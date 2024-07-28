@@ -157,18 +157,22 @@ class ExternalApiDataNode extends DataFlow::Node {
   ExternalApiDataNode() {
     exists(InterestingExternalApiCall call | this = call.getArgument(_)) and
     // Not already modeled as a taint step
-    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _) and
+    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _, _) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
     // Since we have modeled this explicitly, I don't see any cases where we would want to report this.
     not exists(DataFlow::PostUpdateNode post |
       post.getPreUpdateNode() = this and
-      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post)
+      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post, _)
     )
   }
 }
 
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `XmlBombFlow` module instead.
+ *
+ * A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
+ */
+deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -176,14 +180,21 @@ class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
+private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+}
+
+/** Global taint-tracking from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+module UntrustedDataToExternalApiFlow = TaintTracking::Global<UntrustedDataToExternalApiConfig>;
+
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { any(UntrustedDataToExternalApiConfig c).hasFlow(_, this) }
+  UntrustedExternalApiDataNode() { UntrustedDataToExternalApiFlow::flow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalApiConfig c).hasFlow(result, this)
-  }
+  DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::flow(result, this) }
 }
 
 /** An external API which is used with untrusted data. */

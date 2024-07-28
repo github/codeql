@@ -25,7 +25,7 @@ predicate usefulUpcast(CastingExpr e) {
       other.getName() = target.getName() and
       other.getSourceDeclaration() != target.getSourceDeclaration()
     |
-      c.(MethodAccess).getReceiverType().inherits(other.(Method)) or
+      c.(MethodCall).getReceiverType().inherits(other.(Method)) or
       other = target.(Constructor).getDeclaringType().getAConstructor()
     )
   )
@@ -48,7 +48,7 @@ predicate usefulUpcast(CastingExpr e) {
     not e.getExpr().getType().(RefType).inherits(fa.getField())
   )
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     e = ma.getQualifier() and
     m = ma.getMethod() and
     (m.isStatic() or m.isPrivate())

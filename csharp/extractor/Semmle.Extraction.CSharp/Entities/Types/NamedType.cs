@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.TypeKind == TypeKind.Error)
             {
                 UnknownType.Create(Context); // make sure this exists so we can use it in `TypeRef::getReferencedType`
-                Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
+                Context.ExtractionContext.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var l in GetLocations(Symbol))
                     yield return Context.CreateLocation(l);
 
-                if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) && Symbol.DeclaringSyntaxReferences.Any())
+                if (Symbol.DeclaringSyntaxReferences.Any())
                     yield return Assembly.CreateOutputAssembly(Context);
             }
         }

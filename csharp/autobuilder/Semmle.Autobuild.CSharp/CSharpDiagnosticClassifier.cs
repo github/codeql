@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Semmle.Autobuild.Shared;
 using Semmle.Util;
+using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {

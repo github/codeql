@@ -11,6 +11,8 @@ module Strconv {
     Atoi() { this.hasQualifiedName("strconv", "Atoi") }
 
     override int getTargetBitSize() { result = 0 }
+
+    override boolean isSigned() { result = true }
   }
 
   /** The `ParseInt` function. */
@@ -18,6 +20,8 @@ module Strconv {
     ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
 
     override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+
+    override boolean isSigned() { result = true }
   }
 
   /** The `ParseUint` function. */
@@ -25,6 +29,8 @@ module Strconv {
     ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
 
     override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+
+    override boolean isSigned() { result = false }
   }
 
   /**

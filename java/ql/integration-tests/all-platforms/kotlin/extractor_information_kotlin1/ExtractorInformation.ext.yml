@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-queries
+      extensible: extractorInformationSkipKey
+    data:
+      # These will have unstable values, as they are dependent on the
+      # JDK that the test is run with, so filter them out:
+      - ["Number of files"]
+      - ["Number of files with extension class"]
+      # These depend on the Kotlin version you have installed
+      - ["Kotlin Compiler Version: %"]
+      - ["Kotlin Extractor Name: %"]
+

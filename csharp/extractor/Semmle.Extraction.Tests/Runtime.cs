@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 using System.Collections.Generic;
 using Semmle.Extraction.CSharp.DependencyFetching;
 
@@ -18,13 +19,17 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
+        public RestoreResult Restore(RestoreSettings restoreSettings) => new(true, Array.Empty<string>());
 
         public IList<string> GetListedRuntimes() => runtimes;
 
         public IList<string> GetListedSdks() => sdks;
 
         public bool Exec(string execArgs) => true;
+
+        public IList<string> GetNugetFeeds(string nugetConfig) => [];
+
+        public IList<string> GetNugetFeedsFromFolder(string folderPath) => [];
     }
 
     public class RuntimeTests
@@ -159,10 +164,10 @@ namespace Semmle.Extraction.Tests
                 "6.0.301 [/usr/local/share/dotnet/sdk7]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);
@@ -181,10 +186,10 @@ namespace Semmle.Extraction.Tests
                 "7.0.400 [/usr/local/share/dotnet/sdk4]",
             };
             var dotnet = new DotNetStub(null!, listedSdks);
-            var sdk = new Sdk(dotnet);
+            var sdk = new Sdk(dotnet, new LoggerStub());
 
             // Execute
-            var version = sdk.GetNewestSdk();
+            var version = sdk.Version;
 
             // Verify
             Assert.NotNull(version);

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hadoop.hive.ql.exec", "Utilities", False, "renameOrMoveFilesInParallel", "(Configuration,FileSystem,Path,Path)", "", "Argument[2]", "path-injection", "ai-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.hadoop.hive.ql.exec", "Utilities", False, "replaceTaskIdFromFilename", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

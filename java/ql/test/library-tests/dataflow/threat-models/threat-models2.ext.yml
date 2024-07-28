@@ -1,7 +1,0 @@
-extensions:
-
-  - addsTo:
-      pack: codeql/java-all
-      extensible: supportedThreatModels
-    data:
-      - ["local"] # Add the "local" group threat model.

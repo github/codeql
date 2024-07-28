@@ -27,3 +27,5 @@ numberToLetter = re.compile(r'[7-F]') # NOT OK
 overlapsWithClass1 = re.compile(r'[0-9\d]') # NOT OK
 
 overlapsWithClass2 = re.compile(r'[\w,.-?:*+]') # NOT OK
+
+unicodeStuff =  re.compile('[\U0001D173-\U0001D17A\U000E0020-\U000E007F\U000e0001]') # NOT OK

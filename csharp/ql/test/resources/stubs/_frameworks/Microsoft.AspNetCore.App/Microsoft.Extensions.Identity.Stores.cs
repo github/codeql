@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Identity.Stores, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
-
+// Generated from `Microsoft.Extensions.Identity.Stores, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -12,103 +11,95 @@ namespace Microsoft
                 public IdentityRole() => throw null;
                 public IdentityRole(string roleName) => throw null;
             }
-
             public class IdentityRole<TKey> where TKey : System.IEquatable<TKey>
             {
-                public virtual string ConcurrencyStamp { get => throw null; set => throw null; }
-                public virtual TKey Id { get => throw null; set => throw null; }
+                public virtual string ConcurrencyStamp { get => throw null; set { } }
                 public IdentityRole() => throw null;
                 public IdentityRole(string roleName) => throw null;
-                public virtual string Name { get => throw null; set => throw null; }
-                public virtual string NormalizedName { get => throw null; set => throw null; }
+                public virtual TKey Id { get => throw null; set { } }
+                public virtual string Name { get => throw null; set { } }
+                public virtual string NormalizedName { get => throw null; set { } }
                 public override string ToString() => throw null;
             }
-
             public class IdentityRoleClaim<TKey> where TKey : System.IEquatable<TKey>
             {
-                public virtual string ClaimType { get => throw null; set => throw null; }
-                public virtual string ClaimValue { get => throw null; set => throw null; }
-                public virtual int Id { get => throw null; set => throw null; }
+                public virtual string ClaimType { get => throw null; set { } }
+                public virtual string ClaimValue { get => throw null; set { } }
                 public IdentityRoleClaim() => throw null;
+                public virtual int Id { get => throw null; set { } }
                 public virtual void InitializeFromClaim(System.Security.Claims.Claim other) => throw null;
-                public virtual TKey RoleId { get => throw null; set => throw null; }
+                public virtual TKey RoleId { get => throw null; set { } }
                 public virtual System.Security.Claims.Claim ToClaim() => throw null;
             }
-
             public class IdentityUser : Microsoft.AspNetCore.Identity.IdentityUser<string>
             {
                 public IdentityUser() => throw null;
                 public IdentityUser(string userName) => throw null;
             }
-
             public class IdentityUser<TKey> where TKey : System.IEquatable<TKey>
             {
-                public virtual int AccessFailedCount { get => throw null; set => throw null; }
-                public virtual string ConcurrencyStamp { get => throw null; set => throw null; }
-                public virtual string Email { get => throw null; set => throw null; }
-                public virtual bool EmailConfirmed { get => throw null; set => throw null; }
-                public virtual TKey Id { get => throw null; set => throw null; }
+                public virtual int AccessFailedCount { get => throw null; set { } }
+                public virtual string ConcurrencyStamp { get => throw null; set { } }
                 public IdentityUser() => throw null;
                 public IdentityUser(string userName) => throw null;
-                public virtual bool LockoutEnabled { get => throw null; set => throw null; }
-                public virtual System.DateTimeOffset? LockoutEnd { get => throw null; set => throw null; }
-                public virtual string NormalizedEmail { get => throw null; set => throw null; }
-                public virtual string NormalizedUserName { get => throw null; set => throw null; }
-                public virtual string PasswordHash { get => throw null; set => throw null; }
-                public virtual string PhoneNumber { get => throw null; set => throw null; }
-                public virtual bool PhoneNumberConfirmed { get => throw null; set => throw null; }
-                public virtual string SecurityStamp { get => throw null; set => throw null; }
+                public virtual string Email { get => throw null; set { } }
+                public virtual bool EmailConfirmed { get => throw null; set { } }
+                public virtual TKey Id { get => throw null; set { } }
+                public virtual bool LockoutEnabled { get => throw null; set { } }
+                public virtual System.DateTimeOffset? LockoutEnd { get => throw null; set { } }
+                public virtual string NormalizedEmail { get => throw null; set { } }
+                public virtual string NormalizedUserName { get => throw null; set { } }
+                public virtual string PasswordHash { get => throw null; set { } }
+                public virtual string PhoneNumber { get => throw null; set { } }
+                public virtual bool PhoneNumberConfirmed { get => throw null; set { } }
+                public virtual string SecurityStamp { get => throw null; set { } }
                 public override string ToString() => throw null;
-                public virtual bool TwoFactorEnabled { get => throw null; set => throw null; }
-                public virtual string UserName { get => throw null; set => throw null; }
+                public virtual bool TwoFactorEnabled { get => throw null; set { } }
+                public virtual string UserName { get => throw null; set { } }
             }
-
             public class IdentityUserClaim<TKey> where TKey : System.IEquatable<TKey>
             {
-                public virtual string ClaimType { get => throw null; set => throw null; }
-                public virtual string ClaimValue { get => throw null; set => throw null; }
-                public virtual int Id { get => throw null; set => throw null; }
+                public virtual string ClaimType { get => throw null; set { } }
+                public virtual string ClaimValue { get => throw null; set { } }
                 public IdentityUserClaim() => throw null;
+                public virtual int Id { get => throw null; set { } }
                 public virtual void InitializeFromClaim(System.Security.Claims.Claim claim) => throw null;
                 public virtual System.Security.Claims.Claim ToClaim() => throw null;
-                public virtual TKey UserId { get => throw null; set => throw null; }
+                public virtual TKey UserId { get => throw null; set { } }
             }
-
             public class IdentityUserLogin<TKey> where TKey : System.IEquatable<TKey>
             {
                 public IdentityUserLogin() => throw null;
-                public virtual string LoginProvider { get => throw null; set => throw null; }
-                public virtual string ProviderDisplayName { get => throw null; set => throw null; }
-                public virtual string ProviderKey { get => throw null; set => throw null; }
-                public virtual TKey UserId { get => throw null; set => throw null; }
+                public virtual string LoginProvider { get => throw null; set { } }
+                public virtual string ProviderDisplayName { get => throw null; set { } }
+                public virtual string ProviderKey { get => throw null; set { } }
+                public virtual TKey UserId { get => throw null; set { } }
             }
-
             public class IdentityUserRole<TKey> where TKey : System.IEquatable<TKey>
             {
                 public IdentityUserRole() => throw null;
-                public virtual TKey RoleId { get => throw null; set => throw null; }
-                public virtual TKey UserId { get => throw null; set => throw null; }
+                public virtual TKey RoleId { get => throw null; set { } }
+                public virtual TKey UserId { get => throw null; set { } }
             }
-
             public class IdentityUserToken<TKey> where TKey : System.IEquatable<TKey>
             {
                 public IdentityUserToken() => throw null;
-                public virtual string LoginProvider { get => throw null; set => throw null; }
-                public virtual string Name { get => throw null; set => throw null; }
-                public virtual TKey UserId { get => throw null; set => throw null; }
-                public virtual string Value { get => throw null; set => throw null; }
+                public virtual string LoginProvider { get => throw null; set { } }
+                public virtual string Name { get => throw null; set { } }
+                public virtual TKey UserId { get => throw null; set { } }
+                public virtual string Value { get => throw null; set { } }
             }
-
-            public abstract class RoleStoreBase<TRole, TKey, TUserRole, TRoleClaim> : Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>, Microsoft.AspNetCore.Identity.IRoleClaimStore<TRole>, Microsoft.AspNetCore.Identity.IRoleStore<TRole>, System.IDisposable where TKey : System.IEquatable<TKey> where TRole : Microsoft.AspNetCore.Identity.IdentityRole<TKey> where TRoleClaim : Microsoft.AspNetCore.Identity.IdentityRoleClaim<TKey>, new() where TUserRole : Microsoft.AspNetCore.Identity.IdentityUserRole<TKey>, new()
+            public abstract class RoleStoreBase<TRole, TKey, TUserRole, TRoleClaim> : System.IDisposable, Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>, Microsoft.AspNetCore.Identity.IRoleClaimStore<TRole>, Microsoft.AspNetCore.Identity.IRoleStore<TRole> where TRole : Microsoft.AspNetCore.Identity.IdentityRole<TKey> where TKey : System.IEquatable<TKey> where TUserRole : Microsoft.AspNetCore.Identity.IdentityUserRole<TKey>, new() where TRoleClaim : Microsoft.AspNetCore.Identity.IdentityRoleClaim<TKey>, new()
             {
                 public abstract System.Threading.Tasks.Task AddClaimAsync(TRole role, System.Security.Claims.Claim claim, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public virtual TKey ConvertIdFromString(string id) => throw null;
                 public virtual string ConvertIdToString(TKey id) => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> CreateAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 protected virtual TRoleClaim CreateRoleClaim(TRole role, System.Security.Claims.Claim claim) => throw null;
+                public RoleStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> DeleteAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public void Dispose() => throw null;
-                public Microsoft.AspNetCore.Identity.IdentityErrorDescriber ErrorDescriber { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Identity.IdentityErrorDescriber ErrorDescriber { get => throw null; set { } }
                 public abstract System.Threading.Tasks.Task<TRole> FindByIdAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public abstract System.Threading.Tasks.Task<TRole> FindByNameAsync(string normalizedName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public abstract System.Threading.Tasks.Task<System.Collections.Generic.IList<System.Security.Claims.Claim>> GetClaimsAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -116,28 +107,13 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<string> GetRoleIdAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GetRoleNameAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public abstract System.Threading.Tasks.Task RemoveClaimAsync(TRole role, System.Security.Claims.Claim claim, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public RoleStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) => throw null;
                 public abstract System.Linq.IQueryable<TRole> Roles { get; }
                 public virtual System.Threading.Tasks.Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public virtual System.Threading.Tasks.Task SetRoleNameAsync(TRole role, string roleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected void ThrowIfDisposed() => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> UpdateAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
-
-            public abstract class UserStoreBase<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TUserToken, TRoleClaim> : Microsoft.AspNetCore.Identity.UserStoreBase<TUser, TKey, TUserClaim, TUserLogin, TUserToken>, Microsoft.AspNetCore.Identity.IUserRoleStore<TUser>, Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TKey : System.IEquatable<TKey> where TRole : Microsoft.AspNetCore.Identity.IdentityRole<TKey> where TRoleClaim : Microsoft.AspNetCore.Identity.IdentityRoleClaim<TKey>, new() where TUser : Microsoft.AspNetCore.Identity.IdentityUser<TKey> where TUserClaim : Microsoft.AspNetCore.Identity.IdentityUserClaim<TKey>, new() where TUserLogin : Microsoft.AspNetCore.Identity.IdentityUserLogin<TKey>, new() where TUserRole : Microsoft.AspNetCore.Identity.IdentityUserRole<TKey>, new() where TUserToken : Microsoft.AspNetCore.Identity.IdentityUserToken<TKey>, new()
-            {
-                public abstract System.Threading.Tasks.Task AddToRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                protected virtual TUserRole CreateUserRole(TUser user, TRole role) => throw null;
-                protected abstract System.Threading.Tasks.Task<TRole> FindRoleAsync(string normalizedRoleName, System.Threading.CancellationToken cancellationToken);
-                protected abstract System.Threading.Tasks.Task<TUserRole> FindUserRoleAsync(TKey userId, TKey roleId, System.Threading.CancellationToken cancellationToken);
-                public abstract System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetRolesAsync(TUser user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public abstract System.Threading.Tasks.Task<System.Collections.Generic.IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public abstract System.Threading.Tasks.Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public abstract System.Threading.Tasks.Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public UserStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) : base(default(Microsoft.AspNetCore.Identity.IdentityErrorDescriber)) => throw null;
-            }
-
-            public abstract class UserStoreBase<TUser, TKey, TUserClaim, TUserLogin, TUserToken> : Microsoft.AspNetCore.Identity.IQueryableUserStore<TUser>, Microsoft.AspNetCore.Identity.IUserAuthenticationTokenStore<TUser>, Microsoft.AspNetCore.Identity.IUserAuthenticatorKeyStore<TUser>, Microsoft.AspNetCore.Identity.IUserClaimStore<TUser>, Microsoft.AspNetCore.Identity.IUserEmailStore<TUser>, Microsoft.AspNetCore.Identity.IUserLockoutStore<TUser>, Microsoft.AspNetCore.Identity.IUserLoginStore<TUser>, Microsoft.AspNetCore.Identity.IUserPasswordStore<TUser>, Microsoft.AspNetCore.Identity.IUserPhoneNumberStore<TUser>, Microsoft.AspNetCore.Identity.IUserSecurityStampStore<TUser>, Microsoft.AspNetCore.Identity.IUserStore<TUser>, Microsoft.AspNetCore.Identity.IUserTwoFactorRecoveryCodeStore<TUser>, Microsoft.AspNetCore.Identity.IUserTwoFactorStore<TUser>, System.IDisposable where TKey : System.IEquatable<TKey> where TUser : Microsoft.AspNetCore.Identity.IdentityUser<TKey> where TUserClaim : Microsoft.AspNetCore.Identity.IdentityUserClaim<TKey>, new() where TUserLogin : Microsoft.AspNetCore.Identity.IdentityUserLogin<TKey>, new() where TUserToken : Microsoft.AspNetCore.Identity.IdentityUserToken<TKey>, new()
+            public abstract class UserStoreBase<TUser, TKey, TUserClaim, TUserLogin, TUserToken> : System.IDisposable, Microsoft.AspNetCore.Identity.IQueryableUserStore<TUser>, Microsoft.AspNetCore.Identity.IUserAuthenticationTokenStore<TUser>, Microsoft.AspNetCore.Identity.IUserAuthenticatorKeyStore<TUser>, Microsoft.AspNetCore.Identity.IUserClaimStore<TUser>, Microsoft.AspNetCore.Identity.IUserEmailStore<TUser>, Microsoft.AspNetCore.Identity.IUserLockoutStore<TUser>, Microsoft.AspNetCore.Identity.IUserLoginStore<TUser>, Microsoft.AspNetCore.Identity.IUserPasswordStore<TUser>, Microsoft.AspNetCore.Identity.IUserPhoneNumberStore<TUser>, Microsoft.AspNetCore.Identity.IUserSecurityStampStore<TUser>, Microsoft.AspNetCore.Identity.IUserStore<TUser>, Microsoft.AspNetCore.Identity.IUserTwoFactorRecoveryCodeStore<TUser>, Microsoft.AspNetCore.Identity.IUserTwoFactorStore<TUser> where TUser : Microsoft.AspNetCore.Identity.IdentityUser<TKey> where TKey : System.IEquatable<TKey> where TUserClaim : Microsoft.AspNetCore.Identity.IdentityUserClaim<TKey>, new() where TUserLogin : Microsoft.AspNetCore.Identity.IdentityUserLogin<TKey>, new() where TUserToken : Microsoft.AspNetCore.Identity.IdentityUserToken<TKey>, new()
             {
                 public abstract System.Threading.Tasks.Task AddClaimsAsync(TUser user, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public abstract System.Threading.Tasks.Task AddLoginAsync(TUser user, Microsoft.AspNetCore.Identity.UserLoginInfo login, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -149,9 +125,10 @@ namespace Microsoft
                 protected virtual TUserClaim CreateUserClaim(TUser user, System.Security.Claims.Claim claim) => throw null;
                 protected virtual TUserLogin CreateUserLogin(TUser user, Microsoft.AspNetCore.Identity.UserLoginInfo login) => throw null;
                 protected virtual TUserToken CreateUserToken(TUser user, string loginProvider, string name, string value) => throw null;
+                public UserStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> DeleteAsync(TUser user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public void Dispose() => throw null;
-                public Microsoft.AspNetCore.Identity.IdentityErrorDescriber ErrorDescriber { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Identity.IdentityErrorDescriber ErrorDescriber { get => throw null; set { } }
                 public abstract System.Threading.Tasks.Task<TUser> FindByEmailAsync(string normalizedEmail, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public abstract System.Threading.Tasks.Task<TUser> FindByIdAsync(string userId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 public virtual System.Threading.Tasks.Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -205,10 +182,20 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task SetUserNameAsync(TUser user, string userName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected void ThrowIfDisposed() => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> UpdateAsync(TUser user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-                public UserStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) => throw null;
                 public abstract System.Linq.IQueryable<TUser> Users { get; }
             }
-
+            public abstract class UserStoreBase<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TUserToken, TRoleClaim> : Microsoft.AspNetCore.Identity.UserStoreBase<TUser, TKey, TUserClaim, TUserLogin, TUserToken>, System.IDisposable, Microsoft.AspNetCore.Identity.IUserRoleStore<TUser>, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : Microsoft.AspNetCore.Identity.IdentityUser<TKey> where TRole : Microsoft.AspNetCore.Identity.IdentityRole<TKey> where TKey : System.IEquatable<TKey> where TUserClaim : Microsoft.AspNetCore.Identity.IdentityUserClaim<TKey>, new() where TUserRole : Microsoft.AspNetCore.Identity.IdentityUserRole<TKey>, new() where TUserLogin : Microsoft.AspNetCore.Identity.IdentityUserLogin<TKey>, new() where TUserToken : Microsoft.AspNetCore.Identity.IdentityUserToken<TKey>, new() where TRoleClaim : Microsoft.AspNetCore.Identity.IdentityRoleClaim<TKey>, new()
+            {
+                public abstract System.Threading.Tasks.Task AddToRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                protected virtual TUserRole CreateUserRole(TUser user, TRole role) => throw null;
+                public UserStoreBase(Microsoft.AspNetCore.Identity.IdentityErrorDescriber describer) : base(default(Microsoft.AspNetCore.Identity.IdentityErrorDescriber)) => throw null;
+                protected abstract System.Threading.Tasks.Task<TRole> FindRoleAsync(string normalizedRoleName, System.Threading.CancellationToken cancellationToken);
+                protected abstract System.Threading.Tasks.Task<TUserRole> FindUserRoleAsync(TKey userId, TKey roleId, System.Threading.CancellationToken cancellationToken);
+                public abstract System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetRolesAsync(TUser user, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public abstract System.Threading.Tasks.Task<System.Collections.Generic.IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public abstract System.Threading.Tasks.Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public abstract System.Threading.Tasks.Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+            }
         }
     }
 }

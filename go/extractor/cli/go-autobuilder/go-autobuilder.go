@@ -1,22 +1,19 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"runtime"
-	"sort"
 	"strings"
-
-	"golang.org/x/mod/semver"
 
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/project"
+	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -56,98 +53,6 @@ Build behavior:
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
 }
 
-var goVersion = ""
-
-// Returns the current Go version as returned by 'go version', e.g. go1.14.4
-func getEnvGoVersion() string {
-	if goVersion == "" {
-		gover, err := exec.Command("go", "version").CombinedOutput()
-		if err != nil {
-			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
-		}
-		goVersion = parseGoVersion(string(gover))
-	}
-	return goVersion
-}
-
-// The 'go version' command may output warnings on separate lines before
-// the actual version string is printed. This function parses the output
-// to retrieve just the version string.
-func parseGoVersion(data string) string {
-	var lastLine string
-	sc := bufio.NewScanner(strings.NewReader(data))
-	for sc.Scan() {
-		lastLine = sc.Text()
-	}
-	return strings.Fields(lastLine)[2]
-}
-
-// Returns the current Go version in semver format, e.g. v1.14.4
-func getEnvGoSemVer() string {
-	goVersion := getEnvGoVersion()
-	if !strings.HasPrefix(goVersion, "go") {
-		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
-	}
-	return "v" + goVersion[2:]
-}
-
-// Returns the import path of the package being built, or "" if it cannot be determined.
-func getImportPath() (importpath string) {
-	importpath = os.Getenv("LGTM_INDEX_IMPORT_PATH")
-	if importpath == "" {
-		repourl := os.Getenv("SEMMLE_REPO_URL")
-		if repourl == "" {
-			githubrepo := os.Getenv("GITHUB_REPOSITORY")
-			if githubrepo == "" {
-				log.Printf("Unable to determine import path, as neither LGTM_INDEX_IMPORT_PATH nor GITHUB_REPOSITORY is set\n")
-				return ""
-			} else {
-				importpath = "github.com/" + githubrepo
-			}
-		} else {
-			importpath = getImportPathFromRepoURL(repourl)
-			if importpath == "" {
-				log.Printf("Failed to determine import path from SEMMLE_REPO_URL '%s'\n", repourl)
-				return
-			}
-		}
-	}
-	log.Printf("Import path is '%s'\n", importpath)
-	return
-}
-
-// Returns the import path of the package being built from `repourl`, or "" if it cannot be
-// determined.
-func getImportPathFromRepoURL(repourl string) string {
-	// check for scp-like URL as in "git@github.com:github/codeql-go.git"
-	shorturl := regexp.MustCompile(`^([^@]+@)?([^:]+):([^/].*?)(\.git)?$`)
-	m := shorturl.FindStringSubmatch(repourl)
-	if m != nil {
-		return m[2] + "/" + m[3]
-	}
-
-	// otherwise parse as proper URL
-	u, err := url.Parse(repourl)
-	if err != nil {
-		log.Fatalf("Malformed repository URL '%s'\n", repourl)
-	}
-
-	if u.Scheme == "file" {
-		// we can't determine import paths from file paths
-		return ""
-	}
-
-	if u.Hostname() == "" || u.Path == "" {
-		return ""
-	}
-
-	host := u.Hostname()
-	path := u.Path
-	// strip off leading slashes and trailing `.git` if present
-	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
-	return host + "/" + path
-}
-
 func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName string, toDir string) {
 	for _, dirEntry := range dirEntries {
 		if dirEntry != scratchDirName {
@@ -158,59 +63,6 @@ func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName strin
 			}
 		}
 	}
-}
-
-// DependencyInstallerMode is an enum describing how dependencies should be installed
-type DependencyInstallerMode int
-
-const (
-	// GoGetNoModules represents dependency installation using `go get` without modules
-	GoGetNoModules DependencyInstallerMode = iota
-	// GoGetWithModules represents dependency installation using `go get` with modules
-	GoGetWithModules
-	// Dep represent dependency installation using `dep ensure`
-	Dep
-	// Glide represents dependency installation using `glide install`
-	Glide
-)
-
-// ModMode corresponds to the possible values of the -mod flag for the Go compiler
-type ModMode int
-
-const (
-	ModUnset ModMode = iota
-	ModReadonly
-	ModMod
-	ModVendor
-)
-
-// argsForGoVersion returns the arguments to pass to the Go compiler for the given `ModMode` and
-// Go version
-func (m ModMode) argsForGoVersion(version string) []string {
-	switch m {
-	case ModUnset:
-		return []string{}
-	case ModReadonly:
-		return []string{"-mod=readonly"}
-	case ModMod:
-		if !semver.IsValid(version) {
-			log.Fatalf("Invalid Go semver: '%s'", version)
-		}
-		if semver.Compare(version, "v1.14") < 0 {
-			return []string{} // -mod=mod is the default behaviour for go <= 1.13, and is not accepted as an argument
-		} else {
-			return []string{"-mod=mod"}
-		}
-	case ModVendor:
-		return []string{"-mod=vendor"}
-	}
-	return nil
-}
-
-type BuildInfo struct {
-	DepMode DependencyInstallerMode
-	ModMode ModMode
-	BaseDir string
 }
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
@@ -247,162 +99,9 @@ func getSourceDir() string {
 	return srcdir
 }
 
-func getDirs(paths []string) []string {
-	dirs := make([]string, len(paths))
-	for i, path := range paths {
-		dirs[i] = filepath.Dir(path)
-	}
-	return dirs
-}
-
-func checkDirsNested(inputDirs []string) (string, bool) {
-	// replace "." with "" so that we can check if all the paths are nested
-	dirs := make([]string, len(inputDirs))
-	for i, inputDir := range inputDirs {
-		if inputDir == "." {
-			dirs[i] = ""
-		} else {
-			dirs[i] = inputDir
-		}
-	}
-	// the paths were generated by a depth-first search so I think they might
-	// be sorted, but we sort them just in case
-	sort.Strings(dirs)
-	for _, dir := range dirs {
-		if !strings.HasPrefix(dir, dirs[0]) {
-			return "", false
-		}
-	}
-	return dirs[0], true
-}
-
-// Returns the directory to run the go build in and whether to use a go.mod
-// file.
-func findGoModFiles(emitDiagnostics bool) (baseDir string, useGoMod bool) {
-	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
-	if len(goModPaths) == 0 {
-		baseDir = "."
-		useGoMod = false
-		return
-	}
-	goModDirs := getDirs(goModPaths)
-	if util.AnyGoFilesOutsideDirs(".", goModDirs...) {
-		if emitDiagnostics {
-			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
-		}
-		baseDir = "."
-		useGoMod = false
-		return
-	}
-	if len(goModPaths) > 1 {
-		// currently not supported
-		baseDir = "."
-		commonRoot, nested := checkDirsNested(goModDirs)
-		if nested && commonRoot == "" {
-			useGoMod = true
-		} else {
-			useGoMod = false
-		}
-		if emitDiagnostics {
-			if nested {
-				diagnostics.EmitMultipleGoModFoundNested(goModPaths)
-			} else {
-				diagnostics.EmitMultipleGoModFoundNotNested(goModPaths)
-			}
-		}
-		return
-	}
-	if emitDiagnostics {
-		if goModDirs[0] == "." {
-			diagnostics.EmitSingleRootGoModFound(goModPaths[0])
-		} else {
-			diagnostics.EmitSingleNonRootGoModFound(goModPaths[0])
-		}
-	}
-	baseDir = goModDirs[0]
-	useGoMod = true
-	return
-}
-
-// Returns the appropriate DependencyInstallerMode for the current project
-func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
-	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
-	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
-	if len(bazelPaths) > 0 {
-		// currently not supported
-		if emitDiagnostics {
-			diagnostics.EmitBazelBuildFilesFound(bazelPaths)
-		}
-	}
-
-	goWorkPaths := util.FindAllFilesWithName(".", "go.work", "vendor")
-	if len(goWorkPaths) > 0 {
-		// currently not supported
-		if emitDiagnostics {
-			diagnostics.EmitGoWorkFound(goWorkPaths)
-		}
-	}
-
-	baseDir, useGoMod := findGoModFiles(emitDiagnostics)
-	if useGoMod {
-		log.Println("Found go.mod, enabling go modules")
-		return GoGetWithModules, baseDir
-	}
-
-	if util.FileExists("Gopkg.toml") {
-		if emitDiagnostics {
-			diagnostics.EmitGopkgTomlFound()
-		}
-		log.Println("Found Gopkg.toml, using dep instead of go get")
-		return Dep, "."
-	}
-
-	if util.FileExists("glide.yaml") {
-		if emitDiagnostics {
-			diagnostics.EmitGlideYamlFound()
-		}
-		log.Println("Found glide.yaml, using Glide instead of go get")
-		return Glide, "."
-	}
-	return GoGetNoModules, "."
-}
-
-// Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
-func tryReadGoDirective(buildInfo BuildInfo) (string, bool) {
-	if buildInfo.DepMode == GoGetWithModules {
-		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
-		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
-		if err != nil {
-			log.Println("Failed to read go.mod to check for missing Go version")
-		} else {
-			matches := versionRe.FindSubmatch(goMod)
-			if matches != nil {
-				if len(matches) > 1 {
-					return string(matches[1]), true
-				}
-			}
-		}
-	}
-	return "", false
-}
-
-// Returns the appropriate ModMode for the current project
-func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
-	if depMode == GoGetWithModules {
-		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
-		// skip the dependency installation step and run the extractor with `-mod=vendor`
-		if util.FileExists(filepath.Join(baseDir, "vendor", "modules.txt")) {
-			return ModVendor
-		} else if util.DirExists(filepath.Join(baseDir, "vendor")) {
-			return ModMod
-		}
-	}
-	return ModUnset
-}
-
 // fixGoVendorIssues fixes issues with go vendor for go version >= 1.14
-func fixGoVendorIssues(buildInfo *BuildInfo, goModVersionFound bool) {
-	if buildInfo.ModMode == ModVendor {
+func fixGoVendorIssues(workspace *project.GoWorkspace, goModVersionFound bool) {
+	if workspace.ModMode == project.ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
 		// if this is the case, and dependencies were vendored with an old go version (and therefore
 		// do not contain a '## explicit' annotation, the go command will fail and refuse to do any
@@ -410,7 +109,7 @@ func fixGoVendorIssues(buildInfo *BuildInfo, goModVersionFound bool) {
 		//
 		// we work around this by adding an explicit go version of 1.13, which is the last version
 		// where this is not an issue
-		if buildInfo.DepMode == GoGetWithModules {
+		if workspace.DepMode == project.GoGetWithModules {
 			if !goModVersionFound {
 				// if the go.mod does not contain a version line
 				modulesTxt, err := os.ReadFile("vendor/modules.txt")
@@ -421,7 +120,7 @@ func fixGoVendorIssues(buildInfo *BuildInfo, goModVersionFound bool) {
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
 					if !addVersionToMod("1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
-						buildInfo.ModMode = ModMod
+						workspace.ModMode = project.ModMod
 					}
 				}
 			}
@@ -430,9 +129,9 @@ func fixGoVendorIssues(buildInfo *BuildInfo, goModVersionFound bool) {
 }
 
 // Determines whether the project needs a GOPATH set up
-func getNeedGopath(buildInfo BuildInfo, importpath string) bool {
+func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 	needGopath := true
-	if buildInfo.DepMode == GoGetWithModules {
+	if workspace.DepMode == project.GoGetWithModules {
 		needGopath = false
 	}
 	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
@@ -453,44 +152,46 @@ func getNeedGopath(buildInfo BuildInfo, importpath string) bool {
 }
 
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
-func tryUpdateGoModAndGoSum(buildInfo BuildInfo) {
+func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if buildInfo.ModMode != ModVendor && buildInfo.DepMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "v1.16") >= 0 {
-		// stat go.mod and go.sum
-		goModPath := filepath.Join(buildInfo.BaseDir, "go.mod")
-		beforeGoModFileInfo, beforeGoModErr := os.Stat(goModPath)
-		if beforeGoModErr != nil {
-			log.Println("Failed to stat go.mod before running `go mod tidy -e`")
-		}
-
-		goSumPath := filepath.Join(buildInfo.BaseDir, "go.sum")
-		beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
-
-		// run `go mod tidy -e`
-		cmd := exec.Command("go", "mod", "tidy", "-e")
-		cmd.Dir = buildInfo.BaseDir
-		res := util.RunCmd(cmd)
-
-		if !res {
-			log.Println("Failed to run `go mod tidy -e`")
-		} else {
-			if beforeGoModFileInfo != nil {
-				afterGoModFileInfo, afterGoModErr := os.Stat(goModPath)
-				if afterGoModErr != nil {
-					log.Println("Failed to stat go.mod after running `go mod tidy -e`")
-				} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
-					// if go.mod has been changed then notify the user
-					log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
-				}
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
+		for _, goMod := range workspace.Modules {
+			// stat go.mod and go.sum
+			goModPath := goMod.Path
+			goModDir := filepath.Dir(goModPath)
+			beforeGoModFileInfo, beforeGoModErr := os.Stat(goModPath)
+			if beforeGoModErr != nil {
+				log.Printf("Failed to stat %s before running `go mod tidy -e`\n", goModPath)
 			}
 
-			afterGoSumFileInfo, afterGoSumErr := os.Stat(goSumPath)
-			if afterGoSumErr != nil {
-				log.Println("Failed to stat go.sum after running `go mod tidy -e`")
+			goSumPath := filepath.Join(goModDir, "go.sum")
+			beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
+
+			// run `go mod tidy -e`
+			cmd := goMod.Tidy()
+			res := util.RunCmd(cmd)
+
+			if !res {
+				log.Printf("Failed to run `go mod tidy -e` in %s\n", goModDir)
 			} else {
-				if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
-					// if go.sum has been changed then notify the user
-					log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
+				if beforeGoModFileInfo != nil {
+					afterGoModFileInfo, afterGoModErr := os.Stat(goModPath)
+					if afterGoModErr != nil {
+						log.Printf("Failed to stat %s after running `go mod tidy -e`: %s\n", goModPath, afterGoModErr.Error())
+					} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
+						// if go.mod has been changed then notify the user
+						log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
+					}
+				}
+
+				afterGoSumFileInfo, afterGoSumErr := os.Stat(goSumPath)
+				if afterGoSumErr != nil {
+					log.Printf("Failed to stat %s after running `go mod tidy -e`: %s\n", goSumPath, afterGoSumErr.Error())
+				} else {
+					if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
+						// if go.sum has been changed then notify the user
+						log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
+					}
 				}
 			}
 		}
@@ -617,25 +318,35 @@ func setGopath(root string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
-// Try to build the project without custom commands. If that fails, return a boolean indicating
-// that we should install dependencies ourselves.
-func buildWithoutCustomCommands(modMode ModMode) bool {
-	shouldInstallDependencies := false
-	// try to build the project
-	buildSucceeded := autobuilder.Autobuild()
+// Try to build the project with a build script. If that fails, return a boolean indicating
+// that we should install dependencies in the normal way.
+func buildWithoutCustomCommands(workspaces []project.GoWorkspace) {
+	// try to run a build script
+	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
+	scriptCount := len(scriptsExecuted)
 
-	// Build failed or there are still dependency errors; we'll try to install dependencies
-	// ourselves
-	if !buildSucceeded {
-		log.Println("Build failed, continuing to install dependencies.")
+	// If there is no build script we could invoke successfully or there are still dependency errors;
+	// we'll try to install dependencies ourselves in the normal Go way.
+	if !scriptSucceeded {
+		if scriptCount > 0 {
+			log.Printf("Unsuccessfully ran %d build scripts(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		} else {
+			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
+		}
 
-		shouldInstallDependencies = true
-	} else if util.DepErrors("./...", modMode.argsForGoVersion(getEnvGoSemVer())...) {
-		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+		// Install dependencies for all workspaces.
+		for i, _ := range workspaces {
+			workspaces[i].ShouldInstallDependencies = true
+		}
+	} else {
+		for i, workspace := range workspaces {
+			if toolchain.DepErrors("./...", workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+				log.Printf("Dependencies are still not resolving for `%s` after executing %d build script(s), continuing to install dependencies in the normal way.\n", workspace.BaseDir, scriptCount)
 
-		shouldInstallDependencies = true
+				workspaces[i].ShouldInstallDependencies = true
+			}
+		}
 	}
-	return shouldInstallDependencies
 }
 
 // Build the project with custom commands.
@@ -673,10 +384,10 @@ func buildWithCustomCommands(inst string) {
 }
 
 // Install dependencies using the given dependency installer mode.
-func installDependencies(buildInfo BuildInfo) {
+func installDependencies(workspace project.GoWorkspace) {
 	// automatically determine command to install dependencies
 	var install *exec.Cmd
-	if buildInfo.DepMode == Dep {
+	if workspace.DepMode == project.Dep {
 		// set up the dep cache if SEMMLE_CACHE is set
 		cacheDir := os.Getenv("SEMMLE_CACHE")
 		if cacheDir != "" {
@@ -706,58 +417,87 @@ func installDependencies(buildInfo BuildInfo) {
 			install = exec.Command("dep", "ensure", "-v")
 		}
 		log.Println("Installing dependencies using `dep ensure`.")
-	} else if buildInfo.DepMode == Glide {
+		util.RunCmd(install)
+	} else if workspace.DepMode == project.Glide {
 		install = exec.Command("glide", "install")
 		log.Println("Installing dependencies using `glide install`")
+		util.RunCmd(install)
 	} else {
-		// explicitly set go module support
-		if buildInfo.DepMode == GoGetWithModules {
-			os.Setenv("GO111MODULE", "on")
-		} else if buildInfo.DepMode == GoGetNoModules {
-			os.Setenv("GO111MODULE", "off")
+		if workspace.Modules == nil {
+			project.InitGoModForLegacyProject(workspace.BaseDir)
+			workspace.Modules = project.LoadGoModules(true, []string{filepath.Join(workspace.BaseDir, "go.mod")})
 		}
 
-		// get dependencies
-		install = exec.Command("go", "get", "-v", "./...")
-		install.Dir = buildInfo.BaseDir
-		log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", buildInfo.BaseDir)
+		// get dependencies for all modules
+		for _, module := range workspace.Modules {
+			path := filepath.Dir(module.Path)
+
+			if util.DirExists(filepath.Join(path, "vendor")) {
+				vendor := module.Vendor()
+				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
+				util.RunCmd(vendor)
+			}
+
+			install = exec.Command("go", "get", "-v", "./...")
+			install.Dir = path
+			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", path)
+			util.RunCmd(install)
+		}
 	}
-	util.RunCmd(install)
 }
 
 // Run the extractor.
-func extract(buildInfo BuildInfo) {
+func extract(workspace project.GoWorkspace) bool {
 	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
 	}
 
 	extractorArgs := []string{}
-	if buildInfo.DepMode == GoGetWithModules {
-		extractorArgs = append(extractorArgs, buildInfo.ModMode.argsForGoVersion(getEnvGoSemVer())...)
+	if workspace.DepMode == project.GoGetWithModules {
+		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
 	}
-	extractorArgs = append(extractorArgs, "./...")
 
-	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, buildInfo.BaseDir)
+	if len(workspace.Modules) == 0 {
+		// There may be no modules if we are using e.g. Dep or Glide
+		extractorArgs = append(extractorArgs, "./...")
+	} else {
+		for _, module := range workspace.Modules {
+			relModPath, relErr := filepath.Rel(workspace.BaseDir, filepath.Dir(module.Path))
+
+			if relErr != nil {
+				log.Printf(
+					"Unable to make module path %s relative to workspace base dir %s: %s\n",
+					filepath.Dir(module.Path), workspace.BaseDir, relErr.Error())
+			} else {
+				if relModPath != "." {
+					extractorArgs = append(extractorArgs, "."+string(os.PathSeparator)+relModPath+"/...")
+				} else {
+					extractorArgs = append(extractorArgs, relModPath+"/...")
+				}
+			}
+		}
+	}
+
+	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, workspace.BaseDir)
 	cmd := exec.Command(extractor, extractorArgs...)
-	cmd.Dir = buildInfo.BaseDir
+	cmd.Dir = workspace.BaseDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		log.Fatalf("Extraction failed: %s\n", err.Error())
+		log.Printf("Extraction failed for %s: %s\n", workspace.BaseDir, err.Error())
+		return false
 	}
-}
 
-func getBuildInfo(emitDiagnostics bool) BuildInfo {
-	depMode, baseDir := getDepMode(true)
-	modMode := getModMode(depMode, baseDir)
-	return BuildInfo{depMode, modMode, baseDir}
+	return true
 }
 
 // Build the project and run the extractor.
 func installDependenciesAndBuild() {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
+	// do not print experiments the autobuilder was built with if any, only the version
+	version := strings.SplitN(runtime.Version(), " ", 2)[0]
+	log.Printf("Autobuilder was built with %s, environment has %s\n", version, toolchain.GetEnvGoVersion())
 
 	srcdir := getSourceDir()
 
@@ -766,350 +506,127 @@ func installDependenciesAndBuild() {
 
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
-	buildInfo := getBuildInfo(true)
+	workspaces := project.GetWorkspaceInfo(true)
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
-	goModVersion, goModVersionFound := tryReadGoDirective(buildInfo)
+	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
+	defer project.RemoveTemporaryExtractorFiles()
 
-	if goModVersionFound && semver.Compare("v"+goModVersion, getEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded()
+	// If there is only one workspace and it needs a GOPATH set up, which may be the case if
+	// we don't use Go modules, then we move the repository to a temporary directory and set
+	// the GOPATH to it.
+	if len(workspaces) == 1 {
+		workspace := workspaces[0]
+
+		importpath := util.GetImportPath()
+		needGopath := getNeedGopath(workspace, importpath)
+
+		inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
+
+		if inLGTM && needGopath {
+			paths := moveToTemporaryGopath(srcdir, importpath)
+
+			// schedule restoring the contents of newdir to their original location after this function completes:
+			defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
+
+			pt := createPathTransformerFile(paths.newdir)
+			defer os.Remove(pt.Name())
+
+			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			setGopath(paths.root)
+		}
 	}
 
-	fixGoVendorIssues(&buildInfo, goModVersionFound)
+	// Find the greatest version of Go that is required by the workspaces to check it against the version
+	// of Go that is installed on the system.
+	greatestGoVersion := project.RequiredGoVersion(&workspaces)
 
-	tryUpdateGoModAndGoSum(buildInfo)
+	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
+	// Go tooling should install required Go versions as needed.
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
+		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+			log.Printf(
+				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
+				greatestGoVersion,
+				toolchain.GetEnvGoSemVer())
+		}
+	}
 
-	importpath := getImportPath()
-	needGopath := getNeedGopath(buildInfo, importpath)
+	// Track all projects which could not be extracted successfully
+	var unsuccessfulProjects = []string{}
 
-	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
+	// Attempt to automatically fix issues with each workspace
+	for _, workspace := range workspaces {
+		goVersionInfo := workspace.RequiredGoVersion()
 
-	if inLGTM && needGopath {
-		paths := moveToTemporaryGopath(srcdir, importpath)
+		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
-		// schedule restoring the contents of newdir to their original location after this function completes:
-		defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
-
-		pt := createPathTransformerFile(paths.newdir)
-		defer os.Remove(pt.Name())
-
-		writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
-		setGopath(paths.root)
+		tryUpdateGoModAndGoSum(workspace)
 	}
 
 	// check whether an explicit dependency installation command was provided
 	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-	shouldInstallDependencies := false
 	if inst == "" {
-		shouldInstallDependencies = buildWithoutCustomCommands(buildInfo.ModMode)
+		buildWithoutCustomCommands(workspaces)
 	} else {
 		buildWithCustomCommands(inst)
 	}
 
-	if buildInfo.ModMode == ModVendor {
-		// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-		// or not set if the go version < 1.14. Note we check this post-build in case the build brings
-		// the vendor directory up to date.
-		if !checkVendor() {
-			buildInfo.ModMode = ModMod
-			log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
+		if workspace.ModMode == project.ModVendor {
+			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
+			// the vendor directory up to date.
+			if !checkVendor() {
+				workspace.ModMode = project.ModMod
+				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+			}
+		}
+
+		if workspace.ShouldInstallDependencies {
+			if workspace.ModMode == project.ModVendor {
+				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
+			} else {
+				installDependencies(workspace)
+			}
+		}
+
+		workspaces[i].Extracted = extract(workspace)
+
+		if !workspaces[i].Extracted {
+			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
 		}
 	}
 
-	if shouldInstallDependencies {
-		if buildInfo.ModMode == ModVendor {
-			log.Printf("Skipping dependency installation because a Go vendor directory was found.")
-		} else {
-			installDependencies(buildInfo)
-		}
+	// If all projects could not be extracted successfully, we fail the overall extraction.
+	if len(unsuccessfulProjects) == len(workspaces) {
+		log.Fatalln("Extraction failed for all discovered Go projects.")
 	}
 
-	extract(buildInfo)
-}
-
-const minGoVersion = "1.11"
-const maxGoVersion = "1.21"
-
-// Check if `version` is lower than `minGoVersion`. Note that for this comparison we ignore the
-// patch part of the version, so 1.20.1 and 1.20 are considered equal.
-func belowSupportedRange(version string) bool {
-	return semver.Compare(semver.MajorMinor("v"+version), "v"+minGoVersion) < 0
-}
-
-// Check if `version` is higher than `maxGoVersion`. Note that for this comparison we ignore the
-// patch part of the version, so 1.20.1 and 1.20 are considered equal.
-func aboveSupportedRange(version string) bool {
-	return semver.Compare(semver.MajorMinor("v"+version), "v"+maxGoVersion) > 0
-}
-
-// Check if `version` is lower than `minGoVersion` or higher than `maxGoVersion`. Note that for
-// this comparison we ignore the patch part of the version, so 1.20.1 and 1.20 are considered
-// equal.
-func outsideSupportedRange(version string) bool {
-	return belowSupportedRange(version) || aboveSupportedRange(version)
-}
-
-// Assuming `v.goModVersionFound` is false, emit a diagnostic and return the version to install,
-// or the empty string if we should not attempt to install a version of Go.
-func getVersionWhenGoModVersionNotFound(v versionInfo) (msg, version string) {
-	if !v.goEnvVersionFound {
-		// There is no Go version installed in the environment. We have no indication which version
-		// was intended to be used to build this project. Go versions are generally backwards
-		// compatible, so we install the maximum supported version.
-		msg = "No version of Go installed and no `go.mod` file found. Requesting the maximum " +
-			"supported version of Go (" + maxGoVersion + ")."
-		version = maxGoVersion
-		diagnostics.EmitNoGoModAndNoGoEnv(msg)
-	} else if outsideSupportedRange(v.goEnvVersion) {
-		// The Go version installed in the environment is not supported. We have no indication
-		// which version was intended to be used to build this project. Go versions are generally
-		// backwards compatible, so we install the maximum supported version.
-		msg = "No `go.mod` file found. The version of Go installed in the environment (" +
-			v.goEnvVersion + ") is outside of the supported range (" + minGoVersion + "-" +
-			maxGoVersion + "). Requesting the maximum supported version of Go (" + maxGoVersion +
-			")."
-		version = maxGoVersion
-		diagnostics.EmitNoGoModAndGoEnvUnsupported(msg)
+	// If there is at least one project that could not be extracted successfully,
+	// emit a diagnostic that reports which projects we could not extract successfully.
+	// We only consider this a warning, since there may be test projects etc. which
+	// do not matter if they cannot be extracted successfully.
+	if len(unsuccessfulProjects) > 0 {
+		log.Printf(
+			"Warning: extraction failed for %d project(s): %s\n",
+			len(unsuccessfulProjects),
+			strings.Join(unsuccessfulProjects, ", "))
+		diagnostics.EmitExtractionFailedForProjects(unsuccessfulProjects)
 	} else {
-		// The version of Go that is installed is supported. We have no indication which version
-		// was intended to be used to build this project. We assume that the installed version is
-		// suitable and do not install a version of Go.
-		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the " +
-			"environment is supported. Not requesting any version of Go."
-		version = ""
-		diagnostics.EmitNoGoModAndGoEnvSupported(msg)
+		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
-
-	return msg, version
-}
-
-// Assuming `v.goModVersion` is above the supported range, emit a diagnostic and return the
-// version to install, or the empty string if we should not attempt to install a version of Go.
-func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
-	if !v.goEnvVersionFound {
-		// The version in the `go.mod` file is above the supported range. There is no Go version
-		// installed. We install the maximum supported version as a best effort.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). No version of Go installed. Requesting the maximum supported version of Go (" +
-			maxGoVersion + ")."
-		version = maxGoVersion
-		diagnostics.EmitGoModVersionTooHighAndNoGoEnv(msg)
-	} else if aboveSupportedRange(v.goEnvVersion) {
-		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is above the supported range. We do not install a version of Go.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). The version of Go installed in the environment (" + v.goEnvVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). Not requesting any version of Go."
-		version = ""
-		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooHigh(msg)
-	} else if belowSupportedRange(v.goEnvVersion) {
-		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is below the supported range. We install the maximum supported version as
-		// a best effort.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). The version of Go installed in the environment (" + v.goEnvVersion +
-			") is below the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion + ")."
-		version = maxGoVersion
-		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooLow(msg)
-	} else if semver.Compare("v"+maxGoVersion, "v"+v.goEnvVersion) > 0 {
-		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is supported and below the maximum supported version. We install the
-		// maximum supported version as a best effort.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). The version of Go installed in the environment (" + v.goEnvVersion +
-			") is below the maximum supported version (" + maxGoVersion +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion + ")."
-		version = maxGoVersion
-		diagnostics.EmitGoModVersionTooHighAndEnvVersionBelowMax(msg)
-	} else {
-		// The version in the `go.mod` file is above the supported range. The version of Go that
-		// is installed is the maximum supported version. We do not install a version of Go.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). The version of Go installed in the environment (" + v.goEnvVersion +
-			") is the maximum supported version (" + maxGoVersion +
-			"). Not requesting any version of Go."
-		version = ""
-		diagnostics.EmitGoModVersionTooHighAndEnvVersionMax(msg)
-	}
-
-	return msg, version
-}
-
-// Assuming `v.goModVersion` is below the supported range, emit a diagnostic and return the
-// version to install, or the empty string if we should not attempt to install a version of Go.
-func getVersionWhenGoModVersionTooLow(v versionInfo) (msg, version string) {
-	if !v.goEnvVersionFound {
-		// There is no Go version installed. The version in the `go.mod` file is below the
-		// supported range. Go versions are generally backwards compatible, so we install the
-		// minimum supported version.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is below the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). No version of Go installed. Requesting the minimum supported version of Go (" +
-			minGoVersion + ")."
-		version = minGoVersion
-		diagnostics.EmitGoModVersionTooLowAndNoGoEnv(msg)
-	} else if outsideSupportedRange(v.goEnvVersion) {
-		// The version of Go that is installed is outside of the supported range. The version
-		// in the `go.mod` file is below the supported range. Go versions are generally
-		// backwards compatible, so we install the minimum supported version.
-		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is below the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). The version of Go installed in the environment (" + v.goEnvVersion +
-			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + "). " +
-			"Requesting the minimum supported version of Go (" + minGoVersion + ")."
-		version = minGoVersion
-		diagnostics.EmitGoModVersionTooLowAndEnvVersionUnsupported(msg)
-	} else {
-		// The version of Go that is installed is supported. The version in the `go.mod` file is
-		// below the supported range. We do not install a version of Go.
-		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is supported and is high enough for the version found in the `go.mod` file (" +
-			v.goModVersion + "). Not requesting any version of Go."
-		version = ""
-		diagnostics.EmitGoModVersionTooLowAndEnvVersionSupported(msg)
-	}
-
-	return msg, version
-}
-
-// Assuming `v.goModVersion` is in the supported range, emit a diagnostic and return the version
-// to install, or the empty string if we should not attempt to install a version of Go.
-func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
-	if !v.goEnvVersionFound {
-		// There is no Go version installed. The version in the `go.mod` file is supported.
-		// We install the version from the `go.mod` file.
-		msg = "No version of Go installed. Requesting the version of Go found in the `go.mod` " +
-			"file (" + v.goModVersion + ")."
-		version = v.goModVersion
-		diagnostics.EmitGoModVersionSupportedAndNoGoEnv(msg)
-	} else if outsideSupportedRange(v.goEnvVersion) {
-		// The version of Go that is installed is outside of the supported range. The version in
-		// the `go.mod` file is supported. We install the version from the `go.mod` file.
-		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + "). " +
-			"Requesting the version of Go from the `go.mod` file (" +
-			v.goModVersion + ")."
-		version = v.goModVersion
-		diagnostics.EmitGoModVersionSupportedAndGoEnvUnsupported(msg)
-	} else if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
-		// The version of Go that is installed is supported. The version in the `go.mod` file is
-		// supported and is higher than the version that is installed. We install the version from
-		// the `go.mod` file.
-		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is lower than the version found in the `go.mod` file (" + v.goModVersion +
-			"). Requesting the version of Go from the `go.mod` file (" + v.goModVersion + ")."
-		version = v.goModVersion
-		diagnostics.EmitGoModVersionSupportedHigherGoEnv(msg)
-	} else {
-		// The version of Go that is installed is supported. The version in the `go.mod` file is
-		// supported and is lower than or equal to the version that is installed. We do not install
-		// a version of Go.
-		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is supported and is high enough for the version found in the `go.mod` file (" +
-			v.goModVersion + "). Not requesting any version of Go."
-		version = ""
-		diagnostics.EmitGoModVersionSupportedLowerEqualGoEnv(msg)
-	}
-
-	return msg, version
-}
-
-// Check the versions of Go found in the environment and in the `go.mod` file, and return a
-// version to install. If the version is the empty string then no installation is required.
-// We never return a version of Go that is outside of the supported range.
-//
-// +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
-// | Found in go.mod >     | *None*                | *Below min supported* | *In supported range*                                | *Above max supported                           |
-// | Installed \/          |                       |                       |                                                     |                                                |
-// |-----------------------|-----------------------|-----------------------|-----------------------------------------------------|------------------------------------------------|
-// | *None*                | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
-// | *Below min supported* | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
-// | *In supported range*  | No action             | No action             | Install version from go.mod if newer than installed | Install max supported if newer than installed  |
-// | *Above max supported* | Install max supported | Install min supported | Install version from go.mod                         | No action                                      |
-// +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
-func getVersionToInstall(v versionInfo) (msg, version string) {
-	if !v.goModVersionFound {
-		return getVersionWhenGoModVersionNotFound(v)
-	}
-
-	if aboveSupportedRange(v.goModVersion) {
-		return getVersionWhenGoModVersionTooHigh(v)
-	}
-
-	if belowSupportedRange(v.goModVersion) {
-		return getVersionWhenGoModVersionTooLow(v)
-	}
-
-	return getVersionWhenGoModVersionSupported(v)
-}
-
-// Output some JSON to stdout specifying the version of Go to install, unless `version` is the
-// empty string.
-func outputEnvironmentJson(version string) {
-	var content string
-	if version == "" {
-		content = `{ "go": {} }`
-	} else {
-		content = `{ "go": { "version": "` + version + `" } }`
-	}
-	_, err := fmt.Fprint(os.Stdout, content)
-
-	if err != nil {
-		log.Println("Failed to write environment json to stdout: ")
-		log.Println(err)
-	}
-}
-
-type versionInfo struct {
-	goModVersion      string // The version of Go found in the go directive in the `go.mod` file.
-	goModVersionFound bool   // Whether a `go` directive was found in the `go.mod` file.
-	goEnvVersion      string // The version of Go found in the environment.
-	goEnvVersionFound bool   // Whether an installation of Go was found in the environment.
-}
-
-func (v versionInfo) String() string {
-	return fmt.Sprintf(
-		"go.mod version: %s, go.mod directive found: %t, go env version: %s, go installation found: %t",
-		v.goModVersion, v.goModVersionFound, v.goEnvVersion, v.goEnvVersionFound)
-}
-
-// Check if Go is installed in the environment.
-func isGoInstalled() bool {
-	_, err := exec.LookPath("go")
-	return err == nil
-}
-
-// Get the version of Go to install and output it to stdout as json.
-func identifyEnvironment() {
-	var v versionInfo
-	buildInfo := getBuildInfo(false)
-	v.goModVersion, v.goModVersionFound = tryReadGoDirective(buildInfo)
-
-	v.goEnvVersionFound = isGoInstalled()
-	if v.goEnvVersionFound {
-		v.goEnvVersion = getEnvGoVersion()[2:]
-	}
-
-	msg, versionToInstall := getVersionToInstall(v)
-	log.Println(msg)
-
-	outputEnvironmentJson(versionToInstall)
 }
 
 func main() {
 	if len(os.Args) == 1 {
 		installDependenciesAndBuild()
 	} else if len(os.Args) == 2 && os.Args[1] == "--identify-environment" {
-		identifyEnvironment()
+		autobuilder.IdentifyEnvironment()
 	} else {
 		usage()
 		os.Exit(2)

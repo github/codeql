@@ -20,17 +20,21 @@ private class StandardDeallocationFunction extends DeallocationFunction {
     freedArg = 0
     or
     this.hasGlobalName([
-        // --- OpenSSL memory allocation
-        "CRYPTO_free", "CRYPTO_secure_free"
+        // --- OpenSSL memory deallocation
+        "CRYPTO_free", "CRYPTO_secure_free",
+        // --- glib memory deallocation
+        "g_free"
       ]) and
     freedArg = 0
     or
     this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
-        "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeMdl", "IoFreeWorkItem", "IoFreeErrorLogEntry",
-        "MmFreeContiguousMemory", "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory",
-        "MmFreeMappingAddress", "MmFreePagesFromMdl", "MmUnmapReservedMapping",
-        "MmUnmapLockedPages",
+        "ExFreePool", "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeIrp", "IoFreeMdl",
+        "IoFreeErrorLogEntry", "IoFreeWorkItem", "MmFreeContiguousMemory",
+        "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory", "MmFreeMappingAddress",
+        "MmFreePagesFromMdl", "MmUnmapReservedMapping", "MmUnmapLockedPages",
+        "NdisFreeGenericObject", "NdisFreeMemory", "NdisFreeMemoryWithTag", "NdisFreeMdl",
+        "NdisFreeNetBufferListPool", "NdisFreeNetBufferPool",
         // --- Windows Global / Local legacy allocation
         "LocalFree", "GlobalFree", "LocalReAlloc", "GlobalReAlloc",
         // --- Windows System Services allocation
@@ -47,6 +51,7 @@ private class StandardDeallocationFunction extends DeallocationFunction {
     this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
         "ExFreeToLookasideListEx", "ExFreeToPagedLookasideList", "ExFreeToNPagedLookasideList",
+        "NdisFreeMemoryWithTagPriority", "StorPortFreeMdl", "StorPortFreePool",
         // --- NetBSD pool manager
         "pool_put", "pool_cache_put"
       ]) and

@@ -15,12 +15,15 @@ on:
       - ".github/workflows/validate-change-notes.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+
 jobs:
   check-change-note:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql

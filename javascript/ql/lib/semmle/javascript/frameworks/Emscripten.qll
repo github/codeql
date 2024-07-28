@@ -17,9 +17,6 @@ class EmscriptenStartAsmComment extends EmscriptenMarkerComment {
   EmscriptenStartAsmComment() { this.getText().trim() = "EMSCRIPTEN_START_ASM" }
 }
 
-/** DEPRECATED: Alias for EmscriptenStartAsmComment */
-deprecated class EmscriptenStartASMComment = EmscriptenStartAsmComment;
-
 /**
  * An `EMSCRIPTEN_START_FUNCS` marker comment.
  */
@@ -33,9 +30,6 @@ class EmscriptenStartFuncsComment extends EmscriptenMarkerComment {
 class EmscriptenEndAsmComment extends EmscriptenMarkerComment {
   EmscriptenEndAsmComment() { this.getText().trim() = "EMSCRIPTEN_END_ASM" }
 }
-
-/** DEPRECATED: Alias for EmscriptenEndAsmComment */
-deprecated class EmscriptenEndASMComment = EmscriptenEndAsmComment;
 
 /**
  * An `EMSCRIPTEN_END_FUNCS` marker comment.

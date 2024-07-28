@@ -81,13 +81,13 @@ csharp73.cs:
 #   22|                 1: [TypeMention] int
 #   22|               0: [IntLiteral] 10
 #   25|       2: [BlockStmt] {...}
-#   30| [Class] UnmanagedConstraint<>
+#   30| [Class] UnmanagedConstraint`1
 #-----|   1: (Type parameters)
 #   30|     0: [TypeParameter] T
-#   34| [Class] EnumConstraint<>
+#   34| [Class] EnumConstraint`1
 #-----|   1: (Type parameters)
 #   34|     0: [TypeParameter] T
-#   38| [Class] DelegateConstraint<>
+#   38| [Class] DelegateConstraint`1
 #-----|   1: (Type parameters)
 #   38|     0: [TypeParameter] T
 #   42| [Class] ExpressionVariables

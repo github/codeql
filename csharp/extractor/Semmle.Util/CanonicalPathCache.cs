@@ -268,7 +268,7 @@ namespace Semmle.Util
                     catch  // lgtm[cs/catch-of-all-exceptions]
                     {
                         // Failed to late-bind a suitable library.
-                        logger.Log(Severity.Warning, "Preserving symlinks in canonical paths");
+                        logger.LogWarning("Preserving symlinks in canonical paths");
                         pathStrategy = new QueryDirectoryStrategy();
                     }
                     break;

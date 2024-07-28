@@ -91,6 +91,8 @@ class RelevantDefinition extends AssignableDefinition {
       this = any(Ssa::ExplicitDefinition ssaDef).getADefinition()
       or
       mayEscape(v)
+      or
+      v.isCaptured()
     )
   }
 

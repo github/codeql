@@ -13,7 +13,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.windows.Forms
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.asp.AspNet
 
 /**

@@ -296,7 +296,7 @@ deprecated class PossibleYearArithmeticOperationCheckConfiguration extends Taint
   }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asConvertedExpr() |
+    exists(Operation op | op = source.asExpr() |
       op.getAChild*().getValue().toInt() = 365 and
       (
         not op.getParent() instanceof Expr or
@@ -321,7 +321,7 @@ deprecated class PossibleYearArithmeticOperationCheckConfiguration extends Taint
 
   override predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asConvertedExpr()
+      aexpr.getRValue() = sink.asExpr()
     |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
@@ -336,7 +336,7 @@ deprecated class PossibleYearArithmeticOperationCheckConfiguration extends Taint
  */
 private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asConvertedExpr() |
+    exists(Operation op | op = source.asExpr() |
       op.getAChild*().getValue().toInt() = 365 and
       (
         not op.getParent() instanceof Expr or
@@ -344,6 +344,8 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       )
     )
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from anything on the RHS of an assignment to a time/date structure to that
@@ -361,7 +363,7 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
 
   predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asConvertedExpr()
+      aexpr.getRValue() = sink.asExpr()
     |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and

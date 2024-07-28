@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using an object after its lifetime has ended results in undefined behavior.
+When an object's lifetime has ended it relinquishes ownership of its resources and the memory it occupied may be reused for other purposes.
+If the object is accessed after its lifetime has ended, the program may crash or behave in unexpected ways.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that no object is accessed after its lifetime has ended.
+Use RAII ("Resource Acquisition Is Initialization") to manage the lifetime of objects, and avoid manual memory management, if possible.
+</p>
+
+</recommendation>
+<example>
+<p>
+The following two examples demonstrate common lifetime violations when working with the C++ standard library.
+</p>
+
+<p>
+The <code>bad_call_c_api</code> function contains a use of an expired lifetime.
+First, a temporary object of type <code>std::string</code> is constructed, and a pointer to its internal buffer is stored in a local variable.
+Once the <code>c_str()</code> call returns, the temporary object is destroyed, and the memory pointed to by <code>p</code> is freed.
+Thus, any attempt to dereference <code>p</code> inside <code>c_api</code> will result in a use-after-free vulnerability.
+
+The <code>good_call_c_api</code> function contains a fixed version of the first example.
+The variable <code>hello</code> is declared as a local variable, and the pointer to its internal buffer is stored in <code>p</code>.
+The lifetime of hello outlives the call to <code>c_api</code>, so the pointer stored in <code>p</code> remains valid throughout the call to <code>c_api</code>.
+</p>
+<sample src="UseAfterExpiredLifetime_c_api_call.cpp" />
+
+<p>
+The <code>bad_remove_even_numbers</code> function demonstrates a potential issue with iterator invalidation.
+Each C++ standard library container comes with a specification of which operations invalidates iterators pointing into the container.
+For example, calling <code>erase</code> on an object of type <code>std::vector&lt;T&gt;</code> invalidates all its iterators, and thus any attempt to dereference the iterator can result in a use-after-free vulnerability.
+
+The <code>good_remove_even_numbers</code> function contains a fixd version of the third example.
+The <code>erase</code> function returns an iterator to the element following the last element removed, and this return value is used to ensure that <code>it</code> remains valid after the call to <code>erase</code>.
+</p>
+<sample src="UseAfterExpiredLifetime_iterator_invalidation.cpp" />
+
+</example>
+<references>
+
+<li>CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/MEM30-C.+Do+not+access+freed+memory">MEM30-C. Do not access freed memory</a>.</li>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Using_freed_memory">Using freed memory</a>.
+</li>
+<li>
+<a href="https://github.com/isocpp/CppCoreGuidelines/blob/master/docs/Lifetime.pdf">Lifetime safety: Preventing common dangling</a>
+</li>
+<li>
+<a href="https://en.cppreference.com/w/cpp/container">Containers library</a>
+</li>
+<li>
+<a href="https://en.cppreference.com/w/cpp/language/raii">RAII</a>
+</li>
+
+</references>
+</qhelp>

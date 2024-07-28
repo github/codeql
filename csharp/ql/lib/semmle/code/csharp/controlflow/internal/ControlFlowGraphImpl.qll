@@ -13,11 +13,14 @@ private import semmle.code.csharp.commons.Compilation
 /** An element that defines a new CFG scope. */
 class CfgScope extends Element, @top_level_exprorstmt_parent {
   CfgScope() {
-    this instanceof Callable
-    or
-    // For now, static initializer values have their own scope. Eventually, they
-    // should be treated like instance initializers.
-    this.(Assignable).(Modifiable).isStatic()
+    this.getFile().fromSource() and
+    (
+      this instanceof Callable
+      or
+      // For now, static initializer values have their own scope. Eventually, they
+      // should be treated like instance initializers.
+      this.(Assignable).(Modifiable).isStatic()
+    )
   }
 }
 
@@ -780,7 +783,7 @@ module Expressions {
             nc.getOuterCompletion()
                 .(ThrowCompletion)
                 .getExceptionClass()
-                .hasQualifiedName("System", "InvalidOperationException")
+                .hasFullyQualifiedName("System", "InvalidOperationException")
           )
       )
     }

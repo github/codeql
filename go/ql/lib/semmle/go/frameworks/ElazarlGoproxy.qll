@@ -95,7 +95,7 @@ module ElazarlGoproxy {
     }
   }
 
-  private class UserControlledRequestData extends UntrustedFlowSource::Range {
+  private class UserControlledRequestData extends RemoteFlowSource::Range {
     UserControlledRequestData() {
       exists(DataFlow::FieldReadNode frn | this = frn |
         // liberally consider ProxyCtx.UserData to be untrusted; it's a data field set by a request handler

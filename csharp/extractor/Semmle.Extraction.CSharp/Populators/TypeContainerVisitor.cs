@@ -82,9 +82,6 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (Cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                return;
-
             var outputAssembly = Assembly.CreateOutputAssembly(Cx);
             var kind = node.Target?.Identifier.Kind() switch
             {
@@ -92,8 +89,10 @@ namespace Semmle.Extraction.CSharp.Populators
                 SyntaxKind.ModuleKeyword => Entities.AttributeKind.Module,
                 _ => throw new InternalError(node, "Unhandled global target")
             };
-            foreach (var attribute in node.Attributes)
+            var attributes = node.Attributes;
+            for (var i = 0; i < attributes.Count; i++)
             {
+                var attribute = attributes[i];
                 if (attributeLookup.Value(attribute) is AttributeData attributeData)
                 {
                     var ae = Entities.Attribute.Create(Cx, attributeData, outputAssembly, kind);

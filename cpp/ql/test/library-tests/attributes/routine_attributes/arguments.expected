@@ -1,4 +1,8 @@
 | declspec.cpp:4:23:4:43 | Use fatal() instead | declspec.cpp:4:59:4:62 | exit | declspec.cpp:4:12:4:21 | deprecated | Use fatal() instead |
+| routine_attributes2.cpp:5:6:5:11 | hidden | routine_attributes2.cpp:5:13:5:21 | a_routine | routine_attributes2.cpp:5:6:5:11 | visibility | hidden |
+| routine_attributes2.cpp:5:6:5:11 | hidden | routine_attributes2.cpp:5:13:5:21 | a_routine | routine_attributes2.cpp:5:6:5:11 | visibility | hidden |
+| routine_attributes2.h:3:6:3:11 | hidden | routine_attributes2.cpp:5:13:5:21 | a_routine | routine_attributes2.h:3:6:3:11 | visibility | hidden |
+| routine_attributes2.h:3:6:3:11 | hidden | routine_attributes2.cpp:5:13:5:21 | a_routine | routine_attributes2.h:3:6:3:11 | visibility | hidden |
 | routine_attributes.c:3:53:3:59 | dummy | routine_attributes.c:3:12:3:24 | named_weakref | routine_attributes.c:3:44:3:50 | weakref | dummy |
 | routine_attributes.c:4:62:4:68 | dummy | routine_attributes.c:4:12:4:26 | aliased_weakref | routine_attributes.c:4:55:4:59 | alias | dummy |
 | routine_attributes.c:6:49:6:55 | dummy | routine_attributes.c:6:12:6:22 | plain_alias | routine_attributes.c:6:42:6:46 | alias | dummy |

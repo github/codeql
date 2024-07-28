@@ -1,0 +1,1 @@
+| move_semantics.swift:5:9:5:17 | ConsumeExpr | hasType: | yes | getSubExpr: | move_semantics.swift:5:17:5:17 | x |

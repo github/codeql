@@ -1,0 +1,10 @@
+breakLabel
+| stmts.kt:25:24:25:33 | break | loop |
+| stmts.kt:37:24:37:36 | break | forLoop |
+continueLabel
+jumpTarget
+| stmts.kt:25:24:25:33 | break | stmts.kt:23:11:27:5 | while (...) |
+| stmts.kt:29:9:29:16 | continue | stmts.kt:28:5:29:16 | while (...) |
+| stmts.kt:32:20:32:24 | break | stmts.kt:31:5:33:5 | for (... : ...) |
+| stmts.kt:37:24:37:36 | break | stmts.kt:35:13:39:5 | for (... : ...) |
+| stmts.kt:42:20:42:24 | break | stmts.kt:41:5:43:5 | for (... : ...) |

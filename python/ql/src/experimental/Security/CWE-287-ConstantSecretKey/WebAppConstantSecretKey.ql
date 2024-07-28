@@ -25,7 +25,7 @@ newtype TFrameWork =
   Flask() or
   Django()
 
-module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
+private module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
   class FlowState = TFrameWork;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -54,11 +54,11 @@ module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
   }
 }
 
-module WebAppConstantSecretKey = TaintTracking::GlobalWithState<WebAppConstantSecretKeyConfig>;
+module WebAppConstantSecretKeyFlow = TaintTracking::GlobalWithState<WebAppConstantSecretKeyConfig>;
 
-import WebAppConstantSecretKey::PathGraph
+import WebAppConstantSecretKeyFlow::PathGraph
 
-from WebAppConstantSecretKey::PathNode source, WebAppConstantSecretKey::PathNode sink
-where WebAppConstantSecretKey::flowPath(source, sink)
+from WebAppConstantSecretKeyFlow::PathNode source, WebAppConstantSecretKeyFlow::PathNode sink
+where WebAppConstantSecretKeyFlow::flowPath(source, sink)
 select sink, source, sink, "The SECRET_KEY config variable is assigned by $@.", source,
   " this constant String"

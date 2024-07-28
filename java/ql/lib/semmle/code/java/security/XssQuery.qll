@@ -9,7 +9,7 @@ import semmle.code.java.security.XSS
  * A taint-tracking configuration for cross site scripting vulnerabilities.
  */
 module XssConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 

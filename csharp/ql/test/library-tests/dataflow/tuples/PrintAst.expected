@@ -363,7 +363,7 @@ Tuples.cs:
 #   95|         1: [Parameter] right
 #   95|     14: [Property] EqualityContract
 #   95|       3: [Getter] get_EqualityContract
-#   95|     15: [InstanceConstructor] R1
+#   95|     15: [InstanceConstructor,PrimaryConstructor] R1
 #-----|       2: (Parameters)
 #   95|         0: [Parameter] i
 #   95|           -1: [TypeMention] string
@@ -510,7 +510,7 @@ Tuples.cs:
 #  137|       0: [Parameter] o
 #  137|         -1: [TypeMention] object
 #  137|     4: [BlockStmt] {...}
-#  139|   13: [Method] Source<>
+#  139|   15: [Method] Source`1
 #  139|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #  139|       0: [TypeParameter] T

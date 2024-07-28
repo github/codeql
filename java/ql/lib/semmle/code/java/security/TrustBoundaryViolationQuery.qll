@@ -6,13 +6,15 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.frameworks.owasp.Esapi
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A source of data that crosses a trust boundary.
  */
 abstract class TrustBoundaryViolationSource extends DataFlow::Node { }
 
-private class RemoteSource extends TrustBoundaryViolationSource instanceof RemoteFlowSource { }
+private class ThreatModelSource extends TrustBoundaryViolationSource instanceof ThreatModelFlowSource
+{ }
 
 /**
  * A sink for data that crosses a trust boundary.
@@ -32,7 +34,7 @@ abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 private class EsapiValidatedInputSanitizer extends TrustBoundaryValidationSanitizer {
   EsapiValidatedInputSanitizer() {
     this = DataFlow::BarrierGuard<esapiIsValidData/3>::getABarrierNode() or
-    this.asExpr().(MethodAccess).getMethod() instanceof EsapiGetValidMethod
+    this.asExpr().(MethodCall).getMethod() instanceof EsapiGetValidMethod
   }
 }
 
@@ -41,7 +43,7 @@ private class EsapiValidatedInputSanitizer extends TrustBoundaryValidationSaniti
  */
 private predicate esapiIsValidData(Guard g, Expr e, boolean branch) {
   branch = true and
-  exists(MethodAccess ma | ma.getMethod() instanceof EsapiIsValidMethod |
+  exists(MethodCall ma | ma.getMethod() instanceof EsapiIsValidMethod |
     g = ma and
     e = ma.getArgument(1)
   )
@@ -56,9 +58,7 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TrustBoundaryValidationSanitizer or
     node.getType() instanceof HttpServletSession or
-    node.getType() instanceof NumberType or
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }

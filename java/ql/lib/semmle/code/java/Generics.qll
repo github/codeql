@@ -479,7 +479,7 @@ class GenericCall extends Call {
   }
 
   private RefType getAnExplicitTypeArgument(TypeVariable v) {
-    exists(GenericCallable gen, MethodAccess call, int i |
+    exists(GenericCallable gen, MethodCall call, int i |
       this = call and
       gen = call.getCallee() and
       v = gen.getTypeParameter(i) and

@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Reflection.Context", "CustomReflectionContext", False, "CustomReflectionContext", "(System.Reflection.ReflectionContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.ParameterInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Reflection.Context", "CustomReflectionContext", "AddProperties", "(System.Type)", "summary", "df-generated"]

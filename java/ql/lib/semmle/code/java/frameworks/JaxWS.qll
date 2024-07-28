@@ -4,6 +4,8 @@
  */
 
 import java
+private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.frameworks.Rmi
 private import semmle.code.java.security.XSS
 
 /**
@@ -23,16 +25,112 @@ string getAJaxRsPackage(string subpackage) { result = getAJaxRsPackage() + "." +
  */
 class JaxWsEndpoint extends Class {
   JaxWsEndpoint() {
-    exists(AnnotationType a | a = this.getAnAnnotation().getType() |
+    exists(AnnotationType a | a = this.getAnAncestor().getAnAnnotation().getType() |
       a.hasName(["WebService", "WebServiceProvider", "WebServiceClient"])
     )
   }
 
-  /** Gets a method annotated with `@WebMethod` or `@WebEndpoint`. */
-  Callable getARemoteMethod() {
+  /**
+   * Gets a method of this class that is not an excluded `@WebMethod`,
+   * and the parameters and return value of which are either of an acceptable type,
+   * or are annotated with `@XmlJavaTypeAdapter`.
+   */
+  Method getARemoteMethod() {
     result = this.getACallable() and
-    exists(AnnotationType a | a = result.getAnAnnotation().getType() |
-      a.hasName(["WebMethod", "WebEndpoint"])
+    result.isPublic() and
+    not result instanceof InitializerMethod and
+    not exists(Annotation a | a = result.getAnAnnotation() |
+      a.getType().hasQualifiedName(["javax", "jakarta"] + ".jws", "WebMethod") and
+      a.getValue("exclude").(BooleanLiteral).getBooleanValue() = true
+    ) and
+    forex(ParamOrReturn paramOrRet | paramOrRet = result.getAParameter() or paramOrRet = result |
+      exists(Type t | t = paramOrRet.getType() |
+        t instanceof JaxAcceptableType
+        or
+        t.(Annotatable).getAnAnnotation().getType() instanceof XmlJavaTypeAdapter
+        or
+        t instanceof VoidType
+      )
+      or
+      paramOrRet.getInheritedAnnotation().getType() instanceof XmlJavaTypeAdapter
+    )
+  }
+}
+
+/** The annotation type `@XmlJavaTypeAdapter`. */
+class XmlJavaTypeAdapter extends AnnotationType {
+  XmlJavaTypeAdapter() {
+    this.hasQualifiedName(["javax", "jakarta"] + ".xml.bind.annotation.adapters",
+      "XmlJavaTypeAdapter")
+  }
+}
+
+private class ParamOrReturn extends Annotatable {
+  ParamOrReturn() { this instanceof Parameter or this instanceof Method }
+
+  Type getType() {
+    result = this.(Parameter).getType()
+    or
+    result = this.(Method).getReturnType()
+  }
+
+  Annotation getInheritedAnnotation() {
+    result = this.getAnAnnotation()
+    or
+    result = this.(Method).getAnOverride*().getAnAnnotation()
+    or
+    result =
+      this.(Parameter)
+          .getCallable()
+          .(Method)
+          .getAnOverride*()
+          .getParameter(this.(Parameter).getPosition())
+          .getAnAnnotation()
+  }
+}
+
+// JAX-RPC 1.1, section 5
+private class JaxAcceptableType extends Type {
+  JaxAcceptableType() {
+    // JAX-RPC 1.1, section 5.1.1
+    this instanceof PrimitiveType
+    or
+    // JAX-RPC 1.1, section 5.1.2
+    this.(Array).getElementType() instanceof JaxAcceptableType
+    or
+    // JAX-RPC 1.1, section 5.1.3
+    this instanceof JaxAcceptableStandardClass
+    or
+    // JAX-RPC 1.1, section 5.1.4
+    this instanceof JaxValueType
+  }
+}
+
+private class JaxAcceptableStandardClass extends RefType {
+  JaxAcceptableStandardClass() {
+    this instanceof TypeString or
+    this.hasQualifiedName("java.util", "Date") or
+    this.hasQualifiedName("java.util", "Calendar") or
+    this.hasQualifiedName("java.math", "BigInteger") or
+    this.hasQualifiedName("java.math", "BigDecimal") or
+    this.hasQualifiedName("javax.xml.namespace", "QName") or
+    this instanceof TypeUri
+  }
+}
+
+// JAX-RPC 1.1, section 5.4
+private class JaxValueType extends RefType {
+  JaxValueType() {
+    not this instanceof Wildcard and
+    // Mutually exclusive with other `JaxAcceptableType`s
+    not this instanceof Array and
+    not this instanceof JaxAcceptableStandardClass and
+    not this.getPackage().getName().matches("java.%") and
+    // Must not implement (directly or indirectly) the java.rmi.Remote interface.
+    not this.getAnAncestor() instanceof TypeRemote and
+    // The Java type of a public field must be a supported JAX-RPC type as specified in the section 5.1.
+    forall(Field f | this.getAMember() = f and f.isPublic() |
+      f.getType() instanceof JaxAcceptableType
     )
   }
 }
@@ -339,7 +437,7 @@ private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getCon
 private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   // Base case: ResponseBuilder.type(contentType)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee().hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder", "type") and
       contentType = ma.getArgument(0)
     )
@@ -353,7 +451,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Base case: Variant[.VariantListBuilder].mediaTypes(...)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee()
           .hasQualifiedName(getAJaxRsPackage("core"), ["Variant", "Variant$VariantListBuilder"],
             "mediaTypes") and
@@ -362,7 +460,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through variant list building:
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       (
         ma.getType()
             .(RefType)
@@ -377,14 +475,14 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through a List.get operation
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getMethod().hasQualifiedName("java.util", "List<Variant>", "get") and
       ma.getQualifier() = getABuilderWithExplicitContentType(contentType).asExpr()
     )
   or
   // Recursive case: propagate through Response.ResponseBuilder operations, including the `variant(...)` operation.
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getType().(RefType).hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder") and
       [ma.getQualifier(), ma.getArgument(0)] =
         getABuilderWithExplicitContentType(contentType).asExpr()
@@ -420,7 +518,7 @@ private class SanitizedResponseBuilder extends XssSanitizer {
     this = getASanitizedBuilder()
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getMethod().hasQualifiedName(getAJaxRsPackage("core"), "Response", "ok") and
         (
           // e.g. Response.ok(sanitizeMe, new Variant("application/json", ...))
@@ -444,19 +542,19 @@ private class SanitizedResponseBuilder extends XssSanitizer {
 private class VulnerableEntity extends XssSinkBarrier {
   VulnerableEntity() {
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           // Vulnerable content-type already set:
           ma.getQualifier() = getAVulnerableBuilder().asExpr()
           or
           // Vulnerable content-type set in the future:
-          getAVulnerableBuilder().asExpr().(MethodAccess).getQualifier*() = ma
+          getAVulnerableBuilder().asExpr().(MethodCall).getQualifier*() = ma
         ) and
         ma.getMethod().hasName("entity")
       ).getArgument(0)
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           isXssVulnerableContentTypeExpr(ma.getArgument(1))
           or

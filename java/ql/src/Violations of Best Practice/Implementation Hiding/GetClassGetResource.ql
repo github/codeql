@@ -12,7 +12,7 @@
 
 import java
 
-from Class c, MethodAccess getResource, MethodAccess getClass
+from Class c, MethodCall getResource, MethodCall getClass
 where
   getResource.getNumArgument() = 1 and
   (
@@ -20,7 +20,7 @@ where
     getResource.getMethod().hasName("getResourceAsStream")
   ) and
   getResource.getQualifier() = getClass and
-  getClass.isOwnMethodAccess() and
+  getClass.isOwnMethodCall() and
   getClass.getNumArgument() = 0 and
   getClass.getMethod().hasName("getClass") and
   getResource.getEnclosingCallable().getDeclaringType() = c and

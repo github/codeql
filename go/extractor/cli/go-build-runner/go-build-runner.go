@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/github/codeql-go/extractor/util"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+
+	"github.com/github/codeql-go/extractor/util"
 
 	"github.com/github/codeql-go/extractor/autobuilder"
 )
@@ -14,7 +15,8 @@ import (
 func main() {
 	// check if a build command has successfully extracted something
 	autobuilder.CheckExtracted = true
-	if autobuilder.Autobuild() {
+	scriptSuccess, _ := autobuilder.Autobuild()
+	if scriptSuccess {
 		return
 	}
 

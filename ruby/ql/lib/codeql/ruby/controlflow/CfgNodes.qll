@@ -7,7 +7,6 @@ private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
-private import internal.Splitting
 
 /** An entry node for a given scope. */
 class EntryNode extends CfgNode, CfgImpl::EntryNode {
@@ -201,8 +200,15 @@ module ExprNodes {
 
     override LhsExpr getExpr() { result = super.getExpr() }
 
-    /** Gets a variable used in (or introduced by) this LHS. */
-    Variable getAVariable() { result = e.(VariableAccess).getVariable() }
+    /**
+     * DEPRECATED: use `getVariable` instead.
+     *
+     * Gets a variable used in (or introduced by) this LHS.
+     */
+    deprecated Variable getAVariable() { result = e.(VariableAccess).getVariable() }
+
+    /** Gets the variable used in (or introduced by) this LHS. */
+    Variable getVariable() { result = e.(VariableAccess).getVariable() }
   }
 
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
@@ -954,8 +960,7 @@ module ExprNodes {
       exists(ConstantReadAccess array |
         array = this.getReceiver().getExpr() and
         e.(MethodCall).getMethodName() = "[]" and
-        array.getName() = "Array" and
-        array.hasGlobalScope()
+        array.getModule().getQualifiedName() = "Array"
       )
     }
   }
@@ -969,11 +974,10 @@ module ExprNodes {
     override string getAPrimaryQlClass() { result = "HashLiteralCfgNode" }
 
     HashLiteralCfgNode() {
-      exists(ConstantReadAccess array |
-        array = this.getReceiver().getExpr() and
+      exists(ConstantReadAccess hash |
+        hash = this.getReceiver().getExpr() and
         e.(MethodCall).getMethodName() = "[]" and
-        array.getName() = "Hash" and
-        array.hasGlobalScope()
+        hash.getModule().getQualifiedName() = "Hash"
       )
     }
 

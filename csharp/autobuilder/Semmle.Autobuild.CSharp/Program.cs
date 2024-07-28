@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -15,7 +17,7 @@ namespace Semmle.Autobuild.CSharp
                 try
                 {
                     Console.WriteLine("CodeQL C# autobuilder");
-                    var builder = new CSharpAutobuilder(actions, options);
+                    using var builder = new CSharpAutobuilder(actions, options);
                     return builder.AttemptBuild();
                 }
                 catch (InvalidEnvironmentException ex)

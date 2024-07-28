@@ -59,9 +59,6 @@ class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
   }
 }
 
-/** DEPRECATED: Alias for Json2CsvTaintStep */
-deprecated class JSON2CSVTaintStep = Json2CsvTaintStep;
-
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.
  * This is not quite a `JSON.stringify` call, as it e.g. does not wrap keys in double quotes.

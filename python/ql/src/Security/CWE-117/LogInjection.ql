@@ -13,9 +13,9 @@
 
 import python
 import semmle.python.security.dataflow.LogInjectionQuery
-import DataFlow::PathGraph
+import LogInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from LogInjectionFlow::PathNode source, LogInjectionFlow::PathNode sink
+where LogInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

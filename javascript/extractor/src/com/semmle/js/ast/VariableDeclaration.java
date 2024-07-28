@@ -28,8 +28,8 @@ public class VariableDeclaration extends Statement {
   }
 
   /**
-   * The kind of this variable declaration statement; one of <code>"var"</code>, <code>"let"</code>
-   * or <code>"const"</code>.
+   * The kind of this variable declaration statement; one of <code>"var"</code>, <code>"let"</code>,
+   * <code>"const"</code>, or <code>"using"</code>.
    */
   public String getKind() {
     return kind;
@@ -42,6 +42,7 @@ public class VariableDeclaration extends Statement {
    */
   public boolean isBlockScoped(ECMAVersion ecmaVersion) {
     return "let".equals(kind)
+        || "using".equals(kind)
         || ecmaVersion.compareTo(ECMAVersion.ECMA2015) >= 0 && "const".equals(kind);
   }
 

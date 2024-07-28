@@ -15,6 +15,11 @@ import HostnameRegexp as HostnameShared
 signature module MissingRegExpAnchorSig<
   RegexTreeViewSig TreeImpl, HostnameShared::HostnameRegexpSig<TreeImpl> Specific>
 {
+  /**
+   * Holds if this regular expression is used in a 'replacement' operation, such
+   * as replacing all matches of the regular expression in the input string
+   * with another string.
+   */
   predicate isUsedAsReplace(Specific::RegExpPatternSource pattern);
 
   /** Gets a string representation of an end anchor from a regular expression. */

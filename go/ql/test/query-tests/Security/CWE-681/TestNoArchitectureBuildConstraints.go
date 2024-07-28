@@ -13,15 +13,15 @@ func testIntSizeIsArchicturallyDependent1() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)  // $ hasValueFlow="type conversion"
-		_ = uint32(parsed) // $ hasValueFlow="type conversion"
+		_ = int32(parsed)  // $ hasValueFlow="parsed"
+		_ = uint32(parsed) // $ hasValueFlow="parsed"
 	}
 	{
 		parsed, err := strconv.ParseInt("3456", 10, 64)
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)  // $ hasValueFlow="type conversion"
-		_ = uint(parsed) // $ hasValueFlow="type conversion"
+		_ = int(parsed)  // $ hasValueFlow="parsed"
+		_ = uint(parsed) // $ hasValueFlow="parsed"
 	}
 }

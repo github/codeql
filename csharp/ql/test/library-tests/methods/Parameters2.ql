@@ -7,7 +7,7 @@ import csharp
 from Method m
 where
   m.hasName("Divide") and
-  m.getDeclaringType().hasQualifiedName("Methods", "TestOut") and
+  m.getDeclaringType().hasFullyQualifiedName("Methods", "TestOut") and
   m.getParameter(0).isValue() and
   m.getParameter(0).hasName("x") and
   m.getParameter(0).getType() instanceof IntType and

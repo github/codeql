@@ -4,6 +4,7 @@ amoModule_exports
 | lib/a.js:1:1:3:3 | <toplevel> | foo | lib/a.js:2:19:2:20 | 42 |
 | lib/foo.js:1:1:4:0 | <toplevel> | foo | lib/foo.js:2:10:2:11 | 23 |
 | lib/nested/a.js:1:1:3:3 | <toplevel> | foo | lib/nested/a.js:2:19:2:20 | 42 |
+| test_range.js:1:1:4:0 | <toplevel> | foo | test_range.js:2:19:2:20 | 42 |
 | tst2.js:1:1:3:3 | <toplevel> | foo | tst2.js:2:19:2:20 | 42 |
 | tst3.js:1:1:3:3 | <toplevel> | foo | tst3.js:2:43:2:44 | 42 |
 | tst4.js:1:1:11:3 | <toplevel> | bar | tst4.js:9:14:9:18 | b.bar |
@@ -22,6 +23,7 @@ amdModule
 | lib/a.js:1:1:3:3 | <toplevel> | lib/a.js:1:1:3:2 | define( ... 2 };\\n}) |
 | lib/foo.js:1:1:4:0 | <toplevel> | lib/foo.js:1:1:3:2 | define( ... : 23\\n}) |
 | lib/nested/a.js:1:1:3:3 | <toplevel> | lib/nested/a.js:1:1:3:2 | define( ... 2 };\\n}) |
+| test_range.js:1:1:4:0 | <toplevel> | test_range.js:1:1:3:2 | test.am ... 2 };\\n}) |
 | tst2.js:1:1:3:3 | <toplevel> | tst2.js:1:1:3:2 | define( ...  42;\\n}) |
 | tst3.js:1:1:3:3 | <toplevel> | tst3.js:1:1:3:2 | define( ...  42;\\n}) |
 | tst4.js:1:1:11:3 | <toplevel> | tst4.js:1:1:11:2 | define( ...   };\\n}) |
@@ -48,6 +50,7 @@ amdModuleDefinition
 | lib/a.js:1:1:3:2 | define( ... 2 };\\n}) | lib/a.js:1:8:3:1 | functio ... 42 };\\n} |
 | lib/foo.js:1:1:3:2 | define( ... : 23\\n}) | lib/foo.js:1:8:3:1 | {\\n    foo: 23\\n} |
 | lib/nested/a.js:1:1:3:2 | define( ... 2 };\\n}) | lib/nested/a.js:1:8:3:1 | functio ... 42 };\\n} |
+| test_range.js:1:1:3:2 | test.am ... 2 };\\n}) | test_range.js:1:16:3:1 | functio ... 42 };\\n} |
 | tst2.js:1:1:3:2 | define( ...  42;\\n}) | tst2.js:1:21:3:1 | functio ... = 42;\\n} |
 | tst3.js:1:1:3:2 | define( ...  42;\\n}) | tst3.js:1:8:3:1 | functio ... = 42;\\n} |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:6:11:11:1 | functio ...    };\\n} |
@@ -58,7 +61,6 @@ amdModuleDefinition
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:1:18:1:24 | factory |
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:9:9:14:1 | functio ...    };\\n} |
 amdModuleDependencies
-| tst2.js:1:1:3:2 | define( ...  42;\\n}) | tst2.js:1:9:1:17 | 'exports' |
 | tst3.js:1:1:3:2 | define( ...  42;\\n}) | tst3.js:2:21:2:25 | './a' |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:2:9:2:14 | 'a.js' |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:3:9:3:13 | 'foo' |
@@ -78,6 +80,7 @@ amdModuleExportedSymbol
 | lib/a.js:1:1:3:3 | <toplevel> | foo |
 | lib/foo.js:1:1:4:0 | <toplevel> | foo |
 | lib/nested/a.js:1:1:3:3 | <toplevel> | foo |
+| test_range.js:1:1:4:0 | <toplevel> | foo |
 | tst2.js:1:1:3:3 | <toplevel> | foo |
 | tst3.js:1:1:3:3 | <toplevel> | foo |
 | tst4.js:1:1:11:3 | <toplevel> | bar |
@@ -96,6 +99,7 @@ amdModuleExpr
 | lib/a.js:1:1:3:2 | define( ... 2 };\\n}) | lib/a.js:2:12:2:22 | { foo: 42 } | lib/a.js:2:12:2:22 | { foo: 42 } |
 | lib/foo.js:1:1:3:2 | define( ... : 23\\n}) | lib/foo.js:1:8:3:1 | {\\n    foo: 23\\n} | lib/foo.js:1:8:3:1 | {\\n    foo: 23\\n} |
 | lib/nested/a.js:1:1:3:2 | define( ... 2 };\\n}) | lib/nested/a.js:2:12:2:22 | { foo: 42 } | lib/nested/a.js:2:12:2:22 | { foo: 42 } |
+| test_range.js:1:1:3:2 | test.am ... 2 };\\n}) | test_range.js:2:12:2:22 | { foo: 42 } | test_range.js:2:12:2:22 | { foo: 42 } |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:7:12:10:5 | {\\n      ... r\\n    } | tst4.js:7:12:10:5 | {\\n      ... r\\n    } |
 | tst5.js:1:1:6:2 | define( ...   };\\n}) | tst5.js:2:12:5:5 | {\\n      ... r\\n    } | tst5.js:2:12:5:5 | {\\n      ... r\\n    } |
 | tst.js:1:1:6:2 | define( ...   };\\n}) | tst.js:2:12:5:5 | {\\n      ... r\\n    } | tst.js:2:12:5:5 | {\\n      ... r\\n    } |

@@ -346,6 +346,3 @@ module Http {
     predicate guardedBy(DataFlow::Node check) { super.guardedBy(check) }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;

@@ -29,8 +29,7 @@ private module Impl = Make<Input>;
 
 class Container = Impl::Container;
 
-/** A folder. */
-class Folder extends Container, Impl::Folder { }
+class Folder = Impl::Folder;
 
 bindingset[flag]
 private predicate fileHasExtractionFlag(File f, int flag) {
@@ -55,14 +54,14 @@ class File extends Container, Impl::File {
 
   /** Holds if this file is a QL test stub file. */
   pragma[noinline]
-  private predicate isStub() {
+  predicate isStub() {
     this.extractedQlTest() and
     this.getAbsolutePath().matches("%resources/stubs/%")
   }
 
   /** Holds if this file contains source code. */
   final predicate fromSource() {
-    this.getExtension() = "cs" and
+    this.getExtension() = ["cs", "cshtml"] and
     not this.isStub()
   }
 

@@ -8,13 +8,13 @@ void SetOptionsNoOldTls(boost::asio::ssl::context& ctx)
 
 void TestProperConfiguration_inter_CorrectUsage01()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls_client); // GOOD [FALSE POSITIVE]
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls_client); // GOOD
 	SetOptionsNoOldTls(ctx);
 }
 
 void TestProperConfiguration_inter_CorrectUsage02()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23); // GOOD [FALSE POSITIVE]
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23); // GOOD
 	ctx.set_options(boost::asio::ssl::context::no_tlsv1 | 
 		boost::asio::ssl::context::no_tlsv1_1 | 
 		boost::asio::ssl::context::no_sslv3);

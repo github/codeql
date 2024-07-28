@@ -70,7 +70,7 @@ jdk/StringMatch.java:
 #    4|       3: [TypeAccess] void
 #    4|       5: [BlockStmt] { ... }
 #    5|         0: [ExprStmt] <Expr>;
-#    5|           0: [MethodAccess] matches(...)
+#    5|           0: [MethodCall] matches(...)
 #    5|             -1: [VarAccess] STR
 #    5|             0: [StringLiteral] "[a-z]+"
 #    5|               0: [RegExpPlus] [a-z]+
@@ -82,42 +82,42 @@ jdk/StringMatch.java:
 #    8|       3: [TypeAccess] void
 #    8|       5: [BlockStmt] { ... }
 #    9|         0: [ExprStmt] <Expr>;
-#    9|           0: [MethodAccess] contains(...)
+#    9|           0: [MethodCall] contains(...)
 #    9|             -1: [VarAccess] STR
 #    9|             0: [StringLiteral] "the"
 #   12|     6: [Method] c
 #   12|       3: [TypeAccess] void
 #   12|       5: [BlockStmt] { ... }
 #   13|         0: [ExprStmt] <Expr>;
-#   13|           0: [MethodAccess] startsWith(...)
+#   13|           0: [MethodCall] startsWith(...)
 #   13|             -1: [VarAccess] STR
 #   13|             0: [StringLiteral] "the"
 #   16|     7: [Method] d
 #   16|       3: [TypeAccess] void
 #   16|       5: [BlockStmt] { ... }
 #   17|         0: [ExprStmt] <Expr>;
-#   17|           0: [MethodAccess] endsWith(...)
+#   17|           0: [MethodCall] endsWith(...)
 #   17|             -1: [VarAccess] STR
 #   17|             0: [StringLiteral] "dog"
 #   20|     8: [Method] e
 #   20|       3: [TypeAccess] void
 #   20|       5: [BlockStmt] { ... }
 #   21|         0: [ExprStmt] <Expr>;
-#   21|           0: [MethodAccess] indexOf(...)
+#   21|           0: [MethodCall] indexOf(...)
 #   21|             -1: [VarAccess] STR
 #   21|             0: [StringLiteral] "lazy"
 #   24|     9: [Method] f
 #   24|       3: [TypeAccess] void
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [ExprStmt] <Expr>;
-#   25|           0: [MethodAccess] lastIndexOf(...)
+#   25|           0: [MethodCall] lastIndexOf(...)
 #   25|             -1: [VarAccess] STR
 #   25|             0: [StringLiteral] "lazy"
 #   28|     10: [Method] g
 #   28|       3: [TypeAccess] void
 #   28|       5: [BlockStmt] { ... }
 #   29|         0: [ExprStmt] <Expr>;
-#   29|           0: [MethodAccess] regionMatches(...)
+#   29|           0: [MethodCall] regionMatches(...)
 #   29|             -1: [VarAccess] STR
 #   29|             0: [IntegerLiteral] 0
 #   29|             1: [StringLiteral] "fox"
@@ -127,7 +127,7 @@ jdk/StringMatch.java:
 #   32|       3: [TypeAccess] void
 #   32|       5: [BlockStmt] { ... }
 #   33|         0: [ExprStmt] <Expr>;
-#   33|           0: [MethodAccess] regionMatches(...)
+#   33|           0: [MethodCall] regionMatches(...)
 #   33|             -1: [VarAccess] STR
 #   33|             0: [BooleanLiteral] true
 #   33|             1: [IntegerLiteral] 0
@@ -144,14 +144,14 @@ jdk/SystemGetPropertyCall.java:
 #    6|       3: [TypeAccess] void
 #    6|       5: [BlockStmt] { ... }
 #    7|         0: [ExprStmt] <Expr>;
-#    7|           0: [MethodAccess] getProperty(...)
+#    7|           0: [MethodCall] getProperty(...)
 #    7|             -1: [TypeAccess] System
 #    7|             0: [StringLiteral] "user.dir"
 #   10|     5: [Method] b
 #   10|       3: [TypeAccess] void
 #   10|       5: [BlockStmt] { ... }
 #   11|         0: [ExprStmt] <Expr>;
-#   11|           0: [MethodAccess] getProperty(...)
+#   11|           0: [MethodCall] getProperty(...)
 #   11|             -1: [TypeAccess] System
 #   11|             0: [StringLiteral] "user.dir"
 #   11|             1: [StringLiteral] "HOME"
@@ -159,13 +159,13 @@ jdk/SystemGetPropertyCall.java:
 #   14|       3: [TypeAccess] void
 #   14|       5: [BlockStmt] { ... }
 #   15|         0: [ExprStmt] <Expr>;
-#   15|           0: [MethodAccess] getProperty(...)
+#   15|           0: [MethodCall] getProperty(...)
 #   15|             -1: [TypeAccess] System
 #   15|             0: [VarAccess] USER_DIR_PROPERTY
 #   18|     7: [Method] d
 #   18|       3: [TypeAccess] void
 #   18|       5: [BlockStmt] { ... }
 #   19|         0: [ExprStmt] <Expr>;
-#   19|           0: [MethodAccess] getProperty(...)
+#   19|           0: [MethodCall] getProperty(...)
 #   19|             -1: [TypeAccess] System
 #   19|             0: [StringLiteral] "random.property"

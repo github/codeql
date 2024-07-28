@@ -1,4 +1,4 @@
 import javascript
 
-from KnownDirective d
+from Directive::KnownDirective d
 select d, d.getDirectiveText()

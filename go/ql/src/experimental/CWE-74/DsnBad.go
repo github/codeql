@@ -1,3 +1,10 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"os"
+)
 
 func bad() interface{} {
 	name := os.Args[1:]

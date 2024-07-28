@@ -99,9 +99,11 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction {
 /**
  * The `std::string` function `c_str`.
  */
-private class StdStringCStr extends StdStringTaintFunction {
+class StdStringCStr extends MemberFunction {
   StdStringCStr() { this.getClassAndName("c_str") instanceof StdBasicString }
+}
 
+private class StdStringCStrModel extends StdStringCStr, StdStringTaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
@@ -112,9 +114,11 @@ private class StdStringCStr extends StdStringTaintFunction {
 /**
  * The `std::string` function `data`.
  */
-private class StdStringData extends StdStringTaintFunction {
+class StdStringData extends MemberFunction {
   StdStringData() { this.getClassAndName("data") instanceof StdBasicString }
+}
 
+private class StdStringDataModel extends StdStringData, StdStringTaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
@@ -125,6 +129,8 @@ private class StdStringData extends StdStringTaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -138,6 +144,8 @@ private class StdStringPush extends StdStringTaintFunction {
     input.isParameter(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -200,6 +208,8 @@ private class StdStringAppend extends StdStringTaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -233,6 +243,8 @@ private class StdStringInsert extends StdStringTaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -301,6 +313,8 @@ private class StdStringAt extends StdStringTaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -334,6 +348,8 @@ private class StdIStreamIn extends DataFlowFunction, TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -353,6 +369,8 @@ private class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
     input.isParameterDeref(0) and
     output.isReturnValueDeref()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from first parameter to second parameter
@@ -399,6 +417,8 @@ private class StdIStreamRead extends DataFlowFunction, TaintFunction {
     output.isReturnValueDeref()
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to first parameter
     input.isQualifierObject() and
@@ -438,6 +458,8 @@ private class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
     output.isReturnValueDeref()
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from first parameter (value or pointer) to qualifier
     input.isParameter(0) and
@@ -473,6 +495,8 @@ private class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
     input.isQualifierObject() and
     output.isReturnValueDeref()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to first parameter
@@ -536,6 +560,8 @@ private class StdOStreamOut extends DataFlowFunction, TaintFunction {
     output.isReturnValueDeref()
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from first parameter (value or pointer) to qualifier
     input.isParameter(0) and
@@ -574,6 +600,8 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     input.isParameterDeref(0) and
     output.isReturnValueDeref()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(0) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from second parameter to first parameter
@@ -667,6 +695,8 @@ private class StdStreamFunction extends DataFlowFunction, TaintFunction {
     input.isQualifierObject() and
     output.isReturnValueDeref()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // reverse flow from returned reference to the qualifier

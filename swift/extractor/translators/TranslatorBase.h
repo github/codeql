@@ -1,5 +1,7 @@
 #pragma once
 
+#include <concepts>
+
 #include <swift/AST/ASTVisitor.h>
 #include <swift/AST/TypeVisitor.h>
 
@@ -18,45 +20,6 @@ class TranslatorBase {
       : dispatcher{dispatcher}, logger{"translator/" + std::string(name)} {}
 };
 
-// define by macro metaprogramming member checkers
-// see https://fekir.info/post/detect-member-variables/ for technical details
-#define DEFINE_TRANSLATE_CHECKER(KIND, CLASS, PARENT)                                          \
-  template <typename T, typename = void>                                                       \
-  struct HasTranslate##CLASS##KIND : std::false_type {};                                       \
-                                                                                               \
-  template <typename T>                                                                        \
-  struct HasTranslate##CLASS##KIND<T, decltype((void)std::declval<T>().translate##CLASS##KIND( \
-                                                   std::declval<const swift::CLASS##KIND&>()), \
-                                               void())> : std::true_type {};
-
-DEFINE_TRANSLATE_CHECKER(Decl, , )
-#define DECL(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Decl, CLASS, PARENT)
-#define ABSTRACT_DECL(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Decl, CLASS, PARENT)
-#include "swift/AST/DeclNodes.def"
-
-DEFINE_TRANSLATE_CHECKER(Stmt, , )
-#define STMT(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Stmt, CLASS, PARENT)
-#define ABSTRACT_STMT(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Stmt, CLASS, PARENT)
-#include "swift/AST/StmtNodes.def"
-
-DEFINE_TRANSLATE_CHECKER(Expr, , )
-#define EXPR(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Expr, CLASS, PARENT)
-#define ABSTRACT_EXPR(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Expr, CLASS, PARENT)
-#include "swift/AST/ExprNodes.def"
-
-DEFINE_TRANSLATE_CHECKER(Pattern, , )
-#define PATTERN(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Pattern, CLASS, PARENT)
-#include "swift/AST/PatternNodes.def"
-
-DEFINE_TRANSLATE_CHECKER(Type, , )
-#define TYPE(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Type, CLASS, PARENT)
-#define ABSTRACT_TYPE(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(Type, CLASS, PARENT)
-#include "swift/AST/TypeNodes.def"
-
-DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
-#define TYPEREPR(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(TypeRepr, CLASS, PARENT)
-#define ABSTRACT_TYPEREPR(CLASS, PARENT) DEFINE_TRANSLATE_CHECKER(TypeRepr, CLASS, PARENT)
-#include "swift/AST/TypeReprNodes.def"
 }  // namespace detail
 
 enum class TranslatorPolicy {
@@ -76,11 +39,15 @@ enum class TranslatorPolicy {
 #define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
  public:                                                                             \
   static constexpr TranslatorPolicy getPolicyFor##CLASS##KIND() {                    \
-    if constexpr (std::is_same_v<TrapTagOf<swift::CLASS##KIND>, void>) {             \
+    if constexpr (std::same_as<TrapTagOf<swift::CLASS##KIND>, void>) {               \
       return TranslatorPolicy::ignore;                                               \
-    } else if constexpr (detail::HasTranslate##CLASS##KIND<CrtpSubclass>::value) {   \
+    } else if constexpr (requires(CrtpSubclass x, swift::CLASS##KIND e) {            \
+                           x.translate##CLASS##KIND(e);                              \
+                         }) {                                                        \
       return TranslatorPolicy::translate;                                            \
-    } else if constexpr (detail::HasTranslate##PARENT<CrtpSubclass>::value) {        \
+    } else if constexpr (requires(CrtpSubclass x, swift::CLASS##KIND e) {            \
+                           x.translate##PARENT(e);                                   \
+                         }) {                                                        \
       return TranslatorPolicy::translateParent;                                      \
     } else {                                                                         \
       return TranslatorPolicy::emitUnknown;                                          \
@@ -92,7 +59,6 @@ enum class TranslatorPolicy {
     constexpr auto policy = getPolicyFor##CLASS##KIND();                             \
     if constexpr (policy == TranslatorPolicy::ignore) {                              \
       LOG_ERROR("Unexpected " #CLASS #KIND);                                         \
-      return;                                                                        \
     } else if constexpr (policy == TranslatorPolicy::translate) {                    \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
     } else if constexpr (policy == TranslatorPolicy::translateParent) {              \
@@ -121,6 +87,10 @@ class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
 
   void translateAndEmit(const swift::CapturedValue& e) {
     dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateCapturedValue(e));
+  }
+
+  void translateAndEmit(const swift::MacroRoleAttr& attr) {
+    dispatcher.emit(static_cast<CrtpSubclass*>(this)->translateMacroRoleAttr(attr));
   }
 
  private:

@@ -43,6 +43,9 @@ class Stmt extends ControlFlowElement, @stmt {
    * For example converts `{ { return x; } }` to `return x;`.
    */
   Stmt stripSingletonBlocks() { result = this }
+
+  /** Holds if this statement is compiler generated. */
+  predicate isCompilerGenerated() { compiler_generated(this) }
 }
 
 /**
@@ -75,7 +78,7 @@ class BlockStmt extends Stmt, @block_stmt {
 
   /** Holds if this block is the container of the global statements. */
   predicate isGlobalStatementContainer() {
-    this.getEnclosingCallable().hasQualifiedName("Program", "<Main>$")
+    this.getEnclosingCallable().hasFullyQualifiedName("Program", "<Main>$")
   }
 
   override Stmt stripSingletonBlocks() {
@@ -984,7 +987,12 @@ class CatchClause extends Stmt, @catch {
    * }
    * ```
    */
-  ExceptionClass getCaughtExceptionType() { catch_type(this, getTypeRef(result), _) }
+  ExceptionClass getCaughtExceptionType() {
+    catch_type(this, result, _)
+    or
+    not catch_type(this, any(Type t), _) and
+    catch_type(this, getTypeRef(result), _)
+  }
 
   /**
    * Gets the `catch` filter clause, if any. For example, the filter expression

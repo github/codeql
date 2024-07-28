@@ -1,0 +1,283 @@
+Annot0j.java:
+#    0| [CompilationUnit] Annot0j
+#    1|   1: [Interface] Annot0j
+#    2|     1: [Method] abc
+#    2|       3: [TypeAccess] int
+Annot1j.java:
+#    0| [CompilationUnit] Annot1j
+#    1|   1: [Interface] Annot1j
+#    2|     1: [Method] a
+#    2|       3: [TypeAccess] int
+#    4|     2: [Method] b
+#    4|       3: [TypeAccess] String
+#    6|     3: [Method] c
+#    6|       3: [TypeAccess] Class<>
+#    8|     4: [Method] d
+#    8|       3: [TypeAccess] Y
+#   10|     5: [Method] e
+#   10|       3: [ArrayTypeAccess] ...[]
+#   10|         0: [TypeAccess] Y
+#   12|     6: [Method] f
+#   12|       3: [TypeAccess] Annot0j
+def.kt:
+#    0| [CompilationUnit] def
+#    0|   1: [Class] DefKt
+#   45|     2: [Method] fn
+#-----|       1: (Annotations)
+#   45|         1: [Annotation] Annot0k
+#   21|           1: [IntegerLiteral] 0
+#-----|       2: (Generic Parameters)
+#   46|         0: [TypeVariable] T
+#   45|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   46|         0: [Parameter] a
+#-----|           -1: (Annotations)
+#   46|             1: [Annotation] Annot0k
+#   21|               1: [IntegerLiteral] 0
+#   46|           0: [TypeAccess] Annot0k
+#   46|       5: [BlockStmt] { ... }
+#   47|         0: [ExprStmt] <Expr>;
+#   47|           0: [MethodCall] println(...)
+#   47|             -1: [TypeAccess] ConsoleKt
+#   47|             0: [MethodCall] a(...)
+#   47|               -1: [VarAccess] a
+#   49|         1: [LocalVariableDeclStmt] var ...;
+#   49|           1: [LocalVariableDeclExpr] x
+#   50|             0: [IntegerLiteral] 10
+#   53|     3: [Method] getP
+#-----|       1: (Annotations)
+#   54|         1: [Annotation] Annot0k
+#   21|           1: [IntegerLiteral] 0
+#   53|       3: [TypeAccess] int
+#   53|       5: [BlockStmt] { ... }
+#   53|         0: [ReturnStmt] return ...
+#   53|           0: [VarAccess] DefKt.p
+#   53|             -1: [TypeAccess] DefKt
+#   53|     4: [FieldDeclaration] int p;
+#-----|       -2: (Annotations)
+#   56|         1: [Annotation] Annot0k
+#   21|           1: [IntegerLiteral] 0
+#   53|       -1: [TypeAccess] int
+#   57|       0: [IntegerLiteral] 5
+#   53|     5: [Method] setP
+#-----|       1: (Annotations)
+#   55|         1: [Annotation] Annot0k
+#   21|           1: [IntegerLiteral] 0
+#   53|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   53|         0: [Parameter] <set-?>
+#   53|           0: [TypeAccess] int
+#   53|       5: [BlockStmt] { ... }
+#   53|         0: [ExprStmt] <Expr>;
+#   53|           0: [AssignExpr] ...=...
+#   53|             0: [VarAccess] DefKt.p
+#   53|               -1: [TypeAccess] DefKt
+#   53|             1: [VarAccess] <set-?>
+#   59|     6: [ExtensionMethod] myExtension
+#   59|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   59|         0: [Parameter] <this>
+#-----|           -1: (Annotations)
+#   59|             1: [Annotation] Annot0k
+#   21|               1: [IntegerLiteral] 0
+#   59|           0: [TypeAccess] String
+#   59|       5: [BlockStmt] { ... }
+#    5|   2: [Interface] Annot0k
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#    0|       2: [Annotation] Target
+#    0|         1: [ArrayInit] {...}
+#    0|           1: [VarAccess] ElementType.TYPE
+#    0|             -1: [TypeAccess] ElementType
+#    0|           2: [VarAccess] ElementType.FIELD
+#    0|             -1: [TypeAccess] ElementType
+#    0|           3: [VarAccess] ElementType.METHOD
+#    0|             -1: [TypeAccess] ElementType
+#    0|           4: [VarAccess] ElementType.PARAMETER
+#    0|             -1: [TypeAccess] ElementType
+#    0|           5: [VarAccess] ElementType.CONSTRUCTOR
+#    0|             -1: [TypeAccess] ElementType
+#    0|           6: [VarAccess] ElementType.LOCAL_VARIABLE
+#    0|             -1: [TypeAccess] ElementType
+#    0|           7: [VarAccess] ElementType.ANNOTATION_TYPE
+#    0|             -1: [TypeAccess] ElementType
+#    0|           8: [VarAccess] ElementType.TYPE_PARAMETER
+#    0|             -1: [TypeAccess] ElementType
+#    0|           9: [VarAccess] ElementType.TYPE_USE
+#    0|             -1: [TypeAccess] ElementType
+#    5|       3: [Annotation] Target
+#    5|         1: [ArrayInit] {...}
+#    5|           1: [VarAccess] AnnotationTarget.CLASS
+#    5|             -1: [TypeAccess] AnnotationTarget
+#    6|           2: [VarAccess] AnnotationTarget.ANNOTATION_CLASS
+#    6|             -1: [TypeAccess] AnnotationTarget
+#    7|           3: [VarAccess] AnnotationTarget.TYPE_PARAMETER
+#    7|             -1: [TypeAccess] AnnotationTarget
+#    8|           4: [VarAccess] AnnotationTarget.PROPERTY
+#    8|             -1: [TypeAccess] AnnotationTarget
+#    9|           5: [VarAccess] AnnotationTarget.FIELD
+#    9|             -1: [TypeAccess] AnnotationTarget
+#   10|           6: [VarAccess] AnnotationTarget.LOCAL_VARIABLE
+#   10|             -1: [TypeAccess] AnnotationTarget
+#   11|           7: [VarAccess] AnnotationTarget.VALUE_PARAMETER
+#   11|             -1: [TypeAccess] AnnotationTarget
+#   12|           8: [VarAccess] AnnotationTarget.CONSTRUCTOR
+#   12|             -1: [TypeAccess] AnnotationTarget
+#   13|           9: [VarAccess] AnnotationTarget.FUNCTION
+#   13|             -1: [TypeAccess] AnnotationTarget
+#   14|           10: [VarAccess] AnnotationTarget.PROPERTY_GETTER
+#   14|             -1: [TypeAccess] AnnotationTarget
+#   15|           11: [VarAccess] AnnotationTarget.PROPERTY_SETTER
+#   15|             -1: [TypeAccess] AnnotationTarget
+#   16|           12: [VarAccess] AnnotationTarget.TYPE
+#   16|             -1: [TypeAccess] AnnotationTarget
+#   18|           13: [VarAccess] AnnotationTarget.FILE
+#   18|             -1: [TypeAccess] AnnotationTarget
+#   19|           14: [VarAccess] AnnotationTarget.TYPEALIAS
+#   19|             -1: [TypeAccess] AnnotationTarget
+#   21|     1: [Method] a
+#-----|       1: (Annotations)
+#   21|         1: [Annotation] JvmName
+#   21|           1: [StringLiteral] "a"
+#   21|       3: [TypeAccess] int
+#   23|   3: [Interface] Annot1k
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#   23|       2: [Annotation] Annot0k
+#   21|         1: [IntegerLiteral] 0
+#   25|     1: [Method] a
+#   25|       3: [TypeAccess] int
+#   26|     2: [Method] b
+#   26|       3: [TypeAccess] String
+#   27|     3: [Method] c
+#   27|       3: [TypeAccess] Class<?>
+#   27|         0: [WildcardTypeAccess] ? ...
+#   28|     4: [Method] d
+#   28|       3: [TypeAccess] Y
+#   29|     5: [Method] e
+#   29|       3: [TypeAccess] Y[]
+#   29|         0: [TypeAccess] Y
+#   30|     6: [Method] f
+#   30|       3: [TypeAccess] Annot0k
+#   33|   4: [Class] X
+#   33|     1: [Constructor] X
+#   33|       5: [BlockStmt] { ... }
+#   33|         0: [SuperConstructorInvocationStmt] super(...)
+#   33|         1: [BlockStmt] { ... }
+#   34|   5: [Class] Y
+#   34|     2: [Constructor] Y
+#   34|       5: [BlockStmt] { ... }
+#   34|         0: [ExprStmt] <Expr>;
+#   34|           0: [ClassInstanceExpr] new Enum<Y>(...)
+#   34|             -3: [TypeAccess] Enum<Y>
+#   34|               0: [TypeAccess] Y
+#   34|             0: [NullLiteral] null
+#   34|             1: [IntegerLiteral] 0
+#   34|         1: [BlockStmt] { ... }
+#   34|     3: [Method] getEntries
+#   34|       3: [TypeAccess] EnumEntries<Y>
+#   34|         0: [TypeAccess] Y
+#   34|     4: [Method] valueOf
+#   34|       3: [TypeAccess] Y
+#-----|       4: (Parameters)
+#   34|         0: [Parameter] value
+#   34|           0: [TypeAccess] String
+#   34|     5: [Method] values
+#   34|       3: [TypeAccess] Y[]
+#   34|         0: [TypeAccess] Y
+#   35|     6: [FieldDeclaration] Y A;
+#   35|       -1: [TypeAccess] Y
+#   35|       0: [ClassInstanceExpr] new Y(...)
+#   35|         -3: [TypeAccess] Y
+#   35|     7: [FieldDeclaration] Y B;
+#   35|       -1: [TypeAccess] Y
+#   35|       0: [ClassInstanceExpr] new Y(...)
+#   35|         -3: [TypeAccess] Y
+#   35|     8: [FieldDeclaration] Y C;
+#   35|       -1: [TypeAccess] Y
+#   35|       0: [ClassInstanceExpr] new Y(...)
+#   35|         -3: [TypeAccess] Y
+#   38|   6: [Class] Z
+#-----|     -3: (Annotations)
+#   38|       1: [Annotation] Annot0k
+#   38|         1: [IntegerLiteral] 1
+#   39|       2: [Annotation] Annot1k
+#   25|         1: [IntegerLiteral] 2
+#   26|         2: [StringLiteral] "ab"
+#   27|         3: [TypeLiteral] X.class
+#   27|           0: [TypeAccess] X
+#   30|         4: [Annotation] Annot0k
+#   30|           1: [IntegerLiteral] 1
+#   39|         5: [VarAccess] Y.B
+#   39|           -1: [TypeAccess] Y
+#   39|         6: [ArrayInit] {...}
+#   39|           1: [VarAccess] Y.C
+#   39|             -1: [TypeAccess] Y
+#   39|           2: [VarAccess] Y.A
+#   39|             -1: [TypeAccess] Y
+#   41|     1: [Constructor] Z
+#-----|       1: (Annotations)
+#   41|         1: [Annotation] Annot0k
+#   21|           1: [IntegerLiteral] 0
+#   41|       5: [BlockStmt] { ... }
+#   42|         0: [SuperConstructorInvocationStmt] super(...)
+#   41|         1: [BlockStmt] { ... }
+use.java:
+#    0| [CompilationUnit] use
+#    1|   1: [Class] use
+#-----|     -1: (Base Types)
+#    1|       0: [TypeAccess] Annot0k
+#    3|     2: [Method] a
+#-----|       1: (Annotations)
+#    2|         1: [Annotation] Override
+#    3|       3: [TypeAccess] int
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [IntegerLiteral] 1
+#    6|     3: [Method] annotationType
+#-----|       1: (Annotations)
+#    5|         1: [Annotation] Override
+#    6|       3: [TypeAccess] Class<? extends Annotation>
+#    6|         0: [WildcardTypeAccess] ? ...
+#    6|           0: [TypeAccess] Annotation
+#    6|       5: [BlockStmt] { ... }
+#    7|         0: [ReturnStmt] return ...
+#    7|           0: [NullLiteral] null
+#   14|     4: [Class] Z
+#-----|       -3: (Annotations)
+#   10|         1: [Annotation] Annot0j
+#   10|           1: [IntegerLiteral] 1
+#   11|         2: [Annotation] Annot1j
+#   11|           1: [IntegerLiteral] 1
+#   11|           2: [StringLiteral] "ac"
+#   11|           3: [TypeLiteral] X.class
+#   11|             0: [TypeAccess] X
+#   11|           4: [VarAccess] Y.B
+#   11|             -1: [TypeAccess] Y
+#   11|           5: [ArrayInit] {...}
+#   11|             3: [VarAccess] Y.C
+#   11|               -1: [TypeAccess] Y
+#   11|             4: [VarAccess] Y.A
+#   11|               -1: [TypeAccess] Y
+#   11|           6: [Annotation] Annot0j
+#   11|             1: [IntegerLiteral] 2
+#   12|         3: [Annotation] Annot0k
+#   12|           1: [IntegerLiteral] 1
+#   13|         4: [Annotation] Annot1k
+#   13|           1: [IntegerLiteral] 1
+#   13|           2: [StringLiteral] "ac"
+#   13|           3: [TypeLiteral] X.class
+#   13|             0: [TypeAccess] X
+#   13|           4: [VarAccess] Y.B
+#   13|             -1: [TypeAccess] Y
+#   13|           5: [ArrayInit] {...}
+#   13|             3: [VarAccess] Y.C
+#   13|               -1: [TypeAccess] Y
+#   13|             4: [VarAccess] Y.A
+#   13|               -1: [TypeAccess] Y
+#   13|           6: [Annotation] Annot0k
+#   13|             1: [IntegerLiteral] 2

@@ -85,7 +85,8 @@ namespace Expressions
             other[i, Nested.constant] = this[0, ""]; // indexer write and read access, and access to constant through static type reference
             int[] array = { (int)4ul, (int)3l }; // array creation
             array[1] = 5; // array element access
-
+            MyInlineArray inlinearray = new MyInlineArray();
+            inlinearray[2] = 7; // inline array element access
         }
 
         void MainIsAsCast(string s, object o, object p)
@@ -505,6 +506,28 @@ namespace Expressions
             var b = default((bool, int[], object));
             var x = typeof((int, string));
             var y = typeof((bool, int[], dynamic));
+        }
+    }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    struct MyInlineArray
+    {
+        private int myInlineArrayElements;
+    }
+
+    class ClassC1(object oc1) { }
+
+    class ClassC2(object oc2) : ClassC1(oc2) { }
+
+    class SuppressNullableWarning
+    {
+
+        public object? Api() => new object();
+
+        public void Test(object? arg0)
+        {
+            var x = arg0!;
+            var y = Api()!;
         }
     }
 }

@@ -19,8 +19,8 @@ Method forwarderCandidate(Method forwardee) {
   result != forwardee and
   result.getName() = forwardee.getName() and
   result.getDeclaringType() = forwardee.getDeclaringType() and
-  forex(MethodAccess c | c.getMethod() = forwardee | c.getCaller() = result) and
-  forall(MethodAccess c | c.getCaller() = result | c.getMethod() = forwardee)
+  forex(MethodCall c | c.getMethod() = forwardee | c.getCaller() = result) and
+  forall(MethodCall c | c.getCaller() = result | c.getMethod() = forwardee)
 }
 
 from Method forwarder, Method forwardee
@@ -29,10 +29,10 @@ where
   // Exclusions
   not ignored(forwarder) and
   not ignored(forwardee) and
-  not exists(VirtualMethodAccess c |
+  not exists(VirtualMethodCall c |
     c.getMethod() = forwardee and
     c.getCaller() = forwarder and
-    c.(MethodAccess).hasQualifier()
+    c.(MethodCall).hasQualifier()
   )
 select forwarder.getSourceDeclaration(),
   "This method is a forwarder for $@, which is not called independently - the methods can be merged.",

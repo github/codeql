@@ -1,0 +1,6 @@
+| CommentController.cs:6:25:6:29 | Edit1 | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| CommentController.cs:29:25:29:29 | Edit4 | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| MiscTestControllers.cs:26:33:26:40 | EditAnon | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| MiscTestControllers.cs:34:34:34:41 | EditAnon | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| MiscTestControllers.cs:45:25:45:29 | Edit4 | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| ProfileController.cs:14:25:14:29 | Edit2 | This method may be missing authorization checks for which users can access the resource of the provided ID. |

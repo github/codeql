@@ -30,7 +30,7 @@ fn simple_extractor() {
         languages: vec![language],
         trap_dir,
         source_archive_dir,
-        file_list,
+        file_lists: vec![file_list],
         trap_compression: Ok(trap::Compression::Gzip),
     };
 

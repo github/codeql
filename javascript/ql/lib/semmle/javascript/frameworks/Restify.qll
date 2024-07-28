@@ -73,26 +73,10 @@ module Restify {
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * A Node.js HTTP response provided by Restify.
-   */
-  deprecated class ResponseExpr extends NodeJSLib::ResponseExpr {
-    ResponseExpr() { src instanceof ResponseSource }
-  }
-
-  /**
    * A Node.js HTTP response provided by Restify.
    */
   class ResponseNode extends NodeJSLib::ResponseNode {
     ResponseNode() { src instanceof ResponseSource or src instanceof FormatterResponseSource }
-  }
-
-  /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * A Node.js HTTP request provided by Restify.
-   */
-  deprecated class RequestExpr extends NodeJSLib::RequestExpr {
-    RequestExpr() { src instanceof RequestSource }
   }
 
   /**

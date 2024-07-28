@@ -135,7 +135,7 @@ class ForbiddenThisCallable extends ForbiddenCallable {
 ThisAccess forbiddenThisUse(Callable c) {
   result.getEnclosingCallable() = c and
   (
-    exists(MethodAccess ma | ma.getAnArgument() = result) or
+    exists(MethodCall ma | ma.getAnArgument() = result) or
     exists(ReturnStmt rs | rs.getResult() = result)
   )
 }

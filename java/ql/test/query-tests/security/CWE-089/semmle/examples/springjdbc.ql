@@ -4,7 +4,7 @@ import semmle.code.java.security.SqlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
 private class SourceMethodSource extends RemoteFlowSource {
-  SourceMethodSource() { this.asExpr().(MethodAccess).getMethod().hasName("source") }
+  SourceMethodSource() { this.asExpr().(MethodCall).getMethod().hasName("source") }
 
   override string getSourceType() { result = "source" }
 }

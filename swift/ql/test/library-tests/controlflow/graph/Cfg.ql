@@ -4,16 +4,17 @@
 
 import swift
 import codeql.swift.controlflow.ControlFlowGraph
-import codeql.swift.controlflow.internal.ControlFlowGraphImpl::TestOutput
 
-class MyRelevantNode extends RelevantNode {
+class MyRelevantNode extends ControlFlowNode {
   MyRelevantNode() { this.getScope().getLocation().getFile().getName().matches("%swift/ql/test%") }
 
-  private AstNode asAstNode() { result = this.getNode().asAstNode() }
+  private AstNode asAstNode() { result = this.getAstNode().asAstNode() }
 
-  override string getOrderDisambiguation() {
+  string getOrderDisambiguation() {
     result = this.asAstNode().getPrimaryQlClasses()
     or
     not exists(this.asAstNode()) and result = ""
   }
 }
+
+import codeql.swift.controlflow.internal.ControlFlowGraphImpl::TestOutput<MyRelevantNode>

@@ -1,0 +1,94 @@
+| Test.java:1:14:1:17 | Test | 0 | public class Test { |
+| Test.java:1:14:1:17 | Test | 1 |   public Test() { |
+| Test.java:1:14:1:17 | Test | 2 |     super(); |
+| Test.java:1:14:1:17 | Test | 3 |   } |
+| Test.java:1:14:1:17 | Test | 4 |  |
+| Test.java:1:14:1:17 | Test | 5 |   static final class S { |
+| Test.java:1:14:1:17 | Test | 6 |     public final boolean equals(Object p0) { <missing body> } |
+| Test.java:1:14:1:17 | Test | 7 |    |
+| Test.java:1:14:1:17 | Test | 8 |     public final int hashCode() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 9 |    |
+| Test.java:1:14:1:17 | Test | 10 |     public final String toString() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 11 |    |
+| Test.java:1:14:1:17 | Test | 12 |     public int x() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 13 |    |
+| Test.java:1:14:1:17 | Test | 14 |     S(int x) { |
+| Test.java:1:14:1:17 | Test | 15 |       super(); |
+| Test.java:1:14:1:17 | Test | 16 |       this.x = x; |
+| Test.java:1:14:1:17 | Test | 17 |     } |
+| Test.java:1:14:1:17 | Test | 18 |    |
+| Test.java:1:14:1:17 | Test | 19 |     private final int x; |
+| Test.java:1:14:1:17 | Test | 20 |   } |
+| Test.java:1:14:1:17 | Test | 21 |  |
+| Test.java:1:14:1:17 | Test | 22 |   static final class R { |
+| Test.java:1:14:1:17 | Test | 23 |     public final boolean equals(Object p0) { <missing body> } |
+| Test.java:1:14:1:17 | Test | 24 |    |
+| Test.java:1:14:1:17 | Test | 25 |     public final int hashCode() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 26 |    |
+| Test.java:1:14:1:17 | Test | 27 |     public S s() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 28 |    |
+| Test.java:1:14:1:17 | Test | 29 |     public final String toString() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 30 |    |
+| Test.java:1:14:1:17 | Test | 31 |     public String y() { <missing body> } |
+| Test.java:1:14:1:17 | Test | 32 |    |
+| Test.java:1:14:1:17 | Test | 33 |     R(S s, String y) { |
+| Test.java:1:14:1:17 | Test | 34 |       super(); |
+| Test.java:1:14:1:17 | Test | 35 |       this.s = s; |
+| Test.java:1:14:1:17 | Test | 36 |       this.y = y; |
+| Test.java:1:14:1:17 | Test | 37 |     } |
+| Test.java:1:14:1:17 | Test | 38 |    |
+| Test.java:1:14:1:17 | Test | 39 |     private final S s; |
+| Test.java:1:14:1:17 | Test | 40 |    |
+| Test.java:1:14:1:17 | Test | 41 |     private final String y; |
+| Test.java:1:14:1:17 | Test | 42 |   } |
+| Test.java:1:14:1:17 | Test | 43 |  |
+| Test.java:1:14:1:17 | Test | 44 |   public static void test(Object o) { |
+| Test.java:1:14:1:17 | Test | 45 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 46 |       case String s: |
+| Test.java:1:14:1:17 | Test | 47 |       break; |
+| Test.java:1:14:1:17 | Test | 48 |       case R(S(int x), String y): |
+| Test.java:1:14:1:17 | Test | 49 |       break; |
+| Test.java:1:14:1:17 | Test | 50 |       default: |
+| Test.java:1:14:1:17 | Test | 51 |       break; |
+| Test.java:1:14:1:17 | Test | 52 |     } |
+| Test.java:1:14:1:17 | Test | 53 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 54 |       case String s -> { |
+| Test.java:1:14:1:17 | Test | 55 |       } |
+| Test.java:1:14:1:17 | Test | 56 |       case R(S(int x), String y) -> { |
+| Test.java:1:14:1:17 | Test | 57 |       } |
+| Test.java:1:14:1:17 | Test | 58 |       case null, default -> { |
+| Test.java:1:14:1:17 | Test | 59 |       } |
+| Test.java:1:14:1:17 | Test | 60 |     } |
+| Test.java:1:14:1:17 | Test | 61 |     var a = switch (o) { |
+| Test.java:1:14:1:17 | Test | 62 |       case String s: |
+| Test.java:1:14:1:17 | Test | 63 |       yield 1; |
+| Test.java:1:14:1:17 | Test | 64 |       case R(S(int x), String y): |
+| Test.java:1:14:1:17 | Test | 65 |       yield x; |
+| Test.java:1:14:1:17 | Test | 66 |       case null, default: |
+| Test.java:1:14:1:17 | Test | 67 |       yield 2; |
+| Test.java:1:14:1:17 | Test | 68 |     }; |
+| Test.java:1:14:1:17 | Test | 69 |     var b = switch (o) { |
+| Test.java:1:14:1:17 | Test | 70 |       case String s -> 1; |
+| Test.java:1:14:1:17 | Test | 71 |       case R(S(int x), String y) -> x; |
+| Test.java:1:14:1:17 | Test | 72 |       default -> 2; |
+| Test.java:1:14:1:17 | Test | 73 |     }; |
+| Test.java:1:14:1:17 | Test | 74 |     if (o instanceof String s) { |
+| Test.java:1:14:1:17 | Test | 75 |     } |
+| Test.java:1:14:1:17 | Test | 76 |     if (o instanceof R(S(int x), String y)) { |
+| Test.java:1:14:1:17 | Test | 77 |     } |
+| Test.java:1:14:1:17 | Test | 78 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 79 |       case R(S(var x), var y) -> { |
+| Test.java:1:14:1:17 | Test | 80 |       } |
+| Test.java:1:14:1:17 | Test | 81 |       case null, default -> { |
+| Test.java:1:14:1:17 | Test | 82 |       } |
+| Test.java:1:14:1:17 | Test | 83 |     } |
+| Test.java:1:14:1:17 | Test | 84 |     if (o instanceof R(S(var x), var y)) { |
+| Test.java:1:14:1:17 | Test | 85 |     } |
+| Test.java:1:14:1:17 | Test | 86 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 87 |       case String _, Integer _: |
+| Test.java:1:14:1:17 | Test | 88 |       case R(S(var _), var _): |
+| Test.java:1:14:1:17 | Test | 89 |       default: |
+| Test.java:1:14:1:17 | Test | 90 |       break; |
+| Test.java:1:14:1:17 | Test | 91 |     } |
+| Test.java:1:14:1:17 | Test | 92 |   } |
+| Test.java:1:14:1:17 | Test | 93 | } |

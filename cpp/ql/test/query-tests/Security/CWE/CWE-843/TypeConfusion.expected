@@ -1,0 +1,116 @@
+edges
+| test.cpp:17:13:17:18 | new | test.cpp:17:13:17:18 | new | provenance |  |
+| test.cpp:17:13:17:18 | new | test.cpp:18:21:18:47 | p | provenance |  |
+| test.cpp:22:13:22:26 | new | test.cpp:22:13:22:26 | new | provenance |  |
+| test.cpp:22:13:22:26 | new | test.cpp:23:12:23:30 | p | provenance |  |
+| test.cpp:27:13:27:18 | new | test.cpp:27:13:27:18 | new | provenance |  |
+| test.cpp:27:13:27:18 | new | test.cpp:28:25:28:55 | p | provenance |  |
+| test.cpp:32:13:32:30 | new | test.cpp:32:13:32:30 | new | provenance |  |
+| test.cpp:32:13:32:30 | new | test.cpp:33:12:33:30 | p | provenance |  |
+| test.cpp:47:21:47:36 | new | test.cpp:47:21:47:36 | new | provenance |  |
+| test.cpp:47:21:47:36 | new | test.cpp:48:22:48:55 | p | provenance |  |
+| test.cpp:66:15:66:21 | new | test.cpp:66:15:66:21 | new | provenance |  |
+| test.cpp:66:15:66:21 | new | test.cpp:67:12:67:31 | a | provenance |  |
+| test.cpp:76:15:76:21 | new | test.cpp:76:15:76:21 | new | provenance |  |
+| test.cpp:76:15:76:21 | new | test.cpp:77:12:77:31 | a | provenance |  |
+| test.cpp:83:5:83:15 | ... = ... | test.cpp:88:14:88:33 | a | provenance |  |
+| test.cpp:83:9:83:15 | new | test.cpp:83:5:83:15 | ... = ... | provenance |  |
+| test.cpp:85:5:85:15 | ... = ... | test.cpp:88:14:88:33 | a | provenance |  |
+| test.cpp:85:9:85:15 | new | test.cpp:85:5:85:15 | ... = ... | provenance |  |
+| test.cpp:115:12:115:17 | new | test.cpp:115:12:115:17 | new | provenance |  |
+| test.cpp:115:12:115:17 | new | test.cpp:116:20:116:51 | s2 | provenance |  |
+| test.cpp:127:12:127:17 | new | test.cpp:127:12:127:17 | new | provenance |  |
+| test.cpp:127:12:127:17 | new | test.cpp:128:24:128:59 | s2 | provenance |  |
+| test.cpp:140:12:140:17 | new | test.cpp:140:12:140:17 | new | provenance |  |
+| test.cpp:140:12:140:17 | new | test.cpp:141:23:141:57 | s1 | provenance |  |
+| test.cpp:143:14:143:19 | new | test.cpp:143:14:143:19 | new | provenance |  |
+| test.cpp:143:14:143:19 | new | test.cpp:145:28:145:68 | s1_2 | provenance |  |
+| test.cpp:153:5:153:15 | ... = ... | test.cpp:159:14:159:33 | a | provenance |  |
+| test.cpp:153:9:153:15 | new | test.cpp:153:5:153:15 | ... = ... | provenance |  |
+| test.cpp:166:5:166:15 | ... = ... | test.cpp:171:14:171:33 | a | provenance |  |
+| test.cpp:166:9:166:15 | new | test.cpp:166:5:166:15 | ... = ... | provenance |  |
+| test.cpp:168:5:168:15 | ... = ... | test.cpp:171:14:171:33 | a | provenance |  |
+| test.cpp:168:9:168:15 | new | test.cpp:168:5:168:15 | ... = ... | provenance |  |
+| test.cpp:179:15:179:24 | new | test.cpp:179:15:179:24 | new | provenance |  |
+| test.cpp:179:15:179:24 | new | test.cpp:181:15:181:25 | u64 | provenance |  |
+| test.cpp:187:15:187:24 | new | test.cpp:187:15:187:24 | new | provenance |  |
+| test.cpp:187:15:187:24 | new | test.cpp:189:25:189:45 | u64 | provenance |  |
+| test.cpp:207:14:207:26 | new | test.cpp:207:14:207:26 | new | provenance |  |
+| test.cpp:207:14:207:26 | new | test.cpp:209:17:209:28 | si | provenance |  |
+| test.cpp:217:13:217:18 | new | test.cpp:217:13:217:18 | new | provenance |  |
+| test.cpp:217:13:217:18 | new | test.cpp:218:30:218:65 | p | provenance |  |
+| test.cpp:226:13:226:18 | new | test.cpp:226:13:226:18 | new | provenance |  |
+| test.cpp:226:13:226:18 | new | test.cpp:227:29:227:63 | p | provenance |  |
+nodes
+| test.cpp:17:13:17:18 | new | semmle.label | new |
+| test.cpp:17:13:17:18 | new | semmle.label | new |
+| test.cpp:18:21:18:47 | p | semmle.label | p |
+| test.cpp:22:13:22:26 | new | semmle.label | new |
+| test.cpp:22:13:22:26 | new | semmle.label | new |
+| test.cpp:23:12:23:30 | p | semmle.label | p |
+| test.cpp:27:13:27:18 | new | semmle.label | new |
+| test.cpp:27:13:27:18 | new | semmle.label | new |
+| test.cpp:28:25:28:55 | p | semmle.label | p |
+| test.cpp:32:13:32:30 | new | semmle.label | new |
+| test.cpp:32:13:32:30 | new | semmle.label | new |
+| test.cpp:33:12:33:30 | p | semmle.label | p |
+| test.cpp:47:21:47:36 | new | semmle.label | new |
+| test.cpp:47:21:47:36 | new | semmle.label | new |
+| test.cpp:48:22:48:55 | p | semmle.label | p |
+| test.cpp:66:15:66:21 | new | semmle.label | new |
+| test.cpp:66:15:66:21 | new | semmle.label | new |
+| test.cpp:67:12:67:31 | a | semmle.label | a |
+| test.cpp:76:15:76:21 | new | semmle.label | new |
+| test.cpp:76:15:76:21 | new | semmle.label | new |
+| test.cpp:77:12:77:31 | a | semmle.label | a |
+| test.cpp:83:5:83:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:83:9:83:15 | new | semmle.label | new |
+| test.cpp:85:5:85:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:85:9:85:15 | new | semmle.label | new |
+| test.cpp:88:14:88:33 | a | semmle.label | a |
+| test.cpp:115:12:115:17 | new | semmle.label | new |
+| test.cpp:115:12:115:17 | new | semmle.label | new |
+| test.cpp:116:20:116:51 | s2 | semmle.label | s2 |
+| test.cpp:127:12:127:17 | new | semmle.label | new |
+| test.cpp:127:12:127:17 | new | semmle.label | new |
+| test.cpp:128:24:128:59 | s2 | semmle.label | s2 |
+| test.cpp:140:12:140:17 | new | semmle.label | new |
+| test.cpp:140:12:140:17 | new | semmle.label | new |
+| test.cpp:141:23:141:57 | s1 | semmle.label | s1 |
+| test.cpp:143:14:143:19 | new | semmle.label | new |
+| test.cpp:143:14:143:19 | new | semmle.label | new |
+| test.cpp:145:28:145:68 | s1_2 | semmle.label | s1_2 |
+| test.cpp:153:5:153:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:153:9:153:15 | new | semmle.label | new |
+| test.cpp:159:14:159:33 | a | semmle.label | a |
+| test.cpp:166:5:166:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:166:9:166:15 | new | semmle.label | new |
+| test.cpp:168:5:168:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:168:9:168:15 | new | semmle.label | new |
+| test.cpp:171:14:171:33 | a | semmle.label | a |
+| test.cpp:179:15:179:24 | new | semmle.label | new |
+| test.cpp:179:15:179:24 | new | semmle.label | new |
+| test.cpp:181:15:181:25 | u64 | semmle.label | u64 |
+| test.cpp:187:15:187:24 | new | semmle.label | new |
+| test.cpp:187:15:187:24 | new | semmle.label | new |
+| test.cpp:189:25:189:45 | u64 | semmle.label | u64 |
+| test.cpp:207:14:207:26 | new | semmle.label | new |
+| test.cpp:207:14:207:26 | new | semmle.label | new |
+| test.cpp:209:17:209:28 | si | semmle.label | si |
+| test.cpp:217:13:217:18 | new | semmle.label | new |
+| test.cpp:217:13:217:18 | new | semmle.label | new |
+| test.cpp:218:30:218:65 | p | semmle.label | p |
+| test.cpp:226:13:226:18 | new | semmle.label | new |
+| test.cpp:226:13:226:18 | new | semmle.label | new |
+| test.cpp:227:29:227:63 | p | semmle.label | p |
+subpaths
+#select
+| test.cpp:28:25:28:55 | p | test.cpp:27:13:27:18 | new | test.cpp:28:25:28:55 | p | Conversion from $@ to $@ is invalid. | test.cpp:1:8:1:9 | S1 | S1 | test.cpp:11:8:11:21 | Not_S1_wrapper | Not_S1_wrapper |
+| test.cpp:33:12:33:30 | p | test.cpp:32:13:32:30 | new | test.cpp:33:12:33:30 | p | Conversion from $@ to $@ is invalid. | test.cpp:11:8:11:21 | Not_S1_wrapper | Not_S1_wrapper | test.cpp:1:8:1:9 | S1 | S1 |
+| test.cpp:67:12:67:31 | a | test.cpp:66:15:66:21 | new | test.cpp:67:12:67:31 | a | Conversion from $@ to $@ is invalid. | test.cpp:55:8:55:10 | Cat | Cat | test.cpp:60:8:60:10 | Dog | Dog |
+| test.cpp:128:24:128:59 | s2 | test.cpp:127:12:127:17 | new | test.cpp:128:24:128:59 | s2 | Conversion from $@ to $@ is invalid. | test.cpp:102:8:102:9 | S2 | S2 | test.cpp:119:8:119:20 | Not_S2_prefix | Not_S2_prefix |
+| test.cpp:145:28:145:68 | s1_2 | test.cpp:143:14:143:19 | new | test.cpp:145:28:145:68 | s1_2 | Conversion from $@ to $@ is invalid. | test.cpp:1:8:1:9 | S1 | S1 | test.cpp:131:8:131:23 | HasSomeBitFields | HasSomeBitFields |
+| test.cpp:159:14:159:33 | a | test.cpp:153:9:153:15 | new | test.cpp:159:14:159:33 | a | Conversion from $@ to $@ is invalid. | test.cpp:60:8:60:10 | Dog | Dog | test.cpp:55:8:55:10 | Cat | Cat |
+| test.cpp:189:25:189:45 | u64 | test.cpp:187:15:187:24 | new | test.cpp:189:25:189:45 | u64 | Conversion from $@ to $@ is invalid. | test.cpp:175:8:175:13 | UInt64 | UInt64 | test.cpp:184:8:184:22 | UInt8_with_more | UInt8_with_more |
+| test.cpp:218:30:218:65 | p | test.cpp:217:13:217:18 | new | test.cpp:218:30:218:65 | p | Conversion from $@ to $@ is invalid. | test.cpp:1:8:1:9 | S1 | S1 | test.cpp:212:8:212:26 | UnrelatedStructSize | UnrelatedStructSize |
+| test.cpp:227:29:227:63 | p | test.cpp:226:13:226:18 | new | test.cpp:227:29:227:63 | p | Conversion from $@ to $@ is invalid. | test.cpp:1:8:1:9 | S1 | S1 | test.cpp:221:8:221:25 | TooLargeBufferSize | TooLargeBufferSize |

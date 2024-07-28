@@ -1,0 +1,5 @@
+| package | package |
+| package.__init__ | package/__init__.py |
+| package.mod | package/mod |
+| package.mod | package/mod.py |
+| package.mod.__init__ | package/mod/__init__.py |

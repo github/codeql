@@ -16,6 +16,10 @@ To guard against untrusted URL redirection, it is advisable to avoid putting use
 directly into a redirect URL. Instead, maintain a list of authorized
 redirects on the server; then choose from that list based on the user input provided.
 </p>
+<p>
+If this is not possible, then the user input should be validated in some other way,
+for example, by verifying that the target URL is on the same host as the current page.
+</p>
 </recommendation>
 
 <example>
@@ -32,6 +36,21 @@ before doing the redirection:
 </p>
 
 <sample src="examples/ServerSideUrlRedirectGood.js"/>
+
+<p>
+Alternatively, we can check that the target URL does not redirect to a different host
+by parsing it relative to a base URL with a known host and verifying that the host
+stays the same:
+</p>
+
+<sample src="examples/ServerSideUrlRedirectGood2.js"/>
+
+<p>
+Note that as written, the above code will allow redirects to URLs on <code>example.com</code>,
+which is harmless but perhaps not intended. You can substitute your own domain (if known) for
+<code>example.com</code> to prevent this.
+</p>
+
 </example>
 
 <references>

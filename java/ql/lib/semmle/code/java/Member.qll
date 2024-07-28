@@ -33,6 +33,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
    * Holds if this member has the specified name and is declared in the
    * specified package and type.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string package, string type, string name) {
     this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
   }
@@ -128,7 +129,7 @@ class Callable extends StmtParent, Member, @callable {
    * Holds if this callable calls `target`
    * using a `super` method call.
    */
-  predicate callsSuper(Method target) { this.getACallSite(target) instanceof SuperMethodAccess }
+  predicate callsSuper(Method target) { this.getACallSite(target) instanceof SuperMethodCall }
 
   /**
    * Holds if this callable calls `c` using
@@ -160,13 +161,13 @@ class Callable extends StmtParent, Member, @callable {
    * Holds if field `f` may be assigned a value
    * within the body of this callable.
    */
-  predicate writes(Field f) { f.getAnAccess().(LValue).getEnclosingCallable() = this }
+  predicate writes(Field f) { f.getAnAccess().(VarWrite).getEnclosingCallable() = this }
 
   /**
    * Holds if field `f` may be read
    * within the body of this callable.
    */
-  predicate reads(Field f) { f.getAnAccess().(RValue).getEnclosingCallable() = this }
+  predicate reads(Field f) { f.getAnAccess().(VarRead).getEnclosingCallable() = this }
 
   /**
    * Holds if field `f` may be either read or written
@@ -525,7 +526,7 @@ class Method extends Callable, @method {
     this.getSourceDeclaration().getAPossibleImplementationOfSrcMethod() = result
   }
 
-  override MethodAccess getAReference() { result = Callable.super.getAReference() }
+  override MethodCall getAReference() { result = Callable.super.getAReference() }
 
   override predicate isPublic() {
     Callable.super.isPublic()
@@ -736,10 +737,17 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
+  private string stringifyType() {
+    // Necessary because record fields are missing their type access.
+    if exists(this.getTypeAccess())
+    then result = this.getTypeAccess().toString()
+    else result = this.getAField().getType().toString()
+  }
+
   override string toString() {
     if this.getNumField() = 1
-    then result = this.getTypeAccess() + " " + this.getField(0) + ";"
-    else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
+    then result = this.stringifyType() + " " + this.getField(0) + ";"
+    else result = this.stringifyType() + " " + this.getField(0) + ", ...;"
   }
 
   override string getAPrimaryQlClass() { result = "FieldDeclaration" }

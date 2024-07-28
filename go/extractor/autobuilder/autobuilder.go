@@ -54,13 +54,15 @@ func checkExtractorRun() bool {
 }
 
 // tryBuildIfExists tries to run the command `cmd args...` if the file `buildFile` exists and is not
-// a directory. Returns true if the command was successful and false if not.
-func tryBuildIfExists(buildFile, cmd string, args ...string) bool {
-	if util.FileExists(buildFile) {
+// a directory. Returns values indicating whether the script succeeded as well as whether the script was found.
+func tryBuildIfExists(buildFile, cmd string, args ...string) (scriptSuccess bool, scriptFound bool) {
+	scriptSuccess = false
+	scriptFound = util.FileExists(buildFile)
+	if scriptFound {
 		log.Printf("%s found.\n", buildFile)
-		return tryBuild(cmd, args...)
+		scriptSuccess = tryBuild(cmd, args...)
 	}
-	return false
+	return
 }
 
 // tryBuild tries to run `cmd args...`, returning true if successful and false if not.
@@ -70,12 +72,47 @@ func tryBuild(cmd string, args ...string) bool {
 	return res && (!CheckExtracted || checkExtractorRun())
 }
 
-// Autobuild attempts to detect build system and run the corresponding command.
-func Autobuild() bool {
-	return tryBuildIfExists("Makefile", "make") ||
-		tryBuildIfExists("makefile", "make") ||
-		tryBuildIfExists("GNUmakefile", "make") ||
-		tryBuildIfExists("build.ninja", "ninja") ||
-		tryBuildIfExists("build", "./build") ||
-		tryBuildIfExists("build.sh", "./build.sh")
+// If a project is accompanied by a build script (such as a makefile), then we try executing such
+// build scripts to build the project. This type represents pairs of script names to check for
+// and the names of corresponding build tools to invoke if those scripts exist.
+type BuildScript struct {
+	Tool     string // The name of the command to execute if the build script exists
+	Filename string // The name of the build script to check for
+}
+
+// An array of build scripts to check for and corresponding commands that we can execute
+// if they exist.
+var BuildScripts = []BuildScript{
+	{Tool: "make", Filename: "Makefile"},
+	{Tool: "make", Filename: "makefile"},
+	{Tool: "make", Filename: "GNUmakefile"},
+	{Tool: "ninja", Filename: "build.ninja"},
+	{Tool: "./build", Filename: "build"},
+	{Tool: "./build.sh", Filename: "build.sh"},
+}
+
+// Autobuild attempts to detect build systems based on the presence of build scripts from the
+// list in `BuildScripts` and run the corresponding command. This may invoke zero or more
+// build scripts in the order given by `BuildScripts`.
+// Returns `scriptSuccess` which indicates whether a build script was successfully executed.
+// Returns `scriptsExecuted` which contains the names of all build scripts that were executed.
+func Autobuild() (scriptSuccess bool, scriptsExecuted []string) {
+	scriptSuccess = false
+	scriptsExecuted = []string{}
+
+	for _, script := range BuildScripts {
+		// Try to run the build script
+		success, scriptFound := tryBuildIfExists(script.Filename, script.Tool)
+
+		// If it was found, we attempted to run it: add it to the array.
+		if scriptFound {
+			scriptsExecuted = append(scriptsExecuted, script.Filename)
+		}
+		// If it was successfully executed, we stop here.
+		if success {
+			scriptSuccess = true
+			return
+		}
+	}
+	return
 }

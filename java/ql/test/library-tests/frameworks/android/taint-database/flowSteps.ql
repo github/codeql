@@ -6,7 +6,7 @@ import TestUtilities.InlineExpectationsTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().(MethodAccess).getMethod().hasName("taint")
+    source.asExpr().(MethodCall).getMethod().hasName("taint")
   }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getResult() }

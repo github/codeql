@@ -3,37 +3,27 @@ fields.cs:
 #    7|   1: [Class] A
 #   10|     6: [Field] X
 #   10|       -1: [TypeMention] int
-#   10|       1: [AssignExpr] ... = ...
-#   10|         0: [FieldAccess] access to field X
-#   10|         1: [IntLiteral] 1
+#   10|       1: [IntLiteral] 1
 #   10|     7: [Field] Y
 #   10|       -1: [TypeMention] int
 #   10|     8: [Field] Z
 #   10|       -1: [TypeMention] int
-#   10|       1: [AssignExpr] ... = ...
-#   10|         0: [FieldAccess] access to field Z
-#   10|         1: [IntLiteral] 100
+#   10|       1: [IntLiteral] 100
 #   13|   2: [Class] B
 #   15|     6: [Field] X
 #   15|       -1: [TypeMention] int
-#   15|       1: [AssignExpr] ... = ...
-#   15|         0: [FieldAccess] access to field X
-#   15|         1: [IntLiteral] 1
+#   15|       1: [IntLiteral] 1
 #   16|     7: [Field] Y
 #   16|       -1: [TypeMention] int
 #   17|     8: [Field] Z
 #   17|       -1: [TypeMention] int
-#   17|       1: [AssignExpr] ... = ...
-#   17|         0: [FieldAccess] access to field Z
-#   17|         1: [IntLiteral] 100
-#   20|   3: [Class] C<>
+#   17|       1: [IntLiteral] 100
+#   20|   3: [Class] C`1
 #-----|     1: (Type parameters)
 #   20|       0: [TypeParameter] V
 #   23|     5: [Field] count
 #   23|       -1: [TypeMention] int
-#   23|       1: [AssignExpr] ... = ...
-#   23|         0: [FieldAccess] access to field count
-#   23|         1: [IntLiteral] 0
+#   23|       1: [IntLiteral] 0
 #   25|     6: [InstanceConstructor] C
 #   25|       4: [BlockStmt] {...}
 #   25|         0: [ExprStmt] ...;
@@ -50,22 +40,16 @@ fields.cs:
 #   34|       -1: [TypeMention] bool
 #   35|     7: [Field] x
 #   35|       -1: [TypeMention] double
-#   35|       1: [AssignExpr] ... = ...
-#   35|         0: [FieldAccess] access to field x
-#   35|         1: [MethodCall] call to method Sqrt
-#   35|           -1: [TypeAccess] access to type Math
-#   35|             0: [TypeMention] Math
-#   35|           0: [DoubleLiteral] 2
+#   35|       1: [MethodCall] call to method Sqrt
+#   35|         -1: [TypeAccess] access to type Math
+#   35|           0: [TypeMention] Math
+#   35|         0: [DoubleLiteral] 2
 #   36|     8: [Field] i
 #   36|       -1: [TypeMention] int
-#   36|       1: [AssignExpr] ... = ...
-#   36|         0: [FieldAccess] access to field i
-#   36|         1: [IntLiteral] 100
+#   36|       1: [IntLiteral] 100
 #   37|     9: [Field] s
 #   37|       -1: [TypeMention] string
-#   37|       1: [AssignExpr] ... = ...
-#   37|         0: [FieldAccess] access to field s
-#   37|         1: [StringLiteralUtf16] "Hello"
+#   37|       1: [StringLiteralUtf16] "Hello"
 #   39|     10: [Method] Main
 #   39|       -1: [TypeMention] Void
 #   40|       4: [BlockStmt] {...}
@@ -111,28 +95,24 @@ fields.cs:
 #   50|   5: [Class] Color
 #   53|     5: [Field] Black
 #   53|       -1: [TypeMention] Color
-#   53|       1: [AssignExpr] ... = ...
-#   53|         0: [FieldAccess] access to field Black
-#   53|         1: [ObjectCreation] object creation of type Color
-#   53|           -1: [TypeMention] Color
-#   53|           0: [CastExpr] (...) ...
-#   53|             1: [IntLiteral] 0
-#   53|           1: [CastExpr] (...) ...
-#   53|             1: [IntLiteral] 0
-#   53|           2: [CastExpr] (...) ...
-#   53|             1: [IntLiteral] 0
+#   53|       1: [ObjectCreation] object creation of type Color
+#   53|         -1: [TypeMention] Color
+#   53|         0: [CastExpr] (...) ...
+#   53|           1: [IntLiteral] 0
+#   53|         1: [CastExpr] (...) ...
+#   53|           1: [IntLiteral] 0
+#   53|         2: [CastExpr] (...) ...
+#   53|           1: [IntLiteral] 0
 #   54|     6: [Field] White
 #   54|       -1: [TypeMention] Color
-#   54|       1: [AssignExpr] ... = ...
-#   54|         0: [FieldAccess] access to field White
-#   54|         1: [ObjectCreation] object creation of type Color
-#   54|           -1: [TypeMention] Color
-#   54|           0: [CastExpr] (...) ...
-#   54|             1: [IntLiteral] 255
-#   54|           1: [CastExpr] (...) ...
-#   54|             1: [IntLiteral] 255
-#   54|           2: [CastExpr] (...) ...
-#   54|             1: [IntLiteral] 255
+#   54|       1: [ObjectCreation] object creation of type Color
+#   54|         -1: [TypeMention] Color
+#   54|         0: [CastExpr] (...) ...
+#   54|           1: [IntLiteral] 255
+#   54|         1: [CastExpr] (...) ...
+#   54|           1: [IntLiteral] 255
+#   54|         2: [CastExpr] (...) ...
+#   54|           1: [IntLiteral] 255
 #   56|     7: [InstanceConstructor] Color
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] r
@@ -145,50 +125,38 @@ fields.cs:
 #   60|   6: [Class] TestBindings
 #   63|     6: [Field] a
 #   63|       -1: [TypeMention] int
-#   63|       1: [AssignExpr] ... = ...
-#   63|         0: [FieldAccess] access to field a
-#   63|         1: [AddExpr] ... + ...
-#   63|           0: [FieldAccess] access to field b
-#   63|           1: [IntLiteral] 1
+#   63|       1: [AddExpr] ... + ...
+#   63|         0: [FieldAccess] access to field b
+#   63|         1: [IntLiteral] 1
 #   64|     7: [Field] b
 #   64|       -1: [TypeMention] int
-#   64|       1: [AssignExpr] ... = ...
-#   64|         0: [FieldAccess] access to field b
-#   64|         1: [AddExpr] ... + ...
-#   64|           0: [FieldAccess] access to field a
-#   64|           1: [IntLiteral] 1
+#   64|       1: [AddExpr] ... + ...
+#   64|         0: [FieldAccess] access to field a
+#   64|         1: [IntLiteral] 1
 #   70| [NamespaceDeclaration] namespace ... { ... }
 #   72|   1: [Class] A
 #   74|     5: [Field] X
 #   74|       -1: [TypeMention] int
-#   74|       1: [AssignExpr] ... = ...
-#   74|         0: [MemberConstantAccess] access to constant X
-#   74|         1: [AddExpr] ... + ...
-#   74|           0: [MemberConstantAccess] access to constant Z
-#   74|             -1: [TypeAccess] access to type B
-#   74|               0: [TypeMention] B
-#   74|           1: [IntLiteral] 1
+#   74|       1: [AddExpr] ... + ...
+#   74|         0: [MemberConstantAccess] access to constant Z
+#   74|           -1: [TypeAccess] access to type B
+#   74|             0: [TypeMention] B
+#   74|         1: [IntLiteral] 1
 #   75|     6: [Field] Y
 #   75|       -1: [TypeMention] int
-#   75|       1: [AssignExpr] ... = ...
-#   75|         0: [MemberConstantAccess] access to constant Y
-#   75|         1: [IntLiteral] 10
+#   75|       1: [IntLiteral] 10
 #   78|   2: [Class] B
 #   80|     5: [Field] Z
 #   80|       -1: [TypeMention] int
-#   80|       1: [AssignExpr] ... = ...
-#   80|         0: [MemberConstantAccess] access to constant Z
-#   80|         1: [AddExpr] ... + ...
-#   80|           0: [MemberConstantAccess] access to constant Y
-#   80|             -1: [TypeAccess] access to type A
-#   80|               0: [TypeMention] A
-#   80|           1: [IntLiteral] 1
+#   80|       1: [AddExpr] ... + ...
+#   80|         0: [MemberConstantAccess] access to constant Y
+#   80|           -1: [TypeAccess] access to type A
+#   80|             0: [TypeMention] A
+#   80|         1: [IntLiteral] 1
 #   83|   3: [Class] C
 #   85|     4: [Field] Foo
 #   85|       -1: [TypeMention] int
-#   85|       1: [AssignExpr] ... = ...
-#   85|         0: [MemberConstantAccess] access to constant Foo
-#   85|         1: [IntLiteral] 1
+#   85|       1: [IntLiteral] 1
 #   86|     5: [Field] x
 #   86|       -1: [TypeMention] long?
 #   86|         1: [TypeMention] long

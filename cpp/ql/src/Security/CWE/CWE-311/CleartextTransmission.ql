@@ -206,25 +206,22 @@ class Encrypted extends Expr {
  * operation `nsr`.
  */
 predicate isSinkSendRecv(DataFlow::Node sink, NetworkSendRecv nsr) {
-  [sink.asIndirectConvertedExpr(), sink.asConvertedExpr()] = nsr.getDataExpr().getFullyConverted()
+  [sink.asIndirectExpr(), sink.asExpr()] = nsr.getDataExpr()
 }
 
 /**
  * Holds if `sink` is a node that is encrypted by `enc`.
  */
-predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) {
-  sink.asConvertedExpr() = enc.getFullyConverted()
-}
+predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) { sink.asExpr() = enc }
 
 /**
  * Holds if `source` represents a use of a sensitive variable, or data returned by a
  * function returning sensitive data.
  */
 predicate isSourceImpl(DataFlow::Node source) {
-  exists(Expr e |
-    e = source.asConvertedExpr() and
-    e.getUnconverted().(VariableAccess).getTarget() instanceof SourceVariable and
-    not e.hasConversion()
+  exists(VariableAccess e |
+    e = source.asExpr() and
+    e.getTarget() instanceof SourceVariable
   )
   or
   source.asExpr().(FunctionCall).getTarget() instanceof SourceFunction

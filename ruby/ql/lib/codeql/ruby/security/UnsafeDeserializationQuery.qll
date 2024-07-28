@@ -2,7 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about unsafe deserialization.
  *
  * Note, for performance reasons: only import this file if
- * `UnsafeDeserialization::Configuration` is needed, otherwise
+ * `UnsafeDeserializationFlow` is needed, otherwise
  * `UnsafeDeserializationCustomizations` should be imported instead.
  */
 
@@ -13,8 +13,9 @@ import UnsafeDeserializationCustomizations
 
 /**
  * A taint-tracking configuration for reasoning about unsafe deserialization.
+ * DEPRECATED: Use `UnsafeDeserializationFlow`
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeDeserialization" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -28,3 +29,16 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof UnsafeDeserialization::Sanitizer
   }
 }
+
+private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UnsafeDeserialization::Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserialization::Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof UnsafeDeserialization::Sanitizer }
+}
+
+/**
+ * Taint-tracking for reasoning about unsafe deserialization.
+ */
+module UnsafeCodeConstructionFlow = TaintTracking::Global<UnsafeDeserializationConfig>;

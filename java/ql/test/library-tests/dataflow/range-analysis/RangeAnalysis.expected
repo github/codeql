@@ -59,6 +59,7 @@
 | A.java:12:16:12:20 | ... + ... | SSA init(y) | 1 | upper | NoReason |
 | A.java:12:20:12:20 | 1 | 0 | 1 | lower | NoReason |
 | A.java:12:20:12:20 | 1 | 0 | 1 | upper | NoReason |
+| A.java:13:13:13:23 | sum | SSA init(y) | 400 | upper | NoReason |
 | A.java:13:19:13:19 | x | 0 | 400 | upper | ... > ... |
 | A.java:13:19:13:19 | x | SSA init(x) | 0 | lower | NoReason |
 | A.java:13:19:13:19 | x | SSA init(x) | 0 | upper | NoReason |
@@ -72,6 +73,17 @@
 | A.java:15:13:15:13 | y | SSA init(y) | 0 | upper | NoReason |
 | A.java:15:17:15:19 | 300 | 0 | 300 | lower | NoReason |
 | A.java:15:17:15:19 | 300 | 0 | 300 | upper | NoReason |
+| A.java:16:15:16:25 | sum | 0 | 603 | lower | ... > ... |
+| A.java:16:15:16:25 | sum | 0 | 799 | upper | ... != ... |
+| A.java:16:15:16:25 | sum | 0 | 799 | upper | ... > ... |
+| A.java:16:15:16:25 | sum | SSA init(x) | 301 | lower | ... != ... |
+| A.java:16:15:16:25 | sum | SSA init(x) | 301 | lower | NoReason |
+| A.java:16:15:16:25 | sum | SSA init(x) | 399 | upper | ... != ... |
+| A.java:16:15:16:25 | sum | SSA init(x) | 399 | upper | NoReason |
+| A.java:16:15:16:25 | sum | SSA init(y) | 302 | lower | ... != ... |
+| A.java:16:15:16:25 | sum | SSA init(y) | 302 | lower | NoReason |
+| A.java:16:15:16:25 | sum | SSA init(y) | 400 | upper | ... != ... |
+| A.java:16:15:16:25 | sum | SSA init(y) | 400 | upper | NoReason |
 | A.java:16:21:16:21 | x | 0 | 302 | lower | ... > ... |
 | A.java:16:21:16:21 | x | 0 | 400 | upper | ... > ... |
 | A.java:16:21:16:21 | x | SSA init(x) | 0 | lower | NoReason |

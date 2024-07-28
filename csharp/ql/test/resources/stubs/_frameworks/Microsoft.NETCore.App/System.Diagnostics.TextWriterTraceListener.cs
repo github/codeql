@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.TextWriterTraceListener, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `System.Diagnostics.TextWriterTraceListener, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
@@ -11,7 +10,6 @@ namespace System
             public ConsoleTraceListener() => throw null;
             public ConsoleTraceListener(bool useErrorStream) => throw null;
         }
-
         public class DelimitedListTraceListener : System.Diagnostics.TextWriterTraceListener
         {
             public DelimitedListTraceListener(System.IO.Stream stream) => throw null;
@@ -20,19 +18,16 @@ namespace System
             public DelimitedListTraceListener(System.IO.TextWriter writer, string name) => throw null;
             public DelimitedListTraceListener(string fileName) => throw null;
             public DelimitedListTraceListener(string fileName, string name) => throw null;
-            public string Delimiter { get => throw null; set => throw null; }
+            public string Delimiter { get => throw null; set { } }
             protected override string[] GetSupportedAttributes() => throw null;
             public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, object data) => throw null;
             public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, params object[] data) => throw null;
             public override void TraceEvent(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, string message) => throw null;
             public override void TraceEvent(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, string format, params object[] args) => throw null;
         }
-
         public class TextWriterTraceListener : System.Diagnostics.TraceListener
         {
             public override void Close() => throw null;
-            protected override void Dispose(bool disposing) => throw null;
-            public override void Flush() => throw null;
             public TextWriterTraceListener() => throw null;
             public TextWriterTraceListener(System.IO.Stream stream) => throw null;
             public TextWriterTraceListener(System.IO.Stream stream, string name) => throw null;
@@ -40,14 +35,21 @@ namespace System
             public TextWriterTraceListener(System.IO.TextWriter writer, string name) => throw null;
             public TextWriterTraceListener(string fileName) => throw null;
             public TextWriterTraceListener(string fileName, string name) => throw null;
+            protected override void Dispose(bool disposing) => throw null;
+            public override void Flush() => throw null;
             public override void Write(string message) => throw null;
             public override void WriteLine(string message) => throw null;
-            public System.IO.TextWriter Writer { get => throw null; set => throw null; }
+            public System.IO.TextWriter Writer { get => throw null; set { } }
         }
-
         public class XmlWriterTraceListener : System.Diagnostics.TextWriterTraceListener
         {
             public override void Close() => throw null;
+            public XmlWriterTraceListener(System.IO.Stream stream) => throw null;
+            public XmlWriterTraceListener(System.IO.Stream stream, string name) => throw null;
+            public XmlWriterTraceListener(System.IO.TextWriter writer) => throw null;
+            public XmlWriterTraceListener(System.IO.TextWriter writer, string name) => throw null;
+            public XmlWriterTraceListener(string filename) => throw null;
+            public XmlWriterTraceListener(string filename, string name) => throw null;
             public override void Fail(string message, string detailMessage) => throw null;
             public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, object data) => throw null;
             public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, params object[] data) => throw null;
@@ -56,13 +58,6 @@ namespace System
             public override void TraceTransfer(System.Diagnostics.TraceEventCache eventCache, string source, int id, string message, System.Guid relatedActivityId) => throw null;
             public override void Write(string message) => throw null;
             public override void WriteLine(string message) => throw null;
-            public XmlWriterTraceListener(System.IO.Stream stream) => throw null;
-            public XmlWriterTraceListener(System.IO.Stream stream, string name) => throw null;
-            public XmlWriterTraceListener(System.IO.TextWriter writer) => throw null;
-            public XmlWriterTraceListener(System.IO.TextWriter writer, string name) => throw null;
-            public XmlWriterTraceListener(string filename) => throw null;
-            public XmlWriterTraceListener(string filename, string name) => throw null;
         }
-
     }
 }

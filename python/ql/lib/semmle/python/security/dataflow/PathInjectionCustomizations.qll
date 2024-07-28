@@ -43,13 +43,6 @@ module PathInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "path injection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
@@ -78,11 +71,11 @@ module PathInjection {
       // ```
       //
       // The same approach is used in the command injection query.
-      not exists(Module pathlib |
-        pathlib.getName() = "pathlib" and
-        this.getScope().getEnclosingModule() = pathlib and
-        // do allow this call if we're analyzing pathlib.py as part of CPython though
-        not exists(pathlib.getFile().getRelativePath())
+      not exists(Module inStdlib |
+        inStdlib.getName() in ["pathlib", "os"] and
+        this.getScope().getEnclosingModule() = inStdlib and
+        // do allow this call if we're analyzing, say, pathlib.py as part of CPython though
+        not exists(inStdlib.getFile().getRelativePath())
       )
     }
   }

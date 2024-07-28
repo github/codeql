@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "FileWriterUtil", "(String,OutputStreamCreator)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "buildDir", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getFileToWrite", "(String,String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getFileToWrite", "(String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getWriter", "(File,String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getWriter", "(String,String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getWriter", "(String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getWriter", "(String,String,String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "FileWriterUtil", True, "getWriter", "(String,String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.util", "OutputStreamCreator", true, "createOutputStream", "(File)", "", "Argument[0]", "path-injection", "manual"]

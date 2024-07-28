@@ -24,8 +24,8 @@ predicate whitelistedMethod(Method m) {
 
 class SideEffect extends Expr {
   SideEffect() {
-    this instanceof MethodAccess and
-    not whitelistedMethod(this.(MethodAccess).getMethod())
+    this instanceof MethodCall and
+    not whitelistedMethod(this.(MethodCall).getMethod())
     or
     this.(Assignment).getDest() instanceof FieldAccess
   }

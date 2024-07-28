@@ -70,6 +70,8 @@ func myRegexpTests(myUrl: URL) throws {
     let regex = try Regex(str)
     _ = try regex.firstMatch(in: tainted)
 
+    _ = try Regex(#"(?is)X(?:.|\n)*Y"#) // BAD - suggested attack should begin with 'x' or 'X', *not* 'isx' or 'isX'
+
     // NSRegularExpression
 
     _ = try? NSRegularExpression(pattern: "((a*)*b)") // DUBIOUS (never used) [FLAGGED]

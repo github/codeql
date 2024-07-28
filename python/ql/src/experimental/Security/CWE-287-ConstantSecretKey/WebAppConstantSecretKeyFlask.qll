@@ -121,7 +121,7 @@ module FlaskConstantSecretKeyConfig {
           .getACall() and
     result =
       [
-        cn.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText(),
+        cn.getParameter(0).getAValueReachingSink().asExpr().(StringLiteral).getText(),
         cn.getParameter(0).asSink().asExpr().(Name).getId()
       ]
   }
@@ -134,6 +134,6 @@ module FlaskConstantSecretKeyConfig {
           .getASuccessor*()
           .getMember("from_object")
           .getACall() and
-    result = cn.getParameter(0).asSink().asExpr().(StrConst).getText()
+    result = cn.getParameter(0).asSink().asExpr().(StringLiteral).getText()
   }
 }

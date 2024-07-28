@@ -20,6 +20,13 @@ module Shared {
     string getVulnerabilityKind() { result = "Cross-site scripting" }
   }
 
+  // import the various XSS query customizations, they populate the shared classes
+  private import DomBasedXssCustomizations
+  private import ReflectedXssCustomizations
+  private import StoredXssCustomizations
+  private import XssThroughDomCustomizations
+  private import ExceptionXssCustomizations
+
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
@@ -137,44 +144,4 @@ module Shared {
   class IsEscapedInSwitchSanitizer extends Sanitizer {
     IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAUse() }
   }
-}
-
-/**
- * DEPRECATED: Use the `DomBasedXssCustomizations.qll` file instead.
- * Provides classes and predicates for the DOM-based XSS query.
- */
-deprecated module DomBasedXss {
-  import DomBasedXssCustomizations::DomBasedXss
-}
-
-/**
- * DEPRECATED: Use the `DomBasedXssCustomizations.qll` file instead.
- * Provides classes and predicates for the reflected XSS query.
- */
-deprecated module ReflectedXss {
-  import ReflectedXssCustomizations::ReflectedXss
-}
-
-/**
- * DEPRECATED: Use the `StoredXssCustomizations.qll` file instead.
- * Provides classes and predicates for the stored XSS query.
- */
-deprecated module StoredXss {
-  import StoredXssCustomizations::StoredXss
-}
-
-/**
- * DEPRECATED: Use the `XssThroughDomCustomizations.qll` file instead.
- * Provides classes and predicates for the XSS through DOM query.
- */
-deprecated module XssThroughDom {
-  import XssThroughDomCustomizations::XssThroughDom
-}
-
-/**
- * DEPRECATED: Use the `ExceptionXssCustomizations.qll` file instead.
- * Provides classes for customizing the `ExceptionXss` query.
- */
-deprecated module ExceptionXss {
-  import ExceptionXssCustomizations::ExceptionXss
 }

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - ['Mime::Type', 'Mime!', 'Method[fetch].ReturnValue']
+      - ['Mime::Type', 'Mime::Type!', 'Method[lookup].ReturnValue']
+      - ['Mime::Type', 'Mime::Type!', 'Method[lookup_by_extension].ReturnValue']
+      - ['Mime::Type', 'Mime::Type!', 'Method[register].ReturnValue']
+      - ['Mime::Type', 'Mime::Type!', 'Method[register_alias].ReturnValue']

@@ -12,9 +12,11 @@ import semmle.python.dataflow.new.TaintTracking
 import ReflectedXSSCustomizations::ReflectedXss
 
 /**
+ * DEPRECATED: Use `ReflectedXssFlow` module instead.
+ *
  * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ReflectedXSS" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -22,8 +24,15 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
+
+private module ReflectedXssConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/** Global taint-tracking for detecting "reflected server-side cross-site scripting" vulnerabilities. */
+module ReflectedXssFlow = TaintTracking::Global<ReflectedXssConfig>;

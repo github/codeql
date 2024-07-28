@@ -9,15 +9,12 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp
 {
-    public class TracingAnalyser : Analyser, IDisposable
+    public class TracingAnalyser : Analyser
     {
-        private Entities.Compilation? compilationEntity;
-        private IDisposable? compilationTrapFile;
-
         private bool init;
 
-        public TracingAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
-            : base(pm, logger, addAssemblyTrapPrefix, pathTransformer)
+        public TracingAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
         {
         }
 
@@ -28,7 +25,8 @@ namespace Semmle.Extraction.CSharp
         /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
         public bool BeginInitialize(IEnumerable<string> roslynArgs)
         {
-            return init = LogRoslynArgs(roslynArgs, Extraction.Extractor.Version);
+            LogExtractorInfo();
+            return init = LogRoslynArgs(roslynArgs);
         }
 
         /// <summary>
@@ -41,32 +39,20 @@ namespace Semmle.Extraction.CSharp
         public void EndInitialize(
            CSharpCommandLineArguments commandLineArguments,
            CommonOptions options,
-           CSharpCompilation compilation)
+           CSharpCompilation compilation,
+           string cwd,
+           string[] args)
         {
             if (!init)
                 throw new InternalError("EndInitialize called without BeginInitialize returning true");
             this.options = options;
             this.compilation = compilation;
-            this.extractor = new TracingExtractor(GetOutputName(compilation, commandLineArguments), Logger, PathTransformer, options);
-            LogDiagnostics();
+            this.ExtractionContext = new ExtractionContext(cwd, args, GetOutputName(compilation, commandLineArguments), [], Logger, PathTransformer, ExtractorMode.None, options.QlTest);
+            var errorCount = LogDiagnostics();
 
             SetReferencePaths();
 
-            CompilationErrors += FilteredDiagnostics.Count();
-        }
-
-        public override void Dispose()
-        {
-            compilationTrapFile?.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
-        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
-        /// </summary>
-        public void AnalyseCompilation()
-        {
-            extractionTasks.Add(() => DoAnalyseCompilation());
+            CompilationErrors += errorCount;
         }
 
         /// <summary>
@@ -74,9 +60,8 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
-        private bool LogRoslynArgs(IEnumerable<string> roslynArgs, string extractorVersion)
+        private bool LogRoslynArgs(IEnumerable<string> roslynArgs)
         {
-            LogExtractorInfo(extractorVersion);
             Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
             var tempFile = Extractor.GetCSharpArgsLogPath(Path.GetRandomFileName());
@@ -84,8 +69,8 @@ namespace Semmle.Extraction.CSharp
             bool argsWritten;
             using (var streamWriter = new StreamWriter(new FileStream(tempFile, FileMode.Append, FileAccess.Write)))
             {
-                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !arg.StartsWith('@')))}");
-                argsWritten = roslynArgs.WriteCommandLine(streamWriter);
+                streamWriter.WriteLine($"# Arguments to Roslyn: {string.Join(' ', roslynArgs.Where(arg => !CommandLineExtensions.IsFileArgument(arg)))}");
+                argsWritten = streamWriter.WriteContentFromArgumentFile(roslynArgs);
             }
 
             var hash = FileUtils.ComputeFileHash(tempFile);
@@ -152,27 +137,27 @@ namespace Semmle.Extraction.CSharp
             return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
         }
 
-#nullable disable warnings
-
-        /// <summary>
-        /// Logs detailed information about this invocation,
-        /// in the event that errors were detected.
-        /// </summary>
-        /// <returns>A Boolean indicating whether to proceed with extraction.</returns>
-        private void LogDiagnostics()
+        private int LogDiagnostics()
         {
-            foreach (var error in FilteredDiagnostics)
+            var filteredDiagnostics = compilation!
+                .GetDiagnostics()
+                .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
+                .ToList();
+
+            foreach (var error in filteredDiagnostics)
             {
                 Logger.Log(Severity.Error, "  Compilation error: {0}", error);
             }
 
-            if (FilteredDiagnostics.Any())
+            if (filteredDiagnostics.Count != 0)
             {
                 foreach (var reference in compilation.References)
                 {
                     Logger.Log(Severity.Info, "  Resolved reference {0}", reference.Display);
                 }
             }
+
+            return filteredDiagnostics.Count;
         }
 
         private static readonly HashSet<string> errorsToIgnore = new HashSet<string>
@@ -181,39 +166,5 @@ namespace Semmle.Extraction.CSharp
             "CS1589",   // XML referencing not supported
             "CS1569"    // Error writing XML documentation
         };
-
-        private IEnumerable<Diagnostic> FilteredDiagnostics
-        {
-            get
-            {
-                return extractor is null || extractor.Mode.HasFlag(ExtractorMode.Standalone) || compilation is null ? Enumerable.Empty<Diagnostic>() :
-                    compilation.
-                    GetDiagnostics().
-                    Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
-            }
-        }
-
-        private void DoAnalyseCompilation()
-        {
-            try
-            {
-                var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
-                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
-                var assembly = compilation.Assembly;
-                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
-                compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
-
-                compilationEntity = Entities.Compilation.Create(cx);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
-            }
-        }
-
-        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
-
-#nullable restore warnings
     }
 }

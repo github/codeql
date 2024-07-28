@@ -1,0 +1,5 @@
+| test.cpp:162:7:162:11 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:171:7:171:11 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:204:7:204:11 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:436:7:436:11 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |
+| test.cpp:443:11:443:15 | call to scanf | The result of scanf is only checked against 0, but it can also return EOF. |

@@ -16,33 +16,14 @@
  */
 
 import codeql.ruby.DataFlow
-import codeql.ruby.TaintTracking
-import codeql.ruby.dataflow.RemoteFlowSources
-import codeql.ruby.dataflow.BarrierGuards
-import DataFlow::PathGraph
 import codeql.ruby.security.KernelOpenQuery
-
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "KernelOpen" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(AmbiguousPathCall r).getPathArgument()
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier or
-    node instanceof Sanitizer
-  }
-}
+import KernelOpenFlow::PathGraph
 
 from
-  Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  DataFlow::Node sourceNode, DataFlow::CallNode call
+  KernelOpenFlow::PathNode source, KernelOpenFlow::PathNode sink, DataFlow::Node sourceNode,
+  DataFlow::CallNode call
 where
-  config.hasFlowPath(source, sink) and
+  KernelOpenFlow::flowPath(source, sink) and
   sourceNode = source.getNode() and
   call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,

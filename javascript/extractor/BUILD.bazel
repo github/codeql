@@ -1,0 +1,56 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@semmle_code//:common.bzl", "codeql_fat_jar", "codeql_java_project")
+
+java_library(
+    name = "deps",
+    visibility = [":__subpackages__"],
+    exports = [
+        "@semmle_code//extractor:html",
+        "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:commons-compress",
+        "@semmle_code//resources/lib/java:gson",
+        "@semmle_code//resources/lib/java:jericho-html",
+        "@semmle_code//resources/lib/java:slf4j-api",
+        "@semmle_code//resources/lib/java:snakeyaml",
+        "@semmle_code//third_party:jackson",
+        "@semmle_code//third_party:logback",
+        "@semmle_code//util-java7",
+        "@semmle_code//util-java8",
+    ],
+)
+
+codeql_java_project(
+    name = "extractor",
+    deps = [
+        ":deps",
+    ],
+)
+
+codeql_fat_jar(
+    name = "extractor-javascript",
+    srcs = [
+        ":extractor",
+        "@semmle_code//extractor:html",
+        "@semmle_code//extractor:xml-trap-writer",
+        "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:commons-compress",
+        "@semmle_code//resources/lib/java:gson",
+        "@semmle_code//resources/lib/java:jericho-html",
+        "@semmle_code//resources/lib/java:slf4j-api",
+        "@semmle_code//resources/lib/java:snakeyaml",
+        "@semmle_code//third_party:jackson",
+        "@semmle_code//third_party:logback",
+        "@semmle_code//util-java7",
+        "@semmle_code//util-java8",
+    ],
+    main_class = "com.semmle.js.extractor.Main",
+)
+
+pkg_files(
+    name = "tools-extractor",
+    srcs = [
+        ":extractor-javascript",
+    ],
+    prefix = "tools",
+    visibility = ["//visibility:public"],
+)

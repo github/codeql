@@ -1,3 +1,4 @@
+//codeql-extractor-options: -enable-experimental-move-only
 class A {
     var x: Int
     init() {
@@ -13,3 +14,5 @@ func process() async { _ = (await create())}
 Task.init {
     await (process)()
 }
+let x = 42
+let _ = _borrow x

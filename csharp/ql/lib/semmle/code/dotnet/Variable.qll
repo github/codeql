@@ -4,16 +4,16 @@ import Declaration
 import Callable
 
 /** A .Net variable. */
-class Variable extends Declaration, @dotnet_variable {
+deprecated class Variable extends Declaration, @dotnet_variable {
   /** Gets the type of this variable. */
   Type getType() { none() }
 }
 
 /** A .Net field. */
-class Field extends Variable, Member, @dotnet_field { }
+deprecated class Field extends Variable, Member, @dotnet_field { }
 
 /** A parameter to a .Net callable, property or function pointer type. */
-class Parameter extends Variable, @dotnet_parameter {
+deprecated class Parameter extends Variable, @dotnet_parameter {
   /** Gets the raw position of this parameter, including the `this` parameter at index 0. */
   final int getRawPosition() { this = this.getDeclaringElement().getRawParameter(result) }
 

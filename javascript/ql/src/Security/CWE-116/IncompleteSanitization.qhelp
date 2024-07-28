@@ -43,18 +43,6 @@ needed, for instance by using prepared statements for SQL queries.
 Otherwise, make sure to use a regular expression with the <code>g</code> flag to ensure that
 all occurrences are replaced, and remember to escape backslashes if applicable.
 </p>
-<p>
-Note, however, that this is generally <i>not</i> sufficient for replacing multi-character strings:
-the <code>String.prototype.replace</code> method only performs one pass over the input string,
-and will not replace further instances of the string that result from earlier replacements.
-</p>
-<p>
-For example, consider the code snippet <code>s.replace(/\/\.\.\//g, "")</code>, which attempts
-to strip out all occurences of <code>/../</code> from <code>s</code>. This will not work as
-expected: for the string <code>/./.././</code>, for example, it will remove the single
-occurrence of <code>/../</code> in the middle, but the remainder of the string then becomes
-<code>/../</code>, which is another instance of the substring we were trying to remove.
-</p>
 </recommendation>
 
 <example>

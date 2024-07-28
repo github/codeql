@@ -136,7 +136,7 @@ module Stages {
       or
       exists(DataFlow::ssaDefinitionNode(_))
       or
-      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _)
+      exists(any(DataFlow::Node node).getLocation())
       or
       exists(any(DataFlow::Node node).toString())
       or
@@ -145,6 +145,12 @@ module Stages {
       exists(any(DataFlow::PropRef ref).getBase())
       or
       exists(any(DataFlow::ClassNode cls))
+      or
+      exists(any(DataFlow::CallNode node).getArgument(_))
+      or
+      exists(any(DataFlow::CallNode node).getAnArgument())
+      or
+      exists(any(DataFlow::CallNode node).getLastArgument())
     }
   }
 

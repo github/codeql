@@ -9,7 +9,7 @@ private predicate empty_sequence(Expr e) {
   or
   e instanceof Tuple and not exists(e.(Tuple).getAnElt())
   or
-  e.(StrConst).getText().length() = 0
+  e.(StringLiteral).getText().length() = 0
 }
 
 /* This has the potential for refinement, but we err on the side of fewer false positives for now. */

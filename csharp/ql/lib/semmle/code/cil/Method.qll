@@ -12,7 +12,7 @@ private import dotnet
 /**
  * An implementation of a method in an assembly.
  */
-class MethodImplementation extends EntryPoint, @cil_method_implementation {
+deprecated class MethodImplementation extends EntryPoint, @cil_method_implementation {
   /** Gets the method of this implementation. */
   Method getMethod() { cil_method_implementation(this, result, _) }
 
@@ -66,7 +66,7 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
  * A method, which corresponds to any callable in C#, including constructors,
  * destructors, operators, accessors and so on.
  */
-class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowNode,
+deprecated class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowNode,
   CustomModifierReceiver, Parameterizable, @cil_method
 {
   /**
@@ -147,7 +147,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   /** Holds if this method is a destructor/finalizer. */
   predicate isFinalizer() {
-    this.getOverriddenMethod*().hasQualifiedName("System", "Object", "Finalize")
+    this.getOverriddenMethod*().hasFullyQualifiedName("System", "Object", "Finalize")
   }
 
   /** Holds if this method is an operator. */
@@ -191,27 +191,27 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 }
 
 /** A destructor/finalizer. */
-class Destructor extends Method, DotNet::Destructor {
+deprecated class Destructor extends Method, DotNet::Destructor {
   Destructor() { this.isFinalizer() }
 }
 
 /** A constructor. */
-class Constructor extends Method, DotNet::Constructor {
+deprecated class Constructor extends Method, DotNet::Constructor {
   Constructor() { this.isConstructor() }
 }
 
 /** A static/class constructor. */
-class StaticConstructor extends Constructor {
+deprecated class StaticConstructor extends Constructor {
   StaticConstructor() { this.isStaticConstructor() }
 }
 
 /** An instance constructor. */
-class InstanceConstructor extends Constructor {
+deprecated class InstanceConstructor extends Constructor {
   InstanceConstructor() { this.isInstanceConstructor() }
 }
 
 /** A method that always returns the `this` parameter. */
-class ChainingMethod extends Method {
+deprecated class ChainingMethod extends Method {
   ChainingMethod() {
     forex(Return ret | ret = this.getImplementation().getAnInstruction() |
       ret.getExpr() instanceof ThisAccess
@@ -220,13 +220,13 @@ class ChainingMethod extends Method {
 }
 
 /** An accessor. */
-abstract class Accessor extends Method {
+abstract deprecated class Accessor extends Method {
   /** Gets the property declaring this accessor. */
   abstract Property getProperty();
 }
 
 /** A getter. */
-class Getter extends Accessor {
+deprecated class Getter extends Accessor {
   Getter() { cil_getter(_, this) }
 
   override Property getProperty() { cil_getter(result, this) }
@@ -236,7 +236,7 @@ class Getter extends Accessor {
  * A method that does nothing but retrieve a field.
  * Note that this is not necessarily a property getter.
  */
-class TrivialGetter extends Method {
+deprecated class TrivialGetter extends Method {
   TrivialGetter() {
     exists(MethodImplementation impl | impl = this.getAnImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
@@ -252,14 +252,14 @@ class TrivialGetter extends Method {
 }
 
 /** A setter. */
-class Setter extends Accessor {
+deprecated class Setter extends Accessor {
   Setter() { cil_setter(_, this) }
 
   override Property getProperty() { cil_setter(result, this) }
 
   /** Holds if this setter is an `init` accessor. */
   predicate isInitOnly() {
-    exists(Type t | t.hasQualifiedName("System.Runtime.CompilerServices", "IsExternalInit") |
+    exists(Type t | t.hasFullyQualifiedName("System.Runtime.CompilerServices", "IsExternalInit") |
       this.hasRequiredCustomModifier(t)
     )
   }
@@ -269,7 +269,7 @@ class Setter extends Accessor {
  * A method that does nothing but set a field.
  * This is not necessarily a property setter.
  */
-class TrivialSetter extends Method {
+deprecated class TrivialSetter extends Method {
   TrivialSetter() {
     exists(MethodImplementation impl | impl = this.getAnImplementation() |
       impl.getInstruction(0) instanceof ThisAccess and
@@ -285,10 +285,10 @@ class TrivialSetter extends Method {
 }
 
 /** An alias for `Method` for compatibility with the C# data model. */
-class Callable = Method;
+deprecated class Callable = Method;
 
 /** An operator. */
-class Operator extends Method {
+deprecated class Operator extends Method {
   Operator() { this.isOperator() }
 
   /** Gets the name of the implementing method (for compatibility with C# data model). */

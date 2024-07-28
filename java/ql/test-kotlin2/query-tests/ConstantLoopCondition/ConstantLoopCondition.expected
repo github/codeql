@@ -1,0 +1,3 @@
+| A.kt:5:12:5:12 | c | $@ might not terminate, as this loop condition is constant within the loop. | A.kt:5:5:9:5 | while (...) | Loop |
+| A.kt:12:12:12:12 | d | $@ might not terminate, as this loop condition is constant within the loop. | A.kt:12:5:16:5 | while (...) | Loop |
+| A.kt:19:12:19:12 | e | $@ might not terminate, as this loop condition is constant within the loop. | A.kt:19:5:23:5 | while (...) | Loop |

@@ -13,18 +13,18 @@
  *       external/cwe/cwe-400
  */
 
-import DataFlow::PathGraph
-import codeql.ruby.DataFlow
+import codeql.ruby.security.regexp.PolynomialReDoSCustomizations::PolynomialReDoS as PR
 import codeql.ruby.security.regexp.PolynomialReDoSQuery
+import PolynomialReDoSFlow::PathGraph
 
 from
-  PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialReDoS::Sink sinkNode, PolynomialReDoS::PolynomialBackTrackingTerm regexp
+  PolynomialReDoSFlow::PathNode source, PolynomialReDoSFlow::PathNode sink, PR::Sink sinkNode,
+  PR::PolynomialBackTrackingTerm regexp
 where
-  config.hasFlowPath(source, sink) and
+  PolynomialReDoSFlow::flowPath(source, sink) and
   sinkNode = sink.getNode() and
   regexp = sinkNode.getRegExp()
 select sinkNode.getHighlight(), source, sink,
   "This $@ that depends on a $@ may run slow on strings " + regexp.getPrefixMessage() +
     "with many repetitions of '" + regexp.getPumpString() + "'.", regexp, "regular expression",
-  source.getNode(), source.getNode().(PolynomialReDoS::Source).describe()
+  source.getNode(), source.getNode().(PR::Source).describe()

@@ -1,0 +1,5 @@
+| pack | pack |
+| pack.__init__ | pack/__init__.py |
+| pack.inner | pack/inner |
+| pack.inner.__init__ | pack/inner/__init__.py |
+| pack.inner.mod | pack/inner/mod.py |

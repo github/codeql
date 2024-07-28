@@ -12,13 +12,9 @@ definitions.cs:
 #    9|       4: [BlockStmt] {...}
 #   13|   2: [Enum] Enumeration
 #   15|     5: [Field] e1
-#   15|       1: [AssignExpr] ... = ...
-#   15|         0: [MemberConstantAccess] access to constant e1
-#   15|         1: [IntLiteral] 1
+#   15|       1: [IntLiteral] 1
 #   15|     6: [Field] e2
-#   15|       1: [AssignExpr] ... = ...
-#   15|         0: [MemberConstantAccess] access to constant e2
-#   15|         1: [IntLiteral] 2
+#   15|       1: [IntLiteral] 2
 #   15|     7: [Field] e3
 #   18|   3: [Class] C1
 #   20|     4: [InstanceConstructor] C1
@@ -172,7 +168,7 @@ definitions.cs:
 #   72|             -1: [TypeMention] C1
 #   72|             0: [LocalVariableAccess] access to local variable c2
 #   72|             1: [NullLiteral] null
-#   75|     9: [Method] GenericFn<>
+#   75|     10: [Method] GenericFn`1
 #   75|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   75|         0: [TypeParameter] T
@@ -250,18 +246,18 @@ definitions.cs:
 #  108|           0: [DelegateCall] delegate call
 #  108|             -1: [EventAccess,EventCall] access to event Click
 #  112|   6: [Interface] I1
-#  114|     4: [Method] M2<>
+#  114|     4: [Method] M2`1
 #  114|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #  114|         0: [TypeParameter] T
-#  117|   7: [Interface] I2<>
+#  117|   7: [Interface] I2`1
 #-----|     1: (Type parameters)
 #  117|       0: [TypeParameter] T
 #  119|   8: [Interface] I3
 #-----|     3: (Base types)
 #  119|       1: [TypeMention] I2<object>
 #  119|         1: [TypeMention] object
-#  121|   9: [Class] B<>
+#  121|   9: [Class] B`1
 #-----|     1: (Type parameters)
 #  121|       0: [TypeParameter] T
 #-----|     3: (Base types)
@@ -275,13 +271,13 @@ definitions.cs:
 #  125|         0: [ExprStmt] ...;
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
-#  128|     6: [Method] M2<>
+#  128|     6: [Method] M2`1
 #  128|       -1: [TypeMention] Void
 #  128|       -1: [TypeMention] I1
 #-----|       1: (Type parameters)
 #  128|         0: [TypeParameter] T
 #  128|       4: [BlockStmt] {...}
-#  130|     7: [Struct] S<>
+#  130|     7: [Struct] S`1
 #-----|       1: (Type parameters)
 #  130|         0: [TypeParameter] T2
 #-----|       3: (Base types)
@@ -389,7 +385,7 @@ definitions.cs:
 #  156|                 0: [TypeMention] S1
 #  156|               1: [ObjectCreation] object creation of type S1
 #  156|                 0: [TypeMention] S1
-#  158|     9: [Class] Nested<>
+#  158|     10: [Class] Nested`1
 #-----|       1: (Type parameters)
 #  158|         0: [TypeParameter] T
 #  160|       5: [Method] Create
@@ -397,7 +393,7 @@ definitions.cs:
 #  160|           1: [TypeMention] T
 #  160|         4: [BlockStmt] {...}
 #  160|           0: [ReturnStmt] return ...;
-#  160|             0: [ObjectCreation] object creation of type Nested<>
+#  160|             0: [ObjectCreation] object creation of type Nested`1
 #  160|               0: [TypeMention] Nested<T>
 #  160|                 1: [TypeMention] T
 #  164|   13: [Class] C5
@@ -405,14 +401,12 @@ definitions.cs:
 #  166|       -1: [TypeMention] Nested<I4>
 #  166|         1: [TypeMention] C4
 #  166|         2: [TypeMention] I4
-#  166|       1: [AssignExpr] ... = ...
-#  166|         0: [FieldAccess] access to field f
-#  166|         1: [MethodCall] call to method Create
-#  166|           -1: [TypeAccess] access to type Nested<I4>
-#  166|             -2: [TypeMention] Nested<I4>
-#  166|               1: [TypeMention] I4
-#  166|             -1: [TypeAccess] access to type C4
-#  166|               0: [TypeMention] C4
+#  166|       1: [MethodCall] call to method Create
+#  166|         -1: [TypeAccess] access to type Nested<I4>
+#  166|           -2: [TypeMention] Nested<I4>
+#  166|             1: [TypeMention] I4
+#  166|           -1: [TypeAccess] access to type C4
+#  166|             0: [TypeMention] C4
 #  167|     6: [Field] c1
 #  167|       -1: [TypeMention] C1
 #  169|     7: [Method] M

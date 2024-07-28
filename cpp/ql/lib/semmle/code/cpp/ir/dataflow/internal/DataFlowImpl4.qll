@@ -10,10 +10,12 @@ private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
 private import DataFlowImpl
 import DataFlowImplCommonPublic
-import FlowStateString
+deprecated import FlowStateString
 private import codeql.util.Unit
 
 /**
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
+ *
  * A configuration of interprocedural data flow analysis. This defines
  * sources, sinks, and any other configurable aspect of the analysis. Each
  * use of the global data flow library must define its own unique extension
@@ -48,7 +50,7 @@ private import codeql.util.Unit
  * should instead depend on a `DataFlow2::Configuration`, a
  * `DataFlow3::Configuration`, or a `DataFlow4::Configuration`.
  */
-abstract class Configuration extends string {
+abstract deprecated class Configuration extends string {
   bindingset[this]
   Configuration() { any() }
 
@@ -90,21 +92,6 @@ abstract class Configuration extends string {
 
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
-   *
-   * Holds if data flow through nodes guarded by `guard` is prohibited.
-   */
-  deprecated predicate isBarrierGuard(BarrierGuard guard) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
-   *
-   * Holds if data flow through nodes guarded by `guard` is prohibited when
-   * the flow state is `state`
-   */
-  deprecated predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
 
   /**
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
@@ -204,7 +191,7 @@ abstract class Configuration extends string {
  * Good performance cannot be guaranteed in the presence of such recursion, so
  * it should be replaced by using more than one copy of the data flow library.
  */
-abstract private class ConfigurationRecursionPrevention extends Configuration {
+abstract deprecated private class ConfigurationRecursionPrevention extends Configuration {
   bindingset[this]
   ConfigurationRecursionPrevention() { any() }
 
@@ -225,30 +212,7 @@ abstract private class ConfigurationRecursionPrevention extends Configuration {
   }
 }
 
-/** A bridge class to access the deprecated `isBarrierGuard`. */
-private class BarrierGuardGuardedNodeBridge extends Unit {
-  abstract predicate guardedNode(Node n, Configuration config);
-
-  abstract predicate guardedNode(Node n, FlowState state, Configuration config);
-}
-
-private class BarrierGuardGuardedNode extends BarrierGuardGuardedNodeBridge {
-  deprecated override predicate guardedNode(Node n, Configuration config) {
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g) and
-      n = g.getAGuardedNode()
-    )
-  }
-
-  deprecated override predicate guardedNode(Node n, FlowState state, Configuration config) {
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g, state) and
-      n = g.getAGuardedNode()
-    )
-  }
-}
-
-private FlowState relevantState(Configuration config) {
+deprecated private FlowState relevantState(Configuration config) {
   config.isSource(_, result) or
   config.isSink(_, result) or
   config.isBarrier(_, result) or
@@ -257,17 +221,17 @@ private FlowState relevantState(Configuration config) {
 }
 
 private newtype TConfigState =
-  TMkConfigState(Configuration config, FlowState state) {
+  deprecated TMkConfigState(Configuration config, FlowState state) {
     state = relevantState(config) or state instanceof FlowStateEmpty
   }
 
-private Configuration getConfig(TConfigState state) { state = TMkConfigState(result, _) }
+deprecated private Configuration getConfig(TConfigState state) { state = TMkConfigState(result, _) }
 
-private FlowState getState(TConfigState state) { state = TMkConfigState(_, result) }
+deprecated private FlowState getState(TConfigState state) { state = TMkConfigState(_, result) }
 
-private predicate singleConfiguration() { 1 = strictcount(Configuration c) }
+deprecated private predicate singleConfiguration() { 1 = strictcount(Configuration c) }
 
-private module Config implements FullStateConfigSig {
+deprecated private module Config implements FullStateConfigSig {
   class FlowState = TConfigState;
 
   predicate isSource(Node source, FlowState state) {
@@ -288,18 +252,21 @@ private module Config implements FullStateConfigSig {
 
   predicate isBarrier(Node node, FlowState state) {
     getConfig(state).isBarrier(node, getState(state)) or
-    getConfig(state).isBarrier(node) or
-    any(BarrierGuardGuardedNodeBridge b).guardedNode(node, getState(state), getConfig(state)) or
-    any(BarrierGuardGuardedNodeBridge b).guardedNode(node, getConfig(state))
+    getConfig(state).isBarrier(node)
   }
 
   predicate isBarrierIn(Node node) { any(Configuration config).isBarrierIn(node) }
 
   predicate isBarrierOut(Node node) { any(Configuration config).isBarrierOut(node) }
 
-  predicate isAdditionalFlowStep(Node node1, Node node2) {
+  predicate isBarrierIn(Node node, FlowState state) { none() }
+
+  predicate isBarrierOut(Node node, FlowState state) { none() }
+
+  predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
     singleConfiguration() and
-    any(Configuration config).isAdditionalFlowStep(node1, node2)
+    any(Configuration config).isAdditionalFlowStep(node1, node2) and
+    model = ""
   }
 
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
@@ -319,6 +286,8 @@ private module Config implements FullStateConfigSig {
 
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 
+  int accessPathLimit() { result = 5 }
+
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
 
   predicate sourceGrouping(Node source, string sourceGroup) {
@@ -332,13 +301,13 @@ private module Config implements FullStateConfigSig {
   predicate includeHiddenNodes() { any(Configuration config).includeHiddenNodes() }
 }
 
-private import Impl<Config> as I
+deprecated private import Impl<Config> as I
 
 /**
  * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
  * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
  */
-class PathNode instanceof I::PathNode {
+deprecated class PathNode instanceof I::PathNode {
   /** Gets a textual representation of this element. */
   final string toString() { result = super.toString() }
 
@@ -365,10 +334,10 @@ class PathNode instanceof I::PathNode {
   final Node getNode() { result = super.getNode() }
 
   /** Gets the `FlowState` of this node. */
-  final FlowState getState() { result = getState(super.getState()) }
+  deprecated final FlowState getState() { result = getState(super.getState()) }
 
   /** Gets the associated configuration. */
-  final Configuration getConfiguration() { result = getConfig(super.getState()) }
+  deprecated final Configuration getConfiguration() { result = getConfig(super.getState()) }
 
   /** Gets a successor of this node, if any. */
   final PathNode getASuccessor() { result = super.getASuccessor() }
@@ -383,9 +352,9 @@ class PathNode instanceof I::PathNode {
   final predicate isSinkGroup(string group) { super.isSinkGroup(group) }
 }
 
-module PathGraph = I::PathGraph;
+deprecated module PathGraph = I::PathGraph;
 
-private predicate hasFlow(Node source, Node sink, Configuration config) {
+deprecated private predicate hasFlow(Node source, Node sink, Configuration config) {
   exists(PathNode source0, PathNode sink0 |
     hasFlowPath(source0, sink0, config) and
     source0.getNode() = source and
@@ -393,10 +362,10 @@ private predicate hasFlow(Node source, Node sink, Configuration config) {
   )
 }
 
-private predicate hasFlowPath(PathNode source, PathNode sink, Configuration config) {
+deprecated private predicate hasFlowPath(PathNode source, PathNode sink, Configuration config) {
   I::flowPath(source, sink) and source.getConfiguration() = config
 }
 
-private predicate hasFlowTo(Node sink, Configuration config) { hasFlow(_, sink, config) }
+deprecated private predicate hasFlowTo(Node sink, Configuration config) { hasFlow(_, sink, config) }
 
-predicate flowsTo = hasFlow/3;
+deprecated predicate flowsTo = hasFlow/3;

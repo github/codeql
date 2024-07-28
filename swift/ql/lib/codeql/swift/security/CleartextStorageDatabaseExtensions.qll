@@ -49,12 +49,32 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // with `coreDataObj.data` is a sink.
     // (ideally this would be only members with the `@NSManaged` attribute)
     exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "NSManagedObject" and
+      t.getUnderlyingType().getABaseType*().getName() = "NSManagedObject" and
       this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
+}
+
+/**
+ * The Realm database `RealmSwiftObject` type. Also matches the Realm `Object`
+ * type, which may or may not be a type alias for `RealmSwiftObject`.
+ */
+class RealmSwiftObject extends Type {
+  RealmSwiftObject() {
+    this.getName() = "RealmSwiftObject"
+    or
+    this.getName() = "Object" and
+    this.(NominalType).getDeclaration().getModule().getName() = "RealmSwift"
+  }
+}
+
+/**
+ * A class that inherits from `RealmSwiftObject`.
+ */
+class RealmSwiftObjectType extends Type {
+  RealmSwiftObjectType() { this.getUnderlyingType().getABaseType*() instanceof RealmSwiftObject }
 }
 
 /**
@@ -66,10 +86,9 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "RealmSwiftObject" and
+    exists(Expr e |
       this.getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = t and
+      e.getFullyConverted().getType() instanceof RealmSwiftObjectType and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
@@ -108,13 +127,54 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
         ";FetchableRecord;true;fetchOne(_:arguments:adapter:);;;Argument[1];database-store",
         ";Statement;true;execute(arguments:);;;Argument[0];database-store",
         ";CommonTableExpression;true;init(recursive:named:columns:sql:arguments:);;;Argument[4];database-store",
-        ";Statement;true;setArguments(_:);;;Argument[0];database-store"
+        ";Statement;true;setArguments(_:);;;Argument[0];database-store",
+        // sqlite3 sinks
+        ";;false;sqlite3_exec(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare_v2(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare_v3(_:_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16_v2(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16_v3(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_bind_blob(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_blob64(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_double(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_int(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_int64(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text16(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text64(_:_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_value(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_pointer(_:_:_:_:);;;Argument[2];database-store",
+        // SQLite.swift
+        ";Connection;true;execute(_:);;;Argument[0];database-store",
+        ";Connection;true;prepare(_:_:);;;Argument[0];database-store",
+        ";Connection;true;prepare(_:_:);;;Argument[1];database-store",
+        ";Connection;true;run(_:_:);;;Argument[0];database-store",
+        ";Connection;true;run(_:_:);;;Argument[1];database-store",
+        ";Connection;true;scalar(_:_:);;;Argument[0];database-store",
+        ";Connection;true;scalar(_:_:);;;Argument[1];database-store",
+        ";Statement;true;init(_:_:);;;Argument[1];database-store",
+        ";Statement;true;bind(_:);;;Argument[0];database-store",
+        ";Statement;true;run(_:);;;Argument[0];database-store",
+        ";Statement;true;scalar(_:);;;Argument[0];database-store",
+        ";QueryType;true;insert(_:);;;Argument[0];database-store",
+        ";QueryType;true;insert(_:_:);;;Argument[0..1];database-store",
+        ";QueryType;true;insert(or:_:);;;Argument[1];database-store",
+        ";QueryType;true;insertMany(_:);;;Argument[0];database-store",
+        ";QueryType;true;insertMany(or:_:);;;Argument[1];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:);;;Argument[0];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:setValues:);;;Argument[0];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:setValues:);;;Argument[2];database-store",
+        ";QueryType;true;update(_:);;;Argument[0];database-store",
+        ";QueryType;true;update(_:_:);;;Argument[0..1];database-store",
+        ";QueryType;true;update(or:_:);;;Argument[1];database-store",
       ]
   }
 }
 
 /**
- * An barrier for cleartext database storage vulnerabilities.
+ * A barrier for cleartext database storage vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
@@ -128,15 +188,9 @@ private class CleartextStorageDatabaseDefaultBarrier extends CleartextStorageDat
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseArrayAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
+private class CleartextStorageDatabaseFieldsAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // needed until we have proper content flow through arrays.
-    exists(ArrayExpr arr |
-      nodeFrom.asExpr() = arr.getAnElement() and
-      nodeTo.asExpr() = arr
-    )
-    or
     // if an object is sensitive, its fields are always sensitive
     // (this is needed because the sensitive data sources are in a sense
     //  approximate; for example we might identify `passwordBox` as a source,

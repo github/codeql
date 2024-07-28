@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.CSharp, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `Microsoft.CSharp, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace CSharp
@@ -21,39 +20,35 @@ namespace Microsoft
                 public static System.Runtime.CompilerServices.CallSiteBinder SetMember(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags flags, string name, System.Type context, System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo> argumentInfo) => throw null;
                 public static System.Runtime.CompilerServices.CallSiteBinder UnaryOperation(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags flags, System.Linq.Expressions.ExpressionType operation, System.Type context, System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo> argumentInfo) => throw null;
             }
-
-            public class CSharpArgumentInfo
+            public sealed class CSharpArgumentInfo
             {
                 public static Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo Create(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags flags, string name) => throw null;
             }
-
             [System.Flags]
-            public enum CSharpArgumentInfoFlags : int
+            public enum CSharpArgumentInfoFlags
             {
-                Constant = 2,
-                IsOut = 16,
-                IsRef = 8,
-                IsStaticType = 32,
-                NamedArgument = 4,
                 None = 0,
                 UseCompileTimeType = 1,
+                Constant = 2,
+                NamedArgument = 4,
+                IsRef = 8,
+                IsOut = 16,
+                IsStaticType = 32,
             }
-
             [System.Flags]
-            public enum CSharpBinderFlags : int
+            public enum CSharpBinderFlags
             {
-                BinaryOperationLogical = 8,
+                None = 0,
                 CheckedContext = 1,
-                ConvertArrayIndex = 32,
-                ConvertExplicit = 16,
                 InvokeSimpleName = 2,
                 InvokeSpecialName = 4,
-                None = 0,
-                ResultDiscarded = 256,
+                BinaryOperationLogical = 8,
+                ConvertExplicit = 16,
+                ConvertArrayIndex = 32,
                 ResultIndexed = 64,
                 ValueFromCompoundAssignment = 128,
+                ResultDiscarded = 256,
             }
-
             public class RuntimeBinderException : System.Exception
             {
                 public RuntimeBinderException() => throw null;
@@ -61,7 +56,6 @@ namespace Microsoft
                 public RuntimeBinderException(string message) => throw null;
                 public RuntimeBinderException(string message, System.Exception innerException) => throw null;
             }
-
             public class RuntimeBinderInternalCompilerException : System.Exception
             {
                 public RuntimeBinderInternalCompilerException() => throw null;
@@ -69,7 +63,6 @@ namespace Microsoft
                 public RuntimeBinderInternalCompilerException(string message) => throw null;
                 public RuntimeBinderInternalCompilerException(string message, System.Exception innerException) => throw null;
             }
-
         }
     }
 }

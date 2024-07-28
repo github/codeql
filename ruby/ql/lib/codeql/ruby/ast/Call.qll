@@ -58,7 +58,7 @@ class Call extends Expr instanceof CallImpl {
       TCfgScope(result) = viableCallableLambda(c, _)
     )
     or
-    result = getTarget(this.getAControlFlowNode())
+    result = getTarget(TNormalCall(this.getAControlFlowNode()))
   }
 
   override AstNode getAChild(string pred) {
@@ -116,6 +116,17 @@ class MethodCall extends Call instanceof MethodCallImpl {
    * ```
    */
   final Block getBlock() { result = super.getBlockImpl() }
+
+  /**
+   * Gets the block argument of this method call, if any.
+   * ```rb
+   * foo(&block)
+   * ```
+   */
+  final BlockArgument getBlockArgument() { result = this.getAnArgument() }
+
+  /** Holds if this method call has a block or block argument. */
+  final predicate hasBlock() { exists(this.getBlock()) or exists(this.getBlockArgument()) }
 
   /**
    * Holds if the safe navigation operator (`&.`) is used in this call.

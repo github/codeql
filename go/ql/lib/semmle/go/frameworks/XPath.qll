@@ -144,6 +144,19 @@ module XPath {
 
     /**
      * An XPath expression string used in an API function of the
+     * [lestrrat-go/libxml2](https://github.com/lestrrat-go/libxml2) package.
+     */
+    private class LestratGoLibxml2XPathExpressionString extends Range {
+      LestratGoLibxml2XPathExpressionString() {
+        exists(Method m, string name | name.matches("Parse%") |
+          m.hasQualifiedName(package("github.com/lestrrat-go/libxml2", "parser"), "Parser", name) and
+          this = m.getACall().getArgument(0)
+        )
+      }
+    }
+
+    /**
+     * An XPath expression string used in an API function of the
      * [xpathparser](https://github.com/santhosh-tekuri/xpathparser) package.
      */
     private class SanthoshTekuriXpathparserXPathExpressionString extends Range {

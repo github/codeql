@@ -192,9 +192,6 @@ class AssignLeftShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
   override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for AssignLeftShipExpr. */
-deprecated class AssignLShiftExpr = AssignLeftShiftExpr;
-
 /**
  * A right-shift assignment operation, for example `x >>= y`.
  */
@@ -203,9 +200,6 @@ class AssignRightShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
 
   override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for AssignRightShiftExpr. */
-deprecated class AssignRShiftExpr = AssignRightShiftExpr;
 
 /**
  * An unsigned right-shift assignment operation, for example `x >>>= y`.

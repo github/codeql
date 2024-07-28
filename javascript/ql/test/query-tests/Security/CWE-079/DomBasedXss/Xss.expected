@@ -706,6 +706,18 @@ nodes
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:23:38:23:43 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -1882,6 +1894,20 @@ edges
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
@@ -2486,6 +2512,7 @@ edges
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:44 | documen ... on.href | user-provided value |
 | tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
+| tooltip.jsx:18:51:18:59 | provide() | tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:18:51:18:59 | provide() | Cross-site scripting vulnerability due to $@. | tooltip.jsx:22:20:22:30 | window.name | user-provided value |
 | translate.js:9:27:9:50 | searchP ... 'term') | translate.js:6:16:6:39 | documen ... .search | translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:39 | documen ... .search | user-provided value |
 | trusted-types-lib.js:2:12:2:12 | x | trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:2:12:2:12 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:13:20:13:30 | window.name | user-provided value |
 | trusted-types.js:3:67:3:67 | x | trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:67:3:67 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:4:20:4:30 | window.name | user-provided value |

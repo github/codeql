@@ -29,10 +29,6 @@ module UnsafeUnzipSymlink {
       super.isSanitizer(node) or
       node instanceof EvalSymlinksInvalidator
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof EvalSymlinksInvalidatorGuard
-    }
   }
 
   // Archive header field symlinks resolved
@@ -76,10 +72,6 @@ module UnsafeUnzipSymlink {
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof SymlinkSanitizer
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SymlinkSanitizerGuard
     }
   }
 

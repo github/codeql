@@ -124,9 +124,6 @@ private module Ldap {
           )
         )
       }
-
-      /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**
@@ -219,9 +216,6 @@ private module Ldap {
           startTls.getObject().getALocalSource() = this
         )
       }
-
-      /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**

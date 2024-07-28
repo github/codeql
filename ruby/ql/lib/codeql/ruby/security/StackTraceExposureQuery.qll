@@ -13,8 +13,9 @@ private import StackTraceExposureCustomizations::StackTraceExposure
 
 /**
  * A taint-tracking configuration for detecting "stack trace exposure" vulnerabilities.
+ * DEPRECATED: Use `StackTraceExposureFlow`
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "StackTraceExposure" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -23,3 +24,16 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+private module StackTraceExposureConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * Taint-tracking for detecting "stack trace exposure" vulnerabilities.
+ */
+module StackTraceExposureFlow = TaintTracking::Global<StackTraceExposureConfig>;

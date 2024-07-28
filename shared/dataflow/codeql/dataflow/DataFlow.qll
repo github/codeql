@@ -4,22 +4,19 @@
  * modules.
  */
 
+private import codeql.util.Location
+
 /** Provides language-specific data flow parameters. */
-signature module InputSig {
+signature module InputSig<LocationSig Location> {
+  /**
+   * A node in the data flow graph.
+   */
   class Node {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   class ParameterNode extends Node;
@@ -30,9 +27,27 @@ signature module InputSig {
     ReturnKind getKind();
   }
 
+  /**
+   * A node in the data flow graph that represents an output of a call.
+   */
   class OutNode extends Node;
 
+  /**
+   * A node in the data flow graph representing the value of some other node
+   * after an operation that might have changed its state. A typical example is
+   * an argument, which may have been modified by the callee. For example,
+   * consider the following code calling a setter method:
+   * ```
+   * x.setFoo(y);
+   * ```
+   * The post-update node for the argument node `x` is the node representing the
+   * value of `x` after the field `foo` has been updated.
+   */
   class PostUpdateNode extends Node {
+    /**
+     * Gets the pre-update node, that is, the node that represents the same
+     * value prior to the operation.
+     */
     Node getPreUpdateNode();
   }
 
@@ -57,12 +72,24 @@ signature module InputSig {
     /** Gets a textual representation of this element. */
     string toString();
 
+    /** Gets the location of this call. */
+    Location getLocation();
+
     DataFlowCallable getEnclosingCallable();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class DataFlowCallable {
     /** Gets a textual representation of this element. */
     string toString();
+
+    /** Gets the location of this callable. */
+    Location getLocation();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class ReturnKind {
@@ -77,13 +104,13 @@ signature module InputSig {
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c);
+  default predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx);
+  default DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
   /**
    * Gets a node that can read the value returned from `call` with return kind
@@ -91,6 +118,13 @@ signature module InputSig {
    */
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind);
 
+  /**
+   * A type for a data flow node.
+   *
+   * This may or may not coincide with any type system existing for the source
+   * language, but should minimally include unique types for individual closure
+   * expressions (typically lambdas).
+   */
   class DataFlowType {
     /** Gets a textual representation of this element. */
     string toString();
@@ -98,9 +132,25 @@ signature module InputSig {
 
   string ppReprType(DataFlowType t);
 
+  /**
+   * Holds if `t1` and `t2` are compatible types.
+   *
+   * This predicate must be symmetric and reflexive.
+   *
+   * This predicate is used in the following way: If the data flow library
+   * tracks an object from node `n1` to `n2` using solely value-preserving
+   * steps, then it will check that the types of `n1` and `n2` are compatible.
+   * If they are not, then flow will be blocked.
+   */
   bindingset[t1, t2]
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2);
 
+  /**
+   * Holds if `t1` is strictly stronger than `t2`. That is, `t1` is a strict
+   * subtype of `t2`.
+   *
+   * This predicate must be transitive and imply `compatibleTypes(t1, t2)`.
+   */
   predicate typeStrongerThan(DataFlowType t1, DataFlowType t2);
 
   class Content {
@@ -108,6 +158,12 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if access paths with `c` at their head always should be tracked at
+   * high precision. This disables adaptive access path precision for such
+   * access paths. This may be beneficial for content that indicates an
+   * element of an array or container.
+   */
   predicate forceHighPrecision(Content c);
 
   /**
@@ -117,6 +173,9 @@ signature module InputSig {
    * stored into (`getAStoreContent`) or read from (`getAReadContent`).
    */
   class ContentSet {
+    /** Gets a textual representation of this element. */
+    string toString();
+
     /** Gets a content that may be stored into when storing into this set. */
     Content getAStoreContent();
 
@@ -124,11 +183,19 @@ signature module InputSig {
     Content getAReadContent();
   }
 
+  /**
+   * A content approximation. A content approximation corresponds to one or
+   * more `Content`s, and is used to provide an in-between level of precision
+   * for pruning.
+   */
   class ContentApprox {
     /** Gets a textual representation of this element. */
     string toString();
   }
 
+  /**
+   * Gets the content approximation for content `c`.
+   */
   ContentApprox getContentApprox(Content c);
 
   class ParameterPosition {
@@ -143,9 +210,24 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if the parameter position `ppos` matches the argument position
+   * `apos`.
+   */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
-  predicate simpleLocalFlowStep(Node node1, Node node2);
+  /**
+   * Holds if there is a simple local flow step from `node1` to `node2`. These
+   * are the value-preserving intra-callable flow steps.
+   */
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model);
+
+  /**
+   * Holds if the data-flow step from `node1` to `node2` can be used to
+   * determine where side-effects may return from a callable.
+   */
+  bindingset[node1, node2]
+  default predicate validParameterAliasStep(Node node1, Node node2) { any() }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -181,10 +263,18 @@ signature module InputSig {
    */
   predicate expectsContent(Node n, ContentSet c);
 
+  /** A set of `Node`s in a `DataFlowCallable`. */
+  class NodeRegion {
+    /** Holds if this region contains `n`. */
+    predicate contains(Node n);
+
+    int totalOrder();
+  }
+
   /**
-   * Holds if the node `n` is unreachable when the call context is `call`.
+   * Holds if the nodes in `nr` are unreachable when the call context is `call`.
    */
-  predicate isUnreachableInCall(Node n, DataFlowCall call);
+  predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call);
 
   default int accessPathLimit() { result = 5 }
 
@@ -197,6 +287,17 @@ signature module InputSig {
    */
   predicate allowParameterReturnInSelf(ParameterNode p);
 
+  /**
+   * Holds if the value of `node2` is given by `node1`.
+   *
+   * This predicate is combined with type information in the following way: If
+   * the data flow library is able to compute an improved type for `node1` then
+   * it will also conclude that this type applies to `node2`. Vice versa, if
+   * `node2` must be visited along a flow path, then any type known for `node2`
+   * must also apply to `node1`.
+   */
+  predicate localMustFlowStep(Node node1, Node node2);
+
   class LambdaCallKind;
 
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
@@ -207,6 +308,10 @@ signature module InputSig {
 
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
+
+  predicate knownSourceModel(Node sink, string model);
+
+  predicate knownSinkModel(Node sink, string model);
 
   /**
    * Holds if `n` should never be skipped over in the `PathGraph` and in path
@@ -221,14 +326,40 @@ signature module InputSig {
    *
    * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
    */
-  int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p);
+  default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
-  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg);
+  /**
+   * A second-level control-flow scope in a callable.
+   *
+   * This is used to provide a more fine-grained separation of a callable
+   * context for the purpose of identifying uncertain control flow. For most
+   * languages, this is not needed, as this separation is handled through
+   * virtual dispatch, but for some cases (for example, C++) this can be used to
+   * identify, for example, large top-level switch statements acting like
+   * virtual dispatch.
+   */
+  class DataFlowSecondLevelScope {
+    /** Gets a textual representation of this element. */
+    string toString();
+  }
+
+  /** Gets the second-level scope containing the node `n`, if any. */
+  default DataFlowSecondLevelScope getSecondLevelScope(Node n) { none() }
+
+  bindingset[call, p, arg]
+  default predicate golangSpecificParamArgFilter(
+    DataFlowCall call, ParameterNode p, ArgumentNode arg
+  ) {
+    any()
+  }
+
+  /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
+  default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
 
-module Configs<InputSig Lang> {
+module Configs<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImplCommon::MakeImplCommon<Lang>
+  private import internal.DataFlowImplCommon::MakeImplCommon<Location, Lang>
   import DataFlowImplCommonPublic
 
   /** An input configuration for data flow. */
@@ -280,6 +411,9 @@ module Configs<InputSig Lang> {
      * value of 0 disables field flow), or a larger value to get more results.
      */
     default int fieldFlowBranchLimit() { result = 2 }
+
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
 
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
@@ -352,8 +486,14 @@ module Configs<InputSig Lang> {
     /** Holds if data flow into `node` is prohibited. */
     default predicate isBarrierIn(Node node) { none() }
 
+    /** Holds if data flow into `node` is prohibited when the target flow state is `state`. */
+    default predicate isBarrierIn(Node node, FlowState state) { none() }
+
     /** Holds if data flow out of `node` is prohibited. */
     default predicate isBarrierOut(Node node) { none() }
+
+    /** Holds if data flow out of `node` is prohibited when the originating flow state is `state`. */
+    default predicate isBarrierOut(Node node, FlowState state) { none() }
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
@@ -394,6 +534,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -430,10 +573,10 @@ module Configs<InputSig Lang> {
   }
 }
 
-module DataFlowMake<InputSig Lang> {
+module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Lang>
-  import Configs<Lang>
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  import Configs<Location, Lang>
 
   /**
    * Gets the exploration limit for `partialFlow` and `partialFlowRev`
@@ -482,6 +625,12 @@ module DataFlowMake<InputSig Lang> {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
     }
 
     import Impl<C>
@@ -498,6 +647,12 @@ module DataFlowMake<InputSig Lang> {
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
     }
 
     import Impl<C>
@@ -512,24 +667,16 @@ module DataFlowMake<InputSig Lang> {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
-
     /** Gets the underlying `Node`. */
     Node getNode();
+
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   signature module PathGraphSig<PathNodeSig PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-    predicate edges(PathNode a, PathNode b);
+    predicate edges(PathNode a, PathNode b, string key, string val);
 
     /** Holds if `n` is a node in the graph of data flow path explanations. */
     predicate nodes(PathNode n, string key, string val);
@@ -567,6 +714,15 @@ module DataFlowMake<InputSig Lang> {
         result = this.asPathNode2().toString()
       }
 
+      /** Gets the underlying `Node`. */
+      Node getNode() {
+        result = this.asPathNode1().getNode() or
+        result = this.asPathNode2().getNode()
+      }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getNode().getLocation() }
+
       /**
        * Holds if this element is at the specified location.
        * The location spans column `startcolumn` of line `startline` to
@@ -574,17 +730,10 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
-        this.asPathNode1().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-        this.asPathNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
-
-      /** Gets the underlying `Node`. */
-      Node getNode() {
-        result = this.asPathNode1().getNode() or
-        result = this.asPathNode2().getNode()
+        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       }
     }
 
@@ -593,9 +742,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) {
-        Graph1::edges(a.asPathNode1(), b.asPathNode1()) or
-        Graph2::edges(a.asPathNode2(), b.asPathNode2())
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Graph1::edges(a.asPathNode1(), b.asPathNode1(), key, val) or
+        Graph2::edges(a.asPathNode2(), b.asPathNode2(), key, val)
       }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -649,7 +798,7 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
         super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -657,6 +806,9 @@ module DataFlowMake<InputSig Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = super.getLocation() }
     }
 
     /**
@@ -664,7 +816,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) { Merged::PathGraph::edges(a, b) }
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Merged::PathGraph::edges(a, b, key, val)
+      }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
       query predicate nodes(PathNode n, string key, string val) {

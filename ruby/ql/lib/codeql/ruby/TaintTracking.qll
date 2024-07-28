@@ -7,6 +7,7 @@ module TaintTracking {
   private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
   private import codeql.ruby.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<RubyDataFlow, RubyTaintTracking>
+  private import codeql.Locations
+  import TaintFlowMake<Location, RubyDataFlow, RubyTaintTracking>
   import codeql.ruby.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

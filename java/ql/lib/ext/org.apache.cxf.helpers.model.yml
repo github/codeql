@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.helpers", "FileUtils", True, "delete", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.helpers", "FileUtils", True, "delete", "(File,boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.helpers", "FileUtils", True, "mkdir", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.helpers", "FileUtils", True, "readLines", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.helpers", "FileUtils", True, "removeDir", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.helpers", "XPathUtils", True, "getValue", "(String,Node,QName)", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.apache.cxf.helpers", "XPathUtils", True, "getValueList", "(String,Node)", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.apache.cxf.helpers", "XPathUtils", True, "getValueNode", "(String,Node)", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.apache.cxf.helpers", "XPathUtils", True, "getValueString", "(String,Node)", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.apache.cxf.helpers", "XPathUtils", True, "isExist", "(String,Node,QName)", "", "Argument[0]", "xpath-injection", "manual"]

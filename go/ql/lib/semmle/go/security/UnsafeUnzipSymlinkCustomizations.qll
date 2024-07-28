@@ -37,16 +37,6 @@ module UnsafeUnzipSymlink {
   abstract class EvalSymlinksInvalidator extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `EvalSymlinksInvalidator` instead.
-   *
-   * A sanitizer guard that prevents reaching an `EvalSymlinksSink`.
-   *
-   * This is called an invalidator instead of a sanitizer because reaching a EvalSymlinksSink
-   * is a good thing from a security perspective.
-   */
-  abstract deprecated class EvalSymlinksInvalidatorGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A sanitizer for an unsafe symbolic-link unzip vulnerability.
    *
    * Extend this to mark a particular path as safe for use in an `os.Symlink` or similar call.
@@ -54,17 +44,6 @@ module UnsafeUnzipSymlink {
    * `EvalSymlinksSink` instead.
    */
   abstract class SymlinkSanitizer extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `SymlinkSanitizer` instead.
-   *
-   * A sanitizer guard for an unsafe symbolic-link unzip vulnerability.
-   *
-   * Extend this to mark a particular path as safe for use in an `os.Symlink` or similar call.
-   * To exclude a source from the query entirely if it reaches a particular node, extend
-   * `EvalSymlinksSink` instead.
-   */
-  abstract deprecated class SymlinkSanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A file name from a zip or tar entry, as a source for unsafe unzipping of symlinks. */
   class FileNameSource extends FilenameWithSymlinks, DataFlow::FieldReadNode {

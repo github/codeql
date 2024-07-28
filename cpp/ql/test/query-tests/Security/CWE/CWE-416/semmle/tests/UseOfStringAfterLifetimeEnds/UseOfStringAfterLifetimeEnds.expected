@@ -1,0 +1,13 @@
+| test.cpp:165:34:165:38 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:166:39:166:43 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:167:44:167:48 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:169:29:169:33 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:178:37:178:41 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:181:39:181:43 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:183:37:183:41 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:187:34:187:37 | call to data | The underlying temporary string object is destroyed after the call to 'data' returns. |
+| test.cpp:188:39:188:42 | call to data | The underlying temporary string object is destroyed after the call to 'data' returns. |
+| test.cpp:189:44:189:47 | call to data | The underlying temporary string object is destroyed after the call to 'data' returns. |
+| test.cpp:191:29:191:32 | call to data | The underlying temporary string object is destroyed after the call to 'data' returns. |
+| test.cpp:193:47:193:51 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:195:31:195:35 | call to c_str | The underlying temporary string object is destroyed after the call to 'c_str' returns. |

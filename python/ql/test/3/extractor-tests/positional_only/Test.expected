@@ -1,0 +1,9 @@
+| test.py:5:1:5:30 | Function positional_only_arg |
+| test.py:9:1:9:40 | Function all_markers |
+| test.py:13:1:23:2 | Function all_markers_with_args_and_kwargs |
+| test.py:27:1:27:64 | Function all_markers_with_defaults |
+| test.py:31:1:38:2 | Function long_one_with_long_parameter_names |
+| test.py:42:1:42:14 | Function lambda |
+| test.py:44:1:44:32 | Function lambda |
+| test.py:46:1:46:49 | Function lambda |
+| test.py:48:1:48:42 | Function lambda |

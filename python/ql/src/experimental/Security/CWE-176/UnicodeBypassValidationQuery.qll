@@ -3,6 +3,7 @@
  */
 
 private import python
+import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import semmle.python.Concepts
 import semmle.python.dataflow.new.internal.DataFlowPublic
@@ -11,13 +12,18 @@ import semmle.python.dataflow.new.internal.TaintTrackingPrivate
 import semmle.python.dataflow.new.RemoteFlowSources
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
+abstract private class ValidationState extends string {
+  bindingset[this]
+  ValidationState() { any() }
+}
+
 /** A state signifying that a logical validation has not been performed. */
-class PreValidation extends DataFlow::FlowState {
+class PreValidation extends ValidationState {
   PreValidation() { this = "PreValidation" }
 }
 
 /** A state signifying that a logical validation has been performed. */
-class PostValidation extends DataFlow::FlowState {
+class PostValidation extends ValidationState {
   PostValidation() { this = "PostValidation" }
 }
 
@@ -27,16 +33,15 @@ class PostValidation extends DataFlow::FlowState {
  * This configuration uses two flow states, `PreValidation` and `PostValidation`,
  * to track the requirement that a logical validation has been performed before the Unicode Transformation.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnicodeBypassValidation" }
+private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig {
+  class FlowState = ValidationState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof RemoteFlowSource and state instanceof PreValidation
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-    DataFlow::FlowState stateTo
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
     (
       exists(Escaping escaping | nodeFrom = escaping.getAnInput() and nodeTo = escaping.getOutput())
@@ -51,7 +56,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     exists(API::CallNode cn |
       cn = API::moduleImport("unicodedata").getMember("normalize").getACall() and
       sink = cn.getArg(1)
@@ -71,3 +76,6 @@ class Configuration extends TaintTracking::Configuration {
     state instanceof PostValidation
   }
 }
+
+/** Global taint-tracking for detecting "Unicode transformation mishandling" vulnerabilities. */
+module UnicodeBypassValidationFlow = TaintTracking::GlobalWithState<UnicodeBypassValidationConfig>;

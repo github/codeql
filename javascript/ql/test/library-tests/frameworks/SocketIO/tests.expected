@@ -1,7 +1,65 @@
-test_ClientReceiveNode_getEventName
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | message |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | event |
-| client2.js:18:1:18:41 | sock2.o ... dler')) | message |
+test_SendNode
+| tst.js:30:1:30:28 | ns.emit ... event') | socket.io namespace with path '/' |
+| tst.js:31:1:31:20 | ns.send('a message') | socket.io namespace with path '/' |
+| tst.js:32:1:32:22 | ns2.wri ... ssage') | socket.io namespace with path '/foo/bar' |
+| tst.js:39:1:39:31 | io.emit ... ssage') | socket.io namespace with path '/' |
+| tst.js:40:1:40:20 | io.send('a message') | socket.io namespace with path '/' |
+| tst.js:41:1:41:21 | io.writ ... ssage') | socket.io namespace with path '/' |
+| tst.js:51:3:51:22 | socket.emit('event') | socket.io namespace with path '/' |
+| tst.js:54:3:54:43 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:55:3:55:27 | socket. ... ssage') | socket.io namespace with path '/' |
+| tst.js:66:3:66:36 | socket. ... dcast') | socket.io namespace with path '/' |
+test_ServerNode
+| tst.js:1:12:1:33 | require ... .io')() | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:4:13:4:24 | new Server() | tst.js:4:13:4:24 | new Server() |
+| tst.js:6:13:6:27 | Server.listen() | tst.js:6:13:6:27 | Server.listen() |
+| tst.js:9:1:9:21 | io.serv ... (false) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:10:1:10:21 | io.set( ... s', []) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:11:1:11:21 | io.path ... npath') | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:12:1:12:15 | io.adapter(foo) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:13:1:13:14 | io.origins([]) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:14:1:14:15 | io.listen(http) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:15:1:15:15 | io.attach(http) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:16:1:16:15 | io.bind(engine) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:17:1:17:23 | io.onco ... socket) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:50:1:67:2 | io.on(' ... t');\\n}) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:68:1:68:35 | io.on(' ...  => {}) | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:80:1:80:10 | obj.server | tst.js:1:12:1:33 | require ... .io')() |
+| tst.js:85:1:85:37 | io.on(' ... , "x")) | tst.js:1:12:1:33 | require ... .io')() |
+test_SocketNode
+| tst.js:50:19:50:24 | socket | socket.io namespace with path '/' |
+| tst.js:51:3:51:22 | socket.emit('event') | socket.io namespace with path '/' |
+| tst.js:52:3:52:17 | socket.to(room) | socket.io namespace with path '/' |
+| tst.js:53:3:53:17 | socket.in(room) | socket.io namespace with path '/' |
+| tst.js:54:3:54:43 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:55:3:55:27 | socket. ... ssage') | socket.io namespace with path '/' |
+| tst.js:56:3:56:19 | socket.join(room) | socket.io namespace with path '/' |
+| tst.js:57:3:57:20 | socket.leave(room) | socket.io namespace with path '/' |
+| tst.js:58:3:58:16 | socket.use(cb) | socket.io namespace with path '/' |
+| tst.js:59:3:59:23 | socket. ... s(true) | socket.io namespace with path '/' |
+| tst.js:60:3:60:22 | socket.binary(false) | socket.io namespace with path '/' |
+| tst.js:61:3:61:25 | socket. ... t(true) | socket.io namespace with path '/' |
+| tst.js:62:3:62:13 | socket.json | socket.io namespace with path '/' |
+| tst.js:63:3:63:17 | socket.volatile | socket.io namespace with path '/' |
+| tst.js:64:3:64:18 | socket.broadcast | socket.io namespace with path '/' |
+| tst.js:65:3:65:14 | socket.local | socket.io namespace with path '/' |
+| tst.js:66:3:66:18 | socket.broadcast | socket.io namespace with path '/' |
+| tst.js:66:3:66:36 | socket. ... dcast') | socket.io namespace with path '/' |
+| tst.js:68:22:68:27 | socket | socket.io namespace with path '/' |
+| tst.js:69:19:69:24 | socket | socket.io namespace with path '/' |
+| tst.js:70:22:70:27 | socket | socket.io namespace with path '/' |
+| tst.js:71:3:71:35 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:72:3:72:46 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:73:3:73:43 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:84:16:84:21 | socket | socket.io namespace with path '/' |
+test_ReceiveNode
+| tst.js:71:3:71:35 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
+| tst.js:72:3:72:46 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
+| tst.js:73:3:73:43 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
+test_ServerObject
+| tst.js:1:12:1:33 | require ... .io')() | tst.js:1:12:1:33 | require ... .io')() | socket.io namespace with path '/' |
+| tst.js:4:13:4:24 | new Server() | tst.js:4:13:4:24 | new Server() | socket.io namespace with path '/' |
+| tst.js:6:13:6:27 | Server.listen() | tst.js:6:13:6:27 | Server.listen() | socket.io namespace with path '/' |
 test_NamespaceNode
 | tst.js:25:10:25:19 | io.sockets | socket.io namespace with path '/' |
 | tst.js:26:11:26:27 | io.of("/foo/bar") | socket.io namespace with path '/foo/bar' |
@@ -31,49 +89,29 @@ test_NamespaceNode
 | tst.js:69:1:69:32 | ns.on(' ...  => {}) | socket.io namespace with path '/' |
 | tst.js:70:1:74:2 | ns.on(' ... {});\\n}) | socket.io namespace with path '/' |
 | tst.js:85:1:85:37 | io.on(' ... , "x")) | socket.io namespace with path '/' |
-test_ClientReceiveNode_getASender
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:30:1:30:28 | ns.emit ... event') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:31:1:31:20 | ns.send('a message') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:39:1:39:31 | io.emit ... ssage') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:40:1:40:20 | io.send('a message') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:41:1:41:21 | io.writ ... ssage') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:51:3:51:22 | socket.emit('event') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:54:3:54:43 | socket. ...  => {}) |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:55:3:55:27 | socket. ... ssage') |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:66:3:66:36 | socket. ... dcast') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:30:1:30:28 | ns.emit ... event') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:31:1:31:20 | ns.send('a message') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:39:1:39:31 | io.emit ... ssage') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:40:1:40:20 | io.send('a message') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:41:1:41:21 | io.writ ... ssage') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:51:3:51:22 | socket.emit('event') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:54:3:54:43 | socket. ...  => {}) |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:55:3:55:27 | socket. ... ssage') |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:66:3:66:36 | socket. ... dcast') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:30:1:30:28 | ns.emit ... event') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:31:1:31:20 | ns.send('a message') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:39:1:39:31 | io.emit ... ssage') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:40:1:40:20 | io.send('a message') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:41:1:41:21 | io.writ ... ssage') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:51:3:51:22 | socket.emit('event') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:54:3:54:43 | socket. ...  => {}) |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:55:3:55:27 | socket. ... ssage') |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:66:3:66:36 | socket. ... dcast') |
-| client2.js:18:1:18:41 | sock2.o ... dler')) | tst.js:32:1:32:22 | ns2.wri ... ssage') |
-test_ReceiveNode
-| tst.js:71:3:71:35 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
-| tst.js:72:3:72:46 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
-| tst.js:73:3:73:43 | socket. ...  => {}) | tst.js:70:22:70:27 | socket |
-test_SendNode_getSentItem
-| tst.js:30:1:30:28 | ns.emit ... event') | 0 | tst.js:30:18:30:27 | 'an event' |
-| tst.js:31:1:31:20 | ns.send('a message') | 0 | tst.js:31:9:31:19 | 'a message' |
-| tst.js:32:1:32:22 | ns2.wri ... ssage') | 0 | tst.js:32:11:32:21 | 'a message' |
-| tst.js:39:1:39:31 | io.emit ... ssage') | 0 | tst.js:39:20:39:30 | 'a message' |
-| tst.js:40:1:40:20 | io.send('a message') | 0 | tst.js:40:9:40:19 | 'a message' |
-| tst.js:41:1:41:21 | io.writ ... ssage') | 0 | tst.js:41:10:41:20 | 'a message' |
-| tst.js:54:3:54:43 | socket. ...  => {}) | 0 | tst.js:54:15:54:17 | 'a' |
-| tst.js:54:3:54:43 | socket. ...  => {}) | 1 | tst.js:54:20:54:28 | 'message' |
-| tst.js:55:3:55:27 | socket. ... ssage') | 0 | tst.js:55:16:55:26 | 'a message' |
+test_ClientSendNode
+| client2.js:14:1:14:32 | sock.em ... there") | client2.js:1:12:1:56 | require ... lhost") | / |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | client2.js:1:12:1:56 | require ... lhost") | / |
+test_NamespaceObject
+| socket.io namespace with path '/' | tst.js:1:12:1:33 | require ... .io')() | / |
+| socket.io namespace with path '/' | tst.js:4:13:4:24 | new Server() | / |
+| socket.io namespace with path '/' | tst.js:6:13:6:27 | Server.listen() | / |
+| socket.io namespace with path '/foo/bar' | tst.js:1:12:1:33 | require ... .io')() | /foo/bar |
+test_SendNode_getAck
+| tst.js:54:3:54:43 | socket. ...  => {}) | tst.js:54:31:54:42 | (data) => {} |
+test_ClientSocketNode
+| client1.js:1:1:1:4 | io() | / |
+| client1.js:2:1:2:23 | io.conn ... sages") | /messages |
+| client2.js:1:12:1:56 | require ... lhost") | / |
+| client2.js:2:13:2:85 | require ... v#abc") | /foo/bar |
+| client3.js:3:1:3:4 | io() | / |
+| client4.js:3:1:3:4 | io() | / |
+| client4.js:4:1:4:23 | io.conn ... sages") | /messages |
+test_ClientReceiveNode
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | client2.js:1:12:1:56 | require ... lhost") |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | client2.js:1:12:1:56 | require ... lhost") |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:1:12:1:56 | require ... lhost") |
+| client2.js:18:1:18:41 | sock2.o ... dler')) | client2.js:2:13:2:85 | require ... v#abc") |
 test_AdditionalFlowStep
 | client2.js:16:12:16:25 | "do you copy?" | tst.js:71:25:71:27 | msg |
 | client2.js:16:12:16:25 | "do you copy?" | tst.js:72:27:72:31 | data1 |
@@ -95,126 +133,23 @@ test_AdditionalFlowStep
 | tst.js:54:20:54:28 | 'message' | client2.js:4:24:4:24 | y |
 | tst.js:55:16:55:26 | 'a message' | client2.js:4:21:4:21 | x |
 | tst.js:55:16:55:26 | 'a message' | client2.js:8:23:8:25 | msg |
-test_ClientSendNode_getAck
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | client2.js:16:28:16:35 | () => {} |
-test_SocketNode
-| tst.js:50:19:50:24 | socket | socket.io namespace with path '/' |
-| tst.js:51:3:51:22 | socket.emit('event') | socket.io namespace with path '/' |
-| tst.js:52:3:52:17 | socket.to(room) | socket.io namespace with path '/' |
-| tst.js:53:3:53:17 | socket.in(room) | socket.io namespace with path '/' |
-| tst.js:54:3:54:43 | socket. ...  => {}) | socket.io namespace with path '/' |
-| tst.js:55:3:55:27 | socket. ... ssage') | socket.io namespace with path '/' |
-| tst.js:56:3:56:19 | socket.join(room) | socket.io namespace with path '/' |
-| tst.js:57:3:57:20 | socket.leave(room) | socket.io namespace with path '/' |
-| tst.js:58:3:58:16 | socket.use(cb) | socket.io namespace with path '/' |
-| tst.js:59:3:59:23 | socket. ... s(true) | socket.io namespace with path '/' |
-| tst.js:60:3:60:22 | socket.binary(false) | socket.io namespace with path '/' |
-| tst.js:61:3:61:25 | socket. ... t(true) | socket.io namespace with path '/' |
-| tst.js:62:3:62:13 | socket.json | socket.io namespace with path '/' |
-| tst.js:63:3:63:17 | socket.volatile | socket.io namespace with path '/' |
-| tst.js:64:3:64:18 | socket.broadcast | socket.io namespace with path '/' |
-| tst.js:65:3:65:14 | socket.local | socket.io namespace with path '/' |
-| tst.js:66:3:66:18 | socket.broadcast | socket.io namespace with path '/' |
-| tst.js:66:3:66:36 | socket. ... dcast') | socket.io namespace with path '/' |
-| tst.js:68:22:68:27 | socket | socket.io namespace with path '/' |
-| tst.js:69:19:69:24 | socket | socket.io namespace with path '/' |
-| tst.js:70:22:70:27 | socket | socket.io namespace with path '/' |
-| tst.js:71:3:71:35 | socket. ...  => {}) | socket.io namespace with path '/' |
-| tst.js:72:3:72:46 | socket. ...  => {}) | socket.io namespace with path '/' |
-| tst.js:73:3:73:43 | socket. ...  => {}) | socket.io namespace with path '/' |
-| tst.js:84:16:84:21 | socket | socket.io namespace with path '/' |
-test_ClientSendNode_getEventName
-| client2.js:14:1:14:32 | sock.em ... there") | data |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | message |
-test_ClientSendNode_getSentItem
-| client2.js:14:1:14:32 | sock.em ... there") | 0 | client2.js:14:19:14:22 | "hi" |
-| client2.js:14:1:14:32 | sock.em ... there") | 1 | client2.js:14:25:14:31 | "there" |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | 0 | client2.js:16:12:16:25 | "do you copy?" |
-test_ReceiveNode_getEventName
-| tst.js:71:3:71:35 | socket. ...  => {}) | message |
-| tst.js:72:3:72:46 | socket. ...  => {}) | message |
-test_ClientSocketNode
-| client1.js:1:1:1:4 | io() | / |
-| client1.js:2:1:2:23 | io.conn ... sages") | /messages |
-| client2.js:1:12:1:56 | require ... lhost") | / |
-| client2.js:2:13:2:85 | require ... v#abc") | /foo/bar |
-| client3.js:3:1:3:4 | io() | / |
-| client4.js:3:1:3:4 | io() | / |
-| client4.js:4:1:4:23 | io.conn ... sages") | /messages |
-test_ReceiveNode_getASender
-| tst.js:71:3:71:35 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
-| tst.js:71:3:71:35 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
-| tst.js:72:3:72:46 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
-| tst.js:72:3:72:46 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
-| tst.js:73:3:73:43 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
-| tst.js:73:3:73:43 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
-test_ReceiveNode_getReceivedItem
-| tst.js:71:3:71:35 | socket. ...  => {}) | 0 | tst.js:71:25:71:27 | msg |
-| tst.js:72:3:72:46 | socket. ...  => {}) | 0 | tst.js:72:27:72:31 | data1 |
-| tst.js:72:3:72:46 | socket. ...  => {}) | 1 | tst.js:72:34:72:38 | data2 |
 test_SendNode_getSocket
 | tst.js:51:3:51:22 | socket.emit('event') | tst.js:50:19:50:24 | socket |
 | tst.js:54:3:54:43 | socket. ...  => {}) | tst.js:50:19:50:24 | socket |
 | tst.js:55:3:55:27 | socket. ... ssage') | tst.js:50:19:50:24 | socket |
 | tst.js:66:3:66:36 | socket. ... dcast') | tst.js:50:19:50:24 | socket |
-test_ServerNode
-| tst.js:1:12:1:33 | require ... .io')() | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:4:13:4:24 | new Server() | tst.js:4:13:4:24 | new Server() |
-| tst.js:6:13:6:27 | Server.listen() | tst.js:6:13:6:27 | Server.listen() |
-| tst.js:9:1:9:21 | io.serv ... (false) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:10:1:10:21 | io.set( ... s', []) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:11:1:11:21 | io.path ... npath') | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:12:1:12:15 | io.adapter(foo) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:13:1:13:14 | io.origins([]) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:14:1:14:15 | io.listen(http) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:15:1:15:15 | io.attach(http) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:16:1:16:15 | io.bind(engine) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:17:1:17:23 | io.onco ... socket) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:50:1:67:2 | io.on(' ... t');\\n}) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:68:1:68:35 | io.on(' ...  => {}) | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:80:1:80:10 | obj.server | tst.js:1:12:1:33 | require ... .io')() |
-| tst.js:85:1:85:37 | io.on(' ... , "x")) | tst.js:1:12:1:33 | require ... .io')() |
-test_ClientSendNode_getAReceiver
-| client2.js:14:1:14:32 | sock.em ... there") | tst.js:71:3:71:35 | socket. ...  => {}) |
-| client2.js:14:1:14:32 | sock.em ... there") | tst.js:72:3:72:46 | socket. ...  => {}) |
-| client2.js:14:1:14:32 | sock.em ... there") | tst.js:73:3:73:43 | socket. ...  => {}) |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:71:3:71:35 | socket. ...  => {}) |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:72:3:72:46 | socket. ...  => {}) |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:73:3:73:43 | socket. ...  => {}) |
-test_ClientReceiveNode_getAck
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:10:22:10:23 | cb |
-test_ClientReceiveNode_getReceivedItem
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | 0 | client2.js:4:21:4:21 | x |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | 1 | client2.js:4:24:4:24 | y |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | 0 | client2.js:8:23:8:25 | msg |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | 0 | client2.js:10:19:10:19 | x |
-| client2.js:18:1:18:41 | sock2.o ... dler')) | 0 | handler.js:1:19:1:19 | x |
-test_NamespaceObject
-| socket.io namespace with path '/' | tst.js:1:12:1:33 | require ... .io')() | / |
-| socket.io namespace with path '/' | tst.js:4:13:4:24 | new Server() | / |
-| socket.io namespace with path '/' | tst.js:6:13:6:27 | Server.listen() | / |
-| socket.io namespace with path '/foo/bar' | tst.js:1:12:1:33 | require ... .io')() | /foo/bar |
-test_ClientReceiveNode
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:18:1:18:41 | sock2.o ... dler')) | client2.js:2:13:2:85 | require ... v#abc") |
-test_ClientSendNode
-| client2.js:14:1:14:32 | sock.em ... there") | client2.js:1:12:1:56 | require ... lhost") | / |
-| client2.js:16:1:16:36 | sock.wr ...  => {}) | client2.js:1:12:1:56 | require ... lhost") | / |
-test_SendNode_getAck
-| tst.js:54:3:54:43 | socket. ...  => {}) | tst.js:54:31:54:42 | (data) => {} |
-test_SendNode
-| tst.js:30:1:30:28 | ns.emit ... event') | socket.io namespace with path '/' |
-| tst.js:31:1:31:20 | ns.send('a message') | socket.io namespace with path '/' |
-| tst.js:32:1:32:22 | ns2.wri ... ssage') | socket.io namespace with path '/foo/bar' |
-| tst.js:39:1:39:31 | io.emit ... ssage') | socket.io namespace with path '/' |
-| tst.js:40:1:40:20 | io.send('a message') | socket.io namespace with path '/' |
-| tst.js:41:1:41:21 | io.writ ... ssage') | socket.io namespace with path '/' |
-| tst.js:51:3:51:22 | socket.emit('event') | socket.io namespace with path '/' |
-| tst.js:54:3:54:43 | socket. ...  => {}) | socket.io namespace with path '/' |
-| tst.js:55:3:55:27 | socket. ... ssage') | socket.io namespace with path '/' |
-| tst.js:66:3:66:36 | socket. ... dcast') | socket.io namespace with path '/' |
+test_SendNode_getSentItem
+| tst.js:30:1:30:28 | ns.emit ... event') | 0 | tst.js:30:18:30:27 | 'an event' |
+| tst.js:31:1:31:20 | ns.send('a message') | 0 | tst.js:31:9:31:19 | 'a message' |
+| tst.js:32:1:32:22 | ns2.wri ... ssage') | 0 | tst.js:32:11:32:21 | 'a message' |
+| tst.js:39:1:39:31 | io.emit ... ssage') | 0 | tst.js:39:20:39:30 | 'a message' |
+| tst.js:40:1:40:20 | io.send('a message') | 0 | tst.js:40:9:40:19 | 'a message' |
+| tst.js:41:1:41:21 | io.writ ... ssage') | 0 | tst.js:41:10:41:20 | 'a message' |
+| tst.js:54:3:54:43 | socket. ...  => {}) | 0 | tst.js:54:15:54:17 | 'a' |
+| tst.js:54:3:54:43 | socket. ...  => {}) | 1 | tst.js:54:20:54:28 | 'message' |
+| tst.js:55:3:55:27 | socket. ... ssage') | 0 | tst.js:55:16:55:26 | 'a message' |
+test_ClientSendNode_getAck
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | client2.js:16:28:16:35 | () => {} |
 test_SendNode_getAReceiver
 | tst.js:30:1:30:28 | ns.emit ... event') | client2.js:4:1:6:2 | sock.on ...  y);\\n}) |
 | tst.js:30:1:30:28 | ns.emit ... event') | client2.js:8:1:8:33 | sock.on ...  => {}) |
@@ -244,7 +179,72 @@ test_SendNode_getAReceiver
 | tst.js:66:3:66:36 | socket. ... dcast') | client2.js:4:1:6:2 | sock.on ...  y);\\n}) |
 | tst.js:66:3:66:36 | socket. ... dcast') | client2.js:8:1:8:33 | sock.on ...  => {}) |
 | tst.js:66:3:66:36 | socket. ... dcast') | client2.js:10:1:12:2 | sock.on ... d");\\n}) |
-test_ServerObject
-| tst.js:1:12:1:33 | require ... .io')() | tst.js:1:12:1:33 | require ... .io')() | socket.io namespace with path '/' |
-| tst.js:4:13:4:24 | new Server() | tst.js:4:13:4:24 | new Server() | socket.io namespace with path '/' |
-| tst.js:6:13:6:27 | Server.listen() | tst.js:6:13:6:27 | Server.listen() | socket.io namespace with path '/' |
+test_ReceiveNode_getASender
+| tst.js:71:3:71:35 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
+| tst.js:71:3:71:35 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
+| tst.js:72:3:72:46 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
+| tst.js:72:3:72:46 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
+| tst.js:73:3:73:43 | socket. ...  => {}) | client2.js:14:1:14:32 | sock.em ... there") |
+| tst.js:73:3:73:43 | socket. ...  => {}) | client2.js:16:1:16:36 | sock.wr ...  => {}) |
+test_ClientReceiveNode_getAck
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:10:22:10:23 | cb |
+test_ReceiveNode_getEventName
+| tst.js:71:3:71:35 | socket. ...  => {}) | message |
+| tst.js:72:3:72:46 | socket. ...  => {}) | message |
+test_ClientSendNode_getSentItem
+| client2.js:14:1:14:32 | sock.em ... there") | 0 | client2.js:14:19:14:22 | "hi" |
+| client2.js:14:1:14:32 | sock.em ... there") | 1 | client2.js:14:25:14:31 | "there" |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | 0 | client2.js:16:12:16:25 | "do you copy?" |
+test_ClientSendNode_getAReceiver
+| client2.js:14:1:14:32 | sock.em ... there") | tst.js:71:3:71:35 | socket. ...  => {}) |
+| client2.js:14:1:14:32 | sock.em ... there") | tst.js:72:3:72:46 | socket. ...  => {}) |
+| client2.js:14:1:14:32 | sock.em ... there") | tst.js:73:3:73:43 | socket. ...  => {}) |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:71:3:71:35 | socket. ...  => {}) |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:72:3:72:46 | socket. ...  => {}) |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:73:3:73:43 | socket. ...  => {}) |
+test_ClientSendNode_getEventName
+| client2.js:14:1:14:32 | sock.em ... there") | data |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | message |
+test_ReceiveNode_getReceivedItem
+| tst.js:71:3:71:35 | socket. ...  => {}) | 0 | tst.js:71:25:71:27 | msg |
+| tst.js:72:3:72:46 | socket. ...  => {}) | 0 | tst.js:72:27:72:31 | data1 |
+| tst.js:72:3:72:46 | socket. ...  => {}) | 1 | tst.js:72:34:72:38 | data2 |
+test_ClientReceiveNode_getASender
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:30:1:30:28 | ns.emit ... event') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:31:1:31:20 | ns.send('a message') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:39:1:39:31 | io.emit ... ssage') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:40:1:40:20 | io.send('a message') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:41:1:41:21 | io.writ ... ssage') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:51:3:51:22 | socket.emit('event') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:54:3:54:43 | socket. ...  => {}) |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:55:3:55:27 | socket. ... ssage') |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | tst.js:66:3:66:36 | socket. ... dcast') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:30:1:30:28 | ns.emit ... event') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:31:1:31:20 | ns.send('a message') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:39:1:39:31 | io.emit ... ssage') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:40:1:40:20 | io.send('a message') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:41:1:41:21 | io.writ ... ssage') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:51:3:51:22 | socket.emit('event') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:54:3:54:43 | socket. ...  => {}) |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:55:3:55:27 | socket. ... ssage') |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | tst.js:66:3:66:36 | socket. ... dcast') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:30:1:30:28 | ns.emit ... event') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:31:1:31:20 | ns.send('a message') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:39:1:39:31 | io.emit ... ssage') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:40:1:40:20 | io.send('a message') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:41:1:41:21 | io.writ ... ssage') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:51:3:51:22 | socket.emit('event') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:54:3:54:43 | socket. ...  => {}) |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:55:3:55:27 | socket. ... ssage') |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | tst.js:66:3:66:36 | socket. ... dcast') |
+| client2.js:18:1:18:41 | sock2.o ... dler')) | tst.js:32:1:32:22 | ns2.wri ... ssage') |
+test_ClientReceiveNode_getEventName
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | message |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | event |
+| client2.js:18:1:18:41 | sock2.o ... dler')) | message |
+test_ClientReceiveNode_getReceivedItem
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | 0 | client2.js:4:21:4:21 | x |
+| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | 1 | client2.js:4:24:4:24 | y |
+| client2.js:8:1:8:33 | sock.on ...  => {}) | 0 | client2.js:8:23:8:25 | msg |
+| client2.js:10:1:12:2 | sock.on ... d");\\n}) | 0 | client2.js:10:19:10:19 | x |
+| client2.js:18:1:18:41 | sock2.o ... dler')) | 0 | handler.js:1:19:1:19 | x |

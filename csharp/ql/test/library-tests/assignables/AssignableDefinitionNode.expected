@@ -29,11 +29,11 @@
 | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:9:34:45 | call to method RefCertainOneOf |
 | Assignables.cs:37:22:37:22 | o | Assignables.cs:37:10:37:12 | enter Out |
 | Assignables.cs:39:9:39:13 | ... = ... | Assignables.cs:39:9:39:13 | ... = ... |
-| Assignables.cs:42:26:42:26 | x | Assignables.cs:42:10:42:22 | enter RefCertain<> |
-| Assignables.cs:42:35:42:35 | y | Assignables.cs:42:10:42:22 | enter RefCertain<> |
-| Assignables.cs:42:43:42:43 | b | Assignables.cs:42:10:42:22 | enter RefCertain<> |
+| Assignables.cs:42:26:42:26 | x | Assignables.cs:42:10:42:22 | enter RefCertain`1 |
+| Assignables.cs:42:35:42:35 | y | Assignables.cs:42:10:42:22 | enter RefCertain`1 |
+| Assignables.cs:42:43:42:43 | b | Assignables.cs:42:10:42:22 | enter RefCertain`1 |
 | Assignables.cs:45:13:45:17 | ... = ... | Assignables.cs:45:13:45:17 | ... = ... |
-| Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:13:47:38 | call to method RefCertain<> |
+| Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:13:47:38 | call to method RefCertain`1 |
 | Assignables.cs:50:27:50:27 | x | Assignables.cs:50:10:50:21 | enter RefUncertain |
 | Assignables.cs:50:38:50:38 | y | Assignables.cs:50:10:50:21 | enter RefUncertain |
 | Assignables.cs:53:13:53:17 | ... = ... | Assignables.cs:53:13:53:17 | ... = ... |

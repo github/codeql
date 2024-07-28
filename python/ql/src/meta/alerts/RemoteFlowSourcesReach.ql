@@ -16,15 +16,13 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import meta.MetaMetrics
 private import semmle.python.dataflow.new.internal.PrintNode
 
-class RemoteFlowSourceReach extends TaintTracking::Configuration {
-  RemoteFlowSourceReach() { this = "RemoteFlowSourceReach" }
-
-  override predicate isSource(DataFlow::Node node) {
+module RemoteFlowSourceReachConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     node instanceof RemoteFlowSource and
     not node.getLocation().getFile() instanceof IgnoredFile
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     not node.getLocation().getFile() instanceof IgnoredFile
     // We could try to reduce the number of sinks in this configuration, by only
     // allowing something that is on one end of a localFlowStep, readStep or storeStep,
@@ -37,6 +35,8 @@ class RemoteFlowSourceReach extends TaintTracking::Configuration {
   }
 }
 
-from RemoteFlowSourceReach cfg, DataFlow::Node reachable
-where cfg.hasFlow(_, reachable)
+module RemoteFlowSourceReachFlow = TaintTracking::Global<RemoteFlowSourceReachConfig>;
+
+from DataFlow::Node reachable
+where RemoteFlowSourceReachFlow::flow(_, reachable)
 select reachable, prettyNode(reachable)

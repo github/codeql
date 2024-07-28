@@ -176,7 +176,7 @@ namespace SemmleTests.Semmle.Util
         {
             public void Dispose() { }
 
-            public void Log(Severity s, string text) { }
+            public void Log(Severity s, string text, int? threadId = null) { }
         }
     }
 }

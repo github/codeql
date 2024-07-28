@@ -6,6 +6,7 @@
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.frameworks.android.Intent
@@ -14,7 +15,7 @@ private import semmle.code.java.frameworks.android.Intent
  * A sink for Intent URI permission manipulation vulnerabilities in Android,
  * that is, method calls that return an Intent as the result of an Activity.
  */
-abstract class IntentUriPermissionManipulationSink extends DataFlow::Node { }
+abstract class IntentUriPermissionManipulationSink extends ApiSinkNode { }
 
 /**
  * A sanitizer that makes sure that an Intent is safe to be returned to another Activity.
@@ -22,16 +23,6 @@ abstract class IntentUriPermissionManipulationSink extends DataFlow::Node { }
  * Usually, this is done by setting the Intent's data URI and/or its flags to safe values.
  */
 abstract class IntentUriPermissionManipulationSanitizer extends DataFlow::Node { }
-
-/**
- * DEPRECATED: Use `IntentUriPermissionManipulationSanitizer` instead.
- *
- * A guard that makes sure that an Intent is safe to be returned to another Activity.
- *
- * Usually, this is done by checking that the Intent's data URI and/or its flags contain
- * expected values.
- */
-abstract deprecated class IntentUriPermissionManipulationGuard extends DataFlow::BarrierGuard { }
 
 /**
  * An additional taint step for flows related to Intent URI permission manipulation
@@ -48,7 +39,7 @@ class IntentUriPermissionManipulationAdditionalTaintStep extends Unit {
 private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermissionManipulationSink
 {
   DefaultIntentUriPermissionManipulationSink() {
-    exists(MethodAccess ma | ma.getMethod() instanceof ActivitySetResultMethod |
+    exists(MethodCall ma | ma.getMethod() instanceof ActivitySetResultMethod |
       ma.getArgument(1) = this.asExpr()
     )
   }
@@ -64,7 +55,7 @@ private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermis
  */
 private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManipulationSanitizer {
   IntentFlagsOrDataChangedSanitizer() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       this.asExpr() = ma.getQualifier()
@@ -109,7 +100,7 @@ private class IntentFlagsOrDataCheckedSanitizer extends IntentUriPermissionManip
  * is equality-tested.
  */
 private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch) {
-  exists(MethodAccess ma, Method m, Expr checkedValue |
+  exists(MethodCall ma, Method m, Expr checkedValue |
     ma.getQualifier() = intent and
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeIntent and
@@ -119,9 +110,9 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
     bitwiseCheck(g, branch) and
     checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
     or
-    g.(MethodAccess).getMethod() instanceof EqualsMethod and
+    g.(MethodCall).getMethod() instanceof EqualsMethod and
     branch = true and
-    checkedValue = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()]
+    checkedValue = [g.(MethodCall).getArgument(0), g.(MethodCall).getQualifier()]
   )
 }
 

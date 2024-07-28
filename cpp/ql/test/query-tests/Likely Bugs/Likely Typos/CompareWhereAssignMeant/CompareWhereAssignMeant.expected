@@ -6,3 +6,5 @@
 | test.cpp:39:23:39:28 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
 | test.cpp:42:23:42:28 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
 | test.cpp:51:13:51:13 | call to operator== | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:72:3:72:8 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |
+| test.cpp:73:3:73:12 | ... == ... | This '==' operator has no effect. The assignment ('=') operator was probably intended. |

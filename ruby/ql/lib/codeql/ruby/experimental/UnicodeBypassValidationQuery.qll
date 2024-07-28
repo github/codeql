@@ -9,14 +9,63 @@ private import codeql.ruby.TaintTracking
 private import codeql.ruby.ApiGraphs
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
-/** A state signifying that a logical validation has not been performed. */
-class PreValidation extends DataFlow::FlowState {
+/**
+ * A state signifying that a logical validation has not been performed.
+ * DEPRECATED: Use `PreValidationState()`
+ */
+deprecated class PreValidation extends DataFlow::FlowState {
   PreValidation() { this = "PreValidation" }
 }
 
-/** A state signifying that a logical validation has been performed. */
-class PostValidation extends DataFlow::FlowState {
+/**
+ * A state signifying that a logical validation has been performed.
+ * DEPRECATED: Use `PostValidationState()`
+ */
+deprecated class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
+}
+
+/**
+ * A state signifying if a logical validation has been performed or not.
+ */
+private newtype ValidationState =
+  // A state signifying that a logical validation has not been performed.
+  PreValidationState() or
+  // A state signifying that a logical validation has been performed.
+  PostValidationState()
+
+/**
+ * A taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
+ *
+ * This configuration uses two flow states, `PreValidation` and `PostValidation`,
+ * to track the requirement that a logical validation has been performed before the Unicode Transformation.
+ * DEPRECATED: Use `UnicodeBypassValidationFlow`
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "UnicodeBypassValidation" }
+
+  private ValidationState convertState(DataFlow::FlowState state) {
+    state instanceof PreValidation and result = PreValidationState()
+    or
+    state instanceof PostValidation and result = PostValidationState()
+  }
+
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    UnicodeBypassValidationConfig::isSource(source, this.convertState(state))
+  }
+
+  override predicate isAdditionalTaintStep(
+    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
+    DataFlow::FlowState stateTo
+  ) {
+    UnicodeBypassValidationConfig::isAdditionalFlowStep(nodeFrom, this.convertState(stateFrom),
+      nodeTo, this.convertState(stateTo))
+  }
+
+  /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    UnicodeBypassValidationConfig::isSink(sink, this.convertState(state))
+  }
 }
 
 /**
@@ -25,16 +74,55 @@ class PostValidation extends DataFlow::FlowState {
  * This configuration uses two flow states, `PreValidation` and `PostValidation`,
  * to track the requirement that a logical validation has been performed before the Unicode Transformation.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnicodeBypassValidation" }
+private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig {
+  class FlowState = ValidationState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    source instanceof RemoteFlowSource and state instanceof PreValidation
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof RemoteFlowSource and state = PreValidationState()
+    or
+    (
+      exists(Escaping escaping | source = escaping.getOutput())
+      or
+      source instanceof RegexExecution
+      or
+      // String Manipulation Method Calls
+      // https://ruby-doc.org/core-2.7.0/String.html
+      // String Manipulation Method Calls
+      // https://ruby-doc.org/core-2.7.0/String.html
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            [
+                "ljust", "lstrip", "succ", "next", "rjust", "capitalize", "chomp", "gsub", "chop",
+                "downcase", "swapcase", "uprcase", "scrub", "slice", "squeeze", "strip", "sub",
+                "tr", "tr_s", "reverse"
+              ] + ["", "!"], "concat", "dump", "each_line", "replace", "insert", "inspect", "lines",
+            "partition", "prepend", "replace", "rpartition", "scan", "split", "undump",
+            "unpack" + ["", "1"]
+          ] and
+        source = cn
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            "casecmp" + ["", "?"], "center", "count", "each_char", "index", "rindex", "sum",
+            ["delete", "delete_prefix", "delete_suffix"] + ["", "!"],
+            ["start_with", "end_with" + "eql", "include"] + ["?", "!"], "match" + ["", "?"],
+          ] and
+        source = cn.getReceiver()
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn = API::getTopLevelMember("CGI").getAMethodCall("escapeHTML") and
+        source = cn
+      )
+    ) and
+    state = PostValidationState()
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-    DataFlow::FlowState stateTo
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
     (
       exists(Escaping escaping | nodeFrom = escaping.getAnInput() and nodeTo = escaping.getOutput())
@@ -75,12 +163,12 @@ class Configuration extends TaintTracking::Configuration {
         nodeTo = cn
       )
     ) and
-    stateFrom instanceof PreValidation and
-    stateTo instanceof PostValidation
+    stateFrom = PreValidationState() and
+    stateTo = PostValidationState()
   }
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     (
       exists(DataFlow::CallNode cn |
         cn.getMethodName() = "unicode_normalize" and
@@ -118,6 +206,11 @@ class Configuration extends TaintTracking::Configuration {
         sink = cn.getArgument(0)
       )
     ) and
-    state instanceof PostValidation
+    state = PostValidationState()
   }
 }
+
+/**
+ * Taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
+ */
+module UnicodeBypassValidationFlow = TaintTracking::GlobalWithState<UnicodeBypassValidationConfig>;

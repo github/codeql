@@ -40,7 +40,7 @@ func (extraction *Extraction) extractGoMod(path string) error {
 		return err
 	}
 
-	extraction.extractFileInfo(tw, path)
+	extraction.extractFileInfo(tw, path, false)
 
 	file, err := os.Open(path)
 	if err != nil {

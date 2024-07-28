@@ -1873,5 +1873,166 @@ public class B {
       Collection out = null;
       Object[] in = storeArrayElement(source()); ((Collections)null).addAll(out,in); sink(readElement(out)); // $ hasValueFlow
     }
+    // Java 21 sequenced collections tests:
+    {
+      // ["java.util", "SequencedCollection", True, "addFirst", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      SequencedCollection out = null;
+      Object in = source(); out.addFirst(in); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "addLast", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      SequencedCollection out = null;
+      Object in = source(); out.addLast(in); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "getFirst", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      Object out = null;
+      SequencedCollection in = storeElementList(source()); out = in.getFirst(); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "getLast", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      Object out = null;
+      SequencedCollection in = storeElementList(source()); out = in.getLast(); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "removeFirst", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      Object out = null;
+      SequencedCollection in = storeElementList(source()); out = in.removeFirst(); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "removeLast", "", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      Object out = null;
+      SequencedCollection in = storeElementList(source()); out = in.removeLast(); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedCollection", True, "reversed", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedCollection out = null;
+      SequencedCollection in = storeElementList(source()); out = in.reversed(); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "firstEntry", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.firstEntry(); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "lastEntry", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.lastEntry(); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // - ["java.util", "SequencedMap", True, "pollFirstEntry", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.pollFirstEntry(); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "pollLastEntry", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.pollLastEntry(); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putFirst", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      Object out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.putFirst(null, null); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putFirst", "", "", "Argument[0]", "Argument[this].MapKey", "value", "manual"]
+      SequencedMap out = null;
+      Object in = source(); out.putFirst(in, null); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putLast", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      Object out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.putLast(null, null); sink(out); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putLast", "", "", "Argument[0]", "Argument[this].MapKey", "value", "manual"]
+      SequencedMap out = null;
+      Object in = source(); out.putLast(in, null); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "reversed", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.reversed(); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "sequencedEntrySet", "", "", "Argument[this].MapKey", "ReturnValue.Element.MapKey", "value", "manual"]
+      Set<Map.Entry> out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.sequencedEntrySet(); sink(readMapKey(readElement(out))); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "firstEntry", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.firstEntry(); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "lastEntry", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.lastEntry(); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // - ["java.util", "SequencedMap", True, "pollFirstEntry", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.pollFirstEntry(); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "pollLastEntry", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      Map.Entry out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.pollLastEntry(); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putFirst", "", "", "Argument[0]", "Argument[this].MapValue", "value", "manual"]
+      SequencedMap out = null;
+      Object in = source(); out.putFirst(null, in); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "putLast", "", "", "Argument[0]", "Argument[this].MapValue", "value", "manual"]
+      SequencedMap out = null;
+      Object in = source(); out.putLast(null, in); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "reversed", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.reversed(); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "sequencedEntrySet", "", "", "Argument[this].MapValue", "ReturnValue.Element.MapValue", "value", "manual"]
+      Set<Map.Entry> out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.sequencedEntrySet(); sink(readMapValue(readElement(out))); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "sequencedKeySet", "", "", "Argument[this].MapKey", "ReturnValue.Element", "value", "manual"]
+      Set out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = in.sequencedKeySet(); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedMap", True, "sequencedValues", "", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
+      SequencedCollection out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = in.sequencedValues(); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "SequencedSet", True, "reversed", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedSet out = null;
+      SequencedSet in = storeElementNavSet(source()); out = in.reversed(); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedCollection", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedCollection out = null;
+      SequencedCollection in = storeElementList(source()); out = Collections.unmodifiableSequencedCollection(in); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedMap", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = Collections.unmodifiableSequencedMap(in); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedMap", "", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = Collections.unmodifiableSequencedMap(in); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedSet out = null;
+      SequencedSet in = storeElementNavSet(source()); out = Collections.unmodifiableSequencedSet(in); sink(readElement(out)); // $ hasValueFlow
+    }
   }
 }

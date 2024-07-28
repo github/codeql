@@ -50,6 +50,9 @@ class DispatchCall extends Internal::TDispatchCall {
   RuntimeCallable getADynamicTargetInCallContext(DispatchCall ctx) {
     result = Internal::getADynamicTargetInCallContext(this, ctx)
   }
+
+  /** Holds if this call uses reflection. */
+  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
 }
 
 /** Internal implementation details. */
@@ -862,9 +865,7 @@ private module Internal {
         or
         Unification::subsumes(t, qualifierType)
         or
-        t.(Unification::ConstrainedTypeParameter).unifiable(qualifierType)
-        or
-        qualifierType = t.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+        qualifierType = t.(TypeParameter).getAnUltimatelySuppliedType()
       )
     }
 

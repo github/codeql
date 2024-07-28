@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.DEFAULT,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 value);
 
             return new Expression(info);

@@ -268,3 +268,8 @@ def bad_path_sanitizer(p1, p2)
   p1.sub! "/../", "" # NOT OK
   p2.sub  "/../", "" # NOT OK
 end
+
+def each_line_sanitizer(p1)
+  p1.each_line("\n") do |l| # OK - does no sanitization
+  end
+end

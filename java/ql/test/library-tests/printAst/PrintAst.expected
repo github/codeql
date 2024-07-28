@@ -73,7 +73,7 @@ A.java:
 #   33|       0: [ExprStmt] <Expr>;
 #   33|         0: [AssignExpr] ...=...
 #   33|           0: [VarAccess] counter
-#   33|           1: [MethodAccess] doSomething(...)
+#   33|           1: [MethodCall] doSomething(...)
 #   33|             0: [StringLiteral] "hi"
 #   42|     8: [Method] doSomethingElse
 #-----|       1: (Annotations)
@@ -110,45 +110,708 @@ A.java:
 #   48|                     0: [ReturnStmt] return ...
 #   50|                 1: [IfStmt] if (...)
 #   50|                   0: [InstanceOfExpr] ...instanceof...
-#-----|                     0: (Single Local Variable Declaration)
+#   50|                     0: [VarAccess] thing
+#-----|                     2: (Single Local Variable Declaration)
 #   50|                       0: [TypeAccess] String
 #   50|                       1: [LocalVariableDeclExpr] s
-#   50|                         0: [VarAccess] thing
 #   50|                   1: [BlockStmt] { ... }
 #   51|                     0: [ThrowStmt] throw ...
 #   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
 #   51|                         -3: [TypeAccess] RuntimeException
 #   51|                         0: [VarAccess] s
-#   55|           0: [CatchClause] catch (...)
+#   53|                 2: [SwitchStmt] switch (...)
+#   53|                   -1: [VarAccess] thing
+#   54|                   0: [PatternCase] case <Pattern>
+#   54|                     -1: [ExprStmt] <Expr>;
+#   54|                       0: [MethodCall] println(...)
+#   54|                         -1: [VarAccess] System.out
+#   54|                           -1: [TypeAccess] System
+#   54|                         0: [VarAccess] s
+#-----|                     0: (Pattern case declaration)
+#   54|                       0: [TypeAccess] String
+#   54|                       1: [LocalVariableDeclExpr] s
+#   55|                   1: [PatternCase] case <Pattern>
+#   55|                     -1: [ExprStmt] <Expr>;
+#   55|                       0: [MethodCall] println(...)
+#   55|                         -1: [VarAccess] System.out
+#   55|                           -1: [TypeAccess] System
+#   55|                         0: [AddExpr] ... + ...
+#   55|                           0: [StringLiteral] "An integer: "
+#   55|                           1: [VarAccess] i
+#-----|                     0: (Pattern case declaration)
+#   55|                       0: [TypeAccess] Integer
+#   55|                       1: [LocalVariableDeclExpr] i
+#   56|                   2: [DefaultCase] default
+#   56|                     -1: [BlockStmt] { ... }
+#   58|                 3: [SwitchStmt] switch (...)
+#   58|                   -1: [VarAccess] thing
+#   59|                   0: [PatternCase] case <Pattern>
+#-----|                     0: (Pattern case declaration)
+#   59|                       0: [TypeAccess] String
+#   59|                       1: [LocalVariableDeclExpr] s
+#   60|                   1: [ExprStmt] <Expr>;
+#   60|                     0: [MethodCall] println(...)
+#   60|                       -1: [VarAccess] System.out
+#   60|                         -1: [TypeAccess] System
+#   60|                       0: [VarAccess] s
+#   61|                   2: [BreakStmt] break
+#   62|                   3: [PatternCase] case <Pattern>
+#-----|                     0: (Pattern case declaration)
+#   62|                       0: [TypeAccess] Integer
+#   62|                       1: [LocalVariableDeclExpr] i
+#   63|                   4: [ExprStmt] <Expr>;
+#   63|                     0: [MethodCall] println(...)
+#   63|                       -1: [VarAccess] System.out
+#   63|                         -1: [TypeAccess] System
+#   63|                       0: [AddExpr] ... + ...
+#   63|                         0: [StringLiteral] "An integer:"
+#   63|                         1: [VarAccess] i
+#   64|                   5: [BreakStmt] break
+#   65|                   6: [DefaultCase] default
+#   66|                   7: [BreakStmt] break
+#   68|                 4: [LocalVariableDeclStmt] var ...;
+#   68|                   1: [LocalVariableDeclExpr] thingAsString
+#   68|                     0: [SwitchExpr] switch (...)
+#   68|                       -1: [VarAccess] thing
+#   69|                       0: [PatternCase] case <Pattern>
+#   69|                         -1: [VarAccess] s
+#-----|                         0: (Pattern case declaration)
+#   69|                           0: [TypeAccess] String
+#   69|                           1: [LocalVariableDeclExpr] s
+#   70|                       1: [PatternCase] case <Pattern>
+#   70|                         -1: [AddExpr] ... + ...
+#   70|                           0: [StringLiteral] "An integer: "
+#   70|                           1: [VarAccess] i
+#-----|                         0: (Pattern case declaration)
+#   70|                           0: [TypeAccess] Integer
+#   70|                           1: [LocalVariableDeclExpr] i
+#   71|                       2: [DefaultCase] default
+#   71|                         -1: [StringLiteral] "Something else"
+#   73|                 5: [LocalVariableDeclStmt] var ...;
+#   73|                   1: [LocalVariableDeclExpr] thingAsString2
+#   73|                     0: [SwitchExpr] switch (...)
+#   73|                       -1: [VarAccess] thing
+#   74|                       0: [PatternCase] case <Pattern>
+#-----|                         0: (Pattern case declaration)
+#   74|                           0: [TypeAccess] String
+#   74|                           1: [LocalVariableDeclExpr] s
+#   75|                       1: [YieldStmt] yield ...
+#   75|                         0: [VarAccess] s
+#   76|                       2: [PatternCase] case <Pattern>
+#-----|                         0: (Pattern case declaration)
+#   76|                           0: [TypeAccess] Integer
+#   76|                           1: [LocalVariableDeclExpr] i
+#   77|                       3: [YieldStmt] yield ...
+#   77|                         0: [AddExpr] ... + ...
+#   77|                           0: [StringLiteral] "An integer: "
+#   77|                           1: [VarAccess] i
+#   78|                       4: [DefaultCase] default
+#   79|                       5: [YieldStmt] yield ...
+#   79|                         0: [StringLiteral] "Something else"
+#   81|                 6: [LocalVariableDeclStmt] var ...;
+#   81|                   1: [LocalVariableDeclExpr] nullTest
+#   81|                     0: [SwitchExpr] switch (...)
+#   81|                       -1: [VarAccess] thing
+#   82|                       0: [ConstCase] case ...
+#   82|                         -1: [StringLiteral] "Null"
+#   82|                         0: [NullLiteral] null
+#   83|                       1: [DefaultCase] default
+#   83|                         -1: [StringLiteral] "Not null"
+#   85|                 7: [LocalVariableDeclStmt] var ...;
+#   85|                   1: [LocalVariableDeclExpr] whenTest
+#   85|                     0: [SwitchExpr] switch (...)
+#   85|                       -1: [CastExpr] (...)...
+#   85|                         0: [TypeAccess] String
+#   85|                         1: [VarAccess] thing
+#   86|                       0: [ConstCase] case ...
+#   86|                         -1: [StringLiteral] "It's constant"
+#   86|                         0: [StringLiteral] "constant"
+#   87|                       1: [PatternCase] case <Pattern>
+#   87|                         -3: [EQExpr] ... == ...
+#   87|                           0: [MethodCall] length(...)
+#   87|                             -1: [VarAccess] s
+#   87|                           1: [IntegerLiteral] 3
+#   87|                         -1: [StringLiteral] "It's 3 letters long"
+#-----|                         0: (Pattern case declaration)
+#   87|                           0: [TypeAccess] String
+#   87|                           1: [LocalVariableDeclExpr] s
+#   88|                       2: [PatternCase] case <Pattern>
+#   88|                         -3: [EQExpr] ... == ...
+#   88|                           0: [MethodCall] length(...)
+#   88|                             -1: [VarAccess] s
+#   88|                           1: [IntegerLiteral] 5
+#   88|                         -1: [StringLiteral] "it's 5 letters long"
+#-----|                         0: (Pattern case declaration)
+#   88|                           0: [TypeAccess] String
+#   88|                           1: [LocalVariableDeclExpr] s
+#   89|                       3: [DefaultCase] default
+#   89|                         -1: [StringLiteral] "It's something else"
+#   91|                 8: [LocalVariableDeclStmt] var ...;
+#   91|                   1: [LocalVariableDeclExpr] nullDefaultTest
+#   91|                     0: [SwitchExpr] switch (...)
+#   91|                       -1: [VarAccess] thing
+#   92|                       0: [PatternCase] case <Pattern>
+#   92|                         -1: [StringLiteral] "It's a string"
+#-----|                         0: (Pattern case declaration)
+#   92|                           0: [TypeAccess] String
+#   92|                           1: [LocalVariableDeclExpr] s
+#   93|                       1: [NullDefaultCase] case null, default
+#   93|                         -1: [StringLiteral] "It's something else"
+#   93|                         0: [NullLiteral] null
+#   95|                 9: [LocalVariableDeclStmt] var ...;
+#   95|                   1: [LocalVariableDeclExpr] qualifiedEnumTest
+#   95|                     0: [SwitchExpr] switch (...)
+#   95|                       -1: [VarAccess] thing
+#   96|                       0: [ConstCase] case ...
+#   96|                         -1: [StringLiteral] "It's E.A"
+#   96|                         0: [VarAccess] E.A
+#   96|                           -1: [TypeAccess] E
+#   97|                       1: [DefaultCase] default
+#   97|                         -1: [StringLiteral] "It's something else"
+#   99|                 10: [LocalVariableDeclStmt] var ...;
+#   99|                   1: [LocalVariableDeclExpr] unnecessaryQualifiedEnumTest
+#   99|                     0: [SwitchExpr] switch (...)
+#   99|                       -1: [CastExpr] (...)...
+#   99|                         0: [TypeAccess] E
+#   99|                         1: [VarAccess] thing
+#  100|                       0: [ConstCase] case ...
+#  100|                         -1: [StringLiteral] "It's E.A"
+#  100|                         0: [VarAccess] A
+#  101|                       1: [ConstCase] case ...
+#  101|                         -1: [StringLiteral] "It's E.B"
+#  101|                         0: [VarAccess] E.B
+#  101|                           -1: [TypeAccess] E
+#  102|                       2: [DefaultCase] default
+#  102|                         -1: [StringLiteral] "It's something else"
+#  104|                 11: [LocalVariableDeclStmt] var ...;
+#  104|                   1: [LocalVariableDeclExpr] recordPatterntest
+#  104|                     0: [SwitchExpr] switch (...)
+#  104|                       -1: [VarAccess] thing
+#  105|                       0: [PatternCase] case <Pattern>
+#  105|                         -1: [VarAccess] field
+#  105|                         0: [RecordPatternExpr] Middle(...)
+#  105|                           0: [RecordPatternExpr] Inner(...)
+#  105|                             -1: [TypeAccess] String
+#  105|                             0: [LocalVariableDeclExpr] field
+#  106|                       1: [DefaultCase] default
+#  106|                         -1: [StringLiteral] "Doesn't match pattern Middle(Inner(...))"
+#  110|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
-#   55|               0: [TypeAccess] RuntimeException
-#   55|               1: [LocalVariableDeclExpr] rte
-#   55|             1: [BlockStmt] { ... }
-#   56|               0: [ReturnStmt] return ...
-#   60|     10: [Class] E
-#   64|       3: [FieldDeclaration] E A;
+#  110|               0: [TypeAccess] RuntimeException
+#  110|               1: [LocalVariableDeclExpr] rte
+#  110|             1: [BlockStmt] { ... }
+#  111|               0: [ReturnStmt] return ...
+#  115|     10: [Class] E
+#  119|       3: [FieldDeclaration] E A;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   64|         -1: [TypeAccess] E
-#   64|         0: [ClassInstanceExpr] new E(...)
-#   64|           -3: [TypeAccess] E
-#   65|       4: [FieldDeclaration] E B;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  119|         -1: [TypeAccess] E
+#  119|         0: [ClassInstanceExpr] new E(...)
+#  119|           -3: [TypeAccess] E
+#  120|       4: [FieldDeclaration] E B;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   65|         -1: [TypeAccess] E
-#   65|         0: [ClassInstanceExpr] new E(...)
-#   65|           -3: [TypeAccess] E
-#   66|       5: [FieldDeclaration] E C;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  120|         -1: [TypeAccess] E
+#  120|         0: [ClassInstanceExpr] new E(...)
+#  120|           -3: [TypeAccess] E
+#  121|       5: [FieldDeclaration] E C;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   66|         -1: [TypeAccess] E
-#   66|         0: [ClassInstanceExpr] new E(...)
-#   66|           -3: [TypeAccess] E
-#   72|     11: [FieldDeclaration] int i, ...;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  121|         -1: [TypeAccess] E
+#  121|         0: [ClassInstanceExpr] new E(...)
+#  121|           -3: [TypeAccess] E
+#  127|     11: [FieldDeclaration] int i, ...;
 #-----|       -3: (Javadoc)
-#   69|         1: [Javadoc] /** Javadoc for fields */
-#   70|           0: [JavadocText] Javadoc for fields
-#   72|       -1: [TypeAccess] int
+#  124|         1: [Javadoc] /** Javadoc for fields */
+#  125|           0: [JavadocText] Javadoc for fields
+#  127|       -1: [TypeAccess] int
+#  130|   2: [Class] Inner
+#  130|     2: [FieldDeclaration] String field;
+#  131|   3: [Class] Middle
+#  131|     2: [FieldDeclaration] Inner inner;
+AnonDecls.java:
+#    0| [CompilationUnit] AnonDecls
+#-----|   -1: (Imports)
+#    1|     1: [ImportType] import Closeable
+#    2|     2: [ImportType] import List
+#    3|     3: [ImportType] import BiFunction
+#    5|   1: [Class] SubRecord
+#    5|     2: [FieldDeclaration] int z;
+#    6|   2: [Class] MyRecord
+#    6|     2: [FieldDeclaration] int x;
+#    6|     3: [FieldDeclaration] SubRecord y;
+#    8|   3: [Class] AnonDecls
+#   10|     2: [Method] test
+#   10|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   10|         0: [Parameter] ss
+#   10|           0: [TypeAccess] List<String>
+#   10|             0: [TypeAccess] String
+#   10|         1: [Parameter] o
+#   10|           0: [TypeAccess] Object
+#   10|       5: [BlockStmt] { ... }
+#   14|         0: [LocalVariableDeclStmt] var ...;
+#   14|           0: [TypeAccess] int
+#   14|           1: [LocalVariableDeclExpr] <anonymous local variable>
+#   14|             0: [IntegerLiteral] 1
+#   15|         1: [LocalVariableDeclStmt] var ...;
+#   15|           0: [TypeAccess] int
+#   15|           1: [LocalVariableDeclExpr] <anonymous local variable>
+#   15|             0: [IntegerLiteral] 2
+#   17|         2: [TryStmt] try ...
+#   17|           -3: [LocalVariableDeclStmt] var ...;
+#   17|             0: [TypeAccess] Closeable
+#   17|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   17|               0: [NullLiteral] null
+#   17|           -1: [BlockStmt] { ... }
+#   17|           0: [CatchClause] catch (...)
+#-----|             0: (Single Local Variable Declaration)
+#   17|               0: [TypeAccess] Exception
+#   17|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   17|             1: [BlockStmt] { ... }
+#   18|         3: [TryStmt] try ...
+#   18|           -3: [LocalVariableDeclStmt] var ...;
+#   18|             0: [TypeAccess] Closeable
+#   18|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   18|               0: [NullLiteral] null
+#   18|           -1: [BlockStmt] { ... }
+#   18|           0: [CatchClause] catch (...)
+#-----|             0: (Single Local Variable Declaration)
+#   18|               0: [TypeAccess] Exception
+#   18|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   18|             1: [BlockStmt] { ... }
+#   20|         4: [LocalVariableDeclStmt] var ...;
+#   20|           0: [TypeAccess] int
+#   20|           1: [LocalVariableDeclExpr] x
+#   20|             0: [IntegerLiteral] 0
+#   22|         5: [ForStmt] for (...;...;...)
+#-----|           0: (For Initializers) 
+#   22|             0: [TypeAccess] int
+#   22|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   22|               0: [IntegerLiteral] 1
+#   22|           1: [LTExpr] ... < ...
+#   22|             0: [VarAccess] x
+#   22|             1: [IntegerLiteral] 10
+#   22|           2: [BlockStmt] { ... }
+#   22|           3: [PostIncExpr] ...++
+#   22|             0: [VarAccess] x
+#   23|         6: [ForStmt] for (...;...;...)
+#-----|           0: (For Initializers) 
+#   23|             0: [TypeAccess] int
+#   23|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   23|               0: [IntegerLiteral] 2
+#   23|           1: [GTExpr] ... > ...
+#   23|             0: [VarAccess] x
+#   23|             1: [IntegerLiteral] 0
+#   23|           2: [BlockStmt] { ... }
+#   23|           3: [PostDecExpr] ...--
+#   23|             0: [VarAccess] x
+#   25|         7: [EnhancedForStmt] for (... : ...)
+#-----|           0: (Single Local Variable Declaration)
+#   25|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   25|           1: [VarAccess] ss
+#   25|           2: [BlockStmt] { ... }
+#   26|         8: [EnhancedForStmt] for (... : ...)
+#-----|           0: (Single Local Variable Declaration)
+#   26|             1: [LocalVariableDeclExpr] <anonymous local variable>
+#   26|           1: [VarAccess] ss
+#   26|           2: [BlockStmt] { ... }
+#   28|         9: [LocalVariableDeclStmt] var ...;
+#   28|           0: [TypeAccess] BiFunction<Integer,Integer,Integer>
+#   28|             0: [TypeAccess] Integer
+#   28|             1: [TypeAccess] Integer
+#   28|             2: [TypeAccess] Integer
+#   28|           1: [LocalVariableDeclExpr] f1
+#   28|             0: [LambdaExpr] ...->...
+#   28|               -4: [AnonymousClass] new BiFunction<Integer,Integer,Integer>(...) { ... }
+#   28|                 2: [Method] apply
+#-----|                   4: (Parameters)
+#   28|                     0: [Parameter] <anonymous parameter>
+#   28|                     1: [Parameter] <anonymous parameter>
+#   28|                   5: [BlockStmt] { ... }
+#   28|                     0: [ReturnStmt] return ...
+#   28|                       0: [IntegerLiteral] 1
+#   28|               -3: [TypeAccess] BiFunction<Integer,Integer,Integer>
+#   28|                 0: [TypeAccess] Integer
+#   28|                 1: [TypeAccess] Integer
+#   28|                 2: [TypeAccess] Integer
+#   29|         10: [LocalVariableDeclStmt] var ...;
+#   29|           0: [TypeAccess] BiFunction<Integer,Integer,Integer>
+#   29|             0: [TypeAccess] Integer
+#   29|             1: [TypeAccess] Integer
+#   29|             2: [TypeAccess] Integer
+#   29|           1: [LocalVariableDeclExpr] f2
+#   29|             0: [LambdaExpr] ...->...
+#   29|               -4: [AnonymousClass] new BiFunction<Integer,Integer,Integer>(...) { ... }
+#   29|                 2: [Method] apply
+#-----|                   4: (Parameters)
+#   29|                     0: [Parameter] <anonymous parameter>
+#   29|                     1: [Parameter] <anonymous parameter>
+#   29|                   5: [BlockStmt] { ... }
+#   29|                     0: [ReturnStmt] return ...
+#   29|                       0: [IntegerLiteral] 2
+#   29|               -3: [TypeAccess] BiFunction<Integer,Integer,Integer>
+#   29|                 0: [TypeAccess] Integer
+#   29|                 1: [TypeAccess] Integer
+#   29|                 2: [TypeAccess] Integer
+#   31|         11: [SwitchStmt] switch (...)
+#   31|           -1: [VarAccess] o
+#   32|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   32|               0: [TypeAccess] SubRecord
+#   32|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   33|           1: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   33|               0: [TypeAccess] MyRecord
+#   33|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   34|           2: [DefaultCase] default
+#   37|         12: [SwitchStmt] switch (...)
+#   37|           -1: [VarAccess] o
+#   38|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   38|               0: [TypeAccess] SubRecord
+#   38|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   39|           1: [PatternCase] case <Pattern>
+#   39|             0: [RecordPatternExpr] MyRecord(...)
+#   39|               -2: [TypeAccess] SubRecord
+#   39|               -1: [TypeAccess] int
+#   39|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   39|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   40|           2: [DefaultCase] default
+#   43|         13: [SwitchStmt] switch (...)
+#   43|           -1: [VarAccess] o
+#   44|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   44|               0: [TypeAccess] SubRecord
+#   44|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   45|           1: [PatternCase] case <Pattern>
+#   45|             0: [RecordPatternExpr] MyRecord(...)
+#   45|               -1: [TypeAccess] int
+#   45|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   45|               1: [RecordPatternExpr] SubRecord(...)
+#   45|                 -1: [TypeAccess] int
+#   45|                 0: [LocalVariableDeclExpr] <anonymous local variable>
+#   46|           2: [DefaultCase] default
+#   49|         14: [SwitchStmt] switch (...)
+#   49|           -1: [VarAccess] o
+#   50|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   50|               0: [TypeAccess] SubRecord
+#   50|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   51|           1: [PatternCase] case <Pattern>
+#   51|             0: [RecordPatternExpr] MyRecord(...)
+#   51|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   51|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   52|           2: [DefaultCase] default
+#   55|         15: [SwitchStmt] switch (...)
+#   55|           -1: [VarAccess] o
+#   56|           0: [PatternCase] case <Pattern>
+#   56|             0: [RecordPatternExpr] MyRecord(...)
+#   56|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   56|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   56|             1: [RecordPatternExpr] SubRecord(...)
+#   56|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   57|           1: [DefaultCase] default
+#   60|         16: [SwitchStmt] switch (...)
+#   60|           -1: [VarAccess] o
+#   61|           0: [PatternCase] case <Pattern>
+#   61|             -3: [NEExpr] ... != ...
+#   61|               0: [VarAccess] ss
+#   61|               1: [NullLiteral] null
+#   61|             0: [RecordPatternExpr] MyRecord(...)
+#   61|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   61|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   61|             1: [RecordPatternExpr] SubRecord(...)
+#   61|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   62|           1: [DefaultCase] default
+#   65|         17: [SwitchStmt] switch (...)
+#   65|           -1: [VarAccess] o
+#   67|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   67|               0: [TypeAccess] MyRecord
+#   67|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#-----|             1: (Pattern case declaration)
+#   67|               0: [TypeAccess] SubRecord
+#   67|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   68|           1: [DefaultCase] default
+#   71|         18: [SwitchStmt] switch (...)
+#   71|           -1: [VarAccess] o
+#   72|           0: [PatternCase] case <Pattern>
+#   72|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   72|               0: [TypeAccess] SubRecord
+#   72|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   73|           1: [PatternCase] case <Pattern>
+#   73|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   73|               0: [TypeAccess] MyRecord
+#   73|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   74|           2: [DefaultCase] default
+#   74|             -1: [BlockStmt] { ... }
+#   77|         19: [SwitchStmt] switch (...)
+#   77|           -1: [VarAccess] o
+#   78|           0: [PatternCase] case <Pattern>
+#   78|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   78|               0: [TypeAccess] SubRecord
+#   78|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   79|           1: [PatternCase] case <Pattern>
+#   79|             -1: [BlockStmt] { ... }
+#   79|             0: [RecordPatternExpr] MyRecord(...)
+#   79|               -2: [TypeAccess] SubRecord
+#   79|               -1: [TypeAccess] int
+#   79|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   79|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   80|           2: [DefaultCase] default
+#   80|             -1: [BlockStmt] { ... }
+#   83|         20: [SwitchStmt] switch (...)
+#   83|           -1: [VarAccess] o
+#   84|           0: [PatternCase] case <Pattern>
+#   84|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   84|               0: [TypeAccess] SubRecord
+#   84|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   85|           1: [PatternCase] case <Pattern>
+#   85|             -1: [BlockStmt] { ... }
+#   85|             0: [RecordPatternExpr] MyRecord(...)
+#   85|               -1: [TypeAccess] int
+#   85|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   85|               1: [RecordPatternExpr] SubRecord(...)
+#   85|                 -1: [TypeAccess] int
+#   85|                 0: [LocalVariableDeclExpr] <anonymous local variable>
+#   86|           2: [DefaultCase] default
+#   86|             -1: [BlockStmt] { ... }
+#   89|         21: [SwitchStmt] switch (...)
+#   89|           -1: [VarAccess] o
+#   90|           0: [PatternCase] case <Pattern>
+#   90|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   90|               0: [TypeAccess] SubRecord
+#   90|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   91|           1: [PatternCase] case <Pattern>
+#   91|             -1: [BlockStmt] { ... }
+#   91|             0: [RecordPatternExpr] MyRecord(...)
+#   91|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   91|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   92|           2: [DefaultCase] default
+#   92|             -1: [BlockStmt] { ... }
+#   95|         22: [SwitchStmt] switch (...)
+#   95|           -1: [VarAccess] o
+#   96|           0: [PatternCase] case <Pattern>
+#   96|             -1: [BlockStmt] { ... }
+#   96|             0: [RecordPatternExpr] MyRecord(...)
+#   96|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   96|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   96|             1: [RecordPatternExpr] SubRecord(...)
+#   96|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#   97|           1: [DefaultCase] default
+#   97|             -1: [BlockStmt] { ... }
+#  100|         23: [SwitchStmt] switch (...)
+#  100|           -1: [VarAccess] o
+#  101|           0: [PatternCase] case <Pattern>
+#  101|             -3: [NEExpr] ... != ...
+#  101|               0: [VarAccess] ss
+#  101|               1: [NullLiteral] null
+#  101|             -1: [BlockStmt] { ... }
+#  101|             0: [RecordPatternExpr] MyRecord(...)
+#  101|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#  101|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#  101|             1: [RecordPatternExpr] SubRecord(...)
+#  101|               0: [LocalVariableDeclExpr] <anonymous local variable>
+#  102|           1: [DefaultCase] default
+#  102|             -1: [BlockStmt] { ... }
+#  105|         24: [LocalVariableDeclStmt] var ...;
+#  105|           1: [LocalVariableDeclExpr] x1
+#  105|             0: [SwitchExpr] switch (...)
+#  105|               -1: [VarAccess] o
+#  106|               0: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#  106|                   0: [TypeAccess] SubRecord
+#  106|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  107|               1: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#  107|                   0: [TypeAccess] MyRecord
+#  107|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  108|               2: [DefaultCase] default
+#  109|               3: [YieldStmt] yield ...
+#  109|                 0: [IntegerLiteral] 1
+#  112|         25: [LocalVariableDeclStmt] var ...;
+#  112|           1: [LocalVariableDeclExpr] x2
+#  112|             0: [SwitchExpr] switch (...)
+#  112|               -1: [VarAccess] o
+#  113|               0: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#  113|                   0: [TypeAccess] SubRecord
+#  113|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  114|               1: [PatternCase] case <Pattern>
+#  114|                 0: [RecordPatternExpr] MyRecord(...)
+#  114|                   -2: [TypeAccess] SubRecord
+#  114|                   -1: [TypeAccess] int
+#  114|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  114|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  115|               2: [DefaultCase] default
+#  116|               3: [YieldStmt] yield ...
+#  116|                 0: [IntegerLiteral] 1
+#  119|         26: [LocalVariableDeclStmt] var ...;
+#  119|           1: [LocalVariableDeclExpr] x3
+#  119|             0: [SwitchExpr] switch (...)
+#  119|               -1: [VarAccess] o
+#  120|               0: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#  120|                   0: [TypeAccess] SubRecord
+#  120|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  121|               1: [PatternCase] case <Pattern>
+#  121|                 0: [RecordPatternExpr] MyRecord(...)
+#  121|                   -1: [TypeAccess] int
+#  121|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  121|                   1: [RecordPatternExpr] SubRecord(...)
+#  121|                     -1: [TypeAccess] int
+#  121|                     0: [LocalVariableDeclExpr] <anonymous local variable>
+#  122|               2: [DefaultCase] default
+#  123|               3: [YieldStmt] yield ...
+#  123|                 0: [IntegerLiteral] 1
+#  126|         27: [LocalVariableDeclStmt] var ...;
+#  126|           1: [LocalVariableDeclExpr] x4
+#  126|             0: [SwitchExpr] switch (...)
+#  126|               -1: [VarAccess] o
+#  127|               0: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#  127|                   0: [TypeAccess] SubRecord
+#  127|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  128|               1: [PatternCase] case <Pattern>
+#  128|                 0: [RecordPatternExpr] MyRecord(...)
+#  128|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  128|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  129|               2: [DefaultCase] default
+#  130|               3: [YieldStmt] yield ...
+#  130|                 0: [IntegerLiteral] 1
+#  133|         28: [LocalVariableDeclStmt] var ...;
+#  133|           1: [LocalVariableDeclExpr] x5
+#  133|             0: [SwitchExpr] switch (...)
+#  133|               -1: [VarAccess] o
+#  134|               0: [PatternCase] case <Pattern>
+#  134|                 0: [RecordPatternExpr] MyRecord(...)
+#  134|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  134|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  134|                 1: [RecordPatternExpr] SubRecord(...)
+#  134|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  135|               1: [DefaultCase] default
+#  136|               2: [YieldStmt] yield ...
+#  136|                 0: [IntegerLiteral] 1
+#  139|         29: [LocalVariableDeclStmt] var ...;
+#  139|           1: [LocalVariableDeclExpr] x6
+#  139|             0: [SwitchExpr] switch (...)
+#  139|               -1: [VarAccess] o
+#  140|               0: [PatternCase] case <Pattern>
+#  140|                 -3: [NEExpr] ... != ...
+#  140|                   0: [VarAccess] ss
+#  140|                   1: [NullLiteral] null
+#  140|                 0: [RecordPatternExpr] MyRecord(...)
+#  140|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  140|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  140|                 1: [RecordPatternExpr] SubRecord(...)
+#  140|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  141|               1: [DefaultCase] default
+#  142|               2: [YieldStmt] yield ...
+#  142|                 0: [IntegerLiteral] 1
+#  145|         30: [LocalVariableDeclStmt] var ...;
+#  145|           1: [LocalVariableDeclExpr] x7
+#  145|             0: [SwitchExpr] switch (...)
+#  145|               -1: [VarAccess] o
+#  146|               0: [PatternCase] case <Pattern>
+#  146|                 -1: [IntegerLiteral] 1
+#-----|                 0: (Pattern case declaration)
+#  146|                   0: [TypeAccess] SubRecord
+#  146|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  147|               1: [PatternCase] case <Pattern>
+#  147|                 -1: [IntegerLiteral] 2
+#-----|                 0: (Pattern case declaration)
+#  147|                   0: [TypeAccess] MyRecord
+#  147|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  148|               2: [DefaultCase] default
+#  148|                 -1: [IntegerLiteral] 3
+#  151|         31: [LocalVariableDeclStmt] var ...;
+#  151|           1: [LocalVariableDeclExpr] x8
+#  151|             0: [SwitchExpr] switch (...)
+#  151|               -1: [VarAccess] o
+#  152|               0: [PatternCase] case <Pattern>
+#  152|                 -1: [IntegerLiteral] 1
+#-----|                 0: (Pattern case declaration)
+#  152|                   0: [TypeAccess] SubRecord
+#  152|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  153|               1: [PatternCase] case <Pattern>
+#  153|                 -1: [IntegerLiteral] 2
+#  153|                 0: [RecordPatternExpr] MyRecord(...)
+#  153|                   -2: [TypeAccess] SubRecord
+#  153|                   -1: [TypeAccess] int
+#  153|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  153|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  154|               2: [DefaultCase] default
+#  154|                 -1: [IntegerLiteral] 3
+#  157|         32: [LocalVariableDeclStmt] var ...;
+#  157|           1: [LocalVariableDeclExpr] x9
+#  157|             0: [SwitchExpr] switch (...)
+#  157|               -1: [VarAccess] o
+#  158|               0: [PatternCase] case <Pattern>
+#  158|                 -1: [IntegerLiteral] 1
+#-----|                 0: (Pattern case declaration)
+#  158|                   0: [TypeAccess] SubRecord
+#  158|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  159|               1: [PatternCase] case <Pattern>
+#  159|                 -1: [IntegerLiteral] 2
+#  159|                 0: [RecordPatternExpr] MyRecord(...)
+#  159|                   -1: [TypeAccess] int
+#  159|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  159|                   1: [RecordPatternExpr] SubRecord(...)
+#  159|                     -1: [TypeAccess] int
+#  159|                     0: [LocalVariableDeclExpr] <anonymous local variable>
+#  160|               2: [DefaultCase] default
+#  160|                 -1: [IntegerLiteral] 3
+#  163|         33: [LocalVariableDeclStmt] var ...;
+#  163|           1: [LocalVariableDeclExpr] x10
+#  163|             0: [SwitchExpr] switch (...)
+#  163|               -1: [VarAccess] o
+#  164|               0: [PatternCase] case <Pattern>
+#  164|                 -1: [IntegerLiteral] 1
+#-----|                 0: (Pattern case declaration)
+#  164|                   0: [TypeAccess] SubRecord
+#  164|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  165|               1: [PatternCase] case <Pattern>
+#  165|                 -1: [IntegerLiteral] 2
+#  165|                 0: [RecordPatternExpr] MyRecord(...)
+#  165|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  165|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  166|               2: [DefaultCase] default
+#  166|                 -1: [IntegerLiteral] 3
+#  169|         34: [LocalVariableDeclStmt] var ...;
+#  169|           1: [LocalVariableDeclExpr] x11
+#  169|             0: [SwitchExpr] switch (...)
+#  169|               -1: [VarAccess] o
+#  170|               0: [PatternCase] case <Pattern>
+#  170|                 -1: [IntegerLiteral] 1
+#  170|                 0: [RecordPatternExpr] MyRecord(...)
+#  170|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  170|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  170|                 1: [RecordPatternExpr] SubRecord(...)
+#  170|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  171|               1: [DefaultCase] default
+#  171|                 -1: [IntegerLiteral] 2
+#  174|         35: [LocalVariableDeclStmt] var ...;
+#  174|           1: [LocalVariableDeclExpr] x12
+#  174|             0: [SwitchExpr] switch (...)
+#  174|               -1: [VarAccess] o
+#  175|               0: [PatternCase] case <Pattern>
+#  175|                 -3: [NEExpr] ... != ...
+#  175|                   0: [VarAccess] ss
+#  175|                   1: [NullLiteral] null
+#  175|                 -1: [IntegerLiteral] 1
+#  175|                 0: [RecordPatternExpr] MyRecord(...)
+#  175|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  175|                   1: [LocalVariableDeclExpr] <anonymous local variable>
+#  175|                 1: [RecordPatternExpr] SubRecord(...)
+#  175|                   0: [LocalVariableDeclExpr] <anonymous local variable>
+#  176|               1: [DefaultCase] default
+#  176|                 -1: [IntegerLiteral] 2

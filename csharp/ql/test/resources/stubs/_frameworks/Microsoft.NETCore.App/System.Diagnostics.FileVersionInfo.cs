@@ -1,11 +1,10 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.FileVersionInfo, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `System.Diagnostics.FileVersionInfo, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
     {
-        public class FileVersionInfo
+        public sealed class FileVersionInfo
         {
             public string Comments { get => throw null; }
             public string CompanyName { get => throw null; }
@@ -37,6 +36,5 @@ namespace System
             public string SpecialBuild { get => throw null; }
             public override string ToString() => throw null;
         }
-
     }
 }

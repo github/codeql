@@ -1,6 +1,6 @@
-| FieldAccess.cpp:11:12:11:13 | p1 | ptr |
-| FieldAccess.cpp:12:12:12:13 | p2 | ptr |
-| FieldAccess.cpp:25:12:25:13 | x1 | ptr |
+| FieldAccess.cpp:11:12:11:13 | p1 | ptr, this |
+| FieldAccess.cpp:12:12:12:13 | p2 | ptr, this |
+| FieldAccess.cpp:25:12:25:13 | x1 | ptr, this |
 | FieldAccess.cpp:29:18:29:19 | x2 | ptr |
 | FieldAccess.cpp:34:3:34:3 | d | this |
 | FieldAccess.cpp:45:13:45:14 | x1 | ptr |
@@ -19,10 +19,10 @@
 | FieldAccess.cpp:91:7:91:7 | x | val |
 | FieldAccess.cpp:91:13:91:13 | y | ref |
 | FieldAccess.cpp:92:8:92:8 | x | ptr |
-| FieldAccess.cpp:92:12:92:12 | y | ptr |
+| FieldAccess.cpp:92:12:92:12 | y | ptr, this |
 | FieldAccess.cpp:93:8:93:8 | x | ptr |
 | FieldAccess.cpp:93:18:93:18 | y | ptr |
 | FieldAccess.cpp:94:11:94:11 | y | ptr |
 | FieldAccess.cpp:94:20:94:20 | y | val |
-| FieldAccess.cpp:113:5:113:5 | x | ptr |
+| FieldAccess.cpp:113:5:113:5 | x | ptr, this |
 | FieldAccess.cpp:116:3:116:3 | v | this |

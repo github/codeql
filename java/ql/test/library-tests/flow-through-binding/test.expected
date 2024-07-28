@@ -1,0 +1,6 @@
+| Test.java:60:23:60:30 | source(...) | Test.java:61:10:61:61 | testFlowThroughSwitchStmt(...) |
+| Test.java:60:23:60:30 | source(...) | Test.java:62:10:62:61 | testFlowThroughSwitchExpr(...) |
+| Test.java:60:23:60:30 | source(...) | Test.java:63:10:63:68 | testFlowThroughBindingInstanceOf(...) |
+| Test.java:66:51:66:58 | source(...) | Test.java:67:10:67:82 | testFlowThroughSwitchStmtWrapper(...) |
+| Test.java:66:51:66:58 | source(...) | Test.java:68:10:68:82 | testFlowThroughSwitchExprWrapper(...) |
+| Test.java:66:51:66:58 | source(...) | Test.java:69:10:69:89 | testFlowThroughBindingInstanceOfWrapper(...) |

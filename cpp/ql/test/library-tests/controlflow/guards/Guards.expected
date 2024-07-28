@@ -24,9 +24,28 @@
 | test.c:126:12:126:26 | call to test3_condition |
 | test.c:131:7:131:7 | b |
 | test.c:137:7:137:7 | 0 |
-| test.c:138:9:138:9 | i |
 | test.c:146:7:146:8 | ! ... |
 | test.c:146:8:146:8 | x |
+| test.c:152:8:152:8 | p |
+| test.c:158:8:158:9 | ! ... |
+| test.c:158:9:158:9 | p |
+| test.c:164:8:164:8 | s |
+| test.c:170:8:170:9 | ! ... |
+| test.c:170:9:170:9 | s |
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
+| test.cpp:61:10:61:10 | i |
+| test.cpp:74:10:74:10 | i |
+| test.cpp:84:10:84:10 | i |
+| test.cpp:93:6:93:6 | c |
+| test.cpp:99:6:99:6 | f |
+| test.cpp:105:6:105:14 | ... != ... |
+| test.cpp:111:6:111:14 | ... != ... |
+| test.cpp:122:9:122:9 | b |
+| test.cpp:125:13:125:20 | ! ... |
+| test.cpp:125:14:125:17 | call to safe |
+| test.cpp:131:6:131:21 | call to __builtin_expect |
+| test.cpp:135:6:135:21 | call to __builtin_expect |
+| test.cpp:141:6:141:21 | call to __builtin_expect |
+| test.cpp:145:6:145:21 | call to __builtin_expect |

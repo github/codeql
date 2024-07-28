@@ -5,7 +5,8 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.IO
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.security.Sanitizers
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for uncontrolled data in path expression vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for uncontrolled data in path expression vulnerabilities.
@@ -56,8 +57,15 @@ private module TaintedPathConfig implements DataFlow::ConfigSig {
  */
 module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * A path argument to a `File` method call.

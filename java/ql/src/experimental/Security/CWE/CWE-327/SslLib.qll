@@ -24,7 +24,7 @@ module UnsafeTlsVersionFlow = TaintTracking::Global<UnsafeTlsVersionConfig>;
  */
 class SslContextGetInstanceSink extends DataFlow::ExprNode {
   SslContextGetInstanceSink() {
-    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+    exists(StaticMethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslContext and
       m.hasName("getInstance") and
       ma.getArgument(0) = this.asExpr()
@@ -50,7 +50,7 @@ class CreateSslParametersSink extends DataFlow::ExprNode {
  */
 class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
   SslParametersSetProtocolsSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslParameters and
       m.hasName("setProtocols") and
       ma.getArgument(0) = this.asExpr()
@@ -64,7 +64,7 @@ class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
  */
 class SetEnabledProtocolsSink extends DataFlow::ExprNode {
   SetEnabledProtocolsSink() {
-    exists(MethodAccess ma, Method m, RefType type |
+    exists(MethodCall ma, Method m, RefType type |
       m = ma.getMethod() and type = m.getDeclaringType()
     |
       (

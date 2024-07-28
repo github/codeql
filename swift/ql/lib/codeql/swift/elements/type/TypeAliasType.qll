@@ -1,6 +1,12 @@
 private import codeql.swift.elements.type.Type
 private import codeql.swift.generated.type.TypeAliasType
 
+/**
+ * A type alias to another type. For example:
+ * ```
+ * typealias MyInt = Int
+ * ```
+ */
 class TypeAliasType extends Generated::TypeAliasType {
   /**
    * Gets the aliased type of this type alias type.
@@ -13,6 +19,4 @@ class TypeAliasType extends Generated::TypeAliasType {
   Type getAliasedType() { result = this.getDecl().getAliasedType() }
 
   override Type getUnderlyingType() { result = this.getAliasedType().getUnderlyingType() }
-
-  override Type getABaseType() { result = this.getAliasedType().getABaseType() }
 }

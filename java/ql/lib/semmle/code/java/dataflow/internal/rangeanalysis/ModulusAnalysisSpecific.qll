@@ -4,6 +4,7 @@ module Private {
   private import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.controlflow.Guards as G
   private import semmle.code.java.controlflow.BasicBlocks as BB
+  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
   private import SsaReadPositionCommon
 
   class BasicBlock = BB::BasicBlock;
@@ -100,9 +101,31 @@ module Private {
     }
   }
 
-  predicate guardDirectlyControlsSsaRead = RU::guardDirectlyControlsSsaRead/3;
+  /**
+   * Holds if `guard` directly controls the position `controlled` with the
+   * value `testIsTrue`.
+   */
+  pragma[nomagic]
+  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
+    )
+  }
 
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    or
+    exists(Guard guard0, boolean testIsTrue0 |
+      GL::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
+      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    )
+  }
 
   predicate valueFlowStep = RU::valueFlowStep/3;
 

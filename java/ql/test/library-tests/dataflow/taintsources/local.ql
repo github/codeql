@@ -7,7 +7,7 @@ class LocalSource extends DataFlow::Node instanceof UserInput {
 }
 
 predicate isTestSink(DataFlow::Node n) {
-  exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
 module LocalValueConfig implements DataFlow::ConfigSig {

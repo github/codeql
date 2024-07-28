@@ -37,10 +37,10 @@ class DoGetServletMethod extends Method {
 }
 
 /** Holds if `ma` is (perhaps indirectly) called from the `doGet` method of `HttpServlet`. */
-predicate isReachableFromServletDoGet(MethodAccess ma) {
+predicate isReachableFromServletDoGet(MethodCall ma) {
   ma.getEnclosingCallable() instanceof DoGetServletMethod
   or
-  exists(Method pm, MethodAccess pma |
+  exists(Method pm, MethodCall pma |
     ma.getEnclosingCallable() = pm and
     pma.getMethod() = pm and
     isReachableFromServletDoGet(pma)
@@ -50,7 +50,7 @@ predicate isReachableFromServletDoGet(MethodAccess ma) {
 /** Source of GET servlet requests. */
 class RequestGetParamSource extends DataFlow::ExprNode {
   RequestGetParamSource() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       isRequestGetParamMethod(ma) and
       ma = this.asExpr() and
       isReachableFromServletDoGet(ma)

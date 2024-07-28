@@ -57,7 +57,10 @@ module Gem {
     }
 
     /** Gets the name of the gem */
-    string getName() { result = this.getSpecProperty("name").getConstantValue().getString() }
+    string getName() {
+      result = this.getSpecProperty("name").getConstantValue().getString() or
+      result = specCall.getArgument(0).getAValueReachingSink().getConstantValue().getString()
+    }
 
     /** Gets a path that is loaded when the gem is required */
     private string getARequirePath() {

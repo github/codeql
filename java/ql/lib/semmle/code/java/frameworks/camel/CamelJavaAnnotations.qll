@@ -19,7 +19,7 @@ import java
 import semmle.code.java.Reflection
 import semmle.code.java.frameworks.spring.Spring
 
-library class CamelAnnotation extends Annotation {
+class CamelAnnotation extends Annotation {
   CamelAnnotation() { this.getType().getPackage().hasName("org.apache.camel") }
 }
 

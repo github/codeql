@@ -19,7 +19,21 @@ private module DispatchImpl {
     )
   }
 
+  private predicate hasExactManualModel(Call c, Callable tgt) {
+    tgt = c.getCallee().getSourceDeclaration() and
+    (
+      exists(Impl::Public::SummarizedCallable sc |
+        sc.getACall() = c and sc.hasExactModel() and sc.hasManualModel()
+      )
+      or
+      exists(Impl::Public::NeutralSummaryCallable nc |
+        nc.getACall() = c and nc.hasExactModel() and nc.hasManualModel()
+      )
+    )
+  }
+
   private Callable sourceDispatch(Call c) {
+    not hasExactManualModel(c, result) and
     result = VirtualDispatch::viableCallable(c) and
     if VirtualDispatch::lowConfidenceDispatchTarget(c, result)
     then not hasHighConfidenceTarget(c)
@@ -38,7 +52,7 @@ private module DispatchImpl {
    * might be improved by knowing the call context. This is the case if the
    * qualifier is the `i`th parameter of the enclosing callable `c`.
    */
-  private predicate mayBenefitFromCallContext(MethodAccess ma, Callable c, int i) {
+  private predicate mayBenefitFromCallContext(MethodCall ma, Callable c, int i) {
     exists(Parameter p |
       2 <= strictcount(sourceDispatch(ma)) and
       ma.getQualifier().(VarAccess).getVariable() = p and
@@ -58,7 +72,7 @@ private module DispatchImpl {
 
   /**
    * Holds if the call `ctx` might act as a context that improves the set of
-   * dispatch targets of a `MethodAccess` that occurs in a viable target of
+   * dispatch targets of a `MethodCall` that occurs in a viable target of
    * `ctx`.
    */
   pragma[nomagic]
@@ -116,10 +130,16 @@ private module DispatchImpl {
   /**
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context. This is the case if the
-   * qualifier is a parameter of the enclosing callable `c`.
+   * qualifier is a parameter of the enclosing callable of `call`.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-    mayBenefitFromCallContext(call.asCall(), c.asCallable(), _)
+  predicate mayBenefitFromCallContext(DataFlowCall call) {
+    mayBenefitFromCallContext(call.asCall(), _, _)
+  }
+
+  bindingset[call, tgt]
+  pragma[inline_late]
+  private predicate viableCallableFilter(DataFlowCall call, DataFlowCallable tgt) {
+    tgt = viableCallable(call)
   }
 
   /**
@@ -127,8 +147,8 @@ private module DispatchImpl {
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    result = viableCallable(call) and
-    exists(int i, Callable c, Method def, RefType t, boolean exact, MethodAccess ma |
+    viableCallableFilter(call, result) and
+    exists(int i, Callable c, Method def, RefType t, boolean exact, MethodCall ma |
       ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx).asCallable() and
@@ -171,16 +191,6 @@ private module DispatchImpl {
   /** Holds if arguments at position `apos` match parameters at position `ppos`. */
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
-
-  /**
-   * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
-   *
-   * This is a temporary hook to support technical debt in the Go language; do not use.
-   */
-  pragma[inline]
-  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-    any()
-  }
 }
 
 import DispatchImpl

@@ -1,8 +1,0 @@
-edges
-| StoredLDAPInjection.cs:22:83:22:109 | call to method GetString : String | StoredLDAPInjection.cs:22:66:22:109 | ... + ... |
-nodes
-| StoredLDAPInjection.cs:22:66:22:109 | ... + ... | semmle.label | ... + ... |
-| StoredLDAPInjection.cs:22:83:22:109 | call to method GetString : String | semmle.label | call to method GetString : String |
-subpaths
-#select
-| StoredLDAPInjection.cs:22:66:22:109 | ... + ... | StoredLDAPInjection.cs:22:83:22:109 | call to method GetString : String | StoredLDAPInjection.cs:22:66:22:109 | ... + ... | This LDAP query depends on a $@. | StoredLDAPInjection.cs:22:83:22:109 | call to method GetString | stored (potentially user-provided) value |

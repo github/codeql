@@ -5,13 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Stores information about an assembly file (DLL).
     /// </summary>
-    internal sealed class AssemblyInfo
+    internal sealed partial class AssemblyInfo
     {
         /// <summary>
         /// The file containing the assembly.
@@ -27,6 +29,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The version number of this assembly.
         /// </summary>
         public System.Version? Version { get; }
+
+        /// <summary>
+        /// The version number of the .NET Core framework that this assembly targets.
+        ///
+        /// This is extracted from the `TargetFrameworkAttribute` of the assembly, e.g.
+        /// ```
+        /// [assembly:TargetFramework(".NETCoreApp,Version=v7.0")]
+        /// ```
+        /// yields version 7.0.
+        /// </summary>
+        public Version? NetCoreVersion { get; }
 
         /// <summary>
         /// The public key token of the assembly.
@@ -97,28 +110,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Filename = filename;
         }
 
-        private AssemblyInfo(string filename, string name, Version version, string culture, string publicKeyToken)
+        private AssemblyInfo(string filename, string name, Version version, string culture, string publicKeyToken, Version? netCoreVersion)
         {
             Filename = filename;
             Name = name;
             Version = version;
             Culture = culture;
             PublicKeyToken = publicKeyToken;
-        }
-
-        /// <summary>
-        /// Get AssemblyInfo from a loaded Assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>Info about the assembly.</returns>
-        public static AssemblyInfo MakeFromAssembly(Assembly assembly)
-        {
-            if (assembly.FullName is null)
-            {
-                throw new InvalidOperationException("Assembly with empty full name is not expected.");
-            }
-
-            return new AssemblyInfo(assembly.FullName, assembly.Location);
+            NetCoreVersion = netCoreVersion;
         }
 
         /// <summary>
@@ -146,11 +145,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  *  loading the same assembly from different locations.
                  */
                 using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+                if (!pereader.HasMetadata)
+                {
+                    throw new AssemblyLoadException();
+                }
+
                 using var sha1 = SHA1.Create();
                 var metadata = pereader.GetMetadata();
+
                 unsafe
                 {
-                    var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
+                    var reader = new MetadataReader(metadata.Pointer, metadata.Length);
+                    if (!reader.IsAssembly)
+                    {
+                        throw new AssemblyLoadException();
+                    }
+
                     var def = reader.GetAssemblyDefinition();
 
                     // This is how you compute the public key token from the full public key.
@@ -162,7 +172,39 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         publicKeyString.AppendFormat("{0:x2}", b);
 
                     var culture = def.Culture.IsNil ? "neutral" : reader.GetString(def.Culture);
-                    return new AssemblyInfo(filename, reader.GetString(def.Name), def.Version, culture, publicKeyString.ToString());
+                    Version? netCoreVersion = null;
+
+                    foreach (var attrHandle in def.GetCustomAttributes().Select(reader.GetCustomAttribute))
+                    {
+                        var ctorHandle = attrHandle.Constructor;
+                        if (ctorHandle.Kind != HandleKind.MemberReference)
+                        {
+                            continue;
+                        }
+
+                        var mHandle = reader.GetMemberReference((MemberReferenceHandle)ctorHandle).Parent;
+                        if (mHandle.Kind != HandleKind.TypeReference)
+                        {
+                            continue;
+                        }
+
+                        var name = reader.GetString(reader.GetTypeReference((TypeReferenceHandle)mHandle).Name);
+
+                        if (name is "TargetFrameworkAttribute")
+                        {
+                            var decoded = attrHandle.DecodeValue(new DummyAttributeDecoder());
+                            if (
+                                decoded.FixedArguments.Length > 0 &&
+                                decoded.FixedArguments[0].Value is string value &&
+                                NetCoreAppRegex().Match(value).Groups.TryGetValue("version", out var match))
+                            {
+                                netCoreVersion = new Version(match.Value);
+                            }
+                            break;
+                        }
+                    }
+
+                    return new AssemblyInfo(filename, reader.GetString(def.Name), def.Version, culture, publicKeyString.ToString(), netCoreVersion);
                 }
             }
             catch (BadImageFormatException)
@@ -175,6 +217,34 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             throw new AssemblyLoadException();
+        }
+
+        [GeneratedRegex(@"^\.NETCoreApp,Version=v(?<version>\d+\.\d+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex NetCoreAppRegex();
+
+        private class DummyAttributeDecoder : ICustomAttributeTypeProvider<int>
+        {
+            public int GetPrimitiveType(PrimitiveTypeCode typeCode) => 0;
+
+            public int GetSystemType() => throw new NotImplementedException();
+
+            public int GetSZArrayType(int elementType) =>
+                throw new NotImplementedException();
+
+            public int GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind) =>
+                throw new NotImplementedException();
+
+            public int GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) =>
+                throw new NotImplementedException();
+
+            public int GetTypeFromSerializedName(string name) =>
+                throw new NotImplementedException();
+
+            public PrimitiveTypeCode GetUnderlyingEnumType(int type) =>
+                throw new NotImplementedException();
+
+            public bool IsSystemType(int type) => throw new NotImplementedException();
+
         }
     }
 }

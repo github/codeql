@@ -1,3 +1,13 @@
+package main
+
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+	"os"
+	"regexp"
+)
+
 func good() (interface{}, error) {
 	name := os.Args[1]
 	hasBadChar, _ := regexp.MatchString(".*[?].*", name)

@@ -13,19 +13,30 @@ class Test {
 
     public Test() { }
 
-    static class Generic<T> {
+    static class BaseClass {
+    }
+
+    static class Generic<T> extends BaseClass {
         public Generic() { }
 
         class Inner {
             public Inner() { }
+
+            void test() {
+                Supplier s0 = Generic.this::toString;
+                Supplier s1 = Generic.super::toString;
+            }
         }
 
         void test() {
-            Supplier s = Generic<Number>.Inner::new;
+            Supplier s0 = Generic<Number>.Inner::new;
+            Supplier s1 = super::toString;
         }
     }
 
     void doSomething() { }
+
+    static void staticMethod() { }
 
     static class Sub extends Test {
     }
@@ -43,9 +54,12 @@ class Test {
         Supplier s0 = this::toString;
         Supplier s1 = this::hashCode;
         Supplier s2 = this::clone;
+        Supplier s3 = ((Supplier) this::toString)::toString;
 
         // Discards result of method call
-        Runnable r = this::toString;
+        Runnable r0 = this::toString;
+
+        Runnable r1 = Test::staticMethod;
 
         Supplier[] classInstances = {
             Test::new,

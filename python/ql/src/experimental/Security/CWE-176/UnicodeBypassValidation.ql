@@ -14,10 +14,10 @@
 
 import python
 import UnicodeBypassValidationQuery
-import DataFlow::PathGraph
+import UnicodeBypassValidationFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from UnicodeBypassValidationFlow::PathNode source, UnicodeBypassValidationFlow::PathNode sink
+where UnicodeBypassValidationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters.",
   sink.getNode(), "Unicode transformation (Unicode normalization)", source.getNode(),

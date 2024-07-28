@@ -104,7 +104,7 @@ predicate isReturnedWithError(Node node) {
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
   or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
@@ -118,14 +118,16 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 cached
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  basicLocalFlowStep(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  basicLocalFlowStep(nodeFrom, nodeTo) and
+  model = ""
   or
   // step through function model
-  any(FunctionModel m).flowStep(nodeFrom, nodeTo)
+  any(FunctionModel m).flowStep(nodeFrom, nodeTo) and
+  model = "FunctionModel"
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**
@@ -405,34 +407,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       )
     )
   }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * When using a data-flow or taint-flow configuration `cfg`, it is important
- * that any classes extending BarrierGuard in scope which are not used in `cfg`
- * are disjoint from any classes extending BarrierGuard in scope which are used
- * in `cfg`.
- */
-abstract deprecated class BarrierGuard extends Node {
-  /** Holds if this guard validates `e` upon evaluating to `branch`. */
-  abstract predicate checks(Expr e, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    result = BarrierGuard<barrierGuardChecks/3>::getABarrierNodeForGuard(this)
-  }
-}
-
-deprecated private predicate barrierGuardChecks(Node g, Expr e, boolean branch) {
-  g.(BarrierGuard).checks(e, branch)
 }
 
 DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {

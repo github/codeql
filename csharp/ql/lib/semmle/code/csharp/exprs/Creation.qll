@@ -438,7 +438,12 @@ class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
   predicate hasExplicitReturnType() { lambda_expr_return_type(this, _) }
 
   /** Gets the explicit return type of this lambda expression, if any. */
-  Type getExplicitReturnType() { lambda_expr_return_type(this, getTypeRef(result)) }
+  Type getExplicitReturnType() {
+    lambda_expr_return_type(this, result)
+    or
+    not lambda_expr_return_type(this, any(Type t)) and
+    lambda_expr_return_type(this, getTypeRef(result))
+  }
 
   override string toString() { result = "(...) => ..." }
 

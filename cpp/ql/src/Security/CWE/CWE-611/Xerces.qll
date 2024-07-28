@@ -70,7 +70,7 @@ class XercesDomParserLibrary extends XmlLibrary {
     // sink is the read of the qualifier of a call to `AbstractDOMParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof AbstractDomParserClass and
-      call.getQualifier() = node.asIndirectConvertedExpr()
+      call.getQualifier() = node.asIndirectExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -114,7 +114,7 @@ class CreateLSParserLibrary extends XmlLibrary {
     // sink is the read of the qualifier of a call to `DOMLSParserClass.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof DomLSParserClass and
-      call.getQualifier() = node.asIndirectConvertedExpr()
+      call.getQualifier() = node.asIndirectExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -155,7 +155,7 @@ class SaxParserLibrary extends XmlLibrary {
     // sink is the read of the qualifier of a call to `SAXParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof SaxParserClass and
-      call.getQualifier() = node.asIndirectConvertedExpr()
+      call.getQualifier() = node.asIndirectExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -192,7 +192,7 @@ class Sax2XmlReaderLibrary extends XmlLibrary {
     // sink is the read of the qualifier of a call to `SAX2XMLReader.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof Sax2XmlReader and
-      call.getQualifier() = node.asIndirectConvertedExpr()
+      call.getQualifier() = node.asIndirectExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration

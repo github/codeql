@@ -110,12 +110,12 @@ comments2.cs:
 #  115|           -1: [TypeMention] int
 #  115|           0: [LocalVariableAccess] access to local variable t4
 #  115|           1: [MethodCall] call to method GenericFn<Double>
-#  119|   18: [Class] GenericClass<>
+#  119|   20: [Class] GenericClass`1
 #-----|     1: (Type parameters)
 #  119|       0: [TypeParameter] T
 #  121|     5: [Field] f
 #  121|       -1: [TypeMention] int
-#  125|   21: [Method] GenericFn<>
+#  125|   23: [Method] GenericFn`1
 #  125|     -1: [TypeMention] int
 #-----|     1: (Type parameters)
 #  125|       0: [TypeParameter] T
@@ -186,14 +186,10 @@ trivia.cs:
 #   89|     4: [BlockStmt] {...}
 #   92|   7: [Field] F1
 #   92|     -1: [TypeMention] int
-#   92|     1: [AssignExpr] ... = ...
-#   92|       0: [FieldAccess] access to field F1
-#   94|       1: [IntLiteral] 10
+#   94|     1: [IntLiteral] 10
 #   98|   8: [Field] F2
 #   98|     -1: [TypeMention] int
-#   98|     1: [AssignExpr] ... = ...
-#   98|       0: [FieldAccess] access to field F2
-#   98|       1: [IntLiteral] 0
+#   98|     1: [IntLiteral] 0
 #  100|   9: [Property] P1
 #  100|     -1: [TypeMention] int
 #  102|     3: [Getter] get_P1

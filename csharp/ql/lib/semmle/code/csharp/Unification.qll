@@ -15,7 +15,7 @@ module Gvn {
    * but only if the enclosing type is not a `GenericType`.
    */
   string getNameNested(Type t) {
-    exists(string name | name = t.getName() |
+    exists(string name | name = t.getUndecoratedName() |
       if not t instanceof NestedType or t.(NestedType).getDeclaringType() instanceof GenericType
       then result = name
       else result = getNameNested(t.(NestedType).getDeclaringType()) + "+" + name
@@ -267,7 +267,7 @@ module Gvn {
             or
             this.isDeclaringTypeAt(i) and j = 1 and result = "."
           else (
-            j = 0 and result = name.prefix(name.length() - children - 1) + "<"
+            j = 0 and result = name + "<"
             or
             j in [1 .. 2 * children - 1] and
             if j % 2 = 0
@@ -538,7 +538,8 @@ module Unification {
      *
      * Note: This predicate is inlined.
      */
-    bindingset[t]
+    bindingset[this]
+    pragma[inline_late]
     predicate unifiable(Type t) { none() }
 
     /**
@@ -546,7 +547,8 @@ module Unification {
      *
      * Note: This predicate is inlined.
      */
-    bindingset[t]
+    bindingset[this]
+    pragma[inline_late]
     predicate subsumes(Type t) { none() }
   }
 
@@ -554,7 +556,8 @@ module Unification {
   private class SingleConstraintTypeParameter extends ConstrainedTypeParameter {
     SingleConstraintTypeParameter() { constraintCount = 1 }
 
-    bindingset[t]
+    bindingset[this]
+    pragma[inline_late]
     override predicate unifiable(Type t) {
       exists(TTypeParameterConstraint ttc | ttc = getATypeConstraint(this) |
         ttc = TRefTypeConstraint() and
@@ -567,7 +570,8 @@ module Unification {
       )
     }
 
-    bindingset[t]
+    bindingset[this]
+    pragma[inline_late]
     override predicate subsumes(Type t) {
       exists(TTypeParameterConstraint ttc | ttc = getATypeConstraint(this) |
         ttc = TRefTypeConstraint() and
@@ -585,9 +589,13 @@ module Unification {
   private class MultiConstraintTypeParameter extends ConstrainedTypeParameter {
     MultiConstraintTypeParameter() { constraintCount > 1 }
 
-    bindingset[t]
+    pragma[nomagic]
+    TTypeParameterConstraint getATypeConstraint() { result = getATypeConstraint(this) }
+
+    bindingset[this]
+    pragma[inline_late]
     override predicate unifiable(Type t) {
-      forex(TTypeParameterConstraint ttc | ttc = getATypeConstraint(this) |
+      forex(TTypeParameterConstraint ttc | ttc = this.getATypeConstraint() |
         ttc = TRefTypeConstraint() and
         t.isRefType()
         or
@@ -598,9 +606,10 @@ module Unification {
       )
     }
 
-    bindingset[t]
+    bindingset[this]
+    pragma[inline_late]
     override predicate subsumes(Type t) {
-      forex(TTypeParameterConstraint ttc | ttc = getATypeConstraint(this) |
+      forex(TTypeParameterConstraint ttc | ttc = this.getATypeConstraint() |
         ttc = TRefTypeConstraint() and
         t.isRefType()
         or

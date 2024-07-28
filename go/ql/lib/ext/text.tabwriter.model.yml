@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["text/tabwriter", "Writer", True, "Init", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["text/tabwriter", "Writer", True, "Init", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

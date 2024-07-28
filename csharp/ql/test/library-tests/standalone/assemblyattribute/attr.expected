@@ -1,0 +1,2 @@
+| standalone.cs:3:12:3:29 | [assembly: Attribute1(...)] |
+| standalone.cs:9:2:9:11 | [Attribute1(...)] |

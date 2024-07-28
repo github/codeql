@@ -20,6 +20,8 @@ private class InetAton extends TaintFunction, ArrayFunction {
     output.isParameterDeref(1)
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(1) }
+
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 1 }
@@ -157,7 +159,7 @@ private class Getaddrinfo extends TaintFunction, ArrayFunction, RemoteFlowSource
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam in [0, 1] }
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(3) and
+    output.isParameterDeref(3, 2) and
     description = "address returned by " + this.getName()
   }
 }

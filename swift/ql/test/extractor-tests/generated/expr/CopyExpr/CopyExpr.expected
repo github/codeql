@@ -1,0 +1,1 @@
+| move_semantics.swift:4:9:4:14 | CopyExpr | hasType: | yes | getSubExpr: | move_semantics.swift:4:14:4:14 | x |

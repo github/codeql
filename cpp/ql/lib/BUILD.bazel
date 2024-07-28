@@ -1,15 +1,13 @@
-package(default_visibility = ["//cpp:__pkg__"])
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
-load("@rules_pkg//:mappings.bzl", "pkg_files")
+package(default_visibility = ["//cpp:__pkg__"])
 
 pkg_files(
     name = "dbscheme",
     srcs = ["semmlecode.cpp.dbscheme"],
-    prefix = "cpp",
 )
 
 pkg_files(
     name = "dbscheme-stats",
     srcs = ["semmlecode.cpp.dbscheme.stats"],
-    prefix = "cpp",
 )

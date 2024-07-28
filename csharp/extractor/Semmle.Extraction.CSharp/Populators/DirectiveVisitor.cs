@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (regionStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start region", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -58,5 +59,15 @@ func handler5(db *sql.DB, req *http.Request) {
 
 	q := fmt.Sprintf("SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='%s' ORDER BY PRICE",
 		(*RequestData).Category)
+	db.Query(q)
+}
+
+// This is an integer, so should not counted as injection
+func handlerint(db *sql.DB, req *http.Request) {
+	var request RequestStruct
+	json.NewDecoder(req.Body).Decode(&request)
+
+	q := fmt.Sprintf("SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='%d' ORDER BY PRICE",
+		request.Id)
 	db.Query(q)
 }

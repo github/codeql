@@ -8,7 +8,7 @@ namespace Semmle.Extraction.Entities
             : base(cx, path)
         {
             originalPath = path;
-            transformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(originalPath));
+            transformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.ExtractionContext.PathTransformer.Transform(originalPath));
         }
 
         protected readonly string originalPath;

@@ -9,15 +9,17 @@
  * @id java/file-path-injection
  * @tags security
  *       experimental
- *       external/cwe-073
+ *       external/cwe/cwe-073
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.TaintedPathQuery
 import JFinalController
 import semmle.code.java.security.PathSanitizer
+private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
 private class ActivateModels extends ActiveExperimentalModels {
@@ -25,7 +27,7 @@ private class ActivateModels extends ActiveExperimentalModels {
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-class PathNormalizeSanitizer extends MethodAccess {
+class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or
@@ -48,15 +50,15 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sinkNode(sink, "path-injection") and
+    sink instanceof TaintedPathSink and
     not sink instanceof NormalizedPathNode
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
+    node instanceof SimpleTypeSanitizer
     or
     node instanceof PathInjectionSanitizer
   }

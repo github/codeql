@@ -56,6 +56,19 @@ class LocalizedStringWithFormat extends FormattingFunction, Method {
 }
 
 /**
+ * A method that appends a formatted string.
+ */
+class StringMethodWithFormat extends FormattingFunction, Method {
+  StringMethodWithFormat() {
+    this.hasQualifiedName("NSMutableString", "appendFormat(_:_:)")
+    or
+    this.hasQualifiedName("StringProtocol", "appendingFormat(_:_:)")
+  }
+
+  override int getFormatParameterIndex() { result = 0 }
+}
+
+/**
  * The functions `NSLog` and `NSLogv`.
  */
 class NsLog extends FormattingFunction, FreeFunction {
@@ -65,10 +78,33 @@ class NsLog extends FormattingFunction, FreeFunction {
 }
 
 /**
- * The `NSException.raise` method.
+ * The `NSException.init` and `NSException.raise` methods.
  */
 class NsExceptionRaise extends FormattingFunction, Method {
-  NsExceptionRaise() { this.hasQualifiedName("NSException", "raise(_:format:arguments:)") }
+  NsExceptionRaise() {
+    this.hasQualifiedName("NSException", "init(name:reason:userInfo:)") or
+    this.hasQualifiedName("NSException", "raise(_:format:arguments:)")
+  }
 
   override int getFormatParameterIndex() { result = 1 }
+}
+
+/**
+ * A function that appears to be an imported C `printf` variant.
+ */
+class PrintfFormat extends FormattingFunction, FreeFunction {
+  int formatParamIndex;
+  string modeChars;
+
+  PrintfFormat() {
+    modeChars = this.getShortName().regexpCapture("(.*)printf.*", 1) and
+    this.getParam(formatParamIndex).getName() = "format"
+  }
+
+  override int getFormatParameterIndex() { result = formatParamIndex }
+
+  /**
+   * Holds if this `printf` is a variant of `sprintf`.
+   */
+  predicate isSprintf() { modeChars.charAt(_) = "s" }
 }

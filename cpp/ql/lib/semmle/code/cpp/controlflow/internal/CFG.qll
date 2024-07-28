@@ -332,21 +332,12 @@ private Node getControlOrderChildSparse(Node n, int i) {
   n = any(ConditionDeclExpr cd | i = 0 and result = cd.getInitializingExpr())
   or
   n =
-    any(DeleteExpr del |
+    any(DeleteOrDeleteArrayExpr del |
       i = 0 and result = del.getExpr()
       or
       i = 1 and result = del.getDestructorCall()
       or
-      i = 2 and result = del.getAllocatorCall()
-    )
-  or
-  n =
-    any(DeleteArrayExpr del |
-      i = 0 and result = del.getExpr()
-      or
-      i = 1 and result = del.getDestructorCall()
-      or
-      i = 2 and result = del.getAllocatorCall()
+      i = 2 and result = del.getDeallocatorCall()
     )
   or
   n =
@@ -646,8 +637,10 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
     any(RangeBasedForStmt for |
       i = -1 and ni = for and spec.isAt()
       or
+      i = 0 and ni = for.getInitialization() and spec.isAround()
+      or
       exists(DeclStmt s | s.getADeclaration() = for.getRangeVariable() |
-        i = 0 and ni = s and spec.isAround()
+        i = 1 and ni = s and spec.isAround()
       )
       or
       exists(DeclStmt s |
@@ -658,22 +651,22 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
         // DeclStmt in that case.
         exists(s.getADeclaration())
       |
-        i = 1 and ni = s and spec.isAround()
+        i = 2 and ni = s and spec.isAround()
       )
       or
-      i = 2 and ni = for.getCondition() and spec.isBefore()
+      i = 3 and ni = for.getCondition() and spec.isBefore()
       or
-      i = 3 and /* BARRIER */ ni = for and spec.isBarrier()
+      i = 4 and /* BARRIER */ ni = for and spec.isBarrier()
       or
       exists(DeclStmt declStmt | declStmt.getADeclaration() = for.getVariable() |
-        i = 4 and ni = declStmt and spec.isAfter()
+        i = 5 and ni = declStmt and spec.isAfter()
       )
       or
-      i = 5 and ni = for.getStmt() and spec.isAround()
+      i = 6 and ni = for.getStmt() and spec.isAround()
       or
-      i = 6 and ni = for.getUpdate() and spec.isAround()
+      i = 7 and ni = for.getUpdate() and spec.isAround()
       or
-      i = 7 and ni = for.getCondition() and spec.isBefore()
+      i = 8 and ni = for.getCondition() and spec.isBefore()
     )
   or
   scope =

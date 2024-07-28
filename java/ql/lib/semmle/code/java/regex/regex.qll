@@ -472,12 +472,57 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
-  private predicate flagGroupStart(int start, int end, string c) {
+  /**
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
+   */
+  private predicate flagGroupStartNoModes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    end = start + 3 and
-    c = this.getChar(start + 2) and
-    c in ["i", "m", "s", "u", "x", "U"]
+    this.getChar(start + 2) in ["-", "i", "d", "m", "s", "u", "x", "U"] and
+    end = start + 2
+  }
+
+  /**
+   * Holds if `pos` contains a mode character from the
+   * flag group starting at `start`.
+   */
+  private predicate modeCharacter(int start, int pos) {
+    this.flagGroupStartNoModes(start, pos)
+    or
+    this.modeCharacter(start, pos - 1) and
+    this.getChar(pos) in ["-", "i", "d", "m", "s", "u", "x", "U"]
+  }
+
+  /**
+   * Holds if a parse mode group is between `start` and `end`.
+   */
+  private predicate flagGroupStart(int start, int end) {
+    this.flagGroupStartNoModes(start, _) and
+    // Check if this is a capturing group with flags, and therefore the `:` should be excluded
+    exists(int maybeEnd | maybeEnd = max(int i | this.modeCharacter(start, i) | i + 1) |
+      if this.getChar(maybeEnd) = ":" then end = maybeEnd + 1 else end = maybeEnd
+    )
+  }
+
+  /**
+   * Holds if a parse mode group of this regex includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
+  private predicate flag(string c) {
+    exists(int start, int pos |
+      this.modeCharacter(start, pos) and
+      this.getChar(pos) = c and
+      // Ignore if flag is disabled; use `<=` to also exclude `-` itself
+      // This does not properly handle the (contrived) case where a flag is both enabled and
+      // disabled, e.g. `(?i-i)a+`, in which case the flag seems to acts as if it was disabled
+      not exists(int minusPos |
+        this.modeCharacter(start, minusPos) and this.getChar(minusPos) = "-" and minusPos <= pos
+      )
+    )
   }
 
   /**
@@ -485,8 +530,10 @@ abstract class RegexString extends StringLiteral {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flagGroupStart(_, _, c) |
+    exists(string c | this.flag(c) |
       c = "i" and result = "IGNORECASE"
+      or
+      c = "d" and result = "UNIXLINES"
       or
       c = "m" and result = "MULTILINE"
       or
@@ -540,7 +587,7 @@ abstract class RegexString extends StringLiteral {
   private predicate groupStart(int start, int end) {
     this.nonCapturingGroupStart(start, end)
     or
-    this.flagGroupStart(start, end, _)
+    this.flagGroupStart(start, end)
     or
     this.namedGroupStart(start, end)
     or
@@ -894,13 +941,13 @@ class Regex extends RegexString {
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
-   * UNICODECLASS
+   * - IGNORECASE
+   * - UNIXLINES
+   * - MULTILINE
+   * - DOTALL
+   * - UNICODE
+   * - VERBOSE
+   * - UNICODECLASS
    */
   string getAMode() {
     result != "None" and
@@ -910,7 +957,7 @@ class Regex extends RegexString {
   }
 
   /**
-   *  Holds if this regex is used to match against a full string,
+   * Holds if this regex is used to match against a full string,
    * as though it was implicitly surrounded by ^ and $.
    */
   predicate matchesFullString() { matches_full_string = true }

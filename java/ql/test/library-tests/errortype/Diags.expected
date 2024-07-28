@@ -1,0 +1,6 @@
+| Test.java:0:0:0:0 | 2 javac errors |
+| Test.java:6:5:6:15 | Unknown or erroneous type for expression of kind TypeAccess |
+| Test.java:6:23:6:39 | Unexpected symbol for constructor: new NoSuchClass() |
+| Test.java:6:23:6:39 | Unknown or erroneous type for expression of kind ClassInstanceCreation |
+| Test.java:6:27:6:37 | Unknown or erroneous type for expression of kind TypeAccess |
+| file://:0:0:0:0 | 2 errors during annotation processing |

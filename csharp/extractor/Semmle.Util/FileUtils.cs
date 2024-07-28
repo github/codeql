@@ -1,13 +1,20 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
     public static class FileUtils
     {
+        public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
+
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -90,6 +97,130 @@ namespace Semmle.Util
             foreach (var b in sha)
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
+        }
+
+        private static async Task DownloadFileAsync(string address, string filename)
+        {
+            using var httpClient = new HttpClient();
+            using var contentStream = await httpClient.GetStreamAsync(address);
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream);
+        }
+
+        /// <summary>
+        /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
+        /// </summary>
+        public static void DownloadFile(string address, string fileName) =>
+           DownloadFileAsync(address, fileName).GetAwaiter().GetResult();
+
+        public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
+        {
+            var nested = innerpath;
+            if (!string.IsNullOrEmpty(outerpath))
+            {
+                // Remove all leading path separators / or \
+                // For example, UNC paths have two leading \\
+                innerpath = innerpath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                if (innerpath.Length > 1 && innerpath[1] == ':')
+                    innerpath = innerpath[0] + "_" + innerpath.Substring(2);
+
+                nested = Path.Combine(outerpath, innerpath);
+            }
+            try
+            {
+                var directoryName = Path.GetDirectoryName(nested);
+                if (directoryName is null)
+                {
+                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
+                    throw new InvalidOperationException();
+                }
+                Directory.CreateDirectory(directoryName);
+            }
+            catch (PathTooLongException)
+            {
+                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
+                throw;
+            }
+            return nested;
+        }
+
+        private static readonly Lazy<string> tempFolderPath = new Lazy<string>(() =>
+        {
+            var tempPath = Path.GetTempPath();
+            var name = Guid.NewGuid().ToString("N").ToUpper();
+            var tempFolder = Path.Combine(tempPath, "GitHub", name);
+            Directory.CreateDirectory(tempFolder);
+            return tempFolder;
+        });
+
+        public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
+        {
+            var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
+            if (!string.IsNullOrEmpty(tempFolder))
+            {
+                shouldCleanUp = false;
+                return tempFolder;
+            }
+
+            shouldCleanUp = true;
+            return tempFolderPath.Value;
+        }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
+            GetTemporaryWorkingDirectory(Environment.GetEnvironmentVariable, "CSHARP", out shouldCleanUp);
+
+        public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
+        {
+            var tempFolder = GetTemporaryWorkingDirectory(out shouldCleanUpContainingFolder);
+            Directory.CreateDirectory(tempFolder);
+            string outputPath;
+            do
+            {
+                outputPath = Path.Combine(tempFolder, Path.GetRandomFileName() + extension);
+            }
+            while (File.Exists(outputPath));
+
+            File.Create(outputPath);
+
+            return new FileInfo(outputPath);
+        }
+
+        public static string SafeGetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {path}: {ex.Message}");
+                return "";
+            }
+        }
+
+        public static string? SafeGetFileName(string path, ILogger logger)
+        {
+            try
+            {
+                return Path.GetFileName(path);
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get file name for {path}: {ex.Message}");
+                return null;
+            }
         }
     }
 }

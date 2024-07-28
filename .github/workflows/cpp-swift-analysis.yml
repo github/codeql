@@ -1,0 +1,55 @@
+name: "Code scanning - C++"
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+    paths:
+      - 'swift/**'
+      - '.github/codeql/**'
+      - '.github/workflows/cpp-swift-analysis.yml'
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  CodeQL-Build:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@main
+      # Override language selection by uncommenting this and choosing your languages
+      with:
+        languages: cpp
+        config-file: ./.github/codeql/codeql-config.yml
+  
+    - name: "[Ubuntu] Remove GCC 13 from runner image"
+      shell: bash
+      run: |
+        sudo rm -f /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
+        sudo apt-get update
+        sudo apt-get install -y --allow-downgrades libc6=2.35-* libc6-dev=2.35-* libstdc++6=12.3.0-* libgcc-s1=12.3.0-*
+
+    - name: "Build Swift extractor using Bazel"
+      run: |
+        bazel clean --expunge
+        bazel run //swift:create-extractor-pack --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results --spawn_strategy=local --features=-layering_check
+        bazel shutdown
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@main

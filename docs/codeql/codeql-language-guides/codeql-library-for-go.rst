@@ -275,7 +275,7 @@ Entities and name binding
 Not all elements of a code base can be represented as AST nodes. For example, functions defined in
 the standard library or in a dependency do not have a source-level definition within the source code
 of the program itself, and built-in functions like ``len`` do not have a definition at all. Hence
-functions cannot simplify be identified with their definition, and similarly for variables, types,
+functions cannot simply be identified with their definition, and similarly for variables, types,
 and so on.
 
 To smooth over this difference and provide a unified view of functions no matter where they are

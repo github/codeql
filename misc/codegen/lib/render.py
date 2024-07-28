@@ -29,7 +29,7 @@ class Renderer:
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self._generator = generator
 
-    def render(self, data: object, output: pathlib.Path):
+    def render(self, data: object, output: typing.Optional[pathlib.Path], template: typing.Optional[str] = None):
         """ Render `data` to `output`.
 
         `data` must have a `template` attribute denoting which template to use from the template directory.
@@ -42,12 +42,16 @@ class Renderer:
         extensions = getattr(data, "extensions", [None])
         for ext in extensions:
             output_filename = output
-            template = data.template
+            template_to_use = template or data.template
             if ext:
                 output_filename = output_filename.with_suffix(f".{ext}")
-                template += f"_{ext}"
-            contents = self._r.render_name(template, data, generator=self._generator)
+                template_to_use += f"_{ext}"
+            contents = self.render_str(data, template_to_use)
             self._do_write(mnemonic, contents, output_filename)
+
+    def render_str(self, data: object, template: typing.Optional[str] = None):
+        template = template or data.template
+        return self._r.render_name(template, data, generator=self._generator)
 
     def _do_write(self, mnemonic: str, contents: str, output: pathlib.Path):
         with open(output, "w") as out:

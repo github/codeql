@@ -1,4 +1,7 @@
 nodes
+| ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] |
+| ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] |
+| ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] |
 | express.js:7:16:7:34 | req.param("target") |
 | express.js:7:16:7:34 | req.param("target") |
 | express.js:7:16:7:34 | req.param("target") |
@@ -114,6 +117,7 @@ nodes
 | react-native.js:9:26:9:32 | tainted |
 | react-native.js:9:26:9:32 | tainted |
 edges
+| ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] | ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] |
 | express.js:7:16:7:34 | req.param("target") | express.js:7:16:7:34 | req.param("target") |
 | express.js:12:26:12:44 | req.param("target") | express.js:12:26:12:44 | req.param("target") |
 | express.js:27:7:27:34 | target | express.js:33:18:33:23 | target |
@@ -211,6 +215,7 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 #select
+| ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] | ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] | ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] | Untrusted URL redirection depends on a $@. | ServerSideUrlRedirect.js:5:16:5:34 | req.query["target"] | user-provided value |
 | express.js:7:16:7:34 | req.param("target") | express.js:7:16:7:34 | req.param("target") | express.js:7:16:7:34 | req.param("target") | Untrusted URL redirection depends on a $@. | express.js:7:16:7:34 | req.param("target") | user-provided value |
 | express.js:12:26:12:44 | req.param("target") | express.js:12:26:12:44 | req.param("target") | express.js:12:26:12:44 | req.param("target") | Untrusted URL redirection depends on a $@. | express.js:12:26:12:44 | req.param("target") | user-provided value |
 | express.js:33:18:33:23 | target | express.js:27:16:27:34 | req.param("target") | express.js:33:18:33:23 | target | Untrusted URL redirection depends on a $@. | express.js:27:16:27:34 | req.param("target") | user-provided value |

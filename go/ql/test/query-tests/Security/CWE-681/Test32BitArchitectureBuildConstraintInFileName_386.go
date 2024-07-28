@@ -20,7 +20,7 @@ func testIntSource386() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)
+		_ = int32(parsed) // $ hasValueFlow="parsed"
 		_ = uint32(parsed)
 	}
 	{

@@ -27,14 +27,14 @@ private module GoRestfulHttp {
   /**
    * A model of go-restful's `Request` object as a source of user-controlled data.
    */
-  private class GoRestfulSource extends UntrustedFlowSource::Range {
+  private class GoRestfulSource extends RemoteFlowSource::Range {
     GoRestfulSource() { this = any(GoRestfulSourceMethod g).getACall() }
   }
 
   /**
    * A model of go-restful's `Request.ReadEntity` method as a source of user-controlled data.
    */
-  private class GoRestfulReadEntitySource extends UntrustedFlowSource::Range {
+  private class GoRestfulReadEntitySource extends RemoteFlowSource::Range {
     GoRestfulReadEntitySource() {
       exists(DataFlow::MethodCallNode call |
         call.getTarget().hasQualifiedName(packagePath(), "Request", "ReadEntity")

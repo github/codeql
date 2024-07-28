@@ -1,0 +1,115 @@
+arrayCreationTypes
+| arrayCreations.kt:5:14:5:33 | new Integer[] | file://:0:0:0:0 | Integer[] | arrayCreations.kt:5:14:5:33 | Integer |
+| arrayCreations.kt:6:14:6:32 | new Integer[] | file://:0:0:0:0 | Integer[] | arrayCreations.kt:6:14:6:32 | Integer |
+| arrayCreations.kt:7:14:7:46 | new double[] | file://:0:0:0:0 | double[] | arrayCreations.kt:7:14:7:46 | double |
+| arrayCreations.kt:8:14:8:49 | new float[] | file://:0:0:0:0 | float[] | arrayCreations.kt:8:14:8:49 | float |
+| arrayCreations.kt:9:14:9:36 | new long[] | file://:0:0:0:0 | long[] | arrayCreations.kt:9:14:9:36 | long |
+| arrayCreations.kt:10:14:10:35 | new int[] | file://:0:0:0:0 | int[] | arrayCreations.kt:10:14:10:35 | int |
+| arrayCreations.kt:11:14:11:34 | new char[] | file://:0:0:0:0 | char[] | arrayCreations.kt:11:14:11:34 | char |
+| arrayCreations.kt:12:14:12:37 | new short[] | file://:0:0:0:0 | short[] | arrayCreations.kt:12:14:12:37 | short |
+| arrayCreations.kt:13:14:13:36 | new byte[] | file://:0:0:0:0 | byte[] | arrayCreations.kt:13:14:13:36 | byte |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | file://:0:0:0:0 | boolean[] | arrayCreations.kt:14:14:14:52 | boolean |
+| arrayCreations.kt:17:14:17:68 | new int[][] | file://:0:0:0:0 | int[][] | arrayCreations.kt:17:14:17:68 | int[] |
+| arrayCreations.kt:17:22:17:43 | new int[] | file://:0:0:0:0 | int[] | arrayCreations.kt:17:22:17:43 | int |
+| arrayCreations.kt:17:46:17:67 | new int[] | file://:0:0:0:0 | int[] | arrayCreations.kt:17:46:17:67 | int |
+| arrayCreations.kt:18:14:18:65 | new Object[] | file://:0:0:0:0 | Object[] | arrayCreations.kt:18:14:18:65 | Object |
+| arrayCreations.kt:18:22:18:43 | new int[] | file://:0:0:0:0 | int[] | arrayCreations.kt:18:22:18:43 | int |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | file://:0:0:0:0 | Integer[] | arrayCreations.kt:18:46:18:64 | Integer |
+| arrayCreations.kt:19:14:19:62 | new Integer[][] | file://:0:0:0:0 | Integer[][] | arrayCreations.kt:19:14:19:62 | Integer[] |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | file://:0:0:0:0 | Integer[] | arrayCreations.kt:19:22:19:40 | Integer |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | file://:0:0:0:0 | Integer[] | arrayCreations.kt:19:43:19:61 | Integer |
+arrayCreationDimensions
+| arrayCreations.kt:5:14:5:33 | new Integer[] | arrayCreations.kt:5:32:5:32 | 1 | 0 |
+| arrayCreations.kt:6:14:6:32 | new Integer[] | arrayCreations.kt:6:14:6:32 | 4 | 0 |
+| arrayCreations.kt:7:14:7:46 | new double[] | arrayCreations.kt:7:14:7:46 | 4 | 0 |
+| arrayCreations.kt:8:14:8:49 | new float[] | arrayCreations.kt:8:14:8:49 | 4 | 0 |
+| arrayCreations.kt:9:14:9:36 | new long[] | arrayCreations.kt:9:14:9:36 | 4 | 0 |
+| arrayCreations.kt:10:14:10:35 | new int[] | arrayCreations.kt:10:14:10:35 | 4 | 0 |
+| arrayCreations.kt:11:14:11:34 | new char[] | arrayCreations.kt:11:14:11:34 | 2 | 0 |
+| arrayCreations.kt:12:14:12:37 | new short[] | arrayCreations.kt:12:14:12:37 | 4 | 0 |
+| arrayCreations.kt:13:14:13:36 | new byte[] | arrayCreations.kt:13:14:13:36 | 4 | 0 |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | arrayCreations.kt:14:14:14:52 | 4 | 0 |
+| arrayCreations.kt:17:14:17:68 | new int[][] | arrayCreations.kt:17:14:17:68 | 2 | 0 |
+| arrayCreations.kt:17:22:17:43 | new int[] | arrayCreations.kt:17:22:17:43 | 4 | 0 |
+| arrayCreations.kt:17:46:17:67 | new int[] | arrayCreations.kt:17:46:17:67 | 4 | 0 |
+| arrayCreations.kt:18:14:18:65 | new Object[] | arrayCreations.kt:18:14:18:65 | 2 | 0 |
+| arrayCreations.kt:18:22:18:43 | new int[] | arrayCreations.kt:18:22:18:43 | 4 | 0 |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | arrayCreations.kt:18:46:18:64 | 4 | 0 |
+| arrayCreations.kt:19:14:19:62 | new Integer[][] | arrayCreations.kt:19:14:19:62 | 2 | 0 |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | arrayCreations.kt:19:22:19:40 | 4 | 0 |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | 4 | 0 |
+arrayCreationInit
+| arrayCreations.kt:6:14:6:32 | new Integer[] | arrayCreations.kt:6:14:6:32 | {...} | arrayCreations.kt:6:22:6:22 | 1 | 0 |
+| arrayCreations.kt:6:14:6:32 | new Integer[] | arrayCreations.kt:6:14:6:32 | {...} | arrayCreations.kt:6:25:6:25 | 2 | 1 |
+| arrayCreations.kt:6:14:6:32 | new Integer[] | arrayCreations.kt:6:14:6:32 | {...} | arrayCreations.kt:6:28:6:28 | 3 | 2 |
+| arrayCreations.kt:6:14:6:32 | new Integer[] | arrayCreations.kt:6:14:6:32 | {...} | arrayCreations.kt:6:31:6:31 | 4 | 3 |
+| arrayCreations.kt:7:14:7:46 | new double[] | arrayCreations.kt:7:14:7:46 | {...} | arrayCreations.kt:7:28:7:30 | 1.0 | 0 |
+| arrayCreations.kt:7:14:7:46 | new double[] | arrayCreations.kt:7:14:7:46 | {...} | arrayCreations.kt:7:33:7:35 | 2.0 | 1 |
+| arrayCreations.kt:7:14:7:46 | new double[] | arrayCreations.kt:7:14:7:46 | {...} | arrayCreations.kt:7:38:7:40 | 3.0 | 2 |
+| arrayCreations.kt:7:14:7:46 | new double[] | arrayCreations.kt:7:14:7:46 | {...} | arrayCreations.kt:7:43:7:45 | 4.0 | 3 |
+| arrayCreations.kt:8:14:8:49 | new float[] | arrayCreations.kt:8:14:8:49 | {...} | arrayCreations.kt:8:27:8:30 | 1.0 | 0 |
+| arrayCreations.kt:8:14:8:49 | new float[] | arrayCreations.kt:8:14:8:49 | {...} | arrayCreations.kt:8:33:8:36 | 2.0 | 1 |
+| arrayCreations.kt:8:14:8:49 | new float[] | arrayCreations.kt:8:14:8:49 | {...} | arrayCreations.kt:8:39:8:42 | 3.0 | 2 |
+| arrayCreations.kt:8:14:8:49 | new float[] | arrayCreations.kt:8:14:8:49 | {...} | arrayCreations.kt:8:45:8:48 | 4.0 | 3 |
+| arrayCreations.kt:9:14:9:36 | new long[] | arrayCreations.kt:9:14:9:36 | {...} | arrayCreations.kt:9:26:9:26 | 1 | 0 |
+| arrayCreations.kt:9:14:9:36 | new long[] | arrayCreations.kt:9:14:9:36 | {...} | arrayCreations.kt:9:29:9:29 | 2 | 1 |
+| arrayCreations.kt:9:14:9:36 | new long[] | arrayCreations.kt:9:14:9:36 | {...} | arrayCreations.kt:9:32:9:32 | 3 | 2 |
+| arrayCreations.kt:9:14:9:36 | new long[] | arrayCreations.kt:9:14:9:36 | {...} | arrayCreations.kt:9:35:9:35 | 4 | 3 |
+| arrayCreations.kt:10:14:10:35 | new int[] | arrayCreations.kt:10:14:10:35 | {...} | arrayCreations.kt:10:25:10:25 | 1 | 0 |
+| arrayCreations.kt:10:14:10:35 | new int[] | arrayCreations.kt:10:14:10:35 | {...} | arrayCreations.kt:10:28:10:28 | 2 | 1 |
+| arrayCreations.kt:10:14:10:35 | new int[] | arrayCreations.kt:10:14:10:35 | {...} | arrayCreations.kt:10:31:10:31 | 3 | 2 |
+| arrayCreations.kt:10:14:10:35 | new int[] | arrayCreations.kt:10:14:10:35 | {...} | arrayCreations.kt:10:34:10:34 | 4 | 3 |
+| arrayCreations.kt:11:14:11:34 | new char[] | arrayCreations.kt:11:14:11:34 | {...} | arrayCreations.kt:11:26:11:28 | a | 0 |
+| arrayCreations.kt:11:14:11:34 | new char[] | arrayCreations.kt:11:14:11:34 | {...} | arrayCreations.kt:11:31:11:33 | b | 1 |
+| arrayCreations.kt:12:14:12:37 | new short[] | arrayCreations.kt:12:14:12:37 | {...} | arrayCreations.kt:12:27:12:27 | 1 | 0 |
+| arrayCreations.kt:12:14:12:37 | new short[] | arrayCreations.kt:12:14:12:37 | {...} | arrayCreations.kt:12:30:12:30 | 2 | 1 |
+| arrayCreations.kt:12:14:12:37 | new short[] | arrayCreations.kt:12:14:12:37 | {...} | arrayCreations.kt:12:33:12:33 | 3 | 2 |
+| arrayCreations.kt:12:14:12:37 | new short[] | arrayCreations.kt:12:14:12:37 | {...} | arrayCreations.kt:12:36:12:36 | 4 | 3 |
+| arrayCreations.kt:13:14:13:36 | new byte[] | arrayCreations.kt:13:14:13:36 | {...} | arrayCreations.kt:13:26:13:26 | 1 | 0 |
+| arrayCreations.kt:13:14:13:36 | new byte[] | arrayCreations.kt:13:14:13:36 | {...} | arrayCreations.kt:13:29:13:29 | 2 | 1 |
+| arrayCreations.kt:13:14:13:36 | new byte[] | arrayCreations.kt:13:14:13:36 | {...} | arrayCreations.kt:13:32:13:32 | 3 | 2 |
+| arrayCreations.kt:13:14:13:36 | new byte[] | arrayCreations.kt:13:14:13:36 | {...} | arrayCreations.kt:13:35:13:35 | 4 | 3 |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | arrayCreations.kt:14:14:14:52 | {...} | arrayCreations.kt:14:29:14:32 | true | 0 |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | arrayCreations.kt:14:14:14:52 | {...} | arrayCreations.kt:14:35:14:39 | false | 1 |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | arrayCreations.kt:14:14:14:52 | {...} | arrayCreations.kt:14:42:14:45 | true | 2 |
+| arrayCreations.kt:14:14:14:52 | new boolean[] | arrayCreations.kt:14:14:14:52 | {...} | arrayCreations.kt:14:48:14:51 | true | 3 |
+| arrayCreations.kt:17:14:17:68 | new int[][] | arrayCreations.kt:17:14:17:68 | {...} | arrayCreations.kt:17:22:17:43 | new int[] | 0 |
+| arrayCreations.kt:17:14:17:68 | new int[][] | arrayCreations.kt:17:14:17:68 | {...} | arrayCreations.kt:17:46:17:67 | new int[] | 1 |
+| arrayCreations.kt:17:22:17:43 | new int[] | arrayCreations.kt:17:22:17:43 | {...} | arrayCreations.kt:17:33:17:33 | 1 | 0 |
+| arrayCreations.kt:17:22:17:43 | new int[] | arrayCreations.kt:17:22:17:43 | {...} | arrayCreations.kt:17:36:17:36 | 2 | 1 |
+| arrayCreations.kt:17:22:17:43 | new int[] | arrayCreations.kt:17:22:17:43 | {...} | arrayCreations.kt:17:39:17:39 | 3 | 2 |
+| arrayCreations.kt:17:22:17:43 | new int[] | arrayCreations.kt:17:22:17:43 | {...} | arrayCreations.kt:17:42:17:42 | 4 | 3 |
+| arrayCreations.kt:17:46:17:67 | new int[] | arrayCreations.kt:17:46:17:67 | {...} | arrayCreations.kt:17:57:17:57 | 1 | 0 |
+| arrayCreations.kt:17:46:17:67 | new int[] | arrayCreations.kt:17:46:17:67 | {...} | arrayCreations.kt:17:60:17:60 | 2 | 1 |
+| arrayCreations.kt:17:46:17:67 | new int[] | arrayCreations.kt:17:46:17:67 | {...} | arrayCreations.kt:17:63:17:63 | 3 | 2 |
+| arrayCreations.kt:17:46:17:67 | new int[] | arrayCreations.kt:17:46:17:67 | {...} | arrayCreations.kt:17:66:17:66 | 4 | 3 |
+| arrayCreations.kt:18:14:18:65 | new Object[] | arrayCreations.kt:18:14:18:65 | {...} | arrayCreations.kt:18:22:18:43 | new int[] | 0 |
+| arrayCreations.kt:18:14:18:65 | new Object[] | arrayCreations.kt:18:14:18:65 | {...} | arrayCreations.kt:18:46:18:64 | new Integer[] | 1 |
+| arrayCreations.kt:18:22:18:43 | new int[] | arrayCreations.kt:18:22:18:43 | {...} | arrayCreations.kt:18:33:18:33 | 1 | 0 |
+| arrayCreations.kt:18:22:18:43 | new int[] | arrayCreations.kt:18:22:18:43 | {...} | arrayCreations.kt:18:36:18:36 | 2 | 1 |
+| arrayCreations.kt:18:22:18:43 | new int[] | arrayCreations.kt:18:22:18:43 | {...} | arrayCreations.kt:18:39:18:39 | 3 | 2 |
+| arrayCreations.kt:18:22:18:43 | new int[] | arrayCreations.kt:18:22:18:43 | {...} | arrayCreations.kt:18:42:18:42 | 4 | 3 |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | arrayCreations.kt:18:46:18:64 | {...} | arrayCreations.kt:18:54:18:54 | 1 | 0 |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | arrayCreations.kt:18:46:18:64 | {...} | arrayCreations.kt:18:57:18:57 | 2 | 1 |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | arrayCreations.kt:18:46:18:64 | {...} | arrayCreations.kt:18:60:18:60 | 3 | 2 |
+| arrayCreations.kt:18:46:18:64 | new Integer[] | arrayCreations.kt:18:46:18:64 | {...} | arrayCreations.kt:18:63:18:63 | 4 | 3 |
+| arrayCreations.kt:19:14:19:62 | new Integer[][] | arrayCreations.kt:19:14:19:62 | {...} | arrayCreations.kt:19:22:19:40 | new Integer[] | 0 |
+| arrayCreations.kt:19:14:19:62 | new Integer[][] | arrayCreations.kt:19:14:19:62 | {...} | arrayCreations.kt:19:43:19:61 | new Integer[] | 1 |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | arrayCreations.kt:19:22:19:40 | {...} | arrayCreations.kt:19:30:19:30 | 1 | 0 |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | arrayCreations.kt:19:22:19:40 | {...} | arrayCreations.kt:19:33:19:33 | 2 | 1 |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | arrayCreations.kt:19:22:19:40 | {...} | arrayCreations.kt:19:36:19:36 | 3 | 2 |
+| arrayCreations.kt:19:22:19:40 | new Integer[] | arrayCreations.kt:19:22:19:40 | {...} | arrayCreations.kt:19:39:19:39 | 4 | 3 |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:51:19:51 | 1 | 0 |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:54:19:54 | 2 | 1 |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:57:19:57 | 3 | 2 |
+| arrayCreations.kt:19:43:19:61 | new Integer[] | arrayCreations.kt:19:43:19:61 | {...} | arrayCreations.kt:19:60:19:60 | 4 | 3 |
+cloneCalls
+| arrayCreations.kt:29:18:29:29 | clone(...) | file://:0:0:0:0 | Integer[] |
+| arrayCreations.kt:30:18:30:35 | clone(...) | file://:0:0:0:0 | double[] |
+| arrayCreations.kt:31:18:31:34 | clone(...) | file://:0:0:0:0 | float[] |
+| arrayCreations.kt:32:18:32:33 | clone(...) | file://:0:0:0:0 | long[] |
+| arrayCreations.kt:33:18:33:32 | clone(...) | file://:0:0:0:0 | int[] |
+| arrayCreations.kt:34:18:34:33 | clone(...) | file://:0:0:0:0 | char[] |
+| arrayCreations.kt:35:18:35:34 | clone(...) | file://:0:0:0:0 | short[] |
+| arrayCreations.kt:36:18:36:33 | clone(...) | file://:0:0:0:0 | byte[] |
+| arrayCreations.kt:37:18:37:36 | clone(...) | file://:0:0:0:0 | boolean[] |

@@ -42,20 +42,6 @@ module LdapInjection {
   abstract class FilterSanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `DnSanitizer` instead.
-   *
-   * A sanitizer guard for "ldap injection" vulnerabilities.
-   */
-  abstract deprecated class DnSanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
-   * DEPRECATED: Use `FilterSanitizer` instead.
-   *
-   * A sanitizer guard for "ldap injection" vulnerabilities.
-   */
-  abstract deprecated class FilterSanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }

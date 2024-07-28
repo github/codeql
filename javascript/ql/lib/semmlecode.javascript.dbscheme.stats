@@ -170,6 +170,10 @@
 <v>5</v>
 </e>
 <e>
+<k>@using_decl_stmt</k>
+<v>5</v>
+</e>
+<e>
 <k>@export_default_declaration</k>
 <v>5</v>
 </e>

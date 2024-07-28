@@ -216,8 +216,8 @@
 | E.cs:259:13:259:21 | ... == ... | true | E.cs:259:18:259:21 | null | E.cs:259:13:259:13 | access to parameter i |
 | E.cs:274:17:274:25 | ... != ... | false | E.cs:274:17:274:17 | access to local variable o | E.cs:274:22:274:25 | null |
 | E.cs:274:17:274:25 | ... != ... | false | E.cs:274:22:274:25 | null | E.cs:274:17:274:17 | access to local variable o |
-| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | E.cs:293:24:293:24 | (...) ... |
-| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:24:293:24 | (...) ... | E.cs:293:15:293:19 | call to method M2 |
+| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:13:293:19 | call to method M2 | E.cs:293:24:293:24 | (...) ... |
+| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:24:293:24 | (...) ... | E.cs:293:13:293:19 | call to method M2 |
 | E.cs:321:13:321:30 | ... is ... | true | E.cs:321:14:321:21 | ... ?? ... | E.cs:321:27:321:30 | null |
 | E.cs:321:13:321:30 | ... is ... | true | E.cs:321:27:321:30 | null | E.cs:321:14:321:21 | ... ?? ... |
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:13:355:13 | access to local variable x | E.cs:355:18:355:21 | null |
@@ -244,16 +244,18 @@
 | E.cs:423:33:423:44 | ... == ... | true | E.cs:423:38:423:44 | access to property Value | E.cs:423:33:423:33 | access to parameter j |
 | E.cs:430:34:430:45 | ... == ... | true | E.cs:430:34:430:34 | access to parameter j | E.cs:430:39:430:45 | access to property Value |
 | E.cs:430:34:430:45 | ... == ... | true | E.cs:430:39:430:45 | access to property Value | E.cs:430:34:430:34 | access to parameter j |
+| E.cs:437:13:437:21 | ... is ... | true | E.cs:437:13:437:13 | access to parameter s | E.cs:437:18:437:21 | null |
+| E.cs:437:13:437:21 | ... is ... | true | E.cs:437:18:437:21 | null | E.cs:437:13:437:13 | access to parameter s |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:13:59:13 | access to parameter o | Forwarding.cs:59:18:59:21 | null |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:18:59:21 | null | Forwarding.cs:59:13:59:13 | access to parameter o |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:32:78:32 | access to parameter o | Forwarding.cs:78:35:78:38 | null |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:35:78:38 | null | Forwarding.cs:78:32:78:32 | access to parameter o |
 | Forwarding.cs:83:16:83:24 | ... != ... | false | Forwarding.cs:83:16:83:16 | access to parameter o | Forwarding.cs:83:21:83:24 | null |
 | Forwarding.cs:83:16:83:24 | ... != ... | false | Forwarding.cs:83:21:83:24 | null | Forwarding.cs:83:16:83:16 | access to parameter o |
-| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:15:19:21 | access to property Length | GuardedString.cs:19:26:19:26 | (...) ... |
-| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:26:19:26 | (...) ... | GuardedString.cs:19:15:19:21 | access to property Length |
-| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:15:34:21 | access to property Length | GuardedString.cs:34:26:34:26 | (...) ... |
-| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:26:34:26 | (...) ... | GuardedString.cs:34:15:34:21 | access to property Length |
+| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:13:19:21 | access to property Length | GuardedString.cs:19:26:19:26 | (...) ... |
+| GuardedString.cs:19:13:19:26 | ... == ... | true | GuardedString.cs:19:26:19:26 | (...) ... | GuardedString.cs:19:13:19:21 | access to property Length |
+| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:13:34:21 | access to property Length | GuardedString.cs:34:26:34:26 | (...) ... |
+| GuardedString.cs:34:13:34:26 | ... != ... | false | GuardedString.cs:34:26:34:26 | (...) ... | GuardedString.cs:34:13:34:21 | access to property Length |
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | false | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | NullAlwaysBad.cs:9:22:9:25 | null |
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | false | NullAlwaysBad.cs:9:22:9:25 | null | NullAlwaysBad.cs:9:17:9:17 | access to parameter s |
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | false | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | NullAlwaysGood.cs:9:22:9:25 | null |

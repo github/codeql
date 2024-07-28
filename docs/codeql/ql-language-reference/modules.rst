@@ -180,7 +180,8 @@ For example, in the previous two snippets, we relied on the predicate signature 
     signature int transformer(int x);
 
 The instantiation of parameterized modules is applicative.
-That is, if you instantiate a parameterized module twice with identical arguments, the resulting object is the same.
+That is, if you instantiate a parameterized module twice with equivalent arguments, the resulting object is the same.
+Arguments are considered equivalent in this context if they differ only by :ref:`weak aliasing <weak_strong_aliases>`.
 This is particularly relevant for type definitions inside parameterized modules as :ref:`classes <classes>`
 or via :ref:`newtype <algebraic-datatypes>`, because the duplication of such type definitions would result in
 incompatible types.

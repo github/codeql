@@ -12,8 +12,9 @@ private import codeql.ruby.ApiGraphs
 /**
  * A taint-tracking configuration for reasoning about zip slip
  * vulnerabilities.
+ * DEPRECATED: Use `ZipSlipFlow`
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ZipSlip" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof ZipSlip::Source }
@@ -36,3 +37,30 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof ZipSlip::Sanitizer }
 }
+
+private module ZipSlipConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ZipSlip::Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ZipSlip::Sink }
+
+  /**
+   * This should actually be
+   * `and cn = API::getTopLevelMember("Gem").getMember("Package").getMember("TarReader").getMember("Entry").getAMethodCall("full_name")` and similar for other classes
+   * but I couldn't make it work so there's only check for the method name called on the entry. It is `full_name` for `Gem::Package::TarReader::Entry` and `Zlib`
+   * and `name` for `Zip::File`
+   */
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::CallNode cn |
+      cn.getReceiver() = nodeFrom and
+      cn.getMethodName() in ["full_name", "name"] and
+      cn = nodeTo
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof ZipSlip::Sanitizer }
+}
+
+/**
+ * Taint-tracking for reasoning about zip slip vulnerabilities.
+ */
+module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;

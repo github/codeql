@@ -60,10 +60,6 @@ module OpenUrlRedirect {
       or
       hostnameSanitizingPrefixEdge(node, _)
     }
-
-    deprecated override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
-    }
   }
 
   private module Config implements DataFlow::ConfigSig {
@@ -75,7 +71,8 @@ module OpenUrlRedirect {
 
     predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       // taint steps that do not include flow through fields
-      TaintTracking::localTaintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
+      TaintTracking::defaultAdditionalTaintStep(pred, succ, _) and
+      not TaintTracking::fieldReadStep(pred, succ)
       or
       // explicit extra taint steps for this query
       any(AdditionalStep s).hasTaintStep(pred, succ)

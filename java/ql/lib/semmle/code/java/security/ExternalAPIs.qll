@@ -77,7 +77,7 @@ class ExternalApiDataNode extends DataFlow::Node {
     ) and
     // Not already modeled as a taint step (we need both of these to handle `AdditionalTaintStep` subclasses as well)
     not TaintTracking::localTaintStep(this, _) and
-    not TaintTracking::defaultAdditionalTaintStep(this, _) and
+    not TaintTracking::defaultAdditionalTaintStep(this, _, _) and
     // Not a call to a known safe external API
     not call.getCallee() instanceof SafeExternalApiMethod
   }
@@ -106,10 +106,10 @@ deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configu
 }
 
 /**
- * Taint tracking configuration for flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
+ * Taint tracking configuration for flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s.
  */
 module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }

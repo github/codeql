@@ -16,9 +16,9 @@
 
 import python
 import experimental.Security.UnsafeUnpackQuery
-import DataFlow::PathGraph
+import UnsafeUnpackFlow::PathGraph
 
-from UnsafeUnpackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from UnsafeUnpackFlow::PathNode source, UnsafeUnpackFlow::PathNode sink
+where UnsafeUnpackFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Unsafe extraction from a malicious tarball retrieved from a remote location."

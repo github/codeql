@@ -4,7 +4,10 @@ class PostsController < ApplicationController
 
   def show
   end
-  
+
   def upvote
+  end
+
+  def downvote
   end
 end

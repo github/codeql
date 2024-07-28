@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.SecurityTests
+private import semmle.code.java.dataflow.FlowSinks
 
 /** Holds if `ex` looks like a check that this is a debug build. */
 private predicate isDebugCheck(Expr ex) {
@@ -13,8 +14,8 @@ private predicate isDebugCheck(Expr ex) {
   |
     subex.(VarAccess).getVariable().getName() = debug
     or
-    subex.(MethodAccess).getMethod().hasName("getProperty") and
-    subex.(MethodAccess).getAnArgument().(CompileTimeConstantExpr).getStringValue() = debug
+    subex.(MethodCall).getMethod().hasName("getProperty") and
+    subex.(MethodCall).getAnArgument().(CompileTimeConstantExpr).getStringValue() = debug
   )
 }
 
@@ -31,7 +32,7 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
       node.asExpr() = ma.getArgument(0)
     )
@@ -44,18 +45,25 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   }
 }
 
+/**
+ * A webview debug sink node.
+ */
+private class WebviewDebugSink extends ApiSinkNode {
+  WebviewDebugSink() {
+    exists(MethodCall ma |
+      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
+      this.asExpr() = ma.getArgument(0)
+    )
+  }
+}
+
 /** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
 module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node.asExpr().(BooleanLiteral).getBooleanValue() = true
   }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
-      node.asExpr() = ma.getArgument(0)
-    )
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof WebviewDebugSink }
 
   predicate isBarrier(DataFlow::Node node) {
     exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))

@@ -1,1 +1,63 @@
+hasBranchEdge
+| Test.java:4:7:4:22 | case ... | Test.java:2:39:36:3 | { ... } | Test.java:4:7:4:22 | case ... | true |
+| Test.java:5:7:5:17 | case ... | Test.java:2:39:36:3 | { ... } | Test.java:5:7:5:17 | case ... | true |
+| Test.java:6:7:6:17 | case ... | Test.java:2:39:36:3 | { ... } | Test.java:6:7:6:17 | case ... | true |
+| Test.java:7:7:7:16 | default | Test.java:2:39:36:3 | { ... } | Test.java:7:7:7:16 | default | true |
+| Test.java:10:7:10:22 | case ... | Test.java:3:9:3:21 | x | Test.java:10:7:10:22 | case ... | true |
+| Test.java:11:7:11:17 | case ... | Test.java:3:9:3:21 | x | Test.java:11:7:11:17 | case ... | true |
+| Test.java:12:7:12:17 | case ... | Test.java:3:9:3:21 | x | Test.java:12:7:12:17 | case ... | true |
+| Test.java:13:7:13:16 | default | Test.java:3:9:3:21 | x | Test.java:13:7:13:16 | default | true |
+| Test.java:17:7:17:36 | case <Pattern> | Test.java:15:5:15:25 | var ...; | Test.java:17:19:17:19 | <anonymous local variable> | true |
+| Test.java:17:7:17:36 | case <Pattern> | Test.java:15:5:15:25 | var ...; | Test.java:18:7:18:17 | case ... | false |
+| Test.java:17:7:17:36 | case <Pattern> | Test.java:15:5:15:25 | var ...; | Test.java:19:7:19:16 | default | false |
+| Test.java:17:26:17:33 | ... == ... | Test.java:17:19:17:19 | <anonymous local variable> | Test.java:17:38:17:40 | { ... } | true |
+| Test.java:17:26:17:33 | ... == ... | Test.java:17:19:17:19 | <anonymous local variable> | Test.java:18:7:18:17 | case ... | false |
+| Test.java:17:26:17:33 | ... == ... | Test.java:17:19:17:19 | <anonymous local variable> | Test.java:19:7:19:16 | default | false |
+| Test.java:18:7:18:17 | case ... | Test.java:15:5:15:25 | var ...; | Test.java:18:7:18:17 | case ... | true |
+| Test.java:18:7:18:17 | case ... | Test.java:17:19:17:19 | <anonymous local variable> | Test.java:18:7:18:17 | case ... | true |
+| Test.java:19:7:19:16 | default | Test.java:15:5:15:25 | var ...; | Test.java:19:7:19:16 | default | true |
+| Test.java:19:7:19:16 | default | Test.java:17:19:17:19 | <anonymous local variable> | Test.java:19:7:19:16 | default | true |
+| Test.java:21:13:21:19 | unknown | Test.java:21:5:21:42 | switch (...) | Test.java:21:23:21:23 | s | true |
+| Test.java:21:13:21:19 | unknown | Test.java:21:5:21:42 | switch (...) | Test.java:21:27:21:27 | s | false |
+| Test.java:22:7:22:17 | case ... | Test.java:21:23:21:23 | s | Test.java:22:7:22:17 | case ... | true |
+| Test.java:22:7:22:17 | case ... | Test.java:21:27:21:27 | s | Test.java:22:7:22:17 | case ... | true |
+| Test.java:23:7:23:37 | case <Pattern> | Test.java:23:7:23:37 | case <Pattern> | Test.java:23:19:23:20 | s2 | true |
+| Test.java:23:7:23:37 | case <Pattern> | Test.java:23:7:23:37 | case <Pattern> | Test.java:24:7:24:17 | case ... | false |
+| Test.java:23:7:23:37 | case <Pattern> | Test.java:23:7:23:37 | case <Pattern> | Test.java:25:7:25:16 | default | false |
+| Test.java:23:27:23:34 | ... == ... | Test.java:23:19:23:20 | s2 | Test.java:23:39:23:41 | { ... } | true |
+| Test.java:23:27:23:34 | ... == ... | Test.java:23:19:23:20 | s2 | Test.java:24:7:24:17 | case ... | false |
+| Test.java:23:27:23:34 | ... == ... | Test.java:23:19:23:20 | s2 | Test.java:25:7:25:16 | default | false |
+| Test.java:24:7:24:17 | case ... | Test.java:23:7:23:37 | case <Pattern> | Test.java:24:7:24:17 | case ... | true |
+| Test.java:24:7:24:17 | case ... | Test.java:23:19:23:20 | s2 | Test.java:24:7:24:17 | case ... | true |
+| Test.java:25:7:25:16 | default | Test.java:23:7:23:37 | case <Pattern> | Test.java:25:7:25:16 | default | true |
+| Test.java:25:7:25:16 | default | Test.java:23:19:23:20 | s2 | Test.java:25:7:25:16 | default | true |
+| Test.java:28:7:28:15 | case ... | Test.java:27:5:27:14 | switch (...) | Test.java:28:7:28:15 | case ... | true |
+| Test.java:29:7:29:34 | case <Pattern> | Test.java:29:7:29:34 | case <Pattern> | Test.java:29:19:29:19 | <anonymous local variable> | true |
+| Test.java:29:7:29:34 | case <Pattern> | Test.java:29:7:29:34 | case <Pattern> | Test.java:30:7:30:15 | case ... | false |
+| Test.java:29:7:29:34 | case <Pattern> | Test.java:29:7:29:34 | case <Pattern> | Test.java:33:7:33:14 | default | false |
+| Test.java:29:26:29:33 | ... == ... | Test.java:29:19:29:19 | <anonymous local variable> | Test.java:30:7:30:15 | case ... | false |
+| Test.java:29:26:29:33 | ... == ... | Test.java:29:19:29:19 | <anonymous local variable> | Test.java:30:7:30:15 | case ... | true |
+| Test.java:29:26:29:33 | ... == ... | Test.java:29:19:29:19 | <anonymous local variable> | Test.java:33:7:33:14 | default | false |
+| Test.java:30:7:30:15 | case ... | Test.java:29:7:29:34 | case <Pattern> | Test.java:30:7:30:15 | case ... | true |
+| Test.java:33:7:33:14 | default | Test.java:29:7:29:34 | case <Pattern> | Test.java:33:7:33:14 | default | true |
+| Test.java:33:7:33:14 | default | Test.java:29:19:29:19 | <anonymous local variable> | Test.java:33:7:33:14 | default | true |
+#select
+| Test.java:5:7:5:17 | case ... | Test.java:3:20:3:20 | s | Test.java:5:12:5:14 | "c" | true | false | Test.java:7:7:7:16 | default |
 | Test.java:5:7:5:17 | case ... | Test.java:3:20:3:20 | s | Test.java:5:12:5:14 | "c" | true | true | Test.java:5:7:5:17 | case ... |
+| Test.java:6:7:6:17 | case ... | Test.java:3:20:3:20 | s | Test.java:6:12:6:14 | "d" | true | false | Test.java:7:7:7:16 | default |
+| Test.java:6:7:6:17 | case ... | Test.java:3:20:3:20 | s | Test.java:6:12:6:14 | "d" | true | true | Test.java:6:7:6:17 | case ... |
+| Test.java:11:7:11:17 | case ... | Test.java:9:13:9:13 | s | Test.java:11:12:11:14 | "c" | true | false | Test.java:13:7:13:16 | default |
+| Test.java:11:7:11:17 | case ... | Test.java:9:13:9:13 | s | Test.java:11:12:11:14 | "c" | true | true | Test.java:11:7:11:17 | case ... |
+| Test.java:12:7:12:17 | case ... | Test.java:9:13:9:13 | s | Test.java:12:12:12:14 | "d" | true | false | Test.java:13:7:13:16 | default |
+| Test.java:12:7:12:17 | case ... | Test.java:9:13:9:13 | s | Test.java:12:12:12:14 | "d" | true | true | Test.java:12:7:12:17 | case ... |
+| Test.java:17:26:17:33 | ... == ... | Test.java:17:26:17:28 | len | Test.java:17:33:17:33 | 4 | true | true | Test.java:17:38:17:40 | { ... } |
+| Test.java:18:7:18:17 | case ... | Test.java:16:13:16:13 | s | Test.java:18:12:18:14 | "e" | true | false | Test.java:19:7:19:16 | default |
+| Test.java:18:7:18:17 | case ... | Test.java:16:13:16:13 | s | Test.java:18:12:18:14 | "e" | true | true | Test.java:18:7:18:17 | case ... |
+| Test.java:22:7:22:17 | case ... | Test.java:21:13:21:41 | ...?...:... | Test.java:22:12:22:14 | "f" | true | false | Test.java:25:7:25:16 | default |
+| Test.java:22:7:22:17 | case ... | Test.java:21:13:21:41 | ...?...:... | Test.java:22:12:22:14 | "f" | true | true | Test.java:22:7:22:17 | case ... |
+| Test.java:23:27:23:34 | ... == ... | Test.java:23:27:23:29 | len | Test.java:23:34:23:34 | 4 | true | true | Test.java:23:39:23:41 | { ... } |
+| Test.java:24:7:24:17 | case ... | Test.java:21:13:21:41 | ...?...:... | Test.java:24:12:24:14 | "g" | true | false | Test.java:25:7:25:16 | default |
+| Test.java:24:7:24:17 | case ... | Test.java:21:13:21:41 | ...?...:... | Test.java:24:12:24:14 | "g" | true | true | Test.java:24:7:24:17 | case ... |
+| Test.java:28:7:28:15 | case ... | Test.java:27:13:27:13 | s | Test.java:28:12:28:14 | "h" | true | false | Test.java:33:7:33:14 | default |
+| Test.java:28:7:28:15 | case ... | Test.java:27:13:27:13 | s | Test.java:28:12:28:14 | "h" | true | true | Test.java:28:7:28:15 | case ... |
+| Test.java:30:7:30:15 | case ... | Test.java:27:13:27:13 | s | Test.java:30:12:30:14 | "i" | true | false | Test.java:33:7:33:14 | default |

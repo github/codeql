@@ -10,6 +10,8 @@ string describe(Type t) {
   result = "getAliasedType:" + t.(TypeAliasType).getAliasedType().toString()
   or
   result = "getABaseType:" + t.getABaseType().toString()
+  or
+  result = "getCanonicalType:" + t.getCanonicalType().toString()
 }
 
 from VarDecl v, Type t

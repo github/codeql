@@ -26,10 +26,6 @@ deprecated class IntentUriPermissionManipulationConf extends TaintTracking::Conf
     barrier instanceof IntentUriPermissionManipulationSanitizer
   }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof IntentUriPermissionManipulationGuard
-  }
-
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(IntentUriPermissionManipulationAdditionalTaintStep c).step(node1, node2)
   }
@@ -39,7 +35,7 @@ deprecated class IntentUriPermissionManipulationConf extends TaintTracking::Conf
  * A taint tracking configuration for user-provided Intents being returned to third party apps.
  */
 module IntentUriPermissionManipulationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentUriPermissionManipulationSink }
 

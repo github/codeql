@@ -28,3 +28,29 @@ public class ProfileController : Controller {
     }
 
 }
+
+[Authorize]
+public class AuthBaseController : Controller {
+    protected void doThings() { }
+}
+
+public class SubController : AuthBaseController {
+    // GOOD: The Authorize attribute is used on the base class.
+    public ActionResult Delete4(int id) {
+        doThings();
+        return View();
+    }
+}
+
+[Authorize]
+public class AuthBaseGenericController<T> : Controller {
+    protected void doThings() { }
+}
+
+public class SubGenericController : AuthBaseGenericController<string> {
+    // GOOD: The Authorize attribute is used on the base class.
+    public ActionResult Delete5(int id) {
+        doThings();
+        return View();
+    }
+}

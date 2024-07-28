@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.NameResolution, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `System.Net.NameResolution, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -34,14 +33,12 @@ namespace System
             public static string GetHostName() => throw null;
             public static System.Net.IPHostEntry Resolve(string hostName) => throw null;
         }
-
         public class IPHostEntry
         {
-            public System.Net.IPAddress[] AddressList { get => throw null; set => throw null; }
-            public string[] Aliases { get => throw null; set => throw null; }
-            public string HostName { get => throw null; set => throw null; }
+            public System.Net.IPAddress[] AddressList { get => throw null; set { } }
+            public string[] Aliases { get => throw null; set { } }
             public IPHostEntry() => throw null;
+            public string HostName { get => throw null; set { } }
         }
-
     }
 }

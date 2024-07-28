@@ -4,7 +4,7 @@
 
 import ruby
 import TestUtilities.InlineFlowTest
-import PathGraph
+import TaintFlow::PathGraph
 import codeql.ruby.frameworks.Rails
 
 module ParamsTaintFlowConfig implements DataFlow::ConfigSig {

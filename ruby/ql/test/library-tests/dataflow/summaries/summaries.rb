@@ -20,7 +20,7 @@ sink(tainted3) # $ hasValueFlow=tainted
 tainted4 = Foo.firstArg(tainted)
 sink(tainted4) # $ hasTaintFlow=tainted
 
-notTainted = Foo.firstArg(nil, tainted))
+notTainted = Foo.firstArg(nil, tainted)
 sink(notTainted)
 
 tainted5 = Foo.secondArg(nil, tainted)
@@ -128,7 +128,7 @@ x = Foo.new
 x.flowToSelf(tainted)
 sink(x) # $ hasTaintFlow=tainted
 
-Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted $ hasTaintFlow=tainted
 Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)

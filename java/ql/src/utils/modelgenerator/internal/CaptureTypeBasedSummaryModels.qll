@@ -296,7 +296,7 @@ private module ModelPrinting = PrintingImpl<Printing>;
  * on the Theorems for Free approach.
  */
 class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
-  TypeBasedFlowTargetApi() { Specific::isRelevantForTypeBasedFlowModels(this) }
+  TypeBasedFlowTargetApi() { not Specific::isUninterestingForTypeBasedFlowModels(this) }
 
   /**
    * Gets the string representation of all type based summaries for `this`

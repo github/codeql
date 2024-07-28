@@ -1,0 +1,7 @@
+| Test.kt:3:9:3:31 | List<Integer> l |
+| Test.kt:4:28:4:32 | index |
+| Test.kt:4:35:4:35 | p1 |
+| Test.kt:6:9:6:26 | Pair<Integer,Integer> p |
+| Test.kt:7:9:7:26 | Pair<Integer,Integer> <destruct> |
+| Test.kt:7:14:7:18 | int first |
+| Test.kt:8:14:8:25 | Exception <unused var> |

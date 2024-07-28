@@ -1,3 +1,0 @@
-WARNING: Type SSTISink has been deprecated and may be removed in future (GenshiSSTISinks.ql:4,6-14)
-| Genshi.py:5:27:5:32 | argument to genshi.template.MarkupTemplate() |
-| Genshi.py:10:25:10:30 | argument to genshi.template.TextTemplate() |

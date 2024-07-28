@@ -47,10 +47,10 @@ nestedtypes.cs:
 #   48|         1: [ExprStmt] ...;
 #   48|           0: [MethodCall] call to method G
 #   48|             -1: [LocalVariableAccess] access to local variable n
-#   53|   4: [Class] Outer<>
+#   53|   4: [Class] Outer`1
 #-----|     1: (Type parameters)
 #   53|       0: [TypeParameter] T
-#   56|     5: [Class] Inner<>
+#   56|     6: [Class] Inner`1
 #-----|       1: (Type parameters)
 #   56|         0: [TypeParameter] U
 #   59|       5: [Method] F
@@ -72,7 +72,7 @@ nestedtypes.cs:
 #   65|             -1: [TypeAccess] access to type Inner<String>
 #   65|               -2: [TypeMention] Inner<string>
 #   65|                 1: [TypeMention] string
-#   65|               -1: [TypeAccess] access to type Outer<>
+#   65|               -1: [TypeAccess] access to type Outer`1
 #   65|                 0: [TypeMention] Outer<T>
 #   65|                   1: [TypeMention] T
 #   65|             0: [ParameterAccess] access to parameter t
@@ -92,15 +92,15 @@ nestedtypes.cs:
 #   69|             -1: [TypeMention] Type
 #   69|             0: [LocalVariableAccess] access to local variable type
 #   69|             1: [TypeofExpr] typeof(...)
-#   69|               0: [TypeAccess] access to type Inner<>
+#   69|               0: [TypeAccess] access to type Inner`1
 #   69|                 0: [TypeMention] Inner<U>
 #   69|                   1: [TypeMention] Outer<T>
 #   69|                     1: [TypeMention] <unknown type>
 #   69|                   2: [TypeMention] <unknown type>
-#   74|   5: [Class] Outer2<>
+#   74|   5: [Class] Outer2`1
 #-----|     1: (Type parameters)
 #   74|       0: [TypeParameter] T
-#   77|     5: [Class] Inner2<>
+#   77|     5: [Class] Inner2`1
 #-----|       1: (Type parameters)
 #   77|         0: [TypeParameter] T
 #   80|       5: [Field] t

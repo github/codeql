@@ -24,7 +24,7 @@ abstract class InsecureDexSink extends DataFlow::Node { }
 
 private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
   // propagate from a `java.io.File` via the `File.getAbsolutePath` call.
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod().getDeclaringType() instanceof TypeFile and
     m.getMethod().hasName("getAbsolutePath") and
     m.getQualifier() = pred.asExpr() and
@@ -32,7 +32,7 @@ private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
   or
   // propagate from a `java.io.File` via the `File.toString` call.
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod().getDeclaringType() instanceof TypeFile and
     m.getMethod().hasName("toString") and
     m.getQualifier() = pred.asExpr() and

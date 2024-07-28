@@ -4,4 +4,3 @@ extensions:
       extensible: experimentalSinkModel
     data:
       - ["java.util.concurrent", "TimeUnit", True, "sleep", "", "", "Argument[0]", "thread-pause", "manual", "thread-resource-abuse"]
-      - ["java.util.concurrent", "TimeUnit", True, "sleep", "", "", "Argument[0]", "thread-pause", "manual", "unsafe-url-forward"]

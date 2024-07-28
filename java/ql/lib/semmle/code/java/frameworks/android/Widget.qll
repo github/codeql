@@ -6,7 +6,7 @@ private import semmle.code.java.dataflow.FlowSources
 
 private class EditableToStringStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("toString") and
       ma.getReceiverType().getASourceSupertype*().hasQualifiedName("android.text", "Editable") and
       n1.asExpr() = ma.getQualifier() and

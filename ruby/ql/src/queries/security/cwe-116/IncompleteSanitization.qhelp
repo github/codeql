@@ -37,18 +37,6 @@ An even safer alternative is to design the application so that sanitization is n
 Otherwise, make sure to use <code>String#gsub</code> rather than <code>String#sub</code>, to ensure
 that all occurrences are replaced, and remember to escape backslashes if applicable.
 </p>
-<p>
-Note, however, that this is generally <i>not</i> sufficient for replacing multi-character strings:
-the <code>String#gsub</code> method performs only one pass over the input string, and will not
-replace further instances of the string that result from earlier replacements.
-</p>
-<p>
-For example, consider the code snippet <code>s.gsub /\/\.\.\//, ""</code>, which attempts to strip
-out all occurrences of <code>/../</code> from <code>s</code>. This will not work as expected: for the
-string <code>/./.././</code>, for example, it will remove the single occurrence of <code>/../</code>
-in the middle, but the remainder of the string then becomes <code>/../</code>, which is another
-instance of the substring we were trying to remove.
-</p>
 </recommendation>
 
 <example>

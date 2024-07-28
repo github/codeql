@@ -1,3 +1,0 @@
-WARNING: Predicate globalValueNumber has been deprecated and may be removed in future (ast_uniqueness.ql:7,13-30)
-WARNING: Predicate globalValueNumber has been deprecated and may be removed in future (ast_uniqueness.ql:8,30-47)
-WARNING: Type GVN has been deprecated and may be removed in future (ast_uniqueness.ql:8,18-21)

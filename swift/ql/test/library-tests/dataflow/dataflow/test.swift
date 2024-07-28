@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // clean
 }
 
 func lambdaFlows() {
@@ -272,9 +272,9 @@ func test_optionals(y: Int?) {
     sink(opt: y?.signum())
 
     sink(arg: x ?? 0) // $ flow=259
-    sink(arg: x ?? source()) // $ flow=259 MISSING: flow=276
+    sink(arg: x ?? source()) // $ flow=259 flow=275
     sink(arg: y ?? 0)
-    sink(arg: y ?? source()) // $ MISSING: flow=278
+    sink(arg: y ?? source()) // $ flow=277
 
     sink(arg: x != nil ? x! : 0) // $ flow=259
     sink(arg: x != nil ? x! : source()) // $ flow=259 flow=280
@@ -612,7 +612,7 @@ func inoutConstructor() {
 }
 
 struct S {
-  let x: Int
+  var x: Int
 
   init(x: Int) {
     self.x = x
@@ -629,7 +629,7 @@ func testKeyPath() {
 }
 
 struct S2 {
-  let s: S
+  var s: S
 
   init(s: S) {
     self.s = s
@@ -706,7 +706,7 @@ func testArray() {
     sink(arg: arr4[0]) // $ MISSING: flow=692
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5[0]) // $ MISSING: flow=708
+    sink(arg: arr5[0]) // $ flow=708
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
@@ -765,4 +765,230 @@ func testOptionalKeyPathForce() {
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s!.x
     sink(arg: s2[keyPath: f]) // $ flow=764
+}
+
+func testDictionary() {
+    var dict1 = [1:2, 3:4, 5:6]
+    sink(arg: dict1[1])
+
+    dict1[1] = source()
+
+    sink(arg: dict1[1]) // $ flow=774
+
+    var dict2 = [source(): 1]
+    sink(arg: dict2[1])
+
+    for (key, value) in dict2 {
+        sink(arg: key) // $ flow=778
+        sink(arg: value)
+    }
+
+    var dict3 = [1: source()]
+    sink(arg: dict3[1]) // $ flow=786
+
+    dict3[source()] = 2
+
+    sink(arg: dict3.randomElement()!.0) // $ flow=789
+    sink(arg: dict3.randomElement()!.1) // $ flow=786
+
+    for (key, value) in dict3 {
+        sink(arg: key) // $ flow=789
+        sink(arg: value) // $ flow=786
+    }
+
+    var dict4 = [1:source()]
+    sink(arg: dict4.updateValue(1, forKey: source())!) // $ flow=799
+    sink(arg: dict4.updateValue(source(), forKey: 2)!) // $ SPURIOUS: flow=799
+    sink(arg: dict4.randomElement()!.0) // $ flow=800
+    sink(arg: dict4.randomElement()!.1) // $ flow=799 flow=801
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=800
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
+}
+
+struct S3 {
+  init(_ v: Int) {
+    self.v = v
+  }
+
+  func getv() -> Int { return v }
+
+  var v: Int
+}
+
+func testStruct() {
+    var s1 = S3(source())
+    var s2 = S3(0)
+
+    sink(arg: s1.v) // $ flow=819
+    sink(arg: s2.v)
+    sink(arg: s1.getv()) // $ flow=819
+    sink(arg: s2.getv())
+
+    s1.v = 0
+    s2.v = source()
+
+    sink(arg: s1.v)
+    sink(arg: s2.v) // $ flow=828
+    sink(arg: s1.getv())
+    sink(arg: s2.getv()) // $ flow=828
+}
+
+func testNestedKeyPathWrite() {
+  var s2 = S2(s: S(x: 1))
+  sink(arg: s2.s.x)
+  var f = \S2.s.x
+  s2[keyPath: f] = source()
+  sink(arg: s2.s.x) // $ flow=840
+}
+
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ flow=871
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=872
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
+
+    for arg in args {
+        sink(arg: arg) // $ flow=873
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
+}
+
+func testSetForEach() {
+    var set1 = Set([source()])
+
+    for elem in set1 {
+        sink(arg: elem) // $ flow=877
+    }
+
+    var generator = set1.makeIterator()
+    sink(arg: generator.next()!) // $ flow=877
+}
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for _ in 1...100 {
+                    continuation.yield(source())
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        sink(arg: i) // $ MISSING: flow=892
+    }
+}
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr()) // $ flow=908
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}
+
+// ---
+
+protocol MyProtocol {
+	func source(_ label: String) -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source(_ label: String) -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source("x.source")) // $ flow=x.source
+	sink(arg: y.source("y.source")) // $ flow=y.source
+	sink(arg: getMyProtocol().source("getMyProtocol.source")) // $ flow=getMyProtocol.source
+	sink(arg: getMyProtocolImpl().source("getMyProtocolImpl.source")) // $ flow=getMyProtocolImpl.source
+}
+
+// ---
+
+@propertyWrapper struct MyTaintPropertyWrapper {
+    var wrappedValue: Int {
+        get { return source() }
+        set { sink(arg: newValue) } // $ flow=943 flow=950
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=948
+        self.wrappedValue = source()
+    }
+}
+
+func test_my_taint_property_wrapper() {
+    @MyTaintPropertyWrapper var x: Int = source()
+    sink(arg: x) // $ flow=937
+    x = source()
+    sink(arg: x) // $ flow=937
+}
+
+// ---
+
+@propertyWrapper struct MySimplePropertyWrapper {
+    var wrappedValue: Int {
+        didSet {
+            sink(arg: wrappedValue) // $ flow=980 flow=991
+        }
+    }
+
+    var projectedValue: Int {
+        get { wrappedValue }
+        set {
+            sink(arg: wrappedValue) // $ MISSING: flow=991
+            wrappedValue = newValue
+        }
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=983
+        self.wrappedValue = wrappedValue
+    }
+}
+
+func test_my_property_wrapper() {
+    @MySimplePropertyWrapper var a = 0
+    sink(arg: a)
+    a = source()
+    sink(arg: a) // $ MISSING: flow=980
+
+    @MySimplePropertyWrapper var b = source()
+    sink(arg: b) // $ MISSING: flow=983
+    b = 0
+    sink(arg: b)
+
+    @MySimplePropertyWrapper var c = 0
+    sink(arg: c)
+    sink(arg: $c)
+    $c = source()
+    sink(arg: c) // $ MISSING: flow=991
+    sink(arg: $c) // $ MISSING: flow=991
 }

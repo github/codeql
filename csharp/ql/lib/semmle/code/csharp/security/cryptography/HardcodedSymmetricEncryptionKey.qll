@@ -4,7 +4,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 module HardcodedSymmetricEncryptionKey {
   private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
@@ -57,7 +57,7 @@ module HardcodedSymmetricEncryptionKey {
 
   private class CryptographicBuffer extends Class {
     CryptographicBuffer() {
-      this.hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
+      this.hasFullyQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
     }
   }
 

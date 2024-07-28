@@ -11,14 +11,14 @@ private predicate isSafeSecureCookieSetting(Expr e) {
     isSecure.hasName("isSecure") and
     isSecure.getDeclaringType().getASourceSupertype*() instanceof ServletRequest
   |
-    e.(MethodAccess).getMethod() = isSecure
+    e.(MethodCall).getMethod() = isSecure
   )
 }
 
 /** A dataflow configuration to reason about the failure to use secure cookies. */
 module SecureCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    exists(MethodCall ma, Method m | ma.getMethod() = m |
       m.getDeclaringType() instanceof TypeCookie and
       m.getName() = "setSecure" and
       source.asExpr() = ma.getQualifier() and
@@ -33,7 +33,7 @@ module SecureCookieConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
-      any(MethodAccess add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
+      any(MethodCall add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
 }
 

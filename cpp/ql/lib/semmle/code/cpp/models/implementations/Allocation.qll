@@ -5,6 +5,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Allocation
+import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * An allocation function (such as `malloc`) that has an argument for the size
@@ -35,7 +36,9 @@ private class MallocAllocationFunction extends AllocationFunction {
         "CRYPTO_malloc", // CRYPTO_malloc(size_t num, const char *file, int line)
         "CRYPTO_zalloc", // CRYPTO_zalloc(size_t num, const char *file, int line)
         "CRYPTO_secure_malloc", // CRYPTO_secure_malloc(size_t num, const char *file, int line)
-        "CRYPTO_secure_zalloc" // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        "CRYPTO_secure_zalloc", // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        "g_malloc", // g_malloc (n_bytes);
+        "g_try_malloc" // g_try_malloc(n_bytes);
       ]) and
     sizeArg = 0
     or
@@ -121,7 +124,7 @@ private class CallocAllocationFunction extends AllocationFunction {
  * An allocation function (such as `realloc`) that has an argument for the size
  * in bytes, and an argument for an existing pointer that is to be reallocated.
  */
-private class ReallocAllocationFunction extends AllocationFunction {
+private class ReallocAllocationFunction extends AllocationFunction, TaintFunction {
   int sizeArg;
   int reallocArg;
 
@@ -138,7 +141,9 @@ private class ReallocAllocationFunction extends AllocationFunction {
         // --- Windows COM allocation
         "CoTaskMemRealloc", // CoTaskMemRealloc(ptr, size)
         // --- OpenSSL memory allocation
-        "CRYPTO_realloc" // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
+        "CRYPTO_realloc", // CRYPTO_realloc(void *addr, size_t num, const char *file, int line)
+        "g_realloc", // g_realloc(mem, n_bytes);
+        "g_try_realloc" // g_try_realloc(mem, n_bytes);
       ]) and
     sizeArg = 1 and
     reallocArg = 0
@@ -151,6 +156,10 @@ private class ReallocAllocationFunction extends AllocationFunction {
   override int getSizeArg() { result = sizeArg }
 
   override int getReallocPtrArg() { result = reallocArg }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(this.getReallocPtrArg()) and output.isReturnValueDeref()
+  }
 }
 
 /**

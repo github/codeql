@@ -8,22 +8,26 @@ cached
 private module Cached {
   /** Holds if method `m` always returns null. */
   cached
-  predicate alwaysNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNullExpr(e)) }
+  deprecated predicate alwaysNullMethod(Method m) {
+    forex(Expr e | m.canReturn(e) | alwaysNullExpr(e))
+  }
 
   /** Holds if method `m` always returns non-null. */
   cached
-  predicate alwaysNotNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNotNullExpr(e)) }
+  deprecated predicate alwaysNotNullMethod(Method m) {
+    forex(Expr e | m.canReturn(e) | alwaysNotNullExpr(e))
+  }
 
   /** Holds if method `m` always throws an exception. */
   cached
-  predicate alwaysThrowsMethod(Method m) {
+  deprecated predicate alwaysThrowsMethod(Method m) {
     m.hasBody() and
     not exists(m.getImplementation().getAnInstruction().(Return))
   }
 
   /** Holds if method `m` always throws an exception of type `t`. */
   cached
-  predicate alwaysThrowsException(Method m, Type t) {
+  deprecated predicate alwaysThrowsException(Method m, Type t) {
     alwaysThrowsMethod(m) and
     forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExceptionType())
   }
@@ -32,12 +36,12 @@ private module Cached {
 import Cached
 
 pragma[noinline]
-private predicate alwaysNullVariableUpdate(VariableUpdate vu) {
+deprecated private predicate alwaysNullVariableUpdate(VariableUpdate vu) {
   forex(Expr src | src = vu.getSource() | alwaysNullExpr(src))
 }
 
 /** Holds if expression `expr` always evaluates to `null`. */
-private predicate alwaysNullExpr(Expr expr) {
+deprecated private predicate alwaysNullExpr(Expr expr) {
   expr instanceof NullLiteral
   or
   alwaysNullMethod(expr.(StaticCall).getTarget())
@@ -50,12 +54,12 @@ private predicate alwaysNullExpr(Expr expr) {
 }
 
 pragma[noinline]
-private predicate alwaysNotNullVariableUpdate(VariableUpdate vu) {
+deprecated private predicate alwaysNotNullVariableUpdate(VariableUpdate vu) {
   forex(Expr src | src = vu.getSource() | alwaysNotNullExpr(src))
 }
 
 /** Holds if expression `expr` always evaluates to non-null. */
-private predicate alwaysNotNullExpr(Expr expr) {
+deprecated private predicate alwaysNotNullExpr(Expr expr) {
   expr instanceof Opcodes::NewObj
   or
   expr instanceof Literal and not expr instanceof NullLiteral

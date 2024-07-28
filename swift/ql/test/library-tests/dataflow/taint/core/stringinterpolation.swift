@@ -31,3 +31,15 @@ func taintThroughCustomStringInterpolation() {
 	sink(arg: "pair: \(p2.second)") // $ tainted=28
 	sink(arg: "pair: \(p2)")
 }
+
+func moreTestsStringInterpolation() {
+	let a = source()
+	let b = clean()
+	let c = clean()
+
+	sink(arg: "\(a) and \(a)") // $ tainted=36
+	sink(arg: "\(a) and \(b)") // $ tainted=36
+	sink(arg: "\(b) and \(a)") // $ tainted=36
+	sink(arg: "\(b) and \(b)")
+	sink(arg: "\(c) and \(c)")
+}

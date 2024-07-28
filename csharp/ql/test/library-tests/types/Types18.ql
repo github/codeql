@@ -6,5 +6,5 @@
 import csharp
 
 from Struct s
-where s.hasQualifiedName("Types", "Struct")
+where s.hasFullyQualifiedName("Types", "Struct")
 select s
