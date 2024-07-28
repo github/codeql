@@ -38,7 +38,6 @@ public class Bombs {
         // SnappyZip
         SnappyHandler.SnappyZipInputStream(remoteFile);
         // apache Commons
-        CommonsCompressHandler.commonsCompressArchiveInputStream2(remoteFile);
         CommonsCompressHandler.commonsCompressorInputStream(remoteFile);
         try {
             CommonsCompressHandler.commonsCompressArchiveInputStream(remoteFile);

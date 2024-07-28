@@ -156,6 +156,30 @@ module ApacheCommons {
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
       }
     }
+
+    /**
+     * Gets `n1` and `n2` which `GzipCompressorInputStream n2 = new GzipCompressorInputStream(n1)`
+     */
+    private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
+    {
+      override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+        exists(Call call |
+          // Constructors
+          call.getCallee().getDeclaringType() instanceof TypeCompressors and
+          call.getArgument(0) = n1.asExpr() and
+          call = n2.asExpr()
+        )
+      }
+    }
+
+    predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+      exists(Call call |
+        // Constructors
+        call.getCallee().getDeclaringType() instanceof TypeCompressors and
+        call.getArgument(0) = n1.asExpr() and
+        call = n2.asExpr()
+      )
+    }
   }
 
   /**
@@ -189,6 +213,25 @@ module ApacheCommons {
       ReadInputStreamCall() {
         this.getReceiverType() instanceof TypeArchivers and
         this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
+      }
+    }
+
+    /**
+     * Gets `n1` and `n2` which `CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)`
+     * or `ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)` or
+     * `n1.read(n2)`,
+     * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
+     * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
+     */
+    private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
+    {
+      override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+        exists(Call call |
+          // Constructors
+          call.getCallee().getDeclaringType() instanceof TypeArchivers and
+          call.getArgument(0) = n1.asExpr() and
+          call = n2.asExpr()
+        )
       }
     }
   }
