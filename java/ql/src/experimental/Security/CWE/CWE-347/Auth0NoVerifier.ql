@@ -11,7 +11,6 @@
  */
 
 import java
-import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 
 module JwtAuth0 {
@@ -19,12 +18,12 @@ module JwtAuth0 {
     PayloadType() { this.hasQualifiedName("com.auth0.jwt.interfaces", "Payload") }
   }
 
-  class JWTType extends RefType {
-    JWTType() { this.hasQualifiedName("com.auth0.jwt", "JWT") }
+  class JwtType extends RefType {
+    JwtType() { this.hasQualifiedName("com.auth0.jwt", "JWT") }
   }
 
-  class JWTVerifierType extends RefType {
-    JWTVerifierType() { this.hasQualifiedName("com.auth0.jwt", "JWTVerifier") }
+  class JwtVerifierType  extends RefType {
+    JwtVerifierType () { this.hasQualifiedName("com.auth0.jwt", "JWTVerifier") }
   }
 
   /**
@@ -42,7 +41,7 @@ module JwtAuth0 {
    */
   class Decode extends MethodAccess {
     Decode() {
-      this.getCallee().getDeclaringType() instanceof JWTType and
+      this.getCallee().getDeclaringType() instanceof JwtType and
       this.getCallee().hasName("decode")
     }
   }
@@ -52,7 +51,7 @@ module JwtAuth0 {
    */
   class Verify extends MethodAccess {
     Verify() {
-      this.getCallee().getDeclaringType() instanceof JWTVerifierType and
+      this.getCallee().getDeclaringType() instanceof JwtVerifierType  and
       this.getCallee().hasName("verify")
     }
   }
