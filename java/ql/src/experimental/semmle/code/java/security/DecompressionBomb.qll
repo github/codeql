@@ -25,14 +25,6 @@ module DecompressionBomb {
   }
 
   abstract class BombTypeInputStream extends RefType { }
-
-  private class TypeInputStreamConstructorArgumentSink extends DecompressionBomb::Sink {
-    TypeInputStreamConstructorArgumentSink() {
-      exists(ConstructorCall call | call.getConstructedType() instanceof BombTypeInputStream |
-        this.asExpr() = call.getArgument(0)
-      )
-    }
-  }
 }
 
 /**
