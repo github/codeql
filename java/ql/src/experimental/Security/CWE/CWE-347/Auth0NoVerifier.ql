@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id java/missing-jwt-signature-check
+ * @id java/missing-jwt-signature-check-auth0
  * @tags security
  *       external/cwe/cwe-347
  */
@@ -22,14 +22,14 @@ module JwtAuth0 {
     JwtType() { this.hasQualifiedName("com.auth0.jwt", "JWT") }
   }
 
-  class JwtVerifierType  extends RefType {
-    JwtVerifierType () { this.hasQualifiedName("com.auth0.jwt", "JWTVerifier") }
+  class JwtVerifierType extends RefType {
+    JwtVerifierType() { this.hasQualifiedName("com.auth0.jwt", "JWTVerifier") }
   }
 
   /**
    * A Method that returns a Decoded Claim of JWT
    */
-  class GetPayload extends MethodAccess {
+  class GetPayload extends MethodCall {
     GetPayload() {
       this.getCallee().getDeclaringType() instanceof PayloadType and
       this.getCallee().hasName(["getClaim", "getIssuedAt"])
@@ -39,7 +39,7 @@ module JwtAuth0 {
   /**
    * A Method that Decode JWT without signature verification
    */
-  class Decode extends MethodAccess {
+  class Decode extends MethodCall {
     Decode() {
       this.getCallee().getDeclaringType() instanceof JwtType and
       this.getCallee().hasName("decode")
@@ -49,9 +49,9 @@ module JwtAuth0 {
   /**
    * A Method that Decode JWT with signature verification
    */
-  class Verify extends MethodAccess {
+  class Verify extends MethodCall {
     Verify() {
-      this.getCallee().getDeclaringType() instanceof JwtVerifierType  and
+      this.getCallee().getDeclaringType() instanceof JwtVerifierType and
       this.getCallee().hasName("verify")
     }
   }
