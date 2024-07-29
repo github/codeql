@@ -1,26 +1,11 @@
 - description: Standard Code Scanning queries for Actions
-- queries: .
-
+- queries: '.'
 - include:
-    kind:
-      - problem
-      - path-problem
-    tags contain:
-      - security
-      - maintainability
     problem.severity: 
       - error
       - recommendation
-
-- include:
-    kind:
-      - diagnostic
-
 - exclude:
-    problem.severity: 
-      - warning
     tags contain:
       - experimental
-      - testing
       - debug
-      - model-generator
+      
