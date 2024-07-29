@@ -1268,19 +1268,16 @@ module Http {
          * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
          */
         predicate hasHttpOnlyFlag(boolean b) {
-          exists(this.getHeaderArg()) and
-          (
-            exists(StringLiteral sl |
-              sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
-              TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
-              b = true
-            )
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = true
             or
-            exists(StringLiteral sl |
-              not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
-              DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
-              b = false
-            )
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = false
           )
         }
 
