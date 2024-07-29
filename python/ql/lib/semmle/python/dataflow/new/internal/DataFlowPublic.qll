@@ -223,7 +223,7 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
   /** Gets the data-flow node corresponding to the first tuple (*) argument of the call corresponding to this data-flow node, if any. */
   Node getStarArg() { result.asCfgNode() = node.getStarArg() }
 
-  /** Gets tje data-flow node corresponding to a dictionary (**) argument of the call corresponding to this data-flow node, if any. */
+  /** Gets the data-flow node corresponding to a dictionary (**) argument of the call corresponding to this data-flow node, if any. */
   Node getKwargs() { result.asCfgNode() = node.getKwargs() }
 }
 
