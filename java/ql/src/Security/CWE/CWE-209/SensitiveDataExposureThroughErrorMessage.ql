@@ -1,6 +1,6 @@
 /**
- * @name Information exposure through a error message
- * @description Information from a error message propagates to an external user.
+ * @name Information exposure through an error message
+ * @description Information from an error message propagates to an external user.
  *              Error messages can unintentionally reveal implementation details
  *              that are useful to an attacker for developing a subsequent exploit.
  * @kind problem

@@ -34,8 +34,5 @@ information.</p>
 <a href="https://www.securecoding.cert.org/confluence/display/java/ERR01-J.+Do+not+allow+exceptions+to+expose+sensitive+information">ERR01-J.
 Do not allow exceptions to expose sensitive information</a>.</li>
 
-<li>
-  CWE-209: <a href="https://cwe.mitre.org/data/definitions/209.html">Information Exposure Through an Error Message</a>.
-</li>
 </references>
 </qhelp>

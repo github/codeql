@@ -12,7 +12,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 	try {
 		doSomeWork();
 	} catch (NullPointerException ex) {
-		// GOOD: log the stack trace, and send back a non-revealing response
+		// GOOD: log the exception message, and send back a non-revealing response
 		log("Exception occurred", ex.getMessage);
 		response.sendError(
 			HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
