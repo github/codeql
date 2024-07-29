@@ -2536,7 +2536,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             TStagePathNodeSrcGrp() or
             TStagePathNodeSinkGrp()
 
-          class StagePathNode extends TStagePathNode {
+          class StagePathNodeImpl extends TStagePathNode {
             abstract string toString();
 
             abstract Location getLocation();
@@ -2553,19 +2553,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             predicate isArbitrarySink() { this instanceof TStagePathNodeSinkGrp }
           }
 
-          class StagePathNodeSrcGrp extends StagePathNode, TStagePathNodeSrcGrp {
+          class StagePathNodeSrcGrp extends StagePathNodeImpl, TStagePathNodeSrcGrp {
             override string toString() { result = "<any source>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
           }
 
-          class StagePathNodeSinkGrp extends StagePathNode, TStagePathNodeSinkGrp {
+          class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
             override string toString() { result = "<any sink>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
           }
 
-          class StagePathNodeMid extends StagePathNode, TStagePathNodeMid {
+          class StagePathNodeMid extends StagePathNodeImpl, TStagePathNodeMid {
             NodeEx node;
             FlowState state;
             Cc cc;
@@ -2646,14 +2646,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           bindingset[node, state, cc, summaryCtx, argT, argAp, t, ap]
           pragma[inline_late]
-          private StagePathNode mkStagePathNode(
+          private StagePathNodeImpl mkStagePathNode(
             NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
             ApOption argAp, Typ t, Ap ap
           ) {
             result = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
           }
 
-          private StagePathNode typeStrengthenToStagePathNode(
+          private StagePathNodeImpl typeStrengthenToStagePathNode(
             NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
             ApOption argAp, Typ t0, Ap ap
           ) {
@@ -2665,9 +2665,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep1(
-            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, DataFlowCall call, Cc cc,
-            FlowState state, CcCall ccc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp,
-            Typ t, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
+            StagePathNodeImpl pn1, StagePathNodeImpl pn2, StagePathNodeImpl pn3, DataFlowCall call,
+            Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
           ) {
             exists(FlowState state0, ArgNodeEx arg, ParamNodeEx p, Typ innerArgT, Ap innerArgAp |
               fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa,
@@ -2685,7 +2685,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep2(
-            StagePathNode pn1, StagePathNode pn2, StagePathNode pn3, NodeEx node, Cc cc,
+            StagePathNodeImpl pn1, StagePathNodeImpl pn2, StagePathNodeImpl pn3, NodeEx node, Cc cc,
             FlowState state, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
             Ap ap
           ) {
@@ -2701,7 +2701,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           private predicate localStep(
-            StagePathNode pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
+            StagePathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
             TypOption argT, ApOption argAp, Typ t, Ap ap, string label
           ) {
             exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
@@ -2732,7 +2732,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
           }
 
-          private predicate localStep(StagePathNode pn1, StagePathNode pn2, string label) {
+          private predicate localStep(StagePathNodeImpl pn1, StagePathNodeImpl pn2, string label) {
             exists(
               NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
               ApOption argAp, Typ t0, Ap ap
@@ -2744,27 +2744,29 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             summaryStep(pn1, pn2, label)
           }
 
-          private predicate summaryLabel(StagePathNode pn1, StagePathNode pn2, string summaryLabel) {
+          private predicate summaryLabel(
+            StagePathNodeImpl pn1, StagePathNodeImpl pn2, string summaryLabel
+          ) {
             pn1 = pn2 and
             summaryLabel = "" and
             subpaths(_, pn1, _, _)
             or
-            exists(StagePathNode mid, string l1, string l2 |
+            exists(StagePathNodeImpl mid, string l1, string l2 |
               summaryLabel(pn1, mid, l1) and
               localStep(mid, pn2, l2) and
               summaryLabel = mergeLabels(l1, l2)
             )
           }
 
-          private predicate summaryStep(StagePathNode arg, StagePathNode out, string label) {
-            exists(StagePathNode par, StagePathNode ret |
+          private predicate summaryStep(StagePathNodeImpl arg, StagePathNodeImpl out, string label) {
+            exists(StagePathNodeImpl par, StagePathNodeImpl ret |
               subpaths(arg, par, ret, out) and
               summaryLabel(par, ret, label)
             )
           }
 
           private predicate nonLocalStep(
-            StagePathNode pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
+            StagePathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
             TypOption argT, ApOption argAp, Typ t, Ap ap, string label
           ) {
             // jump
@@ -2823,7 +2825,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
           }
 
-          private predicate nonLocalStep(StagePathNode pn1, StagePathNode pn2, string label) {
+          private predicate nonLocalStep(StagePathNodeImpl pn1, StagePathNodeImpl pn2, string label) {
             exists(
               NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
               ApOption argAp, Typ t0, Ap ap
@@ -2834,7 +2836,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           query predicate subpaths(
-            StagePathNode arg, StagePathNode par, StagePathNode ret, StagePathNode out
+            StagePathNodeImpl arg, StagePathNodeImpl par, StagePathNodeImpl ret,
+            StagePathNodeImpl out
           ) {
             exists(
               NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
@@ -2845,7 +2848,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
           }
 
-          query predicate edges(StagePathNode pn1, StagePathNode pn2, string key, string val) {
+          query predicate edges(StagePathNodeImpl pn1, StagePathNodeImpl pn2, string key, string val) {
             key = "provenance" and
             (
               localStep(pn1, pn2, val)
