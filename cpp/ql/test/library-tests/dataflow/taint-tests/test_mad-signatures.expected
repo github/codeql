@@ -496,6 +496,9 @@ getParameterTypeName
 | stl.h:333:42:333:47 | insert | 1 | func:0 |
 | stl.h:333:42:333:47 | insert | 2 | func:0 |
 | stl.h:333:42:333:47 | insert | 2 | func:0 |
+| stl.h:335:37:335:43 | emplace | 0 | const_iterator |
+| stl.h:335:37:335:43 | emplace | 1 | func:0 && |
+| stl.h:336:33:336:44 | emplace_back | 0 | func:0 && |
 | stl.h:338:8:338:11 | swap | 0 | vector & |
 | stl.h:351:12:351:21 | shared_ptr | 0 | class:0 * |
 | stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
@@ -529,9 +532,25 @@ getParameterTypeName
 | stl.h:435:6:435:15 | operator[] | 0 | key_type && |
 | stl.h:435:6:435:15 | operator[] | 0 | key_type && |
 | stl.h:436:6:436:7 | at | 0 | const key_type & |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
 | stl.h:443:24:443:29 | insert | 0 | value_type && |
 | stl.h:445:12:445:17 | insert | 0 | const_iterator |
 | stl.h:445:12:445:17 | insert | 1 | value_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
 | stl.h:452:42:452:57 | insert_or_assign | 0 | key_type && |
 | stl.h:452:42:452:57 | insert_or_assign | 1 | func:0 && |
 | stl.h:454:30:454:45 | insert_or_assign | 0 | const_iterator |
@@ -550,9 +569,34 @@ getParameterTypeName
 | stl.h:503:16:503:25 | operator[] | 0 | key_type && |
 | stl.h:503:16:503:25 | operator[] | 0 | key_type && |
 | stl.h:504:16:504:17 | at | 0 | const key_type & |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
 | stl.h:511:24:511:29 | insert | 0 | value_type && |
 | stl.h:513:12:513:17 | insert | 0 | const_iterator |
 | stl.h:513:12:513:17 | insert | 1 | value_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
 | stl.h:520:42:520:57 | insert_or_assign | 0 | key_type && |
 | stl.h:520:42:520:57 | insert_or_assign | 1 | func:0 && |
 | stl.h:522:30:522:45 | insert_or_assign | 0 | const_iterator |
@@ -567,6 +611,12 @@ getParameterTypeName
 | stl.h:557:33:557:35 | set | 0 | func:0 |
 | stl.h:557:33:557:35 | set | 1 | func:0 |
 | stl.h:560:8:560:16 | operator= | 0 | const set & |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
 | stl.h:571:23:571:28 | insert | 0 | value_type && |
 | stl.h:573:12:573:17 | insert | 0 | const_iterator |
 | stl.h:573:12:573:17 | insert | 1 | value_type && |
@@ -584,6 +634,12 @@ getParameterTypeName
 | stl.h:611:33:611:45 | unordered_set | 1 | func:0 |
 | stl.h:611:33:611:45 | unordered_set | 2 | size_type |
 | stl.h:614:18:614:26 | operator= | 0 | const unordered_set & |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
 | stl.h:625:24:625:29 | insert | 0 | value_type && |
 | stl.h:627:12:627:17 | insert | 0 | const_iterator |
 | stl.h:627:12:627:17 | insert | 1 | value_type && |
