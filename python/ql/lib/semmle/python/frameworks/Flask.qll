@@ -583,9 +583,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
-  class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode
-  {
+  class FlaskResponseSetCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -593,51 +591,6 @@ module Flask {
     override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
 
     override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
-
-    override predicate hasSecureFlag(boolean b) {
-      super.hasSecureFlag(b)
-      or
-      exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
-        DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
-        b = bool.booleanValue()
-      )
-      or
-      not exists(this.getArgByName("secure")) and
-      b = false
-    }
-
-    override predicate hasHttpOnlyFlag(boolean b) {
-      super.hasHttpOnlyFlag(b)
-      or
-      exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
-        DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
-        b = bool.booleanValue()
-      )
-      or
-      not exists(this.getArgByName("httponly")) and
-      b = false
-    }
-
-    override predicate hasSameSiteAttribute(Http::Server::CookieWrite::SameSiteValue v) {
-      super.hasSameSiteAttribute(v)
-      or
-      exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
-        DataFlow::localFlow(DataFlow::exprNode(str), arg) and
-        (
-          str.getText().toLowerCase() = "strict" and
-          v instanceof Http::Server::CookieWrite::SameSiteStrict
-          or
-          str.getText().toLowerCase() = "lax" and
-          v instanceof Http::Server::CookieWrite::SameSiteLax
-          or
-          str.getText().toLowerCase() = "none" and
-          v instanceof Http::Server::CookieWrite::SameSiteNone
-        )
-      )
-      or
-      not exists(this.getArgByName("samesite")) and
-      v instanceof Http::Server::CookieWrite::SameSiteLax // Lax is the default
-    }
   }
 
   /**

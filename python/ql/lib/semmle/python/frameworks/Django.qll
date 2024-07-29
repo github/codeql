@@ -2170,7 +2170,7 @@ module PrivateDjango {
         /**
          * A call to `set_cookie` on a HTTP Response.
          */
-        class DjangoResponseSetCookieCall extends Http::Server::CookieWrite::Range,
+        class DjangoResponseSetCookieCall extends Http::Server::SetCookieCall,
           DataFlow::MethodCallNode
         {
           DjangoResponseSetCookieCall() {
@@ -2185,51 +2185,6 @@ module PrivateDjango {
 
           override DataFlow::Node getValueArg() {
             result in [this.getArg(1), this.getArgByName("value")]
-          }
-
-          override predicate hasSecureFlag(boolean b) {
-            super.hasSecureFlag(b)
-            or
-            exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
-              DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
-              b = bool.booleanValue()
-            )
-            or
-            not exists(this.getArgByName("secure")) and
-            b = false
-          }
-
-          override predicate hasHttpOnlyFlag(boolean b) {
-            super.hasHttpOnlyFlag(b)
-            or
-            exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
-              DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
-              b = bool.booleanValue()
-            )
-            or
-            not exists(this.getArgByName("httponly")) and
-            b = false
-          }
-
-          override predicate hasSameSiteAttribute(Http::Server::CookieWrite::SameSiteValue v) {
-            super.hasSameSiteAttribute(v)
-            or
-            exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
-              DataFlow::localFlow(DataFlow::exprNode(str), arg) and
-              (
-                str.getText().toLowerCase() = "strict" and
-                v instanceof Http::Server::CookieWrite::SameSiteStrict
-                or
-                str.getText().toLowerCase() = "lax" and
-                v instanceof Http::Server::CookieWrite::SameSiteLax
-                or
-                str.getText().toLowerCase() = "none" and
-                v instanceof Http::Server::CookieWrite::SameSiteNone
-              )
-            )
-            or
-            not exists(this.getArgByName("samesite")) and
-            v instanceof Http::Server::CookieWrite::SameSiteLax // Lax is the default
           }
         }
 

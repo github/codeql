@@ -1220,6 +1220,57 @@ module Http {
       predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) { super.hasSameSiteAttribute(v) }
     }
 
+    /**
+     * A dataflow call node to a method that sets a cookie in an http response,
+     * and has common keyword arguments `secure`, `httponly`, and `samesite` to set the attributes of the cookie.
+     */
+    abstract class SetCookieCall extends CookieWrite::Range, DataFlow::CallCfgNode {
+      override predicate hasSecureFlag(boolean b) {
+        super.hasSecureFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("secure")) and
+        b = false
+      }
+
+      override predicate hasHttpOnlyFlag(boolean b) {
+        super.hasHttpOnlyFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("httponly")) and
+        b = false
+      }
+
+      override predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) {
+        super.hasSameSiteAttribute(v)
+        or
+        exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
+          DataFlow::localFlow(DataFlow::exprNode(str), arg) and
+          (
+            str.getText().toLowerCase() = "strict" and
+            v instanceof CookieWrite::SameSiteStrict
+            or
+            str.getText().toLowerCase() = "lax" and
+            v instanceof CookieWrite::SameSiteLax
+            or
+            str.getText().toLowerCase() = "none" and
+            v instanceof CookieWrite::SameSiteNone
+          )
+        )
+        or
+        not exists(this.getArgByName("samesite")) and
+        v instanceof CookieWrite::SameSiteLax // Lax is the default
+      }
+    }
+
     /** Provides a class for modeling new cookie writes on HTTP responses. */
     module CookieWrite {
       /**
