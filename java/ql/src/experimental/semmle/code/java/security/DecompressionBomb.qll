@@ -23,8 +23,6 @@ module DecompressionBomb {
   private class ReadInputStreamQualifierSink extends DecompressionBomb::Sink {
     ReadInputStreamQualifierSink() { this.asExpr() = any(BombReadInputStreamCall r).getQualifier() }
   }
-
-  abstract class BombTypeInputStream extends RefType { }
 }
 
 /**
@@ -34,7 +32,7 @@ module XerialSnappy {
   /**
    * A type that is responsible for `SnappyInputStream` Class
    */
-  class TypeInputStream extends DecompressionBomb::BombTypeInputStream {
+  class TypeInputStream extends RefType {
     TypeInputStream() {
       this.getASupertype*().hasQualifiedName("org.xerial.snappy", "SnappyInputStream")
     }
@@ -99,7 +97,7 @@ module ApacheCommons {
     /**
      * The types that are responsible for specific compression format of `CompressorInputStream` Class
      */
-    class TypeCompressors extends DecompressionBomb::BombTypeInputStream {
+    class TypeCompressors extends RefType {
       TypeCompressors() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.compressors.gzip",
@@ -163,15 +161,6 @@ module ApacheCommons {
         )
       }
     }
-
-    predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-      exists(Call call |
-        // Constructors
-        call.getCallee().getDeclaringType() instanceof TypeCompressors and
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-      )
-    }
   }
 
   /**
@@ -181,7 +170,7 @@ module ApacheCommons {
     /**
      * The types that are responsible for specific compression format of `ArchiveInputStream` Class
      */
-    class TypeArchivers extends DecompressionBomb::BombTypeInputStream {
+    class TypeArchivers extends RefType {
       TypeArchivers() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.archivers.ar", "ArArchiveInputStream") or
@@ -235,7 +224,7 @@ module ApacheCommons {
     /**
      * A type that is responsible for `ArchiveInputStream` Class
      */
-    class TypeArchivers extends DecompressionBomb::BombTypeInputStream {
+    class TypeArchivers extends RefType {
       TypeArchivers() {
         this.getASupertype*()
             .hasQualifiedName("org.apache.commons.compress.archivers", "ArchiveStreamFactory")
@@ -253,11 +242,7 @@ module ApacheCommons {
     }
 
     /**
-     * Gets `n1` and `n2` which `CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)`
-     * or `ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)` or
-     * `n1.read(n2)`,
-     * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
-     * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
+     * Gets `n1` and `n2` which `ZipInputStream n2 = new ZipInputStream(n1)`
      */
     private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
     {
@@ -314,12 +299,21 @@ module Zip4j {
     }
   }
 
-  class Sink extends DecompressionBomb::Sink {
-    Sink() {
-      this.asExpr() = any(ReadInputStreamCall r).getQualifier()
-      or
-      exists(ConstructorCall call | call.getConstructedType() instanceof TypeZipInputStream |
-        this.asExpr() = call.getArgument(0)
+  /**
+   * Gets `n1` and `n2` which `CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)`
+   * or `ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)` or
+   * `n1.read(n2)`,
+   * second one is added because of sanitizer, we want to compare return value of each `read` or similar method
+   * that whether there is a flow to a comparison between total read of decompressed stream and a constant value
+   */
+  private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
+  {
+    override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+      exists(Call call |
+        // Constructors
+        call.getCallee().getDeclaringType() instanceof TypeZipInputStream and
+        call.getArgument(0) = n1.asExpr() and
+        call = n2.asExpr()
       )
     }
   }
@@ -332,7 +326,7 @@ module Zip {
   /**
    * The Types that are responsible for `ZipInputStream`, `GZIPInputStream`, `InflaterInputStream` Classes
    */
-  class TypeInputStream extends DecompressionBomb::BombTypeInputStream {
+  class TypeInputStream extends RefType {
     TypeInputStream() {
       this.getASupertype*()
           .hasQualifiedName("java.util.zip",

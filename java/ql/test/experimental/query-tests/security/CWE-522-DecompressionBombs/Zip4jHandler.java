@@ -12,11 +12,11 @@ public class Zip4jHandler {
         LocalFileHeader localFileHeader;
         int readLen;
         byte[] readBuffer = new byte[4096];
-        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
+        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
             while ((localFileHeader = zipInputStream.getNextEntry()) != null) {
                 File extractedFile = new File(localFileHeader.getFileName());
                 try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
-                    while ((readLen = zipInputStream.read(readBuffer)) != -1) {
+                    while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"
                         outputStream.write(readBuffer, 0, readLen);
                     }
                 }
@@ -28,12 +28,12 @@ public class Zip4jHandler {
         LocalFileHeader localFileHeader;
         int readLen;
         byte[] readBuffer = new byte[4096];
-        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { // $ hasTaintFlow="inputStream"
+        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) { 
             while ((localFileHeader = zipInputStream.getNextEntry()) != null) {
                 File extractedFile = new File(localFileHeader.getFileName());
                 try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
                     int totallRead = 0;
-                    while ((readLen = zipInputStream.read(readBuffer)) != -1) {
+                    while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"
                         totallRead += readLen;
                         if (totallRead > 1024 * 1024 * 4) {
                             System.out.println("potential Bomb");
