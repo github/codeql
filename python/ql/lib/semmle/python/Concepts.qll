@@ -1234,6 +1234,7 @@ module Http {
         )
         or
         not exists(this.getArgByName("secure")) and
+        not exists(this.getKwargs()) and
         b = false
       }
 
@@ -1246,6 +1247,7 @@ module Http {
         )
         or
         not exists(this.getArgByName("httponly")) and
+        not exists(this.getKwargs()) and
         b = false
       }
 
@@ -1267,6 +1269,7 @@ module Http {
         )
         or
         not exists(this.getArgByName("samesite")) and
+        not exists(this.getKwargs()) and
         v instanceof CookieWrite::SameSiteLax // Lax is the default
       }
     }
