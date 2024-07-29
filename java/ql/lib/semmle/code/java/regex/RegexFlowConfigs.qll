@@ -13,9 +13,17 @@ private class ExploitableStringLiteral extends StringLiteral {
 
 /**
  * Holds if `kind` is an external sink kind that is relevant for regex flow.
- * `full` is true if sinks with this kind match against the full string of its input.
- * `strArg` is the index of the argument to methods with this sink kind that contan the string to be matched against,
- * where -1 is the qualifier; or -2 if no such argument exists.
+ * `full` is true if sinks with this kind match against the full string of its
+ * input.
+ * `strArg` is the index of the argument to methods with this sink kind that
+ * contain the string to be matched against, where -1 is the qualifier; or -2
+ * if no such argument exists.
+ *
+ * Note that `regex-use` is deliberately not a possible value for `kind` here,
+ * as it is used for regular expression injection sinks that need to be selected
+ * separately from existing `regex-use[0]` sinks.
+ * TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query
+ * can also use the `regex-use` sinks.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
   sinkModel(_, _, _, _, _, _, _, kind, _, _) and

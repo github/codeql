@@ -1,7 +1,7 @@
 import AliasAnalysis
 private import SimpleSSAImports
 import SimpleSSAPublicImports
-private import AliasConfiguration
+import AliasConfiguration
 private import codeql.util.Unit
 
 private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRType type) {
