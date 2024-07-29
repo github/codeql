@@ -1,2 +1,2 @@
-query: Security/CWE-022/UnsafeUnzipSymlink.ql
+query: Security/CWE-022/TaintedPath.ql
 postprocess: TestUtilities/PrettyPrintModels.ql
