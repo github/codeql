@@ -1,0 +1,27 @@
+edges
+| withUnsafeBytes.swift:9:25:9:25 | $0 | withUnsafeBytes.swift:10:16:10:16 | $0 |
+| withUnsafeBytes.swift:13:34:13:37 | p | withUnsafeBytes.swift:13:97:13:97 | p |
+| withUnsafeBytes.swift:15:34:15:37 | p | withUnsafeBytes.swift:15:109:15:109 | p |
+| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) |
+| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:38:12:38:21 | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer |
+nodes
+| withUnsafeBytes.swift:9:25:9:25 | $0 | semmle.label | $0 |
+| withUnsafeBytes.swift:10:16:10:16 | $0 | semmle.label | $0 |
+| withUnsafeBytes.swift:13:34:13:37 | p | semmle.label | p |
+| withUnsafeBytes.swift:13:97:13:97 | p | semmle.label | p |
+| withUnsafeBytes.swift:15:34:15:37 | p | semmle.label | p |
+| withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | semmle.label | call to id(pointer:) |
+| withUnsafeBytes.swift:15:109:15:109 | p | semmle.label | p |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | semmle.label | pointer |
+subpaths
+| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) |
+#select
+| withUnsafeBytes.swift:10:16:10:16 | $0 | withUnsafeBytes.swift:9:25:9:25 | $0 | withUnsafeBytes.swift:10:16:10:16 | $0 | This unsafe parameter may escape its invocation |
+| withUnsafeBytes.swift:13:97:13:97 | p | withUnsafeBytes.swift:13:34:13:37 | p | withUnsafeBytes.swift:13:97:13:97 | p | This unsafe parameter may escape its invocation |
+| withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | withUnsafeBytes.swift:15:34:15:37 | p | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | This unsafe parameter may escape its invocation |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer | This unsafe parameter may escape its invocation |
