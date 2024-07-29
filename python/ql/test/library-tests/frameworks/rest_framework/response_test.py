@@ -7,7 +7,7 @@ def normal_response(request): # $ requestHandler
     # has no pre-defined content type, since that will be negotiated
     # see https://www.django-rest-framework.org/api-guide/responses/
     data = "data"
-    resp = Response(data) # $ HttpResponse responseBody=data mimetype=text/html
+    resp = Response(data) # $ HttpResponse responseBody=data
     return resp
 
 @api_view()
@@ -15,8 +15,8 @@ def plain_text_response(request): # $ requestHandler
     # this response is not the standard way to use the Djagno REST framework, but it
     # certainly is possible -- notice that the response contains double quotes
     data = 'this response will contain double quotes since it was a string'
-    resp = Response(data, None, None, None, None, "text/plain") # $ HttpResponse
-    resp = Response(data=data, content_type="text/plain") # $ HttpResponse
+    resp = Response(data, None, None, None, None, "text/plain") # $ HttpResponse responseBody=data mimetype=text/plain
+    resp = Response(data=data, content_type="text/plain") # $ HttpResponse responseBody=data mimetype=text/plain
     return resp
 
 ################################################################################
@@ -25,7 +25,7 @@ def plain_text_response(request): # $ requestHandler
 
 @api_view
 def setting_cookie(request):
-    resp = Response() # $ HttpResponse mimetype=text/html
+    resp = Response() # $ HttpResponse
     resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
     resp.set_cookie(key="key4", value="value") # $ CookieWrite CookieName="key4" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
     resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
