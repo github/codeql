@@ -2444,9 +2444,6 @@ DataFlowType getNodeType(Node n) {
   ] = result.getADelegateCreation()
 }
 
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
-
 private class DataFlowNullType extends Gvn::GvnType {
   DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }
 
