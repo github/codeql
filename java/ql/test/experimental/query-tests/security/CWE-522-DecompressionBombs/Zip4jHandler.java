@@ -33,7 +33,7 @@ public class Zip4jHandler {
                 File extractedFile = new File(localFileHeader.getFileName());
                 try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
                     int totallRead = 0;
-                    while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"
+                    while ((readLen = zipInputStream.read(readBuffer)) != -1) { // $ hasTaintFlow="zipInputStream"  "this test gives a FP"
                         totallRead += readLen;
                         if (totallRead > 1024 * 1024 * 4) {
                             System.out.println("potential Bomb");

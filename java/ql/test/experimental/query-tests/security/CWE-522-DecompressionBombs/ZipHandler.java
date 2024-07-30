@@ -38,7 +38,7 @@ public class ZipHandler {
                 }
                 FileOutputStream fos = new FileOutputStream("/tmp/tmptmp");
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while (total + BUFFER <= TOOBIG && (count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
+                while (total + BUFFER <= TOOBIG && (count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis" "this test gives a FP"
                     dest.write(data, 0, count);
                     total += count;
                 }
@@ -78,7 +78,7 @@ public class ZipHandler {
                 }
                 FileOutputStream fos = new FileOutputStream(entry.getName());
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
+                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"  "this test gives a FP"
                     dest.write(data, 0, count);
                 }
                 dest.flush();
@@ -100,7 +100,7 @@ public class ZipHandler {
                 // Write the files to the disk
                 FileOutputStream fos = new FileOutputStream(entry.getName()); 
                 BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER);
-                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis"
+                while ((count = zis.read(data, 0, BUFFER)) != -1) { // $ hasTaintFlow="zis" 
                     dest.write(data, 0, count);
                 }
                 dest.flush();
