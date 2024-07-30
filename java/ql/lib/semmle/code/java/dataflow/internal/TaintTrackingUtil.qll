@@ -156,11 +156,18 @@ private module Cached {
   }
 
   /**
+   * A sanitizer in all global taint flow configurations but not in local taint.
+   */
+  cached
+  abstract class DefaultTaintSanitizer extends DataFlow::Node { }
+
+  /**
    * Holds if `node` should be a sanitizer in all global taint flow configurations
    * but not in local taint.
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
@@ -657,4 +664,86 @@ private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
     not fa.getField().isStatic()
   ) and
   src.getType().(RefType).getSourceDeclaration() = entrypointType()
+}
+
+/**
+ * A comparison against a list of compile-time constants, sanitizing taint by
+ * restricting to a set of known values.
+ */
+class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
+  ListOfConstantsComparisonSanitizerGuard() {
+    this = DataFlow::BarrierGuard<listOfConstantsComparisonSanitizerGuard/3>::getABarrierNode()
+  }
+}
+
+private predicate listOfConstantsComparisonSanitizerGuard(Guard g, Expr e, boolean outcome) {
+  exists(ListOfConstantsComparison locc |
+    g = locc and
+    e = locc.getExpr() and
+    outcome = locc.getOutcome()
+  )
+}
+
+/** A comparison against a list of compile-time constants. */
+abstract class ListOfConstantsComparison extends Guard {
+  Expr e;
+  boolean outcome;
+
+  ListOfConstantsComparison() {
+    exists(this) and
+    outcome = [true, false]
+  }
+
+  /** Gets the expression that is compared to a list of constants. */
+  Expr getExpr() { result = e }
+
+  /** Gets the value of `this` when `e` is in the list of constants. */
+  boolean getOutcome() { result = outcome }
+}
+
+/**
+ * An invocation of `java.util.List.contains` where the qualifier contains only
+ * compile-time constants.
+ */
+private class JavaUtilListOfConstantsContains extends ListOfConstantsComparison {
+  JavaUtilListOfConstantsContains() {
+    exists(MethodCall mc, Method m | mc.getMethod() = m |
+      m.hasName("contains") and
+      m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "List") and
+      DataFlow::localFlow(any(JavaUtilListOfConstants loc), DataFlow::exprNode(mc.getQualifier())) and
+      this = mc and
+      e = mc.getArgument(0) and
+      outcome = true
+    )
+  }
+}
+
+/**
+ * An instance of `java.util.List` which contains only compile-time constants.
+ */
+abstract class JavaUtilListOfConstants extends DataFlow::Node { }
+
+/**
+ * An invocation of `java.util.List.of` which constructs an (immutable) list
+ * which contains only compile-time constants.
+ */
+private class JavaUtilListOfConstantsCreatedWithListOf extends JavaUtilListOfConstants {
+  JavaUtilListOfConstantsCreatedWithListOf() {
+    exists(MethodCall mc, Method m |
+      m.hasName("of") and
+      m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "List") and
+      mc.getMethod() = m and
+      DataFlow::localFlow(DataFlow::exprNode(mc), this) and
+      (
+        // List<String> allowlist = List.of("a", "b", "c")
+        forall(Expr e | e = mc.getAnArgument() | e.isCompileTimeConstant())
+        or
+        // String[] a = {"a", "b", "c"};
+        // List<String> allowlist = List.of(a)
+        exists(ArrayInit arr | DataFlow::localExprFlow(arr, mc.getArgument(0)) |
+          forall(Expr e | e = arr.getAnInit() | e.isCompileTimeConstant())
+        )
+      )
+    )
+  }
 }

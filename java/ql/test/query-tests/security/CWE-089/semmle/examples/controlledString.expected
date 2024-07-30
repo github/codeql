@@ -1,6 +1,40 @@
 | <clinit> | 1 | Test.java:20:2:20:9 | FloorWax |
 | <clinit> | 1 | Test.java:20:12:20:18 | Topping |
 | <clinit> | 1 | Test.java:20:21:20:28 | Biscuits |
+| allowlist | 1 | Test.java:228:25:228:25 | 1 |
+| allowlist | 5 | Test.java:232:37:232:46 | "allowed1" |
+| allowlist | 5 | Test.java:232:49:232:58 | "allowed2" |
+| allowlist | 5 | Test.java:232:61:232:70 | "allowed3" |
+| allowlist | 6 | Test.java:233:7:233:33 | contains(...) |
+| allowlist | 7 | Test.java:234:20:234:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 8 | Test.java:235:19:235:36 | "' ORDER BY PRICE" |
+| allowlist | 15 | Test.java:242:37:242:46 | "allowed1" |
+| allowlist | 15 | Test.java:242:49:242:58 | "allowed2" |
+| allowlist | 15 | Test.java:242:66:242:66 | 2 |
+| allowlist | 16 | Test.java:243:7:243:33 | contains(...) |
+| allowlist | 17 | Test.java:244:20:244:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 18 | Test.java:245:19:245:36 | "' ORDER BY PRICE" |
+| allowlist | 25 | Test.java:252:29:252:38 | "allowed1" |
+| allowlist | 25 | Test.java:252:41:252:50 | "allowed2" |
+| allowlist | 25 | Test.java:252:53:252:62 | "allowed3" |
+| allowlist | 27 | Test.java:254:7:254:33 | contains(...) |
+| allowlist | 28 | Test.java:255:20:255:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 29 | Test.java:256:19:256:36 | "' ORDER BY PRICE" |
+| allowlist | 36 | Test.java:263:29:263:38 | "allowed1" |
+| allowlist | 36 | Test.java:263:41:263:50 | "allowed2" |
+| allowlist | 36 | Test.java:263:58:263:58 | 2 |
+| allowlist | 38 | Test.java:265:7:265:33 | contains(...) |
+| allowlist | 39 | Test.java:266:20:266:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 40 | Test.java:267:19:267:36 | "' ORDER BY PRICE" |
+| allowlist | 48 | Test.java:275:4:275:28 | add(...) |
+| allowlist | 48 | Test.java:275:18:275:27 | "allowed1" |
+| allowlist | 49 | Test.java:276:4:276:28 | add(...) |
+| allowlist | 49 | Test.java:276:18:276:27 | "allowed2" |
+| allowlist | 50 | Test.java:277:4:277:28 | add(...) |
+| allowlist | 50 | Test.java:277:18:277:27 | "allowed3" |
+| allowlist | 51 | Test.java:278:7:278:33 | contains(...) |
+| allowlist | 52 | Test.java:279:20:279:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| allowlist | 53 | Test.java:280:19:280:36 | "' ORDER BY PRICE" |
 | bindingVars | 3 | Test.java:216:48:216:48 | 1 |
 | bindingVars | 5 | Test.java:218:20:218:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | bindingVars | 6 | Test.java:219:20:219:37 | "' ORDER BY PRICE" |
