@@ -760,7 +760,7 @@ pragma[inline_late]
 private predicate funcHasQualifiedName(Function func, string namespace, string name) {
   exists(string nameWithoutArgs |
     parseAngles(name, nameWithoutArgs, _, "") and
-    func.hasQualifiedName(namespace, name)
+    func.hasQualifiedName(namespace, nameWithoutArgs)
   )
 }
 
