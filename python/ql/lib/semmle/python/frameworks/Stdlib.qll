@@ -4845,9 +4845,9 @@ module StdlibPrivate {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Flow summaries for string methods
-  // ---------------------------------------------------------------------------
+  /**
+   * Flow summaries for string manipulation methods.
+   */
   class StringManipulation extends SummarizedCallable {
     string method_name;
 
