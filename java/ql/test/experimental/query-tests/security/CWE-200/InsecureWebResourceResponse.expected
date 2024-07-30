@@ -124,6 +124,8 @@ models
 | 2 | Summary: android.net; Uri; true; getLastPathSegment; ; ; Argument[this]; ReturnValue; taint; manual |
 | 3 | Summary: android.net; Uri; true; getPath; ; ; Argument[this]; ReturnValue; taint; manual |
 | 4 | Summary: android.net; Uri; false; parse; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: android.webkit; WebResourceRequest; false; getUrl; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.io; FileInputStream; true; FileInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
 | 7 | Summary: java.io; File; false; File; ; ; Argument[1]; Argument[this]; taint; manual |
 | 8 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes

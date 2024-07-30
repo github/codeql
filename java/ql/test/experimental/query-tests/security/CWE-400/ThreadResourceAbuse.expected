@@ -42,6 +42,8 @@ edges
 | UploadListener.java:33:7:33:17 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:33:7:33:17 | slowUploads : Number | provenance |  |
 | UploadListener.java:35:18:35:28 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:35:18:35:28 | slowUploads | provenance |  Sink:MaD:1 |
 models
+| 1 | Sink: java.lang; Thread; true; sleep; ; ; Argument[0]; thread-pause; manual |
+| 2 | Sink: java.util.concurrent; TimeUnit; true; sleep; ; ; Argument[0]; thread-pause; manual |
 | 3 | Source: javax.servlet.http; Cookie; false; getValue; (); ; ReturnValue; remote; manual |
 | 4 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
 | 5 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |

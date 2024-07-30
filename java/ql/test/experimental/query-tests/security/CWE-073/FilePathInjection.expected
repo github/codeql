@@ -15,6 +15,7 @@ edges
 | FilePathInjection.java:209:24:209:31 | filePath : String | FilePathInjection.java:209:15:209:32 | new File(...) : File | provenance | MaD:5 |
 | FilePathInjection.java:217:19:217:22 | file : File | FilePathInjection.java:177:50:177:58 | file : File | provenance |  |
 models
+| 1 | Source: com.jfinal.core; Controller; true; getPara; ; ; ReturnValue; remote; manual |
 | 2 | Sink: java.io; File; true; exists; (); ; Argument[this]; path-injection; manual |
 | 3 | Sink: java.io; FileInputStream; true; FileInputStream; (File); ; Argument[0]; path-injection; ai-manual |
 | 4 | Sink: java.io; FileOutputStream; false; FileOutputStream; ; ; Argument[0]; path-injection; manual |
