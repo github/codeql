@@ -12,7 +12,7 @@ If a database query (such as a SQL query) is built from user-provided data witho
 <recommendation>
 
 <p>
-Most database connector libraries offer a way to safely embed untrusted data into a query using query parameters or prepared statements. You should use these features to build queries, rather than string concatenation or similar methods without sufficient sanitization.
+Most database connector libraries offer a way to safely embed untrusted data into a query using query parameters or prepared statements. You should use these features to build queries, rather than string concatenation or similar methods. It's also possible to escape (sanitize) user-controlled strings so that they can be included directly in an SQL command, but this approach is only safe if the chosen escaping function is robust.
 </p>
 
 </recommendation>
