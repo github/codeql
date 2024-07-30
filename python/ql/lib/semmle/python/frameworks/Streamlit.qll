@@ -38,7 +38,7 @@ module Streamlit {
   private class StreamlitSqlConnection extends API::CallNode {
     StreamlitSqlConnection() {
       exists(StringLiteral str, API::CallNode n |
-        str.getText().matches("sql")
+        str.getText() = "sql"
         and
         n = API::moduleImport("streamlit").getMember("connection").getACall()
         and
