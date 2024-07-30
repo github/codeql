@@ -90,9 +90,11 @@ class RetryException(Exception):
 
 attempts = 0
 success = False
-while attempts < 3 and success is False:
+while attempts < 3 and not success:
+    attempts += 1
     destdir.mkdir(parents=True, exist_ok=True)
     subprocess.run([script, "--destdir", destdir], check=True)
+    success = True
 
     if opts.zip_manifest:
         ripunzip = runfiles.Rlocation(opts.ripunzip)
@@ -110,7 +112,6 @@ while attempts < 3 and success is False:
                 success = ret.returncode == 0
                 if not success:
                     print(f"Failed to unzip {zip} to {dest}, retrying installation...")
-                    attempts += 1
                     rmdir(destdir)
                     break
 
