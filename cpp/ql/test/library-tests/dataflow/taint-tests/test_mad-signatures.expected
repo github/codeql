@@ -175,6 +175,7 @@ signatureMatches
 | stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
 | stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
 | stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:335:37:335:43 | emplace | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
 | stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
 | stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
@@ -215,6 +216,19 @@ signatureMatches
 | stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
 | stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
 | stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:452:42:452:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:520:42:520:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
@@ -223,6 +237,8 @@ signatureMatches
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | list | assign<InputIt> | 1 |
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
 | stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
@@ -231,6 +247,8 @@ signatureMatches
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
 | stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
 | stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
 | stl.h:628:38:628:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
@@ -315,6 +333,8 @@ getSignatureParameterName
 | (deque &&) | deque | deque | 0 | deque && |
 | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 0 | deque && |
 | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
+| (format_string,Args &&) |  | format<Args> | 0 | format_string |
+| (format_string,Args &&) |  | format<Args> | 1 | func:0 && |
 | (forward_list &&) | forward_list | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
