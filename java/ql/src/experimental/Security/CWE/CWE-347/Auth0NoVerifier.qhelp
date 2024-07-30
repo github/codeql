@@ -24,7 +24,7 @@
      </example>
      <references>
           <li>
-               <a href="CVE-2021-37580">The incorrect use of JWT in ShenyuAdminBootstrap allows an attacker to bypass authentication.</a>
+               <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-37580">The incorrect use of JWT in ShenyuAdminBootstrap allows an attacker to bypass authentication.</a>
           </li>
      </references>
 
