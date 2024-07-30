@@ -35,7 +35,8 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
           (
             value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
             or
-            value.matches("$(echo %") and value.indexOf(var_name) > 0
+            value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
+            value.indexOf(var_name) > 0
           )
         )
       )

@@ -74,7 +74,7 @@ predicate extractVariableAndValue(string raw_content, string key, string value) 
 bindingset[script]
 predicate singleLineFileWrite(string script, string cmd, string file, string content, string filters) {
   exists(string regexp |
-    regexp = "(?i)(echo|write-output)\\s*(.*?)\\s*(>>|>)\\s*(\\S+)" and
+    regexp = "(?i)(echo|printf|write-output)\\s*(.*?)\\s*(>>|>)\\s*(\\S+)" and
     cmd = script.regexpCapture(regexp, 1) and
     file = trimQuotes(script.regexpCapture(regexp, 4)) and
     filters = "" and
@@ -85,12 +85,12 @@ predicate singleLineFileWrite(string script, string cmd, string file, string con
 bindingset[script]
 predicate singleLineWorkflowCmd(string script, string cmd, string key, string value) {
   exists(string regexp |
-    regexp = "(?i)(echo|write-output)\\s*(['|\"])?::(set-[a-z]+)\\s*name\\s*=\\s*(.*?)::(.*)" and
+    regexp = "(?i)(echo|printf|write-output)\\s*(['|\"])?::(set-[a-z]+)\\s*name\\s*=\\s*(.*?)::(.*)" and
     cmd = script.regexpCapture(regexp, 3) and
     key = script.regexpCapture(regexp, 4) and
     value = trimQuotes(script.regexpCapture(regexp, 5))
     or
-    regexp = "(?i)(echo|write-output)\\s*(['|\"])?::(add-[a-z]+)\\s*::(.*)" and
+    regexp = "(?i)(echo|printf|write-output)\\s*(['|\"])?::(add-[a-z]+)\\s*::(.*)" and
     cmd = script.regexpCapture(regexp, 3) and
     key = "" and
     value = trimQuotes(script.regexpCapture(regexp, 4))
@@ -119,17 +119,17 @@ bindingset[script]
 predicate linesFileWrite(string script, string cmd, string file, string content, string filters) {
   exists(string regexp |
     regexp =
-      "(?msi).*(echo\\s+['|\"]?(.*?<<(\\S+))['|\"]?\\s*>>\\s*(\\S+)\\s*[\r\n]+)" +
+      "(?msi).*((echo|printf)\\s+['|\"]?(.*?<<(\\S+))['|\"]?\\s*>>\\s*(\\S+)\\s*[\r\n]+)" +
         "(((.*?)\\s*>>\\s*\\S+\\s*[\r\n]+)+)" +
-        "(echo\\s+['|\"]?(EOF)['|\"]?\\s*>>\\s*\\S+\\s*[\r\n]*).*" and
+        "((echo|printf)\\s+['|\"]?(EOF)['|\"]?\\s*>>\\s*\\S+\\s*[\r\n]*).*" and
     content =
-      trimQuotes(script.regexpCapture(regexp, 2)) + "\n" + "$(" +
-        trimQuotes(script.regexpCapture(regexp, 5)) +
+      trimQuotes(script.regexpCapture(regexp, 3)) + "\n" + "$(" +
+        trimQuotes(script.regexpCapture(regexp, 6)) +
         // TODO: there are some >> $GITHUB_ENV, >> $GITHUB_OUTPUT, >> "$GITHUB_ENV" lefotvers in content
         //.regexpReplaceAll("\\s*(>|>>)\\s*\\$[{]*" + file + "(.*?)[}]*", "")
-        ")\n" + trimQuotes(script.regexpCapture(regexp, 3)) and
+        ")\n" + trimQuotes(script.regexpCapture(regexp, 4)) and
     cmd = "echo" and
-    file = trimQuotes(script.regexpCapture(regexp, 4)) and
+    file = trimQuotes(script.regexpCapture(regexp, 5)) and
     filters = ""
   )
 }
@@ -146,8 +146,8 @@ predicate blockFileWrite(string script, string cmd, string file, string content,
     content =
       script
           .regexpCapture(regexp, 1)
-          .regexpReplaceAll("(?m)^[ ]*echo\\s*['\"](.*?)['\"]", "$1")
-          .regexpReplaceAll("(?m)^[ ]*echo\\s*", "") and
+          .regexpReplaceAll("(?m)^\\s*(echo|printf|write-output)\\s*['\"](.*?)['\"]", "$2")
+          .regexpReplaceAll("(?m)^\\s*(echo|printf|write-output)\\s*", "") and
     file = trimQuotes(script.regexpCapture(regexp, 4)) and
     cmd = "echo" and
     filters = ""
