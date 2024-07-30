@@ -262,6 +262,8 @@ signatureMatches
 | stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
 | stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
 | stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
 getSignatureParameterName
 | (InputIt,InputIt) | deque | assign<InputIt> | 0 | func:0 |
@@ -722,7 +724,10 @@ getParameterTypeName
 | stl.h:639:12:639:15 | find | 0 | const key_type & |
 | stl.h:641:28:641:38 | equal_range | 0 | const key_type & |
 | stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
 | stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 1 | func:0 && |
 | stl.h:678:33:678:38 | format | 1 | func:0 && |
 | stringstream.cpp:18:6:18:9 | sink | 0 | const basic_ostream> & |
 | stringstream.cpp:21:6:21:9 | sink | 0 | const basic_istream> & |

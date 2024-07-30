@@ -161,4 +161,7 @@ void test2()
 void test_format() {
   auto s = std::format("{}", string::source());
   sink(s); // $ ir MISSING: ast
+
+  auto s2 = std::format(string::source());
+  sink(s2); // $ ir MISSING: ast
 }

@@ -3,11 +3,12 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*1]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*2]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*3]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*4]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*5]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*6]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*7]", "ReturnValue.Element[@]", "taint", "manual"]
-      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*8]", "ReturnValue.Element[@]", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*1]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*2]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*3]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*4]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*5]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*6]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*7]", "ReturnValue.Element", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*8]", "ReturnValue.Element", "taint", "manual"]
