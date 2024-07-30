@@ -1,4 +1,4 @@
-
+#include "stl.h"
 typedef unsigned long size_t;
 typedef struct {} FILE;
 
@@ -156,4 +156,9 @@ void test2()
 
 	sink(s[strlen(s) - 1]); // $ ast,ir
 	sink(ws + (wcslen(ws) / 2)); // $ ast,ir
+}
+
+void test_format() {
+  auto s = std::format("{}", string::source());
+  sink(s); // $ MISSING: ast,ir
 }
