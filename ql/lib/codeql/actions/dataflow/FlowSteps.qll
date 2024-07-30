@@ -113,7 +113,7 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
     run.getInScopeEnvVarExpr(var_name) = pred.asExpr() and
     succ.asExpr() = run.getScriptScalar() and
     (
-      envToSpecialFile(["GITHUB_ENV", "GITHUB_PATH"], var_name, run, _) or
+      envToSpecialFile(["GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH"], var_name, run, _) or
       envToArgInjSink(var_name, run, _)
     )
   )

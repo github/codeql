@@ -1,0 +1,12 @@
+edges
+| .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | provenance |  |
+| .github/workflows/output1.yml:30:9:35:6 | Uses Step | .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | provenance |  |
+nodes
+| .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | semmle.label | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n |
+| .github/workflows/output1.yml:30:9:35:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | semmle.label | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n |
+subpaths
+#select
+| .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | Potential clobbering of a step output in $@. | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n |
+| .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | .github/workflows/output1.yml:30:9:35:6 | Uses Step | .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | Potential clobbering of a step output in $@. | .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n |
