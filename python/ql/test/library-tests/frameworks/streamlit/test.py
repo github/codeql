@@ -10,3 +10,8 @@ conn = st.connection("postgresql", type="sql")
 
 # SQL injection sink
 q = conn.query("some sql")  # $ getSql="some sql"
+
+# SQLAlchemy connection
+c = conn.connect()
+
+c.execute("other sql")  # $ getSql="other sql"

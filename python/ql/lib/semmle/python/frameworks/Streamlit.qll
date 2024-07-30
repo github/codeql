@@ -44,4 +44,14 @@ module Streamlit {
 
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
   }
+private class StreamlitConnection extends SqlAlchemy::Connection::InstanceSource {
+    StreamlitConnection() {
+      this =
+        API::moduleImport("streamlit")
+            .getMember("connection")
+            .getReturn()
+            .getMember("connect")
+            .getACall()
+    }
+  }
 }
