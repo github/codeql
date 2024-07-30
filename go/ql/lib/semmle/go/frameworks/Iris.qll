@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.security.HardcodedCredentials
 
 private module Iris {
   /** Gets the v1 module path `github.com/kataras/iris`. */
@@ -46,14 +45,5 @@ private module Iris {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-  }
-
-  private class IrisJwt extends HardcodedCredentials::Sink {
-    IrisJwt() {
-      exists(Field f |
-        f.hasQualifiedName(package("github.com/kataras/iris", "middleware/jwt"), "Signer", "Key") and
-        f.getAWrite().getRhs() = this
-      )
-    }
   }
 }

@@ -4,26 +4,8 @@
  */
 
 import go
-private import semmle.go.security.HardcodedCredentials
 
 private module GoJose {
-  private class GoJoseKey extends HardcodedCredentials::Sink {
-    GoJoseKey() {
-      exists(Field f |
-        f.hasQualifiedName(goJosePackage(), ["Recipient", "SigningKey"], "Key") and
-        f.getAWrite().getRhs() = this
-      )
-    }
-  }
-
-  private string goJosePackage() {
-    result =
-      [
-        package("github.com/square/go-jose", ""), package("github.com/go-jose/go-jose", ""),
-        "gopkg.in/square/go-jose.v2"
-      ]
-  }
-
   /**
    * Provides classes and predicates for working with the `gopkg.in/square/go-jose/jwt` and
    * `github.com/go-jose/go-jose/jwt` packages.

@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.security.HardcodedCredentials
 
 private module Gin {
   /** Gets the package name `github.com/gin-gonic/gin`. */
@@ -29,14 +28,5 @@ private module Gin {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-  }
-
-  private class GinJwtSign extends HardcodedCredentials::Sink {
-    GinJwtSign() {
-      exists(Field f |
-        f.hasQualifiedName(package("github.com/appleboy/gin-jwt", ""), "GinJWTMiddleware", "Key") and
-        f.getAWrite().getRhs() = this
-      )
-    }
   }
 }
