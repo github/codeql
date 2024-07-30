@@ -8,6 +8,6 @@ class Test {
         logger.error("Auth failed for: " + authToken); // $ hasTaintFlow
         logger.error("Auth failed for: " + username); // Safe
         logger.error("Auth failed for: " + nullToken); // Safe
-        logger.error("Auth failed for: " + stringTokenizer); // $ hasTaintFlow
+        logger.error("Auth failed for: " + stringTokenizer); // Safe
     }
 }
