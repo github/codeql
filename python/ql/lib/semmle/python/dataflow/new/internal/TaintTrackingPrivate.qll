@@ -146,7 +146,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     (
       fmt.getLeft() = nodeFrom.getNode()
       or
-      fmt.getRight() = nodeFrom.getNode()
+      fmt.getRight().getAChild*() = nodeFrom.getNode()
     )
   )
   or
