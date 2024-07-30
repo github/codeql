@@ -56,8 +56,6 @@ module NoSqlInjectionConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node = any(NoSqlSanitizer noSqlSanitizer).getAnInput()
   }
-
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) { isSink(node, _) }
 }
 
 module NoSqlInjectionFlow = TaintTracking::GlobalWithState<NoSqlInjectionConfig>;

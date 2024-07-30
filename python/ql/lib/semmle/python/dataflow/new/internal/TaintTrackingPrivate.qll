@@ -16,7 +16,16 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  (
+    c instanceof DataFlow::TupleElementContent
+    or
+    c instanceof DataFlow::DictionaryElementContent
+    or
+    c instanceof DataFlow::DictionaryElementAnyContent
+  )
+}
 
 private module Cached {
   /**
