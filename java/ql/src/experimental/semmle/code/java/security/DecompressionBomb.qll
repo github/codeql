@@ -56,8 +56,7 @@ module XerialSnappy {
    */
   private class InputStreamAdditionalTaintStep extends DecompressionBomb::AdditionalStep {
     override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-      exists(Call call |
-        // Constructors
+      exists(ConstructorCall call |
         call.getCallee().getDeclaringType() instanceof TypeInputStream and
         call.getArgument(0) = n1.asExpr() and
         call = n2.asExpr()
@@ -153,8 +152,7 @@ module ApacheCommons {
     private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
     {
       override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-        exists(Call call |
-          // Constructors
+        exists(ConstructorCall call |
           call.getCallee().getDeclaringType() instanceof TypeCompressors and
           call.getArgument(0) = n1.asExpr() and
           call = n2.asExpr()
@@ -207,8 +205,7 @@ module ApacheCommons {
     private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
     {
       override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-        exists(Call call |
-          // Constructors
+        exists(ConstructorCall call |
           call.getCallee().getDeclaringType() instanceof TypeArchivers and
           call.getArgument(0) = n1.asExpr() and
           call = n2.asExpr()
@@ -247,8 +244,7 @@ module ApacheCommons {
     private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
     {
       override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-        exists(Call call |
-          // Constructors
+        exists(MethodCall call |
           (
             call.getCallee().getDeclaringType() instanceof TypeCompressors
             or
@@ -309,8 +305,7 @@ module Zip4j {
   private class CompressorsAndArchiversAdditionalTaintStep extends DecompressionBomb::AdditionalStep
   {
     override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-      exists(Call call |
-        // Constructors
+      exists(ConstructorCall call |
         call.getCallee().getDeclaringType() instanceof TypeZipInputStream and
         call.getArgument(0) = n1.asExpr() and
         call = n2.asExpr()
