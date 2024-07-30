@@ -35,8 +35,8 @@ module Streamlit {
  * https://docs.streamlit.io/develop/api-reference/connections/st.connections.sqlconnection#:~:text=to%20data.-,st.connections.SQLConnection,-Streamlit%20Version
  * We can connect to SQL databases for example with `import streamlit as st; conn = st.connection('pets_db', type='sql')`
  */
-  private class StreamlitSQLConnection extends API::CallNode {
-    StreamlitSQLConnection() {
+  private class StreamlitSqlConnection extends API::CallNode {
+    StreamlitSqlConnection() {
       exists(StringLiteral str, API::CallNode n |
         str.getText().matches("sql")
         and
@@ -56,7 +56,7 @@ module Streamlit {
   private class QueryMethodCall extends DataFlow::CallCfgNode, SqlExecution::Range {
 
     QueryMethodCall() {
-      exists(StreamlitSQLConnection s |
+      exists(StreamlitSqlConnection s |
         this = s.getReturn().getMember("query").getACall())
     }
 
@@ -70,7 +70,7 @@ module Streamlit {
  */
 private class StreamlitSQLAlchemyConnection extends SqlAlchemy::Connection::InstanceSource {
     StreamlitSQLAlchemyConnection() {
-      exists(StreamlitSQLConnection s |
+      exists(StreamlitSqlConnection s |
         this = s.getReturn().getMember("connect").getACall())
     }
   }
@@ -79,9 +79,9 @@ private class StreamlitSQLAlchemyConnection extends SqlAlchemy::Connection::Inst
  * The underlying SQLAlchemy Engine, accessed via `st.connection().engine`.
  * Streamlit creates an engine to a SQL database basing off SQL Alchemy, so we can reuse the models that we already have.
  */
-private class StreamlitSQLAlchemyEngine extends SqlAlchemy::Engine::InstanceSource {
-    StreamlitSQLAlchemyEngine() {
-      exists(StreamlitSQLConnection s |
+private class StreamlitSqlAlchemyEngine extends SqlAlchemy::Engine::InstanceSource {
+    StreamlitSqlAlchemyEngine() {
+      exists(StreamlitSqlConnection s |
         this = s.getReturn().getMember("engine").asSource())
     }
   }
@@ -92,9 +92,9 @@ private class StreamlitSQLAlchemyEngine extends SqlAlchemy::Engine::InstanceSour
  * For example, the modeling for `session` includes an `execute` method, which is used to execute raw SQL queries.
  * https://docs.streamlit.io/develop/api-reference/connections/st.connections.sqlconnection#:~:text=SQLConnection.engine-,SQLConnection.session,-Streamlit%20Version
  */
-  private class StreamlitSession extends SqlAlchemy::Session::InstanceSource {
-    StreamlitSession() {
-      exists(StreamlitSQLConnection s |
+  private class StreamlitSqlSession extends SqlAlchemy::Session::InstanceSource {
+    StreamlitSqlSession() {
+      exists(StreamlitSqlConnection s |
         this = s.getReturn().getMember("session").asSource())
     }
   }
