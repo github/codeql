@@ -16,6 +16,7 @@
 | Dubious signature "(const_iterator,size_type,const T &)" in summary model. |
 | Dubious signature "(deque &&)" in summary model. |
 | Dubious signature "(deque &&,const Allocator &)" in summary model. |
+| Dubious signature "(format_string,Args &&)" in summary model. |
 | Dubious signature "(forward_list &&)" in summary model. |
 | Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
 | Dubious signature "(list &&)" in summary model. |
