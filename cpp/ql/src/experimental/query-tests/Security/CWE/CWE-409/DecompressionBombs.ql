@@ -22,12 +22,13 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc, DecompressionFunction f | fc.getTarget() = f |
-      fc.getArgument(f.getArchiveParameterIndex()) = sink.asExpr()
+      fc.getArgument(f.getArchiveParameterIndex()) = sink.asExpr() 
     )
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(DecompressionFlowStep f).isAdditionalFlowStep(node1, node2)
+    any(DecompressionFlowStep f).isAdditionalFlowStep(node1, node2) or
+    nextInAdditionalFlowStep(node1, node2)
   }
 }
 

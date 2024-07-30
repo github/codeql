@@ -37,7 +37,7 @@ class GzGetsFunction extends DecompressionFunction {
 class GzReadFunction extends DecompressionFunction {
   GzReadFunction() { this.hasGlobalName("gzread") }
 
-  override int getArchiveParameterIndex() { result = 1 }
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
@@ -66,7 +66,7 @@ class GzopenFunction extends DecompressionFlowStep {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(FunctionCall fc | fc.getTarget() = this |
-      node1.asExpr() = fc.getArgument(0) and
+      node1.asIndirectExpr() = fc.getArgument(0) and
       node2.asExpr() = fc
     )
   }
