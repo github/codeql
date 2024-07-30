@@ -15,3 +15,13 @@ q = conn.query("some sql")  # $ getSql="some sql"
 c = conn.connect()
 
 c.execute("other sql")  # $ getSql="other sql"
+
+# SQL Alchemy session
+s = conn.session
+
+s.execute("yet another sql")  # $ getSql="yet another sql"
+
+# SQL Alchemy engine
+e = st.connection("postgresql", type="sql")
+
+e.engine.connect().execute("yet yet another sql")  # $ getSql="yet yet another sql"
