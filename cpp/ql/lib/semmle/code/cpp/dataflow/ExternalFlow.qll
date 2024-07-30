@@ -581,38 +581,6 @@ private string getSignatureWithoutFunctionTemplateNames(
   )
 }
 
-private string paramsStringPart(Function c, int i) {
-  not c.isFromUninstantiatedTemplate(_) and
-  (
-    i = -1 and result = "(" and exists(c)
-    or
-    exists(int n, string p | getParameterTypeName(c, n) = p |
-      i = 2 * n and result = p
-      or
-      i = 2 * n - 1 and result = "," and n != 0
-    )
-    or
-    i = 2 * c.getNumberOfParameters() and result = ")"
-  )
-}
-
-/**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
- *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
- */
-cached
-private string paramsString(Function c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
-
-bindingset[func]
-private predicate matchesSignature(Function func, string signature) {
-  signature = "" or
-  paramsString(func) = signature
-}
-
 /**
  * Holds if `elementSpec(_, type, _, name, signature, _)` holds and
  * - `typeArgs` represents the named template parameters supplied to `type`, and
