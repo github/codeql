@@ -8,7 +8,7 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import semmle.python.Concepts
-import semmle.python.frameworks.SqlAlchemy
+private import semmle.python.frameworks.SqlAlchemy
 
 /**
  * Provides models for the `gradio` PyPI package.
