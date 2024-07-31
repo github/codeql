@@ -12,6 +12,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//go/extractor/trap",
-        "@org_golang_x_tools//go/packages:go_default_library",
+        "@org_golang_x_tools//go/packages",
     ],
 )
