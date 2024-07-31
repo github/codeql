@@ -85,8 +85,10 @@ def rmdir(dir: pathlib.Path):
 if destdir.exists() and opts.cleanup:
     rmdir(destdir)
 
+
 class RetryException(Exception):
     pass
+
 
 attempts = 0
 success = False
@@ -114,5 +116,5 @@ while attempts < 3 and not success:
                     print(f"Failed to unzip {zip} to {dest}, retrying installation...")
                     rmdir(destdir)
                     break
-
-sys.exit(ret.returncode)
+if not success:
+    sys.exit(1)
