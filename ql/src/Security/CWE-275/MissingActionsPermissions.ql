@@ -13,11 +13,13 @@
 
 import actions
 
-from Workflow workflow, Job job
+from Job job
 where
-  job = workflow.getAJob() and
-  (
-    not exists(workflow.getPermissions()) and
-    not exists(job.getPermissions())
+  not exists(job.getPermissions()) and
+  not exists(job.getEnclosingWorkflow().getPermissions()) and
+  // exists a trigger event that is not a workflow_call
+  exists(Event e |
+    e = job.getATriggerEvent() and
+    not e.getName() = "workflow_call"
   )
 select job, "Actions Job or Workflow does not set permissions"
