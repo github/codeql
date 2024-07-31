@@ -18,11 +18,21 @@ abstract class UntrustedArtifactDownloadStep extends Step {
 
 class GitHubDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep {
   GitHubDownloadArtifactActionStep() {
-    // By default, the permissions are scoped so they can only download Artifacts within the current workflow run.
-    // To elevate permissions for this scenario, you can specify a github-token along with other repository and run identifiers
     this.getCallee() = "actions/download-artifact" and
-    this.getArgument("run-id").matches("%github.event.workflow_run.id%") and
-    exists(this.getArgument("github-token"))
+    (
+      // By default, the permissions are scoped so they can only download Artifacts within the current workflow run.
+      // To elevate permissions for this scenario, you can specify a github-token along with other repository and run identifiers
+      this.getArgument("run-id").matches("%github.event.workflow_run.id%") and
+      exists(this.getArgument("github-token"))
+      or
+      // There is an artifact upload step in the same workflow which can be influenced by an attacker on a checkout step
+      exists(UsesStep checkout, UsesStep upload |
+        this.getEnclosingWorkflow().getAJob().(LocalJob).getAStep() = checkout and
+        checkout.getCallee() = "actions/checkout" and
+        checkout.getAFollowingStep() = upload and
+        upload.getCallee() = "actions/upload-artifact"
+      )
+    )
   }
 
   override string getPath() {
