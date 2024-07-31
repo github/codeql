@@ -307,6 +307,10 @@ class Expr extends StmtParent, @expr {
     )
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
+    or
+    exists(ConstexprIfStmt constIf |
+      constIf.getControllingExpr() = this.getParentWithConversions*()
+    )
   }
 
   /**
