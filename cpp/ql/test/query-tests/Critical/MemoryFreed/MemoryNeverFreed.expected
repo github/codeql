@@ -6,11 +6,16 @@
 | my_auto_ptr.cpp:82:9:82:15 | new | This memory is never freed. |
 | test.cpp:26:18:26:23 | call to malloc | This memory is never freed. |
 | test.cpp:42:18:42:23 | call to malloc | This memory is never freed. |
+| test.cpp:71:18:71:23 | call to malloc | This memory is never freed. |
 | test.cpp:73:18:73:23 | call to malloc | This memory is never freed. |
+| test.cpp:88:18:88:23 | call to malloc | This memory is never freed. |
 | test.cpp:89:18:89:23 | call to malloc | This memory is never freed. |
 | test.cpp:156:3:156:26 | new | This memory is never freed. |
 | test.cpp:157:3:157:26 | new[] | This memory is never freed. |
 | test.cpp:169:14:169:19 | call to strdup | This memory is never freed. |
+| test_free.cpp:153:15:153:20 | call to malloc | This memory is never freed. |
 | test_free.cpp:167:15:167:21 | call to realloc | This memory is never freed. |
-| test_free.cpp:253:14:253:19 | call to malloc | This memory is never freed. |
-| test_free.cpp:261:6:261:12 | new | This memory is never freed. |
+| virtual.cpp:13:7:13:12 | new | This memory is never freed. |
+| virtual.cpp:14:7:14:12 | new | This memory is never freed. |
+| virtual.cpp:33:7:33:12 | new | This memory is never freed. |
+| virtual.cpp:34:7:34:12 | new | This memory is never freed. |
