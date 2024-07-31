@@ -435,12 +435,17 @@ private predicate elementSpec(
 }
 
 /** Gets the fully templated version of `f`. */
-private Function getFullyTemplatedMemberFunction(Function f) {
+private Function getFullyTemplatedFunction(Function f) {
   not f.isFromUninstantiatedTemplate(_) and
-  exists(Class c, Class templateClass, int i |
-    c.isConstructedFrom(templateClass) and
-    f = c.getAMember(i) and
-    result = templateClass.getCanonicalMember(i)
+  (
+    exists(Class c, Class templateClass, int i |
+      c.isConstructedFrom(templateClass) and
+      f = c.getAMember(i) and
+      result = templateClass.getCanonicalMember(i)
+    )
+    or
+    not exists(f.getDeclaringType()) and
+    f.isConstructedFrom(result)
   )
 }
 
@@ -464,14 +469,14 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n) {
  */
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
-    templateFunction = getFullyTemplatedMemberFunction(f) and
+    templateFunction = getFullyTemplatedFunction(f) and
     remaining = templateFunction.getNumberOfTemplateArguments() and
     result = getParameterTypeWithoutTemplateArguments(templateFunction, n)
   )
   or
   exists(string mid, TemplateParameter tp, Function templateFunction |
     mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
-    templateFunction = getFullyTemplatedMemberFunction(f) and
+    templateFunction = getFullyTemplatedFunction(f) and
     tp = templateFunction.getTemplateArgument(remaining) and
     result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
   )
@@ -482,11 +487,17 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
  * with `class:N` (where `N` is the index of the template).
  */
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
+  // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
     f.getDeclaringType().isConstructedFrom(template) and
     remaining = template.getNumberOfTemplateArguments() and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
+  or
+  // If there is no declaring type we're done after expanding the function templates
+  not exists(f.getDeclaringType()) and
+  remaining = 0 and
+  result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   or
   exists(string mid, TemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
@@ -568,38 +579,6 @@ private string getSignatureWithoutFunctionTemplateNames(
     not exists(getAtIndex(nameArgs, remaining)) and
     result = mid
   )
-}
-
-private string paramsStringPart(Function c, int i) {
-  not c.isFromUninstantiatedTemplate(_) and
-  (
-    i = -1 and result = "(" and exists(c)
-    or
-    exists(int n, string p | getParameterTypeName(c, n) = p |
-      i = 2 * n and result = p
-      or
-      i = 2 * n - 1 and result = "," and n != 0
-    )
-    or
-    i = 2 * c.getNumberOfParameters() and result = ")"
-  )
-}
-
-/**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
- *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
- */
-cached
-private string paramsString(Function c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
-
-bindingset[func]
-private predicate matchesSignature(Function func, string signature) {
-  signature = "" or
-  paramsString(func) = signature
 }
 
 /**
@@ -750,17 +729,17 @@ private predicate elementSpecWithArguments0(
 
 /**
  * Holds if `elementSpec(namespace, type, subtypes, name, signature, _)` and
- * `method`'s signature matches `signature`.
+ * `func`'s signature matches `signature`.
  *
  * `signature` may contain template parameter names that are bound by `type` and `name`.
  */
 pragma[nomagic]
 private predicate elementSpecMatchesSignature(
-  Function method, string namespace, string type, boolean subtypes, string name, string signature
+  Function func, string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
     pragma[only_bind_into](signature), _) and
-  signatureMatches(method, signature, type, name, 0)
+  signatureMatches(func, signature, type, name, 0)
 }
 
 /**
@@ -776,13 +755,22 @@ private predicate hasClassAndName(Class classWithMethod, Function method, string
   )
 }
 
+bindingset[name]
+pragma[inline_late]
+private predicate funcHasQualifiedName(Function func, string namespace, string name) {
+  exists(string nameWithoutArgs |
+    parseAngles(name, nameWithoutArgs, _, "") and
+    func.hasQualifiedName(namespace, nameWithoutArgs)
+  )
+}
+
 /**
  * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
 bindingset[type, namespace]
 pragma[inline_late]
-private predicate hasQualifiedName(Class namedClass, string namespace, string type) {
+private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
   exists(string typeWithoutArgs |
     parseAngles(type, typeWithoutArgs, _, "") and
     namedClass.hasQualifiedName(namespace, typeWithoutArgs)
@@ -804,15 +792,16 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   (
-    elementSpec(namespace, type, subtypes, name, signature, _) and
     // Non-member functions
-    exists(Function func |
-      func.hasQualifiedName(namespace, name) and
-      type = "" and
-      matchesSignature(func, signature) and
-      subtypes = false and
-      not exists(func.getDeclaringType()) and
-      result = func
+    elementSpec(namespace, type, subtypes, name, signature, _) and
+    subtypes = false and
+    type = "" and
+    (
+      elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
+      or
+      signature = "" and
+      elementSpec(namespace, type, subtypes, name, "", _) and
+      funcHasQualifiedName(result, namespace, name)
     )
     or
     // Member functions
@@ -825,7 +814,7 @@ private Element interpretElement0(
         elementSpec(namespace, type, subtypes, name, "", _) and
         hasClassAndName(classWithMethod, result, name)
       ) and
-      hasQualifiedName(namedClass, namespace, type) and
+      classHasQualifiedName(namedClass, namespace, type) and
       (
         // member declared in the named type or a subtype of it
         subtypes = true and

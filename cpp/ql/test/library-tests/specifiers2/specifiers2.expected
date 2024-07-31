@@ -27,6 +27,7 @@
 | Function | cpp20.cpp:62:8:62:8 | operator= | operator= | extern, inline, is_constexpr, public |
 | Function | cpp20.cpp:62:8:62:8 | operator= | operator= | extern, inline, is_constexpr, public |
 | Function | cpp20.cpp:64:5:64:21 | TestExplicitBool4 | TestExplicitBool4 | explicit, extern, public |
+| Function | file://:0:0:0:0 | TestExplicitBool | TestExplicitBool | explicit, has_trailing_return_type |
 | Function | file://:0:0:0:0 | operator delete | operator delete | extern |
 | Function | file://:0:0:0:0 | operator new | operator new | extern |
 | Function | specifiers2.c:11:6:11:6 | f | f | c_linkage, extern |

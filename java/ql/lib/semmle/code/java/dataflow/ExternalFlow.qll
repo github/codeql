@@ -124,9 +124,9 @@ abstract class ActiveExperimentalModels extends string {
    */
   predicate sinkModel(
     string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+    string input, string kind, string provenance, QlBuiltins::ExtensionId madId
   ) {
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, output, kind,
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, this, madId)
   }
 
@@ -195,7 +195,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
+    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, _, madId)
+  |
     model =
       "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + output + "; " + kind + "; " + provenance
@@ -205,7 +208,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
+      provenance, _, madId)
+  |
     model =
       "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + kind + "; " + provenance
@@ -216,7 +222,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string input, string output, string kind, string provenance
   |
     summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
+      madId) or
+    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, _, madId)
+  |
     model =
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance

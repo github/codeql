@@ -12,9 +12,9 @@ Go framework & library support
    `Echo <https://echo.labstack.com/>`_,``github.com/labstack/echo*``,12,2,
    `Fosite <https://github.com/ory/fosite>`_,``github.com/ory/fosite*``,,,2
    `Gin <https://github.com/gin-gonic/gin>`_,``github.com/gin-gonic/gin*``,46,2,
-   `Go JOSE <https://github.com/go-jose/go-jose>`_,"``github.com/go-jose/go-jose*``, ``github.com/square/go-jose*``, ``gopkg.in/square/go-jose*``",,12,3
+   `Go JOSE <https://github.com/go-jose/go-jose>`_,"``github.com/go-jose/go-jose*``, ``github.com/square/go-jose*``, ``gopkg.in/square/go-jose*``",,12,9
    `Go kit <https://gokit.io/>`_,``github.com/go-kit/kit*``,,,1
-   `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,1
+   `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,2
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
    `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,
@@ -23,7 +23,7 @@ Go framework & library support
    `beego <https://beego.me/>`_,"``github.com/astaxie/beego*``, ``github.com/beego/beego*``",63,63,
    `chi <https://go-chi.io/>`_,``github.com/go-chi/chi*``,3,,
    `cristalhq/jwt <https://github.com/cristalhq/jwt>`_,``github.com/cristalhq/jwt*``,,,1
-   `fasthttp <https://github.com/valyala/fasthttp>`_,``github.com/valyala/fasthttp*``,50,5,
+   `fasthttp <https://github.com/valyala/fasthttp>`_,``github.com/valyala/fasthttp*``,50,5,25
    `go-pg <https://pg.uptrace.dev/>`_,``github.com/go-pg/pg*``,,6,
    `go-restful <https://github.com/emicklei/go-restful>`_,``github.com/emicklei/go-restful*``,7,,
    `golang.org/x/net <https://pkg.go.dev/golang.org/x/net>`_,``golang.org/x/net*``,2,21,
@@ -38,6 +38,6 @@ Go framework & library support
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_,"``github.com/golang/protobuf*``, ``google.golang.org/protobuf*``",,16,
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
-   Others,"``github.com/gobwas/ws``, ``github.com/gorilla/websocket``, ``nhooyr.io/websocket``",7,,
-   Totals,,267,902,25
+   Others,"``github.com/ChrisTrenkamp/goxpath``, ``github.com/antchfx/htmlquery``, ``github.com/antchfx/jsonquery``, ``github.com/antchfx/xmlquery``, ``github.com/antchfx/xpath``, ``github.com/appleboy/gin-jwt``, ``github.com/go-xmlpath/xmlpath``, ``github.com/gobwas/ws``, ``github.com/gogf/gf-jwt``, ``github.com/gorilla/websocket``, ``github.com/jbowtie/gokogiri/xml``, ``github.com/jbowtie/gokogiri/xpath``, ``github.com/lestrrat-go/libxml2/parser``, ``github.com/santhosh-tekuri/xpathparser``, ``nhooyr.io/websocket``",7,,37
+   Totals,,267,902,94
 
