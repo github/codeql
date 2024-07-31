@@ -417,12 +417,12 @@ public:
 
 void testHasGetter() {
     HasGetterAndFree hg;
-    void *buffer = hg.getBuffer(); // GOOD (freed in destructor) [FALSE POSITIVE]
+    void *buffer = hg.getBuffer(); // GOOD (freed in destructor)
 
     HasGetterNoFree hg2;
     void *buffer2 = hg2.getBuffer(); // GOOD (freed below)
     free(buffer2);
 
     HasGetterNoFree hg3;
-    void *buffer3 = hg3.getBuffer(); // BAD (not freed)
+    void *buffer3 = hg3.getBuffer(); // BAD (not freed) [NOT DETECTED]
 }
