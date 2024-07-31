@@ -11,13 +11,6 @@ edges
 | rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:76:152:76:152 | myConstantSalt2 | provenance |  |
 | rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:79:160:79:160 | myConstantSalt2 | provenance |  |
 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:60:24:60:30 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:83:62:83:62 | 123 | rncryptor.swift:83:62:83:87 | ... .+(_:_:) ... | provenance |  |
-| rncryptor.swift:83:62:83:87 | ... .+(_:_:) ... | rncryptor.swift:83:57:83:88 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:84:62:84:83 | ... .+(_:_:) ... | rncryptor.swift:84:57:84:88 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:84:83:84:83 | abc | rncryptor.swift:84:62:84:83 | ... .+(_:_:) ... | provenance |  |
-| rncryptor.swift:85:62:85:62 | 123 | rncryptor.swift:85:62:85:70 | ... .+(_:_:) ... | provenance |  |
-| rncryptor.swift:85:62:85:70 | ... .+(_:_:) ... | rncryptor.swift:85:57:85:75 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:85:70:85:70 | abc | rncryptor.swift:85:62:85:70 | ... .+(_:_:) ... | provenance |  |
 | rncryptor.swift:86:62:86:62 | 123 | rncryptor.swift:86:62:86:62 | "..." | provenance |  |
 | rncryptor.swift:86:62:86:62 | "..." | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | provenance |  |
 | rncryptor.swift:86:87:86:87 | abc | rncryptor.swift:86:62:86:62 | "..." | provenance |  |
@@ -31,10 +24,6 @@ edges
 | rncryptor.swift:94:26:94:26 | abc | rncryptor.swift:94:2:94:2 | [post] myMutableString2 | provenance |  |
 | rncryptor.swift:94:26:94:26 | abc | rncryptor.swift:95:62:95:62 | myMutableString2 | provenance | AdditionalTaintStep |
 | rncryptor.swift:95:62:95:62 | myMutableString2 | rncryptor.swift:95:57:95:78 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:97:25:97:25 | 123 | rncryptor.swift:99:62:99:62 | myMutableString3 | provenance |  |
-| rncryptor.swift:99:62:99:62 | myMutableString3 | rncryptor.swift:99:57:99:78 | call to Data.init(_:) | provenance |  |
-| rncryptor.swift:102:22:102:22 | abc | rncryptor.swift:103:62:103:62 | myMutableString4 | provenance |  |
-| rncryptor.swift:103:62:103:62 | myMutableString4 | rncryptor.swift:103:57:103:78 | call to Data.init(_:) | provenance |  |
 | test.swift:29:3:29:3 | this string is constant | test.swift:33:10:33:28 | call to getConstantString() | provenance |  |
 | test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | provenance |  |
 | test.swift:33:10:33:28 | call to getConstantString() | test.swift:33:10:33:30 | .utf8 | provenance |  |
@@ -62,16 +51,6 @@ nodes
 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | semmle.label | myConstantSalt2 |
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | semmle.label | myConstantSalt1 |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | semmle.label | myConstantSalt2 |
-| rncryptor.swift:83:57:83:88 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| rncryptor.swift:83:62:83:62 | 123 | semmle.label | 123 |
-| rncryptor.swift:83:62:83:87 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| rncryptor.swift:84:57:84:88 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| rncryptor.swift:84:62:84:83 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| rncryptor.swift:84:83:84:83 | abc | semmle.label | abc |
-| rncryptor.swift:85:57:85:75 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| rncryptor.swift:85:62:85:62 | 123 | semmle.label | 123 |
-| rncryptor.swift:85:62:85:70 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| rncryptor.swift:85:70:85:70 | abc | semmle.label | abc |
 | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | rncryptor.swift:86:62:86:62 | 123 | semmle.label | 123 |
 | rncryptor.swift:86:62:86:62 | "..." | semmle.label | "..." |
@@ -88,12 +67,6 @@ nodes
 | rncryptor.swift:94:26:94:26 | abc | semmle.label | abc |
 | rncryptor.swift:95:57:95:78 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | rncryptor.swift:95:62:95:62 | myMutableString2 | semmle.label | myMutableString2 |
-| rncryptor.swift:97:25:97:25 | 123 | semmle.label | 123 |
-| rncryptor.swift:99:57:99:78 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| rncryptor.swift:99:62:99:62 | myMutableString3 | semmle.label | myMutableString3 |
-| rncryptor.swift:102:22:102:22 | abc | semmle.label | abc |
-| rncryptor.swift:103:57:103:78 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| rncryptor.swift:103:62:103:62 | myMutableString4 | semmle.label | myMutableString4 |
 | test.swift:29:3:29:3 | this string is constant | semmle.label | this string is constant |
 | test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
 | test.swift:33:10:33:28 | call to getConstantString() | semmle.label | call to getConstantString() |
@@ -120,10 +93,6 @@ subpaths
 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
-| rncryptor.swift:83:57:83:88 | call to Data.init(_:) | rncryptor.swift:83:62:83:62 | 123 | rncryptor.swift:83:57:83:88 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:83:62:83:62 | 123 | 123 |
-| rncryptor.swift:84:57:84:88 | call to Data.init(_:) | rncryptor.swift:84:83:84:83 | abc | rncryptor.swift:84:57:84:88 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:84:83:84:83 | abc | abc |
-| rncryptor.swift:85:57:85:75 | call to Data.init(_:) | rncryptor.swift:85:62:85:62 | 123 | rncryptor.swift:85:57:85:75 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:85:62:85:62 | 123 | 123 |
-| rncryptor.swift:85:57:85:75 | call to Data.init(_:) | rncryptor.swift:85:70:85:70 | abc | rncryptor.swift:85:57:85:75 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:85:70:85:70 | abc | abc |
 | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | rncryptor.swift:86:62:86:62 | 123 | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:86:62:86:62 | 123 | 123 |
 | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | rncryptor.swift:86:87:86:87 | abc | rncryptor.swift:86:57:86:91 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:86:87:86:87 | abc | abc |
 | rncryptor.swift:87:57:87:81 | call to Data.init(_:) | rncryptor.swift:87:62:87:62 | 123 | rncryptor.swift:87:57:87:81 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:87:62:87:62 | 123 | 123 |
@@ -131,8 +100,6 @@ subpaths
 | rncryptor.swift:87:57:87:81 | call to Data.init(_:) | rncryptor.swift:87:76:87:76 | )abc | rncryptor.swift:87:57:87:81 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:87:76:87:76 | )abc | )abc |
 | rncryptor.swift:91:57:91:78 | call to Data.init(_:) | rncryptor.swift:89:25:89:25 | 123 | rncryptor.swift:91:57:91:78 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:89:25:89:25 | 123 | 123 |
 | rncryptor.swift:95:57:95:78 | call to Data.init(_:) | rncryptor.swift:94:26:94:26 | abc | rncryptor.swift:95:57:95:78 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:94:26:94:26 | abc | abc |
-| rncryptor.swift:99:57:99:78 | call to Data.init(_:) | rncryptor.swift:97:25:97:25 | 123 | rncryptor.swift:99:57:99:78 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:97:25:97:25 | 123 | 123 |
-| rncryptor.swift:103:57:103:78 | call to Data.init(_:) | rncryptor.swift:102:22:102:22 | abc | rncryptor.swift:103:57:103:78 | call to Data.init(_:) | The value '$@' is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:102:22:102:22 | abc | abc |
 | test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:51:49:51:49 | constantSalt | The value '$@' is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
 | test.swift:52:49:52:49 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:52:49:52:49 | constantStringSalt | The value '$@' is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |
 | test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:56:59:56:59 | constantSalt | The value '$@' is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |

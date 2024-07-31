@@ -69,3 +69,17 @@ private class RnCryptorSaltSink extends ConstantSaltSink {
 private class DefaultSaltSink extends ConstantSaltSink {
   DefaultSaltSink() { sinkNode(this, "encryption-salt") }
 }
+
+/**
+ * A barrier for appending, since appending strings to a constant string
+ * may (and often does) result in a non-constant string.
+ *
+ * Ideally, these would not be a barrier when there is flow to *all*
+ * inputs.
+ */
+private class AppendConstantSaltBarrier extends ConstantSaltBarrier {
+  AppendConstantSaltBarrier() {
+    this.asExpr() = any(AddExpr ae).getAnOperand() or
+    this.asExpr() = any(AssignAddExpr aae).getAnOperand()
+  }
+}

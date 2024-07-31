@@ -80,9 +80,9 @@ func test(myPassword: String) {
 
 	// appending constants
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + getARandomString()), settings: myKeyDerivationSettings) // GOOD
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + getARandomString()), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + "abc"), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + "abc"), settings: myKeyDerivationSettings) // BAD (constant salt)
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + getARandomString()), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + "abc"), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + "abc"), settings: myKeyDerivationSettings) // BAD (constant salt) [NOT DETECTED]
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\(getARandomString())abc"), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\("const"))abc"), settings: myKeyDerivationSettings) // BAD (constant salt)
 
@@ -96,9 +96,9 @@ func test(myPassword: String) {
 
 	var myMutableString3 = "123"
 	myMutableString3 += getARandomString()
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString3), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString3), settings: myKeyDerivationSettings) // GOOD
 
 	var myMutableString4 = getARandomString()
 	myMutableString4 += "abc"
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString4), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString4), settings: myKeyDerivationSettings) // GOOD
 }
