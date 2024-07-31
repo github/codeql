@@ -36,7 +36,10 @@ private class DefaultSafeExternalApiFunction extends SafeExternalApiFunction {
   DefaultSafeExternalApiFunction() {
     this instanceof BuiltinFunction or
     isDefaultSafePackage(this.getPackage()) or
-    this.hasQualifiedName(package("gopkg.in/square/go-jose", "jwt"), "ParseSigned") or
+    this.hasQualifiedName(package([
+          "gopkg.in/square/go-jose", "gopkg.in/go-jose/go-jose", "github.com/square/go-jose",
+          "github.com/go-jose/go-jose"
+        ], "jwt"), "ParseSigned") or
     this.(Method).hasQualifiedName(Gorm::packagePath(), "DB", "Update") or
     this.hasQualifiedName("crypto/hmac", "Equal") or
     this.hasQualifiedName("crypto/subtle", "ConstantTimeCompare") or
