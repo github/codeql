@@ -11,8 +11,8 @@ import semmle.python.Concepts
 private import semmle.python.frameworks.SqlAlchemy
 
 /**
- * Provides models for the `gradio` PyPI package.
- * See https://pypi.org/project/gradio/.
+ * Provides models for the `streamlit` PyPI package.
+ * See https://pypi.org/project/streamlit/.
  */
 module Streamlit {
   /**
