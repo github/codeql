@@ -88,7 +88,7 @@ func test(myPassword: String) {
 
 	var myMutableString1 = "123"
 	myMutableString1.append(getARandomString())
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString1), settings: myKeyDerivationSettings) // GOOD [FALSE POSITIVE]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString1), settings: myKeyDerivationSettings) // GOOD
 
 	var myMutableString2 = getARandomString()
 	myMutableString2.append("abc")

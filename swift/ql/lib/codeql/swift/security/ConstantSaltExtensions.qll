@@ -86,7 +86,10 @@ private class AppendConstantSaltBarrier extends ConstantSaltBarrier {
     exists(CallExpr ce |
       ce.getStaticTarget().getName() =
         ["append(_:)", "appending(_:)", "appendLiteral(_:)", "appendInterpolation(_:)"] and
-      this.asExpr() = ce.getAnArgument().getExpr()
+      (
+        this.asExpr() = ce.getAnArgument().getExpr() or
+        this.asExpr() = ce.getQualifier()
+      )
     )
   }
 }
