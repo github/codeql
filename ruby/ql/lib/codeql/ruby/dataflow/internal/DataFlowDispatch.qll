@@ -113,16 +113,6 @@ class DataFlowCallable extends TDataFlowCallable {
     this instanceof TLibraryCallable and
     result instanceof EmptyLocation
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
