@@ -96,4 +96,10 @@ module CleartextLogging {
       )
     }
   }
+
+  private import semmle.python.frameworks.data.ModelsAsData
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+  }
 }
