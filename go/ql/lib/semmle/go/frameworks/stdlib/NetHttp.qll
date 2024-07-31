@@ -8,16 +8,6 @@ private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    UserControlledRequestField() {
-      exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName =
-          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
-      )
-    }
-  }
-
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
   private class StdlibResponseWriter extends Http::ResponseWriter::Range {
     SsaWithFields v;

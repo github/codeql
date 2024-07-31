@@ -130,7 +130,13 @@ class SinkTargetApi extends SourceOrSinkTargetApi {
  * A class of callables that are potentially relevant for generating source models.
  */
 class SourceTargetApi extends SourceOrSinkTargetApi {
-  SourceTargetApi() { not hasManualSourceModel(this) }
+  SourceTargetApi() {
+    not hasManualSourceModel(this) and
+    // Do not generate source models for overridable callables
+    // as virtual dispatch implies that too many methods
+    // will be considered sources.
+    not this.(Overridable).overridesOrImplements(_)
+  }
 }
 
 /**

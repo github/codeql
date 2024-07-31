@@ -2379,15 +2379,6 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
-
-  int totalOrder() {
-    this =
-      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
-        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        b order by startline, startcolumn
-      )
-  }
 }
 
 /**

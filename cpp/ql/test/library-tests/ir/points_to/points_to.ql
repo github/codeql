@@ -56,7 +56,7 @@ module UnaliasedSsa {
         not memLocation.getVirtualVariable() instanceof AliasedVirtualVariable and
         not memLocation instanceof AllNonLocalMemory and
         tag = "ussa" and
-        not ignoreAllocation(memLocation.getAllocation().getAllocationString()) and
+        not ignoreAllocation(memLocation.getAnAllocation().getAllocationString()) and
         value = memLocation.toString() and
         element = instr.toString() and
         location = instr.getLocation() and
