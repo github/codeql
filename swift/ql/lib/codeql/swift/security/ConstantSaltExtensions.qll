@@ -79,7 +79,14 @@ private class DefaultSaltSink extends ConstantSaltSink {
  */
 private class AppendConstantSaltBarrier extends ConstantSaltBarrier {
   AppendConstantSaltBarrier() {
-    this.asExpr() = any(AddExpr ae).getAnOperand() or
+    this.asExpr() = any(AddExpr ae).getAnOperand()
+    or
     this.asExpr() = any(AssignAddExpr aae).getAnOperand()
+    or
+    exists(CallExpr ce |
+      ce.getStaticTarget().getName() =
+        ["append(_:)", "appending(_:)", "appendLiteral(_:)", "appendInterpolation(_:)"] and
+      this.asExpr() = ce.getAnArgument().getExpr()
+    )
   }
 }
