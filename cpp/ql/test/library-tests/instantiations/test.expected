@@ -25,10 +25,6 @@
 | test.cpp:16:7:16:7 | operator= |
 | test.cpp:16:32:16:35 | vfun |
 | test.cpp:19:7:19:7 | C |
-| test.cpp:19:7:19:7 | C |
-| test.cpp:19:7:19:7 | C |
-| test.cpp:19:7:19:7 | operator= |
-| test.cpp:19:7:19:7 | operator= |
 | test.cpp:21:18:21:18 | vfun |
 | test.cpp:21:18:21:21 | vfun |
 | test.cpp:27:6:27:6 | f |

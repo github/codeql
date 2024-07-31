@@ -101,6 +101,8 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
   final override predicate isAlwaysAllocatedOnStack() { none() }
 
   final override predicate alwaysEscapes() { none() }
+
+  final IRAutomaticVariable getIRVariable() { result = var }
 }
 
 class DynamicAllocation extends Allocation, TDynamicAllocation {

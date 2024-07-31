@@ -66,7 +66,7 @@ abstract private class StdStringTaintFunction extends TaintFunction {
    * Gets the index of a parameter to this function that is an iterator.
    */
   final int getAnIteratorParameterIndex() {
-    this.getParameter(result).getType() instanceof Iterator
+    this.getParameter(result).getUnspecifiedType() instanceof Iterator
   }
 }
 

@@ -1025,8 +1025,6 @@ class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 //--------

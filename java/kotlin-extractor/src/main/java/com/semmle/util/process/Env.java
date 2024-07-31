@@ -51,10 +51,6 @@ public class Env {
 		 */
 		SEMMLE_CACHE,
 		/**
-		 * The location of the toolchain files, including the odasa jar, our queries etc.
-		 */
-		SEMMLE_DIST,
-		/**
 		 * If running from a git tree, the root of the tree.
 		 */
 		SEMMLE_GIT_ROOT,

@@ -12,8 +12,6 @@ Supported platforms
 
 .. include:: ../reusables/supported-platforms.rst
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 Additional software requirements
 ################################
 
