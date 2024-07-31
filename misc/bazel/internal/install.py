@@ -86,10 +86,6 @@ if destdir.exists() and opts.cleanup:
     rmdir(destdir)
 
 
-class RetryException(Exception):
-    pass
-
-
 attempts = 0
 success = False
 while attempts < 3 and not success:
