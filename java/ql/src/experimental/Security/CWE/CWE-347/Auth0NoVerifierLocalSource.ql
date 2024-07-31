@@ -14,7 +14,6 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import JwtAuth0 as JwtAuth0
 
-
 module JwtDecodeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(Variable v |
