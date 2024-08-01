@@ -4526,7 +4526,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pathThroughCallable(mid, node, state, cc, t, ap, label) and
       sc = mid.getSummaryCtx() and
       isStoreStep = false and
-      summaryLabel = mid.getSummaryLabel()
+      summaryLabel = mergeLabels(mid.getSummaryLabel(), label)
     }
 
     pragma[nomagic]

@@ -20,15 +20,22 @@ edges
 | DotRegexSpring.java:20:26:20:50 | path : String | DotRegexSpring.java:22:21:22:24 | path : String | provenance |  |
 | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String | DotRegexSpring.java:23:25:23:28 | path | provenance |  |
 | DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String | provenance |  |
+| DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String | provenance | MaD:3 |
 | DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | provenance |  |
 | DotRegexSpring.java:37:40:37:64 | path : String | DotRegexSpring.java:39:21:39:24 | path : String | provenance |  |
 | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String | DotRegexSpring.java:40:25:40:28 | path | provenance |  |
 | DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String | provenance |  |
+| DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String | provenance | MaD:3 |
 | DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | provenance |  |
 | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:71:29:71:32 | path : String | provenance |  |
+| DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:71:29:71:32 | path : String | provenance |  |
+| DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | provenance |  |
 | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | provenance |  |
 | DotRegexSpring.java:71:11:71:42 | decode(...) : String | DotRegexSpring.java:71:29:71:32 | path : String | provenance |  |
+| DotRegexSpring.java:71:11:71:42 | decode(...) : String | DotRegexSpring.java:71:29:71:32 | path : String | provenance |  |
 | DotRegexSpring.java:71:11:71:42 | decode(...) : String | DotRegexSpring.java:73:10:73:13 | path : String | provenance |  |
+| DotRegexSpring.java:71:11:71:42 | decode(...) : String | DotRegexSpring.java:73:10:73:13 | path : String | provenance |  |
+| DotRegexSpring.java:71:29:71:32 | path : String | DotRegexSpring.java:71:11:71:42 | decode(...) : String | provenance | MaD:3 |
 | DotRegexSpring.java:71:29:71:32 | path : String | DotRegexSpring.java:71:11:71:42 | decode(...) : String | provenance | MaD:3 |
 models
 | 1 | Source: javax.servlet.http; HttpServletRequest; false; getPathInfo; (); ; ReturnValue; uri-path; manual |
@@ -58,7 +65,11 @@ nodes
 | DotRegexSpring.java:69:28:69:38 | path : String | semmle.label | path : String |
 | DotRegexSpring.java:71:11:71:42 | decode(...) : String | semmle.label | decode(...) : String |
 | DotRegexSpring.java:71:29:71:32 | path : String | semmle.label | path : String |
+| DotRegexSpring.java:71:29:71:32 | path : String | semmle.label | path : String |
+| DotRegexSpring.java:73:10:73:13 | path : String | semmle.label | path : String |
 | DotRegexSpring.java:73:10:73:13 | path : String | semmle.label | path : String |
 subpaths
 | DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String |
+| DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String |
+| DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String |
 | DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String |

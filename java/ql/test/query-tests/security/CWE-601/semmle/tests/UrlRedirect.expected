@@ -6,7 +6,7 @@
 | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |
 | mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |
 edges
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:2  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:2 MaD:1 |
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:2  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
 | UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:1 |
