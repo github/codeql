@@ -64,12 +64,5 @@ private class CommandInjectionDefaultBarrier extends CommandInjectionBarrier {
   CommandInjectionDefaultBarrier() {
     // any numeric type
     this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
-    or
-    // we get poor results when the tainted data is a directory list, such as
-    // the result of `FileMananger.contentsOfDirectory` and similar functions.
-    exists(CallExpr ce |
-      ce.getStaticTarget().getName().matches(["%directory%", "%Directory%"]) and
-      this.asExpr() = ce
-    )
   }
 }
