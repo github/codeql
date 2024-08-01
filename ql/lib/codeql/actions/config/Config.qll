@@ -114,3 +114,17 @@ predicate poisonableActionsDataModel(string action) {
 predicate untrustedEventPropertiesDataModel(string property, string kind) {
   Extensions::untrustedEventPropertiesDataModel(property, kind)
 }
+
+/**
+ * MaD models for vulnerable actions
+ * Fields:
+ *    - action: action name
+ *    - vulnerable_version: vulnerable version
+ *    - vulnerable_sha: vulnerable sha
+ *    - fixed_version: fixed version
+ */
+predicate vulnerableActionsDataModel(
+  string action, string vulnerable_version, string vulnerable_sha, string fixed_version
+) {
+  Extensions::vulnerableActionsDataModel(action, vulnerable_version, vulnerable_sha, fixed_version)
+}
