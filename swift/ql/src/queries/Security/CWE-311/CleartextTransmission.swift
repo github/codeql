@@ -5,7 +5,7 @@ private func encrypt(_ text: String, _ encryptionKey: SymmetricKey) -> String {
 	return sealedBox.combined!.base64EncodedString()
 }
 
-func transmitMyData(connection : NWConnection, faveSong : String, creditCardNo : String, key: SymmetricKey) {
+func transmitMyData(connection : NWConnection, faveSong : String, creditCardNo : String, encryptionKey: SymmetricKey) {
 	// ...
 
 	// GOOD: not sensitive information

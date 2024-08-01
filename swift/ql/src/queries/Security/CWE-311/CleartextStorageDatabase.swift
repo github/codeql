@@ -5,7 +5,7 @@ private func encrypt(_ text: String, _ encryptionKey: SymmetricKey) -> String {
 	return sealedBox.combined!.base64EncodedString()
 }
 
-func storeMyData(databaseObject : NSManagedObject, faveSong : String, creditCardNo : String, key: SymmetricKey) {
+func storeMyData(databaseObject : NSManagedObject, faveSong : String, creditCardNo : String, encryptionKey: SymmetricKey) {
 	// ...
 
 	// GOOD: not sensitive information
