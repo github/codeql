@@ -53,6 +53,12 @@ class NSUserAutomatorTask : NSUserScriptTask {
 	var variables: [String: Any]? { get { return nil } set { } }
 }
 
+
+
+
+
+
+
 // --- tests ---
 
 func validateCommand(_ command: String) -> String? {
@@ -160,6 +166,19 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task11 = try! NSUserAutomatorTask(url: URL(string: userControlledString)!) // BAD
 	task11.variables = ["abc": userControlledString] // BAD [NOT DETECTED]
 	task11.execute(withInput: nil)
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 struct MyClass {
