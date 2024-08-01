@@ -898,4 +898,11 @@ class UserDefinedLiteral extends Function {
  */
 class DeductionGuide extends Function {
   DeductionGuide() { functions(underlyingElement(this), _, 8) }
+
+  /**
+   * Gets the class template for which this is a deduction guide.
+   */
+  TemplateClass getTemplateClass() {
+    deduction_guide_for_class(underlyingElement(this), unresolveElement(result))
+  }
 }
