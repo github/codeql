@@ -1,2 +1,1 @@
-query: experimental/CWE-090/LDAPInjection.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+experimental/CWE-090/LDAPInjection.ql

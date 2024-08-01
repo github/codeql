@@ -1,2 +1,1 @@
-query: Security/CWE-089/SqlInjection.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+Security/CWE-089/SqlInjection.ql

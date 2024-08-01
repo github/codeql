@@ -4,9 +4,7 @@
  */
 
 import Test
-import semmle.go.dataflow.ExternalFlow
-import codeql.dataflow.test.ProvenancePathGraph
-import ShowProvenance<interpretModelForTest/2, ThreatModelFlow::PathNode, ThreatModelFlow::PathGraph>
+import ThreatModelFlow::PathGraph
 
 from ThreatModelFlow::PathNode source, ThreatModelFlow::PathNode sink
 where ThreatModelFlow::flowPath(source, sink)

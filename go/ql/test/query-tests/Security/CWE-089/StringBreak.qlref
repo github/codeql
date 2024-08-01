@@ -1,2 +1,1 @@
-query: Security/CWE-089/StringBreak.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+Security/CWE-089/StringBreak.ql
