@@ -74,9 +74,10 @@ predicate extractVariableAndValue(string raw_content, string key, string value) 
 bindingset[script]
 predicate singleLineFileWrite(string script, string cmd, string file, string content, string filters) {
   exists(string regexp |
-    regexp = "(?i)(echo|printf|write-output)\\s*(.*?)\\s*(>>|>)\\s*(\\S+)" and
+    regexp =
+      "(?i)(echo|printf|write-output)\\s*(.*?)\\s*(>>|>|\\s*\\|\\s*tee\\s*(-a|--append)?)\\s*(\\S+)" and
     cmd = script.regexpCapture(regexp, 1) and
-    file = trimQuotes(script.regexpCapture(regexp, 4)) and
+    file = trimQuotes(script.regexpCapture(regexp, 5)) and
     filters = "" and
     content = script.regexpCapture(regexp, 2)
   )
@@ -100,18 +101,19 @@ predicate singleLineWorkflowCmd(string script, string cmd, string key, string va
 bindingset[script]
 predicate heredocFileWrite(string script, string cmd, string file, string content, string filters) {
   exists(string regexp |
-    regexp = "(?msi).*^(cat)\\s*(>>|>)\\s*(\\S+)\\s*<<\\s*['\"]?(\\S+)['\"]?\\s*\n(.*?)\n\\4\\s*$.*" and
+    regexp =
+      "(?msi).*^(cat)\\s*(>>|>|\\s*\\|\\s*tee\\s*(-a|--append)?)\\s*(\\S+)\\s*<<\\s*['\"]?(\\S+)['\"]?\\s*\n(.*?)\n\\4\\s*$.*" and
     cmd = script.regexpCapture(regexp, 1) and
-    file = trimQuotes(script.regexpCapture(regexp, 3)) and
-    content = script.regexpCapture(regexp, 5) and
+    file = trimQuotes(script.regexpCapture(regexp, 4)) and
+    content = script.regexpCapture(regexp, 6) and
     filters = ""
     or
     regexp =
-      "(?msi).*^(cat)\\s*(<<|<)\\s*[-]?['\"]?(\\S+)['\"]?\\s*([^>]*)(>>|>)\\s*(\\S+)\\s*\n(.*?)\n\\3\\s*$.*" and
+      "(?msi).*^(cat)\\s*(<<|<)\\s*[-]?['\"]?(\\S+)['\"]?\\s*([^>]*)(>>|>|\\s*\\|\\s*tee\\s*(-a|--append)?)\\s*(\\S+)\\s*\n(.*?)\n\\3\\s*$.*" and
     cmd = script.regexpCapture(regexp, 1) and
-    file = trimQuotes(script.regexpCapture(regexp, 6)) and
+    file = trimQuotes(script.regexpCapture(regexp, 7)) and
     filters = script.regexpCapture(regexp, 4) and
-    content = script.regexpCapture(regexp, 7)
+    content = script.regexpCapture(regexp, 8)
   )
 }
 
@@ -142,13 +144,13 @@ predicate blockFileWrite(string script, string cmd, string file, string content,
         //
         "(.*?)" +
         //
-        "(\\s*\\}\\s*(>>|>)\\s*(\\S+))\\s*$.*" and
+        "(\\s*\\}\\s*(>>|>|\\s*\\|\\s*tee\\s*(-a|--append)?)\\s*(\\S+))\\s*$.*" and
     content =
       script
           .regexpCapture(regexp, 1)
           .regexpReplaceAll("(?m)^\\s*(echo|printf|write-output)\\s*['\"](.*?)['\"]", "$2")
           .regexpReplaceAll("(?m)^\\s*(echo|printf|write-output)\\s*", "") and
-    file = trimQuotes(script.regexpCapture(regexp, 4)) and
+    file = trimQuotes(script.regexpCapture(regexp, 5)) and
     cmd = "echo" and
     filters = ""
   )
