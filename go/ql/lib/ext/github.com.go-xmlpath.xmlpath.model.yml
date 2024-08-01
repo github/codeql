@@ -1,7 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["xmlpath", "gopkg.in/xmlpath"]
+      - ["xmlpath", "github.com/go-xmlpath/xmlpath"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/go-xmlpath/xmlpath", "", True, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
-      - ["github.com/go-xmlpath/xmlpath", "", True, "MustCompile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:xmlpath", "", True, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:xmlpath", "", True, "MustCompile", "", "", "Argument[0]", "xpath-injection", "manual"]
