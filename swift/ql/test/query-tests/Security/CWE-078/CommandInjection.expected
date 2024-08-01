@@ -136,6 +136,15 @@ edges
 | CommandInjection.swift:166:45:166:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:166:45:166:78 | ...! | provenance |  |
 | CommandInjection.swift:166:45:166:78 | ...! | file://:0:0:0:0 | url | provenance |  |
 | CommandInjection.swift:166:57:166:57 | userControlledString | CommandInjection.swift:166:45:166:77 | call to URL.init(string:) [some:0] | provenance |  |
+| CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | CommandInjection.swift:176:22:176:22 | files | provenance |  |
+| CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | CommandInjection.swift:178:23:178:30 | ...[...] | provenance |  |
+| CommandInjection.swift:176:3:176:3 | [post] task12 [arguments] | CommandInjection.swift:176:3:176:3 | [post] task12 | provenance |  |
+| CommandInjection.swift:176:22:176:22 | files | CommandInjection.swift:176:3:176:3 | [post] task12 [arguments] | provenance |  |
+| CommandInjection.swift:176:22:176:22 | files | CommandInjection.swift:176:22:176:22 | files | provenance |  |
+| CommandInjection.swift:176:22:176:22 | files | CommandInjection.swift:178:23:178:30 | ...[...] | provenance |  |
+| CommandInjection.swift:178:3:178:3 | [post] task12 [arguments, Collection element] | CommandInjection.swift:178:3:178:3 | [post] task12 | provenance |  |
+| CommandInjection.swift:178:22:178:31 | [...] [Collection element] | CommandInjection.swift:178:3:178:3 | [post] task12 [arguments, Collection element] | provenance |  |
+| CommandInjection.swift:178:23:178:30 | ...[...] | CommandInjection.swift:178:22:178:31 | [...] [Collection element] | provenance |  |
 | CommandInjection.swift:193:3:193:3 | newValue [Collection element] | CommandInjection.swift:194:19:194:19 | newValue [Collection element] | provenance |  |
 | CommandInjection.swift:193:3:193:3 | newValue [Collection element] | CommandInjection.swift:195:20:195:20 | newValue [Collection element] | provenance |  |
 | CommandInjection.swift:193:3:193:3 | newValue [Collection element] | CommandInjection.swift:196:19:196:19 | newValue [Collection element] | provenance |  |
@@ -284,6 +293,14 @@ nodes
 | CommandInjection.swift:166:45:166:78 | ...! | semmle.label | ...! |
 | CommandInjection.swift:166:45:166:78 | ...! | semmle.label | ...! |
 | CommandInjection.swift:166:57:166:57 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | semmle.label | call to contentsOfDirectory(atPath:) |
+| CommandInjection.swift:176:3:176:3 | [post] task12 | semmle.label | [post] task12 |
+| CommandInjection.swift:176:3:176:3 | [post] task12 [arguments] | semmle.label | [post] task12 [arguments] |
+| CommandInjection.swift:176:22:176:22 | files | semmle.label | files |
+| CommandInjection.swift:178:3:178:3 | [post] task12 | semmle.label | [post] task12 |
+| CommandInjection.swift:178:3:178:3 | [post] task12 [arguments, Collection element] | semmle.label | [post] task12 [arguments, Collection element] |
+| CommandInjection.swift:178:22:178:31 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:178:23:178:30 | ...[...] | semmle.label | ...[...] |
 | CommandInjection.swift:193:3:193:3 | newValue [Collection element] | semmle.label | newValue [Collection element] |
 | CommandInjection.swift:194:4:194:4 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
 | CommandInjection.swift:194:4:194:4 | [post] getter for .p1 [arguments, Collection element] | semmle.label | [post] getter for .p1 [arguments, Collection element] |
@@ -351,6 +368,8 @@ subpaths
 | CommandInjection.swift:163:40:163:73 | ...! | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | CommandInjection.swift:163:40:163:73 | ...! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:164:32:164:53 | [...] | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | CommandInjection.swift:164:32:164:53 | [...] | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:166:45:166:78 | ...! | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | CommandInjection.swift:166:45:166:78 | ...! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:176:3:176:3 | [post] task12 | CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | CommandInjection.swift:176:3:176:3 | [post] task12 | This command depends on a $@. | CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | user-provided value |
+| CommandInjection.swift:178:3:178:3 | [post] task12 | CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | CommandInjection.swift:178:3:178:3 | [post] task12 | This command depends on a $@. | CommandInjection.swift:170:19:170:83 | call to contentsOfDirectory(atPath:) | user-provided value |
 | CommandInjection.swift:194:4:194:4 | [post] getter for .p1 | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | CommandInjection.swift:194:4:194:4 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:195:4:195:6 | [post] ...! | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | CommandInjection.swift:195:4:195:6 | [post] ...! | This command depends on a $@. | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:196:4:196:4 | [post] ...! | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | CommandInjection.swift:196:4:196:4 | [post] ...! | This command depends on a $@. | CommandInjection.swift:201:41:201:95 | call to String.init(contentsOf:) | user-provided value |
