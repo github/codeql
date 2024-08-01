@@ -50,3 +50,10 @@ extensible predicate untrustedEventPropertiesDataModel(string property, string k
 extensible predicate argumentInjectionSinksDataModel(
   string regexp, int command_group, int argument_group
 );
+
+/**
+ * Holds for actions that are known to be vulnerable.
+ */
+extensible predicate vulnerableActionsDataModel(
+  string action, string vulnerable_version, string vulnerable_sha, string fixed_version
+);
