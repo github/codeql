@@ -109,6 +109,17 @@ module TranslateProvenanceResults<
 
   private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
+  private newtype TModelRow = TMkModelRow(int r, string model) { Models::models(r, model) }
+
+  private predicate rankedModels(int i, int r, string model) {
+    TMkModelRow(r, model) =
+      rank[i](TModelRow row, int r0, string model0 |
+        row = TMkModelRow(r0, model0)
+      |
+        row order by r0, model0
+      )
+  }
+
   predicate results(string relation, int row, int column, string data) {
     queryResults(relation, row, column, data) and
     (relation != "edges" or column != provenanceColumn())
@@ -121,9 +132,8 @@ module TranslateProvenanceResults<
     )
     or
     exists(int r, string model |
-      Models::models(r, model) and
       relation = "models" and
-      row = r
+      rankedModels(row, r, model)
     |
       column = 0 and data = r.toString()
       or
