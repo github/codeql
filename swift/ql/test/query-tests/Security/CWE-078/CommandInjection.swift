@@ -173,9 +173,9 @@ func testCommandInjectionMore(mySafeString: String) {
 		task12.launchPath = "/bin/rm" // GOOD
 		task12.arguments = [file] // GOOD (cases like this vary, but our analysis doesn't work well on them)
 		task12.launch()
-		task12.arguments = files // GOOD (similar to previous) [FALSE POSITIVE]
+		task12.arguments = files // GOOD (similar to previous)
 		task12.launch()
-		task12.arguments = [files[0]] // GOOD (similar to previous) [FALSE POSITIVE]
+		task12.arguments = [files[0]] // GOOD (similar to previous)
 		task12.launch()
 	}
 
