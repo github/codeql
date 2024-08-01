@@ -921,11 +921,6 @@ varspecifiers(
     int spec_id: @specifier ref
 );
 
-explicit_specifier_exprs(
-    unique int func_id: @function ref,
-    int constant: @expr ref
-)
-
 attributes(
     unique int id: @attribute,
     int kind: int ref,

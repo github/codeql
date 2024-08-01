@@ -159,6 +159,26 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   predicate isConsteval() { this.hasSpecifier("is_consteval") }
 
   /**
+   * Holds if this function is declared to be `explicit`.
+   */
+  predicate isExplicit() { this.hasSpecifier("explicit") }
+
+  /**
+   * Gets the constant expression that determines whether the function is explicit.
+   *
+   * For example, for the following code the result is is the expression `sizeof(T) == 1`:
+   * ```
+   * template<typename T> struct C {
+   *   explicit(sizeof(T) == 1)
+   *   C(const T);
+   * };
+   * ```
+   */
+  Expr getExplicitExpr() {
+    explicit_specifier_exprs(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Holds if this function is declared with `__attribute__((naked))` or
    * `__declspec(naked)`.
    */
