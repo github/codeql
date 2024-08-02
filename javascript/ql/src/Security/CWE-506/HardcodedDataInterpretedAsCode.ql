@@ -14,10 +14,12 @@
 
 import javascript
 import semmle.javascript.security.dataflow.HardcodedDataInterpretedAsCodeQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<HardcodedDataInterpretedAsCodeFlow::PathNode, HardcodedDataInterpretedAsCodeFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where
+  HardcodedDataInterpretedAsCodeFlow::flowPath(source.getAnOriginalPathNode(),
+    sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink,
   "$@ is interpreted as " + sink.getNode().(Sink).getKind() + ".", source.getNode(),
   "Hard-coded data"

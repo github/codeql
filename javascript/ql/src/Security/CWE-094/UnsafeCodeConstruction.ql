@@ -14,11 +14,13 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.UnsafeCodeConstruction::UnsafeCodeConstruction
+import UnsafeCodeConstructionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
+from
+  UnsafeCodeConstructionFlow::PathNode source, UnsafeCodeConstructionFlow::PathNode sink,
+  Sink sinkNode
+where UnsafeCodeConstructionFlow::flowPath(source, sink) and sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
   "This " + sinkNode.getSinkType() + " which depends on $@ is later $@.", source.getNode(),
   "library input", sinkNode.getCodeSink(), "interpreted as code"

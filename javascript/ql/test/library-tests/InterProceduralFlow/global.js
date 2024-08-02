@@ -9,11 +9,11 @@ function g(x) {
 let sink1 = g(source1);
 let sink2 = g(source2);
 
-document.location = source1; // should not flow to `global2.js` in spite of assignment
+document.someProp = source1; // should not flow to `global2.js` in spite of assignment
                              // `document = {}` in `fake-document.js`
 
-window.location = source1;
+window.someProp = source1;
 let win = window;
-let sink3 = window.location;
-let sink4 = win.location;
-let sink5 = location;
+let sink3 = window.someProp;
+let sink4 = win.someProp;
+let sink5 = someProp;

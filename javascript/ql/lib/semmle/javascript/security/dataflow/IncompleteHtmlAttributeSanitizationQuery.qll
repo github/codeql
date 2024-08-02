@@ -25,7 +25,34 @@ private module Label {
 /**
  * A taint-tracking configuration for reasoning about incomplete HTML sanitization vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    label = Label::characterToLabel(source.(Source).getAnUnsanitizedCharacter())
+  }
+
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    label = Label::characterToLabel(sink.(Sink).getADangerousCharacter())
+  }
+
+  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+    lbl = Label::characterToLabel(node.(StringReplaceCall).getAReplacedString())
+  }
+
+  predicate isBarrier(DataFlow::Node n) { n instanceof Sanitizer }
+}
+
+/**
+ * Taint-tracking for reasoning about incomplete HTML sanitization vulnerabilities.
+ */
+module IncompleteHtmlAttributeSanitizationFlow =
+  TaintTracking::GlobalWithState<IncompleteHtmlAttributeSanitizationConfig>;
+
+/**
+ * DEPRECATED. Use the `IncompleteHtmlAttributeSanitizationFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "IncompleteHtmlAttributeSanitization" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {

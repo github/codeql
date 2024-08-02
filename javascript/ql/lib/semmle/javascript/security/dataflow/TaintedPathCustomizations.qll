@@ -31,7 +31,28 @@ module TaintedPath {
   /**
    * A barrier guard for tainted-path vulnerabilities.
    */
-  abstract class BarrierGuardNode extends DataFlow::LabeledBarrierGuardNode { }
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, DataFlow::BarrierGuardNode {
+    override predicate blocks(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  deprecated class BarrierGuardNode = BarrierGuard;
 
   module Label {
     /**
@@ -345,10 +366,10 @@ module TaintedPath {
    *
    * This is relevant for paths that are known to be normalized.
    */
-  class StartsWithDotDotSanitizer extends BarrierGuardNode instanceof StringOps::StartsWith {
+  class StartsWithDotDotSanitizer extends BarrierGuardLegacy instanceof StringOps::StartsWith {
     StartsWithDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       // Sanitize in the false case for:
       //   .startsWith(".")
       //   .startsWith("..")
@@ -365,12 +386,12 @@ module TaintedPath {
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
    */
-  class MembershipTestBarrierGuard extends BarrierGuardNode {
+  class MembershipTestBarrierGuard extends BarrierGuardLegacy {
     MembershipCandidate candidate;
 
     MembershipTestBarrierGuard() { this = candidate.getTest() }
 
-    override predicate blocks(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       candidate = e.flow() and
       candidate.getTestPolarity() = outcome
     }
@@ -380,7 +401,7 @@ module TaintedPath {
    * A check of form `x.startsWith(dir)` that sanitizes normalized absolute paths, since it is then
    * known to be in a subdirectory of `dir`.
    */
-  class StartsWithDirSanitizer extends BarrierGuardNode {
+  class StartsWithDirSanitizer extends BarrierGuardLegacy {
     StringOps::StartsWith startsWith;
 
     StartsWithDirSanitizer() {
@@ -390,7 +411,7 @@ module TaintedPath {
       not startsWith.getSubstring().getStringValue() = "/"
     }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = startsWith.getPolarity() and
       e = startsWith.getBaseString().asExpr() and
       exists(Label::PosixPath posixPath | posixPath = label |
@@ -404,7 +425,7 @@ module TaintedPath {
    * A call to `path.isAbsolute` as a sanitizer for relative paths in true branch,
    * and a sanitizer for absolute paths in the false branch.
    */
-  class IsAbsoluteSanitizer extends BarrierGuardNode {
+  class IsAbsoluteSanitizer extends BarrierGuardLegacy {
     DataFlow::Node operand;
     boolean polarity;
     boolean negatable;
@@ -425,7 +446,7 @@ module TaintedPath {
       ) // !x.startsWith("/home") does not guarantee that x is not absolute
     }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = operand.asExpr() and
       exists(Label::PosixPath posixPath | posixPath = label |
         outcome = polarity and posixPath.isRelative()
@@ -440,10 +461,10 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends BarrierGuardNode instanceof StringOps::Includes {
+  class ContainsDotDotSanitizer extends BarrierGuardLegacy instanceof StringOps::Includes {
     ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getBaseString().asExpr() and
       outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
@@ -453,10 +474,10 @@ module TaintedPath {
   /**
    * An expression of form `x.matches(/\.\./)` or similar.
    */
-  class ContainsDotDotRegExpSanitizer extends BarrierGuardNode instanceof StringOps::RegExpTest {
+  class ContainsDotDotRegExpSanitizer extends BarrierGuardLegacy instanceof StringOps::RegExpTest {
     ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getStringOperand().asExpr() and
       outcome = super.getPolarity().booleanNot() and
       label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
@@ -484,7 +505,7 @@ module TaintedPath {
    * }
    * ```
    */
-  class RelativePathStartsWithSanitizer extends BarrierGuardNode {
+  class RelativePathStartsWithSanitizer extends BarrierGuardLegacy {
     StringOps::StartsWith startsWith;
     DataFlow::CallNode pathCall;
     string member;
@@ -506,7 +527,7 @@ module TaintedPath {
       (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
     }
 
-    override predicate blocks(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       member = "relative" and
       e = this.maybeGetPathSuffix(pathCall.getArgument(1)).asExpr() and
       outcome = startsWith.getPolarity().booleanNot()
@@ -542,7 +563,7 @@ module TaintedPath {
    * An expression of form `isInside(x, y)` or similar, where `isInside` is
    * a library check for the relation between `x` and `y`.
    */
-  class IsInsideCheckSanitizer extends BarrierGuardNode {
+  class IsInsideCheckSanitizer extends BarrierGuardLegacy {
     DataFlow::Node checked;
     boolean onlyNormalizedAbsolutePaths;
 
@@ -558,7 +579,7 @@ module TaintedPath {
       )
     }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       (
         onlyNormalizedAbsolutePaths = true and
         label.(Label::PosixPath).isNormalized() and
@@ -749,8 +770,6 @@ module TaintedPath {
         dst = decode
       )
     )
-    or
-    TaintTracking::promiseStep(src, dst) and srclabel = dstlabel
     or
     TaintTracking::persistentStorageStep(src, dst) and srclabel = dstlabel
     or

@@ -17,11 +17,11 @@
 
 	var [clean3, tainted3] = await Promise.all(["clean", Promise.resolve(source)]);
 	sink(clean3); // OK
-	sink(tainted3); // NOT OK - but only flagged by taint-tracking
+	sink(tainted3); // NOT OK
 
 	var tainted4 = await Promise.race(["clean", Promise.resolve(source)]);
-	sink(tainted4); // NOT OK - but only flagged by taint-tracking
+	sink(tainted4); // NOT OK
 
 	var tainted5 = await Promise.any(["clean", Promise.resolve(source)]);
-	sink(tainted5); // NOT OK - but only flagged by taint-tracking
+	sink(tainted5); // NOT OK
 });

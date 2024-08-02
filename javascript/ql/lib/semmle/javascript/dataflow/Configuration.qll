@@ -73,6 +73,7 @@ private import internal.FlowSteps
 private import internal.AccessPaths
 private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
+private import AdditionalFlowSteps
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -159,7 +160,7 @@ abstract class Configuration extends string {
    * Holds if the intermediate flow node `node` is prohibited.
    */
   predicate isBarrier(DataFlow::Node node) {
-    exists(BarrierGuardNode guard |
+    exists(BarrierGuardNodeInternal guard |
       isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, "")
     )
@@ -199,7 +200,7 @@ abstract class Configuration extends string {
    * Holds if flow with label `lbl` cannot flow into `node`.
    */
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
-    exists(BarrierGuardNode guard |
+    exists(BarrierGuardNodeInternal guard |
       isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, lbl)
     )
@@ -280,10 +281,12 @@ abstract class Configuration extends string {
  * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
  */
 pragma[nomagic]
-private predicate isBarrierGuardInternal(Configuration cfg, BarrierGuardNode guard) {
+private predicate isBarrierGuardInternal(Configuration cfg, BarrierGuardNodeInternal guard) {
   cfg.isBarrierGuard(guard)
   or
   guard.(AdditionalBarrierGuardNode).appliesTo(cfg)
+  or
+  guard.(DerivedBarrierGuardNode).appliesTo(cfg)
 }
 
 /**
@@ -346,6 +349,8 @@ module FlowLabel {
   FlowLabel taint() { result = "taint" }
 }
 
+abstract private class BarrierGuardNodeInternal extends DataFlow::Node { }
+
 /**
  * A node that can act as a barrier when appearing in a condition.
  *
@@ -357,7 +362,7 @@ module FlowLabel {
  * classes as precise as possible: if two subclasses of `BarrierGuardNode` overlap, their
  * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
-abstract class BarrierGuardNode extends DataFlow::Node {
+abstract class BarrierGuardNode extends BarrierGuardNodeInternal {
   /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
    *
@@ -372,30 +377,40 @@ abstract class BarrierGuardNode extends DataFlow::Node {
 }
 
 /**
+ * Barrier guards derived from other barrier guards.
+ */
+abstract private class DerivedBarrierGuardNode extends BarrierGuardNodeInternal {
+  abstract predicate appliesTo(Configuration cfg);
+
+  /**
+   * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
+   *
+   * `label` is bound to the empty string if it blocks all flow labels.
+   */
+  abstract predicate blocks(boolean outcome, Expr e, string label);
+}
+
+/**
  * Holds if data flow node `guard` acts as a barrier for data flow.
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
 pragma[nomagic]
 private predicate barrierGuardBlocksExpr(
-  BarrierGuardNode guard, boolean outcome, Expr test, string label
+  BarrierGuardNodeInternal guard, boolean outcome, Expr test, string label
 ) {
-  guard.blocks(outcome, test) and label = ""
+  guard.(BarrierGuardNode).blocks(outcome, test) and label = ""
   or
-  guard.blocks(outcome, test, label)
+  guard.(BarrierGuardNode).blocks(outcome, test, label)
   or
-  // Handle labelled barrier guard functions specially, to avoid negative recursion
-  // through the non-abstract 3-argument version of blocks().
-  guard.(AdditionalBarrierGuardCall).internalBlocksLabel(outcome, test, label)
-  or
-  guard.(CallAgainstEqualityCheck).internalBlocksLabel(outcome, test, label)
+  guard.(DerivedBarrierGuardNode).blocks(outcome, test, label)
 }
 
 /**
  * Holds if `guard` may block the flow of a value reachable through exploratory flow.
  */
 pragma[nomagic]
-private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
+private predicate barrierGuardIsRelevant(BarrierGuardNodeInternal guard) {
   exists(Expr e |
     barrierGuardBlocksExpr(guard, _, e, _) and
     isRelevantForward(e.flow(), _)
@@ -410,7 +425,7 @@ private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
  */
 pragma[nomagic]
 private predicate barrierGuardBlocksAccessPath(
-  BarrierGuardNode guard, boolean outcome, AccessPath ap, string label
+  BarrierGuardNodeInternal guard, boolean outcome, AccessPath ap, string label
 ) {
   barrierGuardIsRelevant(guard) and
   barrierGuardBlocksExpr(guard, outcome, ap.getAnInstance(), label)
@@ -423,7 +438,7 @@ private predicate barrierGuardBlocksAccessPath(
  */
 pragma[nomagic]
 private predicate barrierGuardBlocksSsaRefinement(
-  BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label
+  BarrierGuardNodeInternal guard, boolean outcome, SsaRefinementNode ref, string label
 ) {
   barrierGuardIsRelevant(guard) and
   guard.getEnclosingExpr() = ref.getGuard().getTest() and
@@ -439,7 +454,7 @@ private predicate barrierGuardBlocksSsaRefinement(
  */
 pragma[nomagic]
 private predicate barrierGuardUsedInCondition(
-  BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome
+  BarrierGuardNodeInternal guard, ConditionGuardNode cond, boolean outcome
 ) {
   barrierGuardIsRelevant(guard) and
   outcome = cond.getOutcome() and
@@ -457,7 +472,9 @@ private predicate barrierGuardUsedInCondition(
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
 pragma[nomagic]
-private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node nd, string label) {
+private predicate barrierGuardBlocksNode(
+  BarrierGuardNodeInternal guard, DataFlow::Node nd, string label
+) {
   // 1) `nd` is a use of a refinement node that blocks its input variable
   exists(SsaRefinementNode ref, boolean outcome |
     nd = DataFlow::ssaDefinitionNode(ref) and
@@ -481,7 +498,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
  */
 pragma[nomagic]
 private predicate barrierGuardBlocksEdge(
-  BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
+  BarrierGuardNodeInternal guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
   exists(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
@@ -501,7 +518,7 @@ private predicate barrierGuardBlocksEdge(
  * This predicate exists to get a better join-order for the `barrierGuardBlocksEdge` predicate above.
  */
 pragma[noinline]
-private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuardNode cond) {
+private BasicBlock getADominatedBasicBlock(BarrierGuardNodeInternal guard, ConditionGuardNode cond) {
   barrierGuardIsRelevant(guard) and
   guard.getEnclosingExpr() = cond.getTest() and
   cond.dominates(result)
@@ -516,7 +533,7 @@ private BasicBlock getADominatedBasicBlock(BarrierGuardNode guard, ConditionGuar
 private predicate isBarrierEdgeRaw(Configuration cfg, DataFlow::Node pred, DataFlow::Node succ) {
   cfg.isBarrierEdge(pred, succ)
   or
-  exists(DataFlow::BarrierGuardNode guard |
+  exists(BarrierGuardNodeInternal guard |
     cfg.isBarrierGuard(guard) and
     barrierGuardBlocksEdge(guard, pred, succ, "")
   )
@@ -546,7 +563,7 @@ private predicate isLabeledBarrierEdgeRaw(
 ) {
   cfg.isBarrierEdge(pred, succ, label)
   or
-  exists(DataFlow::BarrierGuardNode guard |
+  exists(BarrierGuardNodeInternal guard |
     cfg.isBarrierGuard(guard) and
     barrierGuardBlocksEdge(guard, pred, succ, label)
   )
@@ -572,128 +589,6 @@ private predicate isLabeledBarrierEdge(
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
-}
-
-/**
- * A data flow edge that should be added to all data flow configurations in
- * addition to standard data flow edges.
- *
- * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
- *
- * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library. Override `Configuration::isAdditionalFlowStep`
- * for analysis-specific flow steps.
- */
-class SharedFlowStep extends Unit {
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
-   */
-  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
-
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
-   * transforming values with label `predlbl` to have label `succlbl`.
-   */
-  predicate step(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
-    DataFlow::FlowLabel succlbl
-  ) {
-    none()
-  }
-
-  /**
-   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
-   */
-  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
-
-  /**
-   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-   */
-  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  /**
-   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-   */
-  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  /**
-   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
-   */
-  predicate loadStoreStep(
-    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
-  ) {
-    none()
-  }
-}
-
-/**
- * Contains predicates for accessing the steps contributed by `SharedFlowStep` subclasses.
- */
-cached
-module SharedFlowStep {
-  cached
-  private module Internal {
-    // Forces this to be part of the `FlowSteps` stage.
-    // We use a public predicate in a private module to avoid warnings about this being unused.
-    cached
-    predicate forceStage() { Stages::FlowSteps::ref() }
-  }
-
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
-   */
-  cached
-  predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    any(SharedFlowStep s).step(pred, succ)
-  }
-
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
-   * transforming values with label `predlbl` to have label `succlbl`.
-   */
-  cached
-  predicate step(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
-    DataFlow::FlowLabel succlbl
-  ) {
-    any(SharedFlowStep s).step(pred, succ, predlbl, succlbl)
-  }
-
-  /**
-   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
-   */
-  cached
-  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    any(SharedFlowStep s).storeStep(pred, succ, prop)
-  }
-
-  /**
-   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-   */
-  cached
-  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(SharedFlowStep s).loadStep(pred, succ, prop)
-  }
-
-  /**
-   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-   */
-  cached
-  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(SharedFlowStep s).loadStoreStep(pred, succ, prop)
-  }
-
-  /**
-   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
-   */
-  cached
-  predicate loadStoreStep(
-    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
-  ) {
-    any(SharedFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
-  }
 }
 
 /**
@@ -768,6 +663,12 @@ module PseudoProperties {
    */
   bindingset[key]
   string mapValueKey(string key) { result = pseudoProperty("mapValue", key) }
+
+  /**
+   * Holds if `prop` equals `mapValueKey(key)` for some value of `key`.
+   */
+  bindingset[prop]
+  predicate isMapValueKey(string prop) { prop.matches("$mapValue|%$") }
 
   /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.
@@ -1295,7 +1196,7 @@ private string getARelevantProp(DataFlow::Configuration cfg) {
 private predicate isAdditionalLoadStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::loadStep(pred, succ, prop)
+  LegacyFlowStep::loadStep(pred, succ, prop)
   or
   cfg.isAdditionalLoadStep(pred, succ, prop)
 }
@@ -1306,7 +1207,7 @@ private predicate isAdditionalLoadStep(
 private predicate isAdditionalStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::storeStep(pred, succ, prop)
+  LegacyFlowStep::storeStep(pred, succ, prop)
   or
   cfg.isAdditionalStoreStep(pred, succ, prop)
 }
@@ -1318,13 +1219,13 @@ private predicate isAdditionalLoadStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp,
   DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::loadStoreStep(pred, succ, loadProp, storeProp)
+  LegacyFlowStep::loadStoreStep(pred, succ, loadProp, storeProp)
   or
   cfg.isAdditionalLoadStoreStep(pred, succ, loadProp, storeProp)
   or
   loadProp = storeProp and
   (
-    SharedFlowStep::loadStoreStep(pred, succ, loadProp)
+    LegacyFlowStep::loadStoreStep(pred, succ, loadProp)
     or
     cfg.isAdditionalLoadStoreStep(pred, succ, loadProp)
   )
@@ -1858,7 +1759,13 @@ class MidPathNode extends PathNode, MkMidNode {
    * Holds if this node is hidden from paths in path explanation queries, except
    * in cases where it is the source or sink.
    */
-  predicate isHidden() {
+  predicate isHidden() { PathNode::shouldNodeBeHidden(nd) }
+}
+
+/** Companion module to the `PathNode` class. */
+module PathNode {
+  /** Holds if `nd` should be hidden in data flow paths. */
+  predicate shouldNodeBeHidden(DataFlow::Node nd) {
     // Skip phi, refinement, and capture nodes
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
       SsaImplicitDefinition
@@ -1881,6 +1788,8 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip captured variable nodes as the successor will be a use of that variable anyway.
     nd = DataFlow::capturedVariableNode(_)
+    or
+    nd instanceof DataFlow::FunctionSelfReferenceNode
   }
 }
 
@@ -1955,7 +1864,7 @@ module PathGraph {
 /**
  * Gets a logical `and` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalAndParent(BarrierGuardNode guard) {
+private Expr getALogicalAndParent(BarrierGuardNodeInternal guard) {
   barrierGuardIsRelevant(guard) and result = guard.asExpr()
   or
   result.(LogAndExpr).getAnOperand() = getALogicalAndParent(guard)
@@ -1966,7 +1875,7 @@ private Expr getALogicalAndParent(BarrierGuardNode guard) {
 /**
  * Gets a logical `or` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalOrParent(BarrierGuardNode guard) {
+private Expr getALogicalOrParent(BarrierGuardNodeInternal guard) {
   barrierGuardIsRelevant(guard) and result = guard.asExpr()
   or
   result.(LogOrExpr).getAnOperand() = getALogicalOrParent(guard)
@@ -1991,7 +1900,7 @@ abstract class AdditionalBarrierGuardNode extends BarrierGuardNode {
  */
 private class BarrierGuardFunction extends Function {
   DataFlow::ParameterNode sanitizedParameter;
-  BarrierGuardNode guard;
+  BarrierGuardNodeInternal guard;
   boolean guardOutcome;
   string label;
   int paramIndex;
@@ -2035,23 +1944,18 @@ private class BarrierGuardFunction extends Function {
     )
   }
 
-  /**
-   * Holds if this function applies to the flow in `cfg`.
-   */
   predicate appliesTo(Configuration cfg) { isBarrierGuardInternal(cfg, guard) }
 }
 
 /**
  * A call that sanitizes an argument.
  */
-private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, DataFlow::CallNode {
+private class AdditionalBarrierGuardCall extends DerivedBarrierGuardNode, DataFlow::CallNode {
   BarrierGuardFunction f;
 
   AdditionalBarrierGuardCall() { f.isBarrierCall(this, _, _, _) }
 
-  override predicate blocks(boolean outcome, Expr e) { f.isBarrierCall(this, e, outcome, "") }
-
-  predicate internalBlocksLabel(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocks(boolean outcome, Expr e, string label) {
     f.isBarrierCall(this, e, outcome, label)
   }
 
@@ -2067,8 +1971,8 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
  * }
  * ```
  */
-private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
-  DataFlow::BarrierGuardNode prev;
+private class CallAgainstEqualityCheck extends DerivedBarrierGuardNode {
+  BarrierGuardNodeInternal prev;
   boolean polarity;
 
   CallAgainstEqualityCheck() {
@@ -2080,11 +1984,7 @@ private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
     )
   }
 
-  override predicate blocks(boolean outcome, Expr e) {
-    none() // handled by internalBlocksLabel
-  }
-
-  predicate internalBlocksLabel(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+  override predicate blocks(boolean outcome, Expr e, string lbl) {
     exists(boolean prevOutcome |
       barrierGuardBlocksExpr(prev, prevOutcome, e, lbl) and
       outcome = prevOutcome.booleanXor(polarity)
@@ -2099,6 +1999,7 @@ private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
  */
 class VarAccessBarrier extends DataFlow::Node {
+  // TODO: This does not work in dataflow2 when the variable is captured, since the capture-flow library bypasses the refinement node.
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |
       this = DataFlow::ssaDefinitionNode(refinement) and

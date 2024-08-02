@@ -1,3 +1,4 @@
+legacyDataFlowDifference
 consistencyIssue
 taintFlow
 | paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |

@@ -107,6 +107,30 @@ module Stages {
   }
 
   /**
+   * The part of data flow computed before flow summary nodes.
+   */
+  cached
+  module EarlyDataFlowStage {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the early DataFlow stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      DataFlow::localFlowStep(_, _)
+    }
+  }
+
+  /**
    * The `dataflow` stage.
    */
   cached
@@ -127,8 +151,6 @@ module Stages {
       1 = 1
       or
       exists(AmdModule a)
-      or
-      DataFlow::localFlowStep(_, _)
       or
       exists(any(DataFlow::SourceNode s).getAPropertyReference("foo"))
       or

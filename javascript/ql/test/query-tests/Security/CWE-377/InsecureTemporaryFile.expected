@@ -1,50 +1,33 @@
-nodes
-| insecure-temporary-file.js:7:9:11:5 | tmpLocation |
-| insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) |
-| insecure-temporary-file.js:8:9:8:45 | os.tmpd ... mpDir() |
-| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() |
-| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() |
-| insecure-temporary-file.js:13:22:13:32 | tmpLocation |
-| insecure-temporary-file.js:13:22:13:32 | tmpLocation |
-| insecure-temporary-file.js:15:9:15:34 | tmpPath |
-| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" |
-| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" |
-| insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:17:32:17:38 | tmpPath |
-| insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:23:32:23:38 | tmpPath |
-| insecure-temporary-file.js:25:11:25:92 | tmpPath2 |
-| insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) |
-| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() |
-| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() |
-| insecure-temporary-file.js:26:22:26:29 | tmpPath2 |
-| insecure-temporary-file.js:26:22:26:29 | tmpPath2 |
-| insecure-temporary-file.js:28:17:28:24 | tmpPath2 |
-| insecure-temporary-file.js:28:17:28:24 | tmpPath2 |
 edges
-| insecure-temporary-file.js:7:9:11:5 | tmpLocation | insecure-temporary-file.js:13:22:13:32 | tmpLocation |
-| insecure-temporary-file.js:7:9:11:5 | tmpLocation | insecure-temporary-file.js:13:22:13:32 | tmpLocation |
-| insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) | insecure-temporary-file.js:7:9:11:5 | tmpLocation |
-| insecure-temporary-file.js:8:9:8:45 | os.tmpd ... mpDir() | insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) |
-| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | insecure-temporary-file.js:8:9:8:45 | os.tmpd ... mpDir() |
-| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | insecure-temporary-file.js:8:9:8:45 | os.tmpd ... mpDir() |
-| insecure-temporary-file.js:15:9:15:34 | tmpPath | insecure-temporary-file.js:17:32:17:38 | tmpPath |
-| insecure-temporary-file.js:15:9:15:34 | tmpPath | insecure-temporary-file.js:23:32:23:38 | tmpPath |
-| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | insecure-temporary-file.js:15:9:15:34 | tmpPath |
-| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | insecure-temporary-file.js:15:9:15:34 | tmpPath |
-| insecure-temporary-file.js:17:32:17:38 | tmpPath | insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:17:32:17:38 | tmpPath | insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:23:32:23:38 | tmpPath | insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:23:32:23:38 | tmpPath | insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") |
-| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:26:22:26:29 | tmpPath2 |
-| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:26:22:26:29 | tmpPath2 |
-| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:28:17:28:24 | tmpPath2 |
-| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:28:17:28:24 | tmpPath2 |
-| insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) | insecure-temporary-file.js:25:11:25:92 | tmpPath2 |
-| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() | insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) |
-| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() | insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) |
+| insecure-temporary-file.js:7:9:11:5 | tmpLocation | insecure-temporary-file.js:13:22:13:32 | tmpLocation | provenance |  |
+| insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) | insecure-temporary-file.js:7:9:11:5 | tmpLocation | provenance |  |
+| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) | provenance |  |
+| insecure-temporary-file.js:15:9:15:34 | tmpPath | insecure-temporary-file.js:17:32:17:38 | tmpPath | provenance |  |
+| insecure-temporary-file.js:15:9:15:34 | tmpPath | insecure-temporary-file.js:23:32:23:38 | tmpPath | provenance |  |
+| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | insecure-temporary-file.js:15:9:15:34 | tmpPath | provenance |  |
+| insecure-temporary-file.js:17:32:17:38 | tmpPath | insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") | provenance |  |
+| insecure-temporary-file.js:23:32:23:38 | tmpPath | insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") | provenance |  |
+| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:26:22:26:29 | tmpPath2 | provenance |  |
+| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | insecure-temporary-file.js:28:17:28:24 | tmpPath2 | provenance |  |
+| insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) | insecure-temporary-file.js:25:11:25:92 | tmpPath2 | provenance |  |
+| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() | insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) | provenance |  |
+nodes
+| insecure-temporary-file.js:7:9:11:5 | tmpLocation | semmle.label | tmpLocation |
+| insecure-temporary-file.js:7:23:11:5 | path.jo ... )\\n    ) | semmle.label | path.jo ... )\\n    ) |
+| insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | semmle.label | os.tmpdir() |
+| insecure-temporary-file.js:13:22:13:32 | tmpLocation | semmle.label | tmpLocation |
+| insecure-temporary-file.js:15:9:15:34 | tmpPath | semmle.label | tmpPath |
+| insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | semmle.label | "/tmp/something" |
+| insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") | semmle.label | path.jo ... /foo/") |
+| insecure-temporary-file.js:17:32:17:38 | tmpPath | semmle.label | tmpPath |
+| insecure-temporary-file.js:23:22:23:49 | path.jo ... /foo/") | semmle.label | path.jo ... /foo/") |
+| insecure-temporary-file.js:23:32:23:38 | tmpPath | semmle.label | tmpPath |
+| insecure-temporary-file.js:25:11:25:92 | tmpPath2 | semmle.label | tmpPath2 |
+| insecure-temporary-file.js:25:22:25:92 | path.jo ... )}.md`) | semmle.label | path.jo ... )}.md`) |
+| insecure-temporary-file.js:25:32:25:42 | os.tmpdir() | semmle.label | os.tmpdir() |
+| insecure-temporary-file.js:26:22:26:29 | tmpPath2 | semmle.label | tmpPath2 |
+| insecure-temporary-file.js:28:17:28:24 | tmpPath2 | semmle.label | tmpPath2 |
+subpaths
 #select
 | insecure-temporary-file.js:13:22:13:32 | tmpLocation | insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | insecure-temporary-file.js:13:22:13:32 | tmpLocation | Insecure creation of file in $@. | insecure-temporary-file.js:8:21:8:31 | os.tmpdir() | the os temp dir |
 | insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") | insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | insecure-temporary-file.js:17:22:17:49 | path.jo ... /foo/") | Insecure creation of file in $@. | insecure-temporary-file.js:15:19:15:34 | "/tmp/something" | the os temp dir |

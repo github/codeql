@@ -15,14 +15,16 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery
+import IndirectCommandInjectionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight
+from
+  IndirectCommandInjectionFlow::PathNode source, IndirectCommandInjectionFlow::PathNode sink,
+  DataFlow::Node highlight
 where
-  cfg.hasFlowPath(source, sink) and
-  if cfg.isSinkWithHighlight(sink.getNode(), _)
-  then cfg.isSinkWithHighlight(sink.getNode(), highlight)
+  IndirectCommandInjectionFlow::flowPath(source, sink) and
+  if IndirectCommandInjectionConfig::isSinkWithHighlight(sink.getNode(), _)
+  then IndirectCommandInjectionConfig::isSinkWithHighlight(sink.getNode(), highlight)
   else highlight = sink.getNode()
 select highlight, source, sink, "This command depends on an unsanitized $@.", source.getNode(),
   source.getNode().(Source).describe()

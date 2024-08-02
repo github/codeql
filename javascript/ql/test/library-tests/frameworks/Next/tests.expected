@@ -1,3 +1,4 @@
+legacyDataFlowDifference
 remoteFlow
 | pages/[my-fallback-id].jsx:9:40:9:45 | params |
 | pages/secondpage.jsx:5:17:5:27 | ctx.req.url |

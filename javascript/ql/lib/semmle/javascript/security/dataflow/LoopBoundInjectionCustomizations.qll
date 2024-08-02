@@ -167,6 +167,30 @@ module LoopBoundInjection {
   abstract class Source extends DataFlow::Node { }
 
   /**
+   * A barrier guard for looping on tainted objects with unbounded length.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  /**
    * A source of remote user input objects.
    */
   class TaintedObjectSource extends Source instanceof TaintedObject::Source { }
@@ -174,12 +198,12 @@ module LoopBoundInjection {
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.
    */
-  class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+  class IsArraySanitizerGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
     override CallExpr astNode;
 
     IsArraySanitizerGuard() { astNode.getCalleeName() = "isArray" }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       true = outcome and
       e = astNode.getAnArgument() and
       label = TaintedObject::label()
@@ -189,9 +213,7 @@ module LoopBoundInjection {
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `X instanceof Array` check.
    */
-  class InstanceofArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode
-  {
+  class InstanceofArraySanitizerGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
     override BinaryExpr astNode;
 
     InstanceofArraySanitizerGuard() {
@@ -199,7 +221,7 @@ module LoopBoundInjection {
       DataFlow::globalVarRef("Array").flowsToExpr(astNode.getRightOperand())
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       true = outcome and
       e = astNode.getLeftOperand() and
       label = TaintedObject::label()
@@ -211,9 +233,7 @@ module LoopBoundInjection {
    *
    * Also implicitly makes sure that only the first DoS-prone loop is selected by the query (as the .length test has outcome=false when exiting the loop).
    */
-  class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode
-  {
+  class LengthCheckSanitizerGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
     override RelationalComparison astNode;
     DataFlow::PropRead propRead;
 
@@ -222,7 +242,7 @@ module LoopBoundInjection {
       propRead.getPropertyName() = "length"
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       false = outcome and
       e = propRead.getBase().asExpr() and
       label = TaintedObject::label()

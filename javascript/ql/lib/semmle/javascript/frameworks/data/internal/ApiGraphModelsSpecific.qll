@@ -56,13 +56,15 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
 predicate isPackageUsed(string package) {
-  exists(DataFlow::moduleImport(package))
-  or
-  exists(JS::PackageJson json | json.getPackageName() = package)
-  or
   package = "global"
   or
-  any(DataFlow::SourceNode sn).hasUnderlyingType(package, _)
+  package = any(JS::Import imp).getImportedPath().getValue()
+  or
+  any(JS::TypeName t).hasQualifiedName(package, _)
+  or
+  any(JS::TypeAnnotation t).hasQualifiedName(package, _)
+  or
+  exists(JS::PackageJson json | json.getPackageName() = package)
 }
 
 bindingset[type]

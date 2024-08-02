@@ -13,10 +13,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.TaintedFormatStringQuery
-import DataFlow::PathGraph
+import TaintedFormatStringFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from TaintedFormatStringFlow::PathNode source, TaintedFormatStringFlow::PathNode sink
+where
+  TaintedFormatStringFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, "Format string depends on a $@.", source.getNode(),
   "user-provided value"

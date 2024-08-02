@@ -1,115 +1,66 @@
-nodes
-| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url |
-| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| resource-exhaustion.js:5:7:5:42 | s |
-| resource-exhaustion.js:5:11:5:34 | url.par ... , true) |
-| resource-exhaustion.js:5:11:5:40 | url.par ... ).query |
-| resource-exhaustion.js:5:11:5:42 | url.par ... query.s |
-| resource-exhaustion.js:5:21:5:27 | req.url |
-| resource-exhaustion.js:5:21:5:27 | req.url |
-| resource-exhaustion.js:6:7:6:21 | n |
-| resource-exhaustion.js:6:11:6:21 | parseInt(s) |
-| resource-exhaustion.js:6:20:6:20 | s |
-| resource-exhaustion.js:14:16:14:16 | n |
-| resource-exhaustion.js:14:16:14:16 | n |
-| resource-exhaustion.js:15:22:15:22 | n |
-| resource-exhaustion.js:15:22:15:22 | n |
-| resource-exhaustion.js:16:26:16:26 | n |
-| resource-exhaustion.js:16:26:16:26 | n |
-| resource-exhaustion.js:20:20:20:20 | n |
-| resource-exhaustion.js:20:20:20:20 | n |
-| resource-exhaustion.js:22:18:22:18 | n |
-| resource-exhaustion.js:22:18:22:18 | n |
-| resource-exhaustion.js:27:9:27:9 | n |
-| resource-exhaustion.js:27:9:27:9 | n |
-| resource-exhaustion.js:28:13:28:13 | n |
-| resource-exhaustion.js:28:13:28:13 | n |
-| resource-exhaustion.js:29:9:29:9 | n |
-| resource-exhaustion.js:29:9:29:9 | n |
-| resource-exhaustion.js:30:9:30:9 | n |
-| resource-exhaustion.js:30:9:30:9 | n |
-| resource-exhaustion.js:31:9:31:9 | n |
-| resource-exhaustion.js:31:9:31:9 | n |
-| resource-exhaustion.js:32:9:32:9 | n |
-| resource-exhaustion.js:32:9:32:9 | n |
-| resource-exhaustion.js:34:12:34:12 | n |
-| resource-exhaustion.js:34:12:34:12 | n |
-| resource-exhaustion.js:35:12:35:12 | s |
-| resource-exhaustion.js:35:12:35:12 | s |
-| resource-exhaustion.js:81:17:81:17 | n |
-| resource-exhaustion.js:81:17:81:17 | n |
-| resource-exhaustion.js:82:17:82:17 | s |
-| resource-exhaustion.js:82:17:82:17 | s |
-| resource-exhaustion.js:83:18:83:18 | n |
-| resource-exhaustion.js:83:18:83:18 | n |
-| resource-exhaustion.js:84:18:84:18 | s |
-| resource-exhaustion.js:84:18:84:18 | s |
-| resource-exhaustion.js:88:16:88:16 | n |
-| resource-exhaustion.js:88:16:88:16 | n |
-| resource-exhaustion.js:92:18:92:18 | n |
-| resource-exhaustion.js:92:18:92:18 | n |
 edges
-| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:52 | url.par ... ).query | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
-| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:6:20:6:20 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:35:12:35:12 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:35:12:35:12 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:82:17:82:17 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:82:17:82:17 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:84:18:84:18 | s |
-| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:84:18:84:18 | s |
-| resource-exhaustion.js:5:11:5:34 | url.par ... , true) | resource-exhaustion.js:5:11:5:40 | url.par ... ).query |
-| resource-exhaustion.js:5:11:5:40 | url.par ... ).query | resource-exhaustion.js:5:11:5:42 | url.par ... query.s |
-| resource-exhaustion.js:5:11:5:42 | url.par ... query.s | resource-exhaustion.js:5:7:5:42 | s |
-| resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:5:11:5:34 | url.par ... , true) |
-| resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:5:11:5:34 | url.par ... , true) |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:14:16:14:16 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:14:16:14:16 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:15:22:15:22 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:15:22:15:22 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:16:26:16:26 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:16:26:16:26 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:20:20:20:20 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:20:20:20:20 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:22:18:22:18 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:22:18:22:18 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:27:9:27:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:27:9:27:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:28:13:28:13 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:28:13:28:13 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:29:9:29:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:29:9:29:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:30:9:30:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:30:9:30:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:31:9:31:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:31:9:31:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:32:9:32:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:32:9:32:9 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:34:12:34:12 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:34:12:34:12 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:81:17:81:17 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:81:17:81:17 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:83:18:83:18 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:83:18:83:18 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:88:16:88:16 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:88:16:88:16 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:92:18:92:18 | n |
-| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:92:18:92:18 | n |
-| resource-exhaustion.js:6:11:6:21 | parseInt(s) | resource-exhaustion.js:6:7:6:21 | n |
-| resource-exhaustion.js:6:20:6:20 | s | resource-exhaustion.js:6:11:6:21 | parseInt(s) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | provenance |  |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | provenance |  |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | provenance |  |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | provenance | Config |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | provenance |  |
+| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:6:20:6:20 | s | provenance |  |
+| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:35:12:35:12 | s | provenance |  |
+| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:82:17:82:17 | s | provenance |  |
+| resource-exhaustion.js:5:7:5:42 | s | resource-exhaustion.js:84:18:84:18 | s | provenance |  |
+| resource-exhaustion.js:5:11:5:34 | url.par ... , true) | resource-exhaustion.js:5:7:5:42 | s | provenance |  |
+| resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:5:11:5:34 | url.par ... , true) | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:14:16:14:16 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:15:22:15:22 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:16:26:16:26 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:20:20:20:20 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:22:18:22:18 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:27:9:27:9 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:28:13:28:13 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:29:9:29:9 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:30:9:30:9 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:31:9:31:9 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:32:9:32:9 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:34:12:34:12 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:81:17:81:17 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:83:18:83:18 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:88:16:88:16 | n | provenance |  |
+| resource-exhaustion.js:6:7:6:21 | n | resource-exhaustion.js:92:18:92:18 | n | provenance |  |
+| resource-exhaustion.js:6:11:6:21 | parseInt(s) | resource-exhaustion.js:6:7:6:21 | n | provenance |  |
+| resource-exhaustion.js:6:20:6:20 | s | resource-exhaustion.js:6:11:6:21 | parseInt(s) | provenance | Config |
+nodes
+| documentaion-examples/ResourceExhaustion_timeout.js:5:6:5:59 | delay | semmle.label | delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | semmle.label | parseIn ... .delay) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | semmle.label | url.par ... , true) |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | semmle.label | url.par ... y.delay |
+| documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | semmle.label | req.url |
+| documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | semmle.label | delay |
+| resource-exhaustion.js:5:7:5:42 | s | semmle.label | s |
+| resource-exhaustion.js:5:11:5:34 | url.par ... , true) | semmle.label | url.par ... , true) |
+| resource-exhaustion.js:5:21:5:27 | req.url | semmle.label | req.url |
+| resource-exhaustion.js:6:7:6:21 | n | semmle.label | n |
+| resource-exhaustion.js:6:11:6:21 | parseInt(s) | semmle.label | parseInt(s) |
+| resource-exhaustion.js:6:20:6:20 | s | semmle.label | s |
+| resource-exhaustion.js:14:16:14:16 | n | semmle.label | n |
+| resource-exhaustion.js:15:22:15:22 | n | semmle.label | n |
+| resource-exhaustion.js:16:26:16:26 | n | semmle.label | n |
+| resource-exhaustion.js:20:20:20:20 | n | semmle.label | n |
+| resource-exhaustion.js:22:18:22:18 | n | semmle.label | n |
+| resource-exhaustion.js:27:9:27:9 | n | semmle.label | n |
+| resource-exhaustion.js:28:13:28:13 | n | semmle.label | n |
+| resource-exhaustion.js:29:9:29:9 | n | semmle.label | n |
+| resource-exhaustion.js:30:9:30:9 | n | semmle.label | n |
+| resource-exhaustion.js:31:9:31:9 | n | semmle.label | n |
+| resource-exhaustion.js:32:9:32:9 | n | semmle.label | n |
+| resource-exhaustion.js:34:12:34:12 | n | semmle.label | n |
+| resource-exhaustion.js:35:12:35:12 | s | semmle.label | s |
+| resource-exhaustion.js:81:17:81:17 | n | semmle.label | n |
+| resource-exhaustion.js:82:17:82:17 | s | semmle.label | s |
+| resource-exhaustion.js:83:18:83:18 | n | semmle.label | n |
+| resource-exhaustion.js:84:18:84:18 | s | semmle.label | s |
+| resource-exhaustion.js:88:16:88:16 | n | semmle.label | n |
+| resource-exhaustion.js:92:18:92:18 | n | semmle.label | n |
+subpaths
 #select
 | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | This creates a timer with a user-controlled duration from a $@. | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | user-provided value |
 | resource-exhaustion.js:14:16:14:16 | n | resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:14:16:14:16 | n | This creates a buffer with a user-controlled size from a $@. | resource-exhaustion.js:5:21:5:27 | req.url | user-provided value |

@@ -513,7 +513,7 @@ function usingDefineProperty(dst, src) {
             usingDefineProperty(dst[key], src[key]);
         } else {
             var descriptor = {};
-            descriptor.value = src[key]; 
+            descriptor.value = src[key];
             Object.defineProperty(dst, key, descriptor);  // NOT OK
         }
     }
@@ -586,4 +586,23 @@ function indirectHasOwn(dst, src) {
 
 function hasOwn(obj, key) {
     return obj.hasOwnProperty(key)
+}
+
+function captureBarrier(obj) {
+	if (!obj || typeof obj !== 'object') {
+		return obj; // 'obj' is captured but should not propagate through here
+	}
+    const fn = () => obj;
+    fn();
+    return "safe";
+}
+
+function merge_captureBarrier(dest, source) {
+    for (const key of Object.keys(source)) {
+        if (dest[key]) {
+            merge_captureBarrier(dest[key], source[key]);
+        } else {
+            dest[key] = captureBarrier(source[key]); // OK - but currently flagged anyway
+        }
+    }
 }

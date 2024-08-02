@@ -23,7 +23,10 @@ query predicate incomplete(DataFlow::Node dfn, DataFlow::Incompleteness cause) {
   dfn.isIncomplete(cause)
 }
 
-query predicate noBasicBlock(DataFlow::Node node) { not exists(node.getBasicBlock()) }
+query predicate noBasicBlock(DataFlow::Node node) {
+  (node instanceof DataFlow::ValueNode or node instanceof DataFlow::SsaDefinitionNode) and
+  not exists(node.getBasicBlock())
+}
 
 query predicate parameters(DataFlow::ParameterNode param) { any() }
 

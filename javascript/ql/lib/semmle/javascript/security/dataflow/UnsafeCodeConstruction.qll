@@ -19,7 +19,34 @@ module UnsafeCodeConstruction {
   /**
    * A taint-tracking configuration for reasoning about unsafe code constructed from library input.
    */
-  class Configuration extends TaintTracking::Configuration {
+  module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof CodeInjection::Sanitizer }
+
+    predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
+      // HTML sanitizers are insufficient protection against code injection
+      src = trg.(HtmlSanitizerCall).getInput()
+      or
+      none()
+      // TODO: localFieldStep is too expensive with dataflow2
+      // DataFlow::localFieldStep(pred, succ)
+    }
+
+    DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+  }
+
+  /**
+   * Taint-tracking for reasoning about unsafe code constructed from library input.
+   */
+  module UnsafeCodeConstructionFlow = TaintTracking::Global<UnsafeCodeConstructionConfig>;
+
+  /**
+   * DEPRECATED. Use the `UnsafeCodeConstructionFlow` module instead.
+   */
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "UnsafeCodeConstruction" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }

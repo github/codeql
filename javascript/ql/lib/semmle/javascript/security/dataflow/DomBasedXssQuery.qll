@@ -20,7 +20,8 @@ class HtmlSink extends DataFlow::Node instanceof Sink {
 }
 
 /**
- * A taint-tracking configuration for reasoning about XSS.
+ * A taint-tracking configuration for reasoning about XSS by DOM manipulation.
+ *
  * Both ordinary HTML sinks, URL sinks, and JQuery selector based sinks.
  * - HTML sinks are sinks for any tainted value
  * - URL sinks are only sinks when the scheme is user controlled
@@ -31,10 +32,10 @@ class HtmlSink extends DataFlow::Node instanceof Sink {
  * - Taint: a tainted value where the attacker controls part of the value.
  * - PrefixLabel: a tainted value where the attacker controls the prefix
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "HtmlInjection" }
+module DomBasedXssConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
     source instanceof Source and
     (label.isTaint() or label = prefixLabel()) and
     not source = TaintedUrlSuffix::source()
@@ -43,7 +44,7 @@ class Configuration extends TaintTracking::Configuration {
     label = TaintedUrlSuffix::label()
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     sink instanceof HtmlSink and
     label = [TaintedUrlSuffix::label(), prefixLabel(), DataFlow::FlowLabel::taint()]
     or
@@ -54,23 +55,11 @@ class Configuration extends TaintTracking::Configuration {
     label = prefixLabel()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node)
-    or
-    node instanceof Sanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizerActivated or
-    guard instanceof QuoteGuard or
-    guard instanceof ContainsHtmlGuard
-  }
-
-  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    super.isLabeledBarrier(node, lbl)
-    or
-    // copy all taint barriers to the TaintedUrlSuffix/PrefixLabel label. This copies both the ordinary sanitizers and the sanitizer-guards.
-    super.isLabeledBarrier(node, DataFlow::FlowLabel::taint()) and
+  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+    // copy all taint barrier guards to the TaintedUrlSuffix/PrefixLabel label
+    TaintTracking::defaultSanitizer(node) and
     lbl = [TaintedUrlSuffix::label(), prefixLabel()]
     or
     // any non-first string-concatenation leaf is a barrier for the prefix label.
@@ -86,43 +75,78 @@ class Configuration extends TaintTracking::Configuration {
     or
     isOptionallySanitizedNode(node) and
     lbl = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
+    or
+    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(lbl)
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
+    DataFlow::FlowLabel state2
   ) {
-    TaintedUrlSuffix::step(src, trg, inlbl, outlbl)
+    TaintedUrlSuffix::step(node1, node2, state1, state2)
     or
     exists(DataFlow::Node operator |
-      StringConcatenation::taintStep(src, trg, operator, _) and
+      StringConcatenation::taintStep(node1, node2, operator, _) and
       StringConcatenation::getOperand(operator, 0).getStringValue() = "<" + any(string s) and
-      inlbl = TaintedUrlSuffix::label() and
-      outlbl.isTaint()
+      state1 = TaintedUrlSuffix::label() and
+      state2.isTaint()
     )
     or
-    // inherit all ordinary taint steps for prefixLabel
-    inlbl = prefixLabel() and
-    outlbl = prefixLabel() and
-    TaintTracking::sharedTaintStep(src, trg)
+    // steps out of taintedSuffixlabel to taint-label are also steps to prefixLabel.
+    TaintedUrlSuffix::step(node1, node2, TaintedUrlSuffix::label(), DataFlow::FlowLabel::taint()) and
+    state1 = TaintedUrlSuffix::label() and
+    state2 = prefixLabel()
     or
-    // steps out of taintedSuffixlabel to taint-label are also a steps to prefixLabel.
-    TaintedUrlSuffix::step(src, trg, TaintedUrlSuffix::label(), DataFlow::FlowLabel::taint()) and
-    inlbl = TaintedUrlSuffix::label() and
-    outlbl = prefixLabel()
-    or
+    // FIXME: this fails to work in the test case at jquery.js:37
     exists(DataFlow::FunctionNode callback, DataFlow::Node arg |
       any(JQuery::MethodCall c).interpretsArgumentAsHtml(arg) and
       callback = arg.getABoundFunctionValue(_) and
-      src = callback.getReturnNode() and
-      trg = callback and
-      inlbl = outlbl
+      node1 = callback.getReturnNode() and
+      node2 = callback and
+      state1 = state2
     )
   }
 }
 
-private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGuardNode,
-  PrefixStringSanitizer
-{
+/**
+ * Taint-tracking for reasoning about XSS by DOM manipulation.
+ */
+module DomBasedXssFlow = TaintTracking::GlobalWithState<DomBasedXssConfig>;
+
+/**
+ * DEPRECATED. Use the `DomBasedXssFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "HtmlInjection" }
+
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    DomBasedXssConfig::isSource(source, label)
+  }
+
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    DomBasedXssConfig::isSink(sink, label)
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) { DomBasedXssConfig::isBarrier(node) }
+
+  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+    DomBasedXssConfig::isBarrier(node, lbl)
+  }
+
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node node1, DataFlow::Node node2, DataFlow::FlowLabel state1,
+    DataFlow::FlowLabel state2
+  ) {
+    DomBasedXssConfig::isAdditionalFlowStep(node1, state1, node2, state2)
+    or
+    // inherit all ordinary taint steps for the prefix label
+    state1 = prefixLabel() and
+    state2 = prefixLabel() and
+    TaintTracking::sharedTaintStep(node1, node2)
+  }
+}
+
+private class PrefixStringSanitizerActivated extends PrefixStringSanitizer {
   PrefixStringSanitizerActivated() { this = this }
 }
 
@@ -130,11 +154,10 @@ private class PrefixStringActivated extends DataFlow::FlowLabel, PrefixString {
   PrefixStringActivated() { this = this }
 }
 
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+private class QuoteGuard extends Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
-{
+private class ContainsHtmlGuard extends Shared::ContainsHtmlGuard {
   ContainsHtmlGuard() { this = this }
 }

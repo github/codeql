@@ -11,7 +11,44 @@ private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizati
 /**
  * A taint-tracking configuration for reasoning about XSS through the DOM.
  */
-class Configuration extends TaintTracking::Configuration {
+module XssThroughDomConfig implements DataFlow::ConfigSig {
+  // NOTE: Gained FP in Lucifier due to spurious source but with more data flow (I think).
+  // TODO: Seen unexplained FP in meteor, likely due to spurious flow into a callback coming from another call site
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof DomBasedXss::Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof DomBasedXss::Sanitizer or
+    DomBasedXss::isOptionallySanitizedNode(node) or
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode() or
+    node = DataFlow::MakeBarrierGuard<UnsafeJQuery::BarrierGuard>::getABarrierNode()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    succ = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
+    pred = succ.(DataFlow::InvokeNode).getArgument(0)
+  }
+}
+
+/**
+ * Taint-tracking configuration for reasoning about XSS through the DOM.
+ */
+module XssThroughDomFlow = TaintTracking::Global<XssThroughDomConfig>;
+
+/**
+ * Holds if the `source,sink` pair should not be reported.
+ */
+bindingset[source, sink]
+predicate isIgnoredSourceSinkPair(Source source, DomBasedXss::Sink sink) {
+  source.(DomPropertySource).getPropertyName() = "src" and
+  sink instanceof DomBasedXss::WriteUrlSink
+}
+
+/**
+ * DEPRECATED. Use the `XssThroughDomFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "XssThroughDOM" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -49,14 +86,14 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+class TypeTestGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
   override EqualityTest astNode;
   Expr operand;
   boolean polarity;
 
   TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     polarity = outcome and
     e = operand
   }
@@ -64,9 +101,7 @@ class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNo
 
 private import semmle.javascript.security.dataflow.Xss::Shared as Shared
 
-private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
-  DomBasedXss::PrefixStringSanitizer
-{
+private class PrefixStringSanitizer extends DomBasedXss::PrefixStringSanitizer {
   PrefixStringSanitizer() { this = this }
 }
 
@@ -74,11 +109,10 @@ private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixStrin
   PrefixString() { this = this }
 }
 
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+private class QuoteGuard extends Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
-{
+private class ContainsHtmlGuard extends Shared::ContainsHtmlGuard {
   ContainsHtmlGuard() { this = this }
 }

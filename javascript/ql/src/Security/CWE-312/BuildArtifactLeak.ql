@@ -15,10 +15,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.BuildArtifactLeakQuery
-import DataFlow::PathGraph
+import BuildArtifactLeakFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from BuildArtifactLeakFlow::PathNode source, BuildArtifactLeakFlow::PathNode sink
+where BuildArtifactLeakFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This creates a build artifact that depends on $@.",
   source.getNode(),
   "sensitive data returned by" + source.getNode().(CleartextLogging::Source).describe()

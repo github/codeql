@@ -27,7 +27,72 @@ private class ConcreteMaybeFromProto extends MaybeFromProto {
 /**
  * A taint-tracking configuration for reasoning about unvalidated dynamic method calls.
  */
-class Configuration extends TaintTracking::Configuration {
+module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    source.(Source).getFlowLabel() = label
+  }
+
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    sink.(Sink).getFlowLabel() = label
+  }
+
+  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+    node.(Sanitizer).getFlowLabel() = label
+    or
+    TaintTracking::defaultSanitizer(node) and
+    label.isTaint()
+    or
+    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node src, DataFlow::FlowLabel srclabel, DataFlow::Node dst,
+    DataFlow::FlowLabel dstlabel
+  ) {
+    exists(DataFlow::PropRead read |
+      src = read.getPropertyNameExpr().flow() and
+      dst = read and
+      srclabel.isTaint() and
+      (
+        dstlabel instanceof MaybeNonFunction
+        or
+        // a property of `Object.create(null)` cannot come from a prototype
+        not PropertyInjection::isPrototypeLessObject(read.getBase().getALocalSource()) and
+        dstlabel instanceof MaybeFromProto
+      ) and
+      // avoid overlapping results with unsafe dynamic method access query
+      not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
+    )
+    or
+    exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
+      src = get.getArgument(0) and
+      dst = get
+    ) and
+    srclabel.isTaint() and
+    dstlabel instanceof MaybeNonFunction
+    or
+    srclabel.isTaint() and
+    TaintTracking::defaultTaintStep(src, dst) and
+    srclabel = dstlabel
+  }
+}
+
+/**
+ * Taint-tracking for reasoning about unvalidated dynamic method calls.
+ */
+module UnvalidatedDynamicMethodCallFlow =
+  DataFlow::GlobalWithState<UnvalidatedDynamicMethodCallConfig>;
+
+/**
+ * DEPRECATED. Use the `UnvalidatedDynamicMethodCallFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnvalidatedDynamicMethodCall" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
@@ -53,26 +118,6 @@ class Configuration extends TaintTracking::Configuration {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    exists(DataFlow::PropRead read |
-      src = read.getPropertyNameExpr().flow() and
-      dst = read and
-      srclabel.isTaint() and
-      (
-        dstlabel instanceof MaybeNonFunction
-        or
-        // a property of `Object.create(null)` cannot come from a prototype
-        not PropertyInjection::isPrototypeLessObject(read.getBase().getALocalSource()) and
-        dstlabel instanceof MaybeFromProto
-      ) and
-      // avoid overlapping results with unsafe dynamic method access query
-      not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
-    )
-    or
-    exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
-      src = get.getArgument(0) and
-      dst = get
-    ) and
-    srclabel.isTaint() and
-    dstlabel instanceof MaybeNonFunction
+    UnvalidatedDynamicMethodCallConfig::isAdditionalFlowStep(src, srclabel, dst, dstlabel)
   }
 }

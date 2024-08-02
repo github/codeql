@@ -84,6 +84,30 @@ module SecondOrderCommandInjection {
   }
 
   /**
+   * A barrier guard for second order command-injection vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  /**
    * A sink that invokes a command described by the `VulnerableCommand` class.
    */
   abstract class VulnerableCommandSink extends Sink {
@@ -190,9 +214,8 @@ module SecondOrderCommandInjection {
   /**
    * A sanitizer that blocks flow when a string is tested to start with a certain prefix.
    */
-  class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith
-  {
-    override predicate sanitizes(boolean outcome, Expr e) {
+  class PrefixStringSanitizer extends BarrierGuardLegacy instanceof StringOps::StartsWith {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       e = super.getBaseString().asExpr() and
       outcome = super.getPolarity()
     }
@@ -201,11 +224,10 @@ module SecondOrderCommandInjection {
   /**
    * A sanitizer that blocks flow when a string does not start with "--"
    */
-  class DoubleDashSanitizer extends TaintTracking::SanitizerGuardNode instanceof StringOps::StartsWith
-  {
+  class DoubleDashSanitizer extends BarrierGuardLegacy instanceof StringOps::StartsWith {
     DoubleDashSanitizer() { super.getSubstring().mayHaveStringValue("--") }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       e = super.getBaseString().asExpr() and
       outcome = super.getPolarity().booleanNot()
     }

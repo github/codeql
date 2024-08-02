@@ -15,7 +15,66 @@ deprecated class Configration = Configuration;
 /**
  * A taint-tracking configuration for reasoning about unsafe HTML constructed from library input vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    source instanceof Source and
+    label = [TaintedObject::label(), DataFlow::FlowLabel::taint(), DataFlow::FlowLabel::data()]
+  }
+
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    sink instanceof Sink and
+    label = DataFlow::FlowLabel::taint()
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof DomBasedXss::Sanitizer
+    or
+    node instanceof UnsafeJQueryPlugin::Sanitizer
+    or
+    DomBasedXss::isOptionallySanitizedNode(node)
+  }
+
+  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+    TaintTracking::defaultSanitizer(node) and label.isTaint()
+    or
+    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node pred, DataFlow::FlowLabel inlbl, DataFlow::Node succ, DataFlow::FlowLabel outlbl
+  ) {
+    // TODO: localFieldStep is too expensive with dataflow2
+    // DataFlow::localFieldStep(pred, succ) and
+    // inlbl.isTaint() and
+    // outlbl.isTaint()
+    none()
+    or
+    TaintedObject::step(pred, succ, inlbl, outlbl)
+    or
+    // property read from a tainted object is considered tainted
+    succ.(DataFlow::PropRead).getBase() = pred and
+    inlbl = TaintedObject::label() and
+    outlbl = DataFlow::FlowLabel::taint()
+    or
+    TaintTracking::defaultTaintStep(pred, succ) and
+    inlbl.isTaint() and
+    outlbl = inlbl
+  }
+
+  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+}
+
+/**
+ * Taint-tracking for reasoning about unsafe HTML constructed from library input vulnerabilities.
+ */
+module UnsafeHtmlConstructionFlow = DataFlow::GlobalWithState<UnsafeHtmlConstructionConfig>;
+
+/**
+ * DEPRECATED. Use the `UnsafeHtmlConstructionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeHtmlConstruction" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
@@ -68,11 +127,10 @@ class Configuration extends TaintTracking::Configuration {
 
 private import semmle.javascript.security.dataflow.Xss::Shared as Shared
 
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+private class QuoteGuard extends Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
-{
+private class ContainsHtmlGuard extends Shared::ContainsHtmlGuard {
   ContainsHtmlGuard() { this = this }
 }

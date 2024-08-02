@@ -1,57 +1,26 @@
-nodes
-| CleartextStorage2.js:5:7:5:58 | pw |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword |
-| CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
-| CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
-| CleartextStorage2.js:7:33:7:34 | pw |
-| CleartextStorage.js:5:7:5:40 | pw |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") |
-| CleartextStorage.js:7:26:7:27 | pw |
-| CleartextStorage.js:7:26:7:27 | pw |
-| tst-angularjs.js:3:32:3:45 | data1.password |
-| tst-angularjs.js:3:32:3:45 | data1.password |
-| tst-angularjs.js:3:32:3:45 | data1.password |
-| tst-angularjs.js:4:33:4:46 | data2.password |
-| tst-angularjs.js:4:33:4:46 | data2.password |
-| tst-angularjs.js:4:33:4:46 | data2.password |
-| tst-angularjs.js:5:27:5:40 | data3.password |
-| tst-angularjs.js:5:27:5:40 | data3.password |
-| tst-angularjs.js:5:27:5:40 | data3.password |
-| tst-angularjs.js:6:33:6:46 | data4.password |
-| tst-angularjs.js:6:33:6:46 | data4.password |
-| tst-angularjs.js:6:33:6:46 | data4.password |
-| tst-webstorage.js:1:18:1:30 | data.password |
-| tst-webstorage.js:1:18:1:30 | data.password |
-| tst-webstorage.js:1:18:1:30 | data.password |
-| tst-webstorage.js:2:27:2:39 | data.password |
-| tst-webstorage.js:2:27:2:39 | data.password |
-| tst-webstorage.js:2:27:2:39 | data.password |
-| tst-webstorage.js:3:20:3:32 | data.password |
-| tst-webstorage.js:3:20:3:32 | data.password |
-| tst-webstorage.js:3:20:3:32 | data.password |
-| tst-webstorage.js:4:29:4:41 | data.password |
-| tst-webstorage.js:4:29:4:41 | data.password |
-| tst-webstorage.js:4:29:4:41 | data.password |
 edges
-| CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
-| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
-| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
-| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
-| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
-| tst-angularjs.js:3:32:3:45 | data1.password | tst-angularjs.js:3:32:3:45 | data1.password |
-| tst-angularjs.js:4:33:4:46 | data2.password | tst-angularjs.js:4:33:4:46 | data2.password |
-| tst-angularjs.js:5:27:5:40 | data3.password | tst-angularjs.js:5:27:5:40 | data3.password |
-| tst-angularjs.js:6:33:6:46 | data4.password | tst-angularjs.js:6:33:6:46 | data4.password |
-| tst-webstorage.js:1:18:1:30 | data.password | tst-webstorage.js:1:18:1:30 | data.password |
-| tst-webstorage.js:2:27:2:39 | data.password | tst-webstorage.js:2:27:2:39 | data.password |
-| tst-webstorage.js:3:20:3:32 | data.password | tst-webstorage.js:3:20:3:32 | data.password |
-| tst-webstorage.js:4:29:4:41 | data.password | tst-webstorage.js:4:29:4:41 | data.password |
+| CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw | provenance |  |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw | provenance |  |
+| CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | provenance |  |
+| CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw | provenance |  |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw | provenance |  |
+nodes
+| CleartextStorage2.js:5:7:5:58 | pw | semmle.label | pw |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | semmle.label | url.par ... assword |
+| CleartextStorage2.js:7:19:7:34 | 'password=' + pw | semmle.label | 'password=' + pw |
+| CleartextStorage2.js:7:33:7:34 | pw | semmle.label | pw |
+| CleartextStorage.js:5:7:5:40 | pw | semmle.label | pw |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | semmle.label | req.par ... sword") |
+| CleartextStorage.js:7:26:7:27 | pw | semmle.label | pw |
+| tst-angularjs.js:3:32:3:45 | data1.password | semmle.label | data1.password |
+| tst-angularjs.js:4:33:4:46 | data2.password | semmle.label | data2.password |
+| tst-angularjs.js:5:27:5:40 | data3.password | semmle.label | data3.password |
+| tst-angularjs.js:6:33:6:46 | data4.password | semmle.label | data4.password |
+| tst-webstorage.js:1:18:1:30 | data.password | semmle.label | data.password |
+| tst-webstorage.js:2:27:2:39 | data.password | semmle.label | data.password |
+| tst-webstorage.js:3:20:3:32 | data.password | semmle.label | data.password |
+| tst-webstorage.js:4:29:4:41 | data.password | semmle.label | data.password |
+subpaths
 #select
 | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | This stores sensitive data returned by $@ as clear text. | CleartextStorage2.js:5:12:5:58 | url.par ... assword | an access to current_password |
 | CleartextStorage.js:7:26:7:27 | pw | CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:7:26:7:27 | pw | This stores sensitive data returned by $@ as clear text. | CleartextStorage.js:5:12:5:40 | req.par ... sword") | a call to param |

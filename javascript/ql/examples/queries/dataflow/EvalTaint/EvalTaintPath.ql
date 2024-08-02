@@ -9,18 +9,20 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
-class EvalTaint extends TaintTracking::Configuration {
-  EvalTaint() { this = "EvalTaint" }
+module EvalTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSource(Node node) { node instanceof RemoteFlowSource }
-
-  override predicate isSink(Node node) { node = globalVarRef("eval").getACall().getArgument(0) }
+  predicate isSink(DataFlow::Node node) {
+    node = DataFlow::globalVarRef("eval").getACall().getArgument(0)
+  }
 }
 
-from EvalTaint cfg, PathNode source, PathNode sink
-where cfg.hasFlowPath(source, sink)
+module EvalTaintFlow = TaintTracking::Global<EvalTaintConfig>;
+
+import EvalTaintFlow::PathGraph
+
+from EvalTaintFlow::PathNode source, EvalTaintFlow::PathNode sink
+where EvalTaintFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Eval with user-controlled input from $@.", source.getNode(),
   "here"

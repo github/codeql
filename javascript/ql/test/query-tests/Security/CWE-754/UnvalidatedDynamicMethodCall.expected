@@ -1,189 +1,120 @@
 nodes
-| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev |
-| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev |
-| UnsafeDynamicMethodAccess.js:6:9:6:37 | message |
-| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) |
-| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
-| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data |
-| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnsafeDynamicMethodAccess.js:15:9:15:15 | message |
-| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name |
-| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action |
-| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
-| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action |
-| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action |
-| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
-| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
-| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action |
-| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action |
-| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
-| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action |
-| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action |
-| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
-| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
-| tst.js:6:39:6:40 | ev |
-| tst.js:6:39:6:40 | ev |
-| tst.js:7:9:7:39 | name |
-| tst.js:7:16:7:34 | JSON.parse(ev.data) |
-| tst.js:7:16:7:39 | JSON.pa ... a).name |
-| tst.js:7:27:7:28 | ev |
-| tst.js:7:27:7:33 | ev.data |
-| tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:9:9:9:10 | ev |
-| tst.js:9:9:9:15 | ev.data |
-| tst.js:11:5:11:13 | obj[name] |
-| tst.js:11:5:11:13 | obj[name] |
-| tst.js:11:5:11:13 | obj[name] |
-| tst.js:11:9:11:12 | name |
-| tst.js:17:9:17:22 | fn |
-| tst.js:17:9:17:22 | fn |
-| tst.js:17:14:17:22 | obj[name] |
-| tst.js:17:14:17:22 | obj[name] |
-| tst.js:17:18:17:21 | name |
-| tst.js:18:5:18:6 | fn |
-| tst.js:18:5:18:6 | fn |
-| tst.js:18:5:18:6 | fn |
-| tst.js:20:7:20:8 | fn |
-| tst.js:20:7:20:8 | fn |
-| tst.js:21:7:21:15 | obj[name] |
-| tst.js:21:7:21:15 | obj[name] |
-| tst.js:21:7:21:15 | obj[name] |
-| tst.js:21:11:21:14 | name |
-| tst.js:22:11:22:12 | fn |
-| tst.js:22:11:22:12 | fn |
-| tst.js:26:7:26:15 | obj[name] |
-| tst.js:26:7:26:15 | obj[name] |
-| tst.js:26:7:26:15 | obj[name] |
-| tst.js:26:11:26:14 | name |
-| tst.js:28:7:28:15 | obj[name] |
-| tst.js:28:7:28:15 | obj[name] |
-| tst.js:28:11:28:14 | name |
-| tst.js:34:9:34:24 | key |
-| tst.js:34:15:34:24 | "$" + name |
-| tst.js:34:21:34:24 | name |
-| tst.js:35:5:35:12 | obj[key] |
-| tst.js:35:5:35:12 | obj[key] |
-| tst.js:35:5:35:12 | obj[key] |
-| tst.js:35:9:35:11 | key |
-| tst.js:37:7:37:14 | obj[key] |
-| tst.js:37:7:37:14 | obj[key] |
-| tst.js:37:11:37:13 | key |
-| tst.js:47:39:47:40 | ev |
-| tst.js:47:39:47:40 | ev |
-| tst.js:48:9:48:39 | name |
-| tst.js:48:16:48:34 | JSON.parse(ev.data) |
-| tst.js:48:16:48:39 | JSON.pa ... a).name |
-| tst.js:48:27:48:28 | ev |
-| tst.js:48:27:48:33 | ev.data |
-| tst.js:49:9:49:23 | fn |
-| tst.js:49:14:49:23 | obj2[name] |
-| tst.js:49:19:49:22 | name |
-| tst.js:50:5:50:6 | fn |
-| tst.js:50:5:50:6 | fn |
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | semmle.label | ev |
+| UnsafeDynamicMethodAccess.js:6:9:6:37 | message | semmle.label | message |
+| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) | semmle.label | JSON.parse(ev.data) |
+| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev | semmle.label | ev |
+| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data | semmle.label | ev.data |
+| UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | semmle.label | obj[message.name] |
+| UnsafeDynamicMethodAccess.js:15:9:15:15 | message | semmle.label | message |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | semmle.label | message.name |
+| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | semmle.label | action |
+| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) | semmle.label | actions ... action) |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | semmle.label | req.params.action |
+| UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | semmle.label | action |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | semmle.label | action |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | semmle.label | actions ... action] |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | semmle.label | req.params.action |
+| UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | semmle.label | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | semmle.label | action |
+| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) | semmle.label | actions ... action) |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | semmle.label | req.params.action |
+| UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action | semmle.label | action |
+| tst.js:6:39:6:40 | ev | semmle.label | ev |
+| tst.js:7:9:7:39 | name | semmle.label | name |
+| tst.js:7:16:7:34 | JSON.parse(ev.data) | semmle.label | JSON.parse(ev.data) |
+| tst.js:7:16:7:39 | JSON.pa ... a).name | semmle.label | JSON.pa ... a).name |
+| tst.js:7:27:7:28 | ev | semmle.label | ev |
+| tst.js:7:27:7:33 | ev.data | semmle.label | ev.data |
+| tst.js:9:5:9:16 | obj[ev.data] | semmle.label | obj[ev.data] |
+| tst.js:9:9:9:10 | ev | semmle.label | ev |
+| tst.js:9:9:9:15 | ev.data | semmle.label | ev.data |
+| tst.js:11:5:11:13 | obj[name] | semmle.label | obj[name] |
+| tst.js:11:9:11:12 | name | semmle.label | name |
+| tst.js:17:9:17:22 | fn | semmle.label | fn |
+| tst.js:17:14:17:22 | obj[name] | semmle.label | obj[name] |
+| tst.js:17:18:17:21 | name | semmle.label | name |
+| tst.js:18:5:18:6 | fn | semmle.label | fn |
+| tst.js:20:7:20:8 | fn | semmle.label | fn |
+| tst.js:21:7:21:15 | obj[name] | semmle.label | obj[name] |
+| tst.js:21:11:21:14 | name | semmle.label | name |
+| tst.js:22:11:22:12 | fn | semmle.label | fn |
+| tst.js:26:7:26:15 | obj[name] | semmle.label | obj[name] |
+| tst.js:26:11:26:14 | name | semmle.label | name |
+| tst.js:28:7:28:15 | obj[name] | semmle.label | obj[name] |
+| tst.js:28:11:28:14 | name | semmle.label | name |
+| tst.js:34:9:34:24 | key | semmle.label | key |
+| tst.js:34:15:34:24 | "$" + name | semmle.label | "$" + name |
+| tst.js:34:21:34:24 | name | semmle.label | name |
+| tst.js:35:5:35:12 | obj[key] | semmle.label | obj[key] |
+| tst.js:35:9:35:11 | key | semmle.label | key |
+| tst.js:37:7:37:14 | obj[key] | semmle.label | obj[key] |
+| tst.js:37:11:37:13 | key | semmle.label | key |
+| tst.js:47:39:47:40 | ev | semmle.label | ev |
+| tst.js:48:9:48:39 | name | semmle.label | name |
+| tst.js:48:16:48:34 | JSON.parse(ev.data) | semmle.label | JSON.parse(ev.data) |
+| tst.js:48:16:48:39 | JSON.pa ... a).name | semmle.label | JSON.pa ... a).name |
+| tst.js:48:27:48:28 | ev | semmle.label | ev |
+| tst.js:48:27:48:33 | ev.data | semmle.label | ev.data |
+| tst.js:49:9:49:23 | fn | semmle.label | fn |
+| tst.js:49:14:49:23 | obj2[name] | semmle.label | obj2[name] |
+| tst.js:49:19:49:22 | name | semmle.label | name |
+| tst.js:50:5:50:6 | fn | semmle.label | fn |
 edges
-| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
-| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:6:30:6:31 | ev |
-| UnsafeDynamicMethodAccess.js:6:9:6:37 | message | UnsafeDynamicMethodAccess.js:15:9:15:15 | message |
-| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) | UnsafeDynamicMethodAccess.js:6:9:6:37 | message |
-| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev | UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data |
-| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data | UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) |
-| UnsafeDynamicMethodAccess.js:15:9:15:15 | message | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name |
-| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] |
-| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
-| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action |
-| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) | UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action |
-| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
-| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action |
-| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
-| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] |
-| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
-| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action |
-| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) | UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action |
-| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
-| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) |
-| tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
-| tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev |
-| tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev |
-| tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev |
-| tst.js:7:9:7:39 | name | tst.js:11:9:11:12 | name |
-| tst.js:7:9:7:39 | name | tst.js:17:18:17:21 | name |
-| tst.js:7:9:7:39 | name | tst.js:21:11:21:14 | name |
-| tst.js:7:9:7:39 | name | tst.js:26:11:26:14 | name |
-| tst.js:7:9:7:39 | name | tst.js:28:11:28:14 | name |
-| tst.js:7:9:7:39 | name | tst.js:34:21:34:24 | name |
-| tst.js:7:16:7:34 | JSON.parse(ev.data) | tst.js:7:16:7:39 | JSON.pa ... a).name |
-| tst.js:7:16:7:39 | JSON.pa ... a).name | tst.js:7:9:7:39 | name |
-| tst.js:7:27:7:28 | ev | tst.js:7:27:7:33 | ev.data |
-| tst.js:7:27:7:33 | ev.data | tst.js:7:16:7:34 | JSON.parse(ev.data) |
-| tst.js:9:9:9:10 | ev | tst.js:9:9:9:15 | ev.data |
-| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] |
-| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
-| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
-| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] |
-| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn |
-| tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn |
-| tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
-| tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn |
-| tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
-| tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] |
-| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
-| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
-| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] |
-| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
-| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
-| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
-| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
-| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
-| tst.js:34:9:34:24 | key | tst.js:35:9:35:11 | key |
-| tst.js:34:9:34:24 | key | tst.js:37:11:37:13 | key |
-| tst.js:34:15:34:24 | "$" + name | tst.js:34:9:34:24 | key |
-| tst.js:34:21:34:24 | name | tst.js:34:15:34:24 | "$" + name |
-| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
-| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
-| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
-| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] |
-| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] |
-| tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
-| tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
-| tst.js:48:9:48:39 | name | tst.js:49:19:49:22 | name |
-| tst.js:48:16:48:34 | JSON.parse(ev.data) | tst.js:48:16:48:39 | JSON.pa ... a).name |
-| tst.js:48:16:48:39 | JSON.pa ... a).name | tst.js:48:9:48:39 | name |
-| tst.js:48:27:48:28 | ev | tst.js:48:27:48:33 | ev.data |
-| tst.js:48:27:48:33 | ev.data | tst.js:48:16:48:34 | JSON.parse(ev.data) |
-| tst.js:49:9:49:23 | fn | tst.js:50:5:50:6 | fn |
-| tst.js:49:9:49:23 | fn | tst.js:50:5:50:6 | fn |
-| tst.js:49:14:49:23 | obj2[name] | tst.js:49:9:49:23 | fn |
-| tst.js:49:19:49:22 | name | tst.js:49:14:49:23 | obj2[name] |
+| UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:6:30:6:31 | ev | provenance |  |
+| UnsafeDynamicMethodAccess.js:6:9:6:37 | message | UnsafeDynamicMethodAccess.js:15:9:15:15 | message | provenance |  |
+| UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) | UnsafeDynamicMethodAccess.js:6:9:6:37 | message | provenance |  |
+| UnsafeDynamicMethodAccess.js:6:30:6:31 | ev | UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data | provenance | Config |
+| UnsafeDynamicMethodAccess.js:6:30:6:36 | ev.data | UnsafeDynamicMethodAccess.js:6:19:6:37 | JSON.parse(ev.data) | provenance | Config |
+| UnsafeDynamicMethodAccess.js:15:9:15:15 | message | UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | provenance | Config |
+| UnsafeDynamicMethodAccess.js:15:9:15:20 | message.name | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | provenance | Config |
+| UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | provenance |  |
+| UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) | UnvalidatedDynamicMethodCall2.js:13:9:13:47 | action | provenance |  |
+| UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:13:18:13:47 | actions ... action) | provenance | Config |
+| UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | UnvalidatedDynamicMethodCall.js:15:11:15:16 | action | provenance |  |
+| UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | UnvalidatedDynamicMethodCall.js:14:7:14:41 | action | provenance |  |
+| UnvalidatedDynamicMethodCall.js:14:24:14:40 | req.params.action | UnvalidatedDynamicMethodCall.js:14:16:14:41 | actions ... action] | provenance | Config |
+| UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | UnvalidatedDynamicMethodCallGood4.js:15:17:15:22 | action | provenance |  |
+| UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) | UnvalidatedDynamicMethodCallGood4.js:14:13:14:51 | action | provenance |  |
+| UnvalidatedDynamicMethodCallGood4.js:14:34:14:50 | req.params.action | UnvalidatedDynamicMethodCallGood4.js:14:22:14:51 | actions ... action) | provenance | Config |
+| tst.js:6:39:6:40 | ev | tst.js:7:27:7:28 | ev | provenance |  |
+| tst.js:6:39:6:40 | ev | tst.js:9:9:9:10 | ev | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:11:9:11:12 | name | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:17:18:17:21 | name | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:21:11:21:14 | name | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:26:11:26:14 | name | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:28:11:28:14 | name | provenance |  |
+| tst.js:7:9:7:39 | name | tst.js:34:21:34:24 | name | provenance |  |
+| tst.js:7:16:7:34 | JSON.parse(ev.data) | tst.js:7:16:7:39 | JSON.pa ... a).name | provenance | Config |
+| tst.js:7:16:7:39 | JSON.pa ... a).name | tst.js:7:9:7:39 | name | provenance |  |
+| tst.js:7:27:7:28 | ev | tst.js:7:27:7:33 | ev.data | provenance | Config |
+| tst.js:7:27:7:33 | ev.data | tst.js:7:16:7:34 | JSON.parse(ev.data) | provenance | Config |
+| tst.js:9:9:9:10 | ev | tst.js:9:9:9:15 | ev.data | provenance | Config |
+| tst.js:9:9:9:15 | ev.data | tst.js:9:5:9:16 | obj[ev.data] | provenance | Config |
+| tst.js:11:9:11:12 | name | tst.js:11:5:11:13 | obj[name] | provenance | Config |
+| tst.js:17:9:17:22 | fn | tst.js:18:5:18:6 | fn | provenance |  |
+| tst.js:17:9:17:22 | fn | tst.js:20:7:20:8 | fn | provenance |  |
+| tst.js:17:9:17:22 | fn | tst.js:22:11:22:12 | fn | provenance |  |
+| tst.js:17:14:17:22 | obj[name] | tst.js:17:9:17:22 | fn | provenance |  |
+| tst.js:17:18:17:21 | name | tst.js:17:14:17:22 | obj[name] | provenance | Config |
+| tst.js:21:11:21:14 | name | tst.js:21:7:21:15 | obj[name] | provenance | Config |
+| tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] | provenance | Config |
+| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] | provenance | Config |
+| tst.js:34:9:34:24 | key | tst.js:35:9:35:11 | key | provenance |  |
+| tst.js:34:9:34:24 | key | tst.js:37:11:37:13 | key | provenance |  |
+| tst.js:34:15:34:24 | "$" + name | tst.js:34:9:34:24 | key | provenance |  |
+| tst.js:34:21:34:24 | name | tst.js:34:15:34:24 | "$" + name | provenance | Config |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] | provenance | Config |
+| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] | provenance | Config |
+| tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev | provenance |  |
+| tst.js:48:9:48:39 | name | tst.js:49:19:49:22 | name | provenance |  |
+| tst.js:48:16:48:34 | JSON.parse(ev.data) | tst.js:48:16:48:39 | JSON.pa ... a).name | provenance | Config |
+| tst.js:48:16:48:39 | JSON.pa ... a).name | tst.js:48:9:48:39 | name | provenance |  |
+| tst.js:48:27:48:28 | ev | tst.js:48:27:48:33 | ev.data | provenance | Config |
+| tst.js:48:27:48:33 | ev.data | tst.js:48:16:48:34 | JSON.parse(ev.data) | provenance | Config |
+| tst.js:49:9:49:23 | fn | tst.js:50:5:50:6 | fn | provenance |  |
+| tst.js:49:14:49:23 | obj2[name] | tst.js:49:9:49:23 | fn | provenance |  |
+| tst.js:49:19:49:22 | name | tst.js:49:14:49:23 | obj2[name] | provenance | Config |
+subpaths
 #select
 | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | UnsafeDynamicMethodAccess.js:15:5:15:21 | obj[message.name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnsafeDynamicMethodAccess.js:5:37:5:38 | ev | user-controlled |
 | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | UnvalidatedDynamicMethodCall2.js:14:13:14:18 | action | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | UnvalidatedDynamicMethodCall2.js:13:30:13:46 | req.params.action | user-controlled |

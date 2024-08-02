@@ -14,13 +14,13 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnsafeJQueryPluginQuery
-import DataFlow::PathGraph
+import UnsafeJQueryPluginFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
+  UnsafeJQueryPluginFlow::PathNode source, UnsafeJQueryPluginFlow::PathNode sink,
   JQuery::JQueryPluginMethod plugin
 where
-  cfg.hasFlowPath(source, sink) and
+  UnsafeJQueryPluginFlow::flowPath(source, sink) and
   source.getNode().(Source).getPlugin() = plugin
 select sink.getNode(), source, sink, "Potential XSS vulnerability in the $@.", plugin,
   "'$.fn." + plugin.getPluginName() + "' plugin"
