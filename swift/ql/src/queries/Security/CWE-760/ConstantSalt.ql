@@ -20,5 +20,5 @@ from
 where
   ConstantSaltFlow::flowPath(sourcePathNode, sinkPathNode) and sourceNode = sourcePathNode.getNode()
 select sinkPathNode.getNode(), sourcePathNode, sinkPathNode,
-  "The value '$@' is used as a constant, which is insecure for hashing passwords.", sourceNode,
+  "The value $@ is used as a constant, which is insecure for hashing passwords.", sourceNode,
   sourceNode.toString()
