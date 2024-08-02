@@ -2732,6 +2732,24 @@ destructors_for_temps.cpp:
 #  102|     v102_7(void)                         = AliasedUse                               : ~m?
 #  102|     v102_8(void)                         = ExitFunction                             : 
 
+generic.c:
+#    7| char const* c11_generic()
+#    7|   Block 0
+#    7|     v7_1(void)            = EnterFunction            : 
+#    7|     mu7_2(unknown)        = AliasedDefinition        : 
+#    7|     mu7_3(unknown)        = InitializeNonLocal       : 
+#    9|     r9_1(glval<int>)      = VariableAddress[i]       : 
+#    9|     mu9_2(int)            = Uninitialized[i]         : &:r9_1
+#   11|     r11_1(glval<char *>)  = VariableAddress[#return] : 
+#   11|     r11_2(glval<char[4]>) = StringConstant[int]      : 
+#   11|     r11_3(char *)         = Convert                  : r11_2
+#   11|     r11_4(char *)         = Convert                  : r11_3
+#   11|     mu11_5(char *)        = Store[#return]           : &:r11_1, r11_4
+#    7|     r7_4(glval<char *>)   = VariableAddress[#return] : 
+#    7|     v7_5(void)            = ReturnValue              : &:r7_4, ~m?
+#    7|     v7_6(void)            = AliasedUse               : ~m?
+#    7|     v7_7(void)            = ExitFunction             : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0

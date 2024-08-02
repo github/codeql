@@ -4179,6 +4179,25 @@ destructors_for_temps.cpp:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
+generic.c:
+#    7| [TopLevelFunction] char const* c11_generic()
+#    7|   <params>: 
+#    8|   getEntryPoint(): [BlockStmt] { ... }
+#    9|     getStmt(0): [DeclStmt] declaration
+#    9|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#    9|           Type = [IntType] int
+#   11|     getStmt(1): [ReturnStmt] return ...
+#   11|       getExpr(): int
+#   11|           Type = [ArrayType] char[4]
+#   11|           Value = [StringLiteral] "int"
+#   11|           ValueCategory = lvalue
+#   11|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   11|           Conversion = [PointerConversion] pointer conversion
+#   11|           Type = [PointerType] const char *
+#   11|           ValueCategory = prvalue
+#   11|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   11|             Type = [CharPointerType] char *
+#   11|             ValueCategory = prvalue
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
