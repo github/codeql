@@ -1061,6 +1061,16 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
     result = this.asSourceCallable()
   }
+
+  /** Gets a best-effort total ordering. */
+  int totalorder() {
+    this =
+      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
+        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
+      |
+        c order by file, startline, startcolumn
+      )
+  }
 }
 
 /**
@@ -1267,6 +1277,15 @@ module IsUnreachableInCall {
     string toString() { result = "NodeRegion" }
 
     predicate contains(Node n) { this = n.getBasicBlock() }
+
+    int totalOrder() {
+      this =
+        rank[result](IRBlock b, int startline, int startcolumn |
+          b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+        |
+          b order by startline, startcolumn
+        )
+    }
   }
 
   predicate isUnreachableInCall(NodeRegion block, DataFlowCall call) {

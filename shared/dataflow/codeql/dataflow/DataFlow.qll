@@ -97,6 +97,9 @@ signature module InputSig<LocationSig Location> {
 
     /** Gets the location of this callable. */
     Location getLocation();
+
+    /** Gets a best-effort total ordering. */
+    int totalorder();
   }
 
   class ReturnKind {
@@ -273,6 +276,8 @@ signature module InputSig<LocationSig Location> {
   class NodeRegion {
     /** Holds if this region contains `n`. */
     predicate contains(Node n);
+
+    int totalOrder();
   }
 
   /**
