@@ -1,3 +1,22 @@
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.5.
+
+### Minor Analysis Improvements
+
+* Enabled type-tracking to follow content through array methods
+* Improved modeling of `Array.prototype.splice` for when it is called with more than two arguments
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

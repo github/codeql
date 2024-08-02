@@ -58,9 +58,19 @@ private J::Callable liftedImpl(J::Callable m) {
   not exists(getARelevantOverride(result))
 }
 
-private predicate hasManualModel(Callable api) {
+private predicate hasManualSummaryModel(Callable api) {
   api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
   api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+}
+
+private predicate hasManualSourceModel(Callable api) {
+  api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel()).asCallable()
+}
+
+private predicate hasManualSinkModel(Callable api) {
+  api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel()).asCallable()
 }
 
 /**
@@ -73,6 +83,28 @@ predicate isUninterestingForDataFlowModels(Callable api) {
 }
 
 /**
+ * A class of callables that are potentially relevant for generating source or
+ * sink models.
+ */
+class SourceOrSinkTargetApi extends Callable {
+  SourceOrSinkTargetApi() { relevant(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating sink models.
+ */
+class SinkTargetApi extends SourceOrSinkTargetApi {
+  SinkTargetApi() { not hasManualSinkModel(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating source models.
+ */
+class SourceTargetApi extends SourceOrSinkTargetApi {
+  SourceTargetApi() { not hasManualSourceModel(this) }
+}
+
+/**
  * Holds if it is irrelevant to generate models for `api` based on type-based analysis.
  *
  * This serves as an extra filter for the `relevant` predicate.
@@ -80,18 +112,18 @@ predicate isUninterestingForDataFlowModels(Callable api) {
 predicate isUninterestingForTypeBasedFlowModels(Callable api) { none() }
 
 /**
- * A class of callables that are potentially relevant for generating summary, source, sink
- * and neutral models.
+ * A class of callables that are potentially relevant for generating summary or
+ * neutral models.
  *
  * In the Standard library and 3rd party libraries it is the callables (or callables that have a
  * super implementation) that can be called from outside the library itself.
  */
-class TargetApiSpecific extends Callable {
+class SummaryTargetApi extends Callable {
   private Callable lift;
 
-  TargetApiSpecific() {
+  SummaryTargetApi() {
     lift = liftedImpl(this) and
-    not hasManualModel(lift)
+    not hasManualSummaryModel(lift)
   }
 
   /**
@@ -222,15 +254,6 @@ predicate sinkModelSanitizer(DataFlow::Node node) {
   )
 }
 
-private class ManualNeutralSinkCallable extends Callable {
-  ManualNeutralSinkCallable() {
-    this =
-      any(FlowSummaryImpl::Public::NeutralCallable nc |
-        nc.hasManualModel() and nc.getKind() = "sink"
-      ).asCallable()
-  }
-}
-
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
@@ -239,14 +262,10 @@ predicate apiSource(DataFlow::Node source) {
     source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
     source instanceof DataFlow::ParameterNode
   ) and
-  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
-    exists(liftedImpl(enclosing)) and
-    not enclosing instanceof ManualNeutralSinkCallable and
-    exists(J::RefType t |
-      t = enclosing.getDeclaringType().getAnAncestor() and
-      not t instanceof J::TypeObject and
-      t.isPublic()
-    )
+  exists(J::RefType t |
+    t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+    not t instanceof J::TypeObject and
+    t.isPublic()
   )
 }
 
@@ -254,7 +273,7 @@ predicate apiSource(DataFlow::Node source) {
  * Holds if it is not relevant to generate a source model for `api`, even
  * if flow is detected from a node within `source` to a sink within `api`.
  */
-predicate irrelevantSourceSinkApi(Callable source, TargetApiSpecific api) { none() }
+predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
 
 /**
  * Gets the MaD input string representation of `source`.

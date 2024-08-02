@@ -1,3 +1,18 @@
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Element references with blocks, such as `foo[:bar] { |x| puts x}`, are now parsed correctly.
+* The `CleartextSources.qll` library, used by `rb/clear-text-logging-sensitive-data` and `rb/clear-text-logging-sensitive-data`, has been updated to consider heuristics for additional categories of sensitive data. 
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

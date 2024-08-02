@@ -44,7 +44,8 @@ private ControlFlow::Node getAPrimaryConstructorParameterCfn(ParameterAccess pa)
   (
     result = pa.(ParameterRead).getAControlFlowNode()
     or
-    pa = any(AssignableDefinition def | result = def.getAControlFlowNode()).getTargetAccess()
+    pa =
+      any(AssignableDefinition def | result = def.getExpr().getAControlFlowNode()).getTargetAccess()
   )
 }
 
@@ -263,13 +264,15 @@ module VariableCapture {
 
   private module CaptureInput implements Shared::InputSig<Location> {
     private import csharp as Cs
-    private import semmle.code.csharp.controlflow.ControlFlowGraph
+    private import semmle.code.csharp.controlflow.ControlFlowGraph as Cfg
     private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = super.getCallable() }
     }
+
+    class ControlFlowNode = Cfg::ControlFlow::Node;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -352,9 +355,7 @@ module VariableCapture {
 
       VariableWrite() {
         def.getTarget() = v.asLocalScopeVariable() and
-        this = def.getAControlFlowNode() and
-        // the shared variable capture library inserts implicit parameter definitions
-        not def instanceof AssignableDefinitions::ImplicitParameterDefinition
+        this = def.getExpr().getAControlFlowNode()
       }
 
       ControlFlow::Node getRhs() { LocalFlow::defAssigns(def, this, result) }
@@ -1098,13 +1099,10 @@ private module Cached {
     TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) {
       // Handled by `TExplicitParameterNode` below
-      not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
-        AssignableDefinitions::ImplicitParameterDefinition
+      not def instanceof Ssa::ImplicitParameterDefinition
     } or
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
-      cfn = def.getAControlFlowNode() and
-      // Handled by `TExplicitParameterNode` below
-      not def instanceof AssignableDefinitions::ImplicitParameterDefinition
+      cfn = def.getExpr().getAControlFlowNode()
     } or
     TExplicitParameterNode(Parameter p) {
       p = any(DataFlowCallable dfc).asCallable().getAParameter()
@@ -1351,10 +1349,7 @@ private module ParameterNodes {
     ExplicitParameterNode() { this = TExplicitParameterNode(parameter) }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ExplicitDefinition getSsaDefinition() {
-      result.getADefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
-        parameter
-    }
+    Ssa::ImplicitParameterDefinition getSsaDefinition() { result.getParameter() = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       c.asCallable().getParameter(pos.getPosition()) = parameter
@@ -2384,15 +2379,6 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
-
-  int totalOrder() {
-    this =
-      rank[result](ControlFlow::BasicBlock b, int startline, int startcolumn |
-        b.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        b order by startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -2457,9 +2443,6 @@ DataFlowType getNodeType(Node n) {
     n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode().getAstNode()
   ] = result.getADelegateCreation()
 }
-
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends Gvn::GvnType {
   DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }

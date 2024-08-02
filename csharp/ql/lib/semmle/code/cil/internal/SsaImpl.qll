@@ -1,14 +1,17 @@
 private import cil
+private import CIL
 private import codeql.ssa.Ssa as SsaImplCommon
 
 deprecated private module SsaInput implements SsaImplCommon::InputSig<CIL::Location> {
   class BasicBlock = CIL::BasicBlock;
 
+  class ControlFlowNode = CIL::ControlFlowNode;
+
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = CIL::ExitBasicBlock;
+  class ExitBasicBlock extends BasicBlock, CIL::ExitBasicBlock { }
 
   class SourceVariable = CIL::StackVariable;
 

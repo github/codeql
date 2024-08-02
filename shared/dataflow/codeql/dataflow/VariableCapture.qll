@@ -17,10 +17,25 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this basic block. */
     string toString();
 
+    /** Gets the `i`th node in this basic block. */
+    ControlFlowNode getNode(int i);
+
+    /** Gets the length of this basic block. */
+    int length();
+
     /** Gets the enclosing callable. */
     Callable getEnclosingCallable();
 
     /** Gets the location of this basic block. */
+    Location getLocation();
+  }
+
+  /** A control flow node. */
+  class ControlFlowNode {
+    /** Gets a textual representation of this control flow node. */
+    string toString();
+
+    /** Gets the location of this control flow node. */
     Location getLocation();
   }
 
@@ -672,6 +687,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   private module CaptureSsaInput implements Ssa::InputSig<Location> {
     final class BasicBlock = Input::BasicBlock;
 
+    final class ControlFlowNode = Input::ControlFlowNode;
+
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = Input::getImmediateBasicBlockDominator(bb)
     }
@@ -717,10 +734,10 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     TSynthPhi(CaptureSsa::DefinitionExt phi) {
       phi instanceof CaptureSsa::PhiNode or phi instanceof CaptureSsa::PhiReadNode
     } or
-    TExprNode(Expr expr, boolean isPost) {
-      expr instanceof VariableRead and isPost = [false, true]
+    TExprNode(Expr expr, Boolean isPost) {
+      expr instanceof VariableRead
       or
-      synthRead(_, _, _, _, expr) and isPost = [false, true]
+      synthRead(_, _, _, _, expr)
     } or
     TParamNode(CapturedParameter p) or
     TThisParamNode(Callable c) { captureAccess(_, c) } or

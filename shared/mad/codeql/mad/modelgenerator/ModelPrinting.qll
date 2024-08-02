@@ -19,9 +19,11 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     /**
      * The class of APIs relevant for model generation.
      */
-    class Api extends Lang::Callable {
+    class SummaryApi extends Lang::Callable {
       Lang::Callable lift();
     }
+
+    class SourceOrSinkApi extends Lang::Callable;
 
     /**
      * Gets the string representation of the provenance of the models.
@@ -33,9 +35,9 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     /**
      * Computes the first 6 columns for MaD rows used for summaries, sources and sinks.
      */
-    private string asPartialModel(Printing::Api api) {
+    private string asPartialModel(Lang::Callable api) {
       exists(string container, string type, string extensible, string name, string parameters |
-        Lang::partialModel(api.lift(), container, type, extensible, name, parameters) and
+        Lang::partialModel(api, container, type, extensible, name, parameters) and
         result =
           container + ";" //
             + type + ";" //
@@ -49,7 +51,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     /**
      * Computes the first 4 columns for neutral MaD rows.
      */
-    private string asPartialNeutralModel(Printing::Api api) {
+    private string asPartialNeutralModel(Printing::SummaryApi api) {
       exists(string container, string type, string name, string parameters |
         Lang::partialModel(api, container, type, _, name, parameters) and
         result =
@@ -64,15 +66,15 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the summary model for `api` with `input`, `output` and `kind`.
      */
     bindingset[input, output, kind]
-    private string asSummaryModel(Printing::Api api, string input, string output, string kind) {
+    private string asSummaryModel(Printing::SummaryApi api, string input, string output, string kind) {
       result =
-        asPartialModel(api) + input + ";" //
+        asPartialModel(api.lift()) + input + ";" //
           + output + ";" //
           + kind + ";" //
           + Printing::getProvenance()
     }
 
-    string asNeutralSummaryModel(Printing::Api api) {
+    string asNeutralSummaryModel(Printing::SummaryApi api) {
       result =
         asPartialNeutralModel(api) //
           + "summary" + ";" //
@@ -83,7 +85,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the value summary model for `api` with `input` and `output`.
      */
     bindingset[input, output]
-    string asValueModel(Printing::Api api, string input, string output) {
+    string asValueModel(Printing::SummaryApi api, string input, string output) {
       result = asSummaryModel(api, input, output, "value")
     }
 
@@ -91,7 +93,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the taint summary model for `api` with `input` and `output`.
      */
     bindingset[input, output]
-    string asTaintModel(Printing::Api api, string input, string output) {
+    string asTaintModel(Printing::SummaryApi api, string input, string output) {
       result = asSummaryModel(api, input, output, "taint")
     }
 
@@ -99,7 +101,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the sink model for `api` with `input` and `kind`.
      */
     bindingset[input, kind]
-    string asSinkModel(Printing::Api api, string input, string kind) {
+    string asSinkModel(Printing::SourceOrSinkApi api, string input, string kind) {
       result =
         asPartialModel(api) + input + ";" //
           + kind + ";" //
@@ -110,7 +112,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the source model for `api` with `output` and `kind`.
      */
     bindingset[output, kind]
-    string asSourceModel(Printing::Api api, string output, string kind) {
+    string asSourceModel(Printing::SourceOrSinkApi api, string output, string kind) {
       result =
         asPartialModel(api) + output + ";" //
           + kind + ";" //

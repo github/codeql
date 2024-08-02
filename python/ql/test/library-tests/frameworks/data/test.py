@@ -117,3 +117,17 @@ testlib.foo.bar.baz.fuzzyCall(getSource()) # NOT OK
 testlib.foo().bar().fuzzyCall(getSource()) # NOT OK
 testlib.foo(lambda x: x.fuzzyCall(getSource())) # NOT OK
 otherlib.fuzzyCall(getSource()) # OK
+
+# defining sources through content steps
+
+# dictionaries
+testlib.source_dict["key"].func() # source
+testlib.source_dict["safe"].func() # not a source
+lambda k: testlib.source_dict_any[k].func() # source
+
+# TODO: implement support for lists
+lambda i: testlib.source_list[i].func()
+
+# TODO: implement support for tuples
+testlib.source_tuple[0].func() # a source
+testlib.source_tuple[1].func() # not a source

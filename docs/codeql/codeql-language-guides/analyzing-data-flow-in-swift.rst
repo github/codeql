@@ -5,8 +5,6 @@ Analyzing data flow in Swift
 
 You can use CodeQL to track the flow of data through a Swift program to places where the data is used.
 
-.. include:: ../reusables/swift-beta-note.rst
-
 About this article
 ------------------
 

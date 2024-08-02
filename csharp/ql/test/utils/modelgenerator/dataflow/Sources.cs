@@ -4,6 +4,15 @@ namespace Sources;
 
 public class NewSources
 {
+    // Defined as source in the extensions file next to the test.
+    // neutral=Sources;NewSources;Source1;();summary;df-generated 
+    public static string Source1() => throw null;
+
+    // Defined as source in the extensions file next to the test.
+    // neutral=Sources;NewSources;Source2;();summary;df-generated
+    public static string Source2() => throw null;
+
+
     // New source
     // source=Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadLine;();summary;df-generated
@@ -43,25 +52,96 @@ public class NewSources
         return s == "hello";
     }
 
-    public class MyConsoleReader
+    public abstract class ValueReader
     {
-        // source=Sources;NewSources+MyConsoleReader;false;ToString;();;ReturnValue;local;df-generated
-        // neutral=Sources;NewSources+MyConsoleReader;ToString;();summary;df-generated
-        public override string ToString()
+        // neutral=Sources;NewSources+ValueReader;GetValue;();summary;df-generated
+        public abstract string GetValue();
+    }
+
+    public class MyConsoleReader : ValueReader
+    {
+        // neutral=Sources;NewSources+MyConsoleReader;GetValue;();summary;df-generated
+        public override string GetValue()
         {
             return Console.ReadLine();
         }
     }
 
+    public class MyOtherReader : ValueReader
+    {
+        // neutral=Sources;NewSources+MyOtherReader;GetValue;();summary;df-generated
+        public override string GetValue()
+        {
+            return "";
+        }
+    }
 
-    public class MyContainer<T>
+    public class MyContainer<T> where T : ValueReader
     {
         public T Value { get; set; }
 
-        // summary=Sources;NewSources+MyContainer<T>;false;Read;();;Argument[this];ReturnValue;taint;df-generated
+        // neutral=Sources;NewSources+MyContainer<T>;Read;();summary;df-generated
         public string Read()
         {
-            return Value.ToString();
+            return Value.GetValue();
         }
     }
+
+    // Not a new source as this callable has been manually modelled
+    // as source neutral.
+    // neutral=Sources;NewSources;ManualNeutralSource;();summary;df-generated
+    public string ManualNeutralSource()
+    {
+        return Console.ReadLine();
+    }
+
+    // Not a new source as this callable already has a manual source.
+    // neutral=Sources;NewSources;ManualSourceAlreadyDefined;();summary;df-generated
+    public string ManualSourceAlreadyDefined()
+    {
+        return Console.ReadLine();
+    }
+
+    public abstract class DataReader
+    {
+        // neutral=Sources;NewSources+DataReader;Read;();summary;df-generated
+        public abstract string Read();
+    }
+
+    public class DataReaderKind1 : DataReader
+    {
+        // neutral=Sources;NewSources+DataReaderKind1;Read;();summary;df-generated
+        public override string Read()
+        {
+            return Source1();
+        }
+    }
+
+    public sealed class DataReaderKind2 : DataReader
+    {
+        // neutral=Sources;NewSources+DataReaderKind2;Read;();summary;df-generated
+        public override string Read()
+        {
+            return Source2();
+        }
+    }
+
+    public class C1
+    {
+        // neutral=Sources;NewSources+C1;ToString;();summary;df-generated
+        public override string ToString()
+        {
+            return Source1();
+        }
+    }
+
+    public sealed class C2
+    {
+        // neutral=Sources;NewSources+C2;ToString;();summary;df-generated
+        public override string ToString()
+        {
+            return Source1();
+        }
+    }
+
 }

@@ -316,9 +316,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodCall sink, string mo
  * Methods that return tainted data when called on tainted data.
  */
 private predicate taintPreservingQualifierToMethod(Method m, string model) {
-  model = "" and
-  m instanceof CloneMethod
-  or
   model = "%StringWriter" and
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
   (
