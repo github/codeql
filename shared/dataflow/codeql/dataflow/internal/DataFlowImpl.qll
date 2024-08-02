@@ -2681,7 +2681,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               revFlow(arg, state0, _, _, _) and
               pn1 = mkStagePathNode(arg, state0, cc, summaryCtx, argT, argAp, innerArgT, innerArgAp) and
               pn2 =
-                mkStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
+                typeStrengthenToStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
                   TypOption::some(innerArgT), apSome(innerArgAp), innerArgT, innerArgAp) and
               pn3 =
                 mkStagePathNode(ret, state, ccc, TParamNodeSome(p.asNode()),
