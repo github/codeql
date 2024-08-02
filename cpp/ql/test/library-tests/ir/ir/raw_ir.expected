@@ -2763,7 +2763,7 @@ generic.c:
 #   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
 #   14|     mu14_2(int)           = Uninitialized[i]         : &:r14_1
 #   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
-#   16|     r16_2(glval<char[4]>) = StringConstant[int]      : 
+#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
 #   16|     r16_3(char *)         = Convert                  : r16_2
 #   16|     r16_4(char *)         = Convert                  : r16_3
 #   16|     mu16_5(char *)        = Store[#return]           : &:r16_1, r16_4
@@ -2780,7 +2780,7 @@ generic.c:
 #   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
 #   21|     mu21_2(int)           = Uninitialized[i]         : &:r21_1
 #   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
-#   23|     r23_2(glval<char[4]>) = StringConstant["int"]    : 
+#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
 #   23|     r23_3(char *)         = Convert                  : r23_2
 #   23|     r23_4(char *)         = Convert                  : r23_3
 #   23|     mu23_5(char *)        = Store[#return]           : &:r23_1, r23_4
