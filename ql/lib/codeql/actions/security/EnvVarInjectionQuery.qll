@@ -2,6 +2,7 @@ private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.UntrustedCheckoutQuery
 private import codeql.actions.dataflow.FlowSteps
 import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
@@ -12,33 +13,48 @@ abstract class EnvVarInjectionSink extends DataFlow::Node { }
  * Holds if a Run step declares an environment variable with contents from a local file.
  * e.g.
  *    run: |
+ *      cat test-results/.env >> $GITHUB_ENV
  *      echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV
  *      echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
-    exists(Run run, UntrustedArtifactDownloadStep step, string content, string value |
+    exists(Run run, Step step |
+      (
+        step instanceof UntrustedArtifactDownloadStep or
+        step instanceof PRHeadCheckoutStep
+      ) and
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
-      writeToGitHubEnv(run, content) and
-      extractVariableAndValue(content, _, value) and
       (
-        outputsPartialFileContent(value)
-        or
         // e.g.
-        // FOO=$(cat test-results/sha-number)
-        // echo "FOO=$FOO" >> $GITHUB_ENV
-        exists(string line, string var_name, string var_value |
-          run.getScript().splitAt("\n") = line
-        |
-          var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
-          var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
-          outputsPartialFileContent(var_value) and
+        // cat test-results/.env >> $GITHUB_ENV
+        fileToGitHubEnv(run, _)
+        or
+        exists(string content, string value |
+          writeToGitHubEnv(run, content) and
+          extractVariableAndValue(content, _, value) and
           (
-            value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+            // e.g.
+            // echo "FOO=$(cat test-results/sha-number)" >> $GITHUB_ENV
+            outputsPartialFileContent(value)
             or
-            value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
-            value.indexOf(var_name) > 0
+            // e.g.
+            // FOO=$(cat test-results/sha-number)
+            // echo "FOO=$FOO" >> $GITHUB_ENV
+            exists(string line, string var_name, string var_value |
+              run.getScript().splitAt("\n") = line
+            |
+              var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
+              var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+              outputsPartialFileContent(var_value) and
+              (
+                value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+                or
+                value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
+                value.indexOf(var_name) > 0
+              )
+            )
           )
         )
       )

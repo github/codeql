@@ -2,6 +2,7 @@ private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.UntrustedCheckoutQuery
 private import codeql.actions.dataflow.FlowSteps
 import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
@@ -16,27 +17,39 @@ abstract class EnvPathInjectionSink extends DataFlow::Node { }
  */
 class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
   EnvPathInjectionFromFileReadSink() {
-    exists(Run run, UntrustedArtifactDownloadStep step, string value |
+    exists(Run run, Step step |
+      (
+        step instanceof UntrustedArtifactDownloadStep or
+        step instanceof PRHeadCheckoutStep
+      ) and
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
-      writeToGitHubPath(run, value) and
       (
-        outputsPartialFileContent(value)
-        or
         // e.g.
-        // FOO=$(cat test-results/sha-number)
-        // echo "FOO=$FOO" >> $GITHUB_PATH
-        exists(string line, string var_name, string var_value |
-          run.getScript().splitAt("\n") = line
-        |
-          var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
-          var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
-          outputsPartialFileContent(var_value) and
+        // cat test-results/.env >> $GITHUB_PATH
+        fileToGitHubPath(run, _)
+        or
+        exists(string value |
+          writeToGitHubPath(run, value) and
           (
-            value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+            outputsPartialFileContent(value)
             or
-            value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
-            value.indexOf(var_name) > 0
+            // e.g.
+            // FOO=$(cat test-results/sha-number)
+            // echo "FOO=$FOO" >> $GITHUB_PATH
+            exists(string line, string var_name, string var_value |
+              run.getScript().splitAt("\n") = line
+            |
+              var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
+              var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+              outputsPartialFileContent(var_value) and
+              (
+                value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
+                or
+                value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
+                value.indexOf(var_name) > 0
+              )
+            )
           )
         )
       )

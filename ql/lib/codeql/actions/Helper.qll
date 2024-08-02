@@ -212,6 +212,32 @@ predicate writeToGitHubPath(Run run, string content) {
   extractFileWrite(run.getScript(), "GITHUB_PATH", content)
 }
 
+/** Writes the content of the file specified by `path` into a file pointed to by `file_var` */
+bindingset[script, file_var]
+predicate fileToFileWrite(string script, string file_var, string path) {
+  exists(string regexp, string line, string file_expr |
+    isBashParameterExpansion(file_expr, file_var, _, _) and
+    regexp =
+      "(?i)(cat)\\s*" + "((?:(?!<<|<<-)[^>\n])+)\\s*" +
+        "(>>|>|\\s*\\|\\s*tee\\s*(-a|--append)?)\\s*" + "(\\S+)" and
+    line = script.splitAt("\n") and
+    path = line.regexpCapture(regexp, 2) and
+    file_expr = trimQuotes(line.regexpCapture(regexp, 5))
+  )
+}
+
+predicate fileToGitHubEnv(Run run, string path) {
+  fileToFileWrite(run.getScript(), "GITHUB_ENV", path)
+}
+
+predicate fileToGitHubOutput(Run run, string path) {
+  fileToFileWrite(run.getScript(), "GITHUB_OUTPUT", path)
+}
+
+predicate fileToGitHubPath(Run run, string path) {
+  fileToFileWrite(run.getScript(), "GITHUB_PATH", path)
+}
+
 predicate inPrivilegedCompositeAction(AstNode node) {
   exists(CompositeAction a |
     a = node.getEnclosingCompositeAction() and
