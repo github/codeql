@@ -4180,7 +4180,7 @@ destructors_for_temps.cpp:
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
 generic.c:
-#    1| [TopLevelFunction] void c11_generic_test(unsigned int, int)
+#    1| [TopLevelFunction] void c11_generic_test_with_load(unsigned int, int)
 #    1|   <params>: 
 #    1|     getParameter(0): [Parameter] x
 #    1|         Type = [IntType] unsigned int
@@ -4213,6 +4213,65 @@ generic.c:
 #    3|               Value = [CStyleCast] 1
 #    3|               ValueCategory = prvalue
 #    4|     getStmt(2): [ReturnStmt] return ...
+#   12| [TopLevelFunction] char const* c11_generic_test_with_constant_and_macro()
+#   12|   <params>: 
+#   13|   getEntryPoint(): [BlockStmt] { ... }
+#   14|     getStmt(0): [DeclStmt] declaration
+#   14|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   14|           Type = [IntType] int
+#   16|     getStmt(1): [ReturnStmt] return ...
+#   16|       getExpr(): int
+#   16|           Type = [ArrayType] char[4]
+#   16|           Value = [StringLiteral] "int"
+#   16|           ValueCategory = lvalue
+#   16|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   16|           Conversion = [PointerConversion] pointer conversion
+#   16|           Type = [PointerType] const char *
+#   16|           ValueCategory = prvalue
+#   16|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   16|             Type = [CharPointerType] char *
+#   16|             ValueCategory = prvalue
+#   19| [TopLevelFunction] char const* c11_generic_test_with_constant_and_no_macro()
+#   19|   <params>: 
+#   20|   getEntryPoint(): [BlockStmt] { ... }
+#   21|     getStmt(0): [DeclStmt] declaration
+#   21|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   21|           Type = [IntType] int
+#   23|     getStmt(1): [ReturnStmt] return ...
+#   23|       getExpr(): int
+#   23|           Type = [ArrayType] char[4]
+#   23|           Value = [StringLiteral] "int"
+#   23|           ValueCategory = lvalue
+#   23|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   23|           Conversion = [PointerConversion] pointer conversion
+#   23|           Type = [PointerType] const char *
+#   23|           ValueCategory = prvalue
+#   23|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   23|             Type = [CharPointerType] char *
+#   23|             ValueCategory = prvalue
+#   26| [TopLevelFunction] void c11_generic_test_test_with_cast(int)
+#   26|   <params>: 
+#   26|     getParameter(0): [Parameter] y
+#   26|         Type = [IntType] int
+#   26|   getEntryPoint(): [BlockStmt] { ... }
+#   27|     getStmt(0): [DeclStmt] declaration
+#   27|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#   27|           Type = [IntType] unsigned int
+#   28|     getStmt(1): [ExprStmt] ExprStmt
+#   28|       getExpr(): [AssignExpr] ... = ...
+#   28|           Type = [IntType] unsigned int
+#   28|           ValueCategory = prvalue
+#   28|         getLValue(): [VariableAccess] r
+#   28|             Type = [IntType] unsigned int
+#   28|             ValueCategory = lvalue
+#   28|         getRValue(): [VariableAccess] y
+#   28|             Type = [IntType] int
+#   28|             ValueCategory = prvalue(load)
+#   28|         getRValue().getFullyConverted(): [CStyleCast] (unsigned int)...
+#   28|             Conversion = [IntegralConversion] integral conversion
+#   28|             Type = [IntType] unsigned int
+#   28|             ValueCategory = prvalue
+#   29|     getStmt(2): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
