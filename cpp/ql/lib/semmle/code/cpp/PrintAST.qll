@@ -386,6 +386,19 @@ class CastNode extends ConversionNode {
 }
 
 /**
+ * A node representing a `C11GenericExpr`.
+ */
+class C11GenericNode extends ConversionNode {
+  C11GenericExpr generic;
+
+  C11GenericNode() { generic = conv }
+
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = generic.getChild(childIndex)
+  }
+}
+
+/**
  * A node representing a `StmtExpr`.
  */
 class StmtExprNode extends ExprNode {
