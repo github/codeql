@@ -1,7 +1,7 @@
 
 // --- stubs ---
 
-class Data {
+struct Data {
     init<S>(_ elements: S) {}
 }
 
@@ -31,16 +31,16 @@ extension Realm {
 	}
 }
 
+protocol BlockMode { }
 
+struct CBC: BlockMode {
+	init(iv: Array<UInt8>) { }
+}
 
-
-
-
-
-
-
-
-
+class AES
+{
+	init(key: Array<UInt8>, blockMode: BlockMode) { }
+}
 
 // --- tests ---
 
@@ -68,4 +68,17 @@ func test(myVarStr: String) {
 	var configContainer = ConfigContainer()
 	configContainer.config.encryptionKey = myVarKey // GOOD
 	configContainer.config.encryptionKey = myConstKey // BAD
+}
+
+func useKeys(_ k1: String, _ k2: String, _ k3: String, _ myIV: Array<UInt8>) {
+	// --- cryptoswift ---
+
+	let a1 = AES(key: Array(k1.utf8), blockMode: CBC(iv: myIV)) // BAD
+	let a2 = AES(key: Array(k2.utf8), blockMode: CBC(iv: myIV)) // BAD
+	let a3 = AES(key: Array(k3.utf8), blockMode: CBC(iv: myIV)) // GOOD
+}
+
+func caller(varString: String, myIV: Array<UInt8>) {
+	useKeys("abc123", varString, varString, myIV)
+	useKeys("abc123", "abc123", varString, myIV)
 }
