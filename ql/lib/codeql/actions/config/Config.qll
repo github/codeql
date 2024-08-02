@@ -92,7 +92,7 @@ predicate argumentInjectionSinksDataModel(string regexp, int command_group, int 
   exists(string sub_regexp |
     Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
     // capture regexp
-    regexp = ".*" + commandPrefixDelimiter() + sub_regexp + commandSuffixDelimiter() + ".*"
+    regexp = ".*" + commandPrefixDelimiter() + sub_regexp // + commandSuffixDelimiter() +  ".*"
   )
 }
 

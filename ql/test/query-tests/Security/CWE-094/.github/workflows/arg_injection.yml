@@ -17,6 +17,14 @@ jobs:
       - run: awk "BEGIN {$TITLE}"
       - run: sed -i "s/git_branch = .*/git_branch = \"$GITHUB_HEAD_REF\"/" config.json
       - run: |
-          # We consider | as a shell pipe so this one is not reported yet until
-          # we can better identify all the commands in a shell script
           sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json
+      - run: |
+          sed -e 's#<branch_to_sync>#${TITLE}#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#TITLE#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky
+      - run: |
+          sed -e 's#<branch_to_sync>#TITLE#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#${TITLE}#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky

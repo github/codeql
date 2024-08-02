@@ -39,3 +39,8 @@ jobs:
       - run: echo "foo" | awk -f ./config.awk > foo.txt
       - run: gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo
       - run: ./foo/cmd
+      - run: |
+          sed -e 's#<branch_to_sync>#TITLE#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#${TITLE}#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky

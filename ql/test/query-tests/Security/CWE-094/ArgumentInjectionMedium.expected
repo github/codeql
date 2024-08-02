@@ -3,6 +3,8 @@ edges
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:15:14:15:52 | echo "foo" \| sed "s/FOO/$TITLE/g" > bar | provenance |  |
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | provenance |  |
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:17:14:17:33 | awk "BEGIN {$TITLE}" | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:21:14:25:111 | sed -e 's#<branch_to_sync>#${TITLE}#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#TITLE#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n | provenance |  |
+| .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | .github/workflows/arg_injection.yml:26:14:30:111 | sed -e 's#<branch_to_sync>#TITLE#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#${TITLE}#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n | provenance |  |
 nodes
 | .github/workflows/arg_injection.yml:11:15:11:43 | github.event.issue.title | semmle.label | github.event.issue.title |
 | .github/workflows/arg_injection.yml:14:14:14:33 | sed "s/FOO/$TITLE/g" | semmle.label | sed "s/FOO/$TITLE/g" |
@@ -10,5 +12,8 @@ nodes
 | .github/workflows/arg_injection.yml:16:14:16:60 | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) | semmle.label | echo $(echo "foo" \| sed "s/FOO/$TITLE/g" > bar) |
 | .github/workflows/arg_injection.yml:17:14:17:33 | awk "BEGIN {$TITLE}" | semmle.label | awk "BEGIN {$TITLE}" |
 | .github/workflows/arg_injection.yml:18:14:18:86 | sed -i "s/git_branch = .*/git_branch = \\"$GITHUB_HEAD_REF\\"/" config.json | semmle.label | sed -i "s/git_branch = .*/git_branch = \\"$GITHUB_HEAD_REF\\"/" config.json |
+| .github/workflows/arg_injection.yml:19:14:20:84 | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json\n | semmle.label | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json\n |
+| .github/workflows/arg_injection.yml:21:14:25:111 | sed -e 's#<branch_to_sync>#${TITLE}#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#TITLE#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n | semmle.label | sed -e 's#<branch_to_sync>#${TITLE}#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#TITLE#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n |
+| .github/workflows/arg_injection.yml:26:14:30:111 | sed -e 's#<branch_to_sync>#TITLE#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#${TITLE}#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n | semmle.label | sed -e 's#<branch_to_sync>#TITLE#' \\\n    -e 's#<sot_repo>#${{ env.sot_repo }}#' \\\n    -e 's#<destination_repo>#${TITLE}#' \\\n    .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky\n |
 subpaths
 #select
