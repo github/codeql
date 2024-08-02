@@ -23,6 +23,17 @@ private string positionToString(int pos) {
 module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   class SummarizedCallableBase = Callable;
 
+  predicate neutralElement(
+    Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
+  ) {
+    exists(string namespace, string type, string name, string signature |
+      neutralModel(namespace, type, name, signature, kind, provenance) and
+      c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
+    ) and
+    // isExact is not needed for Go.
+    isExact = false
+  }
+
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
   ReturnKind getStandardReturnValueKind() { result = getReturnKind(0) }
@@ -304,10 +315,7 @@ module Private {
      * and with provenance `provenance`.
      */
     predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
-      exists(string namespace, string type, string name, string signature |
-        neutralModel(namespace, type, name, signature, kind, provenance) and
-        c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
-      )
+      Input::neutralElement(c, kind, provenance, _)
     }
   }
 

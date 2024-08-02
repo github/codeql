@@ -21,6 +21,10 @@ public class Sinks {
   // neutral=p;Sinks;sink2;(Object);summary;df-generated
   public void sink2(Object o) {}
 
+  // Defined as sink neutral in the file next to the neutral summary test.
+  // neutral=p;Sinks;nosink;(Object);summary;df-generated
+  public void nosink(Object o) {}
+
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];path-injection;df-generated
   // neutral=p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated

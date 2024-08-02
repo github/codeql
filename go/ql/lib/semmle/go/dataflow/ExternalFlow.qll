@@ -595,15 +595,3 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     summaryElement(this, _, _, _, provenance, _)
   }
 }
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-}

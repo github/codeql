@@ -556,7 +556,7 @@ private predicate interpretSummary(
   )
 }
 
-private predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
     neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
@@ -611,18 +611,6 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   override predicate hasProvenance(Provenance provenance) {
     interpretSummary(this, _, _, _, provenance, _)
   }
-}
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() { interpretNeutral(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }
 
 /**
