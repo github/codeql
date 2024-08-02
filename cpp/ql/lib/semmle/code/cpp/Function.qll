@@ -166,7 +166,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /**
    * Gets the constant expression that determines whether the function is explicit.
    *
-   * For example, for the following code the result is is the expression `sizeof(T) == 1`:
+   * For example, for the following code the result is the expression `sizeof(T) == 1`:
    * ```
    * template<typename T> struct C {
    *   explicit(sizeof(T) == 1)
