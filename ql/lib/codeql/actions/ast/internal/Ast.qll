@@ -1243,7 +1243,7 @@ class RunImpl extends StepImpl {
 
   RunImpl() { this.getNode().lookup("run") = script }
 
-  string getScript() { result = script.getValue() }
+  string getScript() { result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
 
   ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
 
