@@ -2733,7 +2733,7 @@ destructors_for_temps.cpp:
 #  102|     v102_8(void)                         = ExitFunction                             : 
 
 generic.c:
-#    1| void foo(unsigned int, int)
+#    1| void c11_generic_test(unsigned int, int)
 #    1|   Block 0
 #    1|     v1_1(void)                = EnterFunction          : 
 #    1|     mu1_2(unknown)            = AliasedDefinition      : 

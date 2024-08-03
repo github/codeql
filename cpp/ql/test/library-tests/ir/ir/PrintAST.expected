@@ -4180,7 +4180,7 @@ destructors_for_temps.cpp:
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
 generic.c:
-#    1| [TopLevelFunction] void foo(unsigned int, int)
+#    1| [TopLevelFunction] void c11_generic_test(unsigned int, int)
 #    1|   <params>: 
 #    1|     getParameter(0): [Parameter] x
 #    1|         Type = [IntType] unsigned int
