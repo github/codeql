@@ -1,4 +1,4 @@
-| -:0:0:0:0 | package ; expected nonexistent |
+| -:0:0:0:0 | package ; expected package nonexistent |
 | vendor/github.com/github/nonexistent/bad.go:1:57:1:57 | expected ';', found 'EOF' |
 | vendor/github.com/github/nonexistent/bad.go:1:57:1:57 | expected 'IDENT', found 'EOF' |
 | vendor/github.com/github/nonexistent/bad.go:1:57:1:57 | expected 'package', found 'EOF' |
