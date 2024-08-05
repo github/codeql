@@ -44,6 +44,8 @@ extensions:
       - ["poetry"]
       - ["pylint"]
       - ["pytest"]
+      - ["python\\s+-m\\s+pip\\s+install\\s+-r"]
+      - ["python\\s+-m\\s+pip\\s+install\\s+--requirement"]
       - ["rake"]
       - ["rails\\s+db:create"]
       - ["rails\\s+assets:precompile"]
