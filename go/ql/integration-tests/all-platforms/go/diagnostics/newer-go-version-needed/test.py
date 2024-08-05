@@ -1,6 +1,8 @@
 import os
+import pytest
 
-from go_integration_test import *
 
-os.environ['LGTM_INDEX_IMPORT_PATH'] = "test"
-go_integration_test(source="work", db=None, runFunction=runUnsuccessfully)
+@pytest.mark.resolve_build_environment(source_root="work")
+def test(codeql, go):
+    os.environ["LGTM_INDEX_IMPORT_PATH"] = "test"
+    codeql.database.create(source_root="work", _assert_failure=True)

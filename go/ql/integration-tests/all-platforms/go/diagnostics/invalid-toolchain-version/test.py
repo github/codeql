@@ -1,6 +1,6 @@
 import os
 
-from go_integration_test import *
 
-os.environ['LGTM_INDEX_IMPORT_PATH'] = "test"
-go_integration_test()
+def test(codeql, go):
+    os.environ["LGTM_INDEX_IMPORT_PATH"] = "test"
+    codeql.database.create(source_root="src")

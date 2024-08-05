@@ -1,6 +1,10 @@
 import os
+import runs_on
+import pytest
 
-from go_integration_test import *
 
-os.environ['LGTM_INDEX_IMPORT_PATH'] = "glidetest"
-go_integration_test(source="work")
+@pytest.mark.resolve_build_environment(source_root="work")
+@runs_on.linux
+def test(codeql, go):
+    os.environ["LGTM_INDEX_IMPORT_PATH"] = "glidetest"
+    codeql.database.create(source_root="work")

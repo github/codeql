@@ -1,6 +1,8 @@
 import os
+import pytest
 
-from go_integration_test import *
 
-os.environ['GITHUB_REPOSITORY'] = "a/b"
-go_integration_test(source="work", db=None)
+@pytest.mark.resolve_build_environment(source_root="work")
+def test(codeql, go):
+    os.environ["GITHUB_REPOSITORY"] = "a/b"
+    codeql.database.create(source_root="work")
