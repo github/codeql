@@ -9,7 +9,7 @@ private import DataFlowUtil
 /**
  * Gets a function that might be called by `call`.
  */
-Function viableCallable(DataFlowCall call) {
+DataFlowCallable viableCallable(DataFlowCall call) {
   result = call.(Call).getTarget()
   or
   // If the target of the call does not have a body in the snapshot, it might

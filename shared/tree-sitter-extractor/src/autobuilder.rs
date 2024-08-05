@@ -54,6 +54,12 @@ impl Autobuilder {
         let mut cmd = Command::new(codeql);
         cmd.arg("database").arg("index-files");
 
+        let verbosity = env::var("CODEQL_VERBOSITY");
+
+        if let Ok(verbosity) = verbosity {
+            cmd.arg(format!("--verbosity={}", verbosity));
+        }
+
         for ext in &self.include_extensions {
             cmd.arg(format!("--include-extension={}", ext));
         }

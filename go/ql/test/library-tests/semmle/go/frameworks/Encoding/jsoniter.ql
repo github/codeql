@@ -1,13 +1,16 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import semmle.go.security.CommandInjection
-import CommandInjection::Flow::PathGraph
+import codeql.dataflow.test.ProvenancePathGraph
+import ShowProvenance<interpretModelForTest/2, CommandInjection::Flow::PathNode, CommandInjection::Flow::PathGraph>
 
 class UntrustedFunction extends Function {
   UntrustedFunction() { this.getName() = ["getUntrustedString", "getUntrustedBytes"] }
 }
 
 class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
-  RemoteSource() { this = any(UntrustedFunction f).getACall() }
+  RemoteSource() { this = any(UntrustedFunction f).getACall().getResult() }
 }
 
 from CommandInjection::Flow::PathNode source, CommandInjection::Flow::PathNode sink

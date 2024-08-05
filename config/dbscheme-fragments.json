@@ -28,6 +28,7 @@
     "/*- Yaml dbscheme -*/",
     "/*- Blame dbscheme -*/",
     "/*- JSON dbscheme -*/",
-    "/*- Python dbscheme -*/"
+    "/*- Python dbscheme -*/",
+    "/*- Empty location -*/"
   ]
 }

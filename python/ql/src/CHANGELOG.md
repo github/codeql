@@ -1,3 +1,34 @@
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Adding Python support for Hardcoded Credentials as Models as Data
+* Additional sanitizers have been added to the `py/full-ssrf` and `py/partial-ssrf` queries for methods that verify a string contains only a certain set of characters, such as `.isalnum()` as well as regular expression tests.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* Added models for `opml` library.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Added models of `gradio` PyPI package.
+
 ## 0.9.16
 
 ### New Queries

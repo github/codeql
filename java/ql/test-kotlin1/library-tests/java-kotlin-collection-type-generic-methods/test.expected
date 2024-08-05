@@ -433,6 +433,8 @@ methodWithDuplicate
 | MutableList | add | int |
 | MutableList | addAll | Collection<? extends E> |
 | MutableList | addAll | int |
+| MutableList | addFirst | E |
+| MutableList | addLast | E |
 | MutableList | listIterator | int |
 | MutableList | remove | Object |
 | MutableList | remove | int |

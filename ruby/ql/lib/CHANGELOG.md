@@ -1,3 +1,32 @@
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Element references with blocks, such as `foo[:bar] { |x| puts x}`, are now parsed correctly.
+* The `CleartextSources.qll` library, used by `rb/clear-text-logging-sensitive-data` and `rb/clear-text-logging-sensitive-data`, has been updated to consider heuristics for additional categories of sensitive data. 
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `rb/sensitive-get-query`.
+
 ## 0.9.1
 
 No user-facing changes.

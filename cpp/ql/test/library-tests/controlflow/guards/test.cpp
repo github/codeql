@@ -112,3 +112,37 @@ void int_float_comparison(int i) {
     use(i);
   }
 }
+
+int source();
+bool safe(int);
+
+void test(bool b)
+{
+    int x;
+    if (b)
+    {
+        x = source();
+        if (!safe(x)) return;
+    }
+    use(x);
+}
+
+void binary_test_builtin_expected(int a, int b) {
+  if(__builtin_expect(a == b + 42, 0)) {
+      use(a);
+  }
+
+  if(__builtin_expect(a != b + 42, 0)) {
+      use(a);
+  }
+}
+
+void unary_test_builtin_expected(int a) {
+  if(__builtin_expect(a == 42, 0)) {
+      use(a);
+  }
+
+  if(__builtin_expect(a != 42, 0)) {
+      use(a);
+  }
+}

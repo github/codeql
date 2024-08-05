@@ -215,9 +215,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
     internal class TestDiagnosticWriter : IDiagnosticsWriter
     {
-        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+        public IList<Semmle.Util.DiagnosticMessage> Diagnostics { get; } = new List<Semmle.Util.DiagnosticMessage>();
 
-        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+        public void AddEntry(Semmle.Util.DiagnosticMessage message) => this.Diagnostics.Add(message);
 
         public void Dispose() { }
     }

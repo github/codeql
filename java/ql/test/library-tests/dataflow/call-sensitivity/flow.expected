@@ -1,13 +1,12 @@
+models
 edges
 | A2.java:15:15:15:28 | new Integer(...) : Number | A2.java:27:27:27:34 | o : Number | provenance |  |
 | A2.java:27:27:27:34 | o : Number | A2.java:29:9:29:9 | o | provenance |  |
-| A.java:6:28:6:35 | o : Number | A.java:8:11:8:11 | o : Number | provenance |  |
 | A.java:6:28:6:35 | o : Number | A.java:8:11:8:11 | o : Number | provenance |  |
 | A.java:14:29:14:36 | o : Number | A.java:16:9:16:9 | o | provenance |  |
 | A.java:20:30:20:37 | o : Number | A.java:22:9:22:9 | o | provenance |  |
 | A.java:26:31:26:38 | o : Number | A.java:28:9:28:9 | o | provenance |  |
 | A.java:32:35:32:42 | o : Number | A.java:40:8:40:9 | o3 | provenance |  |
-| A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 | provenance |  |
 | A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 | provenance |  |
 | A.java:43:36:43:43 | o : Number | A.java:51:8:51:9 | o3 | provenance |  |
 | A.java:62:18:62:31 | new Integer(...) : Number | A.java:14:29:14:36 | o : Number | provenance |  |
@@ -37,8 +36,6 @@ nodes
 | A2.java:27:27:27:34 | o : Number | semmle.label | o : Number |
 | A2.java:29:9:29:9 | o | semmle.label | o |
 | A.java:6:28:6:35 | o : Number | semmle.label | o : Number |
-| A.java:6:28:6:35 | o : Number | semmle.label | o : Number |
-| A.java:8:11:8:11 | o : Number | semmle.label | o : Number |
 | A.java:8:11:8:11 | o : Number | semmle.label | o : Number |
 | A.java:14:29:14:36 | o : Number | semmle.label | o : Number |
 | A.java:16:9:16:9 | o | semmle.label | o |
@@ -48,7 +45,6 @@ nodes
 | A.java:28:9:28:9 | o | semmle.label | o |
 | A.java:32:35:32:42 | o : Number | semmle.label | o : Number |
 | A.java:40:8:40:9 | o3 | semmle.label | o3 |
-| A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
 | A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
 | A.java:43:36:43:43 | o : Number | semmle.label | o : Number |
 | A.java:51:8:51:9 | o3 | semmle.label | o3 |

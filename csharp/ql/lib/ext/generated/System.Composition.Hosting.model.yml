@@ -4,7 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Composition.Hosting", "CompositionHost", False, "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssemblies", "(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssemblies", "(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>,System.Composition.Convention.AttributedModelProvider)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting", "ContainerConfiguration", False, "WithAssembly", "(System.Reflection.Assembly)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

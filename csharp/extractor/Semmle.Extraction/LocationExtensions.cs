@@ -1,4 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction
 {
@@ -36,5 +39,46 @@ namespace Semmle.Extraction
             var endsBefore = before.SourceSpan.End <= after.SourceSpan.Start;
             return sameFile && endsBefore;
         }
+
+        private static int GetLocationKindPriority(Location location) =>
+            location.IsInSource
+                ? 2
+                : location.IsInMetadata
+                    ? 1
+                    : 0;
+
+        /// <summary>
+        /// Returns true if l1 is better than l2.
+        /// Source locations are considered better than non source locations.
+        /// </summary>
+        private static bool BetterThan(Location l1, Location l2)
+        {
+            if (GetLocationKindPriority(l1) > GetLocationKindPriority(l2))
+            {
+                return true;
+            }
+
+            // For source locations we compare the filepath and span.
+            if (l1.IsInSource && l2.IsInSource)
+            {
+                var l1s = l1.SourceTree.FilePath + l1.SourceSpan;
+                var l2s = l2.SourceTree.FilePath + l2.SourceSpan;
+                return l1s.CompareTo(l2s) < 0;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the best location from the given list of locations.
+        /// Source locations are considered better than non-source locations.
+        /// In case of a (source location) tie, the location with the
+        /// lexicographically smaller filepath and span is considered better.
+        /// </summary>
+        public static Location? BestOrDefault(this IEnumerable<Location> locations) =>
+            locations.Any() ? locations.Aggregate((best, loc) => BetterThan(loc, best) ? loc : best) : null;
+
+        public static Location Best(this IEnumerable<Location> locations) =>
+            locations.BestOrDefault() ?? throw new ArgumentException("No location found.");
     }
 }

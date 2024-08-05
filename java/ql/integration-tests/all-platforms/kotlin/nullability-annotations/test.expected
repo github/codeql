@@ -22,7 +22,7 @@
 | ktUser.kt:0:0:0:0 | nullableAnnotated | parameter | ktUser.kt:0:0:0:0 | Nullable |
 | ktUser.kt:0:0:0:0 | nullableAnnotated | return value | ktUser.kt:0:0:0:0 | A |
 | ktUser.kt:0:0:0:0 | nullableAnnotated | return value | ktUser.kt:0:0:0:0 | Nullable |
-| ktUser.kt:5:6:5:105 | f | parameter | ktUser.kt:0:0:0:0 | NotNull |
-| ktUser.kt:5:6:5:105 | f | parameter | ktUser.kt:5:12:5:13 | A |
-| ktUser.kt:5:6:5:105 | f | return value | ktUser.kt:0:0:0:0 | NotNull |
-| ktUser.kt:5:6:5:105 | f | return value | ktUser.kt:5:3:5:4 | A |
+| ktUser.kt:5:3:5:105 | f | parameter | ktUser.kt:0:0:0:0 | NotNull |
+| ktUser.kt:5:3:5:105 | f | parameter | ktUser.kt:5:12:5:13 | A |
+| ktUser.kt:5:3:5:105 | f | return value | ktUser.kt:0:0:0:0 | NotNull |
+| ktUser.kt:5:3:5:105 | f | return value | ktUser.kt:5:3:5:4 | A |

@@ -1,44 +1,45 @@
 invalidModelRow
 #select
-| test.go:47:10:47:12 | arg | qltest |
-| test.go:48:2:48:13 | type assertion | qltest |
-| test.go:61:10:61:15 | taint1 | qltest |
-| test.go:64:10:64:15 | taint2 | qltest |
-| test.go:68:10:68:15 | taint3 | qltest |
-| test.go:72:10:72:15 | taint4 | qltest |
-| test.go:75:10:75:15 | taint5 | qltest |
-| test.go:79:10:79:15 | taint6 | qltest |
-| test.go:82:10:82:15 | taint7 | qltest |
-| test.go:85:10:85:18 | index expression | qltest |
-| test.go:87:11:87:11 | x | qltest |
-| test.go:90:11:90:11 | x | qltest |
-| test.go:95:10:95:15 | taint9 | qltest |
-| test.go:98:10:98:33 | call to GetElement | qltest |
-| test.go:99:10:99:18 | <-... | qltest |
-| test.go:101:11:101:11 | e | qltest |
-| test.go:104:11:104:11 | e | qltest |
-| test.go:109:10:109:16 | taint11 | qltest |
-| test.go:112:10:112:32 | call to GetMapKey | qltest |
-| test.go:114:11:114:11 | k | qltest |
-| test.go:117:11:117:11 | k | qltest |
-| test.go:120:11:120:11 | k | qltest |
-| test.go:123:11:123:11 | k | qltest |
-| test.go:128:10:128:16 | taint13 | qltest |
-| test.go:131:10:131:20 | index expression | qltest |
-| test.go:133:11:133:11 | v | qltest |
-| test.go:136:11:136:11 | v | qltest |
-| test.go:141:10:141:16 | taint15 | qltest |
-| test.go:145:10:145:17 | index expression | qltest |
-| test.go:151:10:151:18 | index expression | qltest |
-| test.go:156:10:156:16 | taint16 | qltest |
-| test.go:160:10:160:13 | selection of F | qltest |
-| test.go:163:10:163:17 | call to Get | qltest |
-| test.go:167:10:167:17 | call to Get | qltest |
+| test.go:48:10:48:12 | arg | qltest |
+| test.go:49:2:49:13 | type assertion | qltest |
+| test.go:62:10:62:15 | taint1 | qltest |
+| test.go:65:10:65:15 | taint2 | qltest |
+| test.go:69:10:69:15 | taint3 | qltest |
+| test.go:73:10:73:22 | taint3ignored | qltest |
+| test.go:77:10:77:15 | taint4 | qltest |
+| test.go:80:10:80:15 | taint5 | qltest |
+| test.go:84:10:84:15 | taint6 | qltest |
+| test.go:87:10:87:15 | taint7 | qltest |
+| test.go:90:10:90:18 | index expression | qltest |
+| test.go:92:11:92:11 | x | qltest |
+| test.go:95:11:95:11 | x | qltest |
+| test.go:100:10:100:15 | taint9 | qltest |
+| test.go:103:10:103:33 | call to GetElement | qltest |
+| test.go:104:10:104:18 | <-... | qltest |
+| test.go:106:11:106:11 | e | qltest |
+| test.go:109:11:109:11 | e | qltest |
+| test.go:114:10:114:16 | taint11 | qltest |
+| test.go:117:10:117:32 | call to GetMapKey | qltest |
+| test.go:119:11:119:11 | k | qltest |
+| test.go:122:11:122:11 | k | qltest |
+| test.go:125:11:125:11 | k | qltest |
+| test.go:128:11:128:11 | k | qltest |
+| test.go:133:10:133:16 | taint13 | qltest |
+| test.go:136:10:136:20 | index expression | qltest |
+| test.go:138:11:138:11 | v | qltest |
+| test.go:141:11:141:11 | v | qltest |
+| test.go:146:10:146:16 | taint15 | qltest |
+| test.go:150:10:150:17 | index expression | qltest |
+| test.go:156:10:156:18 | index expression | qltest |
+| test.go:161:10:161:16 | taint16 | qltest |
+| test.go:165:10:165:13 | selection of F | qltest |
+| test.go:168:10:168:17 | call to Get | qltest |
 | test.go:172:10:172:17 | call to Get | qltest |
-| test.go:176:10:176:14 | selection of F | qltest |
-| test.go:179:10:179:32 | call to GetThroughPointer | qltest |
-| test.go:183:10:183:32 | call to GetThroughPointer | qltest |
+| test.go:177:10:177:17 | call to Get | qltest |
+| test.go:181:10:181:14 | selection of F | qltest |
+| test.go:184:10:184:32 | call to GetThroughPointer | qltest |
 | test.go:188:10:188:32 | call to GetThroughPointer | qltest |
-| test.go:194:17:194:20 | arg1 | qltest |
-| test.go:194:23:194:26 | arg2 | qltest |
-| test.go:194:29:194:32 | arg3 | qltest |
+| test.go:193:10:193:32 | call to GetThroughPointer | qltest |
+| test.go:199:17:199:20 | arg1 | qltest |
+| test.go:199:23:199:26 | arg2 | qltest |
+| test.go:199:29:199:32 | arg3 | qltest |

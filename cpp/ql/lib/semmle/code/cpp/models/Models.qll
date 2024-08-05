@@ -27,6 +27,11 @@ private import implementations.StdPair
 private import implementations.StdMap
 private import implementations.StdSet
 private import implementations.StdString
+private import implementations.StdFunction
+private import implementations.StdException
+private import implementations.StdAllocator
+private import implementations.StdAlgorithm
+private import implementations.StdMath
 private import implementations.Swap
 private import implementations.GetDelim
 private import implementations.SmartPointer

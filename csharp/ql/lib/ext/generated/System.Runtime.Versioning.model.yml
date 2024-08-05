@@ -16,7 +16,6 @@ extensions:
       - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "get_FrameworkName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope,System.Type)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

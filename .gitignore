@@ -62,3 +62,6 @@ node_modules/
 
 # Temporary folders for working with generated models
 .model-temp
+
+# bazel-built in-tree extractor packs
+/*/extractor-pack

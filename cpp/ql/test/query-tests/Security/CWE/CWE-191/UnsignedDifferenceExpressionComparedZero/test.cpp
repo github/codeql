@@ -43,7 +43,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 	while(cond()) {
 		if(unknown) { y--; }
 	}
-	
+
 	if(x - y > 0) { } // GOOD
 
 	x = y;
@@ -297,4 +297,81 @@ int test18() {
 	} // b == 0
 
 	return (a - b > 0); // GOOD (as b = 0)
+}
+
+typedef unsigned int uint32_t;
+typedef long long int64_t;
+uint32_t get_limit();
+uint32_t get_data();
+
+void test19() {
+	// from the doc:
+	uint32_t limit = get_limit();
+	uint32_t total = 0;
+
+	while (limit - total > 0) { // BAD: if `total` is greater than `limit` this will underflow and continue executing the loop.
+		total += get_data();
+	}
+
+	while (total < limit) { // GOOD: never underflows here because there is no arithmetic.
+		total += get_data();
+	}
+
+	while ((int64_t)limit - total > 0) { // GOOD: never underflows here because the result always fits in an `int64_t`.
+		total += get_data();
+	}
+}
+
+void test20(int a, bool b, unsigned long c)
+{
+  int x = 0;
+
+  if(b) {
+    x = (a - c) / 2;
+  } else {
+    x = a - c;
+  }
+
+  if (a - c - x > 0) // GOOD
+  {
+  }
+}
+
+uint32_t get_uint32();
+int64_t get_int64();
+
+void test21(unsigned long a)
+{
+  {
+    int b = a & get_int64();
+    if (a - b > 0) { } // GOOD
+  }
+
+  {
+  int b = a - get_uint32();
+  if(a - b > 0) { } // GOOD
+  }
+
+  {
+    int64_t c = get_int64();
+    if(c <= 0) {
+      int64_t b = (int64_t)a + c;
+      if(a - b > 0) { } // GOOD
+    }
+    int64_t b = (int64_t)a + c;
+    if(a - b > 0) { } // BAD
+  }
+
+  {
+    unsigned c = get_uint32();
+    if(c >= 1) {
+      int b = a / c;
+      if(a - b > 0) { } // GOOD
+    }
+  }
+
+  {
+    int b = a >> get_uint32();
+    if(a - b > 0) { } // GOOD
+  }
 }

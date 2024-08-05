@@ -1,5 +1,3 @@
-load("@semmle_code//:common.bzl", "on_windows")
-
 # Builds a zip file of the compiled typscript-parser-wrapper and its dependencies.
 genrule(
     name = "typescript",
@@ -33,19 +31,16 @@ genrule(
         # Install again with only runtime deps
         "$$NPM install --prod",
         "mv node_modules build/",
-        "mkdir -p javascript/tools/typescript-parser-wrapper",
-        "mv build/* javascript/tools/typescript-parser-wrapper",
+        "mkdir -p typescript-parser-wrapper",
+        "mv build/* typescript-parser-wrapper",
+        "OUT=$$BAZEL_ROOT/$@",
+        "case $$OSTYPE in",
+        "  cygwin|msys|win32) OUT=$$(cygpath -w $$OUT);;",
+        "esac",
         "",
-    ]) + on_windows(
-        " && ".join([
-            "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$(cygpath -w $$BAZEL_ROOT/$@) $$(find javascript -name '*' -print)",
-            "rm -rf $$TEMP",
-        ]),
-        " && ".join([
-            "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$BAZEL_ROOT/$@ $$(find javascript -name '*' -print)",
-            "rm -rf $$TEMP",
-        ]),
-    ),
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT $$(find typescript-parser-wrapper -name '*' -print)",
+        "rm -rf $$TEMP",
+    ]),
     tools = [
         "@bazel_tools//tools/zip:zipper",
         "@nodejs//:node_bin",

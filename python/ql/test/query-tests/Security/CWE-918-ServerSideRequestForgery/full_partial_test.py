@@ -1,7 +1,7 @@
 from flask import request
 
 import requests
-
+import re
 
 def full_ssrf():
     user_input = request.args['untrusted_input']
@@ -120,3 +120,57 @@ def partial_ssrf_6():
 
     url = f"https://example.com/foo#{user_input}"
     requests.get(url) # NOT OK -- user only controlled fragment
+
+def partial_ssrf_7():
+    user_input = request.args['untrusted_input']
+
+    if user_input.isalnum():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain alphanumerical characters 
+
+    if user_input.isalpha():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain alphabetical characters 
+
+    if user_input.isdecimal():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain decimal characters 
+
+    if user_input.isdigit():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain digits
+
+    if user_input.isnumeric():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain numeric characters
+
+    if user_input.isspace():
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain whitespace characters 
+
+    if re.fullmatch(r'[a-zA-Z0-9]+', user_input):
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain alphanumerical characters
+
+    if re.fullmatch(r'.*[a-zA-Z0-9]+.*', user_input):
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # NOT OK, but NOT FOUND - user input can contain arbitrary characters 
+
+    
+    if re.match(r'^[a-zA-Z0-9]+$', user_input):
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # OK - user input can only contain alphanumerical characters
+
+    if re.match(r'[a-zA-Z0-9]+', user_input):
+        url = f"https://example.com/foo#{user_input}"
+        requests.get(url) # NOT OK, but NOT FOUND - user input can contain arbitrary character as a suffix.
+
+    reg = re.compile(r'^[a-zA-Z0-9]+$')
+
+    if reg.match(user_input):
+       url = f"https://example.com/foo#{user_input}"
+       requests.get(url) # OK - user input can only contain alphanumerical characters
+
+    if reg.fullmatch(user_input):
+       url = f"https://example.com/foo#{user_input}"
+       requests.get(url) # OK - user input can only contain alphanumerical characters 

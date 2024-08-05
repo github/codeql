@@ -1,3 +1,43 @@
+## 1.1.3
+
+### Minor Analysis Improvements
+
+* There was a bug which meant that the built-in function `clear` was considered as a sanitizer in some cases when it shouldn't have been. This has now been fixed, which may lead to more alerts.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* DataFlow queries which previously used `RemoteFlowSource` to define their sources have been modified to instead use `ThreatModelFlowSource`. This means these queries will now respect threat model configurations. The default threat model configuration is equivalent to `RemoteFlowSource`, so there should be no change in results for users using the default.
+* Added the `ThreatModelFlowSource` class to `FlowSources.qll`. The `ThreatModelFlowSource` class can be used to include sources which match the current *threat model* configuration. This is the first step in supporting threat modeling for Go.
+
+### Bug Fixes
+
+* Fixed dataflow via global variables other than via a direct write: for example, via a side-effect on a global, such as `io.copy(SomeGlobal, ...)` or via assignment to a field or array or slice cell of a global. This means that any data-flow query may return more results where global variables are involved.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Features
+
+* When writing models-as-data models, the receiver is now referred to as `Argument[receiver]` rather than `Argument[-1]`.
+* Neutral models are now supported. They have no effect except that a manual neutral summary model will stop a generated summary model from having any effect.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* A bug has been fixed which meant that the query `go/incorrect-integer-conversion` did not consider type assertions and type switches which use a defined type whose underlying type is an integer type. This may lead to fewer false positive alerts.
+* A bug has been fixed which meant flow was not followed through some ranged for loops. This may lead to more alerts being found.
+* Added value flow models for the built-in functions `append`, `copy`, `max` and `min` using Models-as-Data. Removed the old-style models for `max` and `min`.
+
 ## 0.8.1
 
 ### Minor Analysis Improvements

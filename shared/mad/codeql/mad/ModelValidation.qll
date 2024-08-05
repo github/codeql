@@ -41,7 +41,9 @@ module KindValidation<KindValidationConfigSig Config> {
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
           // Go-only currently, but may be shared in the future
-          "jwt"
+          "jwt",
+          // CPP-only currently
+          "remote-sink"
         ]
       or
       this.matches([
@@ -50,7 +52,9 @@ module KindValidation<KindValidationConfigSig Config> {
           // Java-only currently, but may be shared in the future
           "regex-use%",
           // Swift-only currently, but may be shared in the future
-          "%string-%length", "weak-hash-input-%"
+          "%string-%length", "weak-hash-input-%",
+          // Go-only currently, but may be shared in the future
+          "request-forgery%"
         ])
     }
   }
@@ -116,7 +120,7 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote", "file", "commandargs", "database", "environment",
+          "local", "remote", "file", "commandargs", "database", "environment", "reverse-dns",
           // Java
           "android-external-storage-dir", "contentprovider",
           // C#

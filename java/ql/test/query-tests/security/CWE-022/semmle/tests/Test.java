@@ -5,12 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.DirectoryScanner;
@@ -24,10 +26,10 @@ import org.springframework.util.FileCopyUtils;
 
 public class Test {
 
-    private InetAddress address;
+    private HttpServletRequest request;
 
     public Object source() {
-        return address.getHostName();
+        return request.getParameter("source");
     }
 
     void test() throws IOException {
@@ -37,8 +39,46 @@ public class Test {
         getClass().getResource((String) source()); // $ hasTaintFlow
         // "java.lang;ClassLoader;true;getSystemResourceAsStream;(String);;Argument[0];read-file;ai-generated"
         ClassLoader.getSystemResourceAsStream((String) source()); // $ hasTaintFlow
+        // "java.io;File;True;canExecute;();;Argument[this];path-injection;manual"
+        ((File) source()).canExecute(); // $ hasTaintFlow
+        // "java.io;File;True;canRead;();;Argument[this];path-injection;manual"
+        ((File) source()).canRead(); // $ hasTaintFlow
+        // "java.io;File;True;canWrite;();;Argument[this];path-injection;manual"
+        ((File) source()).canWrite(); // $ hasTaintFlow
+        // "java.io;File;True;createNewFile;();;Argument[this];path-injection;ai-manual"
+        ((File) source()).createNewFile(); // $ hasTaintFlow
         // "java.io;File;true;createTempFile;(String,String,File);;Argument[2];create-file;ai-generated"
         File.createTempFile(";", ";", (File) source()); // $ hasTaintFlow
+        // "java.io;File;True;delete;();;Argument[this];path-injection;manual"
+        ((File) source()).delete(); // $ hasTaintFlow
+        // "java.io;File;True;deleteOnExit;();;Argument[this];path-injection;manual"
+        ((File) source()).deleteOnExit(); // $ hasTaintFlow
+        // "java.io;File;True;exists;();;Argument[this];path-injection;manual"
+        ((File) source()).exists(); // $ hasTaintFlow
+        // "java.io:File;True;isDirectory;();;Argument[this];path-injection;manual"
+        ((File) source()).isDirectory(); // $ hasTaintFlow
+        // "java.io:File;True;isFile;();;Argument[this];path-injection;manual"
+        ((File) source()).isFile(); // $ hasTaintFlow
+        // "java.io:File;True;isHidden;();;Argument[this];path-injection;manual"
+        ((File) source()).isHidden(); // $ hasTaintFlow
+        // "java.io;File;True;mkdir;();;Argument[this];path-injection;manual"
+        ((File) source()).mkdir(); // $ hasTaintFlow
+        // "java.io;File;True;mkdirs;();;Argument[this];path-injection;manual"
+        ((File) source()).mkdirs(); // $ hasTaintFlow
+        // "java.io;File;True;renameTo;(File);;Argument[0];path-injection;ai-manual"
+        new File("").renameTo((File) source()); // $ hasTaintFlow
+        // "java.io;File;True;renameTo;(File);;Argument[this];path-injection;ai-manual"
+        ((File) source()).renameTo(null); // $ hasTaintFlow
+        // "java.io;File;True;setExecutable;;;Argument[this];path-injection;manual"
+        ((File) source()).setExecutable(true); // $ hasTaintFlow
+        // "java.io;File;True;setLastModified;;;Argument[this];path-injection;manual"
+        ((File) source()).setLastModified(0); // $ hasTaintFlow
+        // "java.io;File;True;setReadable;;;Argument[this];path-injection;manual"
+        ((File) source()).setReadable(true); // $ hasTaintFlow
+        // "java.io;File;True;setReadOnly;;;Argument[this];path-injection;manual"
+        ((File) source()).setReadOnly(); // $ hasTaintFlow
+        // "java.io;File;True;setWritable;;;Argument[this];path-injection;manual"
+        ((File) source()).setWritable(true); // $ hasTaintFlow
         // "java.io;File;true;renameTo;(File);;Argument[0];create-file;ai-generated"
         new File("").renameTo((File) source()); // $ hasTaintFlow
         // "java.io;FileInputStream;true;FileInputStream;(File);;Argument[0];read-file;ai-generated"
@@ -128,8 +168,8 @@ public class Test {
         new LargeText((File) source(), null, false, false); // $ hasTaintFlow
     }
 
-    void doGet6(String root, InetAddress address) throws IOException {
-        String temp = address.getHostName();
+    void doGet6(String root, HttpServletRequest request) throws IOException {
+        String temp = request.getParameter("source");
         // GOOD: Use `contains` and `startsWith` to check if the path is safe
         if (!temp.contains("..") && temp.startsWith(root + "/")) {
             File file = new File(temp);

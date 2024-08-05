@@ -69,6 +69,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += " --force";
             }
 
+            if (restoreSettings.TargetWindows)
+            {
+                args += " /p:EnableWindowsTargeting=true";
+            }
+
             return args;
         }
 
@@ -230,7 +235,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
                             Argument("-Command").
-                            Argument("\"" + psCommand + "\"").
+                            Argument($"\"{psCommand}\"").
                             Script;
 
                         return GetInstall("pwsh") | GetInstall("powershell");

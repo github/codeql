@@ -1,3 +1,74 @@
+## 2.0.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `SEMMLE_DIST` legacy environment variable.
+
+### Deprecated APIs
+
+* The predicate `isAndroid` from the module `semmle.code.java.security.AndroidCertificatePinningQuery` has been deprecated. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication(File)` instead.
+
+### New Features
+
+* Kotlin support is now out of beta, and generally available
+* Kotlin versions up to 2.0.2*x* are now supported.
+
+### Minor Analysis Improvements
+
+* Added a path-injection sink for `hudson.FilePath.exists()`.
+* Added summary models for `org.apache.commons.io.IOUtils.toByteArray`.
+* Java build-mode `none` analyses now only report a warning on the CodeQL status page when there are significant analysis problems-- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * io.undertow.server.handlers.resource
+  * jakarta.faces.context
+  * javax.faces.context
+  * javax.servlet
+  * org.jboss.vfs
+  * org.springframework.core.io
+* A bug has been fixed in the heuristic identification of uncertain control
+  flow, which is used to filter data flow in order to improve performance and
+  reduce false positives. This fix means that slightly more code is identified
+  and hence pruned from data flow.
+* Excluded reverse DNS from the loopback address as a source of untrusted data.
+
+### Bug Fixes
+
+* Support for `codeql test run` for Kotlin sources has been fixed.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The precision of virtual dispatch has been improved. This increases precision in general for all data flow queries. 
+
+### Minor Analysis Improvements
+
+* Support for Eclipse Compiler for Java (ecj) has been fixed to work with (a) runs that don't pass `-noExit` and (b) runs that use post-Java-9 command-line arguments.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* JDK version detection based on Gradle projects has been improved. Java extraction using build-modes `autobuild` or `none` is more likely to pick an appropriate JDK version, particularly when the Android Gradle Plugin or Spring Boot Plugin are in use.
+
 ## 0.11.0
 
 ### Breaking Changes

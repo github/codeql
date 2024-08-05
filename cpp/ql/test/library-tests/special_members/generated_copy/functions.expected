@@ -34,13 +34,6 @@
 | copy.cpp:59:9:59:9 | HasArray2D | void private_cc::HasArray2D::HasArray2D(private_cc::HasArray2D&) | deleted |  |
 | copy.cpp:59:9:59:9 | operator= | private_cc::HasArray2D& private_cc::HasArray2D::operator=(private_cc::HasArray2D const&) |  |  |
 | copy.cpp:59:9:59:9 | operator= | private_cc::HasArray2D& private_cc::HasArray2D::operator=(private_cc::HasArray2D&&) |  |  |
-| copy.cpp:67:9:67:9 | Wrapper | void container::Wrapper<container::Copyable>::Wrapper() |  |  |
-| copy.cpp:67:9:67:9 | Wrapper | void container::Wrapper<container::NotCopyable>::Wrapper() | deleted |  |
-| copy.cpp:67:9:67:9 | Wrapper | void container::Wrapper<container::NotCopyable>::Wrapper(container::Wrapper<container::NotCopyable> const&) | deleted |  |
-| copy.cpp:67:9:67:9 | Wrapper | void container::Wrapper<container::NotCopyable>::Wrapper(container::Wrapper<container::NotCopyable>&&) |  |  |
-| copy.cpp:67:9:67:9 | operator= | container::Wrapper<container::Copyable>& container::Wrapper<container::Copyable>::operator=(container::Wrapper<container::Copyable> const&) |  |  |
-| copy.cpp:67:9:67:9 | operator= | container::Wrapper<container::Copyable>& container::Wrapper<container::Copyable>::operator=(container::Wrapper<container::Copyable>&&) |  |  |
-| copy.cpp:67:9:67:9 | operator= | container::Wrapper<container::NotCopyable>& container::Wrapper<container::NotCopyable>::operator=(container::Wrapper<container::NotCopyable> const&) | deleted |  |
 | copy.cpp:71:9:71:9 | operator= | container::Copyable& container::Copyable::operator=(container::Copyable const&) |  |  |
 | copy.cpp:71:9:71:9 | operator= | container::Copyable& container::Copyable::operator=(container::Copyable&&) |  |  |
 | copy.cpp:72:9:72:9 | NotCopyable | void container::NotCopyable::NotCopyable() | deleted |  |
@@ -85,7 +78,6 @@
 | copy.cpp:131:9:131:9 | OnlyAssign | void difference::OnlyAssign::OnlyAssign(difference::OnlyAssign const&) | deleted |  |
 | copy.cpp:131:9:131:9 | operator= | difference::OnlyAssign& difference::OnlyAssign::operator=(difference::OnlyAssign const&) |  |  |
 | copy.cpp:131:9:131:9 | operator= | difference::OnlyAssign& difference::OnlyAssign::operator=(difference::OnlyAssign&&) |  |  |
-| copy.cpp:137:9:137:9 | operator= | instantiated_explicit_ctor::Wrapper<int>& instantiated_explicit_ctor::Wrapper<int>::operator=(instantiated_explicit_ctor::Wrapper<int> const&) |  |  |
 | copy.cpp:139:5:139:11 | Wrapper | void instantiated_explicit_ctor::Wrapper<T>::Wrapper(instantiated_explicit_ctor::Wrapper<T>&) |  |  |
 | copy.cpp:143:5:143:5 | Wrapper | void instantiated_explicit_ctor::Wrapper<int>::Wrapper() |  |  |
 | copy.cpp:143:5:143:11 | Wrapper | void instantiated_explicit_ctor::Wrapper<T>::Wrapper() |  |  |

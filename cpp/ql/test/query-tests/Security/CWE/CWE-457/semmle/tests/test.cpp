@@ -564,5 +564,32 @@ void test45() {
   }
 
   *rP = NULL;
-  use(r); // GOOD [FALSE POSITIVE]
+  use(r); // GOOD
+}
+
+void test46()
+{
+  LinkedList *r, **rP = &r;
+
+  while (getBool())
+  {
+    LinkedList *s = nullptr;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = nullptr;
+  use(r);
+}
+
+namespace std {
+	float remquo(float, float, int*);
+}
+
+void test47() {
+	float x = 1.0f;
+	float y = 2.0f;
+	int quo;
+	std::remquo(x, y, &quo);
+	use(quo); // GOOD
 }

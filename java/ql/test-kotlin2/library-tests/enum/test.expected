@@ -13,6 +13,8 @@
 | finalize |
 | forEach |
 | getDeclaringClass |
+| getFirst |
+| getLast |
 | hasMoreElements |
 | hashCode |
 | name |
@@ -23,6 +25,7 @@
 | parallelStream |
 | range |
 | resolveConstantDesc |
+| reversed |
 | spliterator |
 | stream |
 | toArray |

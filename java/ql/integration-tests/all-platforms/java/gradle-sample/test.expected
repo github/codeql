@@ -1,5 +1,5 @@
-xmlFiles
-| gradle/verification-metadata.xml:0:0:0:0 | gradle/verification-metadata.xml |
 #select
 | src/main/java/com/example/App.java:0:0:0:0 | App |
 | src/test/java/com/example/AppTest.java:0:0:0:0 | AppTest |
+xmlFiles
+| gradle/verification-metadata.xml:0:0:0:0 | gradle/verification-metadata.xml |

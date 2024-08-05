@@ -1,3 +1,31 @@
+## 1.1.0
+
+### New Features
+
+* Swift support is now out of beta, and generally available.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for sensitive private information have been added to the `SensitiveExprs.qll` library, improving coverage for credit card and social security numbers. This may result in additional results for queries that use sensitive data such as `swift/cleartext-transmission`.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
 ## 0.3.16
 
 No user-facing changes.

@@ -6,22 +6,6 @@ import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
-/**
- * Emulate that methods with summaries do not have a body.
- * This is relevant for dataflow analysis using summaries with a generated like
- * provenance as generated summaries are only applied, if a
- * callable does not have a body.
- */
-private class StepArgQualGenerated extends Method {
-  StepArgQualGenerated() {
-    exists(string name |
-      this.hasFullyQualifiedName("My.Qltest", "C", name) and name.matches("StepArgQualGenerated%")
-    )
-  }
-
-  override predicate hasBody() { none() }
-}
-
 query predicate summaryThroughStep(
   DataFlow::Node node1, DataFlow::Node node2, boolean preservesValue
 ) {

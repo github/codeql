@@ -74,6 +74,8 @@ astGuardsCompare
 | 34 | j >= 10+0 when ... < ... is false |
 | 42 | 10 < j+1 when ... < ... is false |
 | 42 | 10 >= j+1 when ... < ... is true |
+| 42 | call to getABool != 0 when call to getABool is true |
+| 42 | call to getABool == 0 when call to getABool is false |
 | 42 | j < 10+0 when ... < ... is true |
 | 42 | j >= 10+0 when ... < ... is false |
 | 44 | 0 < z+0 when ... > ... is true |
@@ -537,6 +539,8 @@ astGuardsEnsure_const
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 31 | 32 |
+| test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | != | 0 | 43 | 45 |
+| test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | == | 0 | 53 | 53 |
 irGuards
 | test.c:7:9:7:13 | CompareGT: ... > ... |
 | test.c:17:8:17:12 | CompareLT: ... < ... |
@@ -613,6 +617,8 @@ irGuardsCompare
 | 34 | j >= 10+0 when CompareLT: ... < ... is false |
 | 42 | 10 < j+1 when CompareLT: ... < ... is false |
 | 42 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 42 | call to getABool != 0 when Call: call to getABool is true |
+| 42 | call to getABool == 0 when Call: call to getABool is false |
 | 42 | j < 10 when CompareLT: ... < ... is true |
 | 42 | j < 10+0 when CompareLT: ... < ... is true |
 | 42 | j >= 10 when CompareLT: ... < ... is false |
@@ -1081,3 +1087,5 @@ irGuardsEnsure_const
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | -1 | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 32 | 32 |
+| test.cpp:42:13:42:20 | Call: call to getABool | test.cpp:42:13:42:20 | Call: call to getABool | != | 0 | 44 | 44 |
+| test.cpp:42:13:42:20 | Call: call to getABool | test.cpp:42:13:42:20 | Call: call to getABool | == | 0 | 53 | 53 |
