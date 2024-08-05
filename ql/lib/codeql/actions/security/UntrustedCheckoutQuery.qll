@@ -1,6 +1,12 @@
 import actions
 import codeql.actions.DataFlow
 
+string getStepCWD() {
+  // TODO: This should be the path of the git command.
+  // Read if from the step's CWD, workspace or look for a cd command.
+  result = "?"
+}
+
 bindingset[s]
 predicate containsPullRequestNumber(string s) {
   exists(
@@ -68,7 +74,9 @@ predicate containsHeadRef(string s) {
 }
 
 /** Checkout of a Pull Request HEAD */
-abstract class PRHeadCheckoutStep extends Step { }
+abstract class PRHeadCheckoutStep extends Step {
+  abstract string getPath();
+}
 
 /** Checkout of a Pull Request HEAD ref */
 abstract class MutableRefCheckoutStep extends PRHeadCheckoutStep { }
@@ -138,6 +146,12 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       )
     )
   }
+
+  override string getPath() {
+    if exists(this.(UsesStep).getArgument("path"))
+    then result = this.(UsesStep).getArgument("path")
+    else result = "?"
+  }
 }
 
 /** Checkout of a Pull Request HEAD ref using actions/checkout action */
@@ -194,6 +208,12 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       )
     )
   }
+
+  override string getPath() {
+    if exists(this.(UsesStep).getArgument("path"))
+    then result = this.(UsesStep).getArgument("path")
+    else result = "?"
+  }
 }
 
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
@@ -216,6 +236,8 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
       )
     )
   }
+
+  override string getPath() { result = getStepCWD() }
 }
 
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
@@ -235,6 +257,8 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
       )
     )
   }
+
+  override string getPath() { result = getStepCWD() }
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
@@ -256,6 +280,8 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
       )
     )
   }
+
+  override string getPath() { result = getStepCWD() }
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
@@ -274,4 +300,6 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
       )
     )
   }
+
+  override string getPath() { result = getStepCWD() }
 }

@@ -44,14 +44,28 @@ predicate runsOnDefaultBranch(Event e) {
   )
 }
 
-abstract class CacheWritingStep extends Step { }
+abstract class CacheWritingStep extends Step {
+  abstract string getPath();
+}
 
 class CacheActionUsesStep extends CacheWritingStep, UsesStep {
   CacheActionUsesStep() { this.getCallee() = "actions/cache" }
+
+  override string getPath() {
+    if exists(this.(UsesStep).getArgument("path"))
+    then result = this.(UsesStep).getArgument("path").splitAt("\n")
+    else result = "?"
+  }
 }
 
 class CacheActionSaveUsesStep extends CacheWritingStep, UsesStep {
   CacheActionSaveUsesStep() { this.getCallee() = "actions/cache/save" }
+
+  override string getPath() {
+    if exists(this.(UsesStep).getArgument("path"))
+    then result = this.(UsesStep).getArgument("path").splitAt("\n")
+    else result = "?"
+  }
 }
 
 class SetupJavaUsesStep extends CacheWritingStep, UsesStep {
@@ -62,6 +76,9 @@ class SetupJavaUsesStep extends CacheWritingStep, UsesStep {
       exists(this.getArgument("cache-dependency-path"))
     )
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
 
 class SetupGoUsesStep extends CacheWritingStep, UsesStep {
@@ -73,6 +90,9 @@ class SetupGoUsesStep extends CacheWritingStep, UsesStep {
       this.getArgument("cache") = "true"
     )
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
 
 class SetupNodeUsesStep extends CacheWritingStep, UsesStep {
@@ -83,6 +103,9 @@ class SetupNodeUsesStep extends CacheWritingStep, UsesStep {
       exists(this.getArgument("cache-dependency-path"))
     )
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
 
 class SetupPythonUsesStep extends CacheWritingStep, UsesStep {
@@ -93,6 +116,9 @@ class SetupPythonUsesStep extends CacheWritingStep, UsesStep {
       exists(this.getArgument("cache-dependency-path"))
     )
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
 
 class SetupDotnetUsesStep extends CacheWritingStep, UsesStep {
@@ -103,6 +129,9 @@ class SetupDotnetUsesStep extends CacheWritingStep, UsesStep {
       exists(this.getArgument("cache-dependency-path"))
     )
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
 
 class SetupRubyUsesStep extends CacheWritingStep, UsesStep {
@@ -110,4 +139,7 @@ class SetupRubyUsesStep extends CacheWritingStep, UsesStep {
     this.getCallee() = ["actions/setup-ruby", "ruby/setup-ruby"] and
     this.getArgument("bundler-cache") = "true"
   }
+
+  // TODO: Try to get the actual path being cached
+  override string getPath() { result = "?" }
 }
