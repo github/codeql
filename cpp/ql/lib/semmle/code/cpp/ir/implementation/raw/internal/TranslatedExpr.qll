@@ -893,7 +893,8 @@ class TranslatedTransparentConversion extends TranslatedTransparentExpr {
     (
       expr instanceof ParenthesisExpr or
       expr instanceof ReferenceDereferenceExpr or
-      expr instanceof ReferenceToExpr
+      expr instanceof ReferenceToExpr or
+      expr instanceof C11GenericExpr
     )
   }
 

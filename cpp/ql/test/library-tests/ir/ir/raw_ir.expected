@@ -2732,6 +2732,53 @@ destructors_for_temps.cpp:
 #  102|     v102_7(void)                         = AliasedUse                               : ~m?
 #  102|     v102_8(void)                         = ExitFunction                             : 
 
+generic.c:
+#    7| char const* c11_generic_1()
+#    7|   Block 0
+#    7|     v7_1(void)            = EnterFunction            : 
+#    7|     mu7_2(unknown)        = AliasedDefinition        : 
+#    7|     mu7_3(unknown)        = InitializeNonLocal       : 
+#    9|     r9_1(glval<int>)      = VariableAddress[i]       : 
+#    9|     mu9_2(int)            = Uninitialized[i]         : &:r9_1
+#   11|     r11_1(glval<char *>)  = VariableAddress[#return] : 
+#   11|     r11_2(glval<char[4]>) = StringConstant[int]      : 
+#   11|     r11_3(char *)         = Convert                  : r11_2
+#   11|     r11_4(char *)         = Convert                  : r11_3
+#   11|     mu11_5(char *)        = Store[#return]           : &:r11_1, r11_4
+#    7|     r7_4(glval<char *>)   = VariableAddress[#return] : 
+#    7|     v7_5(void)            = ReturnValue              : &:r7_4, ~m?
+#    7|     v7_6(void)            = AliasedUse               : ~m?
+#    7|     v7_7(void)            = ExitFunction             : 
+
+#   14| void enk_c11_generic_2(unsigned int, int)
+#   14|   Block 0
+#   14|     v14_1(void)                = EnterFunction          : 
+#   14|     mu14_2(unknown)            = AliasedDefinition      : 
+#   14|     mu14_3(unknown)            = InitializeNonLocal     : 
+#   14|     r14_4(glval<unsigned int>) = VariableAddress[x]     : 
+#   14|     mu14_5(unsigned int)       = InitializeParameter[x] : &:r14_4
+#   14|     r14_6(glval<int>)          = VariableAddress[y]     : 
+#   14|     mu14_7(int)                = InitializeParameter[y] : &:r14_6
+#   15|     r15_1(glval<unsigned int>) = VariableAddress[r]     : 
+#   15|     mu15_2(unsigned int)       = Uninitialized[r]       : &:r15_1
+#   16|     r16_1(glval<unsigned int>) = VariableAddress[x]     : 
+#   16|     r16_2(unsigned int)        = Constant[1]            : 
+#   16|     r16_3(unsigned int)        = Add                    : r16_1, r16_2
+#   16|     r16_4(glval<unsigned int>) = VariableAddress[r]     : 
+#   16|     mu16_5(unsigned int)       = Store[r]               : &:r16_4, r16_3
+#   18|     r18_1(glval<unsigned int>) = VariableAddress[s]     : 
+#   18|     mu18_2(unsigned int)       = Uninitialized[s]       : &:r18_1
+#   19|     r19_1(glval<unsigned int>) = VariableAddress[x]     : 
+#   19|     r19_2(unsigned int)        = Load[x]                : &:r19_1, ~m?
+#   19|     r19_3(unsigned int)        = Constant[1]            : 
+#   19|     r19_4(unsigned int)        = Add                    : r19_2, r19_3
+#   19|     r19_5(glval<unsigned int>) = VariableAddress[s]     : 
+#   19|     mu19_6(unsigned int)       = Store[s]               : &:r19_5, r19_4
+#   20|     v20_1(void)                = NoOp                   : 
+#   14|     v14_8(void)                = ReturnVoid             : 
+#   14|     v14_9(void)                = AliasedUse             : ~m?
+#   14|     v14_10(void)               = ExitFunction           : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0

@@ -4179,6 +4179,123 @@ destructors_for_temps.cpp:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
+generic.c:
+#    7| [TopLevelFunction] char const* c11_generic_1()
+#    7|   <params>: 
+#    8|   getEntryPoint(): [BlockStmt] { ... }
+#    9|     getStmt(0): [DeclStmt] declaration
+#    9|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#    9|           Type = [IntType] int
+#   11|     getStmt(1): [ReturnStmt] return ...
+#   11|       getExpr(): int
+#   11|           Type = [ArrayType] char[4]
+#   11|           Value = [StringLiteral] "int"
+#   11|           ValueCategory = lvalue
+#   11|       getExpr().getFullyConverted(): [CStyleCast] (const char *)...
+#   11|           Conversion = [PointerConversion] pointer conversion
+#   11|           Type = [PointerType] const char *
+#   11|           ValueCategory = prvalue
+#   11|         getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   11|             Type = [CharPointerType] char *
+#   11|             ValueCategory = prvalue
+#   11|           getExpr(): [C11GenericExpr] _Generic
+#   11|               Type = [ArrayType] char[4]
+#   11|               ValueCategory = lvalue
+#   11|             getChild(0): [VariableAccess] i
+#   11|                 Type = [IntType] int
+#   11|                 ValueCategory = prvalue(load)
+#   11|             getChild(1): [TypeName] int
+#   11|                 Type = [IntType] int
+#   11|                 ValueCategory = prvalue
+#   11|             getChild(2): [ReuseExpr] reuse of int
+#   11|                 Type = [ArrayType] char[4]
+#   11|                 ValueCategory = lvalue
+#   11|             getChild(3): [TypeName] void
+#   11|                 Type = [VoidType] void
+#   11|                 ValueCategory = prvalue
+#   11|             getChild(4): unknown
+#   11|                 Type = [ArrayType] char[8]
+#   11|                 Value = [StringLiteral] "unknown"
+#   11|                 ValueCategory = lvalue
+#   11|             getChild(0).getFullyConverted(): [ParenthesisExpr] (...)
+#   11|                 Type = [IntType] int
+#   11|                 ValueCategory = prvalue(load)
+#   14| [TopLevelFunction] void enk_c11_generic_2(unsigned int, int)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] x
+#   14|         Type = [IntType] unsigned int
+#   14|     getParameter(1): [Parameter] y
+#   14|         Type = [IntType] int
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [DeclStmt] declaration
+#   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#   15|           Type = [IntType] unsigned int
+#   16|     getStmt(1): [ExprStmt] ExprStmt
+#   16|       getExpr(): [AssignExpr] ... = ...
+#   16|           Type = [IntType] unsigned int
+#   16|           ValueCategory = prvalue
+#   16|         getLValue(): [VariableAccess] r
+#   16|             Type = [IntType] unsigned int
+#   16|             ValueCategory = lvalue
+#   16|         getRValue(): [AddExpr] ... + ...
+#   16|             Type = [IntType] unsigned int
+#   16|             ValueCategory = prvalue
+#   16|           getLeftOperand(): [VariableAccess] x
+#   16|               Type = [IntType] unsigned int
+#   16|               ValueCategory = lvalue
+#   16|           getRightOperand(): [Literal] 1
+#   16|               Type = [IntType] int
+#   16|               Value = [Literal] 1
+#   16|               ValueCategory = prvalue
+#   16|           getLeftOperand().getFullyConverted(): [C11GenericExpr] _Generic
+#   16|               Type = [IntType] unsigned int
+#   16|               ValueCategory = prvalue
+#   16|             getChild(0): [VariableAccess] r
+#   16|                 Type = [IntType] unsigned int
+#   16|                 ValueCategory = prvalue(load)
+#   16|             getChild(1): [TypeName] unsigned int
+#   16|                 Type = [IntType] unsigned int
+#   16|                 ValueCategory = prvalue
+#   16|             getChild(2): [ReuseExpr] reuse of x
+#   16|                 Type = [IntType] unsigned int
+#   16|                 ValueCategory = lvalue
+#   16|             getChild(3): [TypeName] int
+#   16|                 Type = [IntType] int
+#   16|                 ValueCategory = prvalue
+#   16|             getChild(4): [VariableAccess] y
+#   16|                 Type = [IntType] int
+#   16|                 ValueCategory = lvalue
+#   16|           getRightOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
+#   16|               Conversion = [IntegralConversion] integral conversion
+#   16|               Type = [IntType] unsigned int
+#   16|               Value = [CStyleCast] 1
+#   16|               ValueCategory = prvalue
+#   18|     getStmt(2): [DeclStmt] declaration
+#   18|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+#   18|           Type = [IntType] unsigned int
+#   19|     getStmt(3): [ExprStmt] ExprStmt
+#   19|       getExpr(): [AssignExpr] ... = ...
+#   19|           Type = [IntType] unsigned int
+#   19|           ValueCategory = prvalue
+#   19|         getLValue(): [VariableAccess] s
+#   19|             Type = [IntType] unsigned int
+#   19|             ValueCategory = lvalue
+#   19|         getRValue(): [AddExpr] ... + ...
+#   19|             Type = [IntType] unsigned int
+#   19|             ValueCategory = prvalue
+#   19|           getLeftOperand(): [VariableAccess] x
+#   19|               Type = [IntType] unsigned int
+#   19|               ValueCategory = prvalue(load)
+#   19|           getRightOperand(): [Literal] 1
+#   19|               Type = [IntType] int
+#   19|               Value = [Literal] 1
+#   19|               ValueCategory = prvalue
+#   19|           getRightOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
+#   19|               Conversion = [IntegralConversion] integral conversion
+#   19|               Type = [IntType] unsigned int
+#   19|               Value = [CStyleCast] 1
+#   19|               ValueCategory = prvalue
+#   20|     getStmt(4): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

@@ -832,6 +832,15 @@ class TemporaryObjectExpr extends Conversion, @temp_init {
 }
 
 /**
+ * A node representing a C11 `_Generic` expression.
+ */
+class C11GenericExpr extends Conversion, @c11_generic {
+  override string toString() { result = "_Generic" }
+
+  override string getAPrimaryQlClass() { result = "C11GenericExpr" }
+}
+
+/**
  * A node representing the Cast sub-class of entity `cast`.
  */
 string qlCast(Cast cast) {
