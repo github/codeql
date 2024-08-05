@@ -260,12 +260,6 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseCompilation());
         }
 
-        private static bool FileIsUpToDate(string src, string dest)
-        {
-            return File.Exists(dest) &&
-                File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
-        }
-
         private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
