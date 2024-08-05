@@ -22,11 +22,9 @@ CodeQL CLI
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-*   A number of breaking changes have been made to the C and C++ CodeQL environment:
+*   A number of breaking changes have been made to the C and C++ CodeQL test environment as used by :code:`codeql test run`\ :
 
-    *   The environment no longer defines any GNU-specific builtin macros.
-        If these macros are still needed, please define them via
-        :code:`semmle-extractor-options`.
+    *   The test environment no longer defines any GNU-specific builtin macros. If these macros are still needed by a test, please define them via :code:`semmle-extractor-options`.
         
     *   The :code:`--force-recompute` option is no longer directly supported by
         :code:`semmle-extractor-options`. Instead, :code:`--edg --force-recompute` should be specified.
