@@ -96,4 +96,4 @@ where
     // excluding privileged workflows since they can be exploited in easier circumstances
     not j.isPrivileged()
   )
-select s, source, s, "Potential cache poisoning in the context of the default branch" + message
+select s, source, s, "Potential cache poisoning in the context of the default branch " + message
