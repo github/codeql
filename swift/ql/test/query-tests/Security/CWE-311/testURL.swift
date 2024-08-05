@@ -107,3 +107,27 @@ func test4(key: SecKey) {
 		}
 	}
 }
+
+func test5() {
+	// variant URL types...
+	let email = get_string()
+	let secret_key = get_string()
+
+	_ = URL(string: "http://example.com/login?email=\(email)"); // BAD
+	_ = URL(string: "mailto:\(email)"); // GOOD (revealing your e-amil address in an e-mail is expected) [FALSE POSITIVE]
+	_ = URL(string: "mailto:info@example.com?subject=\(secret_key)"); // BAD
+	_ = URL(string: "mailto:info@example.com?subject=foo&cc=\(email)"); // GOOD [FALSE POSITIVE]
+
+	let phone_number = get_string()
+
+	_ = URL(string: "http://example.com/profile?tel=\(phone_number)"); // BAD
+	_ = URL(string: "tel:\(phone_number)") // GOOD [FALSE POSITIVE]
+	_ = URL(string: "telprompt:\(phone_number)") // GOOD [FALSE POSITIVE]
+	_ = URL(string: "callto:\(phone_number)") // GOOD [FALSE POSITIVE]
+	_ = URL(string: "sms:\(phone_number)") // GOOD [FALSE POSITIVE]
+
+	let account_no = get_string()
+
+	_ = URL(string: "file:///foo/bar/\(account_no).csv") // GOOD (local, so not transmitted) [FALSE POSITIVE]
+	_ = URL(string: "ftp://example.com/\(account_no).csv") // BAD
+}
