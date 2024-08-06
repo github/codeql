@@ -112,6 +112,23 @@ module FileSystemAccess {
   }
 }
 
+private class DefaultFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode pathArgument;
+
+  DefaultFileSystemAccess() {
+    sinkNode(pathArgument, "path-injection") and
+    this = pathArgument.getCall()
+  }
+
+  override DataFlow::Node getAPathArgument() {
+    not pathArgument instanceof DataFlow::ImplicitVarargsSlice and
+    result = pathArgument
+    or
+    pathArgument instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
 /** A function that escapes meta-characters to prevent injection attacks. */
 class EscapeFunction extends Function instanceof EscapeFunction::Range {
   /**

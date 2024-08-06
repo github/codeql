@@ -173,33 +173,6 @@ module Beego {
     }
   }
 
-  /**
-   * The File system access sinks
-   */
-  private class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
-    int pathArg;
-
-    FsOperations() {
-      this.getTarget().hasQualifiedName(packagePath(), "Walk") and pathArg = 1
-      or
-      exists(Method m | this = m.getACall() |
-        m.hasQualifiedName(packagePath(), "FileSystem", "Open") and pathArg = 0
-        or
-        m.hasQualifiedName(packagePath(), "Controller", "SaveToFile") and pathArg = 1
-        or
-        m.hasQualifiedName(contextPackagePath(), "BeegoOutput", "Download") and
-        pathArg = 0
-        or
-        // SaveToFileWithBuffer only available in v2
-        m.hasQualifiedName("github.com/beego/beego/v2/server/web", "Controller",
-          "SaveToFileWithBuffer") and
-        pathArg = 1
-      )
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-  }
-
   private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
     string className;
 

@@ -1,6 +1,36 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["os", "", False, "Chdir", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Chmod", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Chown", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Chtimes", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Create", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Lchown", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Link", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "Lstat", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "NewFile", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["os", "", False, "Open", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Readlink", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Remove", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Rename", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "Stat", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "Symlink", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "Truncate", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "DirFS", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "ReadDir", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "ReadFile", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["os", "", False, "MkdirTemp", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "CreateTemp", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "WriteFile", "", "", "Argument[0]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["os", "", False, "Expand", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -70,9 +70,11 @@ private module Echo {
   }
 
   /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
    * The File system access sinks
    */
-  class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
+  deprecated class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
     FsOperations() {
       exists(Method m |
         m.hasQualifiedName(packagePath(), "Context", ["Attachment", "File"]) and
