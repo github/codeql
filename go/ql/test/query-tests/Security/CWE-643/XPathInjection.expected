@@ -84,22 +84,22 @@ edges
 | tst.go:106:14:106:35 | call to Get | tst.go:109:27:109:89 | ...+... | provenance |  Sink:MaD:34 |
 | tst.go:106:14:106:35 | call to Get | tst.go:110:28:110:90 | ...+... | provenance |  Sink:MaD:35 |
 | tst.go:115:14:115:19 | selection of Form | tst.go:115:14:115:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
-| tst.go:115:14:115:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance |  Sink:MaD:26 |
-| tst.go:115:14:115:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance |  Sink:MaD:27 |
-| tst.go:115:14:115:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance |  Sink:MaD:28 |
-| tst.go:115:14:115:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance |  Sink:MaD:29 |
-| tst.go:115:14:115:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance |  Sink:MaD:30 |
+| tst.go:115:14:115:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance |  Sink:MaD:33 |
+| tst.go:115:14:115:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance |  Sink:MaD:29 |
+| tst.go:115:14:115:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance |  Sink:MaD:30 |
+| tst.go:115:14:115:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance |  Sink:MaD:31 |
+| tst.go:115:14:115:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance |  Sink:MaD:32 |
 | tst.go:116:14:116:19 | selection of Form | tst.go:116:14:116:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
-| tst.go:116:14:116:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance |  Sink:MaD:26 |
-| tst.go:116:14:116:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance |  Sink:MaD:27 |
-| tst.go:116:14:116:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance |  Sink:MaD:28 |
-| tst.go:116:14:116:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance |  Sink:MaD:29 |
-| tst.go:116:14:116:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance |  Sink:MaD:30 |
+| tst.go:116:14:116:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance |  Sink:MaD:33 |
+| tst.go:116:14:116:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance |  Sink:MaD:29 |
+| tst.go:116:14:116:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance |  Sink:MaD:30 |
+| tst.go:116:14:116:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance |  Sink:MaD:31 |
+| tst.go:116:14:116:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance |  Sink:MaD:32 |
 | tst.go:139:14:139:19 | selection of Form | tst.go:139:14:139:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
-| tst.go:139:14:139:35 | call to Get | tst.go:144:17:144:87 | type conversion | provenance |  Sink:MaD:31 |
+| tst.go:139:14:139:35 | call to Get | tst.go:144:17:144:87 | type conversion | provenance |  Sink:MaD:26 |
 | tst.go:139:14:139:35 | call to Get | tst.go:145:41:145:103 | ...+... | provenance |  |
-| tst.go:139:14:139:35 | call to Get | tst.go:146:23:146:85 | ...+... | provenance |  Sink:MaD:33 |
-| tst.go:145:41:145:103 | ...+... | tst.go:145:23:145:104 | call to NewReader | provenance | MaD:38 Sink:MaD:32 |
+| tst.go:139:14:139:35 | call to Get | tst.go:146:23:146:85 | ...+... | provenance |  Sink:MaD:28 |
+| tst.go:145:41:145:103 | ...+... | tst.go:145:23:145:104 | call to NewReader | provenance | MaD:38 Sink:MaD:27 |
 models
 | 1 | Sink: github.com/antchfx/htmlquery; ; true; Find; ; ; Argument[1]; xpath-injection; manual |
 | 2 | Sink: github.com/antchfx/htmlquery; ; true; FindOne; ; ; Argument[1]; xpath-injection; manual |
@@ -138,14 +138,19 @@ models
 | 25 | Sink: gopkg.in/go-xmlpath/xmlpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
 | 25 | Sink: gopkg.in/xmlpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
 | 25 | Sink: launchpad.net/xmlpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
-| 26 | Sink: github.com/jbowtie/gokogiri/xpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
-| 27 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; Search; ; ; Argument[0]; xpath-injection; manual |
-| 28 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; SearchWithVariables; ; ; Argument[0]; xpath-injection; manual |
-| 29 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; EvalXPath; ; ; Argument[0]; xpath-injection; manual |
-| 30 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; EvalXPathAsBoolean; ; ; Argument[0]; xpath-injection; manual |
-| 31 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; Parse; ; ; Argument[0]; xpath-injection; manual |
-| 32 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseReader; ; ; Argument[0]; xpath-injection; manual |
-| 33 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseString; ; ; Argument[0]; xpath-injection; manual |
+| 26 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 27 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseReader; ; ; Argument[0]; xpath-injection; manual |
+| 28 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseString; ; ; Argument[0]; xpath-injection; manual |
+| 29 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; Search; ; ; Argument[0]; xpath-injection; manual |
+| 29 | Sink: github.com/moovweb/gokogiri/xml; Node; true; Search; ; ; Argument[0]; xpath-injection; manual |
+| 30 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; SearchWithVariables; ; ; Argument[0]; xpath-injection; manual |
+| 30 | Sink: github.com/moovweb/gokogiri/xml; Node; true; SearchWithVariables; ; ; Argument[0]; xpath-injection; manual |
+| 31 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; EvalXPath; ; ; Argument[0]; xpath-injection; manual |
+| 31 | Sink: github.com/moovweb/gokogiri/xml; Node; true; EvalXPath; ; ; Argument[0]; xpath-injection; manual |
+| 32 | Sink: github.com/jbowtie/gokogiri/xml; Node; true; EvalXPathAsBoolean; ; ; Argument[0]; xpath-injection; manual |
+| 32 | Sink: github.com/moovweb/gokogiri/xml; Node; true; EvalXPathAsBoolean; ; ; Argument[0]; xpath-injection; manual |
+| 33 | Sink: github.com/jbowtie/gokogiri/xpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 33 | Sink: github.com/moovweb/gokogiri/xpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
 | 34 | Sink: github.com/santhosh-tekuri/xpathparser; ; true; Parse; ; ; Argument[0]; xpath-injection; manual |
 | 35 | Sink: github.com/santhosh-tekuri/xpathparser; ; true; MustParse; ; ; Argument[0]; xpath-injection; manual |
 | 36 | Source: net/http; Request; true; Form; ; ; ; remote; manual |

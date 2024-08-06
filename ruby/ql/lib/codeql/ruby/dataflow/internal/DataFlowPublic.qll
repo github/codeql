@@ -6,6 +6,7 @@ private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.ApiGraphs
+private import SsaImpl as SsaImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -360,16 +361,12 @@ class PostUpdateNode extends Node {
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionNode extends Node instanceof SsaDefinitionExtNode {
-  Ssa::Definition def;
-
-  SsaDefinitionNode() { this = TSsaDefinitionExtNode(def) }
-
+class SsaDefinitionNode extends Node instanceof SsaDefinitionNodeImpl {
   /** Gets the underlying SSA definition. */
-  Ssa::Definition getDefinition() { result = def }
+  Ssa::Definition getDefinition() { result = super.getDefinitionExt() }
 
   /** Gets the underlying variable. */
-  Variable getVariable() { result = def.getSourceVariable() }
+  Variable getVariable() { result = this.getDefinition().getSourceVariable() }
 }
 
 cached
@@ -870,56 +867,7 @@ private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2)
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  private import SsaImpl as SsaImpl
-
-  pragma[nomagic]
-  private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
-    guardChecks(g, def.getARead(), branch)
-  }
-
-  pragma[nomagic]
-  private predicate guardControlsSsaRead(
-    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, Node n
-  ) {
-    def.getARead() = n.asExpr() and
-    guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
-  }
-
-  pragma[nomagic]
-  private predicate guardControlsPhiInput(
-    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
-    SsaInputDefinitionExt phi
-  ) {
-    phi.hasInputFromBlock(def, _, _, input) and
-    (
-      guardControlsBlock(g, input, branch)
-      or
-      exists(SuccessorTypes::ConditionalSuccessor s |
-        g = input.getLastNode() and
-        s.getValue() = branch and
-        input.getASuccessor(s) = phi.getBasicBlock()
-      )
-    )
-  }
-
-  /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
-    exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
-      guardChecksSsaDef(g, branch, def) and
-      guardControlsSsaRead(g, branch, def, result)
-    )
-    or
-    exists(
-      CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, BasicBlock input,
-      SsaInputDefinitionExt phi
-    |
-      guardChecksSsaDef(g, branch, def) and
-      guardControlsPhiInput(g, branch, def, input, phi) and
-      result = TSsaInputNode(phi, input)
-    )
-    or
-    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
-  }
+  private import codeql.ruby.controlflow.internal.Guards
 
   /**
    * Gets an implicit entry definition for a captured variable that
@@ -928,6 +876,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * This is restricted to calls where the variable is captured inside a
    * block.
    */
+  pragma[nomagic]
   private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef() {
     exists(
       CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
@@ -940,15 +889,14 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       sameSourceVariable(def, result)
     )
   }
-}
 
-/** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-private predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean branch) {
-  exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
-    guard = conditionBlock.getLastNode() and
-    s.getValue() = branch and
-    conditionBlock.controls(bb, s)
-  )
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+    or
+    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
+  }
 }
 
 /**
