@@ -1,7 +1,6 @@
-import subprocess
-from create_database_utils import *
-from diagnostics_test_utils import *
+import commands
 
-subprocess.check_call(["dotnet", "build", "test.sln", "/bl:test.binlog"])
-run_codeql_database_create([], lang="csharp", extra_args=["--build-mode=none", "-Obinlog=test.binlog"])
-check_diagnostics()
+
+def test(codeql, csharp):
+    commands.run(["dotnet", "build", "test.sln", "/bl:test.binlog"])
+    codeql.database.create(build_mode="none", extractor_option="binlog=test.binlog")
