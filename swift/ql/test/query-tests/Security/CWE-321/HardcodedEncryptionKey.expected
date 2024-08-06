@@ -1,31 +1,31 @@
 edges
 | SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | provenance |  |
-| cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:80:10:80:28 | call to getConstantString() | provenance |  |
-| cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:92:18:92:36 | call to getConstantString() | provenance |  |
-| cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] | cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | provenance |  |
-| cryptoswift.swift:80:10:80:28 | call to getConstantString() | cryptoswift.swift:80:10:80:30 | .utf8 | provenance |  |
-| cryptoswift.swift:80:10:80:30 | .utf8 | cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:118:22:118:22 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:128:26:128:26 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:135:25:135:25 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:140:25:140:25 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:145:26:145:26 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:150:26:150:26 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:151:26:151:26 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:161:24:161:24 | key | provenance |  |
-| cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:163:24:163:24 | key | provenance |  |
-| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:106:21:106:21 | key2 | provenance |  |
-| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:107:21:107:21 | key2 | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:108:21:108:21 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:109:21:109:21 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:119:22:119:22 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:120:22:120:22 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:129:26:129:26 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:152:26:152:26 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:153:26:153:26 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:162:24:162:24 | keyString | provenance |  |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:164:24:164:24 | keyString | provenance |  |
+| cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:82:10:82:28 | call to getConstantString() | provenance |  |
+| cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:94:18:94:36 | call to getConstantString() | provenance |  |
+| cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | provenance |  |
+| cryptoswift.swift:82:10:82:28 | call to getConstantString() | cryptoswift.swift:82:10:82:30 | .utf8 | provenance |  |
+| cryptoswift.swift:82:10:82:30 | .utf8 | cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:119:22:119:22 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:120:22:120:22 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:130:26:130:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:137:25:137:25 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:142:25:142:25 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:147:26:147:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:152:26:152:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:153:26:153:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:163:24:163:24 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:165:24:165:24 | key | provenance |  |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:108:21:108:21 | key2 | provenance |  |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:109:21:109:21 | key2 | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:110:21:110:21 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:111:21:111:21 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:121:22:121:22 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:122:22:122:22 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:131:26:131:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:154:26:154:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:155:26:155:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:164:24:164:24 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:166:24:166:24 | keyString | provenance |  |
 | file://:0:0:0:0 | [post] self | misc.swift:30:7:30:7 | self [Return] | provenance |  |
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self | provenance |  |
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self | provenance |  |
@@ -79,34 +79,34 @@ nodes
 | SQLite.swift:49:79:49:79 | hardcoded_key | semmle.label | hardcoded_key |
 | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | semmle.label | call to Blob.init(bytes:) |
 | SQLite.swift:54:25:54:33 | [...] | semmle.label | [...] |
-| cryptoswift.swift:76:3:76:3 | this string is constant | semmle.label | this string is constant |
-| cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
-| cryptoswift.swift:80:10:80:28 | call to getConstantString() | semmle.label | call to getConstantString() |
-| cryptoswift.swift:80:10:80:30 | .utf8 | semmle.label | .utf8 |
-| cryptoswift.swift:90:26:90:121 | [...] | semmle.label | [...] |
-| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
-| cryptoswift.swift:92:18:92:36 | call to getConstantString() | semmle.label | call to getConstantString() |
-| cryptoswift.swift:106:21:106:21 | key2 | semmle.label | key2 |
-| cryptoswift.swift:107:21:107:21 | key2 | semmle.label | key2 |
-| cryptoswift.swift:108:21:108:21 | keyString | semmle.label | keyString |
-| cryptoswift.swift:109:21:109:21 | keyString | semmle.label | keyString |
-| cryptoswift.swift:117:22:117:22 | key | semmle.label | key |
-| cryptoswift.swift:118:22:118:22 | key | semmle.label | key |
-| cryptoswift.swift:119:22:119:22 | keyString | semmle.label | keyString |
-| cryptoswift.swift:120:22:120:22 | keyString | semmle.label | keyString |
-| cryptoswift.swift:128:26:128:26 | key | semmle.label | key |
-| cryptoswift.swift:129:26:129:26 | keyString | semmle.label | keyString |
-| cryptoswift.swift:135:25:135:25 | key | semmle.label | key |
-| cryptoswift.swift:140:25:140:25 | key | semmle.label | key |
-| cryptoswift.swift:145:26:145:26 | key | semmle.label | key |
-| cryptoswift.swift:150:26:150:26 | key | semmle.label | key |
-| cryptoswift.swift:151:26:151:26 | key | semmle.label | key |
-| cryptoswift.swift:152:26:152:26 | keyString | semmle.label | keyString |
-| cryptoswift.swift:153:26:153:26 | keyString | semmle.label | keyString |
-| cryptoswift.swift:161:24:161:24 | key | semmle.label | key |
-| cryptoswift.swift:162:24:162:24 | keyString | semmle.label | keyString |
+| cryptoswift.swift:78:2:78:2 | this string is constant | semmle.label | this string is constant |
+| cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| cryptoswift.swift:82:10:82:28 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:82:10:82:30 | .utf8 | semmle.label | .utf8 |
+| cryptoswift.swift:92:26:92:121 | [...] | semmle.label | [...] |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:108:21:108:21 | key2 | semmle.label | key2 |
+| cryptoswift.swift:109:21:109:21 | key2 | semmle.label | key2 |
+| cryptoswift.swift:110:21:110:21 | keyString | semmle.label | keyString |
+| cryptoswift.swift:111:21:111:21 | keyString | semmle.label | keyString |
+| cryptoswift.swift:119:22:119:22 | key | semmle.label | key |
+| cryptoswift.swift:120:22:120:22 | key | semmle.label | key |
+| cryptoswift.swift:121:22:121:22 | keyString | semmle.label | keyString |
+| cryptoswift.swift:122:22:122:22 | keyString | semmle.label | keyString |
+| cryptoswift.swift:130:26:130:26 | key | semmle.label | key |
+| cryptoswift.swift:131:26:131:26 | keyString | semmle.label | keyString |
+| cryptoswift.swift:137:25:137:25 | key | semmle.label | key |
+| cryptoswift.swift:142:25:142:25 | key | semmle.label | key |
+| cryptoswift.swift:147:26:147:26 | key | semmle.label | key |
+| cryptoswift.swift:152:26:152:26 | key | semmle.label | key |
+| cryptoswift.swift:153:26:153:26 | key | semmle.label | key |
+| cryptoswift.swift:154:26:154:26 | keyString | semmle.label | keyString |
+| cryptoswift.swift:155:26:155:26 | keyString | semmle.label | keyString |
 | cryptoswift.swift:163:24:163:24 | key | semmle.label | key |
 | cryptoswift.swift:164:24:164:24 | keyString | semmle.label | keyString |
+| cryptoswift.swift:165:24:165:24 | key | semmle.label | key |
+| cryptoswift.swift:166:24:166:24 | keyString | semmle.label | keyString |
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self [encryptionKey] | semmle.label | [post] self [encryptionKey] |
@@ -165,27 +165,27 @@ subpaths
 | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:47:15:47:15 | hardcoded_key | hardcoded_key |
 | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:49:79:49:79 | hardcoded_key | hardcoded_key |
 | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | The key 'call to Blob.init(bytes:)' has been initialized with hard-coded values from $@. | SQLite.swift:54:25:54:33 | [...] | [...] |
-| cryptoswift.swift:106:21:106:21 | key2 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:106:21:106:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:107:21:107:21 | key2 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:107:21:107:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:109:21:109:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:117:22:117:22 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:118:22:118:22 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:118:22:118:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:119:22:119:22 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:119:22:119:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:120:22:120:22 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:120:22:120:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:128:26:128:26 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:128:26:128:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:129:26:129:26 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:129:26:129:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:135:25:135:25 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:135:25:135:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:140:25:140:25 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:140:25:140:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:145:26:145:26 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:145:26:145:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:150:26:150:26 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:150:26:150:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:151:26:151:26 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:151:26:151:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:152:26:152:26 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:152:26:152:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:153:26:153:26 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:153:26:153:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:161:24:161:24 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:161:24:161:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:162:24:162:24 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:162:24:162:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
-| cryptoswift.swift:163:24:163:24 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
-| cryptoswift.swift:164:24:164:24 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
+| cryptoswift.swift:108:21:108:21 | key2 | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:108:21:108:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:109:21:109:21 | key2 | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:109:21:109:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:110:21:110:21 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:110:21:110:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:111:21:111:21 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:111:21:111:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:119:22:119:22 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:119:22:119:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:120:22:120:22 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:120:22:120:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:121:22:121:22 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:121:22:121:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:122:22:122:22 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:122:22:122:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:130:26:130:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:130:26:130:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:131:26:131:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:131:26:131:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:137:25:137:25 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:137:25:137:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:142:25:142:25 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:142:25:142:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:147:26:147:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:147:26:147:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:152:26:152:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:152:26:152:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:153:26:153:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:153:26:153:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:154:26:154:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:154:26:154:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:155:26:155:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:155:26:155:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:163:24:163:24 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:164:24:164:24 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:165:24:165:24 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:165:24:165:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:166:24:166:24 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:166:24:166:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
 | file://:0:0:0:0 | [post] self | misc.swift:46:24:46:24 | abcdef123456 | file://:0:0:0:0 | [post] self | The key '[post] self' has been initialized with hard-coded values from $@. | misc.swift:46:24:46:24 | abcdef123456 | abcdef123456 |
 | grdb.swift:27:23:27:23 | constString | grdb.swift:21:20:21:20 | abc123 | grdb.swift:27:23:27:23 | constString | The key 'constString' has been initialized with hard-coded values from $@. | grdb.swift:21:20:21:20 | abc123 | abc123 |
 | grdb.swift:29:23:29:23 | constData | grdb.swift:22:33:22:50 | [...] | grdb.swift:29:23:29:23 | constData | The key 'constData' has been initialized with hard-coded values from $@. | grdb.swift:22:33:22:50 | [...] | [...] |

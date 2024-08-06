@@ -1,118 +1,123 @@
 newExprs
-| allocators.cpp:49:3:49:9 | new | int | void* operator new(unsigned long) | 4 | 4 |  |  |
-| allocators.cpp:50:3:50:15 | new | int | void* operator new(size_t, float) | 4 | 4 |  |  |
-| allocators.cpp:51:3:51:11 | new | int | void* operator new(unsigned long) | 4 | 4 |  |  |
-| allocators.cpp:52:3:52:14 | new | String | void* operator new(unsigned long) | 8 | 8 |  |  |
-| allocators.cpp:53:3:53:27 | new | String | void* operator new(size_t, float) | 8 | 8 |  |  |
-| allocators.cpp:54:3:54:17 | new | Overaligned | void* operator new(unsigned long, std::align_val_t) | 256 | 128 | aligned |  |
-| allocators.cpp:55:3:55:25 | new | Overaligned | void* operator new(size_t, std::align_val_t, float) | 256 | 128 | aligned |  |
-| allocators.cpp:107:3:107:18 | new | FailedInit | void* FailedInit::operator new(size_t) | 1 | 1 |  |  |
-| allocators.cpp:109:3:109:35 | new | FailedInitOveraligned | void* FailedInitOveraligned::operator new(size_t, std::align_val_t, float) | 128 | 128 | aligned |  |
-| allocators.cpp:129:3:129:21 | new | int | void* operator new(std::size_t, void*) | 4 | 4 |  | & ... |
-| allocators.cpp:135:3:135:26 | new | int | void* operator new(std::size_t, std::nothrow_t const&) | 4 | 4 |  |  |
+| allocators.cpp:59:3:59:9 | new | int | void* operator new(unsigned long) | 4 | 4 |  |  |
+| allocators.cpp:60:3:60:15 | new | int | void* operator new(size_t, float) | 4 | 4 |  |  |
+| allocators.cpp:61:3:61:11 | new | int | void* operator new(unsigned long) | 4 | 4 |  |  |
+| allocators.cpp:62:3:62:14 | new | String | void* operator new(unsigned long) | 8 | 8 |  |  |
+| allocators.cpp:63:3:63:27 | new | String | void* operator new(size_t, float) | 8 | 8 |  |  |
+| allocators.cpp:64:3:64:17 | new | Overaligned | void* operator new(unsigned long, std::align_val_t) | 256 | 128 | aligned |  |
+| allocators.cpp:65:3:65:25 | new | Overaligned | void* operator new(size_t, std::align_val_t, float) | 256 | 128 | aligned |  |
+| allocators.cpp:126:3:126:18 | new | FailedInit | void* FailedInit::operator new(size_t) | 1 | 1 |  |  |
+| allocators.cpp:128:3:128:35 | new | FailedInitOveraligned | void* FailedInitOveraligned::operator new(size_t, std::align_val_t, float) | 128 | 128 | aligned |  |
+| allocators.cpp:130:3:130:34 | new | FailedInitDestroyingDelete | void* FailedInitDestroyingDelete::operator new(size_t) | 128 | 128 |  |  |
+| allocators.cpp:149:3:149:21 | new | int | void* operator new(std::size_t, void*) | 4 | 4 |  | & ... |
+| allocators.cpp:155:3:155:26 | new | int | void* operator new(std::size_t, std::nothrow_t const&) | 4 | 4 |  |  |
 newArrayExprs
-| allocators.cpp:68:3:68:12 | new[] | int[] | int | void* operator new[](unsigned long) | 4 | 4 |  | n |  |
-| allocators.cpp:69:3:69:18 | new[] | int[] | int | void* operator new[](size_t, float) | 4 | 4 |  | n |  |
-| allocators.cpp:70:3:70:15 | new[] | String[] | String | void* operator new[](unsigned long) | 8 | 8 |  | n |  |
-| allocators.cpp:71:3:71:20 | new[] | Overaligned[] | Overaligned | void* operator new[](unsigned long, std::align_val_t) | 256 | 128 | aligned | n |  |
-| allocators.cpp:72:3:72:16 | new[] | String[10] | String | void* operator new[](unsigned long) | 8 | 8 |  |  |  |
-| allocators.cpp:108:3:108:19 | new[] | FailedInit[] | FailedInit | void* FailedInit::operator new[](size_t) | 1 | 1 |  | n |  |
-| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned[10] | FailedInitOveraligned | void* FailedInitOveraligned::operator new[](size_t, std::align_val_t, float) | 128 | 128 | aligned |  |  |
-| allocators.cpp:132:3:132:17 | new[] | int[1] | int | void* operator new[](std::size_t, void*) | 4 | 4 |  |  | buf |
-| allocators.cpp:136:3:136:26 | new[] | int[2] | int | void* operator new[](std::size_t, std::nothrow_t const&) | 4 | 4 |  |  |  |
-| allocators.cpp:142:13:142:27 | new[] | char[][10] | char[10] | void* operator new[](unsigned long) | 10 | 1 |  | x |  |
-| allocators.cpp:143:13:143:28 | new[] | char[20][20] | char[20] | void* operator new[](unsigned long) | 20 | 1 |  |  |  |
-| allocators.cpp:144:13:144:31 | new[] | char[][30][30] | char[30][30] | void* operator new[](unsigned long) | 900 | 1 |  | x |  |
+| allocators.cpp:79:3:79:12 | new[] | int[] | int | void* operator new[](unsigned long) | 4 | 4 |  | n |  |
+| allocators.cpp:80:3:80:18 | new[] | int[] | int | void* operator new[](size_t, float) | 4 | 4 |  | n |  |
+| allocators.cpp:81:3:81:15 | new[] | String[] | String | void* operator new[](unsigned long) | 8 | 8 |  | n |  |
+| allocators.cpp:82:3:82:20 | new[] | Overaligned[] | Overaligned | void* operator new[](unsigned long, std::align_val_t) | 256 | 128 | aligned | n |  |
+| allocators.cpp:83:3:83:16 | new[] | String[10] | String | void* operator new[](unsigned long) | 8 | 8 |  |  |  |
+| allocators.cpp:127:3:127:19 | new[] | FailedInit[] | FailedInit | void* FailedInit::operator new[](size_t) | 1 | 1 |  | n |  |
+| allocators.cpp:129:3:129:37 | new[] | FailedInitOveraligned[10] | FailedInitOveraligned | void* FailedInitOveraligned::operator new[](size_t, std::align_val_t, float) | 128 | 128 | aligned |  |  |
+| allocators.cpp:152:3:152:17 | new[] | int[1] | int | void* operator new[](std::size_t, void*) | 4 | 4 |  |  | buf |
+| allocators.cpp:156:3:156:26 | new[] | int[2] | int | void* operator new[](std::size_t, std::nothrow_t const&) | 4 | 4 |  |  |  |
+| allocators.cpp:162:13:162:27 | new[] | char[][10] | char[10] | void* operator new[](unsigned long) | 10 | 1 |  | x |  |
+| allocators.cpp:163:13:163:28 | new[] | char[20][20] | char[20] | void* operator new[](unsigned long) | 20 | 1 |  |  |  |
+| allocators.cpp:164:13:164:31 | new[] | char[][30][30] | char[30][30] | void* operator new[](unsigned long) | 900 | 1 |  | x |  |
 newExprDeallocators
-| allocators.cpp:52:3:52:14 | new | String | void operator delete(void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:53:3:53:27 | new | String | void operator delete(void*, float) | 8 | 8 |   |
-| allocators.cpp:107:3:107:18 | new | FailedInit | void FailedInit::operator delete(void*, size_t) | 1 | 1 | sized  |
-| allocators.cpp:109:3:109:35 | new | FailedInitOveraligned | void FailedInitOveraligned::operator delete(void*, std::align_val_t, float) | 128 | 128 |  aligned |
+| allocators.cpp:62:3:62:14 | new | String | void operator delete(void*, unsigned long) | 8 | 8 | sized   |
+| allocators.cpp:63:3:63:27 | new | String | void operator delete(void*, float) | 8 | 8 |    |
+| allocators.cpp:126:3:126:18 | new | FailedInit | void FailedInit::operator delete(void*, size_t) | 1 | 1 | sized   |
+| allocators.cpp:128:3:128:35 | new | FailedInitOveraligned | void FailedInitOveraligned::operator delete(void*, std::align_val_t, float) | 128 | 128 |  aligned  |
+| allocators.cpp:130:3:130:34 | new | FailedInitDestroyingDelete | void FailedInitDestroyingDelete::operator delete(FailedInitDestroyingDelete*, std::destroying_delete_t) | 128 | 128 |   destroying |
 newArrayExprDeallocators
-| allocators.cpp:70:3:70:15 | new[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:72:3:72:16 | new[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:108:3:108:19 | new[] | FailedInit | void FailedInit::operator delete[](void*, size_t) | 1 | 1 | sized  |
-| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned | void FailedInitOveraligned::operator delete[](void*, std::align_val_t, float) | 128 | 128 |  aligned |
+| allocators.cpp:81:3:81:15 | new[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized   |
+| allocators.cpp:83:3:83:16 | new[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized   |
+| allocators.cpp:127:3:127:19 | new[] | FailedInit | void FailedInit::operator delete[](void*, size_t) | 1 | 1 | sized   |
+| allocators.cpp:129:3:129:37 | new[] | FailedInitOveraligned | void FailedInitOveraligned::operator delete[](void*, std::align_val_t, float) | 128 | 128 |  aligned  |
 deleteExprs
-| allocators.cpp:59:3:59:35 | delete | int | void operator delete(void*, unsigned long) | 4 | 4 | sized  | false |
-| allocators.cpp:60:3:60:38 | delete | String | void operator delete(void*, unsigned long) | 8 | 8 | sized  | false |
-| allocators.cpp:61:3:61:44 | delete | SizedDealloc | void SizedDealloc::operator delete(void*, size_t) | 32 | 1 | sized  | true |
-| allocators.cpp:62:3:62:43 | delete | Overaligned | void operator delete(void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned | false |
-| allocators.cpp:64:3:64:44 | delete | const String | void operator delete(void*, unsigned long) | 8 | 8 | sized  | false |
+| allocators.cpp:69:3:69:35 | delete | int | void operator delete(void*, unsigned long) | 4 | 4 | sized   | false |
+| allocators.cpp:70:3:70:38 | delete | String | void operator delete(void*, unsigned long) | 8 | 8 | sized   | false |
+| allocators.cpp:71:3:71:44 | delete | SizedDealloc | void SizedDealloc::operator delete(void*, size_t) | 32 | 1 | sized   | true |
+| allocators.cpp:72:3:72:49 | delete | DestroyingDealloc | void DestroyingDealloc::operator delete(DestroyingDealloc*, std::destroying_delete_t) | 1 | 1 |   destroying | true |
+| allocators.cpp:73:3:73:43 | delete | Overaligned | void operator delete(void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned  | false |
+| allocators.cpp:75:3:75:44 | delete | const String | void operator delete(void*, unsigned long) | 8 | 8 | sized   | false |
 deleteArrayExprs
-| allocators.cpp:78:3:78:37 | delete[] | int | void operator delete[](void*, unsigned long) | 4 | 4 | sized  |
-| allocators.cpp:79:3:79:40 | delete[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:80:3:80:46 | delete[] | SizedDealloc | void SizedDealloc::operator delete[](void*, size_t) | 32 | 1 | sized  |
-| allocators.cpp:81:3:81:45 | delete[] | Overaligned | void operator delete[](void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned |
-| allocators.cpp:82:3:82:49 | delete[] | PolymorphicBase | void operator delete[](void*, unsigned long) | 8 | 8 | sized  |
-| allocators.cpp:83:3:83:23 | delete[] | int | void operator delete[](void*, unsigned long) | 4 | 4 | sized  |
+| allocators.cpp:89:3:89:37 | delete[] | int | void operator delete[](void*, unsigned long) | 4 | 4 | sized   |
+| allocators.cpp:90:3:90:40 | delete[] | String | void operator delete[](void*, unsigned long) | 8 | 8 | sized   |
+| allocators.cpp:91:3:91:46 | delete[] | SizedDealloc | void SizedDealloc::operator delete[](void*, size_t) | 32 | 1 | sized   |
+| allocators.cpp:92:3:92:45 | delete[] | Overaligned | void operator delete[](void*, unsigned long, std::align_val_t) | 256 | 128 | sized aligned  |
+| allocators.cpp:93:3:93:49 | delete[] | PolymorphicBase | void operator delete[](void*, unsigned long) | 8 | 8 | sized   |
+| allocators.cpp:94:3:94:23 | delete[] | int | void operator delete[](void*, unsigned long) | 4 | 4 | sized   |
 allocationFunctions
-| allocators.cpp:7:7:7:18 | operator new | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:8:7:8:20 | operator new[] | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:9:7:9:18 | operator new | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:10:7:10:20 | operator new[] | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:121:7:121:18 | operator new | getPlacementArgument = 1, getSizeArg = 0 |
-| allocators.cpp:122:7:122:20 | operator new[] | getPlacementArgument = 1, getSizeArg = 0 |
-| allocators.cpp:123:7:123:18 | operator new | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:124:7:124:20 | operator new[] | getSizeArg = 0, requiresDealloc |
-| allocators.cpp:153:7:153:12 | malloc | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:12:7:12:18 | operator new | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:13:7:13:20 | operator new[] | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:14:7:14:18 | operator new | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:15:7:15:20 | operator new[] | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:141:7:141:18 | operator new | getPlacementArgument = 1, getSizeArg = 0 |
+| allocators.cpp:142:7:142:20 | operator new[] | getPlacementArgument = 1, getSizeArg = 0 |
+| allocators.cpp:143:7:143:18 | operator new | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:144:7:144:20 | operator new[] | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:173:7:173:12 | malloc | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new[] | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new[] | getSizeArg = 0, requiresDealloc |
 allocationExprs
-| allocators.cpp:49:3:49:9 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
-| allocators.cpp:50:3:50:15 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
-| allocators.cpp:51:3:51:11 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
-| allocators.cpp:52:3:52:14 | new | getAllocatedElementType = String, getSizeBytes = 8, requiresDealloc |
-| allocators.cpp:53:3:53:27 | new | getAllocatedElementType = String, getSizeBytes = 8, requiresDealloc |
-| allocators.cpp:54:3:54:17 | new | getAllocatedElementType = Overaligned, getSizeBytes = 256, requiresDealloc |
-| allocators.cpp:55:3:55:25 | new | getAllocatedElementType = Overaligned, getSizeBytes = 256, requiresDealloc |
-| allocators.cpp:68:3:68:12 | new[] | getAllocatedElementType = int, getSizeExpr = n, getSizeMult = 4, requiresDealloc |
-| allocators.cpp:69:3:69:18 | new[] | getAllocatedElementType = int, getSizeExpr = n, getSizeMult = 4, requiresDealloc |
-| allocators.cpp:70:3:70:15 | new[] | getAllocatedElementType = String, getSizeExpr = n, getSizeMult = 8, requiresDealloc |
-| allocators.cpp:71:3:71:20 | new[] | getAllocatedElementType = Overaligned, getSizeExpr = n, getSizeMult = 256, requiresDealloc |
-| allocators.cpp:72:3:72:16 | new[] | getAllocatedElementType = String, getSizeBytes = 80, requiresDealloc |
-| allocators.cpp:107:3:107:18 | new | getAllocatedElementType = FailedInit, getSizeBytes = 1, requiresDealloc |
-| allocators.cpp:108:3:108:19 | new[] | getAllocatedElementType = FailedInit, getSizeExpr = n, getSizeMult = 1, requiresDealloc |
-| allocators.cpp:109:3:109:35 | new | getAllocatedElementType = FailedInitOveraligned, getSizeBytes = 128, requiresDealloc |
-| allocators.cpp:110:3:110:37 | new[] | getAllocatedElementType = FailedInitOveraligned, getSizeBytes = 1280, requiresDealloc |
-| allocators.cpp:129:3:129:21 | new | getAllocatedElementType = int, getSizeBytes = 4 |
-| allocators.cpp:132:3:132:17 | new[] | getAllocatedElementType = int, getSizeBytes = 4 |
-| allocators.cpp:135:3:135:26 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
-| allocators.cpp:136:3:136:26 | new[] | getAllocatedElementType = int, getSizeBytes = 8, requiresDealloc |
-| allocators.cpp:142:13:142:27 | new[] | getAllocatedElementType = char[10], getSizeExpr = x, getSizeMult = 10, requiresDealloc |
-| allocators.cpp:143:13:143:28 | new[] | getAllocatedElementType = char[20], getSizeBytes = 400, requiresDealloc |
-| allocators.cpp:144:13:144:31 | new[] | getAllocatedElementType = char[30][30], getSizeExpr = x, getSizeMult = 900, requiresDealloc |
-| allocators.cpp:149:8:149:19 | call to operator new | getSizeBytes = 4, getSizeExpr = sizeof(int), getSizeMult = 1, requiresDealloc |
-| allocators.cpp:157:50:157:55 | call to malloc | getAllocatedElementType = const volatile int, getSizeBytes = 5, getSizeExpr = 5, getSizeMult = 1, requiresDealloc |
-| allocators.cpp:158:26:158:31 | call to malloc | getAllocatedElementType = int, getSizeBytes = 20, getSizeExpr = 5, getSizeMult = 4, requiresDealloc |
-| allocators.cpp:159:31:159:36 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 1, requiresDealloc |
-| allocators.cpp:160:16:160:21 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 4, requiresDealloc |
-| allocators.cpp:161:34:161:39 | call to malloc | getAllocatedElementType = const char, getSizeExpr = ... + ..., getSizeMult = 1, requiresDealloc |
-| allocators.cpp:162:23:162:28 | call to malloc | getSizeExpr = count, getSizeMult = 8, requiresDealloc |
-| allocators.cpp:163:3:163:8 | call to malloc | getSizeBytes = 32, getSizeExpr = ... * ..., getSizeMult = 1, requiresDealloc |
+| allocators.cpp:59:3:59:9 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
+| allocators.cpp:60:3:60:15 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
+| allocators.cpp:61:3:61:11 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
+| allocators.cpp:62:3:62:14 | new | getAllocatedElementType = String, getSizeBytes = 8, requiresDealloc |
+| allocators.cpp:63:3:63:27 | new | getAllocatedElementType = String, getSizeBytes = 8, requiresDealloc |
+| allocators.cpp:64:3:64:17 | new | getAllocatedElementType = Overaligned, getSizeBytes = 256, requiresDealloc |
+| allocators.cpp:65:3:65:25 | new | getAllocatedElementType = Overaligned, getSizeBytes = 256, requiresDealloc |
+| allocators.cpp:79:3:79:12 | new[] | getAllocatedElementType = int, getSizeExpr = n, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:80:3:80:18 | new[] | getAllocatedElementType = int, getSizeExpr = n, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:81:3:81:15 | new[] | getAllocatedElementType = String, getSizeExpr = n, getSizeMult = 8, requiresDealloc |
+| allocators.cpp:82:3:82:20 | new[] | getAllocatedElementType = Overaligned, getSizeExpr = n, getSizeMult = 256, requiresDealloc |
+| allocators.cpp:83:3:83:16 | new[] | getAllocatedElementType = String, getSizeBytes = 80, requiresDealloc |
+| allocators.cpp:126:3:126:18 | new | getAllocatedElementType = FailedInit, getSizeBytes = 1, requiresDealloc |
+| allocators.cpp:127:3:127:19 | new[] | getAllocatedElementType = FailedInit, getSizeExpr = n, getSizeMult = 1, requiresDealloc |
+| allocators.cpp:128:3:128:35 | new | getAllocatedElementType = FailedInitOveraligned, getSizeBytes = 128, requiresDealloc |
+| allocators.cpp:129:3:129:37 | new[] | getAllocatedElementType = FailedInitOveraligned, getSizeBytes = 1280, requiresDealloc |
+| allocators.cpp:130:3:130:34 | new | getAllocatedElementType = FailedInitDestroyingDelete, getSizeBytes = 128, requiresDealloc |
+| allocators.cpp:149:3:149:21 | new | getAllocatedElementType = int, getSizeBytes = 4 |
+| allocators.cpp:152:3:152:17 | new[] | getAllocatedElementType = int, getSizeBytes = 4 |
+| allocators.cpp:155:3:155:26 | new | getAllocatedElementType = int, getSizeBytes = 4, requiresDealloc |
+| allocators.cpp:156:3:156:26 | new[] | getAllocatedElementType = int, getSizeBytes = 8, requiresDealloc |
+| allocators.cpp:162:13:162:27 | new[] | getAllocatedElementType = char[10], getSizeExpr = x, getSizeMult = 10, requiresDealloc |
+| allocators.cpp:163:13:163:28 | new[] | getAllocatedElementType = char[20], getSizeBytes = 400, requiresDealloc |
+| allocators.cpp:164:13:164:31 | new[] | getAllocatedElementType = char[30][30], getSizeExpr = x, getSizeMult = 900, requiresDealloc |
+| allocators.cpp:169:8:169:19 | call to operator new | getSizeBytes = 4, getSizeExpr = sizeof(int), getSizeMult = 1, requiresDealloc |
+| allocators.cpp:177:50:177:55 | call to malloc | getAllocatedElementType = const volatile int, getSizeBytes = 5, getSizeExpr = 5, getSizeMult = 1, requiresDealloc |
+| allocators.cpp:178:26:178:31 | call to malloc | getAllocatedElementType = int, getSizeBytes = 20, getSizeExpr = 5, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:179:31:179:36 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 1, requiresDealloc |
+| allocators.cpp:180:16:180:21 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:181:34:181:39 | call to malloc | getAllocatedElementType = const char, getSizeExpr = ... + ..., getSizeMult = 1, requiresDealloc |
+| allocators.cpp:182:23:182:28 | call to malloc | getSizeExpr = count, getSizeMult = 8, requiresDealloc |
+| allocators.cpp:183:3:183:8 | call to malloc | getSizeBytes = 32, getSizeExpr = ... * ..., getSizeMult = 1, requiresDealloc |
 deallocationFunctions
-| allocators.cpp:11:6:11:20 | operator delete | getFreedArg = 0 |
-| allocators.cpp:12:6:12:22 | operator delete[] | getFreedArg = 0 |
-| allocators.cpp:13:6:13:20 | operator delete | getFreedArg = 0 |
-| allocators.cpp:14:6:14:22 | operator delete[] | getFreedArg = 0 |
+| allocators.cpp:16:6:16:20 | operator delete | getFreedArg = 0 |
+| allocators.cpp:17:6:17:22 | operator delete[] | getFreedArg = 0 |
+| allocators.cpp:18:6:18:20 | operator delete | getFreedArg = 0 |
+| allocators.cpp:19:6:19:22 | operator delete[] | getFreedArg = 0 |
 | file://:0:0:0:0 | operator delete | getFreedArg = 0 |
 | file://:0:0:0:0 | operator delete | getFreedArg = 0 |
 | file://:0:0:0:0 | operator delete | getFreedArg = 0 |
 | file://:0:0:0:0 | operator delete[] | getFreedArg = 0 |
 | file://:0:0:0:0 | operator delete[] | getFreedArg = 0 |
 deallocationExprs
-| allocators.cpp:59:3:59:35 | delete | getFreedExpr = 0 |
-| allocators.cpp:60:3:60:38 | delete | getFreedExpr = 0 |
-| allocators.cpp:61:3:61:44 | delete | getFreedExpr = 0 |
-| allocators.cpp:62:3:62:43 | delete | getFreedExpr = 0 |
-| allocators.cpp:63:3:63:47 | delete | getFreedExpr = 0 |
-| allocators.cpp:64:3:64:44 | delete | getFreedExpr = 0 |
-| allocators.cpp:78:3:78:37 | delete[] | getFreedExpr = 0 |
-| allocators.cpp:79:3:79:40 | delete[] | getFreedExpr = 0 |
-| allocators.cpp:80:3:80:46 | delete[] | getFreedExpr = 0 |
-| allocators.cpp:81:3:81:45 | delete[] | getFreedExpr = 0 |
-| allocators.cpp:82:3:82:49 | delete[] | getFreedExpr = 0 |
-| allocators.cpp:83:3:83:23 | delete[] | getFreedExpr = call to GetPointer |
-| allocators.cpp:150:2:150:16 | call to operator delete | getFreedExpr = ptr |
+| allocators.cpp:69:3:69:35 | delete | getFreedExpr = 0 |
+| allocators.cpp:70:3:70:38 | delete | getFreedExpr = 0 |
+| allocators.cpp:71:3:71:44 | delete | getFreedExpr = 0 |
+| allocators.cpp:72:3:72:49 | delete | getFreedExpr = 0 |
+| allocators.cpp:73:3:73:43 | delete | getFreedExpr = 0 |
+| allocators.cpp:74:3:74:47 | delete | getFreedExpr = 0 |
+| allocators.cpp:75:3:75:44 | delete | getFreedExpr = 0 |
+| allocators.cpp:89:3:89:37 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:90:3:90:40 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:91:3:91:46 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:92:3:92:45 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:93:3:93:49 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:94:3:94:23 | delete[] | getFreedExpr = call to GetPointer |
+| allocators.cpp:170:2:170:16 | call to operator delete | getFreedExpr = ptr |

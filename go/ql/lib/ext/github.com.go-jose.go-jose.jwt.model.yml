@@ -3,9 +3,10 @@ extensions:
       pack: codeql/go-all
       extensible: packageGrouping
     data:
-      - ["go-jose/jwt", "github.com/go-jose/go-jose/jwt"]
       - ["go-jose/jwt", "gopkg.in/square/go-jose/jwt"]
+      - ["go-jose/jwt", "gopkg.in/go-jose/go-jose/jwt"]
       - ["go-jose/jwt", "github.com/square/go-jose/jwt"]
+      - ["go-jose/jwt", "github.com/go-jose/go-jose/jwt"]
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel

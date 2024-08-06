@@ -124,8 +124,6 @@ signature module InputSig<LocationSig Location> {
     string toString();
   }
 
-  string ppReprType(DataFlowType t);
-
   /**
    * Holds if `t1` and `t2` are compatible types.
    *
