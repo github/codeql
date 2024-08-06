@@ -1073,8 +1073,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
         singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr =
-        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
+      nodeFromPreExpr = getParameterDef(p.getParameter()).getARead()
       or
       nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )
