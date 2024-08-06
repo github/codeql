@@ -1223,6 +1223,8 @@ module Http {
     /**
      * A dataflow call node to a method that sets a cookie in an http response,
      * and has common keyword arguments `secure`, `httponly`, and `samesite` to set the attributes of the cookie.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
      */
     abstract class SetCookieCall extends CookieWrite::Range, DataFlow::CallCfgNode {
       override predicate hasSecureFlag(boolean b) {
