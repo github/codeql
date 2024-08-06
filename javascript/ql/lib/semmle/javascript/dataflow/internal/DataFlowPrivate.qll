@@ -301,13 +301,17 @@ newtype TDataFlowType =
   TAnyType()
 
 class DataFlowType extends TDataFlowType {
-  string toString() {
+  string toDebugString() {
     this instanceof TFunctionType and
     result =
       "TFunctionType(" + this.asFunction().toString() + ") at line " +
         this.asFunction().getLocation().getStartLine()
     or
     this instanceof TAnyType and result = "TAnyType"
+  }
+
+  string toString() {
+    result = "" // Must be the empty string to prevent this from showing up in path explanations
   }
 
   Function asFunction() { this = TFunctionType(result) }

@@ -126,6 +126,8 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     )
   }
 
+  class ControlFlowNode = js::ControlFlowNode;
+
   class BasicBlock extends js::BasicBlock {
     Callable getEnclosingCallable() { result = this.getContainer().getFunctionBoundary() }
   }
