@@ -3547,7 +3547,19 @@ public class Parser {
 
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(this.type == TokenType._default);
-      Identifier exported = this.eatContextual("as") ? this.parseIdent(true) : local;
+      Identifier exported;
+      if (!this.eatContextual("as")) {
+        exported = local;
+      } else {
+        if (this.type == TokenType.string) {
+          // e.g. `export { Foo_new as "Foo::new" }`
+          Expression string = this.parseExprAtom(null);
+          String str = ((Literal)string).getStringValue();
+          exported = new Identifier(loc, str);
+        } else {
+          exported = this.parseIdent(true);
+        }
+      }
       checkExport(exports, exported.getName(), exported.getLoc().getStart());
       nodes.add(this.finishNode(new ExportSpecifier(loc, local, exported)));
     }
