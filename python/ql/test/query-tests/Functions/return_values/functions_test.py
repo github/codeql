@@ -331,3 +331,11 @@ def indirectly_returning_different_tuple_sizes(x):
 def mismatched_multi_assign(x):
     a,b = returning_different_tuple_sizes(x)
     return a,b
+
+
+def ok_match(x):  # FP
+    match x:
+        case True | 'true':
+            return 0
+        case _:
+            raise ValueError(x)
