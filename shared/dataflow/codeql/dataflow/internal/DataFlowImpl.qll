@@ -94,7 +94,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     int fieldFlowBranchLimit();
 
-    /** Gets the access path limit. */
+    /** Gets the access path limit. A maximum limit of 5 is allowed. */
     int accessPathLimit();
 
     /**
@@ -552,6 +552,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private module Stage1 implements StageSig {
       class Ap = Unit;
+
+      Content getAHeadContent(Ap ap) { any() }
 
       private class Cc = boolean;
 
@@ -1019,6 +1021,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         callEdgeReturn(call, c, _, _, _, _, _)
       }
 
+      predicate storeMayReachRead(NodeEx storeSource, Content c, NodeEx readTarget) { none() }
+
+      predicate providesStoreReadMatching() { none() }
+
       additional predicate stats(
         boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges
       ) {
@@ -1279,7 +1285,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private signature module StageSig {
-      class Ap;
+      class Ap {
+        string toString();
+      }
+
+      Content getAHeadContent(Ap ap);
 
       predicate revFlow(NodeEx node);
 
@@ -1314,6 +1324,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
 
       predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c);
+
+      predicate storeMayReachRead(NodeEx storeSource, Content c, NodeEx readTarget);
+
+      default predicate providesStoreReadMatching() { any() }
     }
 
     private module MkStage<StageSig PrevStage> {
@@ -1329,6 +1343,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         class ApNil extends Ap;
+
+        Content getAHeadContent(Ap ap);
 
         bindingset[result, ap]
         ApApprox getApprox(Ap ap);
@@ -1402,11 +1418,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[cc]
         LocalCc getLocalCc(Cc cc);
 
+        predicate localValueStep(NodeEx node1, NodeEx node2, LocalCc lcc);
+
         bindingset[node1, state1]
         bindingset[node2, state2]
-        predicate localStep(
-          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-          Typ t, LocalCc lcc
+        predicate localTaintStep(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, Typ t, LocalCc lcc
         );
 
         bindingset[node, state, t0, ap]
@@ -1469,6 +1486,52 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           compatibleContainer0(apc, containerType)
         }
 
+        private class NodeExAlias = NodeEx;
+
+        final private class ApFinal = Ap;
+
+        private module StoreReadMatchingInput implements StoreReadMatchingInputSig {
+          class NodeEx = NodeExAlias;
+
+          class Ap extends ApFinal {
+            Content getHead() { result = getAHeadContent(this) }
+          }
+
+          predicate nodeApRange(NodeEx node, Ap ap) { revFlowAp(node, ap) }
+
+          predicate localValueStep(NodeEx node1, NodeEx node2) {
+            exists(FlowState state, Ap ap, ApOption returnAp |
+              revFlow(node1, pragma[only_bind_into](state), _, pragma[only_bind_into](returnAp),
+                pragma[only_bind_into](ap)) and
+              revFlow(node2, pragma[only_bind_into](state), _, pragma[only_bind_into](returnAp),
+                pragma[only_bind_into](ap)) and
+              localValueStep(node1, node2, _)
+            )
+          }
+
+          predicate jumpValueStep(NodeEx node1, NodeEx node2) { jumpStepEx(node1, node2) }
+
+          predicate callEdgeArgParam(NodeEx arg, NodeEx param) {
+            callEdgeArgParam(_, _, arg, param, true, _)
+          }
+
+          predicate callEdgeReturn(NodeEx ret, NodeEx out) {
+            callEdgeReturn(_, _, ret, _, out, true, _)
+          }
+
+          predicate readContentStep(NodeEx node1, Content c, NodeEx node2) {
+            readStepCand0(node1, c, node2)
+          }
+
+          predicate storeContentStep(NodeEx node1, Content c, NodeEx node2) {
+            storeStepCand0(node1, _, c, node2, _, _)
+          }
+
+          int accessPathConfigLimit() { result = Config::accessPathLimit() }
+        }
+
+        import StoreReadMatching<StoreReadMatchingInput>
+
         /**
          * Holds if `node` is reachable with access path `ap` from a source.
          *
@@ -1504,6 +1567,29 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
           fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
+        }
+
+        bindingset[storeSource, c, readTarget]
+        pragma[inline_late]
+        private predicate storeMayReachReadInlineLate(
+          NodeEx storeSource, Content c, NodeEx readTarget
+        ) {
+          PrevStage::storeMayReachRead(storeSource, c, readTarget)
+        }
+
+        bindingset[node1, state1]
+        bindingset[node2, state2]
+        private predicate localStep(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+          Typ t, LocalCc lcc
+        ) {
+          localValueStep(node1, node2, lcc) and
+          state1 = state2 and
+          preservesValue = true and
+          t = getNodeTyp(node1)
+          or
+          localTaintStep(node1, state1, node2, state2, t, lcc) and
+          preservesValue = false
         }
 
         pragma[nomagic]
@@ -1547,8 +1633,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           // read
           exists(Typ t0, Ap ap0, Content c |
             fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx, argT, argAp) and
-            fwdFlowConsCand(t0, ap0, c, t, ap) and
             apa = getApprox(ap)
+          |
+            exists(NodeEx storeSource |
+              fwdFlowConsCandStoreReadMatchingEnabled(storeSource, t0, ap0, c, t, ap) and
+              storeMayReachReadInlineLate(storeSource, c, node)
+            )
+            or
+            fwdFlowConsCandStoreReadMatchingDisabled(t0, ap0, c, t, ap)
           )
           or
           // flow into a callable
@@ -1616,16 +1708,44 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         /**
          * Holds if forward flow with access path `tail` and type `t1` reaches a
          * store of `c` on a container of type `t2` resulting in access path
-         * `cons`.
+         * `cons`. `storeSource` is a relevant store source.
+         *
+         * This predicate is only evaluated when `PrevStage::providesStoreReadMatching()`
+         * holds.
          */
         pragma[nomagic]
-        private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
+        private predicate fwdFlowConsCandStoreReadMatchingEnabled(
+          NodeEx storeSource, Typ t2, Ap cons, Content c, Typ t1, Ap tail
+        ) {
+          PrevStage::providesStoreReadMatching() and
+          fwdFlowStore(storeSource, t1, tail, c, t2, _, _, _, _, _, _) and
+          cons = apCons(c, t1, tail)
+          or
+          exists(Typ t0 |
+            typeStrengthen(t0, cons, t2) and
+            fwdFlowConsCandStoreReadMatchingEnabled(storeSource, t0, cons, c, t1, tail)
+          )
+        }
+
+        /**
+         * Holds if forward flow with access path `tail` and type `t1` reaches a
+         * store of `c` on a container of type `t2` resulting in access path
+         * `cons`.
+         *
+         * This predicate is only evaluated when `PrevStage::providesStoreReadMatching()`
+         * doesn't hold.
+         */
+        pragma[nomagic]
+        private predicate fwdFlowConsCandStoreReadMatchingDisabled(
+          Typ t2, Ap cons, Content c, Typ t1, Ap tail
+        ) {
+          not PrevStage::providesStoreReadMatching() and
           fwdFlowStore(_, t1, tail, c, t2, _, _, _, _, _, _) and
           cons = apCons(c, t1, tail)
           or
           exists(Typ t0 |
             typeStrengthen(t0, cons, t2) and
-            fwdFlowConsCand(t0, cons, c, t1, tail)
+            fwdFlowConsCandStoreReadMatchingDisabled(t0, cons, c, t1, tail)
           )
         }
 
@@ -1637,7 +1757,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         bindingset[node1, apc]
         pragma[inline_late]
-        private predicate readStepCand0(NodeEx node1, ApHeadContent apc, Content c, NodeEx node2) {
+        private predicate readStepCandInlineLate(
+          NodeEx node1, ApHeadContent apc, Content c, NodeEx node2
+        ) {
           readStepCand(node1, apc, c, node2)
         }
 
@@ -1649,7 +1771,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(ApHeadContent apc |
             fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t, ap, _) and
             apc = getHeadContent(ap) and
-            readStepCand0(node1, apc, c, node2)
+            readStepCandInlineLate(node1, apc, c, node2)
           )
         }
 
@@ -2073,9 +2195,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate readStepFwd(NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2) {
-          exists(Typ t1 |
-            fwdFlowRead(t1, ap1, c, n1, n2, _, _, _, _, _) and
-            fwdFlowConsCand(t1, ap1, c, _, ap2)
+          exists(Typ t1 | fwdFlowRead(t1, ap1, c, n1, n2, _, _, _, _, _) |
+            exists(NodeEx storeSource |
+              fwdFlowConsCandStoreReadMatchingEnabled(storeSource, t1, ap1, c, _, ap2) and
+              storeMayReachReadInlineLate(storeSource, c, n2)
+            )
+            or
+            fwdFlowConsCandStoreReadMatchingDisabled(t1, ap1, c, _, ap2)
           )
         }
 
@@ -2190,8 +2316,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           // store
           exists(Ap ap0, Content c |
-            revFlowStore(ap0, c, ap, _, node, state, _, returnCtx, returnAp) and
-            revFlowConsCand(ap0, c, ap)
+            revFlowStore(ap0, c, ap, _, node, state, _, returnCtx, returnAp)
+          |
+            exists(NodeEx readTarget |
+              revFlowConsCand(readTarget, ap0, c, ap) and
+              storeMayReachReadInlineLate(node, c, readTarget)
+            )
+            or
+            revFlowConsCandStoreReadMatchingDisabled(ap0, c, ap)
           )
           or
           // read
@@ -2257,12 +2389,22 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * resulting in access path `cons`.
          */
         pragma[nomagic]
-        private predicate revFlowConsCand(Ap cons, Content c, Ap tail) {
-          exists(NodeEx mid, Ap tail0 |
-            revFlow(mid, _, _, _, tail) and
+        private predicate revFlowConsCand(NodeEx readTarget, Ap cons, Content c, Ap tail) {
+          exists(Ap tail0 |
+            revFlow(readTarget, _, _, _, tail) and
             tail = pragma[only_bind_into](tail0) and
-            readStepFwd(_, cons, c, mid, tail0)
+            readStepFwd(_, cons, c, readTarget, tail0)
           )
+        }
+
+        /**
+         * Holds if reverse flow with access path `tail` reaches a read of `c`
+         * resulting in access path `cons`.
+         */
+        pragma[nomagic]
+        private predicate revFlowConsCandStoreReadMatchingDisabled(Ap cons, Content c, Ap tail) {
+          not PrevStage::providesStoreReadMatching() and
+          revFlowConsCand(_, cons, c, tail)
         }
 
         private module RevTypeFlowInput implements TypeFlowInput {
@@ -2382,18 +2524,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        predicate storeStepCand(
+        private predicate storeStepCand0(
           NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
           DataFlowType containerType
         ) {
           exists(Ap ap2 |
             PrevStage::storeStepCand(node1, _, c, node2, contentType, containerType) and
             revFlowStore(ap2, c, ap1, _, node1, _, node2, _, _) and
-            revFlowConsCand(ap2, c, ap1)
+            revFlowConsCand(_, ap2, c, ap1)
           )
         }
 
-        predicate readStepCand(NodeEx node1, Content c, NodeEx node2) {
+        pragma[nomagic]
+        private predicate readStepCand0(NodeEx node1, Content c, NodeEx node2) {
           exists(Ap ap1, Ap ap2 |
             revFlow(node2, _, _, _, pragma[only_bind_into](ap2)) and
             readStepFwd(node1, ap1, c, node2, ap2) and
@@ -2413,10 +2556,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private predicate fwdConsCand(Content c, Typ t, Ap ap) { storeStepFwd(_, t, ap, c, _, _) }
 
-        private predicate revConsCand(Content c, Typ t, Ap ap) {
+        private predicate revConsCand(NodeEx readTarget, Content c, Typ t, Ap ap) {
           exists(Ap ap2 |
             revFlowStore(ap2, c, ap, t, _, _, _, _, _) and
-            revFlowConsCand(ap2, c, ap)
+            revFlowConsCand(readTarget, ap2, c, ap)
           )
         }
 
@@ -2430,7 +2573,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         additional predicate consCand(Content c, Typ t, Ap ap) {
-          revConsCand(c, t, ap) and
+          revConsCand(_, c, t, ap) and
           validAp(ap)
         }
 
@@ -2721,8 +2864,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             // read
             exists(NodeEx mid, Typ t0, Ap ap0, Content c |
               pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
-              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp) and
-              fwdFlowConsCand(t0, ap0, c, t, ap)
+              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp)
+            |
+              exists(NodeEx storeSource |
+                fwdFlowConsCandStoreReadMatchingEnabled(storeSource, t0, ap0, c, t, ap) and
+                storeMayReachReadInlineLate(storeSource, c, node)
+              )
+              or
+              fwdFlowConsCandStoreReadMatchingDisabled(t0, ap0, c, t, ap)
             )
             or
             // flow into a callable
@@ -2785,6 +2934,287 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             pn1.isSink() and pn2.isArbitrarySink()
           }
+        }
+
+        /**
+         * Provides logic for computing compatible and (likely) reachable store-read pairs.
+         *
+         * In order to determine whether a store can reach a compatible read, we first compute
+         * the set of contents that may be both stored and read.
+         *
+         * The implementation is based on `doublyBoundedFastTC`, and in order to avoid poor
+         * performance through recursion, we unroll the recursion manually 4 times, in order to
+         * be able to handle access paths of maximum length 5.
+         */
+        private module StoreReadReachability {
+          private class ApCons extends ApFinal {
+            ApCons() { not this instanceof ApNil }
+          }
+
+          pragma[nomagic]
+          private predicate valueStep(NodeEx node1, NodeEx node2, ApCons ap) {
+            exists(FlowState state, ApOption returnAp1, ApOption returnAp2 |
+              revFlow(node1, pragma[only_bind_into](state), _, returnAp1, pragma[only_bind_into](ap)) and
+              revFlow(node2, pragma[only_bind_into](state), _, returnAp2, pragma[only_bind_into](ap))
+            |
+              localStep(node1, state, node2, state, true, _, _) and
+              returnAp1 = returnAp2
+              or
+              jumpStepEx(node1, node2)
+              or
+              callEdgeArgParam(_, _, node1, node2, _, ap)
+              or
+              callEdgeReturn(_, _, node1, _, node2, _, ap)
+            )
+          }
+
+          private signature module StoreReachesReadInputSig {
+            int iteration();
+
+            predicate storeMayReachReadDelta(NodeEx storeSource, Content c, NodeEx readTarget);
+
+            predicate storeMayReachReadPrev(NodeEx storeSource, Content c, NodeEx readTarget);
+          }
+
+          private signature class UsesPrevDeltaInfoSig {
+            string toString();
+
+            boolean toBoolean();
+          }
+
+          private module StoreReachesRead<
+            StoreReachesReadInputSig Prev, UsesPrevDeltaInfoSig UsesPrevDeltaInfo> implements
+            StoreReachesReadInputSig
+          {
+            int iteration() { result = Prev::iteration() + 1 }
+
+            private predicate enabled() { Config::accessPathLimit() > Prev::iteration() }
+
+            private newtype TNodeOrContent =
+              TNodeOrContentNode(
+                NodeEx n, FlowState state, ApCons ap, UsesPrevDeltaInfo usesPrevDelta
+              ) {
+                enabled() and
+                revFlow(n, state, _, _, ap)
+              } or
+              TNodeOrContentContentStart(Content c) { enabled() and readStepCand0(_, c, _) } or
+              TNodeOrContentContentEnd(Content c) { enabled() and readStepCand0(_, c, _) }
+
+            private class NodeOrContent extends TNodeOrContent {
+              NodeEx asNodeEx(FlowState state, Ap ap, UsesPrevDeltaInfo usesPrevDelta) {
+                this = TNodeOrContentNode(result, state, ap, usesPrevDelta)
+              }
+
+              Content asContentStart() { this = TNodeOrContentContentStart(result) }
+
+              Content asContentEnd() { this = TNodeOrContentContentEnd(result) }
+
+              string toString() {
+                result = this.asContentStart().toString()
+                or
+                result = this.asContentEnd().toString()
+                or
+                result = this.asNodeEx(_, _, _).toString()
+              }
+            }
+
+            pragma[nomagic]
+            private predicate step(NodeOrContent node1, NodeOrContent node2) {
+              exists(
+                NodeEx n1, NodeEx n2, FlowState state, Ap ap, UsesPrevDeltaInfo usesPrevDelta1,
+                UsesPrevDeltaInfo usesPrevDelta2
+              |
+                n1 =
+                  node1
+                      .asNodeEx(pragma[only_bind_into](state), pragma[only_bind_into](ap),
+                        usesPrevDelta1) and
+                n2 =
+                  node2
+                      .asNodeEx(pragma[only_bind_into](state), pragma[only_bind_into](ap),
+                        usesPrevDelta2)
+              |
+                valueStep(n1, n2, ap) and
+                pragma[only_bind_into](pragma[only_bind_out](usesPrevDelta2)) =
+                  pragma[only_bind_into](pragma[only_bind_out](usesPrevDelta1))
+                or
+                Prev::storeMayReachReadDelta(n1, _, n2) and usesPrevDelta2.toBoolean() = true
+                or
+                Prev::storeMayReachReadPrev(n1, _, n2) and
+                pragma[only_bind_into](pragma[only_bind_out](usesPrevDelta2)) =
+                  pragma[only_bind_into](pragma[only_bind_out](usesPrevDelta1))
+              )
+              or
+              exists(NodeEx n2, Content c, ApCons ap2, UsesPrevDeltaInfo usesPrevDelta2 |
+                n2 = node2.asNodeEx(_, ap2, usesPrevDelta2) and
+                c = node1.asContentStart() and
+                projectToHeadContent(c) = getHeadContent(ap2) and
+                storeStepCand0(_, _, c, n2, _, _) and
+                usesPrevDelta2.toBoolean() = false
+              )
+              or
+              exists(NodeEx n1, Content c, ApCons ap1, UsesPrevDeltaInfo usesPrevDelta1 |
+                n1 = node1.asNodeEx(_, ap1, usesPrevDelta1) and
+                c = node2.asContentEnd() and
+                projectToHeadContent(c) = getHeadContent(ap1) and
+                readStepCand0(n1, c, _) and
+                usesPrevDelta1.toBoolean() = true
+              )
+            }
+
+            private predicate contentIsStored(NodeOrContent c) {
+              storeStepCand0(_, _, c.asContentStart(), _, _, _)
+            }
+
+            private predicate contentIsRead(NodeOrContent c) {
+              readStepCand0(_, c.asContentEnd(), _)
+            }
+
+            private predicate contentReachesReadTc(NodeOrContent node1, NodeOrContent node2) =
+              doublyBoundedFastTC(step/2, contentIsStored/1, contentIsRead/1)(node1, node2)
+
+            pragma[nomagic]
+            private predicate contentId(NodeOrContent c1, NodeOrContent c2, Content c) {
+              c1.asContentStart() = c and
+              c2.asContentEnd() = c
+            }
+
+            additional predicate contentIsReadAndStored(Content c) {
+              exists(NodeOrContent n1, NodeOrContent n2 |
+                contentReachesReadTc(n1, n2) and
+                contentId(n1, n2, c)
+              )
+            }
+
+            private predicate isStoreTarget(NodeOrContent node) {
+              exists(Content c, Ap ap, UsesPrevDeltaInfo usesPrevDelta |
+                contentIsReadAndStored(c) and
+                storeStepCand0(_, _, c, node.asNodeEx(_, ap, usesPrevDelta), _, _) and
+                projectToHeadContent(c) = getHeadContent(ap) and
+                usesPrevDelta.toBoolean() = false
+              )
+            }
+
+            private predicate isReadSource(NodeOrContent node) {
+              exists(Content c, Ap ap, UsesPrevDeltaInfo usesPrevDelta |
+                contentIsReadAndStored(c) and
+                readStepCand0(node.asNodeEx(_, ap, usesPrevDelta), c, _) and
+                projectToHeadContent(c) = getHeadContent(ap) and
+                usesPrevDelta.toBoolean() = true
+              )
+            }
+
+            private predicate storeMayReachReadTc(NodeOrContent node1, NodeOrContent node2) =
+              doublyBoundedFastTC(step/2, isStoreTarget/1, isReadSource/1)(node1, node2)
+
+            pragma[nomagic]
+            private predicate storeStepCandIsReadAndStored(
+              NodeEx node1, Content c, NodeOrContent node2
+            ) {
+              exists(Ap ap, UsesPrevDeltaInfo usesPrevDelta |
+                contentIsReadAndStored(c) and
+                storeStepCand0(node1, _, c, node2.asNodeEx(_, ap, usesPrevDelta), _, _) and
+                projectToHeadContent(c) = getHeadContent(ap) and
+                usesPrevDelta.toBoolean() = false
+              )
+            }
+
+            pragma[nomagic]
+            private predicate readStepCandIsReadAndStored(
+              NodeOrContent node1, Content c, NodeEx node2
+            ) {
+              exists(Ap ap, UsesPrevDeltaInfo usesPrevDelta |
+                contentIsReadAndStored(c) and
+                readStepCand0(node1.asNodeEx(_, ap, usesPrevDelta), c, node2) and
+                projectToHeadContent(c) = getHeadContent(ap) and
+                usesPrevDelta.toBoolean() = true
+              )
+            }
+
+            pragma[nomagic]
+            predicate storeMayReachReadPrev(NodeEx storeSource, Content c, NodeEx readTarget) {
+              Prev::storeMayReachReadPrev(storeSource, c, readTarget)
+              or
+              Prev::storeMayReachReadDelta(storeSource, c, readTarget)
+            }
+
+            pragma[nomagic]
+            predicate storeMayReachReadDelta(NodeEx storeSource, Content c, NodeEx readTarget) {
+              exists(NodeOrContent storeTarget, NodeOrContent readSource |
+                storeMayReachReadTc(storeTarget, readSource) and
+                storeStepCandIsReadAndStored(storeSource, c, storeTarget) and
+                readStepCandIsReadAndStored(readSource, c, readTarget)
+              ) and
+              not Prev::storeMayReachReadPrev(storeSource, c, readTarget)
+            }
+          }
+
+          module Iteration0 implements StoreReachesReadInputSig {
+            int iteration() { result = 0 }
+
+            predicate storeMayReachReadDelta(NodeEx node1, Content c, NodeEx node2) { none() }
+
+            predicate storeMayReachReadPrev(NodeEx node1, Content c, NodeEx node2) { none() }
+          }
+
+          private class UsesPrevDeltaInfoUnit extends Unit {
+            boolean toBoolean() { result = [false, true] }
+          }
+
+          private module StoreReachesRead1 implements StoreReachesReadInputSig {
+            private module M = StoreReachesRead<Iteration0, UsesPrevDeltaInfoUnit>;
+
+            import M
+
+            predicate storeMayReachReadDelta(NodeEx storeSource, Content c, NodeEx readTarget) {
+              M::storeMayReachReadDelta(storeSource, c, readTarget)
+              or
+              // special case only needed for the first iteration: a store immediately followed by a read
+              exists(NodeEx storeTargetReadSource |
+                StoreReachesRead1::contentIsReadAndStored(c) and
+                storeStepCand0(storeSource, _, c, storeTargetReadSource, _, _) and
+                readStepCand0(storeTargetReadSource, c, readTarget)
+              )
+            }
+          }
+
+          private class UsesPrevDeltaInfoBoolean extends Boolean {
+            boolean toBoolean() { result = this }
+          }
+
+          private module StoreReachesRead2 =
+            StoreReachesRead<StoreReachesRead1, UsesPrevDeltaInfoBoolean>;
+
+          private module StoreReachesRead3 =
+            StoreReachesRead<StoreReachesRead2, UsesPrevDeltaInfoBoolean>;
+
+          private module StoreReachesRead4 =
+            StoreReachesRead<StoreReachesRead3, UsesPrevDeltaInfoBoolean>;
+
+          private module StoreReachesRead5 =
+            StoreReachesRead<StoreReachesRead4, UsesPrevDeltaInfoBoolean>;
+
+          predicate storeMayReachRead(NodeEx storeSource, Content c, NodeEx readTarget) {
+            StoreReachesRead5::storeMayReachReadDelta(storeSource, c, readTarget)
+            or
+            StoreReachesRead5::storeMayReachReadPrev(storeSource, c, readTarget)
+          }
+        }
+
+        predicate storeMayReachRead = StoreReadReachability::storeMayReachRead/3;
+
+        pragma[nomagic]
+        predicate storeStepCand(
+          NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
+          DataFlowType containerType
+        ) {
+          storeStepCand0(node1, ap1, c, node2, contentType, containerType) and
+          storeMayReachRead(node1, c, _)
+        }
+
+        pragma[nomagic]
+        predicate readStepCand(NodeEx node1, Content c, NodeEx node2) {
+          readStepCand0(node1, c, node2) and
+          storeMayReachRead(_, c, node2)
         }
 
         additional predicate stats(
@@ -2884,6 +3314,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ApNil() { this = false }
       }
 
+      Content getAHeadContent(Ap ap) { ap = true and exists(result) }
+
       bindingset[result, ap]
       PrevStage::Ap getApprox(Ap ap) { any() }
 
@@ -2913,22 +3345,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CachedCallContextSensitivity
       import NoLocalCallContext
 
+      predicate localValueStep(NodeEx node1, NodeEx node2, LocalCc lcc) {
+        localFlowStepNodeCand1(node1, node2, _) and
+        exists(lcc)
+      }
+
       bindingset[node1, state1]
       bindingset[node2, state2]
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc
+      predicate localTaintStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, Typ t, LocalCc lcc
       ) {
         (
-          preservesValue = true and
-          localFlowStepNodeCand1(node1, node2, _) and
-          state1 = state2
-          or
-          preservesValue = false and
           additionalLocalFlowStepNodeCand1(node1, node2, _) and
           state1 = state2
           or
-          preservesValue = false and
           additionalLocalStateStep(node1, state1, node2, state2)
         ) and
         exists(t) and
@@ -3164,6 +3594,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class Ap = ApproxAccessPathFront;
 
+      Content getAHeadContent(Ap ap) { result = ap.getAHead() }
+
       class ApNil = ApproxAccessPathFrontNil;
 
       PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
@@ -3201,11 +3633,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import NoLocalCallContext
 
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc
+      predicate localValueStep(NodeEx node1, NodeEx node2, LocalCc lcc) {
+        localFlowBigStep(node1, _, node2, _, true, _, _, _) and
+        exists(lcc)
+      }
+
+      predicate localTaintStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, Typ t, LocalCc lcc
       ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, _) and
+        localFlowBigStep(node1, state1, node2, state2, false, _, _, _) and
         exists(t) and
         exists(lcc)
       }
@@ -3265,6 +3701,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = AccessPathFrontNil;
 
+      Content getAHeadContent(Ap ap) { result = ap.getHead() }
+
       PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
 
       Typ getTyp(DataFlowType t) { result = t }
@@ -3288,11 +3726,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import BooleanCallContext
 
       pragma[nomagic]
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc
+      predicate localValueStep(NodeEx node1, NodeEx node2, LocalCc lcc) {
+        exists(FlowState state |
+          localFlowBigStep(node1, _, node2, _, true, _, _, _) and
+          PrevStage::revFlow(node1, pragma[only_bind_into](state), _) and
+          PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
+          exists(lcc)
+        )
+      }
+
+      pragma[nomagic]
+      predicate localTaintStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, Typ t, LocalCc lcc
       ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, _) and
+        localFlowBigStep(node1, state1, node2, state2, false, t, _, _) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
@@ -3553,6 +4000,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class Ap = AccessPathApprox;
 
+      Content getAHeadContent(Ap ap) { result = ap.getHead() }
+
       class ApNil = AccessPathApproxNil;
 
       pragma[nomagic]
@@ -3590,11 +4039,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
-      predicate localStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, LocalCc lcc
+      pragma[nomagic]
+      predicate localValueStep(NodeEx node1, NodeEx node2, LocalCc lcc) {
+        exists(FlowState state |
+          localFlowBigStep(node1, _, node2, _, true, _, lcc, _) and
+          PrevStage::revFlow(node1, pragma[only_bind_into](state), _) and
+          PrevStage::revFlow(node2, pragma[only_bind_into](state), _)
+        )
+      }
+
+      pragma[nomagic]
+      predicate localTaintStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, Typ t, LocalCc lcc
       ) {
-        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, _) and
+        localFlowBigStep(node1, state1, node2, state2, false, t, lcc, _) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
       }
