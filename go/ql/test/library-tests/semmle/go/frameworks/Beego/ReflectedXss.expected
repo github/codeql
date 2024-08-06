@@ -155,123 +155,45 @@ edges
 | test.go:312:21:312:24 | bMap | test.go:312:21:312:32 | call to Items | provenance | MaD:12 |
 | test.go:312:21:312:32 | call to Items | test.go:312:21:312:52 | type assertion | provenance |  |
 models
-| 1 | Summary: github.com/astaxie/beego/utils; ; false; SliceChunk; ; ; Argument[0]; ReturnValue; taint; manual |
-| 1 | Summary: github.com/beego/beego/core/utils; ; false; SliceChunk; ; ; Argument[0]; ReturnValue; taint; manual |
-| 1 | Summary: github.com/beego/beego/utils; ; false; SliceChunk; ; ; Argument[0]; ReturnValue; taint; manual |
-| 2 | Summary: github.com/astaxie/beego/utils; ; false; SliceDiff; ; ; Argument[0]; ReturnValue; taint; manual |
-| 2 | Summary: github.com/beego/beego/core/utils; ; false; SliceDiff; ; ; Argument[0]; ReturnValue; taint; manual |
-| 2 | Summary: github.com/beego/beego/utils; ; false; SliceDiff; ; ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: github.com/astaxie/beego/utils; ; false; SliceFilter; ; ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: github.com/beego/beego/core/utils; ; false; SliceFilter; ; ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: github.com/beego/beego/utils; ; false; SliceFilter; ; ; Argument[0]; ReturnValue; taint; manual |
-| 4 | Summary: github.com/astaxie/beego/utils; ; false; SliceIntersect; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 4 | Summary: github.com/beego/beego/core/utils; ; false; SliceIntersect; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 4 | Summary: github.com/beego/beego/utils; ; false; SliceIntersect; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 5 | Summary: github.com/astaxie/beego/utils; ; false; SliceMerge; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 5 | Summary: github.com/beego/beego/core/utils; ; false; SliceMerge; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 5 | Summary: github.com/beego/beego/utils; ; false; SliceMerge; ; ; Argument[0..1]; ReturnValue; taint; manual |
-| 6 | Summary: github.com/astaxie/beego/utils; ; false; SlicePad; ; ; Argument[0..2]; ReturnValue; taint; manual |
-| 6 | Summary: github.com/beego/beego/core/utils; ; false; SlicePad; ; ; Argument[0..2]; ReturnValue; taint; manual |
-| 6 | Summary: github.com/beego/beego/utils; ; false; SlicePad; ; ; Argument[0..2]; ReturnValue; taint; manual |
-| 7 | Summary: github.com/astaxie/beego/utils; ; false; SliceRand; ; ; Argument[0]; ReturnValue; taint; manual |
-| 7 | Summary: github.com/beego/beego/core/utils; ; false; SliceRand; ; ; Argument[0]; ReturnValue; taint; manual |
-| 7 | Summary: github.com/beego/beego/utils; ; false; SliceRand; ; ; Argument[0]; ReturnValue; taint; manual |
-| 8 | Summary: github.com/astaxie/beego/utils; ; false; SliceReduce; ; ; Argument[0]; ReturnValue; taint; manual |
-| 8 | Summary: github.com/beego/beego/core/utils; ; false; SliceReduce; ; ; Argument[0]; ReturnValue; taint; manual |
-| 8 | Summary: github.com/beego/beego/utils; ; false; SliceReduce; ; ; Argument[0]; ReturnValue; taint; manual |
-| 9 | Summary: github.com/astaxie/beego/utils; ; false; SliceShuffle; ; ; Argument[0]; ReturnValue; taint; manual |
-| 9 | Summary: github.com/beego/beego/core/utils; ; false; SliceShuffle; ; ; Argument[0]; ReturnValue; taint; manual |
-| 9 | Summary: github.com/beego/beego/utils; ; false; SliceShuffle; ; ; Argument[0]; ReturnValue; taint; manual |
-| 10 | Summary: github.com/astaxie/beego/utils; ; false; SliceUnique; ; ; Argument[0]; ReturnValue; taint; manual |
-| 10 | Summary: github.com/beego/beego/core/utils; ; false; SliceUnique; ; ; Argument[0]; ReturnValue; taint; manual |
-| 10 | Summary: github.com/beego/beego/utils; ; false; SliceUnique; ; ; Argument[0]; ReturnValue; taint; manual |
-| 11 | Summary: github.com/astaxie/beego/utils; BeeMap; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 11 | Summary: github.com/beego/beego/core/utils; BeeMap; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 11 | Summary: github.com/beego/beego/utils; BeeMap; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 12 | Summary: github.com/astaxie/beego/utils; BeeMap; true; Items; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 12 | Summary: github.com/beego/beego/core/utils; BeeMap; true; Items; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 12 | Summary: github.com/beego/beego/utils; BeeMap; true; Items; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 13 | Summary: github.com/astaxie/beego/utils; BeeMap; true; Set; ; ; Argument[1]; Argument[receiver]; taint; manual |
-| 13 | Summary: github.com/beego/beego/core/utils; BeeMap; true; Set; ; ; Argument[1]; Argument[receiver]; taint; manual |
-| 13 | Summary: github.com/beego/beego/utils; BeeMap; true; Set; ; ; Argument[1]; Argument[receiver]; taint; manual |
-| 14 | Source: github.com/astaxie/beego/context; BeegoInput; true; Bind; ; ; Argument[0]; remote; manual |
-| 14 | Source: github.com/beego/beego/context; BeegoInput; true; Bind; ; ; Argument[0]; remote; manual |
-| 14 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Bind; ; ; Argument[0]; remote; manual |
-| 15 | Source: github.com/astaxie/beego/context; BeegoInput; true; Cookie; ; ; ReturnValue[0]; remote; manual |
-| 15 | Source: github.com/beego/beego/context; BeegoInput; true; Cookie; ; ; ReturnValue[0]; remote; manual |
-| 15 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Cookie; ; ; ReturnValue[0]; remote; manual |
-| 16 | Source: github.com/astaxie/beego/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 16 | Source: github.com/beego/beego/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 16 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 17 | Source: github.com/astaxie/beego/context; BeegoInput; true; GetData; ; ; ReturnValue[0]; remote; manual |
-| 17 | Source: github.com/beego/beego/context; BeegoInput; true; GetData; ; ; ReturnValue[0]; remote; manual |
-| 17 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; GetData; ; ; ReturnValue[0]; remote; manual |
-| 18 | Source: github.com/astaxie/beego/context; BeegoInput; true; Header; ; ; ReturnValue[0]; remote; manual |
-| 18 | Source: github.com/beego/beego/context; BeegoInput; true; Header; ; ; ReturnValue[0]; remote; manual |
-| 18 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Header; ; ; ReturnValue[0]; remote; manual |
-| 19 | Source: github.com/astaxie/beego/context; BeegoInput; true; Param; ; ; ReturnValue[0]; remote; manual |
-| 19 | Source: github.com/beego/beego/context; BeegoInput; true; Param; ; ; ReturnValue[0]; remote; manual |
-| 19 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Param; ; ; ReturnValue[0]; remote; manual |
-| 20 | Source: github.com/astaxie/beego/context; BeegoInput; true; Params; ; ; ReturnValue[0]; remote; manual |
-| 20 | Source: github.com/beego/beego/context; BeegoInput; true; Params; ; ; ReturnValue[0]; remote; manual |
-| 20 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Params; ; ; ReturnValue[0]; remote; manual |
-| 21 | Source: github.com/astaxie/beego/context; BeegoInput; true; Query; ; ; ReturnValue[0]; remote; manual |
-| 21 | Source: github.com/beego/beego/context; BeegoInput; true; Query; ; ; ReturnValue[0]; remote; manual |
-| 21 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Query; ; ; ReturnValue[0]; remote; manual |
-| 22 | Source: github.com/astaxie/beego/context; BeegoInput; true; Refer; ; ; ReturnValue[0]; remote; manual |
-| 22 | Source: github.com/beego/beego/context; BeegoInput; true; Refer; ; ; ReturnValue[0]; remote; manual |
-| 22 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Refer; ; ; ReturnValue[0]; remote; manual |
-| 23 | Source: github.com/astaxie/beego/context; BeegoInput; true; Referer; ; ; ReturnValue[0]; remote; manual |
-| 23 | Source: github.com/beego/beego/context; BeegoInput; true; Referer; ; ; ReturnValue[0]; remote; manual |
-| 23 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Referer; ; ; ReturnValue[0]; remote; manual |
-| 24 | Source: github.com/astaxie/beego/context; BeegoInput; true; URI; ; ; ReturnValue[0]; remote; manual |
-| 24 | Source: github.com/beego/beego/context; BeegoInput; true; URI; ; ; ReturnValue[0]; remote; manual |
-| 24 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; URI; ; ; ReturnValue[0]; remote; manual |
-| 25 | Source: github.com/astaxie/beego/context; BeegoInput; true; URL; ; ; ReturnValue[0]; remote; manual |
-| 25 | Source: github.com/beego/beego/context; BeegoInput; true; URL; ; ; ReturnValue[0]; remote; manual |
-| 25 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; URL; ; ; ReturnValue[0]; remote; manual |
-| 26 | Source: github.com/astaxie/beego/context; BeegoInput; true; UserAgent; ; ; ReturnValue[0]; remote; manual |
-| 26 | Source: github.com/beego/beego/context; BeegoInput; true; UserAgent; ; ; ReturnValue[0]; remote; manual |
-| 26 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; UserAgent; ; ; ReturnValue[0]; remote; manual |
-| 27 | Source: github.com/astaxie/beego/context; Context; true; GetCookie; ; ; ReturnValue; remote; manual |
-| 27 | Source: github.com/beego/beego/context; Context; true; GetCookie; ; ; ReturnValue; remote; manual |
-| 27 | Source: github.com/beego/beego/server/web/context; Context; true; GetCookie; ; ; ReturnValue; remote; manual |
-| 28 | Summary: github.com/astaxie/beego; ; false; HTML2str; ; ; Argument[0]; ReturnValue; taint; manual |
-| 28 | Summary: github.com/beego/beego/server/web; ; false; HTML2str; ; ; Argument[0]; ReturnValue; taint; manual |
-| 28 | Summary: github.com/beego/beego; ; false; HTML2str; ; ; Argument[0]; ReturnValue; taint; manual |
-| 29 | Summary: github.com/astaxie/beego; ; false; Htmlunquote; ; ; Argument[0]; ReturnValue; taint; manual |
-| 29 | Summary: github.com/beego/beego/server/web; ; false; Htmlunquote; ; ; Argument[0]; ReturnValue; taint; manual |
-| 29 | Summary: github.com/beego/beego; ; false; Htmlunquote; ; ; Argument[0]; ReturnValue; taint; manual |
-| 30 | Summary: github.com/astaxie/beego; ; false; MapGet; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 30 | Summary: github.com/beego/beego/server/web; ; false; MapGet; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 30 | Summary: github.com/beego/beego; ; false; MapGet; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 31 | Summary: github.com/astaxie/beego; ; false; ParseForm; ; ; Argument[0]; Argument[1]; taint; manual |
-| 31 | Summary: github.com/beego/beego/server/web; ; false; ParseForm; ; ; Argument[0]; Argument[1]; taint; manual |
-| 31 | Summary: github.com/beego/beego; ; false; ParseForm; ; ; Argument[0]; Argument[1]; taint; manual |
-| 32 | Summary: github.com/astaxie/beego; ; false; Str2html; ; ; Argument[0]; ReturnValue; taint; manual |
-| 32 | Summary: github.com/beego/beego/server/web; ; false; Str2html; ; ; Argument[0]; ReturnValue; taint; manual |
-| 32 | Summary: github.com/beego/beego; ; false; Str2html; ; ; Argument[0]; ReturnValue; taint; manual |
-| 33 | Summary: github.com/astaxie/beego; ; false; Substr; ; ; Argument[0]; ReturnValue; taint; manual |
-| 33 | Summary: github.com/beego/beego/server/web; ; false; Substr; ; ; Argument[0]; ReturnValue; taint; manual |
-| 33 | Summary: github.com/beego/beego; ; false; Substr; ; ; Argument[0]; ReturnValue; taint; manual |
-| 34 | Source: github.com/astaxie/beego; Controller; true; ParseForm; ; ; Argument[0]; remote; manual |
-| 34 | Source: github.com/beego/beego/server/web; Controller; true; ParseForm; ; ; Argument[0]; remote; manual |
-| 34 | Source: github.com/beego/beego; Controller; true; ParseForm; ; ; Argument[0]; remote; manual |
-| 35 | Source: github.com/astaxie/beego; Controller; true; GetFile; ; ; ReturnValue[0..1]; remote; manual |
-| 35 | Source: github.com/beego/beego/server/web; Controller; true; GetFile; ; ; ReturnValue[0..1]; remote; manual |
-| 35 | Source: github.com/beego/beego; Controller; true; GetFile; ; ; ReturnValue[0..1]; remote; manual |
-| 36 | Source: github.com/astaxie/beego; Controller; true; GetFiles; ; ; ReturnValue[0]; remote; manual |
-| 36 | Source: github.com/beego/beego/server/web; Controller; true; GetFiles; ; ; ReturnValue[0]; remote; manual |
-| 36 | Source: github.com/beego/beego; Controller; true; GetFiles; ; ; ReturnValue[0]; remote; manual |
-| 37 | Source: github.com/astaxie/beego; Controller; true; GetString; ; ; ReturnValue[0]; remote; manual |
-| 37 | Source: github.com/beego/beego/server/web; Controller; true; GetString; ; ; ReturnValue[0]; remote; manual |
-| 37 | Source: github.com/beego/beego; Controller; true; GetString; ; ; ReturnValue[0]; remote; manual |
-| 38 | Source: github.com/astaxie/beego; Controller; true; GetStrings; ; ; ReturnValue[0]; remote; manual |
-| 38 | Source: github.com/beego/beego/server/web; Controller; true; GetStrings; ; ; ReturnValue[0]; remote; manual |
-| 38 | Source: github.com/beego/beego; Controller; true; GetStrings; ; ; ReturnValue[0]; remote; manual |
-| 39 | Source: github.com/astaxie/beego; Controller; true; Input; ; ; ReturnValue[0]; remote; manual |
-| 39 | Source: github.com/beego/beego/server/web; Controller; true; Input; ; ; ReturnValue[0]; remote; manual |
-| 39 | Source: github.com/beego/beego; Controller; true; Input; ; ; ReturnValue[0]; remote; manual |
+| 1 | Summary: group:beego-utils; ; false; SliceChunk; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: group:beego-utils; ; false; SliceDiff; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: group:beego-utils; ; false; SliceFilter; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: group:beego-utils; ; false; SliceIntersect; ; ; Argument[0..1]; ReturnValue; taint; manual |
+| 5 | Summary: group:beego-utils; ; false; SliceMerge; ; ; Argument[0..1]; ReturnValue; taint; manual |
+| 6 | Summary: group:beego-utils; ; false; SlicePad; ; ; Argument[0..2]; ReturnValue; taint; manual |
+| 7 | Summary: group:beego-utils; ; false; SliceRand; ; ; Argument[0]; ReturnValue; taint; manual |
+| 8 | Summary: group:beego-utils; ; false; SliceReduce; ; ; Argument[0]; ReturnValue; taint; manual |
+| 9 | Summary: group:beego-utils; ; false; SliceShuffle; ; ; Argument[0]; ReturnValue; taint; manual |
+| 10 | Summary: group:beego-utils; ; false; SliceUnique; ; ; Argument[0]; ReturnValue; taint; manual |
+| 11 | Summary: group:beego-utils; BeeMap; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 12 | Summary: group:beego-utils; BeeMap; true; Items; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 13 | Summary: group:beego-utils; BeeMap; true; Set; ; ; Argument[1]; Argument[receiver]; taint; manual |
+| 14 | Source: group:beego-context; BeegoInput; true; Bind; ; ; Argument[0]; remote; manual |
+| 15 | Source: group:beego-context; BeegoInput; true; Cookie; ; ; ReturnValue[0]; remote; manual |
+| 16 | Source: group:beego-context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
+| 17 | Source: group:beego-context; BeegoInput; true; GetData; ; ; ReturnValue[0]; remote; manual |
+| 18 | Source: group:beego-context; BeegoInput; true; Header; ; ; ReturnValue[0]; remote; manual |
+| 19 | Source: group:beego-context; BeegoInput; true; Param; ; ; ReturnValue[0]; remote; manual |
+| 20 | Source: group:beego-context; BeegoInput; true; Params; ; ; ReturnValue[0]; remote; manual |
+| 21 | Source: group:beego-context; BeegoInput; true; Query; ; ; ReturnValue[0]; remote; manual |
+| 22 | Source: group:beego-context; BeegoInput; true; Refer; ; ; ReturnValue[0]; remote; manual |
+| 23 | Source: group:beego-context; BeegoInput; true; Referer; ; ; ReturnValue[0]; remote; manual |
+| 24 | Source: group:beego-context; BeegoInput; true; URI; ; ; ReturnValue[0]; remote; manual |
+| 25 | Source: group:beego-context; BeegoInput; true; URL; ; ; ReturnValue[0]; remote; manual |
+| 26 | Source: group:beego-context; BeegoInput; true; UserAgent; ; ; ReturnValue[0]; remote; manual |
+| 27 | Source: group:beego-context; Context; true; GetCookie; ; ; ReturnValue; remote; manual |
+| 28 | Summary: group:beego; ; false; HTML2str; ; ; Argument[0]; ReturnValue; taint; manual |
+| 29 | Summary: group:beego; ; false; Htmlunquote; ; ; Argument[0]; ReturnValue; taint; manual |
+| 30 | Summary: group:beego; ; false; MapGet; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 31 | Summary: group:beego; ; false; ParseForm; ; ; Argument[0]; Argument[1]; taint; manual |
+| 32 | Summary: group:beego; ; false; Str2html; ; ; Argument[0]; ReturnValue; taint; manual |
+| 33 | Summary: group:beego; ; false; Substr; ; ; Argument[0]; ReturnValue; taint; manual |
+| 34 | Source: group:beego; Controller; true; ParseForm; ; ; Argument[0]; remote; manual |
+| 35 | Source: group:beego; Controller; true; GetFile; ; ; ReturnValue[0..1]; remote; manual |
+| 36 | Source: group:beego; Controller; true; GetFiles; ; ; ReturnValue[0]; remote; manual |
+| 37 | Source: group:beego; Controller; true; GetString; ; ; ReturnValue[0]; remote; manual |
+| 38 | Source: group:beego; Controller; true; GetStrings; ; ; ReturnValue[0]; remote; manual |
+| 39 | Source: group:beego; Controller; true; Input; ; ; ReturnValue[0]; remote; manual |
 | 40 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 41 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
 nodes
