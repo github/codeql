@@ -1,3 +1,9 @@
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* Added support for `DictionaryElement[<key>]` and `DictionaryElementAny` when Customizing Library Models for `sourceModel` (see https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/)
+
 ## 1.0.4
 
 ### Minor Analysis Improvements
