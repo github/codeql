@@ -4179,6 +4179,40 @@ destructors_for_temps.cpp:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue
 #  104|     getStmt(1): [ReturnStmt] return ...
+generic.c:
+#    1| [TopLevelFunction] void c11_generic_test(unsigned int, int)
+#    1|   <params>: 
+#    1|     getParameter(0): [Parameter] x
+#    1|         Type = [IntType] unsigned int
+#    1|     getParameter(1): [Parameter] y
+#    1|         Type = [IntType] int
+#    1|   getEntryPoint(): [BlockStmt] { ... }
+#    2|     getStmt(0): [DeclStmt] declaration
+#    2|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+#    2|           Type = [IntType] unsigned int
+#    3|     getStmt(1): [ExprStmt] ExprStmt
+#    3|       getExpr(): [AssignExpr] ... = ...
+#    3|           Type = [IntType] unsigned int
+#    3|           ValueCategory = prvalue
+#    3|         getLValue(): [VariableAccess] r
+#    3|             Type = [IntType] unsigned int
+#    3|             ValueCategory = lvalue
+#    3|         getRValue(): [AddExpr] ... + ...
+#    3|             Type = [IntType] unsigned int
+#    3|             ValueCategory = prvalue
+#    3|           getLeftOperand(): [VariableAccess] x
+#    3|               Type = [IntType] unsigned int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getRightOperand(): [Literal] 1
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 1
+#    3|               ValueCategory = prvalue
+#    3|           getRightOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
+#    3|               Conversion = [IntegralConversion] integral conversion
+#    3|               Type = [IntType] unsigned int
+#    3|               Value = [CStyleCast] 1
+#    3|               ValueCategory = prvalue
+#    4|     getStmt(2): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
