@@ -3629,7 +3629,22 @@ public class Parser {
 
   protected ImportSpecifier parseImportSpecifier() {
     SourceLocation loc = new SourceLocation(this.startLoc);
-    Identifier imported = this.parseIdent(true), local;
+    Identifier imported, local;
+
+    if (this.type == TokenType.string) {
+      // Arbitrary Module Namespace Identifiers
+      // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
+      Expression string = this.parseExprAtom(null);    
+      String str = ((Literal)string).getStringValue();
+      imported = new Identifier(loc, str);
+      // only makes sense if there is a local identifier
+      if (!this.isContextual("as")) {
+        this.raiseRecoverable(this.start, "Unexpected string");
+      }
+    } else {
+      imported = this.parseIdent(true);
+    }
+
     if (this.eatContextual("as")) {
       local = this.parseIdent(false);
     } else {

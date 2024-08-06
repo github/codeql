@@ -41,6 +41,7 @@ test_ImportNamespaceSpecifier
 | exports.js:1:8:1:17 | * as dummy |
 | m/c.js:1:8:1:13 | * as b |
 test_ImportSpecifiers
+| arbitarySpecifier.js:1:10:1:30 | "Foo::n ... Foo_new | arbitarySpecifier.js:1:24:1:30 | Foo_new |
 | b.js:1:8:1:8 | f | b.js:1:8:1:8 | f |
 | d.js:1:10:1:21 | default as g | d.js:1:21:1:21 | g |
 | d.js:1:24:1:29 | x as y | d.js:1:29:1:29 | y |
@@ -55,6 +56,7 @@ test_ImportSpecifiers
 | tst.html:5:10:5:10 | f | tst.html:5:10:5:10 | f |
 | unresolved.js:1:8:1:8 | f | unresolved.js:1:8:1:8 | f |
 test_Imports
+| arbitarySpecifier.js:1:1:1:50 | import  ... o.wasm" | arbitarySpecifier.js:1:39:1:50 | "./foo.wasm" | 1 |
 | b.js:1:1:1:20 | import f from './a'; | b.js:1:15:1:19 | './a' | 1 |
 | d.js:1:1:1:43 | import  ...  './a'; | d.js:1:38:1:42 | './a' | 2 |
 | d.js:2:1:2:13 | import './b'; | d.js:2:8:2:12 | './b' | 0 |
@@ -84,6 +86,7 @@ test_Module_exports
 | reExportNamespace.js:1:1:2:0 | <toplevel> | ns | reExportNamespace.js:1:8:1:14 | * as ns |
 | tst.html:4:23:8:0 | <toplevel> | y | tst.html:7:20:7:21 | 42 |
 test_NamedImportSpecifier
+| arbitarySpecifier.js:1:10:1:30 | "Foo::n ... Foo_new |
 | d.js:1:10:1:21 | default as g |
 | d.js:1:24:1:29 | x as y |
 | g.ts:1:9:1:11 | foo |
@@ -119,6 +122,7 @@ test_getExportedName
 | m/c.js:5:10:5:15 | g as h | h |
 | reExportNamespace.js:1:8:1:14 | * as ns | ns |
 test_getImportedName
+| arbitarySpecifier.js:1:10:1:30 | "Foo::n ... Foo_new | Foo::new |
 | b.js:1:8:1:8 | f | default |
 | d.js:1:10:1:21 | default as g | default |
 | d.js:1:24:1:29 | x as y | x |
