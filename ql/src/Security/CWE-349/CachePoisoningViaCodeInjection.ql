@@ -1,5 +1,5 @@
 /**
- * @name Cache Poisoning via low-privilege code injection
+ * @name Cache Poisoning via low-privileged code injection
  * @description The cache can be poisoned by untrusted code, leading to a cache poisoning attack.
  * @kind path-problem
  * @problem.severity error
