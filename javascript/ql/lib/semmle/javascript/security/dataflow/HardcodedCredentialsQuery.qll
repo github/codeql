@@ -59,8 +59,7 @@ class Configuration extends DataFlow::Configuration {
       n = DataFlow::globalVarRef("TextEncoder").getAnInstantiation().getAMemberCall("encode")
     |
       src = n.getArgument(0) and
-      trg = n and
-      n.getLocation().getFile().getRelativePath().matches("%HardcodedCredentials.js%")
+      trg = n
     )
     or
     exists(DataFlow::CallNode n | n = DataFlow::globalVarRef("Buffer").getAMemberCall("from") |
