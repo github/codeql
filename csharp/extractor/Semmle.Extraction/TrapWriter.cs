@@ -194,8 +194,11 @@ namespace Semmle.Extraction
                     var hash = FileUtils.ComputeFileHash(tmpFile);
                     if (existingHash != hash)
                     {
-                        var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
-                        if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(trapCompression)}"))
+                        var extension = TrapExtension(trapCompression);
+                        var root = TrapFile[..^extension.Length]; // Remove trailing ".trap", ".trap.gz", or ".trap.br"
+                        var newTrapName = $"{root}-{hash}{extension}";
+                        logger.LogInfo($"Identical trap file for {TrapFile} already exists, renaming to {newTrapName}");
+                        if (TryMove(tmpFile, $"{newTrapName}"))
                             return;
                     }
                     logger.LogInfo($"Identical trap file for {TrapFile} already exists");
@@ -217,16 +220,16 @@ namespace Semmle.Extraction
         {
             switch (compression)
             {
-                case CompressionMode.None: return "";
-                case CompressionMode.Gzip: return ".gz";
-                case CompressionMode.Brotli: return ".br";
+                case CompressionMode.None: return ".trap";
+                case CompressionMode.Gzip: return ".trap.gz";
+                case CompressionMode.Brotli: return ".trap.br";
                 default: throw new ArgumentOutOfRangeException(nameof(compression), compression, "Unsupported compression type");
             }
         }
 
         public static string TrapPath(ILogger logger, string? folder, PathTransformer.ITransformedPath path, TrapWriter.CompressionMode trapCompression)
         {
-            var filename = $"{path.Value}.trap{TrapExtension(trapCompression)}";
+            var filename = $"{path.Value}{TrapExtension(trapCompression)}";
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 
