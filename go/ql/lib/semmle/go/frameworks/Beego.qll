@@ -173,29 +173,6 @@ module Beego {
     }
   }
 
-  private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
-    string className;
-
-    RedirectMethods() {
-      exists(string package |
-        (
-          package = packagePath() and className = "Controller"
-          or
-          package = contextPackagePath() and className = "Context"
-        ) and
-        this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() {
-      className = "Controller" and result = this.getArgument(0)
-      or
-      className = "Context" and result = this.getArgument(1)
-    }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
-  }
-
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {
     UtilsTaintPropagators() { this.hasQualifiedName(utilsPackagePath(), "GetDisplayString") }
 
