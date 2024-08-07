@@ -1,11 +1,11 @@
 /**
- * @name Low Java analysis quality
- * @description Low Java analysis quality
+ * @name Low C# analysis quality
+ * @description Low C# analysis quality
  * @kind diagnostic
- * @id java/diagnostic/database-quality
+ * @id csharp/diagnostic/database-quality
  */
 
-import java
+import csharp
 import DatabaseQuality
 
 private newtype TDbQualityDiagnostic =
@@ -22,12 +22,12 @@ private newtype TDbQualityDiagnostic =
 class DbQualityDiagnostic extends TDbQualityDiagnostic {
   string toString() {
     result =
-      "Scanning Java code completed successfully, but the scan encountered issues. " +
+      "Scanning C# code completed successfully, but the scan encountered issues. " +
         "This may be caused by problems identifying dependencies or use of generated source code, among other reasons -- "
         +
         "see other CodeQL diagnostics reported on the CodeQL status page for more details of possible causes. "
         +
-        "Addressing these warnings is advisable to avoid false-positive or missing results. If they cannot be addressed, consider scanning Java "
+        "Addressing these warnings is advisable to avoid false-positive or missing results. If they cannot be addressed, consider scanning C# "
         +
         "using either the `autobuild` or `manual` [build modes](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages#comparison-of-the-build-modes)."
   }
