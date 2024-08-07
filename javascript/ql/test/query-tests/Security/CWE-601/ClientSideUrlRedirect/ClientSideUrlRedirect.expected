@@ -1,6 +1,15 @@
 nodes
 | electron.js:4:12:4:22 | window.name | semmle.label | window.name |
 | electron.js:7:20:7:29 | getTaint() | semmle.label | getTaint() |
+| floating-anchor-tag.js:3:20:3:22 | url | semmle.label | url |
+| floating-anchor-tag.js:5:14:5:16 | url | semmle.label | url |
+| floating-anchor-tag.js:10:9:10:34 | url | semmle.label | url |
+| floating-anchor-tag.js:10:15:10:34 | window.location.href | semmle.label | window.location.href |
+| floating-anchor-tag.js:15:9:15:51 | taint | semmle.label | taint |
+| floating-anchor-tag.js:15:17:15:19 | url | semmle.label | url |
+| floating-anchor-tag.js:15:17:15:51 | url.sub ... ') + 1) | semmle.label | url.sub ... ') + 1) |
+| floating-anchor-tag.js:16:28:16:32 | taint | semmle.label | taint |
+| floating-anchor-tag.js:17:38:17:42 | taint | semmle.label | taint |
 | react.js:10:60:10:81 | documen ... on.hash | semmle.label | documen ... on.hash |
 | react.js:21:24:21:45 | documen ... on.hash | semmle.label | documen ... on.hash |
 | react.js:28:43:28:64 | documen ... on.hash | semmle.label | documen ... on.hash |
@@ -121,6 +130,14 @@ nodes
 | typed.ts:56:33:56:43 | redirectUri | semmle.label | redirectUri |
 edges
 | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | provenance |  |
+| floating-anchor-tag.js:3:20:3:22 | url | floating-anchor-tag.js:5:14:5:16 | url | provenance |  |
+| floating-anchor-tag.js:10:9:10:34 | url | floating-anchor-tag.js:15:17:15:19 | url | provenance |  |
+| floating-anchor-tag.js:10:15:10:34 | window.location.href | floating-anchor-tag.js:10:9:10:34 | url | provenance |  |
+| floating-anchor-tag.js:15:9:15:51 | taint | floating-anchor-tag.js:16:28:16:32 | taint | provenance |  |
+| floating-anchor-tag.js:15:9:15:51 | taint | floating-anchor-tag.js:17:38:17:42 | taint | provenance |  |
+| floating-anchor-tag.js:15:17:15:19 | url | floating-anchor-tag.js:15:17:15:51 | url.sub ... ') + 1) | provenance | Config |
+| floating-anchor-tag.js:15:17:15:51 | url.sub ... ') + 1) | floating-anchor-tag.js:15:9:15:51 | taint | provenance |  |
+| floating-anchor-tag.js:17:38:17:42 | taint | floating-anchor-tag.js:3:20:3:22 | url | provenance |  |
 | react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) | provenance |  |
 | react.js:34:43:34:64 | documen ... on.hash | react.js:34:43:34:74 | documen ... bstr(1) | provenance |  |
 | react.js:40:19:40:40 | documen ... on.hash | react.js:40:19:40:50 | documen ... bstr(1) | provenance |  |
@@ -207,6 +224,8 @@ edges
 subpaths
 #select
 | electron.js:7:20:7:29 | getTaint() | electron.js:4:12:4:22 | window.name | electron.js:7:20:7:29 | getTaint() | Untrusted URL redirection depends on a $@. | electron.js:4:12:4:22 | window.name | user-provided value |
+| floating-anchor-tag.js:5:14:5:16 | url | floating-anchor-tag.js:10:15:10:34 | window.location.href | floating-anchor-tag.js:5:14:5:16 | url | Untrusted URL redirection depends on a $@. | floating-anchor-tag.js:10:15:10:34 | window.location.href | user-provided value |
+| floating-anchor-tag.js:16:28:16:32 | taint | floating-anchor-tag.js:10:15:10:34 | window.location.href | floating-anchor-tag.js:16:28:16:32 | taint | Untrusted URL redirection depends on a $@. | floating-anchor-tag.js:10:15:10:34 | window.location.href | user-provided value |
 | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | react.js:10:60:10:81 | documen ... on.hash | Untrusted URL redirection depends on a $@. | react.js:10:60:10:81 | documen ... on.hash | user-provided value |
 | react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:45 | documen ... on.hash | react.js:21:24:21:45 | documen ... on.hash | Untrusted URL redirection depends on a $@. | react.js:21:24:21:45 | documen ... on.hash | user-provided value |
 | react.js:28:43:28:74 | documen ... bstr(1) | react.js:28:43:28:64 | documen ... on.hash | react.js:28:43:28:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:28:43:28:64 | documen ... on.hash | user-provided value |
