@@ -34,10 +34,10 @@ def options():
 class Endpoint:
     name: str
     href: str
-    ssh: str | None = None
+    ssh: typing.Opional[str] = None
     headers: typing.Dict[str, str] = dataclasses.field(default_factory=dict)
 
-    def update_headers(self, d: typing.Iterable[tuple[str, str]]):
+    def update_headers(self, d: typing.Iterable[typing.Tuple[str, str]]):
         self.headers.update((k.capitalize(), v) for k, v in d)
 
 
@@ -49,7 +49,7 @@ source_dir = subprocess.check_output(
 ).strip()
 
 
-def get_env(s: str, sep: str = "=") -> typing.Iterable[tuple[str, str]]:
+def get_env(s: str, sep: str = "=") -> typing.Iterable[typing.Tuple[str, str]]:
     for m in re.finditer(rf"(.*?){sep}(.*)", s, re.M):
         yield m.groups()
 
