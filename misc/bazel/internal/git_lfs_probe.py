@@ -34,7 +34,7 @@ def options():
 class Endpoint:
     name: str
     href: str
-    ssh: typing.Opional[str] = None
+    ssh: typing.Optional[str] = None
     headers: typing.Dict[str, str] = dataclasses.field(default_factory=dict)
 
     def update_headers(self, d: typing.Iterable[typing.Tuple[str, str]]):
