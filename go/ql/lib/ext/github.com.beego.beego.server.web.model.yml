@@ -8,6 +8,11 @@ extensions:
       - ["beego", "github.com/beego/beego/server/web"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:beego", "Controller", True, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["group:beego", "", False, "HTML2str", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

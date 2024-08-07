@@ -7,6 +7,11 @@ extensions:
       - ["revel", "github.com/robfig/revel"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:revel", "Controller", True, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"] # It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)` internally, cannot lead to an open redirect vulnerability.
+  - addsTo:
+      pack: codeql/go-all
       extensible: sourceModel
     data:
       - ["group:revel", "Controller", True, "Params", "", "", "", "remote", "manual"]

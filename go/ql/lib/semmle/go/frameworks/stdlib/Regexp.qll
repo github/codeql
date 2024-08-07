@@ -20,20 +20,18 @@ module Regexp {
    * function does not compile the regex.
    */
   private predicate regexSinkKindInfo(string kind, int strArg) {
+    strArg = -3 and
+    kind = "regex-use"
+    or
     sinkModel(_, _, _, _, _, _, _, kind, _, _) and
     exists(string strArgStr |
-      (
-        strArgStr.toInt() = strArg
-        or
-        strArg = -2 and
-        strArgStr = "c"
-      )
+      strArgStr.toInt() = strArg
+      or
+      strArg = -2 and
+      strArgStr = "c"
     |
       kind = "regex-use[" + strArgStr + "]"
     )
-    or
-    strArg = -3 and
-    kind = "regex-use"
   }
 
   private class DefaultRegexpPattern extends RegexpPattern::Range, DataFlow::ArgumentNode {
