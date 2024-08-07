@@ -403,7 +403,8 @@ newtype TContentApprox =
   TApproxIteratorError() or
   TApproxPromiseValue() or
   TApproxPromiseError() or
-  TApproxCapturedContent()
+  TApproxCapturedContent() or
+  TApproxCallbackArgument()
 
 class ContentApprox extends TContentApprox {
   string toString() {
@@ -424,6 +425,8 @@ class ContentApprox extends TContentApprox {
     this = TApproxPromiseError() and result = "TApproxPromiseError"
     or
     this = TApproxCapturedContent() and result = "TApproxCapturedContent"
+    or
+    this = TApproxCallbackArgument() and result = "TApproxCallbackArgument"
   }
 }
 
@@ -450,6 +453,8 @@ ContentApprox getContentApprox(Content c) {
   c instanceof MkPromiseError and result = TApproxPromiseError()
   or
   c instanceof MkCapturedContent and result = TApproxCapturedContent()
+  or
+  c instanceof MkCallbackArgument and result = TApproxCallbackArgument()
 }
 
 cached
@@ -467,9 +472,7 @@ private newtype TDataFlowCall =
     node = TValueNode(any(PropAccess p)) or
     node = TPropNode(any(PropertyPattern p))
   } or
-  MkImpliedLambdaCall(Function f) {
-    VariableCaptureConfig::captures(f, _) or CallGraph::impliedReceiverStep(_, TThisNode(f))
-  } or
+  MkImpliedLambdaCall(Function f) or
   MkSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -925,6 +928,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
+  or
+  exists(DataFlow::FunctionNode function, int n |
+    node1 = TFunctionSelfReferenceNode(function.getFunction()) and
+    node2 = function.getParameter(n) and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
@@ -937,6 +946,10 @@ private Node tryGetPostUpdate(Node node) {
   or
   not exists(getPostUpdate(node)) and
   result = node
+}
+
+private class CallbackCall extends DataFlow::CallNode {
+  CallbackCall() { this.getCalleeNode().getALocalSource() instanceof ParameterNode }
 }
 
 /**
@@ -970,6 +983,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::storeStep(node1, c, node2)
+  or
+  exists(CallbackCall call, int n |
+    node1 = call.getArgument(n) and
+    node2 = call.getCalleeNode().getPostUpdateNode() and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
 }
 
 /**
