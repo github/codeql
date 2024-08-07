@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | params_flow.rb:9:16:9:17 | p1 | params_flow.rb:10:10:10:11 | p1 | provenance |  |
 | params_flow.rb:9:20:9:21 | p2 | params_flow.rb:11:10:11:11 | p2 | provenance |  |
@@ -408,6 +408,7 @@ nodes
 subpaths
 | params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:153:23:153:24 | p1 [Return] [element 0] | params_flow.rb:164:23:164:24 | [post] p1 [element 0] |
 | params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:181:24:181:25 | p1 [Return] [element 0] | params_flow.rb:192:20:192:21 | [post] p1 [element 0] |
+testFailures
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint | call to taint |
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:44:12:44:20 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:44:12:44:20 | call to taint | call to taint |

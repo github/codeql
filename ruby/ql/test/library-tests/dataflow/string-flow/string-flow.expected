@@ -1,6 +1,4 @@
-testFailures
-| string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
-| string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
+models
 edges
 | string_flow.rb:2:5:2:5 | a | string_flow.rb:3:21:3:21 | a | provenance |  |
 | string_flow.rb:2:9:2:18 | call to source | string_flow.rb:2:5:2:5 | a | provenance |  |
@@ -29,6 +27,9 @@ nodes
 | string_flow.rb:225:10:225:10 | a | semmle.label | a |
 | string_flow.rb:227:10:227:10 | a | semmle.label | a |
 subpaths
+testFailures
+| string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
+| string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
 #select
 | string_flow.rb:3:10:3:22 | call to new | string_flow.rb:2:9:2:18 | call to source | string_flow.rb:3:10:3:22 | call to new | $@ | string_flow.rb:2:9:2:18 | call to source | call to source |
 | string_flow.rb:85:10:85:10 | a | string_flow.rb:83:9:83:18 | call to source | string_flow.rb:85:10:85:10 | a | $@ | string_flow.rb:83:9:83:18 | call to source | call to source |
