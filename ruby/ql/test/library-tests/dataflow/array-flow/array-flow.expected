@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | array_flow.rb:2:5:2:5 | a [element 0] | array_flow.rb:3:10:3:10 | a [element 0] | provenance |  |
 | array_flow.rb:2:5:2:5 | a [element 0] | array_flow.rb:5:10:5:10 | a [element 0] | provenance |  |
@@ -4854,6 +4854,7 @@ subpaths
 | array_flow.rb:507:9:507:9 | a [element 3] | array_flow.rb:507:26:507:26 | x | array_flow.rb:509:9:509:9 | x | array_flow.rb:507:9:510:7 | call to filter_map [element] |
 | array_flow.rb:571:9:571:9 | a [element 2] | array_flow.rb:571:24:571:24 | x | array_flow.rb:573:9:573:25 | call to [] [element 0] | array_flow.rb:571:9:574:7 | call to flat_map [element] |
 | array_flow.rb:1678:9:1678:9 | a [element 2] | array_flow.rb:1678:19:1678:19 | x | array_flow.rb:1679:9:1679:9 | x | array_flow.rb:1678:9:1680:7 | call to map [element] |
+testFailures
 arrayLiteral
 | array_flow.rb:9:9:9:25 | call to [] |
 | array_flow.rb:33:9:33:22 | call to [] |
