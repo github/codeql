@@ -20,7 +20,7 @@ string wrapJsonRegexp(string regex) {
 }
 
 bindingset[str]
-private string trimQuotes(string str) {
+string trimQuotes(string str) {
   result = str.trim().regexpReplaceAll("^(\"|')", "").regexpReplaceAll("(\"|')$", "")
 }
 
@@ -279,6 +279,10 @@ predicate inNonPrivilegedContext(AstNode node) {
   inNonPrivilegedJob(node)
 }
 
+string partialFileContentRegexp() {
+  result = ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"]
+}
+
 bindingset[snippet]
 predicate outputsPartialFileContent(string snippet) {
   // e.g.
@@ -286,12 +290,7 @@ predicate outputsPartialFileContent(string snippet) {
   // echo "FOO=$(<foo.txt)" >> $GITHUB_ENV
   // yq '.foo' foo.yml >> $GITHUB_PATH
   // cat foo.txt >> $GITHUB_PATH
-  snippet
-      .regexpMatch([
-          "(\\$\\(|`)<.*",
-          ".*(\\b|^|\\s+)" + ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"] +
-            ".*"
-        ])
+  snippet.regexpMatch(["(\\$\\(|`)<.*", ".*(\\b|^|\\s+)" + partialFileContentRegexp() + ".*"])
 }
 
 string defaultBranchNames() {

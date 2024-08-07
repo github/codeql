@@ -92,6 +92,69 @@ class OutputClobberingFromEnvVarSink extends OutputClobberingSink {
   }
 }
 
+/**
+ *      - id: clob1
+ *        env:
+ *          BODY: ${{ github.event.comment.body }}
+ *        run: |
+ *          # VULNERABLE
+ *          echo $BODY
+ *          echo "::set-output name=OUTPUT::SAFE"
+ *      - id: clob2
+ *        env:
+ *          BODY: ${{ github.event.comment.body }}
+ *        run: |
+ *          # VULNERABLE
+ *          echo "::set-output name=OUTPUT::SAFE"
+ *          echo $BODY
+ */
+class WorkflowCommandClobberingFromEnvVarSink extends OutputClobberingSink {
+  WorkflowCommandClobberingFromEnvVarSink() {
+    exists(Run run, string output_line, string clobbering_line, string var_name |
+      run.getScript().splitAt("\n") = output_line and
+      singleLineWorkflowCmd(output_line, "set-output", _, _) and
+      run.getScript().splitAt("\n") = clobbering_line and
+      clobbering_line.regexpMatch(".*echo\\s+(-e\\s+)?(\"|')?\\$(\\{)?" + var_name + ".*") and
+      exists(run.getInScopeEnvVarExpr(var_name)) and
+      run.getScriptScalar() = this.asExpr()
+    )
+  }
+}
+
+class WorkflowCommandClobberingFromFileReadSink extends OutputClobberingSink {
+  WorkflowCommandClobberingFromFileReadSink() {
+    exists(Run run, string output_line, string clobbering_line |
+      run.getScriptScalar() = this.asExpr() and
+      run.getScript().splitAt("\n") = output_line and
+      singleLineWorkflowCmd(output_line, "set-output", _, _) and
+      run.getScript().splitAt("\n") = clobbering_line and
+      (
+        // A file is read and its content is assigned to an env var that gets printed to stdout
+        // - run: |
+        //     foo=$(<pr-id.txt)"
+        //     echo "${foo}"
+        exists(string var_name, string value, string assign_line, string assignment_regexp |
+          run.getScript().splitAt("\n") = assign_line and
+          assignment_regexp = "([a-zA-Z0-9\\-_]+)=(.*)" and
+          var_name = assign_line.regexpCapture(assignment_regexp, 1) and
+          value = assign_line.regexpCapture(assignment_regexp, 2) and
+          outputsPartialFileContent(trimQuotes(value)) and
+          clobbering_line.regexpMatch(".*echo\\s+(-e\\s+)?(\"|')?\\$(\\{)?" + var_name + ".*")
+        )
+        or
+        // A file is read and its content is printed to stdout
+        // - run: echo "foo=$(<pr-id.txt)"
+        clobbering_line.regexpMatch(".*echo\\s+(-e)?\\s*(\"|')?") and
+        clobbering_line.regexpMatch(partialFileContentRegexp() + ".*")
+        or
+        // A file content is printed to stdout
+        // - run: cat pr-id.txt
+        clobbering_line.regexpMatch(partialFileContentRegexp() + ".*")
+      )
+    )
+  }
+}
+
 class OutputClobberingFromMaDSink extends OutputClobberingSink {
   OutputClobberingFromMaDSink() { madSink(this, "output-clobbering") }
 }

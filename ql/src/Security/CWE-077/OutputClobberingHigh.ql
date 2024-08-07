@@ -30,6 +30,7 @@ where
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
     (
       sink.getNode() instanceof OutputClobberingFromFileReadSink or
+      sink.getNode() instanceof WorkflowCommandClobberingFromFileReadSink or
       madSink(sink.getNode(), "output-clobbering")
     )
   )
