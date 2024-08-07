@@ -17,7 +17,7 @@ function unrelated() {
 
 function related() {
     let ret = foo(source('explicit_source'), p => {
-        sink(p); // $ MISSING: hasValueFlow=explicit_source
+        sink(p); // $ hasValueFlow=explicit_source
     });
     sink(ret); // $ hasValueFlow=explicit_source
 }

@@ -579,7 +579,8 @@ newtype TContentApprox =
   TApproxIteratorError() or
   TApproxPromiseValue() or
   TApproxPromiseError() or
-  TApproxCapturedContent()
+  TApproxCapturedContent() or
+  TApproxCallbackArgument()
 
 class ContentApprox extends TContentApprox {
   string toString() {
@@ -600,6 +601,8 @@ class ContentApprox extends TContentApprox {
     this = TApproxPromiseError() and result = "TApproxPromiseError"
     or
     this = TApproxCapturedContent() and result = "TApproxCapturedContent"
+    or
+    this = TApproxCallbackArgument() and result = "TApproxCallbackArgument"
   }
 }
 
@@ -626,6 +629,8 @@ ContentApprox getContentApprox(Content c) {
   c instanceof MkPromiseError and result = TApproxPromiseError()
   or
   c instanceof MkCapturedContent and result = TApproxCapturedContent()
+  or
+  c instanceof MkCallbackArgument and result = TApproxCallbackArgument()
 }
 
 cached
@@ -643,9 +648,7 @@ private newtype TDataFlowCall =
     node = TValueNode(any(PropAccess p)) or
     node = TPropNode(any(PropertyPattern p))
   } or
-  MkImpliedLambdaCall(Function f) {
-    VariableCaptureConfig::captures(f, _) or CallGraph::impliedReceiverStep(_, TThisNode(f))
-  } or
+  MkImpliedLambdaCall(Function f) or
   MkSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -1190,6 +1193,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
     )
   )
+  or
+  exists(DataFlow::FunctionNode function, int n |
+    node1 = TFunctionSelfReferenceNode(function.getFunction()) and
+    node2 = function.getParameter(n) and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
@@ -1207,6 +1216,10 @@ private Node tryGetPostUpdate(Node node) {
 pragma[nomagic]
 private int firstSpreadArgumentIndex(InvokeExpr expr) {
   result = min(int i | expr.isSpreadArgument(i))
+}
+
+private class CallbackCall extends DataFlow::CallNode {
+  CallbackCall() { this.getCalleeNode().getALocalSource() instanceof ParameterNode }
 }
 
 /**
@@ -1264,6 +1277,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1 = taintNode and
     node2 = taintNode.getArrayNode() and
     c = ContentSet::arrayElementUnknown()
+  )
+  or
+  exists(CallbackCall call, int n |
+    node1 = call.getArgument(n) and
+    node2 = call.getCalleeNode().getPostUpdateNode() and
+    c.asSingleton() = MkCallbackArgument(n)
   )
 }
 
@@ -1360,15 +1379,12 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  // creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
-  none()
+  creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
-  or
-  receiver = call.asOrdinaryCall().getCalleeNode() and exists(kind)
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
