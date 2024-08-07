@@ -59,6 +59,9 @@ edges
 | .github/workflows/dependabot2.yml:47:9:52:6 | Run Step | .github/workflows/dependabot2.yml:52:9:58:6 | Run Step |
 | .github/workflows/dependabot2.yml:52:9:58:6 | Run Step | .github/workflows/dependabot2.yml:58:9:61:6 | Run Step |
 | .github/workflows/dependabot2.yml:58:9:61:6 | Run Step | .github/workflows/dependabot2.yml:61:9:68:19 | Run Step |
+| .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step |
+| .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone |
+| .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | .github/workflows/dependabot3.yml:48:9:52:57 | Run Step |
 | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:18:11:21:8 | Uses Step |
 | .github/workflows/gitcheckout.yml:18:11:21:8 | Uses Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step |
 | .github/workflows/issue_comment_3rd_party_action.yml:12:9:16:6 | Uses Step: comment-branch | .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step |
@@ -153,6 +156,7 @@ edges
 | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | Execution of untrusted code on a privileged workflow. |
+| .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/level0.yml:107:9:112:2 | Run Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/level0.yml:133:9:135:23 | Run Step | .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:133:9:135:23 | Run Step | Execution of untrusted code on a privileged workflow. |

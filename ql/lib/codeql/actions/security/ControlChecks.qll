@@ -122,17 +122,23 @@ class LabelIfCheck extends LabelCheck instanceof If {
 
 class ActorIfCheck extends ActorCheck instanceof If {
   ActorIfCheck() {
-    // eg: github.actor == 'dependabot[bot]'
-    // eg: github.triggering_actor == 'CI Agent'
-    // eg: github.event.pull_request.user.login == 'mybot'
+    // eg: github.event.pull_request.user.login == 'admin'
     exists(
       normalizeExpr(this.getCondition())
           .regexpFind([
-              "\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",
-              "\\bgithub\\.event\\.comment\\.user\\.login\\b",
               "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
+              "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
+              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
             ], _, _)
     )
+    or
+    // eg: github.actor == 'admin'
+    // eg: github.triggering_actor == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
+    ) and
+    not normalizeExpr(this.getCondition()).matches("%[bot]%")
   }
 }
 
