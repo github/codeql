@@ -235,9 +235,7 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#addCookie
    */
-  class TwistedRequestAddCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode
-  {
+  class TwistedRequestAddCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
     TwistedRequestAddCookieCall() { this.calls(Twisted::Request::instance(), "addCookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
