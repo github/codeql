@@ -15,7 +15,7 @@ import experimental.meta.InlineTaintTest::Conf
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { TestTaintTrackingConfig::isSource(source) }
 
-  predicate isSink(DataFlow::Node source) { TestTaintTrackingConfig::isSink(source) }
+  predicate isSink(DataFlow::Node sink) { TestTaintTrackingConfig::isSink(sink) }
 }
 
 module Flows = TaintTracking::Global<Config>;

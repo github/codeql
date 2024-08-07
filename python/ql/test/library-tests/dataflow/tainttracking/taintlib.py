@@ -20,3 +20,15 @@ def ensure_not_tainted(*args):
     print("- ensure_not_tainted")
     for i, arg in enumerate(args):
         print("arg {}: {!r}".format(i, arg))
+
+
+def ensure_tainted_with_reads(*args):
+    print("- ensure_tainted_with_reads")
+    for i, arg in enumerate(args):
+        print("arg {}: {!r}".format(i, arg))
+
+
+def ensure_not_tainted_with_reads(*args):
+    print("- ensure_not_tainted_with_reads")
+    for i, arg in enumerate(args):
+        print("arg {}: {!r}".format(i, arg))
