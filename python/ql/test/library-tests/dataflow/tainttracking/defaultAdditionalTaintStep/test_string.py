@@ -115,7 +115,7 @@ def percent_fmt():
     ensure_tainted(
         tainted_fmt % (1, 2), # $ tainted
         "%s foo bar" % ts, # $ tainted
-        "%s %s %s" % (1, 2, ts), # $ MISSING: tainted
+        "%s %s %s" % (1, 2, ts), # $ tainted
     )
 
 

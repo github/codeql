@@ -17,13 +17,13 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  // We allow implicit reads of precise content
+  // imprecise content has already bubled up.
   exists(node) and
   (
     c instanceof DataFlow::TupleElementContent
     or
     c instanceof DataFlow::DictionaryElementContent
-    or
-    c instanceof DataFlow::DictionaryElementAnyContent
   )
 }
 

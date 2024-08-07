@@ -56,6 +56,14 @@ def test_construction():
         dict(k = tainted_string)["k1"]
     )
 
+    ensure_not_tainted_with_reads(
+        tainted_dict["different_key"],
+    )
+
+    ensure_tainted_with_reads(
+        tainted_tuple, # $ tainted
+        tainted_dict, # $ tainted
+    )
 
 def test_access(x, y, z):
     tainted_list = TAINTED_LIST
