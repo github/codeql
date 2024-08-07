@@ -8,6 +8,7 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
+private import codeql.actions.security.OutputClobberingQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
 
 /**
@@ -114,7 +115,8 @@ predicate envToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
     succ.asExpr() = run.getScriptScalar() and
     (
       envToSpecialFile(["GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH"], var_name, run, _) or
-      envToArgInjSink(var_name, run, _)
+      envToArgInjSink(var_name, run, _) or
+      exists(OutputClobberingSink n | n.asExpr() = run.getScriptScalar())
     )
   )
 }
