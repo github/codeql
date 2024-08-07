@@ -49,8 +49,14 @@ jobs:
           # VULNERABLE
           cat pr-number
           echo "::set-output name=OUTPUT::SAFE"
-      - id: clob2
+      - id: clob3
         run: |
           # VULNERABLE
           echo "::set-output name=OUTPUT::SAFE"
           ls *.txt
+      - id: clob4
+        run: |
+          # VULNERABLE
+          CURRENT_VERSION=$(cat gradle.properties | sed -n '/^version=/ { s/^version=//;p }')
+          echo "$CURRENT_VERSION"
+          echo "::set-output name=OUTPUT::SAFE"
