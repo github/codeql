@@ -15,6 +15,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.TempDirUtils
 import semmle.code.java.security.TempDirLocalInformationDisclosureQuery
+private import codeql.dataflow.test.ProvenancePathGraph as ProvenancePathGraph
 
 /**
  * We include use of inherently insecure methods, which don't have any associated
@@ -24,7 +25,10 @@ import semmle.code.java.security.TempDirLocalInformationDisclosureQuery
  * We achieve this by making inherently-insecure method invocations into an edge-less graph,
  * resulting in a zero-length paths.
  */
-module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodCallInsecureFileCreation> {
+module InsecureMethodPathGraph implements
+  DataFlow::PathGraphSig<MethodCallInsecureFileCreation>,
+  ProvenancePathGraph::PathGraphSig<MethodCallInsecureFileCreation>
+{
   predicate edges(
     MethodCallInsecureFileCreation n1, MethodCallInsecureFileCreation n2, string key, string value
   ) {
