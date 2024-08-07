@@ -1,3 +1,7 @@
+## 3.0.1
+
+No user-facing changes.
+
 ## 3.0.0
 
 ### Breaking Changes
