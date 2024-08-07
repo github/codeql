@@ -173,20 +173,58 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * Creation of an anchor element (`<a>` tag) via `docuemnt.createElement("a")`.
+   *
+   * Sometimes a "floating" anchor tag is used to normalize URLs, particularly in old codebases.
+   * The `href` property of such an element should not be treated as sinks since the link can
+   * never be clicked.
+   */
+  private class AnchorElementCreation extends DataFlow::MethodCallNode {
+    AnchorElementCreation() {
+      this = DOM::documentRef().getAMethodCall("createElement") and
+      this.getArgument(0).getStringValue() = "a"
+    }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result = this
+      or
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
+    }
+
+    DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
+
+    predicate isInsertedIntoDom() {
+      this.ref().flowsTo(DOM::domValueRef().getAMethodCall().getAnArgument())
+    }
+
+    predicate isFloatingElement() { not this.isInsertedIntoDom() }
+  }
+
+  private DataFlow::SourceNode floatingElement() {
+    result = any(AnchorElementCreation anchor | anchor.isFloatingElement()).ref()
+  }
+
+  /**
    * A write to a `href` or similar attribute viewed as a `ScriptUrlSink`.
    */
   class AttributeUrlSink extends ScriptUrlSink {
     AttributeUrlSink() {
-      // e.g. `$("<a>", {href: sink}).appendTo("body")`
-      exists(DOM::AttributeDefinition attr |
-        not attr instanceof JsxAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`.
-        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
-      |
-        this = attr.getValueNode()
+      (
+        // e.g. `$("<a>", {href: sink}).appendTo("body")`
+        exists(DOM::AttributeDefinition attr |
+          not attr instanceof JsxAttribute and // handled more precisely in `ReactAttributeWriteUrlSink`.
+          attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
+        |
+          this = attr.getValueNode()
+        )
+        or
+        // e.g. node.setAttribute("href", sink)
+        exists(DomMethodCallNode call |
+          call.interpretsArgumentsAsUrl(this) and
+          not call = floatingElement().getAMethodCall()
+        )
       )
-      or
-      // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallNode call).interpretsArgumentsAsUrl(this)
     }
 
     override predicate isXssSink() { any() }
@@ -200,7 +238,8 @@ module ClientSideUrlRedirect {
     AttributeWriteUrlSink() {
       exists(DomPropertyWrite pw |
         pw.interpretsValueAsJavaScriptUrl() and
-        this = pw.getRhs()
+        this = pw.getRhs() and
+        not pw = floatingElement().getAPropertyWrite()
       )
     }
 
