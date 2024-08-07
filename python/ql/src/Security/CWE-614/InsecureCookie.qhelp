@@ -4,10 +4,9 @@
 <qhelp>
 
 <overview>
-<p>Setting the 'secure' flag on a cookie to <code>False</code> can cause it to be sent in cleartext.
-Setting the 'httponly' flag on a cookie to <code>False</code> may allow attackers access it via JavaScript.
-Setting the 'samesite' flag on a cookie to <code>'None'</code> will make the cookie to be sent in third-party 
-contexts which may be attacker-controlled.</p>
+<p>Cookies without the <code>Secure</code> flag set may be transmittd using HTTP instead of HTTPS, which leaves it vulnerable to being read by a third party.</p>
+<p>Cookies without the <code>HttpOnly</code> flag set are accessible to JavaScript running in the same origin. In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.</p>
+<p>Cookies with the <code>SameSite</code> attribute set to <code>'None'</code> will be sent with cross-origin requests, which can be controlled by third-party JavaScript code and allow for Cross-Site Request Forgery (CSRF) attacks.</p>
 </overview>
 
 <recommendation>
@@ -18,9 +17,8 @@ contexts which may be attacker-controlled.</p>
 </recommendation>
 
 <example>
-<p>This example shows two ways of adding a cookie to a Flask response. The first way uses <code>set_cookie</code>'s
-secure flag and the second adds the secure flag in the cookie's raw value.</p>
-<sample src="InsecureCookie.py" />
+<p>In the following examples, the cases marked GOOD show secure cookie attributes being set; whereas in the cases marked BAD they are not set.</p>
+<sample src="examples/InsecureCookie.py" />
 </example>
 
 <references>
