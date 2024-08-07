@@ -9,9 +9,7 @@
  * @tags actions
  *       security
  *       experimental
- *       external/cwe/cwe-094
- *       external/cwe/cwe-095
- *       external/cwe/cwe-116
+ *       external/cwe/cwe-074
  */
 
 import actions
