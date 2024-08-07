@@ -3555,7 +3555,7 @@ public class Parser {
           // e.g. `export { Foo_new as "Foo::new" }`
           Expression string = this.parseExprAtom(null);
           String str = ((Literal)string).getStringValue();
-          exported = new Identifier(loc, str);
+          exported = this.finishNode(new Identifier(loc, str));
         } else {
           exported = this.parseIdent(true);
         }
@@ -3648,7 +3648,7 @@ public class Parser {
       // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
       Expression string = this.parseExprAtom(null);    
       String str = ((Literal)string).getStringValue();
-      imported = new Identifier(loc, str);
+      imported = this.finishNode(new Identifier(loc, str));
       // only makes sense if there is a local identifier
       if (!this.isContextual("as")) {
         this.raiseRecoverable(this.start, "Unexpected string");
