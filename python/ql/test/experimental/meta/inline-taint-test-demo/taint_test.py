@@ -47,3 +47,32 @@ def bad_usage():
     ensure_not_tainted(
         should_not_be_tainted # $ tainted
     )
+
+
+def implicit_reads():
+    tt = (TAINTED_STRING,)
+
+    # Normal use
+    ensure_tainted(
+        tt[0], # $ tainted
+    )
+
+    # We have precise content, so the tuple itself is not tainted
+    ensure_not_tainted(
+        tt,
+        tt[1],
+    )
+
+    # We can see the tuple tainted at sinks due to implicit reads
+    ensure_tainted_with_reads(
+        tt, # $ tainted
+    )
+
+    # We should not see other elements of the tuple being tainted
+    # but the implicit reads of the previous test allows the taint
+    # to flow to the tuple and then to the subscript.
+    # We can see a warning about this in the expected output under
+    # `spuriousReadStepsPossible`.
+    ensure_not_tainted(
+        tt[1], # $ SPURIOUS:tainted
+    )
