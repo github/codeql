@@ -1203,6 +1203,77 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasSecureFlag(boolean b) { super.hasSecureFlag(b) }
+
+      /**
+       * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasHttpOnlyFlag(boolean b) { super.hasHttpOnlyFlag(b) }
+
+      /**
+       * Holds if the `SameSite` attribute of the cookie is known to have a value of `v`.
+       */
+      predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) { super.hasSameSiteAttribute(v) }
+    }
+
+    /**
+     * A dataflow call node to a method that sets a cookie in an http response,
+     * and has common keyword arguments `secure`, `httponly`, and `samesite` to set the attributes of the cookie.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+     */
+    abstract class SetCookieCall extends CookieWrite::Range, DataFlow::CallCfgNode {
+      override predicate hasSecureFlag(boolean b) {
+        super.hasSecureFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("secure")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasHttpOnlyFlag(boolean b) {
+        super.hasHttpOnlyFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("httponly")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) {
+        super.hasSameSiteAttribute(v)
+        or
+        exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
+          DataFlow::localFlow(DataFlow::exprNode(str), arg) and
+          (
+            str.getText().toLowerCase() = "strict" and
+            v instanceof CookieWrite::SameSiteStrict
+            or
+            str.getText().toLowerCase() = "lax" and
+            v instanceof CookieWrite::SameSiteLax
+            or
+            str.getText().toLowerCase() = "none" and
+            v instanceof CookieWrite::SameSiteNone
+          )
+        )
+        or
+        not exists(this.getArgByName("samesite")) and
+        not exists(this.getKwargs()) and
+        v instanceof CookieWrite::SameSiteLax // Lax is the default
+      }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1231,6 +1302,91 @@ module Http {
          * Gets the argument, if any, specifying the cookie value.
          */
         abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasSecureFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasHttpOnlyFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `SameSite` flag of the cookie is known to have a value of `v`.
+         */
+        predicate hasSameSiteAttribute(SameSiteValue v) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            (
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict(;.*|\\s*)") and
+              v instanceof SameSiteStrict
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax(;.*|\\s*)") and
+              v instanceof SameSiteLax
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=none(;.*|\\s*)") and
+              v instanceof SameSiteNone
+            )
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none)(;.*|\\s*)") and
+            v instanceof SameSiteLax // Lax is the default
+          )
+        }
+      }
+
+      private newtype TSameSiteValue =
+        TSameSiteStrict() or
+        TSameSiteLax() or
+        TSameSiteNone()
+
+      /** A possible value for the SameSite attribute of a cookie. */
+      class SameSiteValue extends TSameSiteValue {
+        /** Gets a string representation of this value. */
+        string toString() { none() }
+      }
+
+      /** A `Strict` value of the `SameSite` attribute. */
+      class SameSiteStrict extends SameSiteValue, TSameSiteStrict {
+        override string toString() { result = "Strict" }
+      }
+
+      /** A `Lax` value of the `SameSite` attribute. */
+      class SameSiteLax extends SameSiteValue, TSameSiteLax {
+        override string toString() { result = "Lax" }
+      }
+
+      /** A `None` value of the `SameSite` attribute. */
+      class SameSiteNone extends SameSiteValue, TSameSiteNone {
+        override string toString() { result = "None" }
       }
     }
 

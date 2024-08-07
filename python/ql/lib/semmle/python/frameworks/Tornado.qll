@@ -592,7 +592,7 @@ module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
-  class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
+  class TornadoRequestHandlerSetCookieCall extends Http::Server::SetCookieCall,
     DataFlow::MethodCallNode
   {
     TornadoRequestHandlerSetCookieCall() {
