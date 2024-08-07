@@ -65,13 +65,13 @@ private module TranslateModels<
 /** Transforms a `PathGraph` by printing the provenance information. */
 module ShowProvenance<
   interpretModelForTestSig/2 interpretModelForTest, PathNodeSig PathNode,
-  DF::PathGraphSig<PathNode> PathGraph>
+  DF::PathGraphSig<PathNode> PathGraph> implements DF::PathGraphSig<PathNode>
 {
   private predicate provenance(string model) { PathGraph::edges(_, _, _, model) }
 
   private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
-  query predicate models(int r, string model) { Models::models(r, model) }
+  additional query predicate models(int r, string model) { Models::models(r, model) }
 
   query predicate edges(PathNode a, PathNode b, string key, string val) {
     exists(string model |
