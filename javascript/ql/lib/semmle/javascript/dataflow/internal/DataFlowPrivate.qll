@@ -1360,7 +1360,8 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
+  // creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
+  none()
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */

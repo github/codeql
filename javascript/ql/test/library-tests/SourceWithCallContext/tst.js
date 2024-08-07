@@ -10,14 +10,14 @@ lib.something(foo);
 
 function unrelated() {
     let ret = foo('safe', p => {
-        sink(p); // $ hasValueFlow=source_param [SPURIOUS]
+        sink(p);
     });
     sink(ret);
 }
 
 function related() {
     let ret = foo(source('explicit_source'), p => {
-        sink(p); // $ hasValueFlow=explicit_source
+        sink(p); // $ MISSING: hasValueFlow=explicit_source
     });
     sink(ret); // $ hasValueFlow=explicit_source
 }
