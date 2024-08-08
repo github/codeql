@@ -1,0 +1,41 @@
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): The key set {file} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 5: (278,0)
+Tuple 2 in row 6: (278,1)
+	Relevant element: Tuple 1: file=278
+		Full ID for 278: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Antiforgery.dll;sourcefile"
+	Relevant element: Tuple 2: file=278
+		Full ID for 278: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Antiforgery.dll;sourcefile"
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): The key set {file} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 7: (967,0)
+Tuple 2 in row 8: (967,1)
+	Relevant element: Tuple 1: file=967
+		Full ID for 967: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.netcore.app.ref/8.0.5/ref/net8.0/System.Runtime.dll;sourcefile"
+	Relevant element: Tuple 2: file=967
+		Full ID for 967: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.netcore.app.ref/8.0.5/ref/net8.0/System.Runtime.dll;sourcefile"
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): The key set {file} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 9: (999,0)
+Tuple 2 in row 10: (999,1)
+	Relevant element: Tuple 1: file=999
+		Full ID for 999: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.Extensions.Options.dll;sourcefile"
+	Relevant element: Tuple 2: file=999
+		Full ID for 999: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.Extensions.Options.dll;sourcefile"
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): The key set {file} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 11: (1008,0)
+Tuple 2 in row 12: (1008,1)
+	Relevant element: Tuple 1: file=1008
+		Full ID for 1008: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.Extensions.ObjectPool.dll;sourcefile"
+	Relevant element: Tuple 2: file=1008
+		Full ID for 1008: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.Extensions.ObjectPool.dll;sourcefile"
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): The key set {file} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 13: (1158,0)
+Tuple 2 in row 14: (1158,1)
+	Relevant element: Tuple 1: file=1158
+		Full ID for 1158: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Authentication.Abstractions.dll;sourcefile"
+	Relevant element: Tuple 2: file=1158
+		Full ID for 1158: @"/Users/tamasvajk/dev/semmle-code/target/codeql-csharp-integration-tests/ql/csharp/ql/integration-tests/all-platforms/cshtml_standalone_flowsteps/test-db/working/4180263f08d2af88/packages/microsoft.aspnetcore.app.ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Authentication.Abstractions.dll;sourcefile"
+[INVALID_KEY] predicate file_extraction_mode(@file file, int mode): More errors, not displayed. There are 304 pairs of tuples not satisfying the key dependency for a relation of size 617
