@@ -3547,7 +3547,19 @@ public class Parser {
 
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(this.type == TokenType._default);
-      Identifier exported = this.eatContextual("as") ? this.parseIdent(true) : local;
+      Identifier exported;
+      if (!this.eatContextual("as")) {
+        exported = local;
+      } else {
+        if (this.type == TokenType.string) {
+          // e.g. `export { Foo_new as "Foo::new" }`
+          Expression string = this.parseExprAtom(null);
+          String str = ((Literal)string).getStringValue();
+          exported = this.finishNode(new Identifier(loc, str));
+        } else {
+          exported = this.parseIdent(true);
+        }
+      }
       checkExport(exports, exported.getName(), exported.getLoc().getStart());
       nodes.add(this.finishNode(new ExportSpecifier(loc, local, exported)));
     }
@@ -3629,7 +3641,22 @@ public class Parser {
 
   protected ImportSpecifier parseImportSpecifier() {
     SourceLocation loc = new SourceLocation(this.startLoc);
-    Identifier imported = this.parseIdent(true), local;
+    Identifier imported, local;
+
+    if (this.type == TokenType.string) {
+      // Arbitrary Module Namespace Identifiers
+      // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
+      Expression string = this.parseExprAtom(null);    
+      String str = ((Literal)string).getStringValue();
+      imported = this.finishNode(new Identifier(loc, str));
+      // only makes sense if there is a local identifier
+      if (!this.isContextual("as")) {
+        this.raiseRecoverable(this.start, "Unexpected string");
+      }
+    } else {
+      imported = this.parseIdent(true);
+    }
+
     if (this.eatContextual("as")) {
       local = this.parseIdent(false);
     } else {
