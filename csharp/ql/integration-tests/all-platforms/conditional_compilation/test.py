@@ -1,6 +1,8 @@
-from create_database_utils import *
 import os
 
-os.environ["CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION"] = "none"
 
-run_codeql_database_create(['dotnet build /p:DefineConstants=A', 'dotnet build /p:DefineConstants=B'], lang="csharp")
+def test(codeql, csharp):
+    os.environ["CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION"] = "none"
+    codeql.database.create(
+        command=["dotnet build /p:DefineConstants=A", "dotnet build /p:DefineConstants=B"]
+    )

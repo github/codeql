@@ -1,4 +1,0 @@
-dependencies:
-  codeql/csharp-all: '*'
-  codeql/csharp-queries: '*'
-warnOnImplicitThis: true
