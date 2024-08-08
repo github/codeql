@@ -31,9 +31,9 @@ edges
 | main.cpp:9:29:9:32 | *argv | tests_restrict.c:15:41:15:44 | *argv | provenance |  |
 | main.cpp:9:29:9:32 | tests_restrict_main output argument | main.cpp:10:20:10:23 | **argv | provenance |  |
 | main.cpp:9:29:9:32 | tests_restrict_main output argument | main.cpp:10:20:10:23 | *argv | provenance |  |
-| main.cpp:10:20:10:23 | **argv | tests.cpp:657:32:657:35 | **argv | provenance |  |
-| main.cpp:10:20:10:23 | *argv | tests.cpp:657:32:657:35 | **argv | provenance |  |
-| main.cpp:10:20:10:23 | *argv | tests.cpp:657:32:657:35 | *argv | provenance |  |
+| main.cpp:10:20:10:23 | **argv | tests.cpp:664:32:664:35 | **argv | provenance |  |
+| main.cpp:10:20:10:23 | *argv | tests.cpp:664:32:664:35 | **argv | provenance |  |
+| main.cpp:10:20:10:23 | *argv | tests.cpp:664:32:664:35 | *argv | provenance |  |
 | overflowdestination.cpp:23:45:23:48 | **argv | overflowdestination.cpp:23:45:23:48 | **argv | provenance |  |
 | overflowdestination.cpp:23:45:23:48 | **argv | overflowdestination.cpp:23:45:23:48 | *argv | provenance |  |
 | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | provenance |  |
@@ -46,12 +46,12 @@ edges
 | tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home | provenance |  |
 | tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home | provenance |  |
 | tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home | provenance |  |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:682:9:682:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:683:9:683:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | *argv | tests.cpp:682:9:682:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | *argv | tests.cpp:683:9:683:15 | *access to array | provenance |  |
-| tests.cpp:682:9:682:15 | *access to array | tests.cpp:613:19:613:24 | *source | provenance |  |
-| tests.cpp:683:9:683:15 | *access to array | tests.cpp:622:19:622:24 | *source | provenance |  |
+| tests.cpp:664:32:664:35 | **argv | tests.cpp:689:9:689:15 | *access to array | provenance |  |
+| tests.cpp:664:32:664:35 | **argv | tests.cpp:690:9:690:15 | *access to array | provenance |  |
+| tests.cpp:664:32:664:35 | *argv | tests.cpp:689:9:689:15 | *access to array | provenance |  |
+| tests.cpp:664:32:664:35 | *argv | tests.cpp:690:9:690:15 | *access to array | provenance |  |
+| tests.cpp:689:9:689:15 | *access to array | tests.cpp:613:19:613:24 | *source | provenance |  |
+| tests.cpp:690:9:690:15 | *access to array | tests.cpp:622:19:622:24 | *source | provenance |  |
 | tests_restrict.c:15:41:15:44 | **argv | tests_restrict.c:15:41:15:44 | **argv | provenance |  |
 | tests_restrict.c:15:41:15:44 | *argv | tests_restrict.c:15:41:15:44 | *argv | provenance |  |
 nodes
@@ -85,10 +85,10 @@ nodes
 | tests.cpp:628:14:628:14 | *s [*home] | semmle.label | *s [*home] |
 | tests.cpp:628:14:628:19 | *home | semmle.label | *home |
 | tests.cpp:628:16:628:19 | *home | semmle.label | *home |
-| tests.cpp:657:32:657:35 | **argv | semmle.label | **argv |
-| tests.cpp:657:32:657:35 | *argv | semmle.label | *argv |
-| tests.cpp:682:9:682:15 | *access to array | semmle.label | *access to array |
-| tests.cpp:683:9:683:15 | *access to array | semmle.label | *access to array |
+| tests.cpp:664:32:664:35 | **argv | semmle.label | **argv |
+| tests.cpp:664:32:664:35 | *argv | semmle.label | *argv |
+| tests.cpp:689:9:689:15 | *access to array | semmle.label | *access to array |
+| tests.cpp:690:9:690:15 | *access to array | semmle.label | *access to array |
 | tests_restrict.c:15:41:15:44 | **argv | semmle.label | **argv |
 | tests_restrict.c:15:41:15:44 | **argv | semmle.label | **argv |
 | tests_restrict.c:15:41:15:44 | *argv | semmle.label | *argv |

@@ -654,6 +654,13 @@ void test26(bool cond)
 	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1]
 }
 
+void test27(){
+	char *src = "";
+	char *dest = "abcdefgh";
+
+	strncpy(dest, src, strlen(dest)); // GOOD, strncpy will not read past null terminator of source
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
