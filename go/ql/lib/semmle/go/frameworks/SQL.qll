@@ -67,42 +67,14 @@ module SQL {
      */
     abstract class Range extends DataFlow::Node { }
 
-    /**
-     * An argument to an API of the squirrel library that is directly interpreted as SQL without
-     * taking syntactic structure into account.
-     */
-    private class SquirrelQueryString extends Range {
-      SquirrelQueryString() {
-        exists(Function fn |
-          exists(string sq |
-            sq =
-              package([
-                  "github.com/Masterminds/squirrel", "gopkg.in/Masterminds/squirrel",
-                  "github.com/lann/squirrel"
-                ], "")
-          |
-            fn.hasQualifiedName(sq, ["Delete", "Expr", "Insert", "Select", "Update"])
-            or
-            exists(Method m, string builder | m = fn |
-              builder = ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"] and
-              m.hasQualifiedName(sq, builder,
-                ["Columns", "From", "Options", "OrderBy", "Prefix", "Suffix", "Where"])
-              or
-              builder = "InsertBuilder" and
-              m.hasQualifiedName(sq, builder, ["Replace", "Into"])
-              or
-              builder = "SelectBuilder" and
-              m.hasQualifiedName(sq, builder,
-                ["CrossJoin", "GroupBy", "InnerJoin", "LeftJoin", "RightJoin"])
-              or
-              builder = "UpdateBuilder" and
-              m.hasQualifiedName(sq, builder, ["Set", "Table"])
-            )
-          ) and
-          this = fn.getACall().getArgument(0)
-        |
-          this.getType().getUnderlyingType() instanceof StringType or
-          this.getType().getUnderlyingType().(SliceType).getElementType() instanceof StringType
+    private class DefaultQueryString extends Range {
+      DefaultQueryString() {
+        exists(DataFlow::ArgumentNode arg | sinkNode(arg, "sql-injection") |
+          not arg instanceof DataFlow::ImplicitVarargsSlice and
+          this = arg
+          or
+          arg instanceof DataFlow::ImplicitVarargsSlice and
+          this = arg.getCall().getAnImplicitVarargsArgument()
         )
       }
     }
