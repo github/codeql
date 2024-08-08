@@ -667,7 +667,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     "Found unreachable Nuget feed in C# analysis with build-mode 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
                     markdownMessage: "Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
-                    severity: DiagnosticMessage.TspSeverity.Warning
+                    severity: DiagnosticMessage.TspSeverity.Note
                 ));
             }
             compilationInfoContainer.CompilationInfos.Add(("All Nuget feeds reachable", allFeedsReachable ? "1" : "0"));
