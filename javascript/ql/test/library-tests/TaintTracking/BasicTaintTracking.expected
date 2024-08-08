@@ -11,10 +11,6 @@ legacyDataFlowDifference
 | call-apply.js:27:14:27:21 | source() | call-apply.js:41:6:41:28 | foo1_ca ... ource]) | only flow with OLD data flow library |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:59:10:59:21 | arguments[1] | only flow with OLD data flow library |
 | call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) | only flow with NEW data flow library |
-| callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
-| callbacks.js:37:17:37:24 | source() | callbacks.js:41:10:41:10 | x | only flow with NEW data flow library |
-| callbacks.js:44:17:44:24 | source() | callbacks.js:37:37:37:37 | x | only flow with NEW data flow library |
-| callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
 | capture-flow.js:89:13:89:20 | source() | capture-flow.js:89:6:89:21 | test3c(source()) | only flow with NEW data flow library |
 | capture-flow.js:101:12:101:19 | source() | capture-flow.js:102:6:102:20 | test5("safe")() | only flow with OLD data flow library |
 | capture-flow.js:274:33:274:40 | source() | capture-flow.js:272:10:272:17 | this.foo | only flow with OLD data flow library |
@@ -91,10 +87,6 @@ flow
 | callbacks.js:25:16:25:23 | source() | callbacks.js:47:26:47:26 | x |
 | callbacks.js:25:16:25:23 | source() | callbacks.js:48:26:48:26 | x |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:37:37:37:37 | x |
-| callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x |
-| callbacks.js:37:17:37:24 | source() | callbacks.js:41:10:41:10 | x |
-| callbacks.js:44:17:44:24 | source() | callbacks.js:37:37:37:37 | x |
-| callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x |
 | callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
