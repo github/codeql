@@ -1,8 +1,10 @@
-from create_database_utils import *
+import runs_on
 
-path = b'\xd2abcd.cs'
 
-with open(path, 'w') as file:
-  file.write('class X { }\n')
+@runs_on.linux
+def test(codeql, csharp):
+    path = b"\xd2abcd.cs"
 
-run_codeql_database_create([], lang="csharp", extra_args=["--build-mode=none"])
+    with open(path, "w") as file:
+        file.write("class X { }\n")
+        codeql.database.create(build_mode="none")

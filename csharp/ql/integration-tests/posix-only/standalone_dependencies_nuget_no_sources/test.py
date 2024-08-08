@@ -1,3 +1,8 @@
-from create_database_utils import *
+import runs_on
+import pytest
 
-run_codeql_database_create([], source="proj", lang="csharp", extra_args=["--build-mode=none"])
+
+# Skipping the test on the ARM runners, as we're running into trouble with Mono and nuget.
+@pytest.mark.only_if(runs_on.linux or (runs_on.macos and runs_on.x86_64))
+def test(codeql, csharp):
+    codeql.database.create(source_root="proj", build_mode="none")
