@@ -255,4 +255,20 @@ module NextJS {
           .getMember("router")
           .asSource()
   }
+
+  /**
+   * Provides classes and predicates modeling the `next-auth` library.
+   */
+  private module NextAuth {
+    /**
+     * A random string used to hash tokens, sign cookies and generate cryptographic keys as a `CredentialsNode`.
+     */
+    private class SecretKey extends CredentialsNode {
+      SecretKey() {
+        this = API::moduleImport("next-auth").getParameter(0).getMember("secret").asSink()
+      }
+
+      override string getCredentialsKind() { result = "jwt key" }
+    }
+  }
 }

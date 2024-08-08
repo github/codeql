@@ -1,7 +1,6 @@
-import os
-from create_database_utils import *
-from diagnostics_test_utils import *
+import runs_on
 
-run_codeql_database_create(["./build.sh"], lang="csharp")
 
-check_diagnostics()
+@runs_on.posix
+def test(codeql, csharp):
+    codeql.database.create(command="./build.sh")

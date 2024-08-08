@@ -653,8 +653,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
-  {
+  class AiohttpResponseSetCookieCall extends Http::Server::SetCookieCall {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }

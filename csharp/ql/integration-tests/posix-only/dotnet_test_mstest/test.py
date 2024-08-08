@@ -1,14 +1,19 @@
-import platform
-from create_database_utils import *
-from diagnostics_test_utils import *
+import runs_on
 
-# Implicitly build and then run tests.
-run_codeql_database_create(['dotnet test'], test_db="test-db", lang="csharp")
-check_diagnostics()
 
-# Fix `dotnet test` picking `x64` on arm-based macOS
-architecture = '-a arm64' if platform.machine() == 'arm64' else ''
+@runs_on.posix
+def test_implicit_build_and_test(codeql, csharp):
+    codeql.database.create(command="dotnet test")
+
 
 # Explicitly build and then run tests.
-run_codeql_database_create(['dotnet clean', 'rm -rf test-db', 'dotnet build -o myout --os win', 'dotnet test myout/dotnet_test_mstest.exe ' + architecture], test_db="test2-db", lang="csharp")
-check_diagnostics(test_db="test2-db")
+@runs_on.posix
+def test_explicit_build_and_test(codeql, csharp):
+    # Fix `dotnet test` picking `x64` on arm-based macOS
+    architecture = "-a arm64" if runs_on.arm64 else ""
+    codeql.database.create(
+        command=[
+            "dotnet build -o myout --os win",
+            f"dotnet test myout/dotnet_test_mstest.exe {architecture}",
+        ]
+    )
