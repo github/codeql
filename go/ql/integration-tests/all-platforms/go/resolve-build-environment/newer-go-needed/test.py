@@ -1,3 +1,6 @@
-def test(codeql, go, check_build_environment):
-    check_build_environment.env = {"GOTOOLCHAIN": "go1.21.0"}
-    codeql.database.create(source_root="src")
+import os
+
+
+def test(check_build_environment, go):
+    # the check for resolve build-environment runs after the test and will pick up this environment variable
+    os.environ["GOTOOLCHAIN"] = "go1.21.0"
