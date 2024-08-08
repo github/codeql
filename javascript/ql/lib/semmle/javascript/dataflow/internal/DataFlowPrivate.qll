@@ -219,6 +219,23 @@ class ApplyCallTaintNode extends DataFlow::Node, TApplyCallTaintNode {
   DataFlow::Node getArrayNode() { result = apply.getArgument(1).flow() }
 }
 
+/**
+ * An argument that is passed to the given parameter at the implied lambda call site.
+ */
+class ImplicitArgumentNode extends DataFlow::Node, TImplicitArgumentNode {
+  private Parameter parameter;
+
+  ImplicitArgumentNode() { this = TImplicitArgumentNode(parameter) }
+
+  Function getFunction() { result.getAParameter() = parameter }
+
+  override StmtContainer getContainer() { result = this.getFunction().getEnclosingContainer() }
+
+  override string toString() { result = "[implicit argument] " + parameter.toString() }
+
+  override Location getLocation() { result = parameter.getLocation() }
+}
+
 cached
 newtype TReturnKind =
   MkNormalReturnKind() or
@@ -414,6 +431,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   pos.isFunctionSelfReference() and n = call.asOrdinaryCall().getCalleeNode()
   or
   pos.isFunctionSelfReference() and n = call.asImpliedLambdaCall().flow()
+  or
+  n = TImplicitArgumentNode(call.asImpliedLambdaCall().getParameter(pos.asPositional())) // TODO: rest parameters
   or
   exists(Function fun |
     call.asImpliedLambdaCall() = fun and
@@ -1197,6 +1216,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(DataFlow::FunctionNode function, int n |
     node1 = TFunctionSelfReferenceNode(function.getFunction()) and
     node2 = function.getParameter(n) and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
+  or
+  exists(Function function, Parameter param, int n |
+    node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
+    param = function.getParameter(n) and
+    node2 = TImplicitArgumentNode(param) and
     c.asSingleton() = MkCallbackArgument(n)
   )
 }
