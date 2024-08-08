@@ -1,3 +1,9 @@
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `rb/weak-sensitive-data-hashing`, to detect cases where sensitive data is hashed using a weak cryptographic hashing algorithm.
+
 ## 1.0.4
 
 No user-facing changes.
