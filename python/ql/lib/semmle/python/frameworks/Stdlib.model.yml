@@ -12,5 +12,13 @@ extensions:
       - ['sys', 'Member[argv]', 'commandargs']
       - ['sys', 'Member[orig_argv]', 'commandargs']
 
-      # TODO: argparse
+      # if no argument is given, the default is to use sys.argv[1:]
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args].WithArity[0].ReturnValue', 'commandargs']
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args]', 'Argument[0,args:]', 'ReturnValue', 'taint']
+      # note: taint of attribute lookups is handled in QL
+
       # TODO: input / read from stdin
