@@ -18,6 +18,14 @@ jobs:
           printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
           gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
           gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
+      - name: Install Packs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone github/codeql
+          codeql pack install "ql/lib"
+          codeql pack install "ql/src"
+          codeql pack install "ql/test"
       - name: Publish
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
