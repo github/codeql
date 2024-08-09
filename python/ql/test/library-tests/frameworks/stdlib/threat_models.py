@@ -2,18 +2,25 @@ import os
 import sys
 import posix
 
-os.getenv("foo") # $ threatModelSource[environment]=os.getenv(..)
-os.getenvb("bar") # $ threatModelSource[environment]=os.getenvb(..)
+ensure_tainted(
+    os.getenv("foo"), # $ tainted threatModelSource[environment]=os.getenv(..)
+    os.getenvb("bar"), # $ tainted threatModelSource[environment]=os.getenvb(..)
 
-os.environ["foo"] # $ threatModelSource[environment]=os.environ["foo"]
-os.environ.get("foo") # $ MISSING: threatModelSource[environment]=os.environ.get(..)
+    os.environ["foo"], # $ tainted threatModelSource[environment]=os.environ
+    os.environ.get("foo"), # $ tainted threatModelSource[environment]=os.environ
 
-os.environb["bar"] # $ threatModelSource[environment]=os.environb["bar"]
-posix.environ[b"foo"] # $ threatModelSource[environment]=posix.environ[b"foo"]
+    os.environb["bar"], # $ tainted threatModelSource[environment]=os.environb
+    posix.environ[b"foo"], # $ tainted threatModelSource[environment]=posix.environ
 
 
-sys.argv[1] # $ threatModelSource[commandargs]=sys.argv[1]
-sys.orig_argv[1] # $ threatModelSource[commandargs]=sys.orig_argv[1]
+    sys.argv[1], # $ tainted threatModelSource[commandargs]=sys.argv
+    sys.orig_argv[1], # $ tainted threatModelSource[commandargs]=sys.orig_argv
+)
+
+for k,v in os.environ.items(): # $ threatModelSource[environment]=os.environ
+    ensure_tainted(k) # $ tainted
+    ensure_tainted(v) # $ tainted
+
 
 ########################################
 # argparse
@@ -23,21 +30,23 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("foo")
 
-args = parser.parse_args()
-args.foo # $ MISSING: threatModelSource[commandargs]=args.foo
+args = parser.parse_args() # $ MISSING: threatModelSource[commandargs]=parser.parse_args()
+ensure_tainted(args.foo) # $ MISSING: tainted
 
-explicit_argv_parsing = parser.parse_args(sys.argv)
-explicit_argv_parsing.foo # $ MISSING: threatModelSource[commandargs]=explicit_argv_parsing.foo
+explicit_argv_parsing = parser.parse_args(sys.argv) # $ threatModelSource[commandargs]=sys.argv
+ensure_tainted(explicit_argv_parsing.foo) # $ MISSING: tainted
 
 fake_args = parser.parse_args(["<foo>"])
-fake_args.foo
+ensure_not_tainted(fake_args.foo)
 
 ########################################
 # reading input from stdin
 ########################################
 
-sys.stdin.readline() # $ MISSING: threatModelSource
-input() # $ MISSING: threatModelSource
+ensure_tainted(
+    sys.stdin.readline(), # $ MISSING: tainted threatModelSource
+    input(), # $ MISSING: tainted threatModelSource
+)
 
 ########################################
 # socket
@@ -46,4 +55,4 @@ input() # $ MISSING: threatModelSource
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("example.com", 1234))
-s.recv(1024) # $ MISSING: threatModelSource[socket]
+ensure_tainted(s.recv(1024)) # $ MISSING: tainted threatModelSource[socket]

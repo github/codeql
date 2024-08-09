@@ -5,12 +5,12 @@ extensions:
     data:
       - ['os', 'Member[getenv].ReturnValue', 'environment']
       - ['os', 'Member[getenvb].ReturnValue', 'environment']
-      - ['os', 'Member[environ].DictionaryElementAny', 'environment']
-      - ['os', 'Member[environb].DictionaryElementAny', 'environment']
-      - ['posix', 'Member[environ].DictionaryElementAny', 'environment']
+      - ['os', 'Member[environ]', 'environment']
+      - ['os', 'Member[environb]', 'environment']
+      - ['posix', 'Member[environ]', 'environment']
 
-      - ['sys', 'Member[argv].DictionaryElementAny', 'commandargs']
-      - ['sys', 'Member[orig_argv].DictionaryElementAny', 'commandargs']
+      - ['sys', 'Member[argv]', 'commandargs']
+      - ['sys', 'Member[orig_argv]', 'commandargs']
 
       # TODO: argparse
       # TODO: input / read from stdin
