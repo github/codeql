@@ -20,11 +20,6 @@ where
   job.getATriggerEvent() = event and
   event.getName() = "pull_request_target" and
   event.getAnActivityType() = "synchronize" and
-  job.getAStep() = checkout and
-  (
-    checkout.getIf() = check
-    or
-    checkout.getEnclosingJob().getIf() = check
-  )
-select checkout, "The checked-out code can be changed after the authorization check o step $@.",
-  check, check.toString()
+  check.dominates(checkout)
+select checkout, "The checked-out code can be modified after the authorization check $@.", check,
+  check.toString()
