@@ -81,6 +81,23 @@ class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
   string getTag() { result = tag }
 }
 
+/**
+ * An argument that is passed to the given parameter at the implied lambda call site.
+ */
+class ImplicitArgumentNode extends DataFlow::Node, TImplicitArgumentNode {
+  private Parameter parameter;
+
+  ImplicitArgumentNode() { this = TImplicitArgumentNode(parameter) }
+
+  Function getFunction() { result.getAParameter() = parameter }
+
+  override StmtContainer getContainer() { result = this.getFunction().getEnclosingContainer() }
+
+  override string toString() { result = "[implicit argument] " + parameter.toString() }
+
+  override Location getLocation() { result = parameter.getLocation() }
+}
+
 cached
 newtype TReturnKind =
   MkNormalReturnKind() or
@@ -259,6 +276,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   pos.isFunctionSelfReference() and n = call.asImpliedLambdaCall().flow()
   or
+  n = TImplicitArgumentNode(call.asImpliedLambdaCall().getParameter(pos.asPositional())) // TODO: rest parameters
+  or
   exists(Function fun |
     call.asImpliedLambdaCall() = fun and
     CallGraph::impliedReceiverStep(n, TThisNode(fun)) and
@@ -403,7 +422,8 @@ newtype TContentApprox =
   TApproxIteratorError() or
   TApproxPromiseValue() or
   TApproxPromiseError() or
-  TApproxCapturedContent()
+  TApproxCapturedContent() or
+  TApproxCallbackArgument()
 
 class ContentApprox extends TContentApprox {
   string toString() {
@@ -424,6 +444,8 @@ class ContentApprox extends TContentApprox {
     this = TApproxPromiseError() and result = "TApproxPromiseError"
     or
     this = TApproxCapturedContent() and result = "TApproxCapturedContent"
+    or
+    this = TApproxCallbackArgument() and result = "TApproxCallbackArgument"
   }
 }
 
@@ -450,6 +472,8 @@ ContentApprox getContentApprox(Content c) {
   c instanceof MkPromiseError and result = TApproxPromiseError()
   or
   c instanceof MkCapturedContent and result = TApproxCapturedContent()
+  or
+  c instanceof MkCallbackArgument and result = TApproxCallbackArgument()
 }
 
 cached
@@ -467,9 +491,7 @@ private newtype TDataFlowCall =
     node = TValueNode(any(PropAccess p)) or
     node = TPropNode(any(PropertyPattern p))
   } or
-  MkImpliedLambdaCall(Function f) {
-    VariableCaptureConfig::captures(f, _) or CallGraph::impliedReceiverStep(_, TThisNode(f))
-  } or
+  MkImpliedLambdaCall(Function f) or
   MkSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -925,6 +947,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
+  or
+  exists(Function function, Parameter param, int n |
+    node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
+    param = function.getParameter(n) and
+    node2 = TImplicitArgumentNode(param) and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
@@ -937,6 +966,14 @@ private Node tryGetPostUpdate(Node node) {
   or
   not exists(getPostUpdate(node)) and
   result = node
+}
+
+private class ContinuationCall extends DataFlow::CallNode {
+  ContinuationCall() {
+    this.getCalleeNode().getALocalSource() instanceof ParameterNode and
+    inVoidContext(this.asExpr()) and
+    not exists(this.getASpreadArgument()) // not currently supported by continuation logic
+  }
 }
 
 /**
@@ -970,6 +1007,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::storeStep(node1, c, node2)
+  or
+  exists(ContinuationCall call, int n |
+    node1 = call.getArgument(n) and
+    node2 = call.getCalleeNode().getPostUpdateNode() and
+    c.asSingleton() = MkCallbackArgument(n)
+  )
 }
 
 /**
@@ -1060,6 +1103,8 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
 
 class LambdaCallKind = Unit;
 
+private import Expressions.ExprHasNoEffect
+
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
@@ -1069,7 +1114,12 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
   or
-  receiver = call.asOrdinaryCall().getCalleeNode() and exists(kind)
+  exists(DataFlow::InvokeNode node |
+    node = call.asOrdinaryCall() and
+    not node instanceof ContinuationCall and
+    receiver = node.getCalleeNode() and
+    exists(kind)
+  )
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

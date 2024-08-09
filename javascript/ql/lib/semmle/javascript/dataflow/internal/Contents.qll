@@ -63,6 +63,15 @@ module Private {
     int asArrayIndex() { result = this.toInt() and result >= 0 and this = result.toString() }
   }
 
+  private int getMaxArity() {
+    // TODO: account for flow summaries
+    result =
+      max(int n |
+        n = any(InvokeExpr e).getNumArgument() or
+        n = 10
+      )
+  }
+
   cached
   newtype TContent =
     MkPropertyContent(PropertyName name) or
@@ -75,7 +84,8 @@ module Private {
     MkIteratorError() or
     MkPromiseValue() or
     MkPromiseError() or
-    MkCapturedContent(LocalVariable v) { v.isCaptured() }
+    MkCapturedContent(LocalVariable v) { v.isCaptured() } or
+    MkCallbackArgument(int index) { index = [0 .. getMaxArity()] }
 
   cached
   newtype TContentSet =
@@ -147,6 +157,8 @@ module Public {
       result = "PromiseError"
       or
       result = this.asCapturedVariable().getName()
+      or
+      result = "CallbackArgument(" + this.asCallbackArgumentIndex() + ")"
     }
 
     /** Gets the property name represented by this content, if any. */
@@ -167,6 +179,9 @@ module Public {
 
     /** Holds if this represents values stored in a `Map` as the given string key. */
     predicate isMapValueWithKnownKey(string key) { this = MkMapValueWithKnownKey(key) }
+
+    /** Gets the callback argument index represented by this content, if any. */
+    int asCallbackArgumentIndex() { this = MkCallbackArgument(result) }
   }
 
   /**
