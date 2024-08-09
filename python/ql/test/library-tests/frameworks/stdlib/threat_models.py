@@ -44,8 +44,8 @@ ensure_not_tainted(fake_args.foo) # $ SPURIOUS: tainted
 ########################################
 
 ensure_tainted(
-    sys.stdin.readline(), # $ MISSING: tainted threatModelSource
-    input(), # $ MISSING: tainted threatModelSource
+    sys.stdin.readline(), # $ tainted threatModelSource[stdin]=sys.stdin
+    input(), # $ tainted threatModelSource[stdin]=input()
 )
 
 ########################################

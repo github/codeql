@@ -5009,6 +5009,19 @@ module StdlibPrivate {
       nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // sys
+  // ---------------------------------------------------------------------------
+  /**
+   * An access of `sys.stdin`/`sys.stdout`/`sys.stderr`, to get additional FileLike
+   * modeling.
+   */
+  private class SysStandardStreams extends Stdlib::FileLikeObject::InstanceSource, DataFlow::Node {
+    SysStandardStreams() {
+      this = API::moduleImport("sys").getMember(["stdin", "stdout", "stderr"]).asSource()
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

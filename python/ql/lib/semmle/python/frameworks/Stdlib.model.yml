@@ -12,6 +12,9 @@ extensions:
       - ['sys', 'Member[argv]', 'commandargs']
       - ['sys', 'Member[orig_argv]', 'commandargs']
 
+      - ['sys', 'Member[stdin]', 'stdin']
+      - ['builtins', 'Member[input].ReturnValue', 'stdin']
+
       # if no argument is given, the default is to use sys.argv[1:]
       - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args].WithArity[0].ReturnValue', 'commandargs']
   - addsTo:
@@ -20,5 +23,3 @@ extensions:
     data:
       - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args]', 'Argument[0,args:]', 'ReturnValue', 'taint']
       # note: taint of attribute lookups is handled in QL
-
-      # TODO: input / read from stdin
