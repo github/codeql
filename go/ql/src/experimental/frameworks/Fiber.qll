@@ -127,25 +127,6 @@ private module Fiber {
   }
 
   /**
-   * Models HTTP redirects.
-   */
-  private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-    DataFlow::Node urlNode;
-
-    Redirect() {
-      // HTTP redirect models for package: github.com/gofiber/fiber@v1.14.6
-      // Receiver type: Ctx
-      // signature: func (*Ctx) Redirect(location string, status ...int)
-      this = any(Method m | m.hasQualifiedName(fiberPackagePath(), "Ctx", "Redirect")).getACall() and
-      urlNode = this.getArgument(0)
-    }
-
-    override DataFlow::Node getUrl() { result = urlNode }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
-  }
-
-  /**
    * Models HTTP header writers.
    * The write is done with a call where you can set both the key and the value of the header.
    */
