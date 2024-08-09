@@ -1,4 +1,6 @@
-from create_database_utils import *
+import commands
 
-runSuccessfully([get_cmd("kotlinc"), '-language-version', '1.9', 'A.kt'])
-run_codeql_database_create(['kotlinc -cp . -language-version 1.9 B.kt C.kt'], lang="java")
+
+def test(codeql, java_full):
+    commands.run("kotlinc -language-version 1.9 A.kt")
+    codeql.database.create(command="kotlinc -cp . -language-version 1.9 B.kt C.kt")
