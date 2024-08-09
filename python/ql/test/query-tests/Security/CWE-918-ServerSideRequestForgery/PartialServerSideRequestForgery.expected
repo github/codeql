@@ -198,7 +198,6 @@ nodes
 | test_requests.py:8:18:8:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 subpaths
 #select
-| full_partial_test.py:68:5:68:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:68:18:68:20 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | full_partial_test.py:89:5:89:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:89:18:89:20 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | full_partial_test.py:95:5:95:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:95:18:95:20 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | full_partial_test.py:101:5:101:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:101:18:101:20 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |

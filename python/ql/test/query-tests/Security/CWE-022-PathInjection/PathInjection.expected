@@ -74,7 +74,10 @@ edges
 | path_injection.py:129:16:129:27 | ControlFlowNode for Attribute | path_injection.py:129:16:129:47 | ControlFlowNode for Attribute() | provenance | dict.get |
 | path_injection.py:129:16:129:47 | ControlFlowNode for Attribute() | path_injection.py:129:5:129:12 | ControlFlowNode for filename | provenance |  |
 | path_injection.py:130:5:130:8 | ControlFlowNode for path | path_injection.py:131:5:131:13 | ControlFlowNode for sanitized | provenance |  |
+| path_injection.py:130:5:130:8 | ControlFlowNode for path | path_injection.py:131:17:131:20 | ControlFlowNode for path | provenance |  |
 | path_injection.py:131:5:131:13 | ControlFlowNode for sanitized | path_injection.py:132:14:132:22 | ControlFlowNode for sanitized | provenance |  |
+| path_injection.py:131:17:131:20 | ControlFlowNode for path | path_injection.py:131:17:131:38 | ControlFlowNode for Attribute() | provenance | string.replace |
+| path_injection.py:131:17:131:38 | ControlFlowNode for Attribute() | path_injection.py:131:5:131:13 | ControlFlowNode for sanitized | provenance |  |
 | path_injection.py:138:5:138:12 | ControlFlowNode for filename | path_injection.py:139:5:139:8 | ControlFlowNode for path | provenance | AdditionalTaintStep |
 | path_injection.py:138:16:138:22 | ControlFlowNode for request | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | path_injection.py:138:16:138:47 | ControlFlowNode for Attribute() | provenance | dict.get |
@@ -199,6 +202,8 @@ nodes
 | path_injection.py:129:16:129:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | path_injection.py:130:5:130:8 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
 | path_injection.py:131:5:131:13 | ControlFlowNode for sanitized | semmle.label | ControlFlowNode for sanitized |
+| path_injection.py:131:17:131:20 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| path_injection.py:131:17:131:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | path_injection.py:132:14:132:22 | ControlFlowNode for sanitized | semmle.label | ControlFlowNode for sanitized |
 | path_injection.py:138:5:138:12 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
 | path_injection.py:138:16:138:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

@@ -4260,6 +4260,15 @@ module StdlibPrivate {
       output = "ReturnValue.ListElement" and
       preservesValue = true
       or
+      // in case we create a list from a container with precise elementt,
+      // we need to taint the list.
+      exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+        input = "Argument[0].TupleElement[" + i.toString() + "]"
+      ) and
+      // TODO: Once we have DictKeyContent, we need to transform that into taint
+      output = "ReturnValue" and
+      preservesValue = false
+      or
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -4708,8 +4717,13 @@ module StdlibPrivate {
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.ListElement" and
-        preservesValue = true
+        (
+          output = "ReturnValue.ListElement" and
+          preservesValue = true
+          or
+          output = "ReturnValue" and
+          preservesValue = false
+        )
       )
       or
       input = "Argument[self]" and
@@ -4759,8 +4773,13 @@ module StdlibPrivate {
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.ListElement.TupleElement[1]" and
-        preservesValue = true
+        (
+          output = "ReturnValue.ListElement.TupleElement[1]" and
+          preservesValue = true
+          or
+          output = "ReturnValue" and
+          preservesValue = false
+        )
       )
       or
       // TODO: Add the keys to output list
@@ -4822,6 +4841,50 @@ module StdlibPrivate {
       // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
       input = "Argument[0]" and
       output = "Argument[self]" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * Flow summaries for string manipulation methods.
+   */
+  class StringManipulation extends SummarizedCallable {
+    string method_name;
+
+    StringManipulation() {
+      this = "string." + method_name and
+      method_name in [
+          "capitalize", "casefold", "center", "expandtabs", "format", "format_map", "join", "ljust",
+          "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper",
+          "zfill", "encode", "decode"
+        ]
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, method_name)
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = method_name
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+      or
+      method_name = "join" and
+      exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+        input = "Argument[0].TupleElement[" + i + "]"
+      ) and
+      output = "ReturnValue" and
+      preservesValue = false
+      or
+      method_name = "format_map" and
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[0].DictionaryElement[" + key + "]"
+      ) and
+      output = "ReturnValue" and
       preservesValue = false
     }
   }

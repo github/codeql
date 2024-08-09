@@ -3,6 +3,10 @@ argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
 | taint_test.py:32:9:32:25 | taint_test.py:32 | ERROR, you should add `# $ MISSING: tainted` annotation | should_be_tainted |
 | taint_test.py:37:24:37:40 | taint_test.py:37 | ERROR, you should add `# $ MISSING: tainted` annotation | should_be_tainted |
+argumentToEnsureNotTaintedWithReadsNotMarkedAsSpurious
+untaintedArgumentToEnsureTaintedWithReadsNotMarkedAsMissing
+spuriousReadStepsPossible
+| taint_test.py:68:9:68:10 | ControlFlowNode for tt | taint_test.py:77:9:77:13 | ControlFlowNode for Subscript |
 testFailures
 | taint_test.py:41:20:41:21 | ts | Fixed missing result:tainted= |
 failures
