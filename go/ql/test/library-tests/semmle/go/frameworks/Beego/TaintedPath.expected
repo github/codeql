@@ -17,12 +17,8 @@ edges
 | test.go:340:15:340:26 | call to Data | test.go:344:23:344:31 | untrusted | provenance | Src:MaD:2  |
 models
 | 1 | Summary: encoding/json; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
-| 2 | Source: github.com/astaxie/beego/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 2 | Source: github.com/beego/beego/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 2 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
-| 3 | Source: github.com/astaxie/beego/context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
-| 3 | Source: github.com/beego/beego/context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
-| 3 | Source: github.com/beego/beego/server/web/context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
+| 2 | Source: group:beego-context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
+| 3 | Source: group:beego-context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
 nodes
 | test.go:215:15:215:26 | call to Data | semmle.label | call to Data |
 | test.go:216:18:216:26 | untrusted | semmle.label | untrusted |
