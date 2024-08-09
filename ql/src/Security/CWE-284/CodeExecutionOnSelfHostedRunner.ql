@@ -8,9 +8,8 @@
  * @id actions/pr-on-self-hosted-runner
  * @tags actions
  *       security
- *       external/cwe/cwe-284
- *       testing
  *       experimental
+ *       external/cwe/cwe-284
  */
 
 import codeql.actions.security.SelfHostedQuery

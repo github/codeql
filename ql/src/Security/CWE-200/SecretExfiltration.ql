@@ -8,6 +8,7 @@
  * @id actions/secret-exfiltration
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-200
  */
 

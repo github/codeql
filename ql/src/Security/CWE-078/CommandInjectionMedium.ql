@@ -9,6 +9,7 @@
  * @id actions/command-injection/medium
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-078
  */
 
