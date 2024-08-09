@@ -1,0 +1,62 @@
+compilationErrors
+| standalone.cs:43:12:43:12 | CS0104: 'C' is an ambiguous reference between 'A.C' and 'B.C' |
+| standalone.cs:68:9:68:9 | CS0104: 'C' is an ambiguous reference between 'A.C' and 'B.C' |
+methodCalls
+| standalone.cs:47:9:47:15 | call to method M0 |
+| standalone.cs:48:9:48:18 | call to method M0 |
+| standalone.cs:49:9:49:20 | call to method M0 |
+| standalone.cs:50:9:50:21 | call to method M0 |
+| standalone.cs:52:9:52:15 | call to method M1 |
+| standalone.cs:53:9:53:18 | call to method M1 |
+| standalone.cs:54:9:54:20 | call to method M1 |
+| standalone.cs:55:9:55:21 | call to method M1 |
+| standalone.cs:57:9:57:15 | call to method M2 |
+| standalone.cs:58:9:58:18 | call to method M2 |
+| standalone.cs:59:9:59:20 | call to method M2 |
+| standalone.cs:60:9:60:21 | call to method M2 |
+| standalone.cs:62:9:62:15 | call to method M3 |
+| standalone.cs:64:9:64:31 | call to method M0 |
+| standalone.cs:65:9:65:31 | call to method M1 |
+| standalone.cs:66:9:66:31 | call to method M2 |
+| standalone.cs:68:9:68:15 | call to method M4 |
+| standalone.cs:69:9:69:15 | call to method M4 |
+methodCallsTargets
+| standalone.cs:47:9:47:15 | call to method M0 | standalone.cs:8:21:8:22 | M0 |
+| standalone.cs:47:9:47:15 | call to method M0 | standalone.cs:9:21:9:22 | M0 |
+| standalone.cs:47:9:47:15 | call to method M0 | standalone.cs:10:21:10:22 | M0 |
+| standalone.cs:47:9:47:15 | call to method M0 | standalone.cs:11:21:11:22 | M0 |
+| standalone.cs:48:9:48:18 | call to method M0 | standalone.cs:9:21:9:22 | M0 |
+| standalone.cs:48:9:48:18 | call to method M0 | standalone.cs:10:21:10:22 | M0 |
+| standalone.cs:48:9:48:18 | call to method M0 | standalone.cs:11:21:11:22 | M0 |
+| standalone.cs:49:9:49:20 | call to method M0 | standalone.cs:10:21:10:22 | M0 |
+| standalone.cs:50:9:50:21 | call to method M0 | standalone.cs:11:21:11:22 | M0 |
+| standalone.cs:52:9:52:15 | call to method M1 | standalone.cs:16:21:16:22 | M1 |
+| standalone.cs:52:9:52:15 | call to method M1 | standalone.cs:17:21:17:22 | M1 |
+| standalone.cs:52:9:52:15 | call to method M1 | standalone.cs:18:21:18:22 | M1 |
+| standalone.cs:52:9:52:15 | call to method M1 | standalone.cs:19:21:19:22 | M1 |
+| standalone.cs:53:9:53:18 | call to method M1 | standalone.cs:17:21:17:22 | M1 |
+| standalone.cs:53:9:53:18 | call to method M1 | standalone.cs:18:21:18:22 | M1 |
+| standalone.cs:53:9:53:18 | call to method M1 | standalone.cs:19:21:19:22 | M1 |
+| standalone.cs:54:9:54:20 | call to method M1 | standalone.cs:18:21:18:22 | M1 |
+| standalone.cs:55:9:55:21 | call to method M1 | standalone.cs:19:21:19:22 | M1 |
+| standalone.cs:57:9:57:15 | call to method M2 | standalone.cs:32:21:32:22 | M2 |
+| standalone.cs:57:9:57:15 | call to method M2 | standalone.cs:33:21:33:22 | M2 |
+| standalone.cs:57:9:57:15 | call to method M2 | standalone.cs:34:21:34:22 | M2 |
+| standalone.cs:57:9:57:15 | call to method M2 | standalone.cs:35:21:35:22 | M2 |
+| standalone.cs:58:9:58:18 | call to method M2 | standalone.cs:33:21:33:22 | M2 |
+| standalone.cs:58:9:58:18 | call to method M2 | standalone.cs:34:21:34:22 | M2 |
+| standalone.cs:58:9:58:18 | call to method M2 | standalone.cs:35:21:35:22 | M2 |
+| standalone.cs:59:9:59:20 | call to method M2 | standalone.cs:34:21:34:22 | M2 |
+| standalone.cs:60:9:60:21 | call to method M2 | standalone.cs:35:21:35:22 | M2 |
+| standalone.cs:62:9:62:15 | call to method M3 | standalone.cs:21:21:21:22 | M3 |
+| standalone.cs:62:9:62:15 | call to method M3 | standalone.cs:37:21:37:22 | M3 |
+| standalone.cs:64:9:64:31 | call to method M0 | standalone.cs:11:21:11:22 | M0 |
+| standalone.cs:65:9:65:31 | call to method M1 | standalone.cs:19:21:19:22 | M1 |
+| standalone.cs:66:9:66:31 | call to method M2 | standalone.cs:35:21:35:22 | M2 |
+| standalone.cs:68:9:68:15 | call to method M4 | standalone.cs:23:28:23:29 | M4 |
+| standalone.cs:69:9:69:15 | call to method M4 | standalone.cs:24:21:24:22 | M4 |
+field
+| standalone.cs:43:14:43:14 | c | A.C |
+ambiguousAlternativeTypes
+| standalone.cs:14:18:14:18 | C | standalone.cs:30:18:30:18 | C |
+| standalone.cs:30:18:30:18 | C | standalone.cs:14:18:14:18 | C |
