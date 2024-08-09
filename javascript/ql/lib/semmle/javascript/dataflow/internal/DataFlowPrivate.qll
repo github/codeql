@@ -114,6 +114,42 @@ class DynamicArgumentArrayNode extends DataFlow::Node, TDynamicArgumentArrayNode
 }
 
 /**
+ * Intermediate node with data that will be stored in `DyanmicArgumentArrayNode`.
+ */
+class DynamicArgumentStoreNode extends DataFlow::Node, TDynamicArgumentStoreNode {
+  private InvokeExpr invoke;
+  private Content content;
+
+  DynamicArgumentStoreNode() { this = TDynamicArgumentStoreNode(invoke, content) }
+
+  override StmtContainer getContainer() { result = invoke.getContainer() }
+
+  override string toString() { result = "[dynamic argument store node] content=" + content }
+
+  override Location getLocation() { result = invoke.getLocation() }
+}
+
+/**
+ * Intermediate node with data that will be stored in the function's rest parameter node.
+ */
+class RestParameterStoreNode extends DataFlow::Node, TRestParameterStoreNode {
+  private Function function;
+  private Content content;
+
+  RestParameterStoreNode() { this = TRestParameterStoreNode(function, content) }
+
+  override StmtContainer getContainer() { result = function }
+
+  override string toString() {
+    result =
+      "[rest parameter store node] '..." + function.getRestParameter().getName() + "' content=" +
+        content
+  }
+
+  override Location getLocation() { result = function.getRestParameter().getLocation() }
+}
+
+/**
  * A parameter containing an array of all positional arguments with an obvious index, i.e. not affected by spread or `.apply()`.
  *
  * These are read and stored in the function's rest parameter and `arguments` array.
@@ -297,8 +333,6 @@ private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosit
   or
   pos.isFunctionSelfReference() and p = TFunctionSelfReferenceNode(c.asSourceCallable())
   or
-  pos.isArgumentsArray() and p = TReflectiveParametersNode(c.asSourceCallable()) // TODO: remove
-  or
   pos.isStaticArgumentArray() and p = TStaticParameterArrayNode(c.asSourceCallable())
   or
   pos.isDynamicArgumentArray() and p = TDynamicParameterArrayNode(c.asSourceCallable())
@@ -316,6 +350,12 @@ predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition
 
 private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
   n = call.asOrdinaryCall().getArgument(pos.asPositional())
+  or
+  exists(InvokeExpr invoke |
+    call.asOrdinaryCall() = TReflectiveCallNode(invoke, "apply") and
+    pos.isDynamicArgumentArray() and
+    n = TValueNode(invoke.getArgument(1))
+  )
   or
   pos.isThis() and n = call.asOrdinaryCall().(DataFlow::CallNode).getReceiver()
   or
@@ -342,10 +382,6 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   )
   or
   pos.isThis() and n = TConstructorThisArgumentNode(call.asOrdinaryCall().asExpr())
-  or
-  // For now, treat all spread argument as flowing into the 'arguments' array, regardless of preceding arguments
-  n = call.asOrdinaryCall().getASpreadArgument() and
-  pos.isArgumentsArray()
   or
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
@@ -953,6 +989,39 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   // NOTE: For consistency with readStep/storeStep, we do not translate these steps to jump steps automatically.
   DataFlow::AdditionalFlowStep::step(node1, node2)
+  or
+  exists(InvokeExpr invoke |
+    // When the first argument is a spread argument, flow into the argument array as a local flow step
+    // to ensure we preserve knowledge about array indices
+    node1 = TValueNode(invoke.getArgument(0).stripParens().(SpreadElement).getOperand()) and
+    node2 = TDynamicArgumentArrayNode(invoke)
+  )
+  or
+  exists(Function f |
+    // When the first parameter is a rest parameter, flow into the rest parameter as a local flow step
+    // to ensure we preserve knowledge about array indices
+    (node1 = TStaticParameterArrayNode(f) or node1 = TDynamicParameterArrayNode(f))
+  |
+    // rest parameter at initial position
+    exists(Parameter rest |
+      rest = f.getParameter(0) and
+      rest.isRestParameter() and
+      node2 = TValueNode(rest)
+    )
+    or
+    // 'arguments' array
+    node2 = TReflectiveParametersNode(f)
+  )
+  or
+  // Prepare to store non-spread arguments after a spread into the dynamic arguments array
+  exists(InvokeExpr invoke, int n, Expr argument, Content storeContent |
+    invoke.getArgument(n) = argument and
+    not argument instanceof SpreadElement and
+    n > firstSpreadArgumentIndex(invoke) and
+    node1 = TValueNode(argument) and
+    node2 = TDynamicArgumentStoreNode(invoke, storeContent) and
+    storeContent.isUnknownArrayElement()
+  )
 }
 
 predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediatePredecessor() }
@@ -1018,6 +1087,42 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
+  or
+  // Pass dynamic arguments into plain parameters
+  exists(Function function, Parameter param, int n |
+    param = function.getParameter(n) and
+    not param.isRestParameter() and
+    node1 = TDynamicParameterArrayNode(function) and
+    node2 = TValueNode(param) and
+    c = ContentSet::arrayElementFromInt(n)
+  )
+  or
+  // Prepare to store dynamic and static arguments into the rest parameter array when it isn't the first parameter
+  exists(Function function, Content content, int restIndex |
+    restIndex = function.getRestParameter().getIndex() and
+    restIndex > 0 and
+    (node1 = TStaticParameterArrayNode(function) or node1 = TDynamicParameterArrayNode(function)) and
+    node2 = TRestParameterStoreNode(function, content)
+  |
+    // shift known array indices
+    c.asArrayIndex() = content.asArrayIndex() + restIndex
+    or
+    content.isUnknownArrayElement() and // TODO: don't read unknown array elements from static array
+    c = ContentSet::arrayElementUnknown()
+  )
+  or
+  // Prepare to store spread arguments into the dynamic arguments array, when it isn't the initial spread argument
+  exists(InvokeExpr invoke, int n, Expr argument, Content storeContent |
+    invoke.getArgument(n).stripParens().(SpreadElement).getOperand() = argument and
+    n > 0 and // n=0 is handled as a value step
+    node1 = TValueNode(argument) and
+    node2 = TDynamicArgumentStoreNode(invoke, storeContent) and
+    if n > firstSpreadArgumentIndex(invoke)
+    then
+      c = ContentSet::arrayElement() and // unknown start index when not the first spread operator
+      storeContent.isUnknownArrayElement()
+    else storeContent.asArrayIndex() = n + c.asArrayIndex()
+  )
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
@@ -1030,6 +1135,11 @@ private Node tryGetPostUpdate(Node node) {
   or
   not exists(getPostUpdate(node)) and
   result = node
+}
+
+pragma[nomagic]
+private int firstSpreadArgumentIndex(InvokeExpr expr) {
+  result = min(int i | expr.isSpreadArgument(i))
 }
 
 /**
@@ -1063,6 +1173,25 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   DataFlow::AdditionalFlowStep::storeStep(node1, c, node2)
+  or
+  exists(Function f, Content storeContent |
+    node1 = TRestParameterStoreNode(f, storeContent) and
+    node2 = TValueNode(f.getRestParameter()) and
+    c.asSingleton() = storeContent
+  )
+  or
+  exists(InvokeExpr invoke, Content storeContent |
+    node1 = TDynamicArgumentStoreNode(invoke, storeContent) and
+    node2 = TDynamicArgumentArrayNode(invoke) and
+    c.asSingleton() = storeContent
+  )
+  or
+  exists(InvokeExpr invoke, int n |
+    node1 = TValueNode(invoke.getArgument(n)) and
+    node2 = TStaticArgumentArrayNode(invoke) and
+    c.asArrayIndex() = n and
+    not n >= firstSpreadArgumentIndex(invoke)
+  )
 }
 
 /**
@@ -1112,6 +1241,9 @@ predicate expectsContent(Node n, ContentSet c) {
   c = MkPromiseFilter()
   or
   any(AdditionalFlowInternal flow).expectsContent(n, c)
+  or
+  c = ContentSet::arrayElement() and
+  n instanceof TDynamicParameterArrayNode
 }
 
 abstract class NodeRegion extends Unit {

@@ -15,6 +15,12 @@ private import semmle.javascript.dataflow.internal.VariableCapture as VariableCa
 
 cached
 private module Cached {
+  private Content dynamicArgumentsContent() {
+    result.asArrayIndex() = [0 .. 10]
+    or
+    result.isUnknownArrayElement()
+  }
+
   /**
    * The raw data type underlying `DataFlow::Node`.
    */
@@ -39,6 +45,16 @@ private module Cached {
       f.getAParameter().isRestParameter() or f.usesArgumentsObject()
     } or
     TDynamicParameterArrayNode(Function f) or
+    /** Data about to be stored in the rest parameter object. Needed for shifting array indices. */
+    TRestParameterStoreNode(Function f, Content storeContent) {
+      f.getRestParameter().getIndex() > 0 and
+      storeContent = dynamicArgumentsContent()
+    } or
+    /** Data about to be stored in the dynamic argument array of an invocation. Needed for shifting array indices. */
+    TDynamicArgumentStoreNode(InvokeExpr invoke, Content storeContent) {
+      invoke.isSpreadArgument(_) and
+      storeContent = dynamicArgumentsContent()
+    } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
@@ -49,7 +65,7 @@ private module Cached {
     TExceptionalInvocationReturnNode(InvokeExpr e) or
     TGlobalAccessPathRoot() or
     TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
-    TReflectiveParametersNode(Function f) or
+    TReflectiveParametersNode(Function f) { f.usesArgumentsObject() } or
     TExprPostUpdateNode(AST::ValueNode e) {
       e = any(InvokeExpr invoke).getAnArgument() or
       e = any(PropAccess access).getBase() or

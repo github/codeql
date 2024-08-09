@@ -79,7 +79,7 @@ function t7() {
 
 function t8() {
     function finalTarget(x, y, z) {
-        sink(x); // $ hasValueFlow=t8.1 SPURIOUS: hasValueFlow=t8.3
+        sink(x); // $ hasValueFlow=t8.1 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
         sink(y); // $ hasValueFlow=t8.2 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
         sink(z); // $ hasValueFlow=t8.3 SPURIOUS: hasValueFlow=t8.3 hasValueFlow=t8.4
     }
