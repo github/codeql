@@ -8,11 +8,23 @@
 
 private import internal.Types
 private import internal.Summaries
+private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.data.ModelsAsData
 
-/**
- * Holds if `(type2, path)` should be seen as an instance of `type1`.
- */
-query predicate typeModel = Types::typeModel/3;
+module ModelExportConfig implements ModelExportSig {
+  predicate shouldContain(API::Node node) {
+    exists(DataFlow::MethodNode method | node = method.backtrack())
+  }
+
+  predicate shouldContainType(string type) {
+    type = any(DataFlow::ModuleNode mod).getQualifiedName() + ["", "!"]
+  }
+}
+
+module ExportedModel = ModelExport<ModelExportConfig>;
+
+query predicate typeModel = ExportedModel::typeModel/3;
 
 /**
  * Holds if the value at `(type, path)` should be seen as a flow
@@ -35,7 +47,11 @@ query predicate sinkModel(string type, string path, string kind) { none() }
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
  * respectively.
  */
-query predicate summaryModel = Summaries::summaryModel/5;
+query predicate summaryModel(string type, string path, string input, string output, string kind) {
+  Summaries::summaryModel(type, path, input, output, kind)
+  or
+  ExportedModel::summaryModel(type, path, input, output, kind)
+}
 
 /**
  * Holds if `path` can be substituted for a token `TypeVar[name]`.
