@@ -32,9 +32,9 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A SQL statement of a SQL construction, considered as a flow sink.
