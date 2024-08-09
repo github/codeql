@@ -1244,8 +1244,12 @@ private int firstSpreadArgumentIndex(InvokeExpr expr) {
   result = min(int i | expr.isSpreadArgument(i))
 }
 
-private class CallbackCall extends DataFlow::CallNode {
-  CallbackCall() { this.getCalleeNode().getALocalSource() instanceof ParameterNode }
+private class ContinuationCall extends DataFlow::CallNode {
+  ContinuationCall() {
+    this.getCalleeNode().getALocalSource() instanceof ParameterNode and
+    inVoidContext(this.asExpr()) and
+    not exists(this.getASpreadArgument()) // not currently supported by continuation logic
+  }
 }
 
 /**
@@ -1305,7 +1309,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElementUnknown()
   )
   or
-  exists(CallbackCall call, int n |
+  exists(ContinuationCall call, int n |
     node1 = call.getArgument(n) and
     node2 = call.getCalleeNode().getPostUpdateNode() and
     c.asSingleton() = MkCallbackArgument(n)
@@ -1403,6 +1407,8 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
 
 class LambdaCallKind = Unit;
 
+private import Expressions.ExprHasNoEffect
+
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   creation.(DataFlow::FunctionNode).getFunction() = c.asSourceCallable() and exists(kind)
@@ -1411,6 +1417,13 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
+  or
+  exists(DataFlow::InvokeNode node |
+    node = call.asOrdinaryCall() and
+    not node instanceof ContinuationCall and
+    receiver = node.getCalleeNode() and
+    exists(kind)
+  )
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
