@@ -180,6 +180,8 @@
 | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear | normal | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear |
 | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString |
 | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString |
+| MultiImplementationA.cs:3:7:3:15 | call to constructor Object | normal | MultiImplementationA.cs:3:7:3:15 | call to constructor Object |
+| MultiImplementationB.cs:1:7:1:15 | call to constructor Object | normal | MultiImplementationB.cs:1:7:1:15 | call to constructor Object |
 | Splitting.cs:1:7:1:15 | call to constructor Object | normal | Splitting.cs:1:7:1:15 | call to constructor Object |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
