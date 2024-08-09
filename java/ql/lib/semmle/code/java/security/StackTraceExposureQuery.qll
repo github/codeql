@@ -7,7 +7,7 @@ private import semmle.code.java.security.InformationLeak
 /**
  * One of the `printStackTrace()` overloads on `Throwable`.
  */
-private class PrintStackTraceMethod extends Method {
+class PrintStackTraceMethod extends Method {
   PrintStackTraceMethod() {
     this.getDeclaringType()
         .getSourceDeclaration()
@@ -17,7 +17,11 @@ private class PrintStackTraceMethod extends Method {
   }
 }
 
-private module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
+/**
+ * Flow configuration for xss vulnerable writer source flowing to `Throwable.printStackTrace()` on
+ * a stream that is connected to external output.
+ */
+module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
@@ -55,7 +59,10 @@ private predicate printWriterOnStringWriter(Expr printWriter, Variable stringWri
   )
 }
 
-private predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
+/**
+ * Holds if `stackTraceString` writes the stack trace from `exception` to a string.
+ */
+predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
   exists(Expr printWriter, Variable stringWriterVar, MethodCall printStackCall |
     printWriterOnStringWriter(printWriter, stringWriterVar) and
     printStackCall.getMethod() instanceof PrintStackTraceMethod and
@@ -66,7 +73,8 @@ private predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
   )
 }
 
-private module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+/** Flow configuration for stack trace flowing to http response. */
+module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }

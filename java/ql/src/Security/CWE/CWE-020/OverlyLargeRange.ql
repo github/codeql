@@ -12,6 +12,7 @@
  *       external/cwe/cwe-020
  */
 
+private import semmle.code.java.AlertFiltering
 private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
 
@@ -22,6 +23,7 @@ TreeView::RegExpCharacterClass potentialMisparsedCharClass() {
 
 from TreeView::RegExpCharacterRange range, string reason
 where
+  AlertFiltering::filterByLocation(range.getLocation()) and
   problem(range, reason) and
   not range.getParent() = potentialMisparsedCharClass()
 select range, "Suspicious character range that " + reason + "."

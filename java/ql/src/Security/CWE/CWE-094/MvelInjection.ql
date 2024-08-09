@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.MvelInjectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module MvelInjectionFlow = TaintTracking::Global<FilteredConfig<MvelInjectionFlowConfig>>;
+
 import MvelInjectionFlow::PathGraph
 
 from MvelInjectionFlow::PathNode source, MvelInjectionFlow::PathNode sink

@@ -14,5 +14,7 @@ import java
 import semmle.code.java.security.AndroidLocalAuthQuery
 
 from AuthenticationSuccessCallback c
-where not exists(c.getAResultUse())
+where
+  AlertFiltering::filterByLocation(c.getLocation()) and
+  not exists(c.getAResultUse())
 select c, "This authentication callback does not use its result for a cryptographic operation."

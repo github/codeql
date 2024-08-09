@@ -11,8 +11,14 @@
  */
 
 import java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.ExternallyControlledFormatStringQuery
 import semmle.code.java.StringFormat
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module ExternallyControlledFormatStringFlow =
+  TaintTracking::Global<FilteredConfig<ExternallyControlledFormatStringConfig>>;
+
 import ExternallyControlledFormatStringFlow::PathGraph
 
 from

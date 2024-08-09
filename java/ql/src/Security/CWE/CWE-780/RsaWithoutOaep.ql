@@ -12,6 +12,10 @@
 
 import java
 import semmle.code.java.security.RsaWithoutOaepQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module RsaWithoutOaepFlow = DataFlow::Global<FilteredConfig<RsaWithoutOaepConfig>>;
+
 import RsaWithoutOaepFlow::PathGraph
 
 from RsaWithoutOaepFlow::PathNode source, RsaWithoutOaepFlow::PathNode sink

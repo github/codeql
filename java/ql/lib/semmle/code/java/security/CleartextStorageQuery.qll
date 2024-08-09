@@ -36,7 +36,8 @@ abstract class Storable extends Call {
   abstract Expr getAStore();
 }
 
-private module SensitiveSourceFlowConfig implements DataFlow::ConfigSig {
+/** Flow configuration for sensitive data flowing into cleartext storage. */
+module SensitiveSourceFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorageSink }

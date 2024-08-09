@@ -15,6 +15,11 @@
 
 import java
 import semmle.code.java.security.InsecureRandomnessQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+private import semmle.code.java.dataflow.TaintTracking
+
+module InsecureRandomnessFlow = TaintTracking::Global<FilteredConfig<InsecureRandomnessConfig>>;
+
 import InsecureRandomnessFlow::PathGraph
 
 from InsecureRandomnessFlow::PathNode source, InsecureRandomnessFlow::PathNode sink

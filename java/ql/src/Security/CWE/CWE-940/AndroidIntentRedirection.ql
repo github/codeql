@@ -15,6 +15,10 @@
 
 import java
 import semmle.code.java.security.AndroidIntentRedirectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module IntentRedirectionFlow = TaintTracking::Global<FilteredConfig<IntentRedirectionConfig>>;
+
 import IntentRedirectionFlow::PathGraph
 
 from IntentRedirectionFlow::PathNode source, IntentRedirectionFlow::PathNode sink

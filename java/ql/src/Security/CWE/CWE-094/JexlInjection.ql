@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.JexlInjectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module JexlInjectionFlow = TaintTracking::Global<FilteredConfig<JexlInjectionConfig>>;
+
 import JexlInjectionFlow::PathGraph
 
 from JexlInjectionFlow::PathNode source, JexlInjectionFlow::PathNode sink

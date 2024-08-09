@@ -15,6 +15,10 @@
 
 import java
 import semmle.code.java.security.regexp.RegexInjectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module RegexInjectionFlow = TaintTracking::Global<FilteredConfig<RegexInjectionConfig>>;
+
 import RegexInjectionFlow::PathGraph
 
 from RegexInjectionFlow::PathNode source, RegexInjectionFlow::PathNode sink

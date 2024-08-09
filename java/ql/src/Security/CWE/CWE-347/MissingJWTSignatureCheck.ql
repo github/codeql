@@ -12,6 +12,11 @@
 
 import java
 import semmle.code.java.security.MissingJWTSignatureCheckQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module MissingJwtSignatureCheckFlow =
+  DataFlow::Global<FilteredConfig<MissingJwtSignatureCheckConfig>>;
+
 import MissingJwtSignatureCheckFlow::PathGraph
 
 from MissingJwtSignatureCheckFlow::PathNode source, MissingJwtSignatureCheckFlow::PathNode sink

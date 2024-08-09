@@ -14,7 +14,12 @@
 
 import java
 import semmle.code.java.security.IntentUriPermissionManipulationQuery
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module IntentUriPermissionManipulationFlow =
+  TaintTracking::Global<FilteredConfig<IntentUriPermissionManipulationConfig>>;
+
 import IntentUriPermissionManipulationFlow::PathGraph
 
 from

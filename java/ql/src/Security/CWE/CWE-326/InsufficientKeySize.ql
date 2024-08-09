@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.InsufficientKeySizeQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module KeySizeFlow = DataFlow::GlobalWithState<FilteredStateConfig<KeySizeConfig>>;
+
 import KeySizeFlow::PathGraph
 
 from KeySizeFlow::PathNode source, KeySizeFlow::PathNode sink

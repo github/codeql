@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.XssQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module XssFlow = TaintTracking::Global<FilteredConfig<XssConfig>>;
+
 import XssFlow::PathGraph
 
 from XssFlow::PathNode source, XssFlow::PathNode sink

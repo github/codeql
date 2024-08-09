@@ -13,6 +13,11 @@
 
 import java
 import semmle.code.java.security.StaticInitializationVectorQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module StaticInitializationVectorFlow =
+  TaintTracking::Global<FilteredConfig<StaticInitializationVectorConfig>>;
+
 import StaticInitializationVectorFlow::PathGraph
 
 from StaticInitializationVectorFlow::PathNode source, StaticInitializationVectorFlow::PathNode sink

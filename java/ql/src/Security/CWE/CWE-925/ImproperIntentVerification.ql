@@ -14,6 +14,8 @@ import java
 import semmle.code.java.security.ImproperIntentVerificationQuery
 
 from AndroidReceiverXmlElement reg, Method orm, SystemActionName sa
-where unverifiedSystemReceiver(reg, orm, sa)
+where
+  AlertFiltering::filterByLocation(orm.getLocation()) and
+  unverifiedSystemReceiver(reg, orm, sa)
 select orm, "This reciever doesn't verify intents it receives, and $@ to receive $@.", reg,
   "it is registered", sa, "the system action " + sa.getName()
