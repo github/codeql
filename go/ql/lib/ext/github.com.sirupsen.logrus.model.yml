@@ -4,7 +4,7 @@ extensions:
       extensible: packageGrouping
     data:
       - ["logrus", "github.com/sirupsen/logrus"]
-      - ["logrus", "ggithub.com/Sirupsen/logrus"]
+      - ["logrus", "github.com/Sirupsen/logrus"]
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel
