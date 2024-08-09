@@ -2,7 +2,6 @@
 | server/main.go:30:38:30:48 | selection of Text | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | user-provided value |
 | server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | definition of params | user-provided value |
 edges
-| client/main.go:16:35:16:78 | &... | client/main.go:16:35:16:78 | &... | provenance |  |
 | client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | definition of params | provenance |  |
 | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | rpc/notes/service.twirp.go:477:44:477:51 | typedReq | provenance |  |
 | rpc/notes/service.twirp.go:477:44:477:51 | typedReq | server/main.go:19:56:19:61 | definition of params | provenance |  |

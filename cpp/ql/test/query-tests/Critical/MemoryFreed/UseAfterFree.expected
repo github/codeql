@@ -16,7 +16,6 @@ edges
 | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:153:5:153:5 | a | provenance |  |
 | test_free.cpp:233:14:233:15 | pointer to free output argument | test_free.cpp:234:9:234:11 | *... ++ | provenance |  |
 | test_free.cpp:234:9:234:11 | *... ++ | test_free.cpp:236:9:236:10 | * ... | provenance |  |
-| test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
 | test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:241:9:241:10 | * ... | provenance |  |
 | test_free.cpp:239:14:239:15 | pointer to free output argument | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | test_free.cpp:246:9:246:10 | * ... | provenance |  |
