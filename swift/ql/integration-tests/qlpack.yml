@@ -1,4 +1,0 @@
-dependencies:
-  codeql/swift-all: '*'
-  codeql/swift-queries: '*'
-warnOnImplicitThis: true

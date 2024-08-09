@@ -1,22 +1,24 @@
-from create_database_utils import *
-from subprocess import check_call
 from hashlib import sha256
 from pathlib import Path
+import runs_on
+import pytest
 
-run_codeql_database_create([
-    './build.sh',
-], lang='swift',
-)
 
-with open('hashes.expected', 'w') as expected:
-    for f in sorted(Path().glob("*.swiftmodule")):
-        with open(f, 'rb') as module:
-            print(f.name, sha256(module.read()).hexdigest(), file=expected)
+@runs_on.posix
+@pytest.mark.ql_test("DB-CHECK", xfail=True)
+def test(codeql, swift, expected_files):
+    codeql.database.create(command="./build.sh")
+    with open("hashes.expected", "w") as expected:
+        for f in sorted(Path().glob("*.swiftmodule")):
+            with open(f, "rb") as module:
+                print(f.name, sha256(module.read()).hexdigest(), file=expected)
 
-with open('hashes.actual', 'w') as actual:
-    hashes = [(s.name, s.resolve().name) for s in Path("test-db/working/swift-extraction-artifacts/store").iterdir()]
-    hashes.sort()
-    for module, hash in hashes:
-        print(module, hash, file=actual)
-
-check_call(['diff', '-u', 'hashes.expected', 'hashes.actual'])
+    with open("hashes.actual", "w") as actual:
+        hashes = [
+            (s.name, s.resolve().name)
+            for s in Path("test-db/working/swift-extraction-artifacts/store").iterdir()
+        ]
+        hashes.sort()
+        for module, hash in hashes:
+            print(module, hash, file=actual)
+    expected_files.add("hashes.expected")

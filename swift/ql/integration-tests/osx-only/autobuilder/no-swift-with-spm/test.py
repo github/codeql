@@ -1,5 +1,6 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
+import runs_on
 
-run_codeql_database_create([], lang='swift', keep_trap=True, db=None, runFunction=runUnsuccessfully)
-check_diagnostics()
+
+@runs_on.macos
+def test(codeql, swift):
+    codeql.database.create(_assert_failure=True)

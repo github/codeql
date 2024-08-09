@@ -1,5 +1,6 @@
-from create_database_utils import *
+import runs_on
 
-run_codeql_database_create([
-    "swiftc -enable-bare-slash-regex regex.swift -o /dev/null",
-], lang="swift")
+
+@runs_on.linux
+def test(codeql, swift):
+    codeql.database.create(command="swiftc -enable-bare-slash-regex regex.swift -o /dev/null")
