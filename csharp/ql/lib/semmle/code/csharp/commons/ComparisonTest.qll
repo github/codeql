@@ -305,6 +305,7 @@ class ComparisonTest extends TComparisonTest {
   }
 
   /** Gets an argument of this comparison test. */
+  pragma[nomagic]
   Expr getAnArgument() {
     result = this.getFirstArgument() or
     result = this.getSecondArgument()

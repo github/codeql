@@ -40,6 +40,7 @@ class Call extends Expr, @call {
   Callable getTarget() { none() }
 
   /** Gets the `i`th argument to this call, if any. */
+  pragma[nomagic]
   Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
   /**
