@@ -315,8 +315,17 @@ class WrapperSanitizerMethodCall extends SanitizerMethodCall {
     )
   }
 
+  pragma[nomagic]
+  private predicate paramFilePathIndex(int index) {
+    index = wrapperMethod.paramFilePath().getIndex()
+  }
+
+
   override Expr getFilePathArgument() {
-    result = this.getArgument(wrapperMethod.paramFilePath().getIndex())
+    exists(int index |
+      this.paramFilePathIndex(index) and
+      result = this.getArgument(index)
+    )
   }
 }
 
