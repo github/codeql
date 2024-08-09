@@ -293,7 +293,11 @@ private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosit
   or
   pos.isFunctionSelfReference() and p = TFunctionSelfReferenceNode(c.asSourceCallable())
   or
-  pos.isArgumentsArray() and p = TReflectiveParametersNode(c.asSourceCallable())
+  pos.isArgumentsArray() and p = TReflectiveParametersNode(c.asSourceCallable()) // TODO: remove
+  or
+  pos.isStaticArgumentArray() and p = TStaticParameterArrayNode(c.asSourceCallable())
+  or
+  pos.isDynamicArgumentArray() and p = TDynamicParameterArrayNode(c.asSourceCallable())
   or
   exists(FlowSummaryNode summaryNode |
     summaryNode = p and
@@ -347,6 +351,14 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   FlowSummaryImpl::Private::summaryArgumentNode(call.(SummaryCall).getReceiver(),
     n.(FlowSummaryNode).getSummaryNode(), pos)
+  or
+  exists(InvokeExpr invoke | call.asOrdinaryCall() = TValueNode(invoke) |
+    n = TStaticArgumentArrayNode(invoke) and
+    pos.isStaticArgumentArray()
+    or
+    n = TDynamicArgumentArrayNode(invoke) and
+    pos.isDynamicArgumentArray()
+  )
 }
 
 predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
@@ -738,7 +750,9 @@ newtype TParameterPosition =
   MkPositionalLowerBound(int n) { n = [0 .. getMaxArity()] } or
   MkThisParameter() or
   MkFunctionSelfReferenceParameter() or
-  MkArgumentsArrayParameter()
+  MkArgumentsArrayParameter() or // TODO: remove
+  MkStaticArgumentArray() or
+  MkDynamicArgumentArray()
 
 class ParameterPosition extends TParameterPosition {
   predicate isPositionalExact() { this instanceof MkPositionalParameter }
@@ -755,7 +769,11 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isFunctionSelfReference() { this = MkFunctionSelfReferenceParameter() }
 
-  predicate isArgumentsArray() { this = MkArgumentsArrayParameter() }
+  predicate isArgumentsArray() { this = MkArgumentsArrayParameter() } // TODO: remove
+
+  predicate isStaticArgumentArray() { this = MkStaticArgumentArray() }
+
+  predicate isDynamicArgumentArray() { this = MkDynamicArgumentArray() }
 
   string toString() {
     result = this.asPositional().toString()
@@ -766,7 +784,11 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isFunctionSelfReference() and result = "function"
     or
-    this.isArgumentsArray() and result = "arguments-array"
+    this = MkArgumentsArrayParameter() and result = "deprecated-arguments-array"
+    or
+    this.isStaticArgumentArray() and result = "static-argument-array"
+    or
+    this.isDynamicArgumentArray() and result = "dynamic-argument-array"
   }
 }
 
