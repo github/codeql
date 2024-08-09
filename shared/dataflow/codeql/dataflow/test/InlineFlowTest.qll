@@ -38,6 +38,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
 
   bindingset[src, sink]
   string getArgString(DataFlowLang::Node src, DataFlowLang::Node sink);
+
+  /** Holds if the given extension tuple `madId` should pretty-print as `model`. */
+  predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model);
 }
 
 module InlineFlowTestMake<
@@ -50,6 +53,8 @@ module InlineFlowTestMake<
   private module TaintTracking = TT::TaintFlowMake<Location, DataFlowLang, TaintTrackingLang>;
 
   private module InlineExpectationsTest = IET::Make<Test>;
+
+  private import ProvenancePathGraph
 
   module DefaultFlowConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlowLang::Node source) { Impl::defaultSource(source) }
@@ -66,13 +71,33 @@ module InlineFlowTestMake<
   bindingset[src, sink]
   signature string getArgStringSig(DataFlowLang::Node src, DataFlowLang::Node sink);
 
+  private module DataFlowGlobal<DataFlow::ConfigSig Config> {
+    private import DataFlow::Global<Config> as G
+    import G
+
+    module PathGraphNoInterpretModel = G::PathGraph;
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, PathNode, PathGraphNoInterpretModel>;
+  }
+
+  private module TaintTrackingGlobal<DataFlow::ConfigSig Config> {
+    private import TaintTracking::Global<Config> as G
+    import G
+
+    module PathGraphNoInterpretModel = G::PathGraph;
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, PathNode, PathGraphNoInterpretModel>;
+  }
+
   module FlowTestArgString<
     DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig,
     getArgStringSig/2 getArgString>
   {
-    module ValueFlow = DataFlow::Global<ValueFlowConfig>;
+    module ValueFlow = DataFlowGlobal<ValueFlowConfig>;
 
-    module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
+    module TaintFlow = TaintTrackingGlobal<TaintFlowConfig>;
 
     private predicate hasLocationInfo(DataFlowLang::Node node, Test::Location location) {
       exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
@@ -104,7 +129,11 @@ module InlineFlowTestMake<
     }
 
     import InlineExpectationsTest::MakeTest<InlineTest>
-    import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraph, TaintFlow::PathGraph>
+    private import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraphNoInterpretModel, TaintFlow::PathGraphNoInterpretModel> as Merged
+    import Merged
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, Merged::PathNode, Merged::PathGraph>;
 
     predicate flowPath(PathNode source, PathNode sink) {
       ValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) or

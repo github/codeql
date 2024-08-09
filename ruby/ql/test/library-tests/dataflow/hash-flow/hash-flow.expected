@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | hash_flow.rb:10:5:10:8 | hash [element 0] | hash_flow.rb:30:10:30:13 | hash [element 0] | provenance |  |
 | hash_flow.rb:10:5:10:8 | hash [element :a] | hash_flow.rb:22:10:22:13 | hash [element :a] | provenance |  |
@@ -2267,6 +2267,7 @@ nodes
 | hash_flow.rb:1013:14:1013:14 | v | semmle.label | v |
 | hash_flow.rb:1014:14:1014:14 | k | semmle.label | k |
 subpaths
+testFailures
 hashLiteral
 | hash_flow.rb:10:12:21:5 | call to [] |
 | hash_flow.rb:55:13:55:37 | ...[...] |

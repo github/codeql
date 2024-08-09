@@ -678,12 +678,15 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
   }
 
+  private import codeql.dataflow.test.ProvenancePathGraph as ProvenancePathGraph
+
   /**
    * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.
    */
   module MergePathGraph<
-    PathNodeSig PathNode1, PathNodeSig PathNode2, PathGraphSig<PathNode1> Graph1,
-    PathGraphSig<PathNode2> Graph2>
+    PathNodeSig PathNode1, PathNodeSig PathNode2,
+    ProvenancePathGraph::PathGraphSig<PathNode1> Graph1,
+    ProvenancePathGraph::PathGraphSig<PathNode2> Graph2>
   {
     private newtype TPathNode =
       TPathNode1(PathNode1 p) or
@@ -729,7 +732,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Provides the query predicates needed to include a graph in a path-problem query.
      */
-    module PathGraph implements PathGraphSig<PathNode> {
+    module PathGraph implements ProvenancePathGraph::PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
       query predicate edges(PathNode a, PathNode b, string key, string val) {
         Graph1::edges(a.asPathNode1(), b.asPathNode1(), key, val) or
@@ -759,7 +762,9 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
    */
   module MergePathGraph3<
     PathNodeSig PathNode1, PathNodeSig PathNode2, PathNodeSig PathNode3,
-    PathGraphSig<PathNode1> Graph1, PathGraphSig<PathNode2> Graph2, PathGraphSig<PathNode3> Graph3>
+    ProvenancePathGraph::PathGraphSig<PathNode1> Graph1,
+    ProvenancePathGraph::PathGraphSig<PathNode2> Graph2,
+    ProvenancePathGraph::PathGraphSig<PathNode3> Graph3>
   {
     private module MergedInner = MergePathGraph<PathNode1, PathNode2, Graph1, Graph2>;
 
@@ -803,7 +808,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Provides the query predicates needed to include a graph in a path-problem query.
      */
-    module PathGraph implements PathGraphSig<PathNode> {
+    module PathGraph implements PathGraphSig<PathNode>, ProvenancePathGraph::PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
       query predicate edges(PathNode a, PathNode b, string key, string val) {
         Merged::PathGraph::edges(a, b, key, val)

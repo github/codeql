@@ -1,5 +1,4 @@
-testFailures
-| views/index.erb:2:10:2:12 | call to foo | Unexpected result: hasTaintFlow= |
+models
 edges
 | app.rb:75:5:75:8 | [post] self [@foo] | app.rb:76:32:76:35 | self [@foo] | provenance |  |
 | app.rb:75:12:75:17 | call to params | app.rb:75:12:75:24 | ...[...] | provenance |  |
@@ -23,6 +22,8 @@ nodes
 | app.rb:103:13:103:22 | call to source | semmle.label | call to source |
 | views/index.erb:2:10:2:12 | call to foo | semmle.label | call to foo |
 subpaths
+testFailures
+| views/index.erb:2:10:2:12 | call to foo | Unexpected result: hasTaintFlow= |
 #select
 | app.rb:95:10:95:14 | @user | app.rb:103:13:103:22 | call to source | app.rb:95:10:95:14 | @user | $@ | app.rb:103:13:103:22 | call to source | call to source |
 | views/index.erb:2:10:2:12 | call to foo | app.rb:75:12:75:17 | call to params | views/index.erb:2:10:2:12 | call to foo | $@ | app.rb:75:12:75:17 | call to params | call to params |

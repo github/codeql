@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | main.rb:3:9:3:9 | x | main.rb:4:26:4:26 | x | provenance |  |
 | main.rb:3:13:3:21 | call to source | main.rb:3:9:3:9 | x | provenance |  |
@@ -103,6 +103,7 @@ subpaths
 | view1.html.erb:6:5:6:13 | call to source | view1.rb:13:13:13:13 | x | view1.rb:13:5:15:7 | self in set [Return] [@x] | view1.html.erb:6:1:6:14 | [post] self [@x] |
 | view2.html.erb:3:5:3:13 | call to source | view2.rb:6:13:6:13 | x | view2.rb:6:5:8:7 | self in set [Return] [@x] | view2.html.erb:3:1:3:14 | [post] self [@x] |
 | view3.html.erb:3:6:3:8 | self [@x] | view3.rb:6:5:8:7 | self in get [@x] | view3.rb:7:9:7:10 | @x | view3.html.erb:3:6:3:8 | call to get |
+testFailures
 #select
 | view1.rb:10:14:10:15 | @x | main.rb:3:13:3:21 | call to source | view1.rb:10:14:10:15 | @x | $@ | main.rb:3:13:3:21 | call to source | call to source |
 | view1.rb:10:14:10:15 | @x | view1.html.erb:6:5:6:13 | call to source | view1.rb:10:14:10:15 | @x | $@ | view1.html.erb:6:5:6:13 | call to source | call to source |
