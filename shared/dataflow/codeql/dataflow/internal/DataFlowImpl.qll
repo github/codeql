@@ -1560,7 +1560,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               argT = TypOption::some(t) and
               argAp = apSome(ap)
             ) else (
-              summaryCtx = TParamNodeNone() and argT instanceof TypOption::None and argAp = apNone()
+              summaryCtx = TParamNodeNone() and
+              argT instanceof TypOption::None and
+              argAp = apNone() and
+              // When the call contexts of source and sink needs to match then there's
+              // never any reason to enter a callable except to find a summary. See also
+              // the comment in `PathNodeMid::isAtSink`.
+              not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
             )
           )
           or
@@ -2598,8 +2604,23 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             override predicate isSink() {
               sinkNode(node, state) and
-              (if hasSinkCallCtx() then instanceofCcNoCall(cc) else any()) and
-              ap instanceof ApNil
+              ap instanceof ApNil and
+              // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
+              // is exactly what we need to check.
+              // For `FeatureEqualSourceSinkCallContext` the initial call
+              // context was set to `CallContextSomeCall` and jumps are
+              // disallowed, so `cc instanceof CallContextNoCall` never holds.
+              // On the other hand, in this case there's never any need to
+              // enter a call except to identify a summary, so the condition in
+              // conjunction with setting the summary context enforces this,
+              // which means that the summary context being empty holds if and
+              // only if we are in the call context of the source.
+              if Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
+              then summaryCtx = TParamNodeNone()
+              else
+                if Config::getAFeature() instanceof FeatureHasSinkCallContext
+                then instanceofCcNoCall(cc)
+                else any()
             }
           }
 
@@ -4320,21 +4341,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         sinkNode(node, state) and
         sinkModel(node, model) and
         ap instanceof AccessPathNil and
-        if hasSinkCallCtx()
-        then
-          // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
-          // is exactly what we need to check. This also implies
-          // `sc instanceof SummaryCtxNone`.
-          // For `FeatureEqualSourceSinkCallContext` the initial call context was
-          // set to `CallContextSomeCall` and jumps are disallowed, so
-          // `cc instanceof CallContextNoCall` never holds. On the other hand,
-          // in this case there's never any need to enter a call except to identify
-          // a summary, so the condition in `pathIntoCallable` enforces this, which
-          // means that `sc instanceof SummaryCtxNone` holds if and only if we are
-          // in the call context of the source.
-          sc instanceof SummaryCtxNone or
-          cc instanceof CallContextNoCall
-        else any()
+        // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
+        // is exactly what we need to check.
+        // For `FeatureEqualSourceSinkCallContext` the initial call context was
+        // set to `CallContextSomeCall` and jumps are disallowed, so
+        // `cc instanceof CallContextNoCall` never holds. On the other hand,
+        // in this case there's never any need to enter a call except to identify
+        // a summary, so the condition in `pathIntoCallable` enforces this, which
+        // means that `sc instanceof SummaryCtxNone` holds if and only if we are
+        // in the call context of the source.
+        if Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
+        then sc instanceof SummaryCtxNone
+        else
+          if Config::getAFeature() instanceof FeatureHasSinkCallContext
+          then cc instanceof CallContextNoCall
+          else any()
       }
 
       PathNodeSink projectToSink(string model) {
