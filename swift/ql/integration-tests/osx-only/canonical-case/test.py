@@ -1,5 +1,6 @@
-from create_database_utils import *
+import runs_on
 
-run_codeql_database_create([
-    './build.sh',
-], lang='swift')
+
+@runs_on.macos
+def test(codeql, swift):
+    codeql.database.create(command="./build.sh")

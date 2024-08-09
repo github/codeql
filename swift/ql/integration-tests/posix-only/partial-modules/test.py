@@ -1,6 +1,8 @@
-from create_database_utils import *
+import runs_on
+import pytest
 
-run_codeql_database_create([
-    'swift package clean',
-    'swift build'
-], lang='swift', keep_trap=True)
+
+@runs_on.posix
+@pytest.mark.ql_test("DB-CHECK", xfail=True)
+def test(codeql, swift):
+    codeql.database.create(command="swift build")

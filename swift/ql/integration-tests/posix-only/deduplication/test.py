@@ -1,6 +1,6 @@
-from create_database_utils import *
+import runs_on
 
-run_codeql_database_create([
-    'swift package clean',
-    'swift build',
-], lang='swift', keep_trap=True)
+
+@runs_on.posix
+def test(codeql, swift):
+    codeql.database.create(command="swift build", keep_trap=True)
