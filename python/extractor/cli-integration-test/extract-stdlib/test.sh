@@ -13,10 +13,10 @@ rm -rf dbs
 
 mkdir dbs
 
-CODEQL_EXTRACTOR_PYTHON_DONT_EXTRACT_STDLIB=True $CODEQL database create dbs/without-stdlib --language python --source-root repo_dir/
+$CODEQL database create dbs/without-stdlib --language python --source-root repo_dir/
 $CODEQL query run --database dbs/without-stdlib query.ql > query.without-stdlib.actual
 diff query.without-stdlib.expected query.without-stdlib.actual
 
-LGTM_INDEX_EXCLUDE="/usr/lib/**" $CODEQL database create dbs/with-stdlib --language python --source-root repo_dir/
+LGTM_INDEX_EXCLUDE="/usr/lib/**" CODEQL_EXTRACTOR_PYTHON_EXTRACT_STDLIB=True $CODEQL database create dbs/with-stdlib --language python --source-root repo_dir/
 $CODEQL query run --database dbs/with-stdlib query.ql > query.with-stdlib.actual
 diff query.with-stdlib.expected query.with-stdlib.actual
