@@ -81,6 +81,73 @@ class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
   string getTag() { result = tag }
 }
 
+/**
+ * An argument containing an array of all positional arguments with an obvious index, i.e. not affected by a spread argument.
+ */
+class StaticArgumentArrayNode extends DataFlow::Node, TStaticArgumentArrayNode {
+  private InvokeExpr invoke;
+
+  StaticArgumentArrayNode() { this = TStaticArgumentArrayNode(invoke) }
+
+  override StmtContainer getContainer() { result = invoke.getContainer() }
+
+  override string toString() { result = "[static argument array]" }
+
+  override Location getLocation() { result = invoke.getLocation() }
+}
+
+/**
+ * An argument containing an array of all positional arguments with non-obvious index, i.e. affected by a spread argument.
+ *
+ * Only exists for call sites with a spread argument.
+ */
+class DynamicArgumentArrayNode extends DataFlow::Node, TDynamicArgumentArrayNode {
+  private InvokeExpr invoke;
+
+  DynamicArgumentArrayNode() { this = TDynamicArgumentArrayNode(invoke) }
+
+  override StmtContainer getContainer() { result = invoke.getContainer() }
+
+  override string toString() { result = "[dynamic argument array]" }
+
+  override Location getLocation() { result = invoke.getLocation() }
+}
+
+/**
+ * A parameter containing an array of all positional arguments with an obvious index, i.e. not affected by spread or `.apply()`.
+ *
+ * These are read and stored in the function's rest parameter and `arguments` array.
+ * The node only exists for functions with a rest parameter or which uses the `arguments` array.
+ */
+class StaticParameterArrayNode extends DataFlow::Node, TStaticParameterArrayNode {
+  private Function function;
+
+  StaticParameterArrayNode() { this = TStaticParameterArrayNode(function) }
+
+  override StmtContainer getContainer() { result = function }
+
+  override string toString() { result = "[static parameter array]" }
+
+  override Location getLocation() { result = function.getLocation() }
+}
+
+/**
+ * A parameter containing an array of all positional argument values with non-obvious index, i.e. affected by spread or `.apply()`.
+ *
+ * These are read and assigned into regular positional parameters and stored into rest parameters and the `arguments` array.
+ */
+class DynamicParameterArrayNode extends DataFlow::Node, TDynamicParameterArrayNode {
+  private Function function;
+
+  DynamicParameterArrayNode() { this = TDynamicParameterArrayNode(function) }
+
+  override StmtContainer getContainer() { result = function }
+
+  override string toString() { result = "[dynamic parameter array]" }
+
+  override Location getLocation() { result = function.getLocation() }
+}
+
 cached
 newtype TReturnKind =
   MkNormalReturnKind() or

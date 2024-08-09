@@ -33,6 +33,12 @@ private module Cached {
     } or
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TFunctionSelfReferenceNode(Function f) or
+    TStaticArgumentArrayNode(InvokeExpr node) or
+    TDynamicArgumentArrayNode(InvokeExpr node) { node.isSpreadArgument(_) } or
+    TStaticParameterArrayNode(Function f) {
+      f.getAParameter().isRestParameter() or f.usesArgumentsObject()
+    } or
+    TDynamicParameterArrayNode(Function f) or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
