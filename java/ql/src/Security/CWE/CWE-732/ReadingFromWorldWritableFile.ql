@@ -17,6 +17,9 @@ import semmle.code.java.security.FileWritable
 
 from Variable fileVariable, FileReadExpr readFrom, SetFileWorldWritable setWorldWritable
 where
+  AlertFiltering::filterByLocation(any(Location l |
+      l = setWorldWritable.getLocation() or l = readFrom.getLocation()
+    )) and
   // The file variable must be both read from and set to world writable. This is not flow-sensitive.
   fileVariable.getAnAccess() = readFrom.getFileVarAccess() and
   fileVariable.getAnAccess() = setWorldWritable.getFileVarAccess() and

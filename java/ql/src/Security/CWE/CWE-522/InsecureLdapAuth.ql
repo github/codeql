@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.InsecureLdapAuthQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module InsecureLdapUrlFlow = TaintTracking::Global<FilteredConfig<InsecureLdapUrlConfig>>;
+
 import InsecureLdapUrlFlow::PathGraph
 
 from InsecureLdapUrlFlow::PathNode source, InsecureLdapUrlFlow::PathNode sink

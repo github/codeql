@@ -13,6 +13,10 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsecureTrustManagerQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module InsecureTrustManagerFlow = DataFlow::Global<FilteredConfig<InsecureTrustManagerConfig>>;
+
 import InsecureTrustManagerFlow::PathGraph
 
 from InsecureTrustManagerFlow::PathNode source, InsecureTrustManagerFlow::PathNode sink

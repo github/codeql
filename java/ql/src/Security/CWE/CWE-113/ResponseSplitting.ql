@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.ResponseSplittingQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module ResponseSplittingFlow = TaintTracking::Global<FilteredConfig<ResponseSplittingConfig>>;
+
 import ResponseSplittingFlow::PathGraph
 
 from ResponseSplittingFlow::PathNode source, ResponseSplittingFlow::PathNode sink

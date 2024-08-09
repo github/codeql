@@ -16,6 +16,11 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.XxeRemoteQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+private import semmle.code.java.dataflow.TaintTracking
+
+module XxeFlow = TaintTracking::Global<FilteredConfig<XxeConfig>>;
+
 import XxeFlow::PathGraph
 
 from XxeFlow::PathNode source, XxeFlow::PathNode sink

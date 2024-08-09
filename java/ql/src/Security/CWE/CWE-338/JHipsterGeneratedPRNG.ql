@@ -47,5 +47,6 @@ private class VulnerableJHipsterRandomUtilMethod extends Method {
 }
 
 from VulnerableJHipsterRandomUtilMethod method
+where AlertFiltering::filterByLocation(method.getLocation())
 select method,
   "Weak random number generator used in security sensitive method (JHipster CVE-2019-16303)."

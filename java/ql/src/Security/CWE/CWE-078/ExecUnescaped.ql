@@ -47,6 +47,7 @@ predicate builtFromUncontrolledConcat(Expr expr) {
 
 from StringArgumentToExec argument
 where
+  AlertFiltering::filterByLocation(argument.getLocation()) and
   builtFromUncontrolledConcat(argument) and
   not execIsTainted(_, _, argument)
 select argument, "Command line is built with string concatenation."

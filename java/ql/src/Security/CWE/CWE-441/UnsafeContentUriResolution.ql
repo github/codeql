@@ -14,6 +14,11 @@
 
 import java
 import semmle.code.java.security.UnsafeContentUriResolutionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module UnsafeContentResolutionFlow =
+  TaintTracking::Global<FilteredConfig<UnsafeContentResolutionConfig>>;
+
 import UnsafeContentResolutionFlow::PathGraph
 
 from UnsafeContentResolutionFlow::PathNode src, UnsafeContentResolutionFlow::PathNode sink

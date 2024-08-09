@@ -14,11 +14,13 @@
  *       external/cwe/cwe-400
  */
 
+private import semmle.code.java.AlertFiltering
 private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBackTracking
 
 from TreeView::RegExpTerm t, string pump, ExponentialBackTracking::State s, string prefixMsg
 where
+  AlertFiltering::filterByLocation(t.getLocation()) and
   ExponentialBackTracking::hasReDoSResult(t, pump, s, prefixMsg) and
   // exclude verbose mode regexes for now
   not t.getRegex().getAMode() = "VERBOSE"

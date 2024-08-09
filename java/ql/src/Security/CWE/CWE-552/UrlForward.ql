@@ -13,6 +13,11 @@
 
 import java
 import semmle.code.java.security.UrlForwardQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+private import semmle.code.java.dataflow.TaintTracking
+
+module UrlForwardFlow = TaintTracking::Global<FilteredConfig<UrlForwardFlowConfig>>;
+
 import UrlForwardFlow::PathGraph
 
 from UrlForwardFlow::PathNode source, UrlForwardFlow::PathNode sink

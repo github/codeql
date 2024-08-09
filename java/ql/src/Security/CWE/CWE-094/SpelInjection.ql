@@ -13,7 +13,11 @@
 
 import java
 import semmle.code.java.security.SpelInjectionQuery
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module SpelInjectionFlow = TaintTracking::Global<FilteredConfig<SpelInjectionConfig>>;
+
 import SpelInjectionFlow::PathGraph
 
 from SpelInjectionFlow::PathNode source, SpelInjectionFlow::PathNode sink

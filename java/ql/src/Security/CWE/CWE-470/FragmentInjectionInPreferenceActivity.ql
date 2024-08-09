@@ -16,7 +16,9 @@ import java
 import semmle.code.java.security.FragmentInjection
 
 from IsValidFragmentMethod m
-where m.isUnsafe()
+where
+  AlertFiltering::filterByLocation(m.getLocation()) and
+  m.isUnsafe()
 select m,
   "The 'isValidFragment' method always returns true. This makes the exported Activity $@ vulnerable to Fragment Injection.",
   m.getDeclaringType(), m.getDeclaringType().getName()

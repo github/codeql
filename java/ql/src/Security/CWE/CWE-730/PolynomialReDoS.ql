@@ -15,6 +15,10 @@
 
 import java
 import semmle.code.java.security.regexp.PolynomialReDoSQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module PolynomialRedosFlow = TaintTracking::Global<FilteredConfig<PolynomialRedosConfig>>;
+
 import PolynomialRedosFlow::PathGraph
 
 from

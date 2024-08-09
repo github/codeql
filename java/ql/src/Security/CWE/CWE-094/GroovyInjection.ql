@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.GroovyInjectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module GroovyInjectionFlow = TaintTracking::Global<FilteredConfig<GroovyInjectionConfig>>;
+
 import GroovyInjectionFlow::PathGraph
 
 from GroovyInjectionFlow::PathNode source, GroovyInjectionFlow::PathNode sink

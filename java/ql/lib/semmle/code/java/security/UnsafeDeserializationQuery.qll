@@ -334,7 +334,7 @@ deprecated class UnsafeDeserializationConfig extends TaintTracking::Configuratio
 }
 
 /** Tracks flows from remote user input to a deserialization sink. */
-private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
+module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }

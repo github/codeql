@@ -13,6 +13,11 @@
 
 import java
 import semmle.code.java.security.XPathInjectionQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+private import semmle.code.java.dataflow.TaintTracking
+
+module XPathInjectionFlow = TaintTracking::Global<FilteredConfig<XPathInjectionConfig>>;
+
 import XPathInjectionFlow::PathGraph
 
 from XPathInjectionFlow::PathNode source, XPathInjectionFlow::PathNode sink

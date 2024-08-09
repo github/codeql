@@ -17,6 +17,7 @@ import semmle.code.java.security.InsecureCookieQuery
 
 from MethodCall add
 where
+  AlertFiltering::filterByLocation(add.getLocation()) and
   add.getMethod() instanceof ResponseAddCookieMethod and
   not SecureCookieFlow::flowToExpr(add.getArgument(0))
 select add, "Cookie is added to response without the 'secure' flag being set."

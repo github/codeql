@@ -11,6 +11,11 @@
  */
 
 import semmle.code.java.security.PartialPathTraversalQuery
+private import semmle.code.java.dataflow.DataFlowFiltering
+
+module PartialPathTraversalFromRemoteFlow =
+  TaintTracking::Global<FilteredConfig<PartialPathTraversalFromRemoteConfig>>;
+
 import PartialPathTraversalFromRemoteFlow::PathGraph
 
 from
