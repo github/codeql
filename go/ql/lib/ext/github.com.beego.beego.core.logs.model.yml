@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["beego-logs", "github.com/astaxie/beego/logs"]
+      - ["beego-logs", "github.com/beego/beego/logs"]
+      - ["beego-logs", "github.com/beego/beego/core/logs"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:beego-logs", "", False, "Alert", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Critical", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Emergency", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Error", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Info", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Informational", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Notice", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Trace", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "", False, "Warning", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Alert", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Critical", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Emergency", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Error", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Info", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Informational", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Notice", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Trace", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["group:beego-logs", "BeeLogger", False, "Warning", "", "", "Argument[0..1]", "log-injection", "manual"]

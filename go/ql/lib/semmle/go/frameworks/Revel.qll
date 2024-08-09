@@ -88,20 +88,6 @@ module Revel {
   }
 
   /**
-   * The `revel.Controller.RenderFileName` method, which instructs Revel to open a file and return its contents.
-   * We extend FileSystemAccess rather than HTTP::ResponseBody as this will usually mean exposing a user-controlled
-   * file rather than the actual contents being user-controlled.
-   */
-  private class RenderFileNameCall extends FileSystemAccess::Range, DataFlow::CallNode {
-    RenderFileNameCall() {
-      this =
-        any(Method m | m.hasQualifiedName(packagePath(), "Controller", "RenderFileName")).getACall()
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-  }
-
-  /**
    * The `revel.Controller.Redirect` method.
    *
    * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
