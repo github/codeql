@@ -4989,6 +4989,26 @@ module StdlibPrivate {
 
     override string getKind() { result = Escaping::getHtmlKind() }
   }
+
+  // ---------------------------------------------------------------------------
+  // argparse
+  // ---------------------------------------------------------------------------
+  /**
+   * if result of `parse_args` is tainted (because it uses command-line arguments),
+   *    then the parsed values accesssed on any attribute lookup is also tainted.
+   */
+  private class ArgumentParserAnyAttributeStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getReturn()
+            .getMember("parse_args")
+            .getReturn()
+            .getAValueReachableFromSource() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

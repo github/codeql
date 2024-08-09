@@ -30,14 +30,14 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("foo")
 
-args = parser.parse_args() # $ MISSING: threatModelSource[commandargs]=parser.parse_args()
-ensure_tainted(args.foo) # $ MISSING: tainted
+args = parser.parse_args() # $ threatModelSource[commandargs]=parser.parse_args()
+ensure_tainted(args.foo) # $ tainted
 
 explicit_argv_parsing = parser.parse_args(sys.argv) # $ threatModelSource[commandargs]=sys.argv
-ensure_tainted(explicit_argv_parsing.foo) # $ MISSING: tainted
+ensure_tainted(explicit_argv_parsing.foo) # $ tainted
 
 fake_args = parser.parse_args(["<foo>"])
-ensure_not_tainted(fake_args.foo)
+ensure_not_tainted(fake_args.foo) # $ SPURIOUS: tainted
 
 ########################################
 # reading input from stdin
