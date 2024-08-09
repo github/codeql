@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      - ['os', 'Member[getenv].ReturnValue', 'environment']
+      - ['os', 'Member[getenvb].ReturnValue', 'environment']
+      - ['os', 'Member[environ].DictionaryElementAny', 'environment']
+      - ['os', 'Member[environb].DictionaryElementAny', 'environment']
+      - ['posix', 'Member[environ].DictionaryElementAny', 'environment']
+
+      - ['sys', 'Member[argv].DictionaryElementAny', 'commandargs']
+      - ['sys', 'Member[orig_argv].DictionaryElementAny', 'commandargs']
+
+      # TODO: argparse
+      # TODO: input / read from stdin
