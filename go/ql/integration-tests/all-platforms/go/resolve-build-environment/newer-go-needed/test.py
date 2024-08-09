@@ -1,3 +1,3 @@
-from go_integration_test import *
-
-go_integration_test(toolchain="go1.21.0")
+def test(codeql, go, check_build_environment):
+    check_build_environment.env = {"GOTOOLCHAIN": "go1.21.0"}
+    codeql.database.create(source_root="src")
