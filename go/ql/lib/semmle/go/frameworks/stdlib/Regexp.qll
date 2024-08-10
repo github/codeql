@@ -9,9 +9,10 @@ module Regexp {
   /**
    * Holds if `kind` is an external sink kind that is relevant for regex flow.
    * `strArg` is the index of the argument to methods with this sink kind that
-   * contain the string to be matched against, where -1 is the qualifier; or -2
-   * if no such argument exists and the function compiles the regex; or -3 if
-   * no such argument exists and the function does not compile the regex.
+   * contain the string to be matched against, where "receiver" indicates the
+   * receiver; or -2  if no such argument exists and the function compiles the
+   * regex; or -3 if no such argument exists and the function does not compile
+   * the regex.
    *
    * So `regex-use[0]` indicates that argument 0 contains the string to matched
    * against, `regex-use[c]` indicates that there is no string to be matched
@@ -25,7 +26,11 @@ module Regexp {
     or
     sinkModel(_, _, _, _, _, _, _, kind, _, _) and
     exists(string strArgStr |
+      strArg >= 0 and
       strArgStr.toInt() = strArg
+      or
+      strArg = -1 and
+      strArgStr = "receiver"
       or
       strArg = -2 and
       strArgStr = "c"
