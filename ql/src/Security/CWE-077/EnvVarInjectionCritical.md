@@ -2,9 +2,9 @@
 
 ## Description
 
-GitHub Actions allow to define Environment Variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
+GitHub Actions allow to define environment variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
 
-This file should lines in the `KEY=VALUE` format:
+This file contains lines in the `KEY=VALUE` format:
 
 ```bash
 steps:
@@ -14,7 +14,7 @@ steps:
       echo "action_state=yellow" >> "$GITHUB_ENV"
 ```
 
-It is also possible to define a multiline variables by using the following format:
+It is also possible to define multiline variables by using the [following construct](https://en.wikipedia.org/wiki/Here_document):
 
 ```
 KEY<<{delimiter}
@@ -35,40 +35,40 @@ steps:
       } >> "$GITHUB_ENV"
 ```
 
-If an attacker can control the contents of the values assigned to these variables and these are not properly sanitized, they will be able to inject additional variables by injecting new lines or `{delimiters}`.
+If an attacker can control the values assigned to environment variables and there is no sanitization in place, the attacker will be able to inject additional variables by injecting new lines or `{delimiters}`.
 
 ## Recommendations
 
-1. **Do Not Allow Untrusted Data to Influence Environment Variables**:
+1. **Do not allow untrusted data to influence environment variables**:
 
-- Avoid using untrusted data sources (e.g., artifact content) to define environment variables.
-- Validate and sanitize all inputs before using them in environment settings.
+    - Avoid using untrusted data sources (e.g., artifact content) to define environment variables.
+    - Validate and sanitize all inputs before using them in environment settings.
 
-2. **Do Not Allow New Lines When Defining Single Line Environment Variables**:
+2. **Do not allow new lines when defining single line environment variables**:
 
-- `echo "BODY=$(echo "$BODY" | tr -d '\n')" >> "$GITHUB_ENV"`
+    - `echo "BODY=$(echo "$BODY" | tr -d '\n')" >> "$GITHUB_ENV"`
 
-3. **Use Unique Identifiers When Defining Multi Line Environment Variables**:
+3. **Use unique identifiers when defining multi line environment variables**:
 
-```bash
-steps:
-  - name: Set the value in bash
-    id: step_one
-    run: |
-      # Generate a UUID
-      UUID=$(uuidgen)
-      {
-        echo "JSON_RESPONSE<<EOF$UUID"
-        curl https://example.com
-        echo "EOF$UUID"
-      } >> "$GITHUB_ENV"
-```
+    ```bash
+    steps:
+      - name: Set the value in bash
+        id: step_one
+        run: |
+          # Generate a UUID
+          UUID=$(uuidgen)
+          {
+            echo "JSON_RESPONSE<<EOF$UUID"
+            curl https://example.com
+            echo "EOF$UUID"
+          } >> "$GITHUB_ENV"
+    ```
 
 ## Examples
 
 ### Example of Vulnerability
 
-Consider the following basic setup where an environment variable `MYVAR` is set and used in different steps:
+Consider the following basic setup where an environment variable `MYVAR` is set and used in subsequent steps:
 
 ```yaml
 steps:
@@ -78,17 +78,17 @@ steps:
       BODY: ${{ github.event.comment.body }}
     run: |
       REPLACED=$(echo "$BODY" | sed 's/FOO/BAR/g')
-      echo "BODY=$REPLACED" >> "$GITHUB_ENV"
+      echo "MYVAR=$REPLACED" >> "$GITHUB_ENV"
 ```
 
-If an attacker can manipulate the value being set, such as through artifact downloads or user inputs, they can potentially inject new Environment variables. For example, they could write an Issue comment like:
+If an attacker can manipulate the value being set, such as through artifact downloads or user inputs, the attacker can potentially inject new environment variables. For example, they could write an issue comment like:
 
-```
+```text
 FOO
 NEW_ENV_VAR=MALICIOUS_VALUE
 ```
 
-Likewise, if the attacker controls a file in the Runner's workspace (eg: the workflow checkouts untrusted code or downloads an untrusted artifact), and the contents of that file are assigned to an environment variable such as:
+Likewise, if the attacker controls a file in the GitHub Actions Runner's workspace (eg: the workflow checkouts untrusted code or downloads an untrusted artifact) and the contents of that file are assigned to an environment variable such as:
 
 ```bash
 - run: |
@@ -109,7 +109,7 @@ An attacker could craft a malicious artifact that writes dangerous environment v
 
 ### Exploitation
 
-An attacker will be able to run arbitrary code by injecting environment variables such as `LD_PRELOAD`, `BASH_ENV`, etc.
+An attacker is be able to run arbitrary code by injecting environment variables such as `LD_PRELOAD`, `BASH_ENV`, etc.
 
 ## References
 
