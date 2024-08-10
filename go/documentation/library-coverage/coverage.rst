@@ -14,7 +14,7 @@ Go framework & library support
    `Gin <https://github.com/gin-gonic/gin>`_,``github.com/gin-gonic/gin*``,46,2,
    `Go JOSE <https://github.com/go-jose/go-jose>`_,"``github.com/go-jose/go-jose*``, ``github.com/square/go-jose*``, ``gopkg.in/square/go-jose*``, ``gopkg.in/go-jose/go-jose*``",,16,12
    `Go kit <https://gokit.io/>`_,``github.com/go-kit/kit*``,,,1
-   `Gokogiri <https://github.com/moovweb/gokogiri>`_,"``github.com/jbowtie/gokogiri*``, ``github.com/jbowtie/moovweb*``",,,5
+   `Gokogiri <https://github.com/moovweb/gokogiri>`_,"``github.com/jbowtie/gokogiri*``, ``github.com/moovweb/gokogiri*``",,,10
    `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,2
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
    `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,
@@ -52,6 +52,5 @@ Go framework & library support
    `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_,``github.com/santhosh-tekuri/xpathparser*``,,,2
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
-   Others,"``github.com/moovweb/gokogiri/xml``, ``github.com/moovweb/gokogiri/xpath``",,,5
    Totals,,267,906,114
 
