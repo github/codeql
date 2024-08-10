@@ -2,17 +2,19 @@
 
 ## Description
 
-GitHub Actions allow to define the system PATH variable by writing to a file pointed to by the `GITHUB_PATH` environment variable. Writing to this file will prepend a directory to the system PATH variable and automatically makes it available to all subsequent actions in the current job. E.g.
+GitHub Actions allow to define the system PATH variable by writing to a file pointed by the `GITHUB_PATH` environment variable. Writing to this file appends a directory to the system PATH variable and automatically makes it available to all subsequent actions in the current job.
+
+E.g.:
 
 ```bash
 echo "$HOME/.local/bin" >> $GITHUB_PATH
 ```
 
-If an attacker can control the contents of the path being assigned to the system PATH, they will be able to influence what commands are run in subsequen steps of the same job.
+If an attacker can control the contents of the system PATH, they are able to influence what commands are run in subsequent steps of the same job.
 
 ## Recommendations
 
-- Do Not Allow Untrusted Data to Influence The System PATH: Avoid using untrusted data sources (e.g., artifact content) to define the system PATH.
+Do not allow untrusted data to influence the system PATH: Avoid using untrusted data sources (e.g., artifact content) to define the system PATH.
 
 ## Examples
 
