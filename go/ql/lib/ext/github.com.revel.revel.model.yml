@@ -34,6 +34,11 @@ extensions:
       - ["group:revel", "ServerWebSocket", True, "MessageReceiveJSON", "", "", "Argument[0]", "remote", "manual"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:revel", "Controller", True, "RenderFileName", "", "", "Argument[0]", "path-injection", "manual"] # we model this as a path-injection sink rather than extending HTTP::ResponseBody as this will usually mean exposing a user-controlled file rather than the actual contents being user-controlled.
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["group:revel", "Params", True, "Bind", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
+      # request-forgery
       - ["github.com/valyala/fasthttp", "", True, "Get", "", "", "Argument[1]", "request-forgery", "manual"]
       - ["github.com/valyala/fasthttp", "", True, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"]
       - ["github.com/valyala/fasthttp", "", True, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"]
@@ -28,6 +29,15 @@ extensions:
       - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialDualStack", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
       - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialDualStackTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
       - ["github.com/valyala/fasthttp", "TCPDialer", True, "DialTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"]
+      # path-injection
+      - ["github.com/valyala/fasthttp", "", False, "SaveMultipartFile", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "", False, "ServeFile", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "", False, "ServeFileBytes", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "", False, "ServeFileBytesUncompressed", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "", False, "ServeFileUncompressed", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "RequestCtx", False, "SendFile", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "RequestCtx", False, "SendFileBytes", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/valyala/fasthttp", "Response", False, "SendFile", "", "", "Argument[0]", "path-injection", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel

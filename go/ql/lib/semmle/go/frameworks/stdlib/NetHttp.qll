@@ -288,9 +288,11 @@ module NetHttp {
   }
 
   /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
    * The File system access sinks
    */
-  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  deprecated class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
     HttpServeFile() {
       exists(Function f |
         f.hasQualifiedName("net/http", "ServeFile") and
