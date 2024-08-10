@@ -2,7 +2,7 @@
 
 ## Description
 
-GitHub Actions allows to define Environment Variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
+GitHub Actions allow to define Environment Variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
 
 This file should lines in the `KEY=VALUE` format:
 

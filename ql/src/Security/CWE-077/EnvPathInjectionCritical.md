@@ -2,7 +2,7 @@
 
 ## Description
 
-GitHub Actions allows to define the system PATH variable by writing to a file pointed to by the `GITHUB_PATH` environment variable. Writing to this file will prepend a directory to the system PATH variable and automatically makes it available to all subsequent actions in the current job. E.g.
+GitHub Actions allow to define the system PATH variable by writing to a file pointed to by the `GITHUB_PATH` environment variable. Writing to this file will prepend a directory to the system PATH variable and automatically makes it available to all subsequent actions in the current job. E.g.
 
 ```bash
 echo "$HOME/.local/bin" >> $GITHUB_PATH
