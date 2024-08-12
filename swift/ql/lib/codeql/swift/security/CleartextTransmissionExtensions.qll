@@ -7,6 +7,7 @@ import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
+import codeql.swift.dataflow.TaintTracking
 
 /**
  * A dataflow sink for cleartext transmission vulnerabilities. That is,
@@ -49,19 +50,44 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
+ * A call to `URL.init`.
+ */
+private predicate urlInit(CallExpr urlInit, Expr withString) {
+  urlInit
+      .getStaticTarget()
+      .(Method)
+      .hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
+  urlInit.getArgument(0).getExpr() = withString
+}
+
+/**
+ * A data flow configuration for tracking string literals representing `tel:` and similar
+ * URLs to creation of URL objects.
+ */
+private module ExcludeUrlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    node.asExpr()
+        .(StringLiteralExpr)
+        .getValue()
+        .regexpMatch("^(mailto|file|tel|telprompt|callto|sms):.*")
+  }
+
+  predicate isSink(DataFlow::Node node) { urlInit(_, node.asExpr()) }
+}
+
+private module ExcludeUrlFlow = TaintTracking::Global<ExcludeUrlConfig>;
+
+/**
  * A `URL` that is a sink for this query. Not all URLs are considered sinks, depending
  * on their content.
  */
-private class URLTransmittedSink extends CleartextTransmissionSink {
-  URLTransmittedSink() {
-    // sinks are the first argument containing the URL, and the `parameters`
-    // and `headers` arguments to appropriate methods of `Session`.
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(Method)
-          .hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
-      call.getArgument(0).getExpr() = this.asExpr()
-    )
+private class UrlTransmittedSink extends CleartextTransmissionSink {
+  UrlTransmittedSink() {
+    urlInit(_, this.asExpr()) and
+    // exclude `tel:` and similar URLs. These URLs necessarily contain
+    // sensitive data which you expect to transmit only by making the
+    // phone call (or similar operation).
+    not ExcludeUrlFlow::flow(_, this)
   }
 }
 

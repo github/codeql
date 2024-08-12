@@ -33,15 +33,7 @@ edges
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
 | testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 | testURL.swift:116:52:116:52 | email | testURL.swift:116:18:116:18 | "..." | provenance |  |
-| testURL.swift:117:28:117:28 | email | testURL.swift:117:18:117:18 | "..." | provenance |  |
-| testURL.swift:118:53:118:53 | secret_key | testURL.swift:118:18:118:18 | "..." | provenance |  |
-| testURL.swift:119:60:119:60 | email | testURL.swift:119:18:119:18 | "..." | provenance |  |
 | testURL.swift:123:52:123:52 | phone_number | testURL.swift:123:18:123:18 | "..." | provenance |  |
-| testURL.swift:124:25:124:25 | phone_number | testURL.swift:124:18:124:18 | "..." | provenance |  |
-| testURL.swift:125:31:125:31 | phone_number | testURL.swift:125:18:125:18 | "..." | provenance |  |
-| testURL.swift:126:28:126:28 | phone_number | testURL.swift:126:18:126:18 | "..." | provenance |  |
-| testURL.swift:127:25:127:25 | phone_number | testURL.swift:127:18:127:18 | "..." | provenance |  |
-| testURL.swift:131:37:131:37 | account_no | testURL.swift:131:18:131:18 | "..." | provenance |  |
 | testURL.swift:132:39:132:39 | account_no | testURL.swift:132:18:132:18 | "..." | provenance |  |
 nodes
 | file://:0:0:0:0 | .value | semmle.label | .value |
@@ -103,24 +95,8 @@ nodes
 | testURL.swift:106:20:106:20 | "..." | semmle.label | "..." |
 | testURL.swift:116:18:116:18 | "..." | semmle.label | "..." |
 | testURL.swift:116:52:116:52 | email | semmle.label | email |
-| testURL.swift:117:18:117:18 | "..." | semmle.label | "..." |
-| testURL.swift:117:28:117:28 | email | semmle.label | email |
-| testURL.swift:118:18:118:18 | "..." | semmle.label | "..." |
-| testURL.swift:118:53:118:53 | secret_key | semmle.label | secret_key |
-| testURL.swift:119:18:119:18 | "..." | semmle.label | "..." |
-| testURL.swift:119:60:119:60 | email | semmle.label | email |
 | testURL.swift:123:18:123:18 | "..." | semmle.label | "..." |
 | testURL.swift:123:52:123:52 | phone_number | semmle.label | phone_number |
-| testURL.swift:124:18:124:18 | "..." | semmle.label | "..." |
-| testURL.swift:124:25:124:25 | phone_number | semmle.label | phone_number |
-| testURL.swift:125:18:125:18 | "..." | semmle.label | "..." |
-| testURL.swift:125:31:125:31 | phone_number | semmle.label | phone_number |
-| testURL.swift:126:18:126:18 | "..." | semmle.label | "..." |
-| testURL.swift:126:28:126:28 | phone_number | semmle.label | phone_number |
-| testURL.swift:127:18:127:18 | "..." | semmle.label | "..." |
-| testURL.swift:127:25:127:25 | phone_number | semmle.label | phone_number |
-| testURL.swift:131:18:131:18 | "..." | semmle.label | "..." |
-| testURL.swift:131:37:131:37 | account_no | semmle.label | account_no |
 | testURL.swift:132:18:132:18 | "..." | semmle.label | "..." |
 | testURL.swift:132:39:132:39 | account_no | semmle.label | account_no |
 subpaths
@@ -155,13 +131,5 @@ subpaths
 | testURL.swift:96:18:96:18 | "..." | testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:96:51:96:51 | certificate | certificate |
 | testURL.swift:106:20:106:20 | "..." | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | call to SecKeyCopyExternalRepresentation(_:_:) |
 | testURL.swift:116:18:116:18 | "..." | testURL.swift:116:52:116:52 | email | testURL.swift:116:18:116:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:116:52:116:52 | email | email |
-| testURL.swift:117:18:117:18 | "..." | testURL.swift:117:28:117:28 | email | testURL.swift:117:18:117:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:117:28:117:28 | email | email |
-| testURL.swift:118:18:118:18 | "..." | testURL.swift:118:53:118:53 | secret_key | testURL.swift:118:18:118:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:118:53:118:53 | secret_key | secret_key |
-| testURL.swift:119:18:119:18 | "..." | testURL.swift:119:60:119:60 | email | testURL.swift:119:18:119:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:119:60:119:60 | email | email |
 | testURL.swift:123:18:123:18 | "..." | testURL.swift:123:52:123:52 | phone_number | testURL.swift:123:18:123:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:123:52:123:52 | phone_number | phone_number |
-| testURL.swift:124:18:124:18 | "..." | testURL.swift:124:25:124:25 | phone_number | testURL.swift:124:18:124:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:124:25:124:25 | phone_number | phone_number |
-| testURL.swift:125:18:125:18 | "..." | testURL.swift:125:31:125:31 | phone_number | testURL.swift:125:18:125:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:125:31:125:31 | phone_number | phone_number |
-| testURL.swift:126:18:126:18 | "..." | testURL.swift:126:28:126:28 | phone_number | testURL.swift:126:18:126:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:126:28:126:28 | phone_number | phone_number |
-| testURL.swift:127:18:127:18 | "..." | testURL.swift:127:25:127:25 | phone_number | testURL.swift:127:18:127:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:127:25:127:25 | phone_number | phone_number |
-| testURL.swift:131:18:131:18 | "..." | testURL.swift:131:37:131:37 | account_no | testURL.swift:131:18:131:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:131:37:131:37 | account_no | account_no |
 | testURL.swift:132:18:132:18 | "..." | testURL.swift:132:39:132:39 | account_no | testURL.swift:132:18:132:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:132:39:132:39 | account_no | account_no |
