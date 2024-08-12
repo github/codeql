@@ -37,6 +37,12 @@ private module ConsistencyConfig implements InputSig<Location, JSDataFlow> {
     isAmbientNode(call.asOrdinaryCall()) or
     isAmbientNode(call.asAccessorCall())
   }
+
+  predicate argHasPostUpdateExclude(ArgumentNode node) {
+    // Side-effects directly on these can't propagate back to the caller, and for longer access paths it's too imprecise
+    node instanceof TStaticArgumentArrayNode or
+    node instanceof TDynamicArgumentArrayNode
+  }
 }
 
 module Consistency = MakeConsistency<Location, JSDataFlow, JSTaintFlow, ConsistencyConfig>;
