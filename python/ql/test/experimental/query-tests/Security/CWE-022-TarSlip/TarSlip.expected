@@ -11,7 +11,7 @@ edges
 | TarSlipImprov.py:38:1:38:3 | ControlFlowNode for tar | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:38:7:38:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:38:1:38:3 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | provenance |  |
-| TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:39:49:39:68 | ControlFlowNode for members_filter1() | provenance |  |
+| TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:39:49:39:68 | ControlFlowNode for members_filter1() | provenance | list.append |
 | TarSlipImprov.py:43:6:43:38 | ControlFlowNode for Attribute() | TarSlipImprov.py:43:43:43:45 | ControlFlowNode for tar | provenance |  |
 | TarSlipImprov.py:43:43:43:45 | ControlFlowNode for tar | TarSlipImprov.py:44:9:44:13 | ControlFlowNode for entry | provenance |  |
 | TarSlipImprov.py:44:9:44:13 | ControlFlowNode for entry | TarSlipImprov.py:47:21:47:25 | ControlFlowNode for entry | provenance |  |

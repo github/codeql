@@ -68,9 +68,9 @@ def function_based_view(request: Request): # $ requestHandler
 @api_view(["GET", "POST"])
 def cookie_test(request: Request): # $ requestHandler
     resp = Response("wat") # $ HttpResponse
-    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.set_cookie(key="key4", value="value") # $ CookieWrite CookieName="key4" CookieValue="value"
-    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(key="key4", value="value") # $ CookieWrite CookieName="key4" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
     resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
     return resp
 

@@ -1,0 +1,50 @@
+nodes
+| apollo-test.js:8:9:8:59 | user_origin |
+| apollo-test.js:8:23:8:46 | url.par ... , true) |
+| apollo-test.js:8:23:8:52 | url.par ... ).query |
+| apollo-test.js:8:23:8:59 | url.par ... .origin |
+| apollo-test.js:8:33:8:39 | req.url |
+| apollo-test.js:8:33:8:39 | req.url |
+| apollo-test.js:11:25:11:28 | true |
+| apollo-test.js:11:25:11:28 | true |
+| apollo-test.js:11:25:11:28 | true |
+| apollo-test.js:21:25:21:28 | null |
+| apollo-test.js:21:25:21:28 | null |
+| apollo-test.js:21:25:21:28 | null |
+| apollo-test.js:26:25:26:35 | user_origin |
+| apollo-test.js:26:25:26:35 | user_origin |
+| express-test.js:10:9:10:59 | user_origin |
+| express-test.js:10:23:10:46 | url.par ... , true) |
+| express-test.js:10:23:10:52 | url.par ... ).query |
+| express-test.js:10:23:10:59 | url.par ... .origin |
+| express-test.js:10:33:10:39 | req.url |
+| express-test.js:10:33:10:39 | req.url |
+| express-test.js:26:17:26:19 | '*' |
+| express-test.js:26:17:26:19 | '*' |
+| express-test.js:26:17:26:19 | '*' |
+| express-test.js:33:17:33:27 | user_origin |
+| express-test.js:33:17:33:27 | user_origin |
+edges
+| apollo-test.js:8:9:8:59 | user_origin | apollo-test.js:26:25:26:35 | user_origin |
+| apollo-test.js:8:9:8:59 | user_origin | apollo-test.js:26:25:26:35 | user_origin |
+| apollo-test.js:8:23:8:46 | url.par ... , true) | apollo-test.js:8:23:8:52 | url.par ... ).query |
+| apollo-test.js:8:23:8:52 | url.par ... ).query | apollo-test.js:8:23:8:59 | url.par ... .origin |
+| apollo-test.js:8:23:8:59 | url.par ... .origin | apollo-test.js:8:9:8:59 | user_origin |
+| apollo-test.js:8:33:8:39 | req.url | apollo-test.js:8:23:8:46 | url.par ... , true) |
+| apollo-test.js:8:33:8:39 | req.url | apollo-test.js:8:23:8:46 | url.par ... , true) |
+| apollo-test.js:11:25:11:28 | true | apollo-test.js:11:25:11:28 | true |
+| apollo-test.js:21:25:21:28 | null | apollo-test.js:21:25:21:28 | null |
+| express-test.js:10:9:10:59 | user_origin | express-test.js:33:17:33:27 | user_origin |
+| express-test.js:10:9:10:59 | user_origin | express-test.js:33:17:33:27 | user_origin |
+| express-test.js:10:23:10:46 | url.par ... , true) | express-test.js:10:23:10:52 | url.par ... ).query |
+| express-test.js:10:23:10:52 | url.par ... ).query | express-test.js:10:23:10:59 | url.par ... .origin |
+| express-test.js:10:23:10:59 | url.par ... .origin | express-test.js:10:9:10:59 | user_origin |
+| express-test.js:10:33:10:39 | req.url | express-test.js:10:23:10:46 | url.par ... , true) |
+| express-test.js:10:33:10:39 | req.url | express-test.js:10:23:10:46 | url.par ... , true) |
+| express-test.js:26:17:26:19 | '*' | express-test.js:26:17:26:19 | '*' |
+#select
+| apollo-test.js:11:25:11:28 | true | apollo-test.js:11:25:11:28 | true | apollo-test.js:11:25:11:28 | true | CORS Origin misconfiguration due to a $@. | apollo-test.js:11:25:11:28 | true | too permissive or user controlled value |
+| apollo-test.js:21:25:21:28 | null | apollo-test.js:21:25:21:28 | null | apollo-test.js:21:25:21:28 | null | CORS Origin misconfiguration due to a $@. | apollo-test.js:21:25:21:28 | null | too permissive or user controlled value |
+| apollo-test.js:26:25:26:35 | user_origin | apollo-test.js:8:33:8:39 | req.url | apollo-test.js:26:25:26:35 | user_origin | CORS Origin misconfiguration due to a $@. | apollo-test.js:8:33:8:39 | req.url | too permissive or user controlled value |
+| express-test.js:26:17:26:19 | '*' | express-test.js:26:17:26:19 | '*' | express-test.js:26:17:26:19 | '*' | CORS Origin misconfiguration due to a $@. | express-test.js:26:17:26:19 | '*' | too permissive or user controlled value |
+| express-test.js:33:17:33:27 | user_origin | express-test.js:10:33:10:39 | req.url | express-test.js:33:17:33:27 | user_origin | CORS Origin misconfiguration due to a $@. | express-test.js:10:33:10:39 | req.url | too permissive or user controlled value |

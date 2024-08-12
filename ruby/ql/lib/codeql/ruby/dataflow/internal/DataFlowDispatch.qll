@@ -113,16 +113,6 @@ class DataFlowCallable extends TDataFlowCallable {
     this instanceof TLibraryCallable and
     result instanceof EmptyLocation
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -153,16 +143,6 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
   }
 }
 
@@ -1093,8 +1073,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
         singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr =
-        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
+      nodeFromPreExpr = getParameterDef(p.getParameter()).getARead()
       or
       nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )

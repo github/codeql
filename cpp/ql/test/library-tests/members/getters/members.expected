@@ -19,7 +19,5 @@
 | test.cpp:14:7:14:7 | D | test.cpp:23:10:23:12 | f_D | D::f_D() | getAMember(), getAMember(3), getAMemberFunction(), getCanonicalMember(3), getDeclaringType() |
 | test.cpp:27:7:27:7 | E<T> | test.cpp:29:10:29:12 | f_E | E<T>::f_E() | getAMember(), getAMember(0), getAMemberFunction(), getCanonicalMember(0), getDeclaringType() |
 | test.cpp:27:7:27:7 | E<T> | test.cpp:31:10:31:16 | f_E_arg | E<T>::f_E_arg(E<T>) | getAMember(), getAMember(1), getAMemberFunction(), getCanonicalMember(1), getDeclaringType() |
-| test.cpp:27:7:27:7 | E<int> | test.cpp:27:7:27:7 | operator= | E<int>::operator=(E<int> &&) | getAMember(), getAMember(3), getAMemberFunction(), getCanonicalMember(3), getDeclaringType() |
-| test.cpp:27:7:27:7 | E<int> | test.cpp:27:7:27:7 | operator= | E<int>::operator=(const E<int> &) | getAMember(), getAMember(2), getAMemberFunction(), getCanonicalMember(2), getDeclaringType() |
 | test.cpp:27:7:27:7 | E<int> | test.cpp:29:10:29:10 | f_E | E<int>::f_E() | getAMember(), getAMember(0), getAMemberFunction(), getCanonicalMember(0), getDeclaringType() |
 | test.cpp:27:7:27:7 | E<int> | test.cpp:31:10:31:10 | f_E_arg | E<int>::f_E_arg(E<int>) | getAMember(), getAMember(1), getAMemberFunction(), getCanonicalMember(1), getDeclaringType() |

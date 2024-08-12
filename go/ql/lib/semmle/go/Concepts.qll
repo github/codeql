@@ -112,6 +112,23 @@ module FileSystemAccess {
   }
 }
 
+private class DefaultFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode pathArgument;
+
+  DefaultFileSystemAccess() {
+    sinkNode(pathArgument, "path-injection") and
+    this = pathArgument.getCall()
+  }
+
+  override DataFlow::Node getAPathArgument() {
+    not pathArgument instanceof DataFlow::ImplicitVarargsSlice and
+    result = pathArgument
+    or
+    pathArgument instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
 /** A function that escapes meta-characters to prevent injection attacks. */
 class EscapeFunction extends Function instanceof EscapeFunction::Range {
   /**
@@ -357,6 +374,23 @@ module LoggerCall {
   abstract class Range extends DataFlow::Node {
     /** Gets a node that is a part of the logged message. */
     abstract DataFlow::Node getAMessageComponent();
+  }
+}
+
+private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode messageComponent;
+
+  DefaultLoggerCall() {
+    sinkNode(messageComponent, "log-injection") and
+    this = messageComponent.getCall()
+  }
+
+  override DataFlow::Node getAMessageComponent() {
+    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = messageComponent
+    or
+    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
   }
 }
 

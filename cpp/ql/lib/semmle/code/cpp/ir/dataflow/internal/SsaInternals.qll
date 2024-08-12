@@ -104,7 +104,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefImpl =
-  TDefAddressImpl(BaseIRVariable v) or
+  TDefAddressImpl(BaseSourceVariable v) or
   TDirectDefImpl(Operand address, int indirectionIndex) {
     isDef(_, _, address, _, _, indirectionIndex)
   } or
@@ -325,9 +325,9 @@ private Instruction getInitializationTargetAddress(IRVariable v) {
   )
 }
 
-/** An initial definition of an `IRVariable`'s address. */
-private class DefAddressImpl extends DefImpl, TDefAddressImpl {
-  BaseIRVariable v;
+/** An initial definition of an SSA variable address. */
+abstract private class DefAddressImpl extends DefImpl, TDefAddressImpl {
+  BaseSourceVariable v;
 
   DefAddressImpl() {
     this = TDefAddressImpl(v) and
@@ -342,6 +342,19 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
 
   final override Node0Impl getValue() { none() }
 
+  override Cpp::Location getLocation() { result = v.getLocation() }
+
+  final override SourceVariable getSourceVariable() {
+    result.getBaseVariable() = v and
+    result.getIndirection() = 0
+  }
+
+  final override BaseSourceVariable getBaseSourceVariable() { result = v }
+}
+
+private class DefVariableAddressImpl extends DefAddressImpl {
+  override BaseIRVariable v;
+
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     exists(IRVariable var | var = v.getIRVariable() |
       block.getInstruction(index) = getInitializationTargetAddress(var)
@@ -353,15 +366,14 @@ private class DefAddressImpl extends DefImpl, TDefAddressImpl {
       index = 0
     )
   }
+}
 
-  override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
+private class DefCallAddressImpl extends DefAddressImpl {
+  override BaseCallVariable v;
 
-  final override SourceVariable getSourceVariable() {
-    result.getBaseVariable() = v and
-    result.getIndirection() = 0
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    block.getInstruction(index) = v.getCallInstruction()
   }
-
-  final override BaseSourceVariable getBaseSourceVariable() { result = v }
 }
 
 private class DirectDef extends DefImpl, TDirectDefImpl {
@@ -981,7 +993,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    * Holds if the `i`'th write in block `bb` writes to the variable `v`.
    * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
    */
-  predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
       exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
@@ -999,7 +1011,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    * Holds if the `i`'th read in block `bb` reads to the variable `v`.
    * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
    */
-  predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )

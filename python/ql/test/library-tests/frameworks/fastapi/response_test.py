@@ -9,11 +9,12 @@ app = FastAPI()
 
 @app.get("/response_parameter") # $ routeSetup="/response_parameter"
 async def response_parameter(response: Response): # $ requestHandler
-    response.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-    response.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
-    response.headers.append("Set-Cookie", "key2=value2") # $ CookieWrite CookieRawHeader="key2=value2"
-    response.headers.append(key="Set-Cookie", value="key2=value2") # $ CookieWrite CookieRawHeader="key2=value2"
-    response.headers["X-MyHeader"] = "header-value"
+    response.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    response.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    response.set_cookie(key="key", value="value", secure=False, httponly=True, samesite="Lax") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax
+    response.headers.append("Set-Cookie", "key2=value2") # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    response.headers.append(key="Set-Cookie", value="key2=value2") # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    response.headers["X-MyHeader"] = "header-value" # $ headerWriteName="X-MyHeader" headerWriteValue="header-value"
     response.status_code = 418
     return {"message": "response as parameter"} # $ HttpResponse mimetype=application/json responseBody=Dict
 
@@ -44,8 +45,8 @@ async def response_parameter_custom_type(response: MyXmlResponse): # $ requestHa
     # propagated to the final response though.
     print(type(response))
     assert type(response) == fastapi.responses.Response
-    response.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-    response.headers["Custom-Response-Type"] = "yes, but only after function has run"
+    response.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    response.headers["Custom-Response-Type"] = "yes, but only after function has run" # $ headerWriteName="Custom-Response-Type" headerWriteValue="yes, but only after function has run"
     xml_data = "<foo>FOO</foo>"
     return xml_data # $ HttpResponse responseBody=xml_data mimetype=application/xml
 

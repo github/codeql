@@ -10,11 +10,13 @@ private import semmle.code.csharp.controlflow.internal.PreSsa
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = ControlFlow::BasicBlock;
 
+  class ControlFlowNode = ControlFlow::Node;
+
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
 
   class SourceVariable = Ssa::SourceVariable;
 
@@ -24,7 +26,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit writes via calls.
    */
-  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableWriteDirect(bb, i, v, certain)
     or
     variableWriteQualifier(bb, i, v, certain)
@@ -38,7 +40,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit reads via calls.
    */
-  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
     or
@@ -137,7 +139,7 @@ private module SourceVariableImpl {
     ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad
   ) {
     ad = v.getADefinition() and
-    ad.getAControlFlowNode() = bb.getNode(i) and
+    ad.getExpr().getAControlFlowNode() = bb.getNode(i) and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = ad |
       second.getAssignment() = first.getAssignment() and
@@ -231,7 +233,7 @@ private module SourceVariableImpl {
       def.getTarget() = lv and
       lv.isRef() and
       lv = v.getAssignable() and
-      bb.getNode(i) = def.getAControlFlowNode() and
+      bb.getNode(i) = def.getExpr().getAControlFlowNode() and
       not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
     )
   }
@@ -865,11 +867,14 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(
-    ControlFlow::ControlFlow::BasicBlocks::EntryBlock bb, Ssa::SourceVariable v
-  ) {
-    exists(Callable c |
-      c = bb.getCallable() and
+  predicate implicitEntryDefinition(ControlFlow::ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+      c = entry.getCallable() and
+      // In case `c` has multiple bodies, we want each body to gets its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
       c = v.getEnclosingCallable()
     |
       // Captured variable
@@ -881,6 +886,8 @@ private module Cached {
       or
       // Each tracked field and property has an implicit entry definition
       v instanceof PlainFieldOrPropSourceVariable
+      or
+      v.getAssignable() instanceof Parameter
     )
   }
 
@@ -1089,7 +1096,7 @@ class DefinitionExt extends Impl::DefinitionExt {
   override string toString() { result = this.(Ssa::Definition).toString() }
 
   /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 
   /** Gets the enclosing callable of this definition. */
   Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }

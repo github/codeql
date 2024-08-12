@@ -120,8 +120,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     info.Compile
                         .ForEach(r => Dependencies.Add(name, r.Key));
                 });
-
-            return;
         }
 
         /// <summary>

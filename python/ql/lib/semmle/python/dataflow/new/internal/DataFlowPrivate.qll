@@ -534,7 +534,7 @@ newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowType" }
+  string toString() { result = "" }
 }
 
 /** A node that performs a type cast. */
@@ -564,7 +564,6 @@ predicate neverSkipInPathGraph(Node n) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
@@ -576,12 +575,8 @@ predicate localMustFlowStep(Node nodeFrom, Node nodeTo) { none() }
  */
 DataFlowType getNodeType(Node node) {
   result = TAnyFlow() and
-  // Suppress unused variable warning
-  node = node
+  exists(node)
 }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
@@ -1027,8 +1022,6 @@ class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 //--------

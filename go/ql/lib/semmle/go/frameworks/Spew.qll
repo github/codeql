@@ -33,16 +33,6 @@ module Spew {
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
   }
 
-  private class SpewCall extends LoggerCall::Range, DataFlow::CallNode {
-    SpewFunction target;
-
-    SpewCall() { this = target.getACall() }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
-    }
-  }
-
   // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   /** The `Sprint` function or one of its variants. */
   class Sprinter extends TaintTracking::FunctionModel {

@@ -1,5 +1,11 @@
+import CryptoKit
 
-func storeMyData(faveSong : String, creditCardNo : String) {
+private func encrypt(_ text: String, _ encryptionKey: SymmetricKey) -> String {
+	let sealedBox = try! AES.GCM.seal(Data(text.utf8), using: encryptionKey)
+	return sealedBox.combined!.base64EncodedString()
+}
+
+func storeMyData(faveSong : String, creditCardNo : String, encryptionKey: SymmetricKey) {
 	// ...
 
 	// GOOD: not sensitive information
@@ -9,7 +15,7 @@ func storeMyData(faveSong : String, creditCardNo : String) {
 	UserDefaults.standard.set(creditCardNo, forKey: "myCreditCardNo")
 
 	// GOOD: encrypted sensitive information saved
-	UserDefaults.standard.set(encrypt(creditCardNo), forKey: "myCreditCardNo")
+	UserDefaults.standard.set(encrypt(creditCardNo, encryptionKey), forKey: "myCreditCardNo")
 
 	// ...
 }

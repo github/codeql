@@ -119,21 +119,6 @@ private predicate variableStep(Expr tracked, VarAccess sink) {
   )
 }
 
-private class ReverseDnsSource extends RemoteFlowSource {
-  ReverseDnsSource() {
-    // Try not to trigger on `localhost`.
-    exists(MethodCall m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDnsMethod and
-      not exists(MethodCall l |
-        (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
-        (l.getMethod().getName() = "getLocalHost" or l.getMethod().getName() = "getLoopbackAddress")
-      )
-    )
-  }
-
-  override string getSourceType() { result = "reverse DNS lookup" }
-}
-
 private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   MessageBodyReaderParameterSource() {
     exists(MessageBodyReaderRead m |
@@ -385,6 +370,24 @@ class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
 
   override string getSourceType() {
     result = "Parameter of method with JavascriptInterface annotation"
+  }
+}
+
+/** A node with input that comes from a reverse DNS lookup. */
+abstract class ReverseDnsUserInput extends UserInput {
+  override string getThreatModel() { result = "reverse-dns" }
+}
+
+private class ReverseDnsSource extends ReverseDnsUserInput {
+  ReverseDnsSource() {
+    // Try not to trigger on `localhost`.
+    exists(MethodCall m | m = this.asExpr() |
+      m.getMethod() instanceof ReverseDnsMethod and
+      not exists(MethodCall l |
+        (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
+        (l.getMethod().getName() = "getLocalHost" or l.getMethod().getName() = "getLoopbackAddress")
+      )
+    )
   }
 }
 

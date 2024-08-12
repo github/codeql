@@ -1,3 +1,70 @@
+## 3.0.0
+
+### Breaking Changes
+
+* The Java and Kotlin extractors no longer support the `SOURCE_ARCHIVE` and `TRAP_FOLDER` legacy environment variable.
+
+### New Features
+
+* Java support for `build-mode: none` is now out of beta, and generally available.
+
+### Major Analysis Improvements
+
+* We previously considered reverse DNS resolutions (IP address -> domain name) as sources of untrusted data, since compromised/malicious DNS servers could potentially return malicious responses to arbitrary requests. We have now removed this source from the default set of untrusted sources and made a new threat model kind for them, called "reverse-dns". You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+### Minor Analysis Improvements
+
+* Added flow through some methods of the class `java.net.URL` by ensuring that the fields of a URL are tainted.
+* Added path-injection sinks for `org.apache.tools.ant.taskdefs.Property.setFile` and `org.apache.tools.ant.taskdefs.Property.setResource`.
+* Adds models for request handlers using the `org.lastaflute.web` web framework.
+
+## 2.0.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `SEMMLE_DIST` legacy environment variable.
+
+### Deprecated APIs
+
+* The predicate `isAndroid` from the module `semmle.code.java.security.AndroidCertificatePinningQuery` has been deprecated. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication(File)` instead.
+
+### New Features
+
+* Kotlin support is now out of beta, and generally available
+* Kotlin versions up to 2.0.2*x* are now supported.
+
+### Minor Analysis Improvements
+
+* Added a path-injection sink for `hudson.FilePath.exists()`.
+* Added summary models for `org.apache.commons.io.IOUtils.toByteArray`.
+* Java build-mode `none` analyses now only report a warning on the CodeQL status page when there are significant analysis problems-- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * io.undertow.server.handlers.resource
+  * jakarta.faces.context
+  * javax.faces.context
+  * javax.servlet
+  * org.jboss.vfs
+  * org.springframework.core.io
+* A bug has been fixed in the heuristic identification of uncertain control
+  flow, which is used to filter data flow in order to improve performance and
+  reduce false positives. This fix means that slightly more code is identified
+  and hence pruned from data flow.
+* Excluded reverse DNS from the loopback address as a source of untrusted data.
+
+### Bug Fixes
+
+* Support for `codeql test run` for Kotlin sources has been fixed.
+
+## 1.1.1
+
+No user-facing changes.
+
 ## 1.1.0
 
 ### Major Analysis Improvements

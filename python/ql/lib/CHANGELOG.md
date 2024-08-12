@@ -1,3 +1,25 @@
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* Added support for `DictionaryElement[<key>]` and `DictionaryElementAny` when Customizing Library Models for `sourceModel` (see https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/)
+
+## 1.0.4
+
+### Minor Analysis Improvements
+
+* Additional modelling to detect direct writes to the `Set-Cookie` header has been added for several web frameworks.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* A number of Python queries now support sinks defined using data extensions. The format of data extensions for Python has been documented.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

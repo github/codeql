@@ -35,5 +35,43 @@ class Configuration extends DataFlow::Configuration {
       trg = bufferFrom and
       src = bufferFrom.getArgument(0)
     )
+    or
+    exists(API::Node n |
+      n = API::moduleImport("jose").getMember(["importSPKI", "importPKCS8", "importX509"])
+    |
+      src = n.getACall().getArgument(0) and
+      trg = n.getReturn().getPromised().asSource()
+    )
+    or
+    exists(API::Node n |
+      n = API::moduleImport("jose").getMember(["importSPKI", "importPKCS8", "importX509"])
+    |
+      src = n.getACall().getArgument(0) and
+      trg = n.getReturn().getPromised().asSource()
+    )
+    or
+    exists(API::Node n | n = API::moduleImport("jose").getMember("importJWK") |
+      src = n.getParameter(0).getMember(["x", "y", "n"]).asSink() and
+      trg = n.getReturn().getPromised().asSource()
+    )
+    or
+    exists(DataFlow::CallNode n |
+      n = DataFlow::globalVarRef("TextEncoder").getAnInstantiation().getAMemberCall("encode")
+    |
+      src = n.getArgument(0) and
+      trg = n
+    )
+    or
+    exists(DataFlow::CallNode n | n = DataFlow::globalVarRef("Buffer").getAMemberCall("from") |
+      src = n.getArgument(0) and
+      trg = [n, n.getAChainedMethodCall(["toString", "toJSON"])]
+    )
+    or
+    exists(API::Node n |
+      n = API::moduleImport("jose").getMember("base64url").getMember(["decode", "encode"])
+    |
+      src = n.getACall().getArgument(0) and
+      trg = n.getACall()
+    )
   }
 }

@@ -73,6 +73,7 @@ private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.Streamlit
 private import semmle.python.frameworks.Toml
 private import semmle.python.frameworks.Torch
 private import semmle.python.frameworks.Tornado
