@@ -30,6 +30,19 @@ class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
   override string toString() { result = this.getSummaryNode().toString() }
 }
 
+class FlowSummaryDynamicParameterArrayNode extends DataFlow::Node,
+  TFlowSummaryDynamicParameterArrayNode
+{
+  private FlowSummaryImpl::Public::SummarizedCallable callable;
+
+  FlowSummaryDynamicParameterArrayNode() { this = TFlowSummaryDynamicParameterArrayNode(callable) }
+
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = callable }
+
+  cached
+  override string toString() { result = "[dynamic parameter array] " + callable }
+}
+
 class FlowSummaryIntermediateAwaitStoreNode extends DataFlow::Node,
   TFlowSummaryIntermediateAwaitStoreNode
 {
@@ -342,6 +355,12 @@ private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosit
     FlowSummaryImpl::Private::summaryParameterNode(summaryNode.getSummaryNode(), pos) and
     c.asLibraryCallable() = summaryNode.getSummarizedCallable()
   )
+  or
+  exists(FlowSummaryImpl::Public::SummarizedCallable callable |
+    c.asLibraryCallable() = callable and
+    pos.isDynamicArgumentArray() and
+    p = TFlowSummaryDynamicParameterArrayNode(callable)
+  )
 }
 
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
@@ -409,6 +428,8 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asSourceCallable() = node.getContainer()
   or
   result.asLibraryCallable() = node.(FlowSummaryNode).getSummarizedCallable()
+  or
+  result.asLibraryCallable() = node.(FlowSummaryDynamicParameterArrayNode).getSummarizedCallable()
   or
   result.asLibraryCallable() = node.(FlowSummaryIntermediateAwaitStoreNode).getSummarizedCallable()
   or
@@ -1117,6 +1138,17 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElement() and // unknown start index when not the first spread operator
       storeContent.isUnknownArrayElement()
     else storeContent.asArrayIndex() = n + c.asArrayIndex()
+  )
+  or
+  exists(FlowSummaryNode parameter, ParameterPosition pos |
+    FlowSummaryImpl::Private::summaryParameterNode(parameter.getSummaryNode(), pos) and
+    node1 = TFlowSummaryDynamicParameterArrayNode(parameter.getSummarizedCallable()) and
+    node2 = parameter and
+    (
+      c.asArrayIndex() = pos.asPositional()
+      or
+      c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
+    )
   )
 }
 

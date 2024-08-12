@@ -101,17 +101,11 @@ class ArrayConstructorSummary extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = true and
-    (
-      input = "Argument[0..]" and
-      output = "ReturnValue.ArrayElement"
-      or
-      input = "Argument[arguments-array].WithArrayElement" and
-      output = "ReturnValue"
-    )
+    input = "Argument[0..]" and
+    output = "ReturnValue.ArrayElement"
     or
-    // TODO: workaround for WithArrayElement not being converted to a taint step
     preservesValue = false and
-    input = "Argument[arguments-array]" and
+    input = "Argument[0..]" and
     output = "ReturnValue"
   }
 }
@@ -437,8 +431,7 @@ class PushLike extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = true and
-    // TODO: make it so `arguments-array` is handled without needing to reference it explicitly in every flow-summary
-    input = ["Argument[0..]", "Argument[arguments-array].ArrayElement"] and
+    input = "Argument[0..]" and
     output = "Argument[this].ArrayElement"
   }
 }

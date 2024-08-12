@@ -80,6 +80,7 @@ private module Cached {
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
     TConstructorThisPostUpdate(Constructor ctor) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFlowSummaryDynamicParameterArrayNode(FlowSummaryImpl::Public::SummarizedCallable callable) or
     TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
       // NOTE: This dependency goes through the 'Steps' module whose instantiation depends on the call graph,
       //       but the specific predicate we're referering to does not use that information.

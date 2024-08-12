@@ -24,6 +24,8 @@ private module ConsistencyConfig implements InputSig<Location, JSDataFlow> {
     or
     n instanceof FlowSummaryIntermediateAwaitStoreNode
     or
+    n instanceof FlowSummaryDynamicParameterArrayNode
+    or
     n instanceof GenericSynthesizedNode
     or
     n = DataFlow::globalAccessPathRootPseudoNode()
@@ -42,6 +44,10 @@ private module ConsistencyConfig implements InputSig<Location, JSDataFlow> {
     // Side-effects directly on these can't propagate back to the caller, and for longer access paths it's too imprecise
     node instanceof TStaticArgumentArrayNode or
     node instanceof TDynamicArgumentArrayNode
+  }
+
+  predicate reverseReadExclude(DataFlow::Node node) {
+    node instanceof FlowSummaryDynamicParameterArrayNode
   }
 }
 
