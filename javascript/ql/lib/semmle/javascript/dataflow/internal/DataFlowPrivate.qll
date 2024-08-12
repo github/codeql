@@ -287,7 +287,11 @@ abstract class LibraryCallable extends string {
 }
 
 private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
-  p = c.asSourceCallable().(Function).getParameter(pos.asPositional()).flow()
+  exists(Parameter parameter |
+    parameter = c.asSourceCallable().(Function).getParameter(pos.asPositional()) and
+    not parameter.isRestParameter() and
+    p = TValueNode(parameter)
+  )
   or
   pos.isThis() and p = TThisNode(c.asSourceCallable().(Function))
   or
