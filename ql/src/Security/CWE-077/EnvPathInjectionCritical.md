@@ -20,7 +20,7 @@ Do not allow untrusted data to influence the system PATH: Avoid using untrusted 
 
 ### Incorrect Usage
 
-Consider the following basic setup where an environment variable `MYVAR` is set and used in different steps:
+Consider the following basic setup where an environment variable `PATH` is set:
 
 ```yaml
 steps:
