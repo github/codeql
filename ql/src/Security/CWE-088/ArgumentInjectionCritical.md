@@ -4,7 +4,7 @@
 
 Passing user-controlled arguments to certain commands in the context of `Run` steps may lead to arbitrary code execution.
 
-Argument injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token might have write access to the repository, allowing an attacker to use the token to make changes to the repository.
+Argument injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token may have write access to the repository, allowing the attacker to make changes to the repository.
 
 ## Recommendations
 

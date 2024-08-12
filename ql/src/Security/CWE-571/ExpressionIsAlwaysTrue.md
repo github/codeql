@@ -10,7 +10,7 @@ When an `if` condition erroneously evaluates to `true`, unintended steps may be 
 
 To avoid the vulnerability where an `if` condition always evaluates to `true`, it is crucial to eliminate any extra characters or spaces in your GitHub Actions expressions:
 
-1. Do not use Workflow Expressions in `if` conditions.
+1. Do not use `${{` and `}}` for Workflow Expressions in `if` conditions.
 2. Avoid multiline or spaced-out conditional expressions that might inadvertently introduce unwanted characters or formatting.
 3. Test the workflow to ensure the `if` conditions behave as expected under different scenarios.
 
@@ -18,45 +18,45 @@ To avoid the vulnerability where an `if` condition always evaluates to `true`, i
 
 ### Correct Usage
 
-1. Do not use Workflow Expressions:
+1. Omit `${{` and `}}` in `if` conditions:
 
-```yaml
-if: steps.checks.outputs.safe_to_run == true
-if: |-
-    steps.checks.outputs.safe_to_run == true
-if: |
-    steps.checks.outputs.safe_to_run == true
-```
+    ```yaml
+    if: steps.checks.outputs.safe_to_run == true
+    if: |-
+        steps.checks.outputs.safe_to_run == true
+    if: |
+        steps.checks.outputs.safe_to_run == true
+    ```
 
-2. If using Workflow Expressions, ensure the `if` condition is formatted correctly without extra spaces or characters:
+2. If using `${{` and `}}` Workflow Expressions, ensure the `if` condition is formatted correctly without extra spaces or characters:
 
-```yaml
-if: ${{ steps.checks.outputs.safe_to_run == true }}
-if: |-
-    ${{ steps.checks.outputs.safe_to_run == true }}
-```
+    ```yaml
+    if: ${{ steps.checks.outputs.safe_to_run == true }}
+    if: |-
+        ${{ steps.checks.outputs.safe_to_run == true }}
+    ```
 
 ### Incorrect Usage
 
 1. Do not mix Workflow Expressions with un-delimited expressions:
 
-```yaml
-if: ${{ steps.checks.outputs.safe_to_run }} == true
-```
+    ```yaml
+    if: ${{ steps.checks.outputs.safe_to_run }} == true
+    ```
 
 2. Do not include trailing new lines or spaces:
 
-```yaml
-if: |
-  ${{ steps.checks.outputs.safe_to_run == true }}
-if: >
-  ${{ steps.checks.outputs.safe_to_run == true }}
-if: " ${{ steps.checks.outputs.safe_to_run == true }}"
-if: |+
-  ${{ steps.checks.outputs.safe_to_run == true }}
-if: >+
-  ${{ steps.checks.outputs.safe_to_run == true }}
-```
+    ```yaml
+    if: |
+      ${{ steps.checks.outputs.safe_to_run == true }}
+    if: >
+      ${{ steps.checks.outputs.safe_to_run == true }}
+    if: " ${{ steps.checks.outputs.safe_to_run == true }}"
+    if: |+
+      ${{ steps.checks.outputs.safe_to_run == true }}
+    if: >+
+      ${{ steps.checks.outputs.safe_to_run == true }}
+    ```
 
 ## References
 

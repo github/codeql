@@ -2,7 +2,7 @@
 
 ## Description
 
-The workflow download artifacts that may be poisoned by an attacker in previously triggered workflows. If the contents of these artifacts are not correctly extracted, stored and verified, they may lead to repository compromise if untrusted code gets executed in a privileged job.
+The workflow downloads artifacts that may be poisoned by an attacker in previously triggered workflows. If the contents of these artifacts are not correctly extracted, stored and verified, they may lead to repository compromise if untrusted code gets executed in a privileged job.
 
 ## Recommendations
 
@@ -14,7 +14,7 @@ The workflow download artifacts that may be poisoned by an attacker in previousl
 
 ### Incorrect Usage
 
-The following workflow downloads an artifact that can potentially be controlled by an attacker and then runs an script from the runner workspace. Because the `dawidd6/action-download-artifact` by default downloads and extracts the contents of the artifacts overriding existing files. An attacker will be able to override the contents of `cmd.sh` and gain code execution when this file gets executed.
+The following workflow downloads an artifact that can potentially be controlled by an attacker and then runs a script from the runner workspace. Because the `dawidd6/action-download-artifact` by default downloads and extracts the contents of the artifacts overriding existing files, an attacker will be able to override the contents of `cmd.sh` and gain code execution when this file gets executed.
 
 ```yaml
 name: Insecure Workflow
@@ -40,7 +40,7 @@ jobs:
 
 ### Correct Usage
 
-The following example, correctly creates a temporary directory and stores the contents of the artifact there before calling `cmd.sh`.
+The following example, correctly creates a temporary directory and extracts the contents of the artifact there before calling `cmd.sh`.
 
 ```yaml
 name: Insecure Workflow

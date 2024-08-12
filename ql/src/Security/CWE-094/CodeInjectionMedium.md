@@ -4,7 +4,7 @@
 
 Using user-controlled input in GitHub Actions may lead to code injection in contexts like _run:_ or _script:_.
 
-Code injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token might have write access to the repository, allowing an attacker to use the token to make changes to the repository.
+Code injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token may have write access to the repository, allowing an attacker to make changes to the repository.
 
 ## Recommendations
 
@@ -16,7 +16,7 @@ It is also recommended to limit the permissions of any tokens used by a workflow
 
 ### Incorrect Usage
 
-The following example lets a user inject an arbitrary shell command:
+The following example lets attackers inject an arbitrary shell command:
 
 ```yaml
 on: issue_comment

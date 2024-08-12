@@ -2,14 +2,14 @@
 
 ## Description
 
-GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache, potentially leading to code execution in privileged workflows.
+GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache from unprivileged workflow, potentially leading to code execution in privileged workflows.
 
 An attacker with the ability to run code in the context of the default branch (e.g. through Code Injection or Execution of Untrusted Code) can exploit this to:
 
-1. Steal the cache access token and URL
-2. Fill the cache to trigger eviction of legitimate entries
-3. Poison cache entries with malicious payloads
-4. Achieve code execution in privileged workflows that restore the poisoned cache
+1. Steal the cache access token and URL.
+2. Overflow the cache to trigger eviction of legitimate entries.
+3. Poison cache entries with malicious payloads.
+4. Achieve code execution in privileged workflows that restore the poisoned cache.
 
 This allows lateral movement from low-privileged to high-privileged workflows within a repository.
 
@@ -27,11 +27,11 @@ Due to the above design, if something is cached in the context of the default br
 
 1. Avoid using caching in workflows that handle sensitive operations like releases.
 2. If caching must be used:
-   - Validate restored cache contents before use
-   - Use short-lived, workflow-specific cache keys
-   - Clear caches regularly
-3. Implement strict isolation between untrusted and privileged workflow execution:
-4. Never run untrusted code in the context of the default branch
+   - Validate restored cache contents before use.
+   - Use short-lived, workflow-specific cache keys.
+   - Clear caches regularly.
+3. Implement strict isolation between untrusted and privileged workflow execution.
+4. Never run untrusted code in the context of the default branch.
 5. Sign the cache value cryptographically and verify the signature before usage.
 
 ## Examples

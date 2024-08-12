@@ -2,14 +2,14 @@
 
 ## Description
 
-GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache, potentially leading to code execution in privileged workflows.
+GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache from unprivileged workflow, potentially leading to code execution in privileged workflows.
 
 An attacker with the ability to run code in the context of the default branch (e.g. through Code Injection or Execution of Untrusted Code) can exploit this to:
 
-1. Steal the cache access token and URL
-2. Fill the cache to trigger eviction of legitimate entries
-3. Poison cache entries with malicious payloads
-4. Achieve code execution in privileged workflows that restore the poisoned cache
+1. Steal the cache access token and URL.
+2. Overflow the cache to trigger eviction of legitimate entries.
+3. Poison cache entries with malicious payloads.
+4. Achieve code execution in privileged workflows that restore the poisoned cache.
 
 This allows lateral movement from low-privileged to high-privileged workflows within a repository.
 
@@ -27,11 +27,11 @@ Due to the above design, if something is cached in the context of the default br
 
 1. Avoid using caching in workflows that handle sensitive operations like releases.
 2. If caching must be used:
-   - Validate restored cache contents before use
-   - Use short-lived, workflow-specific cache keys
-   - Clear caches regularly
-3. Implement strict isolation between untrusted and privileged workflow execution:
-4. Never run untrusted code in the context of the default branch
+   - Validate restored cache contents before use.
+   - Use short-lived, workflow-specific cache keys.
+   - Clear caches regularly.
+3. Implement strict isolation between untrusted and privileged workflow execution.
+4. Never run untrusted code in the context of the default branch.
 5. Sign the cache value cryptographically and verify the signature before usage.
 
 ## Examples
@@ -69,13 +69,12 @@ jobs:
 
 ### Correct Usage
 
-The following workflow is not checking out untrusted files and, therefore, is caching trusted files only.
+The following workflow checking out untrusted files, but the cache is scoped to the Pull Request.
 
 ```yaml
 name: Secure Workflow
 on:
-  issue_comment:
-    types: [created]
+  pull_request:
 
 jobs:
   pr-comment:
@@ -83,6 +82,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        id: cache-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: ${{ runner.os }}-pip-
+```
+
+Note, that the example above doesn't allow using secrets if the Pull Request originates from a fork. In case secrets are needed, `pull_request_target` with labels as `safe to test` can be used, but the code in Pull Request must be manually reviewed before applying the label.
+
+```yaml
+name: Secure Workflow
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  pr-comment:
+    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    permissions: read-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha}}
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
       - name: Cache pip dependencies

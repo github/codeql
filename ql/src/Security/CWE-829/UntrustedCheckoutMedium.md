@@ -1,4 +1,4 @@
-# Execution of Untrusted Checkedout Code
+# Execution of Untrusted Checked-out Code
 
 ## Description
 
@@ -10,9 +10,9 @@ GitHub workflows can be triggered through various repository events, including i
 - Employ unprivileged `pull_request` workflows followed by `workflow_run` for privileged operations.
 - Use labels like `safe to test` to vet PRs and manage the execution context appropriately.
 
-The best practice is to handle the potentially untrusted pull request via the **pull_request** trigger so that it is isolated in an unprivileged environment. The workflow processing the pull request should then store any results like code coverage or failed/passed tests in artifacts and exit. A second workflow should get triggered by the completion of the first one using `workflow_run` trigger event and access to repository secrets, so that it can download the artifacts and make any necessary modifications to the repository or interact with third party services that require repository secrets (e.g. API tokens).
+The best practice is to handle the potentially untrusted pull request via the **pull_request** trigger so that it is isolated in an unprivileged environment. The workflow processing the pull request should then store any results like code coverage or failed/passed tests in artifacts and exit. A second privileged workflow with the access to repository secrets, triggered by the completion of the first workflow using `workflow_run` trigger event, downloads the artifacts and make any necessary modifications to the repository or interact with third party services that require repository secrets (e.g. API tokens).
 
-The artifacts downloaded from the first workflow should be considered untrusted and verified.
+The artifacts downloaded from the first workflow should be considered untrusted and must be verified.
 
 ## Examples
 
