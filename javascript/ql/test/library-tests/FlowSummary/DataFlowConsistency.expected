@@ -16,10 +16,9 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-| tst.js:109:11:113:3 | 'arguments' object of anonymous function | Origin of readStep is missing a PostUpdateNode. |
+| tst.js:109:11:113:3 | [dynamic parameter array] | Origin of readStep is missing a PostUpdateNode. |
 | tst.js:267:28:267:31 | map3 | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
-| tst.js:219:18:219:27 | [source()] | ArgumentNode is missing PostUpdateNode. |
 postWithInFlow
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array method with flow into callback | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array#filter | PostUpdateNode should not be the target of local flow. |
