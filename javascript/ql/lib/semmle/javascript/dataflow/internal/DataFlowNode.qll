@@ -118,7 +118,8 @@ private class TEarlyStageNode =
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or
-      TExprPostUpdateNode or TConstructorThisArgumentNode;
+      TExprPostUpdateNode or TConstructorThisArgumentNode or TStaticArgumentArrayNode or
+      TDynamicArgumentArrayNode or TStaticParameterArrayNode or TDynamicParameterArrayNode;
 
 /**
  * A data-flow node that is not a flow summary node.
