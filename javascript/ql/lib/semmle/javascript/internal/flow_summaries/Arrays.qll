@@ -1,7 +1,7 @@
 /**
- * Contains a summary for relevant methods on arrays, except Array.prototype.join which is currently special-cased in StringConcatenation.qll.
+ * Contains a summary for relevant methods on arrays.
  *
- * Note that some of Array methods are modelled in `AmbiguousCoreMethods.qll`, and `join` and `toString` are special-cased elsewhere.
+ * Note that some of Array methods are modelled in `AmbiguousCoreMethods.qll`, and `toString` is special-cased elsewhere.
  */
 
 private import javascript
@@ -112,6 +112,26 @@ class ArrayConstructorSummary extends SummarizedCallable {
     // TODO: workaround for WithArrayElement not being converted to a taint step
     preservesValue = false and
     input = "Argument[arguments-array]" and
+    output = "ReturnValue"
+  }
+}
+
+/**
+ * A call to `join` with a separator argument.
+ *
+ * Calls without separators are modelled in `StringConcatenation.qll`.
+ */
+class Join extends SummarizedCallable {
+  Join() { this = "Array#join" }
+
+  override InstanceCall getACallSimple() {
+    result.getMethodName() = "join" and
+    result.getNumArgument() = [0, 1]
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    input = "Argument[this].ArrayElement" and
     output = "ReturnValue"
   }
 }
