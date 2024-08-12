@@ -17,6 +17,8 @@ extensions:
 
       # if no argument is given, the default is to use sys.argv[1:]
       - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args].WithArity[0].ReturnValue', 'commandargs']
+
+      - ['os', 'Member[read].ReturnValue', 'file']
   - addsTo:
       pack: codeql/python-all
       extensible: summaryModel

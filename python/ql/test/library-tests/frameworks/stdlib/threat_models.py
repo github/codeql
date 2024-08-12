@@ -49,6 +49,19 @@ ensure_tainted(
 )
 
 ########################################
+# reading data from files
+########################################
+
+ensure_tainted(
+    open("foo"), # $ tainted threatModelSource[file]=open(..) getAPathArgument="foo"
+    open("foo").read(), # $ tainted threatModelSource[file]=open(..) getAPathArgument="foo"
+    open("foo").readline(), # $ tainted threatModelSource[file]=open(..) getAPathArgument="foo"
+    open("foo").readlines(), # $ tainted threatModelSource[file]=open(..) getAPathArgument="foo"
+
+    os.read(os.open("foo"), 1024), # $ tainted threatModelSource[file]=os.read(..) SPURIOUS: threatModelSource[file]=os.open(..) getAPathArgument="foo"
+)
+
+########################################
 # socket
 ########################################
 
