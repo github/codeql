@@ -8,6 +8,7 @@
  * @id actions/request-forgery
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-918
  */
 

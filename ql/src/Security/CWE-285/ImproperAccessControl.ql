@@ -17,14 +17,14 @@ import codeql.actions.security.ControlChecks
 from LocalJob job, LabelCheck check, MutableRefCheckoutStep checkout, Event event
 where
   job.isPrivileged() and
-  job.getATriggerEvent() = event and
-  event.getName() = "pull_request_target" and
-  event.getAnActivityType() = "synchronize" and
   job.getAStep() = checkout and
+  check.dominates(checkout) and
   (
-    checkout.getIf() = check
+    job.getATriggerEvent() = event and
+    event.getName() = "pull_request_target" and
+    event.getAnActivityType() = "synchronize"
     or
-    checkout.getEnclosingJob().getIf() = check
+    not exists(job.getATriggerEvent())
   )
-select checkout, "The checked-out code can be changed after the authorization check o step $@.",
-  check, check.toString()
+select checkout, "The checked-out code can be modified after the authorization check $@.", check,
+  check.toString()
