@@ -657,9 +657,17 @@ void test26(bool cond)
 void test27(){
 	char *src = "";
 	char *dest = "abcdefgh";
+	const int size = 100;
+	int ind = 100;
+	char buffer[size];
 
 	strncpy(dest, src, strlen(dest)); // GOOD, strncpy will not read past null terminator of source
+		
+	if(ind < size){
+		buffer[ind] = 0; // GOOD: out of bounds, but inaccessible code
+	}
 }
+
 
 int tests_main(int argc, char *argv[])
 {

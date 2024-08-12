@@ -14,8 +14,8 @@ int getPointedSize(Type t) {
  * BufferWrite differ.
  */
 abstract class BufferAccess extends Expr {
-  BufferAccess() { 
-    not this.isUnevaluated() and 
+  BufferAccess() {
+    not this.isUnevaluated() and
     //A buffer access must be reachable (not in dead code)
     reachable(this)
   }
