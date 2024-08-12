@@ -57,7 +57,7 @@ private int isSource(Expr bufferExpr, Element why) {
   exists(Type bufferType |
     // buffer is the address of a variable
     why = bufferExpr.(AddressOfExpr).getAddressable() and
-    bufferType = why.(Variable).getType() and
+    bufferType = why.(Variable).getUnspecifiedType() and
     result = bufferType.getSize() and
     not bufferType instanceof ReferenceType and
     not any(Union u).getAMemberVariable() = why
