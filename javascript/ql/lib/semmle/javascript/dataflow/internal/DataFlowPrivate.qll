@@ -487,6 +487,8 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof FlowSummaryNode
   or
+  node instanceof FlowSummaryDynamicParameterArrayNode
+  or
   node instanceof FlowSummaryIntermediateAwaitStoreNode
   or
   node instanceof CaptureNode
@@ -499,6 +501,18 @@ predicate nodeIsHidden(Node node) {
   node.(DataFlow::ExprPostUpdateNode).getExpr() instanceof Function
   or
   node instanceof GenericSynthesizedNode
+  or
+  node instanceof StaticArgumentArrayNode
+  or
+  node instanceof DynamicArgumentArrayNode
+  or
+  node instanceof DynamicArgumentStoreNode
+  or
+  node instanceof StaticParameterArrayNode
+  or
+  node instanceof DynamicParameterArrayNode
+  or
+  node instanceof RestParameterStoreNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
