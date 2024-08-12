@@ -5,7 +5,8 @@
  * In addition to the `PathGraph`, a `query predicate models` is provided to
  * list the contents of the referenced MaD rows.
  */
-module;
+
+private import codeql.dataflow.DataFlow as DF
 
 signature predicate interpretModelForTestSig(QlBuiltins::ExtensionId madId, string model);
 
@@ -13,21 +14,6 @@ signature predicate queryResultsSig(string relation, int row, int column, string
 
 signature class PathNodeSig {
   string toString();
-}
-
-signature module PathGraphSig<PathNodeSig PathNode> {
-  /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  predicate edges(PathNode a, PathNode b, string key, string val);
-
-  /** Holds if `n` is a node in the graph of data flow path explanations. */
-  predicate nodes(PathNode n, string key, string val);
-
-  /**
-   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
-   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
-   * `ret -> out` is summarized as the edge `arg -> out`.
-   */
-  predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
 }
 
 private signature predicate provenanceSig(string model);
@@ -79,7 +65,7 @@ private module TranslateModels<
 /** Transforms a `PathGraph` by printing the provenance information. */
 module ShowProvenance<
   interpretModelForTestSig/2 interpretModelForTest, PathNodeSig PathNode,
-  PathGraphSig<PathNode> PathGraph>
+  DF::PathGraphSig<PathNode> PathGraph>
 {
   private predicate provenance(string model) { PathGraph::edges(_, _, _, model) }
 
