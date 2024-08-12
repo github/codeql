@@ -38,6 +38,9 @@ extensions:
       - ["github.com/valyala/fasthttp", "RequestCtx", False, "SendFile", "", "", "Argument[0]", "path-injection", "manual"]
       - ["github.com/valyala/fasthttp", "RequestCtx", False, "SendFileBytes", "", "", "Argument[0]", "path-injection", "manual"]
       - ["github.com/valyala/fasthttp", "Response", False, "SendFile", "", "", "Argument[0]", "path-injection", "manual"]
+      # url-redirection
+      - ["github.com/valyala/fasthttp", "RequestCtx", True, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"]
+      - ["github.com/valyala/fasthttp", "RequestCtx", True, "RedirectBytes", "", "", "Argument[0]", "url-redirection", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel

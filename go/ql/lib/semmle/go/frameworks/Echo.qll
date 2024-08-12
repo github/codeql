@@ -55,21 +55,6 @@ private module Echo {
   }
 
   /**
-   * The `echo.Context.Redirect` method.
-   */
-  private class EchoRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
-    EchoRedirectMethod() {
-      exists(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect") |
-        this = m.getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(1) }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
-  }
-
-  /**
    * DEPRECATED: Use `FileSystemAccess::Range` instead.
    *
    * The File system access sinks

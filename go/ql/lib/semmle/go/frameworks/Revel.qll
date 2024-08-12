@@ -88,24 +88,6 @@ module Revel {
   }
 
   /**
-   * The `revel.Controller.Redirect` method.
-   *
-   * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
-   * internally, cannot lead to an open redirect vulnerability.
-   */
-  private class ControllerRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
-    ControllerRedirectMethod() {
-      exists(Method m | m.hasQualifiedName(packagePath(), "Controller", "Redirect") |
-        this = m.getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
-  }
-
-  /**
    * A read in a Revel template that uses Revel's `raw` function.
    */
   class RawTemplateRead extends HtmlTemplate::TemplateRead {

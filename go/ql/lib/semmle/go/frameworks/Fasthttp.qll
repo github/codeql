@@ -497,22 +497,6 @@ module Fasthttp {
     }
 
     /**
-     * The Methods that can be dangerous if they take user controlled URL as their first argument.
-     */
-    class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-      Redirect() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "RequestCtx", ["Redirect", "RedirectBytes"]) and
-          this = m.getACall()
-        )
-      }
-
-      override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-      override Http::ResponseWriter getResponseWriter() { none() }
-    }
-
-    /**
      * DEPRECATED: Use `RemoteFlowSource` instead.
      */
     deprecated class UntrustedFlowSource = RemoteFlowSource;
