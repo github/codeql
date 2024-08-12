@@ -790,7 +790,6 @@ newtype TParameterPosition =
   MkPositionalLowerBound(int n) { n = [0 .. getMaxArity()] } or
   MkThisParameter() or
   MkFunctionSelfReferenceParameter() or
-  MkArgumentsArrayParameter() or // TODO: remove
   MkStaticArgumentArray() or
   MkDynamicArgumentArray()
 
@@ -809,8 +808,6 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isFunctionSelfReference() { this = MkFunctionSelfReferenceParameter() }
 
-  predicate isArgumentsArray() { this = MkArgumentsArrayParameter() } // TODO: remove
-
   predicate isStaticArgumentArray() { this = MkStaticArgumentArray() }
 
   predicate isDynamicArgumentArray() { this = MkDynamicArgumentArray() }
@@ -823,8 +820,6 @@ class ParameterPosition extends TParameterPosition {
     this.isThis() and result = "this"
     or
     this.isFunctionSelfReference() and result = "function"
-    or
-    this = MkArgumentsArrayParameter() and result = "deprecated-arguments-array"
     or
     this.isStaticArgumentArray() and result = "static-argument-array"
     or

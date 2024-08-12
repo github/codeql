@@ -35,7 +35,7 @@ private predicate positionName(ParameterPosition pos, string operand) {
   or
   pos.isFunctionSelfReference() and operand = "function"
   or
-  pos.isArgumentsArray() and operand = "arguments-array"
+  pos.isDynamicArgumentArray() and operand = "arguments-array" // TODO: remove and handle automatically
   or
   operand = pos.asPositionalLowerBound() + ".."
 }
