@@ -1499,13 +1499,17 @@ module StdlibPrivate {
    * See https://docs.python.org/3/library/functions.html#open
    */
   private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
-    DataFlow::CallCfgNode
+    ThreatModelSource::Range, DataFlow::CallCfgNode
   {
     OpenCall() { this = getOpenFunctionRef().getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("file")]
     }
+
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "open()" }
   }
 
   /**
