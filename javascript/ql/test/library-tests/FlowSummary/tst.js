@@ -268,3 +268,26 @@ function m17() {
     sink(value); // NOT OK
   }
 }
+
+function m18() {
+  const staticParam0 = mkSummary("Argument[0]", "ReturnValue");
+  const staticParam1 = mkSummary("Argument[1]", "ReturnValue");
+  const dynamicParam0 = mkSummary("Argument[0..]", "ReturnValue");
+  const dynamicParam1 = mkSummary("Argument[1..]", "ReturnValue");
+
+  sink(staticParam0(...source())); // NOT OK
+  sink(staticParam0("safe", ...source())); // OK
+  sink(staticParam0(source(), ...["safe"])); // NOT OK
+
+  sink(staticParam1(...source())); // NOT OK
+  sink(staticParam1("safe", ...source())); // NOT OK
+  sink(staticParam1(source(), ...["safe"])); // OK
+
+  sink(dynamicParam0(...source())); // NOT OK
+  sink(dynamicParam0("safe", ...source())); // NOT OK
+  sink(dynamicParam0(source(), ...["safe"])); // NOT OK
+
+  sink(dynamicParam1(...source())); // NOT OK
+  sink(dynamicParam1("safe", ...source())); // NOT OK
+  sink(dynamicParam1(source(), ...["safe"])); // OK
+}
