@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | semantics.rb:2:5:2:5 | a | semantics.rb:3:9:3:9 | a | provenance |  |
 | semantics.rb:2:5:2:5 | a | semantics.rb:3:9:3:9 | a | provenance |  |
@@ -2285,3 +2285,4 @@ nodes
 | semantics.rb:516:10:516:16 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:516:10:516:16 | ...[...] | semmle.label | ...[...] |
 subpaths
+testFailures
