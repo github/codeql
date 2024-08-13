@@ -24,7 +24,7 @@ def options():
 opts = options()
 
 try:
-    workspace_dir = pathlib.Path(os.environ.pop('BUILD_WORKSPACE_DIRECTORY'))
+    workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])
 except KeyError:
     print("this should be run with bazel run", file=sys.stderr)
     sys.exit(1)

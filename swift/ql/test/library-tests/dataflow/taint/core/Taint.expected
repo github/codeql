@@ -545,6 +545,8 @@ nodes
 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | semmle.label | ... .&>>(_:_:) ... |
 | simple.swift:87:13:87:21 | call to ~(_:) | semmle.label | call to ~(_:) |
 | simple.swift:87:14:87:21 | call to source() | semmle.label | call to source() |
+| simple.swift:156:12:156:19 | call to source() | semmle.label | call to source() |
+| simple.swift:157:12:157:19 | call to source() | semmle.label | call to source() |
 | stringinterpolation.swift:6:6:6:6 | self [Return] [first] | semmle.label | self [Return] [first] |
 | stringinterpolation.swift:6:6:6:6 | self [first] | semmle.label | self [first] |
 | stringinterpolation.swift:6:6:6:6 | value | semmle.label | value |
@@ -724,6 +726,8 @@ subpaths
 | simple.swift:84:13:84:25 | ... .>>(_:_:) ... | simple.swift:84:13:84:20 | call to source() | simple.swift:84:13:84:25 | ... .>>(_:_:) ... | result |
 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | simple.swift:85:13:85:20 | call to source() | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | result |
 | simple.swift:87:13:87:21 | call to ~(_:) | simple.swift:87:14:87:21 | call to source() | simple.swift:87:13:87:21 | call to ~(_:) | result |
+| simple.swift:156:12:156:19 | call to source() | simple.swift:156:12:156:19 | call to source() | simple.swift:156:12:156:19 | call to source() | result |
+| simple.swift:157:12:157:19 | call to source() | simple.swift:157:12:157:19 | call to source() | simple.swift:157:12:157:19 | call to source() | result |
 | stringinterpolation.swift:22:12:22:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:22:12:22:12 | "..." | result |
 | stringinterpolation.swift:24:12:24:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:24:12:24:12 | "..." | result |
 | stringinterpolation.swift:31:12:31:12 | "..." | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:31:12:31:12 | "..." | result |

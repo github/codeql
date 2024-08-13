@@ -215,9 +215,6 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
-/** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(DataFlowType t) { none() }
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.

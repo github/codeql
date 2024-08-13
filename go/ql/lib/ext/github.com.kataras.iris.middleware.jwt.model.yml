@@ -4,3 +4,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["github.com/kataras/iris/middleware/jwt", "", True, "NewSigner", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/kataras/iris/middleware/jwt", "Signer", True, "Key", "", "", "", "credentials-key", "manual"]

@@ -1310,9 +1310,6 @@ DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { none() }
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.

@@ -136,6 +136,8 @@ void good_new_handles_nullptr() {
     return; // GOOD
 }
 
+// ---
+
 void* operator new(std::size_t count, void*) noexcept;
 void* operator new[](std::size_t count, void*) noexcept;
 
@@ -146,17 +148,45 @@ struct Foo {
   operator bool();
 };
 
+struct Bar {
+  Bar();
+
+  operator bool();
+};
+
 void bad_placement_new_with_exception_handling() {
   char buffer[1024];
-  try { new (buffer) Foo; } // BAD
+
+  try { new (buffer) Foo; } // BAD (placement new should not fail)
   catch (...) {  }
 }
 
 void good_placement_new_with_exception_handling() {
   char buffer[1024];
+
   try { new (buffer) Foo(42); } // GOOD: Foo constructor might throw
   catch (...) {  }
+
+  try { new (buffer) Bar; } // GOOD: Bar constructor might throw
+  catch (...) {  }
 }
+
+template<typename F> F *test_template_platement_new() {
+  char buffer[1024];
+
+  try {
+    return new (buffer) F; // GOOD: `F` constructor might throw (when `F` is `Bar`)
+  } catch (...) {
+    return 0;
+  }
+}
+
+void test_template_platement_new_caller() {
+  test_template_platement_new<Foo>();
+  test_template_platement_new<Bar>();
+}
+
+// ---
 
 int unknown_value_without_exceptions() noexcept;
 

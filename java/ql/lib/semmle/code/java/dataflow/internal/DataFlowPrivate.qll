@@ -356,8 +356,12 @@ RefType getErasedRepr(Type t) {
   t instanceof NullType and result instanceof TypeObject
 }
 
-class DataFlowType extends SrcRefType {
+final private class SrcRefTypeFinal = SrcRefType;
+
+class DataFlowType extends SrcRefTypeFinal {
   DataFlowType() { this = getErasedRepr(_) }
+
+  string toString() { result = ppReprType(this) }
 }
 
 pragma[nomagic]
@@ -371,7 +375,7 @@ DataFlowType getNodeType(Node n) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) {
+private string ppReprType(SrcRefType t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
