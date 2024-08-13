@@ -4877,11 +4877,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate subpaths04(
         PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
       ) {
-        exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
+        exists(
+          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType tret, DataFlowType tout,
+          AccessPath apout, PathNodeMid out0
+        |
           pragma[only_bind_into](arg).getASuccessorImpl(_) = pragma[only_bind_into](out0) and
-          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, _, apout) and
+          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, pragma[only_bind_into](tret),
+            apout) and
           hasSuccessor(pragma[only_bind_into](arg), par, p) and
-          pathNode(out0, o, sout, _, _, _, apout, _, _)
+          pathNode(out0, o, sout, _, _, pragma[only_bind_into](tout), apout, _, _) and
+          compatibleTypes(tret, tout)
         |
           out = out0 or out = out0.projectToSink(_)
         )
