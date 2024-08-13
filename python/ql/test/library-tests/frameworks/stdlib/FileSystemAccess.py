@@ -87,8 +87,8 @@ def test_fspath():
         os.fspath(path=TAINTED_STRING), # $ tainted
     )
 
-os.open("path", os.O_RDONLY) # $ getAPathArgument="path" SPURIOUS: threatModelSource[file]=os.open(..)
-os.open(path="path", flags=os.O_RDONLY) # $ getAPathArgument="path" SPURIOUS: threatModelSource[file]=os.open(..)
+os.open("path", os.O_RDONLY) # $ getAPathArgument="path"
+os.open(path="path", flags=os.O_RDONLY) # $ getAPathArgument="path"
 
 os.access("path", os.R_OK) # $ getAPathArgument="path"
 os.access(path="path", mode=os.R_OK) # $ getAPathArgument="path"
