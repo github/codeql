@@ -56,7 +56,8 @@ func godotenvEnvironmentVariables() {
 }
 
 func envparseEnvironmentVariables() {
-	f := os.Open("file.txt")
+	f := os.OpenRead("file.txt")
+	defer f.Close()
 	envVars, ok := envparse.Parse(f)
 
 	if !ok {
