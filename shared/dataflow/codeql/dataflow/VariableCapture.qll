@@ -810,17 +810,17 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   private class TSynthesizedCaptureNode = TSynthRead or TSynthThisQualifier or TSynthPhi;
 
   class SynthesizedCaptureNode extends ClosureNode, TSynthesizedCaptureNode {
-    Callable getEnclosingCallable() {
-      exists(BasicBlock bb | this = TSynthRead(_, bb, _, _) and result = bb.getEnclosingCallable())
+    BasicBlock getBasicBlock() {
+      this = TSynthRead(_, result, _, _)
       or
-      exists(BasicBlock bb |
-        this = TSynthThisQualifier(bb, _, _) and result = bb.getEnclosingCallable()
-      )
+      this = TSynthThisQualifier(result, _, _)
       or
-      exists(CaptureSsa::DefinitionExt phi, BasicBlock bb |
-        this = TSynthPhi(phi) and phi.definesAt(_, bb, _, _) and result = bb.getEnclosingCallable()
+      exists(CaptureSsa::DefinitionExt phi |
+        this = TSynthPhi(phi) and phi.definesAt(_, result, _, _)
       )
     }
+
+    Callable getEnclosingCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     predicate isVariableAccess(CapturedVariable v) {
       this = TSynthRead(v, _, _, _)
