@@ -43,7 +43,7 @@ func godotenvEnvironmentVariables() {
 		return
 	}
 
-	username := users["USERNAME"]
+	username = users["USERNAME"]
 
 	greetings, err := godotenv.Unmarshal("HELLO=hello")
 	if err != nil {
@@ -56,11 +56,14 @@ func godotenvEnvironmentVariables() {
 }
 
 func envparseEnvironmentVariables() {
-	f := os.OpenRead("file.txt")
+	f, err := os.Open("file.txt")
+	if err != nil {
+		return
+	}
 	defer f.Close()
-	envVars, ok := envparse.Parse(f)
+	envVars, err := envparse.Parse(f)
 
-	if !ok {
+	if err != nil {
 		return
 	}
 
