@@ -40,10 +40,10 @@ int main(int argc, char **argv) {
 	int tainted = atoi(argv[1]);
 
 	MyStruct *arr1 = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD
-	MyStruct *arr2 = (MyStruct *)malloc(tainted); // DUBIOUS (not multiplied by anything)
+	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD
 	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // BAD
 	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // BAD [NOT DETECTED]
-	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // DUBIOUS (not multiplied by anything)
+	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // BAD
 
 	int size = tainted * 8;
 	char *chars1 = (char *)malloc(size); // BAD

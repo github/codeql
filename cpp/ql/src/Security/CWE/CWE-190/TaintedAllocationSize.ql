@@ -1,7 +1,7 @@
 /**
- * @name Overflow in uncontrolled allocation size
- * @description Allocating memory with a size controlled by an external
- *              user can result in integer overflow.
+ * @name Uncontrolled allocation size
+ * @description Allocating memory with a size controlled by an external user can result in
+ *              arbitrary amounts of memory being allocated.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
@@ -104,5 +104,6 @@ where
   isFlowSource(source.getNode(), taintCause) and
   TaintedAllocationSize::flowPath(source, sink) and
   allocSink(alloc, sink.getNode())
-select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
+select alloc, source, sink,
+  "This allocation size is derived from $@ and could allocate arbitrary amounts of memory.",
   source.getNode(), "user input (" + taintCause + ")"
