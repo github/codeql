@@ -1220,6 +1220,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   exists(Function function, Parameter param, int n |
+    // TODO: check same container
     node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
     param = function.getParameter(n) and
     node2 = TImplicitArgumentNode(param) and
