@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ -z "${CODEQL_EXTRACTOR_POWERSHELL_ROOT}" ]]; then
+  export CODEQL_EXTRACTOR_POWERSHELL_ROOT="Semmle.Extraction.PowerShell.Standalone.exe"
+fi
+
+"$CODEQL_EXTRACTOR_POWERSHELL_ROOT/tools/$CODEQL_PLATFORM/$CODEQL_POWERSHELL_EXTRACTOR"

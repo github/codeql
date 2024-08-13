@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	<AssemblyName>Semmle.Extraction.PowerShell</AssemblyName>
+	<RootNamespace>Semmle.Extraction.PowerShell</RootNamespace>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+	<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+	<Nullable>enable</Nullable>
+	<LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
+    <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management.Automation" Version="7.3.3" />
+  </ItemGroup>
+
+</Project>
