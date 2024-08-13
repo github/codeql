@@ -267,22 +267,84 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
   override Location getLocation() { result = v.getLocation() }
 }
 
+/** Holds if property `p1` overrides or implements source declaration property `p2`. */
+private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
+  p1.getOverridee*().getUnboundDeclaration() = p2
+  or
+  p1.getAnUltimateImplementee().getUnboundDeclaration() = p2
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet instanceof Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /**
+   * Holds if this content set represents the property `p`.
+   *
+   *
+   * For `getAReadContent`, this set represents all properties that may
+   * (reflexively and transitively) override/implement `p` (or vice versa).
+   */
+  predicate isProperty(Property p) { this = TPropertyContentSet(p) }
+
+  /** Holds if this content set represent the field `f`. */
+  predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
+
+  /** Holds if this content set represents an element in a collection. */
+  predicate isElement() { this.isSingleton(TElementContent()) }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    this.isProperty(result.(PropertyContent).getProperty())
+  }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    exists(Property p1, Property p2 |
+      this.isProperty(p1) and
+      p2 = result.(PropertyContent).getProperty()
+    |
+      p1 = p2
+      or
+      overridesOrImplementsSourceDecl(p2, p1)
+      or
+      overridesOrImplementsSourceDecl(p1, p2)
+    )
+  }
 
   /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+    or
+    exists(Property p |
+      this.isProperty(p) and
+      result = "property " + p.getName()
+    )
+  }
 
   /** Gets the location of this content set. */
-  Location getLocation() { result = super.getLocation() }
+  Location getLocation() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.getLocation()
+    )
+    or
+    exists(Property p |
+      this.isProperty(p) and
+      result = p.getLocation()
+    )
+  }
 }

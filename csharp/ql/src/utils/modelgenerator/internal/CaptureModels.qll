@@ -50,7 +50,7 @@ module Printing = ModelPrinting<ModelPrintingInput>;
 /**
  * Holds if `c` is a relevant content kind, where the underlying type is relevant.
  */
-private predicate isRelevantTypeInContent(DataFlow::Content c) {
+private predicate isRelevantTypeInContent(DataFlow::ContentSet c) {
   isRelevantType(getUnderlyingContentType(c))
 }
 
@@ -58,24 +58,22 @@ private predicate isRelevantTypeInContent(DataFlow::Content c) {
  * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
  */
 private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(DataFlow::Content f |
+  exists(DataFlow::ContentSet f |
     DataFlowPrivate::readStep(node1, f, node2) and
     // Partially restrict the content types used for intermediate steps.
     (not exists(getUnderlyingContentType(f)) or isRelevantTypeInContent(f))
   )
   or
-  exists(DataFlow::Content f | DataFlowPrivate::storeStep(node1, f, node2) |
-    DataFlowPrivate::containerContent(f)
-  )
+  exists(DataFlow::ContentSet f | DataFlowPrivate::storeStep(node1, f, node2) | containerContent(f))
 }
 
 /**
  * Holds if content `c` is either a field, a synthetic field or language specific
  * content of a relevant type or a container like content.
  */
-private predicate isRelevantContent(DataFlow::Content c) {
+private predicate isRelevantContent(DataFlow::ContentSet c) {
   isRelevantTypeInContent(c) or
-  DataFlowPrivate::containerContent(c)
+  containerContent(c)
 }
 
 /**
@@ -170,8 +168,8 @@ module PropagateFlowConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::Content c |
-      DataFlowImplCommon::store(node1, c, node2, _, _) and
+    exists(DataFlow::ContentSet c |
+      DataFlowImplCommon::store(node1, c.getAStoreContent(), node2, _, _) and
       isRelevantContent(c) and
       (
         state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
@@ -180,7 +178,7 @@ module PropagateFlowConfig implements DataFlow::StateConfigSig {
       )
     )
     or
-    exists(DataFlow::Content c |
+    exists(DataFlow::ContentSet c |
       DataFlowPrivate::readStep(node1, c, node2) and
       isRelevantContent(c) and
       state1.(TaintRead).getStep() + 1 = state2.(TaintRead).getStep()
