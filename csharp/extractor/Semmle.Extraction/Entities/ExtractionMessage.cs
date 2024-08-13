@@ -19,11 +19,10 @@ namespace Semmle.Extraction.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            // The below doesn't limit the extractor messages to the exact limit, but it's good enough.
-            Interlocked.Increment(ref messageCount);
-            if (messageCount > limit)
+            var val = Interlocked.Increment(ref messageCount);
+            if (val > limit)
             {
-                if (messageCount == limit + 1)
+                if (val == limit + 1)
                 {
                     Context.ExtractionContext.Logger.LogWarning($"Stopped logging extractor messages after reaching {limit}");
                 }
