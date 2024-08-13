@@ -59,11 +59,11 @@ func init() {
 
 // Extract extracts the packages specified by the given patterns
 func Extract(patterns []string) error {
-	return ExtractWithFlags(nil, patterns)
+	return ExtractWithFlags(nil, patterns, false)
 }
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
-func ExtractWithFlags(buildFlags []string, patterns []string) error {
+func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool) error {
 	startTime := time.Now()
 
 	extraction := NewExtraction(buildFlags, patterns)
@@ -89,6 +89,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			packages.NeedTypes | packages.NeedTypesSizes |
 			packages.NeedTypesInfo | packages.NeedSyntax,
 		BuildFlags: buildFlags,
+		Tests:      extractTests,
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 	if err != nil {
@@ -132,9 +133,32 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
+	// Build a map from package paths to their longest IDs--
+	// in the context of a `go test -c` compilation, we will see the same package more than
+	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
+	// that contains and is used by test code.
+	// For our purposes it is simplest to just ignore the non-test version, since the test
+	// version seems to be a superset of it.
+	longestPackageIds := make(map[string]string)
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		if shortestID, present := longestPackageIds[pkg.PkgPath]; present {
+			if len(pkg.ID) > len(shortestID) {
+				longestPackageIds[pkg.PkgPath] = pkg.ID
+			}
+		} else {
+			longestPackageIds[pkg.PkgPath] = pkg.ID
+		}
+	})
+
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
+
+		// If this is a variant of a package that also occurs with a longer ID, skip it.
+		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+			log.Printf("Skipping variant of package %s with ID %s.", pkg.PkgPath, pkg.ID)
+			return
+		}
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
 			pkgInfos[pkg.PkgPath] = toolchain.GetPkgInfo(pkg.PkgPath, modFlags...)
@@ -210,6 +234,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+
+		// If this is a variant of a package that also occurs with a longer ID, skip it.
+		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+			// Don't log here; we already mentioned this above.
+			return
+		}
+
 		for root := range wantedRoots {
 			pkgInfo := pkgInfos[pkg.PkgPath]
 			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
