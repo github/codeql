@@ -1,0 +1,8 @@
+name: microsoft-sdl/powershell-all
+version: 0.0.1
+groups: 
+  - powershell
+  - microsoft-all
+dbscheme: semmlecode.powershell.dbscheme
+extractor: powershell
+library: true
