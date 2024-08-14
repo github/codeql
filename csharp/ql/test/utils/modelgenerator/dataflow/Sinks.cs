@@ -25,7 +25,7 @@ public class NewSinks
     public static void NoSink(object o) => throw null;
 
     // Sink and Source defined in the extensible file next to the sink test.
-    // MISSING SINK
+    // sink=Sinks;NewSinks;false;SaveAndGet;(System.Object);;Argument[0];test-sink;df-generated
     // neutral=Sinks;NewSinks;SaveAndGet;(System.Object);summary;df-generated
     public static object SaveAndGet(object o)
     {

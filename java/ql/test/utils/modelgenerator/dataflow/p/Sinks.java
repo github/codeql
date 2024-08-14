@@ -26,7 +26,7 @@ public class Sinks {
   public void nosink(Object o) {}
 
   // Sink and Source defined in the extensible file next to the sink test.
-  // MISSING SINK
+  // sink=p;Sinks;true;saveAndGet;(Object);;Argument[0];test-sink;df-generated
   // neutral=p;Sinks;saveAndGet;(Object);summary;df-generated
   public Object saveAndGet(Object o) {
     sink(o);
