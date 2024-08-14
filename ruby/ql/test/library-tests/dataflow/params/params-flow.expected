@@ -66,8 +66,6 @@ edges
 | params_flow.rb:47:13:47:16 | args [element 1] | params_flow.rb:47:12:47:16 | * ... [element 1] | provenance |  |
 | params_flow.rb:49:13:49:14 | p1 | params_flow.rb:50:10:50:11 | p1 | provenance |  |
 | params_flow.rb:49:17:49:24 | *posargs [element 0] | params_flow.rb:51:11:51:17 | posargs [element 0] | provenance |  |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | params_flow.rb:51:11:51:17 | posargs [element 0] | provenance |  |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
 | params_flow.rb:51:11:51:17 | posargs [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
 | params_flow.rb:51:11:51:20 | ...[...] | params_flow.rb:51:10:51:21 | ( ... ) | provenance |  |
 | params_flow.rb:55:9:55:17 | call to taint | params_flow.rb:49:13:49:14 | p1 | provenance |  |
@@ -76,7 +74,6 @@ edges
 | params_flow.rb:57:8:57:18 | call to [] [element 0] | params_flow.rb:57:1:57:4 | args [element 0] | provenance |  |
 | params_flow.rb:57:9:57:17 | call to taint | params_flow.rb:57:8:57:18 | call to [] [element 0] | provenance |  |
 | params_flow.rb:58:9:58:17 | call to taint | params_flow.rb:49:13:49:14 | p1 | provenance |  |
-| params_flow.rb:58:20:58:24 | * ... [element 0] | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
 | params_flow.rb:58:20:58:24 | * ... [element 0] | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
 | params_flow.rb:58:21:58:24 | args [element 0] | params_flow.rb:58:20:58:24 | * ... [element 0] | provenance |  |
 | params_flow.rb:60:1:60:4 | args [element 0] | params_flow.rb:61:10:61:13 | args [element 0] | provenance |  |
@@ -263,10 +260,8 @@ nodes
 | params_flow.rb:47:13:47:16 | args [element 1] | semmle.label | args [element 1] |
 | params_flow.rb:49:13:49:14 | p1 | semmle.label | p1 |
 | params_flow.rb:49:17:49:24 | *posargs [element 0] | semmle.label | *posargs [element 0] |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | semmle.label | *posargs [element 0] |
 | params_flow.rb:50:10:50:11 | p1 | semmle.label | p1 |
 | params_flow.rb:51:10:51:21 | ( ... ) | semmle.label | ( ... ) |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | semmle.label | posargs [element 0] |
 | params_flow.rb:51:11:51:17 | posargs [element 0] | semmle.label | posargs [element 0] |
 | params_flow.rb:51:11:51:20 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:55:9:55:17 | call to taint | semmle.label | call to taint |

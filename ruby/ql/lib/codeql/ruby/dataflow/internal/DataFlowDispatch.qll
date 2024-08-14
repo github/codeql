@@ -563,7 +563,7 @@ private module Cached {
     THashSplatArgumentPosition() or
     TSynthHashSplatArgumentPosition() or
     TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
-    TSynthSplatArgumentPosition() or
+    TSynthSplatArgumentPosition(Boolean hasActualSplat) or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
@@ -590,11 +590,11 @@ private module Cached {
     THashSplatParameterPosition() or
     TSynthHashSplatParameterPosition() or
     TSplatParameterPosition(int pos) {
-      pos = 0
+      pos = 0 // needed for flow summaries
       or
       exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
     } or
-    TSynthSplatParameterPosition() or
+    TSynthSplatParameterPosition(Boolean hasActualSplat) or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -1383,8 +1383,15 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a splat parameter at position `n`. */
   predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
-  /** Holds if this position represents a synthetic splat parameter. */
-  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
+  /**
+   * Holds if this position represents a synthetic splat parameter.
+   *
+   * `hasActualSplat` indicates whether the method that the parameter belongs
+   * to also has an actual splat parameter.
+   */
+  predicate isSynthSplat(boolean hasActualSplat) {
+    this = TSynthSplatParameterPosition(hasActualSplat)
+  }
 
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
@@ -1419,7 +1426,11 @@ class ParameterPosition extends TParameterPosition {
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
     or
-    this.isSynthSplat() and result = "synthetic *"
+    exists(boolean hasActualSplat, string suffix |
+      this.isSynthSplat(hasActualSplat) and
+      result = "synthetic *" + suffix and
+      if hasActualSplat = true then suffix = " (with actual)" else suffix = ""
+    )
   }
 }
 
@@ -1458,8 +1469,15 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a splat argument at position `n`. */
   predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
 
-  /** Holds if this position represents a synthetic splat argument. */
-  predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
+  /**
+   * Holds if this position represents a synthetic splat argument.
+   *
+   * `hasActualSplat` indicates whether the call that the argument belongs
+   * to also has an actual splat argument.
+   */
+  predicate isSynthSplat(boolean hasActualSplat) {
+    this = TSynthSplatArgumentPosition(hasActualSplat)
+  }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -1483,7 +1501,11 @@ class ArgumentPosition extends TArgumentPosition {
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
     or
-    this.isSynthSplat() and result = "synthetic *"
+    exists(boolean hasActualSplat, string suffix |
+      this.isSynthSplat(hasActualSplat) and
+      result = "synthetic *" + suffix and
+      if hasActualSplat = true then suffix = " (with actual)" else suffix = ""
+    )
   }
 }
 
@@ -1519,16 +1541,26 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   (ppos.isHashSplat() or ppos.isSynthHashSplat()) and
   (apos.isHashSplat() or apos.isSynthHashSplat())
   or
-  exists(int pos |
+  exists(int pos, boolean hasActualSplatParam, boolean hasActualSplatArg |
     (
-      ppos.isSplat(pos)
+      ppos.isSplat(pos) and
+      hasActualSplatParam = true // allow matching with synthetic splat argument
       or
-      ppos.isSynthSplat() and pos = 0
+      ppos.isSynthSplat(hasActualSplatParam) and
+      pos = 0 and
+      // prevent synthetic splat parameters from matching synthetic splat arguments
+      // when direct positional matching is possible
+      (
+        hasActualSplatParam = true
+        or
+        hasActualSplatArg = true
+      )
     ) and
     (
-      apos.isSplat(pos)
+      apos.isSplat(pos) and
+      hasActualSplatArg = true // allow matching with synthetic splat parameter
       or
-      apos.isSynthSplat() and pos = 0
+      apos.isSynthSplat(hasActualSplatArg) and pos = 0
     )
   )
   or
