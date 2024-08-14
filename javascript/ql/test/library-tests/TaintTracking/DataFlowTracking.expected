@@ -1,6 +1,8 @@
 legacyDataFlowDifference
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] | only flow with NEW data flow library |
 | bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y | only flow with OLD data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) | only flow with NEW data flow library |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) | only flow with NEW data flow library |
 | call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) | only flow with NEW data flow library |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |

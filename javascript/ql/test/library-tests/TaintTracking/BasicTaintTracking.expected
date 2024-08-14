@@ -1,5 +1,17 @@
 legacyDataFlowDifference
+| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h | only flow with OLD data flow library |
+| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i | only flow with OLD data flow library |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:27:8:27:13 | arr[0] | only flow with OLD data flow library |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:33:8:33:13 | arr[0] | only flow with OLD data flow library |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:35:8:35:13 | arr[2] | only flow with OLD data flow library |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:36:8:36:13 | arr[3] | only flow with OLD data flow library |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:37:8:37:13 | arr[4] | only flow with OLD data flow library |
 | bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y | only flow with OLD data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:41:6:41:28 | foo1_ca ... ource]) | only flow with OLD data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:59:10:59:21 | arguments[1] | only flow with OLD data flow library |
 | call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) | only flow with NEW data flow library |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:41:10:41:10 | x | only flow with NEW data flow library |
@@ -35,18 +47,11 @@ flow
 | array-mutation.js:19:18:19:25 | source() | array-mutation.js:20:8:20:8 | e |
 | array-mutation.js:23:13:23:20 | source() | array-mutation.js:24:8:24:8 | f |
 | array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
-| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
-| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
 | array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
-| arrays-init.js:2:16:2:23 | source() | arrays-init.js:27:8:27:13 | arr[0] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:28:8:28:13 | arr[1] |
-| arrays-init.js:2:16:2:23 | source() | arrays-init.js:33:8:33:13 | arr[0] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:34:8:34:13 | arr[1] |
-| arrays-init.js:2:16:2:23 | source() | arrays-init.js:35:8:35:13 | arr[2] |
-| arrays-init.js:2:16:2:23 | source() | arrays-init.js:36:8:36:13 | arr[3] |
-| arrays-init.js:2:16:2:23 | source() | arrays-init.js:37:8:37:13 | arr[4] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:43:10:43:15 | arr[i] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:55:10:55:15 | arr[i] |
@@ -69,11 +74,8 @@ flow
 | call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:33:6:33:35 | foo2.ap ... e, ""]) |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:40:6:40:28 | foo1_ca ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:41:6:41:28 | foo1_ca ... ource]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:59:10:59:21 | arguments[1] |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:62:10:62:21 | arguments[0] |
 | call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) |
 | call-apply.js:81:17:81:24 | source() | call-apply.js:78:8:78:11 | this |

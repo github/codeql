@@ -24,17 +24,17 @@
 
   console.log("=== access by index (init by [...]) ===");
   var arr = [str, source];
-  sink(arr[0]);       // OK [INCONSISTENCY]
+  sink(arr[0]);       // OK
   sink(arr[1]);       // NOT OK
   sink(str);          // OK
 
   console.log("=== access by index (init by [...], array.lenght > 5) ===");
   var arr = [str, source, 'b', 'c', 'd', source];
-  sink(arr[0]);      // OK [INCONSISTENCY]
+  sink(arr[0]);      // OK
   sink(arr[1]);      // NOT OK
-  sink(arr[2]);      // OK [INCONSISTENCY]
-  sink(arr[3]);      // OK [INCONSISTENCY]
-  sink(arr[4]);      // OK [INCONSISTENCY]
+  sink(arr[2]);      // OK
+  sink(arr[3]);      // OK
+  sink(arr[4]);      // OK
   sink(arr[5]);      // NOT OK
 
   console.log("=== access in for (init by [...]) ===");
