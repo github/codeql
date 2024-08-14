@@ -29,11 +29,11 @@ function test(x, y) {
 
   let h = [];
   Array.prototype.push.apply(h, source());
-  sink(h); // NOT OK
+  sink(h); // NOT OK [INCONSISTENCY]
 
   let i = [];
   Array.prototype.unshift.apply(i, source());
-  sink(i); // NOT OK
+  sink(i); // NOT OK [INCONSISTENCY]
 
   let j = [];
   j[j.length] = source();

@@ -25,6 +25,7 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
     node1 = TValueNode(invoke.getAnArgument().stripParens().(SpreadElement).getOperand()) and
     node2 = TDynamicArgumentStoreNode(invoke, c) and
     c.isUnknownArrayElement()
+    // TODO: we need a similar case for .apply() calls
   )
 }
 
