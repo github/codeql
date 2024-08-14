@@ -115,24 +115,24 @@ function t10() {
 
 function t11() {
     function target(x, y) {
-        sink(x); // $ MISSING: hasTaintFlow=t11.1
-        sink(y); // $ MISSING: hasTaintFlow=t11.1
+        sink(x); // $ hasTaintFlow=t11.1
+        sink(y); // $ hasTaintFlow=t11.1
     }
     target(...source('t11.1'));
 }
 
 function t12() {
     function target(x, y) {
-        sink(x);
-        sink(y); // $ MISSING: hasTaintFlow=t12.1
+        sink(x); // $ SPURIOUS: hasTaintFlow=t12.1
+        sink(y); // $ hasTaintFlow=t12.1
     }
     target("safe", ...source('t12.1'));
 }
 
 function t13() {
     function target(x, y, ...rest) {
-        sink(x);
-        sink(y); // $ MISSING: hasTaintFlow=t13.1
+        sink(x); // $ SPURIOUS: hasTaintFlow=t13.1
+        sink(y); // $ hasTaintFlow=t13.1
         sink(rest); // $ MISSING: hasTaintFlow=t13.1
         sink(rest[0]); // $ MISSING: hasTaintFlow=t13.1
     }

@@ -1,5 +1,6 @@
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
+private import semmle.javascript.dataflow.internal.DataFlowNode
 private import semmle.javascript.dataflow.internal.Contents::Public
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
@@ -18,6 +19,13 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
   or
   FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
+  or
+  // If the spread argument itself is tainted (not inside a content), store it into the dynamic argument array.
+  exists(InvokeExpr invoke, Content c |
+    node1 = TValueNode(invoke.getAnArgument().stripParens().(SpreadElement).getOperand()) and
+    node2 = TDynamicArgumentStoreNode(invoke, c) and
+    c.isUnknownArrayElement()
+  )
 }
 
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
