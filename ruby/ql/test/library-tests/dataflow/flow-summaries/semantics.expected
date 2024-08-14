@@ -144,14 +144,14 @@ edges
 | semantics.rb:108:5:108:5 | b | semantics.rb:110:27:110:27 | b | provenance |  |
 | semantics.rb:108:9:108:18 | call to source | semantics.rb:108:5:108:5 | b | provenance |  |
 | semantics.rb:108:9:108:18 | call to source | semantics.rb:108:5:108:5 | b | provenance |  |
-| semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | semantics.rb:109:10:109:34 | ...[...] | provenance |  |
-| semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | semantics.rb:109:10:109:34 | ...[...] | provenance |  |
-| semantics.rb:109:19:109:19 | a | semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | provenance |  |
-| semantics.rb:109:19:109:19 | a | semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | provenance |  |
-| semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | semantics.rb:110:10:110:34 | ...[...] | provenance |  |
-| semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | semantics.rb:110:10:110:34 | ...[...] | provenance |  |
-| semantics.rb:110:27:110:27 | b | semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | provenance |  |
-| semantics.rb:110:27:110:27 | b | semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | provenance |  |
+| semantics.rb:109:10:109:28 | call to s15 [element :foo] | semantics.rb:109:10:109:34 | ...[...] | provenance |  |
+| semantics.rb:109:10:109:28 | call to s15 [element :foo] | semantics.rb:109:10:109:34 | ...[...] | provenance |  |
+| semantics.rb:109:19:109:19 | a | semantics.rb:109:10:109:28 | call to s15 [element :foo] | provenance |  |
+| semantics.rb:109:19:109:19 | a | semantics.rb:109:10:109:28 | call to s15 [element :foo] | provenance |  |
+| semantics.rb:110:10:110:28 | call to s15 [element :bar] | semantics.rb:110:10:110:34 | ...[...] | provenance |  |
+| semantics.rb:110:10:110:28 | call to s15 [element :bar] | semantics.rb:110:10:110:34 | ...[...] | provenance |  |
+| semantics.rb:110:27:110:27 | b | semantics.rb:110:10:110:28 | call to s15 [element :bar] | provenance |  |
+| semantics.rb:110:27:110:27 | b | semantics.rb:110:10:110:28 | call to s15 [element :bar] | provenance |  |
 | semantics.rb:114:5:114:5 | a | semantics.rb:116:14:116:14 | a | provenance |  |
 | semantics.rb:114:5:114:5 | a | semantics.rb:116:14:116:14 | a | provenance |  |
 | semantics.rb:114:5:114:5 | a | semantics.rb:119:17:119:17 | a | provenance |  |
@@ -1269,14 +1269,14 @@ nodes
 | semantics.rb:108:5:108:5 | b | semmle.label | b |
 | semantics.rb:108:9:108:18 | call to source | semmle.label | call to source |
 | semantics.rb:108:9:108:18 | call to source | semmle.label | call to source |
-| semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | semmle.label | call to s15 [hash-splat position :foo] |
-| semantics.rb:109:10:109:28 | call to s15 [hash-splat position :foo] | semmle.label | call to s15 [hash-splat position :foo] |
+| semantics.rb:109:10:109:28 | call to s15 [element :foo] | semmle.label | call to s15 [element :foo] |
+| semantics.rb:109:10:109:28 | call to s15 [element :foo] | semmle.label | call to s15 [element :foo] |
 | semantics.rb:109:10:109:34 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:109:10:109:34 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:109:19:109:19 | a | semmle.label | a |
 | semantics.rb:109:19:109:19 | a | semmle.label | a |
-| semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | semmle.label | call to s15 [hash-splat position :bar] |
-| semantics.rb:110:10:110:28 | call to s15 [hash-splat position :bar] | semmle.label | call to s15 [hash-splat position :bar] |
+| semantics.rb:110:10:110:28 | call to s15 [element :bar] | semmle.label | call to s15 [element :bar] |
+| semantics.rb:110:10:110:28 | call to s15 [element :bar] | semmle.label | call to s15 [element :bar] |
 | semantics.rb:110:10:110:34 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:110:10:110:34 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:110:27:110:27 | b | semmle.label | b |

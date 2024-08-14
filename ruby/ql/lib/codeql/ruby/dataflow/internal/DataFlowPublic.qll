@@ -629,7 +629,7 @@ module Content {
    *
    * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
    */
-  class HashSplatContent extends ElementContent, THashSplatContent {
+  deprecated class HashSplatContent extends Content, THashSplatContent {
     private ConstantValue::ConstantSymbolValue cv;
 
     HashSplatContent() { this = THashSplatContent(cv) }
@@ -797,7 +797,6 @@ class ContentSet extends TContentSet {
   private Content getAnElementReadContent() {
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
-      result = THashSplatContent(c.getIndex()) or
       result = TUnknownElementContent()
     )
     or
@@ -814,8 +813,6 @@ class ContentSet extends TContentSet {
       this = TElementContentOfTypeContent(type, includeUnknown)
     |
       type = result.(Content::KnownElementContent).getIndex().getValueType()
-      or
-      type = result.(Content::HashSplatContent).getKey().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()

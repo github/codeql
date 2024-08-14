@@ -1538,8 +1538,13 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
-  (ppos.isHashSplat() or ppos.isSynthHashSplat()) and
+  ppos.isHashSplat() and
   (apos.isHashSplat() or apos.isSynthHashSplat())
+  or
+  // no case for `apos.isSynthHashSplat() and ppos.isSynthHashSplat()`, since
+  // direct keyword matching is possible
+  ppos.isSynthHashSplat() and
+  apos.isHashSplat()
   or
   exists(int pos, boolean hasActualSplatParam, boolean hasActualSplatArg |
     (

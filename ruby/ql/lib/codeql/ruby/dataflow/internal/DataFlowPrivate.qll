@@ -662,7 +662,7 @@ private module Cached {
       )
     } or
     deprecated TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
-    THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
+    deprecated THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
@@ -686,24 +686,16 @@ private module Cached {
     TUnknownElementContentApprox() or
     TKnownIntegerElementContentApprox() or
     TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
-    THashSplatContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
     TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
 
   cached
   newtype TDataFlowType =
     TLambdaDataFlowType(Callable c) { c = any(LambdaSelfReferenceNode n).getCallable() } or
-    // In order to reduce the set of cons-candidates, we annotate all implicit (hash) splat
-    // creations with the name of the method that they are passed into. This includes
-    // array/hash literals as well (where the name is simply `[]`), because of how they
-    // are modeled (see `Array.qll` and `Hash.qll`).
-    TSynthHashSplatArgumentType(string methodName) {
-      methodName = any(SynthHashSplatArgumentNode n).getMethodName()
-    } or
     TUnknownDataFlowType()
 }
 
-class TElementContent = TKnownElementContent or TUnknownElementContent or THashSplatContent;
+class TElementContent = TKnownElementContent or TUnknownElementContent;
 
 import Cached
 
@@ -1118,18 +1110,6 @@ private module ParameterNodes {
    *
    * by adding read steps out of the synthesized parameter node to the relevant
    * keyword parameters.
-   *
-   * In order to avoid redundancy (and improve performance) in cases like
-   *
-   * ```rb
-   * foo(p1: taint(1), p2: taint(2))
-   * ```
-   *
-   * where direct keyword matching is possible, we use a special `HashSplatContent`
-   * (instead of reusing `KnownElementContent`) when we construct a synthesized hash
-   * splat argument (`SynthHashSplatArgumentNode`) at the call site, and then only
-   * add read steps out of this node for actual hash-splat arguments (which will use
-   * a normal `KnownElementContent`).
    */
   class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
     private DataFlowCallable callable;
@@ -1436,24 +1416,7 @@ module ArgumentNodes {
         not cv.isSymbol(_)
       )
     |
-      if call instanceof CfgNodes::ExprNodes::HashLiteralCfgNode
-      then
-        /*
-         * Needed for cases like
-         *
-         * ```rb
-         * hash = { a: taint, b: safe }
-         *
-         * def foo(a:, b:)
-         *   sink(a)
-         * end
-         *
-         * foo(**hash)
-         * ```
-         */
-
-        c.isSingleton(Content::getElementContent(cv))
-      else c.isSingleton(THashSplatContent(cv))
+      c.isSingleton(Content::getElementContent(cv))
     )
   }
 
@@ -1938,11 +1901,8 @@ DataFlowType getNodeType(Node n) {
     result = TLambdaDataFlowType(c)
   )
   or
-  result = TSynthHashSplatArgumentType(n.(SynthHashSplatArgumentNode).getMethodName())
-  or
   not n instanceof LambdaSelfReferenceNode and
   not mustHaveLambdaType(n, _) and
-  not n instanceof SynthHashSplatArgumentNode and
   result = TUnknownDataFlowType()
 }
 
@@ -2168,11 +2128,6 @@ class ContentApprox extends TContentApprox {
       result = "approximated element " + approx
     )
     or
-    exists(string s |
-      this = THashSplatContentApprox(s) and
-      result = "approximated hash-splat position " + s
-    )
-    or
     exists(Content c |
       this = TNonElementContentApprox(c) and
       result = c.toString()
@@ -2211,8 +2166,6 @@ ContentApprox getContentApprox(Content c) {
   or
   result =
     TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
-  or
-  result = THashSplatContentApprox(approxKnownElementIndex(c.(Content::HashSplatContent).getKey()))
   or
   result = TNonElementContentApprox(c)
 }
