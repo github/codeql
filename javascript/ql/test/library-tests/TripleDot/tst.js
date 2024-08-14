@@ -112,3 +112,29 @@ function t10() {
     }
     target(source('t10.1'), source('t10.2'), source('t10.3'));
 }
+
+function t11() {
+    function target(x, y) {
+        sink(x); // $ MISSING: hasTaintFlow=t11.1
+        sink(y); // $ MISSING: hasTaintFlow=t11.1
+    }
+    target(...source('t11.1'));
+}
+
+function t12() {
+    function target(x, y) {
+        sink(x);
+        sink(y); // $ MISSING: hasTaintFlow=t12.1
+    }
+    target("safe", ...source('t12.1'));
+}
+
+function t13() {
+    function target(x, y, ...rest) {
+        sink(x);
+        sink(y); // $ MISSING: hasTaintFlow=t13.1
+        sink(rest); // $ MISSING: hasTaintFlow=t13.1
+        sink(rest[0]); // $ MISSING: hasTaintFlow=t13.1
+    }
+    target("safe", ...source('t13.1'));
+}
