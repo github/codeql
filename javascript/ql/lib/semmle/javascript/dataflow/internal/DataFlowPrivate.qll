@@ -197,6 +197,28 @@ class DynamicParameterArrayNode extends DataFlow::Node, TDynamicParameterArrayNo
   override Location getLocation() { result = function.getLocation() }
 }
 
+/**
+ * Node with taint input from the second argument of `.apply()` and with a store edge back into that same argument.
+ *
+ * This ensures that if `.apply()` is called with a tainted value (not inside a content) the taint is
+ * boxed in an `ArrayElement` content. This is necessary for the target function to propagate the taint.
+ */
+class ApplyCallTaintNode extends DataFlow::Node, TApplyCallTaintNode {
+  private MethodCallExpr apply;
+
+  ApplyCallTaintNode() { this = TApplyCallTaintNode(apply) }
+
+  override StmtContainer getContainer() { result = apply.getContainer() }
+
+  override string toString() { result = "[apply call taint node]" }
+
+  override Location getLocation() { result = apply.getArgument(1).getLocation() }
+
+  MethodCallExpr getMethodCallExpr() { result = apply }
+
+  DataFlow::Node getArrayNode() { result = apply.getArgument(1).flow() }
+}
+
 cached
 newtype TReturnKind =
   MkNormalReturnKind() or
@@ -1232,6 +1254,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2 = TStaticArgumentArrayNode(invoke) and
     c.asArrayIndex() = n and
     not n >= firstSpreadArgumentIndex(invoke)
+  )
+  or
+  exists(ApplyCallTaintNode taintNode |
+    node1 = taintNode and
+    node2 = taintNode.getArrayNode() and
+    c = ContentSet::arrayElementUnknown()
   )
 }
 

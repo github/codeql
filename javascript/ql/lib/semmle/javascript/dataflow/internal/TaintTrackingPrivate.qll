@@ -25,7 +25,12 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
     node1 = TValueNode(invoke.getAnArgument().stripParens().(SpreadElement).getOperand()) and
     node2 = TDynamicArgumentStoreNode(invoke, c) and
     c.isUnknownArrayElement()
-    // TODO: we need a similar case for .apply() calls
+  )
+  or
+  // If the array in an .apply() call is tainted (not inside a content), box it in an array element (similar to the case above).
+  exists(ApplyCallTaintNode taintNode |
+    node1 = taintNode.getArrayNode() and
+    node2 = taintNode
   )
 }
 

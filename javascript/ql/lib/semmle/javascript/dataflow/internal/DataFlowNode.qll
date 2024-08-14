@@ -55,6 +55,9 @@ private module Cached {
       invoke.isSpreadArgument(_) and
       storeContent = dynamicArgumentsContent()
     } or
+    TApplyCallTaintNode(MethodCallExpr node) {
+      node.getMethodName() = "apply" and exists(node.getArgument(1))
+    } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or

@@ -1,6 +1,4 @@
 legacyDataFlowDifference
-| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h | only flow with OLD data flow library |
-| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i | only flow with OLD data flow library |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:27:8:27:13 | arr[0] | only flow with OLD data flow library |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:33:8:33:13 | arr[0] | only flow with OLD data flow library |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:35:8:35:13 | arr[2] | only flow with OLD data flow library |
@@ -47,6 +45,8 @@ flow
 | array-mutation.js:19:18:19:25 | source() | array-mutation.js:20:8:20:8 | e |
 | array-mutation.js:23:13:23:20 | source() | array-mutation.js:24:8:24:8 | f |
 | array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
+| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
+| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
 | array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
