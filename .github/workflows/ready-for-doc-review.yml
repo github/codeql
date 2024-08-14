@@ -1,0 +1,15 @@
+name: Ready for docs-content review
+
+# **What it does**: Adds pull requests created in this repository to the Docs team's review board when the "ready-for-doc-review" label is added or when a review by docs-content is requested
+# **Why we have it**: So that other GitHub teams can easily request reviews from the docs-content team, and so that writers can see when a PR is ready for review
+# **Who does it impact**: Anyone needing a review by the Docs team for pull requests opened in this repository.
+
+on:
+  pull_request_target:
+    types: [labeled, review_requested]
+
+jobs:
+  call-workflow-ready-for-doc-review:
+    if: github.event.label.name == 'ready-for-doc-review' || github.event.requested_team.name == 'docs-content'
+    uses: github/docs-internal/.github/workflows/ready-for-doc-review.yml@main
+    secrets: inherit
