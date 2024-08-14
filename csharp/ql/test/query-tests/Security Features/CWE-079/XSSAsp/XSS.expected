@@ -42,7 +42,6 @@ edges
 | XSS.cs:85:27:85:53 | access to property QueryString : NameValueCollection | XSS.cs:85:27:85:61 | access to indexer : String | provenance | MaD:6 |
 | XSS.cs:85:27:85:61 | access to indexer : String | XSS.cs:85:20:85:23 | access to local variable name : String | provenance |  |
 | XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:1 |
-| XSS.cs:94:20:94:23 | access to local variable name : String | XSS.cs:95:31:95:34 | access to local variable name | provenance |  Sink:MaD:7 |
 | XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |
 | XSS.cs:94:27:94:53 | access to property QueryString : NameValueCollection | XSS.cs:94:27:94:61 | access to indexer : String | provenance | MaD:6 |
 | XSS.cs:94:27:94:61 | access to indexer : String | XSS.cs:94:20:94:23 | access to local variable name : String | provenance |  |
@@ -56,7 +55,6 @@ models
 | 4 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 | 5 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
 | 6 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
-| 7 | Sink: System.Net.Http; StringContent; false; StringContent; (System.String); ; Argument[0]; js-injection; df-generated |
 nodes
 | XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder | semmle.label | [post] access to local variable userInput : StringBuilder |
 | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
