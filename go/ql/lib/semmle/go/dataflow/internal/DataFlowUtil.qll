@@ -339,6 +339,12 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     localFlow(pragma[only_bind_out](outp.getNode(c)), resNode)
   }
 
+  pragma[noinline]
+  private predicate guardsNode(Node g, ControlFlow::ConditionGuardNode guard, Node arg, Node ret) {
+    guards(g, guard, arg) and
+    guard.dominates(ret.getBasicBlock())
+  }
+
   /**
    * Holds if whenever `p` holds of output `outp` of function `f`, this node
    * is known to validate the input `inp` of `f`.
@@ -357,10 +363,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       ret = outp.getEntryNode(fd) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
-        exists(ControlFlow::ConditionGuardNode guard |
-          guards(g, guard, arg) and
-          guard.dominates(ret.getBasicBlock())
-        |
+        exists(ControlFlow::ConditionGuardNode guard | guardsNode(g, guard, arg, ret) |
           exists(boolean b |
             onlyPossibleReturnOfBool(fd, outp, ret, b) and
             p.isBoolean(b)
