@@ -60,33 +60,10 @@ module DatabaseSql {
     override DataFlow::Node getAResult() { result = this.getResult(0) }
 
     override SQL::QueryString getAQueryString() {
-      result = this.getAnArgument()
+      result = this.getASyntacticArgument()
       or
       this.getTarget().hasQualifiedName("database/sql/driver", "Stmt") and
       result = this.getReceiver().getAPredecessor*().(DataFlow::MethodCallNode).getAnArgument()
-    }
-  }
-
-  /** A query string used in an API function of the standard `database/sql/driver` package. */
-  private class DriverQueryString extends SQL::QueryString::Range {
-    DriverQueryString() {
-      exists(Method meth, int n |
-        (
-          meth.hasQualifiedName("database/sql/driver", "Execer", "Exec") and n = 0
-          or
-          meth.hasQualifiedName("database/sql/driver", "ExecerContext", "ExecContext") and n = 1
-          or
-          meth.hasQualifiedName("database/sql/driver", "Conn", "Prepare") and n = 0
-          or
-          meth.hasQualifiedName("database/sql/driver", "ConnPrepareContext", "PrepareContext") and
-          n = 1
-          or
-          meth.hasQualifiedName("database/sql/driver", "Queryer", "Query") and n = 0
-          or
-          meth.hasQualifiedName("database/sql/driver", "QueryerContext", "QueryContext") and n = 1
-        ) and
-        this = meth.getACall().getArgument(n)
-      )
     }
   }
 

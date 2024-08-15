@@ -1,6 +1,16 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["database/sql/driver", "Execer", False, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "ExecerContext", False, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql/driver", "Conn", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "ConnPrepareContext", False, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql/driver", "Queryer", False, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "QueryerContext", False, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["database/sql/driver", "Conn", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
