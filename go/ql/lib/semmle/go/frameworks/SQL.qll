@@ -85,9 +85,6 @@ module SQL {
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
     private string gopgorm() { result = package("github.com/go-pg/pg", "orm") }
 
-    /** A string that might identify package `github.com/gogf/gf/database/gdb` or a specific version of it. */
-    private string gogf() { result = package("github.com/gogf/gf", "database/gdb") }
-
     /**
      * A string argument to an API of `go-pg/pg` that is directly interpreted as SQL without
      * taking syntactic structure into account.
@@ -149,46 +146,6 @@ module SQL {
           )
         |
           this = f.getACall().getArgument(arg)
-        )
-      }
-    }
-
-    /**
-     * A string argument to an API of `github.com/gogf/gf/database/gdb`, or a specific version of it, that is directly interpreted as SQL without
-     * taking syntactic structure into account.
-     */
-    private class GogfQueryString extends Range {
-      GogfQueryString() {
-        exists(Method m, string name | m.implements(gogf(), ["DB", "Core", "TX"], name) |
-          // func (c *Core) Exec(sql string, args ...interface{}) (result sql.Result, err error)
-          // func (c *Core) GetAll(sql string, args ...interface{}) (Result, error)
-          // func (c *Core) GetArray(sql string, args ...interface{}) ([]Value, error)
-          // func (c *Core) GetCount(sql string, args ...interface{}) (int, error)
-          // func (c *Core) GetOne(sql string, args ...interface{}) (Record, error)
-          // func (c *Core) GetValue(sql string, args ...interface{}) (Value, error)
-          // func (c *Core) Prepare(sql string, execOnMaster ...bool) (*Stmt, error)
-          // func (c *Core) Query(sql string, args ...interface{}) (rows *sql.Rows, err error)
-          // func (c *Core) Raw(rawSql string, args ...interface{}) *Model
-          name =
-            [
-              "Query", "Exec", "Prepare", "GetAll", "GetOne", "GetValue", "GetArray", "GetCount",
-              "Raw"
-            ] and
-          this = m.getACall().getArgument(0)
-          or
-          // func (c *Core) GetScan(pointer interface{}, sql string, args ...interface{}) error
-          // func (c *Core) GetStruct(pointer interface{}, sql string, args ...interface{}) error
-          // func (c *Core) GetStructs(pointer interface{}, sql string, args ...interface{}) error
-          name = ["GetScan", "GetStruct", "GetStructs"] and
-          this = m.getACall().getArgument(1)
-          or
-          // func (c *Core) DoCommit(ctx context.Context, link Link, sql string, args []interface{}) (newSql string, newArgs []interface{}, err error)
-          // func (c *Core) DoExec(ctx context.Context, link Link, sql string, args ...interface{}) (result sql.Result, err error)
-          // func (c *Core) DoGetAll(ctx context.Context, link Link, sql string, args ...interface{}) (result Result, err error)
-          // func (c *Core) DoPrepare(ctx context.Context, link Link, sql string) (*Stmt, error)
-          // func (c *Core) DoQuery(ctx context.Context, link Link, sql string, args ...interface{}) (rows *sql.Rows, err error)
-          name = ["DoGetAll", "DoQuery", "DoExec", "DoCommit", "DoPrepare"] and
-          this = m.getACall().getArgument(2)
         )
       }
     }
