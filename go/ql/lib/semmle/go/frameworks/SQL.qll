@@ -150,21 +150,6 @@ module SQL {
       }
     }
   }
-
-  /** A model for sinks of GORM. */
-  private class GormSink extends SQL::QueryString::Range {
-    GormSink() {
-      exists(Method meth, string package, string name |
-        meth.hasQualifiedName(package, "DB", name) and
-        this = meth.getACall().getSyntacticArgument(0) and
-        package = Gorm::packagePath() and
-        name in [
-            "Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins",
-            "Exec", "Distinct", "Pluck"
-          ]
-      )
-    }
-  }
 }
 
 /**
