@@ -26,29 +26,11 @@ module DatabaseSql {
     override DataFlow::Node getAResult() { result = this.getResult(0) }
 
     override SQL::QueryString getAQueryString() {
-      result = this.getAnArgument()
+      result = this.getASyntacticArgument()
       or
       // attempt to resolve a `QueryString` for `Stmt`s using local data flow.
       t = "Stmt" and
       result = this.getReceiver().getAPredecessor*().(DataFlow::MethodCallNode).getAnArgument()
-    }
-  }
-
-  /** A query string used in an API function of the `database/sql` package. */
-  private class QueryString extends SQL::QueryString::Range {
-    QueryString() {
-      exists(Method meth, string base, string t, string m, int n |
-        t = ["DB", "Tx", "Conn"] and
-        meth.hasQualifiedName("database/sql", t, m) and
-        this = meth.getACall().getArgument(n)
-      |
-        base = ["Exec", "Prepare", "Query", "QueryRow"] and
-        (
-          m = base and n = 0
-          or
-          m = base + "Context" and n = 1
-        )
-      )
     }
   }
 
