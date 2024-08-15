@@ -44,8 +44,6 @@ edges
 | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | provenance |  |
 | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | provenance |  |
 | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:3 |
-| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:3 |
-| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:18 |
 | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:18 |
 | Test.java:51:16:51:23 | source(...) : Object | Test.java:52:44:52:45 | in : Object | provenance |  |
 | Test.java:52:10:52:58 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | provenance |  |
