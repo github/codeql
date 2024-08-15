@@ -1,34 +1,15 @@
 import powershell
 
-class FunctionDefinition extends @function_definition instanceof Statement
-{
-    string toString()
-    {
-        result = "FunctionDefinition at: " + this.getLocation().toString()
-    }
+class FunctionDefinition extends @function_definition, Statement {
+  override string toString() { result = "FunctionDefinition at: " + this.getLocation().toString() }
 
-    SourceLocation getLocation()
-    {
-        function_definition_location(this, result)
-    }
+  override SourceLocation getLocation() { function_definition_location(this, result) }
 
-    string getName()
-    {
-        function_definition(this, _, result, _, _)
-    }
+  string getName() { function_definition(this, _, result, _, _) }
 
-    ScriptBlock getBody()
-    {
-        function_definition(this, _, result, _, _)
-    }
+  ScriptBlock getBody() { function_definition(this, result, _, _, _) }
 
-    boolean getIsFilter()
-    {
-        function_definition(this, _, _, result, _)
-    }
+  predicate isFilter() { function_definition(this, _, _, true, _) }
 
-    boolean getIsWorkflow()
-    {
-        function_definition(this, _, _, _, result)
-    }
+  predicate isWorkflow() { function_definition(this, _, _, _, true) }
 }

@@ -1,49 +1,21 @@
 import powershell
 
-class Attribute extends @attribute instanceof AttributeBase
-{
-    string toString()
-    {
-        none()
-    }
+class Attribute extends @attribute, AttributeBase {
+  override string toString() { result = this.getName() }
 
-    SourceLocation getLocation()
-    {
-        attribute_location(this, result)
-    }
+  override SourceLocation getLocation() { attribute_location(this, result) }
 
-    string getName()
-    {
-        attribute(this, result, _, _)
-    }
+  string getName() { attribute(this, result, _, _) }
 
-    int getNumNamedArguments()
-    {
-        attribute(this, _, result, _)
-    }
+  int getNumNamedArguments() { attribute(this, _, result, _) }
 
-    int getNumPositionalArguments()
-    {
-        attribute(this, _, _, result)
-    }
+  int getNumPositionalArguments() { attribute(this, _, _, result) }
 
-    NamedAttributeArgument getNamedArgument(int i)
-    {
-        attribute_named_argument(this, i, result)
-    }
+  NamedAttributeArgument getNamedArgument(int i) { attribute_named_argument(this, i, result) }
 
-    NamedAttributeArgument getANamedArgument()
-    {
-        result = this.getNamedArgument(_)
-    }
+  NamedAttributeArgument getANamedArgument() { result = this.getNamedArgument(_) }
 
-    Expression getPositionalArgument(int i)
-    {
-        attribute_positional_argument(this, i, result)
-    }
+  Expression getPositionalArgument(int i) { attribute_positional_argument(this, i, result) }
 
-    Expression getAPositionalArgument()
-    {
-        result = this.getPositionalArgument(_)
-    }
+  Expression getAPositionalArgument() { result = this.getPositionalArgument(_) }
 }

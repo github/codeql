@@ -1,6 +1,3 @@
 import powershell
 
-class Statement extends @statement instanceof Ast
-{
-    string toString() {none()}
-}
+class Statement extends @statement, Ast { }

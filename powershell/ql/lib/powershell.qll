@@ -1,10 +1,7 @@
-// File Metadata
 import semmle.code.powershell.File
 import semmle.code.powershell.Location
 import semmle.code.powershell.SourceLocation
-// Base Classes
 import semmle.code.powershell.Ast
-import semmle.code.powershell.TokenKind
 import semmle.code.powershell.Statement
 import semmle.code.powershell.Expression
 import semmle.code.powershell.CommandBase
@@ -13,20 +10,15 @@ import semmle.code.powershell.PipelineBase
 import semmle.code.powershell.BaseConstantExpression
 import semmle.code.powershell.ConstantExpression
 import semmle.code.powershell.MemberExpressionBase
-
 import semmle.code.powershell.Attribute
 import semmle.code.powershell.NamedAttributeArgument
 import semmle.code.powershell.VariableExpression
 import semmle.code.powershell.Parameter
-
 import semmle.code.powershell.ModuleSpecification
 import semmle.code.powershell.ParamBlock
 import semmle.code.powershell.NamedBlock
 import semmle.code.powershell.ScriptBlock
-
 import semmle.code.powershell.StringLiteral
-
-// Inherited
 import semmle.code.powershell.AssignmentStatement
 import semmle.code.powershell.BinaryExpression
 import semmle.code.powershell.TernaryExpression
@@ -41,9 +33,10 @@ import semmle.code.powershell.CommandExpression
 import semmle.code.powershell.CommandParameter
 import semmle.code.powershell.ExpandableStringExpression
 import semmle.code.powershell.TypeExpression
-import semmle.code.powershell.VariableExpression
 import semmle.code.powershell.ParenExpression
+import semmle.code.powershell.Chainable
 import semmle.code.powershell.Pipeline
 import semmle.code.powershell.StringConstantExpression
+import semmle.code.powershell.FunctionDefinition
 import semmle.code.powershell.InvokeMemberExpression
 import semmle.code.powershell.CommentEntity

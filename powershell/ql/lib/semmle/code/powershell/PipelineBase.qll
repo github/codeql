@@ -1,5 +1,3 @@
 import powershell
-class PipelineBase extends @pipeline_base instanceof Statement
-{
-    string toString() {none()}
-}
+
+class PipelineBase extends @pipeline_base, Statement { }
