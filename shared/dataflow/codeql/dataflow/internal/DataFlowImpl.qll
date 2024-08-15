@@ -4350,7 +4350,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       private PathNodeMid getSuccMid(string label) {
         pathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-          result.getSummaryCtx(), result.getType(), result.getAp(), _, label)
+          result.getSummaryCtx(), result.getType(), result.getAp(), result.getSummaryLabel(), label)
       }
 
       private predicate isSourceWithLabel(string labelprefix) {
