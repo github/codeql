@@ -10,7 +10,7 @@ Internal.IL,,,46,,,,,,,,,,,,,,,,,,,44,2
 Internal.Pgo,,,9,,,,,,,,,,,,,,,,,,,8,1
 Internal.TypeSystem,,,315,,,,,,,,,,,,,,,,,,,299,16
 JsonToItemsTaskFactory,,,10,,,,,,,,,,,,,,,,,,,10,
-Microsoft.Android.Build,,,16,,,,,,,,,,,,,,,,,,,16,
+Microsoft.Android.Build,,1,16,,,,,,,,,,,,,1,,,,,,16,
 Microsoft.Apple.Build,,,8,,,,,,,,,,,,,,,,,,,8,
 Microsoft.ApplicationBlocks.Data,28,,,,,,,,,,,,28,,,,,,,,,,
 Microsoft.CSharp,,,13,,,,,,,,,,,,,,,,,,,13,
@@ -19,9 +19,9 @@ Microsoft.DotNet.Build.Tasks,,,6,,,,,,,,,,,,,,,,,,,6,
 Microsoft.EntityFrameworkCore,6,,12,,,,,,,,,,6,,,,,,,,,,12
 Microsoft.Extensions.Caching.Distributed,,,10,,,,,,,,,,,,,,,,,,,10,
 Microsoft.Extensions.Caching.Memory,,,39,,,,,,,,,,,,,,,,,,,38,1
-Microsoft.Extensions.Configuration,,2,90,,,,,,,,,,,,,2,,,,,,89,1
+Microsoft.Extensions.Configuration,,3,90,,,,,,,,,,,,,3,,,,,,89,1
 Microsoft.Extensions.DependencyInjection,,,134,,,,,,,,,,,,,,,,,,,133,1
-Microsoft.Extensions.DependencyModel,,,18,,,,,,,,,,,,,,,,,,,18,
+Microsoft.Extensions.DependencyModel,,1,18,,,,,,,,,,,,,1,,,,,,18,
 Microsoft.Extensions.Diagnostics.Metrics,,,15,,,,,,,,,,,,,,,,,,,15,
 Microsoft.Extensions.FileProviders,,,15,,,,,,,,,,,,,,,,,,,15,
 Microsoft.Extensions.FileSystemGlobbing,,,18,,,,,,,,,,,,,,,,,,,16,2
@@ -41,5 +41,5 @@ MySql.Data.MySqlClient,48,,,,,,,,,,,,48,,,,,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,75,,,,92,,,,,,,,,7,
 SourceGenerators,,,5,,,,,,,,,,,,,,,,,,,5,
-System,60,44,10614,,7,6,5,,,4,5,,33,2,,3,15,17,3,4,,8709,1905
+System,54,47,10626,,6,5,5,,,4,1,,33,2,,6,15,17,3,4,,8721,1905
 Windows.Security.Cryptography.Core,1,,,,,,,1,,,,,,,,,,,,,,,
