@@ -340,9 +340,11 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   pragma[noinline]
-  private predicate guardsNode(Node g, ControlFlow::ConditionGuardNode guard, Node arg, Node ret) {
-    guards(g, guard, arg) and
-    guard.dominates(ret.getBasicBlock())
+  private predicate guardsNode(Node g, Node arg, Node ret) {
+    exists(ControlFlow::ConditionGuardNode guard |
+      guards(g, guard, arg) and
+      guard.dominates(ret.getBasicBlock())
+    )
   }
 
   /**
@@ -363,7 +365,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       ret = outp.getEntryNode(fd) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
-        exists(ControlFlow::ConditionGuardNode guard | guardsNode(g, guard, arg, ret) |
+        guardsNode(g, arg, ret) and
+        (
           exists(boolean b |
             onlyPossibleReturnOfBool(fd, outp, ret, b) and
             p.isBoolean(b)
