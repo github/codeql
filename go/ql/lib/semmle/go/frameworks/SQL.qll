@@ -85,11 +85,6 @@ module SQL {
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
     private string gopgorm() { result = package("github.com/go-pg/pg", "orm") }
 
-    /** A string that might identify package `github.com/rqlite/gorqlite` or `github.com/raindog308/gorqlite` or a specific version of it. */
-    private string gorqlite() {
-      result = package(["github.com/rqlite/gorqlite", "github.com/raindog308/gorqlite"], "")
-    }
-
     /** A string that might identify package `github.com/gogf/gf/database/gdb` or a specific version of it. */
     private string gogf() { result = package("github.com/gogf/gf", "database/gdb") }
 
@@ -154,25 +149,6 @@ module SQL {
           )
         |
           this = f.getACall().getArgument(arg)
-        )
-      }
-    }
-
-    /**
-     * A string argument to an API of `github.com/rqlite/gorqlite`, or a specific version of it, that is directly interpreted as SQL without
-     * taking syntactic structure into account.
-     */
-    private class GorqliteQueryString extends Range {
-      GorqliteQueryString() {
-        // func (conn *Connection) Query(sqlStatements []string) (results []QueryResult, err error)
-        // func (conn *Connection) QueryOne(sqlStatement string) (qr QueryResult, err error)
-        // func (conn *Connection) Queue(sqlStatements []string) (seq int64, err error)
-        // func (conn *Connection) QueueOne(sqlStatement string) (seq int64, err error)
-        // func (conn *Connection) Write(sqlStatements []string) (results []WriteResult, err error)
-        // func (conn *Connection) WriteOne(sqlStatement string) (wr WriteResult, err error)
-        exists(Method m, string name | m.hasQualifiedName(gorqlite(), "Connection", name) |
-          name = ["Query", "QueryOne", "Queue", "QueueOne", "Write", "WriteOne"] and
-          this = m.getACall().getArgument(0)
         )
       }
     }
