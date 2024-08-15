@@ -1,0 +1,52 @@
+models
+| 1 | Summary: org.kohsuke.stapler.framework.adjunct; AdjunctManager; true; AdjunctManager; (ServletContext,ClassLoader,String,long); ; Argument[2]; Argument[this].Field[org.kohsuke.stapler.framework.adjunct.AdjunctManager.rootURL]; taint; ai-manual |
+edges
+| DataBoundPostConstructTest.java:17:40:17:60 | source(...) : Object | DataBoundPostConstructTest.java:24:39:24:50 | field : Object | provenance |  |
+| DataBoundPostConstructTest.java:18:55:18:70 | source(...) : Object | DataBoundPostConstructTest.java:29:26:29:37 | field : Object | provenance |  |
+| DataBoundPostConstructTest.java:24:39:24:50 | field : Object | DataBoundPostConstructTest.java:25:22:25:26 | field : Object | provenance |  |
+| DataBoundPostConstructTest.java:25:9:25:12 | this [post update] : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:33:20:33:30 | parameter this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:25:9:25:12 | this [post update] : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:39:18:39:21 | parameter this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:25:22:25:26 | field : Object | DataBoundPostConstructTest.java:25:9:25:12 | this [post update] : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:29:26:29:37 | field : Object | DataBoundPostConstructTest.java:30:22:30:26 | field : Object | provenance |  |
+| DataBoundPostConstructTest.java:30:9:30:12 | this [post update] : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:33:20:33:30 | parameter this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:30:9:30:12 | this [post update] : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:39:18:39:21 | parameter this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:30:22:30:26 | field : Object | DataBoundPostConstructTest.java:30:9:30:12 | this [post update] : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:33:20:33:30 | parameter this : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:34:14:34:17 | this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:34:14:34:17 | this : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:34:14:34:23 | this.field | provenance |  |
+| DataBoundPostConstructTest.java:39:18:39:21 | parameter this : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:40:14:40:17 | this : DataBoundPostConstructTest [field] : Object | provenance |  |
+| DataBoundPostConstructTest.java:40:14:40:17 | this : DataBoundPostConstructTest [field] : Object | DataBoundPostConstructTest.java:40:14:40:23 | this.field | provenance |  |
+| HttpResponseTest.java:16:20:16:44 | (...)... : MyHttpResponse | HttpResponseTest.java:22:21:22:36 | parameter this : MyHttpResponse | provenance |  |
+| HttpResponseTest.java:16:37:16:44 | source(...) : Object | HttpResponseTest.java:16:20:16:44 | (...)... : MyHttpResponse | provenance |  |
+| HttpResponseTest.java:22:21:22:36 | parameter this : MyHttpResponse | HttpResponseTest.java:23:18:23:21 | this | provenance |  |
+| Test.java:19:16:19:32 | (...)... : String | Test.java:20:41:20:42 | in : String | provenance |  |
+| Test.java:19:25:19:32 | source(...) : Object | Test.java:19:16:19:32 | (...)... : String | provenance |  |
+| Test.java:20:10:20:47 | new AdjunctManager(...) : AdjunctManager [rootURL] : String | Test.java:21:9:21:11 | out : AdjunctManager [rootURL] : String | provenance |  |
+| Test.java:20:41:20:42 | in : String | Test.java:20:10:20:47 | new AdjunctManager(...) : AdjunctManager [rootURL] : String | provenance | MaD:1 |
+| Test.java:21:9:21:11 | out : AdjunctManager [rootURL] : String | Test.java:21:9:21:19 | out.rootURL | provenance |  |
+nodes
+| DataBoundPostConstructTest.java:17:40:17:60 | source(...) : Object | semmle.label | source(...) : Object |
+| DataBoundPostConstructTest.java:18:55:18:70 | source(...) : Object | semmle.label | source(...) : Object |
+| DataBoundPostConstructTest.java:24:39:24:50 | field : Object | semmle.label | field : Object |
+| DataBoundPostConstructTest.java:25:9:25:12 | this [post update] : DataBoundPostConstructTest [field] : Object | semmle.label | this [post update] : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:25:22:25:26 | field : Object | semmle.label | field : Object |
+| DataBoundPostConstructTest.java:29:26:29:37 | field : Object | semmle.label | field : Object |
+| DataBoundPostConstructTest.java:30:9:30:12 | this [post update] : DataBoundPostConstructTest [field] : Object | semmle.label | this [post update] : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:30:22:30:26 | field : Object | semmle.label | field : Object |
+| DataBoundPostConstructTest.java:33:20:33:30 | parameter this : DataBoundPostConstructTest [field] : Object | semmle.label | parameter this : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:34:14:34:17 | this : DataBoundPostConstructTest [field] : Object | semmle.label | this : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:34:14:34:23 | this.field | semmle.label | this.field |
+| DataBoundPostConstructTest.java:39:18:39:21 | parameter this : DataBoundPostConstructTest [field] : Object | semmle.label | parameter this : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:40:14:40:17 | this : DataBoundPostConstructTest [field] : Object | semmle.label | this : DataBoundPostConstructTest [field] : Object |
+| DataBoundPostConstructTest.java:40:14:40:23 | this.field | semmle.label | this.field |
+| HttpResponseTest.java:16:20:16:44 | (...)... : MyHttpResponse | semmle.label | (...)... : MyHttpResponse |
+| HttpResponseTest.java:16:37:16:44 | source(...) : Object | semmle.label | source(...) : Object |
+| HttpResponseTest.java:22:21:22:36 | parameter this : MyHttpResponse | semmle.label | parameter this : MyHttpResponse |
+| HttpResponseTest.java:23:18:23:21 | this | semmle.label | this |
+| Test.java:19:16:19:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:19:25:19:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:20:10:20:47 | new AdjunctManager(...) : AdjunctManager [rootURL] : String | semmle.label | new AdjunctManager(...) : AdjunctManager [rootURL] : String |
+| Test.java:20:41:20:42 | in : String | semmle.label | in : String |
+| Test.java:21:9:21:11 | out : AdjunctManager [rootURL] : String | semmle.label | out : AdjunctManager [rootURL] : String |
+| Test.java:21:9:21:19 | out.rootURL | semmle.label | out.rootURL |
+subpaths
+testFailures
