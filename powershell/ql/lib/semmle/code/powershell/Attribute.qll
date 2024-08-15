@@ -15,7 +15,7 @@ class Attribute extends @attribute, AttributeBase {
 
   NamedAttributeArgument getANamedArgument() { result = this.getNamedArgument(_) }
 
-  Expression getPositionalArgument(int i) { attribute_positional_argument(this, i, result) }
+  Expr getPositionalArgument(int i) { attribute_positional_argument(this, i, result) }
 
-  Expression getAPositionalArgument() { result = this.getPositionalArgument(_) }
+  Expr getAPositionalArgument() { result = this.getPositionalArgument(_) }
 }

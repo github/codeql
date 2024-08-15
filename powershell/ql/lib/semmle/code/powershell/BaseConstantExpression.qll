@@ -1,3 +1,3 @@
 import powershell
 
-class BaseConstantExpression extends @base_constant_expression, Expression { }
+class BaseConstExpr extends @base_constant_expression, Expr { }

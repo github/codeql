@@ -1,3 +1,3 @@
 import powershell
 
-class CommandBase extends @command_base, Statement { }
+class CmdBase extends @command_base, Stmt { }

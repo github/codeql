@@ -1,13 +1,13 @@
 import powershell
 
-class TernaryExpression extends @ternary_expression, Expression {
+class ConditionalExpr extends @ternary_expression, Expr {
   override string toString() { result = "...?...:..." }
 
   override SourceLocation getLocation() { ternary_expression_location(this, result) }
 
-  Expression getCondition() { ternary_expression(this, result, _, _) }
+  Expr getCondition() { ternary_expression(this, result, _, _) }
 
-  Expression getIfFalse() { ternary_expression(this, _, result, _) }
+  Expr getIfFalse() { ternary_expression(this, _, result, _) }
 
-  Expression getIfTrue() { ternary_expression(this, _, _, result) }
+  Expr getIfTrue() { ternary_expression(this, _, _, result) }
 }

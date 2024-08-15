@@ -1,6 +1,6 @@
 import powershell
 
-class FunctionDefinition extends @function_definition, Statement {
+class Function extends @function_definition, Stmt {
   override string toString() { result = "FunctionDefinition at: " + this.getLocation().toString() }
 
   override SourceLocation getLocation() { function_definition_location(this, result) }

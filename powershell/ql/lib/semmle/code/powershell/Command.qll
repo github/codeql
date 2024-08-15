@@ -1,6 +1,6 @@
 import powershell
 
-class Command extends @command, CommandBase {
+class Cmd extends @command, CmdBase {
   override string toString() { result = this.getName() }
 
   override SourceLocation getLocation() { command_location(this, result) }
@@ -13,11 +13,11 @@ class Command extends @command, CommandBase {
 
   int getNumRedirection() { command(this, _, _, _, result) }
 
-  CommandElement getElement(int i) { command_command_element(this, i, result) }
+  CmdElement getElement(int i) { command_command_element(this, i, result) }
 
   Redirection getRedirection(int i) { command_redirection(this, i, result) }
 
-  CommandElement getAnElement() { result = this.getElement(_) }
+  CmdElement getAnElement() { result = this.getElement(_) }
 
   Redirection getARedirection() { result = this.getRedirection(_) }
 }

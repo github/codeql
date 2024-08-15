@@ -15,9 +15,9 @@ class ScriptBlock extends @script_block, Ast {
 
   int getNumRequiredPsSnapIns() { script_block(this, _, _, _, _, result) }
 
-  Statement getUsing(int i) { script_block_using(this, i, result) }
+  Stmt getUsing(int i) { script_block_using(this, i, result) }
 
-  Statement getAUsing() { result = this.getUsing(_) }
+  Stmt getAUsing() { result = this.getUsing(_) }
 
   ParamBlock getParamBlock() { script_block_param_block(this, result) }
 

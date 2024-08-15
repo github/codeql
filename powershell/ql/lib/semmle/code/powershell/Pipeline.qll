@@ -7,7 +7,7 @@ class Pipeline extends @pipeline, Chainable {
 
   int getNumComponents() { pipeline(this, result) }
 
-  CommandBase getComponent(int i) { pipeline_component(this, i, result) }
+  CmdBase getComponent(int i) { pipeline_component(this, i, result) }
 
-  CommandBase getAComponent() { result = this.getComponent(_) }
+  CmdBase getAComponent() { result = this.getComponent(_) }
 }

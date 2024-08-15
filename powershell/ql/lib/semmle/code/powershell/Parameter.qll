@@ -3,7 +3,7 @@ import powershell
 class Parameter extends @parameter, Ast {
   override string toString() { result = this.getName().toString() }
 
-  VariableExpression getName() { parameter(this, result, _, _) }
+  VarAccess getName() { parameter(this, result, _, _) }
 
   string getStaticType() { parameter(this, _, result, _) }
 
@@ -11,9 +11,9 @@ class Parameter extends @parameter, Ast {
 
   AttributeBase getAttribute(int i) { parameter_attribute(this, i, result) }
 
-  AttributeBase getAAttribute() { result = this.getAttribute(_) }
+  AttributeBase getAnAttribute() { result = this.getAttribute(_) }
 
-  Expression getDefaultValue() { parameter_default_value(this, result) }
+  Expr getDefaultValue() { parameter_default_value(this, result) }
 
   override SourceLocation getLocation() { parameter_location(this, result) }
 }

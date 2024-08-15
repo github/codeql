@@ -1,6 +1,6 @@
 import powershell
 
-class CommentEntity extends @comment_entity {
+class Comment extends @comment_entity {
   SourceLocation getLocation() { comment_entity_location(this, result) }
 
   StringLiteral getCommentContents() { comment_entity(this, result) }

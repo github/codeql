@@ -1,3 +1,3 @@
 import powershell
 
-class Expression extends @expression, CommandElement { }
+class Expr extends @expression, CmdElement { }

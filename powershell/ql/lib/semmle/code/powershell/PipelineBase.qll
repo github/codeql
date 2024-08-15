@@ -1,3 +1,3 @@
 import powershell
 
-class PipelineBase extends @pipeline_base, Statement { }
+class PipelineBase extends @pipeline_base, Stmt { }

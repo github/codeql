@@ -1,3 +1,3 @@
 import powershell
 
-class CommandElement extends @command_element, Ast { }
+class CmdElement extends @command_element, Ast { }

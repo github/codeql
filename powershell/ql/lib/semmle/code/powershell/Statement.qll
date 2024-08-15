@@ -1,3 +1,3 @@
 import powershell
 
-class Statement extends @statement, Ast { }
+class Stmt extends @statement, Ast { }

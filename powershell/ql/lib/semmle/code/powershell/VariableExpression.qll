@@ -1,6 +1,6 @@
 import powershell
 
-class VariableExpression extends @variable_expression, Expression {
+class VarAccess extends @variable_expression, Expr {
   override string toString() { result = this.getUserPath() }
 
   override SourceLocation getLocation() { variable_expression_location(this, result) }

@@ -1,6 +1,6 @@
 import powershell
 
-class StringConstantExpression extends @string_constant_expression, BaseConstantExpression {
+class StringConstExpression extends @string_constant_expression, BaseConstExpr {
   StringLiteral getValue() { string_constant_expression(this, result) }
 
   /** Get the full string literal with all its parts concatenated */

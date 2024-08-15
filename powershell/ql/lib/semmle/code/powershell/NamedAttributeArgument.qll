@@ -7,5 +7,5 @@ class NamedAttributeArgument extends @named_attribute_argument {
 
   string getName() { named_attribute_argument(this, result, _) }
 
-  Expression getValue() { named_attribute_argument(this, _, result) }
+  Expr getValue() { named_attribute_argument(this, _, result) }
 }
