@@ -124,7 +124,7 @@ models
 | 24 | Summary: System.IO; StreamReader; false; StreamReader; (System.IO.Stream,System.Text.Encoding); ; Argument[0]; Argument[this]; taint; manual |
 | 25 | Summary: System.IO; TextReader; true; ReadLine; (); ; Argument[this]; ReturnValue; taint; manual |
 | 26 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
-| 27 | Source: System; Console; false; ReadLine; ; ; ReturnValue; local; manual |
+| 27 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
 | 28 | Summary: System; String; false; Trim; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
