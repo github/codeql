@@ -1808,34 +1808,37 @@ module Make<
 
         final private class SourceOrSinkElementFinal = SourceOrSinkElement;
 
-        bindingset[this]
-        abstract private class SourceSinkModelCallableBase extends SourceOrSinkElementFinal {
-          /**
-           * Holds if there exists a manual model that applies to this.
-           */
-          final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+        signature predicate sourceOrSinkElementSig(
+          Element e, string path, string kind, Provenance provenance, string model
+        );
 
-          /**
-           * Holds if this has provenance `p`.
-           */
-          abstract predicate hasProvenance(Provenance p);
+        private module MakeSourceOrSinkCallable<sourceOrSinkElementSig/5 sourceOrSinkElement> {
+          class SourceSinkCallable extends SourceOrSinkElementFinal {
+            private Provenance provenance;
+
+            SourceSinkCallable() { sourceOrSinkElement(this, _, _, provenance, _) }
+
+            /**
+             * Holds if there exists a manual model that applies to this.
+             */
+            predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+            /**
+             * Holds if this has provenance `p`.
+             */
+            predicate hasProvenance(Provenance p) { provenance = p }
+          }
         }
 
         /**
          * A callable that has a source model.
          */
-        abstract class SourceModelCallable extends SourceSinkModelCallableBase {
-          bindingset[this]
-          SourceModelCallable() { exists(this) }
-        }
+        class SourceModelCallable = MakeSourceOrSinkCallable<sourceElement/5>::SourceSinkCallable;
 
         /**
          * A callable that has a sink model.
          */
-        abstract class SinkModelCallable extends SourceSinkModelCallableBase {
-          bindingset[this]
-          SinkModelCallable() { exists(this) }
-        }
+        class SinkModelCallable = MakeSourceOrSinkCallable<sinkElement/5>::SourceSinkCallable;
 
         /** A source or sink relevant for testing. */
         signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
