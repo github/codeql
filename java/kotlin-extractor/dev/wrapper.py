@@ -122,10 +122,13 @@ def forward(tool, forwarded_opts):
     if platform.system() == "Windows":
         tool = tool.with_suffix(".bat")
     assert tool.exists(), f"{tool} not found"
-    args = [tool]
-    args.extend(forwarded_opts)
-    ret = subprocess.run(args).returncode
-    sys.exit(ret)
+    cmd = [tool] + forwarded_opts
+    if platform.system() == "Windows":
+        # kotlin bat script is pretty sensible to unquoted args on windows
+        ret = subprocess.run(" ".join(f'"{a}"' for a in cmd)).returncode
+        sys.exit(ret)
+    else:
+        os.execv(cmd[0], cmd)
 
 
 def clear():
