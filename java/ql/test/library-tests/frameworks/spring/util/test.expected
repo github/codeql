@@ -199,20 +199,12 @@ edges
 | Test.java:54:37:54:50 | element : Object | Test.java:54:94:54:100 | element : Object | provenance |  |
 | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | Test.java:54:117:54:117 | p : Properties [<map.key>] : Object | provenance |  |
 | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | Test.java:54:117:54:117 | p : Properties [<map.key>] : Object | provenance |  |
-| Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | Test.java:54:117:54:117 | p : Properties [<map.key>] : Object | provenance |  |
-| Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | Test.java:54:117:54:117 | p : Properties [<map.key>] : Object | provenance |  |
 | Test.java:54:94:54:100 | element : Object | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | provenance | MaD:5 |
-| Test.java:54:94:54:100 | element : Object | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | provenance | MaD:5 |
-| Test.java:54:94:54:100 | element : Object | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | provenance | MaD:13 |
 | Test.java:54:94:54:100 | element : Object | Test.java:54:88:54:88 | p [post update] : Properties [<map.key>] : Object | provenance | MaD:13 |
 | Test.java:55:39:55:52 | element : Object | Test.java:55:102:55:108 | element : Object | provenance |  |
 | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | Test.java:55:119:55:119 | p : Properties [<map.value>] : Object | provenance |  |
 | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | Test.java:55:119:55:119 | p : Properties [<map.value>] : Object | provenance |  |
-| Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | Test.java:55:119:55:119 | p : Properties [<map.value>] : Object | provenance |  |
-| Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | Test.java:55:119:55:119 | p : Properties [<map.value>] : Object | provenance |  |
 | Test.java:55:102:55:108 | element : Object | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | provenance | MaD:6 |
-| Test.java:55:102:55:108 | element : Object | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | provenance | MaD:6 |
-| Test.java:55:102:55:108 | element : Object | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | provenance | MaD:14 |
 | Test.java:55:102:55:108 | element : Object | Test.java:55:90:55:90 | p [post update] : Properties [<map.value>] : Object | provenance | MaD:14 |
 | Test.java:66:17:66:32 | (...)... : String | Test.java:67:33:67:34 | in : String | provenance |  |
 | Test.java:66:25:66:32 | source(...) : Object | Test.java:66:17:66:32 | (...)... : String | provenance |  |
