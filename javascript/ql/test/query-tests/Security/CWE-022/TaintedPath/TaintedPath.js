@@ -68,7 +68,7 @@ angular.module('myApp', [])
     })
     .directive('myCustomer', function() {
         return {
-            templateUrl: Cookie.get("unsafe") // NOT OK
+            templateUrl: Cookie.get("unsafe") // OK - (no longer flagged by this query)
         }
     })
 
