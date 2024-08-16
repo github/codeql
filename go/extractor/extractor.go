@@ -1746,6 +1746,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				}
 				extractComponentType(tw, lbl, i, tildeStr, term.Type())
 			}
+		case *types.Alias:
+			kind = dbscheme.TypeAlias.Index()
+			dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
@@ -1891,6 +1894,14 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				fmt.Fprintf(&b, "{%s}", compLbl)
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
+		case *types.Alias:
+			var b strings.Builder
+			b.WriteString(tp.Obj().Id())
+			// Ensure that the definition of the alias gets extracted,
+			// which may be an alias in itself.
+			extractType(tw, tp.Rhs())
+			// Construct the label for this type alias.
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typealias", b.String()))
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
