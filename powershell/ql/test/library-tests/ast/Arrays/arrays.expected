@@ -1,0 +1,23 @@
+arrayExpr
+| Arrays.ps1:11:11:11:25 | ArrayExpression at: Arrays.ps1:11:11:11:25 | Arrays.ps1:11:13:11:24 | StatementBlock at: Arrays.ps1:11:13:11:24 |
+| Arrays.ps1:14:41:14:44 | ArrayExpression at: Arrays.ps1:14:41:14:44 | Arrays.ps1:0:0:0:0 | StatementBlock at: Arrays.ps1:0:0:0:0 |
+arrayLiteral
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 0 | Arrays.ps1:1:11:1:12 | ConstantExpression at: Arrays.ps1:1:11:1:12 |
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 1 | Arrays.ps1:1:13:1:14 | ConstantExpression at: Arrays.ps1:1:13:1:14 |
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 2 | Arrays.ps1:1:15:1:18 | a |
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 3 | Arrays.ps1:1:19:1:24 | true |
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 4 | Arrays.ps1:1:25:1:31 | false |
+| Arrays.ps1:1:11:1:37 | ArrayLiteral at: Arrays.ps1:1:11:1:37 | 5 | Arrays.ps1:1:32:1:37 | null |
+| Arrays.ps1:5:34:5:37 | ArrayLiteral at: Arrays.ps1:5:34:5:37 | 0 | Arrays.ps1:5:34:5:35 | ConstantExpression at: Arrays.ps1:5:34:5:35 |
+| Arrays.ps1:5:34:5:37 | ArrayLiteral at: Arrays.ps1:5:34:5:37 | 1 | Arrays.ps1:5:36:5:37 | ConstantExpression at: Arrays.ps1:5:36:5:37 |
+| Arrays.ps1:6:9:6:12 | ArrayLiteral at: Arrays.ps1:6:9:6:12 | 0 | Arrays.ps1:6:9:6:10 | ConstantExpression at: Arrays.ps1:6:9:6:10 |
+| Arrays.ps1:6:9:6:12 | ArrayLiteral at: Arrays.ps1:6:9:6:12 | 1 | Arrays.ps1:6:11:6:12 | ConstantExpression at: Arrays.ps1:6:11:6:12 |
+| Arrays.ps1:7:9:7:12 | ArrayLiteral at: Arrays.ps1:7:9:7:12 | 0 | Arrays.ps1:7:9:7:10 | ConstantExpression at: Arrays.ps1:7:9:7:10 |
+| Arrays.ps1:7:9:7:12 | ArrayLiteral at: Arrays.ps1:7:9:7:12 | 1 | Arrays.ps1:7:11:7:12 | ConstantExpression at: Arrays.ps1:7:11:7:12 |
+| Arrays.ps1:8:9:8:12 | ArrayLiteral at: Arrays.ps1:8:9:8:12 | 0 | Arrays.ps1:8:9:8:10 | ConstantExpression at: Arrays.ps1:8:9:8:10 |
+| Arrays.ps1:8:9:8:12 | ArrayLiteral at: Arrays.ps1:8:9:8:12 | 1 | Arrays.ps1:8:11:8:12 | ConstantExpression at: Arrays.ps1:8:11:8:12 |
+| Arrays.ps1:9:9:9:12 | ArrayLiteral at: Arrays.ps1:9:9:9:12 | 0 | Arrays.ps1:9:9:9:10 | ConstantExpression at: Arrays.ps1:9:9:9:10 |
+| Arrays.ps1:9:9:9:12 | ArrayLiteral at: Arrays.ps1:9:9:9:12 | 1 | Arrays.ps1:9:11:9:12 | ConstantExpression at: Arrays.ps1:9:11:9:12 |
+| Arrays.ps1:11:13:11:24 | ArrayLiteral at: Arrays.ps1:11:13:11:24 | 0 | Arrays.ps1:11:13:11:16 | a |
+| Arrays.ps1:11:13:11:24 | ArrayLiteral at: Arrays.ps1:11:13:11:24 | 1 | Arrays.ps1:11:17:11:20 | b |
+| Arrays.ps1:11:13:11:24 | ArrayLiteral at: Arrays.ps1:11:13:11:24 | 2 | Arrays.ps1:11:21:11:24 | c |
