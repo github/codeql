@@ -2,7 +2,7 @@
  * Provides classes for working with Helmet
  */
 
-import javascript
+private import javascript
 
 /**
  * A write to a property of a route handler from the "helmet" module.
