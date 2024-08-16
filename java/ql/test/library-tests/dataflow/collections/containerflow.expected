@@ -397,7 +397,11 @@ edges
 | B.java:31:28:31:42 | obj : NavigableSet [<element>] : Object | B.java:31:54:31:56 | obj : NavigableSet [<element>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : Queue [<element>] : Object | B.java:31:54:31:56 | obj : Queue [<element>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : SequencedCollection [<element>] : Object | B.java:31:54:31:56 | obj : SequencedCollection [<element>] : Object | provenance |  |
+| B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.key>] : Object | B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.key>] : Object | provenance |  |
+| B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.value>] : Object | B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.value>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : SequencedSet [<element>] : Object | B.java:31:54:31:56 | obj : SequencedSet [<element>] : Object | provenance |  |
+| B.java:31:28:31:42 | obj : Set [<element>, <map.key>] : Object | B.java:31:54:31:56 | obj : Set [<element>, <map.key>] : Object | provenance |  |
+| B.java:31:28:31:42 | obj : Set [<element>, <map.value>] : Object | B.java:31:54:31:56 | obj : Set [<element>, <map.value>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : Set [<element>] : Object | B.java:31:54:31:56 | obj : Set [<element>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : SortedSet [<element>] : Object | B.java:31:54:31:56 | obj : SortedSet [<element>] : Object | provenance |  |
 | B.java:31:28:31:42 | obj : Stack [<element>] : Object | B.java:31:54:31:56 | obj : Stack [<element>] : Object | provenance |  |
@@ -412,12 +416,20 @@ edges
 | B.java:31:54:31:56 | obj : NavigableSet [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : Queue [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : SequencedCollection [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
+| B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.key>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:1 |
+| B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.value>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : SequencedSet [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
+| B.java:31:54:31:56 | obj : Set [<element>, <map.key>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:1 |
+| B.java:31:54:31:56 | obj : Set [<element>, <map.value>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : Set [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : SortedSet [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : Stack [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : TransferQueue [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | B.java:31:54:31:56 | obj : Vector [<element>] : Object | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | provenance | MaD:143 |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | provenance | MaD:143 |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | provenance | MaD:143 |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | provenance | MaD:143 |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | B.java:31:54:31:74 | next(...) : Object | provenance | MaD:143 |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | B.java:31:54:31:74 | next(...) : Object | provenance | MaD:143 |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | B.java:31:54:31:74 | next(...) : Object | provenance | MaD:143 |
@@ -565,6 +577,7 @@ edges
 | B.java:129:51:129:57 | (...)... : Map [<map.value>] : Object | B.java:129:50:129:69 | entrySet(...) : Set [<element>, <map.value>] : Object | provenance | MaD:180 |
 | B.java:129:90:129:105 | readElement(...) : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:129:90:129:105 | readElement(...) : Entry [<map.value>] : Object | B.java:129:77:129:106 | readMapValue(...) | provenance | MaD:224 |
+| B.java:129:102:129:104 | out : Set [<element>, <map.value>] : Object | B.java:31:28:31:42 | obj : Set [<element>, <map.value>] : Object | provenance |  |
 | B.java:129:102:129:104 | out : Set [<element>, <map.value>] : Object | B.java:129:90:129:105 | readElement(...) : Entry [<map.value>] : Object | provenance | MaD:1 |
 | B.java:134:19:134:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:134:49:134:55 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
 | B.java:134:31:134:38 | source(...) : Object | B.java:38:37:38:41 | obj : Object | provenance |  |
@@ -573,6 +586,7 @@ edges
 | B.java:134:49:134:55 | (...)... : TreeMap [<map.key>] : Object | B.java:134:48:134:67 | entrySet(...) : Set [<element>, <map.key>] : Object | provenance | MaD:179 |
 | B.java:134:86:134:101 | readElement(...) : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:134:86:134:101 | readElement(...) : Entry [<map.key>] : Object | B.java:134:75:134:102 | readMapKey(...) | provenance | MaD:223 |
+| B.java:134:98:134:100 | out : Set [<element>, <map.key>] : Object | B.java:31:28:31:42 | obj : Set [<element>, <map.key>] : Object | provenance |  |
 | B.java:134:98:134:100 | out : Set [<element>, <map.key>] : Object | B.java:134:86:134:101 | readElement(...) : Entry [<map.key>] : Object | provenance | MaD:1 |
 | B.java:139:19:139:41 | storeMapValue(...) : Map [<map.value>] : Object | B.java:139:51:139:57 | (...)... : Map [<map.value>] : Object | provenance |  |
 | B.java:139:33:139:40 | source(...) : Object | B.java:41:39:41:43 | obj : Object | provenance |  |
@@ -2651,6 +2665,7 @@ edges
 | B.java:1960:68:1960:89 | sequencedEntrySet(...) : SequencedSet [<element>, <map.key>] : Object | B.java:1960:120:1960:122 | out : SequencedSet [<element>, <map.key>] : Object | provenance |  |
 | B.java:1960:108:1960:123 | readElement(...) : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:1960:108:1960:123 | readElement(...) : Entry [<map.key>] : Object | B.java:1960:97:1960:124 | readMapKey(...) | provenance | MaD:223 |
+| B.java:1960:120:1960:122 | out : SequencedSet [<element>, <map.key>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.key>] : Object | provenance |  |
 | B.java:1960:120:1960:122 | out : SequencedSet [<element>, <map.key>] : Object | B.java:1960:108:1960:123 | readElement(...) : Entry [<map.key>] : Object | provenance | MaD:1 |
 | B.java:1965:25:1965:61 | (...)... : SequencedMap [<map.value>] : Object | B.java:1965:70:1965:71 | in : SequencedMap [<map.value>] : Object | provenance |  |
 | B.java:1965:39:1965:61 | storeMapValue(...) : Map [<map.value>] : Object | B.java:1965:25:1965:61 | (...)... : SequencedMap [<map.value>] : Object | provenance |  |
@@ -2710,6 +2725,7 @@ edges
 | B.java:2000:70:2000:91 | sequencedEntrySet(...) : SequencedSet [<element>, <map.value>] : Object | B.java:2000:124:2000:126 | out : SequencedSet [<element>, <map.value>] : Object | provenance |  |
 | B.java:2000:112:2000:127 | readElement(...) : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:2000:112:2000:127 | readElement(...) : Entry [<map.value>] : Object | B.java:2000:99:2000:128 | readMapValue(...) | provenance | MaD:224 |
+| B.java:2000:124:2000:126 | out : SequencedSet [<element>, <map.value>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.value>] : Object | provenance |  |
 | B.java:2000:124:2000:126 | out : SequencedSet [<element>, <map.value>] : Object | B.java:2000:112:2000:127 | readElement(...) : Entry [<map.value>] : Object | provenance | MaD:1 |
 | B.java:2005:25:2005:59 | (...)... : TreeMap [<map.key>] : Object | B.java:2005:68:2005:69 | in : TreeMap [<map.key>] : Object | provenance |  |
 | B.java:2005:39:2005:59 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:2005:25:2005:59 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
@@ -3127,7 +3143,11 @@ nodes
 | B.java:31:28:31:42 | obj : NavigableSet [<element>] : Object | semmle.label | obj : NavigableSet [<element>] : Object |
 | B.java:31:28:31:42 | obj : Queue [<element>] : Object | semmle.label | obj : Queue [<element>] : Object |
 | B.java:31:28:31:42 | obj : SequencedCollection [<element>] : Object | semmle.label | obj : SequencedCollection [<element>] : Object |
+| B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.key>] : Object | semmle.label | obj : SequencedSet [<element>, <map.key>] : Object |
+| B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.value>] : Object | semmle.label | obj : SequencedSet [<element>, <map.value>] : Object |
 | B.java:31:28:31:42 | obj : SequencedSet [<element>] : Object | semmle.label | obj : SequencedSet [<element>] : Object |
+| B.java:31:28:31:42 | obj : Set [<element>, <map.key>] : Object | semmle.label | obj : Set [<element>, <map.key>] : Object |
+| B.java:31:28:31:42 | obj : Set [<element>, <map.value>] : Object | semmle.label | obj : Set [<element>, <map.value>] : Object |
 | B.java:31:28:31:42 | obj : Set [<element>] : Object | semmle.label | obj : Set [<element>] : Object |
 | B.java:31:28:31:42 | obj : SortedSet [<element>] : Object | semmle.label | obj : SortedSet [<element>] : Object |
 | B.java:31:28:31:42 | obj : Stack [<element>] : Object | semmle.label | obj : Stack [<element>] : Object |
@@ -3142,12 +3162,20 @@ nodes
 | B.java:31:54:31:56 | obj : NavigableSet [<element>] : Object | semmle.label | obj : NavigableSet [<element>] : Object |
 | B.java:31:54:31:56 | obj : Queue [<element>] : Object | semmle.label | obj : Queue [<element>] : Object |
 | B.java:31:54:31:56 | obj : SequencedCollection [<element>] : Object | semmle.label | obj : SequencedCollection [<element>] : Object |
+| B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.key>] : Object | semmle.label | obj : SequencedSet [<element>, <map.key>] : Object |
+| B.java:31:54:31:56 | obj : SequencedSet [<element>, <map.value>] : Object | semmle.label | obj : SequencedSet [<element>, <map.value>] : Object |
 | B.java:31:54:31:56 | obj : SequencedSet [<element>] : Object | semmle.label | obj : SequencedSet [<element>] : Object |
+| B.java:31:54:31:56 | obj : Set [<element>, <map.key>] : Object | semmle.label | obj : Set [<element>, <map.key>] : Object |
+| B.java:31:54:31:56 | obj : Set [<element>, <map.value>] : Object | semmle.label | obj : Set [<element>, <map.value>] : Object |
 | B.java:31:54:31:56 | obj : Set [<element>] : Object | semmle.label | obj : Set [<element>] : Object |
 | B.java:31:54:31:56 | obj : SortedSet [<element>] : Object | semmle.label | obj : SortedSet [<element>] : Object |
 | B.java:31:54:31:56 | obj : Stack [<element>] : Object | semmle.label | obj : Stack [<element>] : Object |
 | B.java:31:54:31:56 | obj : TransferQueue [<element>] : Object | semmle.label | obj : TransferQueue [<element>] : Object |
 | B.java:31:54:31:56 | obj : Vector [<element>] : Object | semmle.label | obj : Vector [<element>] : Object |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
+| B.java:31:54:31:67 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | B.java:31:54:31:67 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
@@ -3178,6 +3206,10 @@ nodes
 | B.java:31:54:31:74 | next(...) : Object | semmle.label | next(...) : Object |
 | B.java:31:54:31:74 | next(...) : Object | semmle.label | next(...) : Object |
 | B.java:31:54:31:74 | next(...) : Object | semmle.label | next(...) : Object |
+| B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
+| B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
+| B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
+| B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
 | B.java:32:28:32:42 | obj : Iterator [<element>] : Object | semmle.label | obj : Iterator [<element>] : Object |
 | B.java:32:28:32:42 | obj : ListIterator [<element>] : Object | semmle.label | obj : ListIterator [<element>] : Object |
 | B.java:32:54:32:56 | obj : Iterator [<element>] : Object | semmle.label | obj : Iterator [<element>] : Object |
@@ -5723,8 +5755,10 @@ subpaths
 | B.java:124:66:124:68 | out : Map [<map.value>] : Object | B.java:48:31:48:42 | obj : Map [<map.value>] : Object | B.java:48:54:48:66 | get(...) : Object | B.java:124:53:124:69 | readMapValue(...) |
 | B.java:129:33:129:40 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:129:19:129:41 | storeMapValue(...) : Map [<map.value>] : Object |
 | B.java:129:90:129:105 | readElement(...) : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | B.java:47:60:47:73 | getValue(...) : Object | B.java:129:77:129:106 | readMapValue(...) |
+| B.java:129:102:129:104 | out : Set [<element>, <map.value>] : Object | B.java:31:28:31:42 | obj : Set [<element>, <map.value>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | B.java:129:90:129:105 | readElement(...) : Entry [<map.value>] : Object |
 | B.java:134:31:134:38 | source(...) : Object | B.java:38:37:38:41 | obj : Object | B.java:38:103:38:103 | m : TreeMap [<map.key>] : Object | B.java:134:19:134:39 | storeMapKey(...) : TreeMap [<map.key>] : Object |
 | B.java:134:86:134:101 | readElement(...) : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | B.java:43:58:43:69 | getKey(...) : Object | B.java:134:75:134:102 | readMapKey(...) |
+| B.java:134:98:134:100 | out : Set [<element>, <map.key>] : Object | B.java:31:28:31:42 | obj : Set [<element>, <map.key>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | B.java:134:86:134:101 | readElement(...) : Entry [<map.key>] : Object |
 | B.java:139:33:139:40 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:139:19:139:41 | storeMapValue(...) : Map [<map.value>] : Object |
 | B.java:144:33:144:40 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:144:19:144:41 | storeMapValue(...) : Map [<map.value>] : Object |
 | B.java:154:33:154:40 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:154:19:154:41 | storeMapValue(...) : Map [<map.value>] : Object |
@@ -6197,6 +6231,7 @@ subpaths
 | B.java:1955:99:1955:101 | out : SequencedMap [<map.key>] : Object | B.java:44:29:44:40 | obj : SequencedMap [<map.key>] : Object | B.java:44:52:44:81 | next(...) : Object | B.java:1955:88:1955:102 | readMapKey(...) |
 | B.java:1960:51:1960:58 | source(...) : Object | B.java:38:37:38:41 | obj : Object | B.java:38:103:38:103 | m : TreeMap [<map.key>] : Object | B.java:1960:39:1960:59 | storeMapKey(...) : TreeMap [<map.key>] : Object |
 | B.java:1960:108:1960:123 | readElement(...) : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | B.java:43:58:43:69 | getKey(...) : Object | B.java:1960:97:1960:124 | readMapKey(...) |
+| B.java:1960:120:1960:122 | out : SequencedSet [<element>, <map.key>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.key>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.key>] : Object | B.java:1960:108:1960:123 | readElement(...) : Entry [<map.key>] : Object |
 | B.java:1965:53:1965:60 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:1965:39:1965:61 | storeMapValue(...) : Map [<map.value>] : Object |
 | B.java:1965:105:1965:107 | out : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | B.java:47:60:47:73 | getValue(...) : Object | B.java:1965:92:1965:108 | readMapValue(...) |
 | B.java:1970:53:1970:60 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:1970:39:1970:61 | storeMapValue(...) : Map [<map.value>] : Object |
@@ -6211,6 +6246,7 @@ subpaths
 | B.java:1995:103:1995:105 | out : SequencedMap [<map.value>] : Object | B.java:48:31:48:42 | obj : SequencedMap [<map.value>] : Object | B.java:48:54:48:66 | get(...) : Object | B.java:1995:90:1995:106 | readMapValue(...) |
 | B.java:2000:53:2000:60 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:2000:39:2000:61 | storeMapValue(...) : Map [<map.value>] : Object |
 | B.java:2000:112:2000:127 | readElement(...) : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | B.java:47:60:47:73 | getValue(...) : Object | B.java:2000:99:2000:128 | readMapValue(...) |
+| B.java:2000:124:2000:126 | out : SequencedSet [<element>, <map.value>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>, <map.value>] : Object | B.java:31:54:31:74 | next(...) : Object [<map.value>] : Object | B.java:2000:112:2000:127 | readElement(...) : Entry [<map.value>] : Object |
 | B.java:2005:51:2005:58 | source(...) : Object | B.java:38:37:38:41 | obj : Object | B.java:38:103:38:103 | m : TreeMap [<map.key>] : Object | B.java:2005:39:2005:59 | storeMapKey(...) : TreeMap [<map.key>] : Object |
 | B.java:2005:107:2005:109 | out : SequencedSet [<element>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>] : Object | B.java:31:54:31:74 | next(...) : Object | B.java:2005:95:2005:110 | readElement(...) |
 | B.java:2010:53:2010:60 | source(...) : Object | B.java:41:39:41:43 | obj : Object | B.java:41:139:41:139 | m : Map [<map.value>] : Object | B.java:2010:39:2010:61 | storeMapValue(...) : Map [<map.value>] : Object |

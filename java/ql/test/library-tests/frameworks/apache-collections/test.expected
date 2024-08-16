@@ -846,6 +846,7 @@ edges
 | Test.java:228:18:228:29 | map : ListOrderedMap [<map.key>] : String | Test.java:228:41:228:43 | map : ListOrderedMap [<map.key>] : String | provenance |  |
 | Test.java:228:18:228:29 | map : Map [<map.key>] : Object | Test.java:228:41:228:43 | map : Map [<map.key>] : Object | provenance |  |
 | Test.java:228:18:228:29 | map : Map [<map.key>] : String | Test.java:228:41:228:43 | map : Map [<map.key>] : String | provenance |  |
+| Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:43 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:228:18:228:29 | map : MultiMap [<map.key>] : Object | Test.java:228:41:228:43 | map : MultiMap [<map.key>] : Object | provenance |  |
 | Test.java:228:18:228:29 | map : MultiValueMap [<map.key>] : Object | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : Object | provenance |  |
 | Test.java:228:18:228:29 | map : MultiValueMap [<map.key>] : String | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : String | provenance |  |
@@ -898,6 +899,7 @@ edges
 | Test.java:228:41:228:43 | map : ListOrderedMap [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : Map [<map.key>] : Object | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : Map [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
+| Test.java:228:41:228:43 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>, <element>] : String | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : MultiMap [<map.key>] : Object | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : Object | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
@@ -926,6 +928,7 @@ edges
 | Test.java:228:41:228:43 | map : TransformedSortedMap [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : TreeBidiMap [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
 | Test.java:228:41:228:43 | map : Trie [<map.key>] : String | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | provenance | MaD:10 |
+| Test.java:228:41:228:52 | keySet(...) : Set [<element>, <element>] : String | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>, <element>] : String | provenance | MaD:1 |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
@@ -978,6 +981,7 @@ edges
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| Test.java:228:41:228:63 | iterator(...) : Iterator [<element>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | provenance | MaD:4 |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | Test.java:228:41:228:70 | next(...) : Object | provenance | MaD:4 |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | Test.java:228:41:228:70 | next(...) : Object | provenance | MaD:4 |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | Test.java:228:41:228:70 | next(...) : Object | provenance | MaD:4 |
@@ -1042,6 +1046,8 @@ edges
 | Test.java:230:19:230:32 | it : CircularFifoQueue [<element>] : String | Test.java:230:44:230:45 | it : CircularFifoQueue [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : Collection | Test.java:230:44:230:45 | it : Collection | provenance |  |
 | Test.java:230:19:230:32 | it : Collection [<element>, <element>] : String | Test.java:230:44:230:45 | it : Collection [<element>, <element>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : Collection [<element>, <map.key>] : String | Test.java:230:44:230:45 | it : Collection [<element>, <map.key>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : Collection [<element>, <map.value>] : String | Test.java:230:44:230:45 | it : Collection [<element>, <map.value>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : Collection [<element>] : Object | Test.java:230:44:230:45 | it : Collection [<element>] : Object | provenance |  |
 | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:45 | it : Collection [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : CollectionBag [<element>] : String | Test.java:230:44:230:45 | it : CollectionBag [<element>] : String | provenance |  |
@@ -1062,6 +1068,7 @@ edges
 | Test.java:230:19:230:32 | it : Iterable [<element>] : String | Test.java:230:44:230:45 | it : Iterable [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : IteratorIterable [<element>] : String | Test.java:230:44:230:45 | it : IteratorIterable [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : LazyList [<element>] : String | Test.java:230:44:230:45 | it : LazyList [<element>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | Test.java:230:44:230:45 | it : List [<element>, <element>] : Object | provenance |  |
 | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:45 | it : List [<element>, <element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : List [<element>] : Object | Test.java:230:44:230:45 | it : List [<element>] : Object | provenance |  |
 | Test.java:230:19:230:32 | it : List [<element>] : String | Test.java:230:44:230:45 | it : List [<element>] : String | provenance |  |
@@ -1092,6 +1099,9 @@ edges
 | Test.java:230:19:230:32 | it : PredicatedSortedBag [<element>] : String | Test.java:230:44:230:45 | it : PredicatedSortedBag [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : PredicatedSortedSet [<element>] : String | Test.java:230:44:230:45 | it : PredicatedSortedSet [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : Queue [<element>] : String | Test.java:230:44:230:45 | it : Queue [<element>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | Test.java:230:44:230:45 | it : Set [<element>, <element>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:45 | it : Set [<element>, <map.key>] : String | provenance |  |
+| Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:45 | it : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : Set [<element>] : Object | Test.java:230:44:230:45 | it : Set [<element>] : Object | provenance |  |
 | Test.java:230:19:230:32 | it : Set [<element>] : String | Test.java:230:44:230:45 | it : Set [<element>] : String | provenance |  |
 | Test.java:230:19:230:32 | it : SetUniqueList [<element>] : String | Test.java:230:44:230:45 | it : SetUniqueList [<element>] : String | provenance |  |
@@ -1121,6 +1131,8 @@ edges
 | Test.java:230:44:230:45 | it : CircularFifoQueue [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Collection | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Collection [<element>, <element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : Collection [<element>, <map.key>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : Collection [<element>, <map.value>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Collection [<element>] : Object | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Collection [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : CollectionBag [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
@@ -1141,6 +1153,7 @@ edges
 | Test.java:230:44:230:45 | it : Iterable [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : IteratorIterable [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : LazyList [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : List [<element>, <element>] : Object | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : Object | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : List [<element>, <element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : List [<element>] : Object | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : List [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
@@ -1171,6 +1184,9 @@ edges
 | Test.java:230:44:230:45 | it : PredicatedSortedBag [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : PredicatedSortedSet [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Queue [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : Set [<element>, <element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:45 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Set [<element>] : Object | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : Set [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : SetUniqueList [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
@@ -1192,8 +1208,14 @@ edges
 | Test.java:230:44:230:45 | it : TreeBag [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : TreeList [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
 | Test.java:230:44:230:45 | it : UnmodifiableList [<element>] : String | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : Object | Test.java:230:44:230:63 | next(...) : Object [<element>] : Object | provenance | MaD:4 |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | provenance | MaD:4 |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | provenance | MaD:4 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | provenance | MaD:4 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | provenance | MaD:4 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | provenance | MaD:4 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | provenance | MaD:4 |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | provenance | MaD:4 |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | provenance | MaD:4 |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | provenance | MaD:4 |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | provenance | MaD:4 |
@@ -1280,6 +1302,9 @@ edges
 | Test.java:231:19:231:32 | it : EnumerationIterator [<element>] : String | Test.java:231:44:231:45 | it : EnumerationIterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : FilterIterator [<element>] : String | Test.java:231:44:231:45 | it : FilterIterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : FilterListIterator [<element>] : String | Test.java:231:44:231:45 | it : FilterListIterator [<element>] : String | provenance |  |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.key>] : String | Test.java:231:44:231:45 | it : Iterator [<element>, <map.key>] : String | provenance |  |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : Object | Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : Object | provenance |  |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : String | Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : Iterator [<element>] : Object | Test.java:231:44:231:45 | it : Iterator [<element>] : Object | provenance |  |
 | Test.java:231:19:231:32 | it : Iterator [<element>] : String | Test.java:231:44:231:45 | it : Iterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : IteratorChain [<element>] : String | Test.java:231:44:231:45 | it : IteratorChain [<element>] : String | provenance |  |
@@ -1298,6 +1323,7 @@ edges
 | Test.java:231:19:231:32 | it : ObjectArrayListIterator [<element>] : String | Test.java:231:44:231:45 | it : ObjectArrayListIterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : OrderedMapIterator [<element>] : String | Test.java:231:44:231:45 | it : OrderedMapIterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : PeekingIterator [<element>] : String | Test.java:231:44:231:45 | it : PeekingIterator [<element>] : String | provenance |  |
+| Test.java:231:19:231:32 | it : PermutationIterator [<element>, <element>] : String | Test.java:231:44:231:45 | it : PermutationIterator [<element>, <element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : Object | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : Object | provenance |  |
 | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : String | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : String | provenance |  |
 | Test.java:231:19:231:32 | it : ResettableIterator [<element>] : Object | Test.java:231:44:231:45 | it : ResettableIterator [<element>] : Object | provenance |  |
@@ -1319,6 +1345,9 @@ edges
 | Test.java:231:44:231:45 | it : EnumerationIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : FilterIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : FilterListIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.key>] : String | Test.java:231:44:231:52 | next(...) : Object [<map.key>] : String | provenance | MaD:4 |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : Object | Test.java:231:44:231:52 | next(...) : Object [<map.value>] : Object | provenance | MaD:4 |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : String | Test.java:231:44:231:52 | next(...) : Object [<map.value>] : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : Iterator [<element>] : Object | Test.java:231:44:231:52 | next(...) : Object | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : Iterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : IteratorChain [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
@@ -1337,6 +1366,7 @@ edges
 | Test.java:231:44:231:45 | it : ObjectArrayListIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : OrderedMapIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : PeekingIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
+| Test.java:231:44:231:45 | it : PermutationIterator [<element>, <element>] : String | Test.java:231:44:231:52 | next(...) : Object [<element>] : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : Object | Test.java:231:44:231:52 | next(...) : Object | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | provenance | MaD:4 |
 | Test.java:231:44:231:45 | it : ResettableIterator [<element>] : Object | Test.java:231:44:231:52 | next(...) : Object | provenance | MaD:4 |
@@ -1556,8 +1586,10 @@ edges
 | Test.java:243:62:243:70 | container : MyAbstractMapEntry [<map.value>] : Object | Test.java:243:62:243:81 | getValue(...) : Object | provenance | MaD:569 |
 | Test.java:243:62:243:70 | container : UnmodifiableMapEntry [<map.value>] : Object | Test.java:243:62:243:81 | getValue(...) : Object | provenance | MaD:569 |
 | Test.java:243:62:243:70 | container : UnmodifiableMapEntry [<map.value>] : String | Test.java:243:62:243:81 | getValue(...) : String | provenance | MaD:569 |
+| Test.java:244:29:244:52 | container : Entry [<map.value>] : Object | Test.java:244:64:244:72 | container : Entry [<map.value>] : Object | provenance |  |
 | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:72 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:244:29:244:52 | container : TiedMapEntry [<map.value>] : String | Test.java:244:64:244:72 | container : TiedMapEntry [<map.value>] : String | provenance |  |
+| Test.java:244:64:244:72 | container : Entry [<map.value>] : Object | Test.java:244:64:244:83 | getValue(...) : Object | provenance | MaD:21 |
 | Test.java:244:64:244:72 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | provenance | MaD:21 |
 | Test.java:244:64:244:72 | container : TiedMapEntry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | provenance | MaD:21 |
 | Test.java:245:20:245:59 | container : MyAbstractMapEntryDecorator [<map.value>] : String | Test.java:245:71:245:79 | container : MyAbstractMapEntryDecorator [<map.value>] : String | provenance |  |
@@ -1652,6 +1684,8 @@ edges
 | Test.java:262:52:262:60 | element : String | Test.java:262:106:262:112 | element : String | provenance |  |
 | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String | Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | provenance | MaD:674 |
 | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String | Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | provenance | MaD:674 |
+| Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | provenance |  |
+| Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | provenance |  |
 | Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:262:72:262:125 | getElement(...) : Entry [<element>] : String | provenance | MaD:1 |
 | Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:262:72:262:125 | getElement(...) : Entry [<element>] : String | provenance | MaD:1 |
 | Test.java:262:106:262:112 | element : String | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String | provenance | MaD:2 |
@@ -3552,6 +3586,7 @@ edges
 | Test.java:1917:10:1917:22 | entrySet(...) : Set [<element>, <map.key>] : String | Test.java:1918:39:1918:41 | out : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1918:28:1918:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:1918:28:1918:42 | getElement(...) : Entry [<map.key>] : String | Test.java:1918:9:1918:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:1918:39:1918:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1918:39:1918:41 | out : Set [<element>, <map.key>] : String | Test.java:1918:28:1918:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:1 |
 | Test.java:1923:13:1923:55 | newPatriciaTrieWithMapKey(...) : PatriciaTrie [<map.key>] : String | Test.java:1924:10:1924:11 | in : PatriciaTrie [<map.key>] : String | provenance |  |
 | Test.java:1923:39:1923:54 | (...)... : String | Test.java:288:49:288:58 | key : String | provenance |  |
@@ -3562,6 +3597,7 @@ edges
 | Test.java:1924:10:1924:22 | entrySet(...) : Set [<element>, <map.key>] : String | Test.java:1925:39:1925:41 | out : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1925:28:1925:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:1925:28:1925:42 | getElement(...) : Entry [<map.key>] : String | Test.java:1925:9:1925:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:1925:39:1925:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1925:39:1925:41 | out : Set [<element>, <map.key>] : String | Test.java:1925:28:1925:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:1 |
 | Test.java:1930:30:1930:63 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String | Test.java:1931:10:1931:11 | in : MultiValueMap [<map.key>] : String | provenance |  |
 | Test.java:1930:47:1930:62 | (...)... : String | Test.java:279:47:279:51 | key : String | provenance |  |
@@ -3574,6 +3610,7 @@ edges
 | Test.java:1931:10:1931:22 | entrySet(...) : Set [<element>, <map.key>] : String | Test.java:1932:39:1932:41 | out : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1932:28:1932:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:1932:28:1932:42 | getElement(...) : Entry [<map.key>] : String | Test.java:1932:9:1932:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:1932:39:1932:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:1932:39:1932:41 | out : Set [<element>, <map.key>] : String | Test.java:1932:28:1932:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:1 |
 | Test.java:1937:23:1937:58 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String | Test.java:1938:10:1938:11 | in : MultiValueMap [<map.value>] : String | provenance |  |
 | Test.java:1937:42:1937:57 | (...)... : String | Test.java:298:49:298:55 | value : String | provenance |  |
@@ -3585,6 +3622,7 @@ edges
 | Test.java:1938:10:1938:22 | entrySet(...) : Set [<element>, <map.value>] : String | Test.java:1939:41:1939:43 | out : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1939:30:1939:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:1939:30:1939:44 | getElement(...) : Entry [<map.value>] : String | Test.java:1939:9:1939:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:1939:41:1939:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1939:41:1939:43 | out : Set [<element>, <map.value>] : String | Test.java:1939:30:1939:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:1 |
 | Test.java:1944:13:1944:57 | newPatriciaTrieWithMapValue(...) : PatriciaTrie [<map.value>] : String | Test.java:1945:10:1945:11 | in : PatriciaTrie [<map.value>] : String | provenance |  |
 | Test.java:1944:41:1944:56 | (...)... : String | Test.java:307:50:307:56 | value : String | provenance |  |
@@ -3595,6 +3633,7 @@ edges
 | Test.java:1945:10:1945:22 | entrySet(...) : Set [<element>, <map.value>] : String | Test.java:1946:41:1946:43 | out : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1946:30:1946:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:1946:30:1946:44 | getElement(...) : Entry [<map.value>] : String | Test.java:1946:9:1946:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:1946:41:1946:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1946:41:1946:43 | out : Set [<element>, <map.value>] : String | Test.java:1946:30:1946:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:1 |
 | Test.java:1951:30:1951:65 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String | Test.java:1952:10:1952:11 | in : MultiValueMap [<map.value>] : String | provenance |  |
 | Test.java:1951:49:1951:64 | (...)... : String | Test.java:298:49:298:55 | value : String | provenance |  |
@@ -3606,6 +3645,7 @@ edges
 | Test.java:1952:10:1952:22 | entrySet(...) : Set [<element>, <map.value>] : String | Test.java:1953:41:1953:43 | out : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1953:30:1953:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:1953:30:1953:44 | getElement(...) : Entry [<map.value>] : String | Test.java:1953:9:1953:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:1953:41:1953:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:1953:41:1953:43 | out : Set [<element>, <map.value>] : String | Test.java:1953:30:1953:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:1 |
 | Test.java:1958:18:1958:53 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String | Test.java:1959:10:1959:11 | in : MultiValueMap [<map.value>] : String | provenance |  |
 | Test.java:1958:37:1958:52 | (...)... : String | Test.java:298:49:298:55 | value : String | provenance |  |
@@ -4894,6 +4934,7 @@ edges
 | Test.java:3065:10:3065:21 | entries(...) : Collection [<element>, <map.key>] : String | Test.java:3066:39:3066:41 | out : Collection [<element>, <map.key>] : String | provenance |  |
 | Test.java:3066:28:3066:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:3066:28:3066:42 | getElement(...) : Entry [<map.key>] : String | Test.java:3066:9:3066:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:3066:39:3066:41 | out : Collection [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Collection [<element>, <map.key>] : String | provenance |  |
 | Test.java:3066:39:3066:41 | out : Collection [<element>, <map.key>] : String | Test.java:3066:28:3066:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:1 |
 | Test.java:3071:24:3071:61 | newALVHMWithMapValue(...) : ArrayListValuedHashMap [<map.value>, <element>] : String | Test.java:3072:10:3072:11 | in : ArrayListValuedHashMap [<map.value>, <element>] : String | provenance |  |
 | Test.java:3071:45:3071:60 | (...)... : String | Test.java:290:60:290:66 | value : String | provenance |  |
@@ -4903,6 +4944,7 @@ edges
 | Test.java:3072:10:3072:21 | entries(...) : Collection [<element>, <map.value>] : String | Test.java:3073:41:3073:43 | out : Collection [<element>, <map.value>] : String | provenance |  |
 | Test.java:3073:30:3073:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:3073:30:3073:44 | getElement(...) : Entry [<map.value>] : String | Test.java:3073:9:3073:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:3073:41:3073:43 | out : Collection [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Collection [<element>, <map.value>] : String | provenance |  |
 | Test.java:3073:41:3073:43 | out : Collection [<element>, <map.value>] : String | Test.java:3073:30:3073:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:1 |
 | Test.java:3078:24:3078:61 | newALVHMWithMapValue(...) : ArrayListValuedHashMap [<map.value>, <element>] : String | Test.java:3079:38:3079:39 | in : ArrayListValuedHashMap [<map.value>, <element>] : String | provenance |  |
 | Test.java:3078:45:3078:60 | (...)... : String | Test.java:290:60:290:66 | value : String | provenance |  |
@@ -4999,6 +5041,7 @@ edges
 | Test.java:3156:10:3156:22 | entrySet(...) : Set [<element>, <element>] : String | Test.java:3157:31:3157:33 | out : Set [<element>, <element>] : String | provenance |  |
 | Test.java:3157:20:3157:34 | getElement(...) : Entry [<element>] : String | Test.java:235:19:235:45 | container : Entry [<element>] : String | provenance |  |
 | Test.java:3157:20:3157:34 | getElement(...) : Entry [<element>] : String | Test.java:3157:9:3157:35 | getElement(...) | provenance | MaD:676 |
+| Test.java:3157:31:3157:33 | out : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | provenance |  |
 | Test.java:3157:31:3157:33 | out : Set [<element>, <element>] : String | Test.java:3157:20:3157:34 | getElement(...) : Entry [<element>] : String | provenance | MaD:1 |
 | Test.java:3162:18:3162:57 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String | Test.java:3163:10:3163:11 | in : HashMultiSet [<element>] : String | provenance |  |
 | Test.java:3162:41:3162:56 | (...)... : String | Test.java:263:41:263:49 | element : String | provenance |  |
@@ -6180,6 +6223,7 @@ edges
 | Test.java:4180:28:4180:29 | in : Object | Test.java:4180:23:4180:25 | out [post update] : List [<element>, <element>] : Object | provenance | MaD:88 |
 | Test.java:4181:20:4181:34 | getElement(...) : Collection [<element>] : Object | Test.java:230:19:230:32 | it : Collection [<element>] : Object | provenance |  |
 | Test.java:4181:20:4181:34 | getElement(...) : Collection [<element>] : Object | Test.java:4181:9:4181:35 | getElement(...) | provenance | MaD:1 |
+| Test.java:4181:31:4181:33 | out : List [<element>, <element>] : Object | Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | provenance |  |
 | Test.java:4181:31:4181:33 | out : List [<element>, <element>] : Object | Test.java:4181:20:4181:34 | getElement(...) : Collection [<element>] : Object | provenance | MaD:1 |
 | Test.java:4186:20:4186:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String | Test.java:4188:31:4188:32 | in : TreeBag [<element>] : String | provenance |  |
 | Test.java:4186:42:4186:57 | (...)... : String | Test.java:267:39:267:47 | element : String | provenance |  |
@@ -7115,6 +7159,7 @@ edges
 | Test.java:4936:34:4936:35 | in : List [<element>] : String | Test.java:4936:10:4936:36 | new PermutationIterator<>(...) : PermutationIterator [<element>, <element>] : String | provenance | MaD:168 |
 | Test.java:4937:20:4937:34 | getElement(...) : List [<element>] : String | Test.java:230:19:230:32 | it : List [<element>] : String | provenance |  |
 | Test.java:4937:20:4937:34 | getElement(...) : List [<element>] : String | Test.java:4937:9:4937:35 | getElement(...) | provenance | MaD:1 |
+| Test.java:4937:31:4937:33 | out : PermutationIterator [<element>, <element>] : String | Test.java:231:19:231:32 | it : PermutationIterator [<element>, <element>] : String | provenance |  |
 | Test.java:4937:31:4937:33 | out : PermutationIterator [<element>, <element>] : String | Test.java:4937:20:4937:34 | getElement(...) : List [<element>] : String | provenance | MaD:4 |
 | Test.java:4942:18:4942:61 | newListIteratorWithElement(...) : ListIterator [<element>] : String | Test.java:4943:31:4943:32 | in : ListIterator [<element>] : String | provenance |  |
 | Test.java:4942:45:4942:60 | (...)... : String | Test.java:259:49:259:57 | element : String | provenance |  |
@@ -8164,6 +8209,7 @@ edges
 | Test.java:5988:18:5988:19 | in : String | Test.java:5988:4:5988:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:338 |
 | Test.java:5989:20:5989:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:5989:20:5989:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:5989:9:5989:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:5989:30:5989:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:5989:30:5989:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:5989:20:5989:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:5994:16:5994:31 | (...)... : String | Test.java:5995:12:5995:13 | in : String | provenance |  |
 | Test.java:5994:24:5994:31 | source(...) : Object | Test.java:5994:16:5994:31 | (...)... : String | provenance |  |
@@ -8171,6 +8217,7 @@ edges
 | Test.java:5995:12:5995:13 | in : String | Test.java:5995:4:5995:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:338 |
 | Test.java:5996:20:5996:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:5996:20:5996:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:5996:9:5996:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:5996:30:5996:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:5996:30:5996:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:5996:20:5996:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6001:16:6001:31 | (...)... : String | Test.java:6002:24:6002:25 | in : String | provenance |  |
 | Test.java:6001:24:6001:31 | source(...) : Object | Test.java:6001:16:6001:31 | (...)... : String | provenance |  |
@@ -8184,6 +8231,7 @@ edges
 | Test.java:6009:24:6009:25 | in : String | Test.java:6009:4:6009:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:340 |
 | Test.java:6010:20:6010:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6010:20:6010:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6010:9:6010:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6010:30:6010:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6010:30:6010:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6010:20:6010:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6015:16:6015:31 | (...)... : String | Test.java:6016:18:6016:19 | in : String | provenance |  |
 | Test.java:6015:24:6015:31 | source(...) : Object | Test.java:6015:16:6015:31 | (...)... : String | provenance |  |
@@ -8191,6 +8239,7 @@ edges
 | Test.java:6016:18:6016:19 | in : String | Test.java:6016:4:6016:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:340 |
 | Test.java:6017:20:6017:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6017:20:6017:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6017:9:6017:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6017:30:6017:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6017:30:6017:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6017:20:6017:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6022:16:6022:31 | (...)... : String | Test.java:6023:12:6023:13 | in : String | provenance |  |
 | Test.java:6022:24:6022:31 | source(...) : Object | Test.java:6022:16:6022:31 | (...)... : String | provenance |  |
@@ -8198,6 +8247,7 @@ edges
 | Test.java:6023:12:6023:13 | in : String | Test.java:6023:4:6023:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:340 |
 | Test.java:6024:20:6024:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6024:20:6024:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6024:9:6024:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6024:30:6024:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6024:30:6024:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6024:20:6024:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6029:16:6029:31 | (...)... : String | Test.java:6030:30:6030:31 | in : String | provenance |  |
 | Test.java:6029:24:6029:31 | source(...) : Object | Test.java:6029:16:6029:31 | (...)... : String | provenance |  |
@@ -8211,6 +8261,7 @@ edges
 | Test.java:6037:30:6037:31 | in : String | Test.java:6037:4:6037:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:342 |
 | Test.java:6038:20:6038:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6038:20:6038:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6038:9:6038:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6038:30:6038:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6038:30:6038:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6038:20:6038:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6043:16:6043:31 | (...)... : String | Test.java:6044:24:6044:25 | in : String | provenance |  |
 | Test.java:6043:24:6043:31 | source(...) : Object | Test.java:6043:16:6043:31 | (...)... : String | provenance |  |
@@ -8218,6 +8269,7 @@ edges
 | Test.java:6044:24:6044:25 | in : String | Test.java:6044:4:6044:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:342 |
 | Test.java:6045:20:6045:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6045:20:6045:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6045:9:6045:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6045:30:6045:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6045:30:6045:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6045:20:6045:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6050:16:6050:31 | (...)... : String | Test.java:6051:18:6051:19 | in : String | provenance |  |
 | Test.java:6050:24:6050:31 | source(...) : Object | Test.java:6050:16:6050:31 | (...)... : String | provenance |  |
@@ -8225,6 +8277,7 @@ edges
 | Test.java:6051:18:6051:19 | in : String | Test.java:6051:4:6051:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:342 |
 | Test.java:6052:20:6052:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6052:20:6052:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6052:9:6052:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6052:30:6052:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6052:30:6052:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6052:20:6052:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6057:16:6057:31 | (...)... : String | Test.java:6058:12:6058:13 | in : String | provenance |  |
 | Test.java:6057:24:6057:31 | source(...) : Object | Test.java:6057:16:6057:31 | (...)... : String | provenance |  |
@@ -8232,6 +8285,7 @@ edges
 | Test.java:6058:12:6058:13 | in : String | Test.java:6058:4:6058:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:342 |
 | Test.java:6059:20:6059:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6059:20:6059:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6059:9:6059:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6059:30:6059:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6059:30:6059:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6059:20:6059:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6064:16:6064:31 | (...)... : String | Test.java:6065:36:6065:37 | in : String | provenance |  |
 | Test.java:6064:24:6064:31 | source(...) : Object | Test.java:6064:16:6064:31 | (...)... : String | provenance |  |
@@ -8245,6 +8299,7 @@ edges
 | Test.java:6072:36:6072:37 | in : String | Test.java:6072:4:6072:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:344 |
 | Test.java:6073:20:6073:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6073:20:6073:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6073:9:6073:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6073:30:6073:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6073:30:6073:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6073:20:6073:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6078:16:6078:31 | (...)... : String | Test.java:6079:30:6079:31 | in : String | provenance |  |
 | Test.java:6078:24:6078:31 | source(...) : Object | Test.java:6078:16:6078:31 | (...)... : String | provenance |  |
@@ -8252,6 +8307,7 @@ edges
 | Test.java:6079:30:6079:31 | in : String | Test.java:6079:4:6079:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:344 |
 | Test.java:6080:20:6080:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6080:20:6080:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6080:9:6080:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6080:30:6080:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6080:30:6080:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6080:20:6080:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6085:16:6085:31 | (...)... : String | Test.java:6086:24:6086:25 | in : String | provenance |  |
 | Test.java:6085:24:6085:31 | source(...) : Object | Test.java:6085:16:6085:31 | (...)... : String | provenance |  |
@@ -8259,6 +8315,7 @@ edges
 | Test.java:6086:24:6086:25 | in : String | Test.java:6086:4:6086:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:344 |
 | Test.java:6087:20:6087:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6087:20:6087:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6087:9:6087:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6087:30:6087:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6087:30:6087:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6087:20:6087:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6092:16:6092:31 | (...)... : String | Test.java:6093:18:6093:19 | in : String | provenance |  |
 | Test.java:6092:24:6092:31 | source(...) : Object | Test.java:6092:16:6092:31 | (...)... : String | provenance |  |
@@ -8266,6 +8323,7 @@ edges
 | Test.java:6093:18:6093:19 | in : String | Test.java:6093:4:6093:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:344 |
 | Test.java:6094:20:6094:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6094:20:6094:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6094:9:6094:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6094:30:6094:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6094:30:6094:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6094:20:6094:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6099:16:6099:31 | (...)... : String | Test.java:6100:12:6100:13 | in : String | provenance |  |
 | Test.java:6099:24:6099:31 | source(...) : Object | Test.java:6099:16:6099:31 | (...)... : String | provenance |  |
@@ -8273,6 +8331,7 @@ edges
 | Test.java:6100:12:6100:13 | in : String | Test.java:6100:4:6100:6 | out [post update] : MultiKeyMap [<map.key>, <element>] : String | provenance | MaD:344 |
 | Test.java:6101:20:6101:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | provenance |  |
 | Test.java:6101:20:6101:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:6101:9:6101:34 | getElement(...) | provenance | MaD:231 |
+| Test.java:6101:30:6101:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | provenance |  |
 | Test.java:6101:30:6101:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:6101:20:6101:33 | getMapKey(...) : MultiKey [<element>] : String | provenance | MaD:10 |
 | Test.java:6106:16:6106:31 | (...)... : String | Test.java:6107:42:6107:43 | in : String | provenance |  |
 | Test.java:6106:24:6106:31 | source(...) : Object | Test.java:6106:16:6106:31 | (...)... : String | provenance |  |
@@ -8362,10 +8421,13 @@ edges
 | Test.java:6184:10:6184:11 | in : MultiValueMap [<map.value>] : String | Test.java:6184:10:6184:22 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:349 |
 | Test.java:6184:10:6184:22 | iterator(...) : Iterator [<element>, <map.value>] : Object | Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : Object | provenance |  |
 | Test.java:6184:10:6184:22 | iterator(...) : Iterator [<element>, <map.value>] : String | Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : String | provenance |  |
+| Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : Object | Test.java:244:29:244:52 | container : Entry [<map.value>] : Object | provenance |  |
 | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : Object | Test.java:6185:9:6185:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
 | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : String | Test.java:6185:9:6185:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : Object | Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : Object | provenance |  |
 | Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : Object | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:4 |
+| Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : String | Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : String | provenance |  |
 | Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : String | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:4 |
 | Test.java:6190:38:6190:71 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String | Test.java:6191:10:6191:11 | in : MultiValueMap [<map.key>] : String | provenance |  |
 | Test.java:6190:55:6190:70 | (...)... : String | Test.java:279:47:279:51 | key : String | provenance |  |
@@ -8377,6 +8439,7 @@ edges
 | Test.java:6191:10:6191:22 | iterator(...) : Iterator [<element>, <map.key>] : String | Test.java:6192:39:6192:41 | out : Iterator [<element>, <map.key>] : String | provenance |  |
 | Test.java:6192:28:6192:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:6192:28:6192:42 | getElement(...) : Entry [<map.key>] : String | Test.java:6192:9:6192:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:6192:39:6192:41 | out : Iterator [<element>, <map.key>] : String | Test.java:231:19:231:32 | it : Iterator [<element>, <map.key>] : String | provenance |  |
 | Test.java:6192:39:6192:41 | out : Iterator [<element>, <map.key>] : String | Test.java:6192:28:6192:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:4 |
 | Test.java:6197:38:6197:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>, <element>] : String | Test.java:6198:10:6198:11 | in : MultiValueMap [<map.value>, <element>] : String | provenance |  |
 | Test.java:6197:38:6197:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String | Test.java:6198:10:6198:11 | in : MultiValueMap [<map.value>] : String | provenance |  |
@@ -8715,6 +8778,7 @@ edges
 | Test.java:6457:52:6457:53 | in : ListOrderedSet [<element>, <map.key>] : String | Test.java:6457:10:6457:54 | unmodifiableEntrySet(...) : Set [<element>, <map.key>] : String | provenance | MaD:383 |
 | Test.java:6458:28:6458:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:6458:28:6458:42 | getElement(...) : Entry [<map.key>] : String | Test.java:6458:9:6458:43 | getMapKeyFromEntry(...) | provenance | MaD:20 |
+| Test.java:6458:39:6458:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:6458:39:6458:41 | out : Set [<element>, <map.key>] : String | Test.java:6458:28:6458:42 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:1 |
 | Test.java:6463:39:6463:104 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>, <map.value>] : String | Test.java:6464:52:6464:53 | in : ListOrderedSet [<element>, <map.value>] : String | provenance |  |
 | Test.java:6463:68:6463:103 | newTMEWithMapValue(...) : TiedMapEntry [<map.value>] : String | Test.java:260:53:260:61 | element : TiedMapEntry [<map.value>] : String | provenance |  |
@@ -8726,6 +8790,7 @@ edges
 | Test.java:6464:52:6464:53 | in : ListOrderedSet [<element>, <map.value>] : String | Test.java:6464:10:6464:54 | unmodifiableEntrySet(...) : Set [<element>, <map.value>] : String | provenance | MaD:384 |
 | Test.java:6465:30:6465:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | provenance |  |
 | Test.java:6465:30:6465:44 | getElement(...) : Entry [<map.value>] : String | Test.java:6465:9:6465:45 | getMapValueFromEntry(...) | provenance | MaD:21 |
+| Test.java:6465:41:6465:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | provenance |  |
 | Test.java:6465:41:6465:43 | out : Set [<element>, <map.value>] : String | Test.java:6465:30:6465:44 | getElement(...) : Entry [<map.value>] : String | provenance | MaD:1 |
 | Test.java:6470:13:6470:42 | of(...) : Map [<map.key>] : String | Test.java:6471:42:6471:43 | in : Map [<map.key>] : String | provenance |  |
 | Test.java:6470:20:6470:35 | (...)... : String | Test.java:6470:13:6470:42 | of(...) : Map [<map.key>] : String | provenance | MaD:11 |
@@ -9029,6 +9094,7 @@ edges
 | Test.java:6761:28:6761:29 | in : Object | Test.java:6761:23:6761:25 | out [post update] : List [<element>, <element>] : Object | provenance | MaD:790 |
 | Test.java:6762:20:6762:34 | getElement(...) : Set [<element>] : Object | Test.java:230:19:230:32 | it : Set [<element>] : Object | provenance |  |
 | Test.java:6762:20:6762:34 | getElement(...) : Set [<element>] : Object | Test.java:6762:9:6762:35 | getElement(...) | provenance | MaD:1 |
+| Test.java:6762:31:6762:33 | out : List [<element>, <element>] : Object | Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | provenance |  |
 | Test.java:6762:31:6762:33 | out : List [<element>, <element>] : Object | Test.java:6762:20:6762:34 | getElement(...) : Set [<element>] : Object | provenance | MaD:1 |
 | Test.java:6767:20:6767:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String | Test.java:6769:31:6769:32 | in : TreeBag [<element>] : String | provenance |  |
 | Test.java:6767:42:6767:57 | (...)... : String | Test.java:267:39:267:47 | element : String | provenance |  |
@@ -9548,6 +9614,7 @@ nodes
 | Test.java:228:18:228:29 | map : ListOrderedMap [<map.key>] : String | semmle.label | map : ListOrderedMap [<map.key>] : String |
 | Test.java:228:18:228:29 | map : Map [<map.key>] : Object | semmle.label | map : Map [<map.key>] : Object |
 | Test.java:228:18:228:29 | map : Map [<map.key>] : String | semmle.label | map : Map [<map.key>] : String |
+| Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | semmle.label | map : MultiKeyMap [<map.key>, <element>] : String |
 | Test.java:228:18:228:29 | map : MultiMap [<map.key>] : Object | semmle.label | map : MultiMap [<map.key>] : Object |
 | Test.java:228:18:228:29 | map : MultiValueMap [<map.key>] : Object | semmle.label | map : MultiValueMap [<map.key>] : Object |
 | Test.java:228:18:228:29 | map : MultiValueMap [<map.key>] : String | semmle.label | map : MultiValueMap [<map.key>] : String |
@@ -9600,6 +9667,7 @@ nodes
 | Test.java:228:41:228:43 | map : ListOrderedMap [<map.key>] : String | semmle.label | map : ListOrderedMap [<map.key>] : String |
 | Test.java:228:41:228:43 | map : Map [<map.key>] : Object | semmle.label | map : Map [<map.key>] : Object |
 | Test.java:228:41:228:43 | map : Map [<map.key>] : String | semmle.label | map : Map [<map.key>] : String |
+| Test.java:228:41:228:43 | map : MultiKeyMap [<map.key>, <element>] : String | semmle.label | map : MultiKeyMap [<map.key>, <element>] : String |
 | Test.java:228:41:228:43 | map : MultiMap [<map.key>] : Object | semmle.label | map : MultiMap [<map.key>] : Object |
 | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : Object | semmle.label | map : MultiValueMap [<map.key>] : Object |
 | Test.java:228:41:228:43 | map : MultiValueMap [<map.key>] : String | semmle.label | map : MultiValueMap [<map.key>] : String |
@@ -9628,6 +9696,7 @@ nodes
 | Test.java:228:41:228:43 | map : TransformedSortedMap [<map.key>] : String | semmle.label | map : TransformedSortedMap [<map.key>] : String |
 | Test.java:228:41:228:43 | map : TreeBidiMap [<map.key>] : String | semmle.label | map : TreeBidiMap [<map.key>] : String |
 | Test.java:228:41:228:43 | map : Trie [<map.key>] : String | semmle.label | map : Trie [<map.key>] : String |
+| Test.java:228:41:228:52 | keySet(...) : Set [<element>, <element>] : String | semmle.label | keySet(...) : Set [<element>, <element>] : String |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
@@ -9680,6 +9749,7 @@ nodes
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | semmle.label | keySet(...) : Set [<element>] : String |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | semmle.label | keySet(...) : Set [<element>] : String |
 | Test.java:228:41:228:52 | keySet(...) : Set [<element>] : String | semmle.label | keySet(...) : Set [<element>] : String |
+| Test.java:228:41:228:63 | iterator(...) : Iterator [<element>, <element>] : String | semmle.label | iterator(...) : Iterator [<element>, <element>] : String |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:228:41:228:63 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
@@ -9740,6 +9810,7 @@ nodes
 | Test.java:228:41:228:70 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:228:41:228:70 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:228:41:228:70 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:228:41:228:70 | next(...) : Object [<element>] : String | semmle.label | next(...) : Object [<element>] : String |
 | Test.java:228:41:228:70 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:228:41:228:70 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:228:41:228:70 | next(...) : String | semmle.label | next(...) : String |
@@ -9798,6 +9869,8 @@ nodes
 | Test.java:230:19:230:32 | it : CircularFifoQueue [<element>] : String | semmle.label | it : CircularFifoQueue [<element>] : String |
 | Test.java:230:19:230:32 | it : Collection | semmle.label | it : Collection |
 | Test.java:230:19:230:32 | it : Collection [<element>, <element>] : String | semmle.label | it : Collection [<element>, <element>] : String |
+| Test.java:230:19:230:32 | it : Collection [<element>, <map.key>] : String | semmle.label | it : Collection [<element>, <map.key>] : String |
+| Test.java:230:19:230:32 | it : Collection [<element>, <map.value>] : String | semmle.label | it : Collection [<element>, <map.value>] : String |
 | Test.java:230:19:230:32 | it : Collection [<element>] : Object | semmle.label | it : Collection [<element>] : Object |
 | Test.java:230:19:230:32 | it : Collection [<element>] : String | semmle.label | it : Collection [<element>] : String |
 | Test.java:230:19:230:32 | it : CollectionBag [<element>] : String | semmle.label | it : CollectionBag [<element>] : String |
@@ -9818,6 +9891,7 @@ nodes
 | Test.java:230:19:230:32 | it : Iterable [<element>] : String | semmle.label | it : Iterable [<element>] : String |
 | Test.java:230:19:230:32 | it : IteratorIterable [<element>] : String | semmle.label | it : IteratorIterable [<element>] : String |
 | Test.java:230:19:230:32 | it : LazyList [<element>] : String | semmle.label | it : LazyList [<element>] : String |
+| Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | semmle.label | it : List [<element>, <element>] : Object |
 | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | semmle.label | it : List [<element>, <element>] : String |
 | Test.java:230:19:230:32 | it : List [<element>] : Object | semmle.label | it : List [<element>] : Object |
 | Test.java:230:19:230:32 | it : List [<element>] : String | semmle.label | it : List [<element>] : String |
@@ -9848,6 +9922,9 @@ nodes
 | Test.java:230:19:230:32 | it : PredicatedSortedBag [<element>] : String | semmle.label | it : PredicatedSortedBag [<element>] : String |
 | Test.java:230:19:230:32 | it : PredicatedSortedSet [<element>] : String | semmle.label | it : PredicatedSortedSet [<element>] : String |
 | Test.java:230:19:230:32 | it : Queue [<element>] : String | semmle.label | it : Queue [<element>] : String |
+| Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | semmle.label | it : Set [<element>, <element>] : String |
+| Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | semmle.label | it : Set [<element>, <map.key>] : String |
+| Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | semmle.label | it : Set [<element>, <map.value>] : String |
 | Test.java:230:19:230:32 | it : Set [<element>] : Object | semmle.label | it : Set [<element>] : Object |
 | Test.java:230:19:230:32 | it : Set [<element>] : String | semmle.label | it : Set [<element>] : String |
 | Test.java:230:19:230:32 | it : SetUniqueList [<element>] : String | semmle.label | it : SetUniqueList [<element>] : String |
@@ -9877,6 +9954,8 @@ nodes
 | Test.java:230:44:230:45 | it : CircularFifoQueue [<element>] : String | semmle.label | it : CircularFifoQueue [<element>] : String |
 | Test.java:230:44:230:45 | it : Collection | semmle.label | it : Collection |
 | Test.java:230:44:230:45 | it : Collection [<element>, <element>] : String | semmle.label | it : Collection [<element>, <element>] : String |
+| Test.java:230:44:230:45 | it : Collection [<element>, <map.key>] : String | semmle.label | it : Collection [<element>, <map.key>] : String |
+| Test.java:230:44:230:45 | it : Collection [<element>, <map.value>] : String | semmle.label | it : Collection [<element>, <map.value>] : String |
 | Test.java:230:44:230:45 | it : Collection [<element>] : Object | semmle.label | it : Collection [<element>] : Object |
 | Test.java:230:44:230:45 | it : Collection [<element>] : String | semmle.label | it : Collection [<element>] : String |
 | Test.java:230:44:230:45 | it : CollectionBag [<element>] : String | semmle.label | it : CollectionBag [<element>] : String |
@@ -9897,6 +9976,7 @@ nodes
 | Test.java:230:44:230:45 | it : Iterable [<element>] : String | semmle.label | it : Iterable [<element>] : String |
 | Test.java:230:44:230:45 | it : IteratorIterable [<element>] : String | semmle.label | it : IteratorIterable [<element>] : String |
 | Test.java:230:44:230:45 | it : LazyList [<element>] : String | semmle.label | it : LazyList [<element>] : String |
+| Test.java:230:44:230:45 | it : List [<element>, <element>] : Object | semmle.label | it : List [<element>, <element>] : Object |
 | Test.java:230:44:230:45 | it : List [<element>, <element>] : String | semmle.label | it : List [<element>, <element>] : String |
 | Test.java:230:44:230:45 | it : List [<element>] : Object | semmle.label | it : List [<element>] : Object |
 | Test.java:230:44:230:45 | it : List [<element>] : String | semmle.label | it : List [<element>] : String |
@@ -9927,6 +10007,9 @@ nodes
 | Test.java:230:44:230:45 | it : PredicatedSortedBag [<element>] : String | semmle.label | it : PredicatedSortedBag [<element>] : String |
 | Test.java:230:44:230:45 | it : PredicatedSortedSet [<element>] : String | semmle.label | it : PredicatedSortedSet [<element>] : String |
 | Test.java:230:44:230:45 | it : Queue [<element>] : String | semmle.label | it : Queue [<element>] : String |
+| Test.java:230:44:230:45 | it : Set [<element>, <element>] : String | semmle.label | it : Set [<element>, <element>] : String |
+| Test.java:230:44:230:45 | it : Set [<element>, <map.key>] : String | semmle.label | it : Set [<element>, <map.key>] : String |
+| Test.java:230:44:230:45 | it : Set [<element>, <map.value>] : String | semmle.label | it : Set [<element>, <map.value>] : String |
 | Test.java:230:44:230:45 | it : Set [<element>] : Object | semmle.label | it : Set [<element>] : Object |
 | Test.java:230:44:230:45 | it : Set [<element>] : String | semmle.label | it : Set [<element>] : String |
 | Test.java:230:44:230:45 | it : SetUniqueList [<element>] : String | semmle.label | it : SetUniqueList [<element>] : String |
@@ -9948,8 +10031,14 @@ nodes
 | Test.java:230:44:230:45 | it : TreeBag [<element>] : String | semmle.label | it : TreeBag [<element>] : String |
 | Test.java:230:44:230:45 | it : TreeList [<element>] : String | semmle.label | it : TreeList [<element>] : String |
 | Test.java:230:44:230:45 | it : UnmodifiableList [<element>] : String | semmle.label | it : UnmodifiableList [<element>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : Object | semmle.label | iterator(...) : Iterator [<element>, <element>] : Object |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | semmle.label | iterator(...) : Iterator [<element>, <element>] : String |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | semmle.label | iterator(...) : Iterator [<element>, <element>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <element>] : String | semmle.label | iterator(...) : Iterator [<element>, <element>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.key>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : String |
+| Test.java:230:44:230:56 | iterator(...) : Iterator [<element>, <map.value>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : String |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:230:44:230:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
@@ -10040,8 +10129,14 @@ nodes
 | Test.java:230:44:230:63 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:230:44:230:63 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:230:44:230:63 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:230:44:230:63 | next(...) : Object [<element>] : Object | semmle.label | next(...) : Object [<element>] : Object |
 | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | semmle.label | next(...) : Object [<element>] : String |
 | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | semmle.label | next(...) : Object [<element>] : String |
+| Test.java:230:44:230:63 | next(...) : Object [<element>] : String | semmle.label | next(...) : Object [<element>] : String |
+| Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | semmle.label | next(...) : Object [<map.key>] : String |
+| Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | semmle.label | next(...) : Object [<map.key>] : String |
+| Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | semmle.label | next(...) : Object [<map.value>] : String |
+| Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | semmle.label | next(...) : Object [<map.value>] : String |
 | Test.java:230:44:230:63 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:230:44:230:63 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:230:44:230:63 | next(...) : String | semmle.label | next(...) : String |
@@ -10115,6 +10210,9 @@ nodes
 | Test.java:231:19:231:32 | it : EnumerationIterator [<element>] : String | semmle.label | it : EnumerationIterator [<element>] : String |
 | Test.java:231:19:231:32 | it : FilterIterator [<element>] : String | semmle.label | it : FilterIterator [<element>] : String |
 | Test.java:231:19:231:32 | it : FilterListIterator [<element>] : String | semmle.label | it : FilterListIterator [<element>] : String |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.key>] : String | semmle.label | it : Iterator [<element>, <map.key>] : String |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : Object | semmle.label | it : Iterator [<element>, <map.value>] : Object |
+| Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : String | semmle.label | it : Iterator [<element>, <map.value>] : String |
 | Test.java:231:19:231:32 | it : Iterator [<element>] : Object | semmle.label | it : Iterator [<element>] : Object |
 | Test.java:231:19:231:32 | it : Iterator [<element>] : String | semmle.label | it : Iterator [<element>] : String |
 | Test.java:231:19:231:32 | it : IteratorChain [<element>] : String | semmle.label | it : IteratorChain [<element>] : String |
@@ -10133,6 +10231,7 @@ nodes
 | Test.java:231:19:231:32 | it : ObjectArrayListIterator [<element>] : String | semmle.label | it : ObjectArrayListIterator [<element>] : String |
 | Test.java:231:19:231:32 | it : OrderedMapIterator [<element>] : String | semmle.label | it : OrderedMapIterator [<element>] : String |
 | Test.java:231:19:231:32 | it : PeekingIterator [<element>] : String | semmle.label | it : PeekingIterator [<element>] : String |
+| Test.java:231:19:231:32 | it : PermutationIterator [<element>, <element>] : String | semmle.label | it : PermutationIterator [<element>, <element>] : String |
 | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : Object | semmle.label | it : PushbackIterator [<element>] : Object |
 | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : String | semmle.label | it : PushbackIterator [<element>] : String |
 | Test.java:231:19:231:32 | it : ResettableIterator [<element>] : Object | semmle.label | it : ResettableIterator [<element>] : Object |
@@ -10154,6 +10253,9 @@ nodes
 | Test.java:231:44:231:45 | it : EnumerationIterator [<element>] : String | semmle.label | it : EnumerationIterator [<element>] : String |
 | Test.java:231:44:231:45 | it : FilterIterator [<element>] : String | semmle.label | it : FilterIterator [<element>] : String |
 | Test.java:231:44:231:45 | it : FilterListIterator [<element>] : String | semmle.label | it : FilterListIterator [<element>] : String |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.key>] : String | semmle.label | it : Iterator [<element>, <map.key>] : String |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : Object | semmle.label | it : Iterator [<element>, <map.value>] : Object |
+| Test.java:231:44:231:45 | it : Iterator [<element>, <map.value>] : String | semmle.label | it : Iterator [<element>, <map.value>] : String |
 | Test.java:231:44:231:45 | it : Iterator [<element>] : Object | semmle.label | it : Iterator [<element>] : Object |
 | Test.java:231:44:231:45 | it : Iterator [<element>] : String | semmle.label | it : Iterator [<element>] : String |
 | Test.java:231:44:231:45 | it : IteratorChain [<element>] : String | semmle.label | it : IteratorChain [<element>] : String |
@@ -10172,6 +10274,7 @@ nodes
 | Test.java:231:44:231:45 | it : ObjectArrayListIterator [<element>] : String | semmle.label | it : ObjectArrayListIterator [<element>] : String |
 | Test.java:231:44:231:45 | it : OrderedMapIterator [<element>] : String | semmle.label | it : OrderedMapIterator [<element>] : String |
 | Test.java:231:44:231:45 | it : PeekingIterator [<element>] : String | semmle.label | it : PeekingIterator [<element>] : String |
+| Test.java:231:44:231:45 | it : PermutationIterator [<element>, <element>] : String | semmle.label | it : PermutationIterator [<element>, <element>] : String |
 | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : Object | semmle.label | it : PushbackIterator [<element>] : Object |
 | Test.java:231:44:231:45 | it : PushbackIterator [<element>] : String | semmle.label | it : PushbackIterator [<element>] : String |
 | Test.java:231:44:231:45 | it : ResettableIterator [<element>] : Object | semmle.label | it : ResettableIterator [<element>] : Object |
@@ -10191,6 +10294,10 @@ nodes
 | Test.java:231:44:231:52 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:231:44:231:52 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:231:44:231:52 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:231:44:231:52 | next(...) : Object [<element>] : String | semmle.label | next(...) : Object [<element>] : String |
+| Test.java:231:44:231:52 | next(...) : Object [<map.key>] : String | semmle.label | next(...) : Object [<map.key>] : String |
+| Test.java:231:44:231:52 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
+| Test.java:231:44:231:52 | next(...) : Object [<map.value>] : String | semmle.label | next(...) : Object [<map.value>] : String |
 | Test.java:231:44:231:52 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:231:44:231:52 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:231:44:231:52 | next(...) : String | semmle.label | next(...) : String |
@@ -10522,10 +10629,13 @@ nodes
 | Test.java:243:62:243:81 | getValue(...) : String | semmle.label | getValue(...) : String |
 | Test.java:243:62:243:81 | getValue(...) : String | semmle.label | getValue(...) : String |
 | Test.java:243:62:243:81 | getValue(...) : String | semmle.label | getValue(...) : String |
+| Test.java:244:29:244:52 | container : Entry [<map.value>] : Object | semmle.label | container : Entry [<map.value>] : Object |
 | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | semmle.label | container : Entry [<map.value>] : String |
 | Test.java:244:29:244:52 | container : TiedMapEntry [<map.value>] : String | semmle.label | container : TiedMapEntry [<map.value>] : String |
+| Test.java:244:64:244:72 | container : Entry [<map.value>] : Object | semmle.label | container : Entry [<map.value>] : Object |
 | Test.java:244:64:244:72 | container : Entry [<map.value>] : String | semmle.label | container : Entry [<map.value>] : String |
 | Test.java:244:64:244:72 | container : TiedMapEntry [<map.value>] : String | semmle.label | container : TiedMapEntry [<map.value>] : String |
+| Test.java:244:64:244:83 | getValue(...) : Object | semmle.label | getValue(...) : Object |
 | Test.java:244:64:244:83 | getValue(...) : String | semmle.label | getValue(...) : String |
 | Test.java:244:64:244:83 | getValue(...) : String | semmle.label | getValue(...) : String |
 | Test.java:245:20:245:59 | container : MyAbstractMapEntryDecorator [<map.value>] : String | semmle.label | container : MyAbstractMapEntryDecorator [<map.value>] : String |
@@ -17688,6 +17798,8 @@ subpaths
 | Test.java:254:118:254:124 | element : String | Test.java:260:53:260:61 | element : String | Test.java:260:135:260:135 | x : ListOrderedSet [<element>] : String | Test.java:254:89:254:125 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>] : String |
 | Test.java:256:115:256:121 | element : String | Test.java:269:37:269:45 | element : String | Test.java:269:103:269:103 | v : Vector [<element>] : String | Test.java:256:94:256:122 | newVectorWithElement(...) : Vector [<element>] : String |
 | Test.java:259:90:259:96 | element : String | Test.java:269:37:269:45 | element : String | Test.java:269:103:269:103 | v : Vector [<element>] : String | Test.java:259:69:259:97 | newVectorWithElement(...) : Vector [<element>] : String |
+| Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:262:72:262:125 | getElement(...) : Entry [<element>] : String |
+| Test.java:262:83:262:124 | entrySet(...) : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:262:72:262:125 | getElement(...) : Entry [<element>] : String |
 | Test.java:262:106:262:112 | element : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:262:106:262:112 | element : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:262:106:262:112 | element : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:262:83:262:113 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
@@ -18121,22 +18233,28 @@ subpaths
 | Test.java:1916:40:1916:55 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:1916:23:1916:56 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:1916:40:1916:55 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:1916:23:1916:56 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:1918:28:1918:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:1918:9:1918:43 | getMapKeyFromEntry(...) |
+| Test.java:1918:39:1918:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | Test.java:1918:28:1918:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:1923:39:1923:54 | (...)... : String | Test.java:288:49:288:58 | key : String | Test.java:288:134:288:134 | m : PatriciaTrie [<map.key>] : String | Test.java:1923:13:1923:55 | newPatriciaTrieWithMapKey(...) : PatriciaTrie [<map.key>] : String |
 | Test.java:1923:39:1923:54 | (...)... : String | Test.java:288:49:288:58 | key : String | Test.java:288:134:288:134 | m : PatriciaTrie [<map.key>] : String | Test.java:1923:13:1923:55 | newPatriciaTrieWithMapKey(...) : PatriciaTrie [<map.key>] : String |
 | Test.java:1925:28:1925:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:1925:9:1925:43 | getMapKeyFromEntry(...) |
+| Test.java:1925:39:1925:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | Test.java:1925:28:1925:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:1930:47:1930:62 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:1930:30:1930:63 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:1930:47:1930:62 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:1930:30:1930:63 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:1930:47:1930:62 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:1930:30:1930:63 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:1932:28:1932:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:1932:9:1932:43 | getMapKeyFromEntry(...) |
+| Test.java:1932:39:1932:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | Test.java:1932:28:1932:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:1937:42:1937:57 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1937:23:1937:58 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1937:42:1937:57 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1937:23:1937:58 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1939:30:1939:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:1939:9:1939:45 | getMapValueFromEntry(...) |
+| Test.java:1939:41:1939:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | Test.java:1939:30:1939:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:1944:41:1944:56 | (...)... : String | Test.java:307:50:307:56 | value : String | Test.java:307:129:307:129 | m : PatriciaTrie [<map.value>] : String | Test.java:1944:13:1944:57 | newPatriciaTrieWithMapValue(...) : PatriciaTrie [<map.value>] : String |
 | Test.java:1944:41:1944:56 | (...)... : String | Test.java:307:50:307:56 | value : String | Test.java:307:129:307:129 | m : PatriciaTrie [<map.value>] : String | Test.java:1944:13:1944:57 | newPatriciaTrieWithMapValue(...) : PatriciaTrie [<map.value>] : String |
 | Test.java:1946:30:1946:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:1946:9:1946:45 | getMapValueFromEntry(...) |
+| Test.java:1946:41:1946:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | Test.java:1946:30:1946:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:1951:49:1951:64 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1951:30:1951:65 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1951:49:1951:64 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1951:30:1951:65 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1953:30:1953:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:1953:9:1953:45 | getMapValueFromEntry(...) |
+| Test.java:1953:41:1953:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | Test.java:1953:30:1953:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:1958:37:1958:52 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1958:18:1958:53 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1958:37:1958:52 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:1958:18:1958:53 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:1965:41:1965:56 | (...)... : String | Test.java:307:50:307:56 | value : String | Test.java:307:129:307:129 | m : PatriciaTrie [<map.value>] : String | Test.java:1965:13:1965:57 | newPatriciaTrieWithMapValue(...) : PatriciaTrie [<map.value>] : String |
@@ -18453,8 +18571,10 @@ subpaths
 | Test.java:3052:20:3052:22 | out : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:3052:9:3052:23 | getElement(...) |
 | Test.java:3064:43:3064:58 | (...)... : String | Test.java:272:58:272:62 | key : String | Test.java:272:160:272:160 | m : ArrayListValuedHashMap [<map.key>] : String | Test.java:3064:24:3064:59 | newALVHMWithMapKey(...) : ArrayListValuedHashMap [<map.key>] : String |
 | Test.java:3066:28:3066:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:3066:9:3066:43 | getMapKeyFromEntry(...) |
+| Test.java:3066:39:3066:41 | out : Collection [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Collection [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | Test.java:3066:28:3066:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:3071:45:3071:60 | (...)... : String | Test.java:290:60:290:66 | value : String | Test.java:290:166:290:166 | m : ArrayListValuedHashMap [<map.value>, <element>] : String | Test.java:3071:24:3071:61 | newALVHMWithMapValue(...) : ArrayListValuedHashMap [<map.value>, <element>] : String |
 | Test.java:3073:30:3073:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:3073:9:3073:45 | getMapValueFromEntry(...) |
+| Test.java:3073:41:3073:43 | out : Collection [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Collection [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | Test.java:3073:30:3073:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:3078:45:3078:60 | (...)... : String | Test.java:290:60:290:66 | value : String | Test.java:290:166:290:166 | m : ArrayListValuedHashMap [<map.value>, <element>] : String | Test.java:3078:24:3078:61 | newALVHMWithMapValue(...) : ArrayListValuedHashMap [<map.value>, <element>] : String |
 | Test.java:3080:20:3080:22 | out : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:3080:9:3080:23 | getElement(...) |
 | Test.java:3085:45:3085:60 | (...)... : String | Test.java:290:60:290:66 | value : String | Test.java:290:166:290:166 | m : ArrayListValuedHashMap [<map.value>, <element>] : String | Test.java:3085:24:3085:61 | newALVHMWithMapValue(...) : ArrayListValuedHashMap [<map.value>, <element>] : String |
@@ -18480,6 +18600,7 @@ subpaths
 | Test.java:3155:41:3155:56 | (...)... : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:3155:18:3155:57 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:3155:41:3155:56 | (...)... : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:3155:18:3155:57 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:3157:20:3157:34 | getElement(...) : Entry [<element>] : String | Test.java:235:19:235:45 | container : Entry [<element>] : String | Test.java:235:57:235:78 | getElement(...) : String | Test.java:3157:9:3157:35 | getElement(...) |
+| Test.java:3157:31:3157:33 | out : Set [<element>, <element>] : String | Test.java:230:19:230:32 | it : Set [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:3157:20:3157:34 | getElement(...) : Entry [<element>] : String |
 | Test.java:3162:41:3162:56 | (...)... : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:3162:18:3162:57 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:3162:41:3162:56 | (...)... : String | Test.java:263:41:263:49 | element : String | Test.java:263:119:263:119 | h : HashMultiSet [<element>] : String | Test.java:3162:18:3162:57 | newMultiSetWithElement(...) : HashMultiSet [<element>] : String |
 | Test.java:3164:20:3164:22 | out : Set [<element>] : String | Test.java:230:19:230:32 | it : Set [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:3164:9:3164:23 | getElement(...) |
@@ -18801,12 +18922,14 @@ subpaths
 | Test.java:4165:20:4165:22 | out : MyAbstractCollectionDecorator [<element>] : String | Test.java:230:19:230:32 | it : MyAbstractCollectionDecorator [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4165:9:4165:23 | getElement(...) |
 | Test.java:4173:20:4173:22 | out : CompositeCollection [<element>] : Object | Test.java:230:19:230:32 | it : CompositeCollection [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | Test.java:4173:9:4173:23 | getElement(...) |
 | Test.java:4181:20:4181:34 | getElement(...) : Collection [<element>] : Object | Test.java:230:19:230:32 | it : Collection [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | Test.java:4181:9:4181:35 | getElement(...) |
+| Test.java:4181:31:4181:33 | out : List [<element>, <element>] : Object | Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | Test.java:230:44:230:63 | next(...) : Object [<element>] : Object | Test.java:4181:20:4181:34 | getElement(...) : Collection [<element>] : Object |
 | Test.java:4186:42:4186:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4186:20:4186:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4186:42:4186:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4186:20:4186:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4189:20:4189:22 | out : CompositeCollection [<element>] : String | Test.java:230:19:230:32 | it : CompositeCollection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4189:9:4189:23 | getElement(...) |
 | Test.java:4194:42:4194:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4194:20:4194:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4194:42:4194:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4194:20:4194:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4197:20:4197:34 | getElement(...) : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4197:9:4197:35 | getElement(...) |
+| Test.java:4197:31:4197:33 | out : List [<element>, <element>] : String | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:4197:20:4197:34 | getElement(...) : Collection [<element>] : String |
 | Test.java:4202:42:4202:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4202:20:4202:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4202:42:4202:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4202:20:4202:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4204:20:4204:22 | out : CompositeCollection [<element>] : String | Test.java:230:19:230:32 | it : CompositeCollection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4204:9:4204:23 | getElement(...) |
@@ -18834,6 +18957,7 @@ subpaths
 | Test.java:4258:75:4258:90 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4258:53:4258:91 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4258:75:4258:90 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4258:53:4258:91 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4260:20:4260:34 | getElement(...) : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4260:9:4260:35 | getElement(...) |
+| Test.java:4260:31:4260:33 | out : List [<element>, <element>] : String | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:4260:20:4260:34 | getElement(...) : Collection [<element>] : String |
 | Test.java:4265:75:4265:90 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4265:53:4265:91 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4265:75:4265:90 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:4265:53:4265:91 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:4267:20:4267:22 | out : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4267:9:4267:23 | getElement(...) |
@@ -18976,6 +19100,7 @@ subpaths
 | Test.java:4657:20:4657:22 | out : CollatingIterator [<element>] : String | Test.java:231:19:231:32 | it : CollatingIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:4657:9:4657:23 | getElement(...) |
 | Test.java:4662:102:4662:117 | (...)... : String | Test.java:259:49:259:57 | element : String | Test.java:259:69:259:112 | listIterator(...) : ListIterator [<element>] : String | Test.java:4662:75:4662:118 | newListIteratorWithElement(...) : ListIterator [<element>] : String |
 | Test.java:4664:20:4664:34 | getElement(...) : Iterator [<element>] : String | Test.java:231:19:231:32 | it : Iterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:4664:9:4664:35 | getElement(...) |
+| Test.java:4664:31:4664:33 | out : List [<element>, <element>] : String | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:4664:20:4664:34 | getElement(...) : Iterator [<element>] : String |
 | Test.java:4669:45:4669:60 | (...)... : String | Test.java:259:49:259:57 | element : String | Test.java:259:69:259:112 | listIterator(...) : ListIterator [<element>] : String | Test.java:4669:18:4669:61 | newListIteratorWithElement(...) : ListIterator [<element>] : String |
 | Test.java:4671:20:4671:22 | out : CollatingIterator [<element>] : String | Test.java:231:19:231:32 | it : CollatingIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:4671:9:4671:23 | getElement(...) |
 | Test.java:4676:47:4676:62 | (...)... : String | Test.java:256:47:256:55 | element : String | Test.java:256:67:256:134 | new IteratorEnumeration<T>(...) : IteratorEnumeration [<element>] : String | Test.java:4676:21:4676:63 | newEnumerationWithElement(...) : IteratorEnumeration [<element>] : String |
@@ -19046,6 +19171,7 @@ subpaths
 | Test.java:4928:45:4928:60 | (...)... : String | Test.java:259:49:259:57 | element : String | Test.java:259:69:259:112 | listIterator(...) : ListIterator [<element>] : String | Test.java:4928:18:4928:61 | newListIteratorWithElement(...) : ListIterator [<element>] : String |
 | Test.java:4930:20:4930:22 | out : PeekingIterator [<element>] : String | Test.java:231:19:231:32 | it : PeekingIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:4930:9:4930:23 | getElement(...) |
 | Test.java:4937:20:4937:34 | getElement(...) : List [<element>] : String | Test.java:230:19:230:32 | it : List [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:4937:9:4937:35 | getElement(...) |
+| Test.java:4937:31:4937:33 | out : PermutationIterator [<element>, <element>] : String | Test.java:231:19:231:32 | it : PermutationIterator [<element>, <element>] : String | Test.java:231:44:231:52 | next(...) : Object [<element>] : String | Test.java:4937:20:4937:34 | getElement(...) : List [<element>] : String |
 | Test.java:4942:45:4942:60 | (...)... : String | Test.java:259:49:259:57 | element : String | Test.java:259:69:259:112 | listIterator(...) : ListIterator [<element>] : String | Test.java:4942:18:4942:61 | newListIteratorWithElement(...) : ListIterator [<element>] : String |
 | Test.java:4944:20:4944:22 | out : PushbackIterator [<element>] : String | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:4944:9:4944:23 | getElement(...) |
 | Test.java:4951:20:4951:22 | out : PushbackIterator [<element>] : Object | Test.java:231:19:231:32 | it : PushbackIterator [<element>] : Object | Test.java:231:44:231:52 | next(...) : Object | Test.java:4951:9:4951:23 | getElement(...) |
@@ -19250,22 +19376,36 @@ subpaths
 | Test.java:5973:40:5973:55 | (...)... : String | Test.java:297:47:297:53 | value : String | Test.java:297:136:297:136 | m : MultiKeyMap [<map.value>] : String | Test.java:5973:21:5973:56 | newMKMWithMapValue(...) : MultiKeyMap [<map.value>] : String |
 | Test.java:5980:40:5980:55 | (...)... : String | Test.java:297:47:297:53 | value : String | Test.java:297:136:297:136 | m : MultiKeyMap [<map.value>] : String | Test.java:5980:21:5980:56 | newMKMWithMapValue(...) : MultiKeyMap [<map.value>] : String |
 | Test.java:5989:20:5989:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:5989:9:5989:34 | getElement(...) |
+| Test.java:5989:30:5989:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:5989:20:5989:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:5996:20:5996:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:5996:9:5996:34 | getElement(...) |
+| Test.java:5996:30:5996:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:5996:20:5996:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6003:21:6003:23 | out : MultiKeyMap [<map.value>] : String | Test.java:232:20:232:31 | map : MultiKeyMap [<map.value>] : String | Test.java:232:43:232:55 | get(...) : String | Test.java:6003:9:6003:24 | getMapValue(...) |
 | Test.java:6010:20:6010:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6010:9:6010:34 | getElement(...) |
+| Test.java:6010:30:6010:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6010:20:6010:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6017:20:6017:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6017:9:6017:34 | getElement(...) |
+| Test.java:6017:30:6017:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6017:20:6017:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6024:20:6024:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6024:9:6024:34 | getElement(...) |
+| Test.java:6024:30:6024:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6024:20:6024:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6031:21:6031:23 | out : MultiKeyMap [<map.value>] : String | Test.java:232:20:232:31 | map : MultiKeyMap [<map.value>] : String | Test.java:232:43:232:55 | get(...) : String | Test.java:6031:9:6031:24 | getMapValue(...) |
 | Test.java:6038:20:6038:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6038:9:6038:34 | getElement(...) |
+| Test.java:6038:30:6038:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6038:20:6038:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6045:20:6045:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6045:9:6045:34 | getElement(...) |
+| Test.java:6045:30:6045:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6045:20:6045:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6052:20:6052:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6052:9:6052:34 | getElement(...) |
+| Test.java:6052:30:6052:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6052:20:6052:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6059:20:6059:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6059:9:6059:34 | getElement(...) |
+| Test.java:6059:30:6059:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6059:20:6059:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6066:21:6066:23 | out : MultiKeyMap [<map.value>] : String | Test.java:232:20:232:31 | map : MultiKeyMap [<map.value>] : String | Test.java:232:43:232:55 | get(...) : String | Test.java:6066:9:6066:24 | getMapValue(...) |
 | Test.java:6073:20:6073:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6073:9:6073:34 | getElement(...) |
+| Test.java:6073:30:6073:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6073:20:6073:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6080:20:6080:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6080:9:6080:34 | getElement(...) |
+| Test.java:6080:30:6080:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6080:20:6080:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6087:20:6087:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6087:9:6087:34 | getElement(...) |
+| Test.java:6087:30:6087:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6087:20:6087:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6094:20:6094:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6094:9:6094:34 | getElement(...) |
+| Test.java:6094:30:6094:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6094:20:6094:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6101:20:6101:33 | getMapKey(...) : MultiKey [<element>] : String | Test.java:236:19:236:39 | container : MultiKey [<element>] : String | Test.java:236:51:236:69 | getKey(...) : String | Test.java:6101:9:6101:34 | getElement(...) |
+| Test.java:6101:30:6101:32 | out : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:18:228:29 | map : MultiKeyMap [<map.key>, <element>] : String | Test.java:228:41:228:70 | next(...) : Object [<element>] : String | Test.java:6101:20:6101:33 | getMapKey(...) : MultiKey [<element>] : String |
 | Test.java:6108:21:6108:23 | out : MultiKeyMap [<map.value>] : String | Test.java:232:20:232:31 | map : MultiKeyMap [<map.value>] : String | Test.java:232:43:232:55 | get(...) : String | Test.java:6108:9:6108:24 | getMapValue(...) |
 | Test.java:6113:40:6113:55 | (...)... : String | Test.java:297:47:297:53 | value : String | Test.java:297:136:297:136 | m : MultiKeyMap [<map.value>] : String | Test.java:6113:21:6113:56 | newMKMWithMapValue(...) : MultiKeyMap [<map.value>] : String |
 | Test.java:6120:40:6120:55 | (...)... : String | Test.java:297:47:297:53 | value : String | Test.java:297:136:297:136 | m : MultiKeyMap [<map.value>] : String | Test.java:6120:21:6120:56 | newMKMWithMapValue(...) : MultiKeyMap [<map.value>] : String |
@@ -19284,14 +19424,19 @@ subpaths
 | Test.java:6183:57:6183:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>, <element>] : String | Test.java:6183:38:6183:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>, <element>] : String |
 | Test.java:6183:57:6183:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:6183:38:6183:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:6183:57:6183:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:6183:38:6183:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
+| Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : Object | Test.java:244:29:244:52 | container : Entry [<map.value>] : Object | Test.java:244:64:244:83 | getValue(...) : Object | Test.java:6185:9:6185:45 | getMapValueFromEntry(...) |
 | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:6185:9:6185:45 | getMapValueFromEntry(...) |
+| Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : Object | Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : Object | Test.java:231:44:231:52 | next(...) : Object [<map.value>] : Object | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:6185:41:6185:43 | out : Iterator [<element>, <map.value>] : String | Test.java:231:19:231:32 | it : Iterator [<element>, <map.value>] : String | Test.java:231:44:231:52 | next(...) : Object [<map.value>] : String | Test.java:6185:30:6185:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:6190:55:6190:70 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:6190:38:6190:71 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:6190:55:6190:70 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:6190:38:6190:71 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:6190:55:6190:70 | (...)... : String | Test.java:279:47:279:51 | key : String | Test.java:279:131:279:131 | m : MultiValueMap [<map.key>] : String | Test.java:6190:38:6190:71 | newMVMWithMapKey(...) : MultiValueMap [<map.key>] : String |
 | Test.java:6192:28:6192:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:6192:9:6192:43 | getMapKeyFromEntry(...) |
+| Test.java:6192:39:6192:41 | out : Iterator [<element>, <map.key>] : String | Test.java:231:19:231:32 | it : Iterator [<element>, <map.key>] : String | Test.java:231:44:231:52 | next(...) : Object [<map.key>] : String | Test.java:6192:28:6192:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:6197:57:6197:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>, <element>] : String | Test.java:6197:38:6197:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>, <element>] : String |
 | Test.java:6197:57:6197:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:6197:38:6197:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
 | Test.java:6197:57:6197:72 | (...)... : String | Test.java:298:49:298:55 | value : String | Test.java:298:137:298:137 | m : MultiValueMap [<map.value>] : String | Test.java:6197:38:6197:73 | newMVMWithMapValue(...) : MultiValueMap [<map.value>] : String |
+| Test.java:6199:20:6199:22 | out : Iterator [<element>] : Object | Test.java:231:19:231:32 | it : Iterator [<element>] : Object | Test.java:231:44:231:52 | next(...) : Object | Test.java:6199:9:6199:23 | getElement(...) |
 | Test.java:6199:20:6199:22 | out : Iterator [<element>] : String | Test.java:231:19:231:32 | it : Iterator [<element>] : String | Test.java:231:44:231:52 | next(...) : String | Test.java:6199:9:6199:23 | getElement(...) |
 | Test.java:6204:47:6204:62 | (...)... : String | Test.java:269:37:269:45 | element : String | Test.java:269:103:269:103 | v : Vector [<element>] : String | Test.java:6204:26:6204:63 | newVectorWithElement(...) : Vector [<element>] : String |
 | Test.java:6206:20:6206:47 | (...)... : Collection [<element>] : String | Test.java:230:19:230:32 | it : Collection [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6206:9:6206:48 | getElement(...) |
@@ -19362,9 +19507,11 @@ subpaths
 | Test.java:6456:68:6456:101 | newTMEWithMapKey(...) : TiedMapEntry [<map.key>] : String | Test.java:260:53:260:61 | element : TiedMapEntry [<map.key>] : String | Test.java:260:135:260:135 | x : ListOrderedSet [<element>, <map.key>] : String | Test.java:6456:39:6456:102 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>, <map.key>] : String |
 | Test.java:6456:85:6456:100 | (...)... : String | Test.java:286:46:286:50 | key : String | Test.java:286:62:286:116 | new TiedMapEntry<K,String>(...) : TiedMapEntry [<map.key>] : String | Test.java:6456:68:6456:101 | newTMEWithMapKey(...) : TiedMapEntry [<map.key>] : String |
 | Test.java:6458:28:6458:42 | getElement(...) : Entry [<map.key>] : String | Test.java:238:27:238:50 | container : Entry [<map.key>] : String | Test.java:238:62:238:79 | getKey(...) : String | Test.java:6458:9:6458:43 | getMapKeyFromEntry(...) |
+| Test.java:6458:39:6458:41 | out : Set [<element>, <map.key>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.key>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.key>] : String | Test.java:6458:28:6458:42 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:6463:68:6463:103 | newTMEWithMapValue(...) : TiedMapEntry [<map.value>] : String | Test.java:260:53:260:61 | element : TiedMapEntry [<map.value>] : String | Test.java:260:135:260:135 | x : ListOrderedSet [<element>, <map.value>] : String | Test.java:6463:39:6463:104 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>, <map.value>] : String |
 | Test.java:6463:87:6463:102 | (...)... : String | Test.java:305:48:305:54 | value : String | Test.java:305:66:305:127 | new TiedMapEntry<String,V>(...) : TiedMapEntry [<map.value>] : String | Test.java:6463:68:6463:103 | newTMEWithMapValue(...) : TiedMapEntry [<map.value>] : String |
 | Test.java:6465:30:6465:44 | getElement(...) : Entry [<map.value>] : String | Test.java:244:29:244:52 | container : Entry [<map.value>] : String | Test.java:244:64:244:83 | getValue(...) : String | Test.java:6465:9:6465:45 | getMapValueFromEntry(...) |
+| Test.java:6465:41:6465:43 | out : Set [<element>, <map.value>] : String | Test.java:230:19:230:32 | it : Set [<element>, <map.value>] : String | Test.java:230:44:230:63 | next(...) : Object [<map.value>] : String | Test.java:6465:30:6465:44 | getElement(...) : Entry [<map.value>] : String |
 | Test.java:6472:19:6472:21 | out : Map [<map.key>] : String | Test.java:228:18:228:29 | map : Map [<map.key>] : String | Test.java:228:41:228:70 | next(...) : String | Test.java:6472:9:6472:22 | getMapKey(...) |
 | Test.java:6479:21:6479:23 | out : Map [<map.value>] : String | Test.java:232:20:232:31 | map : Map [<map.value>] : String | Test.java:232:43:232:55 | get(...) : String | Test.java:6479:9:6479:24 | getMapValue(...) |
 | Test.java:6484:48:6484:63 | (...)... : String | Test.java:277:59:277:63 | key : String | Test.java:277:75:277:132 | listOrderedMap(...) : ListOrderedMap [<map.key>] : String | Test.java:6484:20:6484:64 | newListOrderedMapWithMapKey(...) : ListOrderedMap [<map.key>] : String |
@@ -19436,12 +19583,14 @@ subpaths
 | Test.java:6746:20:6746:22 | out : MyAbstractSortedSetDecorator [<element>] : String | Test.java:230:19:230:32 | it : MyAbstractSortedSetDecorator [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6746:9:6746:23 | getElement(...) |
 | Test.java:6754:20:6754:22 | out : CompositeSet [<element>] : Object | Test.java:230:19:230:32 | it : CompositeSet [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | Test.java:6754:9:6754:23 | getElement(...) |
 | Test.java:6762:20:6762:34 | getElement(...) : Set [<element>] : Object | Test.java:230:19:230:32 | it : Set [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | Test.java:6762:9:6762:35 | getElement(...) |
+| Test.java:6762:31:6762:33 | out : List [<element>, <element>] : Object | Test.java:230:19:230:32 | it : List [<element>, <element>] : Object | Test.java:230:44:230:63 | next(...) : Object [<element>] : Object | Test.java:6762:20:6762:34 | getElement(...) : Set [<element>] : Object |
 | Test.java:6767:42:6767:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:6767:20:6767:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:6767:42:6767:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:6767:20:6767:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:6770:20:6770:22 | out : CompositeSet [<element>] : String | Test.java:230:19:230:32 | it : CompositeSet [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6770:9:6770:23 | getElement(...) |
 | Test.java:6775:42:6775:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:6775:20:6775:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:6775:42:6775:57 | (...)... : String | Test.java:267:39:267:47 | element : String | Test.java:267:107:267:107 | b : TreeBag [<element>] : String | Test.java:6775:20:6775:58 | newTreeBagWithElement(...) : TreeBag [<element>] : String |
 | Test.java:6778:20:6778:34 | getElement(...) : Set [<element>] : String | Test.java:230:19:230:32 | it : Set [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6778:9:6778:35 | getElement(...) |
+| Test.java:6778:31:6778:33 | out : List [<element>, <element>] : String | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:6778:20:6778:34 | getElement(...) : Set [<element>] : String |
 | Test.java:6783:42:6783:57 | (...)... : String | Test.java:260:53:260:61 | element : String | Test.java:260:135:260:135 | x : ListOrderedSet [<element>] : String | Test.java:6783:13:6783:58 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>] : String |
 | Test.java:6785:20:6785:22 | out : CompositeSet [<element>] : String | Test.java:230:19:230:32 | it : CompositeSet [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6785:9:6785:23 | getElement(...) |
 | Test.java:6790:54:6790:69 | (...)... : String | Test.java:260:53:260:61 | element : String | Test.java:260:135:260:135 | x : ListOrderedSet [<element>] : String | Test.java:6790:25:6790:70 | newListOrderedSetWithElement(...) : ListOrderedSet [<element>] : String |
@@ -19456,6 +19605,7 @@ subpaths
 | Test.java:6820:20:6820:22 | out : CompositeSet [<element>] : String | Test.java:230:19:230:32 | it : CompositeSet [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6820:9:6820:23 | getElement(...) |
 | Test.java:6825:57:6825:72 | (...)... : String | Test.java:254:49:254:57 | element : String | Test.java:254:69:254:126 | new CompositeSet<T>(...) : CompositeSet [<element>] : String | Test.java:6825:30:6825:73 | newCompositeSetWithElement(...) : CompositeSet [<element>] : String |
 | Test.java:6827:20:6827:34 | getElement(...) : Set [<element>] : String | Test.java:230:19:230:32 | it : Set [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6827:9:6827:35 | getElement(...) |
+| Test.java:6827:31:6827:33 | out : List [<element>, <element>] : String | Test.java:230:19:230:32 | it : List [<element>, <element>] : String | Test.java:230:44:230:63 | next(...) : Object [<element>] : String | Test.java:6827:20:6827:34 | getElement(...) : Set [<element>] : String |
 | Test.java:6832:49:6832:64 | (...)... : String | Test.java:254:49:254:57 | element : String | Test.java:254:69:254:126 | new CompositeSet<T>(...) : CompositeSet [<element>] : String | Test.java:6832:22:6832:65 | newCompositeSetWithElement(...) : CompositeSet [<element>] : String |
 | Test.java:6834:20:6834:22 | out : Set [<element>] : String | Test.java:230:19:230:32 | it : Set [<element>] : String | Test.java:230:44:230:63 | next(...) : String | Test.java:6834:9:6834:23 | getElement(...) |
 | Test.java:6841:20:6841:22 | out : ListOrderedSet [<element>] : Object | Test.java:230:19:230:32 | it : ListOrderedSet [<element>] : Object | Test.java:230:44:230:63 | next(...) : Object | Test.java:6841:9:6841:23 | getElement(...) |

@@ -54,13 +54,22 @@ edges
 | Test.java:21:41:21:52 | keySet(...) : Set [<element>] : String | Test.java:21:41:21:63 | iterator(...) : Iterator [<element>] : String | provenance | MaD:44 |
 | Test.java:21:41:21:63 | iterator(...) : Iterator [<element>] : String | Test.java:21:41:21:70 | next(...) : String | provenance | MaD:45 |
 | Test.java:22:19:22:32 | it : JsonArray [<element>] : JsonElement | Test.java:22:44:22:45 | it : JsonArray [<element>] : JsonElement | provenance |  |
+| Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | Test.java:22:44:22:45 | it : JsonArray [<element>] : Object | provenance |  |
 | Test.java:22:19:22:32 | it : List [<element>] : JsonElement | Test.java:22:44:22:45 | it : List [<element>] : JsonElement | provenance |  |
+| Test.java:22:19:22:32 | it : Set [<element>, <map.key>] : String | Test.java:22:44:22:45 | it : Set [<element>, <map.key>] : String | provenance |  |
+| Test.java:22:19:22:32 | it : Set [<element>, <map.value>] : JsonElement | Test.java:22:44:22:45 | it : Set [<element>, <map.value>] : JsonElement | provenance |  |
 | Test.java:22:19:22:32 | it : Set [<element>] : String | Test.java:22:44:22:45 | it : Set [<element>] : String | provenance |  |
 | Test.java:22:44:22:45 | it : JsonArray [<element>] : JsonElement | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | provenance | MaD:44 |
+| Test.java:22:44:22:45 | it : JsonArray [<element>] : Object | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:44 |
 | Test.java:22:44:22:45 | it : List [<element>] : JsonElement | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | provenance | MaD:44 |
+| Test.java:22:44:22:45 | it : Set [<element>, <map.key>] : String | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.key>] : String | provenance | MaD:44 |
+| Test.java:22:44:22:45 | it : Set [<element>, <map.value>] : JsonElement | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.value>] : JsonElement | provenance | MaD:44 |
 | Test.java:22:44:22:45 | it : Set [<element>] : String | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : String | provenance | MaD:44 |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.key>] : String | Test.java:22:44:22:63 | next(...) : Object [<map.key>] : String | provenance | MaD:45 |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.value>] : JsonElement | Test.java:22:44:22:63 | next(...) : Object [<map.value>] : JsonElement | provenance | MaD:45 |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | Test.java:22:44:22:63 | next(...) : JsonElement | provenance | MaD:45 |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | Test.java:22:44:22:63 | next(...) : JsonElement | provenance | MaD:45 |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : Object | Test.java:22:44:22:63 | next(...) : Object | provenance | MaD:45 |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : String | Test.java:22:44:22:63 | next(...) : String | provenance | MaD:45 |
 | Test.java:23:20:23:31 | map : Map [<map.value>] : JsonElement | Test.java:23:43:23:45 | map : Map [<map.value>] : JsonElement | provenance |  |
 | Test.java:23:43:23:45 | map : Map [<map.value>] : JsonElement | Test.java:23:43:23:55 | get(...) : JsonElement | provenance | MaD:46 |
@@ -189,11 +198,13 @@ edges
 | Test.java:237:26:237:33 | source(...) : Object | Test.java:237:17:237:33 | (...)... : Boolean | provenance |  |
 | Test.java:238:4:238:6 | out [post update] : JsonArray [<element>] : Object | Test.java:239:20:239:22 | out : JsonArray [<element>] : Object | provenance |  |
 | Test.java:238:12:238:13 | in : Boolean | Test.java:238:4:238:6 | out [post update] : JsonArray [<element>] : Object | provenance | MaD:23 |
+| Test.java:239:20:239:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | provenance |  |
 | Test.java:239:20:239:22 | out : JsonArray [<element>] : Object | Test.java:239:9:239:23 | getElement(...) | provenance | MaD:44 |
 | Test.java:244:19:244:37 | (...)... : Number | Test.java:245:12:245:13 | in : Number | provenance |  |
 | Test.java:244:30:244:37 | source(...) : Object | Test.java:244:19:244:37 | (...)... : Number | provenance |  |
 | Test.java:245:4:245:6 | out [post update] : JsonArray [<element>] : Object | Test.java:246:20:246:22 | out : JsonArray [<element>] : Object | provenance |  |
 | Test.java:245:12:245:13 | in : Number | Test.java:245:4:245:6 | out [post update] : JsonArray [<element>] : Object | provenance | MaD:24 |
+| Test.java:246:20:246:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | provenance |  |
 | Test.java:246:20:246:22 | out : JsonArray [<element>] : Object | Test.java:246:9:246:23 | getElement(...) | provenance | MaD:44 |
 | Test.java:251:21:251:41 | (...)... : JsonElement | Test.java:252:12:252:13 | in : JsonElement | provenance |  |
 | Test.java:251:34:251:41 | source(...) : Object | Test.java:251:21:251:41 | (...)... : JsonElement | provenance |  |
@@ -205,11 +216,13 @@ edges
 | Test.java:258:24:258:31 | source(...) : Object | Test.java:258:16:258:31 | (...)... : Number | provenance |  |
 | Test.java:259:4:259:6 | out [post update] : JsonArray [<element>] : Object | Test.java:260:20:260:22 | out : JsonArray [<element>] : Object | provenance |  |
 | Test.java:259:12:259:13 | in : Number | Test.java:259:4:259:6 | out [post update] : JsonArray [<element>] : Object | provenance | MaD:26 |
+| Test.java:260:20:260:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | provenance |  |
 | Test.java:260:20:260:22 | out : JsonArray [<element>] : Object | Test.java:260:9:260:23 | getElement(...) | provenance | MaD:44 |
 | Test.java:265:16:265:31 | (...)... : String | Test.java:266:12:266:13 | in : String | provenance |  |
 | Test.java:265:24:265:31 | source(...) : Object | Test.java:265:16:265:31 | (...)... : String | provenance |  |
 | Test.java:266:4:266:6 | out [post update] : JsonArray [<element>] : Object | Test.java:267:20:267:22 | out : JsonArray [<element>] : Object | provenance |  |
 | Test.java:266:12:266:13 | in : String | Test.java:266:4:266:6 | out [post update] : JsonArray [<element>] : Object | provenance | MaD:27 |
+| Test.java:267:20:267:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | provenance |  |
 | Test.java:267:20:267:22 | out : JsonArray [<element>] : Object | Test.java:267:9:267:23 | getElement(...) | provenance | MaD:44 |
 | Test.java:272:19:272:63 | newWithElementDefault(...) : JsonArray [<element>] : JsonElement | Test.java:273:15:273:16 | in : JsonArray [<element>] : JsonElement | provenance |  |
 | Test.java:272:41:272:62 | (...)... : JsonElement | Test.java:28:34:28:52 | element : JsonElement | provenance |  |
@@ -339,6 +352,7 @@ edges
 | Test.java:434:10:434:22 | entrySet(...) : Set [<element>, <map.key>] : String | Test.java:435:37:435:39 | out : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:435:26:435:40 | getElement(...) : Entry [<map.key>] : String | Test.java:25:25:25:48 | container : Entry [<map.key>] : String | provenance |  |
 | Test.java:435:26:435:40 | getElement(...) : Entry [<map.key>] : String | Test.java:435:9:435:41 | getMapKeyDefault(...) | provenance | MaD:48 |
+| Test.java:435:37:435:39 | out : Set [<element>, <map.key>] : String | Test.java:22:19:22:32 | it : Set [<element>, <map.key>] : String | provenance |  |
 | Test.java:435:37:435:39 | out : Set [<element>, <map.key>] : String | Test.java:435:26:435:40 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:44 |
 | Test.java:440:20:440:65 | newWithMapValueDefault(...) : JsonObject [<map.value>] : JsonElement | Test.java:441:10:441:11 | in : JsonObject [<map.value>] : JsonElement | provenance |  |
 | Test.java:440:43:440:64 | (...)... : JsonElement | Test.java:30:36:30:54 | element : JsonElement | provenance |  |
@@ -348,6 +362,7 @@ edges
 | Test.java:441:10:441:22 | entrySet(...) : Set [<element>, <map.value>] : JsonElement | Test.java:442:39:442:41 | out : Set [<element>, <map.value>] : JsonElement | provenance |  |
 | Test.java:442:28:442:42 | getElement(...) : Entry [<map.value>] : JsonElement | Test.java:27:28:27:51 | container : Entry [<map.value>] : JsonElement | provenance |  |
 | Test.java:442:28:442:42 | getElement(...) : Entry [<map.value>] : JsonElement | Test.java:442:9:442:43 | getMapValueDefault(...) | provenance | MaD:49 |
+| Test.java:442:39:442:41 | out : Set [<element>, <map.value>] : JsonElement | Test.java:22:19:22:32 | it : Set [<element>, <map.value>] : JsonElement | provenance |  |
 | Test.java:442:39:442:41 | out : Set [<element>, <map.value>] : JsonElement | Test.java:442:28:442:42 | getElement(...) : Entry [<map.value>] : JsonElement | provenance | MaD:44 |
 | Test.java:447:20:447:65 | newWithMapValueDefault(...) : JsonObject [<map.value>] : JsonElement | Test.java:448:10:448:11 | in : JsonObject [<map.value>] : JsonElement | provenance |  |
 | Test.java:447:43:447:64 | (...)... : JsonElement | Test.java:30:36:30:54 | element : JsonElement | provenance |  |
@@ -378,16 +393,28 @@ nodes
 | Test.java:21:41:21:63 | iterator(...) : Iterator [<element>] : String | semmle.label | iterator(...) : Iterator [<element>] : String |
 | Test.java:21:41:21:70 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:22:19:22:32 | it : JsonArray [<element>] : JsonElement | semmle.label | it : JsonArray [<element>] : JsonElement |
+| Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | semmle.label | it : JsonArray [<element>] : Object |
 | Test.java:22:19:22:32 | it : List [<element>] : JsonElement | semmle.label | it : List [<element>] : JsonElement |
+| Test.java:22:19:22:32 | it : Set [<element>, <map.key>] : String | semmle.label | it : Set [<element>, <map.key>] : String |
+| Test.java:22:19:22:32 | it : Set [<element>, <map.value>] : JsonElement | semmle.label | it : Set [<element>, <map.value>] : JsonElement |
 | Test.java:22:19:22:32 | it : Set [<element>] : String | semmle.label | it : Set [<element>] : String |
 | Test.java:22:44:22:45 | it : JsonArray [<element>] : JsonElement | semmle.label | it : JsonArray [<element>] : JsonElement |
+| Test.java:22:44:22:45 | it : JsonArray [<element>] : Object | semmle.label | it : JsonArray [<element>] : Object |
 | Test.java:22:44:22:45 | it : List [<element>] : JsonElement | semmle.label | it : List [<element>] : JsonElement |
+| Test.java:22:44:22:45 | it : Set [<element>, <map.key>] : String | semmle.label | it : Set [<element>, <map.key>] : String |
+| Test.java:22:44:22:45 | it : Set [<element>, <map.value>] : JsonElement | semmle.label | it : Set [<element>, <map.value>] : JsonElement |
 | Test.java:22:44:22:45 | it : Set [<element>] : String | semmle.label | it : Set [<element>] : String |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.key>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : String |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>, <map.value>] : JsonElement | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : JsonElement |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | semmle.label | iterator(...) : Iterator [<element>] : JsonElement |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : JsonElement | semmle.label | iterator(...) : Iterator [<element>] : JsonElement |
+| Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:22:44:22:56 | iterator(...) : Iterator [<element>] : String | semmle.label | iterator(...) : Iterator [<element>] : String |
 | Test.java:22:44:22:63 | next(...) : JsonElement | semmle.label | next(...) : JsonElement |
 | Test.java:22:44:22:63 | next(...) : JsonElement | semmle.label | next(...) : JsonElement |
+| Test.java:22:44:22:63 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:22:44:22:63 | next(...) : Object [<map.key>] : String | semmle.label | next(...) : Object [<map.key>] : String |
+| Test.java:22:44:22:63 | next(...) : Object [<map.value>] : JsonElement | semmle.label | next(...) : Object [<map.value>] : JsonElement |
 | Test.java:22:44:22:63 | next(...) : String | semmle.label | next(...) : String |
 | Test.java:23:20:23:31 | map : Map [<map.value>] : JsonElement | semmle.label | map : Map [<map.value>] : JsonElement |
 | Test.java:23:43:23:45 | map : Map [<map.value>] : JsonElement | semmle.label | map : Map [<map.value>] : JsonElement |
@@ -745,7 +772,11 @@ nodes
 | Test.java:469:28:469:29 | in : String | semmle.label | in : String |
 | Test.java:470:9:470:11 | out | semmle.label | out |
 subpaths
+| Test.java:239:20:239:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | Test.java:22:44:22:63 | next(...) : Object | Test.java:239:9:239:23 | getElement(...) |
+| Test.java:246:20:246:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | Test.java:22:44:22:63 | next(...) : Object | Test.java:246:9:246:23 | getElement(...) |
 | Test.java:253:20:253:22 | out : JsonArray [<element>] : JsonElement | Test.java:22:19:22:32 | it : JsonArray [<element>] : JsonElement | Test.java:22:44:22:63 | next(...) : JsonElement | Test.java:253:9:253:23 | getElement(...) |
+| Test.java:260:20:260:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | Test.java:22:44:22:63 | next(...) : Object | Test.java:260:9:260:23 | getElement(...) |
+| Test.java:267:20:267:22 | out : JsonArray [<element>] : Object | Test.java:22:19:22:32 | it : JsonArray [<element>] : Object | Test.java:22:44:22:63 | next(...) : Object | Test.java:267:9:267:23 | getElement(...) |
 | Test.java:272:41:272:62 | (...)... : JsonElement | Test.java:28:34:28:52 | element : JsonElement | Test.java:28:111:28:111 | a : JsonArray [<element>] : JsonElement | Test.java:272:19:272:63 | newWithElementDefault(...) : JsonArray [<element>] : JsonElement |
 | Test.java:274:20:274:22 | out : JsonArray [<element>] : JsonElement | Test.java:22:19:22:32 | it : JsonArray [<element>] : JsonElement | Test.java:22:44:22:63 | next(...) : JsonElement | Test.java:274:9:274:23 | getElement(...) |
 | Test.java:279:41:279:62 | (...)... : JsonElement | Test.java:28:34:28:52 | element : JsonElement | Test.java:28:111:28:111 | a : JsonArray [<element>] : JsonElement | Test.java:279:19:279:63 | newWithElementDefault(...) : JsonArray [<element>] : JsonElement |
@@ -762,8 +793,10 @@ subpaths
 | Test.java:428:21:428:23 | out : Map [<map.value>] : JsonElement | Test.java:23:20:23:31 | map : Map [<map.value>] : JsonElement | Test.java:23:43:23:55 | get(...) : JsonElement | Test.java:428:9:428:24 | getMapValue(...) |
 | Test.java:433:41:433:57 | (...)... : String | Test.java:29:34:29:43 | key : String | Test.java:29:120:29:120 | o : JsonObject [<map.key>] : String | Test.java:433:20:433:58 | newWithMapKeyDefault(...) : JsonObject [<map.key>] : String |
 | Test.java:435:26:435:40 | getElement(...) : Entry [<map.key>] : String | Test.java:25:25:25:48 | container : Entry [<map.key>] : String | Test.java:25:60:25:77 | getKey(...) : String | Test.java:435:9:435:41 | getMapKeyDefault(...) |
+| Test.java:435:37:435:39 | out : Set [<element>, <map.key>] : String | Test.java:22:19:22:32 | it : Set [<element>, <map.key>] : String | Test.java:22:44:22:63 | next(...) : Object [<map.key>] : String | Test.java:435:26:435:40 | getElement(...) : Entry [<map.key>] : String |
 | Test.java:440:43:440:64 | (...)... : JsonElement | Test.java:30:36:30:54 | element : JsonElement | Test.java:30:121:30:121 | o : JsonObject [<map.value>] : JsonElement | Test.java:440:20:440:65 | newWithMapValueDefault(...) : JsonObject [<map.value>] : JsonElement |
 | Test.java:442:28:442:42 | getElement(...) : Entry [<map.value>] : JsonElement | Test.java:27:28:27:51 | container : Entry [<map.value>] : JsonElement | Test.java:27:63:27:82 | getValue(...) : JsonElement | Test.java:442:9:442:43 | getMapValueDefault(...) |
+| Test.java:442:39:442:41 | out : Set [<element>, <map.value>] : JsonElement | Test.java:22:19:22:32 | it : Set [<element>, <map.value>] : JsonElement | Test.java:22:44:22:63 | next(...) : Object [<map.value>] : JsonElement | Test.java:442:28:442:42 | getElement(...) : Entry [<map.value>] : JsonElement |
 | Test.java:447:43:447:64 | (...)... : JsonElement | Test.java:30:36:30:54 | element : JsonElement | Test.java:30:121:30:121 | o : JsonObject [<map.value>] : JsonElement | Test.java:447:20:447:65 | newWithMapValueDefault(...) : JsonObject [<map.value>] : JsonElement |
 | Test.java:454:41:454:57 | (...)... : String | Test.java:29:34:29:43 | key : String | Test.java:29:120:29:120 | o : JsonObject [<map.key>] : String | Test.java:454:20:454:58 | newWithMapKeyDefault(...) : JsonObject [<map.key>] : String |
 | Test.java:456:20:456:22 | out : Set [<element>] : String | Test.java:22:19:22:32 | it : Set [<element>] : String | Test.java:22:44:22:63 | next(...) : String | Test.java:456:9:456:23 | getElement(...) |
