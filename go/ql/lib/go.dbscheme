@@ -204,6 +204,8 @@ base_type(unique int ptr: @pointertype ref, int tp: @type ref);
 
 underlying_type(unique int named: @namedtype ref, int tp: @type ref);
 
+alias_rhs(unique int alias: @typealias ref, int tp: @type ref);
+
 #keyset[parent, index]
 component_types(int parent: @compositetype ref, int index: int ref, string name: string ref, int tp: @type ref);
 
@@ -507,7 +509,8 @@ case @type.kind of
 | 36 = @recvchantype
 | 37 = @sendrcvchantype
 | 38 = @namedtype
-| 39 = @typesetliteraltype;
+| 39 = @typesetliteraltype
+| 40 = @typealias;
 
 @basictype = @booltype | @numerictype | @stringtype | @literaltype | @invalidtype | @unsafepointertype;
 
@@ -531,7 +534,7 @@ case @type.kind of
              | @stringliteraltype | @nilliteraltype;
 
 @compositetype = @typeparamtype | @containertype | @structtype | @pointertype | @interfacetype | @tupletype
-               | @signaturetype | @namedtype | @typesetliteraltype;
+               | @signaturetype | @namedtype | @typesetliteraltype | @typealias;
 
 @containertype = @arraytype | @slicetype | @maptype | @chantype;
 
