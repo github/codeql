@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Aggregate", "", "", "Argument[1]", "nosql-injection", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "CountDocuments", "", "", "Argument[1]", "nosql-injection", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "DeleteMany", "", "", "Argument[1]", "nosql-injection", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "DeleteOne", "", "", "Argument[1]", "nosql-injection", "manual"]
@@ -16,4 +17,3 @@ extensions:
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "UpdateMany", "", "", "Argument[1]", "nosql-injection", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "UpdateOne", "", "", "Argument[1]", "nosql-injection", "manual"]
       - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Watch", "", "", "Argument[1]", "nosql-injection", "manual"]
-      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Aggregate", "", "", "Argument[1]", "nosql-injection", "manual"]
