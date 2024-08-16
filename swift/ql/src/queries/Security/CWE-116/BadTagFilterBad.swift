@@ -1,4 +1,4 @@
-let script_tag_regex = try Regex("<script[^>]*>.*</script>")
+let script_tag_regex = /<script[^>]*>.*<\/script>/
 
 var old_html = ""
 while (html != old_html) {
