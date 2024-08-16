@@ -7,6 +7,7 @@ private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
+private import semmle.code.java.dataflow.ListOfConstantsSanitizer
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
