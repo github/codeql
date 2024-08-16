@@ -1748,6 +1748,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.Alias:
 			kind = dbscheme.TypeAlias.Index()
+			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
 			dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
 		default:
 			log.Fatalf("unexpected type %T", tp)
