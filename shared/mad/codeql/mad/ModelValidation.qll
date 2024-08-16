@@ -119,6 +119,7 @@ module KindValidation<KindValidationConfigSig Config> {
         [
           // shared
           "local", "remote", "file", "commandargs", "database", "environment", "reverse-dns",
+          "stdin",
           // Java
           "android-external-storage-dir", "contentprovider",
           // C#

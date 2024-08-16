@@ -15,6 +15,7 @@ extensions:
       - ["database", "local"]
       - ["commandargs", "local"]
       - ["environment", "local"]
+      - ["stdin", "local"]
       - ["file", "local"]
       - ["windows-registry", "local"]
 

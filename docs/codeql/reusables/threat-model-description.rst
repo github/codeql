@@ -5,7 +5,7 @@ A threat model is a named class of dataflow sources that can be enabled or disab
 The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
 
 - ``remote`` which represents requests and responses from the network.
-- ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), environment variables(``environment``) and Windows registry values ("windows-registry"). Currently, Windows registry values are used by C# only.
+- ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), environment variables(``environment``), standard input (``stdin``) and Windows registry values ("windows-registry"). Currently, Windows registry values are used by C# only.
 
 Note that subcategories can be turned included or excluded separately, so you can specify ``local`` without ``database``, or just ``commandargs`` and ``environment`` without the rest of ``local``.
 
