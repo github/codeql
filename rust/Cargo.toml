@@ -1,0 +1,9 @@
+[package]
+name = "codeql-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ra_ap_hir = "0.0.229"
+ra_ap_load-cargo = "0.0.229"
+ra_ap_project_model = "0.0.229"
