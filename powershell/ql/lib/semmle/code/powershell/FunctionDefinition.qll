@@ -12,4 +12,8 @@ class Function extends @function_definition, Stmt {
   predicate isFilter() { function_definition(this, _, _, true, _) }
 
   predicate isWorkflow() { function_definition(this, _, _, _, true) }
+
+  Parameter getParameter(int i) { function_definition_parameter(this, i, result) }
+
+  Parameter getAParameter() { result = this.getParameter(_) }
 }
