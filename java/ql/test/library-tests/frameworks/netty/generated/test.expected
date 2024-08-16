@@ -501,18 +501,39 @@ models
 edges
 | Test.java:79:19:79:32 | it : Headers [<element>, <map.key>] : Object | Test.java:79:44:79:45 | it : Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:79:19:79:32 | it : Headers [<element>, <map.value>] : Object | Test.java:79:44:79:45 | it : Headers [<element>, <map.value>] : Object | provenance |  |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.key>] : Object | provenance |  |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : Object | provenance |  |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : String | provenance |  |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:79:19:79:32 | it : List [<element>, <map.key>] : Object | Test.java:79:44:79:45 | it : List [<element>, <map.key>] : Object | provenance |  |
 | Test.java:79:19:79:32 | it : List [<element>, <map.value>] : Object | Test.java:79:44:79:45 | it : List [<element>, <map.value>] : Object | provenance |  |
 | Test.java:79:19:79:32 | it : List [<element>] : Object | Test.java:79:44:79:45 | it : List [<element>] : Object | provenance |  |
 | Test.java:79:19:79:32 | it : Set [<element>] : Object | Test.java:79:44:79:45 | it : Set [<element>] : Object | provenance |  |
 | Test.java:79:44:79:45 | it : Headers [<element>, <map.key>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:492 |
 | Test.java:79:44:79:45 | it : Headers [<element>, <map.value>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.key>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : CharSequence | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : CharSequence | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : String | provenance | MaD:492 |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:492 |
 | Test.java:79:44:79:45 | it : List [<element>, <map.key>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | provenance | MaD:492 |
 | Test.java:79:44:79:45 | it : List [<element>, <map.value>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | provenance | MaD:492 |
 | Test.java:79:44:79:45 | it : List [<element>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:492 |
 | Test.java:79:44:79:45 | it : Set [<element>] : Object | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:492 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | provenance | MaD:493 |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | provenance | MaD:493 |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : String | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | provenance | MaD:493 |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | provenance | MaD:493 |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | provenance | MaD:493 |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | provenance | MaD:493 |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | provenance | MaD:493 |
@@ -3548,6 +3569,7 @@ edges
 | Test.java:5314:4:5314:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5315:39:5315:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5314:18:5314:19 | in : CharSequence | Test.java:5314:4:5314:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | provenance | MaD:347 |
 | Test.java:5315:28:5315:42 | getElement(...) : Entry [<map.value>] : CharSequence | Test.java:5315:9:5315:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5315:39:5315:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5315:39:5315:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5315:28:5315:42 | getElement(...) : Entry [<map.value>] : CharSequence | provenance | MaD:492 |
 | Test.java:5320:22:5320:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5321:10:5321:11 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5320:36:5320:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5320:22:5320:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3564,6 +3586,7 @@ edges
 | Test.java:5335:4:5335:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5336:39:5336:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5335:15:5335:16 | in : CharSequence | Test.java:5335:4:5335:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | provenance | MaD:350 |
 | Test.java:5336:28:5336:42 | getElement(...) : Entry [<map.value>] : CharSequence | Test.java:5336:9:5336:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5336:39:5336:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5336:39:5336:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5336:28:5336:42 | getElement(...) : Entry [<map.value>] : CharSequence | provenance | MaD:492 |
 | Test.java:5341:22:5341:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5342:10:5342:11 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5341:36:5341:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5341:22:5341:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3580,6 +3603,7 @@ edges
 | Test.java:5356:4:5356:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5357:39:5357:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5356:13:5356:14 | in : CharSequence | Test.java:5356:4:5356:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | provenance | MaD:353 |
 | Test.java:5357:28:5357:42 | getElement(...) : Entry [<map.value>] : CharSequence | Test.java:5357:9:5357:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5357:39:5357:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5357:39:5357:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5357:28:5357:42 | getElement(...) : Entry [<map.value>] : CharSequence | provenance | MaD:492 |
 | Test.java:5362:22:5362:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5363:10:5363:11 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5362:36:5362:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5362:22:5362:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3596,6 +3620,7 @@ edges
 | Test.java:5377:4:5377:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5378:39:5378:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5377:15:5377:16 | in : CharSequence | Test.java:5377:4:5377:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | provenance | MaD:356 |
 | Test.java:5378:28:5378:42 | getElement(...) : Entry [<map.value>] : CharSequence | Test.java:5378:9:5378:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5378:39:5378:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5378:39:5378:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5378:28:5378:42 | getElement(...) : Entry [<map.value>] : CharSequence | provenance | MaD:492 |
 | Test.java:5383:22:5383:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5384:10:5384:11 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5383:36:5383:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5383:22:5383:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3612,6 +3637,7 @@ edges
 | Test.java:5398:4:5398:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5399:39:5399:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5398:15:5398:16 | in : CharSequence | Test.java:5398:4:5398:6 | out [post update] : Http2Headers [<element>, <map.value>] : CharSequence | provenance | MaD:359 |
 | Test.java:5399:28:5399:42 | getElement(...) : Entry [<map.value>] : CharSequence | Test.java:5399:9:5399:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5399:39:5399:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | provenance |  |
 | Test.java:5399:39:5399:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:5399:28:5399:42 | getElement(...) : Entry [<map.value>] : CharSequence | provenance | MaD:492 |
 | Test.java:5404:22:5404:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5405:10:5405:11 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5404:36:5404:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5404:22:5404:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3648,6 +3674,7 @@ edges
 | Test.java:5440:48:5440:49 | in : Http2Headers [<element>, <map.key>] : Object | Test.java:5440:52:5440:54 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:366 |
 | Test.java:5440:52:5440:54 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5441:37:5441:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5441:26:5441:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5441:9:5441:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5441:37:5441:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5441:37:5441:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5441:26:5441:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5446:22:5446:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | Test.java:5447:48:5447:49 | in : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5446:36:5446:90 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5446:22:5446:90 | (...)... : Http2Headers [<element>, <map.value>] : Object | provenance |  |
@@ -3656,6 +3683,7 @@ edges
 | Test.java:5447:48:5447:49 | in : Http2Headers [<element>, <map.value>] : Object | Test.java:5447:52:5447:54 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:367 |
 | Test.java:5447:52:5447:54 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5448:39:5448:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5448:28:5448:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5448:9:5448:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5448:39:5448:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5448:39:5448:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5448:28:5448:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5453:17:5453:33 | (...)... : ByteBuf | Test.java:5454:70:5454:71 | in : ByteBuf | provenance |  |
 | Test.java:5453:26:5453:33 | source(...) : Object | Test.java:5453:17:5453:33 | (...)... : ByteBuf | provenance |  |
@@ -3720,6 +3748,7 @@ edges
 | Test.java:5524:38:5524:39 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:5524:42:5524:44 | out [post update] : Http2Headers [<element>, <map.key>] : Object | provenance | MaD:376 |
 | Test.java:5524:42:5524:44 | out [post update] : Http2Headers [<element>, <map.key>] : Object | Test.java:5525:37:5525:39 | out : Http2Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5525:26:5525:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5525:9:5525:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5525:37:5525:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5525:37:5525:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:5525:26:5525:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5530:21:5530:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:5531:38:5531:39 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5530:34:5530:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5530:21:5530:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -3728,6 +3757,7 @@ edges
 | Test.java:5531:38:5531:39 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:5531:42:5531:44 | out [post update] : Http2Headers [<element>, <map.value>] : Object | provenance | MaD:377 |
 | Test.java:5531:42:5531:44 | out [post update] : Http2Headers [<element>, <map.value>] : Object | Test.java:5532:39:5532:41 | out : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5532:28:5532:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5532:9:5532:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5532:39:5532:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5532:39:5532:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:5532:28:5532:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5537:21:5537:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:5538:44:5538:45 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5537:34:5537:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5537:21:5537:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -3736,6 +3766,7 @@ edges
 | Test.java:5538:10:5538:53 | toHttp2Headers(...) : Http2Headers [<element>, <map.key>] : Object | Test.java:5539:37:5539:39 | out : Http2Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5538:44:5538:45 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:5538:10:5538:53 | toHttp2Headers(...) : Http2Headers [<element>, <map.key>] : Object | provenance | MaD:374 |
 | Test.java:5539:26:5539:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5539:9:5539:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5539:37:5539:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5539:37:5539:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:5539:26:5539:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5544:21:5544:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:5545:44:5545:45 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5544:34:5544:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5544:21:5544:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -3744,6 +3775,7 @@ edges
 | Test.java:5545:10:5545:53 | toHttp2Headers(...) : Http2Headers [<element>, <map.value>] : Object | Test.java:5546:39:5546:41 | out : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5545:44:5545:45 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:5545:10:5545:53 | toHttp2Headers(...) : Http2Headers [<element>, <map.value>] : Object | provenance | MaD:375 |
 | Test.java:5546:28:5546:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5546:9:5546:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5546:39:5546:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5546:39:5546:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:5546:28:5546:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5551:22:5551:88 | (...)... : Http2Headers [<element>, <map.key>] : Object | Test.java:5552:46:5552:47 | in : Http2Headers [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5551:36:5551:88 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5551:22:5551:88 | (...)... : Http2Headers [<element>, <map.key>] : Object | provenance |  |
@@ -3774,6 +3806,7 @@ edges
 | Test.java:5580:4:5580:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5581:37:5581:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5580:12:5580:13 | in : CharSequence | Test.java:5580:4:5580:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:225 |
 | Test.java:5581:26:5581:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5581:9:5581:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5581:37:5581:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5581:37:5581:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5581:26:5581:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5586:18:5586:44 | (...)... : List [<element>] : Object | Test.java:5587:32:5587:33 | in : List [<element>] : Object | provenance |  |
 | Test.java:5586:28:5586:44 | of(...) : List [<element>] : Object | Test.java:5586:18:5586:44 | (...)... : List [<element>] : Object | provenance |  |
@@ -3781,18 +3814,21 @@ edges
 | Test.java:5587:4:5587:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5588:39:5588:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5587:32:5587:33 | in : List [<element>] : Object | Test.java:5587:4:5587:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:226 |
 | Test.java:5588:28:5588:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5588:9:5588:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5588:39:5588:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5588:39:5588:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5588:28:5588:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5593:22:5593:43 | (...)... : CharSequence | Test.java:5594:12:5594:13 | in : CharSequence | provenance |  |
 | Test.java:5593:36:5593:43 | source(...) : Object | Test.java:5593:22:5593:43 | (...)... : CharSequence | provenance |  |
 | Test.java:5594:4:5594:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5595:37:5595:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5594:12:5594:13 | in : CharSequence | Test.java:5594:4:5594:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:227 |
 | Test.java:5595:26:5595:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5595:9:5595:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5595:37:5595:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5595:37:5595:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5595:26:5595:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5600:16:5600:31 | (...)... : Object | Test.java:5601:32:5601:33 | in : Object | provenance |  |
 | Test.java:5600:24:5600:31 | source(...) : Object | Test.java:5600:16:5600:31 | (...)... : Object | provenance |  |
 | Test.java:5601:4:5601:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5602:39:5602:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5601:32:5601:33 | in : Object | Test.java:5601:4:5601:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:228 |
 | Test.java:5602:28:5602:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5602:9:5602:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5602:39:5602:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5602:39:5602:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5602:28:5602:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5607:21:5607:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:5608:12:5608:13 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5607:34:5607:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5607:21:5607:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -3801,6 +3837,7 @@ edges
 | Test.java:5608:4:5608:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5609:37:5609:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5608:12:5608:13 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:5608:4:5608:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:233 |
 | Test.java:5609:26:5609:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5609:9:5609:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5609:37:5609:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5609:37:5609:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5609:26:5609:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5614:21:5614:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:5615:12:5615:13 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5614:34:5614:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5614:21:5614:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -3809,12 +3846,14 @@ edges
 | Test.java:5615:4:5615:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5616:39:5616:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5615:12:5615:13 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:5615:4:5615:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:234 |
 | Test.java:5616:28:5616:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5616:9:5616:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5616:39:5616:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5616:39:5616:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5616:28:5616:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5621:16:5621:31 | (...)... : String | Test.java:5622:12:5622:13 | in : String | provenance |  |
 | Test.java:5621:24:5621:31 | source(...) : Object | Test.java:5621:16:5621:31 | (...)... : String | provenance |  |
 | Test.java:5622:4:5622:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | Test.java:5623:37:5623:39 | out : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5622:12:5622:13 | in : String | Test.java:5622:4:5622:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | provenance | MaD:229 |
 | Test.java:5623:26:5623:40 | getElement(...) : Entry [<map.key>] : String | Test.java:5623:9:5623:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5623:37:5623:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5623:37:5623:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:5623:26:5623:40 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:492 |
 | Test.java:5628:18:5628:44 | (...)... : List [<element>] : Object | Test.java:5629:26:5629:27 | in : List [<element>] : Object | provenance |  |
 | Test.java:5628:28:5628:44 | of(...) : List [<element>] : Object | Test.java:5628:18:5628:44 | (...)... : List [<element>] : Object | provenance |  |
@@ -3822,18 +3861,21 @@ edges
 | Test.java:5629:4:5629:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5630:39:5630:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5629:26:5629:27 | in : List [<element>] : Object | Test.java:5629:4:5629:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:230 |
 | Test.java:5630:28:5630:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5630:9:5630:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5630:39:5630:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5630:39:5630:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5630:28:5630:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5635:16:5635:31 | (...)... : String | Test.java:5636:12:5636:13 | in : String | provenance |  |
 | Test.java:5635:24:5635:31 | source(...) : Object | Test.java:5635:16:5635:31 | (...)... : String | provenance |  |
 | Test.java:5636:4:5636:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | Test.java:5637:37:5637:39 | out : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5636:12:5636:13 | in : String | Test.java:5636:4:5636:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | provenance | MaD:231 |
 | Test.java:5637:26:5637:40 | getElement(...) : Entry [<map.key>] : String | Test.java:5637:9:5637:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5637:37:5637:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5637:37:5637:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:5637:26:5637:40 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:492 |
 | Test.java:5642:16:5642:31 | (...)... : Object | Test.java:5643:26:5643:27 | in : Object | provenance |  |
 | Test.java:5642:24:5642:31 | source(...) : Object | Test.java:5642:16:5642:31 | (...)... : Object | provenance |  |
 | Test.java:5643:4:5643:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5644:39:5644:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5643:26:5643:27 | in : Object | Test.java:5643:4:5643:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:232 |
 | Test.java:5644:28:5644:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5644:9:5644:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5644:39:5644:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5644:39:5644:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5644:28:5644:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5649:21:5649:41 | (...)... : HttpHeaders | Test.java:5650:10:5650:11 | in : HttpHeaders | provenance |  |
 | Test.java:5649:34:5649:41 | source(...) : Object | Test.java:5649:21:5649:41 | (...)... : HttpHeaders | provenance |  |
@@ -3864,6 +3906,7 @@ edges
 | Test.java:5692:4:5692:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:5693:37:5693:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:5692:15:5692:16 | in : CharSequence | Test.java:5692:4:5692:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | provenance | MaD:236 |
 | Test.java:5693:26:5693:40 | getElement(...) : Entry [<map.key>] : CharSequence | Test.java:5693:9:5693:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5693:37:5693:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:5693:37:5693:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:5693:26:5693:40 | getElement(...) : Entry [<map.key>] : CharSequence | provenance | MaD:492 |
 | Test.java:5698:21:5698:41 | (...)... : HttpHeaders | Test.java:5699:10:5699:11 | in : HttpHeaders | provenance |  |
 | Test.java:5698:34:5698:41 | source(...) : Object | Test.java:5698:21:5698:41 | (...)... : HttpHeaders | provenance |  |
@@ -3874,6 +3917,7 @@ edges
 | Test.java:5706:4:5706:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:5707:37:5707:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:5706:17:5706:18 | in : CharSequence | Test.java:5706:4:5706:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | provenance | MaD:238 |
 | Test.java:5707:26:5707:40 | getElement(...) : Entry [<map.key>] : CharSequence | Test.java:5707:9:5707:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5707:37:5707:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:5707:37:5707:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:5707:26:5707:40 | getElement(...) : Entry [<map.key>] : CharSequence | provenance | MaD:492 |
 | Test.java:5712:21:5712:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:5713:10:5713:11 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5712:34:5712:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5712:21:5712:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -3882,6 +3926,7 @@ edges
 | Test.java:5713:10:5713:11 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:5713:10:5713:18 | copy(...) : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:239 |
 | Test.java:5713:10:5713:18 | copy(...) : HttpHeaders [<element>, <map.key>] : Object | Test.java:5714:37:5714:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5714:26:5714:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5714:9:5714:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5714:37:5714:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5714:37:5714:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5714:26:5714:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5719:21:5719:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:5720:10:5720:11 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5719:34:5719:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5719:21:5719:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -3890,6 +3935,7 @@ edges
 | Test.java:5720:10:5720:11 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:5720:10:5720:18 | copy(...) : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:240 |
 | Test.java:5720:10:5720:18 | copy(...) : HttpHeaders [<element>, <map.value>] : Object | Test.java:5721:39:5721:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5721:28:5721:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5721:9:5721:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5721:39:5721:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5721:39:5721:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5721:28:5721:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5726:21:5726:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:5727:10:5727:11 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5726:34:5726:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5726:21:5726:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -4058,6 +4104,7 @@ edges
 | Test.java:5917:4:5917:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5918:37:5918:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5917:12:5917:13 | in : CharSequence | Test.java:5917:4:5917:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:260 |
 | Test.java:5918:26:5918:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5918:9:5918:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5918:37:5918:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5918:37:5918:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5918:26:5918:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5923:18:5923:44 | (...)... : List [<element>] : Object | Test.java:5924:32:5924:33 | in : List [<element>] : Object | provenance |  |
 | Test.java:5923:28:5923:44 | of(...) : List [<element>] : Object | Test.java:5923:18:5923:44 | (...)... : List [<element>] : Object | provenance |  |
@@ -4065,18 +4112,21 @@ edges
 | Test.java:5924:4:5924:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5925:39:5925:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5924:32:5924:33 | in : List [<element>] : Object | Test.java:5924:4:5924:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:261 |
 | Test.java:5925:28:5925:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5925:9:5925:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5925:39:5925:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5925:39:5925:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5925:28:5925:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5930:22:5930:43 | (...)... : CharSequence | Test.java:5931:12:5931:13 | in : CharSequence | provenance |  |
 | Test.java:5930:36:5930:43 | source(...) : Object | Test.java:5930:22:5930:43 | (...)... : CharSequence | provenance |  |
 | Test.java:5931:4:5931:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5932:37:5932:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5931:12:5931:13 | in : CharSequence | Test.java:5931:4:5931:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:262 |
 | Test.java:5932:26:5932:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5932:9:5932:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5932:37:5932:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5932:37:5932:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5932:26:5932:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5937:16:5937:31 | (...)... : Object | Test.java:5938:32:5938:33 | in : Object | provenance |  |
 | Test.java:5937:24:5937:31 | source(...) : Object | Test.java:5937:16:5937:31 | (...)... : Object | provenance |  |
 | Test.java:5938:4:5938:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5939:39:5939:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5938:32:5938:33 | in : Object | Test.java:5938:4:5938:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:263 |
 | Test.java:5939:28:5939:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5939:9:5939:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5939:39:5939:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5939:39:5939:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5939:28:5939:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5944:21:5944:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:5945:12:5945:13 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5944:34:5944:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:5944:21:5944:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -4085,6 +4135,7 @@ edges
 | Test.java:5945:4:5945:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:5946:37:5946:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5945:12:5945:13 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:5945:4:5945:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:268 |
 | Test.java:5946:26:5946:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:5946:9:5946:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5946:37:5946:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:5946:37:5946:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:5946:26:5946:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:5951:21:5951:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:5952:12:5952:13 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5951:34:5951:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:5951:21:5951:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -4093,12 +4144,14 @@ edges
 | Test.java:5952:4:5952:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5953:39:5953:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5952:12:5952:13 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:5952:4:5952:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:269 |
 | Test.java:5953:28:5953:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5953:9:5953:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5953:39:5953:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5953:39:5953:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5953:28:5953:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5958:16:5958:31 | (...)... : String | Test.java:5959:12:5959:13 | in : String | provenance |  |
 | Test.java:5958:24:5958:31 | source(...) : Object | Test.java:5958:16:5958:31 | (...)... : String | provenance |  |
 | Test.java:5959:4:5959:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | Test.java:5960:37:5960:39 | out : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5959:12:5959:13 | in : String | Test.java:5959:4:5959:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | provenance | MaD:264 |
 | Test.java:5960:26:5960:40 | getElement(...) : Entry [<map.key>] : String | Test.java:5960:9:5960:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5960:37:5960:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5960:37:5960:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:5960:26:5960:40 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:492 |
 | Test.java:5965:18:5965:44 | (...)... : List [<element>] : Object | Test.java:5966:26:5966:27 | in : List [<element>] : Object | provenance |  |
 | Test.java:5965:28:5965:44 | of(...) : List [<element>] : Object | Test.java:5965:18:5965:44 | (...)... : List [<element>] : Object | provenance |  |
@@ -4106,18 +4159,21 @@ edges
 | Test.java:5966:4:5966:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5967:39:5967:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5966:26:5966:27 | in : List [<element>] : Object | Test.java:5966:4:5966:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:265 |
 | Test.java:5967:28:5967:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5967:9:5967:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5967:39:5967:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5967:39:5967:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5967:28:5967:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5972:16:5972:31 | (...)... : String | Test.java:5973:12:5973:13 | in : String | provenance |  |
 | Test.java:5972:24:5972:31 | source(...) : Object | Test.java:5972:16:5972:31 | (...)... : String | provenance |  |
 | Test.java:5973:4:5973:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | Test.java:5974:37:5974:39 | out : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5973:12:5973:13 | in : String | Test.java:5973:4:5973:6 | out [post update] : HttpHeaders [<element>, <map.key>] : String | provenance | MaD:266 |
 | Test.java:5974:26:5974:40 | getElement(...) : Entry [<map.key>] : String | Test.java:5974:9:5974:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:5974:37:5974:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | provenance |  |
 | Test.java:5974:37:5974:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:5974:26:5974:40 | getElement(...) : Entry [<map.key>] : String | provenance | MaD:492 |
 | Test.java:5979:16:5979:31 | (...)... : Object | Test.java:5980:26:5980:27 | in : Object | provenance |  |
 | Test.java:5979:24:5979:31 | source(...) : Object | Test.java:5979:16:5979:31 | (...)... : Object | provenance |  |
 | Test.java:5980:4:5980:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:5981:39:5981:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5980:26:5980:27 | in : Object | Test.java:5980:4:5980:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:267 |
 | Test.java:5981:28:5981:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:5981:9:5981:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:5981:39:5981:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:5981:39:5981:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:5981:28:5981:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:5986:21:5986:41 | (...)... : HttpHeaders | Test.java:5987:10:5987:11 | in : HttpHeaders | provenance |  |
 | Test.java:5986:34:5986:41 | source(...) : Object | Test.java:5986:21:5986:41 | (...)... : HttpHeaders | provenance |  |
@@ -4150,6 +4206,7 @@ edges
 | Test.java:6029:4:6029:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | Test.java:6030:37:6030:39 | out : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:6029:15:6029:16 | in : HttpHeaders [<element>, <map.key>] : Object | Test.java:6029:4:6029:6 | out [post update] : HttpHeaders [<element>, <map.key>] : Object | provenance | MaD:271 |
 | Test.java:6030:26:6030:40 | getElement(...) : Entry [<map.key>] : Object | Test.java:6030:9:6030:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:6030:37:6030:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:6030:37:6030:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:6030:26:6030:40 | getElement(...) : Entry [<map.key>] : Object | provenance | MaD:492 |
 | Test.java:6035:21:6035:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | Test.java:6036:15:6036:16 | in : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:6035:34:6035:88 | newWithElementDefault(...) : Object [<element>, <map.value>] : Object | Test.java:6035:21:6035:88 | (...)... : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
@@ -4158,6 +4215,7 @@ edges
 | Test.java:6036:4:6036:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | Test.java:6037:39:6037:41 | out : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:6036:15:6036:16 | in : HttpHeaders [<element>, <map.value>] : Object | Test.java:6036:4:6036:6 | out [post update] : HttpHeaders [<element>, <map.value>] : Object | provenance | MaD:272 |
 | Test.java:6037:28:6037:42 | getElement(...) : Entry [<map.value>] : Object | Test.java:6037:9:6037:43 | getMapValueDefault(...) | provenance | MaD:498 |
+| Test.java:6037:39:6037:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | provenance |  |
 | Test.java:6037:39:6037:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:6037:28:6037:42 | getElement(...) : Entry [<map.value>] : Object | provenance | MaD:492 |
 | Test.java:6042:21:6042:41 | (...)... : HttpHeaders | Test.java:6043:10:6043:11 | in : HttpHeaders | provenance |  |
 | Test.java:6042:34:6042:41 | source(...) : Object | Test.java:6042:21:6042:41 | (...)... : HttpHeaders | provenance |  |
@@ -4168,6 +4226,7 @@ edges
 | Test.java:6050:4:6050:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:6051:37:6051:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:6050:15:6050:16 | in : CharSequence | Test.java:6050:4:6050:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | provenance | MaD:274 |
 | Test.java:6051:26:6051:40 | getElement(...) : Entry [<map.key>] : CharSequence | Test.java:6051:9:6051:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:6051:37:6051:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:6051:37:6051:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:6051:26:6051:40 | getElement(...) : Entry [<map.key>] : CharSequence | provenance | MaD:492 |
 | Test.java:6056:21:6056:41 | (...)... : HttpHeaders | Test.java:6057:10:6057:11 | in : HttpHeaders | provenance |  |
 | Test.java:6056:34:6056:41 | source(...) : Object | Test.java:6056:21:6056:41 | (...)... : HttpHeaders | provenance |  |
@@ -4178,6 +4237,7 @@ edges
 | Test.java:6064:4:6064:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:6065:37:6065:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:6064:17:6064:18 | in : CharSequence | Test.java:6064:4:6064:6 | out [post update] : HttpHeaders [<element>, <map.key>] : CharSequence | provenance | MaD:276 |
 | Test.java:6065:26:6065:40 | getElement(...) : Entry [<map.key>] : CharSequence | Test.java:6065:9:6065:41 | getMapKeyDefault(...) | provenance | MaD:499 |
+| Test.java:6065:37:6065:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | provenance |  |
 | Test.java:6065:37:6065:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:6065:26:6065:40 | getElement(...) : Entry [<map.key>] : CharSequence | provenance | MaD:492 |
 | Test.java:6070:21:6070:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | Test.java:6071:10:6071:11 | in : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
 | Test.java:6070:34:6070:86 | newWithElementDefault(...) : Object [<element>, <map.key>] : Object | Test.java:6070:21:6070:86 | (...)... : HttpHeaders [<element>, <map.key>] : Object | provenance |  |
@@ -5434,26 +5494,54 @@ edges
 nodes
 | Test.java:79:19:79:32 | it : Headers [<element>, <map.key>] : Object | semmle.label | it : Headers [<element>, <map.key>] : Object |
 | Test.java:79:19:79:32 | it : Headers [<element>, <map.value>] : Object | semmle.label | it : Headers [<element>, <map.value>] : Object |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | semmle.label | it : Http2Headers [<element>, <map.key>] : Object |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | semmle.label | it : Http2Headers [<element>, <map.value>] : CharSequence |
+| Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | semmle.label | it : Http2Headers [<element>, <map.value>] : Object |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | semmle.label | it : HttpHeaders [<element>, <map.key>] : CharSequence |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | semmle.label | it : HttpHeaders [<element>, <map.key>] : Object |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | semmle.label | it : HttpHeaders [<element>, <map.key>] : String |
+| Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | semmle.label | it : HttpHeaders [<element>, <map.value>] : Object |
 | Test.java:79:19:79:32 | it : List [<element>, <map.key>] : Object | semmle.label | it : List [<element>, <map.key>] : Object |
 | Test.java:79:19:79:32 | it : List [<element>, <map.value>] : Object | semmle.label | it : List [<element>, <map.value>] : Object |
 | Test.java:79:19:79:32 | it : List [<element>] : Object | semmle.label | it : List [<element>] : Object |
 | Test.java:79:19:79:32 | it : Set [<element>] : Object | semmle.label | it : Set [<element>] : Object |
 | Test.java:79:44:79:45 | it : Headers [<element>, <map.key>] : Object | semmle.label | it : Headers [<element>, <map.key>] : Object |
 | Test.java:79:44:79:45 | it : Headers [<element>, <map.value>] : Object | semmle.label | it : Headers [<element>, <map.value>] : Object |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.key>] : Object | semmle.label | it : Http2Headers [<element>, <map.key>] : Object |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : CharSequence | semmle.label | it : Http2Headers [<element>, <map.value>] : CharSequence |
+| Test.java:79:44:79:45 | it : Http2Headers [<element>, <map.value>] : Object | semmle.label | it : Http2Headers [<element>, <map.value>] : Object |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : CharSequence | semmle.label | it : HttpHeaders [<element>, <map.key>] : CharSequence |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : Object | semmle.label | it : HttpHeaders [<element>, <map.key>] : Object |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.key>] : String | semmle.label | it : HttpHeaders [<element>, <map.key>] : String |
+| Test.java:79:44:79:45 | it : HttpHeaders [<element>, <map.value>] : Object | semmle.label | it : HttpHeaders [<element>, <map.value>] : Object |
 | Test.java:79:44:79:45 | it : List [<element>, <map.key>] : Object | semmle.label | it : List [<element>, <map.key>] : Object |
 | Test.java:79:44:79:45 | it : List [<element>, <map.value>] : Object | semmle.label | it : List [<element>, <map.value>] : Object |
 | Test.java:79:44:79:45 | it : List [<element>] : Object | semmle.label | it : List [<element>] : Object |
 | Test.java:79:44:79:45 | it : Set [<element>] : Object | semmle.label | it : Set [<element>] : Object |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : CharSequence | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : CharSequence |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : Object |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.key>] : String | semmle.label | iterator(...) : Iterator [<element>, <map.key>] : String |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : CharSequence | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : CharSequence |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
+| Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>, <map.value>] : Object | semmle.label | iterator(...) : Iterator [<element>, <map.value>] : Object |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:79:44:79:56 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
 | Test.java:79:44:79:63 | next(...) : Object | semmle.label | next(...) : Object |
 | Test.java:79:44:79:63 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | semmle.label | next(...) : Object [<map.key>] : CharSequence |
 | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
 | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
+| Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
+| Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | semmle.label | next(...) : Object [<map.key>] : Object |
+| Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | semmle.label | next(...) : Object [<map.key>] : String |
+| Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | semmle.label | next(...) : Object [<map.value>] : CharSequence |
+| Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
+| Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
 | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
 | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | semmle.label | next(...) : Object [<map.value>] : Object |
 | Test.java:80:19:80:32 | it : Iterator [<element>, <map.key>] : Object | semmle.label | it : Iterator [<element>, <map.key>] : Object |
@@ -11414,7 +11502,32 @@ subpaths
 | Test.java:4744:20:4744:22 | out : List [<element>] : Object | Test.java:79:19:79:32 | it : List [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | Test.java:4744:9:4744:23 | getElement(...) |
 | Test.java:4760:20:4760:22 | out : List [<element>] : Object | Test.java:79:19:79:32 | it : List [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | Test.java:4760:9:4760:23 | getElement(...) |
 | Test.java:4768:20:4768:22 | out : List [<element>] : Object | Test.java:79:19:79:32 | it : List [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | Test.java:4768:9:4768:23 | getElement(...) |
+| Test.java:5315:39:5315:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | Test.java:5315:28:5315:42 | getElement(...) : Entry [<map.value>] : CharSequence |
+| Test.java:5336:39:5336:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | Test.java:5336:28:5336:42 | getElement(...) : Entry [<map.value>] : CharSequence |
+| Test.java:5357:39:5357:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | Test.java:5357:28:5357:42 | getElement(...) : Entry [<map.value>] : CharSequence |
+| Test.java:5378:39:5378:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | Test.java:5378:28:5378:42 | getElement(...) : Entry [<map.value>] : CharSequence |
+| Test.java:5399:39:5399:41 | out : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : CharSequence | Test.java:5399:28:5399:42 | getElement(...) : Entry [<map.value>] : CharSequence |
 | Test.java:5406:20:5406:22 | out : Iterator [<element>] : Object | Test.java:80:19:80:32 | it : Iterator [<element>] : Object | Test.java:80:44:80:52 | next(...) : Object | Test.java:5406:9:5406:23 | getElement(...) |
+| Test.java:5441:37:5441:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5441:26:5441:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5448:39:5448:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5448:28:5448:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5525:37:5525:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5525:26:5525:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5532:39:5532:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5532:28:5532:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5539:37:5539:39 | out : Http2Headers [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5539:26:5539:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5546:39:5546:41 | out : Http2Headers [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : Http2Headers [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5546:28:5546:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5581:37:5581:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5581:26:5581:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5588:39:5588:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5588:28:5588:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5595:37:5595:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5595:26:5595:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5602:39:5602:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5602:28:5602:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5609:37:5609:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5609:26:5609:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5616:39:5616:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5616:28:5616:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5623:37:5623:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | Test.java:5623:26:5623:40 | getElement(...) : Entry [<map.key>] : String |
+| Test.java:5630:39:5630:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5630:28:5630:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5637:37:5637:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | Test.java:5637:26:5637:40 | getElement(...) : Entry [<map.key>] : String |
+| Test.java:5644:39:5644:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5644:28:5644:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5693:37:5693:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | Test.java:5693:26:5693:40 | getElement(...) : Entry [<map.key>] : CharSequence |
+| Test.java:5707:37:5707:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | Test.java:5707:26:5707:40 | getElement(...) : Entry [<map.key>] : CharSequence |
+| Test.java:5714:37:5714:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5714:26:5714:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5721:39:5721:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5721:28:5721:42 | getElement(...) : Entry [<map.value>] : Object |
 | Test.java:5728:37:5728:39 | out : List [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : List [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5728:26:5728:40 | getElement(...) : Object [<map.key>] : Object |
 | Test.java:5735:39:5735:41 | out : List [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : List [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5735:28:5735:42 | getElement(...) : Object [<map.value>] : Object |
 | Test.java:5771:20:5771:22 | out : List [<element>] : Object | Test.java:79:19:79:32 | it : List [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | Test.java:5771:9:5771:23 | getElement(...) |
@@ -11425,6 +11538,20 @@ subpaths
 | Test.java:5876:37:5876:39 | out : Iterator [<element>, <map.key>] : Object | Test.java:80:19:80:32 | it : Iterator [<element>, <map.key>] : Object | Test.java:80:44:80:52 | next(...) : Object [<map.key>] : Object | Test.java:5876:26:5876:40 | getElement(...) : Object [<map.key>] : Object |
 | Test.java:5883:39:5883:41 | out : Iterator [<element>, <map.value>] : Object | Test.java:80:19:80:32 | it : Iterator [<element>, <map.value>] : Object | Test.java:80:44:80:52 | next(...) : Object [<map.value>] : Object | Test.java:5883:28:5883:42 | getElement(...) : Object [<map.value>] : Object |
 | Test.java:5890:20:5890:22 | out : Set [<element>] : Object | Test.java:79:19:79:32 | it : Set [<element>] : Object | Test.java:79:44:79:63 | next(...) : Object | Test.java:5890:9:5890:23 | getElement(...) |
+| Test.java:5918:37:5918:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5918:26:5918:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5925:39:5925:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5925:28:5925:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5932:37:5932:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5932:26:5932:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5939:39:5939:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5939:28:5939:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5946:37:5946:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:5946:26:5946:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:5953:39:5953:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5953:28:5953:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5960:37:5960:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | Test.java:5960:26:5960:40 | getElement(...) : Entry [<map.key>] : String |
+| Test.java:5967:39:5967:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5967:28:5967:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:5974:37:5974:39 | out : HttpHeaders [<element>, <map.key>] : String | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : String | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : String | Test.java:5974:26:5974:40 | getElement(...) : Entry [<map.key>] : String |
+| Test.java:5981:39:5981:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:5981:28:5981:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:6030:37:6030:39 | out : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:6030:26:6030:40 | getElement(...) : Entry [<map.key>] : Object |
+| Test.java:6037:39:6037:41 | out : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.value>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.value>] : Object | Test.java:6037:28:6037:42 | getElement(...) : Entry [<map.value>] : Object |
+| Test.java:6051:37:6051:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | Test.java:6051:26:6051:40 | getElement(...) : Entry [<map.key>] : CharSequence |
+| Test.java:6065:37:6065:39 | out : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:19:79:32 | it : HttpHeaders [<element>, <map.key>] : CharSequence | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : CharSequence | Test.java:6065:26:6065:40 | getElement(...) : Entry [<map.key>] : CharSequence |
 | Test.java:6086:20:6086:22 | out : Iterator [<element>] : Object | Test.java:80:19:80:32 | it : Iterator [<element>] : Object | Test.java:80:44:80:52 | next(...) : Object | Test.java:6086:9:6086:23 | getElement(...) |
 | Test.java:6093:20:6093:22 | out : Iterator [<element>] : Object | Test.java:80:19:80:32 | it : Iterator [<element>] : Object | Test.java:80:44:80:52 | next(...) : Object | Test.java:6093:9:6093:23 | getElement(...) |
 | Test.java:6270:37:6270:39 | out : Headers [<element>, <map.key>] : Object | Test.java:79:19:79:32 | it : Headers [<element>, <map.key>] : Object | Test.java:79:44:79:63 | next(...) : Object [<map.key>] : Object | Test.java:6270:26:6270:40 | getElement(...) : Object [<map.key>] : Object |
