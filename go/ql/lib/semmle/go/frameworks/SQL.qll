@@ -70,11 +70,7 @@ module SQL {
     private class DefaultQueryString extends Range {
       DefaultQueryString() {
         exists(DataFlow::ArgumentNode arg | sinkNode(arg, "sql-injection") |
-          not arg instanceof DataFlow::ImplicitVarargsSlice and
-          this = arg
-          or
-          arg instanceof DataFlow::ImplicitVarargsSlice and
-          this = arg.getCall().getAnImplicitVarargsArgument()
+          this = arg.getACorrespondingSyntacticArgument()
         )
       }
     }
