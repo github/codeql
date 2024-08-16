@@ -1058,9 +1058,12 @@ class NamedType extends @namedtype, CompositeType {
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 }
 
+/** An alias type. */
 class AliasType extends @typealias, CompositeType {
+  /** Gets the aliased type (i.e. that appears on the RHS of the alias definition). */
   Type getRhs() { alias_rhs(this, result) }
 }
+
 /**
  * A type that implements the builtin interface `error`.
  */
