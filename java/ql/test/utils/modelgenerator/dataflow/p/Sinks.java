@@ -25,6 +25,14 @@ public class Sinks {
   // neutral=p;Sinks;nosink;(Object);summary;df-generated
   public void nosink(Object o) {}
 
+  // Sink and Source defined in the extensible file next to the sink test.
+  // sink=p;Sinks;true;saveAndGet;(Object);;Argument[0];test-sink;df-generated
+  // neutral=p;Sinks;saveAndGet;(Object);summary;df-generated
+  public Object saveAndGet(Object o) {
+    sink(o);
+    return null;
+  }
+
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];path-injection;df-generated
   // neutral=p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated

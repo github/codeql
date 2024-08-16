@@ -2170,9 +2170,11 @@ predicate jumpStep(Node pred, Node succ) {
     f.getAnAssignedValue() = pred.asExpr() and
     succ = TFlowInsensitiveFieldNode(f)
     or
-    exists(FieldOrPropertyRead fr |
+    exists(FieldOrPropertyRead fr | f.getAnAccess() = fr |
+      fr = pred.(PostUpdateNode).getPreUpdateNode().asExpr() and
+      succ = TFlowInsensitiveFieldNode(f)
+      or
       pred = TFlowInsensitiveFieldNode(f) and
-      f.getAnAccess() = fr and
       fr = succ.asExpr() and
       fr.hasNonlocalValue()
     )

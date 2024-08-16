@@ -67,14 +67,6 @@ extensions:
       - ["System.Net.Http", "StreamContent", False, "StreamContent", "(System.IO.Stream,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: sinkModel
-    data:
-      - ["System.Net.Http", "StringContent", False, "StringContent", "(System.String)", "", "Argument[0]", "js-injection", "df-generated"]
-      - ["System.Net.Http", "StringContent", False, "StringContent", "(System.String,System.Net.Http.Headers.MediaTypeHeaderValue)", "", "Argument[0]", "js-injection", "df-generated"]
-      - ["System.Net.Http", "StringContent", False, "StringContent", "(System.String,System.Text.Encoding)", "", "Argument[0]", "js-injection", "df-generated"]
-      - ["System.Net.Http", "StringContent", False, "StringContent", "(System.String,System.Text.Encoding,System.String)", "", "Argument[0]", "js-injection", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Net.Http", "ByteArrayContent", "TryComputeLength", "(System.Int64)", "summary", "df-generated"]

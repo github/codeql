@@ -2681,7 +2681,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               revFlow(arg, state0, _, _, _) and
               pn1 = mkStagePathNode(arg, state0, cc, summaryCtx, argT, argAp, innerArgT, innerArgAp) and
               pn2 =
-                mkStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
+                typeStrengthenToStagePathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
                   TypOption::some(innerArgT), apSome(innerArgAp), innerArgT, innerArgAp) and
               pn3 =
                 mkStagePathNode(ret, state, ccc, TParamNodeSome(p.asNode()),
@@ -4350,7 +4350,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       private PathNodeMid getSuccMid(string label) {
         pathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-          result.getSummaryCtx(), result.getType(), result.getAp(), _, label)
+          result.getSummaryCtx(), result.getType(), result.getAp(), result.getSummaryLabel(), label)
       }
 
       private predicate isSourceWithLabel(string labelprefix) {
@@ -4878,12 +4878,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
       ) {
         exists(
-          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout,
-          PathNodeMid out0
+          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t0, DataFlowType t,
+          AccessPath apout, PathNodeMid out0
         |
           pragma[only_bind_into](arg).getASuccessorImpl(_) = pragma[only_bind_into](out0) and
-          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, t, apout) and
+          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, t0, apout) and
           hasSuccessor(pragma[only_bind_into](arg), par, p) and
+          strengthenType(o, t0, t) and
           pathNode(out0, o, sout, _, _, t, apout, _, _)
         |
           out = out0 or out = out0.projectToSink(_)
