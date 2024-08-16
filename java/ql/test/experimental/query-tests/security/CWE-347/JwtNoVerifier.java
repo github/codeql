@@ -11,6 +11,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.BearerToken;
 
 public class JwtNoVerifier extends HttpServlet {
 
@@ -39,8 +41,22 @@ public class JwtNoVerifier extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // NOT OK:  only decode, no verification
+        String JwtToken1 = request.getParameter("JWT2");
+        String userName = decodeToken(JwtToken1);
+        if (Objects.equals(userName, "Admin")) {
+            out.println("<html><body>");
+            out.println("<h1>" + "heyyy Admin" + "</h1>");
+            out.println("</body></html>");
+        }
+
+        AuthenticationToken authToken = new BearerToken("admin", "admin");
+        // OK:  no clue of the use of unsafe decoded JWT return value
         String JwtToken2 = request.getParameter("JWT2");
-        String userName = decodeToken(JwtToken2);
+        JWT.decode(JwtToken2);
+
+        // NOT OK:  only decode, no verification
+        String JwtToken3 = (String) authToken.getCredentials();
+        userName = decodeToken(JwtToken3);
         if (Objects.equals(userName, "Admin")) {
             out.println("<html><body>");
             out.println("<h1>" + "heyyy Admin" + "</h1>");
@@ -48,9 +64,10 @@ public class JwtNoVerifier extends HttpServlet {
         }
 
         // OK:  no clue of the use of unsafe decoded JWT return value
-        JwtToken2 = request.getParameter("JWT2");
-        JWT.decode(JwtToken2);
+        String JwtToken4 = (String) authToken.getCredentials();
+        JWT.decode(JwtToken4);
 
+        
 
         out.println("<html><body>");
         out.println("<h1>" + "heyyy Nobody" + "</h1>");
