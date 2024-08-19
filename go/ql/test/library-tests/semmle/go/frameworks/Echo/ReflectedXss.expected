@@ -31,12 +31,14 @@ edges
 | test.go:58:13:58:22 | fileHeader | test.go:58:2:58:29 | ... := ...[0] | provenance | MaD:16 |
 | test.go:59:2:59:7 | definition of buffer | test.go:61:20:61:25 | buffer | provenance |  |
 | test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:15 |
+| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:17 |
 | test.go:66:2:66:31 | ... := ...[0] | test.go:67:16:67:41 | index expression | provenance | Src:MaD:12  |
 | test.go:72:2:72:31 | ... := ...[0] | test.go:74:13:74:22 | fileHeader | provenance | Src:MaD:12  |
 | test.go:74:2:74:29 | ... := ...[0] | test.go:76:2:76:5 | file | provenance |  |
 | test.go:74:13:74:22 | fileHeader | test.go:74:2:74:29 | ... := ...[0] | provenance | MaD:16 |
 | test.go:75:2:75:7 | definition of buffer | test.go:77:20:77:25 | buffer | provenance |  |
 | test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:15 |
+| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:17 |
 | test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | provenance | Src:MaD:13  |
 | test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | provenance | Src:MaD:14  |
 | test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | provenance | Src:MaD:3  |
@@ -49,7 +51,7 @@ edges
 | test.go:136:11:136:32 | call to Param | test.go:137:29:137:41 | type conversion | provenance | Src:MaD:4  |
 | test.go:148:11:148:32 | call to Param | test.go:149:30:149:34 | param | provenance | Src:MaD:4  |
 | test.go:149:12:149:35 | call to NewReader | test.go:150:31:150:36 | reader | provenance |  |
-| test.go:149:30:149:34 | param | test.go:149:12:149:35 | call to NewReader | provenance | MaD:17 |
+| test.go:149:30:149:34 | param | test.go:149:12:149:35 | call to NewReader | provenance | MaD:18 |
 | test.go:164:11:164:32 | call to Param | test.go:165:23:165:35 | type conversion | provenance | Src:MaD:4  |
 models
 | 1 | Summary: github.com/labstack/echo; Context; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
@@ -68,7 +70,8 @@ models
 | 14 | Source: github.com/labstack/echo; Context; true; Cookies; ; ; ReturnValue[0]; remote; manual |
 | 15 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
 | 16 | Summary: mime/multipart; FileHeader; true; Open; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
-| 17 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 17 | Summary: os; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 18 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | test.go:15:11:15:32 | call to Param | semmle.label | call to Param |
 | test.go:16:16:16:20 | param | semmle.label | param |
