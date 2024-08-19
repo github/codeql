@@ -19,7 +19,7 @@ func isGolangVendorDirectory(dirPath string) bool {
 	return path.Base(dirPath) == "vendor" && fileExists(path.Join(dirPath, "modules.txt"))
 }
 
-type PathsIgnoreStruct struct {
+type BaselineConfig struct {
 	PathsIgnore []string `json:"paths-ignore"`
 }
 
@@ -43,6 +43,6 @@ func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 		})
 	}
 
-	outputStruct := PathsIgnoreStruct{PathsIgnore: vendorDirs}
+	outputStruct := BaselineConfig{PathsIgnore: vendorDirs}
 	return json.Marshal(outputStruct)
 }
