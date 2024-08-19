@@ -5,29 +5,13 @@
  * In addition to the `PathGraph`, a `query predicate models` is provided to
  * list the contents of the referenced MaD rows.
  */
-module;
+
+private import codeql.dataflow.DataFlow as DF
 
 signature predicate interpretModelForTestSig(QlBuiltins::ExtensionId madId, string model);
 
-signature predicate queryResultsSig(string relation, int row, int column, string data);
-
 signature class PathNodeSig {
   string toString();
-}
-
-signature module PathGraphSig<PathNodeSig PathNode> {
-  /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  predicate edges(PathNode a, PathNode b, string key, string val);
-
-  /** Holds if `n` is a node in the graph of data flow path explanations. */
-  predicate nodes(PathNode n, string key, string val);
-
-  /**
-   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
-   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
-   * `ret -> out` is summarized as the edge `arg -> out`.
-   */
-  predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
 }
 
 private signature predicate provenanceSig(string model);
@@ -79,13 +63,13 @@ private module TranslateModels<
 /** Transforms a `PathGraph` by printing the provenance information. */
 module ShowProvenance<
   interpretModelForTestSig/2 interpretModelForTest, PathNodeSig PathNode,
-  PathGraphSig<PathNode> PathGraph>
+  DF::PathGraphSig<PathNode> PathGraph> implements DF::PathGraphSig<PathNode>
 {
   private predicate provenance(string model) { PathGraph::edges(_, _, _, model) }
 
   private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
-  query predicate models(int r, string model) { Models::models(r, model) }
+  additional query predicate models(int r, string model) { Models::models(r, model) }
 
   query predicate edges(PathNode a, PathNode b, string key, string val) {
     exists(string model |
@@ -99,45 +83,57 @@ module ShowProvenance<
   query predicate subpaths = PathGraph::subpaths/4;
 }
 
-/** Transforms a `PathGraph` by printing the provenance information. */
-module TranslateProvenanceResults<
-  interpretModelForTestSig/2 interpretModelForTest, queryResultsSig/4 queryResults>
-{
-  private int provenanceColumn() { result = 5 }
+/**
+ * Provides logic for creating a `@kind test-postprocess` query that prints
+ * the provenance information.
+ */
+module TestPostProcessing {
+  external predicate queryResults(string relation, int row, int column, string data);
 
-  private predicate provenance(string model) { queryResults("edges", _, provenanceColumn(), model) }
+  external predicate queryRelations(string relation);
 
-  private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
+  /** Transforms a `PathGraph` by printing the provenance information. */
+  module TranslateProvenanceResults<interpretModelForTestSig/2 interpretModelForTest> {
+    private int provenanceColumn() { result = 5 }
 
-  private newtype TModelRow = TMkModelRow(int r, string model) { Models::models(r, model) }
+    private predicate provenance(string model) {
+      queryResults("edges", _, provenanceColumn(), model)
+    }
 
-  private predicate rankedModels(int i, int r, string model) {
-    TMkModelRow(r, model) =
-      rank[i](TModelRow row, int r0, string model0 |
-        row = TMkModelRow(r0, model0)
-      |
-        row order by r0, model0
-      )
-  }
+    private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
-  predicate results(string relation, int row, int column, string data) {
-    queryResults(relation, row, column, data) and
-    (relation != "edges" or column != provenanceColumn())
-    or
-    exists(string model |
-      relation = "edges" and
-      column = provenanceColumn() and
-      queryResults(relation, row, column, model) and
-      Models::translateModels(model, data)
-    )
-    or
-    exists(int r, string model |
-      relation = "models" and
-      rankedModels(row, r, model)
-    |
-      column = 0 and data = r.toString()
+    private newtype TModelRow = TMkModelRow(int r, string model) { Models::models(r, model) }
+
+    private predicate rankedModels(int i, int r, string model) {
+      TMkModelRow(r, model) =
+        rank[i](TModelRow row, int r0, string model0 |
+          row = TMkModelRow(r0, model0)
+        |
+          row order by r0, model0
+        )
+    }
+
+    predicate results(string relation, int row, int column, string data) {
+      queryResults(relation, row, column, data) and
+      (relation != "edges" or column != provenanceColumn())
       or
-      column = 1 and data = model
-    )
+      exists(string model |
+        relation = "edges" and
+        column = provenanceColumn() and
+        queryResults(relation, row, column, model) and
+        Models::translateModels(model, data)
+      )
+      or
+      exists(int r, string model |
+        relation = "models" and
+        rankedModels(row, r, model)
+      |
+        column = 0 and data = r.toString()
+        or
+        column = 1 and data = model
+      )
+    }
+
+    query predicate resultRelations(string relation) { queryRelations(relation) }
   }
 }

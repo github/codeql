@@ -574,21 +574,3 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     interpretSummary(this, _, _, _, provenance, _)
   }
 }
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Swift.
-    none() and
-    exists(this) and
-    exists(kind) and
-    exists(provenance_)
-  }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-}

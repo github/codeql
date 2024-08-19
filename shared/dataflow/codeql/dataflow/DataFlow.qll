@@ -562,6 +562,30 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
   }
 }
 
+/** A type with `toString`. */
+private signature class TypeWithToString {
+  string toString();
+}
+
+import PathGraphSigMod
+
+private module PathGraphSigMod {
+  signature module PathGraphSig<TypeWithToString PathNode> {
+    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+    predicate edges(PathNode a, PathNode b, string key, string val);
+
+    /** Holds if `n` is a node in the graph of data flow path explanations. */
+    predicate nodes(PathNode n, string key, string val);
+
+    /**
+     * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+     * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+     * `ret -> out` is summarized as the edge `arg -> out`.
+     */
+    predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
+  }
+}
+
 module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
@@ -663,20 +687,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     Location getLocation();
   }
 
-  signature module PathGraphSig<PathNodeSig PathNode> {
-    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-    predicate edges(PathNode a, PathNode b, string key, string val);
-
-    /** Holds if `n` is a node in the graph of data flow path explanations. */
-    predicate nodes(PathNode n, string key, string val);
-
-    /**
-     * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
-     * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
-     * `ret -> out` is summarized as the edge `arg -> out`.
-     */
-    predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out);
-  }
+  import PathGraphSigMod
 
   /**
    * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.

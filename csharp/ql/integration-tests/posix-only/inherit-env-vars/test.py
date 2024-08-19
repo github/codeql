@@ -1,8 +1,8 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
 import os
+import runs_on
 
-os.environ["PROJECT_TO_BUILD"] = "proj.csproj.no_auto"
 
-run_codeql_database_create([], db=None, lang="csharp")
-check_diagnostics()
+@runs_on.posix
+def test(codeql, csharp):
+    os.environ["PROJECT_TO_BUILD"] = "proj.csproj.no_auto"
+    codeql.database.create()

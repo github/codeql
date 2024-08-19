@@ -15,7 +15,7 @@ Go JOSE,https://github.com/go-jose/go-jose,github.com/go-jose/go-jose* github.co
 Go kit,https://gokit.io/,github.com/go-kit/kit*
 go-pg,https://pg.uptrace.dev/,github.com/go-pg/pg*
 go-restful,https://github.com/emicklei/go-restful,github.com/emicklei/go-restful*
-Gokogiri,https://github.com/moovweb/gokogiri,github.com/jbowtie/gokogiri* github.com/jbowtie/moovweb*
+Gokogiri,https://github.com/moovweb/gokogiri,github.com/jbowtie/gokogiri* github.com/moovweb/gokogiri*
 golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*
 goproxy,https://github.com/elazarl/goproxy,github.com/elazarl/goproxy*
 gorilla/mux,https://github.com/gorilla/mux,github.com/gorilla/mux*
