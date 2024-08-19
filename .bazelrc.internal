@@ -8,3 +8,4 @@ common --registry=https://bcr.bazel.build
 # its implementation packages without providing any code itself.
 # We either can depend on internal implementation details, or turn of strict deps.
 common --@rules_dotnet//dotnet/settings:strict_deps=false
+common --experimental_isolated_extension_usages
