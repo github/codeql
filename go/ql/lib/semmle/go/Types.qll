@@ -1062,6 +1062,8 @@ class NamedType extends @namedtype, CompositeType {
 class AliasType extends @typealias, CompositeType {
   /** Gets the aliased type (i.e. that appears on the RHS of the alias definition). */
   Type getRhs() { alias_rhs(this, result) }
+
+  override Type getUnderlyingType() { result = this.getRhs().getUnderlyingType() }
 }
 
 /**
