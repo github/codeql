@@ -50,7 +50,7 @@ func godotenvEnvironmentVariables() {
 		return
 	}
 
-	greeting := greetings["HELLO"]
+	greeting = greetings["HELLO"]
 
 	fmt.Printf("%s, %s!\n", greeting, username)
 }

@@ -1,5 +1,7 @@
 package godotenv
 
+import "io"
+
 func Exec(filenames []string, cmd string, cmdArgs []string, overload bool) error {
 	return nil
 }
