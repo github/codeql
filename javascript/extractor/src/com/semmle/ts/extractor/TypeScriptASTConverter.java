@@ -1215,10 +1215,18 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertExportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
+    boolean hasExported = hasChild(node, "propertyName");
+    System.out.println("String representation of node: " + node.toString());
+    Identifier local = convertChild(node, hasExported ? "propertyName" : "name");
+
+    JsonObject exportedToken = node.get("name").getAsJsonObject();
+    Identifier exported = convertNodeAsIdentifier(exportedToken);
+
+    // Identifier exported = convertChild(node, "name");
     return new ExportSpecifier(
         loc,
-        convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name"),
-        convertChild(node, "name"));
+        local,
+        exported);
   }
 
   private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1431,7 +1439,8 @@ public class TypeScriptASTConverter {
 
   private Node convertImportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
     boolean hasImported = hasChild(node, "propertyName");
-    Identifier imported = convertChild(node, hasImported ? "propertyName" : "name");
+    JsonObject importedToken = node.get(hasImported? "propertyName" : "name").getAsJsonObject();
+    Identifier imported = convertNodeAsIdentifier(importedToken);
     Identifier local = convertChild(node, "name");
     boolean isTypeOnly = node.get("isTypeOnly").getAsBoolean() == true;
     return new ImportSpecifier(loc, imported, local, isTypeOnly);
