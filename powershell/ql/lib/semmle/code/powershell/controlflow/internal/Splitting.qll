@@ -5,8 +5,8 @@
 private import powershell
 private import Completion
 private import ControlFlowGraphImpl
-private import SuccessorTypes
-private import semmle.code.powershell.controlflow.ControlFlowGraph
+private import Cfg::SuccessorTypes
+private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg
 
 cached
 private module Cached {
@@ -63,7 +63,7 @@ private module ConditionalCompletionSplitting {
       none() // TODO
     }
 
-    override predicate hasEntryScope(CfgScope scope, Ast succ) { none() }
+    override predicate hasEntryScope(Cfg::CfgScope scope, Ast succ) { none() }
 
     override predicate hasExit(Ast pred, Ast succ, Completion c) {
       this.appliesTo(pred) and
@@ -71,7 +71,7 @@ private module ConditionalCompletionSplitting {
       if c instanceof ConditionalCompletion then completion = c else any()
     }
 
-    override predicate hasExitScope(CfgScope scope, Ast last, Completion c) {
+    override predicate hasExitScope(Cfg::CfgScope scope, Ast last, Completion c) {
       this.appliesTo(last) and
       succExit(scope, last, c) and
       if c instanceof ConditionalCompletion then completion = c else any()

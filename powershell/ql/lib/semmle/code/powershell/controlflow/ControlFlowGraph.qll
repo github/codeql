@@ -16,10 +16,7 @@ private import internal.Scope
  * Note that module declarations are not themselves CFG scopes, as they are part of
  * the CFG of the enclosing top-level or callable.
  */
-class CfgScope extends Scope instanceof CfgImpl::CfgScopeImpl {
-  /** Gets the CFG scope that this scope is nested under, if any. */
-  final CfgScope getOuterCfgScope() { none() }
-}
+class CfgScope extends Scope instanceof CfgImpl::CfgScope { }
 
 /**
  * A control flow node.

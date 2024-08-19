@@ -28,10 +28,10 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 
   CfgScope getCfgScope(Ast n) { result = Impl::getCfgScope(n) }
 
-  predicate scopeFirst(CfgScope scope, Ast first) { scope.(Impl::CfgScopeImpl).entry(first) }
+  predicate scopeFirst(CfgScope scope, Ast first) { scope.(Impl::CfgScope).entry(first) }
 
   predicate scopeLast(CfgScope scope, Ast last, Completion c) {
-    scope.(Impl::CfgScopeImpl).exit(last, c)
+    scope.(Impl::CfgScope).exit(last, c)
   }
 
   class SplitKindBase = Splitting::TSplitKind;
@@ -56,32 +56,32 @@ private module CfgInput implements CfgShared::InputSig<Location> {
   }
 }
 
+private import CfgInput
 import CfgShared::Make<Location, CfgInput>
 
-abstract class CfgScopeImpl extends Ast {
-  abstract predicate entry(Ast first);
+class CfgScope extends Scope {
+  predicate entry(Ast first) { first(this, first) }
 
-  abstract predicate exit(Ast last, Completion c);
+  predicate exit(Ast last, Completion c) { last(this, last, c) }
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
 pragma[nomagic]
-predicate succEntry(CfgScopeImpl scope, Ast first) { scope.entry(first) }
+predicate succEntry(CfgScope scope, Ast first) { scope.entry(first) }
 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
-predicate succExit(CfgScopeImpl scope, Ast last, Completion c) { scope.exit(last, c) }
+predicate succExit(CfgScope scope, Ast last, Completion c) { scope.exit(last, c) }
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
   // TODO
 }
 
+private import Scope
+
 cached
-private CfgScope getCfgScopeImpl(Ast n) {
-  // TODO
-  none()
-}
+private CfgScope getCfgScopeImpl(Ast n) { result = scopeOf(n) }
 
 /** Gets the CFG scope of node `n`. */
 pragma[inline]
