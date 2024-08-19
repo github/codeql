@@ -33,7 +33,8 @@ func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 	} else {
 		filepath.WalkDir(rootDir, func(dirPath string, d fs.DirEntry, err error) error {
 			if err != nil {
-				// Mask any unreadable paths.
+				// Ignore any unreadable paths -- if this script can't see it, very likely
+				// it will not be extracted either.
 				return nil
 			}
 			if isGolangVendorDirectory(dirPath) {
