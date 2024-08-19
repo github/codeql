@@ -74,6 +74,8 @@ private class DefaultModels extends CommandLineArguments::Range {
     or
     // `require('commander').opt()` => `{a: ..., b: ...}`
     this = commander().getMember("opts").getACall()
+    or
+    this = API::moduleImport("yargs/yargs").getReturn().getMember("argv").asSource()
   }
 }
 

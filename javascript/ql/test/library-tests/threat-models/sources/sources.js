@@ -13,7 +13,7 @@ const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 const argv = yargs(hideBin(process.argv)).argv; // $ threat-source=commandargs
 
-SINK(argv.foo); // $ MISSING: hasFlow
+SINK(argv.foo); // $ hasFlow
 
 // older version
 // https://www.npmjs.com/package/yargs/v/7.1.2
