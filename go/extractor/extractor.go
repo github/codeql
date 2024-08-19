@@ -1750,6 +1750,16 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			kind = dbscheme.TypeAlias.Index()
 			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
 			dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
+
+			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			if entitylbl == trap.InvalidLabel {
+				log.Printf("Omitting type-object binding for unknown object %v.\n", tp.Obj())
+			} else {
+				if !exists {
+					extractObject(tw, tp.Obj(), entitylbl)
+				}
+				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
+			}
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
