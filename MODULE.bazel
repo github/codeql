@@ -61,7 +61,7 @@ r.from_cargo(
         "//ruby/extractor/codeql-extractor-fake-crate:Cargo.toml",
     ],
 )
-use_repo(r, ruby_deps="rd")
+use_repo(r, ruby_deps = "rd")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "8.0.101")
