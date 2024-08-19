@@ -24,6 +24,7 @@ legacyDataFlowDifference
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary | only flow with NEW data flow library |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
@@ -181,3 +182,4 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
