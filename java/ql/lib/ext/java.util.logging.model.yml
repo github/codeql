@@ -53,4 +53,8 @@ extensions:
     data:
       - ["java.util.logging", "Handler", "getEncoding", "()", "summary", "manual"]
       - ["java.util.logging", "Logger", "isLoggable", "(Level)", "summary", "manual"]
+      - ["java.util.logging", "LogRecord", "getResourceBundle", "()", "summary", "df-manual"]
+      # If needed, a pair of manual summary models using synthetics can be made for the two
+      # neutrals below.
       - ["java.util.logging", "LogRecord", "getParameters", "()", "summary", "manual"]
+      - ["java.util.logging", "LogRecord", "setParameters", "", "summary", "df-manual"]
