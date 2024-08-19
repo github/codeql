@@ -3,7 +3,7 @@ package test
 import "os"
 
 func open() {
-	file, err := os.Open("file.txt")
+	file, err := os.Open("file.txt") // $ source
 	if err != nil {
 		return
 	}
@@ -12,7 +12,7 @@ func open() {
 }
 
 func openFile() {
-	file, err := os.OpenFile("file.txt", os.O_RDWR, 0)
+	file, err := os.OpenFile("file.txt", os.O_RDWR, 0) // $source
 	if err != nil {
 		return
 	}
@@ -21,7 +21,7 @@ func openFile() {
 }
 
 func readFile() {
-	data, err := os.ReadFile("file.txt")
+	data, err := os.ReadFile("file.txt") // $source
 	if err != nil {
 		return
 	}
