@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.Build.Construction;
 using Semmle.Util;
 using Semmle.Autobuild.Shared;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.CSharp.Tests
 {
@@ -203,7 +204,7 @@ namespace Semmle.Autobuild.CSharp.Tests
                 throw new ArgumentException($"Missing CreateDirectory, {path}");
         }
 
-        public void DownloadFile(string address, string fileName)
+        public void DownloadFile(string address, string fileName, ILogger logger)
         {
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
