@@ -9,14 +9,14 @@ import (
 )
 
 func osEnvironmentVariables() {
-	home := os.Getenv("HOME")
+	home := os.Getenv("HOME") // $ source
 
-	port, ok := os.LookupEnv("PORT")
+	port, ok := os.LookupEnv("PORT") // $ source
 	if !ok {
 		port = "3000"
 	}
 
-	for _, e := range os.Environ() {
+	for _, e := range os.Environ() { // $ source
 		_ = e
 	}
 
@@ -31,21 +31,21 @@ type ServerConfig struct {
 
 func envconfigEnvironmentVariables() {
 	var cfg ServerConfig
-	envconfig.Process("myapp", &cfg)
+	envconfig.Process("myapp", &cfg) // $ source
 }
 
 func godotenvEnvironmentVariables() {
 	var err error
 	var username, greeting string
 
-	users, err := godotenv.Read("user.env")
+	users, err := godotenv.Read("user.env") // $ source
 	if err != nil {
 		return
 	}
 
 	username = users["USERNAME"]
 
-	greetings, err := godotenv.Unmarshal("HELLO=hello")
+	greetings, err := godotenv.Unmarshal("HELLO=hello") // $ source
 	if err != nil {
 		return
 	}
@@ -61,7 +61,7 @@ func envparseEnvironmentVariables() {
 		return
 	}
 	defer f.Close()
-	envVars, err := envparse.Parse(f)
+	envVars, err := envparse.Parse(f) // $ source
 
 	if err != nil {
 		return

@@ -1,7 +1,3 @@
-| test.go:12:10:12:26 | call to Getenv |
-| test.go:14:2:14:33 | ... := ...[0] |
-| test.go:19:20:19:31 | call to Environ |
-| test.go:34:29:34:32 | &... |
-| test.go:41:2:41:40 | ... := ...[0] |
-| test.go:48:2:48:52 | ... := ...[0] |
-| test.go:61:2:61:33 | ... := ...[0] |
+testFailures
+invalidModelRow
+failures
