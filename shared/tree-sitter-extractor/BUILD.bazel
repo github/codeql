@@ -1,4 +1,4 @@
-load("@rd//:defs.bzl", "aliases", "all_crate_deps")
+load("@ruby_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
