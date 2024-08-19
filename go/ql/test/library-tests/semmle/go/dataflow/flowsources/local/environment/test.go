@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"github.com/caarlos0/env"
 	"github.com/hashicorp/go-envparse"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
@@ -68,4 +69,20 @@ func envparseEnvironmentVariables() {
 	}
 
 	fmt.Printf("HOME: %s\n", envVars["HOME"])
+}
+
+func caarlos0EnvironmentVariables() {
+	type config struct {
+		Home string `env:"HOME"`
+		Port int    `env:"PORT"`
+	}
+
+	cfg := config{}
+	env.Parse(&cfg) // $ source
+
+	fmt.Printf("HOME: %s\n", cfg.Home)
+
+	cfg = env.ParseAs[config]() // $ source
+
+	fmt.Printf("HOME: %s\n", cfg.Home)
 }
