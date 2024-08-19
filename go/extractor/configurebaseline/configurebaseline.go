@@ -6,6 +6,8 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 func fileExists(path string) bool {
@@ -26,7 +28,7 @@ type BaselineConfig struct {
 func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 	vendorDirs := make([]string, 0)
 
-	if os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true" {
+	if util.IsVendorDirExtractionEnabled() {
 		// The user wants vendor directories scanned; emit an empty report.
 	} else {
 		filepath.WalkDir(rootDir, func(dirPath string, d fs.DirEntry, err error) error {
