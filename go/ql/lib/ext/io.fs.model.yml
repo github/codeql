@@ -18,7 +18,7 @@ extensions:
       - ["io/fs", "SubFS", True, "Sub", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
   - addsTo:
       pack: codeql/go-all
-      extensible: summaryModel
+      extensible: sourceModel
     data:
       - ["io/fs", "", False, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
       - ["io/fs", "ReadFileFS", True, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
