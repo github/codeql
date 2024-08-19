@@ -24,3 +24,5 @@ flow
 | arrays.js:29:21:29:28 | "source" | arrays.js:50:8:50:17 | arr6.pop() |
 | arrays.js:33:37:33:44 | "source" | arrays.js:35:8:35:25 | arr4_variant.pop() |
 | arrays.js:53:4:53:11 | "source" | arrays.js:54:10:54:18 | ary.pop() |
+| arrays.js:96:9:96:16 | "source" | arrays.js:96:8:96:40 | ["sourc ... ).pop() |
+| arrays.js:97:9:97:16 | "source" | arrays.js:97:8:97:42 | ["sourc ... ).pop() |

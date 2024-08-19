@@ -92,6 +92,8 @@
 
   sink(arr.at(-1)); // NOT OK
 
-  sink(["source"].filter((x) => x)); // NOT OK
-  sink(["source"].filter((x) => !!x)); // NOT OK
+  sink(["source"]); // OK - for now, array element do not taint the entire array
+  sink(["source"].filter((x) => x).pop()); // NOT OK
+  sink(["source"].filter((x) => !!x).pop()); // NOT OK
+
 });
