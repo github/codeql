@@ -32,8 +32,8 @@ legacyDataFlowDifference
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo | only flow with OLD data flow library |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise | only flow with OLD data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
-| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:16:10:16:10 | y | only flow with NEW data flow library |
 consistencyIssue
 | library-tests/TaintTracking/nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
 | library-tests/TaintTracking/stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
@@ -291,7 +291,9 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
 | tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:16:10:16:10 | y |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |

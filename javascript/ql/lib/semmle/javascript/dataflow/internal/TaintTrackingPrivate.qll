@@ -61,5 +61,5 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, ContentSet c) {
   exists(node) and
-  c = ContentSet::promiseValue()
+  c = [ContentSet::promiseValue(), ContentSet::arrayElement()]
 }
