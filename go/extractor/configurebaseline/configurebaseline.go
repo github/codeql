@@ -13,8 +13,9 @@ func fileExists(path string) bool {
 	return err == nil && stat.Mode().IsRegular()
 }
 
+// Decides if `dirPath` is a vendor directory by testing whether it is called `vendor`
+// and contains a `modules.txt` file.
 func isGolangVendorDirectory(dirPath string) bool {
-	// Call a directory a Golang vendor directory if it contains a modules.txt file.
 	return path.Base(dirPath) == "vendor" && fileExists(path.Join(dirPath, "modules.txt"))
 }
 
@@ -25,7 +26,6 @@ type PathsIgnoreStruct struct {
 func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 	vendorDirs := make([]string, 0)
 
-	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true":
 	if os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true" {
 		// The user wants vendor directories scanned; emit an empty report.
 	} else {
