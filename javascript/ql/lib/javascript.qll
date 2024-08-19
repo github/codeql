@@ -81,6 +81,7 @@ import semmle.javascript.frameworks.Classnames
 import semmle.javascript.frameworks.ClassValidator
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary
+import semmle.javascript.frameworks.CommandLineArguments
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
