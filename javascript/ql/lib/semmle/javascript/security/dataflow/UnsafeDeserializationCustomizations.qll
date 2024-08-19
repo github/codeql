@@ -22,8 +22,8 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for unsafe deserialization. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /** An active threat-model source, considered as a flow source. */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   private API::Node unsafeYamlSchema() {
     result = API::moduleImport("js-yaml").getMember("DEFAULT_FULL_SCHEMA") // from older versions

@@ -70,10 +70,8 @@ module UnvalidatedDynamicMethodCall {
     MaybeFromProto() { this = "MaybeFromProto" }
   }
 
-  /**
-   * A source of remote user input, considered as a source for unvalidated dynamic method calls.
-   */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /** An active threat-model source, considered as a flow source. */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * The page URL considered as a flow source for unvalidated dynamic method calls.

@@ -28,11 +28,8 @@ module ConditionalBypass {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * A source of remote user input, considered as a flow source for bypass of
-   * sensitive action guards.
-   */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /** An active threat-model source, considered as a flow source. */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * Holds if `bb` dominates the basic block in which `action` occurs.

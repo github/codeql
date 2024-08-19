@@ -23,7 +23,8 @@ module DeepObjectResourceExhaustion {
     override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
   }
 
-  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+  /** An active threat-model source, considered as a flow source. */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource {
     override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
   }
 
