@@ -777,13 +777,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <returns>The full path of the temp directory.</returns>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
         {
-            var bytes = Encoding.Unicode.GetBytes(srcDir);
-            var sha = SHA1.HashData(bytes);
-            var sb = new StringBuilder();
-            foreach (var b in sha.Take(8))
-                sb.AppendFormat("{0:x2}", b);
-
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), sb.ToString(), subfolderName);
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);
         }
     }
 }

@@ -91,11 +91,24 @@ namespace Semmle.Util
         public static string ComputeFileHash(string filePath)
         {
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var shaAlg = SHA256.Create();
-            var sha = shaAlg.ComputeHash(fileStream);
+            var sha = SHA256.HashData(fileStream);
+            return GetHashString(sha);
+        }
+
+        public static string ComputeHash(string input)
+        {
+            var bytes = Encoding.Unicode.GetBytes(input);
+            var sha = MD5.HashData(bytes); // MD5 to keep it shorter than SHA256
+            return GetHashString(sha).ToUpper();
+        }
+
+        private static string GetHashString(byte[] sha)
+        {
             var hex = new StringBuilder(sha.Length * 2);
             foreach (var b in sha)
+            {
                 hex.AppendFormat("{0:x2}", b);
+            }
             return hex.ToString();
         }
 
