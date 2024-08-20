@@ -195,7 +195,7 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 - The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
 
-It would also be possible to merge the two rows into one by using a comma-separated list in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
+It would also be possible to merge the two rows into one by using ".." to indicate a range in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
 
 .. code-block:: yaml
 
@@ -204,9 +204,9 @@ It would also be possible to merge the two rows into one by using a comma-separa
          pack: codeql/go-all
          extensible: summaryModel
        data:
-         - ["strings", "", False, "Join", "", "", "Argument[0,1]", "ReturnValue", "taint", "manual"]
+         - ["strings", "", False, "Join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
 
-This row defines flow from both the first and the second argument to the return value. The seventh value ``Argument[0,1]`` is shorthand for specifying an access path to both ``Argument[0]`` and ``Argument[1]``.
+This row defines flow from both the first and the second argument to the return value. The seventh value ``Argument[0..1]`` is shorthand for specifying an access path to both ``Argument[0]`` and ``Argument[1]``.
 
 Example: Add flow through the ``Hostname`` method
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
