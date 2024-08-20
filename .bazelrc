@@ -1,5 +1,17 @@
+# allow automatic platform-specific configurations (:linux, :macos, :windows)
 common --enable_platform_specific_config
+
+# do not shut down the bazel server on idleness
+startup --max_idle_secs=0
 common --enable_bzlmod
+# use stricter environment filtering for actions
+build --incompatible_strict_action_env
+# Enable verbose failures so debugging the build is easier
+build --verbose_failures
+# print test output, like sembuild does.
+# Set to `errors` if this is too verbose.
+test --test_output all
+
 # because we use --override_module with `%workspace%`, the lock file is not stable
 common --lockfile_mode=off
 
@@ -25,5 +37,9 @@ common --registry=https://bcr.bazel.build
 
 common --@rules_dotnet//dotnet/settings:strict_deps=false
 common --experimental_isolated_extension_usages
+# performance improvement on Windows
+common --incompatible_use_plus_in_repo_names
+
+
 
 try-import %workspace%/local.bazelrc

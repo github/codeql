@@ -64,8 +64,8 @@ def _download_lfs(repository_ctx):
         srcs = [f for f in dir.readdir() if not f.is_dir]
     lfs_smudge(repository_ctx, srcs, executable = repository_ctx.attr.executable)
 
-    # with bzlmod the name is qualified with `~` separators, and we want the base name here
-    name = repository_ctx.name.split("~")[-1]
+    # with bzlmod the name is qualified with `+` separators, and we want the base name here
+    name = repository_ctx.name.split("+")[-1]
     basenames = [src.basename for src in srcs]
     build = "exports_files(%s)\n" % repr(basenames)
 
