@@ -309,40 +309,6 @@ For the remaining values for both rows:
 
 That is, the first row specifies that values can flow from the elements of the qualifier enumerable into the first argument of the function provided to ``Select``.  The second row specifies that values can flow from the return value of the function to the elements of the enumerable returned from ``Select``.
 
-Example: Add a ``neutral`` method
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how we can model a method as being neutral with respect to flow. We will also cover how to model a property by modeling the getter of the ``Now`` property of the ``DateTime`` class as neutral.
-A neutral model is used to define that there is no flow through a method.
-
-.. code-block:: csharp
-
-   public static void TaintFlow() {
-       System.DateTime t = System.DateTime.Now; // There is no flow from Now to t.
-       ...
-   }
-
-We need to add a tuple to the ``neutralModel``\(namespace, type, name, signature, kind, provenance) extensible predicate by updating a data extension file.
-
-.. code-block:: yaml
-
-   extensions:
-   - addsTo:
-       pack: codeql/csharp-all
-       extensible: neutralModel
-     data:
-       - ["System", "DateTime", "get_Now", "()", "summary", "manual"]
-
-
-Since we are adding a neutral model, we need to add tuples to the ``neutralModel`` extensible predicate.
-The first four values identify the callable (in this case the getter of the ``Now`` property) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.
-
-- The first value ``System`` is the namespace name.
-- The second value ``DateTime`` is the class (type) name.
-- The third value ``get_Now`` is the method name. Getter and setter methods are named ``get_<name>`` and ``set_<name>`` respectively.
-- The fourth value ``()`` is the method input type signature.
-- The fifth value ``summary`` is the kind of the neutral.
-- The sixth value ``manual`` is the provenance of the neutral.
-
 Example: Accessing the ``Body`` field of an HTTP request
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows how we can model a field read as a source of tainted data.
