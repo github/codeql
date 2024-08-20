@@ -104,7 +104,7 @@ namespace Semmle.Util
         {
             using var contentStream = await httpClient.GetStreamAsync(address, token);
             using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
-            await contentStream.CopyToAsync(stream, CancellationToken.None);
+            await contentStream.CopyToAsync(stream, token);
         }
 
         private static void DownloadFileWithRetry(string address, string fileName, int tryCount, int timeoutMilliSeconds, ILogger logger)
