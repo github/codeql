@@ -705,7 +705,6 @@ private module DynamicImportSteps {
    */
   class DynamicImportStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      // TODO: this step needs to be ported to dataflow2
       exists(DynamicImportExpr imprt |
         pred = imprt.getImportedModule().getAnExportedValue("default") and
         succ = imprt.flow() and
