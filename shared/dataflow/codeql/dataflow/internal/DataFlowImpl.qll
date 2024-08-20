@@ -2541,11 +2541,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             abstract string toString();
 
-            abstract Location getLocation();
-
             predicate isSource() { none() }
 
             predicate isSink() { none() }
+
+            /** Gets the location of this node. */
+            Location getLocation() { result = this.getNodeEx().getLocation() }
 
             predicate isArbitrarySource() { this instanceof TStagePathNodeSrcGrp }
 
@@ -2588,8 +2589,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               result =
                 node.toString() + " " + cc.toString() + " " + t.toString() + " " + ap.toString()
             }
-
-            override Location getLocation() { result = node.getLocation() }
 
             override predicate isSource() {
               sourceNode(node, state) and
