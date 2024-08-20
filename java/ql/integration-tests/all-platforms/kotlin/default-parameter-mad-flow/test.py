@@ -1,5 +1,6 @@
-from create_database_utils import *
-import subprocess
+import commands
 
-subprocess.check_call([get_cmd("kotlinc"), "lib.kt", "-d", "lib"])
-run_codeql_database_create(["kotlinc user.kt -cp lib"], lang="java")
+
+def test(codeql, java_full):
+    commands.run("kotlinc lib.kt -d lib")
+    codeql.database.create(command=["kotlinc user.kt -cp lib"])

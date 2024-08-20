@@ -1,4 +1,6 @@
-from create_database_utils import *
+import runs_on
 
-os.mkdir('build')
-run_codeql_database_create(["kotlinc test.kt -d build", "javac User.java -cp build"], lang="java")
+
+@runs_on.posix
+def test(codeql, java_full):
+    codeql.database.create(command=["kotlinc test.kt -d build", "javac User.java -cp build"])
