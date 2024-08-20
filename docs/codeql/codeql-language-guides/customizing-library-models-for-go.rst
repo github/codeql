@@ -129,7 +129,7 @@ We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, 
          pack: codeql/go-all
          extensible: sourceModel
        data:
-         - ["net", "", False, "Listen", "(string,string)", "", "ReturnValue", "remote", "manual"]
+         - ["net", "", False, "Listen", "", "", "ReturnValue", "remote", "manual"]
 
 
 Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
@@ -139,7 +139,7 @@ The first five values identify the callable (in this case a function) to be mode
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the source also applies to all overrides of the method.
 - The fourth value ``Listen`` is the function name.
-- The fifth value ``(string,string)`` is the method input type signature.
+- The fifth value ``""`` is the function input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
