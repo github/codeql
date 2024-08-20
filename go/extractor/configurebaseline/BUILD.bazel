@@ -7,4 +7,5 @@ go_library(
     srcs = ["configurebaseline.go"],
     importpath = "github.com/github/codeql-go/extractor/configurebaseline",
     visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
 )
