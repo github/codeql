@@ -2,18 +2,20 @@ package main
 
 import "github.com/anotherpkg"
 
-type T1 map[string][]string
-type T2 T1
+type DefinedType1 map[string][]string
+type DefinedType2 DefinedType1
+type AliasType1 = DefinedType2
+type AliasType2 = AliasType1
 
 // A generic function with one type parameter
-func GenericFunctionOneTypeParam[T any](t T) T {
-	var r T
+func GenericFunctionOneTypeParam[TP101 any](t TP101) TP101 {
+	var r TP101
 	return r
 }
 
 // A generic function with two type parameter
-func GenericFunctionTwoTypeParams[K comparable, V int64 | float64](m map[K]V) V {
-	var s V
+func GenericFunctionTwoTypeParams[TP102 comparable, TP103 int64 | float64](m map[TP102]TP103) TP103 {
+	var s TP103
 	for _, v := range m {
 		s += v
 	}
@@ -78,24 +80,24 @@ func generic_functions() {
 	aliasedMap["key"][0] = "new value"
 }
 
-type GenericStruct1[T any] struct {
+type GenericStruct1[TP104 interface{}] struct {
 }
 
-type GenericStruct2[S, T any] struct {
+type GenericStruct2[TP105, TP106 any] struct {
 }
 
-func (x GenericStruct1[TF1]) f1() TF1 {
-	var r TF1
+func (x GenericStruct1[TP107]) f1() TP107 {
+	var r TP107
 	return r
 }
 
-func (x *GenericStruct1[TG1]) g1() {
+func (x *GenericStruct1[TP108]) g1() {
 }
 
-func (x GenericStruct2[SF2, TF2]) f2() {
+func (x GenericStruct2[TP109, TP110]) f2() {
 }
 
-func (x *GenericStruct2[SG2, TG2]) g2() {
+func (x *GenericStruct2[TP111, TP112]) g2() {
 }
 
 func call_methods_with_generic_receiver() {
@@ -108,34 +110,34 @@ func call_methods_with_generic_receiver() {
 	x2.g2()
 }
 
-type Element[S any] struct {
-	list *List[S]
+type Element[TP113 any] struct {
+	list *List[TP113]
 }
 
-type List[T any] struct {
-	root Element[T]
+type List[TP114 any] struct {
+	root Element[TP114]
 }
 
 // Len is the number of elements in the list.
-func (l *List[U]) MyLen() int {
+func (l *List[TP115]) MyLen() int {
 	return 0
 }
 
-type NodeConstraint[Edge any] interface {
-	Edges() []Edge
+type NodeConstraint[TP116 any] interface {
+	Edges() []TP116
 }
 
-type EdgeConstraint[Node any] interface {
-	Nodes() (from, to Node)
+type EdgeConstraint[TP117 any] interface {
+	Nodes() (from, to TP117)
 }
 
-type Graph[Node NodeConstraint[Edge], Edge EdgeConstraint[Node]] struct{}
+type Graph[TP118 NodeConstraint[TP119], TP119 EdgeConstraint[TP118]] struct{}
 
-func New[Node NodeConstraint[Edge], Edge EdgeConstraint[Node]](nodes []Node) *Graph[Node, Edge] {
+func New[TP120 NodeConstraint[TP121], TP121 EdgeConstraint[TP120]](nodes []TP120) *Graph[TP120, TP121] {
 	return nil
 }
 
-func (g *Graph[Node, Edge]) ShortestPath(from, to Node) []Edge { return []Edge{} }
+func (g *Graph[TP122, TP123]) ShortestPath(from, to TP122) []TP123 { return []TP123{} }
 
 func callFunctionsInAnotherFile() {
 	_ = GenericFunctionInAnotherFile[string]("world")
