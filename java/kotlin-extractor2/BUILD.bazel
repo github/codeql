@@ -1,0 +1,204 @@
+"""
+# Usage overview
+Building the extractor can be done with bazel. If building from the internal repository, it is recommended to use
+`tools/bazel` from there.
+
+A specific kotlin extractor variant can be built with
+```
+bazel build @codeql//java/kotlin-extractor:codeql-extractor-kotlin-<variant>-<version>
+```
+where `<variant>` is either `standalone` or `embeddable`, and `<version>` is one of the supported versions.
+```
+bazel build @codeql//java/kotlin-extractor
+```
+will build a default variant:
+* standalone, unless `CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE` is set to true, in which case it will go for embeddable
+* the version will be taken as the last supported version less than the version of the currently available `kotlinc`,
+  or `CODEQL_KOTLIN_SINGLE_VERSION` if set.
+
+If building from the `codeql` repository, `@codeql` can be skipped.
+
+It is recommended to use the `kotlinc` wrapper in `dev` (which is also available in `tools` from `semmle-code`), which
+takes care about providing a sensible default version and keep the version of the default target up to date.
+
+If the wrapper is not used and `kotlinc` is updated, bazel won't be aware of it and will therefore keep the same default
+version. Possible workarounds for that:
+* switch to using the `kotlinc` wrapper in `dev` as mentioned above
+* `bazel clean`
+* `bazel fetch --force @codeql//java/kotlin-extractor`
+* `bazel fetch --force @codeql_kotlin_defaults//:all` (only from `codeql`)
+"""
+
+# This file is used in the `@codeql_kotlin_embeddable` external repo, which means we need to
+# reference explicitly @codeql
+load(
+    "@codeql//java/kotlin-extractor:versions.bzl",
+    "VERSIONS",
+    "get_compatilibity_sources",
+    "get_language_version",
+    "version_less",
+)
+load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+
+package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
+
+_for_embeddable = repo_name().endswith("codeql_kotlin_embeddable")
+
+_common_extractor_name_prefix = "codeql-extractor-kotlin"
+
+_extractor_name_prefix = "%s-%s" % (
+    _common_extractor_name_prefix,
+    "embeddable" if _for_embeddable else "standalone",
+)
+
+py_binary(
+    name = "generate_dbscheme",
+    srcs = ["generate_dbscheme.py"],
+)
+
+_resources = [
+    (
+        r,
+        r[len("src/main/resources/"):],
+    )
+    for r in glob(["src/main/resources/**"])
+]
+
+kt_javac_options(
+    name = "javac-options",
+    release = "8",
+)
+
+[
+    (
+        kt_kotlinc_options(
+            name = "kotlinc-options-%s" % v,
+            include_stdlibs = "none",
+            jvm_target = "1.8",
+            language_version = get_language_version(v),
+            warn = "error",
+            x_optin = [
+                "kotlin.RequiresOptIn",
+                "org.jetbrains.kotlin.ir.symbols.%s" %
+                ("IrSymbolInternals" if version_less(v, "2.0.0") else "UnsafeDuringIrConstructionAPI"),
+            ],
+            x_suppress_version_warnings = True,
+        ),
+        # * extractor.name is different for each version, so we need to put it in different output dirs
+        # * in order to put it in `resources`, we need to define `resource_strip_prefix` to strip this version
+        # * `resource_strip_prefix` is unique per jar, so we must also put other resources under the same version prefix
+        genrule(
+            name = "resources-%s" % v,
+            srcs = [src for src, _ in _resources],
+            outs = [
+                "%s/com/github/codeql/extractor.name" % v,
+            ] + [
+                "%s/%s" % (v, target)
+                for _, target in _resources
+            ],
+            cmd = "\n".join([
+                "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
+            ] + [
+                "cp $(execpath %s) $(RULEDIR)/%s/%s" % (source, v, target)
+                for source, target in _resources
+            ]),
+        ),
+        kt_jvm_library(
+            name = "%s-%s" % (_extractor_name_prefix, v),
+            srcs =
+                ["@codeql//java/kotlin-extractor:generated-dbscheme"] +
+                glob(
+                    [
+                        "src/**/*.kt",
+                        "src/**/*.java",
+                    ],
+                    exclude = [
+                        # a specific version is included back by `get_compatibility_sources`
+                        "src/main/kotlin/utils/versions/**",
+                        # this appears if `generated_dbscheme.py` is run manually, while we want the one built by bazel
+                        "src/main/kotlin/KotlinExtractorDbScheme.kt",
+                    ],
+                ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
+            javac_opts = ":javac-options",
+            kotlinc_opts = ":kotlinc-options-%s" % v,
+            module_name = "codeql-kotlin-extractor",
+            # resource_strip_prefix is very nit-picky: the following makes it work from
+            # `codeql`, `@codeql_kotlin_embeddable` and `semmle-code`
+            resource_strip_prefix = (
+                ("../%s/" % repo_name() if repo_name() else "") +
+                ("%s/" % package_name() if package_name() else "") +
+                v
+            ),
+            resources = [
+                ":resources-%s" % v,
+            ],
+            visibility = ["//visibility:public"],
+            deps = [
+                "@kotlin-compiler%s-%s" % (
+                    "-embeddable" if _for_embeddable else "",
+                    v,
+                ),
+                "@kotlin-stdlib-%s" % v,
+            ],
+        ),
+        # if in main repository, alias the embeddable versions from the modified @codeql_kotlin_embeddable repo
+        alias(
+            name = "%s-embeddable-%s" % (_common_extractor_name_prefix, v),
+            actual = "@codeql_kotlin_embeddable//:%s-embeddable-%s" % (_common_extractor_name_prefix, v),
+            visibility = ["//visibility:public"],
+        ) if not _for_embeddable else None,
+    )
+    for v in VERSIONS
+]
+
+(
+    genrule(
+        name = "generated-dbscheme",
+        srcs = ["@codeql//java:dbscheme"],
+        outs = ["KotlinExtractorDbScheme.kt"],
+        cmd = "$(execpath :generate_dbscheme) $< $@",
+        tools = [":generate_dbscheme"],
+        visibility = ["@codeql_kotlin_embeddable//:__pkg__"],
+    ),
+    [
+        alias(
+            name = n,
+            actual = "//java/kotlin-extractor/defaults:%s" % n,
+            visibility = ["//visibility:public"],
+        )
+        for n in (
+            "%s-standalone" % _common_extractor_name_prefix,
+            "%s-embeddable" % _common_extractor_name_prefix,
+            _common_extractor_name_prefix,
+        )
+    ],
+    alias(
+        name = "kotlin-extractor",
+        actual = _common_extractor_name_prefix,
+        visibility = ["//visibility:public"],
+    ),
+    filegroup(
+        name = "many",
+        srcs = ["%s-%s-%s" % (
+            _common_extractor_name_prefix,
+            variant,
+            version,
+        ) for variant in ("standalone", "embeddable") for version in VERSIONS],
+        visibility = ["//visibility:public"],
+    ),
+    genrule(
+        name = "versions-list",
+        outs = ["kotlin-versions.list"],
+        cmd = "\n".join(["cat > $@ << EOF"] + VERSIONS + ["EOF"]),
+    ),
+    # these are packed in the extractor pack for running QL tests
+    filegroup(
+        name = "version-picker",
+        srcs = [
+            "pick-kotlin-version.py",
+            ":versions-list",
+        ],
+        visibility = ["//visibility:public"],
+    ),
+) if not _for_embeddable else None
