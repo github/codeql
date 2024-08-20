@@ -1406,6 +1406,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[node, state, t0, ap]
         predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
 
+        bindingset[node, ap, isStoreStep]
+        predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep);
+
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
 
@@ -2842,11 +2845,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private predicate localStep(
             StagePathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
-            TypOption argT, ApOption argAp, Typ t, Ap ap, string label
+            TypOption argT, ApOption argAp, Typ t, Ap ap, string label, boolean isStoreStep
           ) {
             exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
               pn1 = TStagePathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
-              localCc = getLocalCc(cc)
+              localCc = getLocalCc(cc) and
+              isStoreStep = false
             |
               localStep(mid, state0, node, state, true, _, localCc, label) and
               t = t0
@@ -2860,7 +2864,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
               fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
               ap = apCons(c, t0, ap0) and
-              label = ""
+              label = "" and
+              isStoreStep = true
             )
             or
             // read
@@ -2868,17 +2873,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               pn1 = TStagePathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
               fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp) and
               fwdFlowConsCand(t0, ap0, c, t, ap) and
-              label = ""
+              label = "" and
+              isStoreStep = false
             )
           }
 
           private predicate localStep(StagePathNodeImpl pn1, StagePathNodeImpl pn2, string label) {
             exists(
               NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t0, Ap ap
+              ApOption argAp, Typ t0, Ap ap, boolean isStoreStep
             |
-              localStep(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap, label) and
-              pn2 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap)
+              localStep(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap, label, isStoreStep) and
+              pn2 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              stepFilter(node, ap, isStoreStep)
             )
             or
             summaryStep(pn1, pn2, label)
@@ -2971,7 +2978,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               ApOption argAp, Typ t0, Ap ap
             |
               nonLocalStep(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap, label) and
-              pn2 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap)
+              pn2 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              stepFilter(node, ap, false)
             )
           }
 
@@ -2989,7 +2997,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               ApOption argAp, Typ t0, Ap ap, StagePathNodeImpl out0
             |
               fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, argT, argAp, t0, ap) and
-              out0 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap)
+              out0 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              stepFilter(node, ap, false)
             |
               out = out0 or out = out0.(StagePathNodeMid).projectToSink(_)
             )
@@ -3180,6 +3189,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           expectsContentCand(node)
         )
       }
+
+      bindingset[node, ap, isStoreStep]
+      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
@@ -3459,6 +3471,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+      bindingset[node, ap, isStoreStep]
+      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
+
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
     }
@@ -3543,8 +3558,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate clear(NodeEx node, Ap ap) {
         // When `node` is the target of a store, we interpret `clearsContent` as
         // only pertaining to _earlier_ store steps. In this case, we need to postpone
-        // checking `clearsContent` to the `pathStep` predicate
+        // checking `clearsContent` to the step creation.
         clearContent(node, ap.getHead(), false)
+      }
+
+      pragma[nomagic]
+      private predicate clearExceptStore(NodeEx node, Ap ap) {
+        clearContent(node, ap.getHead(), true)
       }
 
       pragma[nomagic]
@@ -3567,6 +3587,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           expectsContentCand(node, ap)
         )
+      }
+
+      bindingset[node, ap, isStoreStep]
+      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+        if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
       bindingset[typ, contentType]
@@ -3827,6 +3852,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         strengthenType(node, t0, t) and
         exists(state) and
         exists(ap)
+      }
+
+      pragma[nomagic]
+      private predicate clearExceptStore(NodeEx node, Ap ap) {
+        Stage4Param::clearContent(node, ap.getHead(), true)
+      }
+
+      bindingset[node, ap, isStoreStep]
+      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+        if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
       bindingset[typ, contentType]
