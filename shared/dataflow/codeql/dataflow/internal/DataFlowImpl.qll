@@ -2539,6 +2539,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           class StagePathNodeImpl extends TStagePathNode {
             abstract NodeEx getNodeEx();
 
+            /** Gets the `FlowState` of this node. */
+            abstract FlowState getState();
+
             abstract string toString();
 
             predicate isSource() { none() }
@@ -2559,6 +2562,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
 
             override NodeEx getNodeEx() { none() }
+
+            override FlowState getState() { none() }
           }
 
           class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
@@ -2567,6 +2572,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
 
             override NodeEx getNodeEx() { none() }
+
+            override FlowState getState() { none() }
           }
 
           class StagePathNodeMid extends StagePathNodeImpl, TStagePathNodeMid {
@@ -2584,6 +2591,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             }
 
             override NodeEx getNodeEx() { result = node }
+
+            override FlowState getState() { result = state }
 
             override string toString() {
               result =
