@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 var relativePathToCsProj = Path.GetRelativePath(sourceDir, csprojFile);
-                var name = FileUtils.ComputeHash($"{relativePathToCsProj}{Environment.NewLine}{this.GetType().Name}");
+                var name = FileUtils.ComputeHash($"{relativePathToCsProj}\n{this.GetType().Name}");
                 using var tempDir = new TemporaryDirectory(Path.Join(FileUtils.GetTemporaryWorkingDirectory(out _), "source-generator"), "source generator temporary", logger);
                 var analyzerConfigPath = Path.Combine(tempDir.DirInfo.FullName, $"{name}.txt");
                 var dllPath = Path.Combine(tempDir.DirInfo.FullName, $"{name}.dll");
