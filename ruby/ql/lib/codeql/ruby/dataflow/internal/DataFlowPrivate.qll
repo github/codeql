@@ -195,7 +195,9 @@ private class Argument extends CfgNodes::ExprCfgNode {
       not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       not this.getExpr() instanceof HashSplatExpr and
       not this.getExpr() instanceof SplatExpr and
-      arg.isPositional(i)
+      arg.isPositional(i) and
+      // There are no splat arguments before the positional argument
+      not splatArgumentAt(call, any(int j | j < i))
     )
     or
     exists(CfgNodes::ExprNodes::PairCfgNode p |
@@ -217,7 +219,9 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int pos |
       this = call.getArgument(pos) and
       this.getExpr() instanceof SplatExpr and
-      arg.isSplat(pos)
+      arg.isSplat(pos) and
+      // There are no earlier splat arguments
+      not splatArgumentAt(call, any(int j | j < pos))
     )
     or
     this = call.getAnArgument() and
@@ -432,7 +436,7 @@ private predicate splatParameterAt(Callable c, int pos) {
 }
 
 private predicate splatArgumentAt(CfgNodes::ExprNodes::CallCfgNode c, int pos) {
-  exists(Argument arg, ArgumentPosition apos | arg.isArgumentOf(c, apos) and apos.isSplat(pos))
+  c.getArgument(pos).getExpr() instanceof SplatExpr
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -920,7 +924,12 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       exists(Callable callable | callable = c.asCfgScope() |
-        exists(int i | pos.isPositional(i) and callable.getParameter(i) = parameter |
+        exists(int i |
+          pos.isPositional(i) and
+          callable.getParameter(i) = parameter and
+          // There are no splat parameters before the positional parameter
+          not splatParameterAt(callable, any(int m | m < i))
+        |
           parameter instanceof SimpleParameter
           or
           parameter instanceof OptionalParameter
@@ -939,7 +948,9 @@ private module ParameterNodes {
           parameter = callable.getParameter(n).(SplatParameter) and
           pos.isSplat(n) and
           // There are no positional parameters after the splat
-          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
+          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m)) and
+          // There are no earlier splat parameters
+          not splatParameterAt(callable, any(int m | m < n))
         )
         or
         parameter = callable.getAParameter().(BlockParameter) and
