@@ -156,9 +156,9 @@ This pattern covers many of the cases where we need to summarize flow through a 
 .. code-block:: go
 
     func TaintFlow() {
-        ss := []string{"Hello", "World"}
+        elems := []string{"Hello", "World"}
         sep := " "
-        t := strings.Join(ss, sep) // There is taint flow from ss and sep to t.
+        t := strings.Join(elems, sep) // There is taint flow from ss and sep to t.
         ...
     }
 
@@ -176,7 +176,7 @@ We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, 
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
 Each tuple defines flow from one argument to the return value.
-The first row defines flow from the first argument (``ss`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
+The first row defines flow from the first argument (``elems`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
 
 The first five values identify the callable (in this case a method) to be modeled as a summary.
 These are the same for both of the rows above as we are adding two summaries for the same method.
@@ -190,7 +190,7 @@ These are the same for both of the rows above as we are adding two summaries for
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument (``ss`` in the example) and ``Argument[1]`` is the access path to the second argument (``sep`` in the example).
+- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument (``elems`` in the example) and ``Argument[1]`` is the access path to the second argument (``sep`` in the example).
 - The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
 - The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
