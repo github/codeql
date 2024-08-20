@@ -2537,12 +2537,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             TStagePathNodeSinkGrp()
 
           class StagePathNodeImpl extends TStagePathNode {
+            abstract NodeEx getNodeEx();
+
             abstract string toString();
 
             abstract Location getLocation();
-
-            /** Gets the corresponding `Node`, if any. */
-            Node getNode() { none() }
 
             predicate isSource() { none() }
 
@@ -2557,12 +2556,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override string toString() { result = "<any source>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+
+            override NodeEx getNodeEx() { none() }
           }
 
           class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
             override string toString() { result = "<any sink>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+
+            override NodeEx getNodeEx() { none() }
           }
 
           class StagePathNodeMid extends StagePathNodeImpl, TStagePathNodeMid {
@@ -2579,14 +2582,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               this = TStagePathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
             }
 
+            override NodeEx getNodeEx() { result = node }
+
             override string toString() {
               result =
                 node.toString() + " " + cc.toString() + " " + t.toString() + " " + ap.toString()
             }
 
             override Location getLocation() { result = node.getLocation() }
-
-            override Node getNode() { result = node.asNode() }
 
             override predicate isSource() {
               sourceNode(node, state) and
