@@ -1193,20 +1193,16 @@ track
 | params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps | params_flow.rb:51:11:51:20 | ...[...] |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps with content element 0 | params_flow.rb:49:17:49:24 | *posargs |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps with content element 0 | params_flow.rb:51:5:51:21 | synthetic splat argument |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps with content element 0 or unknown | params_flow.rb:49:17:49:24 | *posargs |
-| params_flow.rb:57:8:57:18 | call to [] | type tracker with call steps with content element 1 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker without call steps | params_flow.rb:57:8:57:18 | call to [] |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker without call steps with content element 0 or unknown | params_flow.rb:58:20:58:24 | * ... |
 | params_flow.rb:57:8:57:18 | call to [] | type tracker without call steps with content element 1 | params_flow.rb:58:1:58:25 | synthetic splat argument |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps | params_flow.rb:51:11:51:20 | ...[...] |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps with content element 0 | params_flow.rb:49:17:49:24 | *posargs |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps with content element 0 | params_flow.rb:51:5:51:21 | synthetic splat argument |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps with content element 0 or unknown | params_flow.rb:49:17:49:24 | *posargs |
-| params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker with call steps with content element 1 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker without call steps | params_flow.rb:57:8:57:18 | call to [] |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker without call steps | params_flow.rb:57:8:57:18 | synthetic splat argument |
 | params_flow.rb:57:8:57:18 | synthetic splat argument | type tracker without call steps with content element 0 or unknown | params_flow.rb:58:20:58:24 | * ... |
@@ -1216,7 +1212,6 @@ track
 | params_flow.rb:57:9:57:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:57:9:57:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:49:17:49:24 | *posargs |
 | params_flow.rb:57:9:57:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:51:5:51:21 | synthetic splat argument |
-| params_flow.rb:57:9:57:17 | call to taint | type tracker with call steps with content element 1 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:57:9:57:17 | call to taint | type tracker without call steps | params_flow.rb:57:9:57:17 | call to taint |
 | params_flow.rb:57:9:57:17 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:57:8:57:18 | call to [] |
 | params_flow.rb:57:9:57:17 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:57:8:57:18 | synthetic splat argument |
@@ -1229,7 +1224,6 @@ track
 | params_flow.rb:57:15:57:16 | 22 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:57:15:57:16 | 22 | type tracker with call steps with content element 0 | params_flow.rb:49:17:49:24 | *posargs |
 | params_flow.rb:57:15:57:16 | 22 | type tracker with call steps with content element 0 | params_flow.rb:51:5:51:21 | synthetic splat argument |
-| params_flow.rb:57:15:57:16 | 22 | type tracker with call steps with content element 1 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:57:15:57:16 | 22 | type tracker without call steps | params_flow.rb:57:9:57:17 | call to taint |
 | params_flow.rb:57:15:57:16 | 22 | type tracker without call steps | params_flow.rb:57:15:57:16 | 22 |
 | params_flow.rb:57:15:57:16 | 22 | type tracker without call steps with content element 0 | params_flow.rb:57:8:57:18 | call to [] |
@@ -1238,12 +1232,10 @@ track
 | params_flow.rb:57:15:57:16 | 22 | type tracker without call steps with content element 0 | params_flow.rb:58:20:58:24 | * ... |
 | params_flow.rb:57:15:57:16 | 22 | type tracker without call steps with content element 1 | params_flow.rb:58:1:58:25 | synthetic splat argument |
 | params_flow.rb:58:1:58:25 | call to posargs | type tracker without call steps | params_flow.rb:58:1:58:25 | call to posargs |
-| params_flow.rb:58:1:58:25 | synthetic splat argument | type tracker with call steps | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:58:1:58:25 | synthetic splat argument | type tracker without call steps | params_flow.rb:58:1:58:25 | synthetic splat argument |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker with call steps | params_flow.rb:49:13:49:14 | p1 |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:58:9:58:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:50:5:50:11 | synthetic splat argument |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker without call steps | params_flow.rb:58:9:58:17 | call to taint |
 | params_flow.rb:58:9:58:17 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:58:1:58:25 | synthetic splat argument |
@@ -1252,7 +1244,6 @@ track
 | params_flow.rb:58:15:58:16 | 23 | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:58:15:58:16 | 23 | type tracker with call steps | params_flow.rb:49:13:49:14 | p1 |
 | params_flow.rb:58:15:58:16 | 23 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:58:15:58:16 | 23 | type tracker with call steps with content element 0 | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:58:15:58:16 | 23 | type tracker with call steps with content element 0 | params_flow.rb:50:5:50:11 | synthetic splat argument |
 | params_flow.rb:58:15:58:16 | 23 | type tracker without call steps | params_flow.rb:58:9:58:17 | call to taint |
 | params_flow.rb:58:15:58:16 | 23 | type tracker without call steps | params_flow.rb:58:15:58:16 | 23 |
@@ -1826,12 +1817,10 @@ track
 | params_flow.rb:94:45:94:46 | 44 | type tracker without call steps | params_flow.rb:94:45:94:46 | 44 |
 | params_flow.rb:94:45:94:46 | 44 | type tracker without call steps with content element 0 | params_flow.rb:94:39:94:47 | synthetic splat argument |
 | params_flow.rb:96:1:96:88 | call to splatmid | type tracker without call steps | params_flow.rb:96:1:96:88 | call to splatmid |
-| params_flow.rb:96:1:96:88 | synthetic splat argument | type tracker with call steps | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:1:96:88 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker with call steps | params_flow.rb:69:14:69:14 | x |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:96:10:96:18 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:70:5:70:10 | synthetic splat argument |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker without call steps | params_flow.rb:96:10:96:18 | call to taint |
 | params_flow.rb:96:10:96:18 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:96:1:96:88 | synthetic splat argument |
@@ -1840,7 +1829,6 @@ track
 | params_flow.rb:96:16:96:17 | 45 | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:96:16:96:17 | 45 | type tracker with call steps | params_flow.rb:69:14:69:14 | x |
 | params_flow.rb:96:16:96:17 | 45 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:96:16:96:17 | 45 | type tracker with call steps with content element 0 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:16:96:17 | 45 | type tracker with call steps with content element 0 | params_flow.rb:70:5:70:10 | synthetic splat argument |
 | params_flow.rb:96:16:96:17 | 45 | type tracker without call steps | params_flow.rb:96:10:96:18 | call to taint |
 | params_flow.rb:96:16:96:17 | 45 | type tracker without call steps | params_flow.rb:96:16:96:17 | 45 |
@@ -1850,7 +1838,6 @@ track
 | params_flow.rb:96:21:96:29 | call to taint | type tracker with call steps | params_flow.rb:69:17:69:17 | y |
 | params_flow.rb:96:21:96:29 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:96:21:96:29 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:71:5:71:10 | synthetic splat argument |
-| params_flow.rb:96:21:96:29 | call to taint | type tracker with call steps with content element 1 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:21:96:29 | call to taint | type tracker without call steps | params_flow.rb:96:21:96:29 | call to taint |
 | params_flow.rb:96:21:96:29 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:21:96:29 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:21:96:29 | synthetic splat argument |
@@ -1859,23 +1846,19 @@ track
 | params_flow.rb:96:27:96:28 | 46 | type tracker with call steps | params_flow.rb:69:17:69:17 | y |
 | params_flow.rb:96:27:96:28 | 46 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
 | params_flow.rb:96:27:96:28 | 46 | type tracker with call steps with content element 0 | params_flow.rb:71:5:71:10 | synthetic splat argument |
-| params_flow.rb:96:27:96:28 | 46 | type tracker with call steps with content element 1 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:27:96:28 | 46 | type tracker without call steps | params_flow.rb:96:21:96:29 | call to taint |
 | params_flow.rb:96:27:96:28 | 46 | type tracker without call steps | params_flow.rb:96:27:96:28 | 46 |
 | params_flow.rb:96:27:96:28 | 46 | type tracker without call steps with content element 0 | params_flow.rb:96:21:96:29 | synthetic splat argument |
 | params_flow.rb:96:27:96:28 | 46 | type tracker without call steps with content element 1 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:32:96:65 | * ... | type tracker without call steps | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:33:96:65 | Array | type tracker without call steps | params_flow.rb:96:33:96:65 | Array |
-| params_flow.rb:96:33:96:65 | call to [] | type tracker with call steps with content element 2 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:33:96:65 | call to [] | type tracker without call steps | params_flow.rb:96:33:96:65 | call to [] |
 | params_flow.rb:96:33:96:65 | call to [] | type tracker without call steps with content element 0 or unknown | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:33:96:65 | call to [] | type tracker without call steps with content element 2 | params_flow.rb:96:1:96:88 | synthetic splat argument |
-| params_flow.rb:96:33:96:65 | synthetic splat argument | type tracker with call steps with content element 2 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:33:96:65 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:33:96:65 | call to [] |
 | params_flow.rb:96:33:96:65 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:33:96:65 | synthetic splat argument |
 | params_flow.rb:96:33:96:65 | synthetic splat argument | type tracker without call steps with content element 0 or unknown | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:33:96:65 | synthetic splat argument | type tracker without call steps with content element 2 | params_flow.rb:96:1:96:88 | synthetic splat argument |
-| params_flow.rb:96:34:96:42 | call to taint | type tracker with call steps with content element 2 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:34:96:42 | call to taint | type tracker without call steps | params_flow.rb:96:34:96:42 | call to taint |
 | params_flow.rb:96:34:96:42 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:34:96:42 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:96:33:96:65 | call to [] |
@@ -1883,7 +1866,6 @@ track
 | params_flow.rb:96:34:96:42 | call to taint | type tracker without call steps with content element 2 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:34:96:42 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:34:96:42 | synthetic splat argument |
 | params_flow.rb:96:40:96:41 | 47 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
-| params_flow.rb:96:40:96:41 | 47 | type tracker with call steps with content element 2 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps | params_flow.rb:96:34:96:42 | call to taint |
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps | params_flow.rb:96:40:96:41 | 47 |
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps with content element 0 | params_flow.rb:96:32:96:65 | * ... |
@@ -1891,7 +1873,6 @@ track
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps with content element 0 | params_flow.rb:96:33:96:65 | synthetic splat argument |
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps with content element 0 | params_flow.rb:96:34:96:42 | synthetic splat argument |
 | params_flow.rb:96:40:96:41 | 47 | type tracker without call steps with content element 2 | params_flow.rb:96:1:96:88 | synthetic splat argument |
-| params_flow.rb:96:45:96:53 | call to taint | type tracker with call steps with content element 3 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:45:96:53 | call to taint | type tracker without call steps | params_flow.rb:96:45:96:53 | call to taint |
 | params_flow.rb:96:45:96:53 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:45:96:53 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:96:33:96:65 | call to [] |
@@ -1899,7 +1880,6 @@ track
 | params_flow.rb:96:45:96:53 | call to taint | type tracker without call steps with content element 3 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:45:96:53 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:45:96:53 | synthetic splat argument |
 | params_flow.rb:96:51:96:52 | 48 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
-| params_flow.rb:96:51:96:52 | 48 | type tracker with call steps with content element 3 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps | params_flow.rb:96:45:96:53 | call to taint |
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps | params_flow.rb:96:51:96:52 | 48 |
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps with content element 0 | params_flow.rb:96:45:96:53 | synthetic splat argument |
@@ -1907,7 +1887,6 @@ track
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps with content element 1 | params_flow.rb:96:33:96:65 | call to [] |
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps with content element 1 | params_flow.rb:96:33:96:65 | synthetic splat argument |
 | params_flow.rb:96:51:96:52 | 48 | type tracker without call steps with content element 3 | params_flow.rb:96:1:96:88 | synthetic splat argument |
-| params_flow.rb:96:56:96:64 | call to taint | type tracker with call steps with content element 4 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:56:96:64 | call to taint | type tracker without call steps | params_flow.rb:96:56:96:64 | call to taint |
 | params_flow.rb:96:56:96:64 | call to taint | type tracker without call steps with content element 2 | params_flow.rb:96:32:96:65 | * ... |
 | params_flow.rb:96:56:96:64 | call to taint | type tracker without call steps with content element 2 | params_flow.rb:96:33:96:65 | call to [] |
@@ -1915,7 +1894,6 @@ track
 | params_flow.rb:96:56:96:64 | call to taint | type tracker without call steps with content element 4 | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:56:96:64 | synthetic splat argument | type tracker without call steps | params_flow.rb:96:56:96:64 | synthetic splat argument |
 | params_flow.rb:96:62:96:63 | 49 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
-| params_flow.rb:96:62:96:63 | 49 | type tracker with call steps with content element 4 | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:62:96:63 | 49 | type tracker without call steps | params_flow.rb:96:56:96:64 | call to taint |
 | params_flow.rb:96:62:96:63 | 49 | type tracker without call steps | params_flow.rb:96:62:96:63 | 49 |
 | params_flow.rb:96:62:96:63 | 49 | type tracker without call steps with content element 0 | params_flow.rb:96:56:96:64 | synthetic splat argument |
@@ -1977,12 +1955,10 @@ track
 | params_flow.rb:102:5:102:10 | call to sink | type tracker without call steps | params_flow.rb:106:1:106:46 | call to splatmidsmall |
 | params_flow.rb:102:5:102:10 | synthetic splat argument | type tracker without call steps | params_flow.rb:102:5:102:10 | synthetic splat argument |
 | params_flow.rb:105:1:105:49 | call to splatmidsmall | type tracker without call steps | params_flow.rb:105:1:105:49 | call to splatmidsmall |
-| params_flow.rb:105:1:105:49 | synthetic splat argument | type tracker with call steps | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:1:105:49 | synthetic splat argument | type tracker without call steps | params_flow.rb:105:1:105:49 | synthetic splat argument |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker with call steps | params_flow.rb:98:19:98:19 | a |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:105:15:105:23 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker with call steps with content element 0 | params_flow.rb:99:5:99:10 | synthetic splat argument |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker without call steps | params_flow.rb:105:15:105:23 | call to taint |
 | params_flow.rb:105:15:105:23 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:105:1:105:49 | synthetic splat argument |
@@ -1991,7 +1967,6 @@ track
 | params_flow.rb:105:21:105:22 | 52 | type tracker with call steps | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:105:21:105:22 | 52 | type tracker with call steps | params_flow.rb:98:19:98:19 | a |
 | params_flow.rb:105:21:105:22 | 52 | type tracker with call steps with content element 0 | params_flow.rb:6:5:6:10 | synthetic splat argument |
-| params_flow.rb:105:21:105:22 | 52 | type tracker with call steps with content element 0 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:21:105:22 | 52 | type tracker with call steps with content element 0 | params_flow.rb:99:5:99:10 | synthetic splat argument |
 | params_flow.rb:105:21:105:22 | 52 | type tracker without call steps | params_flow.rb:105:15:105:23 | call to taint |
 | params_flow.rb:105:21:105:22 | 52 | type tracker without call steps | params_flow.rb:105:21:105:22 | 52 |
@@ -1999,16 +1974,13 @@ track
 | params_flow.rb:105:21:105:22 | 52 | type tracker without call steps with content element 0 | params_flow.rb:105:15:105:23 | synthetic splat argument |
 | params_flow.rb:105:26:105:48 | * ... | type tracker without call steps | params_flow.rb:105:26:105:48 | * ... |
 | params_flow.rb:105:27:105:48 | Array | type tracker without call steps | params_flow.rb:105:27:105:48 | Array |
-| params_flow.rb:105:27:105:48 | call to [] | type tracker with call steps with content element 1 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:27:105:48 | call to [] | type tracker without call steps | params_flow.rb:105:27:105:48 | call to [] |
 | params_flow.rb:105:27:105:48 | call to [] | type tracker without call steps with content element 0 or unknown | params_flow.rb:105:26:105:48 | * ... |
 | params_flow.rb:105:27:105:48 | call to [] | type tracker without call steps with content element 1 | params_flow.rb:105:1:105:49 | synthetic splat argument |
-| params_flow.rb:105:27:105:48 | synthetic splat argument | type tracker with call steps with content element 1 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:27:105:48 | synthetic splat argument | type tracker without call steps | params_flow.rb:105:27:105:48 | call to [] |
 | params_flow.rb:105:27:105:48 | synthetic splat argument | type tracker without call steps | params_flow.rb:105:27:105:48 | synthetic splat argument |
 | params_flow.rb:105:27:105:48 | synthetic splat argument | type tracker without call steps with content element 0 or unknown | params_flow.rb:105:26:105:48 | * ... |
 | params_flow.rb:105:27:105:48 | synthetic splat argument | type tracker without call steps with content element 1 | params_flow.rb:105:1:105:49 | synthetic splat argument |
-| params_flow.rb:105:28:105:36 | call to taint | type tracker with call steps with content element 1 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:28:105:36 | call to taint | type tracker without call steps | params_flow.rb:105:28:105:36 | call to taint |
 | params_flow.rb:105:28:105:36 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:105:26:105:48 | * ... |
 | params_flow.rb:105:28:105:36 | call to taint | type tracker without call steps with content element 0 | params_flow.rb:105:27:105:48 | call to [] |
@@ -2016,7 +1988,6 @@ track
 | params_flow.rb:105:28:105:36 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:105:1:105:49 | synthetic splat argument |
 | params_flow.rb:105:28:105:36 | synthetic splat argument | type tracker without call steps | params_flow.rb:105:28:105:36 | synthetic splat argument |
 | params_flow.rb:105:34:105:35 | 53 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
-| params_flow.rb:105:34:105:35 | 53 | type tracker with call steps with content element 1 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps | params_flow.rb:105:28:105:36 | call to taint |
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps | params_flow.rb:105:34:105:35 | 53 |
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps with content element 0 | params_flow.rb:105:26:105:48 | * ... |
@@ -2024,7 +1995,6 @@ track
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps with content element 0 | params_flow.rb:105:27:105:48 | synthetic splat argument |
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps with content element 0 | params_flow.rb:105:28:105:36 | synthetic splat argument |
 | params_flow.rb:105:34:105:35 | 53 | type tracker without call steps with content element 1 | params_flow.rb:105:1:105:49 | synthetic splat argument |
-| params_flow.rb:105:39:105:47 | call to taint | type tracker with call steps with content element 2 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:39:105:47 | call to taint | type tracker without call steps | params_flow.rb:105:39:105:47 | call to taint |
 | params_flow.rb:105:39:105:47 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:105:26:105:48 | * ... |
 | params_flow.rb:105:39:105:47 | call to taint | type tracker without call steps with content element 1 | params_flow.rb:105:27:105:48 | call to [] |
@@ -2032,7 +2002,6 @@ track
 | params_flow.rb:105:39:105:47 | call to taint | type tracker without call steps with content element 2 | params_flow.rb:105:1:105:49 | synthetic splat argument |
 | params_flow.rb:105:39:105:47 | synthetic splat argument | type tracker without call steps | params_flow.rb:105:39:105:47 | synthetic splat argument |
 | params_flow.rb:105:45:105:46 | 54 | type tracker with call steps | params_flow.rb:1:11:1:11 | x |
-| params_flow.rb:105:45:105:46 | 54 | type tracker with call steps with content element 2 | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:45:105:46 | 54 | type tracker without call steps | params_flow.rb:105:39:105:47 | call to taint |
 | params_flow.rb:105:45:105:46 | 54 | type tracker without call steps | params_flow.rb:105:45:105:46 | 54 |
 | params_flow.rb:105:45:105:46 | 54 | type tracker without call steps with content element 0 | params_flow.rb:105:39:105:47 | synthetic splat argument |
@@ -4438,7 +4407,6 @@ trackEnd
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:57:9:57:17 | call to taint |
 | params_flow.rb:57:15:57:16 | 22 | params_flow.rb:57:15:57:16 | 22 |
 | params_flow.rb:58:1:58:25 | call to posargs | params_flow.rb:58:1:58:25 | call to posargs |
-| params_flow.rb:58:1:58:25 | synthetic splat argument | params_flow.rb:49:1:53:3 | synthetic splat parameter |
 | params_flow.rb:58:1:58:25 | synthetic splat argument | params_flow.rb:58:1:58:25 | synthetic splat argument |
 | params_flow.rb:58:9:58:17 | call to taint | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:58:9:58:17 | call to taint | params_flow.rb:5:10:5:10 | x |
@@ -5032,7 +5000,6 @@ trackEnd
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:94:39:94:47 | call to taint |
 | params_flow.rb:94:45:94:46 | 44 | params_flow.rb:94:45:94:46 | 44 |
 | params_flow.rb:96:1:96:88 | call to splatmid | params_flow.rb:96:1:96:88 | call to splatmid |
-| params_flow.rb:96:1:96:88 | synthetic splat argument | params_flow.rb:69:1:76:3 | synthetic splat parameter |
 | params_flow.rb:96:1:96:88 | synthetic splat argument | params_flow.rb:96:1:96:88 | synthetic splat argument |
 | params_flow.rb:96:10:96:18 | call to taint | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:96:10:96:18 | call to taint | params_flow.rb:5:10:5:10 | x |
@@ -5166,7 +5133,6 @@ trackEnd
 | params_flow.rb:102:5:102:10 | call to sink | params_flow.rb:106:1:106:46 | call to splatmidsmall |
 | params_flow.rb:102:5:102:10 | synthetic splat argument | params_flow.rb:102:5:102:10 | synthetic splat argument |
 | params_flow.rb:105:1:105:49 | call to splatmidsmall | params_flow.rb:105:1:105:49 | call to splatmidsmall |
-| params_flow.rb:105:1:105:49 | synthetic splat argument | params_flow.rb:98:1:103:3 | synthetic splat parameter |
 | params_flow.rb:105:1:105:49 | synthetic splat argument | params_flow.rb:105:1:105:49 | synthetic splat argument |
 | params_flow.rb:105:15:105:23 | call to taint | params_flow.rb:5:10:5:10 | x |
 | params_flow.rb:105:15:105:23 | call to taint | params_flow.rb:5:10:5:10 | x |

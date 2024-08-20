@@ -1204,11 +1204,11 @@ private module ParameterNodes {
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       c = callable and
-      exists(boolean hasActualSplat |
-        pos.isSynthSplat(hasActualSplat) and
-        if exists(TSynthSplatParameterShiftNode(c, _, _))
-        then hasActualSplat = true
-        else hasActualSplat = false
+      exists(int actualSplat | pos.isSynthSplat(actualSplat) |
+        exists(TSynthSplatParameterShiftNode(c, actualSplat, _))
+        or
+        not exists(TSynthSplatParameterShiftNode(c, _, _)) and
+        actualSplat = -1
       )
     }
 
@@ -1488,11 +1488,13 @@ module ArgumentNodes {
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       call = call_ and
-      exists(boolean hasActualSplat |
-        pos.isSynthSplat(hasActualSplat) and
-        if any(SynthSplatArgumentShiftNode shift).storeInto(this, _)
-        then hasActualSplat = true
-        else hasActualSplat = false
+      exists(int actualSplat | pos.isSynthSplat(actualSplat) |
+        any(SynthSplatArgumentShiftNode shift |
+          shift = TSynthSplatArgumentShiftNode(_, actualSplat, _)
+        ).storeInto(this, _)
+        or
+        not any(SynthSplatArgumentShiftNode shift).storeInto(this, _) and
+        actualSplat = -1
       )
     }
 
