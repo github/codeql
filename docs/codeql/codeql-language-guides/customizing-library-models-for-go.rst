@@ -97,7 +97,7 @@ The first five values identify the callable (in this case a method) to be modele
 - The first value ``database/sql`` is the package name.
 - The second value ``DB`` is the name of the type that the method is associated with.
 - The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method.
-- The fourth value ``Prepare`` is the method name. Constructors are named after the class.
+- The fourth value ``Prepare`` is the method name.
 - The fifth value ``""`` is the method input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
@@ -158,7 +158,7 @@ This pattern covers many of the cases where we need to summarize flow through a 
     func TaintFlow() {
         ss := []string{"Hello", "World"}
         sep := " "
-        t := strings.Join(ss, sep) // There is taint flow from s1 and s2 to t.
+        t := strings.Join(ss, sep) // There is taint flow from ss and sep to t.
         ...
     }
 
@@ -235,7 +235,6 @@ Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier of the method call (``u`` in the example) to the return value (``host`` in the example).
 
 The first five values identify the callable (in this case a method) to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value ``net/url`` is the package name.
 - The second value ``URL`` is the receiver type.
@@ -346,7 +345,7 @@ The first four values identify the callable (in this case the getter of the ``No
 
 Example: Accessing the ``Body`` field of an HTTP request
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how we can model a field as a source of tainted data.
+This example shows how we can model a field read as a source of tainted data.
 
 .. code-block:: go
 
@@ -387,7 +386,7 @@ Package grouping
 
 Since Go uses URLs for package identifiers, it is possible for packages to be imported with different paths. For example, the ``glog`` package can be imported using both the ``github.com/golang/glog`` and ``gopkg.in/glog`` paths.
 
-To handle this, the CodeQL Go library uses a mapping from the package path to a  name for the package. This mapping can be specified using the ``packageGrouping`` extensible predicate, and then the models for the APIs in the package
+To handle this, the CodeQL Go library uses a mapping from the package path to a group name for the package. This mapping can be specified using the ``packageGrouping`` extensible predicate, and then the models for the APIs in the package
 will use the group name in place of the package path. The package field in models will be the prefix ``group:`` followed by the group name.
 
 .. code-block:: yaml
@@ -403,7 +402,7 @@ will use the group name in place of the package path. The package field in model
         pack: codeql/go
         extensible: sinkModel
       data:
-        - ["group:glog", "Info", "()", "Argument[0]", "log-injection", "manual"]
+        - ["group:glog", "", False, "Info", "", "", "Argument[0]", "log-injection", "manual"]
 
 .. _threat-models-go:
 
