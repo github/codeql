@@ -1,8 +1,8 @@
-| genericFunctions.go:25:2:25:33 | generic function instantiation expression | genericFunctions.go:25:2:25:28 | GenericFunctionOneTypeParam | 0 | genericFunctions.go:25:30:25:32 | int |
-| genericFunctions.go:26:2:26:36 | generic function instantiation expression | genericFunctions.go:26:2:26:28 | GenericFunctionOneTypeParam | 0 | genericFunctions.go:26:30:26:35 | string |
-| genericFunctions.go:44:6:44:48 | generic function instantiation expression | genericFunctions.go:44:6:44:33 | GenericFunctionTwoTypeParams | 0 | genericFunctions.go:44:35:44:40 | string |
-| genericFunctions.go:44:6:44:48 | generic function instantiation expression | genericFunctions.go:44:6:44:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:44:43:44:47 | int64 |
-| genericFunctions.go:45:6:45:50 | generic function instantiation expression | genericFunctions.go:45:6:45:33 | GenericFunctionTwoTypeParams | 0 | genericFunctions.go:45:35:45:40 | string |
-| genericFunctions.go:45:6:45:50 | generic function instantiation expression | genericFunctions.go:45:6:45:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:45:43:45:49 | float64 |
-| genericFunctions.go:141:6:141:41 | generic function instantiation expression | genericFunctions.go:141:6:141:33 | GenericFunctionInAnotherFile | 0 | genericFunctions.go:141:35:141:40 | string |
-| genericFunctions.go:146:6:146:55 | generic function instantiation expression | genericFunctions.go:146:6:146:47 | selection of GenericFunctionInAnotherPackage | 0 | genericFunctions.go:146:49:146:54 | string |
+| genericFunctions.go:27:2:27:33 | generic function instantiation expression | genericFunctions.go:27:2:27:28 | GenericFunctionOneTypeParam | 0 | genericFunctions.go:27:30:27:32 | int |
+| genericFunctions.go:28:2:28:36 | generic function instantiation expression | genericFunctions.go:28:2:28:28 | GenericFunctionOneTypeParam | 0 | genericFunctions.go:28:30:28:35 | string |
+| genericFunctions.go:46:6:46:48 | generic function instantiation expression | genericFunctions.go:46:6:46:33 | GenericFunctionTwoTypeParams | 0 | genericFunctions.go:46:35:46:40 | string |
+| genericFunctions.go:46:6:46:48 | generic function instantiation expression | genericFunctions.go:46:6:46:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:46:43:46:47 | int64 |
+| genericFunctions.go:47:6:47:50 | generic function instantiation expression | genericFunctions.go:47:6:47:33 | GenericFunctionTwoTypeParams | 0 | genericFunctions.go:47:35:47:40 | string |
+| genericFunctions.go:47:6:47:50 | generic function instantiation expression | genericFunctions.go:47:6:47:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:47:43:47:49 | float64 |
+| genericFunctions.go:143:6:143:41 | generic function instantiation expression | genericFunctions.go:143:6:143:33 | GenericFunctionInAnotherFile | 0 | genericFunctions.go:143:35:143:40 | string |
+| genericFunctions.go:148:6:148:55 | generic function instantiation expression | genericFunctions.go:148:6:148:47 | selection of GenericFunctionInAnotherPackage | 0 | genericFunctions.go:148:49:148:54 | string |

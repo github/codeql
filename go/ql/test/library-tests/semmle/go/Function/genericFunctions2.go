@@ -1,6 +1,6 @@
 package main
 
-func GenericFunctionInAnotherFile[T any](t T) T {
-	var r T
+func GenericFunctionInAnotherFile[TP200 any](t TP200) TP200 {
+	var r TP200
 	return r
 }

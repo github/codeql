@@ -1,53 +1,53 @@
 numberOfTypeParameters
 | genericFunctions2.go:3:6:3:33 | GenericFunctionInAnotherFile | 1 |
-| genericFunctions.go:9:6:9:32 | GenericFunctionOneTypeParam | 1 |
-| genericFunctions.go:15:6:15:33 | GenericFunctionTwoTypeParams | 2 |
-| genericFunctions.go:81:6:81:19 | GenericStruct1 | 1 |
-| genericFunctions.go:84:6:84:19 | GenericStruct2 | 2 |
-| genericFunctions.go:87:30:87:31 | f1 | 1 |
-| genericFunctions.go:92:31:92:32 | g1 | 1 |
-| genericFunctions.go:95:35:95:36 | f2 | 2 |
-| genericFunctions.go:98:36:98:37 | g2 | 2 |
-| genericFunctions.go:111:6:111:12 | Element | 1 |
-| genericFunctions.go:115:6:115:9 | List | 1 |
-| genericFunctions.go:120:19:120:23 | MyLen | 1 |
-| genericFunctions.go:124:6:124:19 | NodeConstraint | 1 |
-| genericFunctions.go:128:6:128:19 | EdgeConstraint | 1 |
-| genericFunctions.go:132:6:132:10 | Graph | 2 |
-| genericFunctions.go:134:6:134:8 | New | 2 |
-| genericFunctions.go:138:29:138:40 | ShortestPath | 2 |
-| genericFunctions.go:150:6:150:36 | multipleAnonymousTypeParamsFunc | 3 |
-| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 3 |
-| genericFunctions.go:154:51:154:51 | f | 3 |
+| genericFunctions.go:11:6:11:32 | GenericFunctionOneTypeParam | 1 |
+| genericFunctions.go:17:6:17:33 | GenericFunctionTwoTypeParams | 2 |
+| genericFunctions.go:83:6:83:19 | GenericStruct1 | 1 |
+| genericFunctions.go:86:6:86:19 | GenericStruct2 | 2 |
+| genericFunctions.go:89:32:89:33 | f1 | 1 |
+| genericFunctions.go:94:33:94:34 | g1 | 1 |
+| genericFunctions.go:97:39:97:40 | f2 | 2 |
+| genericFunctions.go:100:40:100:41 | g2 | 2 |
+| genericFunctions.go:113:6:113:12 | Element | 1 |
+| genericFunctions.go:117:6:117:9 | List | 1 |
+| genericFunctions.go:122:23:122:27 | MyLen | 1 |
+| genericFunctions.go:126:6:126:19 | NodeConstraint | 1 |
+| genericFunctions.go:130:6:130:19 | EdgeConstraint | 1 |
+| genericFunctions.go:134:6:134:10 | Graph | 2 |
+| genericFunctions.go:136:6:136:8 | New | 2 |
+| genericFunctions.go:140:31:140:42 | ShortestPath | 2 |
+| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsFunc | 3 |
+| genericFunctions.go:154:6:154:36 | multipleAnonymousTypeParamsType | 3 |
+| genericFunctions.go:156:51:156:51 | f | 3 |
 #select
 | cmp.Compare | 0 | T | Ordered |
 | cmp.Less | 0 | T | Ordered |
 | cmp.Or | 0 | T | comparable |
 | cmp.isNaN | 0 | T | Ordered |
-| codeql-go-tests/function.EdgeConstraint | 0 | Node | interface { } |
-| codeql-go-tests/function.Element | 0 | S | interface { } |
-| codeql-go-tests/function.GenericFunctionInAnotherFile | 0 | T | interface { } |
-| codeql-go-tests/function.GenericFunctionOneTypeParam | 0 | T | interface { } |
-| codeql-go-tests/function.GenericFunctionTwoTypeParams | 0 | K | comparable |
-| codeql-go-tests/function.GenericFunctionTwoTypeParams | 1 | V | interface { int64 \| float64 } |
-| codeql-go-tests/function.GenericStruct1 | 0 | T | interface { } |
-| codeql-go-tests/function.GenericStruct1.f1 | 0 | TF1 | interface { } |
-| codeql-go-tests/function.GenericStruct1.g1 | 0 | TG1 | interface { } |
-| codeql-go-tests/function.GenericStruct2 | 0 | S | interface { } |
-| codeql-go-tests/function.GenericStruct2 | 1 | T | interface { } |
-| codeql-go-tests/function.GenericStruct2.f2 | 0 | SF2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.f2 | 1 | TF2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.g2 | 0 | SG2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.g2 | 1 | TG2 | interface { } |
-| codeql-go-tests/function.Graph | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.Graph | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.Graph.ShortestPath | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.Graph.ShortestPath | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.List | 0 | T | interface { } |
-| codeql-go-tests/function.List.MyLen | 0 | U | interface { } |
-| codeql-go-tests/function.New | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.New | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.NodeConstraint | 0 | Edge | interface { } |
+| codeql-go-tests/function.EdgeConstraint | 0 | TP117 | interface { } |
+| codeql-go-tests/function.Element | 0 | TP113 | interface { } |
+| codeql-go-tests/function.GenericFunctionInAnotherFile | 0 | TP200 | interface { } |
+| codeql-go-tests/function.GenericFunctionOneTypeParam | 0 | TP101 | interface { } |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 0 | TP102 | comparable |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 1 | TP103 | interface { int64 \| float64 } |
+| codeql-go-tests/function.GenericStruct1 | 0 | TP104 | interface { } |
+| codeql-go-tests/function.GenericStruct1.f1 | 0 | TP107 | interface { } |
+| codeql-go-tests/function.GenericStruct1.g1 | 0 | TP108 | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 0 | TP105 | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 1 | TP106 | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 0 | TP109 | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 1 | TP110 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 0 | TP111 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 1 | TP112 | interface { } |
+| codeql-go-tests/function.Graph | 0 | TP118 | NodeConstraint |
+| codeql-go-tests/function.Graph | 1 | TP119 | EdgeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 0 | TP122 | NodeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 1 | TP123 | EdgeConstraint |
+| codeql-go-tests/function.List | 0 | TP114 | interface { } |
+| codeql-go-tests/function.List.MyLen | 0 | TP115 | interface { } |
+| codeql-go-tests/function.New | 0 | TP120 | NodeConstraint |
+| codeql-go-tests/function.New | 1 | TP121 | EdgeConstraint |
+| codeql-go-tests/function.NodeConstraint | 0 | TP116 | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 | _ | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 | _ | interface { string } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 | _ | interface { } |
