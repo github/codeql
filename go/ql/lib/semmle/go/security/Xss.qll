@@ -49,6 +49,10 @@ module SharedXss {
     override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
   }
 
+  private class DefaultSink extends Sink {
+    DefaultSink() { sinkNode(this, ["html-injection", "js-injection"]) }
+  }
+
   /**
    * Holds if `body` may send a response with a content type other than HTML.
    */
