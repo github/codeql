@@ -55,10 +55,10 @@ Extensible predicates used to create custom models in Go
 
 The CodeQL library for Go analysis exposes the following extensible predicates:
 
-- ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data. The ``kind`` of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see ":ref:`Threat models <threat-models-go>`."
-- ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
-- ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
-- ``neutralModel(namespace, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) can be used to override generated summary models (those with a provenance such as ``df-generated``), so that the summary model will be ignored. Other than that, neutral models have no effect.
+- ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data. The ``kind`` of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see ":ref:`Threat models <threat-models-go>`."
+- ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
+- ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
+- ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) can be used to override generated summary models (those with a provenance such as ``df-generated``), so that the summary model will be ignored. Other than that, neutral models have no effect.
 
 The extensible predicates are populated using the models defined in data extension files.
 
@@ -135,7 +135,7 @@ We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, 
 Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
 The first five values identify the callable (in this case a function) to be modeled as a source.
 
-- The first value ``net`` is the namespace name.
+- The first value ``net`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the source also applies to all overrides of the method.
 - The fourth value ``Listen`` is the function name.
