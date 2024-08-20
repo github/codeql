@@ -2533,6 +2533,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _) and
               revFlow(node, state, _, _, ap)
             } or
+            TStagePathNodeSink(NodeEx node, FlowState state) {
+              exists(StagePathNodeMid sink |
+                sink.isAtSink() and
+                node = sink.getNodeEx() and
+                state = sink.getState()
+              )
+            } or
             TStagePathNodeSrcGrp() or
             TStagePathNodeSinkGrp()
 
@@ -2542,12 +2549,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             /** Gets the `FlowState` of this node. */
             abstract FlowState getState();
 
+            /** Holds if this node is a source. */
+            abstract predicate isSource();
+
+            /** Holds if this node is a sink. */
+            predicate isSink() { this instanceof TStagePathNodeSink }
+
+            abstract StagePathNodeImpl getASuccessorImpl(string label);
+
             /** Gets a textual representation of this element. */
             abstract string toString();
-
-            predicate isSource() { none() }
-
-            predicate isSink() { none() }
 
             /** Gets the location of this node. */
             Location getLocation() { result = this.getNodeEx().getLocation() }
@@ -2565,6 +2576,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override NodeEx getNodeEx() { none() }
 
             override FlowState getState() { none() }
+
+            override StagePathNodeImpl getASuccessorImpl(string label) {
+              result.isSource() and label = ""
+            }
+
+            override predicate isSource() { none() }
           }
 
           private class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
@@ -2575,6 +2592,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override NodeEx getNodeEx() { none() }
 
             override FlowState getState() { none() }
+
+            override StagePathNodeImpl getASuccessorImpl(string label) { none() }
+
+            override predicate isSource() { none() }
           }
 
           /**
@@ -2598,6 +2619,48 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override NodeEx getNodeEx() { result = node }
 
             override FlowState getState() { result = state }
+
+            private StagePathNodeMid getSuccMid(string label) {
+              localStep(this, result, label)
+              or
+              nonLocalStep(this, result, label)
+            }
+
+            private predicate isSourceWithLabel(string labelprefix) {
+              exists(string model |
+                this.isSource() and
+                sourceModel(node, model) and
+                model != "" and
+                labelprefix = "Src:" + model + " "
+              )
+            }
+
+            override StagePathNodeImpl getASuccessorImpl(string label) {
+              // an intermediate step to another intermediate node
+              exists(string l2 | result = this.getSuccMid(l2) |
+                not this.isSourceWithLabel(_) and label = l2
+                or
+                exists(string l1 |
+                  this.isSourceWithLabel(l1) and
+                  label = l1 + l2
+                )
+              )
+              or
+              // a final step to a sink
+              exists(string l2, string sinkmodel |
+                result = this.getSuccMid(l2).projectToSink(sinkmodel)
+              |
+                not this.isSourceWithLabel(_) and
+                if sinkmodel != "" then label = l2 + " Sink:" + sinkmodel else label = l2
+                or
+                exists(string l1 |
+                  this.isSourceWithLabel(l1) and
+                  if sinkmodel != ""
+                  then label = l1 + l2 + " Sink:" + sinkmodel
+                  else label = l1 + l2
+                )
+              )
+            }
 
             private string ppType() {
               exists(string ppt | ppt = t.toString() |
@@ -2642,7 +2705,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               ap instanceof ApNil
             }
 
-            override predicate isSink() {
+            predicate isAtSink() {
               sinkNode(node, state) and
               ap instanceof ApNil and
               // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
@@ -2662,6 +2725,37 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 then instanceofCcNoCall(cc)
                 else any()
             }
+
+            StagePathNodeSink projectToSink(string model) {
+              this.isAtSink() and
+              sinkModel(node, model) and
+              result.getNodeEx() = node and
+              result.getState() = state
+            }
+          }
+
+          /**
+           * A flow graph node corresponding to a sink. This is disjoint from the
+           * intermediate nodes in order to uniquely correspond to a given sink by
+           * excluding the call context.
+           */
+          private class StagePathNodeSink extends StagePathNodeImpl, TStagePathNodeSink {
+            NodeEx node;
+            FlowState state;
+
+            StagePathNodeSink() { this = TStagePathNodeSink(node, state) }
+
+            override NodeEx getNodeEx() { result = node }
+
+            override FlowState getState() { result = state }
+
+            override string toString() { result = node.toString() }
+
+            override StagePathNodeImpl getASuccessorImpl(string label) {
+              result.isArbitrarySink() and label = ""
+            }
+
+            override predicate isSource() { sourceNode(node, state) }
           }
 
           pragma[nomagic]
@@ -2795,7 +2889,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ) {
             pn1 = pn2 and
             summaryLabel = "" and
-            subpaths(_, pn1, _, _)
+            subpathsImpl(_, pn1, _, _)
             or
             exists(StagePathNodeImpl mid, string l1, string l2 |
               summaryLabel(pn1, mid, l1) and
@@ -2806,7 +2900,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private predicate summaryStep(StagePathNodeImpl arg, StagePathNodeImpl out, string label) {
             exists(StagePathNodeImpl par, StagePathNodeImpl ret |
-              subpaths(arg, par, ret, out) and
+              subpathsImpl(arg, par, ret, out) and
               summaryLabel(par, ret, label)
             )
           }
@@ -2881,30 +2975,37 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
           }
 
-          query predicate subpaths(
+          /**
+           * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+           *
+           * All of the nodes may be hidden.
+           */
+          private predicate subpathsImpl(
             StagePathNodeImpl arg, StagePathNodeImpl par, StagePathNodeImpl ret,
             StagePathNodeImpl out
           ) {
             exists(
               NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t0, Ap ap
+              ApOption argAp, Typ t0, Ap ap, StagePathNodeImpl out0
             |
               fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, argT, argAp, t0, ap) and
-              out = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap)
+              out0 = typeStrengthenToStagePathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap)
+            |
+              out = out0 or out = out0.(StagePathNodeMid).projectToSink(_)
             )
           }
 
-          query predicate edges(StagePathNodeImpl pn1, StagePathNodeImpl pn2, string key, string val) {
-            key = "provenance" and
-            (
-              localStep(pn1, pn2, val)
-              or
-              nonLocalStep(pn1, pn2, val)
-              or
-              pn1.isArbitrarySource() and pn2.isSource() and val = ""
-              or
-              pn1.isSink() and pn2.isArbitrarySink() and val = ""
-            )
+          module StagePathGraph {
+            predicate edges(StagePathNodeImpl a, StagePathNodeImpl b, string key, string val) {
+              a.getASuccessorImpl(val) = b and
+              key = "provenance"
+            }
+
+            query predicate nodes(StagePathNodeImpl n, string key, string val) {
+              key = "semmle.label" and val = n.toString()
+            }
+
+            query predicate subpaths = subpathsImpl/4;
           }
         }
 
