@@ -1,4 +1,4 @@
-.. _customizing-library-models-for-csharp:
+.. _customizing-library-models-for-go:
 
 Customizing library models for Go
 =================================
