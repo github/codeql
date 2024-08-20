@@ -21,7 +21,7 @@ public class A {
         Object object = getA();
 
         sink(step(object)); // $ hasTaintFlow=source
-        sink(object); // $ SPURIOUS: hasTaintFlow=source
+        sink(object);
         sink(((A)object).field); // $ hasTaintFlow=source
     }
 }
