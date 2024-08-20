@@ -4175,49 +4175,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private newtype TSummaryCtx =
-      TSummaryCtxNone() or
-      TSummaryCtxSome(ParamNodeEx p, FlowState state, DataFlowType t, AccessPath ap) {
-        exists(AccessPathApprox apa | ap.getApprox() = apa |
-          Stage5::parameterMayFlowThrough(p, apa) and
-          Stage5::fwdFlow(p, state, _, _, Option<DataFlowType>::some(t), _, _, apa, _) and
-          Stage5::revFlow(p, state, _)
-        )
-      }
-
-    /**
-     * A context for generating flow summaries. This represents flow entry through
-     * a specific parameter with an access path of a specific shape.
-     *
-     * Summaries are only created for parameters that may flow through.
-     */
-    abstract private class SummaryCtx extends TSummaryCtx {
-      abstract string toString();
-    }
-
-    /** A summary context from which no flow summary can be generated. */
-    private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
-      override string toString() { result = "<none>" }
-    }
-
-    /** A summary context from which a flow summary can be generated. */
-    private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
-      private ParamNodeEx p;
-      private FlowState s;
-      private DataFlowType t;
-      private AccessPath ap;
-
-      SummaryCtxSome() { this = TSummaryCtxSome(p, s, t, ap) }
-
-      ParamNodeEx getParamNode() { result = p }
-
-      private string ppTyp() { result = t.toString() and result != "" }
-
-      override string toString() { result = p + concat(" : " + this.ppTyp()) + " " + ap }
-
-      Location getLocation() { result = p.getLocation() }
-    }
-
     pragma[nomagic]
     private predicate stage5ConsCand(Content c, DataFlowType t, AccessPathFront apf, int len) {
       Stage5::consCand(c, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
@@ -4448,16 +4405,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets a textual representation of this access path. */
       abstract string toString();
-
-      /** Holds if `node`, which is the target of a store step, clears data stored in this access path. */
-      pragma[nomagic]
-      predicate storeTargetIsClearedAt(NodeEx node) {
-        exists(AccessPathApprox apa |
-          apa = this.getApprox() and
-          Stage5::revFlowAp(node, apa) and
-          Stage4Param::clearContent(node, apa.getHead(), true)
-        )
-      }
     }
 
     private class AccessPathNil extends AccessPath, TAccessPathNil {
