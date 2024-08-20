@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Aggregate", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "CountDocuments", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "DeleteMany", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "DeleteOne", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Distinct", "", "", "Argument[2]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Find", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "FindOne", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "FindOneAndDelete", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "FindOneAndReplace", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "FindOneAndUpdate", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "ReplaceOne", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "UpdateMany", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "UpdateOne", "", "", "Argument[1]", "nosql-injection", "manual"]
+      - ["go.mongodb.org/mongo-driver/mongo", "Collection", True, "Watch", "", "", "Argument[1]", "nosql-injection", "manual"]
