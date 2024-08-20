@@ -2557,7 +2557,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             predicate isArbitrarySink() { this instanceof TStagePathNodeSinkGrp }
           }
 
-          class StagePathNodeSrcGrp extends StagePathNodeImpl, TStagePathNodeSrcGrp {
+          private class StagePathNodeSrcGrp extends StagePathNodeImpl, TStagePathNodeSrcGrp {
             override string toString() { result = "<any source>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
@@ -2567,7 +2567,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override FlowState getState() { none() }
           }
 
-          class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
+          private class StagePathNodeSinkGrp extends StagePathNodeImpl, TStagePathNodeSinkGrp {
             override string toString() { result = "<any sink>" }
 
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
@@ -2577,7 +2577,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override FlowState getState() { none() }
           }
 
-          class StagePathNodeMid extends StagePathNodeImpl, TStagePathNodeMid {
+          /**
+           * An intermediate flow graph node. This is a tuple consisting of a node,
+           * a `FlowState`, a call context, a summary context, a tracked type, and an access path.
+           */
+          private class StagePathNodeMid extends StagePathNodeImpl, TStagePathNodeMid {
             NodeEx node;
             FlowState state;
             Cc cc;
