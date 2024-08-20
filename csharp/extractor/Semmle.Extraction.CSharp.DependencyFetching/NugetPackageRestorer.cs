@@ -771,15 +771,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Computes a unique temp directory for the packages associated
-        /// with this source tree. Use a SHA1 of the directory name.
+        /// Returns the full path to a temporary directory with the given subfolder name.
         /// </summary>
-        /// <returns>The full path of the temp directory.</returns>
         private static string ComputeTempDirectoryPath(string subfolderName)
         {
             return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
         }
 
+        /// <summary>
+        /// Computes a unique temporary directory path based on the source directory and the subfolder name.
+        /// </summary>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
         {
             return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);

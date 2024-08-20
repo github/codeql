@@ -86,7 +86,7 @@ namespace Semmle.Util
         }
 
         /// <summary>
-        /// Computes the hash of <paramref name="filePath"/>.
+        /// Computes the hash of the file at <paramref name="filePath"/>.
         /// </summary>
         public static string ComputeFileHash(string filePath)
         {
@@ -95,6 +95,9 @@ namespace Semmle.Util
             return GetHashString(sha);
         }
 
+        /// <summary>
+        /// Computes the hash of <paramref name="input"/>.
+        /// </summary>
         public static string ComputeHash(string input)
         {
             var bytes = Encoding.Unicode.GetBytes(input);
