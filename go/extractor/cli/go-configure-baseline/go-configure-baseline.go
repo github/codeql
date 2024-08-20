@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/github/codeql-go/extractor/configurebaseline"
 )
 
@@ -9,6 +11,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else {
-		println(string(jsonResult))
+		fmt.Println(string(jsonResult))
 	}
 }
