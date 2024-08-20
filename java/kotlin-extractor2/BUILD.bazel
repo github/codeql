@@ -1,0 +1,40 @@
+load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+
+kt_javac_options(
+    name = "javac-options",
+    # if needed, see https://bazelbuild.github.io/rules_kotlin/kotlin.html#kt_javac_options for available options
+)
+
+kt_kotlinc_options(
+    name = "kotlinc-options",
+    # if needed, see https://bazelbuild.github.io/rules_kotlin/kotlin.html#kt_kotlinc_options for available options
+)
+
+# uncomment if you need the DB scheme generated bindings
+#py_binary(
+#    name = "generate_dbscheme",
+#    srcs = ["generate_dbscheme.py"],
+#)
+#genrule(
+#    name = "generated-dbscheme",
+#    srcs = ["@codeql//java:dbscheme"],
+#    outs = ["KotlinExtractorDbScheme.kt"],
+#    cmd = "$(execpath :generate_dbscheme) $< $@",
+#    tools = [":generate_dbscheme"],
+#)
+
+kt_jvm_library(
+    name = "kotlin-extractor2",
+    srcs = [
+        #        ":generated-dbscheme",
+        "src/main/kotlin/KotlinExtractor.kt",
+    ],
+    javac_opts = ":javac-options",
+    kotlinc_opts = ":kotlinc-options",
+    module_name = "codeql-kotlin-extractor2",
+    resources = glob(["src/main/resources/**"]),
+    visibility = ["//visibility:public"],
+    deps = [
+    ],
+)
