@@ -41,7 +41,7 @@ module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig
   additional predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, PassthroughTypeName name) {
     exists(Type typ |
       typ = sink.getResultType() and
-      typ.getUnderlyingType*().hasQualifiedName("html/template", name)
+      unalias(typ).hasQualifiedName("html/template", name)
     )
   }
 
@@ -80,7 +80,7 @@ module PassthroughTypeConversionToTemplateExecutionCallConfig implements DataFlo
   ) {
     exists(Type typ |
       typ = source.getResultType() and
-      typ.getUnderlyingType*().hasQualifiedName("html/template", name)
+      unalias(typ).hasQualifiedName("html/template", name)
     )
   }
 

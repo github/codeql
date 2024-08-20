@@ -1067,6 +1067,17 @@ class AliasType extends @typealias, CompositeType {
 }
 
 /**
+ * Gets the non-alias type at the end of the alias chain starting at `t`.
+ *
+ * If `t` is not an alias type then `result` is `t`.
+ */
+Type unalias(Type t) {
+  not t instanceof AliasType and result = t
+  or
+  result = unalias(t.(AliasType).getRhs())
+}
+
+/**
  * A type that implements the builtin interface `error`.
  */
 class ErrorType extends Type {
