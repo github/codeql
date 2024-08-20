@@ -290,14 +290,6 @@ deprecated private module Config implements FullStateConfigSig {
 
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
 
-  predicate sourceGrouping(Node source, string sourceGroup) {
-    any(Configuration config).sourceGrouping(source, sourceGroup)
-  }
-
-  predicate sinkGrouping(Node sink, string sinkGroup) {
-    any(Configuration config).sinkGrouping(sink, sinkGroup)
-  }
-
   predicate includeHiddenNodes() { any(Configuration config).includeHiddenNodes() }
 }
 

@@ -117,12 +117,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     FlowFeature getAFeature();
 
-    /** Holds if sources should be grouped in the result of `flowPath`. */
-    predicate sourceGrouping(Node source, string sourceGroup);
-
-    /** Holds if sinks should be grouped in the result of `flowPath`. */
-    predicate sinkGrouping(Node sink, string sinkGroup);
-
     /**
      * Holds if hidden nodes should be included in the data flow graph.
      *
@@ -3934,12 +3928,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           node = sink.getNodeEx() and
           state = sink.getState()
         )
-      } or
-      TPathNodeSourceGroup(string sourceGroup) {
-        exists(PathNodeImpl source | sourceGroup = source.getSourceGroup())
-      } or
-      TPathNodeSinkGroup(string sinkGroup) {
-        exists(PathNodeSink sink | sinkGroup = sink.getSinkGroup())
       }
 
     /**
@@ -4153,21 +4141,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
-      string getSourceGroup() {
-        this.isSource(_) and
-        Config::sourceGrouping(this.getNodeEx().asNode(), result)
-      }
+      predicate isFlowSource() { this.isSource(_) }
 
-      predicate isFlowSource() {
-        this.isSource(_) and not exists(this.getSourceGroup())
-        or
-        this instanceof PathNodeSourceGroup
-      }
-
-      predicate isFlowSink() {
-        this = any(PathNodeSink sink | not exists(sink.getSinkGroup())) or
-        this instanceof PathNodeSinkGroup
-      }
+      predicate isFlowSink() { this instanceof PathNodeSink }
 
       private string ppType() {
         this instanceof PathNodeSink and result = ""
@@ -4217,7 +4193,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     /** Holds if `n` can reach a sink. */
     private predicate directReach(PathNodeImpl n) {
       n instanceof PathNodeSink or
-      n instanceof PathNodeSinkGroup or
       directReach(n.getANonHiddenSuccessor(_))
     }
 
@@ -4284,11 +4259,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       /** Holds if this node is a source. */
       final predicate isSource() { super.isSource(_) }
 
-      /** Holds if this node is a grouping of source nodes. */
-      final predicate isSourceGroup(string group) { this = TPathNodeSourceGroup(group) }
+      /**
+       * DEPRECATED: This functionality is no longer available.
+       *
+       * Holds if this node is a grouping of source nodes.
+       */
+      deprecated final predicate isSourceGroup(string group) { none() }
 
-      /** Holds if this node is a grouping of sink nodes. */
-      final predicate isSinkGroup(string group) { this = TPathNodeSinkGroup(group) }
+      /**
+       * DEPRECATED: This functionality is no longer available.
+       *
+       * Holds if this node is a grouping of sink nodes.
+       */
+      deprecated final predicate isSinkGroup(string group) { none() }
     }
 
     /**
@@ -4436,53 +4419,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override FlowState getState() { result = state }
 
-      override PathNodeImpl getASuccessorImpl(string label) {
-        result = TPathNodeSinkGroup(this.getSinkGroup()) and label = ""
-      }
+      override PathNodeImpl getASuccessorImpl(string label) { none() }
 
       override predicate isSource(string model) {
         sourceNode(node, state) and sourceModel(node, model)
       }
-
-      string getSinkGroup() { Config::sinkGrouping(node.asNode(), result) }
-    }
-
-    private class PathNodeSourceGroup extends PathNodeImpl, TPathNodeSourceGroup {
-      string sourceGroup;
-
-      PathNodeSourceGroup() { this = TPathNodeSourceGroup(sourceGroup) }
-
-      override NodeEx getNodeEx() { none() }
-
-      override FlowState getState() { none() }
-
-      override PathNodeImpl getASuccessorImpl(string label) {
-        result.getSourceGroup() = sourceGroup and label = ""
-      }
-
-      override predicate isSource(string model) { none() }
-
-      override string toString() { result = sourceGroup }
-
-      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
-    }
-
-    private class PathNodeSinkGroup extends PathNodeImpl, TPathNodeSinkGroup {
-      string sinkGroup;
-
-      PathNodeSinkGroup() { this = TPathNodeSinkGroup(sinkGroup) }
-
-      override NodeEx getNodeEx() { none() }
-
-      override FlowState getState() { none() }
-
-      override PathNodeImpl getASuccessorImpl(string label) { none() }
-
-      override predicate isSource(string model) { none() }
-
-      override string toString() { result = sinkGroup }
-
-      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
     }
 
     private predicate pathNode(
