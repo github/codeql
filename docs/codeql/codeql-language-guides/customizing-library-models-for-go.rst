@@ -89,7 +89,7 @@ We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, si
          pack: codeql/go-all
          extensible: sinkModel
        data:
-         - ["database/sql", "DB", False, "Prepare", "(string)", "", "Argument[0]", "sql-injection", "manual"]
+         - ["database/sql", "DB", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
 
 Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
 The first five values identify the callable (in this case a method) to be modeled as a sink.
@@ -98,7 +98,7 @@ The first five values identify the callable (in this case a method) to be modele
 - The second value ``DB`` is the name of the type that the method is associated with.
 - The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method.
 - The fourth value ``Prepare`` is the method name. Constructors are named after the class.
-- The fifth value ``(string)`` is the method input type signature. This value is often excluded and is simply set to an empty string since Go does not allow for a given type to have multiple methods with the same type.
+- The fifth value ``""`` is the method input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the sink.
@@ -228,7 +228,7 @@ We need to add a tuple to the ``summaryModel``\(namespace, type, subtypes, name,
          pack: codeql/go-all
          extensible: summaryModel
        data:
-         - ["net/url", "URL", False, "Hostname", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+         - ["net/url", "URL", False, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
 Each tuple defines flow from one argument to the return value.
@@ -241,12 +241,12 @@ These are the same for both of the rows above as we are adding two summaries for
 - The second value ``URL`` is the receiver type.
 - The third value ``True`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
 - The fourth value ``Hostname`` is the method name.
-- The fifth value ``()`` is the method input type signature.
+- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[this]`` is the access path to the qualifier (``u`` in the example).
+- The seventh value is the access path to the input (where data flows from). ``Argument[receiver]`` is the access path to the receiver (``u`` in the example).
 - The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
 - The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
