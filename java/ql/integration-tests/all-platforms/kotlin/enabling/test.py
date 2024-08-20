@@ -14,10 +14,6 @@ def build():
 
 
 def test(codeql, java_full, build):
-    for var in [
-        "CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN",
-        "CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN",
-    ]:
-        if var in os.environ:
-            del os.environ[var]
+    os.environ.pop("CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN", None)
+    os.environ.pop("CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN", None)
     codeql.database.create(command=build)

@@ -4,9 +4,6 @@ import os
 
 def check_extensions(directory, counts):
     if runs_on.windows:
-        # It's important that the path is a Unicode path on Windows, so
-        # that the right system calls get used.
-        directory = "" + directory
         if not directory.startswith("\\\\?\\"):
             directory = "\\\\?\\" + os.path.abspath(directory)
 

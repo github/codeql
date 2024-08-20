@@ -10,12 +10,11 @@ def test(codeql, java_full, cwd: pathlib.Path, expected_files):
 
     with open("logs.actual", "w") as f_out:
         log_dir = cwd / "test-db" / "log"
-        file_index = 0
-        for log_file in log_dir.glob("kotlin-extractor*.log"):
-            file_index += 1
-            f_out.write(f"Test script\nLog file\n{file_index}\n")
+        for file_index, log_file in enumerate(log_dir.glob("kotlin-extractor*.log"), 1):
+            f_out.write(f"Log file {file_index}\n")
             for line in log_file.read_text().splitlines():
                 j = json.loads(line)
+                del j["timestamp"]
                 msg = j["message"]
                 msg = re.sub(
                     r"(?<=Extraction for invocation TRAP file ).*[\\/]test-db[\\/]trap[\\/]java[\\/]invocations[\\/]kotlin\..*\.trap",
@@ -36,4 +35,5 @@ def test(codeql, java_full, cwd: pathlib.Path, expected_files):
                 ):
                     # These vary between machines etc, and aren't very interesting, so just ignore them
                     continue
-                f_out.write(f"{j['origin']}\n{j['kind']}\n{msg}\n")
+                j["message"] = msg
+                print(json.dumps(j), file=f_out)
