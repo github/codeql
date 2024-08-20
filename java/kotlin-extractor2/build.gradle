@@ -1,0 +1,71 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id 'org.jetbrains.dokka' version '1.4.32'
+}
+
+group 'com.github.codeql'
+version '0.0.1'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    compileOnly("org.jetbrains.kotlin:kotlin-compiler")
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        // enable the below for building with kotlinVersion=1.4.32:
+        // languageVersion = "1.5"
+    }
+}
+
+sourceSets {
+    main {
+        kotlin {
+            // change the excludes for building with other versions.
+            // Currently 1.7.0 is configured:
+            excludes = [
+                    // For 1.7.20-Beta, the below two files should be included, and the corresponding v_1_7_20-Beta ones should be excluded from this list.
+                    //"utils/versions/v_1_4_32/allOverriddenIncludingSelf.kt",
+                    //"utils/versions/v_1_4_32/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
+                    "utils/versions/v_1_4_32/Descriptors.kt",
+                    "utils/versions/v_1_4_32/FileEntry.kt",
+                    "utils/versions/v_1_4_32/Functions.kt",
+                    "utils/versions/v_1_4_32/IsUnderscoreParameter.kt",
+                    "utils/versions/v_1_4_32/Psi2Ir.kt",
+                    "utils/versions/v_1_4_32/Types.kt",
+                    "utils/versions/v_1_4_32/withHasQuestionMark.kt",
+
+                    "utils/versions/v_1_5_20/Descriptors.kt",
+                    "utils/versions/v_1_6_0/Descriptors.kt",
+
+                    "utils/versions/v_1_7_20-Beta/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
+                    "utils/versions/v_1_7_20-Beta/allOverriddenIncludingSelf.kt",
+
+                    "utils/versions/v_1_8_0/ExperimentalCompilerApi.kt",
+                    "utils/versions/v_1_8_0/FirIncompatiblePluginAPI.kt",
+            ]
+        }
+    }
+}
+
+jar {
+    archiveName = "${OUTPUT_JAR_NAME}"
+}
+
+task getHomeDir {
+    doLast {
+        println gradle.gradleHomeDir
+    }
+}
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
+}
