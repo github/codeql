@@ -107,3 +107,13 @@ html_favicon = 'images/site/favicon.ico'
 
 # Exclude these paths from being built by Sphinx
 exclude_patterns = ['vale*', '_static', '_templates', 'reusables', 'images', 'support', 'ql-training', 'query-help', '_build', '*.py*', 'README.rst', 'codeql-for-visual-studio-code']
+
+# Add any redirects needed for the codeql.github.com/docs site
+
+extensions = [
+    'sphinx_reredirects'
+]
+
+redirects = {
+    "codeql-language-guides/analyzing-data-flow-in-cpp-new": "analyzing-data-flow-in-cpp.html"
+}
