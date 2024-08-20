@@ -228,7 +228,7 @@ We need to add a tuple to the ``summaryModel``\(namespace, type, subtypes, name,
          pack: codeql/go-all
          extensible: summaryModel
        data:
-         - ["net/url", "URL", False, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+         - ["net/url", "URL", True, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
 Each tuple defines flow from one argument to the return value.
