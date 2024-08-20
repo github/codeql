@@ -2542,6 +2542,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             /** Gets the `FlowState` of this node. */
             abstract FlowState getState();
 
+            /** Gets a textual representation of this element. */
             abstract string toString();
 
             predicate isSource() { none() }
@@ -2594,9 +2595,39 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             override FlowState getState() { result = state }
 
-            override string toString() {
+            private string ppType() {
+              exists(string ppt | ppt = t.toString() |
+                if ppt = "" then result = "" else result = " : " + ppt
+              )
+            }
+
+            private string ppAp() {
+              exists(string s | s = ap.toString() |
+                if s = "" then result = "" else result = " " + s
+              )
+            }
+
+            private string ppCtx() { result = " <" + cc + ">" }
+
+            private string ppSummaryCtx() {
+              summaryCtx instanceof TParamNodeNone and result = ""
+              or
+              exists(ParamNode p, Ap argAp0 |
+                summaryCtx = TParamNodeSome(p) and argAp = apSome(argAp0)
+              |
+                result = " <" + p + " : " + argT + " " + argAp0 + ">"
+              )
+            }
+
+            override string toString() { result = node.toString() + this.ppType() + this.ppAp() }
+
+            /**
+             * Gets a textual representation of this element, including a textual
+             * representation of the call context.
+             */
+            string toStringWithContext() {
               result =
-                node.toString() + " " + cc.toString() + " " + t.toString() + " " + ap.toString()
+                node.toString() + this.ppType() + this.ppAp() + this.ppCtx() + this.ppSummaryCtx()
             }
 
             override predicate isSource() {
