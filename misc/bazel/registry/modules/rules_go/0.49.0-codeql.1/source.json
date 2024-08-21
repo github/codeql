@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-2T7wLx5yyC2Ls9UWlRmzYWezPPaMJSUl47nT1d0UPec=",
+    "strip_prefix": "",
+    "url": "https://github.com/bazelbuild/rules_go/releases/download/v0.49.0/rules_go-v0.49.0.zip",
+    "patches": {
+        "disable_winsymlink.patch": "sha256-o2DWpbkv9TK80evwEQCdDFSXGLlgoT5BZg7MnvE77Go="
+    },
+    "patch_strip": 1
+}
