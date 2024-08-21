@@ -1,0 +1,12 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,7 +1,7 @@
+ module(
+     name = "rules_kotlin",
+-    version = "1.9.0",
++    version = "1.9.6",
+     compatibility_level = 1,
+     repo_name = "rules_kotlin",
+ )
+ 
