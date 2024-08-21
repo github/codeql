@@ -182,10 +182,16 @@ void more_bounded_tests() {
 
 	{
 		int size = atoi(getenv("USER"));
+		int size2 = size % 100;
+		malloc(size2 * sizeof(int)); // GOOD
+	}
+
+	{
+		int size = atoi(getenv("USER"));
 
 		if (size % 100)
 		{
-			malloc(size * sizeof(int)); // GOOD
+			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
 		}
 	}
 
