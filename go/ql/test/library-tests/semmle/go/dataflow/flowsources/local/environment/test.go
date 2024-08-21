@@ -86,6 +86,10 @@ func caarlos0EnvironmentVariables() {
 
 	cfg, err = env.ParseAs[config]() // $ source
 
+	if err != nil {
+		return
+	}
+
 	fmt.Printf("HOME: %s\n", cfg.Home)
 }
 
@@ -104,8 +108,8 @@ func syscallEnvironmentVariables() {
 		fmt.Println("%s", envVar)
 	}
 
-	home, err := syscall.Getenv("HOME") // $ source
-	if err != nil {
+	home, found := syscall.Getenv("HOME") // $ source
+	if !found {
 		return
 	}
 	fmt.Println("HOME: %s", home)
