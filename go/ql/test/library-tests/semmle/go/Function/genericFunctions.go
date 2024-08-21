@@ -72,12 +72,18 @@ func generic_functions() {
 	// Slice write
 	sliceVar[0] = -1
 
-	// Access a map through two type aliases
-	aliasedMap := T2{"key": []string{"value"}}
+	// Access a map through two named types
+	mapThroughNamedTypes := DefinedType2{"key": []string{"value"}}
 	// Map read
-	_ = aliasedMap["key"]
+	_ = mapThroughNamedTypes["key"]
 	// Map write
-	aliasedMap["key"][0] = "new value"
+	mapThroughNamedTypes["key"][0] = "new value"
+	// Access a map through two type aliases and two named types
+	mapThroughAliasedTypes := AliasType2{"key": []string{"value"}}
+	// Map read
+	_ = mapThroughAliasedTypes["key"]
+	// Map write
+	mapThroughAliasedTypes["key"][0] = "new value"
 }
 
 type GenericStruct1[TP104 interface{}] struct {

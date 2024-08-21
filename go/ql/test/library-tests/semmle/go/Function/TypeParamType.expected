@@ -2,23 +2,23 @@ numberOfTypeParameters
 | genericFunctions2.go:3:6:3:33 | GenericFunctionInAnotherFile | 1 |
 | genericFunctions.go:11:6:11:32 | GenericFunctionOneTypeParam | 1 |
 | genericFunctions.go:17:6:17:33 | GenericFunctionTwoTypeParams | 2 |
-| genericFunctions.go:83:6:83:19 | GenericStruct1 | 1 |
-| genericFunctions.go:86:6:86:19 | GenericStruct2 | 2 |
-| genericFunctions.go:89:32:89:33 | f1 | 1 |
-| genericFunctions.go:94:33:94:34 | g1 | 1 |
-| genericFunctions.go:97:39:97:40 | f2 | 2 |
-| genericFunctions.go:100:40:100:41 | g2 | 2 |
-| genericFunctions.go:113:6:113:12 | Element | 1 |
-| genericFunctions.go:117:6:117:9 | List | 1 |
-| genericFunctions.go:122:23:122:27 | MyLen | 1 |
-| genericFunctions.go:126:6:126:19 | NodeConstraint | 1 |
-| genericFunctions.go:130:6:130:19 | EdgeConstraint | 1 |
-| genericFunctions.go:134:6:134:10 | Graph | 2 |
-| genericFunctions.go:136:6:136:8 | New | 2 |
-| genericFunctions.go:140:31:140:42 | ShortestPath | 2 |
-| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsFunc | 3 |
-| genericFunctions.go:154:6:154:36 | multipleAnonymousTypeParamsType | 3 |
-| genericFunctions.go:156:51:156:51 | f | 3 |
+| genericFunctions.go:89:6:89:19 | GenericStruct1 | 1 |
+| genericFunctions.go:92:6:92:19 | GenericStruct2 | 2 |
+| genericFunctions.go:95:32:95:33 | f1 | 1 |
+| genericFunctions.go:100:33:100:34 | g1 | 1 |
+| genericFunctions.go:103:39:103:40 | f2 | 2 |
+| genericFunctions.go:106:40:106:41 | g2 | 2 |
+| genericFunctions.go:119:6:119:12 | Element | 1 |
+| genericFunctions.go:123:6:123:9 | List | 1 |
+| genericFunctions.go:128:23:128:27 | MyLen | 1 |
+| genericFunctions.go:132:6:132:19 | NodeConstraint | 1 |
+| genericFunctions.go:136:6:136:19 | EdgeConstraint | 1 |
+| genericFunctions.go:140:6:140:10 | Graph | 2 |
+| genericFunctions.go:142:6:142:8 | New | 2 |
+| genericFunctions.go:146:31:146:42 | ShortestPath | 2 |
+| genericFunctions.go:158:6:158:36 | multipleAnonymousTypeParamsFunc | 3 |
+| genericFunctions.go:160:6:160:36 | multipleAnonymousTypeParamsType | 3 |
+| genericFunctions.go:162:51:162:51 | f | 3 |
 #select
 | cmp.Compare | 0 | T | Ordered |
 | cmp.Less | 0 | T | Ordered |
