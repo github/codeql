@@ -1,5 +1,8 @@
 .. _analyzing-data-flow-in-cpp-new:
 
+:orphan:
+:nosearch:
+
 Analyzing data flow in C and C++
 ================================
 
