@@ -1,3 +1,2 @@
 testFailures
-| ImplicitPendingIntentsTest.java:35:60:35:87 | // $hasImplicitPendingIntent | Missing result:hasImplicitPendingIntent= |
 failures
