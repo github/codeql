@@ -81,7 +81,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 		}
 	}
 
-	log.Println("Running packages.Load.")
+	testMessage := ""
+	if extractTests {
+		testMessage = " (test extraction enabled)"
+	}
+	log.Printf("Running packages.Load%s.", testMessage)
+
+	// This includes test packages if either we're tracing a `go test` command,
+	// or if CODEQL_EXTRACTOR_GO_EXTRACT_TESTS is set to "true".
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
 			packages.NeedCompiledGoFiles |
@@ -141,8 +148,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	// version seems to be a superset of it.
 	longestPackageIds := make(map[string]string)
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
-		if shortestID, present := longestPackageIds[pkg.PkgPath]; present {
-			if len(pkg.ID) > len(shortestID) {
+		if longestIDSoFar, present := longestPackageIds[pkg.PkgPath]; present {
+			if len(pkg.ID) > len(longestIDSoFar) {
 				longestPackageIds[pkg.PkgPath] = pkg.ID
 			}
 		} else {
@@ -154,7 +161,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
-		// If this is a variant of a package that also occurs with a longer ID, skip it.
+		// If this is a variant of a package that also occurs with a shorter ID, skip it.
 		if pkg.ID != longestPackageIds[pkg.PkgPath] {
 			log.Printf("Skipping variant of package %s with ID %s.", pkg.PkgPath, pkg.ID)
 			return
