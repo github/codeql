@@ -1,5 +1,5 @@
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
-load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
 
 kt_javac_options(
     name = "javac-options",
@@ -8,6 +8,7 @@ kt_javac_options(
 
 kt_kotlinc_options(
     name = "kotlinc-options",
+    # x_context_receivers = True
     # if needed, see https://bazelbuild.github.io/rules_kotlin/kotlin.html#kt_kotlinc_options for available options
 )
 
@@ -24,8 +25,9 @@ kt_kotlinc_options(
 #    tools = [":generate_dbscheme"],
 #)
 
-kt_jvm_library(
+kt_jvm_binary(
     name = "kotlin-extractor2",
+    main_class = "KotlinExtractorKt",
     srcs = [
         #        ":generated-dbscheme",
         "src/main/kotlin/KotlinExtractor.kt",
