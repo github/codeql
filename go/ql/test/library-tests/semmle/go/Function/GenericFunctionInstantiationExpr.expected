@@ -4,5 +4,5 @@
 | genericFunctions.go:46:6:46:48 | generic function instantiation expression | genericFunctions.go:46:6:46:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:46:43:46:47 | int64 |
 | genericFunctions.go:47:6:47:50 | generic function instantiation expression | genericFunctions.go:47:6:47:33 | GenericFunctionTwoTypeParams | 0 | genericFunctions.go:47:35:47:40 | string |
 | genericFunctions.go:47:6:47:50 | generic function instantiation expression | genericFunctions.go:47:6:47:33 | GenericFunctionTwoTypeParams | 1 | genericFunctions.go:47:43:47:49 | float64 |
-| genericFunctions.go:143:6:143:41 | generic function instantiation expression | genericFunctions.go:143:6:143:33 | GenericFunctionInAnotherFile | 0 | genericFunctions.go:143:35:143:40 | string |
-| genericFunctions.go:148:6:148:55 | generic function instantiation expression | genericFunctions.go:148:6:148:47 | selection of GenericFunctionInAnotherPackage | 0 | genericFunctions.go:148:49:148:54 | string |
+| genericFunctions.go:149:6:149:41 | generic function instantiation expression | genericFunctions.go:149:6:149:33 | GenericFunctionInAnotherFile | 0 | genericFunctions.go:149:35:149:40 | string |
+| genericFunctions.go:154:6:154:55 | generic function instantiation expression | genericFunctions.go:154:6:154:47 | selection of GenericFunctionInAnotherPackage | 0 | genericFunctions.go:154:49:154:54 | string |
