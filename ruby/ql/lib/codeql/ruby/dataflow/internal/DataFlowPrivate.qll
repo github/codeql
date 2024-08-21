@@ -1191,8 +1191,7 @@ private module ParameterNodes {
     /** Holds if a read-step should be added into parameter `p`. */
     predicate readInto(ParameterNode p, ContentSet c) {
       exists(int n |
-        isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n))) and
-        not exists(int i | splatParameterAt(callable.asCfgScope(), i) and i < n)
+        isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n)))
       |
         c = getArrayContent(n)
         or
@@ -1465,7 +1464,6 @@ module ArgumentNodes {
     exists(int n, ArgumentPosition pos |
       arg.isArgumentOf(call, pos) and
       pos.isPositional(n) and
-      not exists(int i | splatArgumentAt(call, i) and i < n) and
       c = getArrayContent(n)
     )
   }
