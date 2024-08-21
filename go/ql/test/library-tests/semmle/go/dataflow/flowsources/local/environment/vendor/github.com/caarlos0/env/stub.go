@@ -1,6 +1,6 @@
 package env
 
-type Options struct {}
+type Options struct{}
 
 func Must[T any](t T, err error) T {
 	if err != nil {
@@ -14,11 +14,13 @@ func Parse(v interface{}) error {
 }
 
 func ParseAs[T any]() (T, error) {
-	return nil, nil
+	var t T
+	return t, nil
 }
 
 func ParseAsWithOptions[T any](opts Options) (T, error) {
-	return nil, nil
+	var t T
+	return t, nil
 }
 
 func ParseWithOptions(v interface{}, opts Options) error {
