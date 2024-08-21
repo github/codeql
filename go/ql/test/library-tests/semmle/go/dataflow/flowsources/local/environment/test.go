@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 	"os"
+	"syscall"
 )
 
 func osEnvironmentVariables() {
@@ -96,4 +97,16 @@ func envyEnvironmentVariables() {
 	homeDir := envy.MustGet("HOME") // $ source
 
 	fmt.Printf("HOME: %s\n", homeDir)
+}
+
+func syscallEnvironmentVariables() {
+	for _, envVar := range syscall.Environ() { // $ source
+		fmt.Println("%s", envVar)
+	}
+
+	home, err := syscall.Getenv("HOME") // $ source
+	if err != nil {
+		return
+	}
+	fmt.Println("HOME: %s", home)
 }
