@@ -4108,6 +4108,86 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+    private module Stage6Param implements MkStage<Stage5>::StageParam {
+      private module PrevStage = Stage5;
+
+      class Typ = DataFlowType;
+
+      class Ap = AccessPath;
+
+      class ApNil = AccessPathNil;
+
+      pragma[nomagic]
+      PrevStage::Ap getApprox(Ap ap) { result = ap.getApprox() }
+
+      Typ getTyp(DataFlowType t) { result = t }
+
+      bindingset[c, t, tail]
+      Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
+
+      class ApHeadContent = Content;
+
+      pragma[noinline]
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+
+      ApHeadContent projectToHeadContent(Content c) { result = c }
+
+      private module ApOption = Option<AccessPath>;
+
+      class ApOption = ApOption::Option;
+
+      ApOption apNone() { result.isNone() }
+
+      ApOption apSome(Ap ap) { result = ApOption::some(ap) }
+
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+
+        predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+
+        predicate reducedViableImplInCallContextCand =
+          Stage5Param::reducedViableImplInCallContext/3;
+
+        predicate reducedViableImplInReturnCand = Stage5Param::reducedViableImplInReturn/2;
+      }
+
+      import CallContextSensitivity<CallContextSensitivityInput>
+      import LocalCallContext
+
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc, string label
+      ) {
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+      }
+
+      bindingset[node, state, t0, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+        strengthenType(node, t0, t) and
+        exists(state) and
+        exists(ap)
+      }
+
+      pragma[nomagic]
+      private predicate clearExceptStore(NodeEx node, Ap ap) {
+        Stage4Param::clearContent(node, ap.getHead(), true)
+      }
+
+      bindingset[node, ap, isStoreStep]
+      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+        if clearExceptStore(node, ap) then isStoreStep = true else any()
+      }
+
+      bindingset[typ, contentType]
+      predicate typecheckStore(Typ typ, DataFlowType contentType) {
+        compatibleTypesFilter(typ, contentType)
+      }
+    }
+
+    module Stage6 = MkStage<Stage5>::Stage<Stage6Param>;
+
     private module PrunedCallContextSensitivityStage5 {
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
