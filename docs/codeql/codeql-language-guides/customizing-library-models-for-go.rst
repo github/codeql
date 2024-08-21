@@ -3,7 +3,7 @@
 Customizing library models for Go
 =================================
 
-You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
+You can model the methods and functions that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
@@ -15,7 +15,7 @@ This article contains reference material about how to define custom models for s
 About data extensions
 ---------------------
 
-You can customize analysis by defining models (summaries, sinks, and sources) of your code's Go dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as methods, properties, and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by dataflow analysis and improve the precision of results.
+You can customize analysis by defining models (summaries, sinks, and sources) of your code's Go dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as functions, methods, and fields. When you run dataflow analysis, these models expand the potential sources and sinks tracked by dataflow analysis and improve the precision of results.
 
 Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability. This is known as taint tracking. Each source is a starting point for dataflow analysis to track tainted data and each sink is an end point.
 
@@ -80,7 +80,7 @@ This is the ``Prepare`` method of the ``DB`` type in the ``database/sql`` packag
         ...
     }
 
-We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sinkModel``\(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -92,7 +92,7 @@ We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, si
          - ["database/sql", "DB", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
 
 Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
-The first five values identify the callable (in this case a method) to be modeled as a sink.
+The first five values identify the function (in this case a method) to be modeled as a sink.
 
 - The first value ``database/sql`` is the package name.
 - The second value ``DB`` is the name of the type that the method is associated with.
@@ -120,7 +120,7 @@ This is the ``Listen`` function which is located in the ``net`` package.
     }
 
 
-We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sourceModel``\(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -133,7 +133,7 @@ We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, 
 
 
 Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
-The first five values identify the callable (in this case a function) to be modeled as a source.
+The first five values identify the function to be modeled as a source.
 
 - The first value ``net`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
@@ -162,7 +162,7 @@ This pattern covers many of the cases where we need to summarize flow through a 
         ...
     }
 
-We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
+We need to add tuples to the ``summaryModel``\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
 
 .. code-block:: yaml
 
@@ -178,10 +178,10 @@ Since we are adding flow through a method, we need to add tuples to the ``summar
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the first argument (``elems`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
 
-The first five values identify the callable (in this case a method) to be modeled as a summary.
+The first five values identify the function to be modeled as a summary.
 These are the same for both of the rows above as we are adding two summaries for the same method.
 
-- The first value ``strings`` is the pacakge name.
+- The first value ``strings`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
 - The fourth value ``Join`` is the function name.
@@ -219,7 +219,7 @@ This example shows how the Go query pack models flow through a method for a simp
         ...
     }
     
-We need to add a tuple to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
+We need to add a tuple to the ``summaryModel``\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
 
 .. code-block:: yaml
 
@@ -234,7 +234,7 @@ Since we are adding flow through a method, we need to add tuples to the ``summar
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier of the method call (``u`` in the example) to the return value (``host`` in the example).
 
-The first five values identify the callable (in this case a method) to be modeled as a summary.
+The first five values identify the function (in this case a method) to be modeled as a summary.
 
 - The first value ``net/url`` is the package name.
 - The second value ``URL`` is the receiver type.
@@ -261,7 +261,7 @@ This example shows how we can model a field read as a source of tainted data.
        ...
    }
 
-We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sourceModel``\(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -294,7 +294,7 @@ Package grouping
 Since Go uses URLs for package identifiers, it is possible for packages to be imported with different paths. For example, the ``glog`` package can be imported using both the ``github.com/golang/glog`` and ``gopkg.in/glog`` paths.
 
 To handle this, the CodeQL Go library uses a mapping from the package path to a group name for the package. This mapping can be specified using the ``packageGrouping`` extensible predicate, and then the models for the APIs in the package
-will use the group name in place of the package path. The package field in models will be the prefix ``group:`` followed by the group name.
+will use the the prefix ``group:`` followed by the group name in place of the package path.
 
 .. code-block:: yaml
 
