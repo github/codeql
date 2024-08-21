@@ -1578,6 +1578,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
               innerArgApa) and
             flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
+            not inBarrier(node, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1610,6 +1611,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(DataFlowType contentType, DataFlowType containerType, ApApprox apa1 |
             fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t1, ap1, apa1) and
+            not outBarrier(node1, state) and
+            not inBarrier(node2, state) and
             PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
             t2 = getTyp(containerType) and
             typecheckStore(t1, contentType)
@@ -1651,6 +1654,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(ApHeadContent apc |
             fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t, ap, _) and
+            not outBarrier(node1, state) and
+            not inBarrier(node2, state) and
             apc = getHeadContent(ap) and
             readStepCand0(node1, apc, c, node2)
           )
@@ -1761,6 +1766,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 or
                 viableImplArgNotCallContextReduced(call, arg, outercc)
               ) and
+              not outBarrier(arg, state) and
+              not inBarrier(p, state) and
               callEdgeArgParamRestrictedInlineLate(call, inner, arg, p, allowsFieldFlow, apa) and
               (if allowsFieldFlow = false then emptyAp = true else any()) and
               if allowsFieldFlowThrough(call, inner)
@@ -1888,6 +1895,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
           instanceofCcNoCall(cc) and
+          not outBarrier(ret, state) and
           fwdFlow(ret, state, cc, summaryCtx, argT, argAp, t, ap, apa)
         }
 
@@ -1925,6 +1933,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
             fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
             fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, apa, allowsFieldFlow) and
+            not inBarrier(out, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -2018,6 +2027,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlow(pragma[only_bind_into](ret), state, ccc,
               TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), TypOption::some(argT),
               pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
+            not outBarrier(ret, state) and
             kind = ret.getKind() and
             parameterFlowThroughAllowed(summaryCtx, kind) and
             argApa = getApprox(argAp) and
@@ -2839,6 +2849,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, argT, argAp, t,
                 ap, apa, ret, innerArgApa) and
               flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
+              not inBarrier(node, state) and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
             )
           }
@@ -2926,11 +2937,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             |
               jumpStepEx(mid, node) and
               state = state0 and
+              not outBarrier(mid, state) and
+              not inBarrier(node, state) and
               t = t0 and
               label = ""
               or
               additionalJumpStep(mid, node, label) and
               state = state0 and
+              not outBarrier(mid, state) and
+              not inBarrier(node, state) and
               t = getNodeTyp(node) and
               ap instanceof ApNil
               or
@@ -2967,6 +2982,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               pn1 = TStagePathNodeMid(ret, state, innercc, summaryCtx, argT, argAp, t, ap) and
               fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
               fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, apa, allowsFieldFlow) and
+              not inBarrier(node, state) and
               label = "" and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
             )
