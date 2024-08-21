@@ -2570,6 +2570,38 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             abstract StagePathNodeImpl getASuccessorImpl(string label);
 
+            private StagePathNodeImpl getASuccessorIfHidden(string label) {
+              this.isHidden() and
+              result = this.getASuccessorImpl(label)
+            }
+
+            private StagePathNodeImpl getASuccessorFromNonHidden(string label) {
+              result = this.getASuccessorImpl(label) and
+              not this.isHidden()
+              or
+              exists(string l1, string l2 |
+                result = this.getASuccessorFromNonHidden(l1).getASuccessorIfHidden(l2) and
+                label = mergeLabels(l1, l2)
+              )
+            }
+
+            final StagePathNodeImpl getANonHiddenSuccessor(string label) {
+              result = this.getASuccessorFromNonHidden(label) and not result.isHidden()
+            }
+
+            predicate isHidden() {
+              not Config::includeHiddenNodes() and
+              (
+                hiddenNode(this.getNodeEx().asNode()) and
+                not this.isSource() and
+                not this instanceof StagePathNodeSink
+                or
+                this.getNodeEx() instanceof TNodeImplicitRead
+                or
+                hiddenNode(this.getNodeEx().asParamReturnNode())
+              )
+            }
+
             /** Gets a textual representation of this element. */
             abstract string toString();
 
