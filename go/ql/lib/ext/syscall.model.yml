@@ -26,4 +26,3 @@ extensions:
     data:
       - ["syscall", "", False, "Environ", "", "", "ReturnValue", "environment", "manual"]
       - ["syscall", "", False, "Getenv", "", "", "ReturnValue[0]", "environment", "manual"]
-      - ["syscall", "ProcAttr", True, "Env", "", "", "", "environment", "manual"]

@@ -56,4 +56,3 @@ extensions:
       - ["os", "", False, "UserCacheDir", "", "", "ReturnValue[0]", "environment", "manual"]
       - ["os", "", False, "UserConfigDir", "", "", "ReturnValue[0]", "environment", "manual"]
       - ["os", "", False, "UserHomeDir", "", "", "ReturnValue[0]", "environment", "manual"]
-      - ["os", "ProcAttr", False, "Env", "", "", "", "environment", "manual"] # TODO: when sources can have access paths, use .ArrayElement
