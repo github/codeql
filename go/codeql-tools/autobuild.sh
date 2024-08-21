@@ -11,6 +11,9 @@ fi
 LGTM_SRC="$(pwd)"
 export LGTM_SRC
 
+CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS=true
+export CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS
+
 if [ "${CODEQL_EXTRACTOR_GO_BUILD_TRACING:-}" = "on" ]; then
   echo "Tracing enabled"
   "$CODEQL_EXTRACTOR_GO_ROOT/tools/$CODEQL_PLATFORM/go-build-runner"
