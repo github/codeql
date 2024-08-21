@@ -1,6 +1,6 @@
 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string | string |
 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.SecondAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string |
-| internal/reflectlite.Kind | internal/abi.Kind | uint |
+| internal/reflectlite.Kind | internal/abi.Kind | uint8 |
 | internal/reflectlite.nameOff | internal/abi.NameOff | int32 |
 | internal/reflectlite.textOff | internal/abi.TextOff | int32 |
 | internal/reflectlite.typeOff | internal/abi.TypeOff | int32 |
