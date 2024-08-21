@@ -50,6 +50,7 @@
 *.dll -text
 *.pdb -text
 
+/maven_install.json linguist-generated=true
 /java/ql/test/stubs/**/*.java linguist-generated=true
 /java/ql/test/experimental/stubs/**/*.java linguist-generated=true
 /java/kotlin-extractor/deps/*.jar filter=lfs diff=lfs merge=lfs -text
