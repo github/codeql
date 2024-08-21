@@ -107,15 +107,15 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 - The eighth value ``sql-injection`` is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value ``manual`` is the provenance of the sink, which is used to identify the origin of the sink.
 
-Example: Taint source from the ``net`` package
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows how the Go query pack models the return value from the ``Listen`` method as a ``remote`` source.
-This is the ``Listen`` function which is located in the ``net`` package.
+Example: Taint source from the ``net/http`` package
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows how the Go query pack models the return value from the ``FormValue`` method as a ``remote`` source.
+This is the ``FormValue`` method of the ``Request`` struct which is located in the ``net/http`` package.
 
 .. code-block:: go
 
-    func Tainted() {
-        ln, err := net.Listen("tcp", ":8080") // The return value of this method is a remote source.
+    func Tainted(r *http.Request) {
+        name := r.FormValue("name") // The return value of this method is a source of tainted data.
         ...
     }
 
@@ -129,16 +129,16 @@ We need to add a tuple to the ``sourceModel``\(package, type, subtypes, name, si
          pack: codeql/go-all
          extensible: sourceModel
        data:
-         - ["net", "", False, "Listen", "", "", "ReturnValue", "remote", "manual"]
+         - ["net/http", "Request", True, "FormValue", "", "", "ReturnValue", "remote", "manual"]
 
 
 Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
 The first five values identify the function to be modeled as a source.
 
-- The first value ``net`` is the package name.
-- The second value ``""`` is left blank, since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the source also applies to all overrides of the method.
-- The fourth value ``Listen`` is the function name.
+- The first value ``net/http`` is the package name.
+- The second value ``Request`` is the type name, since the function is a method of the ``Request`` type.
+- The third value ``True`` is a flag that indicates whether or not the source also applies to all overrides of the method.
+- The fourth value ``FormValue`` is the function name.
 - The fifth value ``""`` is the function input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
