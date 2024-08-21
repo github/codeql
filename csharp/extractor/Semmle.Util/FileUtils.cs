@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Semmle.Util.Logging;
 
@@ -99,19 +100,49 @@ namespace Semmle.Util
             return hex.ToString();
         }
 
-        private static async Task DownloadFileAsync(string address, string filename)
+        private static async Task DownloadFileAsync(string address, string filename, HttpClient httpClient, CancellationToken token)
         {
-            using var httpClient = new HttpClient();
-            using var contentStream = await httpClient.GetStreamAsync(address);
+            using var contentStream = await httpClient.GetStreamAsync(address, token);
             using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
-            await contentStream.CopyToAsync(stream);
+            await contentStream.CopyToAsync(stream, token);
+        }
+
+        private static void DownloadFileWithRetry(string address, string fileName, int tryCount, int timeoutMilliSeconds, ILogger logger)
+        {
+            logger.LogDebug($"Downloading {address} to {fileName}.");
+            using HttpClient client = new();
+
+            for (var i = 0; i < tryCount; i++)
+            {
+                logger.LogDebug($"Attempt {i + 1} of {tryCount}. Timeout: {timeoutMilliSeconds} ms.");
+                using var cts = new CancellationTokenSource();
+                cts.CancelAfter(timeoutMilliSeconds);
+                try
+                {
+                    DownloadFileAsync(address, fileName, client, cts.Token).GetAwaiter().GetResult();
+                    logger.LogDebug($"Downloaded {address} to {fileName}.");
+                    return;
+                }
+                catch (Exception exc)
+                {
+                    logger.LogDebug($"Failed to download {address} to {fileName}. Exception: {exc.Message}");
+                    timeoutMilliSeconds *= 2;
+
+                    if (i == tryCount - 1)
+                    {
+                        logger.LogDebug($"Failed to download {address} to {fileName} after {tryCount} attempts.");
+                        // Rethrowing the last exception
+                        throw;
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
         /// </summary>
-        public static void DownloadFile(string address, string fileName) =>
-           DownloadFileAsync(address, fileName).GetAwaiter().GetResult();
+        public static void DownloadFile(string address, string fileName, ILogger logger) =>
+           DownloadFileWithRetry(address, fileName, tryCount: 3, timeoutMilliSeconds: 10000, logger);
 
         public static string ConvertPathToSafeRelativePath(string path)
         {
