@@ -1,14 +1,4 @@
 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string | string |
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignatureAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature | func(T) T |
 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.SecondAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string |
-| internal/reflectlite.Kind | internal/abi.Kind | uint8 |
-| internal/reflectlite.nameOff | internal/abi.NameOff | int32 |
-| internal/reflectlite.textOff | internal/abi.TextOff | int32 |
-| internal/reflectlite.typeOff | internal/abi.TypeOff | int32 |
-| os.FileMode | io/fs.FileMode | uint32 |
-| os.syscallErrorType | syscall.Errno | uintptr |
-| reflect.aNameOff | internal/abi.NameOff | int32 |
-| reflect.aTextOff | internal/abi.TextOff | int32 |
-| reflect.aTypeOff | internal/abi.TypeOff | int32 |
-| runtime.nameOff | internal/abi.NameOff | int32 |
-| runtime.textOff | internal/abi.TextOff | int32 |
-| runtime.typeOff | internal/abi.TypeOff | int32 |
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.TypeAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericArray | [10]T |
