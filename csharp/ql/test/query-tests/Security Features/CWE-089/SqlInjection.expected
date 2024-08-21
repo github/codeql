@@ -9,6 +9,7 @@
 | SqlInjection.cs:99:50:99:52 | access to local variable cmd | SqlInjection.cs:97:21:97:29 | access to property Text : String | SqlInjection.cs:99:50:99:52 | access to local variable cmd | This query depends on $@. | SqlInjection.cs:97:21:97:29 | access to property Text : String | this TextBox text |
 | SqlInjection.cs:109:42:109:52 | access to local variable queryString | SqlInjection.cs:108:21:108:38 | call to method ReadLine : String | SqlInjection.cs:109:42:109:52 | access to local variable queryString | This query depends on $@. | SqlInjection.cs:108:21:108:38 | call to method ReadLine : String | this read from stdin |
 | SqlInjection.cs:110:50:110:52 | access to local variable cmd | SqlInjection.cs:108:21:108:38 | call to method ReadLine : String | SqlInjection.cs:110:50:110:52 | access to local variable cmd | This query depends on $@. | SqlInjection.cs:108:21:108:38 | call to method ReadLine : String | this read from stdin |
+| SqlInjection.cs:129:53:129:57 | access to local variable query | SqlInjection.cs:122:73:122:78 | userId : String | SqlInjection.cs:129:53:129:57 | access to local variable query | This query depends on $@. | SqlInjection.cs:122:73:122:78 | userId : String | this ASP.NET Core MVC action method parameter |
 | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | This query depends on $@. | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | this TextBox text |
 | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | This query depends on $@. | SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | this TextBox text |
 | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | This query depends on $@. | SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | this TextBox text |
@@ -61,6 +62,8 @@ edges
 | SqlInjection.cs:109:21:109:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:110:50:110:52 | access to local variable cmd | provenance |  Sink:MaD:17 |
 | SqlInjection.cs:109:27:109:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:109:21:109:23 | access to local variable cmd : SqlCommand | provenance |  |
 | SqlInjection.cs:109:42:109:52 | access to local variable queryString : String | SqlInjection.cs:109:27:109:53 | object creation of type SqlCommand : SqlCommand | provenance | MaD:19 |
+| SqlInjection.cs:122:73:122:78 | userId : String | SqlInjection.cs:125:20:125:24 | access to local variable query : String | provenance |  |
+| SqlInjection.cs:125:20:125:24 | access to local variable query : String | SqlInjection.cs:129:53:129:57 | access to local variable query | provenance |  Sink:MaD:16 |
 | SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | provenance |  Sink:MaD:4 |
 | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | provenance |  |
 | SqlInjectionDapper.cs:29:21:29:25 | access to local variable query : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | provenance |  Sink:MaD:5 |
@@ -170,6 +173,9 @@ nodes
 | SqlInjection.cs:109:42:109:52 | access to local variable queryString | semmle.label | access to local variable queryString |
 | SqlInjection.cs:109:42:109:52 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
 | SqlInjection.cs:110:50:110:52 | access to local variable cmd | semmle.label | access to local variable cmd |
+| SqlInjection.cs:122:73:122:78 | userId : String | semmle.label | userId : String |
+| SqlInjection.cs:125:20:125:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlInjection.cs:129:53:129:57 | access to local variable query | semmle.label | access to local variable query |
 | SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | semmle.label | access to local variable query : String |
 | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | semmle.label | access to property Text : String |
 | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | semmle.label | access to local variable query |
