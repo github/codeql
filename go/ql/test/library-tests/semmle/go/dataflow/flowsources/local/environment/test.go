@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"github.com/caarlos0/env"
+	"github.com/gobuffalo/envy"
 	"github.com/hashicorp/go-envparse"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
@@ -85,4 +86,14 @@ func caarlos0EnvironmentVariables() {
 	cfg, err = env.ParseAs[config]() // $ source
 
 	fmt.Printf("HOME: %s\n", cfg.Home)
+}
+
+func envyEnvironmentVariables() {
+	goPath := envy.GoPath() // $ source
+
+	fmt.Printf("GOPATH: %s\n", goPath)
+
+	homeDir := envy.MustGet("HOME") // $ source
+
+	fmt.Printf("HOME: %s\n", homeDir)
 }
