@@ -1,3 +1,9 @@
+## 1.0.6
+
+### Minor Analysis Improvements
+
+* False positive results from the `swift/cleartext-transmission` ("Cleartext transmission of sensitive information") query involving `tel:`, `mailto:` and similar URLs have been fixed.
+
 ## 1.0.5
 
 ### Minor Analysis Improvements
