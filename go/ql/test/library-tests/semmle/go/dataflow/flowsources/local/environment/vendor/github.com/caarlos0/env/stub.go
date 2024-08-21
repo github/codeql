@@ -1,3 +1,5 @@
+package env
+
 type Options struct {}
 
 func Must[T any](t T, err error) T {

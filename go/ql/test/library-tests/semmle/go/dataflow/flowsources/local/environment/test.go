@@ -78,11 +78,11 @@ func caarlos0EnvironmentVariables() {
 	}
 
 	cfg := config{}
-	env.Parse(&cfg) // $ source
+	err := env.Parse(&cfg) // $ source
 
 	fmt.Printf("HOME: %s\n", cfg.Home)
 
-	cfg = env.ParseAs[config]() // $ source
+	cfg, err = env.ParseAs[config]() // $ source
 
 	fmt.Printf("HOME: %s\n", cfg.Home)
 }
