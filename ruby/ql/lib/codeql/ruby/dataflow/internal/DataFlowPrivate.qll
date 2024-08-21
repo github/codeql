@@ -1221,7 +1221,7 @@ private module ParameterNodes {
         not exists(int i | splatParameterAt(callable.asCfgScope(), i) and i < n)
       |
         // Important: do not include `TSplatContent(_, false)` here, as normal parameter matching is possible
-        c = getSplatContent(n, true)
+        c = getSplatContent(n, _)
         or
         c = getArrayContent(n)
         or
