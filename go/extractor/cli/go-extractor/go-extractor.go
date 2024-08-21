@@ -94,7 +94,7 @@ func parseFlags(args []string, mimic bool, extractTests bool) ([]string, []strin
 }
 
 func main() {
-	extractTestsDefault := os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_TESTS") == "true"
+	extractTestsDefault := os.Getenv("CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS") == "true"
 	buildFlags, patterns, extractTests := parseFlags(os.Args[1:], false, extractTestsDefault)
 
 	if cpuprofile != "" {

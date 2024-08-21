@@ -88,7 +88,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	log.Printf("Running packages.Load%s.", testMessage)
 
 	// This includes test packages if either we're tracing a `go test` command,
-	// or if CODEQL_EXTRACTOR_GO_EXTRACT_TESTS is set to "true".
+	// or if CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS is set to "true".
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
 			packages.NeedCompiledGoFiles |

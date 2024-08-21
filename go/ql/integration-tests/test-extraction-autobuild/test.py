@@ -1,5 +1,4 @@
 import os
 
 def test(codeql, go):
-    os.environ["CODEQL_EXTRACTOR_GO_EXTRACT_TESTS"] = "true"
-    codeql.database.create(source_root="src")
+    codeql.database.create(source_root="src", extractor_option = ["extract_tests=true"])
