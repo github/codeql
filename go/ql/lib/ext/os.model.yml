@@ -40,3 +40,12 @@ extensions:
       - ["os", "", False, "ExpandEnv", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["os", "", False, "NewFile", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["os", "File", True, "Fd", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["os", "File", True, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["os", "File", True, "ReadAt", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["os", "", False, "Open", "", "", "ReturnValue[0]", "file", "manual"]
+      - ["os", "", False, "OpenFile", "", "", "ReturnValue[0]", "file", "manual"]
+      - ["os", "", False, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
