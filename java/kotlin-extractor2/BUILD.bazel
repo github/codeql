@@ -36,5 +36,10 @@ kt_jvm_library(
     resources = glob(["src/main/resources/**"]),
     visibility = ["//visibility:public"],
     deps = [
+        "@maven_deps//:org_jetbrains_kotlin_%s" % kotlin_lib
+        for kotlin_lib in (
+            "kotlin_annotation_processing",
+            "kotlin_compiler",
+        )
     ],
 )
