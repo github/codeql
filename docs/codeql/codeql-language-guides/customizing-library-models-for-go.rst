@@ -158,7 +158,7 @@ This pattern covers many of the cases where we need to summarize flow through a 
     func TaintFlow() {
         elems := []string{"Hello", "World"}
         sep := " "
-        t := strings.Join(elems, sep) // There is taint flow from ss and sep to t.
+        t := strings.Join(elems, sep) // There is taint flow from elems and sep to t.
         ...
     }
 
