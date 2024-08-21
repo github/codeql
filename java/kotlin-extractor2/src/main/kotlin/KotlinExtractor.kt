@@ -14,6 +14,75 @@ import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSourceModu
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
-fun main(args : Array<String>) {
-    println("Kotlin Extractor 2 running")
+@OptIn(KaAnalysisApiInternals::class)
+fun main() {
+    lateinit var sourceModule: KaSourceModule
+    val session = buildStandaloneAnalysisAPISession {
+        registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
+
+        buildKtModuleProvider {
+            platform = JvmPlatforms.defaultJvmPlatform
+            val sdk = addModule(
+                buildKtSdkModule {
+                    addBinaryRootsFromJdkHome(Paths.get(System.getProperty("java.home")), isJre = true)
+                    addBinaryRootsFromJdkHome(Paths.get(System.getProperty("java.home")), isJre = false)
+                    platform = JvmPlatforms.defaultJvmPlatform
+                    libraryName = "JDK"
+                }
+            )
+            sourceModule = addModule(
+                buildKtSourceModule {
+                    addSourceRoot(Paths.get("testSrc"))
+                    addRegularDependency(sdk)
+                    platform = JvmPlatforms.defaultJvmPlatform
+                    moduleName = "<source>"
+                }
+            )
+        }
+    }
+
+   val ktFile = session.modulesWithFiles.getValue(sourceModule).single() as KtFile
+    analyze(ktFile) {
+        val c = ktFile.getDeclarations()[0] as KtClass
+        for (d: KtDeclaration in c.getDeclarations()) {
+            val f = d as KtFunction
+            if (f.name == "f") {
+                dumpFunction(f)
+            }
+        }
+    }
+}
+
+context (KaSession)
+fun dumpFunction(f: KtFunction) {
+    val block = f.getBodyExpression() as KtBlockExpression
+    for (p: KtExpression in block.getStatements()) {
+        dumpProperty(p as KtProperty)
+    }
+}
+
+context (KaSession)
+fun dumpProperty(p: KtProperty) {
+    println("Got property ${p.name}")
+    val i = p.getInitializer()!!
+    val t = i.expressionType!!
+    println("  Location: ${location(i)}")
+    println("  Initializer type $t (${t.javaClass})")
+    if (i is KtCallExpression) {
+        println("  Call info: ${i.resolveToCall()}")
+    }
+}
+
+fun location(e: KtElement): String {
+    val range = e.getTextRange()
+    val document = e.getContainingFile().getViewProvider().getDocument()
+    val start = showOffset(document, range.getStartOffset(), 1)
+    val end = showOffset(document, range.getEndOffset(), 0)
+    return "$start-$end"
+}
+
+fun showOffset(document: Document, o: Int, colFudge: Int): String {
+    val line = document.getLineNumber(o)
+    val column = o - document.getLineStartOffset(line)
+    return "${line + 1}:${column + colFudge}"
 }
