@@ -46,6 +46,13 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["os", "", False, "Environ", "", "", "ReturnValue", "environment", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["os", "", False, "ExpandEnv", "", "", "ReturnValue", "environment", "manual"]
+      - ["os", "", False, "Getenv", "", "", "ReturnValue", "environment", "manual"]
+      - ["os", "", False, "LookupEnv", "", "", "ReturnValue[0]", "environment", "manual"]
       - ["os", "", False, "Open", "", "", "ReturnValue[0]", "file", "manual"]
       - ["os", "", False, "OpenFile", "", "", "ReturnValue[0]", "file", "manual"]
       - ["os", "", False, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
+      - ["os", "", False, "UserCacheDir", "", "", "ReturnValue[0]", "environment", "manual"]
+      - ["os", "", False, "UserConfigDir", "", "", "ReturnValue[0]", "environment", "manual"]
+      - ["os", "", False, "UserHomeDir", "", "", "ReturnValue[0]", "environment", "manual"]
