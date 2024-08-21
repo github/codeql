@@ -18,7 +18,7 @@ func fileExists(path string) bool {
 // Decides if `dirPath` is a vendor directory by testing whether it is called `vendor`
 // and contains a `modules.txt` file.
 func isGolangVendorDirectory(dirPath string) bool {
-	return path.Base(dirPath) == "vendor" && fileExists(path.Join(dirPath, "modules.txt"))
+	return filepath.Base(dirPath) == "vendor" && fileExists(filepath.Join(dirPath, "modules.txt"))
 }
 
 type BaselineConfig struct {
@@ -38,7 +38,8 @@ func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 				return nil
 			}
 			if isGolangVendorDirectory(dirPath) {
-				vendorDirs = append(vendorDirs, path.Join(dirPath, "**"))
+				// Note that CodeQL expects a forward-slash-separated path, even on Windows.
+				vendorDirs = append(vendorDirs, path.Join(filepath.ToSlash(dirPath), "**"))
 				return filepath.SkipDir
 			} else {
 				return nil
