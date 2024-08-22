@@ -314,8 +314,6 @@ class ContentSet extends TContentSet {
       this.isProperty(p1) and
       p2 = result.(PropertyContent).getProperty()
     |
-      p1 = p2
-      or
       overridesOrImplementsSourceDecl(p2, p1)
       or
       overridesOrImplementsSourceDecl(p1, p2)
