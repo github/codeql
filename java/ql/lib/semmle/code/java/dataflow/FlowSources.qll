@@ -207,7 +207,8 @@ deprecated class EnvInput extends DataFlow::Node {
   EnvInput() {
     this instanceof EnvironmentInput or
     this instanceof CliInput or
-    this instanceof FileInput
+    this instanceof FileInput or
+    this instanceof StdinInput
   }
 }
 
@@ -234,12 +235,21 @@ private class CliInput extends LocalUserInput {
     exists(Field f | this.asExpr() = f.getAnAccess() |
       f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument"
     )
-    or
+  }
+
+  override string getThreatModel() { result = "commandargs" }
+}
+
+/**
+ * A node with input from stdin.
+ */
+private class StdinInput extends LocalUserInput {
+  StdinInput() {
     // Access to `System.in`.
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
   }
 
-  override string getThreatModel() { result = "commandargs" }
+  override string getThreatModel() { result = "stdin" }
 }
 
 /**

@@ -33,13 +33,6 @@ module Beego {
     result = package(v2modulePath(), "server/web/context")
   }
 
-  /** Gets the path for the logs package of beego. */
-  string logsPackagePath() {
-    result = package(v1modulePath(), "logs")
-    or
-    result = package(v2modulePath(), "core/logs")
-  }
-
   /** Gets the path for the utils package of beego. */
   string utilsPackagePath() {
     result = package(v1modulePath(), "utils")
@@ -172,92 +165,12 @@ module Beego {
     override string getAContentType() { none() }
   }
 
-  private string getALogFunctionName() {
-    result =
-      [
-        "Alert", "Critical", "Debug", "Emergency", "Error", "Info", "Informational", "Notice",
-        "Trace", "Warn", "Warning"
-      ]
-  }
-
-  private class ToplevelBeegoLoggers extends LoggerCall::Range, DataFlow::CallNode {
-    ToplevelBeegoLoggers() {
-      this.getTarget().hasQualifiedName([packagePath(), logsPackagePath()], getALogFunctionName())
-    }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
-  private class BeegoLoggerMethods extends LoggerCall::Range, DataFlow::MethodCallNode {
-    BeegoLoggerMethods() {
-      this.getTarget().hasQualifiedName(logsPackagePath(), "BeeLogger", getALogFunctionName())
-    }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
-  private class UtilLoggers extends LoggerCall::Range, DataFlow::CallNode {
-    UtilLoggers() { this.getTarget().hasQualifiedName(utilsPackagePath(), "Display") }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
     HtmlQuoteSanitizer() {
       exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName(packagePath(), "Htmlquote") |
         this = c.getArgument(0)
       )
     }
-  }
-
-  /**
-   * The File system access sinks
-   */
-  private class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
-    int pathArg;
-
-    FsOperations() {
-      this.getTarget().hasQualifiedName(packagePath(), "Walk") and pathArg = 1
-      or
-      exists(Method m | this = m.getACall() |
-        m.hasQualifiedName(packagePath(), "FileSystem", "Open") and pathArg = 0
-        or
-        m.hasQualifiedName(packagePath(), "Controller", "SaveToFile") and pathArg = 1
-        or
-        m.hasQualifiedName(contextPackagePath(), "BeegoOutput", "Download") and
-        pathArg = 0
-        or
-        // SaveToFileWithBuffer only available in v2
-        m.hasQualifiedName("github.com/beego/beego/v2/server/web", "Controller",
-          "SaveToFileWithBuffer") and
-        pathArg = 1
-      )
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-  }
-
-  private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
-    string className;
-
-    RedirectMethods() {
-      exists(string package |
-        (
-          package = packagePath() and className = "Controller"
-          or
-          package = contextPackagePath() and className = "Context"
-        ) and
-        this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() {
-      className = "Controller" and result = this.getArgument(0)
-      or
-      className = "Context" and result = this.getArgument(1)
-    }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {

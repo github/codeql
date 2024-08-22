@@ -1,6 +1,34 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["database/sql", "Conn", False, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", False, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", False, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", False, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["database/sql", "", False, "Named", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]

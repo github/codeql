@@ -1,6 +1,2 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
-
-run_codeql_database_create([], db=None, lang="csharp", extra_args=["--build-mode=none"], runFunction=runUnsuccessfully)
-
-check_diagnostics()
+def test(codeql, csharp):
+    codeql.database.create(build_mode="none", _assert_failure=True)

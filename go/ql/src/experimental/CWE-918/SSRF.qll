@@ -10,7 +10,6 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  private import semmle.go.frameworks.Gin
   private import validator
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck

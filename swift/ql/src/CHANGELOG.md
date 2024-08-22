@@ -1,3 +1,10 @@
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* The `swift/constant-salt` ("Use of constant salts") query now considers string concatenation and interpolation as a barrier. As a result, there will be fewer false positive results from this query involving constructed strings.
+* The `swift/constant-salt` ("Use of constant salts") query message now contains a link to the source node.
+
 ## 1.0.4
 
 No user-facing changes.

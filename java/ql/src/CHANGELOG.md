@@ -1,3 +1,12 @@
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Variables names containing the string "tokenizer" (case-insensitively) are no longer sources for the `java/sensitive-log` query. They normally relate to things like `java.util.StringTokenizer`, which are not sensitive information. This should fix some false positive alerts.
+* The query "Unused classes and interfaces" (`java/unused-reference-type`) now recognizes that if a method of a class has an annotation then it may be accessed reflectively. This should remove false positive alerts, especially for JUnit 4-style tests annotated with `@test`.
+* Alerts about exposing `exception.getMessage()` in servlet responses are now split out of `java/stack-trace-exposure` into its own query `java/error-message-exposure`.
+* Added the extensible abstract class `SensitiveLoggerSource`. Now this class can be extended to add more sources to the `java/sensitive-log` query or for customizations overrides.
+
 ## 1.1.1
 
 ### Minor Analysis Improvements
@@ -325,7 +334,7 @@ No user-facing changes.
 ### New Queries
 
 * Added a new query, `java/android/incomplete-provider-permissions`, to detect if an Android ContentProvider is not protected with a correct set of permissions.
-* A new query "Uncontrolled data used in content resolution" (`java/android/unsafe-content-uri-resolution`) has been added. This query finds paths from user-provided data to URI resolution operations in Android's `ContentResolver` without previous validation or sanitization.
+* A new query "Uncontrolled data used in content resolution" (`java/androd/unsafe-content-uri-resolution`) has been added. This query finds paths from user-provided data to URI resolution operations in Android's `ContentResolver` without previous validation or sanitization.
 
 ## 0.4.1
 

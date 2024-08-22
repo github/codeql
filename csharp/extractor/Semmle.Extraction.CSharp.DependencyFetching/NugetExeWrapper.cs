@@ -145,7 +145,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Directory.CreateDirectory(directory);
             logger.LogInfo("Attempting to download nuget.exe");
-            FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
+            FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget, logger);
             logger.LogInfo($"Downloaded nuget.exe to {nuget}");
             return nuget;
         }

@@ -1,8 +1,9 @@
-from create_database_utils import *
-import glob
+import runs_on
 
-os.mkdir('build')
-javaccmd = " ".join(["javac"] + glob.glob("javasrc/extlib/*.java") + ["-d", "build"])
-jarcmd = " ".join(["jar", "-c", "-f", "extlib.jar", "-C", "build", "extlib"])
-run_codeql_database_create([javaccmd, jarcmd, "kotlinc user.kt -cp extlib.jar"], lang="java")
 
+@runs_on.linux
+def test(codeql, java_full, cwd):
+    java_srcs = (cwd / "javasrc" / "extlib").glob("*.java")
+    javac_cmd = " ".join(["javac"] + [str(s) for s in java_srcs] + ["-d", "build"])
+    jar_cmd = " ".join(["jar", "-c", "-f", "extlib.jar", "-C", "build", "extlib"])
+    codeql.database.create(command=[javac_cmd, jar_cmd, "kotlinc user.kt -cp extlib.jar"])
