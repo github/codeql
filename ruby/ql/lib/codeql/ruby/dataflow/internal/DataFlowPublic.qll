@@ -586,7 +586,7 @@ module Content {
    *
    * we have an implicit splat argument containing `[1, 2, 3]`.
    */
-  class SplatContent extends ElementContent, TSplatContent {
+  deprecated class SplatContent extends Content, TSplatContent {
     private int i;
     private boolean shifted;
 
@@ -629,7 +629,7 @@ module Content {
    *
    * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
    */
-  class HashSplatContent extends ElementContent, THashSplatContent {
+  deprecated class HashSplatContent extends Content, THashSplatContent {
     private ConstantValue::ConstantSymbolValue cv;
 
     HashSplatContent() { this = THashSplatContent(cv) }
@@ -797,20 +797,13 @@ class ContentSet extends TContentSet {
   private Content getAnElementReadContent() {
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
-      result = TSplatContent(c.getIndex().getInt(), _) or
-      result = THashSplatContent(c.getIndex()) or
       result = TUnknownElementContent()
     )
     or
     exists(int lower, boolean includeUnknown |
       this = TElementLowerBoundContent(lower, includeUnknown)
     |
-      exists(int i |
-        result.(Content::KnownElementContent).getIndex().isInt(i) or
-        result = TSplatContent(i, _)
-      |
-        i >= lower
-      )
+      exists(int i | result.(Content::KnownElementContent).getIndex().isInt(i) | i >= lower)
       or
       includeUnknown = true and
       result = TUnknownElementContent()
@@ -820,11 +813,6 @@ class ContentSet extends TContentSet {
       this = TElementContentOfTypeContent(type, includeUnknown)
     |
       type = result.(Content::KnownElementContent).getIndex().getValueType()
-      or
-      type = "int" and
-      result instanceof Content::SplatContent
-      or
-      type = result.(Content::HashSplatContent).getKey().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()
