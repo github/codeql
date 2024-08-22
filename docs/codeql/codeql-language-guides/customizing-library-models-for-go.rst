@@ -288,6 +288,24 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 - The eighth value ``remote`` is the source kind. This indicates that the source is a remote source of untrusted data.
 - The ninth value ``manual`` is the provenance of the source, which is used to identify the origin of the source.
 
+Package versions
+~~~~~~~~~~~~~~~~
+
+When the major version number is greater than 1 it is included in the package import path. It usually looks like ``/v2`` after the module import path. This is called the major version suffix. We normally want our models to apply to all versions of a package. Rather than having to repeat models with the package column changed to include all available versions, we can just use the package name without the major version suffix and this will be matched to any version. So models with ``github.com/couchbase/gocb`` in the package column will match packages imported from ``github.com/couchbase/gocb`` and ``github.com/couchbase/gocb/v2`` (or any other version).
+
+Note that packages hosted at ``gopkg.in`` use a slightly different syntax: the major version suffix looks like ``.v2``, and it is present even for version 1. This is also supported. So models with ``gopkg.in/yaml`` in the package column will match packages imported from ``gopkg.in/yaml.v1``, ``gopkg.in/yaml.v2`` and ``gopkg.in/yaml.v3``.
+
+To write models that only apply to ``github.com/couchbase/gocb/v2``, it is sufficient to include the major version suffix (``/v2``) in the package column. To write models that only apply to ``github.com/couchbase/gocb``, you may prefix the package column with ``fixed-version:``. For example, here are two models for a method that has changed name from v1 to v2.
+
+.. code-block:: yaml
+  extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["fixed-version:github.com/couchbase/gocb", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["github.com/couchbase/gocb/v2", "Cluster", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+
 Package grouping
 ~~~~~~~~~~~~~~~~
 
