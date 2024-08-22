@@ -11,12 +11,16 @@ import org.jetbrains.kotlin.analysis.api.standalone.buildStandaloneAnalysisAPISe
 import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtLibraryModule
 import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSdkModule
 import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSourceModule
+import org.jetbrains.kotlin.cli.common.arguments.parseCommandLineArguments
+import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
 @OptIn(KaAnalysisApiInternals::class)
-fun main() {
+fun main(args : Array<String>) {
     lateinit var sourceModule: KaSourceModule
+    val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
+
     val session = buildStandaloneAnalysisAPISession {
         registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
 
@@ -32,7 +36,7 @@ fun main() {
             )
             sourceModule = addModule(
                 buildKtSourceModule {
-                    addSourceRoot(Paths.get("testSrc"))
+                    addSourceRoots(k2args.freeArgs.map { Paths.get(it) })
                     addRegularDependency(sdk)
                     platform = JvmPlatforms.defaultJvmPlatform
                     moduleName = "<source>"
