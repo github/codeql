@@ -27,6 +27,10 @@ nodes
 | angular2-client.ts:38:44:38:58 | this.router.url | semmle.label | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url | semmle.label | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | semmle.label | routeSn ... ('foo') |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | semmle.label | Cookie.get("unsafe") |
+| angular-tempate-url.js:13:30:13:31 | ev | semmle.label | ev |
+| angular-tempate-url.js:14:26:14:27 | ev | semmle.label | ev |
+| angular-tempate-url.js:14:26:14:32 | ev.data | semmle.label | ev.data |
 | classnames.js:7:31:7:84 | `<span  ... <span>` | semmle.label | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | semmle.label | classNa ... w.name) |
 | classnames.js:7:58:7:68 | window.name | semmle.label | window.name |
@@ -636,6 +640,9 @@ edges
 | angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo | provenance |  |
 | angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x | provenance |  |
 | angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x | provenance |  |
+| angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev | provenance |  |
+| angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data | provenance |  |
+| angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | provenance |  |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` | provenance |  |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) | provenance |  |
 | classnames.js:8:47:8:70 | classNa ... w.name) | classnames.js:8:31:8:85 | `<span  ... <span>` | provenance |  |
@@ -1243,6 +1250,7 @@ subpaths
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:38:44:38:58 | this.router.url | user-provided value |
 | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:40:45:40:59 | this.router.url | user-provided value |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | Cross-site scripting vulnerability due to $@. | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | user-provided value |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | Cross-site scripting vulnerability due to $@. | angular-tempate-url.js:13:30:13:31 | ev | user-provided value |
 | classnames.js:7:31:7:84 | `<span  ... <span>` | classnames.js:7:58:7:68 | window.name | classnames.js:7:31:7:84 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:7:58:7:68 | window.name | user-provided value |
 | classnames.js:8:31:8:85 | `<span  ... <span>` | classnames.js:8:59:8:69 | window.name | classnames.js:8:31:8:85 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:8:59:8:69 | window.name | user-provided value |
 | classnames.js:9:31:9:85 | `<span  ... <span>` | classnames.js:9:59:9:69 | window.name | classnames.js:9:31:9:85 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:9:59:9:69 | window.name | user-provided value |
