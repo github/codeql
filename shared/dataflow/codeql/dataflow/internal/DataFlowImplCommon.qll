@@ -2340,15 +2340,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       string toString();
     }
 
-    predicate nodeRange(NodeEx node, boolean fromArg);
+    predicate nodeRange(NodeEx node, boolean fromArg, DataFlowCallOption callCtx);
 
     predicate localValueStep(NodeEx node1, NodeEx node2);
 
     predicate jumpValueStep(NodeEx node1, NodeEx node2);
 
-    predicate callEdgeArgParam(NodeEx arg, NodeEx param);
+    bindingset[outerCallCtx]
+    predicate callEdgeArgParam(
+      NodeEx arg, NodeEx param, DataFlowCallOption outerCallCtx, DataFlowCallOption innerCallCtx
+    );
 
-    predicate callEdgeReturn(NodeEx ret, NodeEx out, boolean mayFlowThrough);
+    predicate callEdgeReturn(DataFlowCall call, NodeEx ret, NodeEx out, boolean mayFlowThrough);
 
     predicate readContentStep(NodeEx node1, Content c, NodeEx node2);
 
@@ -2362,7 +2365,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    *
    * In order to determine whether a store can be matched with a compatible read, we
    * check whether the target of a store may reach the source of a read, using over-
-   * approximated data flow (no call contexts).
+   * approximated data flow (depth 1 call contexts only).
    *
    * The implementation is based on `doublyBoundedFastTC`, and in order to avoid poor
    * performance through recursion, we unroll the recursion manually 4 times, in order to
@@ -2383,22 +2386,28 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       int iteration();
 
       predicate storeMayReachReadDelta(
-        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       );
 
       predicate storeMayReachReadPrev(
-        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       );
     }
 
     private newtype TNodeOrContent =
-      TNodeOrContentNode(NodeEx n, Boolean usesPrevDelta, boolean fromArg) { nodeRange(n, fromArg) } or
+      TNodeOrContentNode(
+        NodeEx n, Boolean usesPrevDelta, boolean fromArg, DataFlowCallOption callCtx
+      ) {
+        nodeRange(n, fromArg, callCtx)
+      } or
       TNodeOrContentStoreContent(Content c) { storeContentStep(_, c, _) } or
       TNodeOrContentReadContent(Content c) { readContentStep(_, c, _) }
 
     private class NodeOrContent extends TNodeOrContent {
-      NodeEx asNodeEx(boolean usesPrevDelta, boolean fromArg) {
-        this = TNodeOrContentNode(result, usesPrevDelta, fromArg)
+      NodeEx asNodeEx(boolean usesPrevDelta, boolean fromArg, DataFlowCallOption callCtx) {
+        this = TNodeOrContentNode(result, usesPrevDelta, fromArg, callCtx)
       }
 
       Content asStoreContent() { this = TNodeOrContentStoreContent(result) }
@@ -2410,29 +2419,36 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         or
         result = this.asReadContent().toString()
         or
-        result = this.asNodeEx(_, _).toString()
+        result = this.asNodeEx(_, _, _).toString()
       }
     }
 
     pragma[nomagic]
     private predicate stepNodeCommon(
-      NodeOrContent node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2
+      NodeOrContent node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2,
+      DataFlowCallOption callCtx2
     ) {
-      exists(NodeEx n1, boolean fromArg1 | n1 = node1.asNodeEx(usesPrevDelta2, fromArg1) |
+      exists(NodeEx n1, boolean fromArg1, DataFlowCallOption callCtx1 |
+        n1 = node1.asNodeEx(usesPrevDelta2, fromArg1, callCtx1)
+      |
         localValueStep(n1, n2) and
-        fromArg1 = fromArg2
+        fromArg1 = fromArg2 and
+        callCtx1 = callCtx2
         or
         jumpValueStep(n1, n2) and
-        fromArg2 = false
+        fromArg2 = false and
+        callCtx2 = TDataFlowCallNone()
         or
-        callEdgeArgParam(n1, n2) and
+        callEdgeArgParam(n1, n2, callCtx1, callCtx2) and
         fromArg2 = true
         or
-        exists(boolean mayFlowThrough |
-          callEdgeReturn(n1, n2, mayFlowThrough) and
-          nodeRange(n2, fromArg2)
+        exists(DataFlowCall call, boolean mayFlowThrough |
+          callEdgeReturn(call, n1, n2, mayFlowThrough) and
+          nodeRange(n2, fromArg2, callCtx2) // depth 1 call contexts only
         |
-          fromArg1 = false or mayFlowThrough = true
+          fromArg1 = false
+          or
+          callCtx1 = TDataFlowCallSome(call) and mayFlowThrough = true
         )
       )
     }
@@ -2451,19 +2467,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate stepNode(
-        NodeOrContent node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2
+        NodeOrContent node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2,
+        DataFlowCallOption callCtx2
       ) {
         enabled() and
         (
-          stepNodeCommon(node1, n2, usesPrevDelta2, fromArg2)
+          stepNodeCommon(node1, n2, usesPrevDelta2, fromArg2, callCtx2)
           or
-          exists(NodeEx n1, boolean usesPrevDelta1, boolean fromArg1 |
-            n1 = node1.asNodeEx(usesPrevDelta1, fromArg1)
+          exists(NodeEx n1, boolean usesPrevDelta1, boolean fromArg1, DataFlowCallOption callCtx1 |
+            n1 = node1.asNodeEx(usesPrevDelta1, fromArg1, callCtx1)
           |
-            Prev::storeMayReachReadDelta(n1, _, n2, fromArg1, fromArg2) and
+            Prev::storeMayReachReadDelta(n1, _, n2, fromArg1, fromArg2, callCtx1, callCtx2) and
             usesPrevDelta2 = true
             or
-            Prev::storeMayReachReadPrev(n1, _, n2, fromArg1, fromArg2) and
+            Prev::storeMayReachReadPrev(n1, _, n2, fromArg1, fromArg2, callCtx1, callCtx2) and
             usesPrevDelta1 = usesPrevDelta2
           )
         )
@@ -2471,22 +2488,22 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate step(NodeOrContent node1, NodeOrContent node2) {
-        exists(NodeEx n2, boolean usesPrevDelta2, boolean fromArg2 |
-          n2 = node2.asNodeEx(usesPrevDelta2, fromArg2) and
-          stepNode(node1, n2, usesPrevDelta2, fromArg2)
+        exists(NodeEx n2, boolean usesPrevDelta2, boolean fromArg2, DataFlowCallOption callCtx2 |
+          n2 = node2.asNodeEx(usesPrevDelta2, fromArg2, callCtx2) and
+          stepNode(node1, n2, usesPrevDelta2, fromArg2, callCtx2)
         )
         or
         enabled() and
         (
           exists(NodeEx n2, Content c, boolean usesPrevDelta2 |
-            n2 = node2.asNodeEx(usesPrevDelta2, _) and
+            n2 = node2.asNodeEx(usesPrevDelta2, _, _) and
             c = node1.asStoreContent() and
             storeContentStep(_, c, n2) and
             usesPrevDelta2 = false
           )
           or
           exists(NodeEx n1, Content c, boolean usesPrevDelta1 |
-            n1 = node1.asNodeEx(usesPrevDelta1, _) and
+            n1 = node1.asNodeEx(usesPrevDelta1, _, _) and
             c = node2.asReadContent() and
             readContentStep(n1, c, _) and
             usesPrevDelta(usesPrevDelta1)
@@ -2509,12 +2526,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate contentIsReadAndStoredJoin(NodeOrContent c1, NodeOrContent c2, Content c) {
+        enabled() and
         c1.asStoreContent() = c and
         c2.asReadContent() = c
       }
 
       additional predicate contentIsReadAndStored(Content c) {
-        enabled() and
         exists(NodeOrContent n1, NodeOrContent n2 |
           contentReachesReadTc(n1, n2) and
           contentIsReadAndStoredJoin(n1, n2, c)
@@ -2525,7 +2542,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       private predicate isStoreTarget0(NodeOrContent node, Content c) {
         exists(boolean usesPrevDelta |
           contentIsReadAndStored(c) and
-          storeContentStep(_, c, node.asNodeEx(usesPrevDelta, _)) and
+          storeContentStep(_, c, node.asNodeEx(usesPrevDelta, _, _)) and
           usesPrevDelta = false
         )
       }
@@ -2536,7 +2553,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       private predicate isReadSource0(NodeOrContent node, Content c) {
         exists(boolean usesPrevDelta |
           contentIsReadAndStored(c) and
-          readContentStep(node.asNodeEx(usesPrevDelta, _), c, _) and
+          readContentStep(node.asNodeEx(usesPrevDelta, _, _), c, _) and
           usesPrevDelta(usesPrevDelta)
         )
       }
@@ -2584,45 +2601,50 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate storeMayReachReadDeltaJoinLeft(
-        NodeEx node1, Content c, NodeOrContent node2, boolean fromArg
+        NodeEx node1, Content c, NodeOrContent node2, boolean fromArg2, DataFlowCallOption callCtx2
       ) {
         exists(boolean usesPrevDelta |
           storeMayReachARead(pragma[only_bind_into](node2), pragma[only_bind_into](c)) and
-          storeContentStep(node1, c, node2.asNodeEx(usesPrevDelta, fromArg)) and
+          storeContentStep(node1, c, node2.asNodeEx(usesPrevDelta, fromArg2, callCtx2)) and
           usesPrevDelta = false
         )
       }
 
       pragma[nomagic]
       private predicate storeMayReachReadDeltaJoinRight(
-        NodeOrContent node1, Content c, NodeEx node2, boolean fromArg
+        NodeOrContent node1, Content c, NodeEx node2, boolean fromArg1, DataFlowCallOption callCtx1
       ) {
         exists(boolean usesPrevDelta |
           aStoreMayReachRead(pragma[only_bind_into](node1), pragma[only_bind_into](c)) and
-          readContentStep(node1.asNodeEx(usesPrevDelta, fromArg), c, node2) and
+          readContentStep(node1.asNodeEx(usesPrevDelta, fromArg1, callCtx1), c, node2) and
           usesPrevDelta(usesPrevDelta)
         )
       }
 
       pragma[nomagic]
       predicate storeMayReachReadDelta(
-        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       ) {
         exists(NodeOrContent storeTarget, NodeOrContent readSource |
           storeMayReachReadTc(storeTarget, readSource) and
-          storeMayReachReadDeltaJoinLeft(storeSource, c, storeTarget, fromArg1) and
-          storeMayReachReadDeltaJoinRight(readSource, c, readTarget, fromArg2)
+          storeMayReachReadDeltaJoinLeft(storeSource, c, storeTarget, fromArg1, callCtx1) and
+          storeMayReachReadDeltaJoinRight(readSource, c, readTarget, fromArg2, callCtx2)
         ) and
-        not Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2)
+        not Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
       }
 
       pragma[nomagic]
       predicate storeMayReachReadPrev(
-        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       ) {
-        Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2)
+        Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
         or
-        Prev::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2)
+        Prev::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
       }
     }
 
@@ -2630,13 +2652,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       int iteration() { result = 0 }
 
       predicate storeMayReachReadDelta(
-        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2
+        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       ) {
         none()
       }
 
       predicate storeMayReachReadPrev(
-        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2
+        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       ) {
         none()
       }
@@ -2648,9 +2672,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       import M
 
       predicate storeMayReachReadDelta(
-        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
       ) {
-        M::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2)
+        M::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1, callCtx2)
         or
         // special case only needed for the first iteration: a store immediately followed by a read
         exists(NodeEx storeTargetReadSource |
@@ -2658,9 +2683,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           storeContentStep(storeSource, c, storeTargetReadSource) and
           readContentStep(storeTargetReadSource, c, readTarget)
         ) and
-        nodeRange(storeSource, fromArg1) and
-        nodeRange(readTarget, fromArg2) and
-        fromArg1 = fromArg2
+        nodeRange(storeSource, fromArg1, callCtx1) and
+        nodeRange(readTarget, fromArg2, callCtx2) and
+        fromArg1 = fromArg2 and
+        pragma[only_bind_into](pragma[only_bind_out](callCtx1)) =
+          pragma[only_bind_into](pragma[only_bind_out](callCtx2))
       }
     }
 
@@ -2673,9 +2700,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     private module StoreReachesRead5 = StoreReachesRead<StoreReachesRead4>;
 
     predicate storeMayReachRead(NodeEx storeSource, Content c, NodeEx readTarget) {
-      StoreReachesRead5::storeMayReachReadDelta(storeSource, c, readTarget, _, _)
+      StoreReachesRead5::storeMayReachReadDelta(storeSource, c, readTarget, _, _, _, _)
       or
-      StoreReachesRead5::storeMayReachReadPrev(storeSource, c, readTarget, _, _)
+      StoreReachesRead5::storeMayReachReadPrev(storeSource, c, readTarget, _, _, _, _)
     }
   }
 }

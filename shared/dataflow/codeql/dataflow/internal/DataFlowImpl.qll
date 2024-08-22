@@ -1617,9 +1617,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        private newtype TSummaryCtx =
-          TSummaryCtxNone() or
-          TSummaryCtxSome(ParamNodeEx p, FlowState state, Typ t, Ap ap) {
+        additional newtype TSummaryCtx =
+          additional TSummaryCtxNone() or
+          additional TSummaryCtxSome(ParamNodeEx p, FlowState state, Typ t, Ap ap) {
             fwdFlowInFlowThrough(p, _, state, _, t, ap)
           }
 
@@ -1629,21 +1629,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          *
          * Summaries are only created for parameters that may flow through.
          */
-        private class SummaryCtx extends TSummaryCtx {
+        additional class SummaryCtx extends TSummaryCtx {
           abstract string toString();
 
           abstract Location getLocation();
         }
 
         /** A summary context from which no flow summary can be generated. */
-        private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
+        additional class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
           override string toString() { result = "<none>" }
 
           override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
         }
 
         /** A summary context from which a flow summary can be generated. */
-        private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
+        additional class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
           private ParamNodeEx p;
           private FlowState state;
           private Typ t;
@@ -2657,22 +2657,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowThroughArg(
-          DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
-          Ap ap
+          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, FlowState state, ReturnCtx returnCtx,
+          ApOption returnAp, Ap ap
         ) {
-          exists(ParamNodeEx p, Ap innerReturnAp |
+          exists(Ap innerReturnAp |
             revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
             flowThroughIntoCall(call, arg, p, _, ap, innerReturnAp)
           )
         }
 
         pragma[nomagic]
-        predicate callMayFlowThroughRev(DataFlowCall call) {
+        additional predicate callMayFlowThroughRev(DataFlowCall call, ParamNodeEx p) {
           exists(ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap |
             revFlow(arg, state, returnCtx, returnAp, ap) and
-            revFlowThroughArg(call, arg, state, returnCtx, returnAp, ap)
+            revFlowThroughArg(call, arg, p, state, returnCtx, returnAp, ap)
           )
         }
+
+        predicate callMayFlowThroughRev(DataFlowCall call) { callMayFlowThroughRev(call, _) }
 
         predicate callEdgeArgParam(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
@@ -3933,24 +3935,67 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private module StoreReadMatchingInput implements StoreReadMatchingInputSig {
         class NodeEx = NodeExAlias;
 
-        predicate nodeRange(NodeEx node, boolean fromArg) {
+        /**
+         * Gets a call context for `node` that is relevant for either improved virtual
+         * dispatch or for flow-through.
+         */
+        pragma[nomagic]
+        private DataFlowCallOption getACallCtx(NodeEx node, PrevStage::Ap ap, boolean fromArg) {
+          exists(PrevStage::Cc cc, PrevStage::SummaryCtx summaryCtx |
+            PrevStage::fwdFlow(node, _, cc, summaryCtx, _, ap, _)
+          |
+            PrevStage::instanceofCcCall(cc) and
+            fromArg = true and
+            (
+              // virtual dispatch may be improved
+              exists(DataFlowCall call, DataFlowCallable c |
+                PrevStage::callEdgeArgParam(call, c, _, _, _, _) and
+                cc = Stage2Param::getSpecificCallContextCall(call, c) and
+                c = node.getEnclosingCallable() and
+                result = TDataFlowCallSome(call)
+              )
+              or
+              not cc = Stage2Param::getSpecificCallContextCall(_, _) and
+              (
+                // flow-through not possible
+                summaryCtx instanceof PrevStage::SummaryCtxNone and
+                result = TDataFlowCallNone()
+                or
+                exists(DataFlowCall call, ParamNodeEx p, PrevStage::Ap argAp |
+                  summaryCtx = PrevStage::TSummaryCtxSome(p, _, _, argAp)
+                |
+                  if
+                    PrevStage::parameterMayFlowThrough(p, argAp) and
+                    PrevStage::callMayFlowThroughRev(call, p)
+                  then
+                    // flow-through possible
+                    result = TDataFlowCallSome(call)
+                  else (
+                    // flow-through not possible, but `node` can reach a sink without
+                    // flowing back out
+                    PrevStage::callEdgeArgParam(call, _, _, p, _, _) and
+                    result = TDataFlowCallNone()
+                  )
+                )
+              )
+            )
+            or
+            PrevStage::instanceofCcNoCall(cc) and
+            fromArg = false and
+            result = TDataFlowCallNone()
+          )
+        }
+
+        predicate nodeRange(NodeEx node, boolean fromArg, DataFlowCallOption summaryCtx) {
           exists(PrevStage::Ap ap |
             PrevStage::revFlowAp(node, ap) and
-            (
-              ap = true
-              or
-              PrevStage::storeStepCand(node, ap, _, _, _, _)
-              or
-              PrevStage::readStepCand(_, _, node)
-            )
+            summaryCtx = getACallCtx(node, ap, fromArg)
           |
-            exists(PrevStage::Cc cc | PrevStage::fwdFlow(node, _, cc, _, _, ap, _) |
-              PrevStage::instanceofCcCall(cc) and
-              fromArg = true
-              or
-              PrevStage::instanceofCcNoCall(cc) and
-              fromArg = false
-            )
+            ap = true
+            or
+            PrevStage::storeStepCand(node, ap, _, _, _, _)
+            or
+            PrevStage::readStepCand(_, _, node)
           )
         }
 
@@ -3976,12 +4021,51 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        predicate callEdgeArgParam(NodeEx arg, NodeEx param) {
-          PrevStage::callEdgeArgParam(_, _, arg, param, true, true)
+        pragma[nomagic]
+        private predicate callEdgeArgParam(
+          DataFlowCall call, DataFlowCallable c, NodeEx arg, NodeEx param,
+          DataFlowCallOption innerCallCtx
+        ) {
+          PrevStage::callEdgeArgParam(call, c, arg, param, true, true) and
+          innerCallCtx = getACallCtx(param, true, true) and
+          (
+            innerCallCtx = TDataFlowCallNone()
+            or
+            innerCallCtx = TDataFlowCallSome(call)
+          )
         }
 
-        predicate callEdgeReturn(NodeEx ret, NodeEx out, boolean mayFlowThrough) {
-          PrevStage::callEdgeReturn(_, _, ret, _, out, true, true) and
+        pragma[nomagic]
+        private predicate callEdgeArgParamCallContextReduced(
+          DataFlowCall call, NodeEx arg, NodeEx param, Stage2Param::CcCall outerCcCall,
+          DataFlowCallOption innerCallCtx
+        ) {
+          exists(DataFlowCallable c |
+            callEdgeArgParam(call, c, arg, param, innerCallCtx) and
+            Stage2Param::viableImplCallContextReduced(call, outerCcCall) = c
+          )
+        }
+
+        bindingset[outerCallCtx]
+        predicate callEdgeArgParam(
+          NodeEx arg, NodeEx param, DataFlowCallOption outerCallCtx, DataFlowCallOption innerCallCtx
+        ) {
+          exists(DataFlowCall call | callEdgeArgParam(call, _, arg, param, innerCallCtx) |
+            outerCallCtx = TDataFlowCallNone()
+            or
+            exists(DataFlowCall outerCall, Stage2Param::CcCall outerCcCall |
+              outerCallCtx = TDataFlowCallSome(outerCall) and
+              outerCcCall = Stage2Param::getCallContextCall(outerCall, call.getEnclosingCallable())
+            |
+              callEdgeArgParamCallContextReduced(call, arg, param, outerCcCall, innerCallCtx)
+              or
+              Stage2Param::viableImplNotCallContextReduced(call, outerCcCall)
+            )
+          )
+        }
+
+        predicate callEdgeReturn(DataFlowCall call, NodeEx ret, NodeEx out, boolean mayFlowThrough) {
+          PrevStage::callEdgeReturn(call, _, ret, _, out, true, true) and
           if flowThroughOutOfCall(ret, out) then mayFlowThrough = true else mayFlowThrough = false
         }
 
