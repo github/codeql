@@ -35,7 +35,6 @@ kt_jvm_library(
     javac_opts = ":javac-options",
     kotlinc_opts = ":kotlinc-options",
     module_name = "codeql-kotlin-extractor2",
-    resources = glob(["src/main/resources/**"]),
     deps = [
         "@maven_deps//:org_jetbrains_kotlin_%s" % kotlin_lib
         for kotlin_lib in (
