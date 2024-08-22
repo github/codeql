@@ -298,13 +298,14 @@ Note that packages hosted at ``gopkg.in`` use a slightly different syntax: the m
 To write models that only apply to ``github.com/couchbase/gocb/v2``, it is sufficient to include the major version suffix (``/v2``) in the package column. To write models that only apply to ``github.com/couchbase/gocb``, you may prefix the package column with ``fixed-version:``. For example, here are two models for a method that has changed name from v1 to v2.
 
 .. code-block:: yaml
-  extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: sinkModel
-    data:
-      - ["fixed-version:github.com/couchbase/gocb", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
-      - ["github.com/couchbase/gocb/v2", "Cluster", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+  
+    extensions:
+    - addsTo:
+        pack: codeql/go-all
+        extensible: sinkModel
+      data:
+        - ["fixed-version:github.com/couchbase/gocb", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+        - ["github.com/couchbase/gocb/v2", "Cluster", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
 
 Package grouping
 ~~~~~~~~~~~~~~~~
