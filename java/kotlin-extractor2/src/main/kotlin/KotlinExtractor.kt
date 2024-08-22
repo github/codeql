@@ -45,14 +45,20 @@ fun main(args : Array<String>) {
         }
     }
 
-   val ktFile = session.modulesWithFiles.getValue(sourceModule).single() as KtFile
-    analyze(ktFile) {
-        val c = ktFile.getDeclarations()[0] as KtClass
-        for (d: KtDeclaration in c.getDeclarations()) {
-            val f = d as KtFunction
-            if (f.name == "f") {
-                dumpFunction(f)
+    val psiFiles = session.modulesWithFiles.getValue(sourceModule)
+    for (psiFile in psiFiles) {
+        if (psiFile is KtFile) {
+            analyze(psiFile) {
+                val c = psiFile.getDeclarations()[0] as KtClass
+                for (d: KtDeclaration in c.getDeclarations()) {
+                    val f = d as KtFunction
+                    if (f.name == "f") {
+                        dumpFunction(f)
+                    }
+                }
             }
+        } else {
+            System.out.println("Warning: Not a KtFile")
         }
     }
 }
