@@ -1,5 +1,6 @@
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
-load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
 kt_javac_options(
     name = "javac-options",
@@ -25,9 +26,8 @@ kt_kotlinc_options(
 #    tools = [":generate_dbscheme"],
 #)
 
-kt_jvm_binary(
-    name = "kotlin-extractor2",
-    main_class = "KotlinExtractorKt",
+kt_jvm_library(
+    name = "ke2-kt",
     srcs = [
         #        ":generated-dbscheme",
         "src/main/kotlin/KotlinExtractor.kt",
@@ -36,7 +36,6 @@ kt_jvm_binary(
     kotlinc_opts = ":kotlinc-options",
     module_name = "codeql-kotlin-extractor2",
     resources = glob(["src/main/resources/**"]),
-    visibility = ["//visibility:public"],
     deps = [
         "@maven_deps//:org_jetbrains_kotlin_%s" % kotlin_lib
         for kotlin_lib in (
@@ -44,4 +43,25 @@ kt_jvm_binary(
             "kotlin_compiler",
         )
     ],
+)
+
+java_binary(
+    name = "ke2-java",
+    runtime_deps = [":ke2-kt"],
+)
+
+codeql_pkg_files(
+    name = "kotlin-extractor2",
+    srcs = [
+        ":ke2-java_deploy.jar",
+    ],
+    exes = [
+        "ke2.sh",
+        "ke2.cmd",
+    ],
+    renames = {
+        "ke2.sh": "ke2",
+        ":ke2-java_deploy.jar": "ke2.jar",
+    },
+    visibility = ["//visibility:public"],
 )
