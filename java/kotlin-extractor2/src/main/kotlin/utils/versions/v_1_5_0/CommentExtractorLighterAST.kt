@@ -1,5 +1,7 @@
 package com.github.codeql.comments
 
+/*
+OLD: KE1
 import com.github.codeql.*
 import org.jetbrains.kotlin.ir.declarations.*
 
@@ -13,3 +15,4 @@ class CommentExtractorLighterAST(
         return false
     }
 }
+*/

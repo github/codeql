@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 /**
  * A triple of a type's database label, its signature for use in callable signatures, and its short
  * name for use in all tables that provide a user-facing type name.
@@ -38,3 +40,4 @@ typealias TypeResultsWithoutSignatures = TypeResultsGeneric<Unit>
 fun <T : AnyDbType> TypeResult<T>.forgetSignature(): TypeResultWithoutSignature<T> {
     return TypeResultWithoutSignature(this.id, Unit, this.shortName)
 }
+*/

@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 // Functions copied from stdlib/jdk7/src/kotlin/AutoCloseable.kt, which is not available within
 // kotlinc,
 // but allows the `.use` pattern to be applied to JDK7 AutoCloseables:
@@ -45,3 +47,4 @@ fun AutoCloseable?.closeFinallyAC(cause: Throwable?) =
                 cause.addSuppressed(closeException)
             }
     }
+*/

@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.versions.*
 import com.intellij.lang.LighterASTNode
 import com.intellij.util.diff.FlyweightCapableTreeStructure
@@ -146,3 +148,4 @@ class LinesOfCodeLighterAST(val logger: FileLogger, val tw: FileTrapWriter, val 
         var containsCode = false
     }
 }
+*/

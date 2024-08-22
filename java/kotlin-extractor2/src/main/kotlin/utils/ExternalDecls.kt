@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
@@ -54,3 +56,4 @@ fun isExternalFileClassMember(d: IrDeclaration): Boolean {
     }
     return false
 }
+*/

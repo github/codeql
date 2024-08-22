@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.versions.usesK2
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
@@ -582,3 +584,4 @@ private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String)
         )
     }
 }
+*/

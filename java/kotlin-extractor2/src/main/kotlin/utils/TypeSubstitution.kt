@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.Logger
 import com.github.codeql.getJavaEquivalentClassId
@@ -281,3 +283,4 @@ private fun isUnspecialised(
 fun isUnspecialised(type: IrSimpleType, logger: Logger) =
     (type.classifier.owner as? IrClass)?.let { isUnspecialised(it, type.arguments, logger) }
         ?: false
+*/

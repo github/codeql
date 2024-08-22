@@ -1,5 +1,7 @@
 package com.github.codeql.utils.versions
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrMemberWithContainerSource
@@ -39,3 +41,4 @@ fun getFileClassFqName(d: IrDeclaration): FqName? {
         return null
     }
 }
+*/

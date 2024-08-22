@@ -1,5 +1,7 @@
 package com.github.codeql.utils.versions
 
+/*
+OLD: KE1
 import com.github.codeql.utils.Psi2IrFacade
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.backend.common.psi.PsiSourceManager
@@ -19,3 +21,4 @@ private class Psi2Ir() : Psi2IrFacade {
         return PsiSourceManager.findPsiElement(irElement, irFile)
     }
 }
+*/

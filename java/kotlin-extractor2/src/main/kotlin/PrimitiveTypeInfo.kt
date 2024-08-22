@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -103,3 +105,4 @@ class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContex
             )
         }()
 }
+*/

@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 
 /**
@@ -11,3 +13,4 @@ inline fun <reified S : IrDeclaration> Iterable<IrDeclaration>.findSubType(
 ): S? {
     return this.find { it is S && predicate(it) } as S?
 }
+*/

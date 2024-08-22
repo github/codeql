@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
@@ -22,3 +24,4 @@ fun IrElement.getLocation(): Location {
 fun PsiElement.getLocation(): Location {
     return Location(this.startOffset, this.endOffset)
 }
+*/

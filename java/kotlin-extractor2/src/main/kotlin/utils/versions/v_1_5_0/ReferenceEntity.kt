@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.name.ClassId
@@ -31,3 +33,4 @@ fun getPropertiesByFqName(
     val fqName = pkgName.child(name)
     return pluginContext.referenceProperties(fqName)
 }
+*/

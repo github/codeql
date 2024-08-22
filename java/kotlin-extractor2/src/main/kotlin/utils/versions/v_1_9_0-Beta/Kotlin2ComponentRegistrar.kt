@@ -3,6 +3,8 @@
 
 package com.github.codeql
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
@@ -11,3 +13,4 @@ abstract class Kotlin2ComponentRegistrar : ComponentRegistrar {
     override val supportsK2: Boolean
         get() = true
 }
+*/

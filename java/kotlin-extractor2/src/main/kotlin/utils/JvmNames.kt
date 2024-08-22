@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import com.github.codeql.utils.versions.allOverriddenIncludingSelf
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
@@ -93,3 +95,4 @@ fun getJvmName(container: IrAnnotationContainer): String? {
     }
     return (container as? IrFunction)?.let { getSpecialJvmName(container) }
 }
+*/
