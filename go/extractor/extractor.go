@@ -1890,13 +1890,18 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
 		case *types.Alias:
-			var b strings.Builder
-			b.WriteString(tp.Obj().Id())
-			// Ensure that the definition of the alias gets extracted,
-			// which may be an alias in itself.
+			// Ensure that the definition of the aliased type gets extracted
+			// (which may be an alias in itself).
 			extractType(tw, tp.Rhs())
-			// Construct the label for this type alias.
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typealias", b.String()))
+
+			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			if entitylbl == trap.InvalidLabel {
+				panic(fmt.Sprintf("Cannot construct label for alias type %v (underlying object is %v).\n", tp, tp.Obj()))
+			}
+			if !exists {
+				extractObject(tw, tp.Obj(), entitylbl)
+			}
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};aliastype", entitylbl))
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
