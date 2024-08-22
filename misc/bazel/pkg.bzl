@@ -34,6 +34,7 @@ def codeql_pkg_files(
         srcs = None,
         exes = None,
         visibility = None,
+        renames = None,
         **kwargs):
     """ Wrapper around `pkg_files` adding a distinction between `srcs` and `exes`, where the
     latter will get executable permissions.
@@ -43,10 +44,13 @@ def codeql_pkg_files(
     if "attributes" in kwargs:
         fail("do not use attributes with codeql_pkg_* rules. Use `exes` to mark executable files.")
     if srcs and exes:
+        src_renames = renames and {k: v for k, v in renames.items() if k in srcs}
+        exe_renames = renames and {k: v for k, v in renames.items() if k in exes}
         pkg_files(
             name = internal("srcs"),
             srcs = srcs,
             visibility = ["//visibility:private"],
+            renames = src_renames,
             **kwargs
         )
         pkg_files(
@@ -54,6 +58,7 @@ def codeql_pkg_files(
             srcs = exes,
             visibility = ["//visibility:private"],
             attributes = pkg_attributes(mode = "755"),
+            renames = exe_renames,
             **kwargs
         )
         pkg_filegroup(
@@ -67,6 +72,7 @@ def codeql_pkg_files(
             srcs = srcs or exes,
             visibility = visibility,
             attributes = pkg_attributes(mode = "755") if exes else None,
+            renames = renames,
             **kwargs
         )
 

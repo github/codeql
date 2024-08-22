@@ -40,6 +40,7 @@ load(
 )
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
 package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
@@ -173,9 +174,9 @@ kt_javac_options(
             _common_extractor_name_prefix,
         )
     ],
-    alias(
+    codeql_pkg_files(
         name = "kotlin-extractor",
-        actual = _common_extractor_name_prefix,
+        srcs = [_common_extractor_name_prefix],
         visibility = ["//visibility:public"],
     ),
     filegroup(
