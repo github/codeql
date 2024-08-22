@@ -11,7 +11,8 @@ query predicate extractorMessagesLeachedLimit(ExtractorMessage msg) {
 
 query predicate compilationInfo(string key, float value) {
   exists(Compilation c, string infoValue |
-    infoValue = c.getInfo(key) and key.matches("Compiler diagnostic count for%")
+    infoValue = c.getInfo(key) and
+    key.matches(["Compiler diagnostic count for%", "Extractor message count for group%"])
   |
     value = infoValue.toFloat()
   )
