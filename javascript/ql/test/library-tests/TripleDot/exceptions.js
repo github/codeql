@@ -10,7 +10,7 @@ function e1() {
             throw source('e1.2');
         });
     } catch (err) {
-        sink(err); // $ hasValueFlow=e1.2 hasValueFlow=e1.1
+        sink(err); // $ hasValueFlow=e1.2 MISSING: hasValueFlow=e1.1
     }
 }
 
@@ -24,7 +24,7 @@ function e2() {
             throw source('e2.2');
         });
     } catch (err) {
-        sink(err); // $ MISSING: hasValueFlow=e2.2
+        sink(err); // $ hasValueFlow=e2.2
     }
 }
 
@@ -55,11 +55,11 @@ function e4() {
     try {
         thrower([source("e4.1")]);
     } catch (e) {
-        sink(e); // $ hasValueFlow=e4.1
+        sink(e); // $ MISSING: hasValueFlow=e4.1
     }
     try {
         thrower(["safe"]);
     } catch (e) {
-        sink(e); // $ SPURIOUS: hasValueFlow=e4.1
+        sink(e);
     }
 }
