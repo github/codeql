@@ -110,7 +110,7 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 Example: Taint source from the ``net/http`` package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows how the Go query pack models the return value from the ``FormValue`` method as a ``remote`` source.
-This is the ``FormValue`` method of the ``Request`` struct which is located in the ``net/http`` package.
+This is the ``FormValue`` method of the ``Request`` type which is located in the ``net/http`` package.
 
 .. code-block:: go
 
