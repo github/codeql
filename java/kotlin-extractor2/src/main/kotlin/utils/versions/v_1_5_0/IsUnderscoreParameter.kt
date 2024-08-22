@@ -1,5 +1,7 @@
 package com.github.codeql.utils.versions
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.psi.KtParameter
@@ -19,3 +21,4 @@ fun isUnderscoreParameter(vp: IrValueParameter) =
         // be applied to synthetic functions.
         false
     }
+*/

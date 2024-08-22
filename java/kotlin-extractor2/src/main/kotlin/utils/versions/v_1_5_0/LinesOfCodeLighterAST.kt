@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.ir.declarations.*
 
 class LinesOfCodeLighterAST(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
@@ -16,3 +18,4 @@ class LinesOfCodeLighterAST(val logger: FileLogger, val tw: FileTrapWriter, val 
         return false
     }
 }
+*/

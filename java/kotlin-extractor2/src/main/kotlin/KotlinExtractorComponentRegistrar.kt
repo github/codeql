@@ -3,6 +3,8 @@
 
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.intellij.mock.MockProject
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -27,3 +29,4 @@ class KotlinExtractorComponentRegistrar : Kotlin2ComponentRegistrar() {
         )
     }
 }
+*/

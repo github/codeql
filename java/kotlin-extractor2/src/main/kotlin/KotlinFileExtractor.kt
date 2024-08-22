@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.comments.CommentExtractorLighterAST
 import com.github.codeql.comments.CommentExtractorPSI
 import com.github.codeql.utils.*
@@ -9208,3 +9210,4 @@ open class KotlinFileExtractor(
         CALLABLE_CLASS(13),
     }
 }
+*/

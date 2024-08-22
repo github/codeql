@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.getJvmName
 import com.github.codeql.utils.versions.*
 import com.intellij.openapi.vfs.StandardFileSystems
@@ -148,3 +150,4 @@ private fun getUnknownBinaryLocation(s: String): String {
 
 fun getJavaEquivalentClassId(c: IrClass) =
     c.fqNameWhenAvailable?.toUnsafe()?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
+*/

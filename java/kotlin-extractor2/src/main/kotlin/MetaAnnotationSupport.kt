@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.versions.copyParameterToFunction
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import com.github.codeql.utils.versions.getAnnotationType
@@ -511,3 +513,4 @@ class MetaAnnotationSupport(
             generateDocumentedAnnotation(c)
         )
 }
+*/

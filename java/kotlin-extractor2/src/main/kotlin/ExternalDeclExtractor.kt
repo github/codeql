@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.isExternalFileClassMember
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
@@ -202,3 +204,4 @@ class ExternalDeclExtractor(
         output.writeTrapSet()
     }
 }
+*/

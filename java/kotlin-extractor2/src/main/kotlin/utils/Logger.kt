@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import java.io.File
 import java.io.FileWriter
 import java.io.OutputStreamWriter
@@ -354,3 +356,4 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter) :
         )
     }
 }
+*/

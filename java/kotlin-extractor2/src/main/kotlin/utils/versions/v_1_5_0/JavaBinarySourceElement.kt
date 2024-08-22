@@ -1,5 +1,7 @@
 package org.jetbrains.kotlin.fir.java
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.descriptors.SourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 
@@ -9,3 +11,4 @@ instance of it.
 */
 abstract class JavaBinarySourceElement private constructor(val javaClass: BinaryJavaClass) :
     SourceElement {}
+*/

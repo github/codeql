@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrFile
@@ -10,3 +12,4 @@ interface Psi2IrFacade {
 
     fun findPsiElement(irElement: IrElement, irFile: IrFile): PsiElement?
 }
+*/

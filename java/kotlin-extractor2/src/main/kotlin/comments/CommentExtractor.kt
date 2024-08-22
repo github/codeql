@@ -1,5 +1,7 @@
 package com.github.codeql.comments
 
+/*
+OLD: KE1
 import com.github.codeql.*
 import com.github.codeql.utils.isLocalFunction
 import org.jetbrains.kotlin.ir.IrElement
@@ -95,3 +97,4 @@ open class CommentExtractor(
         }
     }
 }
+*/

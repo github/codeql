@@ -3,6 +3,8 @@
 
 package com.github.codeql
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
@@ -10,3 +12,4 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 abstract class Kotlin2ComponentRegistrar : ComponentRegistrar {
     /* Nothing to do; supportsK2 doesn't exist yet. */
 }
+*/

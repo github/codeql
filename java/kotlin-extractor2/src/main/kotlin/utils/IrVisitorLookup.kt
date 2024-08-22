@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
@@ -38,3 +40,4 @@ class IrVisitorLookup(
         element.acceptChildren(this, data)
     }
 }
+*/

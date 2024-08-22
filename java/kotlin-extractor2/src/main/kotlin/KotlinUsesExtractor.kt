@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
@@ -2249,3 +2251,4 @@ open class KotlinUsesExtractor(
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
 }
+*/

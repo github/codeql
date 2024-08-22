@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
@@ -98,3 +100,4 @@ private val OPTION_COMPILATION_STARTTIME = "compilationStartTime"
 val KEY_COMPILATION_STARTTIME = CompilerConfigurationKey<Long>(OPTION_COMPILATION_STARTTIME)
 private val OPTION_EXIT_AFTER_EXTRACTION = "exitAfterExtraction"
 val KEY_EXIT_AFTER_EXTRACTION = CompilerConfigurationKey<Boolean>(OPTION_EXIT_AFTER_EXTRACTION)
+*/

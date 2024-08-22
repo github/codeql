@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.utils.versions.getPsi2Ir
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
@@ -148,3 +150,4 @@ class LinesOfCodePSI(val logger: FileLogger, val tw: FileTrapWriter, val file: I
         var containsCode = false
     }
 }
+*/

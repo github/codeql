@@ -1,5 +1,7 @@
 package com.github.codeql.utils
 
+/*
+OLD: KE1
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -11,3 +13,4 @@ fun IrFunction.isLocalFunction(): Boolean {
 
 val IrClass.isInterfaceLike
     get() = kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS
+*/

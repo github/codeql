@@ -1,5 +1,7 @@
 package com.github.codeql.comments
 
+/*
+OLD: KE1
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
 import com.github.codeql.utils.Psi2IrFacade
@@ -120,3 +122,4 @@ class CommentExtractorPSI(
             }
         }
 }
+*/

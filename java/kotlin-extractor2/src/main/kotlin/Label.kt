@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 /** This represents a label (`#...`) in a TRAP file. */
 interface Label<T : AnyDbType> {
     fun <U : AnyDbType> cast(): Label<U> {
@@ -19,3 +21,4 @@ class IntLabel<T : AnyDbType>(val i: Int) : Label<T> {
 class StringLabel<T : AnyDbType>(val name: String) : Label<T> {
     override fun toString(): String = "#$name"
 }
+*/

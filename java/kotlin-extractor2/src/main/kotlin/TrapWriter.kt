@@ -1,5 +1,7 @@
 package com.github.codeql
 
+/*
+OLD: KE1
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
@@ -462,3 +464,4 @@ class SourceFileTrapWriter(
         return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
     }
 }
+*/
