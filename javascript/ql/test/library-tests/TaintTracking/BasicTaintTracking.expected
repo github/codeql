@@ -32,6 +32,8 @@ legacyDataFlowDifference
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo | only flow with OLD data flow library |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise | only flow with OLD data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:16:10:16:10 | y | only flow with NEW data flow library |
 consistencyIssue
@@ -250,10 +252,12 @@ flow
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
-| spread.js:2:15:2:22 | source() | spread.js:4:8:4:19 | { ...taint } |
-| spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
-| spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |
-| spread.js:2:15:2:22 | source() | spread.js:8:8:8:28 | [ 1, 2, ... nt, 3 ] |
+| spread.js:4:15:4:22 | source() | spread.js:6:8:6:19 | { ...taint } |
+| spread.js:4:15:4:22 | source() | spread.js:7:8:7:43 | { f: 'h ... orld' } |
+| spread.js:4:15:4:22 | source() | spread.js:9:8:9:19 | [ ...taint ] |
+| spread.js:4:15:4:22 | source() | spread.js:10:8:10:28 | [ 1, 2, ... nt, 3 ] |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y |
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:5:14:5:22 | RegExp.$1 |
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:15:14:15:22 | RegExp.$1 |
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:17:14:17:22 | RegExp.$1 |
