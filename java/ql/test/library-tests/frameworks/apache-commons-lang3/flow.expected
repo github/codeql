@@ -745,12 +745,9 @@ edges
 | ArrayUtilsTest.java:68:27:68:57 | {...} : int[] [[]] : Number | ArrayUtilsTest.java:69:56:69:66 | taintedInts : int[] [[]] : Number | provenance |  |
 | ArrayUtilsTest.java:68:39:68:55 | taint(...) : Number | ArrayUtilsTest.java:68:27:68:57 | {...} : int[] [[]] : Number | provenance |  |
 | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | ArrayUtilsTest.java:70:12:70:27 | taintedBoxedInts | provenance |  |
-| ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] | provenance |  |
 | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | provenance |  |
 | ArrayUtilsTest.java:69:56:69:66 | taintedInts : int[] [[]] : Number | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | provenance | MaD:53 |
 | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | provenance |  |
-| ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Object | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | provenance |  |
-| ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Object | provenance | MaD:54 |
 | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | provenance | MaD:54 |
 | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) | provenance |  |
 | ArrayUtilsTest.java:72:53:72:69 | taint(...) : Number | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | provenance | MaD:55 |
@@ -3434,8 +3431,6 @@ nodes
 | ArrayUtilsTest.java:70:12:70:27 | taintedBoxedInts | semmle.label | taintedBoxedInts |
 | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | semmle.label | toPrimitive(...) |
 | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | semmle.label | toPrimitive(...) : int[] [[]] : Number |
-| ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Object | semmle.label | toPrimitive(...) : int[] [[]] : Object |
-| ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] | semmle.label | taintedBoxedInts : Integer[] |
 | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | semmle.label | taintedBoxedInts : Integer[] [[]] : Number |
 | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) | semmle.label | toPrimitive(...) |
 | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | semmle.label | toPrimitive(...) : int[] [[]] : Number |
