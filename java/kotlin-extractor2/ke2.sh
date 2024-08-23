@@ -15,6 +15,9 @@ INVOCATION_TRAP=`mktemp -p "$TRAP_DIR" invocation.XXXXXXXXXX.trap`
 
 echo "// Invocation of Kotlin Extractor 2" >> "$INVOCATION_TRAP"
 echo "#compilation = *" >> "$INVOCATION_TRAP"
+# TODO: This should be properly escaped:
+echo "compilations(#compilation, 2, \"`pwd`\",\"$INVOCATION_TRAP\")" >> "$INVOCATION_TRAP"
+# TODO: compilation_args
 
 if [[ -n "$CODEQL_JAVA_HOME" ]]; then
   JAVA="$CODEQL_JAVA_HOME/bin/java"
