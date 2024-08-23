@@ -3,6 +3,7 @@ package com.github.codeql
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiFile
 import java.io.File
+import java.io.FileOutputStream
 import java.nio.file.Paths
 import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
 import org.jetbrains.kotlin.analysis.api.KaSession
@@ -20,6 +21,7 @@ import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
 fun main(args : Array<String>) {
+    System.out.println("Kotlin Extractor 2 running")
     try {
         runExtractor(args)
     // We catch Throwable rather than Exception, as we want to
@@ -52,6 +54,30 @@ fun main(args : Array<String>) {
 
 @OptIn(KaAnalysisApiInternals::class)
 fun runExtractor(args : Array<String>) {
+    val startTimeMs = System.currentTimeMillis()
+
+    val invocationTrapFile = args[0]
+    val kotlinArgs = args.drop(1)
+    System.out.println("Invocation TRAP file: " + invocationTrapFile)
+
+    // This default should be kept in sync with
+    // com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
+    val trapDir =
+        File(
+            System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() }
+                ?: "kotlin-extractor/trap"
+        )
+
+    // The invocation TRAP file will already have been started
+    // before the plugin is run, so we always use no compression
+    // and we open it in append mode.
+    FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW
+        ->
+        doAnalysis(kotlinArgs)
+    }
+}
+
+fun doAnalysis(args : List<String>) {
     lateinit var sourceModule: KaSourceModule
     val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
@@ -83,11 +109,14 @@ fun runExtractor(args : Array<String>) {
     for (psiFile in psiFiles) {
         if (psiFile is KtFile) {
             analyze(psiFile) {
-                val c = psiFile.getDeclarations()[0] as KtClass
-                for (d: KtDeclaration in c.getDeclarations()) {
-                    val f = d as KtFunction
-                    if (f.name == "f") {
-                        dumpFunction(f)
+                val c = psiFile.getDeclarations()[0]
+                if (c is KtClass) {
+                    for (d: KtDeclaration in c.getDeclarations()) {
+                        if (d is KtFunction) {
+                            if (d.name == "f") {
+                                dumpFunction(d)
+                            }
+                        }
                     }
                 }
             }
@@ -101,7 +130,9 @@ context (KaSession)
 fun dumpFunction(f: KtFunction) {
     val block = f.getBodyExpression() as KtBlockExpression
     for (p: KtExpression in block.getStatements()) {
-        dumpProperty(p as KtProperty)
+        if (p is KtProperty) {
+            dumpProperty(p)
+        }
     }
 }
 
@@ -142,7 +173,6 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.lang.management.*
@@ -157,11 +187,6 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
 
-/*
- * KotlinExtractorExtension is the main entry point of the CodeQL Kotlin
- * extractor. When the jar is used as a kotlinc plugin, kotlinc will
- * call the `generate` method.
- */
 class KotlinExtractorExtension(
     // The filepath for the invocation TRAP file.
     // This TRAP file is for this invocation of the extractor as a
@@ -192,20 +217,8 @@ class KotlinExtractorExtension(
 ) : IrGenerationExtension {
 
     private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        val startTimeMs = System.currentTimeMillis()
         val usesK2 = usesK2(pluginContext)
-        // This default should be kept in sync with
-        // com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
-        val trapDir =
-            File(
-                System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() }
-                    ?: "kotlin-extractor/trap"
-            )
-        // The invocation TRAP file will already have been started
-        // before the plugin is run, so we always use no compression
-        // and we open it in append mode.
-        FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW
-            ->
+        [...]
             val invocationExtractionProblems = ExtractionProblems()
             val lm = TrapLabelManager()
             val logCounter = LogCounter()
