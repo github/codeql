@@ -31,7 +31,7 @@ jobs:
           cat file.txt | sed  "s/BODY_PLACEHOLDER/$BODY/g" > replaced.txt
 ```
 
-An attacker may set the body of an Issue comment to `BAR|g;1e whoami;#` and the command `whoami` will get executed during the `sed` operation.
+An attacker may set the body of an Issue comment to `BAR/g;1e whoami;#` and the command `whoami` will get executed during the `sed` operation.
 
 ## References
 
