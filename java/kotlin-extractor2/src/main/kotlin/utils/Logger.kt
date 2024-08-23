@@ -10,9 +10,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Stack
 import org.jetbrains.kotlin.ir.IrElement
+*/
 
-class LogCounter() {
-    public val diagnosticInfo = mutableMapOf<String, Pair<Severity, Int>>()
+/**
+ * Counts the number of times each diagnostic message (based on the
+ * location of the diagnostic from the stack trace, and its severity)
+ * has been emitted.
+ */
+class DiagnosticCounter() {
+    public val diagnosticInfo = mutableMapOf<Pair<String, Severity>, Int>()
     public val diagnosticLimit: Int
 
     init {
@@ -21,6 +27,9 @@ class LogCounter() {
     }
 }
 
+/**
+ * The severity of a diagnostic message.
+ */
 enum class Severity(val sev: Int) {
     WarnLow(1),
     Warn(2),
@@ -37,6 +46,8 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
+/*
+OLD: KE1
 class LogMessage(private val kind: String, private val message: String) {
     val timestamp: String
 
