@@ -2,7 +2,7 @@
 	var source = "source";
 
 	Promise.all([source, "clean"]).then((arr) => {
-		sink(arr); // OK
+		sink(arr); // NOT OK - implicit read of array element
 		sink(arr[0]); // NOT OK
 		sink(arr[1]); // OK
 	})
