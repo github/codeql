@@ -9,5 +9,5 @@ sh_binary(
     srcs = ["install.sh"],
     args = ["$(rlocationpath :ripunzip)"],
     data = [":ripunzip"],
-    deps = ["@bazel_tools//tools/bash/runfiles"],
+    deps = ["//misc/bazel:sh_runfiles"],
 )
