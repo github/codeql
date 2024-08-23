@@ -75,6 +75,7 @@ fun runExtractor(args : Array<String>) {
         ->
 /*
 OLD: KE1
+        val usesK2 = usesK2(pluginContext)
         val invocationExtractionProblems = ExtractionProblems()
 */
         val invocationLabelManager = TrapLabelManager()
@@ -86,17 +87,106 @@ OLD: KE1
         dtw.writeCompilation_started(compilation)
 /*
 OLD: KE1
-        tw.writeCompilation_info(
+        dtw.writeCompilation_info(
             compilation,
             "Kotlin Compiler Version",
             KotlinCompilerVersion.getVersion() ?: "<unknown>"
         )
+        val extractor_name =
+            this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
+        dtw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
+        dtw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
+        if (compilationStartTime != null) {
+            dtw.writeCompilation_compiler_times(
+                compilation,
+                -1.0,
+                (System.currentTimeMillis() - compilationStartTime) / 1000.0
+            )
+        }
+*/
+        dtw.flush()
+        val logger = Logger(loggerBase, dtw)
+        logger.info("Extraction started")
+/*
+OLD: KE1
+        logger.flush()
+        logger.info("Extraction for invocation TRAP file $invocationTrapFile")
+        logger.flush()
+        logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
+        logger.flush()
+        logPeakMemoryUsage(logger, "before extractor")
+        if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
+            logger.info("moduleFragment:\n" + moduleFragment.dump())
+        }
+        val compression = getCompression(logger)
+
+        val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
+        // FIXME: FileUtil expects a static global logger
+        // which should be provided by SLF4J's factory facility. For now we set it here.
+        FileUtil.logger = logger
+        val srcDir =
+            File(
+                System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless {
+                    it.isNullOrEmpty()
+                } ?: "kotlin-extractor/src"
+            )
+        srcDir.mkdirs()
+        val globalExtensionState = KotlinExtractorGlobalState()
 */
         doAnalysis(kotlinArgs)
+/*
+OLD: KE1
+        loggerBase.printLimitedDiagnosticCounts(tw)
+        logPeakMemoryUsage(logger, "after extractor")
+        logger.info("Extraction completed")
+        logger.flush()
+        val compilationTimeMs = System.currentTimeMillis() - startTimeMs
+        tw.writeCompilation_finished(
+            compilation,
+            -1.0,
+            compilationTimeMs.toDouble() / 1000,
+            invocationExtractionProblems.extractionResult()
+        )
+        tw.flush()
+        loggerBase.close()
+*/
     }
 }
 
 fun doAnalysis(args : List<String>) {
+/*
+OLD: KE1
+            moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
+                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
+                val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
+                loggerBase.setFileNumber(index)
+                fileTrapWriter.writeCompilation_compiling_files(
+                    compilation,
+                    index,
+                    fileTrapWriter.fileId
+                )
+                doFile(
+                    compression,
+                    fileExtractionProblems,
+                    invocationTrapFile,
+                    fileTrapWriter,
+                    checkTrapIdentical,
+                    loggerBase,
+                    trapDir,
+                    srcDir,
+                    file,
+                    primitiveTypeMapping,
+                    pluginContext,
+                    globalExtensionState
+                )
+                fileTrapWriter.writeCompilation_compiling_files_completed(
+                    compilation,
+                    index,
+                    fileExtractionProblems.extractionResult()
+                )
+            }
+*/
+
     lateinit var sourceModule: KaSourceModule
     val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
@@ -234,91 +324,6 @@ class KotlinExtractorExtension(
     // write any `.class` files etc.
     private val exitAfterExtraction: Boolean
 ) : IrGenerationExtension {
-
-    private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        val usesK2 = usesK2(pluginContext)
-        [...]
-            val extractor_name =
-                this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
-            tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
-            tw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
-            if (compilationStartTime != null) {
-                tw.writeCompilation_compiler_times(
-                    compilation,
-                    -1.0,
-                    (System.currentTimeMillis() - compilationStartTime) / 1000.0
-                )
-            }
-            tw.flush()
-            val logger = Logger(loggerBase, tw)
-            logger.info("Extraction started")
-            logger.flush()
-            logger.info("Extraction for invocation TRAP file $invocationTrapFile")
-            logger.flush()
-            logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
-            logger.flush()
-            logPeakMemoryUsage(logger, "before extractor")
-            if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
-                logger.info("moduleFragment:\n" + moduleFragment.dump())
-            }
-            val compression = getCompression(logger)
-
-            val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
-            // FIXME: FileUtil expects a static global logger
-            // which should be provided by SLF4J's factory facility. For now we set it here.
-            FileUtil.logger = logger
-            val srcDir =
-                File(
-                    System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless {
-                        it.isNullOrEmpty()
-                    } ?: "kotlin-extractor/src"
-                )
-            srcDir.mkdirs()
-            val globalExtensionState = KotlinExtractorGlobalState()
-            moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
-                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
-                val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
-                loggerBase.setFileNumber(index)
-                fileTrapWriter.writeCompilation_compiling_files(
-                    compilation,
-                    index,
-                    fileTrapWriter.fileId
-                )
-                doFile(
-                    compression,
-                    fileExtractionProblems,
-                    invocationTrapFile,
-                    fileTrapWriter,
-                    checkTrapIdentical,
-                    loggerBase,
-                    trapDir,
-                    srcDir,
-                    file,
-                    primitiveTypeMapping,
-                    pluginContext,
-                    globalExtensionState
-                )
-                fileTrapWriter.writeCompilation_compiling_files_completed(
-                    compilation,
-                    index,
-                    fileExtractionProblems.extractionResult()
-                )
-            }
-            loggerBase.printLimitedDiagnosticCounts(tw)
-            logPeakMemoryUsage(logger, "after extractor")
-            logger.info("Extraction completed")
-            logger.flush()
-            val compilationTimeMs = System.currentTimeMillis() - startTimeMs
-            tw.writeCompilation_finished(
-                compilation,
-                -1.0,
-                compilationTimeMs.toDouble() / 1000,
-                invocationExtractionProblems.extractionResult()
-            )
-            tw.flush()
-            loggerBase.close()
-        }
-    }
 
     private fun getCompression(logger: Logger): Compression {
         val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
