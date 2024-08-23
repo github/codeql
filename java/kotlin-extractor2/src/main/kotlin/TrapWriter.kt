@@ -4,8 +4,11 @@ package com.github.codeql
 OLD: KE1
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 import com.semmle.extractor.java.PopulateFile
+*/
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
+/*
+OLD: KE1
 import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
@@ -16,12 +19,15 @@ import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
+*/
 
 /**
  * Each `.trap` file has a `TrapLabelManager` while we are writing it. It provides fresh TRAP label
  * names, and maintains a mapping from keys (`@"..."`) to labels.
  */
 class TrapLabelManager {
+/*
+OLD: KE1
     /** The next integer to use as a label name. */
     private var nextInt: Int = 100
 
@@ -52,6 +58,7 @@ class TrapLabelManager {
      * to avoid duplication.
      */
     val fileClassLocationsExtracted = HashSet<IrFile>()
+*/
 }
 
 /**
@@ -59,15 +66,21 @@ class TrapLabelManager {
  * `TrapWriter`s for the same file, as different instances will have different additional state, but
  * they must all share the same `TrapLabelManager` and `BufferedWriter`.
  */
+/*
+OLD: KE1:
 // TODO lm was `protected` before anonymousTypeMapping and locallyVisibleFunctionLabelMapping moved
 // into it. Should we re-protect it and provide accessors?
+Protected again for now in KE2.
+*/
 abstract class TrapWriter(
     protected val loggerBase: LoggerBase,
-    val lm: TrapLabelManager,
+    protected val lm: TrapLabelManager,
     private val bw: BufferedWriter
 ) {
     abstract fun getDiagnosticTrapWriter(): DiagnosticTrapWriter
 
+/*
+OLD: KE1
     /**
      * Returns the label that is defined to be the given key, if such a label exists, and `null`
      * otherwise. Most users will want to use `getLabelFor` instead, which allows non-existent
@@ -185,15 +198,19 @@ abstract class TrapWriter(
     fun getWholeFileLocation(fileId: Label<DbFile>): Label<DbLocation> {
         return getLocation(fileId, 0, 0, 0, 0)
     }
+*/
 
     /**
-     * Write a raw string into the TRAP file. Users should call one of the wrapper functions
-     * instead.
+     * Write a raw string into the TRAP file.
+     * The only external caller of this should be the generated
+     * KotlinExtractorDbScheme.kt.
      */
     fun writeTrap(trap: String) {
         bw.write(trap)
     }
 
+/*
+OLD: KE1
     /** Write a comment into the TRAP file. */
     fun writeComment(comment: String) {
         writeTrap("// ${comment.replace("\n", "\n//    ")}\n")
@@ -203,10 +220,13 @@ abstract class TrapWriter(
     fun flush() {
         bw.flush()
     }
+*/
 
     /**
      * Escape a string so that it can be used in a TRAP string literal, i.e. with `"` escaped as
      * `""`.
+     * The only external caller of this should be the generated
+     * KotlinExtractorDbScheme.kt.
      */
     fun escapeTrapString(str: String) = str.replace("\"", "\"\"")
 
@@ -216,6 +236,8 @@ abstract class TrapWriter(
     /**
      * Truncate a string, if necessary, so that it can be used as a TRAP string literal. TRAP string
      * literals are limited to 1 megabyte.
+     * The only external caller of this should be the generated
+     * KotlinExtractorDbScheme.kt.
      */
     fun truncateString(str: String): String {
         val len = str.length
@@ -232,6 +254,8 @@ abstract class TrapWriter(
         }
     }
 
+/*
+OLD: KE1
     /**
      * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
      * given `filePath` for locations.
@@ -259,8 +283,11 @@ abstract class TrapWriter(
             file,
             populateFileTables
         )
+*/
 }
 
+/*
+OLD: KE1
 /** A `PlainTrapWriter` has no additional context of its own. */
 class PlainTrapWriter(
     loggerBase: LoggerBase,
@@ -272,6 +299,7 @@ class PlainTrapWriter(
         return dtw
     }
 }
+*/
 
 /**
  * A `DiagnosticTrapWriter` is a TrapWriter that diagnostics can be written to; i.e. it has
@@ -285,6 +313,8 @@ class DiagnosticTrapWriter(loggerBase: LoggerBase, lm: TrapLabelManager, bw: Buf
     }
 }
 
+/*
+OLD: KE1
 /**
  * A `FileTrapWriter` is used when we know which file we are extracting entities from, so we can at
  * least give the right file as a location.

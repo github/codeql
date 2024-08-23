@@ -69,10 +69,29 @@ fun runExtractor(args : Array<String>) {
         )
 
     // The invocation TRAP file will already have been started
-    // before the plugin is run, so we always use no compression
-    // and we open it in append mode.
+    // as an uncompressed TRAP file before the extractor is run,
+    // so we always use no compression and we open it in append mode.
     FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW
         ->
+/*
+OLD: KE1
+        val invocationExtractionProblems = ExtractionProblems()
+*/
+        val invocationLabelManager = TrapLabelManager()
+        val diagnosticCounter = DiagnosticCounter()
+        val loggerBase = LoggerBase(diagnosticCounter)
+        val dtw = DiagnosticTrapWriter(loggerBase, invocationLabelManager, invocationTrapFileBW)
+        // The diganostic TRAP file has already defined #compilation = *
+        val compilation: Label<DbCompilation> = StringLabel("compilation")
+        dtw.writeCompilation_started(compilation)
+/*
+OLD: KE1
+        tw.writeCompilation_info(
+            compilation,
+            "Kotlin Compiler Version",
+            KotlinCompilerVersion.getVersion() ?: "<unknown>"
+        )
+*/
         doAnalysis(kotlinArgs)
     }
 }
@@ -219,19 +238,6 @@ class KotlinExtractorExtension(
     private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val usesK2 = usesK2(pluginContext)
         [...]
-            val invocationExtractionProblems = ExtractionProblems()
-            val lm = TrapLabelManager()
-            val logCounter = LogCounter()
-            val loggerBase = LoggerBase(logCounter)
-            val tw = DiagnosticTrapWriter(loggerBase, lm, invocationTrapFileBW)
-            // The interceptor has already defined #compilation = *
-            val compilation: Label<DbCompilation> = StringLabel("compilation")
-            tw.writeCompilation_started(compilation)
-            tw.writeCompilation_info(
-                compilation,
-                "Kotlin Compiler Version",
-                KotlinCompilerVersion.getVersion() ?: "<unknown>"
-            )
             val extractor_name =
                 this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
             tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)

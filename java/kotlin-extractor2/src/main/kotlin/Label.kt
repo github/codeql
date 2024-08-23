@@ -1,18 +1,22 @@
 package com.github.codeql
 
-/*
-OLD: KE1
 /** This represents a label (`#...`) in a TRAP file. */
 interface Label<T : AnyDbType> {
+/*
+OLD: KE1
     fun <U : AnyDbType> cast(): Label<U> {
         @Suppress("UNCHECKED_CAST") return this as Label<U>
     }
+*/
 }
 
+/*
+OLD: KE1
 /** The label `#i`, e.g. `#123`. Most labels we generate are of this form. */
 class IntLabel<T : AnyDbType>(val i: Int) : Label<T> {
     override fun toString(): String = "#$i"
 }
+*/
 
 /**
  * The label `#name`, e.g. `#compilation`. This is used when labels are shared between different
@@ -21,4 +25,3 @@ class IntLabel<T : AnyDbType>(val i: Int) : Label<T> {
 class StringLabel<T : AnyDbType>(val name: String) : Label<T> {
     override fun toString(): String = "#$name"
 }
-*/
