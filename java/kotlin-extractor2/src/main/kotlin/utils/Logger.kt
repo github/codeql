@@ -100,9 +100,19 @@ data class ExtractorContext(
     val name: String,
     val loc: String
 )
+*/
 
-open class LoggerBase(val logCounter: LogCounter) {
+/**
+ * LoggerBase actually writes log messages to a log file, and to
+ * the DiagnosticTrapWriter that it is passed.
+ * It is only usde directly from the DiagnosticTrapWriter. Everything
+ * else will use a Logger that wraps it (and the DiagnosticTrapWriter).
+ */
+open class LoggerBase(val diagnosticCounter: DiagnosticCounter) {
+/*
+OLD: KE1
     val extractorContextStack = Stack<ExtractorContext>()
+*/
 
     private val verbosity: Int
 
@@ -110,6 +120,8 @@ open class LoggerBase(val logCounter: LogCounter) {
         verbosity = System.getenv("CODEQL_EXTRACTOR_KOTLIN_VERBOSITY")?.toIntOrNull() ?: 3
     }
 
+/*
+OLD: KE1
     private val logStream: Writer
 
     init {
@@ -256,13 +268,19 @@ open class LoggerBase(val logCounter: LogCounter) {
             logStream.write(logMessage.toJsonLine())
         }
     }
+*/
 
     fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 2) {
+/*
+OLD: KE1
             diagnostic(dtw, Severity.Warn, msg, extraInfo)
+*/
         }
     }
 
+/*
+OLD: KE1
     fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 1) {
             diagnostic(dtw, Severity.Error, msg, extraInfo)
@@ -290,8 +308,11 @@ open class LoggerBase(val logCounter: LogCounter) {
     fun close() {
         logStream.close()
     }
+*/
 }
 
+/*
+OLD: KE1
 open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter) {
     fun flush() {
         dtw.flush()
