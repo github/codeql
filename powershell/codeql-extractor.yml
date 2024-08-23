@@ -1,0 +1,10 @@
+name: "powershell"
+display_name: "powershell"
+version: 0.0.1
+column_kind: "utf16"
+legacy_qltest_extraction: true
+file_types:
+  - name: powershell
+    display_name: powershellscripts
+    extensions:
+      - .ps1

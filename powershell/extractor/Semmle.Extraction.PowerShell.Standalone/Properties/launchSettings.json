@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Semmle.Extraction.PowerShell.Standalone": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\codeql-home\\Microsoft\\codeql-queries\\src\\extractors\\powershell\\samples\\code",
+      "workingDirectory": "C:\\codeql-home\\Microsoft\\codeql-queries\\src\\extractors\\powershell\\extractor\\Semmle.Extraction.PowerShell.Standalone\\bin\\Debug\\net7.0"
+    }
+  }
+}
