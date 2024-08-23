@@ -26,8 +26,6 @@
 private import codeql.dataflow.DataFlow
 private import codeql.util.Boolean
 private import codeql.util.Location
-private import DataFlowImpl
-private import DataFlowImplCommon
 
 module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
