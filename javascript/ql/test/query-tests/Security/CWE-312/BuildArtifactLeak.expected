@@ -82,6 +82,7 @@ nodes
 | build-leaks.js:41:82:41:83 | pw | semmle.label | pw |
 subpaths
 | build-leaks.js:17:12:19:9 | {\\n      ...       } | build-leaks.js:14:18:14:20 | env | build-leaks.js:16:20:16:22 | env | build-leaks.js:13:17:19:10 | Object. ...      }) |
+| build-leaks.js:22:36:22:38 | raw | build-leaks.js:22:49:22:51 | env | build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:23:39:23:41 | raw | build-leaks.js:22:49:22:51 | env [Return] | build-leaks.js:25:12:25:13 | [post update] {} |
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:23:39:23:41 | raw | build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |
 | build-leaks.js:25:12:25:13 | {} | build-leaks.js:22:49:22:51 | env | build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |

@@ -39,10 +39,9 @@ edges
 | RegExpInjection.js:87:25:87:48 | input.r ... g, "\|") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | provenance |  |
 | RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | provenance |  |
 | RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | provenance |  |
-| tst.js:1:46:1:46 | e | tst.js:2:16:2:16 | e | provenance |  |
-| tst.js:2:9:2:21 | data | tst.js:3:21:3:24 | data | provenance |  |
-| tst.js:2:16:2:16 | e | tst.js:2:9:2:21 | data | provenance |  |
-| tst.js:3:21:3:24 | data | tst.js:3:16:3:35 | "^"+ data.name + "$" | provenance |  |
+| tst.js:5:9:5:29 | data | tst.js:6:21:6:24 | data | provenance |  |
+| tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data | provenance |  |
+| tst.js:6:21:6:24 | data | tst.js:6:16:6:35 | "^"+ data.name + "$" | provenance |  |
 nodes
 | RegExpInjection.js:5:7:5:28 | key | semmle.label | key |
 | RegExpInjection.js:5:13:5:28 | req.param("key") | semmle.label | req.param("key") |
@@ -89,11 +88,10 @@ nodes
 | RegExpInjection.js:91:20:91:30 | process.env | semmle.label | process.env |
 | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | semmle.label | `^${pro ... r.app$` |
 | RegExpInjection.js:93:20:93:31 | process.argv | semmle.label | process.argv |
-| tst.js:1:46:1:46 | e | semmle.label | e |
-| tst.js:2:9:2:21 | data | semmle.label | data |
-| tst.js:2:16:2:16 | e | semmle.label | e |
-| tst.js:3:16:3:35 | "^"+ data.name + "$" | semmle.label | "^"+ data.name + "$" |
-| tst.js:3:21:3:24 | data | semmle.label | data |
+| tst.js:5:9:5:29 | data | semmle.label | data |
+| tst.js:5:16:5:29 | req.query.data | semmle.label | req.query.data |
+| tst.js:6:16:6:35 | "^"+ data.name + "$" | semmle.label | "^"+ data.name + "$" |
+| tst.js:6:21:6:24 | data | semmle.label | data |
 subpaths
 | RegExpInjection.js:11:26:11:26 | s | RegExpInjection.js:14:18:14:18 | s | RegExpInjection.js:15:12:15:24 | s + "=(.*)\\n" | RegExpInjection.js:11:20:11:27 | wrap2(s) |
 | RegExpInjection.js:19:19:19:21 | key | RegExpInjection.js:10:17:10:17 | s | RegExpInjection.js:11:12:11:27 | "\\\\b" + wrap2(s) | RegExpInjection.js:19:14:19:22 | wrap(key) |
@@ -116,4 +114,4 @@ subpaths
 | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | This regular expression is constructed from a $@. | RegExpInjection.js:82:15:82:32 | req.param("input") | user-provided value |
 | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:91:20:91:30 | process.env | environment variable |
 | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:93:20:93:31 | process.argv | command-line argument |
-| tst.js:3:16:3:35 | "^"+ data.name + "$" | tst.js:1:46:1:46 | e | tst.js:3:16:3:35 | "^"+ data.name + "$" | This regular expression is constructed from a $@. | tst.js:1:46:1:46 | e | user-provided value |
+| tst.js:6:16:6:35 | "^"+ data.name + "$" | tst.js:5:16:5:29 | req.query.data | tst.js:6:16:6:35 | "^"+ data.name + "$" | This regular expression is constructed from a $@. | tst.js:5:16:5:29 | req.query.data | user-provided value |
