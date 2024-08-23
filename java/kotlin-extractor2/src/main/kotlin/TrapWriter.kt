@@ -209,8 +209,6 @@ OLD: KE1
         bw.write(trap)
     }
 
-/*
-OLD: KE1
     /** Write a comment into the TRAP file. */
     fun writeComment(comment: String) {
         writeTrap("// ${comment.replace("\n", "\n//    ")}\n")
@@ -220,7 +218,6 @@ OLD: KE1
     fun flush() {
         bw.flush()
     }
-*/
 
     /**
      * Escape a string so that it can be used in a TRAP string literal, i.e. with `"` escaped as

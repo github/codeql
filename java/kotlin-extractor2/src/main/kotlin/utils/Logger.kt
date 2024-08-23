@@ -1,13 +1,13 @@
 package com.github.codeql
 
-/*
-OLD: KE1
 import java.io.File
 import java.io.FileWriter
 import java.io.OutputStreamWriter
 import java.io.Writer
 import java.text.SimpleDateFormat
 import java.util.Date
+/*
+OLD: KE1
 import java.util.Stack
 import org.jetbrains.kotlin.ir.IrElement
 */
@@ -46,8 +46,10 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
-/*
-OLD: KE1
+/**
+ * Given a log message, this wrapper class adds info like a timestamp,
+ * and formats it for the different output targets.
+ */
 class LogMessage(private val kind: String, private val message: String) {
     val timestamp: String
 
@@ -59,7 +61,7 @@ class LogMessage(private val kind: String, private val message: String) {
         return "[$timestamp K] [$kind] $message"
     }
 
-    private fun escape(str: String): String {
+    private fun escapeForJson(str: String): String {
         return str.replace("\\", "\\\\")
             .replace("\"", "\\\"")
             .replace("\u0000", "\\u0000")
@@ -89,11 +91,13 @@ class LogMessage(private val kind: String, private val message: String) {
                 Pair("message", message)
             )
         return "{ " +
-            kvs.map { p -> "\"${p.first}\": \"${escape(p.second)}\"" }.joinToString(", ") +
+            kvs.map { p -> "\"${p.first}\": \"${escapeForJson(p.second)}\"" }.joinToString(", ") +
             " }\n"
     }
 }
 
+/*
+OLD: KE1
 data class ExtractorContext(
     val kind: String,
     val element: IrElement,
@@ -120,8 +124,6 @@ OLD: KE1
         verbosity = System.getenv("CODEQL_EXTRACTOR_KOTLIN_VERBOSITY")?.toIntOrNull() ?: 3
     }
 
-/*
-OLD: KE1
     private val logStream: Writer
 
     init {
@@ -134,6 +136,8 @@ OLD: KE1
         }
     }
 
+/*
+OLD: KE1
     private fun getDiagnosticLocation(): String? {
         val st = Exception().stackTrace
         for (x in st) {
@@ -245,7 +249,7 @@ OLD: KE1
         logStream.write(logMessage.toJsonLine())
     }
 
-    fun trace(tw: TrapWriter, msg: String) {
+    fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("TRACE", msg)
             tw.writeComment(logMessage.toText())
@@ -253,22 +257,22 @@ OLD: KE1
         }
     }
 
-    fun debug(tw: TrapWriter, msg: String) {
+    fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
             tw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
     }
+*/
 
-    fun info(tw: TrapWriter, msg: String) {
+    fun info(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 3) {
             val logMessage = LogMessage("INFO", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
     }
-*/
 
     fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 2) {
@@ -311,9 +315,12 @@ OLD: KE1
 */
 }
 
+/**
+ * Logger is the high-level interface for writint log messages.
+ */
+open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
 /*
 OLD: KE1
-open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter) {
     fun flush() {
         dtw.flush()
         loggerBase.flush()
@@ -330,11 +337,14 @@ open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter
     fun debug(msg: String) {
         loggerBase.debug(dtw, msg)
     }
+*/
 
     fun info(msg: String) {
         loggerBase.info(dtw, msg)
     }
 
+/*
+OLD: KE1
     private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(dtw, msg, extraInfo)
     }
@@ -358,8 +368,11 @@ open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter
     fun error(msg: String, exn: Throwable) {
         error(msg, exn.stackTraceToString())
     }
+*/
 }
 
+/*
+OLD: KE1
 class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter) :
     Logger(loggerBase, ftw.getDiagnosticTrapWriter()) {
     fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
