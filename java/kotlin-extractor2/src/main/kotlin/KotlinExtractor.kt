@@ -76,8 +76,8 @@ fun runExtractor(args : Array<String>) {
 /*
 OLD: KE1
         val usesK2 = usesK2(pluginContext)
-        val invocationExtractionProblems = ExtractionProblems()
 */
+        val invocationExtractionProblems = ExtractionProblems()
         val invocationLabelManager = TrapLabelManager()
         val diagnosticCounter = DiagnosticCounter()
         val loggerBase = LoggerBase(diagnosticCounter)
@@ -141,16 +141,13 @@ OLD: KE1
 */
         logger.info("Extraction completed")
         logger.flush()
-/*
-OLD: KE1
         val compilationTimeMs = System.currentTimeMillis() - startTimeMs
-        tw.writeCompilation_finished(
+        dtw.writeCompilation_finished(
             compilation,
             -1.0,
             compilationTimeMs.toDouble() / 1000,
             invocationExtractionProblems.extractionResult()
         )
-*/
         dtw.flush()
         loggerBase.close()
     }
@@ -394,6 +391,7 @@ class KotlinExtractorGlobalState {
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
     val syntheticRepeatableAnnotationContainers = HashMap<IrClass, IrClass>()
 }
+*/
 
 /*
 The `ExtractionProblems` class is used to record whether this invocation
@@ -425,6 +423,8 @@ open class ExtractionProblems {
     }
 }
 
+/*
+OLD: KE1
 /*
 The `FileExtractionProblems` is analogous to `ExtractionProblems`,
 except it records whether there were any problems while extracting a
