@@ -81,7 +81,7 @@ OLD: KE1
         val diagnosticCounter = DiagnosticCounter()
         val loggerBase = LoggerBase(diagnosticCounter)
         val dtw = DiagnosticTrapWriter(loggerBase, invocationLabelManager, invocationTrapFileBW)
-        // The diganostic TRAP file has already defined #compilation = *
+        // The diagnostic TRAP file has already defined #compilation = *
         val compilation: Label<DbCompilation> = StringLabel("compilation")
         dtw.writeCompilation_started(compilation)
 /*
