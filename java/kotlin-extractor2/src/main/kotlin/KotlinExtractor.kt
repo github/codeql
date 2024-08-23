@@ -107,11 +107,11 @@ OLD: KE1
         dtw.flush()
         val logger = Logger(loggerBase, dtw)
         logger.info("Extraction started")
-/*
-OLD: KE1
         logger.flush()
         logger.info("Extraction for invocation TRAP file $invocationTrapFile")
         logger.flush()
+/*
+OLD: KE1
         logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
         logger.flush()
         logPeakMemoryUsage(logger, "before extractor")
@@ -138,8 +138,11 @@ OLD: KE1
 OLD: KE1
         loggerBase.printLimitedDiagnosticCounts(tw)
         logPeakMemoryUsage(logger, "after extractor")
+*/
         logger.info("Extraction completed")
         logger.flush()
+/*
+OLD: KE1
         val compilationTimeMs = System.currentTimeMillis() - startTimeMs
         tw.writeCompilation_finished(
             compilation,
@@ -147,9 +150,9 @@ OLD: KE1
             compilationTimeMs.toDouble() / 1000,
             invocationExtractionProblems.extractionResult()
         )
-        tw.flush()
-        loggerBase.close()
 */
+        dtw.flush()
+        loggerBase.close()
     }
 }
 

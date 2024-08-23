@@ -304,6 +304,7 @@ OLD: KE1
             }
         }
     }
+*/
 
     fun flush() {
         logStream.flush()
@@ -312,20 +313,19 @@ OLD: KE1
     fun close() {
         logStream.close()
     }
-*/
 }
 
 /**
  * Logger is the high-level interface for writint log messages.
  */
 open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
-/*
-OLD: KE1
     fun flush() {
         dtw.flush()
         loggerBase.flush()
     }
 
+/*
+OLD: KE1
     fun trace(msg: String) {
         loggerBase.trace(dtw, msg)
     }
