@@ -1,8 +1,5 @@
-import sys
+# The version of gradle used doesn't work on java 17
 
-from create_database_utils import *
 
-#The version of gradle used doesn't work on java 17
-try_use_java11()
-
-run_codeql_database_create([], lang="java")
+def test(codeql, use_java_11, java):
+    codeql.database.create()

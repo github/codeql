@@ -1,8 +1,0 @@
-| gradle-sample2/src/main/java/com/example/App2.java:0:0:0:0 | App2 |
-| gradle-sample2/src/test/java/com/example/AppTest2.java:0:0:0:0 | AppTest2 |
-| gradle-sample/src/main/java/com/example/App.java:0:0:0:0 | App |
-| gradle-sample/src/test/java/com/example/AppTest.java:0:0:0:0 | AppTest |
-| maven-project-1/src/main/java/com/example/App3.java:0:0:0:0 | App3 |
-| maven-project-1/src/test/java/com/example/AppTest3.java:0:0:0:0 | AppTest3 |
-| maven-project-2/src/main/java/com/example/App4.java:0:0:0:0 | App4 |
-| maven-project-2/src/test/java/com/example/AppTest4.java:0:0:0:0 | AppTest4 |

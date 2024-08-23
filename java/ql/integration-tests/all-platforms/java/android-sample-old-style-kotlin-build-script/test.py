@@ -1,7 +1,2 @@
-import sys
-
-from create_database_utils import *
-
-try_use_java11()
-
-run_codeql_database_create([], lang="java")
+def test(codeql, use_java_11, java, gradle_7_4, android_sdk):
+    codeql.database.create()
