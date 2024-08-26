@@ -1547,6 +1547,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					name = ""
 				}
 				extractComponentType(tw, lbl, i, name, field.Type())
+				dbscheme.ComponentTagsTable.Emit(tw, lbl, i, tp.Tag(i))
 			}
 		case *types.Pointer:
 			kind = dbscheme.PointerType.Index()

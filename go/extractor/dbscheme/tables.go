@@ -1159,6 +1159,13 @@ var ComponentTypesTable = NewTable("component_types",
 	EntityColumn(TypeType, "tp"),
 ).KeySet("parent", "index")
 
+// ComponentTagsTable is the table associating composite types with their component types' tags
+var ComponentTagsTable = NewTable("component_tags",
+	EntityColumn(CompositeType, "parent"),
+	IntColumn("index"),
+	StringColumn("tag"),
+).KeySet("parent", "index")
+
 // ArrayLengthTable is the table associating array types with their length (represented as a string
 // since Go array lengths are 64-bit and hence do not always fit into a QL integer)
 var ArrayLengthTable = NewTable("array_length",

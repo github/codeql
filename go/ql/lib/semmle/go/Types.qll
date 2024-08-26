@@ -565,14 +565,19 @@ class StructType extends @structtype, CompositeType {
     )
   }
 
+  private predicate hasComponentTypeAndTag(int i, string name, Type tp, string tag) {
+    component_types(this, i, name, tp) and component_tags(this, i, tag)
+  }
+
   language[monotonicAggregates]
   override string pp() {
     result =
       "struct { " +
-        concat(int i, string name, Type tp |
-          component_types(this, i, name, tp)
+        concat(int i, string name, Type tp, string tag |
+          component_types(this, i, name, tp) and
+          component_tags(this, i, tag)
         |
-          name + " " + tp.pp(), "; " order by i
+          name + " " + tp.pp() + " " + tag + "; " order by i
         ) + " }"
   }
 
