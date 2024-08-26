@@ -1,5 +1,7 @@
 /**
  * Provides classes for working with JavaScript programs, as well as JSON, YAML and HTML.
+ *
+ * Dummy edit to force tests to run.
  */
 
 import Customizations
