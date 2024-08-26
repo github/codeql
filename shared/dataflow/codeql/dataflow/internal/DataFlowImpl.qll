@@ -164,94 +164,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   module Impl<FullStateConfigSig Config> {
     private class FlowState = Config::FlowState;
 
-    private newtype TNodeEx =
-      TNodeNormal(Node n) or
-      TNodeImplicitRead(Node n) { Config::allowImplicitRead(n, _) } or
-      TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
-        paramReturnNode(_, p, scope, _)
-      }
-
-    private class NodeEx extends TNodeEx {
-      string toString() {
-        result = this.asNode().toString()
+    private class NodeEx extends NodeExImpl {
+      NodeEx() {
+        Config::allowImplicitRead(any(Node n | this.isImplicitReadNode(n)), _)
         or
-        exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
-        or
-        result = this.asParamReturnNode().toString() + " [Return]"
+        not this.isImplicitReadNode(_)
       }
-
-      Node asNode() { this = TNodeNormal(result) }
-
-      /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
-      Node asNodeOrImplicitRead() { this = TNodeNormal(result) or this = TNodeImplicitRead(result) }
-
-      predicate isImplicitReadNode(Node n) { this = TNodeImplicitRead(n) }
-
-      ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
-
-      Node projectToNode() {
-        this = TNodeNormal(result) or
-        this = TNodeImplicitRead(result) or
-        this = TParamReturnNode(result, _)
-      }
-
-      pragma[nomagic]
-      private DataFlowCallable getEnclosingCallable0() {
-        nodeEnclosingCallable(this.projectToNode(), result)
-      }
-
-      pragma[inline]
-      DataFlowCallable getEnclosingCallable() {
-        pragma[only_bind_out](this).getEnclosingCallable0() = pragma[only_bind_into](result)
-      }
-
-      pragma[nomagic]
-      private DataFlowType getDataFlowType0() {
-        nodeDataFlowType(this.asNode(), result)
-        or
-        nodeDataFlowType(this.asParamReturnNode(), result)
-      }
-
-      pragma[inline]
-      DataFlowType getDataFlowType() {
-        pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
-      }
-
-      Location getLocation() { result = this.projectToNode().getLocation() }
     }
 
-    private class ArgNodeEx extends NodeEx {
-      ArgNodeEx() { this.asNode() instanceof ArgNode }
+    private class ArgNodeEx extends NodeEx, ArgNodeExImpl { }
 
-      DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
-    }
+    private class ParamNodeEx extends NodeEx, ParamNodeExImpl { }
 
-    private class ParamNodeEx extends NodeEx {
-      ParamNodeEx() { this.asNode() instanceof ParamNode }
-
-      predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-        this.asNode().(ParamNode).isParameterOf(c, pos)
-      }
-
-      ParameterPosition getPosition() { this.isParameterOf(_, result) }
-    }
-
-    /**
-     * A node from which flow can return to the caller. This is either a regular
-     * `ReturnNode` or a synthesized node for flow out via a parameter.
-     */
-    private class RetNodeEx extends NodeEx {
-      private ReturnPosition pos;
-
-      RetNodeEx() {
-        pos = getValueReturnPosition(this.asNode()) or
-        pos = getParamReturnPosition(_, this.asParamReturnNode())
-      }
-
-      ReturnPosition getReturnPosition() { result = pos }
-
-      ReturnKindExt getKind() { result = pos.getKind() }
-    }
+    private class RetNodeEx extends NodeEx, RetNodeExImpl { }
 
     private module SourceSinkFiltering {
       private import codeql.util.AlertFiltering
@@ -428,20 +353,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow in one local step from `node1` to `node2`.
      */
     private predicate localFlowStepEx(NodeEx node1, NodeEx node2, string model) {
-      exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
-        node2.asNode() = n2 and
-        simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model) and
-        stepFilter(node1, node2)
-      )
-      or
-      exists(Node n1, Node n2, SndLevelScopeOption scope |
-        node1.asNode() = n1 and
-        node2 = TParamReturnNode(n2, scope) and
-        paramReturnNode(pragma[only_bind_into](n1), pragma[only_bind_into](n2),
-          pragma[only_bind_into](scope), _) and
-        model = ""
-      )
+      localFlowStepExImpl(node1, node2, model) and
+      stepFilter(node1, node2)
     }
 
     /**
