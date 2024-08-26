@@ -90,7 +90,9 @@ class Type extends @type {
         hasNoMethods(i)
         or
         this.hasMethod(getExampleMethodName(i), _) and
-        forall(string m, SignatureType t | i.hasMethod(m, t) | this.hasMethod(m, t))
+        forall(string m, SignatureType t | interfaceHasMethodWithDeepUnaliasedType(i, m, t) |
+          hasMethodWithDeepUnaliasedType(this, m, t)
+        )
       )
     )
   }
@@ -135,6 +137,13 @@ class Type extends @type {
   PointerType getPointerType() { result.getBaseType() = this }
 
   /**
+   * Gets this type with all aliases substituted for their underlying type.
+   *
+   * Note named types are not substituted.
+   */
+  Type getDeepUnaliasedType() { result = this }
+
+  /**
    * Gets a pretty-printed representation of this type, including its structure where applicable.
    */
   string pp() { result = this.toString() }
@@ -163,6 +172,21 @@ class Type extends @type {
     endline = 0 and
     endcolumn = 0
   }
+}
+
+pragma[nomagic]
+private predicate hasMethodWithDeepUnaliasedType(Type t, string name, SignatureType unaliasedType) {
+  exists(SignatureType methodType |
+    t.hasMethod(name, methodType) and
+    methodType.getDeepUnaliasedType() = unaliasedType
+  )
+}
+
+pragma[nomagic]
+private predicate interfaceHasMethodWithDeepUnaliasedType(
+  InterfaceType i, string name, SignatureType unaliasedType
+) {
+  exists(SignatureType t | i.hasMethod(name, t) and t.getDeepUnaliasedType() = unaliasedType)
 }
 
 /** An invalid type. */
@@ -411,6 +435,11 @@ class ArrayType extends @arraytype, CompositeType {
 
   override Package getPackage() { result = this.getElementType().getPackage() }
 
+  override ArrayType getDeepUnaliasedType() {
+    result.getElementType() = this.getElementType().getDeepUnaliasedType() and
+    result.getLengthString() = this.getLengthString()
+  }
+
   override string pp() { result = "[" + this.getLength() + "]" + this.getElementType().pp() }
 
   override string toString() { result = "array type" }
@@ -422,6 +451,10 @@ class SliceType extends @slicetype, CompositeType {
   Type getElementType() { element_type(this, result) }
 
   override Package getPackage() { result = this.getElementType().getPackage() }
+
+  override SliceType getDeepUnaliasedType() {
+    result.getElementType() = this.getElementType().getDeepUnaliasedType()
+  }
 
   override string pp() { result = "[]" + this.getElementType().pp() }
 
@@ -578,6 +611,19 @@ class StructType extends @structtype, CompositeType {
     )
   }
 
+  private predicate hasComponentTypeAndTag(int i, string name, Type tp, string tag) {
+    component_types(this, i, name, tp) and struct_tags(this, i, tag)
+  }
+
+  override StructType getDeepUnaliasedType() {
+    // Note we must use component_types not hasOwnField here because component_types may specify
+    // interface-in-struct embedding, but hasOwnField does not return such members.
+    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
+    forall(int i, string name, Type tp, string tag | this.hasComponentTypeAndTag(i, name, tp, tag) |
+      result.hasComponentTypeAndTag(i, name, tp.getDeepUnaliasedType(), tag)
+    )
+  }
+
   language[monotonicAggregates]
   override string pp() {
     result =
@@ -628,6 +674,10 @@ class PointerType extends @pointertype, CompositeType {
       // If S contains an embedded field *T, the method set of *S includes promoted methods with receiver T or *T
       result = embedded.(PointerType).getBaseType().getMethod(m)
     )
+  }
+
+  override PointerType getDeepUnaliasedType() {
+    result.getBaseType() = this.getBaseType().getDeepUnaliasedType()
   }
 
   override string pp() { result = "* " + this.getBaseType().pp() }
@@ -927,6 +977,13 @@ class TupleType extends @tupletype, CompositeType {
   /** Gets the `i`th component type of this tuple type. */
   Type getComponentType(int i) { component_types(this, i, _, result) }
 
+  override TupleType getDeepUnaliasedType() {
+    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
+    forall(Type t, int i | t = this.getComponentType(i) |
+      result.getComponentType(i) = t.getDeepUnaliasedType()
+    )
+  }
+
   language[monotonicAggregates]
   override string pp() {
     result =
@@ -952,6 +1009,18 @@ class SignatureType extends @signaturetype, CompositeType {
 
   /** Holds if this signature type is variadic. */
   predicate isVariadic() { variadic(this) }
+
+  override SignatureType getDeepUnaliasedType() {
+    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
+    (
+      this.isVariadic() and result.isVariadic()
+      or
+      not this.isVariadic() and not result.isVariadic()
+    ) and
+    forall(int i, Type componentType | component_types(this, i, _, componentType) |
+      component_types(result, i, _, componentType.getDeepUnaliasedType())
+    )
+  }
 
   language[monotonicAggregates]
   override string pp() {
@@ -982,6 +1051,11 @@ class MapType extends @maptype, CompositeType {
   /** Gets the value type of this map type. */
   Type getValueType() { element_type(this, result) }
 
+  override MapType getDeepUnaliasedType() {
+    result.getKeyType() = this.getKeyType().getDeepUnaliasedType() and
+    result.getValueType() = this.getValueType().getDeepUnaliasedType()
+  }
+
   override string pp() { result = "[" + this.getKeyType().pp() + "]" + this.getValueType().pp() }
 
   override string toString() { result = "map type" }
@@ -1006,6 +1080,10 @@ class SendChanType extends @sendchantype, ChanType {
   override string pp() { result = "chan<- " + this.getElementType().pp() }
 
   override string toString() { result = "send-channel type" }
+
+  override SendChanType getDeepUnaliasedType() {
+    result.getElementType() = this.getElementType().getDeepUnaliasedType()
+  }
 }
 
 /** A channel type that can only receive. */
@@ -1015,6 +1093,10 @@ class RecvChanType extends @recvchantype, ChanType {
   override string pp() { result = "<-chan " + this.getElementType().pp() }
 
   override string toString() { result = "receive-channel type" }
+
+  override RecvChanType getDeepUnaliasedType() {
+    result.getElementType() = this.getElementType().getDeepUnaliasedType()
+  }
 }
 
 /** A channel type that can both send and receive. */
@@ -1026,6 +1108,10 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
   override string pp() { result = "chan " + this.getElementType().pp() }
 
   override string toString() { result = "send-receive-channel type" }
+
+  override SendRecvChanType getDeepUnaliasedType() {
+    result.getElementType() = this.getElementType().getDeepUnaliasedType()
+  }
 }
 
 /** A named type. */
@@ -1064,6 +1150,8 @@ class AliasType extends @typealias, CompositeType {
   Type getRhs() { alias_rhs(this, result) }
 
   override Type getUnderlyingType() { result = unalias(this).getUnderlyingType() }
+
+  override Type getDeepUnaliasedType() { result = unalias(this).getDeepUnaliasedType() }
 }
 
 /**

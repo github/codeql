@@ -1587,9 +1587,22 @@ func resolveTypeAlias(tp types.Type) types.Type {
 // extractType extracts type information for `tp` and returns its associated label;
 // types are only extracted once, so the second time `extractType` is invoked it simply returns the label
 func extractType(tw *trap.Writer, tp types.Type) trap.Label {
-	tp = resolveTypeAlias(tp)
-	lbl, exists := getTypeLabel(tw, tp)
+	return extractTypeWithFlags(tw, tp, false)
+}
+
+func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases bool) trap.Label {
+	lbl, exists := getTypeLabelWithFlags(tw, tp, transparentAliases)
 	if !exists {
+		if !transparentAliases {
+			// Ensure the (deep) underlying type is also extracted, so that it is
+			// possible to implement deepUnalias in QL.
+			// For example, if we had type A = int and type B = string, we would need
+			// to extract map[string]int so that deepUnalias(map[B]A) has a real member
+			// of @type to return.
+			//
+			// TODO: consider using a newtype to do this instead.
+			extractTypeWithFlags(tw, tp, true)
+		}
 		var kind int
 		switch tp := tp.(type) {
 		case *types.Basic:
@@ -1601,10 +1614,10 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Array:
 			kind = dbscheme.ArrayType.Index()
 			dbscheme.ArrayLengthTable.Emit(tw, lbl, fmt.Sprintf("%d", tp.Len()))
-			extractElementType(tw, lbl, tp.Elem())
+			extractElementType(tw, lbl, tp.Elem(), transparentAliases)
 		case *types.Slice:
 			kind = dbscheme.SliceType.Index()
-			extractElementType(tw, lbl, tp.Elem())
+			extractElementType(tw, lbl, tp.Elem(), transparentAliases)
 		case *types.Struct:
 			kind = dbscheme.StructType.Index()
 			for i := 0; i < tp.NumFields(); i++ {
@@ -1624,14 +1637,14 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				if field.Embedded() {
 					name = ""
 				}
-				extractComponentType(tw, lbl, i, name, field.Type())
+				extractComponentType(tw, lbl, i, name, field.Type(), transparentAliases)
 				if tp.Tag(i) != "" {
 					dbscheme.StructTagsTable.Emit(tw, lbl, i, tp.Tag(i))
 				}
 			}
 		case *types.Pointer:
 			kind = dbscheme.PointerType.Index()
-			extractBaseType(tw, lbl, tp.Elem())
+			extractBaseType(tw, lbl, tp.Elem(), transparentAliases)
 		case *types.Interface:
 			kind = dbscheme.InterfaceType.Index()
 			for i := 0; i < tp.NumMethods(); i++ {
@@ -1644,7 +1657,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				// not dealt with by `extractScopes`
 				extractMethod(tw, meth)
 
-				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
+				extractComponentType(tw, lbl, i, meth.Name(), meth.Type(), transparentAliases)
 
 				if !meth.Exported() {
 					dbscheme.InterfacePrivateMethodIdsTable.Emit(tw, lbl, i, meth.Id())
@@ -1655,12 +1668,12 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				if isNonUnionTypeSetLiteral(component) {
 					component = createUnionFromType(component)
 				}
-				extractComponentType(tw, lbl, -(i + 1), "", component)
+				extractComponentType(tw, lbl, -(i + 1), "", component, transparentAliases)
 			}
 		case *types.Tuple:
 			kind = dbscheme.TupleType.Index()
 			for i := 0; i < tp.Len(); i++ {
-				extractComponentType(tw, lbl, i, "", tp.At(i).Type())
+				extractComponentType(tw, lbl, i, "", tp.At(i).Type(), transparentAliases)
 			}
 		case *types.Signature:
 			kind = dbscheme.SignatureType.Index()
@@ -1668,13 +1681,13 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			if params != nil {
 				for i := 0; i < params.Len(); i++ {
 					param := params.At(i)
-					extractComponentType(tw, lbl, i+1, "", param.Type())
+					extractComponentType(tw, lbl, i+1, "", param.Type(), transparentAliases)
 				}
 			}
 			if results != nil {
 				for i := 0; i < results.Len(); i++ {
 					result := results.At(i)
-					extractComponentType(tw, lbl, -(i + 1), "", result.Type())
+					extractComponentType(tw, lbl, -(i + 1), "", result.Type(), transparentAliases)
 				}
 			}
 			if tp.Variadic() {
@@ -1682,17 +1695,17 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.Map:
 			kind = dbscheme.MapType.Index()
-			extractKeyType(tw, lbl, tp.Key())
-			extractElementType(tw, lbl, tp.Elem())
+			extractKeyType(tw, lbl, tp.Key(), transparentAliases)
+			extractElementType(tw, lbl, tp.Elem(), transparentAliases)
 		case *types.Chan:
 			kind = dbscheme.ChanTypes[tp.Dir()].Index()
-			extractElementType(tw, lbl, tp.Elem())
+			extractElementType(tw, lbl, tp.Elem(), transparentAliases)
 		case *types.Named:
 			origintp := tp.Origin()
 			kind = dbscheme.NamedType.Index()
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
-			extractUnderlyingType(tw, lbl, underlying)
+			extractUnderlyingType(tw, lbl, underlying, transparentAliases)
 			trackInstantiatedStructFields(tw, tp, origintp)
 
 			extractTypeObject(tw, lbl, origintp.Obj())
@@ -1736,14 +1749,18 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				if term.Tilde() {
 					tildeStr = "~"
 				}
-				extractComponentType(tw, lbl, i, tildeStr, term.Type())
+				extractComponentType(tw, lbl, i, tildeStr, term.Type(), transparentAliases)
 			}
 		case *types.Alias:
-			kind = dbscheme.TypeAlias.Index()
-			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
-			dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
+			if transparentAliases {
+				extractTypeWithFlags(tw, tp.Rhs(), true)
+			} else {
+				kind = dbscheme.TypeAlias.Index()
+				dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
+				dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
 
-			extractTypeObject(tw, lbl, tp.Obj())
+				extractTypeObject(tw, lbl, tp.Obj())
+			}
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
@@ -1763,7 +1780,10 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 // is constructed from their globally unique ID. This prevents cyclic type keys
 // since type recursion in Go always goes through named types.
 func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
-	tp = resolveTypeAlias(tp)
+	return getTypeLabelWithFlags(tw, tp, false)
+}
+
+func getTypeLabelWithFlags(tw *trap.Writer, tp types.Type, transparentAliases bool) (trap.Label, bool) {
 	lbl, exists := tw.Labeler.TypeLabels[tp]
 	if !exists {
 		switch tp := tp.(type) {
@@ -1771,16 +1791,16 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%d;basictype", tp.Kind()))
 		case *types.Array:
 			len := tp.Len()
-			elem := extractType(tw, tp.Elem())
+			elem := extractTypeWithFlags(tw, tp.Elem(), transparentAliases)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%d,{%s};arraytype", len, elem))
 		case *types.Slice:
-			elem := extractType(tw, tp.Elem())
+			elem := extractTypeWithFlags(tw, tp.Elem(), transparentAliases)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};slicetype", elem))
 		case *types.Struct:
 			var b strings.Builder
 			for i := 0; i < tp.NumFields(); i++ {
 				field := tp.Field(i)
-				fieldTypeLbl := extractType(tw, field.Type())
+				fieldTypeLbl := extractTypeWithFlags(tw, field.Type(), transparentAliases)
 				if i > 0 {
 					b.WriteString(",")
 				}
@@ -1792,13 +1812,13 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;structtype", b.String()))
 		case *types.Pointer:
-			base := extractType(tw, tp.Elem())
+			base := extractTypeWithFlags(tw, tp.Elem(), transparentAliases)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};pointertype", base))
 		case *types.Interface:
 			var b strings.Builder
 			for i := 0; i < tp.NumMethods(); i++ {
 				meth := tp.Method(i).Origin()
-				methLbl := extractType(tw, meth.Type())
+				methLbl := extractTypeWithFlags(tw, meth.Type(), transparentAliases)
 				if i > 0 {
 					b.WriteString(",")
 				}
@@ -1809,7 +1829,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				if i > 0 {
 					b.WriteString(",")
 				}
-				fmt.Fprintf(&b, "{%s}", extractType(tw, tp.EmbeddedType(i)))
+				fmt.Fprintf(&b, "{%s}", extractTypeWithFlags(tw, tp.EmbeddedType(i), transparentAliases))
 			}
 			// We note whether the interface is comparable so that we can
 			// distinguish the underlying type of `comparable` from an
@@ -1821,7 +1841,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 		case *types.Tuple:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
-				compLbl := extractType(tw, tp.At(i).Type())
+				compLbl := extractTypeWithFlags(tw, tp.At(i).Type(), transparentAliases)
 				if i > 0 {
 					b.WriteString(",")
 				}
@@ -1833,7 +1853,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			params, results := tp.Params(), tp.Results()
 			if params != nil {
 				for i := 0; i < params.Len(); i++ {
-					paramLbl := extractType(tw, params.At(i).Type())
+					paramLbl := extractTypeWithFlags(tw, params.At(i).Type(), transparentAliases)
 					if i > 0 {
 						b.WriteString(",")
 					}
@@ -1843,7 +1863,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			b.WriteString(";")
 			if results != nil {
 				for i := 0; i < results.Len(); i++ {
-					resultLbl := extractType(tw, results.At(i).Type())
+					resultLbl := extractTypeWithFlags(tw, results.At(i).Type(), transparentAliases)
 					if i > 0 {
 						b.WriteString(",")
 					}
@@ -1855,12 +1875,12 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;signaturetype", b.String()))
 		case *types.Map:
-			key := extractType(tw, tp.Key())
-			value := extractType(tw, tp.Elem())
+			key := extractTypeWithFlags(tw, tp.Key(), transparentAliases)
+			value := extractTypeWithFlags(tw, tp.Elem(), transparentAliases)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s},{%s};maptype", key, value))
 		case *types.Chan:
 			dir := tp.Dir()
-			elem := extractType(tw, tp.Elem())
+			elem := extractTypeWithFlags(tw, tp.Elem(), transparentAliases)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%v,{%s};chantype", dir, elem))
 		case *types.Named:
 			origintp := tp.Origin()
@@ -1879,7 +1899,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
-				compLbl := extractType(tw, tp.Term(i).Type())
+				compLbl := extractTypeWithFlags(tw, tp.Term(i).Type(), transparentAliases)
 				if i > 0 {
 					b.WriteString("|")
 				}
@@ -1890,18 +1910,22 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
 		case *types.Alias:
-			// Ensure that the definition of the aliased type gets extracted
-			// (which may be an alias in itself).
-			extractType(tw, tp.Rhs())
+			if transparentAliases {
+				lbl = extractTypeWithFlags(tw, tp.Rhs(), true)
+			} else {
+				// Ensure that the definition of the aliased type gets extracted
+				// (which may be an alias in itself).
+				extractType(tw, tp.Rhs())
 
-			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
-			if entitylbl == trap.InvalidLabel {
-				panic(fmt.Sprintf("Cannot construct label for alias type %v (underlying object is %v).\n", tp, tp.Obj()))
+				entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+				if entitylbl == trap.InvalidLabel {
+					panic(fmt.Sprintf("Cannot construct label for alias type %v (underlying object is %v).\n", tp, tp.Obj()))
+				}
+				if !exists {
+					extractObject(tw, tp.Obj(), entitylbl)
+				}
+				lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};aliastype", entitylbl))
 			}
-			if !exists {
-				extractObject(tw, tp.Obj(), entitylbl)
-			}
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};aliastype", entitylbl))
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
@@ -1924,29 +1948,29 @@ func extractTypeObject(tw *trap.Writer, lbl trap.Label, entity *types.TypeName) 
 }
 
 // extractKeyType extracts `key` as the key type of the map type `mp`
-func extractKeyType(tw *trap.Writer, mp trap.Label, key types.Type) {
-	dbscheme.KeyTypeTable.Emit(tw, mp, extractType(tw, key))
+func extractKeyType(tw *trap.Writer, mp trap.Label, key types.Type, transparentAliases bool) {
+	dbscheme.KeyTypeTable.Emit(tw, mp, extractTypeWithFlags(tw, key, transparentAliases))
 }
 
 // extractElementType extracts `element` as the element type of the container type `container`
-func extractElementType(tw *trap.Writer, container trap.Label, element types.Type) {
-	dbscheme.ElementTypeTable.Emit(tw, container, extractType(tw, element))
+func extractElementType(tw *trap.Writer, container trap.Label, element types.Type, transparentAliases bool) {
+	dbscheme.ElementTypeTable.Emit(tw, container, extractTypeWithFlags(tw, element, transparentAliases))
 }
 
 // extractBaseType extracts `base` as the base type of the pointer type `ptr`
-func extractBaseType(tw *trap.Writer, ptr trap.Label, base types.Type) {
-	dbscheme.BaseTypeTable.Emit(tw, ptr, extractType(tw, base))
+func extractBaseType(tw *trap.Writer, ptr trap.Label, base types.Type, transparentAliases bool) {
+	dbscheme.BaseTypeTable.Emit(tw, ptr, extractTypeWithFlags(tw, base, transparentAliases))
 }
 
 // extractUnderlyingType extracts `underlying` as the underlying type of the
 // named type `named`
-func extractUnderlyingType(tw *trap.Writer, named trap.Label, underlying types.Type) {
-	dbscheme.UnderlyingTypeTable.Emit(tw, named, extractType(tw, underlying))
+func extractUnderlyingType(tw *trap.Writer, named trap.Label, underlying types.Type, transparentAliases bool) {
+	dbscheme.UnderlyingTypeTable.Emit(tw, named, extractTypeWithFlags(tw, underlying, transparentAliases))
 }
 
 // extractComponentType extracts `component` as the `idx`th component type of `parent` with name `name`
-func extractComponentType(tw *trap.Writer, parent trap.Label, idx int, name string, component types.Type) {
-	dbscheme.ComponentTypesTable.Emit(tw, parent, idx, name, extractType(tw, component))
+func extractComponentType(tw *trap.Writer, parent trap.Label, idx int, name string, component types.Type, transparentAliases bool) {
+	dbscheme.ComponentTypesTable.Emit(tw, parent, idx, name, extractTypeWithFlags(tw, component, transparentAliases))
 }
 
 // extractNumLines extracts lines-of-code and lines-of-comments information for the
