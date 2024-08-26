@@ -446,7 +446,7 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        name = lookThroughPointerType(tp).(NamedType).getName()
+        name = lookThroughPointerType(unalias(tp)).(NamedType).getName()
       ) else (
         isEmbedded = false and
         name = n
