@@ -1466,8 +1466,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * Holds if `node` is reachable with access path `ap` from a source.
          *
          * The call context `cc` records whether the node is reached through an
-         * argument in a call, and if so, `summaryCtx` and `argAp` record the
-         * corresponding parameter position and access path of that argument, respectively.
+         * argument in a call, and if so, `summaryCtx` records the
+         * corresponding parameter position and access path of that argument.
          */
         pragma[nomagic]
         additional predicate fwdFlow(
