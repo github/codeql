@@ -166,9 +166,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private newtype TNodeEx =
       TNodeNormal(Node n) or
-      TNodeImplicitRead(Node n, boolean hasRead) {
-        Config::allowImplicitRead(n, _) and hasRead = [false, true]
-      } or
+      TNodeImplicitRead(Node n) { Config::allowImplicitRead(n, _) } or
       TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
         paramReturnNode(_, p, scope, _)
       }
@@ -177,7 +175,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       string toString() {
         result = this.asNode().toString()
         or
-        exists(Node n | this.isImplicitReadNode(n, _) | result = n.toString() + " [Ext]")
+        exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
         or
         result = this.asParamReturnNode().toString() + " [Return]"
       }
@@ -185,17 +183,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       Node asNode() { this = TNodeNormal(result) }
 
       /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
-      Node asNodeOrImplicitRead() {
-        this = TNodeNormal(result) or this = TNodeImplicitRead(result, true)
-      }
+      Node asNodeOrImplicitRead() { this = TNodeNormal(result) or this = TNodeImplicitRead(result) }
 
-      predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
+      predicate isImplicitReadNode(Node n) { this = TNodeImplicitRead(n) }
 
       ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
 
       Node projectToNode() {
         this = TNodeNormal(result) or
-        this = TNodeImplicitRead(result, _) or
+        this = TNodeImplicitRead(result) or
         this = TParamReturnNode(result, _)
       }
 
@@ -439,13 +435,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         stepFilter(node1, node2)
       )
       or
-      exists(Node n |
-        node1.asNode() = n and
-        node2.isImplicitReadNode(n, false) and
-        not fullBarrier(node1) and
-        model = ""
-      )
-      or
       exists(Node n1, Node n2, SndLevelScopeOption scope |
         node1.asNode() = n1 and
         node2 = TParamReturnNode(n2, scope) and
@@ -524,9 +513,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       stepFilter(node1, node2)
       or
       exists(Node n |
-        node2.isImplicitReadNode(n, true) and
-        node1.isImplicitReadNode(n, _) and
+        node2.isImplicitReadNode(n) and
         Config::allowImplicitRead(n, c)
+      |
+        node1.asNode() = n and
+        not fullBarrier(node1)
+        or
+        node1.isImplicitReadNode(n)
       )
     }
 
@@ -802,7 +795,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       additional predicate sinkNode(NodeEx node, FlowState state) {
-        fwdFlow(node) and
+        fwdFlow(pragma[only_bind_into](node)) and
         fwdFlowState(state) and
         isRelevantSink(node.asNodeOrImplicitRead())
         or
@@ -2910,14 +2903,50 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             abstract PathNodeImpl getASuccessorImpl(string label);
 
+            pragma[nomagic]
+            PathNodeImpl getAnImplicitReadSuccessorAtSink(string label) {
+              exists(PathNodeMid readTarget |
+                result = this.getASuccessorImpl(label) and
+                localStep(this, readTarget, _) and
+                readTarget.getNodeEx().isImplicitReadNode(_)
+              |
+                // last implicit read, leaving the access path empty
+                result = readTarget.projectToSink(_)
+                or
+                // implicit read, leaving the access path non-empty
+                exists(result.getAnImplicitReadSuccessorAtSink(_)) and
+                result = readTarget
+              )
+            }
+
             private PathNodeImpl getASuccessorIfHidden(string label) {
               this.isHidden() and
               result = this.getASuccessorImpl(label)
+              or
+              result = this.getAnImplicitReadSuccessorAtSink(label)
             }
 
             private PathNodeImpl getASuccessorFromNonHidden(string label) {
               result = this.getASuccessorImpl(label) and
-              not this.isHidden()
+              not this.isHidden() and
+              // In cases like
+              //
+              // ```
+              // x.Field = taint;
+              // Sink(x);
+              // ```
+              //
+              // we only want the direct edge
+              //
+              //  `[post update] x [Field]` -> `x`
+              //
+              // and not the two edges
+              //
+              //  `[post update] x [Field]` -> `x [Field]`
+              //  `x [Field]`               -> `x`
+              //
+              // which the restriction below ensures.
+              not result = this.getAnImplicitReadSuccessorAtSink(label)
               or
               exists(string l1, string l2 |
                 result = this.getASuccessorFromNonHidden(l1).getASuccessorIfHidden(l2) and
@@ -3391,6 +3420,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             private predicate localStepFromHidden(PathNodeImpl n1, PathNodeImpl n2) {
               n2 = localStep(n1) and
               n1.isHidden()
+              or
+              n2 = n1.getAnImplicitReadSuccessorAtSink(_)
             }
 
             bindingset[par, ret]
