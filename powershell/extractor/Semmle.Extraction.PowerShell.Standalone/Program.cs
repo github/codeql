@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Semmle.Util.Logging;
 using System.IO;
 using System.Linq;
 using Semmle.Extraction.PowerShell;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.PowerShell.Standalone
 {
-
     /// <summary>
     ///     One independent run of the extractor.
     /// </summary>
@@ -45,9 +44,13 @@ namespace Semmle.Extraction.PowerShell.Standalone
             var start = DateTime.Now;
 
             output.Log(Severity.Info, "Running PowerShell standalone extractor");
-            var di = new DirectoryInfo(options.SrcDir);
-            var sourceFiles = di.GetFiles("*.*", SearchOption.AllDirectories)
-                .Where(d => options.Extensions.Contains(d.Extension,StringComparer.InvariantCultureIgnoreCase))
+            var sourceFiles = options
+                .Files.Where(d =>
+                    options.Extensions.Contains(
+                        d.Extension,
+                        StringComparer.InvariantCultureIgnoreCase
+                    )
+                )
                 .Select(d => d.FullName)
                 .Where(d => !options.ExcludesFile(d))
                 .ToArray();
@@ -64,7 +67,10 @@ namespace Semmle.Extraction.PowerShell.Standalone
 
             if (!options.SkipExtraction)
             {
-                using var fileLogger = new FileLogger(options.Verbosity, PowerShell.Extractor.Extractor.GetPowerShellLogPath());
+                using var fileLogger = new FileLogger(
+                    options.Verbosity,
+                    PowerShell.Extractor.Extractor.GetPowerShellLogPath()
+                );
 
                 output.Log(Severity.Info, "");
                 output.Log(Severity.Info, "Extracting...");
@@ -73,7 +79,8 @@ namespace Semmle.Extraction.PowerShell.Standalone
                     sourceFiles,
                     new ExtractionProgress(output),
                     fileLogger,
-                    options);
+                    options
+                );
                 output.Log(Severity.Info, $"Extraction completed in {DateTime.Now - start}");
             }
 
@@ -89,14 +96,27 @@ namespace Semmle.Extraction.PowerShell.Standalone
 
             private readonly ILogger logger;
 
-            public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
+            public void Analysed(
+                int item,
+                int total,
+                string source,
+                string output,
+                TimeSpan time,
+                AnalysisAction action
+            )
             {
-                logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
+                logger.Log(
+                    Severity.Info,
+                    "[{0}/{1}] {2} ({3})",
+                    item,
+                    total,
+                    source,
                     action == AnalysisAction.Extracted
                         ? time.ToString()
                         : action == AnalysisAction.Excluded
                             ? "excluded"
-                            : "up to date");
+                            : "up to date"
+                );
             }
         }
     }
