@@ -1069,6 +1069,42 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
+    private predicate localStepNodeCand1(
+      NodeEx node1, NodeEx node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
+      string label
+    ) {
+      Stage1::revFlow(node1) and
+      Stage1::revFlow(node2) and
+      (
+        preservesValue = true and
+        localFlowStepEx(node1, node2, label) and
+        t = node1.getDataFlowType()
+        or
+        preservesValue = false and
+        additionalLocalFlowStep(node1, node2, label) and
+        t = node2.getDataFlowType()
+      ) and
+      lcc.relevantFor(node1.getEnclosingCallable()) and
+      not isUnreachableInCall1(node1, lcc) and
+      not isUnreachableInCall1(node2, lcc)
+    }
+
+    pragma[nomagic]
+    private predicate localStateStepNodeCand1(
+      NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, DataFlowType t,
+      LocalCallContext lcc, string label
+    ) {
+      Stage1::revFlow(node1) and
+      Stage1::revFlow(node2) and
+      additionalLocalStateStep(node1, state1, node2, state2) and
+      label = "Config" and
+      t = node2.getDataFlowType() and
+      lcc.relevantFor(node1.getEnclosingCallable()) and
+      not isUnreachableInCall1(node1, lcc) and
+      not isUnreachableInCall1(node2, lcc)
+    }
+
+    pragma[nomagic]
     private predicate viableReturnPosOutNodeCand1(DataFlowCall call, ReturnPosition pos, NodeEx out) {
       Stage1::revFlow(out) and
       Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out)
@@ -1364,6 +1400,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         predicate instanceofCcNoCall(CcNoCall cc);
 
+        class LocalCc;
+
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx);
 
         bindingset[call, ctx]
@@ -1380,13 +1418,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
         bindingset[cc]
-        LocalCallContext getLocalCc(Cc cc);
+        LocalCc getLocalCc(Cc cc);
 
         bindingset[node1, state1]
         bindingset[node2, state2]
         predicate localStep(
           NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-          DataFlowType t, LocalCallContext lcc, string label
+          Typ t, LocalCc lcc, string label
         );
 
         bindingset[node, state, t0, ap]
@@ -1489,18 +1527,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
         }
 
-        bindingset[node1, state1]
-        bindingset[node2, state2]
-        additional predicate localStep(
-          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-          Typ t, LocalCallContext lcc, string label
-        ) {
-          exists(DataFlowType type |
-            Param::localStep(node1, state1, node2, state2, preservesValue, type, lcc, label) and
-            t = getTyp(type)
-          )
-        }
-
         pragma[nomagic]
         private predicate fwdFlow0(
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
@@ -1515,7 +1541,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ap instanceof ApNil and
           apa = getApprox(ap)
           or
-          exists(NodeEx mid, FlowState state0, Typ t0, LocalCallContext localCc |
+          exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
             localCc = getLocalCc(cc)
           |
@@ -2530,8 +2556,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           callEdgeReturn(call, c, _, _, _, _, _)
         }
 
-        /** Provides a big-step relation for local flow steps. */
-        additional module LocalFlowBigStep {
+        /** Provides the input to `LocalFlowBigStep`. */
+        signature module LocalFlowBigStepInputSig {
+          bindingset[node1, state1]
+          bindingset[node2, state2]
+          predicate localStep(
+            NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+            DataFlowType t, LocalCallContext lcc, string label
+          );
+        }
+
+        /**
+         * Provides a big-step relation for local flow steps.
+         *
+         * The big-step releation is based on the `localStep` relation from the
+         * input module, restricted to nodes that are forwards and backwards
+         * reachable in this stage.
+         */
+        additional module LocalFlowBigStep<LocalFlowBigStepInputSig Input> {
           final private class NodeExFinal = NodeEx;
 
           /**
@@ -2558,7 +2600,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             exists(ApNil nil |
               revFlow(node1, state1, pragma[only_bind_into](nil)) and
               revFlow(node2, state2, pragma[only_bind_into](nil)) and
-              Param::localStep(node1, state1, node2, state2, false, t, lcc, label) and
+              Input::localStep(node1, state1, node2, state2, false, t, lcc, label) and
               state1 != state2
             )
           }
@@ -2652,7 +2694,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             not inBarrier(node2, state) and
             not outBarrier(node1, state) and
             exists(NodeEx node0, boolean preservesValue0, DataFlowType t0, string label0, Ap ap |
-              Param::localStep(node0, state, node2, state, preservesValue0, t0, cc, label0) and
+              Input::localStep(node0, state, node2, state, preservesValue0, t0, cc, label0) and
               revFlow(node2, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
               not outBarrier(node0, state) and
               (preservesValue = true or ap instanceof ApNil)
@@ -3053,7 +3095,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
             TypOption argT, ApOption argAp, Typ t, Ap ap, string label, boolean isStoreStep
           ) {
-            exists(NodeEx mid, FlowState state0, Typ t0, LocalCallContext localCc |
+            exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
               pn1 = TPathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
               localCc = getLocalCc(cc) and
               isStoreStep = false
@@ -3523,13 +3565,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       predicate instanceofCcNoCall(CcNoCall cc) { any() }
 
+      class LocalCc = Unit;
+
       bindingset[cc]
-      LocalCallContext getLocalCc(Cc cc) {
-        cc = ccSomeCall() and
-        result instanceof LocalCallContextSpecificCall
-        or
-        result instanceof LocalCallContextAny
-      }
+      LocalCc getLocalCc(Cc cc) { any() }
 
       DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
@@ -3585,63 +3624,23 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
       import CachedCallContextSensitivity
-      import LocalCallContext
-
-      pragma[noinline]
-      private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
-        Stage1::revFlow(node2) and
-        localFlowStepEx(node1, node2, model)
-      }
-
-      pragma[nomagic]
-      private predicate additionalLocalFlowStepNodeCand1(NodeEx node1, NodeEx node2, string model) {
-        Stage1::revFlow(node2) and
-        additionalLocalFlowStep(node1, node2, model)
-      }
-
-      pragma[nomagic]
-      private predicate localStep(
-        NodeEx node1, NodeEx node2, boolean preservesValue, DataFlowType t, LocalCallContext lcc,
-        string label
-      ) {
-        (
-          preservesValue = true and
-          localFlowStepNodeCand1(node1, node2, label) and
-          t = node1.getDataFlowType()
-          or
-          preservesValue = false and
-          additionalLocalFlowStepNodeCand1(node1, node2, label) and
-          t = node2.getDataFlowType()
-        ) and
-        lcc.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCall1(node1, lcc) and
-        not isUnreachableInCall1(node2, lcc)
-      }
-
-      pragma[nomagic]
-      private predicate localStateStep(
-        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        DataFlowType t, LocalCallContext lcc, string label
-      ) {
-        preservesValue = false and
-        additionalLocalStateStep(node1, state1, node2, state2) and
-        label = "Config" and
-        t = node2.getDataFlowType() and
-        lcc.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCall1(node1, lcc) and
-        not isUnreachableInCall1(node2, lcc)
-      }
+      import NoLocalCallContext
 
       bindingset[node1, state1]
       bindingset[node2, state2]
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        DataFlowType t, LocalCallContext lcc, string label
+        Typ t, LocalCc lcc, string label
       ) {
-        localStep(node1, node2, preservesValue, t, lcc, label) and
-        state1 = state2
-        or
-        localStateStep(node1, state1, node2, state2, preservesValue, t, lcc, label)
+        (
+          localStepNodeCand1(node1, node2, preservesValue, _, _, label) and
+          state1 = state2
+          or
+          localStateStepNodeCand1(node1, state1, node2, state2, _, _, label) and
+          preservesValue = false
+        ) and
+        exists(t) and
+        exists(lcc)
       }
 
       pragma[nomagic]
@@ -3725,9 +3724,41 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import CallContextSensitivity<CallContextSensitivityInput>
-      import LocalCallContext
+      import NoLocalCallContext
 
-      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
+      private module BigStepInput implements PrevStage::LocalFlowBigStepInputSig {
+        bindingset[node1, state1]
+        bindingset[node2, state2]
+        predicate localStep(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+          DataFlowType t, LocalCallContext lcc, string label
+        ) {
+          localStepNodeCand1(node1, node2, preservesValue, t, lcc, label) and
+          state1 = state2
+          or
+          localStateStepNodeCand1(node1, state1, node2, state2, t, lcc, label) and
+          preservesValue = false
+        }
+      }
+
+      additional predicate localFlowBigStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        DataFlowType t, LocalCallContext lcc, string label
+      ) {
+        PrevStage::LocalFlowBigStep<BigStepInput>::localFlowBigStep(node1, state1, node2, state2,
+          preservesValue, t, lcc, label)
+      }
+
+      bindingset[node1, state1]
+      bindingset[node2, state2]
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc, string label
+      ) {
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, label) and
+        exists(t) and
+        exists(lcc)
+      }
 
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
@@ -3809,7 +3840,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       import BooleanCallContext
 
-      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
+      pragma[nomagic]
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc, string label
+      ) {
+        Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, label) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
+        exists(lcc)
+      }
 
       pragma[nomagic]
       private predicate clearSet(NodeEx node, ContentSet c) {
@@ -4113,7 +4153,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
-      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc, string label
+      ) {
+        Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+      }
 
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
@@ -4331,7 +4378,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import LocalCallContext
 
-      predicate localStep = PrevStage::LocalFlowBigStep::localFlowBigStep/8;
+      private module BigStepInput implements PrevStage::LocalFlowBigStepInputSig {
+        predicate localStep(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+          DataFlowType t, LocalCallContext lcc, string label
+        ) {
+          Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
+          PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+          PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+        }
+      }
+
+      predicate localStep = PrevStage::LocalFlowBigStep<BigStepInput>::localFlowBigStep/8;
 
       bindingset[node, state, t0, ap]
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
