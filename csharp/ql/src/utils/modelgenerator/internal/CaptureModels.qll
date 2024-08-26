@@ -194,19 +194,28 @@ module PropagateFlowConfig implements DataFlow::StateConfigSig {
   }
 }
 
-private module PropagateFlow = TaintTracking::GlobalWithState<PropagateFlowConfig>;
+module PropagateFlow = TaintTracking::GlobalWithState<PropagateFlowConfig>;
 
-/**
- * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
- */
-string captureThroughFlow(DataFlowSummaryTargetApi api) {
-  exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input, string output |
-    PropagateFlow::flow(p, returnNodeExt) and
+string captureThroughFlow0(
+  DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt
+) {
+  exists(string input, string output |
+    p.getEnclosingCallable() = api and
     returnNodeExt.(DataFlow::Node).getEnclosingCallable() = api and
     input = parameterNodeAsInput(p) and
     output = returnNodeExt.getOutput() and
     input != output and
     result = Printing::asTaintModel(api, input, output)
+  )
+}
+
+/**
+ * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
+ */
+string captureThroughFlow(DataFlowSummaryTargetApi api) {
+  exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
+    PropagateFlow::flow(p, returnNodeExt) and
+    result = captureThroughFlow0(api, p, returnNodeExt)
   )
 }
 
