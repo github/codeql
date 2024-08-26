@@ -83,13 +83,44 @@ namespace Semmle.Extraction.PowerShell.Standalone
             new List<string>() { "node_modules", "bower_components" };
 
         /// <summary>
+        /// Returns a FileInfo object for each file in the given path (recursively).
+        /// </summary>
+        private static FileInfo[] GetFiles(string path)
+        {
+            var di = new DirectoryInfo(path);
+            return di.Exists
+                ? di.GetFiles("*.*", SearchOption.AllDirectories)
+                : new FileInfo[] { new FileInfo(path) };
+        }
+
+        /// <summary>
+        /// Returns a list of files to extract. By default, this is the list of all files in
+        /// the current directory. However, if the LGTM_INDEX_INCLUDE environment variable is
+        /// set, it is used as a list of files to include instead of the files from the current
+        /// directory.
+        /// </summary>
+        private static FileInfo[] GetDefaultFiles()
+        {
+            // Check if the LGTM_INDEX_INCLUDE environmen variable exists
+            var include = System.Environment.GetEnvironmentVariable("LGTM_INDEX_INCLUDE");
+            if (include != null)
+            {
+                System.Console.WriteLine("Using LGTM_INDEX_INCLUDE: {0}", include);
+                return include.Split(';').Select(GetFiles).SelectMany(f => f).ToArray();
+            }
+            else
+            {
+                return new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles(
+                    "*.*",
+                    SearchOption.AllDirectories
+                );
+            }
+        }
+
+        /// <summary>
         /// The directory or file containing the source code;
         /// </summary>
-        public FileInfo[] Files { get; set; } =
-            new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles(
-                "*.*",
-                SearchOption.AllDirectories
-            );
+        public FileInfo[] Files { get; set; } = GetDefaultFiles();
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).
