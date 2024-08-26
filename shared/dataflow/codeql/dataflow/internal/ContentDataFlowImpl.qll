@@ -456,17 +456,14 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate nodeAndState(Flow::PathNode n, Node node, State state) {
-      n.getNode() = node and n.getState() = state
-    }
-
-    pragma[nomagic]
     private predicate succNodeAndState(
       Flow::PathNode pre, Node preNode, State preState, Flow::PathNode succ, Node succNode,
       State succState
     ) {
-      nodeAndState(pre, preNode, preState) and
-      nodeAndState(succ, succNode, succState) and
+      pre.getNode() = preNode and
+      pre.getState() = preState and
+      succ.getNode() = succNode and
+      succ.getState() = succState and
       pre.getASuccessor() = succ
     }
 
