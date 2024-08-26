@@ -921,9 +921,12 @@ class SignatureType extends @signaturetype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result =
-      "func(" + concat(int i, Type tp | tp = this.getParameterType(i) | tp.pp(), ", " order by i) +
-        ") " + concat(int i, Type tp | tp = this.getResultType(i) | tp.pp(), ", " order by i)
+    exists(string suffix | (if this.isVariadic() then suffix = "[variadic]" else suffix = "") |
+      result =
+        "func(" + concat(int i, Type tp | tp = this.getParameterType(i) | tp.pp(), ", " order by i) +
+          ") " + concat(int i, Type tp | tp = this.getResultType(i) | tp.pp(), ", " order by i) +
+          " " + suffix
+    )
   }
 
   override string toString() { result = "signature type" }
