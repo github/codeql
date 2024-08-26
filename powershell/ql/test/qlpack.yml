@@ -6,3 +6,4 @@ dependencies:
   microsoft-sdl/powershell-all: ${workspace}
 extractor: powershell
 tests: .
+warnOnImplicitThis: true

@@ -6,3 +6,4 @@ groups:
 dbscheme: semmlecode.powershell.dbscheme
 extractor: powershell
 library: true
+warnOnImplicitThis: true
