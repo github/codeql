@@ -16,7 +16,6 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.controlflow.Guards
-import semmle.code.cpp.models.interfaces.NonThrowing
 import semmle.code.cpp.models.implementations.NoexceptFunction
 
 /** Gets the `Constructor` invoked when `newExpr` allocates memory. */
