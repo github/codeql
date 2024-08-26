@@ -4,10 +4,12 @@
 
 private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlowUtil
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.ModelExclusions
 private import semmle.code.java.dataflow.DataFlow as Df
+private import semmle.code.java.dataflow.internal.ContentDataFlow as Cdf
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.TaintTracking as Tt
 import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
@@ -17,6 +19,8 @@ import semmle.code.java.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 module DataFlow = Df::DataFlow;
 
+module ContentDataFlow = Cdf::ContentDataFlow;
+
 module TaintTracking = Tt::TaintTracking;
 
 class Type = J::Type;
@@ -24,6 +28,8 @@ class Type = J::Type;
 class Unit = J::Unit;
 
 class Callable = J::Callable;
+
+class ContentSet = DataFlowUtil::ContentSet;
 
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("javax.swing%") or
@@ -217,6 +223,12 @@ string parameterAccess(J::Parameter p) {
     else result = "Argument[" + p.getPosition() + "]"
 }
 
+/**
+ * Gets the MaD string representation of the parameter `p`
+ * when used in content flow.
+ */
+string parameterContentAccess(J::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+
 class InstanceParameterNode = DataFlow::InstanceParameterNode;
 
 class ParameterPosition = DataFlowDispatch::ParameterPosition;
@@ -228,6 +240,17 @@ class ParameterPosition = DataFlowDispatch::ParameterPosition;
 bindingset[c]
 string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
   result = parameterAccess(c.getParameter(pos))
+  or
+  result = qualifierString() and pos = -1
+}
+
+/**
+ * Gets the MaD string representation of return through parameter at position
+ * `pos` of callable `c` for content flow.
+ */
+bindingset[c]
+string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
+  result = parameterContentAccess(c.getParameter(pos))
   or
   result = qualifierString() and pos = -1
 }
@@ -305,3 +328,34 @@ bindingset[kind]
 predicate isRelevantSourceKind(string kind) { any() }
 
 predicate containerContent = DataFlowPrivate::containerContent/1;
+
+/**
+ * Holds if there is a taint step from `node1` to `node2` in content flow.
+ */
+predicate isAdditionalContentFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  TaintTracking::defaultAdditionalTaintStep(node1, node2, _) and
+  not exists(DataFlow::Content f |
+    DataFlowPrivate::readStep(node1, f, node2) and containerContent(f)
+  )
+}
+
+/**
+ * Gets the MaD string representation of the contentset `c`.
+ */
+string printContent(ContentSet c) {
+  exists(Field f, string name |
+    f = c.(DataFlowUtil::FieldContent).getField() and name = f.getQualifiedName()
+  |
+    if f.isPublic() then result = "Field[" + name + "]" else result = "SyntheticField[" + name + "]"
+  )
+  or
+  result = "SyntheticField[" + c.(DataFlowUtil::SyntheticFieldContent).getField() + "]"
+  or
+  c instanceof DataFlowUtil::CollectionContent and result = "Element"
+  or
+  c instanceof DataFlowUtil::ArrayContent and result = "ArrayElement"
+  or
+  c instanceof DataFlowUtil::MapValueContent and result = "MapValue"
+  or
+  c instanceof DataFlowUtil::MapKeyContent and result = "MapKey"
+}
