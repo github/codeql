@@ -450,7 +450,7 @@ void test_qualifiers()
 	b.member = source();
 	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ ir MISSING: ast
+	sink(b.getMember()); // $  MISSING: ir ast
 
 	c = new MyClass2(0);
 
