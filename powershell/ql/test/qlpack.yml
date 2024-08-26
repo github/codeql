@@ -1,0 +1,9 @@
+name: microsoft-sdl/powershell-tests
+groups:
+  - powershell
+  - test
+dependencies:
+  microsoft-sdl/powershell-all: ${workspace}
+extractor: powershell
+tests: .
+warnOnImplicitThis: true
