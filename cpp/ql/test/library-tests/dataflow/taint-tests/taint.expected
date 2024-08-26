@@ -4,7 +4,4 @@ WARNING: module 'DataFlow' has been deprecated and may be removed in future (tai
 WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:68,25-33)
 WARNING: module 'TaintTracking' has been deprecated and may be removed in future (taint.ql:73,20-33)
 testFailures
-| taint.cpp:453:23:453:42 | // $ ir MISSING: ast | Missing result:ir= |
-| vector.cpp:118:12:118:30 | // $ ir MISSING:ast | Missing result:ir= |
-| vector.cpp:119:12:119:30 | // $ ir MISSING:ast | Missing result:ir= |
 failures
