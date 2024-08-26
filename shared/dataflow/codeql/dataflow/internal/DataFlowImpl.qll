@@ -173,6 +173,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Node asNode() { this = TNodeNormal(result) }
 
+      /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
+      Node asNodeOrImplicitRead() {
+        this = TNodeNormal(result) or this = TNodeImplicitRead(result, true)
+      }
+
       predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
 
       ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
@@ -241,6 +246,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ReturnKindExt getKind() { result = pos.getKind() }
     }
 
+    /** If `node` corresponds to a sink, gets the normal node for that sink. */
+    pragma[nomagic]
+    private NodeEx toNormalSinkNodeEx(NodeEx node) {
+      exists(Node n |
+        node.asNodeOrImplicitRead() = n and
+        (Config::isSink(n) or Config::isSink(n, _)) and
+        result.asNode() = n
+      )
+    }
+
     private predicate inBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
@@ -260,7 +275,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate outBarrier(NodeEx node) {
       exists(Node n |
-        node.asNode() = n and
+        node.asNodeOrImplicitRead() = n and
         Config::isBarrierOut(n)
       |
         Config::isSink(n, _)
@@ -272,7 +287,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     pragma[nomagic]
     private predicate outBarrier(NodeEx node, FlowState state) {
       exists(Node n |
-        node.asNode() = n and
+        node.asNodeOrImplicitRead() = n and
         Config::isBarrierOut(n, state)
       |
         Config::isSink(n, state)
@@ -318,7 +333,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate sinkNodeWithState(NodeEx node, FlowState state) {
-      Config::isSink(node.asNode(), state) and
+      Config::isSink(node.asNodeOrImplicitRead(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
     }
@@ -380,18 +395,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, string model) {
       exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
+        node1.asNodeOrImplicitRead() = n1 and
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model) and
         getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
         stepFilter(node1, node2)
-      )
-      or
-      exists(Node n |
-        node1.isImplicitReadNode(n, true) and
-        node2.asNode() = n and
-        not fullBarrier(node2) and
-        model = ""
       )
     }
 
@@ -399,7 +407,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       NodeEx node1, FlowState s1, NodeEx node2, FlowState s2
     ) {
       exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
+        node1.asNodeOrImplicitRead() = n1 and
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
         getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
@@ -425,7 +433,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     private predicate additionalJumpStep(NodeEx node1, NodeEx node2, string model) {
       exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
+        node1.asNodeOrImplicitRead() = n1 and
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model) and
         getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
@@ -436,7 +444,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate additionalJumpStateStep(NodeEx node1, FlowState s1, NodeEx node2, FlowState s2) {
       exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
+        node1.asNodeOrImplicitRead() = n1 and
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
         getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
@@ -729,7 +737,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       additional predicate sinkNode(NodeEx node, FlowState state) {
         fwdFlow(node) and
         fwdFlowState(state) and
-        Config::isSink(node.asNode())
+        Config::isSink(node.asNodeOrImplicitRead())
         or
         fwdFlow(node) and
         fwdFlowState(state) and
@@ -1052,7 +1060,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate sinkModel(NodeEx node, string model) {
       sinkNode(node, _) and
-      exists(Node n | n = node.asNode() |
+      exists(Node n | n = node.asNodeOrImplicitRead() |
         knownSinkModel(n, model)
         or
         not knownSinkModel(n, _) and model = ""
@@ -2549,7 +2557,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             TPathNodeSink(NodeEx node, FlowState state) {
               exists(PathNodeMid sink |
                 sink.isAtSink() and
-                node = sink.getNodeEx() and
+                node = toNormalSinkNodeEx(sink.getNodeEx()) and
                 state = sink.getState()
               )
             } or
@@ -2772,7 +2780,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeSink projectToSink(string model) {
               this.isAtSink() and
               sinkModel(node, model) and
-              result.getNodeEx() = node and
+              result.getNodeEx() = toNormalSinkNodeEx(node) and
               result.getState() = state
             }
           }
@@ -4851,7 +4859,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate revSinkNode(NodeEx node, FlowState state) {
         sinkNodeWithState(node, state)
         or
-        Config::isSink(node.asNode()) and
+        Config::isSink(node.asNodeOrImplicitRead()) and
         relevantState(state) and
         not fullBarrier(node) and
         not stateBarrier(node, state)
