@@ -440,9 +440,9 @@ class StructType extends @structtype, CompositeType {
       then (
         isEmbedded = true and
         (
-          name = tp.(NamedType).getName()
+          name = unalias(tp).(NamedType).getName()
           or
-          name = tp.(PointerType).getBaseType().(NamedType).getName()
+          name = unalias(tp).(PointerType).getBaseType().(NamedType).getName()
         )
       ) else (
         isEmbedded = false and
