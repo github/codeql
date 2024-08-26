@@ -1580,11 +1580,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         private class SummaryCtx extends TSummaryCtx {
           abstract string toString();
+
+          abstract Location getLocation();
         }
 
         /** A summary context from which no flow summary can be generated. */
         private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
           override string toString() { result = "<none>" }
+
+          override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
         }
 
         /** A summary context from which a flow summary can be generated. */
@@ -1601,7 +1605,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           override string toString() { result = p + concat(" : " + this.ppTyp()) + " " + ap }
 
-          Location getLocation() { result = p.getLocation() }
+          override Location getLocation() { result = p.getLocation() }
         }
 
         private predicate fwdFlowJump(NodeEx node, FlowState state, Typ t, Ap ap, ApApprox apa) {
