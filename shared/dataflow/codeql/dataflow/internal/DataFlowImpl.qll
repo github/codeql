@@ -246,16 +246,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ReturnKindExt getKind() { result = pos.getKind() }
     }
 
-    /** If `node` corresponds to a sink, gets the normal node for that sink. */
-    pragma[nomagic]
-    private NodeEx toNormalSinkNodeEx(NodeEx node) {
-      exists(Node n |
-        node.asNodeOrImplicitRead() = n and
-        (Config::isSink(n) or Config::isSink(n, _)) and
-        result.asNode() = n
-      )
-    }
-
     private predicate inBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
@@ -2607,7 +2597,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             TPathNodeSink(NodeEx node, FlowState state) {
               exists(PathNodeMid sink |
                 sink.isAtSink() and
-                node = toNormalSinkNodeEx(sink.getNodeEx()) and
+                node = sink.toNormalSinkNodeEx() and
                 state = sink.getState()
               )
             } or
@@ -2734,6 +2724,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
             }
 
+            /** If this node corresponds to a sink, gets the normal node for that sink. */
+            pragma[nomagic]
+            NodeEx toNormalSinkNodeEx() {
+              exists(Node n |
+                node.asNodeOrImplicitRead() = n and
+                (Config::isSink(n) or Config::isSink(n, _)) and
+                result.asNode() = n
+              )
+            }
+
             override PathNodeImpl getASuccessorImpl(string label) {
               // an intermediate step to another intermediate node
               exists(string l2 | result = this.getSuccMid(l2) |
@@ -2825,7 +2825,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeSink projectToSink(string model) {
               this.isAtSink() and
               sinkModel(node, model) and
-              result.getNodeEx() = toNormalSinkNodeEx(node) and
+              result.getNodeEx() = this.toNormalSinkNodeEx() and
               result.getState() = state
             }
           }
