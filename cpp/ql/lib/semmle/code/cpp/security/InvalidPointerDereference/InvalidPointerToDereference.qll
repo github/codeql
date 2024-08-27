@@ -173,7 +173,6 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
     invalidPointerToDerefSource(_, pai, source)
   }
 
-  pragma[inline]
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _, _) }
 
   predicate isSink(DataFlow::Node sink, FlowState pai) { none() }
