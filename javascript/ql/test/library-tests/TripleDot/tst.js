@@ -133,7 +133,7 @@ function t13() {
     function target(x, y, ...rest) {
         sink(x); // $ SPURIOUS: hasTaintFlow=t13.1
         sink(y); // $ hasTaintFlow=t13.1
-        sink(rest); // $ MISSING: hasTaintFlow=t13.1
+        sink(rest); // $ hasTaintFlow=t13.1
         sink(rest[0]); // $ MISSING: hasTaintFlow=t13.1
     }
     target("safe", ...source('t13.1'));
