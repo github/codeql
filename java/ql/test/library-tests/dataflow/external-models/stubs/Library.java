@@ -16,4 +16,8 @@ public class Library {
   public Object apiStepArgQualGeneratedIgnored(Object x) {
     return null;
   }
+
+  public Object id(Object x) {
+    return null;
+  }
 }

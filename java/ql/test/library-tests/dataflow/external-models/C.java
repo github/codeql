@@ -56,6 +56,24 @@ public class C {
     lib.apiStepArgQualGeneratedIgnored(arg1);
   }
 
+  void fooPossibleLibraryDispatch(Library lib) {
+    Object arg1 = new Object();
+
+    lib.id(arg1);
+  }
+
+  void fooExplicitDispatch() {
+    Object arg1 = new Object();
+
+    MyLibrary lib = new MyLibrary();
+
+    lib.id(arg1);
+  }
+
+  void fooGeneric(MyGenericLibrary<String> lib) {
+    lib.get();
+  }
+
   Object stepArgRes(Object x) {
     return null;
   }
@@ -72,5 +90,19 @@ public class C {
 
   Object stepArgResGenerated(Object x) {
     return null;
+  }
+
+  class MyLibrary extends Library {
+    @Override
+    // Bad implementation of the id function.
+    public Object id(Object x) {
+      return null;
+    }
+  }
+
+  public class MyGenericLibrary<T> {
+    public T get() {
+      return null;
+    }
   }
 }
