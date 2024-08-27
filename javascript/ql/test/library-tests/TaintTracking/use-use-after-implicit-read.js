@@ -13,5 +13,5 @@ function f(x) {
 
 function g(x, y) {
     sink(x); // NOT OK
-    sink(y); // OK [INCONSISTENCY] - implicit read confuses array index
+    sink(y); // OK
 }
