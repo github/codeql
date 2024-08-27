@@ -27,8 +27,6 @@ private import semmle.python.frameworks.data.ModelsAsData
 module Starlette {
   /**
    * Provides models for the `starlette.app` class
-   *
-   *
    */
   module App {
     /** Gets import of `starlette.app`. */
@@ -53,10 +51,9 @@ module Starlette {
    * A call to any of the execute methods on a `app.add_middleware` with CORSMiddleware.
    */
   class AddCorsMiddlewareCall extends AddMiddlewareCall, Http::Server::CorsMiddleware::Range {
-
-          /**
-      * Gets the string corresponding to the middleware
-      */
+    /**
+     * Gets the string corresponding to the middleware
+     */
     override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
 
     override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
@@ -64,14 +61,15 @@ module Starlette {
     override DataFlow::Node allowed_credentials() {
       result = this.getArgByName("allow_credentials")
     }
-      /**
-       * Gets the dataflow node corresponding to the allowed CORS methods 
-       */
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
     DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
 
-      /**
-      * Gets the dataflow node corresponding to the allowed CORS headers 
-      */
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
     DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
   }
 

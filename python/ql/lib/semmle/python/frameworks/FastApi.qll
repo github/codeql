@@ -43,30 +43,32 @@ module FastApi {
    * A call to `app.add_middleware` adding CORSMiddleware.
    */
   class AddCorsMiddlewareCall extends Http::Server::CorsMiddleware::Range, AddMiddlewareCall {
-      /**
-      * Gets the string corresponding to the middleware
-      */
+    /**
+     * Gets the string corresponding to the middleware
+     */
     override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
 
     /**
-    * Gets the dataflow node corresponding to the allowed CORS origins 
-    */
+     * Gets the dataflow node corresponding to the allowed CORS origins
+     */
     override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
-      /**
-       * Gets the boolean value corresponding to if CORS credentials is enabled
-       * (`true`) or disabled (`false`) by this node.
-       */
+
+    /**
+     * Gets the boolean value corresponding to if CORS credentials is enabled
+     * (`true`) or disabled (`false`) by this node.
+     */
     override DataFlow::Node allowed_credentials() {
       result = this.getArgByName("allow_credentials")
     }
-      /**
-       * Gets the dataflow node corresponding to the allowed CORS methods 
-       */
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
     DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
 
-      /**
-      * Gets the dataflow node corresponding to the allowed CORS headers 
-      */
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
     DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
   }
 

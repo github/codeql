@@ -1425,7 +1425,7 @@ module Http {
       string middleware_name() { result = super.middleware_name() }
 
       /**
-       * Gets the dataflow node corresponding to the allowed CORS origins 
+       * Gets the dataflow node corresponding to the allowed CORS origins
        */
       DataFlow::Node allowed_origins() { result = super.allowed_origins() }
 
