@@ -1,9 +1,11 @@
 @echo off
 
-if not defined CODEQL_POWERSHELL_EXTRACTOR (
-    set CODEQL_POWERSHELL_EXTRACTOR=Semmle.Extraction.PowerShell.Standalone.exe
-)
-
-type NUL && "%CODEQL_EXTRACTOR_POWERSHELL_ROOT%/tools/%CODEQL_PLATFORM%/%CODEQL_POWERSHELL_EXTRACTOR%"
+type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
+    --prune=**/*.testproj ^
+    --include-extension=.ps1 ^
+    --size-limit=5m ^
+    --language=powershell ^
+    --working-dir=. ^
+    "%CODEQL_EXTRACTOR_POWERSHELL_WIP_DATABASE%"
 
 exit /b %ERRORLEVEL%

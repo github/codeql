@@ -1,8 +1,8 @@
-using Semmle.Util.Logging;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.PowerShell.Standalone
 {
@@ -36,6 +36,9 @@ namespace Semmle.Extraction.PowerShell.Standalone
                 case "exclude":
                     Excludes.Add(value);
                     return true;
+                case "file-list":
+                    Files = File.ReadAllLines(value).Select(f => new FileInfo(f)).ToArray();
+                    return true;
                 default:
                     return base.HandleOption(key, value);
             }
@@ -43,14 +46,20 @@ namespace Semmle.Extraction.PowerShell.Standalone
 
         public override bool HandleArgument(string arg)
         {
-            SrcDir = arg;
-            if (!new FileInfo(SrcDir).Exists)
+            if (!new FileInfo(arg).Exists)
             {
-                var di = new DirectoryInfo(SrcDir);
+                var di = new DirectoryInfo(arg);
                 if (!di.Exists)
                 {
-                    System.Console.WriteLine("Error: The file or directory {0} does not exist", di.FullName);
+                    System.Console.WriteLine(
+                        "Error: The file or directory {0} does not exist",
+                        di.FullName
+                    );
                     Errors = true;
+                }
+                else
+                {
+                    Files = di.GetFiles("*.*", SearchOption.AllDirectories);
                 }
             }
             return true;
@@ -70,12 +79,48 @@ namespace Semmle.Extraction.PowerShell.Standalone
         /// <summary>
         /// Files/patterns to exclude.
         /// </summary>
-        public IList<string> Excludes { get; } = new List<string>() { "node_modules", "bower_components" };
+        public IList<string> Excludes { get; } =
+            new List<string>() { "node_modules", "bower_components" };
+
+        /// <summary>
+        /// Returns a FileInfo object for each file in the given path (recursively).
+        /// </summary>
+        private static FileInfo[] GetFiles(string path)
+        {
+            var di = new DirectoryInfo(path);
+            return di.Exists
+                ? di.GetFiles("*.*", SearchOption.AllDirectories)
+                : new FileInfo[] { new FileInfo(path) };
+        }
+
+        /// <summary>
+        /// Returns a list of files to extract. By default, this is the list of all files in
+        /// the current directory. However, if the LGTM_INDEX_INCLUDE environment variable is
+        /// set, it is used as a list of files to include instead of the files from the current
+        /// directory.
+        /// </summary>
+        private static FileInfo[] GetDefaultFiles()
+        {
+            // Check if the LGTM_INDEX_INCLUDE environmen variable exists
+            var include = System.Environment.GetEnvironmentVariable("LGTM_INDEX_INCLUDE");
+            if (include != null)
+            {
+                System.Console.WriteLine("Using LGTM_INDEX_INCLUDE: {0}", include);
+                return include.Split(';').Select(GetFiles).SelectMany(f => f).ToArray();
+            }
+            else
+            {
+                return new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles(
+                    "*.*",
+                    SearchOption.AllDirectories
+                );
+            }
+        }
 
         /// <summary>
         /// The directory or file containing the source code;
         /// </summary>
-        public string SrcDir { get; set; } = Directory.GetCurrentDirectory();
+        public FileInfo[] Files { get; set; } = GetDefaultFiles();
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).
@@ -109,19 +154,20 @@ namespace Semmle.Extraction.PowerShell.Standalone
         /// </summary>
         public static void ShowHelp(System.IO.TextWriter output)
         {
-            output.WriteLine("PowerShell# standalone extractor\n\nExtracts PowerShell scripts in the current directory.\n");
+            output.WriteLine(
+                "PowerShell# standalone extractor\n\nExtracts PowerShell scripts in the current directory.\n"
+            );
             output.WriteLine("Additional options:\n");
             output.WriteLine("    <path>           Use the provided path instead.");
-            output.WriteLine("    --exclude:xxx    Exclude a file or directory (can be specified multiple times)");
+            output.WriteLine(
+                "    --exclude:xxx    Exclude a file or directory (can be specified multiple times)"
+            );
             output.WriteLine("    --dry-run        Stop before extraction");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
-
         }
 
-        private Options()
-        {
-        }
+        private Options() { }
 
         public static Options Create(string[] args)
         {
