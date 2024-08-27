@@ -456,26 +456,38 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
+    private predicate succNodeAndState(
+      Flow::PathNode pre, Node preNode, State preState, Flow::PathNode succ, Node succNode,
+      State succState
+    ) {
+      pre.getNode() = preNode and
+      pre.getState() = preState and
+      succ.getNode() = succNode and
+      succ.getState() = succState and
+      pre.getASuccessor() = succ
+    }
+
+    pragma[nomagic]
     private predicate nodeReachesStore(
-      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode node,
+      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode target,
       ContentSet c, AccessPath reads, AccessPath stores
     ) {
-      exists(Flow::PathNode mid |
+      exists(Flow::PathNode mid, State midState, Node midNode, State targetState, Node targetNode |
         nodeReaches(source, scReads, scStores, mid, reads, stores) and
-        storeStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-        mid.getASuccessor() = node
+        succNodeAndState(mid, midNode, midState, target, targetNode, targetState) and
+        storeStep(midNode, midState, c, targetNode, targetState)
       )
     }
 
     pragma[nomagic]
     private predicate nodeReachesRead(
-      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode node,
+      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode target,
       ContentSet c, AccessPath reads, AccessPath stores
     ) {
-      exists(Flow::PathNode mid |
+      exists(Flow::PathNode mid, State midState, Node midNode, State targetState, Node targetNode |
         nodeReaches(source, scReads, scStores, mid, reads, stores) and
-        readStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-        mid.getASuccessor() = node
+        succNodeAndState(mid, midNode, midState, target, targetNode, targetState) and
+        readStep(midNode, midState, c, targetNode, targetState)
       )
     }
 
