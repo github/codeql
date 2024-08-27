@@ -8,7 +8,7 @@ use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice
 
 
 mod config;
-
+mod trap;
 
 fn main() -> anyhow::Result<()> {
     let cfg = config::Config::extract().context("failed to load configuration")?;
