@@ -1788,10 +1788,6 @@ case @expr.kind of
 | 382 = @isvalidwinrttype
 | 383 = @iswinclass
 | 384 = @iswininterface
-| 385 = @istriviallyequalitycomparable
-| 386 = @isscopedenum
-| 387 = @istriviallyrelocatable
-| 388 = @datasizeof
 ;
 
 @var_args_expr = @vastartexpr
@@ -1905,9 +1901,6 @@ case @expr.kind of
             | @isvalidwinrttype
             | @iswinclass
             | @iswininterface
-            | @istriviallyequalitycomparable
-            | @isscopedenum
-            | @istriviallyrelocatable
             ;
 
 new_allocated_type(
@@ -1968,7 +1961,7 @@ uuidof_bind(
     int type_id: @type ref
 );
 
-@runtime_sizeof_or_alignof = @runtime_sizeof | @runtime_alignof | @datasizeof;
+@runtime_sizeof_or_alignof = @runtime_sizeof | @runtime_alignof;
 
 sizeof_bind(
     unique int expr: @runtime_sizeof_or_alignof ref,
