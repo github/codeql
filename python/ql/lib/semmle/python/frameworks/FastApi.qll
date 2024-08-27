@@ -36,6 +36,9 @@ module FastApi {
   private class AddMiddlewareCall extends DataFlow::CallCfgNode {
     AddMiddlewareCall() { this = App::instance().getMember("add_middleware").getACall() }
 
+    /**
+     * Gets the string corresponding to the middleware
+     */
     string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
   }
 

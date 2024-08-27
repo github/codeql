@@ -44,6 +44,9 @@ module Starlette {
       this = [App::instance().getMember("add_middleware").getACall(), Middleware::instance()]
     }
 
+    /**
+     * Gets the string corresponding to the middleware
+     */
     string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
   }
 
