@@ -279,7 +279,7 @@ open class LoggerBase(val logCounter: LogCounter) {
     }
 }
 
-open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter) {
+open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
     fun flush() {
         dtw.flush()
         loggerBase.flush()
