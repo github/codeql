@@ -3624,10 +3624,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class Typ = Unit;
 
-      class Ap = Boolean;
+      class Ap instanceof int {
+        Ap() { this = [0 .. Config::accessPathLimit()] }
+
+        string toString() { result = "depth=" + this }
+      }
 
       class ApNil extends Ap {
-        ApNil() { this = false }
+        ApNil() { this = 0 }
       }
 
       bindingset[result, ap]
@@ -3637,24 +3641,31 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) {
-        result = true and
+        result = tail + 1 and
         exists(c) and
-        exists(t) and
-        if tail = true then Config::accessPathLimit() > 1 else any()
+        exists(t)
       }
 
       class ApHeadContent = Unit;
 
       pragma[inline]
-      ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+      ApHeadContent getHeadContent(Ap ap) { exists(result) and ap > 0 }
 
       ApHeadContent projectToHeadContent(Content c) { any() }
 
-      class ApOption = BooleanOption;
+      class ApOption instanceof int {
+        ApOption() { this instanceof Ap or this = -1 }
 
-      ApOption apNone() { result = TBooleanNone() }
+        string toString() {
+          this = -1 and result = "<none>"
+          or
+          result = this.(Ap).toString()
+        }
+      }
 
-      ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+      ApOption apNone() { result = -1 }
+
+      ApOption apSome(Ap ap) { result = ap }
 
       import CachedCallContextSensitivity
       import NoLocalCallContext
@@ -3694,7 +3705,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         (
           notExpectsContent(node)
           or
-          ap = true and
+          ap > 0 and
           expectsContentCand(node)
         )
       }
@@ -3724,7 +3735,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = ApproxAccessPathFrontNil;
 
-      PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+      PrevStage::Ap getApprox(Ap ap) {
+        // TODO: returning multiple APs here is a hack
+        if ap = TApproxFrontNil() then result = 0 else result = [1 .. Config::accessPathLimit()]
+      }
 
       Typ getTyp(DataFlowType t) { any() }
 
