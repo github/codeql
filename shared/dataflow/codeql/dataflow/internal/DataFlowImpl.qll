@@ -2728,7 +2728,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             pragma[nomagic]
             NodeEx toNormalSinkNodeEx() {
               exists(Node n |
-                node.asNodeOrImplicitRead() = n and
+                pragma[only_bind_out](node.asNodeOrImplicitRead()) = n and
                 (Config::isSink(n) or Config::isSink(n, _)) and
                 result.asNode() = n
               )
