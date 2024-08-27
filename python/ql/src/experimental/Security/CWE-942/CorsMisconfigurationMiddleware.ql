@@ -8,7 +8,7 @@
  * @precision high
  * @id py/insecure-cors-setting
  * @tags security
- *       external/cwe/cwe-352
+ *       external/cwe/cwe-942
  */
 
 import python

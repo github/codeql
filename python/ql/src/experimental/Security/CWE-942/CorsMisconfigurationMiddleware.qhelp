@@ -45,11 +45,11 @@
 </recommendation>
 <example>
 <p>
-	The first example shows a few possible CORS misconfiguration cases:
+	The first example shows a possible CORS misconfiguration case:
 </p>
 <sample src="CorsMisconfigurationMiddlewareBad.py"/>
 <p>
-	The second example show better configurations:
+	The second example shows a better configuration:
 </p>
 <sample src="CorsMisconfigurationMiddlewareGood.py"/>
 </example>
