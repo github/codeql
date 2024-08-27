@@ -31,6 +31,32 @@ module FastApi {
   }
 
   /**
+   * A call to `app.add_middleware` adding a generic middleware.
+   */
+  private class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() { this = App::instance().getMember("add_middleware").getACall() }
+
+    string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+  }
+
+  /**
+   * A call to `app.add_middleware` adding CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends Http::Server::CorsMiddleware::Range, AddMiddlewareCall {
+    override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+
+    override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
+
+    override DataFlow::Node allowed_credentials() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
+
+    DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
    * Provides models for the `fastapi.APIRouter` class
    *
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.

@@ -26,6 +26,87 @@ private import semmle.python.frameworks.data.ModelsAsData
  */
 module Starlette {
   /**
+   * Provides models for the `starlette.app` class
+   *
+   * See https://www.starlette.io/websockets/.
+   */
+  module App {
+    API::Node cls() { result = API::moduleImport("starlette").getMember("app") }
+
+    /** Gets a reference to a FastAPI application (an instance of `fastapi.FastAPI`). */
+    API::Node instance() { result = cls().getReturn() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware`.
+   */
+  class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() {
+      this = [App::instance().getMember("add_middleware").getACall(), Middleware::instance()]
+    }
+
+    string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware` with CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends AddMiddlewareCall, Http::Server::CorsMiddleware::Range {
+    override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+
+    override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
+
+    override DataFlow::Node allowed_credentials() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
+
+    DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
+   * Provides models for the `starlette.middleware.Middleware` class
+   *
+   * See https://www.starlette.io/.
+   */
+  module Middleware {
+    /** Gets a reference to the `starlette.middleware.Middleware` class. */
+    API::Node classRef() {
+      result = API::moduleImport("starlette").getMember("middleware").getMember("Middleware")
+      or
+      result = ModelOutput::getATypeNode("starlette.middleware.Middleware~Subclass").getASubclass*()
+    }
+
+    /**
+     * A source of instances of `starlette.middleware.Middleware`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Middleware::instance()` to get references to instances of `starlette.middleware.middleware`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `starlette.middleware.Middleware`. */
+    class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  }
+
+  /**
    * Provides models for the `starlette.websockets.WebSocket` class
    *
    * See https://www.starlette.io/websockets/.

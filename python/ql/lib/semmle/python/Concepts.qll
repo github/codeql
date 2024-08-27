@@ -1412,6 +1412,56 @@ module Http {
     }
 
     /**
+     * A data-flow node that enables or disables CORS
+     * in a global manner.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CorsMiddleware::Range` instead.
+     */
+    class CorsMiddleware extends DataFlow::Node instanceof CorsMiddleware::Range {
+      /**
+       * Gets the string corresponding to the middleware
+       */
+      string middleware_name() { result = super.middleware_name() }
+
+      /**
+       * Gets the boolean value corresponding to if CORS credentials is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
+      DataFlow::Node allowed_origins() { result = super.allowed_origins() }
+
+      DataFlow::Node allowed_credentials() { result = super.allowed_credentials() }
+    }
+
+    /** Provides a class for modeling new CORS middleware APIs. */
+    module CorsMiddleware {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * in a global manner.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CorsMiddleware` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the string corresponding to the middleware
+         */
+        abstract string middleware_name();
+
+        /**
+         * Gets the boolean value corresponding to if CORS credentials is enabled
+         * (`true`) or disabled (`false`) by this node.
+         */
+        abstract DataFlow::Node allowed_credentials();
+
+        /**
+         * Gets the strings corresponding to the origins allowed by the cors policy
+         */
+        abstract DataFlow::Node allowed_origins();
+      }
+    }
+
+    /**
      * A data-flow node that enables or disables Cross-site request forgery protection
      * in a global manner.
      *
