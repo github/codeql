@@ -45,7 +45,7 @@ private module DispatchImpl {
    * The following heuristic is applied for finding the appropriate callable:
    * 1. If an exact manual model exists, only dispatch to the summarized callable.
    * 2. If a (non exact) manual model exists and/or if the source code is available, dispatch to both/either.
-   * 3. Only dispatch to a summarized callable (based on a generated model) if neither of the above apply.
+   * 3. Only dispatch to a summarized callable in case the static call target in not in source.
    */
   DataFlowCallable viableCallable(DataFlowCall c) {
     exists(Call call | call = c.asCall() |
@@ -53,11 +53,11 @@ private module DispatchImpl {
       or
       not (
         // Only use summarized callables with generated summaries in case
-        // we are not able to dispatch to a source declaration.
+        // the static call target is not in the source code.
         // Note that if applyGeneratedModel holds it implies that there doesn't
-        // exist a manual (exact) model.
-        exists(Callable callable | callable = sourceDispatch(call) |
-          callable.fromSource() and not callable.isStub()
+        // exist a manual model.
+        exists(Callable staticTarget | staticTarget = call.getCallee().getSourceDeclaration() |
+          staticTarget.fromSource() and not staticTarget.isStub()
         ) and
         result.asSummarizedCallable().applyGeneratedModel()
       ) and
