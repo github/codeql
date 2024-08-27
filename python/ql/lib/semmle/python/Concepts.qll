@@ -1425,11 +1425,14 @@ module Http {
       string middleware_name() { result = super.middleware_name() }
 
       /**
-       * Gets the boolean value corresponding to if CORS credentials is enabled
-       * (`true`) or disabled (`false`) by this node.
+       * Gets the dataflow node corresponding to the allowed CORS origins 
        */
       DataFlow::Node allowed_origins() { result = super.allowed_origins() }
 
+      /**
+       * Gets the boolean value corresponding to if CORS credentials is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
       DataFlow::Node allowed_credentials() { result = super.allowed_credentials() }
     }
 

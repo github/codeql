@@ -28,12 +28,13 @@ module Starlette {
   /**
    * Provides models for the `starlette.app` class
    *
-   * See https://www.starlette.io/websockets/.
+   *
    */
   module App {
+    /** Gets import of `starlette.app`. */
     API::Node cls() { result = API::moduleImport("starlette").getMember("app") }
 
-    /** Gets a reference to a FastAPI application (an instance of `fastapi.FastAPI`). */
+    /** Gets a reference to a Starlette application (an instance of `starlette.app`). */
     API::Node instance() { result = cls().getReturn() }
   }
 
@@ -52,6 +53,10 @@ module Starlette {
    * A call to any of the execute methods on a `app.add_middleware` with CORSMiddleware.
    */
   class AddCorsMiddlewareCall extends AddMiddlewareCall, Http::Server::CorsMiddleware::Range {
+
+          /**
+      * Gets the string corresponding to the middleware
+      */
     override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
 
     override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
@@ -59,9 +64,14 @@ module Starlette {
     override DataFlow::Node allowed_credentials() {
       result = this.getArgByName("allow_credentials")
     }
-
+      /**
+       * Gets the dataflow node corresponding to the allowed CORS methods 
+       */
     DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
 
+      /**
+      * Gets the dataflow node corresponding to the allowed CORS headers 
+      */
     DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
   }
 

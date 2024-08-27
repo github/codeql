@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-	Web browsers, by default, disallow cross-origin resource sharing via direct HTTP requests (i.e. using a JavaScript HTTP client).
+	Web browsers, by default, disallow cross-origin resource sharing via direct HTTP requests.
 	Still, to satisfy some needs that arose with the growth of the web, an expedient was created to make exceptions possible.
 	CORS (Cross-origin resource sharing) is a mechanism that allows resources of a web endpoint (let's call it "Peer A")
 	to be accessed from another web page belonging to a different domain ("Peer B").
