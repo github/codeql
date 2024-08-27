@@ -14,6 +14,8 @@ legacyDataFlowDifference
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:44:8:44:19 | f_safe.taint | only flow with NEW data flow library |
 | constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:39:8:39:14 | e.param | only flow with NEW data flow library |
 | exceptions.js:53:14:53:21 | source() | exceptions.js:54:10:54:10 | e | only flow with NEW data flow library |
+| export-taint.js:3:22:3:29 | source() | import-taint.js:7:10:7:25 | mod.object.taint | only flow with OLD data flow library |
+| export-taint.js:3:22:3:29 | source() | import-taint.js:14:14:14:29 | mod.object.taint | only flow with OLD data flow library |
 | getters-and-setters.js:53:21:53:28 | source() | getters-and-setters.js:53:10:53:30 | getX(ne ... rce())) | only flow with NEW data flow library |
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y | only flow with NEW data flow library |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
@@ -165,6 +167,8 @@ flow
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| export-taint.js:2:12:2:19 | source() | import-taint.js:6:10:6:18 | mod.taint |
+| export-taint.js:2:12:2:19 | source() | import-taint.js:13:14:13:22 | mod.taint |
 | factory-function.js:21:13:21:20 | source() | factory-function.js:7:10:7:12 | obj |
 | factory-function.js:22:13:22:20 | source() | factory-function.js:7:10:7:12 | obj |
 | factory-function.js:26:7:26:14 | source() | factory-function.js:16:14:16:16 | obj |
