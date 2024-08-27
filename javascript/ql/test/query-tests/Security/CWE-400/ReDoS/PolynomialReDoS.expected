@@ -3,8 +3,9 @@ edges
 | lib/indirect.js:1:32:1:32 | x | lib/indirect.js:2:16:2:16 | x | provenance |  |
 | lib/lib.js:3:28:3:31 | name | lib/lib.js:4:14:4:17 | name | provenance |  |
 | lib/lib.js:7:19:7:22 | name | lib/lib.js:8:13:8:16 | name | provenance |  |
-| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments | provenance |  |
-| lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments | lib/lib.js:35:28:35:31 | name | provenance |  |
+| lib/lib.js:32:32:32:40 | [apply call taint node] | lib/lib.js:32:32:32:40 | arguments [ArrayElement] | provenance |  |
+| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:32:32:32:40 | [apply call taint node] | provenance |  |
+| lib/lib.js:32:32:32:40 | arguments [ArrayElement] | lib/lib.js:35:28:35:31 | name | provenance |  |
 | lib/lib.js:35:28:35:31 | name | lib/lib.js:36:13:36:16 | name | provenance |  |
 | lib/lib.js:41:32:41:35 | name | lib/lib.js:42:17:42:20 | name | provenance |  |
 | lib/lib.js:41:32:41:35 | name | lib/lib.js:44:12:44:15 | name | provenance |  |
@@ -359,8 +360,9 @@ nodes
 | lib/lib.js:4:14:4:17 | name | semmle.label | name |
 | lib/lib.js:7:19:7:22 | name | semmle.label | name |
 | lib/lib.js:8:13:8:16 | name | semmle.label | name |
+| lib/lib.js:32:32:32:40 | [apply call taint node] | semmle.label | [apply call taint node] |
 | lib/lib.js:32:32:32:40 | arguments | semmle.label | arguments |
-| lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments | semmle.label | 'arguments' object of function usedWithArguments |
+| lib/lib.js:32:32:32:40 | arguments [ArrayElement] | semmle.label | arguments [ArrayElement] |
 | lib/lib.js:35:28:35:31 | name | semmle.label | name |
 | lib/lib.js:36:13:36:16 | name | semmle.label | name |
 | lib/lib.js:41:32:41:35 | name | semmle.label | name |

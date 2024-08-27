@@ -16,6 +16,7 @@ edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:39:26:39:28 | cmd | provenance |  |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:43:15:43:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:15:53:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
@@ -26,12 +27,18 @@ edges
 | child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:49 | cmd | provenance |  |
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | provenance |  |
-| child_process-test.js:56:46:56:57 | ["bar", cmd] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
+| child_process-test.js:46:9:46:17 | args [1] | child_process-test.js:49:15:49:18 | args [1] | provenance |  |
+| child_process-test.js:48:5:48:8 | [post update] args [1] | child_process-test.js:46:9:46:17 | args [1] | provenance |  |
+| child_process-test.js:48:15:48:17 | cmd | child_process-test.js:48:5:48:8 | [post update] args [1] | provenance |  |
+| child_process-test.js:49:15:49:18 | args [1] | child_process-test.js:66:19:66:22 | args [1] | provenance |  |
+| child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) [ArrayElement] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
 | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
-| child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
-| child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:46:56:57 | ["bar", cmd] | provenance |  |
+| child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) [ArrayElement] | provenance |  |
 | child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | provenance |  |
+| child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) [ArrayElement] | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | provenance |  |
 | child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | provenance |  |
+| child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) [ArrayElement] | provenance |  |
+| child_process-test.js:66:19:66:22 | args [1] | child_process-test.js:66:19:66:22 | args | provenance |  |
 | child_process-test.js:73:9:73:49 | cmd | child_process-test.js:75:29:75:31 | cmd | provenance |  |
 | child_process-test.js:73:15:73:38 | url.par ... , true) | child_process-test.js:73:9:73:49 | cmd | provenance |  |
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) | provenance |  |
@@ -46,26 +53,18 @@ edges
 | exec-sh.js:19:15:19:38 | url.par ... , true) | exec-sh.js:19:9:19:49 | cmd | provenance |  |
 | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:19:15:19:38 | url.par ... , true) | provenance |  |
 | exec-sh.js:20:12:20:14 | cmd | exec-sh.js:13:17:13:23 | command | provenance |  |
-| execSeries.js:3:20:3:22 | arr | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr] | provenance |  |
-| execSeries.js:3:20:3:22 | arr | execSeries.js:6:14:6:16 | arr | provenance |  |
 | execSeries.js:3:20:3:22 | arr [0] | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | provenance |  |
 | execSeries.js:3:20:3:22 | arr [0] | execSeries.js:6:14:6:16 | arr [0] | provenance |  |
 | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | execSeries.js:6:14:6:16 | arr [0] | provenance |  |
-| execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr] | execSeries.js:6:14:6:16 | arr | provenance |  |
-| execSeries.js:6:14:6:16 | arr | execSeries.js:6:14:6:21 | arr[i++] | provenance |  |
 | execSeries.js:6:14:6:16 | arr [0] | execSeries.js:6:14:6:21 | arr[i++] | provenance |  |
 | execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command | provenance |  |
-| execSeries.js:13:19:13:26 | commands | execSeries.js:14:13:14:20 | commands | provenance |  |
 | execSeries.js:13:19:13:26 | commands [0] | execSeries.js:14:13:14:20 | commands [0] | provenance |  |
-| execSeries.js:14:13:14:20 | commands | execSeries.js:3:20:3:22 | arr | provenance |  |
 | execSeries.js:14:13:14:20 | commands [0] | execSeries.js:3:20:3:22 | arr [0] | provenance |  |
 | execSeries.js:14:24:14:30 | command | execSeries.js:14:41:14:47 | command | provenance |  |
 | execSeries.js:18:7:18:58 | cmd | execSeries.js:19:13:19:15 | cmd | provenance |  |
 | execSeries.js:18:13:18:47 | require ... , true) | execSeries.js:18:7:18:58 | cmd | provenance |  |
 | execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) | provenance |  |
-| execSeries.js:19:12:19:16 | [cmd] | execSeries.js:13:19:13:26 | commands | provenance |  |
 | execSeries.js:19:12:19:16 | [cmd] [0] | execSeries.js:13:19:13:26 | commands [0] | provenance |  |
-| execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] | provenance |  |
 | execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] [0] | provenance |  |
 | form-parsers.js:9:19:9:26 | req.file | form-parsers.js:9:8:9:39 | "touch  ... nalname | provenance |  |
 | form-parsers.js:13:3:13:11 | req.files | form-parsers.js:13:21:13:24 | file | provenance |  |
@@ -127,15 +126,22 @@ nodes
 | child_process-test.js:25:21:25:23 | cmd | semmle.label | cmd |
 | child_process-test.js:39:26:39:28 | cmd | semmle.label | cmd |
 | child_process-test.js:43:15:43:17 | cmd | semmle.label | cmd |
+| child_process-test.js:46:9:46:17 | args [1] | semmle.label | args [1] |
+| child_process-test.js:48:5:48:8 | [post update] args [1] | semmle.label | [post update] args [1] |
 | child_process-test.js:48:15:48:17 | cmd | semmle.label | cmd |
+| child_process-test.js:48:15:48:17 | cmd | semmle.label | cmd |
+| child_process-test.js:49:15:49:18 | args [1] | semmle.label | args [1] |
 | child_process-test.js:53:15:53:17 | cmd | semmle.label | cmd |
 | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | semmle.label | ['/C',  ... , cmd]) |
-| child_process-test.js:56:46:56:57 | ["bar", cmd] | semmle.label | ["bar", cmd] |
+| child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) [ArrayElement] | semmle.label | ['/C',  ... , cmd]) [ArrayElement] |
 | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | semmle.label | ["bar", cmd] [1] |
 | child_process-test.js:56:54:56:56 | cmd | semmle.label | cmd |
 | child_process-test.js:56:54:56:56 | cmd | semmle.label | cmd |
 | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | semmle.label | ['/C',  ... at(cmd) |
+| child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) [ArrayElement] | semmle.label | ['/C',  ... at(cmd) [ArrayElement] |
 | child_process-test.js:57:46:57:48 | cmd | semmle.label | cmd |
+| child_process-test.js:66:19:66:22 | args | semmle.label | args |
+| child_process-test.js:66:19:66:22 | args [1] | semmle.label | args [1] |
 | child_process-test.js:73:9:73:49 | cmd | semmle.label | cmd |
 | child_process-test.js:73:15:73:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | child_process-test.js:73:25:73:31 | req.url | semmle.label | req.url |
@@ -155,23 +161,17 @@ nodes
 | exec-sh.js:19:15:19:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | exec-sh.js:19:25:19:31 | req.url | semmle.label | req.url |
 | exec-sh.js:20:12:20:14 | cmd | semmle.label | cmd |
-| execSeries.js:3:20:3:22 | arr | semmle.label | arr |
 | execSeries.js:3:20:3:22 | arr [0] | semmle.label | arr [0] |
 | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | semmle.label | (functi ... );\\n  }) [arr, 0] |
-| execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr] | semmle.label | (functi ... );\\n  }) [arr] |
-| execSeries.js:6:14:6:16 | arr | semmle.label | arr |
 | execSeries.js:6:14:6:16 | arr [0] | semmle.label | arr [0] |
 | execSeries.js:6:14:6:21 | arr[i++] | semmle.label | arr[i++] |
-| execSeries.js:13:19:13:26 | commands | semmle.label | commands |
 | execSeries.js:13:19:13:26 | commands [0] | semmle.label | commands [0] |
-| execSeries.js:14:13:14:20 | commands | semmle.label | commands |
 | execSeries.js:14:13:14:20 | commands [0] | semmle.label | commands [0] |
 | execSeries.js:14:24:14:30 | command | semmle.label | command |
 | execSeries.js:14:41:14:47 | command | semmle.label | command |
 | execSeries.js:18:7:18:58 | cmd | semmle.label | cmd |
 | execSeries.js:18:13:18:47 | require ... , true) | semmle.label | require ... , true) |
 | execSeries.js:18:34:18:40 | req.url | semmle.label | req.url |
-| execSeries.js:19:12:19:16 | [cmd] | semmle.label | [cmd] |
 | execSeries.js:19:12:19:16 | [cmd] [0] | semmle.label | [cmd] [0] |
 | execSeries.js:19:13:19:15 | cmd | semmle.label | cmd |
 | form-parsers.js:9:8:9:39 | "touch  ... nalname | semmle.label | "touch  ... nalname |
@@ -239,6 +239,7 @@ subpaths
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:62:5:62:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:15:53:17 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:48:15:48:17 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
+| child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:66:19:66:22 | args | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command line depends on a $@. | child_process-test.js:73:25:73:31 | req.url | user-provided value |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command line depends on a $@. | child_process-test.js:83:19:83:36 | req.query.fileName | user-provided value |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command line depends on a $@. | child_process-test.js:94:21:94:30 | ctx.params | user-provided value |

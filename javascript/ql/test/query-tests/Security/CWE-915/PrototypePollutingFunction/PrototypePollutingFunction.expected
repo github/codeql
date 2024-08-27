@@ -97,8 +97,12 @@ nodes
 | tests.js:18:24:18:31 | src[key] | semmle.label | src[key] |
 | tests.js:18:28:18:30 | key | semmle.label | key |
 | tests.js:23:19:23:21 | dst | semmle.label | dst |
+| tests.js:23:27:23:33 | sources [0] | semmle.label | sources [0] |
+| tests.js:24:14:24:19 | source | semmle.label | source |
+| tests.js:24:24:24:30 | sources [0] | semmle.label | sources [0] |
 | tests.js:25:18:25:20 | key | semmle.label | key |
 | tests.js:26:25:26:27 | dst | semmle.label | dst |
+| tests.js:26:30:26:35 | source | semmle.label | source |
 | tests.js:26:30:26:40 | source[key] | semmle.label | source[key] |
 | tests.js:26:37:26:39 | key | semmle.label | key |
 | tests.js:26:43:26:45 | key | semmle.label | key |
@@ -110,6 +114,7 @@ nodes
 | tests.js:32:20:32:27 | dst[key] | semmle.label | dst[key] |
 | tests.js:32:24:32:26 | key | semmle.label | key |
 | tests.js:34:18:34:25 | dstValue | semmle.label | dstValue |
+| tests.js:34:28:34:32 | value | semmle.label | value |
 | tests.js:36:9:36:11 | dst | semmle.label | dst |
 | tests.js:36:13:36:15 | key | semmle.label | key |
 | tests.js:36:20:36:24 | value | semmle.label | value |
@@ -567,8 +572,24 @@ nodes
 | tests.js:516:36:516:38 | key | semmle.label | key |
 | tests.js:517:35:517:37 | dst | semmle.label | dst |
 | tests.js:517:40:517:42 | key | semmle.label | key |
+| tests.js:522:35:522:38 | args [0] | semmle.label | args [0] |
+| tests.js:522:35:522:38 | args [1] | semmle.label | args [1] |
+| tests.js:523:11:523:23 | dst | semmle.label | dst |
+| tests.js:523:17:523:20 | args [0] | semmle.label | args [0] |
+| tests.js:523:17:523:23 | args[0] | semmle.label | args[0] |
+| tests.js:524:11:524:23 | src | semmle.label | src |
+| tests.js:524:17:524:20 | args [1] | semmle.label | args [1] |
+| tests.js:524:17:524:23 | args[1] | semmle.label | args[1] |
 | tests.js:525:14:525:16 | key | semmle.label | key |
+| tests.js:527:35:527:37 | dst | semmle.label | dst |
+| tests.js:527:35:527:42 | dst[key] | semmle.label | dst[key] |
+| tests.js:527:39:527:41 | key | semmle.label | key |
+| tests.js:527:45:527:47 | src | semmle.label | src |
+| tests.js:527:45:527:52 | src[key] | semmle.label | src[key] |
+| tests.js:527:49:527:51 | key | semmle.label | key |
+| tests.js:529:13:529:15 | dst | semmle.label | dst |
 | tests.js:529:17:529:19 | key | semmle.label | key |
+| tests.js:529:24:529:26 | src | semmle.label | src |
 | tests.js:529:24:529:31 | src[key] | semmle.label | src[key] |
 | tests.js:529:28:529:30 | key | semmle.label | key |
 | tests.js:534:31:534:33 | obj | semmle.label | obj |
@@ -735,14 +756,19 @@ edges
 | tests.js:18:24:18:26 | src | tests.js:18:24:18:31 | src[key] | provenance | Config |
 | tests.js:18:28:18:30 | key | tests.js:18:24:18:31 | src[key] | provenance | Config |
 | tests.js:23:19:23:21 | dst | tests.js:26:25:26:27 | dst | provenance |  |
+| tests.js:23:27:23:33 | sources [0] | tests.js:24:24:24:30 | sources [0] | provenance |  |
+| tests.js:24:14:24:19 | source | tests.js:26:30:26:35 | source | provenance |  |
+| tests.js:24:24:24:30 | sources [0] | tests.js:24:14:24:19 | source | provenance |  |
 | tests.js:25:18:25:20 | key | tests.js:26:37:26:39 | key | provenance |  |
 | tests.js:25:18:25:20 | key | tests.js:26:43:26:45 | key | provenance |  |
 | tests.js:26:25:26:27 | dst | tests.js:31:22:31:24 | dst | provenance |  |
+| tests.js:26:30:26:35 | source | tests.js:26:30:26:40 | source[key] | provenance | Config |
 | tests.js:26:30:26:40 | source[key] | tests.js:31:27:31:31 | value | provenance |  |
 | tests.js:26:37:26:39 | key | tests.js:26:30:26:40 | source[key] | provenance | Config |
 | tests.js:26:43:26:45 | key | tests.js:31:34:31:36 | key | provenance |  |
 | tests.js:31:22:31:24 | dst | tests.js:32:20:32:22 | dst | provenance |  |
 | tests.js:31:22:31:24 | dst | tests.js:36:9:36:11 | dst | provenance |  |
+| tests.js:31:27:31:31 | value | tests.js:34:28:34:32 | value | provenance |  |
 | tests.js:31:27:31:31 | value | tests.js:36:20:36:24 | value | provenance |  |
 | tests.js:31:34:31:36 | key | tests.js:32:24:32:26 | key | provenance |  |
 | tests.js:31:34:31:36 | key | tests.js:36:13:36:15 | key | provenance |  |
@@ -751,6 +777,7 @@ edges
 | tests.js:32:20:32:27 | dst[key] | tests.js:32:9:32:27 | dstValue | provenance |  |
 | tests.js:32:24:32:26 | key | tests.js:32:20:32:27 | dst[key] | provenance | Config |
 | tests.js:34:18:34:25 | dstValue | tests.js:23:19:23:21 | dst | provenance |  |
+| tests.js:34:28:34:32 | value | tests.js:23:27:23:33 | sources [0] | provenance |  |
 | tests.js:40:27:40:29 | dst | tests.js:44:30:44:32 | dst | provenance |  |
 | tests.js:40:27:40:29 | dst | tests.js:46:13:46:15 | dst | provenance |  |
 | tests.js:40:32:40:34 | src | tests.js:44:40:44:42 | src | provenance |  |
@@ -1257,8 +1284,27 @@ edges
 | tests.js:513:47:513:49 | key | tests.js:513:43:513:50 | src[key] | provenance | Config |
 | tests.js:516:32:516:34 | src | tests.js:516:32:516:39 | src[key] | provenance | Config |
 | tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] | provenance | Config |
+| tests.js:522:35:522:38 | args [0] | tests.js:523:17:523:20 | args [0] | provenance |  |
+| tests.js:522:35:522:38 | args [1] | tests.js:524:17:524:20 | args [1] | provenance |  |
+| tests.js:523:11:523:23 | dst | tests.js:527:35:527:37 | dst | provenance |  |
+| tests.js:523:11:523:23 | dst | tests.js:529:13:529:15 | dst | provenance |  |
+| tests.js:523:17:523:20 | args [0] | tests.js:523:17:523:23 | args[0] | provenance |  |
+| tests.js:523:17:523:23 | args[0] | tests.js:523:11:523:23 | dst | provenance |  |
+| tests.js:524:11:524:23 | src | tests.js:527:45:527:47 | src | provenance |  |
+| tests.js:524:11:524:23 | src | tests.js:529:24:529:26 | src | provenance |  |
+| tests.js:524:17:524:20 | args [1] | tests.js:524:17:524:23 | args[1] | provenance |  |
+| tests.js:524:17:524:23 | args[1] | tests.js:524:11:524:23 | src | provenance |  |
+| tests.js:525:14:525:16 | key | tests.js:527:39:527:41 | key | provenance |  |
+| tests.js:525:14:525:16 | key | tests.js:527:49:527:51 | key | provenance |  |
 | tests.js:525:14:525:16 | key | tests.js:529:17:529:19 | key | provenance |  |
 | tests.js:525:14:525:16 | key | tests.js:529:28:529:30 | key | provenance |  |
+| tests.js:527:35:527:37 | dst | tests.js:527:35:527:42 | dst[key] | provenance | Config |
+| tests.js:527:35:527:42 | dst[key] | tests.js:522:35:522:38 | args [0] | provenance |  |
+| tests.js:527:39:527:41 | key | tests.js:527:35:527:42 | dst[key] | provenance | Config |
+| tests.js:527:45:527:47 | src | tests.js:527:45:527:52 | src[key] | provenance | Config |
+| tests.js:527:45:527:52 | src[key] | tests.js:522:35:522:38 | args [1] | provenance |  |
+| tests.js:527:49:527:51 | key | tests.js:527:45:527:52 | src[key] | provenance | Config |
+| tests.js:529:24:529:26 | src | tests.js:529:24:529:31 | src[key] | provenance | Config |
 | tests.js:529:28:529:30 | key | tests.js:529:24:529:31 | src[key] | provenance | Config |
 | tests.js:534:31:534:33 | obj | tests.js:538:27:538:29 | obj | provenance |  |
 | tests.js:534:36:534:43 | callback [dst] | tests.js:538:9:538:16 | callback [dst] | provenance |  |
@@ -1371,5 +1417,6 @@ subpaths
 | tests.js:477:13:477:15 | dst | tests.js:473:25:473:27 | key | tests.js:477:13:477:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:473:12:473:14 | src | src | tests.js:477:13:477:15 | dst | dst |
 | tests.js:489:13:489:15 | dst | tests.js:484:14:484:16 | key | tests.js:489:13:489:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:484:21:484:23 | src | src | tests.js:489:13:489:15 | dst | dst |
 | tests.js:517:35:517:37 | dst | tests.js:511:19:511:25 | keys[i] | tests.js:517:35:517:37 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:509:28:509:30 | src | src | tests.js:517:35:517:37 | dst | dst |
+| tests.js:529:13:529:15 | dst | tests.js:525:14:525:16 | key | tests.js:529:13:529:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:525:21:525:23 | src | src | tests.js:529:13:529:15 | dst | dst |
 | tests.js:547:13:547:15 | dst | tests.js:538:18:538:24 | keys[i] | tests.js:547:13:547:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:535:30:535:32 | obj | obj | tests.js:547:13:547:15 | dst | dst |
 | tests.js:605:13:605:16 | dest | tests.js:601:16:601:18 | key | tests.js:605:13:605:16 | dest | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:601:35:601:40 | source | source | tests.js:605:13:605:16 | dest | dest |
