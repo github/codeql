@@ -36,14 +36,19 @@ edges
 | apply.kt:6:28:6:41 | $this$apply : String | apply.kt:6:35:6:38 | this | provenance |  |
 | apply.kt:7:14:7:25 | taint(...) : String | apply.kt:7:14:7:40 | apply(...) | provenance | MaD:31 |
 | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:7:14:7:14 | l | provenance |  |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:8:14:8:14 | l : List | provenance |  |
 | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:8:14:8:14 | l : List [<element>] : String | provenance |  |
 | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:9:19:9:19 | l : List [<element>] : String | provenance |  |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:10:18:10:18 | s | provenance |  |
 | list.kt:6:16:6:25 | taint(...) : String | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | provenance | MaD:27 |
+| list.kt:8:14:8:14 | l : List | list.kt:8:14:8:17 | get(...) | provenance | MaD:26 |
 | list.kt:8:14:8:14 | l : List [<element>] : String | list.kt:8:14:8:17 | get(...) | provenance | MaD:26 |
 | list.kt:9:19:9:19 | l : List [<element>] : String | list.kt:10:18:10:18 | s | provenance |  |
 | list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:14:14:14:14 | a | provenance |  |
 | list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:15:14:15:14 | a : String[] [[]] : String | provenance |  |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:15:14:15:17 | ...[...] | provenance |  |
 | list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:16:19:16:19 | a : String[] [[]] : String | provenance |  |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:17:18:17:18 | s | provenance |  |
 | list.kt:13:25:13:34 | taint(...) : String | list.kt:13:17:13:40 | {...} : String[] [[]] : String | provenance |  |
 | list.kt:15:14:15:14 | a : String[] [[]] : String | list.kt:15:14:15:17 | ...[...] | provenance |  |
 | list.kt:16:19:16:19 | a : String[] [[]] : String | list.kt:17:18:17:18 | s | provenance |  |
@@ -129,6 +134,7 @@ nodes
 | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | semmle.label | l [post update] : List [<element>] : String |
 | list.kt:6:16:6:25 | taint(...) : String | semmle.label | taint(...) : String |
 | list.kt:7:14:7:14 | l | semmle.label | l |
+| list.kt:8:14:8:14 | l : List | semmle.label | l : List |
 | list.kt:8:14:8:14 | l : List [<element>] : String | semmle.label | l : List [<element>] : String |
 | list.kt:8:14:8:17 | get(...) | semmle.label | get(...) |
 | list.kt:9:19:9:19 | l : List [<element>] : String | semmle.label | l : List [<element>] : String |

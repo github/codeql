@@ -9,13 +9,18 @@ edges
 | conversions.swift:37:19:37:29 | call to sourceInt() | conversions.swift:37:12:37:30 | call to String.init(_:) | provenance |  |
 | conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:40:12:40:12 | arr | provenance |  |
 | conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:41:12:41:12 | arr [Collection element] | provenance |  |
+| conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:41:12:41:17 | ...[...] | provenance |  |
+| conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:42:20:42:20 | arr | provenance |  |
 | conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:42:20:42:20 | arr [Collection element] | provenance |  |
+| conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:43:20:43:20 | arr | provenance |  |
 | conversions.swift:39:12:39:30 | [...] [Collection element] | conversions.swift:43:20:43:20 | arr [Collection element] | provenance |  |
 | conversions.swift:39:19:39:29 | call to sourceInt() | conversions.swift:39:12:39:30 | [...] [Collection element] | provenance |  |
 | conversions.swift:41:12:41:12 | arr [Collection element] | conversions.swift:41:12:41:17 | ...[...] | provenance |  |
 | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) | provenance |  |
+| conversions.swift:42:20:42:20 | arr | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:42:20:42:20 | arr [Collection element] | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:43:12:43:23 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:43:12:43:26 | ...[...] | provenance |  |
+| conversions.swift:43:20:43:20 | arr | conversions.swift:43:12:43:23 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:43:20:43:20 | arr [Collection element] | conversions.swift:43:12:43:23 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:44:12:44:39 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:44:12:44:39 | call to Array<Element>.init(_:) | provenance |  |
 | conversions.swift:44:20:44:33 | call to sourceString() | conversions.swift:44:20:44:35 | .utf8 | provenance |  |
@@ -101,23 +106,32 @@ edges
 | conversions.swift:171:14:171:33 | call to sourceArray(_:) | conversions.swift:185:31:185:31 | arr1 | provenance |  |
 | conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:174:13:174:13 | arr2 | provenance |  |
 | conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:176:13:176:13 | arr2 [Collection element] | provenance |  |
+| conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:176:13:176:19 | ...[...] | provenance |  |
+| conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:179:25:179:25 | arr2 | provenance |  |
 | conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:179:25:179:25 | arr2 [Collection element] | provenance |  |
+| conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:186:31:186:31 | arr2 | provenance |  |
 | conversions.swift:172:14:172:26 | [...] [Collection element] | conversions.swift:186:31:186:31 | arr2 [Collection element] | provenance |  |
 | conversions.swift:172:15:172:25 | call to sourceInt() | conversions.swift:172:14:172:26 | [...] [Collection element] | provenance |  |
 | conversions.swift:176:13:176:13 | arr2 [Collection element] | conversions.swift:176:13:176:19 | ...[...] | provenance |  |
 | conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:180:13:180:13 | arr1b | provenance |  |
 | conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:182:13:182:13 | arr1b [Collection element] | provenance |  |
+| conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:182:13:182:20 | ...[...] | provenance |  |
 | conversions.swift:178:25:178:25 | arr1 | conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:181:13:181:13 | arr2b | provenance |  |
 | conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:183:13:183:13 | arr2b [Collection element] | provenance |  |
+| conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:183:13:183:20 | ...[...] | provenance |  |
+| conversions.swift:179:25:179:25 | arr2 | conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:179:25:179:25 | arr2 [Collection element] | conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:182:13:182:13 | arr1b [Collection element] | conversions.swift:182:13:182:20 | ...[...] | provenance |  |
 | conversions.swift:183:13:183:13 | arr2b [Collection element] | conversions.swift:183:13:183:20 | ...[...] | provenance |  |
 | conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:187:13:187:13 | arr1c | provenance |  |
 | conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:189:13:189:13 | arr1c [Collection element] | provenance |  |
+| conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:189:13:189:20 | ...[...] | provenance |  |
 | conversions.swift:185:31:185:31 | arr1 | conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:188:13:188:13 | arr2c | provenance |  |
 | conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:190:13:190:13 | arr2c [Collection element] | provenance |  |
+| conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | conversions.swift:190:13:190:20 | ...[...] | provenance |  |
+| conversions.swift:186:31:186:31 | arr2 | conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:186:31:186:31 | arr2 [Collection element] | conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | provenance |  |
 | conversions.swift:189:13:189:13 | arr1c [Collection element] | conversions.swift:189:13:189:20 | ...[...] | provenance |  |
 | conversions.swift:190:13:190:13 | arr2c [Collection element] | conversions.swift:190:13:190:20 | ...[...] | provenance |  |
@@ -263,9 +277,11 @@ nodes
 | conversions.swift:41:12:41:17 | ...[...] | semmle.label | ...[...] |
 | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
 | conversions.swift:42:12:42:23 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:42:20:42:20 | arr | semmle.label | arr |
 | conversions.swift:42:20:42:20 | arr [Collection element] | semmle.label | arr [Collection element] |
 | conversions.swift:43:12:43:23 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
 | conversions.swift:43:12:43:26 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:43:20:43:20 | arr | semmle.label | arr |
 | conversions.swift:43:20:43:20 | arr [Collection element] | semmle.label | arr [Collection element] |
 | conversions.swift:44:12:44:39 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
 | conversions.swift:44:12:44:39 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
@@ -393,6 +409,7 @@ nodes
 | conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
 | conversions.swift:178:25:178:25 | arr1 | semmle.label | arr1 |
 | conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:179:25:179:25 | arr2 | semmle.label | arr2 |
 | conversions.swift:179:25:179:25 | arr2 [Collection element] | semmle.label | arr2 [Collection element] |
 | conversions.swift:180:13:180:13 | arr1b | semmle.label | arr1b |
 | conversions.swift:181:13:181:13 | arr2b | semmle.label | arr2b |
@@ -403,6 +420,7 @@ nodes
 | conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | semmle.label | call to ContiguousArray<Element>.init(_:) [Collection element] |
 | conversions.swift:185:31:185:31 | arr1 | semmle.label | arr1 |
 | conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) [Collection element] | semmle.label | call to ContiguousArray<Element>.init(_:) [Collection element] |
+| conversions.swift:186:31:186:31 | arr2 | semmle.label | arr2 |
 | conversions.swift:186:31:186:31 | arr2 [Collection element] | semmle.label | arr2 [Collection element] |
 | conversions.swift:187:13:187:13 | arr1c | semmle.label | arr1c |
 | conversions.swift:188:13:188:13 | arr2c | semmle.label | arr2c |
