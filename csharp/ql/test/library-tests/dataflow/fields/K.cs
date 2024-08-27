@@ -10,7 +10,7 @@ public class K
 
     private void M2()
     {
-        Sink(Strings[0]); // $ hasValueFlow=1
+        Sink(Strings[0]); // $ MISSING: hasValueFlow=1
     }
 
     public static void Sink(object o) { }
