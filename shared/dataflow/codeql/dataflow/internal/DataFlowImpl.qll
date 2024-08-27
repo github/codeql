@@ -1427,10 +1427,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         import Param
 
         /* Begin: Stage logic. */
-        private module TypOption = Option<Typ>;
-
-        private class TypOption = TypOption::Option;
-
         pragma[nomagic]
         private Typ getNodeTyp(NodeEx node) {
           PrevStage::revFlow(node) and result = getTyp(node.getDataFlowType())
@@ -1478,22 +1474,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * Holds if `node` is reachable with access path `ap` from a source.
          *
          * The call context `cc` records whether the node is reached through an
-         * argument in a call, and if so, `summaryCtx` and `argAp` record the
-         * corresponding parameter position and access path of that argument, respectively.
+         * argument in a call, and if so, `summaryCtx` records the
+         * corresponding parameter position and access path of that argument.
          */
         pragma[nomagic]
         additional predicate fwdFlow(
-          NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa
         ) {
-          fwdFlow1(node, state, cc, summaryCtx, argT, argAp, _, t, ap, apa)
+          fwdFlow1(node, state, cc, summaryCtx, _, t, ap, apa)
         }
 
         private predicate fwdFlow1(
-          NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t0, Typ t, Ap ap, ApApprox apa
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Typ t, Ap ap,
+          ApApprox apa
         ) {
-          fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
+          fwdFlow0(node, state, cc, summaryCtx, t0, ap, apa) and
           PrevStage::revFlow(node, state, apa) and
           filter(node, state, t0, ap, t) and
           (
@@ -1508,25 +1503,22 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
-          fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
+          fwdFlow1(_, _, _, _, t0, t, ap, _) and t0 != t
         }
 
         pragma[nomagic]
         private predicate fwdFlow0(
-          NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa
         ) {
           sourceNode(node, state) and
           (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
-          argT instanceof TypOption::None and
-          argAp = apNone() and
-          summaryCtx = TParamNodeNone() and
+          summaryCtx = TSummaryCtxNone() and
           t = getNodeTyp(node) and
           ap instanceof ApNil and
           apa = getApprox(ap)
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
-            fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
+            fwdFlow(mid, state0, cc, summaryCtx, t0, ap, apa) and
             localCc = getLocalCc(cc)
           |
             localStep(mid, state0, node, state, true, _, localCc, _) and
@@ -1538,20 +1530,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           fwdFlowJump(node, state, t, ap, apa) and
           cc = ccNone() and
-          summaryCtx = TParamNodeNone() and
-          argT instanceof TypOption::None and
-          argAp = apNone()
+          summaryCtx = TSummaryCtxNone()
           or
           // store
           exists(Content c, Typ t0, Ap ap0 |
-            fwdFlowStore(_, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
+            fwdFlowStore(_, t0, ap0, c, t, node, state, cc, summaryCtx) and
             ap = apCons(c, t0, ap0) and
             apa = getApprox(ap)
           )
           or
           // read
           exists(Typ t0, Ap ap0, Content c |
-            fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx, argT, argAp) and
+            fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx) and
             fwdFlowConsCand(t0, ap0, c, t, ap) and
             apa = getApprox(ap)
           )
@@ -1561,13 +1551,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlowIn(node, apa, state, cc, t, ap, allowsFlowThrough) and
             if allowsFlowThrough = true
             then (
-              summaryCtx = TParamNodeSome(node.asNode()) and
-              argT = TypOption::some(t) and
-              argAp = apSome(ap)
+              summaryCtx = TSummaryCtxSome(node, t, ap)
             ) else (
-              summaryCtx = TParamNodeNone() and
-              argT instanceof TypOption::None and
-              argAp = apNone() and
+              summaryCtx = TSummaryCtxNone() and
               // When the call contexts of source and sink needs to match then there's
               // never any reason to enter a callable except to find a summary. See also
               // the comment in `PathNodeMid::isAtSink`.
@@ -1576,36 +1562,75 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
           or
           // flow out of a callable
-          fwdFlowOut(_, _, node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+          fwdFlowOut(_, _, node, state, cc, summaryCtx, t, ap, apa)
           or
           // flow through a callable
           exists(
             DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
             ApApprox innerArgApa
           |
-            fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
-              innerArgApa) and
+            fwdFlowThrough(call, cc, state, ccc, summaryCtx, t, ap, apa, ret, innerArgApa) and
             flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
             not inBarrier(node, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
 
+        private newtype TSummaryCtx =
+          TSummaryCtxNone() or
+          TSummaryCtxSome(ParamNodeEx p, Typ t, Ap ap) { fwdFlowIn(p, _, _, _, t, ap, true) }
+
+        /**
+         * A context for generating flow summaries. This represents flow entry through
+         * a specific parameter with an access path of a specific shape.
+         *
+         * Summaries are only created for parameters that may flow through.
+         */
+        private class SummaryCtx extends TSummaryCtx {
+          abstract string toString();
+
+          abstract Location getLocation();
+        }
+
+        /** A summary context from which no flow summary can be generated. */
+        private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
+          override string toString() { result = "<none>" }
+
+          override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
+        }
+
+        /** A summary context from which a flow summary can be generated. */
+        private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
+          private ParamNodeEx p;
+          private Typ t;
+          private Ap ap;
+
+          SummaryCtxSome() { this = TSummaryCtxSome(p, t, ap) }
+
+          ParamNodeEx getParamNode() { result = p }
+
+          private string ppTyp() { result = t.toString() and result != "" }
+
+          override string toString() { result = p + concat(" : " + this.ppTyp()) + " " + ap }
+
+          override Location getLocation() { result = p.getLocation() }
+        }
+
         private predicate fwdFlowJump(NodeEx node, FlowState state, Typ t, Ap ap, ApApprox apa) {
           exists(NodeEx mid |
-            fwdFlow(mid, state, _, _, _, _, t, ap, apa) and
+            fwdFlow(mid, state, _, _, t, ap, apa) and
             jumpStepEx(mid, node)
           )
           or
           exists(NodeEx mid |
-            fwdFlow(mid, state, _, _, _, _, _, ap, apa) and
+            fwdFlow(mid, state, _, _, _, ap, apa) and
             additionalJumpStep(mid, node, _) and
             t = getNodeTyp(node) and
             ap instanceof ApNil
           )
           or
           exists(NodeEx mid, FlowState state0 |
-            fwdFlow(mid, state0, _, _, _, _, _, ap, apa) and
+            fwdFlow(mid, state0, _, _, _, ap, apa) and
             additionalJumpStateStep(mid, state0, node, state) and
             t = getNodeTyp(node) and
             ap instanceof ApNil
@@ -1615,10 +1640,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowStore(
           NodeEx node1, Typ t1, Ap ap1, Content c, Typ t2, NodeEx node2, FlowState state, Cc cc,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp
+          SummaryCtx summaryCtx
         ) {
           exists(DataFlowType contentType, DataFlowType containerType, ApApprox apa1 |
-            fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t1, ap1, apa1) and
+            fwdFlow(node1, state, cc, summaryCtx, t1, ap1, apa1) and
             not outBarrier(node1, state) and
             not inBarrier(node2, state) and
             PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
@@ -1634,7 +1659,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
-          fwdFlowStore(_, t1, tail, c, t2, _, _, _, _, _, _) and
+          fwdFlowStore(_, t1, tail, c, t2, _, _, _, _) and
           cons = apCons(c, t1, tail)
           or
           exists(Typ t0 |
@@ -1658,10 +1683,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowRead(
           Typ t, Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp
+          SummaryCtx summaryCtx
         ) {
           exists(ApHeadContent apc |
-            fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t, ap, _) and
+            fwdFlow(node1, state, cc, summaryCtx, t, ap, _) and
             not outBarrier(node1, state) and
             not inBarrier(node2, state) and
             apc = getHeadContent(ap) and
@@ -1671,10 +1696,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowIntoArg(
-          ArgNodeEx arg, FlowState state, Cc outercc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, boolean emptyAp, ApApprox apa, boolean cc
+          ArgNodeEx arg, FlowState state, Cc outercc, SummaryCtx summaryCtx, Typ t, Ap ap,
+          boolean emptyAp, ApApprox apa, boolean cc
         ) {
-          fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
+          fwdFlow(arg, state, outercc, summaryCtx, t, ap, apa) and
           (if instanceofCcCall(outercc) then cc = true else cc = false) and
           if ap instanceof ApNil then emptyAp = true else emptyAp = false
         }
@@ -1764,11 +1789,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           private predicate fwdFlowInCand(
             DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
-            ParamNodeEx p, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
-            boolean emptyAp, ApApprox apa, boolean cc, boolean allowsFlowThrough
+            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, boolean emptyAp, ApApprox apa,
+            boolean cc, boolean allowsFlowThrough
           ) {
             exists(boolean allowsFieldFlow |
-              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, t, ap, emptyAp, apa, cc) and
               (
                 inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
                 or
@@ -1787,12 +1812,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           private predicate fwdFlowInCandTypeFlowDisabled(
             DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
-            ParamNodeEx p, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
-            ApApprox apa, boolean cc, boolean allowsFlowThrough
+            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, boolean cc,
+            boolean allowsFlowThrough
           ) {
             not enableTypeFlow() and
-            fwdFlowInCand(call, arg, state, outercc, inner, p, summaryCtx, argT, argAp, t, ap, _,
-              apa, cc, allowsFlowThrough)
+            fwdFlowInCand(call, arg, state, outercc, inner, p, summaryCtx, t, ap, _, apa, cc,
+              allowsFlowThrough)
           }
 
           pragma[nomagic]
@@ -1801,7 +1826,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             boolean emptyAp, ApApprox apa, boolean cc, boolean allowsFlowThrough
           ) {
             enableTypeFlow() and
-            fwdFlowInCand(call, arg, _, outercc, inner, p, _, _, _, _, _, emptyAp, apa, cc,
+            fwdFlowInCand(call, arg, _, outercc, inner, p, _, _, _, emptyAp, apa, cc,
               allowsFlowThrough)
           }
 
@@ -1828,17 +1853,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           predicate fwdFlowIn(
             DataFlowCall call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
-            FlowState state, Cc outercc, CcCall innercc, ParamNodeOption summaryCtx, TypOption argT,
-            ApOption argAp, Typ t, Ap ap, ApApprox apa, boolean cc, boolean allowsFlowThrough
+            FlowState state, Cc outercc, CcCall innercc, SummaryCtx summaryCtx, Typ t, Ap ap,
+            ApApprox apa, boolean cc, boolean allowsFlowThrough
           ) {
             // type flow disabled: linear recursion
-            fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
-              argAp, t, ap, apa, cc, allowsFlowThrough) and
+            fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, t, ap,
+              apa, cc, allowsFlowThrough) and
             fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
             or
             // type flow enabled: non-linear recursion
             exists(boolean emptyAp |
-              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, t, ap, emptyAp, apa, cc) and
               fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp, apa,
                 cc, allowsFlowThrough)
             )
@@ -1853,8 +1878,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           boolean allowsFlowThrough
         ) {
           exists(boolean allowsFlowThrough0 |
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, _, p, state, _, innercc, _, _, _, t,
-              ap, apa, _, allowsFlowThrough0) and
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, _, p, state, _, innercc, _, t, ap,
+              apa, _, allowsFlowThrough0) and
             if PrevStage::parameterMayFlowThrough(p, apa)
             then allowsFlowThrough = allowsFlowThrough0
             else allowsFlowThrough = false
@@ -1899,12 +1924,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowIntoRet(
-          RetNodeEx ret, FlowState state, CcNoCall cc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa
+          RetNodeEx ret, FlowState state, CcNoCall cc, SummaryCtx summaryCtx, Typ t, Ap ap,
+          ApApprox apa
         ) {
           instanceofCcNoCall(cc) and
           not outBarrier(ret, state) and
-          fwdFlow(ret, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+          fwdFlow(ret, state, cc, summaryCtx, t, ap, apa)
         }
 
         pragma[nomagic]
@@ -1912,7 +1937,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
           ApApprox apa, boolean allowsFieldFlow
         ) {
-          fwdFlowIntoRet(ret, _, innercc, _, _, _, _, _, apa) and
+          fwdFlowIntoRet(ret, _, innercc, _, _, _, apa) and
           inner = ret.getEnclosingCallable() and
           (
             call = viableImplCallContextReducedReverseInlineLate(inner, innercc) and
@@ -1936,10 +1961,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[inline]
         private predicate fwdFlowOut(
           DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
+          SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa
         ) {
           exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
-            fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+            fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, apa) and
             fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, apa, allowsFieldFlow) and
             not inBarrier(out, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -1958,14 +1983,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
             Typ t, Ap ap, boolean cc
           ) {
-            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, _, c, p, state, _, innercc, _, _, _,
-              t, ap, _, cc, _)
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, _, c, p, state, _, innercc, _, t, ap,
+              _, cc, _)
           }
 
           pragma[nomagic]
           private predicate fwdFlow1Param(ParamNodeEx p, FlowState state, CcCall cc, Typ t0, Ap ap) {
             instanceofCcCall(cc) and
-            fwdFlow1(p, state, cc, _, _, _, t0, _, ap, _)
+            fwdFlow1(p, state, cc, _, t0, _, ap, _)
           }
 
           pragma[nomagic]
@@ -1980,13 +2005,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate dataFlowTakenCallEdgeOut0(
             DataFlowCall call, DataFlowCallable c, NodeEx node, FlowState state, Cc cc, Typ t, Ap ap
           ) {
-            fwdFlowOut(call, c, node, state, cc, _, _, _, t, ap, _)
+            fwdFlowOut(call, c, node, state, cc, _, t, ap, _)
           }
 
           pragma[nomagic]
           private predicate fwdFlow1Out(NodeEx node, FlowState state, Cc cc, Typ t0, Ap ap) {
             exists(ApApprox apa |
-              fwdFlow1(node, state, cc, _, _, _, t0, _, ap, apa) and
+              fwdFlow1(node, state, cc, _, t0, _, ap, apa) and
               PrevStage::callEdgeReturn(_, _, _, _, node, _, apa)
             )
           }
@@ -2027,43 +2052,39 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowRetFromArg(
-          RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, Typ argT, Ap argAp,
-          ApApprox argApa, Typ t, Ap ap, ApApprox apa
+          RetNodeEx ret, FlowState state, CcCall ccc, SummaryCtxSome summaryCtx, ApApprox argApa,
+          Typ t, Ap ap, ApApprox apa
         ) {
-          exists(ReturnKindExt kind |
+          exists(ReturnKindExt kind, ParamNodeEx p, Ap argAp |
             instanceofCcCall(ccc) and
-            fwdFlow(pragma[only_bind_into](ret), state, ccc,
-              TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), TypOption::some(argT),
-              pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
+            fwdFlow(pragma[only_bind_into](ret), state, ccc, summaryCtx, t, ap,
+              pragma[only_bind_into](apa)) and
+            summaryCtx =
+              TSummaryCtxSome(pragma[only_bind_into](p), _, pragma[only_bind_into](argAp)) and
             not outBarrier(ret, state) and
             kind = ret.getKind() and
-            parameterFlowThroughAllowed(summaryCtx, kind) and
+            parameterFlowThroughAllowed(p, kind) and
             argApa = getApprox(argAp) and
-            PrevStage::returnMayFlowThrough(ret, argApa, apa, kind)
+            PrevStage::returnMayFlowThrough(ret, pragma[only_bind_into](argApa), apa, kind)
           )
         }
 
         pragma[inline]
         private predicate fwdFlowThrough0(
           DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
-          RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
-          ApApprox innerArgApa
+          SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
+          SummaryCtxSome innerSummaryCtx, ApApprox innerArgApa
         ) {
-          fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa, t,
-            ap, apa) and
-          fwdFlowIsEntered(call, arg, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
-            innerArgAp)
+          fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgApa, t, ap, apa) and
+          fwdFlowIsEntered(call, arg, cc, ccc, summaryCtx, innerSummaryCtx)
         }
 
         pragma[nomagic]
         private predicate fwdFlowThrough(
-          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-          TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
-          ApApprox innerArgApa
+          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, SummaryCtx summaryCtx, Typ t,
+          Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _,
-            _, innerArgApa)
+          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, t, ap, apa, ret, _, innerArgApa)
         }
 
         private module FwdFlowThroughRestriction implements FwdFlowInInputSig {
@@ -2072,22 +2093,33 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           predicate parameterRestriction = PrevStage::parameterMayFlowThrough/2;
         }
 
+        pragma[nomagic]
+        private predicate fwdFlowIsEntered0(
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
+          ParamNodeEx p, Typ t, Ap ap
+        ) {
+          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, _, cc, innerCc,
+            summaryCtx, t, ap, _, _, true)
+        }
+
         /**
          * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
          * and data might flow through the target callable and back out at `call`.
          */
         pragma[nomagic]
         private predicate fwdFlowIsEntered(
-          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx,
-          TypOption argT, ApOption argAp, ParamNodeEx p, Typ t, Ap ap
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
+          SummaryCtxSome innerSummaryCtx
         ) {
-          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, _, cc, innerCc,
-            summaryCtx, argT, argAp, t, ap, _, _, true)
+          exists(ParamNodeEx p, Typ t, Ap ap |
+            fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, t, ap) and
+            innerSummaryCtx = TSummaryCtxSome(p, t, ap)
+          )
         }
 
         pragma[nomagic]
         private predicate storeStepFwd(NodeEx node1, Typ t1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
-          fwdFlowStore(node1, t1, ap1, c, _, node2, _, _, _, _, _) and
+          fwdFlowStore(node1, t1, ap1, c, _, node2, _, _, _) and
           ap2 = apCons(c, t1, ap1) and
           readStepFwd(_, ap2, c, _, _)
         }
@@ -2095,7 +2127,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate readStepFwd(NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2) {
           exists(Typ t1 |
-            fwdFlowRead(t1, ap1, c, n1, n2, _, _, _, _, _) and
+            fwdFlowRead(t1, ap1, c, n1, n2, _, _, _) and
             fwdFlowConsCand(t1, ap1, c, _, ap2)
           )
         }
@@ -2103,10 +2135,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate returnFlowsThrough0(
           DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
-          ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
+          SummaryCtxSome innerSummaryCtx, ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, _, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx,
-            innerArgT, innerArgAp, innerArgApa)
+          fwdFlowThrough0(call, _, _, state, ccc, _, _, ap, apa, ret, innerSummaryCtx, innerArgApa)
         }
 
         pragma[nomagic]
@@ -2115,7 +2146,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           Ap argAp, ApApprox argApa, Ap ap
         ) {
           exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow |
-            returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argT, argAp, argApa) and
+            returnFlowsThrough0(call, state, ccc, ap, apa, ret, TSummaryCtxSome(p, argT, argAp),
+              argApa) and
             flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, argApa, apa) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -2130,7 +2162,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
               pragma[only_bind_into](argAp), pragma[only_bind_into](argApa), ap) and
             flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
-            fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
+            fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               pragma[only_bind_into](argApa)) and
             if allowsFieldFlow = false then argAp instanceof ApNil else any()
           )
@@ -2142,7 +2174,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(ApApprox apa, boolean allowsFieldFlow |
             flowIntoCallApaTaken(call, c, arg, p, allowsFieldFlow, apa) and
-            fwdFlow(arg, _, _, _, _, _, _, ap, apa) and
+            fwdFlow(arg, _, _, _, _, ap, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -2154,7 +2186,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(ApApprox apa, boolean allowsFieldFlow |
             PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow, apa) and
-            fwdFlow(ret, _, _, _, _, _, _, ap, apa) and
+            fwdFlow(ret, _, _, _, _, ap, apa) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           |
@@ -2177,14 +2209,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
         ) {
           revFlow0(node, state, returnCtx, returnAp, ap) and
-          fwdFlow(node, state, _, _, _, _, _, ap, _)
+          fwdFlow(node, state, _, _, _, ap, _)
         }
 
         pragma[nomagic]
         private predicate revFlow0(
           NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
         ) {
-          fwdFlow(node, state, _, _, _, _, _, ap, _) and
+          fwdFlow(node, state, _, _, _, ap, _) and
           sinkNode(node, state) and
           (
             if hasSinkCallCtx()
@@ -2312,7 +2344,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
             exists(NodeEx node, FlowState state, ApNil nil |
-              fwdFlow(node, state, _, _, _, _, _, nil, _) and
+              fwdFlow(node, state, _, _, _, nil, _) and
               sinkNode(node, state) and
               (if hasSinkCallCtx() then cc = true else cc = false) and
               c = node.getEnclosingCallable()
@@ -2472,6 +2504,27 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
+        private predicate nodeMayUseSummary0(NodeEx n, ParamNodeEx p, FlowState state, Ap ap) {
+          exists(Ap ap0 |
+            parameterMayFlowThrough(p, _) and
+            revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, ap0) and
+            fwdFlow(n, state, any(CcCall ccc), TSummaryCtxSome(p, _, ap), _, ap0, _)
+          )
+        }
+
+        /**
+         * Holds if `ap` is recorded as the summary context for flow reaching `node`
+         * and remains relevant for the following pruning stage.
+         */
+        pragma[nomagic]
+        additional predicate nodeMayUseSummary(NodeEx n, FlowState state, Ap ap) {
+          exists(ParamNodeEx p |
+            parameterMayFlowThrough(p, ap) and
+            nodeMayUseSummary0(n, p, state, ap)
+          )
+        }
+
+        pragma[nomagic]
         predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind) {
           exists(ParamNodeEx p, ReturnPosition pos |
             returnFlowsThrough(ret, pos, _, _, p, _, argAp, _, ap) and
@@ -2547,11 +2600,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         additional module Graph {
           private newtype TPathNode =
-            TPathNodeMid(
-              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t, Ap ap
-            ) {
-              fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _) and
+            TPathNodeMid(NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap) {
+              fwdFlow(node, state, cc, summaryCtx, t, ap, _) and
               revFlow(node, state, _, _, ap)
             } or
             TPathNodeSink(NodeEx node, FlowState state) {
@@ -2659,13 +2709,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             NodeEx node;
             FlowState state;
             Cc cc;
-            ParamNodeOption summaryCtx;
-            TypOption argT;
-            ApOption argAp;
+            SummaryCtx summaryCtx;
             Typ t;
             Ap ap;
 
-            PathNodeMid() { this = TPathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap) }
+            PathNodeMid() { this = TPathNodeMid(node, state, cc, summaryCtx, t, ap) }
 
             override NodeEx getNodeEx() { result = node }
 
@@ -2728,13 +2776,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             private string ppCtx() { result = " <" + cc + ">" }
 
             private string ppSummaryCtx() {
-              summaryCtx instanceof TParamNodeNone and result = ""
+              summaryCtx instanceof SummaryCtxNone and result = ""
               or
-              exists(ParamNode p, Ap argAp0 |
-                summaryCtx = TParamNodeSome(p) and argAp = apSome(argAp0)
-              |
-                result = " <" + p + " : " + argT + " " + argAp0 + ">"
-              )
+              summaryCtx instanceof SummaryCtxSome and
+              result = " <" + summaryCtx + ">"
             }
 
             override string toString() { result = node.toString() + this.ppType() + this.ppAp() }
@@ -2751,7 +2796,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override predicate isSource() {
               sourceNode(node, state) and
               (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
-              summaryCtx = TParamNodeNone() and
+              summaryCtx = TSummaryCtxNone() and
               t = getNodeTyp(node) and
               ap instanceof ApNil
             }
@@ -2770,7 +2815,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               // which means that the summary context being empty holds if and
               // only if we are in the call context of the source.
               if Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
-              then summaryCtx = TParamNodeNone()
+              then summaryCtx = TSummaryCtxNone()
               else
                 if Config::getAFeature() instanceof FeatureHasSinkCallContext
                 then instanceofCcNoCall(cc)
@@ -2812,12 +2857,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowInStep(
             ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
-            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
-            boolean allowsFlowThrough
+            SummaryCtx summaryCtx, Typ t, Ap ap, boolean allowsFlowThrough
           ) {
             exists(ApApprox apa, boolean allowsFlowThrough0 |
               FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, arg, _, p, state, outercc, innercc,
-                summaryCtx, argT, argAp, t, ap, apa, _, allowsFlowThrough0) and
+                summaryCtx, t, ap, apa, _, allowsFlowThrough0) and
               if PrevStage::parameterMayFlowThrough(p, apa)
               then allowsFlowThrough = allowsFlowThrough0
               else allowsFlowThrough = false
@@ -2827,65 +2871,61 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowThroughStep0(
             DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
-            ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa,
-            RetNodeEx ret, ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp,
-            ApApprox innerArgApa
+            SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
+            SummaryCtxSome innerSummaryCtx, ApApprox innerArgApa
           ) {
-            fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
-              innerSummaryCtx, innerArgT, innerArgAp, innerArgApa)
+            fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, t, ap, apa, ret, innerSummaryCtx,
+              innerArgApa)
           }
 
-          bindingset[node, state, cc, summaryCtx, argT, argAp, t, ap]
+          bindingset[node, state, cc, summaryCtx, t, ap]
           pragma[inline_late]
           private PathNodeImpl mkPathNode(
-            NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-            ApOption argAp, Typ t, Ap ap
+            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap
           ) {
-            result = TPathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+            result = TPathNodeMid(node, state, cc, summaryCtx, t, ap)
           }
 
           private PathNodeImpl typeStrengthenToPathNode(
-            NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-            ApOption argAp, Typ t0, Ap ap
+            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap
           ) {
             exists(Typ t |
-              fwdFlow1(node, state, cc, summaryCtx, argT, argAp, t0, t, ap, _) and
-              result = TPathNodeMid(node, state, cc, summaryCtx, argT, argAp, t, ap)
+              fwdFlow1(node, state, cc, summaryCtx, t0, t, ap, _) and
+              result = TPathNodeMid(node, state, cc, summaryCtx, t, ap)
             )
           }
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep1(
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, DataFlowCall call, Cc cc,
-            FlowState state, CcCall ccc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp,
-            Typ t, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
+            FlowState state, CcCall ccc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa,
+            RetNodeEx ret, ApApprox innerArgApa
           ) {
-            exists(FlowState state0, ArgNodeEx arg, ParamNodeEx p, Typ innerArgT, Ap innerArgAp |
-              fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa,
-                ret, p, innerArgT, innerArgAp, innerArgApa) and
+            exists(
+              FlowState state0, ArgNodeEx arg, SummaryCtxSome innerSummaryCtx, ParamNodeEx p,
+              Typ innerArgT, Ap innerArgAp
+            |
+              fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, t, ap, apa, ret,
+                innerSummaryCtx, innerArgApa) and
+              innerSummaryCtx = TSummaryCtxSome(p, innerArgT, innerArgAp) and
               revFlow(arg, state0, _, _, _) and
-              pn1 = mkPathNode(arg, state0, cc, summaryCtx, argT, argAp, innerArgT, innerArgAp) and
-              pn2 =
-                typeStrengthenToPathNode(p, state0, ccc, TParamNodeSome(p.asNode()),
-                  TypOption::some(innerArgT), apSome(innerArgAp), innerArgT, innerArgAp) and
-              pn3 =
-                mkPathNode(ret, state, ccc, TParamNodeSome(p.asNode()), TypOption::some(innerArgT),
-                  apSome(innerArgAp), t, ap)
+              pn1 = mkPathNode(arg, state0, cc, summaryCtx, innerArgT, innerArgAp) and
+              pn2 = typeStrengthenToPathNode(p, state0, ccc, innerSummaryCtx, innerArgT, innerArgAp) and
+              pn3 = mkPathNode(ret, state, ccc, innerSummaryCtx, t, ap)
             )
           }
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep2(
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, NodeEx node, Cc cc,
-            FlowState state, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
-            Ap ap
+            FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap
           ) {
             exists(
               DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
               ApApprox innerArgApa, ApApprox apa
             |
-              fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, argT, argAp, t,
-                ap, apa, ret, innerArgApa) and
+              fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, t, ap, apa, ret,
+                innerArgApa) and
               flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
               not inBarrier(node, state) and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -2893,11 +2933,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           private predicate localStep(
-            PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
-            TypOption argT, ApOption argAp, Typ t, Ap ap, string label, boolean isStoreStep
+            PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t,
+            Ap ap, string label, boolean isStoreStep
           ) {
             exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
-              pn1 = TPathNodeMid(mid, state0, cc, summaryCtx, argT, argAp, t0, ap) and
+              pn1 = TPathNodeMid(mid, state0, cc, summaryCtx, t0, ap) and
               localCc = getLocalCc(cc) and
               isStoreStep = false
             |
@@ -2910,8 +2950,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             // store
             exists(NodeEx mid, Content c, Typ t0, Ap ap0 |
-              pn1 = TPathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
-              fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
+              pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0) and
+              fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx) and
               ap = apCons(c, t0, ap0) and
               label = "" and
               isStoreStep = true
@@ -2919,8 +2959,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             // read
             exists(NodeEx mid, Typ t0, Ap ap0, Content c |
-              pn1 = TPathNodeMid(mid, state, cc, summaryCtx, argT, argAp, t0, ap0) and
-              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx, argT, argAp) and
+              pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0) and
+              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx) and
               fwdFlowConsCand(t0, ap0, c, t, ap) and
               label = "" and
               isStoreStep = false
@@ -2929,11 +2969,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private predicate localStep(PathNodeImpl pn1, PathNodeImpl pn2, string label) {
             exists(
-              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t0, Ap ap, boolean isStoreStep
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+              boolean isStoreStep
             |
-              localStep(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap, label, isStoreStep) and
-              pn2 = typeStrengthenToPathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              localStep(pn1, node, state, cc, summaryCtx, t0, ap, label, isStoreStep) and
+              pn2 = typeStrengthenToPathNode(node, state, cc, summaryCtx, t0, ap) and
               stepFilter(node, ap, isStoreStep)
             )
             or
@@ -2960,16 +3000,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           private predicate nonLocalStep(
-            PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx,
-            TypOption argT, ApOption argAp, Typ t, Ap ap, string label
+            PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t,
+            Ap ap, string label
           ) {
             // jump
             exists(NodeEx mid, FlowState state0, Typ t0 |
-              pn1 = TPathNodeMid(mid, state0, _, _, _, _, t0, ap) and
+              pn1 = TPathNodeMid(mid, state0, _, _, t0, ap) and
               cc = ccNone() and
-              summaryCtx = TParamNodeNone() and
-              argT instanceof TypOption::None and
-              argAp = apNone()
+              summaryCtx = TSummaryCtxNone()
             |
               jumpStepEx(mid, node) and
               state = state0 and
@@ -2993,29 +3031,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             or
             // flow into a callable
             exists(
-              ArgNodeEx arg, boolean allowsFlowThrough, Cc outercc, ParamNodeOption outerSummaryCtx,
-              TypOption outerArgT, ApOption outerArgAp
+              ArgNodeEx arg, boolean allowsFlowThrough, Cc outercc, SummaryCtx outerSummaryCtx
             |
-              pn1 = TPathNodeMid(arg, state, outercc, outerSummaryCtx, outerArgT, outerArgAp, t, ap) and
-              fwdFlowInStep(arg, node, state, outercc, cc, outerSummaryCtx, outerArgT, outerArgAp,
-                t, ap, allowsFlowThrough) and
+              pn1 = TPathNodeMid(arg, state, outercc, outerSummaryCtx, t, ap) and
+              fwdFlowInStep(arg, node, state, outercc, cc, outerSummaryCtx, t, ap, allowsFlowThrough) and
               label = "" and
               if allowsFlowThrough = true
-              then (
-                summaryCtx = TParamNodeSome(node.asNode()) and
-                argT = TypOption::some(t) and
-                argAp = apSome(ap)
-              ) else (
-                summaryCtx = TParamNodeNone() and
-                argT instanceof TypOption::None and
-                argAp = apNone()
-              )
+              then summaryCtx = TSummaryCtxSome(node, t, ap)
+              else summaryCtx = TSummaryCtxNone()
             )
             or
             // flow out of a callable
             exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow, ApApprox apa |
-              pn1 = TPathNodeMid(ret, state, innercc, summaryCtx, argT, argAp, t, ap) and
-              fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+              pn1 = TPathNodeMid(ret, state, innercc, summaryCtx, t, ap) and
+              fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, apa) and
               fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, apa, allowsFieldFlow) and
               not inBarrier(node, state) and
               label = "" and
@@ -3024,12 +3053,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           private predicate nonLocalStep(PathNodeImpl pn1, PathNodeImpl pn2, string label) {
-            exists(
-              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t0, Ap ap
-            |
-              nonLocalStep(pn1, node, state, cc, summaryCtx, argT, argAp, t0, ap, label) and
-              pn2 = typeStrengthenToPathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+            exists(NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap |
+              nonLocalStep(pn1, node, state, cc, summaryCtx, t0, ap, label) and
+              pn2 = typeStrengthenToPathNode(node, state, cc, summaryCtx, t0, ap) and
               stepFilter(node, ap, false)
             )
           }
@@ -3043,11 +3069,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
           ) {
             exists(
-              NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t0, Ap ap, PathNodeImpl out0
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+              PathNodeImpl out0
             |
-              fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, argT, argAp, t0, ap) and
-              out0 = typeStrengthenToPathNode(node, state, cc, summaryCtx, argT, argAp, t0, ap) and
+              fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, t0, ap) and
+              out0 = typeStrengthenToPathNode(node, state, cc, summaryCtx, t0, ap) and
               stepFilter(node, ap, false)
             |
               out = out0 or out = out0.(PathNodeMid).projectToSink(_)
@@ -3306,14 +3332,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           int tfnodes, int tftuples
         ) {
           fwd = true and
-          nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _, _, _)) and
+          nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _)) and
           fields = count(Content f0 | fwdConsCand(f0, _, _)) and
           conscand = count(Content f0, Typ t, Ap ap | fwdConsCand(f0, t, ap)) and
-          states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _, _, _)) and
+          states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _)) and
           tuples =
-            count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
-              ApOption argAp, Typ t, Ap ap |
-              fwdFlow(n, state, cc, summaryCtx, argT, argAp, t, ap, _)
+            count(NodeEx n, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap |
+              fwdFlow(n, state, cc, summaryCtx, t, ap, _)
             ) and
           calledges =
             count(DataFlowCall call, DataFlowCallable c |
@@ -3888,18 +3913,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
 
     /**
-     * Holds if `argApf` is recorded as the summary context for flow reaching `node`
-     * and remains relevant for the following pruning stage.
-     */
-    private predicate flowCandSummaryCtx(NodeEx node, FlowState state, AccessPathFront argApf) {
-      exists(AccessPathFront apf |
-        Stage4::revFlow(node, state, TReturnCtxMaybeFlowThrough(_), _, apf) and
-        Stage4::fwdFlow(node, state, any(Stage4::CcCall ccc), _, _, TAccessPathFrontSome(argApf), _,
-          apf, _)
-      )
-    }
-
-    /**
      * Holds if a length 2 access path approximation with the head `c` is expected
      * to be expensive.
      */
@@ -3910,7 +3923,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           strictcount(NodeEx n, FlowState state |
             Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
             or
-            flowCandSummaryCtx(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
+            Stage4::nodeMayUseSummary(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
           ) and
         accessPathApproxCostLimits(apLimit, tupleLimit) and
         apLimit < tails and
@@ -4156,26 +4169,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
 
     pragma[nomagic]
-    private predicate nodeMayUseSummary0(
-      NodeEx n, ParamNodeEx p, FlowState state, AccessPathApprox apa
-    ) {
-      exists(AccessPathApprox apa0 |
-        Stage5::parameterMayFlowThrough(p, _) and
-        Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
-        Stage5::fwdFlow(n, state, any(Stage5Param::CcCall ccc), TParamNodeSome(p.asNode()), _,
-          TAccessPathApproxSome(apa), _, apa0, _)
-      )
-    }
-
-    pragma[nomagic]
-    private predicate nodeMayUseSummary(NodeEx n, FlowState state, AccessPathApprox apa) {
-      exists(ParamNodeEx p |
-        Stage5::parameterMayFlowThrough(p, apa) and
-        nodeMayUseSummary0(n, p, state, apa)
-      )
-    }
-
-    pragma[nomagic]
     private predicate stage5ConsCand(Content c, DataFlowType t, AccessPathFront apf, int len) {
       Stage5::consCand(c, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
     }
@@ -4194,7 +4187,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private int countNodesUsingAccessPath(AccessPathApprox apa) {
       result =
         strictcount(NodeEx n, FlowState state |
-          Stage5::revFlow(n, state, apa) or nodeMayUseSummary(n, state, apa)
+          Stage5::revFlow(n, state, apa) or Stage5::nodeMayUseSummary(n, state, apa)
         )
     }
 
