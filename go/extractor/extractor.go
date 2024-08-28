@@ -1786,7 +1786,8 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 }
 
 func getTypeLabelWithFlags(tw *trap.Writer, tp types.Type, transparentAliases bool) (trap.Label, bool) {
-	lbl, exists := tw.Labeler.TypeLabels[tp]
+	typeLabelKey := trap.TypeLabelsKey{Type: tp, TransparentAliases: transparentAliases}
+	lbl, exists := tw.Labeler.TypeLabels[typeLabelKey]
 	if !exists {
 		switch tp := tp.(type) {
 		case *types.Basic:
@@ -1931,7 +1932,7 @@ func getTypeLabelWithFlags(tw *trap.Writer, tp types.Type, transparentAliases bo
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
-		tw.Labeler.TypeLabels[tp] = lbl
+		tw.Labeler.TypeLabels[typeLabelKey] = lbl
 	}
 	return lbl, exists
 }

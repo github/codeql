@@ -19,6 +19,11 @@ func (lbl *Label) String() string {
 	return lbl.id
 }
 
+type TypeLabelsKey struct {
+	Type               types.Type
+	TransparentAliases bool
+}
+
 // Labeler is used to represent labels for a file. It is used to write
 // associate objects with labels.
 type Labeler struct {
@@ -26,10 +31,10 @@ type Labeler struct {
 
 	nextid       int
 	fileLabel    Label
-	nodeLabels   map[interface{}]Label  // labels associated with AST nodes
-	scopeLabels  map[*types.Scope]Label // labels associated with scopes
-	objectLabels map[types.Object]Label // labels associated with objects (that is, declared entities)
-	TypeLabels   map[types.Type]Label   // labels associated with types
+	nodeLabels   map[interface{}]Label   // labels associated with AST nodes
+	scopeLabels  map[*types.Scope]Label  // labels associated with scopes
+	objectLabels map[types.Object]Label  // labels associated with objects (that is, declared entities)
+	TypeLabels   map[TypeLabelsKey]Label // labels associated with types
 	keyLabels    map[string]Label
 }
 
@@ -41,7 +46,7 @@ func newLabeler(tw *Writer) *Labeler {
 		make(map[interface{}]Label),
 		make(map[*types.Scope]Label),
 		make(map[types.Object]Label),
-		make(map[types.Type]Label),
+		make(map[TypeLabelsKey]Label),
 		make(map[string]Label),
 	}
 }
