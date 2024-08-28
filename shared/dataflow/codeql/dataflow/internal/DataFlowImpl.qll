@@ -2693,26 +2693,26 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ) {
             not inBarrier(node2, state) and
             not outBarrier(node1, state) and
-            exists(NodeEx node0, boolean preservesValue0, DataFlowType t0, string label0, Ap ap |
-              Input::localStep(node0, state, node2, state, preservesValue0, t0, cc, label0) and
+            exists(NodeEx mid, boolean preservesValue2, DataFlowType t2, string label2, Ap ap |
+              Input::localStep(mid, state, node2, state, preservesValue2, t2, cc, label2) and
               revFlow(node2, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
-              not outBarrier(node0, state) and
+              not outBarrier(mid, state) and
               (preservesValue = true or ap instanceof ApNil)
             |
-              node1 = node0 and
+              node1 = mid and
               localFlowEntry(node1, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
-              preservesValue = preservesValue0 and
-              label = label0 and
-              t = t0 and
+              preservesValue = preservesValue2 and
+              label = label2 and
+              t = t2 and
               node1 != node2
               or
               exists(boolean preservesValue1, DataFlowType t1, string label1 |
-                localFlowStepPlus(node1, pragma[only_bind_into](state), node0, preservesValue1, t1,
+                localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue1, t1,
                   cc, label1) and
-                not node0 instanceof FlowCheckNode and
-                preservesValue = preservesValue0.booleanAnd(preservesValue1) and
-                label = mergeLabels(label1, label0) and
-                if preservesValue0 = true then t = t1 else t = t0
+                not mid instanceof FlowCheckNode and
+                preservesValue = preservesValue2.booleanAnd(preservesValue1) and
+                label = mergeLabels(label1, label2) and
+                if preservesValue2 = true then t = t1 else t = t2
               )
             )
           }
