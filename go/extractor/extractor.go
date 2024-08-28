@@ -1753,7 +1753,9 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 			}
 		case *types.Alias:
 			if transparentAliases {
-				extractTypeWithFlags(tw, tp.Rhs(), true)
+				// Nothing to do; getTypeLabel will already have looked
+				// through the alias, extracted and returned its RHS.
+				return lbl
 			} else {
 				kind = dbscheme.TypeAlias.Index()
 				dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
