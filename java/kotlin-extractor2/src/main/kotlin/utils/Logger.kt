@@ -363,12 +363,12 @@ OLD: KE1
 */
     }
 
+    fun warn(msg: String) {
 /*
 OLD: KE1
-    fun warn(msg: String) {
         warn(msg, null)
-    }
 */
+    }
 
 /*
 OLD: KE1

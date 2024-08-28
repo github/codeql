@@ -6,7 +6,10 @@ import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiFile
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
+*/
 import java.io.File
+/*
+OLD: KE1
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -29,14 +32,20 @@ import com.github.codeql.utils.versions.usesK2
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
+*/
 import java.io.BufferedWriter
+/*
+OLD: KE1
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.lang.management.*
 import java.util.zip.GZIPInputStream
+*/
 import java.util.zip.GZIPOutputStream
+/*
+OLD: KE1
 import kotlin.system.exitProcess
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -45,8 +54,6 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.*
 */
 
-/*
-OLD: KE1
 enum class Compression(val extension: String) {
     NONE("") {
         override fun bufferedWriter(file: File): BufferedWriter {
@@ -62,7 +69,7 @@ enum class Compression(val extension: String) {
     abstract fun bufferedWriter(file: File): BufferedWriter
 }
 
-private fun getCompression(logger: Logger): Compression {
+fun getCompression(logger: Logger): Compression {
     val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
     val compression_option = System.getenv(compression_env_var)
     val defaultCompression = Compression.GZIP
@@ -88,7 +95,7 @@ private fun getCompression(logger: Logger): Compression {
     }
 }
 
-private fun getTrapFileWriter(
+fun getTrapFileWriter(
     compression: Compression,
     logger: FileLogger,
     trapFileName: String
@@ -99,11 +106,13 @@ private fun getTrapFileWriter(
     }
 }
 
-private abstract class TrapFileWriter(
+abstract class TrapFileWriter(
     val logger: FileLogger,
     trapName: String,
     val extension: String
 ) {
+/*
+OLD: KE1
     private val realFile = File(trapName + extension)
     private val parentDir = realFile.parentFile
     lateinit private var tempFile: File
@@ -168,10 +177,13 @@ private abstract class TrapFileWriter(
         }
         logger.info("Finished writing TRAP file $realFile")
     }
+*/
 }
 
 private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
     TrapFileWriter(logger, trapName, "") {
+/*
+OLD: KE1
     override protected fun getReader(file: File): BufferedReader {
         return file.bufferedReader()
     }
@@ -179,10 +191,13 @@ private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String) 
     override protected fun getWriter(file: File): BufferedWriter {
         return file.bufferedWriter()
     }
+*/
 }
 
 private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
     TrapFileWriter(logger, trapName, ".gz") {
+/*
+OLD: KE1
     override protected fun getReader(file: File): BufferedReader {
         return BufferedReader(
             InputStreamReader(GZIPInputStream(BufferedInputStream(FileInputStream(file))))
@@ -194,5 +209,5 @@ private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String)
             OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file))))
         )
     }
-}
 */
+}
