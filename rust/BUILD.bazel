@@ -1,0 +1,4 @@
+exports_files([
+    "codegen.conf",
+    "schema.py",
+])

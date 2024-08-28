@@ -1,4 +1,4 @@
-from . import dbschemegen, qlgen, trapgen, cppgen
+from . import dbschemegen, qlgen, trapgen, cppgen, rustgen
 
 
 def generate(target, opts, renderer):
