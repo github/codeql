@@ -1565,7 +1565,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlowIn(node, apa, state, cc, t, ap, allowsFlowThrough) and
             if allowsFlowThrough = true
             then (
-              summaryCtx = TSummaryCtxSome(node, t, ap)
+              summaryCtx = TSummaryCtxSome(node, state, t, ap)
             ) else (
               summaryCtx = TSummaryCtxNone() and
               // When the call contexts of source and sink needs to match then there's
@@ -1592,7 +1592,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private newtype TSummaryCtx =
           TSummaryCtxNone() or
-          TSummaryCtxSome(ParamNodeEx p, Typ t, Ap ap) { fwdFlowIn(p, _, _, _, t, ap, true) }
+          TSummaryCtxSome(ParamNodeEx p, FlowState state, Typ t, Ap ap) {
+            fwdFlowIn(p, _, state, _, t, ap, true)
+          }
 
         /**
          * A context for generating flow summaries. This represents flow entry through
@@ -1616,10 +1618,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         /** A summary context from which a flow summary can be generated. */
         private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
           private ParamNodeEx p;
+          private FlowState state;
           private Typ t;
           private Ap ap;
 
-          SummaryCtxSome() { this = TSummaryCtxSome(p, t, ap) }
+          SummaryCtxSome() { this = TSummaryCtxSome(p, state, t, ap) }
 
           ParamNodeEx getParamNode() { result = p }
 
@@ -2074,7 +2077,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlow(pragma[only_bind_into](ret), state, ccc, summaryCtx, t, ap,
               pragma[only_bind_into](apa)) and
             summaryCtx =
-              TSummaryCtxSome(pragma[only_bind_into](p), _, pragma[only_bind_into](argAp)) and
+              TSummaryCtxSome(pragma[only_bind_into](p), _, _, pragma[only_bind_into](argAp)) and
             not outBarrier(ret, state) and
             kind = ret.getKind() and
             parameterFlowThroughAllowed(p, kind) and
@@ -2110,9 +2113,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowIsEntered0(
           DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
-          ParamNodeEx p, Typ t, Ap ap
+          ParamNodeEx p, FlowState state, Typ t, Ap ap
         ) {
-          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, _, cc, innerCc,
+          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, arg, _, p, state, cc, innerCc,
             summaryCtx, t, ap, _, _, true)
         }
 
@@ -2125,9 +2128,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
           SummaryCtxSome innerSummaryCtx
         ) {
-          exists(ParamNodeEx p, Typ t, Ap ap |
-            fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, t, ap) and
-            innerSummaryCtx = TSummaryCtxSome(p, t, ap)
+          exists(ParamNodeEx p, FlowState state, Typ t, Ap ap |
+            fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, state, t, ap) and
+            innerSummaryCtx = TSummaryCtxSome(p, state, t, ap)
           )
         }
 
@@ -2160,7 +2163,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           Ap argAp, ApApprox argApa, Ap ap
         ) {
           exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow |
-            returnFlowsThrough0(call, state, ccc, ap, apa, ret, TSummaryCtxSome(p, argT, argAp),
+            returnFlowsThrough0(call, state, ccc, ap, apa, ret, TSummaryCtxSome(p, _, argT, argAp),
               argApa) and
             flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, argApa, apa) and
             pos = ret.getReturnPosition() and
@@ -2522,7 +2525,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Ap ap0 |
             parameterMayFlowThrough(p, _) and
             revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, ap0) and
-            fwdFlow(n, state, any(CcCall ccc), TSummaryCtxSome(p, _, ap), _, ap0, _)
+            fwdFlow(n, state, any(CcCall ccc), TSummaryCtxSome(p, _, _, ap), _, ap0, _)
           )
         }
 
@@ -3114,8 +3117,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             |
               fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, t, ap, apa, ret,
                 innerSummaryCtx, innerArgApa) and
-              innerSummaryCtx = TSummaryCtxSome(p, innerArgT, innerArgAp) and
-              revFlow(arg, state0, _, _, _) and
+              innerSummaryCtx = TSummaryCtxSome(p, state0, innerArgT, innerArgAp) and
               pn1 = mkPathNode(arg, state0, cc, summaryCtx, innerArgT, innerArgAp) and
               pn2 = typeStrengthenToPathNode(p, state0, ccc, innerSummaryCtx, innerArgT, innerArgAp) and
               pn3 = mkPathNode(ret, state, ccc, innerSummaryCtx, t, ap)
@@ -3244,7 +3246,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdFlowInStep(arg, node, state, outercc, cc, outerSummaryCtx, t, ap, allowsFlowThrough) and
               label = "" and
               if allowsFlowThrough = true
-              then summaryCtx = TSummaryCtxSome(node, t, ap)
+              then summaryCtx = TSummaryCtxSome(node, state, t, ap)
               else summaryCtx = TSummaryCtxNone()
             )
             or
