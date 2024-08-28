@@ -1,38 +1,38 @@
 | ExitStatement.ps1:1:1:1:8 | exit ... |
+| ExitStatement.ps1:1:6:1:8 | -1 |
 | ExitStatement.ps1:1:6:1:8 | ...\|... |
-| ExitStatement.ps1:1:6:1:8 | CommandExpression at: ExitStatement.ps1:1:6:1:8 |
-| IfStatement.ps1:1:1:1:7 | AssignmentStatement at: IfStatement.ps1:1:1:1:7 |
-| IfStatement.ps1:1:6:1:7 | CommandExpression at: IfStatement.ps1:1:6:1:7 |
+| IfStatement.ps1:1:1:1:7 | ...=... |
+| IfStatement.ps1:1:6:1:7 | 4 |
 | IfStatement.ps1:3:1:8:2 | if (...) {...} else {...} |
+| IfStatement.ps1:3:5:3:13 | ...+... |
 | IfStatement.ps1:3:5:3:13 | ...\|... |
-| IfStatement.ps1:3:5:3:13 | CommandExpression at: IfStatement.ps1:3:5:3:13 |
 | IfStatement.ps1:4:2:4:36 | ...\|... |
-| IfStatement.ps1:4:2:4:36 | CommandExpression at: IfStatement.ps1:4:2:4:36 |
+| IfStatement.ps1:4:2:4:36 | ExpandableStringExpression at: IfStatement.ps1:4:2:4:36 |
 | IfStatement.ps1:7:2:7:21 | ...\|... |
-| IfStatement.ps1:7:2:7:21 | CommandExpression at: IfStatement.ps1:7:2:7:21 |
+| IfStatement.ps1:7:2:7:21 | ExpandableStringExpression at: IfStatement.ps1:7:2:7:21 |
 | TrapStatement.ps1:1:1:4:2 | FunctionDefinition at: TrapStatement.ps1:1:1:4:2 |
 | TrapStatement.ps1:2:5:2:26 | TrapStatement at: TrapStatement.ps1:2:5:2:26 |
 | TrapStatement.ps1:2:11:2:25 | ...\|... |
-| TrapStatement.ps1:2:11:2:25 | CommandExpression at: TrapStatement.ps1:2:11:2:25 |
+| TrapStatement.ps1:2:11:2:25 | Error found. |
 | TrapStatement.ps1:3:5:3:19 | ...\|... |
 | TrapStatement.ps1:3:5:3:19 | nonsenseString |
 | TrapStatement.ps1:6:1:6:9 | ...\|... |
 | TrapStatement.ps1:6:1:6:9 | TrapTest |
 | Try.ps1:1:1:13:2 | try {...} |
-| Try.ps1:2:4:2:95 | AssignmentStatement at: Try.ps1:2:4:2:95 |
+| Try.ps1:2:4:2:95 | ...=... |
 | Try.ps1:2:17:2:95 | ...\|... |
 | Try.ps1:2:17:2:95 | New-Object |
 | Try.ps1:2:69:2:94 | ...\|... |
-| Try.ps1:2:69:2:94 | CommandExpression at: Try.ps1:2:69:2:94 |
+| Try.ps1:2:69:2:94 | ArrayLiteral at: Try.ps1:2:69:2:94 |
 | Try.ps1:3:11:3:21 | ...\|... |
-| Try.ps1:3:11:3:21 | CommandExpression at: Try.ps1:3:11:3:21 |
+| Try.ps1:3:11:3:21 | Exception |
 | Try.ps1:6:5:6:64 | ...\|... |
-| Try.ps1:6:5:6:64 | CommandExpression at: Try.ps1:6:5:6:64 |
+| Try.ps1:6:5:6:64 | Unable to download MyDoc.doc from http://www.contoso.com. |
 | Try.ps1:9:5:9:52 | ...\|... |
-| Try.ps1:9:5:9:52 | CommandExpression at: Try.ps1:9:5:9:52 |
+| Try.ps1:9:5:9:52 | An error occurred that could not be resolved. |
 | Try.ps1:12:5:12:37 | ...\|... |
-| Try.ps1:12:5:12:37 | CommandExpression at: Try.ps1:12:5:12:37 |
+| Try.ps1:12:5:12:37 | The finally block is executed. |
 | UseProcessBlockForPipelineCommand.ps1:1:1:11:2 | FunctionDefinition at: UseProcessBlockForPipelineCommand.ps1:1:1:11:2 |
 | UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | ...\|... |
-| UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | CommandExpression at: UseProcessBlockForPipelineCommand.ps1:10:5:10:12 |
+| UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | Number |
 | file://:0:0:0:0 | (no string representation) |

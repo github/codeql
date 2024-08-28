@@ -7,5 +7,5 @@ class ConstExpr extends @constant_expression, BaseConstExpr {
 
   StringLiteral getValue() { constant_expression_value(this, result) }
 
-  override string toString() { result = "ConstantExpression at: " + this.getLocation().toString() }
+  override string toString() { result = this.getValue().toString() }
 }

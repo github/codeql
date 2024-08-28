@@ -1,7 +1,7 @@
 import powershell
 
 class ScriptBlock extends @script_block, Ast {
-  override string toString() { result = "ScriptBlock at: " + this.getLocation().toString() }
+  override string toString() { result = this.getLocation().getFile().getBaseName() }
 
   override SourceLocation getLocation() { script_block_location(this, result) }
 
