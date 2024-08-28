@@ -1705,7 +1705,7 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 			kind = dbscheme.NamedType.Index()
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
-			extractUnderlyingType(tw, lbl, underlying, transparentAliases)
+			extractUnderlyingType(tw, lbl, underlying)
 			trackInstantiatedStructFields(tw, tp, origintp)
 
 			extractTypeObject(tw, lbl, origintp.Obj())
@@ -1964,8 +1964,8 @@ func extractBaseType(tw *trap.Writer, ptr trap.Label, base types.Type, transpare
 
 // extractUnderlyingType extracts `underlying` as the underlying type of the
 // named type `named`
-func extractUnderlyingType(tw *trap.Writer, named trap.Label, underlying types.Type, transparentAliases bool) {
-	dbscheme.UnderlyingTypeTable.Emit(tw, named, extractTypeWithFlags(tw, underlying, transparentAliases))
+func extractUnderlyingType(tw *trap.Writer, named trap.Label, underlying types.Type) {
+	dbscheme.UnderlyingTypeTable.Emit(tw, named, extractType(tw, underlying))
 }
 
 // extractComponentType extracts `component` as the `idx`th component type of `parent` with name `name`
