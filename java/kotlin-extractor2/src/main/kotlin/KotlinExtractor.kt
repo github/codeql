@@ -2,8 +2,11 @@ package com.github.codeql
 
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiFile
+import com.semmle.util.files.FileUtil
+import com.semmle.util.trap.pathtransformers.PathTransformer
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.Files
 import java.nio.file.Paths
 import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
 import org.jetbrains.kotlin.analysis.api.KaSession
@@ -124,6 +127,7 @@ OLD: KE1
         // FIXME: FileUtil expects a static global logger
         // which should be provided by SLF4J's factory facility. For now we set it here.
         FileUtil.logger = logger
+*/
         val srcDir =
             File(
                 System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless {
@@ -131,9 +135,11 @@ OLD: KE1
                 } ?: "kotlin-extractor/src"
             )
         srcDir.mkdirs()
+/*
+OLD: KE1
         val globalExtensionState = KotlinExtractorGlobalState()
 */
-        doAnalysis(dtw, compilation, invocationExtractionProblems, kotlinArgs)
+        doAnalysis(srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
 /*
 OLD: KE1
         loggerBase.printLimitedDiagnosticCounts(tw)
@@ -153,7 +159,14 @@ OLD: KE1
     }
 }
 
-fun doAnalysis(dtw : DiagnosticTrapWriter, compilation: Label<DbCompilation>, invocationExtractionProblems : ExtractionProblems, args : List<String>) {
+fun doAnalysis(
+    srcDir : File,
+    loggerBase: LoggerBase,
+    dtw : DiagnosticTrapWriter,
+    compilation: Label<DbCompilation>,
+    invocationExtractionProblems : ExtractionProblems,
+    args : List<String>
+) {
     lateinit var sourceModule: KaSourceModule
     val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
@@ -207,12 +220,15 @@ OLD: KE1
                     compression,
                     fileExtractionProblems,
                     invocationTrapFile,
-                    fileDiagnosticTrapWriter,
-                    checkTrapIdentical,
-                    loggerBase,
-                    trapDir,
-                    srcDir,
 */
+                    fileDiagnosticTrapWriter,
+                    loggerBase,
+/*
+OLD: KE1
+                    checkTrapIdentical,
+                    trapDir,
+*/
+                    srcDir,
                     psiFile,
 /*
 OLD: KE1
@@ -273,8 +289,6 @@ fun showOffset(document: Document, o: Int, colFudge: Int): String {
 /*
 OLD: KE1
 import com.github.codeql.utils.versions.usesK2
-import com.semmle.util.files.FileUtil
-import com.semmle.util.trap.pathtransformers.PathTransformer
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
@@ -284,8 +298,6 @@ import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.lang.management.*
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import kotlin.system.exitProcess
@@ -475,12 +487,15 @@ OLD: KE1
     compression: Compression,
     fileExtractionProblems: FileExtractionProblems,
     invocationTrapFile: String,
-    fileDiagnosticTrapWriter: FileTrapWriter,
-    checkTrapIdentical: Boolean,
-    loggerBase: LoggerBase,
-    dbTrapDir: File,
-    dbSrcDir: File,
 */
+    fileDiagnosticTrapWriter: FileTrapWriter,
+    loggerBase: LoggerBase,
+/*
+OLD: KE1
+    checkTrapIdentical: Boolean,
+    dbTrapDir: File,
+*/
+    dbSrcDir: File,
     srcFile: KtFile,
 /*
 OLD: KE1
@@ -501,18 +516,19 @@ OLD: KE1
         }
     }
 
-/*
-OLD: KE1
-    val srcFilePath = srcFile.path
+    val srcFilePath = srcFile.virtualFilePath
     val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter)
     logger.info("Extracting file $srcFilePath")
     logger.flush()
 
+/*
+OLD: KE1
     val context = logger.loggerBase.extractorContextStack
     if (!context.empty()) {
         logger.warn("Extractor context was not empty. It thought:")
         context.clear()
     }
+*/
 
     val srcFileRelativePath = PathTransformer.std().fileAsDatabaseString(File(srcFilePath))
 
@@ -528,6 +544,8 @@ OLD: KE1
     srcTmpFile.outputStream().use { Files.copy(Paths.get(srcFilePath), it) }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
+/*
+OLD: KE1
     val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
