@@ -1,7 +1,5 @@
 /**
- * Provides an abstract class for modeling functions that never throws.
- *
- * See also `ThrowingFunction` for modeling functions that do throw.
+ * Provides an abstract class for modeling functions that never throw.
  */
 
 import semmle.code.cpp.Function
