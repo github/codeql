@@ -392,10 +392,10 @@ OLD: KE1
     }
 }
 
-/*
-OLD: KE1
 class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter) :
     Logger(loggerBase, ftw.getDiagnosticTrapWriter()) {
+/*
+OLD: KE1
     fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = ftw.getLocationString(element)
         val mkLocationId = { ftw.getLocation(element) }
@@ -421,5 +421,5 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter) :
             mkLocationId
         )
     }
-}
 */
+}
