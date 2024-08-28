@@ -75,7 +75,95 @@ predicate succExit(CfgScope scope, Ast last, Completion c) { scope.exit(last, c)
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
-  // TODO
+  class ScriptBlockTree extends PreOrderTree instanceof ScriptBlock {
+    final override predicate last(AstNode last, Completion c) {
+      last(super.getEndBlock(), last, c)
+      or
+      not exists(super.getEndBlock()) and
+      last(super.getProcessBlock(), last, c)
+      or
+      not exists(super.getEndBlock()) and
+      not exists(super.getProcessBlock()) and
+      last(super.getBeginBlock(), last, c)
+      or
+      not exists(super.getEndBlock()) and
+      not exists(super.getProcessBlock()) and
+      not exists(super.getBeginBlock()) and
+      last = this and
+      completionIsSimple(c)
+    }
+
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = [super.getBeginBlock(), super.getProcessBlock(), super.getEndBlock()]
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      pred = this and
+      (
+        first(super.getBeginBlock(), succ)
+        or
+        not exists(super.getBeginBlock()) and
+        first(super.getProcessBlock(), succ)
+        or
+        not exists(super.getBeginBlock()) and
+        not exists(super.getProcessBlock()) and
+        first(super.getEndBlock(), succ)
+      ) and
+      completionIsSimple(c)
+      or
+      last(super.getBeginBlock(), pred, c) and
+      c instanceof NormalCompletion and
+      (
+        first(super.getProcessBlock(), succ)
+        or
+        not exists(super.getProcessBlock()) and
+        first(super.getEndBlock(), succ)
+        or
+        not exists(super.getProcessBlock()) and
+        not exists(super.getEndBlock()) and
+        succ = this
+      )
+      or
+      last(super.getProcessBlock(), pred, c) and
+      c instanceof NormalCompletion and
+      (
+        // If we process multiple items we will loop back to the process block
+        first(super.getProcessBlock(), succ)
+        or
+        // Once we're done process all items we will go to the end block
+        first(super.getEndBlock(), succ)
+      )
+    }
+  }
+
+  class NamedBlockTree extends StandardPostOrderTree instanceof NamedBlock {
+    // TODO: Handle trap
+    override AstNode getChildNode(int i) { result = super.getStatement(i) }
+  }
+
+  class AssignStmtTree extends StandardPostOrderTree instanceof AssignStmt {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = super.getLeftHandSide()
+      or
+      i = 1 and result = super.getRightHandSide()
+    }
+  }
+
+  class VarAccessTree extends LeafTree instanceof VarAccess { }
+
+  class BinaryExprTree extends StandardPostOrderTree instanceof BinaryExpr {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = super.getLeft()
+      or
+      i = 1 and result = super.getRight()
+    }
+  }
+
+  class ConstExprTree extends LeafTree instanceof ConstExpr { }
+
+  class CmdExprTree extends StandardPreOrderTree instanceof CmdExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  }
 }
 
 private import Scope
