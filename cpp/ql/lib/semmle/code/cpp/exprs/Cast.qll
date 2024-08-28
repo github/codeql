@@ -795,7 +795,7 @@ class AlignofTypeOperator extends AlignofOperator {
  * A C++ `__datasizeof` expression (used by some implementations
  * of the `<type_traits>` header).
  *
- * The `__datasizeof` expression behaves identical to `sizeof` except
+ * The `__datasizeof` expression behaves identically to `sizeof` except
  * that the result ignores tail padding.
  */
 class DatasizeofOperator extends Expr, @datasizeof {
@@ -813,7 +813,7 @@ class DatasizeofExprOperator extends DatasizeofOperator {
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
 
-  override string toString() { result = "sizeof(<expr>)" }
+  override string toString() { result = "__datasizeof(<expr>)" }
 
   override predicate mayBeImpure() { this.getExprOperand().mayBeImpure() }
 
@@ -831,7 +831,7 @@ class DatasizeofTypeOperator extends DatasizeofOperator {
   /** Gets the contained type. */
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
-  override string toString() { result = "sizeof(" + this.getTypeOperand().getName() + ")" }
+  override string toString() { result = "__datasizeof(" + this.getTypeOperand().getName() + ")" }
 
   override predicate mayBeImpure() { none() }
 
