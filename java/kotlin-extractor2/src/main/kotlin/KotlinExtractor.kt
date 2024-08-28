@@ -121,8 +121,11 @@ OLD: KE1
         if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
             logger.info("moduleFragment:\n" + moduleFragment.dump())
         }
+*/
         val compression = getCompression(logger)
 
+/*
+OLD: KE1
         val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
         // FIXME: FileUtil expects a static global logger
         // which should be provided by SLF4J's factory facility. For now we set it here.
@@ -139,7 +142,7 @@ OLD: KE1
 OLD: KE1
         val globalExtensionState = KotlinExtractorGlobalState()
 */
-        doAnalysis(trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
+        doAnalysis(compression, trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
 /*
 OLD: KE1
         loggerBase.printLimitedDiagnosticCounts(tw)
@@ -160,6 +163,7 @@ OLD: KE1
 }
 
 fun doAnalysis(
+    compression : Compression,
     trapDir : File,
     srcDir : File,
     loggerBase: LoggerBase,
@@ -216,9 +220,9 @@ OLD: KE1
                     fileDiagnosticTrapWriter.fileId
                 )
                 doFile(
+                    compression,
 /*
 OLD: KE1
-                    compression,
                     fileExtractionProblems,
                     invocationTrapFile,
 */
@@ -457,9 +461,9 @@ private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
 
 context (KaSession)
 private fun doFile(
+    compression: Compression,
 /*
 OLD: KE1
-    compression: Compression,
     fileExtractionProblems: FileExtractionProblems,
     invocationTrapFile: String,
 */
@@ -520,10 +524,10 @@ OLD: KE1
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
     val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
-/*
-OLD: KE1
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
+/*
+OLD: KE1
     if (checkTrapIdentical || !trapFileWriter.exists()) {
         trapFileWriter.makeParentDirectory()
 
