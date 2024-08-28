@@ -173,7 +173,7 @@ private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction, 
  *      and
  *      https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms860435(v=msdn.10)
  */
-private class StringCchPrintf extends FormattingFunction, NonThrowingFunction {
+private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
     exists(string baseName |
