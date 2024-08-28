@@ -43,9 +43,12 @@ private module DispatchImpl {
   /**
    * Gets a viable implementation of the target of the given `Call`.
    * The following heuristic is applied for finding the appropriate callable:
-   * 1. If an exact manual model exists, only dispatch to the summarized callable.
-   * 2. If a (non exact) manual model exists and/or if the source code is available, dispatch to both/either.
-   * 3. Only dispatch to a summarized callable in case the static call target in not in source.
+   * In general, dispatch to both any existing model and any viable source dispatch.
+   * However, if the model is generated and the static call target is in the source then
+   * we trust the source more than the model and skip dispatch to the model.
+   * Vice versa, if the model is manual and the source dispatch has a comparatively low
+   * confidence then we only dispatch to the model. Additionally, manual models that
+   * match a source dispatch exactly take precedence over the source.
    */
   DataFlowCallable viableCallable(DataFlowCall c) {
     exists(Call call | call = c.asCall() |
