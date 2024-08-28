@@ -113,11 +113,6 @@ data class ExtractorContext(
  * else will use a Logger that wraps it (and the DiagnosticTrapWriter).
  */
 open class LoggerBase(val diagnosticCounter: DiagnosticCounter) {
-/*
-OLD: KE1
-    val extractorContextStack = Stack<ExtractorContext>()
-*/
-
     private val verbosity: Int
 
     init {
@@ -325,6 +320,11 @@ OLD: KE1
  * Logger is the high-level interface for writint log messages.
  */
 open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
+/*
+OLD: KE1
+    val extractorContextStack = Stack<ExtractorContext>()
+*/
+
     fun flush() {
         dtw.flush()
         loggerBase.flush()
