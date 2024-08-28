@@ -500,15 +500,6 @@ OLD: KE1
     logger.info("Extracting file $srcFilePath")
     logger.flush()
 
-/*
-OLD: KE1
-    val context = logger.loggerBase.extractorContextStack
-    if (!context.empty()) {
-        logger.warn("Extractor context was not empty. It thought:")
-        context.clear()
-    }
-*/
-
     val srcFileRelativePath = PathTransformer.std().fileAsDatabaseString(File(srcFilePath))
 
     val dbSrcFilePath =  FileUtil.appendAbsolutePath(dbSrcDir, srcFileRelativePath).toPath()
