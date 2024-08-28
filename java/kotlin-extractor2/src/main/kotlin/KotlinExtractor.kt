@@ -139,7 +139,7 @@ OLD: KE1
 OLD: KE1
         val globalExtensionState = KotlinExtractorGlobalState()
 */
-        doAnalysis(srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
+        doAnalysis(trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
 /*
 OLD: KE1
         loggerBase.printLimitedDiagnosticCounts(tw)
@@ -160,6 +160,7 @@ OLD: KE1
 }
 
 fun doAnalysis(
+    trapDir : File,
     srcDir : File,
     loggerBase: LoggerBase,
     dtw : DiagnosticTrapWriter,
@@ -226,8 +227,8 @@ OLD: KE1
 /*
 OLD: KE1
                     checkTrapIdentical,
-                    trapDir,
 */
+                    trapDir,
                     srcDir,
                     psiFile,
 /*
@@ -493,8 +494,8 @@ OLD: KE1
 /*
 OLD: KE1
     checkTrapIdentical: Boolean,
-    dbTrapDir: File,
 */
+    dbTrapDir: File,
     dbSrcDir: File,
     srcFile: KtFile,
 /*
@@ -544,9 +545,9 @@ OLD: KE1
     srcTmpFile.outputStream().use { Files.copy(Paths.get(srcFilePath), it) }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
+    val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
 /*
 OLD: KE1
-    val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
     if (checkTrapIdentical || !trapFileWriter.exists()) {
