@@ -17,7 +17,13 @@ echo "// Invocation of Kotlin Extractor 2" >> "$INVOCATION_TRAP"
 echo "#compilation = *" >> "$INVOCATION_TRAP"
 # TODO: This should be properly escaped:
 echo "compilations(#compilation, 2, \"`pwd`\",\"$INVOCATION_TRAP\")" >> "$INVOCATION_TRAP"
-# TODO: compilation_args
+ARG_INDEX=0
+for ARG in "$@"
+do
+    # TODO: This should be properly escaped:
+    echo "compilation_args(#compilation, $ARG_INDEX, \"$ARG\")" >> "$INVOCATION_TRAP"
+    ARG_INDEX=$(("$ARG_INDEX" + 1))
+done
 
 if [[ -n "$CODEQL_JAVA_HOME" ]]; then
   JAVA="$CODEQL_JAVA_HOME/bin/java"

@@ -133,7 +133,7 @@ OLD: KE1
         srcDir.mkdirs()
         val globalExtensionState = KotlinExtractorGlobalState()
 */
-        doAnalysis(kotlinArgs)
+        doAnalysis(dtw, compilation, invocationExtractionProblems, kotlinArgs)
 /*
 OLD: KE1
         loggerBase.printLimitedDiagnosticCounts(tw)
@@ -153,40 +153,7 @@ OLD: KE1
     }
 }
 
-fun doAnalysis(args : List<String>) {
-/*
-OLD: KE1
-            moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
-                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
-                val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
-                loggerBase.setFileNumber(index)
-                fileTrapWriter.writeCompilation_compiling_files(
-                    compilation,
-                    index,
-                    fileTrapWriter.fileId
-                )
-                doFile(
-                    compression,
-                    fileExtractionProblems,
-                    invocationTrapFile,
-                    fileTrapWriter,
-                    checkTrapIdentical,
-                    loggerBase,
-                    trapDir,
-                    srcDir,
-                    file,
-                    primitiveTypeMapping,
-                    pluginContext,
-                    globalExtensionState
-                )
-                fileTrapWriter.writeCompilation_compiling_files_completed(
-                    compilation,
-                    index,
-                    fileExtractionProblems.extractionResult()
-                )
-            }
-*/
-
+fun doAnalysis(dtw : DiagnosticTrapWriter, compilation: Label<DbCompilation>, invocationExtractionProblems : ExtractionProblems, args : List<String>) {
     lateinit var sourceModule: KaSourceModule
     val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
@@ -215,20 +182,52 @@ OLD: KE1
     }
 
     val psiFiles = session.modulesWithFiles.getValue(sourceModule)
+/*
+OLD: KE1
+            moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
+*/
+    var fileIndex = 0
     for (psiFile in psiFiles) {
         if (psiFile is KtFile) {
             analyze(psiFile) {
-                val c = psiFile.getDeclarations()[0]
-                if (c is KtClass) {
-                    for (d: KtDeclaration in c.getDeclarations()) {
-                        if (d is KtFunction) {
-                            if (d.name == "f") {
-                                dumpFunction(d)
-                            }
-                        }
-                    }
-                }
+                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
+                val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
+/*
+OLD: KE1
+                loggerBase.setFileNumber(fileIndex)
+*/
+                fileDiagnosticTrapWriter.writeCompilation_compiling_files(
+                    compilation,
+                    fileIndex,
+                    fileDiagnosticTrapWriter.fileId
+                )
+                doFile(
+/*
+OLD: KE1
+                    compression,
+                    fileExtractionProblems,
+                    invocationTrapFile,
+                    fileDiagnosticTrapWriter,
+                    checkTrapIdentical,
+                    loggerBase,
+                    trapDir,
+                    srcDir,
+*/
+                    psiFile,
+/*
+OLD: KE1
+                    primitiveTypeMapping,
+                    pluginContext,
+                    globalExtensionState
+*/
+                )
+                fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
+                    compilation,
+                    fileIndex,
+                    fileExtractionProblems.extractionResult()
+                )
             }
+            fileIndex += 1
         } else {
             System.out.println("Warning: Not a KtFile")
         }
@@ -424,8 +423,6 @@ open class ExtractionProblems {
 }
 
 /*
-OLD: KE1
-/*
 The `FileExtractionProblems` is analogous to `ExtractionProblems`,
 except it records whether there were any problems while extracting a
 particular source file.
@@ -443,6 +440,8 @@ class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblem
     }
 }
 
+/*
+OLD: KE1
 /*
 This function determines whether 2 TRAP files should be considered to be
 equivalent. It returns `true` iff all of their non-comment lines are
@@ -467,23 +466,45 @@ private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
         }
     }
 }
+*/
 
+context (KaSession)
 private fun doFile(
+/*
+OLD: KE1
     compression: Compression,
     fileExtractionProblems: FileExtractionProblems,
     invocationTrapFile: String,
-    fileTrapWriter: FileTrapWriter,
+    fileDiagnosticTrapWriter: FileTrapWriter,
     checkTrapIdentical: Boolean,
     loggerBase: LoggerBase,
     dbTrapDir: File,
     dbSrcDir: File,
-    srcFile: IrFile,
+*/
+    srcFile: KtFile,
+/*
+OLD: KE1
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
     globalExtensionState: KotlinExtractorGlobalState
+*/
 ) {
+    // TODO: Testing
+    val c = srcFile.getDeclarations()[0]
+    if (c is KtClass) {
+        for (d: KtDeclaration in c.getDeclarations()) {
+            if (d is KtFunction) {
+                if (d.name == "f") {
+                    dumpFunction(d)
+                }
+            }
+        }
+    }
+
+/*
+OLD: KE1
     val srcFilePath = srcFile.path
-    val logger = FileLogger(loggerBase, fileTrapWriter)
+    val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter)
     logger.info("Extracting file $srcFilePath")
     logger.flush()
 
@@ -579,8 +600,11 @@ private fun doFile(
             fileExtractionProblems.setNonRecoverableProblem()
         }
     }
+*/
 }
 
+/*
+OLD: KE1
 enum class Compression(val extension: String) {
     NONE("") {
         override fun bufferedWriter(file: File): BufferedWriter {

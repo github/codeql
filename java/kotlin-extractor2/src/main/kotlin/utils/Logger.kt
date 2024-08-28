@@ -248,15 +248,21 @@ OLD: KE1
         )
         logStream.write(logMessage.toJsonLine())
     }
+*/
 
     fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
+/*
+OLD: KE1
             val logMessage = LogMessage("TRACE", msg)
             tw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
+*/
         }
     }
 
+/*
+OLD: KE1
     fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
@@ -324,8 +330,6 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
         loggerBase.flush()
     }
 
-/*
-OLD: KE1
     fun trace(msg: String) {
         loggerBase.trace(dtw, msg)
     }
@@ -335,9 +339,11 @@ OLD: KE1
     }
 
     fun debug(msg: String) {
+/*
+OLD: KE1
         loggerBase.debug(dtw, msg)
-    }
 */
+    }
 
     fun info(msg: String) {
         loggerBase.info(dtw, msg)
@@ -348,27 +354,42 @@ OLD: KE1
     private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(dtw, msg, extraInfo)
     }
+*/
 
     fun warn(msg: String, exn: Throwable) {
+/*
+OLD: KE1
         warn(msg, exn.stackTraceToString())
+*/
     }
 
+/*
+OLD: KE1
     fun warn(msg: String) {
         warn(msg, null)
     }
+*/
 
+/*
+OLD: KE1
     private fun error(msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo)
     }
+*/
 
     fun error(msg: String) {
+/*
+OLD: KE1
         error(msg, null)
+*/
     }
 
     fun error(msg: String, exn: Throwable) {
+/*
+OLD: KE1
         error(msg, exn.stackTraceToString())
-    }
 */
+    }
 }
 
 /*

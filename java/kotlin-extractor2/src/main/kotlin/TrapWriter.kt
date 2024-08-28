@@ -3,13 +3,13 @@ package com.github.codeql
 /*
 OLD: KE1
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-import com.semmle.extractor.java.PopulateFile
 */
+import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
+import java.io.File
 /*
 OLD: KE1
-import java.io.File
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -20,14 +20,13 @@ import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 */
+import org.jetbrains.kotlin.psi.*
 
 /**
  * Each `.trap` file has a `TrapLabelManager` while we are writing it. It provides fresh TRAP label
  * names, and maintains a mapping from keys (`@"..."`) to labels.
  */
 class TrapLabelManager {
-/*
-OLD: KE1
     /** The next integer to use as a label name. */
     private var nextInt: Int = 100
 
@@ -39,6 +38,8 @@ OLD: KE1
     /** A mapping from a key (`@"..."`) to the label defined to be that key, if any. */
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
 
+/*
+OLD: KE1
     val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
 
     val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> =
@@ -86,9 +87,12 @@ OLD: KE1
      * otherwise. Most users will want to use `getLabelFor` instead, which allows non-existent
      * labels to be initialised.
      */
-    fun <T : AnyDbType> getExistingLabelFor(key: String): Label<T>? {
+TODO: Inline this if it can remain private
+*/
+    private fun <T : AnyDbType> getExistingLabelFor(key: String): Label<T>? {
         return lm.labelMapping.get(key)?.cast<T>()
     }
+
     /**
      * Returns the label for the given key, if one exists. Otherwise, a fresh label is bound to that
      * key, `initialise` is run on it, and it is returned.
@@ -107,6 +111,8 @@ OLD: KE1
         }
     }
 
+/*
+OLD: KE1
     /** Returns a label for a fresh ID (i.e. a new label bound to `*`). */
     fun <T : AnyDbType> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
@@ -136,6 +142,7 @@ OLD: KE1
     fun getExistingVariableLabelFor(v: IrVariable): Label<out DbLocalvar>? {
         return variableLabelMapping.get(v)
     }
+*/
 
     /**
      * This returns a label for the location described by its arguments. Typically users will not
@@ -149,11 +156,17 @@ OLD: KE1
         endLine: Int,
         endColumn: Int
     ): Label<DbLocation> {
+/*
+OLD: HE1
         return getLabelFor("@\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"") {
             writeLocations_default(it, fileId, startLine, startColumn, endLine, endColumn)
         }
+*/
+        TODO()
     }
 
+/*
+OLD: HE1
     /**
      * The label for the 'unknown' file ID. Users will want to use `unknownLocation` instead. This
      * is lazy, as we don't want to define it in a TRAP file unless the TRAP file actually contains
@@ -169,6 +182,7 @@ OLD: KE1
      * file unless the TRAP file actually contains something with an 'unknown' location.
      */
     val unknownLocation: Label<DbLocation> by lazy { getWholeFileLocation(unknownFileId) }
+*/
 
     /**
      * Returns the label for the file `filePath`. If `populateFileTables` is true, then this also
@@ -191,6 +205,8 @@ OLD: KE1
         }
     }
 
+/*
+OLD: HE1
     /**
      * If you have an ID for a file, then this gets a label for the location representing the whole
      * of that file.
@@ -271,7 +287,8 @@ OLD: KE1
      * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
      * given `IrFile` for locations.
      */
-    fun makeSourceFileTrapWriter(file: IrFile, populateFileTables: Boolean) =
+*/
+    fun makeSourceFileTrapWriter(file: KtFile, populateFileTables: Boolean) =
         SourceFileTrapWriter(
             loggerBase,
             lm,
@@ -280,7 +297,6 @@ OLD: KE1
             file,
             populateFileTables
         )
-*/
 }
 
 /*
@@ -319,6 +335,7 @@ OLD: KE1
  * An ID for the file will be created, and if `populateFileTables` is true then we will also add
  * rows to the `files` and `folders` tables for it.
  */
+*/
 open class FileTrapWriter(
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
@@ -335,6 +352,8 @@ open class FileTrapWriter(
         return dtw
     }
 
+/*
+OLD: KE1
     private fun offsetMinOf(default: Int, vararg options: Int?): Int {
         if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
             return default
@@ -400,8 +419,11 @@ open class FileTrapWriter(
     fun getWholeFileLocation(): Label<DbLocation> {
         return getWholeFileLocation(fileId)
     }
+*/
 }
 
+/*
+OLD: KE1
 /**
  * A `SourceFileTrapWriter` is used when not only do we know which file we are extracting entities
  * from, but we also have an `IrFileEntry` (from an `IrFile`) which allows us to map byte offsets to
@@ -410,15 +432,17 @@ open class FileTrapWriter(
  * An ID for the file will be created, and if `populateFileTables` is true then we will also add
  * rows to the `files` and `folders` tables for it.
  */
+*/
 class SourceFileTrapWriter(
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     dtw: DiagnosticTrapWriter,
-    val irFile: IrFile,
+    val ktFile: KtFile,
     populateFileTables: Boolean
-) : FileTrapWriter(loggerBase, lm, bw, dtw, irFile.path, populateFileTables) {
-
+) : FileTrapWriter(loggerBase, lm, bw, dtw, ktFile.virtualFilePath, populateFileTables) {
+/*
+OLD: KE1
     /**
      * The file entry for the file that we are extracting from. Used to map offsets to line/column
      * numbers.
@@ -490,5 +514,5 @@ class SourceFileTrapWriter(
         val endColumn = fileEntry.getColumnNumber(e.endOffset)
         return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
     }
-}
 */
+}
