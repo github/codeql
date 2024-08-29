@@ -1,190 +1,207 @@
 models
 | 1 | Summary: java.util.logging; LogRecord; false; LogRecord; ; ; Argument[1]; Argument[this]; taint; manual |
-| 2 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (Message); ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (String,Object[]); ; Argument[0..1]; ReturnValue; taint; manual |
-| 4 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (String,Supplier[]); ; Argument[0..1]; ReturnValue; taint; manual |
-| 5 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (Supplier[]); ; Argument[0]; ReturnValue; taint; manual |
-| 6 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (EntryMessage,Object); ; Argument[1]; ReturnValue; value; manual |
-| 7 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (Message,Object); ; Argument[1]; ReturnValue; value; manual |
-| 8 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (Object); ; Argument[0]; ReturnValue; value; manual |
-| 9 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (String,Object); ; Argument[1]; ReturnValue; value; manual |
-| 10 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addArgument; ; ; Argument[this]; ReturnValue; value; manual |
-| 11 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[this]; ReturnValue; value; manual |
-| 12 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[1]; Argument[this]; taint; manual |
-| 13 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addMarker; ; ; Argument[this]; ReturnValue; value; manual |
-| 14 | Summary: org.slf4j.spi; LoggingEventBuilder; true; setCause; ; ; Argument[this]; ReturnValue; value; manual |
+| 2 | Summary: java.util.logging; LogRecord; true; getParameters; (); ; Argument[this].SyntheticField[java.util.logging.LogRecord.parameters].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 3 | Summary: java.util.logging; LogRecord; true; setParameters; (Object[]); ; Argument[0].ArrayElement; Argument[this].SyntheticField[java.util.logging.LogRecord.parameters].ArrayElement; value; manual |
+| 4 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (Message); ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (String,Object[]); ; Argument[0..1]; ReturnValue; taint; manual |
+| 6 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (String,Supplier[]); ; Argument[0..1]; ReturnValue; taint; manual |
+| 7 | Summary: org.apache.logging.log4j; Logger; true; traceEntry; (Supplier[]); ; Argument[0]; ReturnValue; taint; manual |
+| 8 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (EntryMessage,Object); ; Argument[1]; ReturnValue; value; manual |
+| 9 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (Message,Object); ; Argument[1]; ReturnValue; value; manual |
+| 10 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (Object); ; Argument[0]; ReturnValue; value; manual |
+| 11 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (String,Object); ; Argument[1]; ReturnValue; value; manual |
+| 12 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addArgument; ; ; Argument[this]; ReturnValue; value; manual |
+| 13 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[this]; ReturnValue; value; manual |
+| 14 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[1]; Argument[this]; taint; manual |
+| 15 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addMarker; ; ; Argument[this]; ReturnValue; value; manual |
+| 16 | Summary: org.slf4j.spi; LoggingEventBuilder; true; setCause; ; ; Argument[this]; ReturnValue; value; manual |
 edges
-| Test.java:23:16:23:32 | (...)... : String | Test.java:24:30:24:31 | in : String | provenance |  |
-| Test.java:23:25:23:32 | source(...) : Object | Test.java:23:16:23:32 | (...)... : String | provenance |  |
-| Test.java:24:10:24:32 | new LogRecord(...) : LogRecord | Test.java:25:9:25:11 | out | provenance |  |
-| Test.java:24:30:24:31 | in : String | Test.java:24:10:24:32 | new LogRecord(...) : LogRecord | provenance | MaD:1 |
-| Test.java:30:17:30:34 | (...)... : Message | Test.java:32:30:32:31 | in : Message | provenance |  |
-| Test.java:30:27:30:34 | source(...) : Object | Test.java:30:17:30:34 | (...)... : Message | provenance |  |
-| Test.java:32:10:32:32 | traceEntry(...) : EntryMessage | Test.java:33:9:33:11 | out | provenance |  |
-| Test.java:32:30:32:31 | in : Message | Test.java:32:10:32:32 | traceEntry(...) : EntryMessage | provenance | MaD:2 |
-| Test.java:38:18:38:36 | (...)... : Object[] | Test.java:40:45:40:46 | in : Object[] | provenance |  |
-| Test.java:38:29:38:36 | source(...) : Object | Test.java:38:18:38:36 | (...)... : Object[] | provenance |  |
-| Test.java:40:10:40:47 | traceEntry(...) : EntryMessage | Test.java:41:9:41:11 | out | provenance |  |
-| Test.java:40:45:40:46 | in : Object[] | Test.java:40:10:40:47 | traceEntry(...) : EntryMessage | provenance | MaD:3 |
-| Test.java:46:16:46:32 | (...)... : String | Test.java:48:30:48:31 | in : String | provenance |  |
-| Test.java:46:25:46:32 | source(...) : Object | Test.java:46:16:46:32 | (...)... : String | provenance |  |
-| Test.java:48:10:48:49 | traceEntry(...) : EntryMessage | Test.java:49:9:49:11 | out | provenance |  |
-| Test.java:48:30:48:31 | in : String | Test.java:48:10:48:49 | traceEntry(...) : EntryMessage | provenance | MaD:3 |
-| Test.java:54:16:54:32 | (...)... : String | Test.java:56:30:56:31 | in : String | provenance |  |
-| Test.java:54:25:54:32 | source(...) : Object | Test.java:54:16:54:32 | (...)... : String | provenance |  |
-| Test.java:56:10:56:81 | traceEntry(...) : EntryMessage | Test.java:57:9:57:11 | out | provenance |  |
-| Test.java:56:30:56:31 | in : String | Test.java:56:10:56:81 | traceEntry(...) : EntryMessage | provenance | MaD:4 |
-| Test.java:63:6:63:56 | (...)... : Supplier[] | Test.java:65:45:65:46 | in : Supplier[] | provenance |  |
-| Test.java:63:49:63:56 | source(...) : Object | Test.java:63:6:63:56 | (...)... : Supplier[] | provenance |  |
-| Test.java:65:10:65:47 | traceEntry(...) : EntryMessage | Test.java:66:9:66:11 | out | provenance |  |
-| Test.java:65:45:65:46 | in : Supplier[] | Test.java:65:10:65:47 | traceEntry(...) : EntryMessage | provenance | MaD:4 |
-| Test.java:72:6:72:56 | (...)... : Supplier[] | Test.java:74:30:74:31 | in : Supplier[] | provenance |  |
-| Test.java:72:49:72:56 | source(...) : Object | Test.java:72:6:72:56 | (...)... : Supplier[] | provenance |  |
-| Test.java:74:10:74:32 | traceEntry(...) : EntryMessage | Test.java:75:9:75:11 | out | provenance |  |
-| Test.java:74:30:74:31 | in : Supplier[] | Test.java:74:10:74:32 | traceEntry(...) : EntryMessage | provenance | MaD:5 |
-| Test.java:80:16:80:32 | (...)... : Object | Test.java:82:50:82:51 | in : Object | provenance |  |
-| Test.java:80:25:80:32 | source(...) : Object | Test.java:80:16:80:32 | (...)... : Object | provenance |  |
-| Test.java:82:10:82:52 | traceExit(...) : Object | Test.java:83:9:83:11 | out | provenance |  |
-| Test.java:82:50:82:51 | in : Object | Test.java:82:10:82:52 | traceExit(...) : Object | provenance | MaD:6 |
-| Test.java:88:16:88:32 | (...)... : Object | Test.java:90:45:90:46 | in : Object | provenance |  |
-| Test.java:88:25:88:32 | source(...) : Object | Test.java:88:16:88:32 | (...)... : Object | provenance |  |
-| Test.java:90:10:90:47 | traceExit(...) : Object | Test.java:91:9:91:11 | out | provenance |  |
-| Test.java:90:45:90:46 | in : Object | Test.java:90:10:90:47 | traceExit(...) : Object | provenance | MaD:7 |
-| Test.java:96:16:96:32 | (...)... : Object | Test.java:98:29:98:30 | in : Object | provenance |  |
-| Test.java:96:25:96:32 | source(...) : Object | Test.java:96:16:96:32 | (...)... : Object | provenance |  |
-| Test.java:98:10:98:31 | traceExit(...) : Object | Test.java:99:9:99:11 | out | provenance |  |
-| Test.java:98:29:98:30 | in : Object | Test.java:98:10:98:31 | traceExit(...) : Object | provenance | MaD:8 |
-| Test.java:104:16:104:32 | (...)... : Object | Test.java:106:44:106:45 | in : Object | provenance |  |
-| Test.java:104:25:104:32 | source(...) : Object | Test.java:104:16:104:32 | (...)... : Object | provenance |  |
-| Test.java:106:10:106:46 | traceExit(...) : Object | Test.java:107:9:107:11 | out | provenance |  |
-| Test.java:106:44:106:45 | in : Object | Test.java:106:10:106:46 | traceExit(...) : Object | provenance | MaD:9 |
-| Test.java:112:29:112:58 | (...)... : LoggingEventBuilder | Test.java:113:10:113:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:112:51:112:58 | source(...) : Object | Test.java:112:29:112:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:113:10:113:11 | in : LoggingEventBuilder | Test.java:113:10:113:38 | addArgument(...) : LoggingEventBuilder | provenance | MaD:10 |
-| Test.java:113:10:113:38 | addArgument(...) : LoggingEventBuilder | Test.java:114:9:114:11 | out | provenance |  |
-| Test.java:119:29:119:58 | (...)... : LoggingEventBuilder | Test.java:120:10:120:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:119:51:119:58 | source(...) : Object | Test.java:119:29:119:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:120:10:120:11 | in : LoggingEventBuilder | Test.java:120:10:120:59 | addArgument(...) : LoggingEventBuilder | provenance | MaD:10 |
-| Test.java:120:10:120:59 | addArgument(...) : LoggingEventBuilder | Test.java:121:9:121:11 | out | provenance |  |
-| Test.java:126:29:126:58 | (...)... : LoggingEventBuilder | Test.java:127:10:127:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:126:51:126:58 | source(...) : Object | Test.java:126:29:126:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:127:10:127:11 | in : LoggingEventBuilder | Test.java:127:10:127:53 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:11 |
-| Test.java:127:10:127:53 | addKeyValue(...) : LoggingEventBuilder | Test.java:128:9:128:11 | out | provenance |  |
-| Test.java:133:29:133:58 | (...)... : LoggingEventBuilder | Test.java:134:10:134:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:133:51:133:58 | source(...) : Object | Test.java:133:29:133:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:134:10:134:11 | in : LoggingEventBuilder | Test.java:134:10:134:74 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:11 |
-| Test.java:134:10:134:74 | addKeyValue(...) : LoggingEventBuilder | Test.java:135:9:135:11 | out | provenance |  |
-| Test.java:140:16:140:32 | (...)... : Object | Test.java:141:35:141:36 | in : Object | provenance |  |
-| Test.java:140:25:140:32 | source(...) : Object | Test.java:140:16:140:32 | (...)... : Object | provenance |  |
-| Test.java:141:4:141:6 | out [post update] : LoggingEventBuilder | Test.java:142:9:142:11 | out | provenance |  |
-| Test.java:141:35:141:36 | in : Object | Test.java:141:4:141:6 | out [post update] : LoggingEventBuilder | provenance | MaD:12 |
-| Test.java:147:37:147:74 | (...)... : Supplier | Test.java:148:35:148:36 | in : Supplier | provenance |  |
-| Test.java:147:67:147:74 | source(...) : Object | Test.java:147:37:147:74 | (...)... : Supplier | provenance |  |
-| Test.java:148:4:148:6 | out [post update] : LoggingEventBuilder | Test.java:149:9:149:11 | out | provenance |  |
-| Test.java:148:35:148:36 | in : Supplier | Test.java:148:4:148:6 | out [post update] : LoggingEventBuilder | provenance | MaD:12 |
-| Test.java:154:29:154:58 | (...)... : LoggingEventBuilder | Test.java:155:10:155:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:154:51:154:58 | source(...) : Object | Test.java:154:29:154:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:155:10:155:11 | in : LoggingEventBuilder | Test.java:155:10:155:27 | addMarker(...) : LoggingEventBuilder | provenance | MaD:13 |
-| Test.java:155:10:155:27 | addMarker(...) : LoggingEventBuilder | Test.java:156:9:156:11 | out | provenance |  |
-| Test.java:161:29:161:58 | (...)... : LoggingEventBuilder | Test.java:162:10:162:11 | in : LoggingEventBuilder | provenance |  |
-| Test.java:161:51:161:58 | source(...) : Object | Test.java:161:29:161:58 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:162:10:162:11 | in : LoggingEventBuilder | Test.java:162:10:162:26 | setCause(...) : LoggingEventBuilder | provenance | MaD:14 |
-| Test.java:162:10:162:26 | setCause(...) : LoggingEventBuilder | Test.java:163:9:163:11 | out | provenance |  |
+| Test.java:24:19:24:35 | (...)... : String | Test.java:25:33:25:34 | in : String | provenance |  |
+| Test.java:24:28:24:35 | source(...) : Object | Test.java:24:19:24:35 | (...)... : String | provenance |  |
+| Test.java:25:13:25:35 | new LogRecord(...) : LogRecord | Test.java:26:12:26:14 | out | provenance |  |
+| Test.java:25:33:25:34 | in : String | Test.java:25:13:25:35 | new LogRecord(...) : LogRecord | provenance | MaD:1 |
+| Test.java:31:20:31:37 | (...)... : Message | Test.java:33:33:33:34 | in : Message | provenance |  |
+| Test.java:31:30:31:37 | source(...) : Object | Test.java:31:20:31:37 | (...)... : Message | provenance |  |
+| Test.java:33:13:33:35 | traceEntry(...) : EntryMessage | Test.java:34:12:34:14 | out | provenance |  |
+| Test.java:33:33:33:34 | in : Message | Test.java:33:13:33:35 | traceEntry(...) : EntryMessage | provenance | MaD:4 |
+| Test.java:39:21:39:39 | (...)... : Object[] | Test.java:41:48:41:49 | in : Object[] | provenance |  |
+| Test.java:39:32:39:39 | source(...) : Object | Test.java:39:21:39:39 | (...)... : Object[] | provenance |  |
+| Test.java:41:13:41:50 | traceEntry(...) : EntryMessage | Test.java:42:12:42:14 | out | provenance |  |
+| Test.java:41:48:41:49 | in : Object[] | Test.java:41:13:41:50 | traceEntry(...) : EntryMessage | provenance | MaD:5 |
+| Test.java:47:19:47:35 | (...)... : String | Test.java:49:33:49:34 | in : String | provenance |  |
+| Test.java:47:28:47:35 | source(...) : Object | Test.java:47:19:47:35 | (...)... : String | provenance |  |
+| Test.java:49:13:49:52 | traceEntry(...) : EntryMessage | Test.java:50:12:50:14 | out | provenance |  |
+| Test.java:49:33:49:34 | in : String | Test.java:49:13:49:52 | traceEntry(...) : EntryMessage | provenance | MaD:5 |
+| Test.java:55:19:55:35 | (...)... : String | Test.java:57:33:57:34 | in : String | provenance |  |
+| Test.java:55:28:55:35 | source(...) : Object | Test.java:55:19:55:35 | (...)... : String | provenance |  |
+| Test.java:57:13:57:84 | traceEntry(...) : EntryMessage | Test.java:58:12:58:14 | out | provenance |  |
+| Test.java:57:33:57:34 | in : String | Test.java:57:13:57:84 | traceEntry(...) : EntryMessage | provenance | MaD:6 |
+| Test.java:64:11:64:61 | (...)... : Supplier[] | Test.java:66:48:66:49 | in : Supplier[] | provenance |  |
+| Test.java:64:54:64:61 | source(...) : Object | Test.java:64:11:64:61 | (...)... : Supplier[] | provenance |  |
+| Test.java:66:13:66:50 | traceEntry(...) : EntryMessage | Test.java:67:12:67:14 | out | provenance |  |
+| Test.java:66:48:66:49 | in : Supplier[] | Test.java:66:13:66:50 | traceEntry(...) : EntryMessage | provenance | MaD:6 |
+| Test.java:73:11:73:61 | (...)... : Supplier[] | Test.java:75:33:75:34 | in : Supplier[] | provenance |  |
+| Test.java:73:54:73:61 | source(...) : Object | Test.java:73:11:73:61 | (...)... : Supplier[] | provenance |  |
+| Test.java:75:13:75:35 | traceEntry(...) : EntryMessage | Test.java:76:12:76:14 | out | provenance |  |
+| Test.java:75:33:75:34 | in : Supplier[] | Test.java:75:13:75:35 | traceEntry(...) : EntryMessage | provenance | MaD:7 |
+| Test.java:81:19:81:35 | (...)... : Object | Test.java:83:53:83:54 | in : Object | provenance |  |
+| Test.java:81:28:81:35 | source(...) : Object | Test.java:81:19:81:35 | (...)... : Object | provenance |  |
+| Test.java:83:13:83:55 | traceExit(...) : Object | Test.java:84:12:84:14 | out | provenance |  |
+| Test.java:83:53:83:54 | in : Object | Test.java:83:13:83:55 | traceExit(...) : Object | provenance | MaD:8 |
+| Test.java:89:19:89:35 | (...)... : Object | Test.java:91:48:91:49 | in : Object | provenance |  |
+| Test.java:89:28:89:35 | source(...) : Object | Test.java:89:19:89:35 | (...)... : Object | provenance |  |
+| Test.java:91:13:91:50 | traceExit(...) : Object | Test.java:92:12:92:14 | out | provenance |  |
+| Test.java:91:48:91:49 | in : Object | Test.java:91:13:91:50 | traceExit(...) : Object | provenance | MaD:9 |
+| Test.java:97:19:97:35 | (...)... : Object | Test.java:99:32:99:33 | in : Object | provenance |  |
+| Test.java:97:28:97:35 | source(...) : Object | Test.java:97:19:97:35 | (...)... : Object | provenance |  |
+| Test.java:99:13:99:34 | traceExit(...) : Object | Test.java:100:12:100:14 | out | provenance |  |
+| Test.java:99:32:99:33 | in : Object | Test.java:99:13:99:34 | traceExit(...) : Object | provenance | MaD:10 |
+| Test.java:105:19:105:35 | (...)... : Object | Test.java:107:47:107:48 | in : Object | provenance |  |
+| Test.java:105:28:105:35 | source(...) : Object | Test.java:105:19:105:35 | (...)... : Object | provenance |  |
+| Test.java:107:13:107:49 | traceExit(...) : Object | Test.java:108:12:108:14 | out | provenance |  |
+| Test.java:107:47:107:48 | in : Object | Test.java:107:13:107:49 | traceExit(...) : Object | provenance | MaD:11 |
+| Test.java:113:32:113:61 | (...)... : LoggingEventBuilder | Test.java:114:13:114:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:113:54:113:61 | source(...) : Object | Test.java:113:32:113:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:114:13:114:14 | in : LoggingEventBuilder | Test.java:114:13:114:41 | addArgument(...) : LoggingEventBuilder | provenance | MaD:12 |
+| Test.java:114:13:114:41 | addArgument(...) : LoggingEventBuilder | Test.java:115:12:115:14 | out | provenance |  |
+| Test.java:120:32:120:61 | (...)... : LoggingEventBuilder | Test.java:121:13:121:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:120:54:120:61 | source(...) : Object | Test.java:120:32:120:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:121:13:121:14 | in : LoggingEventBuilder | Test.java:121:13:121:62 | addArgument(...) : LoggingEventBuilder | provenance | MaD:12 |
+| Test.java:121:13:121:62 | addArgument(...) : LoggingEventBuilder | Test.java:122:12:122:14 | out | provenance |  |
+| Test.java:127:32:127:61 | (...)... : LoggingEventBuilder | Test.java:128:13:128:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:127:54:127:61 | source(...) : Object | Test.java:127:32:127:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:128:13:128:14 | in : LoggingEventBuilder | Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:13 |
+| Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | Test.java:129:12:129:14 | out | provenance |  |
+| Test.java:134:32:134:61 | (...)... : LoggingEventBuilder | Test.java:135:13:135:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:134:54:134:61 | source(...) : Object | Test.java:134:32:134:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:135:13:135:14 | in : LoggingEventBuilder | Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:13 |
+| Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | Test.java:136:12:136:14 | out | provenance |  |
+| Test.java:141:19:141:35 | (...)... : Object | Test.java:142:38:142:39 | in : Object | provenance |  |
+| Test.java:141:28:141:35 | source(...) : Object | Test.java:141:19:141:35 | (...)... : Object | provenance |  |
+| Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | Test.java:143:12:143:14 | out | provenance |  |
+| Test.java:142:38:142:39 | in : Object | Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | provenance | MaD:14 |
+| Test.java:148:40:148:77 | (...)... : Supplier | Test.java:149:38:149:39 | in : Supplier | provenance |  |
+| Test.java:148:70:148:77 | source(...) : Object | Test.java:148:40:148:77 | (...)... : Supplier | provenance |  |
+| Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | Test.java:150:12:150:14 | out | provenance |  |
+| Test.java:149:38:149:39 | in : Supplier | Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | provenance | MaD:14 |
+| Test.java:155:32:155:61 | (...)... : LoggingEventBuilder | Test.java:156:13:156:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:155:54:155:61 | source(...) : Object | Test.java:155:32:155:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:156:13:156:14 | in : LoggingEventBuilder | Test.java:156:13:156:30 | addMarker(...) : LoggingEventBuilder | provenance | MaD:15 |
+| Test.java:156:13:156:30 | addMarker(...) : LoggingEventBuilder | Test.java:157:12:157:14 | out | provenance |  |
+| Test.java:162:32:162:61 | (...)... : LoggingEventBuilder | Test.java:163:13:163:14 | in : LoggingEventBuilder | provenance |  |
+| Test.java:162:54:162:61 | source(...) : Object | Test.java:162:32:162:61 | (...)... : LoggingEventBuilder | provenance |  |
+| Test.java:163:13:163:14 | in : LoggingEventBuilder | Test.java:163:13:163:29 | setCause(...) : LoggingEventBuilder | provenance | MaD:16 |
+| Test.java:163:13:163:29 | setCause(...) : LoggingEventBuilder | Test.java:164:12:164:14 | out | provenance |  |
+| Test.java:171:7:171:16 | parameters [post update] : Object[] [[]] : Object | Test.java:172:28:172:37 | parameters : Object[] [[]] : Object | provenance |  |
+| Test.java:171:23:171:30 | source(...) : Object | Test.java:171:7:171:16 | parameters [post update] : Object[] [[]] : Object | provenance |  |
+| Test.java:172:7:172:12 | record [post update] : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | Test.java:173:22:173:27 | record : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | provenance |  |
+| Test.java:172:28:172:37 | parameters : Object[] [[]] : Object | Test.java:172:7:172:12 | record [post update] : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | provenance | MaD:3 |
+| Test.java:173:22:173:27 | record : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | Test.java:173:22:173:43 | getParameters(...) : Object[] [[]] : Object | provenance | MaD:2 |
+| Test.java:173:22:173:43 | getParameters(...) : Object[] [[]] : Object | Test.java:174:12:174:14 | out : Object[] [[]] : Object | provenance |  |
+| Test.java:174:12:174:14 | out : Object[] [[]] : Object | Test.java:174:12:174:17 | ...[...] | provenance |  |
 nodes
-| Test.java:23:16:23:32 | (...)... : String | semmle.label | (...)... : String |
-| Test.java:23:25:23:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:24:10:24:32 | new LogRecord(...) : LogRecord | semmle.label | new LogRecord(...) : LogRecord |
-| Test.java:24:30:24:31 | in : String | semmle.label | in : String |
-| Test.java:25:9:25:11 | out | semmle.label | out |
-| Test.java:30:17:30:34 | (...)... : Message | semmle.label | (...)... : Message |
-| Test.java:30:27:30:34 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:32:10:32:32 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:32:30:32:31 | in : Message | semmle.label | in : Message |
-| Test.java:33:9:33:11 | out | semmle.label | out |
-| Test.java:38:18:38:36 | (...)... : Object[] | semmle.label | (...)... : Object[] |
-| Test.java:38:29:38:36 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:40:10:40:47 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:40:45:40:46 | in : Object[] | semmle.label | in : Object[] |
-| Test.java:41:9:41:11 | out | semmle.label | out |
-| Test.java:46:16:46:32 | (...)... : String | semmle.label | (...)... : String |
-| Test.java:46:25:46:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:48:10:48:49 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:48:30:48:31 | in : String | semmle.label | in : String |
-| Test.java:49:9:49:11 | out | semmle.label | out |
-| Test.java:54:16:54:32 | (...)... : String | semmle.label | (...)... : String |
-| Test.java:54:25:54:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:56:10:56:81 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:56:30:56:31 | in : String | semmle.label | in : String |
-| Test.java:57:9:57:11 | out | semmle.label | out |
-| Test.java:63:6:63:56 | (...)... : Supplier[] | semmle.label | (...)... : Supplier[] |
-| Test.java:63:49:63:56 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:65:10:65:47 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:65:45:65:46 | in : Supplier[] | semmle.label | in : Supplier[] |
-| Test.java:66:9:66:11 | out | semmle.label | out |
-| Test.java:72:6:72:56 | (...)... : Supplier[] | semmle.label | (...)... : Supplier[] |
-| Test.java:72:49:72:56 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:74:10:74:32 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
-| Test.java:74:30:74:31 | in : Supplier[] | semmle.label | in : Supplier[] |
-| Test.java:75:9:75:11 | out | semmle.label | out |
-| Test.java:80:16:80:32 | (...)... : Object | semmle.label | (...)... : Object |
-| Test.java:80:25:80:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:82:10:82:52 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
-| Test.java:82:50:82:51 | in : Object | semmle.label | in : Object |
-| Test.java:83:9:83:11 | out | semmle.label | out |
-| Test.java:88:16:88:32 | (...)... : Object | semmle.label | (...)... : Object |
-| Test.java:88:25:88:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:90:10:90:47 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
-| Test.java:90:45:90:46 | in : Object | semmle.label | in : Object |
-| Test.java:91:9:91:11 | out | semmle.label | out |
-| Test.java:96:16:96:32 | (...)... : Object | semmle.label | (...)... : Object |
-| Test.java:96:25:96:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:98:10:98:31 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
-| Test.java:98:29:98:30 | in : Object | semmle.label | in : Object |
-| Test.java:99:9:99:11 | out | semmle.label | out |
-| Test.java:104:16:104:32 | (...)... : Object | semmle.label | (...)... : Object |
-| Test.java:104:25:104:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:106:10:106:46 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
-| Test.java:106:44:106:45 | in : Object | semmle.label | in : Object |
-| Test.java:107:9:107:11 | out | semmle.label | out |
-| Test.java:112:29:112:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:112:51:112:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:113:10:113:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:113:10:113:38 | addArgument(...) : LoggingEventBuilder | semmle.label | addArgument(...) : LoggingEventBuilder |
-| Test.java:114:9:114:11 | out | semmle.label | out |
-| Test.java:119:29:119:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:119:51:119:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:120:10:120:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:120:10:120:59 | addArgument(...) : LoggingEventBuilder | semmle.label | addArgument(...) : LoggingEventBuilder |
-| Test.java:121:9:121:11 | out | semmle.label | out |
-| Test.java:126:29:126:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:126:51:126:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:127:10:127:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:127:10:127:53 | addKeyValue(...) : LoggingEventBuilder | semmle.label | addKeyValue(...) : LoggingEventBuilder |
-| Test.java:128:9:128:11 | out | semmle.label | out |
-| Test.java:133:29:133:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:133:51:133:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:134:10:134:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:134:10:134:74 | addKeyValue(...) : LoggingEventBuilder | semmle.label | addKeyValue(...) : LoggingEventBuilder |
-| Test.java:135:9:135:11 | out | semmle.label | out |
-| Test.java:140:16:140:32 | (...)... : Object | semmle.label | (...)... : Object |
-| Test.java:140:25:140:32 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:141:4:141:6 | out [post update] : LoggingEventBuilder | semmle.label | out [post update] : LoggingEventBuilder |
-| Test.java:141:35:141:36 | in : Object | semmle.label | in : Object |
-| Test.java:142:9:142:11 | out | semmle.label | out |
-| Test.java:147:37:147:74 | (...)... : Supplier | semmle.label | (...)... : Supplier |
-| Test.java:147:67:147:74 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:148:4:148:6 | out [post update] : LoggingEventBuilder | semmle.label | out [post update] : LoggingEventBuilder |
-| Test.java:148:35:148:36 | in : Supplier | semmle.label | in : Supplier |
-| Test.java:149:9:149:11 | out | semmle.label | out |
-| Test.java:154:29:154:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:154:51:154:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:155:10:155:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:155:10:155:27 | addMarker(...) : LoggingEventBuilder | semmle.label | addMarker(...) : LoggingEventBuilder |
-| Test.java:156:9:156:11 | out | semmle.label | out |
-| Test.java:161:29:161:58 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
-| Test.java:161:51:161:58 | source(...) : Object | semmle.label | source(...) : Object |
-| Test.java:162:10:162:11 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
-| Test.java:162:10:162:26 | setCause(...) : LoggingEventBuilder | semmle.label | setCause(...) : LoggingEventBuilder |
-| Test.java:163:9:163:11 | out | semmle.label | out |
+| Test.java:24:19:24:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:24:28:24:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:25:13:25:35 | new LogRecord(...) : LogRecord | semmle.label | new LogRecord(...) : LogRecord |
+| Test.java:25:33:25:34 | in : String | semmle.label | in : String |
+| Test.java:26:12:26:14 | out | semmle.label | out |
+| Test.java:31:20:31:37 | (...)... : Message | semmle.label | (...)... : Message |
+| Test.java:31:30:31:37 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:33:13:33:35 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:33:33:33:34 | in : Message | semmle.label | in : Message |
+| Test.java:34:12:34:14 | out | semmle.label | out |
+| Test.java:39:21:39:39 | (...)... : Object[] | semmle.label | (...)... : Object[] |
+| Test.java:39:32:39:39 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:41:13:41:50 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:41:48:41:49 | in : Object[] | semmle.label | in : Object[] |
+| Test.java:42:12:42:14 | out | semmle.label | out |
+| Test.java:47:19:47:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:47:28:47:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:13:49:52 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:49:33:49:34 | in : String | semmle.label | in : String |
+| Test.java:50:12:50:14 | out | semmle.label | out |
+| Test.java:55:19:55:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:55:28:55:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:57:13:57:84 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:57:33:57:34 | in : String | semmle.label | in : String |
+| Test.java:58:12:58:14 | out | semmle.label | out |
+| Test.java:64:11:64:61 | (...)... : Supplier[] | semmle.label | (...)... : Supplier[] |
+| Test.java:64:54:64:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:66:13:66:50 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:66:48:66:49 | in : Supplier[] | semmle.label | in : Supplier[] |
+| Test.java:67:12:67:14 | out | semmle.label | out |
+| Test.java:73:11:73:61 | (...)... : Supplier[] | semmle.label | (...)... : Supplier[] |
+| Test.java:73:54:73:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:75:13:75:35 | traceEntry(...) : EntryMessage | semmle.label | traceEntry(...) : EntryMessage |
+| Test.java:75:33:75:34 | in : Supplier[] | semmle.label | in : Supplier[] |
+| Test.java:76:12:76:14 | out | semmle.label | out |
+| Test.java:81:19:81:35 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:81:28:81:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:83:13:83:55 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
+| Test.java:83:53:83:54 | in : Object | semmle.label | in : Object |
+| Test.java:84:12:84:14 | out | semmle.label | out |
+| Test.java:89:19:89:35 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:89:28:89:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:91:13:91:50 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
+| Test.java:91:48:91:49 | in : Object | semmle.label | in : Object |
+| Test.java:92:12:92:14 | out | semmle.label | out |
+| Test.java:97:19:97:35 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:97:28:97:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:99:13:99:34 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
+| Test.java:99:32:99:33 | in : Object | semmle.label | in : Object |
+| Test.java:100:12:100:14 | out | semmle.label | out |
+| Test.java:105:19:105:35 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:105:28:105:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:107:13:107:49 | traceExit(...) : Object | semmle.label | traceExit(...) : Object |
+| Test.java:107:47:107:48 | in : Object | semmle.label | in : Object |
+| Test.java:108:12:108:14 | out | semmle.label | out |
+| Test.java:113:32:113:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:113:54:113:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:114:13:114:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:114:13:114:41 | addArgument(...) : LoggingEventBuilder | semmle.label | addArgument(...) : LoggingEventBuilder |
+| Test.java:115:12:115:14 | out | semmle.label | out |
+| Test.java:120:32:120:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:120:54:120:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:121:13:121:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:121:13:121:62 | addArgument(...) : LoggingEventBuilder | semmle.label | addArgument(...) : LoggingEventBuilder |
+| Test.java:122:12:122:14 | out | semmle.label | out |
+| Test.java:127:32:127:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:127:54:127:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:128:13:128:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | semmle.label | addKeyValue(...) : LoggingEventBuilder |
+| Test.java:129:12:129:14 | out | semmle.label | out |
+| Test.java:134:32:134:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:134:54:134:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:135:13:135:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | semmle.label | addKeyValue(...) : LoggingEventBuilder |
+| Test.java:136:12:136:14 | out | semmle.label | out |
+| Test.java:141:19:141:35 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:141:28:141:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | semmle.label | out [post update] : LoggingEventBuilder |
+| Test.java:142:38:142:39 | in : Object | semmle.label | in : Object |
+| Test.java:143:12:143:14 | out | semmle.label | out |
+| Test.java:148:40:148:77 | (...)... : Supplier | semmle.label | (...)... : Supplier |
+| Test.java:148:70:148:77 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | semmle.label | out [post update] : LoggingEventBuilder |
+| Test.java:149:38:149:39 | in : Supplier | semmle.label | in : Supplier |
+| Test.java:150:12:150:14 | out | semmle.label | out |
+| Test.java:155:32:155:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:155:54:155:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:156:13:156:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:156:13:156:30 | addMarker(...) : LoggingEventBuilder | semmle.label | addMarker(...) : LoggingEventBuilder |
+| Test.java:157:12:157:14 | out | semmle.label | out |
+| Test.java:162:32:162:61 | (...)... : LoggingEventBuilder | semmle.label | (...)... : LoggingEventBuilder |
+| Test.java:162:54:162:61 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:163:13:163:14 | in : LoggingEventBuilder | semmle.label | in : LoggingEventBuilder |
+| Test.java:163:13:163:29 | setCause(...) : LoggingEventBuilder | semmle.label | setCause(...) : LoggingEventBuilder |
+| Test.java:164:12:164:14 | out | semmle.label | out |
+| Test.java:171:7:171:16 | parameters [post update] : Object[] [[]] : Object | semmle.label | parameters [post update] : Object[] [[]] : Object |
+| Test.java:171:23:171:30 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:172:7:172:12 | record [post update] : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | semmle.label | record [post update] : LogRecord [java.util.logging.LogRecord.parameters, []] : Object |
+| Test.java:172:28:172:37 | parameters : Object[] [[]] : Object | semmle.label | parameters : Object[] [[]] : Object |
+| Test.java:173:22:173:27 | record : LogRecord [java.util.logging.LogRecord.parameters, []] : Object | semmle.label | record : LogRecord [java.util.logging.LogRecord.parameters, []] : Object |
+| Test.java:173:22:173:43 | getParameters(...) : Object[] [[]] : Object | semmle.label | getParameters(...) : Object[] [[]] : Object |
+| Test.java:174:12:174:14 | out : Object[] [[]] : Object | semmle.label | out : Object[] [[]] : Object |
+| Test.java:174:12:174:17 | ...[...] | semmle.label | ...[...] |
 subpaths
 testFailures

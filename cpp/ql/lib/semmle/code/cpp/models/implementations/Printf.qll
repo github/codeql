@@ -8,11 +8,12 @@
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-private class Printf extends FormattingFunction, AliasFunction {
+private class Printf extends FormattingFunction, AliasFunction, NonThrowingFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
@@ -36,7 +37,7 @@ private class Printf extends FormattingFunction, AliasFunction {
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-private class Fprintf extends FormattingFunction {
+private class Fprintf extends FormattingFunction, NonThrowingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
@@ -54,7 +55,7 @@ private class Fprintf extends FormattingFunction {
 /**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-private class Sprintf extends FormattingFunction {
+private class Sprintf extends FormattingFunction, NonThrowingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
@@ -97,7 +98,7 @@ private class Sprintf extends FormattingFunction {
 /**
  * Implements `Snprintf`.
  */
-private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction {
+private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction, NonThrowingFunction {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
@@ -204,7 +205,7 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-private class Syslog extends FormattingFunction {
+private class Syslog extends FormattingFunction, NonThrowingFunction {
   Syslog() {
     this instanceof TopLevelFunction and
     this.hasGlobalName("syslog") and

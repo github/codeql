@@ -1885,3 +1885,59 @@ class BuiltInOperationIsWinInterface extends BuiltInOperation, @iswininterface {
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsWinInterface" }
 }
+
+/**
+ * A C++ `__is_trivially_equality_comparable` built-in operation.
+ *
+ * Returns `true` if comparing two objects of type `_Tp` is equivalent to
+ * comparing their object representations.
+ *
+ * ```
+ * template<typename _Tp>
+ *   struct is_trivially_equality_comparable
+ *   : public integral_constant<bool, __is_trivially_equality_comparable(_Tp)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsTriviallyEqualityComparable extends BuiltInOperation,
+  @istriviallyequalitycomparable
+{
+  override string toString() { result = "__is_trivially_equality_comparable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyEqualityComparable" }
+}
+
+/**
+ * A C++ `__is_scoped_enum` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is a scoped enum.
+ * ```
+ * template<typename _Tp>
+ * constexpr bool is_scoped_enum = __is_scoped_enum(_Tp);
+ * ```
+ */
+class BuiltInOperationIsScopedEnum extends BuiltInOperation, @isscopedenum {
+  override string toString() { result = "__is_scoped_enum" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsScopedEnum" }
+}
+
+/**
+ * A C++ `__is_trivially_relocatable` built-in operation.
+ *
+ * Returns `true` if moving an object of type `_Tp` is equivalent to
+ * copying the underlying bytes.
+ *
+ * ```
+ * template<typename _Tp>
+ *   struct is_trivially_relocatable
+ *   : public integral_constant<bool, __is_trivially_relocatable(_Tp)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsTriviallyRelocatable extends BuiltInOperation, @istriviallyrelocatable {
+  override string toString() { result = "__is_trivially_relocatable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyRelocatable" }
+}
