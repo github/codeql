@@ -48,10 +48,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_nullability(this, n);
             }
 
-            if (info.FlowState != NullableFlowState.None)
-            {
-                trapFile.expr_flowstate(this, (int)info.FlowState);
-            }
+            // if (info.FlowState != NullableFlowState.None)
+            // {
+            //     trapFile.expr_flowstate(this, (int)info.FlowState);
+            // }
 
             if (info.IsCompilerGenerated)
                 trapFile.compiler_generated(this);
@@ -315,7 +315,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         /// <summary>
         /// Given `b` in `a?.b.c`, return `(a?.b, a?.b)`.
-        /// 
+        ///
         /// Given `c` in `a?.b?.c.d`, return `(b?.c, a?.b?.c)`.
         /// </summary>
         /// <param name="node">A MemberBindingExpression.</param>
