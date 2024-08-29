@@ -1,13 +1,61 @@
 functions.ps1:
+#    1| Add-Numbers-Arguments
+#-----|  -> foo
+
+#    1| {...}
+#-----|  -> exit functions.ps1 (normal)
+
 #    1| enter functions.ps1
 #-----|  -> functions.ps1
 
+#    1| exit functions.ps1
+
+#    1| exit functions.ps1 (normal)
+#-----|  -> exit functions.ps1
+
 #    1| functions.ps1
+#-----|  -> Add-Numbers-Arguments
 
 #    1| enter {...}
 #-----|  -> {...}
 
+#    1| exit {...}
+
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
+
 #    1| {...}
+#-----|  -> number1
+
+#    3| param(...)
+#-----|  -> ...|...
+
+#    3| {...}
+#-----|  -> exit {...} (normal)
+
+#    4| number1
+#-----|  -> number2
+
+#    5| number2
+#-----|  -> param(...)
+
+#    8| number1
+#-----|  -> number2
+
+#    8| ...+...
+#-----|  -> number1
+
+#    8| ...+...
+#-----|  -> {...}
+
+#    8| ...|...
+#-----|  -> ...+...
+
+#    8| number2
+#-----|  -> ...+...
+
+#   11| foo
+#-----|  -> Default-Arguments
 
 #   11| enter {...}
 #-----|  -> {...}
@@ -18,21 +66,87 @@ functions.ps1:
 #-----|  -> exit {...}
 
 #   11| {...}
+#-----|  -> a
+
+#   11| param(...)
 #-----|  -> {...}
 
 #   11| {...}
 #-----|  -> exit {...} (normal)
 
+#   11| a
+#-----|  -> param(...)
+
+#   13| Default-Arguments
+#-----|  -> Add-Numbers-From-Array
+
 #   13| enter {...}
 #-----|  -> {...}
 
+#   13| exit {...}
+
+#   13| exit {...} (normal)
+#-----|  -> exit {...}
+
 #   13| {...}
+#-----|  -> name0
+
+#   14| param(...)
+#-----|  -> ...|...
+
+#   14| {...}
+#-----|  -> exit {...} (normal)
+
+#   15| name0
+#-----|  -> 0
+
+#   16| name1
+#-----|  -> name1
+
+#   16| 0
+#-----|  -> name1
+
+#   17| name2
+#-----|  -> param(...)
+
+#   17| name1
+#-----|  -> 1
+
+#   17| ...+...
+#-----|  -> name2
+
+#   17| 1
+#-----|  -> ...+...
+
+#   19| name
+#-----|  -> name2
+
+#   19| ...+...
+#-----|  -> name
+
+#   19| ...+...
+#-----|  -> {...}
+
+#   19| ...|...
+#-----|  -> ...+...
+
+#   19| name2
+#-----|  -> ...+...
+
+#   22| Add-Numbers-From-Array
+#-----|  -> Add-Numbers-From-Pipeline
 
 #   22| enter {...}
 #-----|  -> {...}
 
 #   22| {...}
+#-----|  -> numbers
+
+#   24| param(...)
 #-----|  -> sum
+
+#   25| numbers
+#-----|  -> param(...)
 
 #   28| sum
 #-----|  -> 0
@@ -45,11 +159,25 @@ functions.ps1:
 #   28| 0
 #-----|  -> 0
 
+#   36| Add-Numbers-From-Pipeline
+#-----|  -> {...}
+
 #   36| enter {...}
 #-----|  -> {...}
 
+#   36| exit {...}
+
+#   36| exit {...} (normal)
+#-----|  -> exit {...}
+
 #   36| {...}
+#-----|  -> numbers
+
+#   38| param(...)
 #-----|  -> sum
+
+#   39| numbers
+#-----|  -> param(...)
 
 #   41| {...}
 #-----|  -> sum
@@ -68,6 +196,7 @@ functions.ps1:
 
 #   44| {...}
 #-----|  -> sum
+#-----|  -> ...|...
 
 #   46| sum
 #-----|  -> _
@@ -80,6 +209,18 @@ functions.ps1:
 
 #   46| _
 #-----|  -> _
+
+#   48| {...}
+#-----|  -> exit {...} (normal)
+
+#   50| ...|...
+#-----|  -> sum
+
+#   50| sum
+#-----|  -> sum
+
+#   50| sum
+#-----|  -> {...}
 
 global.ps1:
 #    1| {...}
