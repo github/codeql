@@ -75,6 +75,25 @@ predicate succExit(CfgScope scope, Ast last, Completion c) { scope.exit(last, c)
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
+  class NonDefaultParameterTree extends LeafTree instanceof Parameter {
+    NonDefaultParameterTree() { not exists(super.getDefaultValue()) }
+  }
+
+  class DefaultParameterTree extends StandardPostOrderTree instanceof Parameter {
+    DefaultParameterTree() { exists(super.getDefaultValue()) }
+
+    override AstNode getChildNode(int i) {
+      i = 0 and
+      result = super.getDefaultValue()
+    }
+
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getDefaultValue() }
+  }
+
+  class ParameterBlockTree extends StandardPostOrderTree instanceof ParamBlock {
+    override AstNode getChildNode(int i) { result = super.getParameter(i) }
+  }
+
   abstract class ScriptBlockTree extends ControlFlowTree instanceof ScriptBlock {
     abstract predicate succEntry(AstNode n, Completion c);
 
@@ -160,6 +179,44 @@ module Trees {
     }
   }
 
+  class FunctionScriptBlockTree extends PreOrderTree, ScriptBlockTree {
+    Function func;
+
+    FunctionScriptBlockTree() { func.getBody() = this }
+
+    AstNode getParameter(int i) { result = func.getFunctionParameter(i) }
+
+    int getNumberOfParameters() { result = func.getNumberOfFunctionParameters() }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Step to the first parameter
+      pred = this and
+      first(this.getParameter(0), succ) and
+      completionIsSimple(c)
+      or
+      // Step to the next parameter
+      exists(int i |
+        last(this.getParameter(i), pred, c) and
+        completionIsNormal(c) and
+        first(this.getParameter(i + 1), succ)
+      )
+      or
+      // Body steps
+      super.succ(pred, succ, c)
+    }
+
+    final override predicate succEntry(AstNode n, Completion c) {
+      // If there are no paramters we enter the body directly
+      not exists(this.getParameter(0)) and
+      n = this and
+      completionIsSimple(c)
+      or
+      // Once we are done with the last parameter we enter the body
+      last(this.getParameter(this.getNumberOfParameters() - 1), n, c) and
+      completionIsNormal(c)
+    }
+  }
+
   class TopLevelScriptBlockTree extends PreOrderTree, ScriptBlockTree {
     TopLevelScriptBlockTree() { this.(ScriptBlock).isTopLevel() }
 
@@ -179,6 +236,34 @@ module Trees {
     }
   }
 
+  class StmtBlockTree extends PreOrderTree instanceof StmtBlock {
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getAStmt() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(super.getStmt(super.getNumberOfStmts() - 1), last, c)
+      or
+      not exists(super.getAStmt()) and
+      last = this and
+      completionIsSimple(c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      this = pred and
+      first(super.getStmt(0), succ) and
+      completionIsSimple(c)
+      or
+      exists(int i |
+        last(super.getStmt(i), pred, c) and
+        completionIsNormal(c) and
+        first(super.getStmt(i + 1), succ)
+      )
+    }
+  }
+
+  class GotoStmtTree extends LeafTree instanceof GotoStmt { }
+
+  class FunctionStmtTree extends LeafTree instanceof Function { }
+
   class VarAccessTree extends LeafTree instanceof VarAccess { }
 
   class BinaryExprTree extends StandardPostOrderTree instanceof BinaryExpr {
@@ -189,10 +274,22 @@ module Trees {
     }
   }
 
+  class UnaryExprTree extends StandardPostOrderTree instanceof UnaryExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getOperand() }
+  }
+
+  class ArrayLiteralTree extends StandardPostOrderTree instanceof ArrayLiteral {
+    override AstNode getChildNode(int i) { result = super.getElement(i) }
+  }
+
   class ConstExprTree extends LeafTree instanceof ConstExpr { }
 
   class CmdExprTree extends StandardPreOrderTree instanceof CmdExpr {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  }
+
+  class PipelineTree extends StandardPreOrderTree instanceof Pipeline {
+    override AstNode getChildNode(int i) { result = super.getComponent(i) }
   }
 }
 
