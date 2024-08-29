@@ -74,10 +74,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 */
 
 open class KotlinFileExtractor(
-/*
-OLD: KE1
     override val logger: FileLogger,
-*/
     override val tw: FileTrapWriter,
 /*
 OLD: KE1
@@ -92,10 +89,7 @@ OLD: KE1
 */
 ) :
     KotlinUsesExtractor(
-/*
-OLD: KE1
         logger,
-*/
         tw,
 /*
 OLD: KE1
@@ -291,9 +285,12 @@ OLD: KE1
 */
                 }
                 is KtFunction -> {
+                    println("=== Dec is fun")
+                    println(declaration)
+                    println(declaration.parent)
+                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
 /*
 OLD: KE1
-                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractFunction(
                             declaration,
