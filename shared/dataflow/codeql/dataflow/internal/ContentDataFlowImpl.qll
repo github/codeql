@@ -51,11 +51,6 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
      */
     default predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
 
-    /**
-     * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow steps.
-     */
-    default predicate isAdditionalTaintStep(Node node1, Node node2) { none() }
-
     /** Holds if data flow into `node` is prohibited. */
     default predicate isBarrier(Node node) { none() }
 
@@ -106,10 +101,8 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
       predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
         storeStep(node1, state1, _, node2, state2) or
         readStep(node1, state1, _, node2, state2) or
-        additionalTaintStep(node1, state1, node2, state2)
+        additionalStep(node1, state1, node2, state2)
       }
-
-      predicate isAdditionalFlowStep = ContentConfig::isAdditionalFlowStep/2;
 
       predicate isBarrier = ContentConfig::isBarrier/1;
 
@@ -234,8 +227,8 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate additionalTaintStep(Node node1, State state1, Node node2, State state2) {
-      ContentConfig::isAdditionalTaintStep(node1, node2) and
+    private predicate additionalStep(Node node1, State state1, Node node2, State state2) {
+      ContentConfig::isAdditionalFlowStep(node1, node2) and
       (
         state1 instanceof InitState and
         state2.(InitState).decode(false)
