@@ -150,12 +150,12 @@ OLD: KE1
         with("file", file) {
             val locId = tw.getWholeFileLocation()
             val pkg = file.packageFqName.asString()
-/*
-OLD: KE1
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
 
+/*
+OLD: KE1
             val exceptionOnFile =
                 System.getenv("CODEQL_KOTLIN_INTERNAL_EXCEPTION_WHILE_EXTRACTING_FILE")
             if (exceptionOnFile != null) {

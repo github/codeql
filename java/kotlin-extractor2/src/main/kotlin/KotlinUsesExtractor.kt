@@ -60,6 +60,7 @@ OLD: KE1
     private fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
+*/
 
     fun extractPackage(pkg: String): Label<out DbPackage> {
         val pkgLabel = "@\"package;$pkg\""
@@ -67,6 +68,8 @@ OLD: KE1
         return id
     }
 
+/*
+OLD: KE1
     fun useFileClassType(f: IrFile) =
         TypeResults(TypeResult(extractFileClass(f), "", ""), TypeResult(fakeKotlinType(), "", ""))
 
