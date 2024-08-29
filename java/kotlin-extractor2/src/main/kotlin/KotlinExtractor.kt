@@ -199,6 +199,8 @@ fun doAnalysis(
         }
     }
 
+    val checkTrapIdentical = false // TODO
+
     val psiFiles = session.modulesWithFiles.getValue(sourceModule)
 /*
 OLD: KE1
@@ -228,10 +230,7 @@ OLD: KE1
 */
                     fileDiagnosticTrapWriter,
                     loggerBase,
-/*
-OLD: KE1
                     checkTrapIdentical,
-*/
                     trapDir,
                     srcDir,
                     psiFile,
@@ -431,34 +430,6 @@ class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblem
     }
 }
 
-/*
-OLD: KE1
-/*
-This function determines whether 2 TRAP files should be considered to be
-equivalent. It returns `true` iff all of their non-comment lines are
-identical.
-*/
-private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
-    r1.use { br1 ->
-        r2.use { br2 ->
-            while (true) {
-                val l1 = br1.readLine()
-                val l2 = br2.readLine()
-                if (l1 == null && l2 == null) {
-                    return true
-                } else if (l1 == null || l2 == null) {
-                    return false
-                } else if (l1 != l2) {
-                    if (!l1.startsWith("//") || !l2.startsWith("//")) {
-                        return false
-                    }
-                }
-            }
-        }
-    }
-}
-*/
-
 context (KaSession)
 private fun doFile(
     compression: Compression,
@@ -469,10 +440,7 @@ OLD: KE1
 */
     fileDiagnosticTrapWriter: FileTrapWriter,
     loggerBase: LoggerBase,
-/*
-OLD: KE1
     checkTrapIdentical: Boolean,
-*/
     dbTrapDir: File,
     dbSrcDir: File,
     srcFile: KtFile,
@@ -515,15 +483,13 @@ OLD: KE1
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
     val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
-    val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
-
-/*
-OLD: KE1
-    if (checkTrapIdentical || !trapFileWriter.exists()) {
-        trapFileWriter.makeParentDirectory()
+    val trapFileWriter = getTrapFileWriter(compression, logger, checkTrapIdentical, trapFileName)
 
         try {
-            trapFileWriter.getTempWriter().use { trapFileBW ->
+            trapFileWriter.run { trapFileBW ->
+                TODO()
+/*
+OLD: KE1
                 // We want our comments to be the first thing in the file,
                 // so start off with a mere TrapWriter
                 val tw =
@@ -566,27 +532,18 @@ OLD: KE1
 
                 fileExtractor.extractFileContents(srcFile, sftw.fileId)
                 externalDeclExtractor.extractExternalClasses()
+*/
             }
 
-            if (checkTrapIdentical && trapFileWriter.exists()) {
-                if (
-                    equivalentTrap(trapFileWriter.getTempReader(), trapFileWriter.getRealReader())
-                ) {
-                    trapFileWriter.deleteTemp()
-                } else {
-                    trapFileWriter.renameTempToDifferent()
-                }
-            } else {
-                trapFileWriter.renameTempToReal()
-            }
-            // We catch Throwable rather than Exception, as we want to
-            // continue trying to extract everything else even if we get a
-            // stack overflow or an assertion failure in one file.
+        // We catch Throwable rather than Exception, as we want to
+        // continue trying to extract everything else even if we get a
+        // stack overflow or an assertion failure in one file.
         } catch (e: Throwable) {
+/*
+OLD: KE1
             logger.error("Failed to extract '$srcFilePath'. " + trapFileWriter.debugInfo(), e)
             context.clear()
             fileExtractionProblems.setNonRecoverableProblem()
-        }
-    }
 */
+        }
 }

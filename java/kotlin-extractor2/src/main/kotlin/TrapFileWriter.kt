@@ -7,10 +7,19 @@ import com.intellij.psi.PsiFile
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
 */
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 /*
 OLD: KE1
-import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
@@ -29,21 +38,11 @@ import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
 import com.github.codeql.utils.versions.usesK2
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.BufferedReader
 */
-import java.io.BufferedWriter
 /*
 OLD: KE1
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
 import java.lang.management.*
-import java.util.zip.GZIPInputStream
 */
-import java.util.zip.GZIPOutputStream
 /*
 OLD: KE1
 import kotlin.system.exitProcess
@@ -98,25 +97,50 @@ fun getCompression(logger: Logger): Compression {
 fun getTrapFileWriter(
     compression: Compression,
     logger: FileLogger,
+    checkTrapIdentical: Boolean,
     trapFileName: String
 ): TrapFileWriter {
     return when (compression) {
-        Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
-        Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
+        Compression.NONE -> NonCompressedTrapFileWriter(logger, checkTrapIdentical, trapFileName)
+        Compression.GZIP -> GZipCompressedTrapFileWriter(logger, checkTrapIdentical, trapFileName)
     }
 }
 
 abstract class TrapFileWriter(
     val logger: FileLogger,
+    val checkTrapIdentical: Boolean,
     trapName: String,
     val extension: String
 ) {
-/*
-OLD: KE1
+    abstract protected fun getReader(file: File): BufferedReader
+    abstract protected fun getWriter(file: File): BufferedWriter
+
     private val realFile = File(trapName + extension)
     private val parentDir = realFile.parentFile
-    lateinit private var tempFile: File
 
+    fun run(block: (bw: BufferedWriter) -> Unit) {
+        if (checkTrapIdentical || !exists()) {
+            parentDir.mkdirs()
+
+            logger.info("Will write TRAP file $realFile")
+            val tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
+            logger.debug("Writing temporary TRAP file $tempFile")
+            getWriter(tempFile).use { bw -> block(bw) }
+
+            if (checkTrapIdentical && exists()) {
+                if (equivalentTrap(getReader(tempFile), getReader(realFile))) {
+                    deleteTemp(tempFile)
+                } else {
+                    renameTempToDifferent(tempFile)
+                }
+            } else {
+                renameTempToReal(tempFile)
+            }
+        }
+    }
+
+/*
+OLD: KE1
     fun debugInfo(): String {
         if (this::tempFile.isInitialized) {
             return "Partial TRAP file location is $tempFile"
@@ -124,44 +148,19 @@ OLD: KE1
             return "Temporary file not yet created."
         }
     }
+*/
 
-    fun makeParentDirectory() {
-        parentDir.mkdirs()
-    }
-
-    fun exists(): Boolean {
+    private fun exists(): Boolean {
         return realFile.exists()
     }
 
-    abstract protected fun getReader(file: File): BufferedReader
-
-    abstract protected fun getWriter(file: File): BufferedWriter
-
-    fun getRealReader(): BufferedReader {
-        return getReader(realFile)
-    }
-
-    fun getTempReader(): BufferedReader {
-        return getReader(tempFile)
-    }
-
-    fun getTempWriter(): BufferedWriter {
-        logger.info("Will write TRAP file $realFile")
-        if (this::tempFile.isInitialized) {
-            logger.error("Temp writer reinitialized for $realFile")
-        }
-        tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
-        logger.debug("Writing temporary TRAP file $tempFile")
-        return getWriter(tempFile)
-    }
-
-    fun deleteTemp() {
+    private fun deleteTemp(tempFile: File) {
         if (!tempFile.delete()) {
             logger.warn("Failed to delete $tempFile")
         }
     }
 
-    fun renameTempToDifferent() {
+    private fun renameTempToDifferent(tempFile: File) {
         val trapDifferentFile =
             File.createTempFile(realFile.getName() + ".", ".trap.different" + extension, parentDir)
         if (tempFile.renameTo(trapDifferentFile)) {
@@ -171,19 +170,16 @@ OLD: KE1
         }
     }
 
-    fun renameTempToReal() {
+    private fun renameTempToReal(tempFile: File) {
         if (!tempFile.renameTo(realFile)) {
             logger.warn("Failed to rename $tempFile to $realFile")
         }
         logger.info("Finished writing TRAP file $realFile")
     }
-*/
 }
 
-private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
-    TrapFileWriter(logger, trapName, "") {
-/*
-OLD: KE1
+private class NonCompressedTrapFileWriter(logger: FileLogger, checkTrapIdentical: Boolean, trapName: String) :
+    TrapFileWriter(logger, checkTrapIdentical, trapName, "") {
     override protected fun getReader(file: File): BufferedReader {
         return file.bufferedReader()
     }
@@ -191,13 +187,10 @@ OLD: KE1
     override protected fun getWriter(file: File): BufferedWriter {
         return file.bufferedWriter()
     }
-*/
 }
 
-private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
-    TrapFileWriter(logger, trapName, ".gz") {
-/*
-OLD: KE1
+private class GZipCompressedTrapFileWriter(logger: FileLogger, checkTrapIdentical: Boolean, trapName: String) :
+    TrapFileWriter(logger, checkTrapIdentical, trapName, ".gz") {
     override protected fun getReader(file: File): BufferedReader {
         return BufferedReader(
             InputStreamReader(GZIPInputStream(BufferedInputStream(FileInputStream(file))))
@@ -209,5 +202,29 @@ OLD: KE1
             OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file))))
         )
     }
+}
+
+/*
+This function determines whether 2 TRAP files should be considered to be
+equivalent. It returns `true` iff all of their non-comment lines are
+identical.
 */
+private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
+    r1.use { br1 ->
+        r2.use { br2 ->
+            while (true) {
+                val l1 = br1.readLine()
+                val l2 = br2.readLine()
+                if (l1 == null && l2 == null) {
+                    return true
+                } else if (l1 == null || l2 == null) {
+                    return false
+                } else if (l1 != l2) {
+                    if (!l1.startsWith("//") || !l2.startsWith("//")) {
+                        return false
+                    }
+                }
+            }
+        }
+    }
 }
