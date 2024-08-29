@@ -11,5 +11,5 @@ class ForStmt extends @for_statement, LoopStmt {
 
   PipelineBase getIterator() { for_statement_iterator(this, result) } // TODO: Change @ast to @pipeline_base in dbscheme
 
-  StmtBlock getBody() { for_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
+  final override StmtBlock getBody() { for_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
 }

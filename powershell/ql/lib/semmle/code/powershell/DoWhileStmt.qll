@@ -7,5 +7,5 @@ class DoWhileStmt extends @do_while_statement, LoopStmt {
 
   PipelineBase getCondition() { do_while_statement_condition(this, result) } // TODO: Change @ast to @pipeline_base in dbscheme
 
-  StmtBlock getBody() { do_while_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
+  final override StmtBlock getBody() { do_while_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
 }
