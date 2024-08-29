@@ -131,8 +131,6 @@ open class LoggerBase(val diagnosticCounter: DiagnosticCounter) {
         }
     }
 
-/*
-OLD: KE1
     private fun getDiagnosticLocation(): String? {
         val st = Exception().stackTrace
         for (x in st) {
@@ -148,6 +146,8 @@ OLD: KE1
         return null
     }
 
+/*
+OLD: KE1
     private var file_number = -1
     private var file_number_diagnostic_number = 0
 
@@ -155,14 +155,18 @@ OLD: KE1
         file_number = index
         file_number_diagnostic_number = 0
     }
+*/
 
     fun diagnostic(
         dtw: DiagnosticTrapWriter,
         severity: Severity,
         msg: String,
         extraInfo: String?,
+/*
+OLD: KE1
         locationString: String? = null,
         mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
+*/
     ) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if (diagnosticLoc == null) "<unknown location>" else diagnosticLoc
@@ -170,26 +174,14 @@ OLD: KE1
             if (diagnosticLoc == null) {
                 "    Missing caller information.\n"
             } else {
-                val oldInfo =
-                    logCounter.diagnosticInfo.getOrDefault(diagnosticLoc, Pair(severity, 0))
-                if (severity != oldInfo.first) {
-                    // We don't want to get in a loop, so just emit this
-                    // directly without going through the diagnostic
-                    // counting machinery
-                    if (verbosity >= 1) {
-                        val message =
-                            "Severity mismatch ($severity vs ${oldInfo.first}) at $diagnosticLoc"
-                        emitDiagnostic(dtw, Severity.Error, "Inconsistency", message, message)
-                    }
-                }
-                val newCount = oldInfo.second + 1
-                val newInfo = Pair(severity, newCount)
-                logCounter.diagnosticInfo[diagnosticLoc] = newInfo
+                val key = Pair(diagnosticLoc, severity)
+                val count = 1 + diagnosticCounter.diagnosticInfo.getOrDefault(key, 0)
+                diagnosticCounter.diagnosticInfo[key] = count
                 when {
-                    logCounter.diagnosticLimit <= 0 -> ""
-                    newCount == logCounter.diagnosticLimit ->
+                    diagnosticCounter.diagnosticLimit <= 0 -> ""
+                    count == diagnosticCounter.diagnosticLimit ->
                         "    Limit reached for diagnostics from $diagnosticLoc.\n"
-                    newCount > logCounter.diagnosticLimit -> return
+                    count > diagnosticCounter.diagnosticLimit -> return
                     else -> ""
                 }
             }
@@ -200,15 +192,18 @@ OLD: KE1
             fullMsgBuilder.append(extraInfo)
         }
 
+/*
+OLD: KE1
         val iter = extractorContextStack.listIterator(extractorContextStack.size)
         while (iter.hasPrevious()) {
             val x = iter.previous()
             fullMsgBuilder.append("  ...while extracting a ${x.kind} (${x.name}) at ${x.loc}\n")
         }
+*/
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
-        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
+        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg /* TODO , locationString, mkLocationId */)
     }
 
     private fun emitDiagnostic(
@@ -217,12 +212,21 @@ OLD: KE1
         diagnosticLocStr: String,
         msg: String,
         fullMsg: String,
+/*
+OLD: KE1
         locationString: String? = null,
         mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
+*/
     ) {
+/*
+OLD: KE1
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
+*/
+        val locStr = "" // TODO: Replace with above
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
+/*
+OLD: KE1
         // We don't actually make the location until after the `return` above
         val locationId = mkLocationId()
         val diagLabel = dtw.getFreshIdLabel<DbDiagnostic>()
@@ -241,31 +245,25 @@ OLD: KE1
             file_number,
             file_number_diagnostic_number++
         )
+*/
         logStream.write(logMessage.toJsonLine())
     }
-*/
 
     fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
-/*
-OLD: KE1
             val logMessage = LogMessage("TRACE", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
-*/
         }
     }
 
-/*
-OLD: KE1
     fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
     }
-*/
 
     fun info(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 3) {
@@ -277,28 +275,25 @@ OLD: KE1
 
     fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 2) {
-/*
-OLD: KE1
             diagnostic(dtw, Severity.Warn, msg, extraInfo)
-*/
         }
     }
 
-/*
-OLD: KE1
     fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 1) {
             diagnostic(dtw, Severity.Error, msg, extraInfo)
         }
     }
 
+/*
+OLD: KE1
     fun printLimitedDiagnosticCounts(dtw: DiagnosticTrapWriter) {
-        for ((caller, info) in logCounter.diagnosticInfo) {
+        for ((caller, info) in diagnosticCounter.diagnosticInfo) {
             val severity = info.first
             val count = info.second
-            if (count >= logCounter.diagnosticLimit) {
+            if (count >= diagnosticCounter.diagnosticLimit) {
                 val message =
-                    "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
+                    "Total of $count diagnostics (reached limit of ${diagnosticCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
                     emitDiagnostic(dtw, severity, "Limit", message, message)
                 }
@@ -339,56 +334,35 @@ OLD: KE1
     }
 
     fun debug(msg: String) {
-/*
-OLD: KE1
         loggerBase.debug(dtw, msg)
-*/
     }
 
     fun info(msg: String) {
         loggerBase.info(dtw, msg)
     }
 
-/*
-OLD: KE1
     private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(dtw, msg, extraInfo)
     }
-*/
 
     fun warn(msg: String, exn: Throwable) {
-/*
-OLD: KE1
         warn(msg, exn.stackTraceToString())
-*/
     }
 
     fun warn(msg: String) {
-/*
-OLD: KE1
         warn(msg, null)
-*/
     }
 
-/*
-OLD: KE1
     private fun error(msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo)
     }
-*/
 
     fun error(msg: String) {
-/*
-OLD: KE1
         error(msg, null)
-*/
     }
 
     fun error(msg: String, exn: Throwable) {
-/*
-OLD: KE1
         error(msg, exn.stackTraceToString())
-*/
     }
 }
 
