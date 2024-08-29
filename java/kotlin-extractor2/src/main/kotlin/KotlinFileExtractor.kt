@@ -285,9 +285,6 @@ OLD: KE1
 */
                 }
                 is KtFunction -> {
-                    println("=== Dec is fun")
-                    println(declaration)
-                    println(declaration.parent)
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
 /*
 OLD: KE1

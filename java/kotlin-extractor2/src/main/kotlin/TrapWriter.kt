@@ -51,15 +51,15 @@ OLD: KE1
      * labels, so we just accept this duplication.
      */
     val genericSpecialisationsExtracted = HashSet<String>()
+*/
 
     /**
-     * Sometimes, when we extract a file class we don't have the IrFile for it, so we are not able
+     * Sometimes, when we extract a file class we don't have the KtFile for it, so we are not able
      * to give it a location. This means that the location is written outside of the label creation.
      * This allows us to keep track of whether we've written the location already in this TRAP file,
      * to avoid duplication.
      */
-    val fileClassLocationsExtracted = HashSet<IrFile>()
-*/
+    val fileClassLocationsExtracted = HashSet<KtFile>()
 }
 
 /**
@@ -67,15 +67,9 @@ OLD: KE1
  * `TrapWriter`s for the same file, as different instances will have different additional state, but
  * they must all share the same `TrapLabelManager` and `BufferedWriter`.
  */
-/*
-OLD: KE1:
-// TODO lm was `protected` before anonymousTypeMapping and locallyVisibleFunctionLabelMapping moved
-// into it. Should we re-protect it and provide accessors?
-Protected again for now in KE2.
-*/
 abstract class TrapWriter(
     protected val loggerBase: LoggerBase,
-    protected val lm: TrapLabelManager,
+    val lm: TrapLabelManager,
     private val bw: BufferedWriter
 ) {
     abstract fun getDiagnosticTrapWriter(): DiagnosticTrapWriter

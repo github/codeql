@@ -56,11 +56,11 @@ OLD: KE1
     val javaLangObject by lazy { referenceExternalClass("java.lang.Object") }
 
     val javaLangObjectType by lazy { javaLangObject?.typeWith() }
+*/
 
     private fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
-*/
 
     fun extractPackage(pkg: String): Label<out DbPackage> {
         val pkgLabel = "@\"package;$pkg\""
@@ -84,24 +84,28 @@ OLD: KE1
             TypeResult(extractFileClass(pkg, jvmName), "", ""),
             TypeResult(fakeKotlinType(), "", "")
         )
+*/
 
-    fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
+    fun extractFileClass(f: KtFile): Label<out DbClassorinterface> {
         val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
         val id = extractFileClass(pkg, jvmName)
         if (tw.lm.fileClassLocationsExtracted.add(f)) {
-            val fileId = tw.mkFileId(f.path, false)
+            val fileId = tw.mkFileId(f.virtualFilePath, false)
             val locId = tw.getWholeFileLocation(fileId)
             tw.writeHasLocation(id, locId)
         }
         return id
     }
 
+/*
+OLD: KE1
     private fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
         val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
         val jvmName = fqName.shortName().asString()
         return extractFileClass(pkg, jvmName)
     }
+*/
 
     private fun extractFileClass(pkg: String, jvmName: String): Label<out DbClassorinterface> {
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
@@ -112,11 +116,16 @@ OLD: KE1
                 tw.writeClasses_or_interfaces(it, jvmName, pkgId, it)
                 tw.writeFile_class(it)
 
+/*
+OLD: KE1
                 addModifiers(it, "public", "final")
+*/
             }
         return id
     }
 
+/*
+OLD: KE1
     data class UseClassInstanceResult(
         val typeResult: TypeResult<DbClassorinterface>,
         val javaClass: IrClass
@@ -1016,14 +1025,14 @@ OLD: KE1
 */
     ): Label<out DbElement>? =
         when (dp) {
-/*
-OLD: KE1
-            is IrFile ->
+            is KtFile ->
                 if (canBeTopLevel) {
                     usePackage(dp.packageFqName.asString())
                 } else {
                     extractFileClass(dp)
                 }
+/*
+OLD: KE1
             is IrClass ->
                 if (classTypeArguments != null) {
                     useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
