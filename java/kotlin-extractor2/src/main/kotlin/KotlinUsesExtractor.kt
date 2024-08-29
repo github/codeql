@@ -1,5 +1,8 @@
 package com.github.codeql
 
+import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.*
+
 /*
 OLD: KE1
 import com.github.codeql.utils.*
@@ -31,10 +34,7 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 */
 
 open class KotlinUsesExtractor(
-/*
-OLD: KE1
     open val logger: Logger,
-*/
     open val tw: TrapWriter,
 /*
 OLD: KE1
@@ -950,27 +950,36 @@ OLD: KE1
             }
         }
     }
+*/
 
-    private fun parentOf(d: IrDeclaration): IrDeclarationParent {
+    private fun parentOf(d: KtDeclaration): PsiElement {
+/*
+OLD: KE1
         if (d is IrField) {
             return getFieldParent(d)
         }
+*/
         return d.parent
     }
 
     fun useDeclarationParentOf(
         // The declaration
-        d: IrDeclaration,
+        d: KtDeclaration,
         // Whether the type of entity whose parent this is can be a
         // top-level entity in the JVM's eyes. If so, then its parent may
-        // be a file; otherwise, if dp is a file foo.kt, then the parent
-        // is really the JVM class FooKt.
+        // be a file; otherwise, if the parent appears to be a file foo.kt,
+        // then the parent is really the JVM class FooKt.
         canBeTopLevel: Boolean,
+/*
+OLD: KE1
         classTypeArguments: List<IrTypeArgument>? = null,
         inReceiverContext: Boolean = false
+*/
     ): Label<out DbElement>? {
 
         val parent = parentOf(d)
+/*
+OLD: KE1
         if (parent is IrExternalPackageFragment) {
             // This is in a file class.
             val fqName = getFileClassFqName(d)
@@ -982,24 +991,33 @@ OLD: KE1
             }
             return extractFileClass(fqName)
         }
-        return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
+*/
+        return useDeclarationParent(parent, canBeTopLevel /* TODO , classTypeArguments, inReceiverContext */)
     }
 
+/*
+OLD: KE1
     // Generally, useDeclarationParentOf should be used instead of
     // calling this directly, as this cannot handle
     // IrExternalPackageFragment
+*/
     fun useDeclarationParent(
         // The declaration parent according to Kotlin
-        dp: IrDeclarationParent,
+        dp: PsiElement,
         // Whether the type of entity whose parent this is can be a
         // top-level entity in the JVM's eyes. If so, then its parent may
         // be a file; otherwise, if dp is a file foo.kt, then the parent
         // is really the JVM class FooKt.
         canBeTopLevel: Boolean,
+/*
+OLD: KE1
         classTypeArguments: List<IrTypeArgument>? = null,
         inReceiverContext: Boolean = false
+*/
     ): Label<out DbElement>? =
         when (dp) {
+/*
+OLD: KE1
             is IrFile ->
                 if (canBeTopLevel) {
                     usePackage(dp.packageFqName.asString())
@@ -1024,12 +1042,15 @@ OLD: KE1
                 logger.error("Unable to handle IrExternalPackageFragment as an IrDeclarationParent")
                 null
             }
+*/
             else -> {
-                logger.error("Unrecognised IrDeclarationParent: " + dp.javaClass)
+                logger.error("Unexpected declaration parent type: " + dp.javaClass)
                 null
             }
         }
 
+/*
+OLD: KE1
     private val IrDeclaration.isAnonymousFunction
         get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
 

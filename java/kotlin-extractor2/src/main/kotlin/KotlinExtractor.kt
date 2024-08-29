@@ -267,6 +267,9 @@ OLD: KE1
 
 context (KaSession)
 fun dumpFunction(f: KtFunction) {
+    println("=== Have function")
+    println(f)
+    println(f.parent)
     val block = f.getBodyExpression() as KtBlockExpression
     for (p: KtExpression in block.getStatements()) {
         if (p is KtProperty) {
@@ -473,6 +476,11 @@ OLD: KE1
             }
         }
     }
+    if (c is KtFunction) {
+        if (c.name == "test") {
+            dumpFunction(c)
+        }
+    }
 
     val srcFilePath = srcFile.virtualFilePath
     val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter)
@@ -531,10 +539,7 @@ OLD: KE1
 */
         val fileExtractor =
             KotlinFileExtractor(
-/*
-OLD: KE1
                 logger,
-*/
                 sftw,
 /*
 OLD: KE1
