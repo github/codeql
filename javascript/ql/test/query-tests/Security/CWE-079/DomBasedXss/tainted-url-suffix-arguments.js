@@ -2,9 +2,9 @@ import 'dummy';
 
 function foo(x, y, z) {
     arguments; // ensure 'arguments' are used
-    document.writeln(x); // OK [INCONSISTENCY]
+    document.writeln(x); // OK
     document.writeln(y); // NOT OK
-    document.writeln(z); // OK [INCONSISTENCY]
+    document.writeln(z); // OK
 }
 
 function bar() {

@@ -335,13 +335,8 @@ nodes
 | string-manipulations.js:9:36:9:57 | documen ... on.href | semmle.label | documen ... on.href |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | semmle.label | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | semmle.label | documen ... on.href |
-| tainted-url-suffix-arguments.js:3:1:8:1 | 'arguments' object of function foo [1] | semmle.label | 'arguments' object of function foo [1] |
-| tainted-url-suffix-arguments.js:3:14:3:14 | x | semmle.label | x |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | semmle.label | y |
-| tainted-url-suffix-arguments.js:3:20:3:20 | z | semmle.label | z |
-| tainted-url-suffix-arguments.js:5:22:5:22 | x | semmle.label | x |
 | tainted-url-suffix-arguments.js:6:22:6:22 | y | semmle.label | y |
-| tainted-url-suffix-arguments.js:7:22:7:22 | z | semmle.label | z |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | semmle.label | url |
 | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | semmle.label | window.location.href |
 | tainted-url-suffix-arguments.js:12:17:12:19 | url | semmle.label | url |
@@ -431,7 +426,6 @@ nodes
 | tst.js:64:25:64:48 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:65:25:65:48 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:68:16:68:20 | bar() | semmle.label | bar() |
-| tst.js:70:1:70:27 | [,docum ... search] | semmle.label | [,docum ... search] |
 | tst.js:70:1:70:27 | [,docum ... search] [1] | semmle.label | [,docum ... search] [1] |
 | tst.js:70:3:70:26 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:70:46:70:46 | x | semmle.label | x |
@@ -984,15 +978,9 @@ edges
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | provenance | Config |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance |  |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance | Config |
-| tainted-url-suffix-arguments.js:3:1:8:1 | 'arguments' object of function foo [1] | tainted-url-suffix-arguments.js:3:14:3:14 | x | provenance | Config |
-| tainted-url-suffix-arguments.js:3:1:8:1 | 'arguments' object of function foo [1] | tainted-url-suffix-arguments.js:3:17:3:17 | y | provenance | Config |
-| tainted-url-suffix-arguments.js:3:1:8:1 | 'arguments' object of function foo [1] | tainted-url-suffix-arguments.js:3:20:3:20 | z | provenance | Config |
-| tainted-url-suffix-arguments.js:3:14:3:14 | x | tainted-url-suffix-arguments.js:5:22:5:22 | x | provenance |  |
 | tainted-url-suffix-arguments.js:3:17:3:17 | y | tainted-url-suffix-arguments.js:6:22:6:22 | y | provenance |  |
-| tainted-url-suffix-arguments.js:3:20:3:20 | z | tainted-url-suffix-arguments.js:7:22:7:22 | z | provenance |  |
 | tainted-url-suffix-arguments.js:11:11:11:36 | url | tainted-url-suffix-arguments.js:12:17:12:19 | url | provenance |  |
 | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:11:11:11:36 | url | provenance |  |
-| tainted-url-suffix-arguments.js:12:17:12:19 | url | tainted-url-suffix-arguments.js:3:1:8:1 | 'arguments' object of function foo [1] | provenance |  |
 | tainted-url-suffix-arguments.js:12:17:12:19 | url | tainted-url-suffix-arguments.js:3:17:3:17 | y | provenance |  |
 | tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source | provenance |  |
 | tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source | provenance |  |
@@ -1078,11 +1066,7 @@ edges
 | tst.js:60:34:60:34 | s | tst.js:62:18:62:18 | s | provenance |  |
 | tst.js:64:25:64:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
 | tst.js:65:25:65:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] | tst.js:70:46:70:46 | x | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] | tst.js:70:46:70:46 | x | provenance | Config |
 | tst.js:70:1:70:27 | [,docum ... search] [1] | tst.js:70:46:70:46 | x | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] [1] | tst.js:70:46:70:46 | x | provenance | Config |
-| tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] | provenance | Config |
 | tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] [1] | provenance |  |
 | tst.js:70:46:70:46 | x | tst.js:73:20:73:20 | x | provenance |  |
 | tst.js:107:7:107:44 | v | tst.js:110:18:110:18 | v | provenance |  |
