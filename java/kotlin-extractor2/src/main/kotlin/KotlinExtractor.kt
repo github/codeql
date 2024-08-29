@@ -528,8 +528,11 @@ OLD: KE1
                 fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
             )
         val linesOfCode = LinesOfCode(logger, sftw, srcFile)
+*/
         val fileExtractor =
             KotlinFileExtractor(
+/*
+OLD: KE1
                 logger,
                 sftw,
                 linesOfCode,
@@ -540,8 +543,11 @@ OLD: KE1
                 pluginContext,
                 KotlinFileExtractor.DeclarationStack(),
                 globalExtensionState
+*/
             )
 
+/*
+OLD: KE1
         fileExtractor.extractFileContents(srcFile, sftw.fileId)
         externalDeclExtractor.extractExternalClasses()
 */
