@@ -1,26 +1,20 @@
 import os
-from create_database_utils import *
-from diagnostics_test_utils import *
+import re
+import runs_on
 
-# Ensure we're using an old Java version that won't work with Gradle
-for k in os.environ:
-  if k.upper() in ["JAVA_HOME_8_X64", "JAVA_HOME_8_ARM64"]:
-    os.environ["JAVA_HOME"] = os.environ[k]
-    sep = ";" if platform.system() == "Windows" else ":"
-    os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
-    break
 
-# Ensure the autobuilder *doesn't* see newer Java versions, which it could switch to in order to build the project:
-for k in os.environ:
-  if re.match(r"^JAVA_HOME_\d\d_", k):
-    del os.environ[k]
+# There is no Java 8 build available for OSX Arm, therefore this test fails.
+@runs_on.x86_64
+def test(codeql, use_java_8, java, cwd, gradle_6_6_1):
+    # Use a custom, empty toolchains.xml file so the autobuilder doesn't see any Java versions that may be
+    # in a system-level toolchains file
+    toolchains_path = cwd / "toolchains.xml"
 
-# Use a custom, empty toolchains.xml file so the autobuilder doesn't see any Java versions that may be
-# in a system-level toolchains file
-toolchains_path = os.path.join(os.getcwd(), 'toolchains.xml')
-
-run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None, extra_env={
-  'LGTM_INDEX_MAVEN_TOOLCHAINS_FILE': toolchains_path
-})
-
-check_diagnostics()
+    # Ensure the autobuilder *doesn't* see newer Java versions, which it could switch to in order to build the project:
+    for k in os.environ:
+        if re.match(r"^JAVA_HOME_\d\d_", k):
+            del os.environ[k]
+    codeql.database.create(
+        _assert_failure=True,
+        _env={"LGTM_INDEX_MAVEN_TOOLCHAINS_FILE": str(toolchains_path)},
+    )

@@ -1,31 +1,17 @@
-import sys
-
-from create_database_utils import *
-import shutil
-import os.path
 import tempfile
-import platform
+import runs_on
+import pathlib
 
-#The version of gradle used doesn't work on java 17
-try_use_java11()
 
-gradle_override_dir = tempfile.mkdtemp()
-if platform.system() == "Windows":
-  with open(os.path.join(gradle_override_dir, "gradle.bat"), "w") as f:
-    f.write("@echo off\nexit /b 2\n")
-else:
-  gradlepath = os.path.join(gradle_override_dir, "gradle")
-  with open(gradlepath, "w") as f:
-    f.write("#!/bin/bash\nexit 1\n")
-  os.chmod(gradlepath, 0o0755)
+# The version of gradle used doesn't work on java 17
+def test(codeql, use_java_11, java, environment):
+    gradle_override_dir = pathlib.Path(tempfile.mkdtemp())
+    if runs_on.windows:
+        (gradle_override_dir / "gradle.bat").write_text("@echo off\nexit /b 2\n")
+    else:
+        gradlepath = gradle_override_dir / "gradle"
+        gradlepath.write_text("#!/bin/bash\nexit 1\n")
+        gradlepath.chmod(0o0755)
 
-oldpath = os.getenv("PATH")
-os.environ["PATH"] = gradle_override_dir + os.pathsep + oldpath
-
-try:
-  run_codeql_database_create([], lang="java")
-finally:
-  try:
-    shutil.rmtree(gradle_override_dir)
-  except Exception as e:
-    pass
+    environment.add_path(gradle_override_dir)
+    codeql.database.create()
