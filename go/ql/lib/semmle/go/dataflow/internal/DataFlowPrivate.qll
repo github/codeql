@@ -154,7 +154,10 @@ predicate storeStep(Node node1, ContentSet cs, Node node2) {
       or
       node1 = base and
       node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
-      c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+      c =
+        any(DataFlow::PointerContent pc |
+          pc.getPointerType() = node2.getType().getDeepUnaliasedType()
+        )
     )
     or
     node1 = node2.(AddressOperationNode).getOperand() and
@@ -175,7 +178,8 @@ predicate storeStep(Node node1, ContentSet cs, Node node2) {
 predicate readStep(Node node1, ContentSet cs, Node node2) {
   exists(Content c | cs.asOneContent() = c |
     node1 = node2.(PointerDereferenceNode).getOperand() and
-    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+    c =
+      any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType().getDeepUnaliasedType())
     or
     exists(FieldReadNode read |
       node2 = read and
