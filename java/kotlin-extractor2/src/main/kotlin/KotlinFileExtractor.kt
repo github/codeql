@@ -154,8 +154,6 @@ OLD: KE1
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
 
-/*
-OLD: KE1
             val exceptionOnFile =
                 System.getenv("CODEQL_KOTLIN_INTERNAL_EXCEPTION_WHILE_EXTRACTING_FILE")
             if (exceptionOnFile != null) {
@@ -164,6 +162,8 @@ OLD: KE1
                 }
             }
 
+/*
+OLD: KE1
             file.declarations.forEach {
                 extractDeclaration(
                     it,
