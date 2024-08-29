@@ -40,7 +40,8 @@ module NoSql {
     // Taint an entry if the `Value` is tainted
     exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, pred) |
       base = succ.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-      base.getType().hasQualifiedName(package("go.mongodb.org/mongo-driver", "bson/primitive"), "E") and
+      unalias(base.getType())
+          .hasQualifiedName(package("go.mongodb.org/mongo-driver", "bson/primitive"), "E") and
       f.getName() = "Value"
     )
   }
