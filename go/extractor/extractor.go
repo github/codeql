@@ -1623,15 +1623,20 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 			for i := 0; i < tp.NumFields(); i++ {
 				field := tp.Field(i).Origin()
 
-				// ensure the field is associated with a label - note that
-				// struct fields do not have a parent scope, so they are not
-				// dealt with by `extractScopes`
-				fieldlbl, exists := tw.Labeler.FieldID(field, i, lbl)
-				if !exists {
-					extractObject(tw, field, fieldlbl)
-				}
+				if !transparentAliases {
+					// ensure the field is associated with a label - note that
+					// struct fields do not have a parent scope, so they are not
+					// dealt with by `extractScopes`.
 
-				dbscheme.FieldStructsTable.Emit(tw, fieldlbl, lbl)
+					// Skip this when extracting a type with transparent aliases;
+					// this is not the definitive version of the type.
+					fieldlbl, exists := tw.Labeler.FieldID(field, i, lbl)
+					if !exists {
+						extractObject(tw, field, fieldlbl)
+					}
+
+					dbscheme.FieldStructsTable.Emit(tw, fieldlbl, lbl)
+				}
 
 				name := field.Name()
 				if field.Embedded() {
@@ -1653,9 +1658,14 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 				// deal with them separately.
 				meth := tp.Method(i).Origin()
 
-				// Note that methods do not have a parent scope, so they are
-				// not dealt with by `extractScopes`
-				extractMethod(tw, meth)
+				if !transparentAliases {
+					// Note that methods do not have a parent scope, so they are
+					// not dealt with by `extractScopes`
+
+					// Skip this when extracting a type with transparent aliases;
+					// this is not the definitive version of the type.
+					extractMethod(tw, meth)
+				}
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type(), transparentAliases)
 
@@ -1706,35 +1716,42 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
-			trackInstantiatedStructFields(tw, tp, origintp)
 
-			extractTypeObject(tw, lbl, origintp.Obj())
+			if !transparentAliases {
+				// The transparent and non-transparent versions of a named typed
+				// should be equal, so this is probably harmless, but regardless
+				// don't repeat it to save time.
 
-			// ensure all methods have labels - note that methods do not have a
-			// parent scope, so they are not dealt with by `extractScopes`
-			for i := 0; i < origintp.NumMethods(); i++ {
-				meth := origintp.Method(i).Origin()
+				trackInstantiatedStructFields(tw, tp, origintp)
 
-				extractMethod(tw, meth)
-			}
+				extractTypeObject(tw, lbl, origintp.Obj())
 
-			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
-			_, underlyingIsPointer := underlying.(*types.Pointer)
+				// ensure all methods have labels - note that methods do not have a
+				// parent scope, so they are not dealt with by `extractScopes`
+				for i := 0; i < origintp.NumMethods(); i++ {
+					meth := origintp.Method(i).Origin()
 
-			// associate all methods of underlying interface with this type
-			if underlyingIsInterface {
-				for i := 0; i < underlyingInterface.NumMethods(); i++ {
-					methlbl := extractMethod(tw, underlyingInterface.Method(i).Origin())
-					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
+					extractMethod(tw, meth)
 				}
-			}
 
-			// If `underlying` is not a pointer or interface then methods can
-			// be defined on `origintp`. In this case we must ensure that
-			// `*origintp` is in the database, so that Method.hasQualifiedName
-			// correctly includes methods with receiver type `*origintp`.
-			if !underlyingIsInterface && !underlyingIsPointer {
-				extractType(tw, types.NewPointer(origintp))
+				underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
+				_, underlyingIsPointer := underlying.(*types.Pointer)
+
+				// associate all methods of underlying interface with this type
+				if underlyingIsInterface {
+					for i := 0; i < underlyingInterface.NumMethods(); i++ {
+						methlbl := extractMethod(tw, underlyingInterface.Method(i).Origin())
+						dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
+					}
+				}
+
+				// If `underlying` is not a pointer or interface then methods can
+				// be defined on `origintp`. In this case we must ensure that
+				// `*origintp` is in the database, so that Method.hasQualifiedName
+				// correctly includes methods with receiver type `*origintp`.
+				if !underlyingIsInterface && !underlyingIsPointer {
+					extractType(tw, types.NewPointer(origintp))
+				}
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
