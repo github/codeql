@@ -83,31 +83,31 @@ abstract class TrapFileWriter(
 
             logger.info("Will write TRAP file $realFile")
             val tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
-            logger.debug("Writing temporary TRAP file $tempFile")
-            getWriter(tempFile).use { bw -> block(bw) }
+            try {
+                logger.debug("Writing temporary TRAP file $tempFile")
+                getWriter(tempFile).use { bw -> block(bw) }
 
-            if (checkTrapIdentical && exists()) {
-                if (equivalentTrap(getReader(tempFile), getReader(realFile))) {
-                    deleteTemp(tempFile)
+                if (checkTrapIdentical && exists()) {
+                    if (equivalentTrap(getReader(tempFile), getReader(realFile))) {
+                        deleteTemp(tempFile)
+                    } else {
+                        renameTempToDifferent(tempFile)
+                    }
                 } else {
-                    renameTempToDifferent(tempFile)
+                    renameTempToReal(tempFile)
                 }
-            } else {
-                renameTempToReal(tempFile)
+            // We catch Throwable rather than Exception, as we want to
+            // continue trying to extract everything else even if we get a
+            // stack overflow or an assertion failure in one file.
+            } catch (e: Throwable) {
+                logger.error("Extraction failed while writing '$tempFile'.", e)
+/*
+OLD: KE1
+                fileExtractionProblems.setNonRecoverableProblem()
+*/
             }
         }
     }
-
-/*
-OLD: KE1
-    fun debugInfo(): String {
-        if (this::tempFile.isInitialized) {
-            return "Partial TRAP file location is $tempFile"
-        } else {
-            return "Temporary file not yet created."
-        }
-    }
-*/
 
     private fun exists(): Boolean {
         return realFile.exists()
