@@ -546,9 +546,9 @@ OLD: KE1
 */
             )
 
+        fileExtractor.extractFileContents(srcFile, sftw.fileId)
 /*
 OLD: KE1
-        fileExtractor.extractFileContents(srcFile, sftw.fileId)
         externalDeclExtractor.extractExternalClasses()
 */
     }
