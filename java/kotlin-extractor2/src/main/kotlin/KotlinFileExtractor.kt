@@ -77,7 +77,10 @@ open class KotlinFileExtractor(
 /*
 OLD: KE1
     override val logger: FileLogger,
-    override val tw: FileTrapWriter,
+*/
+    /* TODO override */ val tw: FileTrapWriter,
+/*
+OLD: KE1
     val linesOfCode: LinesOfCode?,
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
@@ -112,7 +115,6 @@ OLD: KE1
                 is KtNamed -> element.getNameAsName()?.asString() ?: "<missing name>"
                 else -> "<no name>"
             }
-        TODO()
 /*
 OLD: KE1
         val loc = tw.getLocationString(element)
@@ -122,9 +124,15 @@ OLD: KE1
             val depth = context.size
             val depthDescription = "${"-".repeat(depth)} (${depth.toString()})"
             logger.trace("$depthDescription: Starting a $kind ($name) at $loc")
+*/
             val result = f()
+/*
+OLD: KE1
             logger.trace("$depthDescription: Finished a $kind ($name) at $loc")
+*/
             return result
+/*
+OLD: KE1
         } catch (exception: Exception) {
             throw Exception("While extracting a $kind ($name) at $loc", exception)
         } finally {
@@ -135,9 +143,9 @@ OLD: KE1
 
     fun extractFileContents(file: KtFile, id: Label<DbFile>) {
         with("file", file) {
+            val locId = tw.getWholeFileLocation()
 /*
 OLD: KE1
-            val locId = tw.getWholeFileLocation()
             val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)

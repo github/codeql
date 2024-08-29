@@ -205,8 +205,6 @@ OLD: HE1
         }
     }
 
-/*
-OLD: HE1
     /**
      * If you have an ID for a file, then this gets a label for the location representing the whole
      * of that file.
@@ -214,7 +212,6 @@ OLD: HE1
     fun getWholeFileLocation(fileId: Label<DbFile>): Label<DbLocation> {
         return getLocation(fileId, 0, 0, 0, 0)
     }
-*/
 
     /**
      * Write a raw string into the TRAP file.
@@ -412,11 +409,11 @@ OLD: KE1
         // to be 0.
         return "file://$filePath"
     }
+*/
     /** Gets a label for the location representing the whole of this file. */
     fun getWholeFileLocation(): Label<DbLocation> {
         return getWholeFileLocation(fileId)
     }
-*/
 }
 
 /*
