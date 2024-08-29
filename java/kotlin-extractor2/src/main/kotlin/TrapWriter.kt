@@ -168,7 +168,7 @@ OLD: KE1
      * is lazy, as we don't want to define it in a TRAP file unless the TRAP file actually contains
      * something in the 'unknown' file.
      */
-    protected val unknownFileId: Label<DbFile> by lazy {
+    private val unknownFileId: Label<DbFile> by lazy {
         val unknownFileLabel = "@\";sourcefile\""
         getLabelFor(unknownFileLabel, { writeFiles(it, "") })
     }
