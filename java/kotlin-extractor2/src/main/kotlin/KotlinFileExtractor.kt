@@ -162,19 +162,25 @@ OLD: KE1
                 }
             }
 
-/*
-OLD: KE1
-            file.declarations.forEach {
+            file.getDeclarations().forEach {
                 extractDeclaration(
                     it,
+/*
+OLD: KE1
                     extractPrivateMembers = true,
                     extractFunctionBodies = true,
                     extractAnnotations = true
+*/
                 )
+/*
+OLD: KE1
                 if (it is IrProperty || it is IrField || it is IrFunction) {
                     externalClassExtractor.writeStubTrapFile(it, getTrapFileSignature(it))
                 }
+*/
             }
+/*
+OLD: KE1
             extractStaticInitializer(file, { extractFileClass(file) })
             val psiCommentsExtracted = CommentExtractorPSI(this, file, tw.fileId).extract()
             val lighterAstCommentsExtracted =
@@ -251,17 +257,26 @@ OLD: KE1
 
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
         extractPrivateMembers || !isPrivate(declaration)
+*/
 
     fun extractDeclaration(
-        declaration: IrDeclaration,
+        declaration: KtDeclaration,
+/*
+OLD: KE1
         extractPrivateMembers: Boolean,
         extractFunctionBodies: Boolean,
         extractAnnotations: Boolean
+*/
     ) {
         with("declaration", declaration) {
+/*
+OLD: KE1
             if (!shouldExtractDecl(declaration, extractPrivateMembers)) return
+*/
             when (declaration) {
-                is IrClass -> {
+                is KtClass -> {
+/*
+OLD: KE1
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
@@ -273,8 +288,11 @@ OLD: KE1
                             extractFunctionBodies = extractFunctionBodies
                         )
                     }
+*/
                 }
-                is IrFunction -> {
+                is KtFunction -> {
+/*
+OLD: KE1
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractFunction(
@@ -288,7 +306,10 @@ OLD: KE1
                         )
                     }
                     Unit
+*/
                 }
+/*
+OLD: KE1
                 is IrAnonymousInitializer -> {
                     // Leaving this intentionally empty. init blocks are extracted during class
                     // extraction.
@@ -336,15 +357,22 @@ OLD: KE1
                     Unit
                 }
                 is IrTypeAlias -> extractTypeAlias(declaration)
+*/
                 else ->
+                    TODO()
+/*
+OLD: KE1
                     logger.errorElement(
                         "Unrecognised IrDeclaration: " + declaration.javaClass,
                         declaration
                     )
+*/
             }
         }
     }
 
+/*
+OLD: KE1
     private fun extractTypeParameter(
         tp: IrTypeParameter,
         apparentIndex: Int,
