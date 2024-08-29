@@ -545,6 +545,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage1 implements StageSig {
       class Ap = Unit;
 
+      class ApNil = Unit;
+
       private class Cc = boolean;
 
       /* Begin: Stage 1 logic. */
@@ -1297,6 +1299,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private signature module StageSig {
       class Ap;
 
+      class ApNil extends Ap;
+
       predicate revFlow(NodeEx node);
 
       predicate revFlowAp(NodeEx node, Ap ap);
@@ -1445,6 +1449,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private Typ getNodeTyp(NodeEx node) {
           PrevStage::revFlow(node) and result = getTyp(node.getDataFlowType())
         }
+
+        private ApApprox nilApprox() { result instanceof PrevStage::ApNil }
 
         pragma[nomagic]
         private predicate flowThroughOutOfCall(
