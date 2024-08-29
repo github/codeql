@@ -60,7 +60,7 @@ keywords = {
 _field_overrides = [
     (
         re.compile(r"(start|end)_(line|column)|(.*_)?index|width|num_.*"),
-        {"base_type": "usize"},
+        {"base_type": "u32"},
     ),
     (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]

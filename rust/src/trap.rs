@@ -8,11 +8,74 @@ use crate::{config, path};
 #[derive(Debug, Clone, Copy)]
 pub struct TrapLabel(u64);
 
+impl Display for TrapLabel {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "#{:x}", self.0)
+    }
+}
+
 //TODO: typed labels
 
-impl From<u64> for TrapLabel {
-    fn from(value: u64) -> Self {
-        TrapLabel(value)
+#[derive(Debug, Clone)]
+pub enum KeyPart {
+    Label(TrapLabel),
+    Text(String),
+}
+
+impl From<String> for KeyPart {
+    fn from(value: String) -> Self {
+        KeyPart::Text(value)
+    }
+}
+
+impl From<&str> for KeyPart {
+    fn from(value: &str) -> Self {
+        KeyPart::Text(value.into())
+    }
+}
+
+impl From<TrapLabel> for KeyPart {
+    fn from(value: TrapLabel) -> Self {
+        KeyPart::Label(value)
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum TrapId {
+    Star,
+    Key(Vec<KeyPart>),
+    Label(TrapLabel),
+}
+
+impl<T: Into<KeyPart>> From<T> for TrapId {
+    fn from(value: T) -> Self {
+        TrapId::Key(vec![value.into()])
+    }
+}
+
+#[macro_export]
+macro_rules! trap_key {
+    ($($x:expr),+ $(,)?) => (
+        $crate::trap::TrapId::Key(vec![$($x.into()),+])
+    );
+}
+
+impl Display for TrapId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TrapId::Star => write!(f, "*"),
+            TrapId::Key(k) => {
+                f.write_str("@\"")?;
+                for p in k {
+                    match p {
+                        KeyPart::Label(l) => write!(f, "{{{l}}}")?,
+                        KeyPart::Text(s) => f.write_str(&escaped(s))?,
+                    }
+                }
+                f.write_str("\"")
+            }
+            TrapId::Label(l) => Display::fmt(&l, f)
+        }
     }
 }
 
@@ -24,20 +87,10 @@ pub fn quoted(s: &str) -> String {
     format!("\"{}\"", escaped(s))
 }
 
-impl Display for TrapLabel {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "#{:x}", self.0)
-    }
-}
 
 pub trait TrapEntry: std::fmt::Debug {
-    type Label: Display + From<u64>;
-
-    fn prefix() -> &'static str { "" }
-
-    fn key(&self) -> Option<&str>;
-
-    fn emit<W: Write>(&self, id: &Self::Label, out: &mut W) -> std::io::Result<()>;
+    fn extract_id(&mut self) -> TrapId;
+    fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()>;
 }
 
 #[derive(Debug)]
@@ -56,28 +109,27 @@ impl TrapFile {
         Ok(())
     }
 
-    pub fn emit<T: TrapEntry>(&mut self, entry: T) -> std::io::Result<T::Label> {
-        let ret = match entry.key() {
-            None => self.create_star_label::<T>()?,
-            Some(key) => self.create_key_label::<T>(key)?,
-        };
+    pub fn label(&mut self, id: TrapId) -> std::io::Result<TrapLabel> {
+        if let TrapId::Label(l) = id {
+            return Ok(l);
+        }
+        let ret = self.create_label();
+        trace!("emit -> {}: {ret:?} = {id:?}", self.trap_name);
+        write!(self.file, "{ret}={id}\n")?;
+        Ok(ret)
+    }
+
+    pub fn emit<T: TrapEntry>(&mut self, mut entry: T) -> std::io::Result<TrapLabel> {
         trace!("emit -> {}: {entry:?}", self.trap_name);
-        entry.emit(&ret, &mut self.file)?;
-        Ok(ret)
+        let id = self.label(entry.extract_id())?;
+        entry.emit(id, &mut self.file)?;
+        Ok(id)
     }
 
-    fn create_star_label<T: TrapEntry>(&mut self) -> std::io::Result<T::Label> {
-        let ret = T::Label::from(self.label_index);
-        write!(self.file, "{ret}=*\n")?;
+    fn create_label(&mut self) -> TrapLabel {
+        let ret = TrapLabel(self.label_index);
         self.label_index += 1;
-        Ok(ret)
-    }
-
-    fn create_key_label<T: TrapEntry>(&mut self, key: &str) -> std::io::Result<T::Label> {
-        let ret = T::Label::from(self.label_index);
-        write!(self.file, "{ret}=@\"{}{}\"\n", T::prefix(), escaped(key))?;
-        self.label_index += 1;
-        Ok(ret)
+        ret
     }
 }
 
