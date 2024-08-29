@@ -1,5 +1,7 @@
 package com.github.codeql
 
+import org.jetbrains.kotlin.psi.*
+
 /*
 OLD: KE1
 import com.github.codeql.utils.getJvmName
@@ -25,14 +27,17 @@ import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
 // for `that`.
 private fun getName(d: IrDeclarationWithName) =
     (d as? IrAnnotationContainer)?.let { getJvmName(it) } ?: d.name.asString()
+*/
 
-fun getFileClassName(f: IrFile) =
-    getJvmName(f)
-        ?: ((f.fileEntry.name
+fun getFileClassName(f: KtFile): String =
+    null /* OLD: KE1: getJvmName(f) */
+        ?: ((f.virtualFilePath
             .replaceFirst(Regex(""".*[/\\]"""), "")
             .replaceFirst(Regex("""\.kt$"""), "")
             .replaceFirstChar { it.uppercase() }) + "Kt")
 
+/*
+OLD: KE1
 fun getIrElementBinaryName(that: IrElement): String {
     if (that is IrFile) {
         val shortName = getFileClassName(that)
