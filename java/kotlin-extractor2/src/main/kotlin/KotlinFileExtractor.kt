@@ -68,8 +68,11 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+*/
 
 open class KotlinFileExtractor(
+/*
+OLD: KE1
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
     val linesOfCode: LinesOfCode?,
@@ -80,6 +83,10 @@ open class KotlinFileExtractor(
     pluginContext: IrPluginContext,
     val declarationStack: DeclarationStack,
     globalExtensionState: KotlinExtractorGlobalState,
+*/
+) {
+/*
+OLD: KE1
 ) :
     KotlinUsesExtractor(
         logger,
@@ -9209,5 +9216,5 @@ open class KotlinFileExtractor(
         ENUM_CONSTRUCTOR_ARGUMENT(12),
         CALLABLE_CLASS(13),
     }
-}
 */
+}
