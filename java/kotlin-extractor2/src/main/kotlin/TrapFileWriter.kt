@@ -1,12 +1,5 @@
 package com.github.codeql
 
-/*
-OLD: KE1
-import com.intellij.openapi.editor.Document
-import com.intellij.psi.PsiFile
-import com.semmle.util.files.FileUtil
-import com.semmle.util.trap.pathtransformers.PathTransformer
-*/
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
@@ -18,40 +11,6 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-/*
-OLD: KE1
-import java.nio.file.Files
-import java.nio.file.Paths
-import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
-import org.jetbrains.kotlin.analysis.api.KaSession
-import org.jetbrains.kotlin.analysis.api.analyze
-import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinAlwaysAccessibleLifetimeTokenProvider
-import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinLifetimeTokenProvider
-import org.jetbrains.kotlin.analysis.api.projectStructure.KaSourceModule
-import org.jetbrains.kotlin.analysis.api.standalone.buildStandaloneAnalysisAPISession
-import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtLibraryModule
-import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSdkModule
-import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSourceModule
-import org.jetbrains.kotlin.cli.common.arguments.parseCommandLineArguments
-import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
-import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
-import org.jetbrains.kotlin.psi.*
-
-import com.github.codeql.utils.versions.usesK2
-*/
-/*
-OLD: KE1
-import java.lang.management.*
-*/
-/*
-OLD: KE1
-import kotlin.system.exitProcess
-import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
-import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.*
-*/
 
 enum class Compression(val extension: String) {
     NONE("") {
