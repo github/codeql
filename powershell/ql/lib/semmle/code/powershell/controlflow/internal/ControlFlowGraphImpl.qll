@@ -75,8 +75,10 @@ predicate succExit(CfgScope scope, Ast last, Completion c) { scope.exit(last, c)
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
-  class ScriptBlockTree extends PreOrderTree instanceof ScriptBlock {
-    final override predicate last(AstNode last, Completion c) {
+  abstract class ScriptBlockTree extends ControlFlowTree instanceof ScriptBlock {
+    abstract predicate succEntry(AstNode n, Completion c);
+
+    override predicate last(AstNode last, Completion c) {
       last(super.getEndBlock(), last, c)
       or
       not exists(super.getEndBlock()) and
@@ -89,16 +91,36 @@ module Trees {
       not exists(super.getEndBlock()) and
       not exists(super.getProcessBlock()) and
       not exists(super.getBeginBlock()) and
-      last = this and
-      completionIsSimple(c)
+      last(super.getParamBlock(), last, c)
+      or
+      not exists(super.getEndBlock()) and
+      not exists(super.getProcessBlock()) and
+      not exists(super.getBeginBlock()) and
+      not exists(super.getParamBlock()) and
+      // No blocks at all. We end where we started
+      this.succEntry(last, c)
     }
 
-    final override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getBeginBlock(), super.getProcessBlock(), super.getEndBlock()]
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      this.succEntry(pred, c) and
+      (
+        first(super.getParamBlock(), succ)
+        or
+        not exists(super.getParamBlock()) and
+        first(super.getBeginBlock(), succ)
+        or
+        not exists(super.getParamBlock()) and
+        not exists(super.getBeginBlock()) and
+        first(super.getProcessBlock(), succ)
+        or
+        not exists(super.getParamBlock()) and
+        not exists(super.getBeginBlock()) and
+        not exists(super.getProcessBlock()) and
+        first(super.getEndBlock(), succ)
+      )
+      or
+      last(super.getParamBlock(), pred, c) and
+      completionIsNormal(c) and
       (
         first(super.getBeginBlock(), succ)
         or
@@ -108,24 +130,19 @@ module Trees {
         not exists(super.getBeginBlock()) and
         not exists(super.getProcessBlock()) and
         first(super.getEndBlock(), succ)
-      ) and
-      completionIsSimple(c)
+      )
       or
       last(super.getBeginBlock(), pred, c) and
-      c instanceof NormalCompletion and
+      completionIsNormal(c) and
       (
         first(super.getProcessBlock(), succ)
         or
         not exists(super.getProcessBlock()) and
         first(super.getEndBlock(), succ)
-        or
-        not exists(super.getProcessBlock()) and
-        not exists(super.getEndBlock()) and
-        succ = this
       )
       or
       last(super.getProcessBlock(), pred, c) and
-      c instanceof NormalCompletion and
+      completionIsNormal(c) and
       (
         // If we process multiple items we will loop back to the process block
         first(super.getProcessBlock(), succ)
@@ -134,6 +151,19 @@ module Trees {
         first(super.getEndBlock(), succ)
       )
     }
+
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = super.getParamBlock() or
+      child = super.getBeginBlock() or
+      child = super.getProcessBlock() or
+      child = super.getEndBlock()
+    }
+  }
+
+  class TopLevelScriptBlockTree extends PreOrderTree, ScriptBlockTree {
+    TopLevelScriptBlockTree() { this.(ScriptBlock).isTopLevel() }
+
+    final override predicate succEntry(Ast n, Completion c) { n = this and completionIsSimple(c) }
   }
 
   class NamedBlockTree extends StandardPostOrderTree instanceof NamedBlock {
