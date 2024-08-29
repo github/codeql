@@ -1,7 +1,7 @@
 import powershell
 
 class ParamBlock extends @param_block, Ast {
-  override string toString() { result = "ParamBlock" }
+  override string toString() { result = "param(...)" }
 
   override SourceLocation getLocation() { param_block_location(this, result) }
 

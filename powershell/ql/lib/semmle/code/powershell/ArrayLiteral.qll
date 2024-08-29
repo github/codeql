@@ -7,5 +7,5 @@ class ArrayLiteral extends @array_literal, Expr {
 
   Expr getAnElement() { array_literal_element(this, _, result) }
 
-  override string toString() { result = "ArrayLiteral at: " + this.getLocation().toString() }
+  override string toString() { result = "...,..." }
 }

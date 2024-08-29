@@ -15,5 +15,5 @@ class StmtBlock extends @statement_block, Ast {
 
   TrapStmt getATrapStatement() { result = this.getTrapStatement(_) }
 
-  override string toString() { result = "StatementBlock at: " + this.getLocation().toString() }
+  override string toString() { result = "{...}" }
 }

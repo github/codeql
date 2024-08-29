@@ -9,6 +9,8 @@ class IfStmt extends @if_statement, Stmt {
 
   PipelineBase getCondition(int i) { if_statement_clause(this, i, result, _) } // TODO: Change @ast to @pipeline_base in dbscheme
 
+  PipelineBase getACondition() { result = this.getCondition(_) }
+
   StmtBlock getThen(int i) { if_statement_clause(this, i, _, result) } // TODO: Change @ast to @statement_block in dbscheme
 
   /** ..., if any. */
