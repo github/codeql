@@ -2708,7 +2708,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 or
                 callEdgeReturn(_, _, node, _, next, _, ap) and
                 apNext = ap
-                or
+              )
+              or
+              exists(NodeEx next, Ap apNext | revFlow(next, pragma[only_bind_into](state), apNext) |
                 storeStepCand(node, _, _, next, _, _)
                 or
                 readStepCand(node, _, next)
