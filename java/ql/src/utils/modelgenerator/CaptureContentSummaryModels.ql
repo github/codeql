@@ -1,8 +1,8 @@
 /**
- * @name Capture field based summary models.
- * @description Finds applicable field based summary models to be used by other queries.
+ * @name Capture content based summary models.
+ * @description Finds applicable content based summary models to be used by other queries.
  * @kind diagnostic
- * @id java/utils/modelgenerator/fieldbased-summary-models
+ * @id java/utils/modelgenerator/contentbased-summary-models
  * @tags modelgenerator
  */
 
