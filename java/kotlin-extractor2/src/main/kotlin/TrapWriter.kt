@@ -299,8 +299,6 @@ OLD: KE1
         )
 }
 
-/*
-OLD: KE1
 /** A `PlainTrapWriter` has no additional context of its own. */
 class PlainTrapWriter(
     loggerBase: LoggerBase,
@@ -312,7 +310,6 @@ class PlainTrapWriter(
         return dtw
     }
 }
-*/
 
 /**
  * A `DiagnosticTrapWriter` is a TrapWriter that diagnostics can be written to; i.e. it has
