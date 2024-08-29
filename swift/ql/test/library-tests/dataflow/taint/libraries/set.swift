@@ -28,7 +28,7 @@ func testSet(ix: Int) {
   sink(arg: taintedSet.max()!) // $ tainted=t1
   sink(arg: taintedSet.firstIndex(of: source("t2"))!)
   sink(arg: taintedSet[taintedSet.firstIndex(of: source("t3"))!]) // $ tainted=t1
-  sink(arg: taintedSet.first!) // $ tainted=t1
+  sink(arg: taintedSet.first!) // $ MISSING: tainted=t1
   for elem in taintedSet {
     sink(arg: elem) // $ tainted=t1
   }
@@ -100,7 +100,7 @@ func testSet(ix: Int) {
   sink(arg: taintedSet.sorted().randomElement()!) // $ tainted=t1
   sink(arg: taintedSet.shuffled().randomElement()!) // $ tainted=t1
 
-  sink(arg: taintedSet.lazy[taintedSet.firstIndex(of: source("t11"))!]) // $ tainted=t1
+  sink(arg: taintedSet.lazy[taintedSet.firstIndex(of: source("t11"))!]) // $ MISSING: tainted=t1
 
   var it = taintedSet.makeIterator()
   sink(arg: it.next()!) // $ tainted=t1

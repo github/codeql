@@ -210,10 +210,24 @@ predicate isRelevantType(CS::Type t) {
 /**
  * Gets the underlying type of the content `c`.
  */
-CS::Type getUnderlyingContentType(DataFlow::Content c) {
+private CS::Type getUnderlyingContType(DataFlow::Content c) {
   result = c.(DataFlow::FieldContent).getField().getType() or
-  result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
-  result = c.(DataFlow::PropertyContent).getProperty().getType()
+  result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+}
+
+/**
+ * Gets the underlying type of the content `c`.
+ */
+CS::Type getUnderlyingContentType(DataFlow::ContentSet c) {
+  exists(DataFlow::Content cont |
+    c.isSingleton(cont) and
+    result = getUnderlyingContType(cont)
+  )
+  or
+  exists(CS::Property p |
+    c.isProperty(p) and
+    result = p.getType()
+  )
 }
 
 /**
@@ -325,3 +339,8 @@ predicate isRelevantSinkKind(string kind) { any() }
  */
 bindingset[kind]
 predicate isRelevantSourceKind(string kind) { any() }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(DataFlow::ContentSet c) { c.isElement() }

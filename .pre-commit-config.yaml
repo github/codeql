@@ -26,7 +26,7 @@ repos:
         name: Format bazel files
         files: \.(bazel|bzl)
         language: system
-        entry: bazel run //misc/bazel:buildifier
+        entry: bazel run //misc/bazel/buildifier
         pass_filenames: false
 
 #      DISABLED: can be enabled by copying this config and installing `pre-commit` with `--config` on the copy

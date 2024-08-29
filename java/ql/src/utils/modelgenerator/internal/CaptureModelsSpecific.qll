@@ -303,3 +303,5 @@ predicate isRelevantSinkKind(string kind) {
  */
 bindingset[kind]
 predicate isRelevantSourceKind(string kind) { any() }
+
+predicate containerContent = DataFlowPrivate::containerContent/1;

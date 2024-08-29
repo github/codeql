@@ -1,1 +1,0 @@
-# Concurrent Maven processes using ~/.m2/repository is not safe, so this test must run sequentially

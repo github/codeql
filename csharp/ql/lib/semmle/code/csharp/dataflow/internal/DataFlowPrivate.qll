@@ -908,19 +908,20 @@ private class Argument extends Expr {
  *
  * `postUpdate` indicates whether the store targets a post-update node.
  */
-private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, boolean postUpdate) {
+private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, boolean postUpdate) {
   exists(FieldOrProperty f |
-    c = f.getContent() and
+    c = f.getContentSet() and
     (
       f.isFieldLike() and
       f instanceof InstanceFieldOrProperty
       or
       exists(
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
-        FlowSummaryImpl::Private::SummaryComponentStack input
+        FlowSummaryImpl::Private::SummaryComponentStack input, ContentSet readSet
       |
         sc.propagatesFlow(input, _, _, _) and
-        input.contains(FlowSummaryImpl::Private::SummaryComponent::content(f.getContent()))
+        input.contains(FlowSummaryImpl::Private::SummaryComponent::content(readSet)) and
+        c.getAStoreContent() = readSet.getAReadContent()
       )
     )
   |
@@ -970,28 +971,13 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
   )
 }
 
-/** Holds if property `p1` overrides or implements source declaration property `p2`. */
-private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
-  p1.getOverridee*().getUnboundDeclaration() = p2
-  or
-  p1.getAnUltimateImplementee().getUnboundDeclaration() = p2
-}
-
 /**
  * Holds if `e2` is an expression that reads field or property `c` from
- * expression `e1`. This takes overriding into account for properties written
- * from library code.
+ * expression `e1`.
  */
-private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
+private predicate fieldOrPropertyRead(Expr e1, ContentSet c, FieldOrPropertyRead e2) {
   e1 = e2.getQualifier() and
-  exists(FieldOrProperty ret | c = ret.getContent() |
-    ret = e2.getTarget()
-    or
-    exists(Property target |
-      target.getGetter() = e2.(PropertyCall).getARuntimeTarget() and
-      overridesOrImplementsSourceDecl(target, ret)
-    )
-  )
+  c = e2.getTarget().(FieldOrProperty).getContentSet()
 }
 
 /**
@@ -1207,6 +1193,11 @@ private module Cached {
       p.getCallable() instanceof PrimaryConstructor
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v)
+
+  cached
+  newtype TContentSet =
+    TSingletonContent(Content c) { not c instanceof PropertyContent } or
+    TPropertyContentSet(Property p) { p.isUnboundDeclaration() }
 
   cached
   newtype TContentApprox =
@@ -2076,10 +2067,10 @@ class FieldOrProperty extends Assignable, Modifiable {
   }
 
   /** Gets the content that matches this field or property. */
-  Content getContent() {
-    result.(FieldContent).getField() = this.getUnboundDeclaration()
+  ContentSet getContentSet() {
+    result.isField(this.getUnboundDeclaration())
     or
-    result.(PropertyContent).getProperty() = this.getUnboundDeclaration()
+    result.isProperty(this.getUnboundDeclaration())
   }
 }
 
@@ -2211,8 +2202,8 @@ private class StoreStepConfiguration extends ControlFlowReachabilityConfiguratio
 }
 
 pragma[nomagic]
-private PropertyContent getResultContent() {
-  result.getProperty() = any(SystemThreadingTasksTaskTClass c_).getResultProperty()
+private ContentSet getResultContent() {
+  result.isProperty(any(SystemThreadingTasksTaskTClass c_).getResultProperty())
 }
 
 private predicate primaryConstructorParameterStore(
@@ -2226,17 +2217,16 @@ private predicate primaryConstructorParameterStore(
   )
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` via an assignment to
- * content `c`.
- */
-predicate storeStep(Node node1, ContentSet c, Node node2) {
+pragma[nomagic]
+private predicate recordParameter(RecordType t, Parameter p, string name) {
+  p.getName() = name and p.getCallable().getDeclaringType() = t
+}
+
+private predicate storeContentStep(Node node1, Content c, Node node2) {
   exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
     hasNodePath(x, node1, node) and
     if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
   |
-    fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
-    or
     arrayStore(_, node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
   )
   or
@@ -2257,26 +2247,59 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c instanceof ElementContent
   )
   or
+  primaryConstructorParameterStore(node1, c, node2)
+  or
+  exists(Parameter p, DataFlowCallable callable |
+    node1 = TExplicitParameterNode(p, callable) and
+    node2 = TPrimaryConstructorThisAccessNode(p, true, callable) and
+    not recordParameter(_, p, _) and
+    c.(PrimaryConstructorParameterContent).getParameter() = p
+  )
+  or
+  VariableCapture::storeStep(node1, c, node2)
+}
+
+pragma[nomagic]
+private predicate recordProperty(RecordType t, ContentSet c, string name) {
+  exists(Property p |
+    c.isProperty(p) and
+    p.getName() = name and
+    p.getDeclaringType() = t
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * content `c`.
+ */
+predicate storeStep(Node node1, ContentSet c, Node node2) {
+  exists(Content cont |
+    storeContentStep(node1, cont, node2) and
+    c.isSingleton(cont)
+  )
+  or
+  exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
+    hasNodePath(x, node1, node) and
+    if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
+  |
+    fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
+  )
+  or
   exists(Expr e |
     e = node1.asExpr() and
     node2.(AsyncReturnNode).getExpr() = e and
     c = getResultContent()
   )
   or
-  primaryConstructorParameterStore(node1, c, node2)
-  or
-  exists(Parameter p, DataFlowCallable callable |
+  exists(Parameter p, DataFlowCallable callable, RecordType t, string name |
     node1 = TExplicitParameterNode(p, callable) and
     node2 = TPrimaryConstructorThisAccessNode(p, true, callable) and
-    if p.getCallable().getDeclaringType() instanceof RecordType
-    then c.(PropertyContent).getProperty().getName() = p.getName()
-    else c.(PrimaryConstructorParameterContent).getParameter() = p
+    recordParameter(t, p, name) and
+    recordProperty(t, c, name)
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
-  or
-  VariableCapture::storeStep(node1, c, node2)
 }
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2344,14 +2367,8 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
   }
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` via a read of content `c`.
- */
-predicate readStep(Node node1, ContentSet c, Node node2) {
+private predicate readContentStep(Node node1, Content c, Node node2) {
   exists(ReadStepConfiguration x |
-    hasNodePath(x, node1, node2) and
-    fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
-    or
     hasNodePath(x, node1, node2) and
     arrayRead(node1.asExpr(), node2.asExpr()) and
     c instanceof ElementContent
@@ -2362,10 +2379,6 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       node2.(SsaDefinitionExtNode).getDefinitionExt() = def and
       c instanceof ElementContent
     )
-    or
-    hasNodePath(x, node1, node2) and
-    node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
-    c = getResultContent()
     or
     node1 =
       any(InstanceParameterAccessPreNode n |
@@ -2404,31 +2417,30 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
-    node2.(FlowSummaryNode).getSummaryNode())
-  or
   VariableCapture::readStep(node1, c, node2)
 }
 
 /**
- * Holds if values stored inside content `c` are cleared at node `n`. For example,
- * any value stored inside `f` is cleared at the pre-update node associated with `x`
- * in `x.f = newValue`.
+ * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
-predicate clearsContent(Node n, ContentSet c) {
-  fieldOrPropertyStore(_, c, _, n.asExpr(), true)
-  or
-  fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
-  or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
-  or
-  exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
-    oi = we.getInitializer() and
-    n.asExpr() = oi and
-    f = oi.getAMemberInitializer().getInitializedMember() and
-    c = f.getContent()
+predicate readStep(Node node1, ContentSet c, Node node2) {
+  exists(Content cont |
+    readContentStep(node1, cont, node2) and
+    c.isSingleton(cont)
   )
   or
+  exists(ReadStepConfiguration x | hasNodePath(x, node1, node2) |
+    fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
+    or
+    node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
+    c = getResultContent()
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
+}
+
+private predicate clearsCont(Node n, Content c) {
   exists(Argument a, Struct s, Field f |
     a = n.(PostUpdateNode).getPreUpdateNode().asExpr() and
     a.getType() = s and
@@ -2443,13 +2455,38 @@ predicate clearsContent(Node n, ContentSet c) {
 }
 
 /**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, ContentSet c) {
+  exists(Content cont |
+    clearsCont(n, cont) and
+    c.isSingleton(cont)
+  )
+  or
+  fieldOrPropertyStore(_, c, _, n.asExpr(), true)
+  or
+  fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
+    oi = we.getInitializer() and
+    n.asExpr() = oi and
+    f = oi.getAMemberInitializer().getInitializedMember() and
+    c = f.getContentSet()
+  )
+}
+
+/**
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
-  n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
+  n.asExpr() instanceof SpreadElementExpr and c.isElement()
 }
 
 class NodeRegion instanceof ControlFlow::BasicBlock {
@@ -3050,8 +3087,3 @@ abstract class SyntheticField extends string {
   /** Gets the type of this synthetic field. */
   Type getType() { result instanceof ObjectType }
 }
-
-/**
- * Holds if the the content `c` is a container.
- */
-predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }

@@ -1,5 +1,2 @@
-import sys
-
-from create_database_utils import *
-
-run_codeql_database_create([], lang="java")
+def test(codeql, java):
+    codeql.database.create()
