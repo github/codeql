@@ -9,8 +9,7 @@ class ForEachStmt extends @foreach_statement, LoopStmt {
 
   VarAccess getVariable() { foreach_statement(this, result, _, _, _) } // TODO: Change @ast to @variable_expression in dbscheme
 
-  /** ..., if any. */
-  PipelineBase getCondition() { foreach_statement(this, _, result, _, _) } // TODO: Change @ast to @pipeline_base in dbscheme
+  PipelineBase getIterableExpr() { foreach_statement(this, _, result, _, _) } // TODO: Change @ast to @pipeline_base in dbscheme
 
   predicate isParallel() { foreach_statement(this, _, _, _, 1) }
 }
