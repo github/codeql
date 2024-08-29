@@ -510,9 +510,12 @@ OLD: KE1
 /*
 OLD: KE1
         tw.writeComment("Part of invocation $invocationTrapFile")
+*/
         // Now elevate to a SourceFileTrapWriter, and populate the
         // file information
         val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
+/*
+OLD: KE1
         val externalDeclExtractor =
             ExternalDeclExtractor(
                 logger,
