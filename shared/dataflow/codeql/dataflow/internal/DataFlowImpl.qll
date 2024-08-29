@@ -2695,7 +2695,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate localFlowExit(NodeEx node, FlowState state, Ap ap) {
             revFlow(node, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             (
-              exists(NodeEx next | revFlow(next, pragma[only_bind_into](state), ap) |
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), ap)
+              |
                 jumpStepEx(node, next)
                 or
                 additionalJumpStep(node, next, _) and
@@ -2706,7 +2708,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 callEdgeReturn(_, _, node, _, next, _, ap)
               )
               or
-              exists(NodeEx next | revFlow(next, pragma[only_bind_into](state), _) |
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), _)
+              |
                 storeStepCand(node, _, _, next, _, _)
                 or
                 readStepCand(node, _, next)
