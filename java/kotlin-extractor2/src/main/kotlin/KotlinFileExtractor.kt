@@ -286,19 +286,22 @@ OLD: KE1
                 }
                 is KtFunction -> {
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
-/*
-OLD: KE1
                     if (parentId != null) {
                         extractFunction(
                             declaration,
                             parentId,
+/*
+OLD: KE1
                             extractBody = extractFunctionBodies,
                             extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                             extractAnnotations = extractAnnotations,
                             null,
                             listOf()
+*/
                         )
                     }
+/*
+OLD: KE1
                     Unit
 */
                 }
@@ -1786,16 +1789,23 @@ OLD: KE1
                     }
                 }
             }
+*/
 
     private fun extractFunction(
-        f: IrFunction,
+        f: KtFunction,
         parentId: Label<out DbReftype>,
+/*
+OLD: KE1
         extractBody: Boolean,
         extractMethodAndParameterTypeAccesses: Boolean,
         extractAnnotations: Boolean,
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+*/
     ) =
+        null // TODO
+/*
+OLD: KE1
         if (isFake(f)) {
             if (needsInterfaceForwarder(f))
                 makeInterfaceForwarder(
@@ -1808,6 +1818,9 @@ OLD: KE1
                 )
             else null
         } else {
+*/
+/*
+OLD: KE1
             // Work around an apparent bug causing redeclarations of `fun toString(): String`
             // specifically in interfaces loaded from Java classes show up like fake overrides.
             val overriddenVisibility =
@@ -1845,7 +1858,10 @@ OLD: KE1
                     )
                 }
         }
+*/
 
+/*
+OLD: KE1
     private fun extractDefaultsFunction(
         f: IrFunction,
         parentId: Label<out DbReftype>,
