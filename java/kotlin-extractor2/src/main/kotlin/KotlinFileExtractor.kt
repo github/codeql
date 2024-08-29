@@ -1,5 +1,8 @@
 package com.github.codeql
 
+import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.*
+
 /*
 OLD: KE1
 import com.github.codeql.comments.CommentExtractorLighterAST
@@ -100,14 +103,18 @@ OLD: KE1
 
     val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
+*/
 
-    private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
+    private inline fun <T> with(kind: String, element: KtElement, f: () -> T): T {
         val name =
             when (element) {
-                is IrFile -> element.name
-                is IrDeclarationWithName -> element.name.asString()
+                is KtFile -> element.virtualFilePath
+                is KtNamed -> element.getNameAsName()?.asString() ?: "<missing name>"
                 else -> "<no name>"
             }
+        TODO()
+/*
+OLD: KE1
         val loc = tw.getLocationString(element)
         val context = logger.loggerBase.extractorContextStack
         context.push(ExtractorContext(kind, element, name, loc))
@@ -123,10 +130,13 @@ OLD: KE1
         } finally {
             context.pop()
         }
+*/
     }
 
-    fun extractFileContents(file: IrFile, id: Label<DbFile>) {
+    fun extractFileContents(file: KtFile, id: Label<DbFile>) {
         with("file", file) {
+/*
+OLD: KE1
             val locId = tw.getWholeFileLocation()
             val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
@@ -177,9 +187,12 @@ OLD: KE1
             linesOfCode?.linesOfCodeInFile(id)
 
             externalClassExtractor.writeStubTrapFile(file)
+*/
         }
     }
 
+/*
+OLD: KE1
     private fun javaBinaryDeclaresMethod(c: IrClass, name: String) =
         ((c.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.methods?.any {
             it.name.asString() == name
