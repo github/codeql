@@ -28,16 +28,25 @@ import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+*/
 
 open class KotlinUsesExtractor(
+/*
+OLD: KE1
     open val logger: Logger,
+*/
     open val tw: TrapWriter,
+/*
+OLD: KE1
     val dependencyCollector: OdasaOutput.TrapFileManager?,
     val externalClassExtractor: ExternalDeclExtractor,
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
+*/
 ) {
+/*
+OLD: KE1
     fun referenceExternalClass(name: String) =
         getClassByFqName(pluginContext, FqName(name))?.owner.also {
             if (it == null) logger.warn("Unable to resolve external class $name")
@@ -2250,5 +2259,5 @@ open class KotlinUsesExtractor(
     fun useVariable(v: IrVariable): Label<out DbLocalvar> {
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
-}
 */
+}

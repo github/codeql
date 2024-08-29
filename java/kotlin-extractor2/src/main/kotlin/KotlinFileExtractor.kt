@@ -78,7 +78,7 @@ open class KotlinFileExtractor(
 OLD: KE1
     override val logger: FileLogger,
 */
-    /* TODO override */ val tw: FileTrapWriter,
+    override val tw: FileTrapWriter,
 /*
 OLD: KE1
     val linesOfCode: LinesOfCode?,
@@ -90,20 +90,25 @@ OLD: KE1
     val declarationStack: DeclarationStack,
     globalExtensionState: KotlinExtractorGlobalState,
 */
-) {
-/*
-OLD: KE1
 ) :
     KotlinUsesExtractor(
+/*
+OLD: KE1
         logger,
+*/
         tw,
+/*
+OLD: KE1
         dependencyCollector,
         externalClassExtractor,
         primitiveTypeMapping,
         pluginContext,
         globalExtensionState
+*/
     ) {
 
+/*
+OLD: KE1
     val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 */
@@ -144,9 +149,9 @@ OLD: KE1
     fun extractFileContents(file: KtFile, id: Label<DbFile>) {
         with("file", file) {
             val locId = tw.getWholeFileLocation()
+            val pkg = file.packageFqName.asString()
 /*
 OLD: KE1
-            val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
