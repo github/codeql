@@ -2710,7 +2710,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 apNext = ap
               )
               or
-              exists(NodeEx next, Ap apNext | revFlow(next, pragma[only_bind_into](state), apNext) |
+              exists(NodeEx next | revFlow(next, pragma[only_bind_into](state), _) |
                 storeStepCand(node, _, _, next, _, _)
                 or
                 readStepCand(node, _, next)
