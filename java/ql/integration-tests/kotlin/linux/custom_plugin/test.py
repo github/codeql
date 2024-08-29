@@ -13,7 +13,7 @@ def test(codeql, java_full, cwd, semmle_code_dir, test_dir):
             f"--output_user_root={build_dir}",
             "--max_idle_secs=1",
             "build",
-            "//java/ql/integration-tests/linux-only/kotlin/custom_plugin/plugin",
+            "//java/ql/integration-tests/kotlin/linux/custom_plugin/plugin",
             "--spawn_strategy=local",
             "--nouse_action_cache",
             "--noremote_accept_cached",
@@ -23,7 +23,7 @@ def test(codeql, java_full, cwd, semmle_code_dir, test_dir):
         _cwd=test_dir,
     )
     shutil.copy(
-        "bazel-bin/java/ql/integration-tests/linux-only/kotlin/custom_plugin/plugin/plugin.jar",
+        "bazel-bin/java/ql/integration-tests/kotlin/linux/custom_plugin/plugin/plugin.jar",
         "plugin.jar",
     )
     codeql.database.create(
