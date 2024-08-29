@@ -156,17 +156,13 @@ OLD: KE1
         endLine: Int,
         endColumn: Int
     ): Label<DbLocation> {
-/*
-OLD: HE1
         return getLabelFor("@\"loc,{$fileId},$startLine,$startColumn,$endLine,$endColumn\"") {
             writeLocations_default(it, fileId, startLine, startColumn, endLine, endColumn)
         }
-*/
-        TODO()
     }
 
 /*
-OLD: HE1
+OLD: KE1
     /**
      * The label for the 'unknown' file ID. Users will want to use `unknownLocation` instead. This
      * is lazy, as we don't want to define it in a TRAP file unless the TRAP file actually contains
