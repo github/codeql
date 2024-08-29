@@ -158,7 +158,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType().getDeepUnaliasedType())
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
