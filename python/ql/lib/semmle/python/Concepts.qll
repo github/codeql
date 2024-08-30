@@ -21,6 +21,10 @@ private import codeql.threatmodels.ThreatModels
 class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Range {
   /**
    * Gets a string that represents the source kind with respect to threat modeling.
+   *
+   * See
+   * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+   * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
    */
   string getThreatModel() { result = super.getThreatModel() }
 
@@ -39,6 +43,10 @@ module ThreatModelSource {
   abstract class Range extends DataFlow::Node {
     /**
      * Gets a string that represents the source kind with respect to threat modeling.
+     *
+     * See
+     * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+     * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
      */
     abstract string getThreatModel();
 
