@@ -358,6 +358,7 @@
   ],
   "shared tree-sitter extractor cargo.toml": [
     "shared/tree-sitter-extractor/Cargo.toml",
-    "ruby/extractor/codeql-extractor-fake-crate/Cargo.toml"
+    "ruby/extractor/codeql-extractor-fake-crate/Cargo.toml",
+    "rust/extractor/codeql-extractor-fake-crate/Cargo.toml"
   ]
 }

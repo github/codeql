@@ -11,5 +11,7 @@ codeql_rust_binary(
     visibility = ["//rust:__subpackages__"],
     deps = all_crate_deps(
         normal = True,
-    ),
+    ) + [
+        "//shared/tree-sitter-extractor:codeql-extractor",
+    ],
 )

@@ -58,10 +58,6 @@ keywords = {
 }
 
 _field_overrides = [
-    (
-        re.compile(r"(start|end)_(line|column)|(.*_)?index|width|num_.*"),
-        {"base_type": "u32"},
-    ),
     (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]
 
@@ -98,20 +94,13 @@ class Field:
             type = f"Vec<{type}>"
         return type
 
-    # using @property breaks pystache internals here
-    def emitter(self):
-        if self.type == "String":
-            return lambda x: f"quoted(&{x})"
-        else:
-            return lambda x: x
-
     @property
     def is_single(self):
         return not (self.is_optional or self.is_repeated or self.is_predicate)
 
     @property
     def is_label(self):
-        return self.base_type == "TrapLabel"
+        return self.base_type == "trap::Label"
 
 
 @dataclasses.dataclass

@@ -13,14 +13,16 @@ from misc.codegen.loaders import schemaloader
 
 def _get_type(t: str) -> str:
     match t:
-        case None | "boolean":  # None means a predicate
+        case None:  # None means a predicate
             return "bool"
         case "string":
             return "String"
         case "int":
-            return "i32"
+            return "usize"
         case _ if t[0].isupper():
-            return "TrapLabel"
+            return "trap::Label"
+        case "boolean":
+            assert False, "boolean unsupported"
         case _:
             return t
 

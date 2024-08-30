@@ -1,0 +1,28 @@
+[package]
+name = "codeql-extractor"
+version = "0.2.0"
+edition = "2021"
+authors = ["GitHub"]
+
+[dependencies]
+flate2 = "1.0"
+globset = "0.4"
+tree-sitter = ">= 0.22.6"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
+rayon = "1.5.0"
+regex = "1.7.1"
+encoding = "0.2"
+lazy_static = "1.4.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4.19", features = ["serde"] }
+num_cpus = "1.14.0"
+
+[dev-dependencies]
+tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql" }
+tree-sitter-json = {git = "https://github.com/tree-sitter/tree-sitter-json" }
+rand = "0.8.5"
+
+[patch.crates-io]
+tree-sitter = {git = "https://github.com/redsun82/tree-sitter.git", rev = "1f5c1112ceaa8fc6aff61d1852690407670d2a96"}

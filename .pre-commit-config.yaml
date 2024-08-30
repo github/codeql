@@ -45,7 +45,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
-        files: \.(qll?|qhelp|swift)$|^config/identical-files\.json$
+        files: \.(qll?|qhelp|swift|toml)$|^config/identical-files\.json$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false

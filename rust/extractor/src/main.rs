@@ -35,21 +35,14 @@ fn main() -> anyhow::Result<()> {
         prefill_caches: false,
     };
     for input in cfg.inputs {
-        let path = fs::canonicalize(input)?;
-        {
-            let mut trap = traps.create("input", &path)?;
-            let name = String::from(path.to_string_lossy());
-            trap.emit(generated::DbFile { id: name.clone().into(), name })?;
-            archiver.archive(&path);
-        }
-        load_workspace_at(&path, &config, &load_config, &no_progress)?;
-        let (db, vfs, _macro_server) = load_workspace_at(&path, &config, &load_config, &no_progress)?;
+        load_workspace_at(&input, &config, &load_config, &no_progress)?;
+        let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &no_progress)?;
         let crates =  <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter().take(1) {
             let krate = Crate::from(crate_id);
             let name = krate.display_name(&db);
             let crate_name = name.as_ref().map(|n| n.canonical_name().as_str()).unwrap_or("");
-            let trap = traps.create("crates", &PathBuf::from(format!("/{}_{}", crate_name, crate_id.into_raw().into_u32())))?;
+            let trap = traps.create("crates", &PathBuf::from(format!("/{}_{}", crate_name, crate_id.into_raw().into_u32())));
             translate::CrateTranslator::new(
                 &db,
                 trap,

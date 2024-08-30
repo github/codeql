@@ -1,11 +1,10 @@
 use std::collections::HashMap;
 use std::fs;
 use std::path::{PathBuf};
-use crate::trap::{TrapFile, TrapId, TrapLabel};
+use crate::trap::{TrapFile, TrapId, AsTrapKeyPart};
 use crate::{generated, trap_key};
 use ra_ap_hir::{Crate, Module, ModuleDef};
 use anyhow;
-use ra_ap_base_db::{CrateId};
 use ra_ap_hir::{HasSource};
 use ra_ap_vfs::{AbsPath, FileId, Vfs};
 use ra_ap_syntax::ast::HasName;
@@ -15,10 +14,11 @@ use triomphe::Arc;
 use ra_ap_ide_db::{LineIndexDatabase, RootDatabase};
 use ra_ap_ide_db::line_index::LineIndex;
 use ra_ap_syntax::AstNode;
+use codeql_extractor::trap;
 
 #[derive(Clone)]
 struct FileData {
-    label: TrapLabel,
+    label: trap::Label,
     line_index: Arc<LineIndex>,
 }
 pub struct CrateTranslator<'a> {
@@ -49,55 +49,47 @@ impl CrateTranslator<'_> {
         }
     }
 
-    fn emit_file(&mut self, file_id: FileId) -> Result<Option<FileData>> {
-        if let Some(abs_path) = self.vfs.file_path(file_id).as_path() {
+    fn emit_file(&mut self, file_id: FileId) -> Option<FileData> {
+        self.vfs.file_path(file_id).as_path().and_then(|abs_path| {
             let mut canonical = PathBuf::from(abs_path.as_str());
             if !self.file_labels.contains_key(&canonical) {
                 self.archiver.archive(&canonical);
                 canonical = fs::canonicalize(&canonical).unwrap_or(canonical);
                 let name = canonical.to_string_lossy();
-                let label = self.trap.emit(generated::DbFile { id: trap_key!["DbFile@", name.as_ref()], name: String::from(name) })?;
+                let label = self.trap.emit(generated::DbFile { id: trap_key!["file;", name.as_ref()], name: String::from(name) });
                 let line_index = <dyn LineIndexDatabase>::line_index(self.db, file_id);
                 self.file_labels.insert(canonical.clone(), FileData { label, line_index });
             }
-            Ok(self.file_labels.get(&canonical).cloned())
-        } else {
-            Ok(None)
-        }
+            self.file_labels.get(&canonical).cloned()
+        })
     }
 
-    fn emit_location<T: HasSource>(&mut self, entity: T) -> Result<Option<TrapLabel>> where T::Ast: AstNode {
-        if let Some(source) = entity.source(self.db) {
-            if let Some(file_id) = source.file_id.file_id().map(|f| f.file_id()) {
-                if let Some(data) =  self.emit_file(file_id)? {
-                    let range = source.value.syntax().text_range();
-                    let start = data.line_index.line_col(range.start());
-                    let end = data.line_index.line_col(range.end());
-                    return Ok(Some(self.trap.emit(generated::DbLocation {
-                        id: trap_key![data.label, ":", start.line, ":", start.col, ":", end.line, ":", end.col],
-                        file: data.label,
-                        start_line: start.line,
-                        start_column: start.col,
-                        end_line: end.line,
-                        end_column: end.col,
-                    })?));
-                }
-            }
-        }
-        Ok(None)
+    fn emit_location<T: HasSource>(&mut self, entity: T) -> Option<trap::Label>
+    where
+        T::Ast: AstNode,
+    {
+        entity.source(self.db)
+            .and_then(|source| source.file_id.file_id().map(|f| (f.file_id(), source)))
+            .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
+            .and_then(|(data, source)| {
+                let range = source.value.syntax().text_range();
+                let start = data.line_index.line_col(range.start());
+                let end = data.line_index.line_col(range.end());
+                Some(self.trap.emit_location(data.label, start, end))
+            })
     }
 
-    fn emit_definition(&mut self, module_label: TrapLabel, id: ModuleDef, labels: &mut Vec<TrapLabel>) -> Result<()> {
+    fn emit_definition(&mut self, module_label: trap::Label, id: ModuleDef, labels: &mut Vec<trap::Label>) {
         match id {
             ModuleDef::Module(_) => {}
             ModuleDef::Function(function) => {
                 let name = function.name(self.db);
-                let location = self.emit_location(function)?;
+                let location = self.emit_location(function);
                 labels.push(self.trap.emit(generated::Function {
                     id: trap_key![module_label, name.as_str()],
                     location,
                     name: name.as_str().into(),
-                })?);
+                }));
             }
             ModuleDef::Adt(_) => {}
             ModuleDef::Variant(_) => {}
@@ -109,25 +101,23 @@ impl CrateTranslator<'_> {
             ModuleDef::BuiltinType(_) => {}
             ModuleDef::Macro(_) => {}
         }
-        Ok(())
     }
 
-    fn emit_module(&mut self, label: TrapLabel, module: Module) -> Result<()> {
+    fn emit_module(&mut self, label: trap::Label, module: Module) {
         let mut children = Vec::new();
         for id in module.declarations(self.db) {
-            self.emit_definition(label, id, &mut children)?;
+            self.emit_definition(label, id, &mut children);
         }
         self.trap.emit(generated::Module {
             id: label.into(),
             location: None,
             declarations: children,
-        })?;
-        Ok(())
+        });
     }
 
-    pub fn emit_crate(&mut self) -> Result<()> {
-        self.emit_file(self.krate.root_file(self.db))?;
-        let mut map = HashMap::<Module, TrapLabel>::new();
+    pub fn emit_crate(&mut self) -> std::io::Result<()>  {
+        self.emit_file(self.krate.root_file(self.db));
+        let mut map = HashMap::<Module, trap::Label>::new();
         for module in self.krate.modules(self.db) {
             let mut key = String::new();
             if let Some(parent) = module.parent(self.db) {
@@ -137,17 +127,17 @@ impl CrateTranslator<'_> {
             }
             let def = module.definition_source(self.db);
             if let Some(file) = def.file_id.file_id() {
-                if let Some(data) = self.emit_file(file.file_id())? {
+                if let Some(data) = self.emit_file(file.file_id()) {
                     key.push_str(&data.label.as_key_part());
                 }
             }
             if let Some(name) = module.name(self.db) {
                 key.push_str(name.as_str());
             }
-            let label = self.trap.label(TrapId::Key(key))?;
+            let label = self.trap.label(TrapId::Key(key));
             map.insert(module, label);
-            self.emit_module(label, module)?;
+            self.emit_module(label, module);
         }
-        Ok(())
+        self.trap.commit()
     }
 }
