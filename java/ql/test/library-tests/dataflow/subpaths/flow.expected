@@ -32,6 +32,7 @@ nodes
 | A.java:27:12:27:25 | apply(...) : String | semmle.label | apply(...) : String |
 | A.java:27:20:27:24 | (...)... : Object | semmle.label | (...)... : Object |
 subpaths
+| A.java:14:44:14:54 | source(...) : Object | A.java:8:24:8:33 | arg : Object | A.java:9:12:9:17 | (...)... : Object | A.java:14:16:14:55 | propagateTaint(...) : String |
 | A.java:18:44:18:54 | source(...) : Object | A.java:8:24:8:33 | arg : Object | A.java:9:12:9:17 | (...)... : Object | A.java:18:16:18:55 | propagateTaint(...) : Object |
 | A.java:22:44:22:54 | source(...) : Object | A.java:26:41:26:48 | x : Object | A.java:27:12:27:25 | apply(...) : String | A.java:22:17:22:55 | apply(...) : String |
 | A.java:27:20:27:24 | (...)... : Object | A.java:22:24:22:33 | arg : String | A.java:22:39:22:41 | arg : String | A.java:27:12:27:25 | apply(...) : String |

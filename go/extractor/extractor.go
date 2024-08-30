@@ -199,7 +199,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
 	// otherwise (the default) is to exclude them from extraction
-	includeVendor := os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true"
+	includeVendor := util.IsVendorDirExtractionEnabled()
 	if !includeVendor {
 		excludedDirs = append(excludedDirs, "vendor")
 	}

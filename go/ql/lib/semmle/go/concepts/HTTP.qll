@@ -332,13 +332,7 @@ module Http {
         )
       }
 
-      override DataFlow::Node getUrl() {
-        not url instanceof DataFlow::ImplicitVarargsSlice and
-        result = url
-        or
-        url instanceof DataFlow::ImplicitVarargsSlice and
-        result = this.getAnImplicitVarargsArgument()
-      }
+      override DataFlow::Node getUrl() { result = url.getACorrespondingSyntacticArgument() }
 
       override Http::ResponseWriter getResponseWriter() {
         rw = -1 and result.getANode() = this.getReceiver()

@@ -1,5 +1,4 @@
-import sys
-
-from create_database_utils import *
-
-run_codeql_database_create([], lang="java", extra_args=["--extractor-option=buildless=true"])
+def test(codeql, java):
+    codeql.database.create(
+        extractor_option="buildless=true",
+    )

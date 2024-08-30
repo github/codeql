@@ -304,6 +304,8 @@ class Expr extends StmtParent, @expr {
       e instanceof NoExceptExpr
       or
       e instanceof AlignofOperator
+      or
+      e instanceof DatasizeofOperator
     )
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())

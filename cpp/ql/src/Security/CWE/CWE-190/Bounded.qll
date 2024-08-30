@@ -24,6 +24,10 @@ private predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr op
  * operation that may greatly reduce the range of possible values.
  */
 predicate bounded(Expr e) {
+  // There can be two separate reasons for `convertedExprMightOverflow` not holding:
+  // 1. `e` really cannot overflow.
+  // 2. `e` isn't analyzable.
+  // If we didn't rule out case 2 we would declare anything that isn't analyzable as bounded.
   (
     e instanceof UnaryArithmeticOperation or
     e instanceof BinaryArithmeticOperation or

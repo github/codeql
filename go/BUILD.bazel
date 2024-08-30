@@ -47,6 +47,7 @@ codeql_pkg_files(
         "//go/extractor/cli/go-autobuilder",
         "//go/extractor/cli/go-bootstrap",
         "//go/extractor/cli/go-build-runner",
+        "//go/extractor/cli/go-configure-baseline",
         "//go/extractor/cli/go-extractor",
         "//go/extractor/cli/go-gen-dbscheme",
         "//go/extractor/cli/go-tokenizer",

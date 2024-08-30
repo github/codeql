@@ -24,6 +24,15 @@ public class NewSinks
     // neutral=Sinks;NewSinks;NoSink;(System.Object);summary;df-generated
     public static void NoSink(object o) => throw null;
 
+    // Sink and Source defined in the extensible file next to the sink test.
+    // sink=Sinks;NewSinks;false;SaveAndGet;(System.Object);;Argument[0];test-sink;df-generated
+    // neutral=Sinks;NewSinks;SaveAndGet;(System.Object);summary;df-generated
+    public static object SaveAndGet(object o)
+    {
+        Sink(o);
+        return null;
+    }
+
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWrite;(System.Object);summary;df-generated
