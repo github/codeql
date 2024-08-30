@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use std::path::{PathBuf};
-use crate::trap::{KeyPart, TrapFile, TrapId, TrapLabel};
+use crate::trap::{TrapFile, TrapId, TrapLabel};
 use crate::{generated, trap_key};
 use ra_ap_hir::{Crate, Module, ModuleDef};
 use anyhow;
@@ -74,7 +74,7 @@ impl CrateTranslator<'_> {
                     let start = data.line_index.line_col(range.start());
                     let end = data.line_index.line_col(range.end());
                     return Ok(Some(self.trap.emit(generated::DbLocation {
-                        id: trap_key![data.label, format!(":{}:{}:{}:{}", start.line, start.col, end.line, end.col)],
+                        id: trap_key![data.label, ":", start.line, ":", start.col, ":", end.line, ":", end.col],
                         file: data.label,
                         start_line: start.line,
                         start_column: start.col,
@@ -129,20 +129,20 @@ impl CrateTranslator<'_> {
         self.emit_file(self.krate.root_file(self.db))?;
         let mut map = HashMap::<Module, TrapLabel>::new();
         for module in self.krate.modules(self.db) {
-            let mut key = Vec::<KeyPart>::new();
+            let mut key = String::new();
             if let Some(parent) = module.parent(self.db) {
                 // assumption: parent was already listed
                 let parent_label = *map.get(&parent).unwrap();
-                key.push(parent_label.into());
+                key.push_str(&parent_label.as_key_part());
             }
             let def = module.definition_source(self.db);
             if let Some(file) = def.file_id.file_id() {
                 if let Some(data) = self.emit_file(file.file_id())? {
-                    key.push(data.label.into());
+                    key.push_str(&data.label.as_key_part());
                 }
             }
             if let Some(name) = module.name(self.db) {
-                key.push(name.as_str().into());
+                key.push_str(name.as_str());
             }
             let label = self.trap.label(TrapId::Key(key))?;
             map.insert(module, label);
