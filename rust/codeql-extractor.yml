@@ -1,0 +1,15 @@
+name: "rust"
+display_name: "Rust"
+version: 0.1.0
+column_kind: "utf8"
+build_modes:
+  - none
+github_api_languages:
+  - Rust
+scc_languages:
+  - Rust
+file_types:
+  - name: rust
+    display_name: Rust files
+    extensions:
+       - .rs

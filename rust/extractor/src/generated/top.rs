@@ -15,7 +15,8 @@ impl TrapEntry for DbFile {
     }
 
     fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()> {
-        write!(out, "db_files({id}, {})\n", quoted(&self.name))?;
+        write!(out, "db_files({id})\n")?;
+        write!(out, "files({id}, {})\n", quoted(&self.name))?;
         Ok(())
     }
 }
@@ -36,7 +37,8 @@ impl TrapEntry for DbLocation {
     }
 
     fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()> {
-        write!(out, "db_locations({id}, {}, {}, {}, {}, {})\n", self.file, self.start_line, self.start_column, self.end_line, self.end_column)?;
+        write!(out, "db_locations({id})\n")?;
+        write!(out, "locations({id}, {}, {}, {}, {}, {})\n", self.file, self.start_line, self.start_column, self.end_line, self.end_column)?;
         Ok(())
     }
 }
@@ -56,7 +58,7 @@ impl TrapEntry for Function {
     fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()> {
         write!(out, "functions({id}, {})\n", quoted(&self.name))?;
         if let Some(ref v) = &self.location {
-            write!(out, "function_locations({id}, {})\n", v)?;
+            write!(out, "locatable_locations({id}, {})\n", v)?;
         }
         Ok(())
     }
@@ -77,7 +79,7 @@ impl TrapEntry for Module {
     fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()> {
         write!(out, "modules({id})\n")?;
         if let Some(ref v) = &self.location {
-            write!(out, "module_locations({id}, {})\n", v)?;
+            write!(out, "locatable_locations({id}, {})\n", v)?;
         }
         for (i, &ref v) in self.declarations.iter().enumerate() {
             write!(out, "module_declarations({id}, {}, {})\n", i, v)?;

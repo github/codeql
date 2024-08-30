@@ -1,5 +1,3 @@
-#![feature(path_add_extension)]
-
 use std::fs;
 use std::path::{PathBuf, Path};
 use ra_ap_project_model::CargoConfig;

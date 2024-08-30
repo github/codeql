@@ -5,11 +5,11 @@ native_binary(
     src = "//misc/codegen",
     out = "codegen",
     args = [
-        "--configuration-file=$(location //rust:codegen.conf)",
+        "--configuration-file=$(location //rust:codegen-conf)",
     ],
     data = [
-        "//rust:codegen.conf",
-        "//rust:schema.py",
+        "//rust:codegen-conf",
+        "//rust:schema",
     ],
     visibility = ["//rust:__subpackages__"],
 )

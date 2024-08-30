@@ -26,7 +26,7 @@ def _get_type(t: str) -> str:
 
 
 def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
-    table_name = None
+    table_name = inflection.tableize(cls.name)
     if not p.is_single:
         table_name = f"{cls.name}_{p.name}"
         if p.is_predicate:
@@ -47,11 +47,12 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
 
 
 def _get_properties(
-    cls: schema.Class, lookup: dict[str, schema.Class]
-) -> typing.Iterable[schema.Property]:
+    cls: schema.Class, lookup: dict[str, schema.Class],
+) -> typing.Iterable[tuple[schema.Class, schema.Property]]:
     for b in cls.bases:
         yield from _get_properties(lookup[b], lookup)
-    yield from cls.properties
+    for p in cls.properties:
+        yield cls, p
 
 
 class Processor:
@@ -63,8 +64,8 @@ class Processor:
         return rust.Class(
             name=name,
             fields=[
-                _get_field(cls, p)
-                for p in _get_properties(cls, self._classmap)
+                _get_field(c, p)
+                for c, p in _get_properties(cls, self._classmap)
                 if "rust_skip" not in p.pragmas and not p.synth
             ],
             table_name=inflection.tableize(cls.name),

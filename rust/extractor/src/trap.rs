@@ -1,3 +1,4 @@
+use std::ffi::OsString;
 use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io::Write;
@@ -158,7 +159,11 @@ impl TrapFileProvider {
     pub fn create(&self, category: &str, key: &Path) -> std::io::Result<TrapFile> {
         let mut path = PathBuf::from(category);
         path.push(path::key(key));
-        path.add_extension("trap");
+        path.set_extension(path.extension().map(|e| {
+            let mut o : OsString = e.to_owned();
+            o.push(".trap");
+            o
+        }).unwrap_or("trap".into()));
         let trap_name = String::from(path.to_string_lossy());
         debug!("creating trap file {}", trap_name);
         path = self.trap_dir.join(path);

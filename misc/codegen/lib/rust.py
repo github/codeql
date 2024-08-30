@@ -78,7 +78,7 @@ def get_field_override(field: str):
 class Field:
     field_name: str
     base_type: str
-    table_name: str = None
+    table_name: str
     is_optional: bool = False
     is_repeated: bool = False
     is_unordered: bool = False
@@ -121,8 +121,12 @@ class Class:
     fields: list[Field] = dataclasses.field(default_factory=list)
 
     @property
-    def single_fields(self):
-        return [f for f in self.fields if f.is_single]
+    def single_field_entries(self):
+        ret = {self.table_name: []}
+        for f in self.fields:
+            if f.is_single:
+                ret.setdefault(f.table_name, []).append(f)
+        return [{"table_name": k, "fields": v} for k, v in ret.items()]
 
 
 @dataclasses.dataclass

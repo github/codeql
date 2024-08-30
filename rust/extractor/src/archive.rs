@@ -19,7 +19,7 @@ impl Archiver {
         let mut dest = self.root.clone();
         dest.push(path::key(source));
         let parent = dest.parent().unwrap();
-        if fs::exists(&dest)? {
+        if fs::metadata(&dest).is_ok() {
             return Ok(())
         }
         fs::create_dir_all(parent)?;

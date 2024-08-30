@@ -18,7 +18,9 @@ impl TrapEntry for {{name}} {
     }
 
     fn emit<W: Write>(self, id: TrapLabel, out: &mut W) -> std::io::Result<()> {
-        write!(out, "{{table_name}}({id}{{#single_fields}}, {}{{/single_fields}})\n"{{#single_fields}}, {{#emitter}}self.{{field_name}}{{/emitter}}{{/single_fields}})?;
+        {{#single_field_entries}}
+        write!(out, "{{table_name}}({id}{{#fields}}, {}{{/fields}})\n"{{#fields}}, {{#emitter}}self.{{field_name}}{{/emitter}}{{/fields}})?;
+        {{/single_field_entries}}
         {{#fields}}
         {{#is_predicate}}
         if self.{{field_name}} {
