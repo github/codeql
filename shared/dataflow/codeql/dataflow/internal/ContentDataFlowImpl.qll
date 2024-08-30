@@ -104,8 +104,6 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
         additionalStep(node1, state1, node2, state2)
       }
 
-      predicate isAdditionalFlowStep = ContentConfig::isAdditionalFlowStep/2;
-
       predicate isBarrier = ContentConfig::isBarrier/1;
 
       FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
@@ -302,12 +300,16 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           // relation, when flow can reach a sink without going back out
           Flow::PathGraph::subpaths(pred, succ, _, _) and
           not reachesSink(succ)
-          or
+        )
+        or
+        exists(Node predNode, State predState, Node succNode, State succState |
+          succNodeAndState(pred, predNode, predState, succ, succNode, succState)
+        |
           // needed to record store steps
-          storeStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState())
+          storeStep(predNode, predState, _, succNode, succState)
           or
           // needed to record read steps
-          readStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState())
+          readStep(predNode, predState, _, succNode, succState)
         )
       }
 
