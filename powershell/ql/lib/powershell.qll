@@ -22,6 +22,7 @@ import semmle.code.powershell.ScriptBlock
 import semmle.code.powershell.StringLiteral
 import semmle.code.powershell.AssignmentStatement
 import semmle.code.powershell.BinaryExpression
+import semmle.code.powershell.UnaryExpression
 import semmle.code.powershell.ScriptBlockExpr
 import semmle.code.powershell.TernaryExpression
 import semmle.code.powershell.UsingExpression
