@@ -615,12 +615,25 @@ class StructType extends @structtype, CompositeType {
     component_types(this, i, name, tp) and struct_tags(this, i, tag)
   }
 
-  override StructType getDeepUnaliasedType() {
+  private predicate isDeepUnaliasedTypeUpTo(StructType unaliased, int i) {
     // Note we must use component_types not hasOwnField here because component_types may specify
     // interface-in-struct embedding, but hasOwnField does not return such members.
-    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
-    forall(int i, string name, Type tp, string tag | this.hasComponentTypeAndTag(i, name, tp, tag) |
-      result.hasComponentTypeAndTag(i, name, tp.getDeepUnaliasedType(), tag)
+    (
+      i = 0 or
+      this.isDeepUnaliasedTypeUpTo(unaliased, i - 1)
+    ) and
+    exists(string name, Type tp, string tag | this.hasComponentTypeAndTag(i, name, tp, tag) |
+      unaliased.hasComponentTypeAndTag(i, name, tp.getDeepUnaliasedType(), tag)
+    )
+  }
+
+  override StructType getDeepUnaliasedType() {
+    exists(int nComponents | nComponents = count(int i | component_types(this, i, _, _)) |
+      (
+        this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
+        or
+        nComponents = 0 and result = this
+      )
     )
   }
 
@@ -977,10 +990,21 @@ class TupleType extends @tupletype, CompositeType {
   /** Gets the `i`th component type of this tuple type. */
   Type getComponentType(int i) { component_types(this, i, _, result) }
 
+  private predicate isDeepUnaliasedTypeUpTo(TupleType tt, int i) {
+    tt.getComponentType(i) = this.getDeepUnaliasedType() and
+    (
+      i = 0
+      or
+      this.isDeepUnaliasedTypeUpTo(tt, i - 1)
+    )
+  }
+
   override TupleType getDeepUnaliasedType() {
-    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
-    forall(Type t, int i | t = this.getComponentType(i) |
-      result.getComponentType(i) = t.getDeepUnaliasedType()
+    exists(int nComponents | nComponents = count(int i | exists(this.getComponentType(i))) |
+      this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
+      or
+      // I don't think Go allows empty tuples in any context, but this is at least harmless.
+      nComponents = 0 and result = this
     )
   }
 
@@ -1010,15 +1034,31 @@ class SignatureType extends @signaturetype, CompositeType {
   /** Holds if this signature type is variadic. */
   predicate isVariadic() { variadic(this) }
 
+  private predicate hasDeepUnaliasedParameterTypesUpTo(SignatureType unaliased, int i) {
+    (i = 0 or this.hasDeepUnaliasedParameterTypesUpTo(unaliased, i - 1)) and
+    unaliased.getParameterType(i) = this.getParameterType(i).getDeepUnaliasedType()
+  }
+
+  private predicate hasDeepUnaliasedResultTypesUpTo(SignatureType unaliased, int i) {
+    (i = 0 or this.hasDeepUnaliasedResultTypesUpTo(unaliased, i - 1)) and
+    unaliased.getResultType(i) = this.getResultType(i).getDeepUnaliasedType()
+  }
+
   override SignatureType getDeepUnaliasedType() {
-    count(int i | component_types(this, i, _, _)) = count(int i | component_types(result, i, _, _)) and
+    exists(int nParams | nParams = this.getNumParameter() |
+      nParams = 0 and result.getNumParameter() = 0
+      or
+      this.hasDeepUnaliasedParameterTypesUpTo(result, nParams - 1)
+    ) and
+    exists(int nResults | nResults = this.getNumResult() |
+      nResults = 0 and result.getNumResult() = 0
+      or
+      this.hasDeepUnaliasedResultTypesUpTo(result, nResults - 1)
+    ) and
     (
       this.isVariadic() and result.isVariadic()
       or
       not this.isVariadic() and not result.isVariadic()
-    ) and
-    forall(int i, Type componentType | component_types(this, i, _, componentType) |
-      component_types(result, i, _, componentType.getDeepUnaliasedType())
     )
   }
 
