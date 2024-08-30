@@ -83,7 +83,50 @@ private predicate mustHaveBooleanCompletion(Ast n) { inBooleanContext(n) }
  * Holds if `n` is used in a Boolean context. That is, the value
  * that `n` evaluates to determines a true/false branch successor.
  */
-private predicate inBooleanContext(Ast n) { none() }
+private predicate inBooleanContext(Ast n) {
+  n = any(IfStmt ifStmt).getACondition()
+  or
+  n = any(WhileStmt whileStmt).getCondition()
+  or
+  n = any(DoWhileStmt doWhileStmt).getCondition()
+  or
+  n = any(ForStmt forStmt).getCondition()
+  or
+  n = any(DoUntilStmt doUntilStmt).getCondition()
+  or
+  exists(ConditionalExpr cond |
+    n = cond.getCondition()
+    or
+    inBooleanContext(cond) and
+    n = cond.getABranch()
+  )
+  or
+  exists(LogicalAndExpr parent |
+    n = parent.getLeft()
+    or
+    inBooleanContext(parent) and
+    n = parent.getRight()
+  )
+  or
+  exists(LogicalOrExpr parent |
+    n = parent.getLeft()
+    or
+    inBooleanContext(parent) and
+    n = parent.getRight()
+  )
+  or
+  n = any(NotExpr parent | inBooleanContext(parent)).getOperand()
+  or
+  exists(Pipeline pipeline |
+    inBooleanContext(pipeline) and
+    n = pipeline.getComponent(pipeline.getNumberOfComponents() - 1)
+  )
+  or
+  exists(CmdExpr cmdExpr |
+    inBooleanContext(cmdExpr) and
+    n = cmdExpr.getExpr()
+  )
+}
 
 /**
  * A completion that represents normal evaluation of a statement or an
