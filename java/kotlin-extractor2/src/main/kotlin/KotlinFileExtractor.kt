@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.*
 
@@ -73,6 +74,7 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 */
 
+context (KaSession)
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,

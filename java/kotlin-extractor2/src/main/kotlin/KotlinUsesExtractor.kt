@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.psi.*
 
 /*
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 */
 
+context (KaSession)
 open class KotlinUsesExtractor(
     open val logger: Logger,
     open val tw: TrapWriter,
@@ -1822,6 +1824,9 @@ OLD: KE1
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
 */
     ): Label<out T> {
+        println("=== useFunction")
+        println(f)
+        println(f.returnType)
         val label = getFunctionLabel(javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
         val id: Label<T> =
             tw.getLabelFor(label) {
