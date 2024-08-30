@@ -642,3 +642,41 @@ public class MemberFlow
         return c.Field;
     }
 }
+
+public class IDictionaryFlow
+{
+    // summary=Models;IDictionaryFlow;false;ReturnIDictionaryValue;(System.Collections.Generic.IDictionary<System.Object,System.Object>,System.Object);;Argument[0].Element;ReturnValue;taint;df-generated
+    // contentbased-summary=Models;IDictionaryFlow;false;ReturnIDictionaryValue;(System.Collections.Generic.IDictionary<System.Object,System.Object>,System.Object);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair`2.Value];ReturnValue;value;df-generated
+    public object ReturnIDictionaryValue(IDictionary<object, object> input, object key)
+    {
+        return input[key];
+    }
+}
+
+public class NestedFieldFlow
+{
+    public NestedFieldFlow FieldA;
+    public NestedFieldFlow FieldB;
+
+    // summary=Models;NestedFieldFlow;false;Move;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;NestedFieldFlow;false;Move;();;Argument[this].Field[Models.NestedFieldFlow.FieldA];ReturnValue.Field[Models.NestedFieldFlow.FieldB];value;df-generated
+    public NestedFieldFlow Move()
+    {
+        return new NestedFieldFlow() { FieldB = this.FieldA };
+    }
+
+    // summary=Models;NestedFieldFlow;false;MoveNested;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;NestedFieldFlow;false;MoveNested;();;Argument[this].Field[Models.NestedFieldFlow.FieldB].Field[Models.NestedFieldFlow.FieldA];ReturnValue.Field[Models.NestedFieldFlow.FieldA].Field[Models.NestedFieldFlow.FieldB];value;df-generated
+    public NestedFieldFlow MoveNested()
+    {
+        return new NestedFieldFlow() { FieldA = FieldB.Move() };
+    }
+
+    // summary=Models;NestedFieldFlow;false;ReverseFields;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;NestedFieldFlow;false;ReverseFields;();;Argument[this].Field[Models.NestedFieldFlow.FieldA].Field[Models.NestedFieldFlow.FieldB];ReturnValue.Field[Models.NestedFieldFlow.FieldA].Field[Models.NestedFieldFlow.FieldB];value;df-generated
+    public NestedFieldFlow ReverseFields()
+    {
+        var x = new NestedFieldFlow() { FieldB = this.FieldA.FieldB };
+        return new NestedFieldFlow() { FieldA = x };
+    }
+}
