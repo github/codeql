@@ -1802,13 +1802,12 @@ OLD: KE1
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
 */
-    ) =
-        null // TODO
+    ): Label<out DbCallable> {
 /*
 OLD: KE1
         if (isFake(f)) {
-            if (needsInterfaceForwarder(f))
-                makeInterfaceForwarder(
+            if (needsInterfaceForwarder(f)) {
+                return makeInterfaceForwarder(
                     f,
                     parentId,
                     extractBody,
@@ -1816,27 +1815,32 @@ OLD: KE1
                     typeSubstitution,
                     classTypeArgsIncludingOuterClasses
                 )
-            else null
+            } else {
+                return null
+            }
         } else {
-*/
-/*
-OLD: KE1
             // Work around an apparent bug causing redeclarations of `fun toString(): String`
             // specifically in interfaces loaded from Java classes show up like fake overrides.
             val overriddenVisibility =
                 if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f))
                     OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)
                 else null
-            forceExtractFunction(
+*/
+            return forceExtractFunction(
                     f,
                     parentId,
+/*
+OLD: KE1
                     extractBody,
                     extractMethodAndParameterTypeAccesses,
                     extractAnnotations,
                     typeSubstitution,
                     classTypeArgsIncludingOuterClasses,
                     overriddenAttributes = overriddenVisibility
+*/
                 )
+/*
+OLD: KE1
                 .also {
                     // The defaults-forwarder function is a static utility, not a member, so we only
                     // need to extract this for the unspecialised instance of this class.
@@ -1857,8 +1861,8 @@ OLD: KE1
                         classTypeArgsIncludingOuterClasses
                     )
                 }
-        }
 */
+        }
 
 /*
 OLD: KE1
@@ -2413,10 +2417,13 @@ OLD: KE1
                 }
             }
         }
+*/
 
     private fun forceExtractFunction(
-        f: IrFunction,
+        f: KtFunction,
         parentId: Label<out DbReftype>,
+/*
+OLD: KE1
         extractBody: Boolean,
         extractMethodAndParameterTypeAccesses: Boolean,
         extractAnnotations: Boolean,
@@ -2424,8 +2431,11 @@ OLD: KE1
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
         extractOrigin: Boolean = true,
         overriddenAttributes: OverriddenFunctionAttributes? = null
+*/
     ): Label<out DbCallable> {
         with("function", f) {
+/*
+OLD: KE1
             DeclarationStackAdjuster(f, overriddenAttributes).use {
                 val javaCallable = getJavaCallable(f)
                 getFunctionTypeParameters(f).mapIndexed { idx, tp ->
@@ -2437,19 +2447,28 @@ OLD: KE1
                             ?.getOrNull(idx)
                     )
                 }
+*/
 
                 val id =
+/*
+OLD: KE1
                     overriddenAttributes?.id
                         ?: // If this is a class that would ordinarily be replaced by a Java
                            // equivalent (e.g. kotlin.Map -> java.util.Map),
                         // don't replace here, really extract the Kotlin version:
+*/
                         useFunction<DbCallable>(
                             f,
                             parentId,
+/*
+OLD: KE1
                             classTypeArgsIncludingOuterClasses,
                             noReplace = true
+*/
                         )
 
+/*
+OLD: KE1
                 val sourceDeclaration =
                     overriddenAttributes?.sourceDeclarationId
                         ?: if (typeSubstitution != null && overriddenAttributes?.id == null) {
@@ -2612,12 +2631,18 @@ OLD: KE1
                         extractMethodAndParameterTypeAccesses
                     )
                 }
+*/
 
                 return id
+/*
+OLD: KE1
             }
+*/
         }
     }
 
+/*
+OLD: KE1
     private fun isStaticFunction(f: IrFunction): Boolean {
         return f.dispatchReceiverParameter == null // Has no dispatch receiver,
         &&
