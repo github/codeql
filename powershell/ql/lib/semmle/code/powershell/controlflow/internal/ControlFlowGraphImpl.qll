@@ -236,6 +236,164 @@ module Trees {
     }
   }
 
+  abstract class LoopStmtTree extends ControlFlowTree instanceof LoopStmt {
+    final AstNode getBody() { result = super.getBody() }
+
+    override predicate last(AstNode last, Completion c) {
+      // Exit the loop body when we encounter a break
+      last(this.getBody(), last, c) and
+      c instanceof BreakCompletion
+      or
+      // Body exits abnormally
+      last(this.getBody(), last, c) and
+      not c instanceof BreakCompletion and
+      not c.continuesLoop()
+    }
+  }
+
+  abstract class ConditionalLoopStmtTree extends PreOrderTree, LoopStmtTree {
+    abstract AstNode getCondition();
+
+    abstract predicate entersLoopWhenConditionIs(boolean value);
+
+    final override predicate propagatesAbnormal(AstNode child) { child = this.getCondition() }
+
+    override predicate last(AstNode last, Completion c) {
+      // Exit the loop body when the condition is false
+      last(this.getCondition(), last, c) and
+      this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue().booleanNot())
+      or
+      super.last(last, c)
+    }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Condition -> body
+      last(this.getCondition(), pred, c) and
+      this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue()) and
+      first(this.getBody(), succ)
+      or
+      // Body -> condition
+      last(this.getBody(), pred, c) and
+      c.continuesLoop() and
+      first(this.getCondition(), succ)
+    }
+  }
+
+  class WhileStmtTree extends ConditionalLoopStmtTree instanceof WhileStmt {
+    override predicate entersLoopWhenConditionIs(boolean value) { value = true }
+
+    override AstNode getCondition() { result = WhileStmt.super.getCondition() }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Start with the condition
+      this = pred and
+      first(this.getCondition(), succ) and
+      completionIsSimple(c)
+      or
+      super.succ(pred, succ, c)
+    }
+  }
+
+  abstract class DoBasedLoopStmtTree extends ConditionalLoopStmtTree {
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Start with the body
+      this = pred and
+      first(this.getBody(), succ) and
+      completionIsSimple(c)
+      or
+      super.succ(pred, succ, c)
+    }
+  }
+
+  class DoWhileStmtTree extends DoBasedLoopStmtTree instanceof DoWhileStmt {
+    override AstNode getCondition() { result = DoWhileStmt.super.getCondition() }
+
+    override predicate entersLoopWhenConditionIs(boolean value) { value = true }
+  }
+
+  class DoUntilStmtTree extends DoBasedLoopStmtTree instanceof DoUntilStmt {
+    override AstNode getCondition() { result = DoUntilStmt.super.getCondition() }
+
+    override predicate entersLoopWhenConditionIs(boolean value) { value = false }
+  }
+
+  class ForStmtTree extends PreOrderTree, LoopStmtTree instanceof ForStmt {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = [super.getInitializer(), super.getIterator()]
+    }
+
+    override predicate last(AstNode last, Completion c) {
+      // Condition returns false
+      last(super.getCondition(), last, c) and
+      c instanceof FalseCompletion
+      or
+      super.last(last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Start with initialization
+      this = pred and
+      first(super.getInitializer(), succ) and
+      completionIsSimple(c)
+      or
+      // Initialization -> condition
+      last(super.getInitializer(), pred, c) and
+      completionIsNormal(c) and
+      first(super.getCondition(), succ)
+      or
+      // Condition -> body
+      last(super.getCondition(), pred, c) and
+      c instanceof TrueCompletion and
+      first(this.getBody(), succ)
+      or
+      // Body -> iterator
+      last(this.getBody(), pred, c) and
+      completionIsNormal(c) and
+      first(super.getIterator(), succ)
+    }
+  }
+
+  class ForEachStmtTree extends LoopStmtTree instanceof ForEachStmt {
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getIterableExpr() }
+
+    final override predicate first(AstNode first) {
+      // Unlike most other statements, `foreach` statements are not modeled in
+      // pre-order, because we use the `foreach` node itself to represent the
+      // emptiness test that determines whether to execute the loop body
+      first(super.getIterableExpr(), first)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      // Emptiness test exits with no more elements
+      last = this and
+      completionIsSimple(c)
+      or
+      super.last(last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Emptiness test
+      last(super.getIterableExpr(), pred, c) and
+      completionIsNormal(c) and
+      succ = this
+      or
+      // Emptiness test to variable declaration
+      pred = this and
+      first(super.getVariable(), succ) and
+      completionIsSimple(c)
+      or
+      // Variable declaration to body
+      last(super.getVariable(), succ, c) and
+      completionIsNormal(c) and
+      first(this.getBody(), succ)
+      or
+      // Body to emptiness test
+      last(this.getBody(), pred, c) and
+      c.continuesLoop() and
+      succ = this
+    }
+  }
+
   class StmtBlockTree extends PreOrderTree instanceof StmtBlock {
     final override predicate propagatesAbnormal(AstNode child) { child = super.getAStmt() }
 
