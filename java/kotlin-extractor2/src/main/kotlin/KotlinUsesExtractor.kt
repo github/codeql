@@ -1543,10 +1543,10 @@ OLD: KE1
                 "<${functionTypeParameters.size}>"
             else ""
 */
-        val prefix = "x" // TODO
+        val prefix = "callable" // TODO
         val paramTypeIds = "x" // TODO
         val returnTypeId = "x" // TODO
-        val typeArgSuffix = "x" // TODO
+        val typeArgSuffix = "" // TODO
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
     }
 
