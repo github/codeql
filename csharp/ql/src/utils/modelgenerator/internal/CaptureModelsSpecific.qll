@@ -5,11 +5,14 @@
 private import csharp as CS
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
+private import semmle.code.csharp.commons.QualifiedName as QualifiedName
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate as TaintTrackingPrivate
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+import semmle.code.csharp.dataflow.internal.ContentDataFlow as ContentDataFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -21,6 +24,8 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 class Callable = CS::Callable;
+
+class ContentSet = DataFlow::ContentSet;
 
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
@@ -241,9 +246,27 @@ string parameterAccess(CS::Parameter p) {
   else result = "Argument[" + p.getPosition() + "]"
 }
 
+/**
+ * Gets the MaD string representation of the parameter `p`
+ * when used in content flow.
+ */
+string parameterContentAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+
 class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
 class ParameterPosition = DataFlowDispatch::ParameterPosition;
+
+private signature string parameterAccessSig(Parameter p);
+
+module ParamReturnNodeAsOutput<parameterAccessSig/1 getParamAccess> {
+  bindingset[c]
+  string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
+    result = getParamAccess(c.getParameter(pos.getPosition()))
+    or
+    pos.isThisParameter() and
+    result = qualifierString()
+  }
+}
 
 /**
  * Gets the MaD string representation of return through parameter at position
@@ -251,10 +274,12 @@ class ParameterPosition = DataFlowDispatch::ParameterPosition;
  */
 bindingset[c]
 string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
-  result = parameterAccess(c.getParameter(pos.getPosition()))
-  or
-  pos.isThisParameter() and
-  result = qualifierString()
+  result = ParamReturnNodeAsOutput<parameterAccess/1>::paramReturnNodeAsOutput(c, pos)
+}
+
+bindingset[c]
+string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
+  result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
 }
 
 /**
@@ -344,3 +369,44 @@ predicate isRelevantSourceKind(string kind) { any() }
  * Holds if the the content `c` is a container.
  */
 predicate containerContent(DataFlow::ContentSet c) { c.isElement() }
+
+/**
+ * Holds if there is a taint step from `node1` to `node2` in content flow.
+ */
+predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  TaintTrackingPrivate::defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
+  not nodeTo.asExpr() instanceof CS::ElementAccess and
+  not exists(DataFlow::ContentSet c |
+    DataFlowPrivate::readStep(nodeFrom, c, nodeTo) and containerContent(c)
+  )
+}
+
+bindingset[d]
+private string getFullyQualifiedName(Declaration d) {
+  exists(string qualifier, string name |
+    d.hasFullyQualifiedName(qualifier, name) and
+    result = QualifiedName::getQualifiedName(qualifier, name)
+  )
+}
+
+/**
+ * Gets the MaD string representation of the contentset `c`.
+ */
+string printContent(DataFlow::ContentSet c) {
+  exists(CS::Field f, string name | name = getFullyQualifiedName(f) |
+    c.isField(f) and
+    if f.isEffectivelyPublic()
+    then result = "Field[" + name + "]"
+    else result = "SyntheticField[" + name + "]"
+  )
+  or
+  exists(CS::Property p, string name | name = getFullyQualifiedName(p) |
+    c.isProperty(p) and
+    if p.isEffectivelyPublic()
+    then result = "Property[" + name + "]"
+    else result = "SyntheticField[" + name + "]"
+  )
+  or
+  c.isElement() and
+  result = "Element"
+}
