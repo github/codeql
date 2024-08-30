@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.intellij.openapi.editor.Document
+import com.intellij.psi.impl.DebugUtil
 import com.intellij.psi.PsiFile
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
@@ -118,9 +119,6 @@ OLD: KE1
         logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
         logger.flush()
         logPeakMemoryUsage(logger, "before extractor")
-        if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
-            logger.info("moduleFragment:\n" + moduleFragment.dump())
-        }
 */
         val compression = getCompression(logger)
 
@@ -207,9 +205,15 @@ OLD: KE1
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
 */
     var fileIndex = 0
+    val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
     for (psiFile in psiFiles) {
         if (psiFile is KtFile) {
             analyze(psiFile) {
+                if (dump_psi) {
+                    val showWhitespaces = false
+                    val showRanges = true
+                    loggerBase.info(dtw, DebugUtil.psiToString(psiFile, showWhitespaces, showRanges))
+                }
                 val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 try {
                     val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
