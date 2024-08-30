@@ -89,6 +89,7 @@
 | DefUse.cs:186:9:190:9 | SSA def(a) | DefUse.cs:186:9:190:9 | ... = ... |
 | DefUse.cs:188:13:188:22 | SSA def(this.Field5) | DefUse.cs:188:13:188:22 | ... = ... |
 | DefUse.cs:191:9:191:11 | SSA call def(this.Field5) | DefUse.cs:191:9:191:11 | delegate call |
+| Enum.cs:8:10:8:10 | SSA entry def(E.A) | Enum.cs:8:10:8:10 | M |
 | Example.cs:6:23:6:23 | SSA param(i) | Example.cs:6:23:6:23 | i |
 | Example.cs:8:9:8:22 | SSA def(this.Field) | Example.cs:8:9:8:22 | ... = ... |
 | Example.cs:11:13:11:30 | SSA def(this.Field) | Example.cs:11:13:11:30 | ... = ... |

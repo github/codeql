@@ -100,6 +100,8 @@
 | DefUse.cs:184:9:184:14 | this.Field5 | DefUse.cs:184:9:184:18 | SSA def(this.Field5) | DefUse.cs:185:13:185:18 | access to field Field5 |
 | DefUse.cs:184:9:184:14 | this.Field5 | DefUse.cs:191:9:191:11 | SSA call def(this.Field5) | DefUse.cs:192:13:192:18 | access to field Field5 |
 | DefUse.cs:188:13:188:18 | this.Field5 | DefUse.cs:188:13:188:22 | SSA def(this.Field5) | DefUse.cs:189:17:189:22 | access to field Field5 |
+| Enum.cs:11:18:11:20 | E.A | Enum.cs:8:10:8:10 | SSA entry def(E.A) | Enum.cs:11:18:11:20 | access to constant A |
+| Enum.cs:11:18:11:20 | E.A | Enum.cs:8:10:8:10 | SSA entry def(E.A) | Enum.cs:12:18:12:20 | access to constant A |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | SSA param(i) | Example.cs:8:22:8:22 | access to parameter i |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | SSA param(i) | Example.cs:10:13:10:13 | access to parameter i |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | SSA param(i) | Example.cs:11:26:11:26 | access to parameter i |

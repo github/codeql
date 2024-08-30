@@ -19,6 +19,7 @@
 | DefUse.cs:144:22:144:22 | x | DefUse.cs:146:17:146:17 | access to local variable x | DefUse.cs:147:17:147:17 | access to local variable x |
 | DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:156:13:156:18 | access to field Field4 | DefUse.cs:157:13:157:18 | access to field Field4 |
 | DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:162:13:162:18 | access to field Field4 | DefUse.cs:163:13:163:18 | access to field Field4 |
+| Enum.cs:3:5:3:5 | A | Enum.cs:11:18:11:20 | access to constant A | Enum.cs:12:18:12:20 | access to constant A |
 | Example.cs:4:9:4:13 | Field | Example.cs:14:13:14:22 | access to field Field | Example.cs:15:13:15:22 | access to field Field |
 | Example.cs:6:23:6:23 | i | Example.cs:8:22:8:22 | access to parameter i | Example.cs:10:13:10:13 | access to parameter i |
 | Example.cs:6:23:6:23 | i | Example.cs:10:13:10:13 | access to parameter i | Example.cs:11:26:11:26 | access to parameter i |
