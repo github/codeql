@@ -466,6 +466,92 @@ class ByteSliceType extends SliceType {
   ByteSliceType() { this.getElementType() instanceof Uint8Type }
 }
 
+// Improve efficiency of matching a struct to its unaliased equivalent
+// by unpacking the first 5 fields and tags, allowing a single join
+// to strongly constrain the available candidates.
+private predicate hasComponentTypeAndTag(StructType s, int i, string name, Type tp, string tag) {
+  component_types(s, i, name, tp) and struct_tags(s, i, tag)
+}
+
+private newtype TOptStructComponent =
+  MkNoComponent() or
+  MkSomeComponent(string name, Type tp, string tag) { hasComponentTypeAndTag(_, _, name, tp, tag) }
+
+private class OptStructComponent extends TOptStructComponent {
+  OptStructComponent getWithDeepUnaliasedType() {
+    this = MkNoComponent() and result = MkNoComponent()
+    or
+    exists(string name, Type tp, string tag |
+      this = MkSomeComponent(name, tp, tag) and
+      result = MkSomeComponent(name, tp.getDeepUnaliasedType(), tag)
+    )
+  }
+
+  string toString() { result = "struct component" }
+}
+
+private class StructComponent extends MkSomeComponent {
+  string toString() { result = "struct component" }
+
+  predicate isComponentOf(StructType s, int i) {
+    exists(string name, Type tp, string tag |
+      hasComponentTypeAndTag(s, i, name, tp, tag) and
+      this = MkSomeComponent(name, tp, tag)
+    )
+  }
+}
+
+pragma[nomagic]
+predicate unpackStructType(
+  StructType s, TOptStructComponent c0, TOptStructComponent c1, TOptStructComponent c2,
+  TOptStructComponent c3, TOptStructComponent c4, int nComponents
+) {
+  nComponents = count(int i | component_types(s, i, _, _)) and
+  (
+    if nComponents >= 1
+    then c0 = any(StructComponent sc | sc.isComponentOf(s, 0))
+    else c0 = MkNoComponent()
+  ) and
+  (
+    if nComponents >= 2
+    then c1 = any(StructComponent sc | sc.isComponentOf(s, 1))
+    else c1 = MkNoComponent()
+  ) and
+  (
+    if nComponents >= 3
+    then c2 = any(StructComponent sc | sc.isComponentOf(s, 2))
+    else c2 = MkNoComponent()
+  ) and
+  (
+    if nComponents >= 4
+    then c3 = any(StructComponent sc | sc.isComponentOf(s, 3))
+    else c3 = MkNoComponent()
+  ) and
+  (
+    if nComponents >= 5
+    then c4 = any(StructComponent sc | sc.isComponentOf(s, 4))
+    else c4 = MkNoComponent()
+  )
+}
+
+pragma[nomagic]
+predicate unpackAndUnaliasStructType(
+  StructType s, TOptStructComponent c0, TOptStructComponent c1, TOptStructComponent c2,
+  TOptStructComponent c3, TOptStructComponent c4, int nComponents
+) {
+  exists(
+    OptStructComponent c0a, OptStructComponent c1a, OptStructComponent c2a, OptStructComponent c3a,
+    OptStructComponent c4a
+  |
+    unpackStructType(s, c0a, c1a, c2a, c3a, c4a, nComponents) and
+    c0 = c0a.getWithDeepUnaliasedType() and
+    c1 = c1a.getWithDeepUnaliasedType() and
+    c2 = c2a.getWithDeepUnaliasedType() and
+    c3 = c3a.getWithDeepUnaliasedType() and
+    c4 = c4a.getWithDeepUnaliasedType()
+  )
+}
+
 /** A struct type. */
 class StructType extends @structtype, CompositeType {
   /**
@@ -611,29 +697,36 @@ class StructType extends @structtype, CompositeType {
     )
   }
 
-  private predicate hasComponentTypeAndTag(int i, string name, Type tp, string tag) {
-    component_types(this, i, name, tp) and struct_tags(this, i, tag)
+  private StructType getDeepUnaliasedTypeCandidate() {
+    exists(
+      OptStructComponent c0, OptStructComponent c1, OptStructComponent c2, OptStructComponent c3,
+      OptStructComponent c4, int nComponents
+    |
+      unpackAndUnaliasStructType(this, c0, c1, c2, c3, c4, nComponents) and
+      unpackStructType(result, c0, c1, c2, c3, c4, nComponents)
+    )
   }
 
   private predicate isDeepUnaliasedTypeUpTo(StructType unaliased, int i) {
     // Note we must use component_types not hasOwnField here because component_types may specify
     // interface-in-struct embedding, but hasOwnField does not return such members.
+    unaliased = this.getDeepUnaliasedTypeCandidate() and
+    i >= 5 and
     (
-      i = 0 or
+      i = 5 or
       this.isDeepUnaliasedTypeUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp, string tag | this.hasComponentTypeAndTag(i, name, tp, tag) |
-      unaliased.hasComponentTypeAndTag(i, name, tp.getDeepUnaliasedType(), tag)
+    exists(string name, Type tp, string tag | hasComponentTypeAndTag(this, i, name, tp, tag) |
+      hasComponentTypeAndTag(unaliased, i, name, tp.getDeepUnaliasedType(), tag)
     )
   }
 
   override StructType getDeepUnaliasedType() {
+    result = this.getDeepUnaliasedTypeCandidate() and
     exists(int nComponents | nComponents = count(int i | component_types(this, i, _, _)) |
-      (
-        this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
-        or
-        nComponents = 0 and result = this
-      )
+      this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
+      or
+      nComponents <= 5
     )
   }
 
@@ -1000,11 +1093,14 @@ class TupleType extends @tupletype, CompositeType {
   }
 
   override TupleType getDeepUnaliasedType() {
-    exists(int nComponents | nComponents = count(int i | exists(this.getComponentType(i))) |
+    exists(int nComponents |
+      nComponents = count(int i | exists(this.getComponentType(i))) and
+      nComponents = count(int i | exists(result.getComponentType(i)))
+    |
       this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
       or
       // I don't think Go allows empty tuples in any context, but this is at least harmless.
-      nComponents = 0 and result = this
+      nComponents = 0
     )
   }
 
@@ -1015,6 +1111,68 @@ class TupleType extends @tupletype, CompositeType {
   }
 
   override string toString() { result = "tuple type" }
+}
+
+// Reasonably efficiently map from a signature type to its
+// deep-unaliased equivalent, by using a single join for the leading 5 parameters
+// and/or 3 results.
+private newtype TOptType =
+  MkNoType() or
+  MkSomeType(Type tp)
+
+private class OptType extends TOptType {
+  OptType getDeepUnaliasedType() {
+    exists(Type t | this = MkSomeType(t) | result = MkSomeType(t.getDeepUnaliasedType()))
+    or
+    this = MkNoType() and result = MkNoType()
+  }
+
+  string toString() {
+    exists(Type t | this = MkSomeType(t) | result = t.toString())
+    or
+    this = MkNoType() and result = "no type"
+  }
+}
+
+pragma[nomagic]
+private predicate unpackSignatureType(
+  SignatureType sig, OptType param0, OptType param1, OptType param2, OptType param3, OptType param4,
+  int nParams, OptType result0, OptType result1, OptType result2, int nResults, boolean isVariadic
+) {
+  nParams = sig.getNumParameter() and
+  nResults = sig.getNumResult() and
+  (if nParams >= 1 then param0 = MkSomeType(sig.getParameterType(0)) else param0 = MkNoType()) and
+  (if nParams >= 2 then param1 = MkSomeType(sig.getParameterType(1)) else param1 = MkNoType()) and
+  (if nParams >= 3 then param2 = MkSomeType(sig.getParameterType(2)) else param2 = MkNoType()) and
+  (if nParams >= 4 then param3 = MkSomeType(sig.getParameterType(3)) else param3 = MkNoType()) and
+  (if nParams >= 5 then param4 = MkSomeType(sig.getParameterType(4)) else param4 = MkNoType()) and
+  (if nResults >= 1 then result0 = MkSomeType(sig.getResultType(0)) else result0 = MkNoType()) and
+  (if nResults >= 2 then result1 = MkSomeType(sig.getResultType(1)) else result1 = MkNoType()) and
+  (if nResults >= 3 then result2 = MkSomeType(sig.getResultType(2)) else result2 = MkNoType()) and
+  (if sig.isVariadic() then isVariadic = true else isVariadic = false)
+}
+
+pragma[nomagic]
+private predicate unpackAndUnaliasSignatureType(
+  SignatureType sig, OptType param0, OptType param1, OptType param2, OptType param3, OptType param4,
+  int nParams, OptType result0, OptType result1, OptType result2, int nResults, boolean isVariadic
+) {
+  exists(
+    OptType param0a, OptType param1a, OptType param2a, OptType param3a, OptType param4a,
+    OptType result0a, OptType result1a, OptType result2a
+  |
+    unpackSignatureType(sig, param0a, param1a, param2a, param3a, param4a, nParams, result0a,
+      result1a, result2a, nResults, isVariadic)
+  |
+    param0 = param0a.getDeepUnaliasedType() and
+    param1 = param1a.getDeepUnaliasedType() and
+    param2 = param2a.getDeepUnaliasedType() and
+    param3 = param3a.getDeepUnaliasedType() and
+    param4 = param4a.getDeepUnaliasedType() and
+    result0 = result0a.getDeepUnaliasedType() and
+    result1 = result1a.getDeepUnaliasedType() and
+    result2 = result2a.getDeepUnaliasedType()
+  )
 }
 
 /** A signature type. */
@@ -1034,31 +1192,48 @@ class SignatureType extends @signaturetype, CompositeType {
   /** Holds if this signature type is variadic. */
   predicate isVariadic() { variadic(this) }
 
+  private SignatureType getDeepUnaliasedTypeCandidate() {
+    exists(
+      OptType param0, OptType param1, OptType param2, OptType param3, OptType param4, int nParams,
+      OptType result0, OptType result1, OptType result2, int nResults, boolean isVariadic
+    |
+      unpackAndUnaliasSignatureType(this, param0, param1, param2, param3, param4, nParams, result0,
+        result1, result2, nResults, isVariadic) and
+      unpackSignatureType(result, param0, param1, param2, param3, param4, nParams, result0, result1,
+        result2, nResults, isVariadic)
+    )
+  }
+
+  // These incremental recursive implementations only apply from parameter 5 or result 3
+  // upwards to avoid constructing large squares of candidates -- the initial parameters
+  // and results are taken care of by the candidate predicate.
   private predicate hasDeepUnaliasedParameterTypesUpTo(SignatureType unaliased, int i) {
-    (i = 0 or this.hasDeepUnaliasedParameterTypesUpTo(unaliased, i - 1)) and
+    unaliased = this.getDeepUnaliasedTypeCandidate() and
+    i >= 5 and
+    (i = 5 or this.hasDeepUnaliasedParameterTypesUpTo(unaliased, i - 1)) and
     unaliased.getParameterType(i) = this.getParameterType(i).getDeepUnaliasedType()
   }
 
   private predicate hasDeepUnaliasedResultTypesUpTo(SignatureType unaliased, int i) {
-    (i = 0 or this.hasDeepUnaliasedResultTypesUpTo(unaliased, i - 1)) and
+    unaliased = this.getDeepUnaliasedTypeCandidate() and
+    i >= 3 and
+    (i = 3 or this.hasDeepUnaliasedResultTypesUpTo(unaliased, i - 1)) and
     unaliased.getResultType(i) = this.getResultType(i).getDeepUnaliasedType()
   }
 
   override SignatureType getDeepUnaliasedType() {
-    exists(int nParams | nParams = this.getNumParameter() |
-      nParams = 0 and result.getNumParameter() = 0
-      or
-      this.hasDeepUnaliasedParameterTypesUpTo(result, nParams - 1)
-    ) and
-    exists(int nResults | nResults = this.getNumResult() |
-      nResults = 0 and result.getNumResult() = 0
-      or
-      this.hasDeepUnaliasedResultTypesUpTo(result, nResults - 1)
-    ) and
-    (
-      this.isVariadic() and result.isVariadic()
-      or
-      not this.isVariadic() and not result.isVariadic()
+    result = this.getDeepUnaliasedTypeCandidate() and
+    exists(int nParams, int nResults |
+      this.getNumParameter() = nParams and this.getNumResult() = nResults
+    |
+      (
+        nParams <= 5
+        or
+        this.hasDeepUnaliasedParameterTypesUpTo(result, nParams - 1) and
+        nResults <= 3
+        or
+        this.hasDeepUnaliasedResultTypesUpTo(result, nResults - 1)
+      )
     )
   }
 
