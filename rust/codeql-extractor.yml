@@ -2,6 +2,7 @@ name: "rust"
 display_name: "Rust"
 version: 0.1.0
 column_kind: "utf8"
+legacy_qltest_extraction: true
 build_modes:
   - none
 github_api_languages:

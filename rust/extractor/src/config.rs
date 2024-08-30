@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use anyhow::Context;
 use serde::{Deserialize, Serialize, Serializer, Deserializer};
 use serde_with;
 use figment::{Figment, providers::{Env, Serialized}};
@@ -48,7 +49,9 @@ struct CliArgs {
     #[arg(long)]
     compression: Option<Compression>,
     #[arg(short, long, action = ArgAction::Count)]
-    pub verbose: u8,
+    verbose: u8,
+    #[arg(long)]
+    inputs_file: Option<PathBuf>,
 
     inputs: Vec<PathBuf>,
 }
@@ -58,10 +61,15 @@ fn is_default<T: Default + PartialEq>(t: &T) -> bool {
 }
 
 impl Config {
-    pub fn extract() -> figment::Result<Config> {
-        Figment::new()
+    pub fn extract() -> anyhow::Result<Config> {
+        let mut cli_args = CliArgs::parse();
+        if let Some(inputs_file) = cli_args.inputs_file.take() {
+            let inputs_list = std::fs::read_to_string(inputs_file).context("reading file list")?;
+            cli_args.inputs.extend(inputs_list.split("\n").map(PathBuf::from));
+        }
+        Ok(Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
-            .merge(Serialized::defaults(CliArgs::parse()))
-            .extract()
+            .merge(Serialized::defaults(cli_args))
+            .extract().context("loading configuration")?)
     }
 }

@@ -35,8 +35,7 @@ fn main() -> anyhow::Result<()> {
         prefill_caches: false,
     };
     for input in cfg.inputs {
-        load_workspace_at(&input, &config, &load_config, &no_progress)?;
-        let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &no_progress)?;
+        let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &no_progress).context("loading inputs")?;
         let crates =  <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter().take(1) {
             let krate = Crate::from(crate_id);
@@ -49,7 +48,7 @@ fn main() -> anyhow::Result<()> {
                 &krate,
                 &vfs,
                 &archiver,
-            ).emit_crate()?;
+            ).emit_crate().context("writing trap file")?;
         }
     }
     Ok(())

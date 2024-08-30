@@ -5,8 +5,6 @@
 /ql/lib/codeql/rust/elements/DbLocation.qll linguist-generated
 /ql/lib/codeql/rust/elements/DbLocationConstructor.qll linguist-generated
 /ql/lib/codeql/rust/elements/Declaration.qll linguist-generated
-/ql/lib/codeql/rust/elements/Element.qll linguist-generated
-/ql/lib/codeql/rust/elements/File.qll linguist-generated
 /ql/lib/codeql/rust/elements/Function.qll linguist-generated
 /ql/lib/codeql/rust/elements/FunctionConstructor.qll linguist-generated
 /ql/lib/codeql/rust/elements/Locatable.qll linguist-generated
@@ -32,6 +30,6 @@
 /ql/lib/codeql/rust/generated/SynthConstructors.qll linguist-generated
 /ql/lib/codeql/rust/generated/UnknownFile.qll linguist-generated
 /ql/lib/codeql/rust/generated/UnknownLocation.qll linguist-generated
-/ql/test/extractor-tests/generated/File/MISSING_SOURCE.txt linguist-generated
-/ql/test/extractor-tests/generated/Function/MISSING_SOURCE.txt linguist-generated
+/ql/test/extractor-tests/generated/File/File.ql linguist-generated
+/ql/test/extractor-tests/generated/Function/Function.ql linguist-generated
 /ql/test/extractor-tests/generated/Module/MISSING_SOURCE.txt linguist-generated
