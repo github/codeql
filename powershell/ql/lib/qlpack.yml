@@ -6,4 +6,6 @@ groups:
 dbscheme: semmlecode.powershell.dbscheme
 extractor: powershell
 library: true
+dependencies:
+  codeql/controlflow: ${workspace}
 warnOnImplicitThis: true

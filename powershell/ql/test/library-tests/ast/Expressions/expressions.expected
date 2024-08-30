@@ -1,19 +1,19 @@
 binaryExpr
 | BinaryExpression.ps1:3:11:3:24 | ...+... | BinaryExpression.ps1:3:11:3:16 | val1 | BinaryExpression.ps1:3:19:3:24 | val2 |
-| TernaryExpression.ps1:1:9:1:16 | ...+... | TernaryExpression.ps1:1:9:1:10 | ConstantExpression at: TernaryExpression.ps1:1:9:1:10 | TernaryExpression.ps1:1:15:1:16 | ConstantExpression at: TernaryExpression.ps1:1:15:1:16 |
+| TernaryExpression.ps1:1:9:1:16 | ...+... | TernaryExpression.ps1:1:9:1:10 | 6 | TernaryExpression.ps1:1:15:1:16 | 7 |
 cmdExpr
-| BinaryExpression.ps1:1:9:1:10 | CommandExpression at: BinaryExpression.ps1:1:9:1:10 | BinaryExpression.ps1:1:9:1:10 | ConstantExpression at: BinaryExpression.ps1:1:9:1:10 |
-| BinaryExpression.ps1:2:9:2:10 | CommandExpression at: BinaryExpression.ps1:2:9:2:10 | BinaryExpression.ps1:2:9:2:10 | ConstantExpression at: BinaryExpression.ps1:2:9:2:10 |
-| BinaryExpression.ps1:3:11:3:24 | CommandExpression at: BinaryExpression.ps1:3:11:3:24 | BinaryExpression.ps1:3:11:3:24 | ...+... |
-| BinaryExpression.ps1:4:1:4:8 | CommandExpression at: BinaryExpression.ps1:4:1:4:8 | BinaryExpression.ps1:4:1:4:8 | result |
-| ExpandableString.ps1:1:1:1:40 | CommandExpression at: ExpandableString.ps1:1:1:1:40 | ExpandableString.ps1:1:1:1:40 | ExpandableStringExpression at: ExpandableString.ps1:1:1:1:40 |
-| ExpandableString.ps1:1:23:1:38 | CommandExpression at: ExpandableString.ps1:1:23:1:38 | file://:0:0:0:0 | (no string representation) |
-| SubExpression.ps1:1:1:1:24 | CommandExpression at: SubExpression.ps1:1:1:1:24 | SubExpression.ps1:1:1:1:24 | ArrayExpression at: SubExpression.ps1:1:1:1:24 |
-| SubExpression.ps1:2:1:2:22 | CommandExpression at: SubExpression.ps1:2:1:2:22 | SubExpression.ps1:2:1:2:22 | ArrayExpression at: SubExpression.ps1:2:1:2:22 |
-| TernaryExpression.ps1:1:8:1:23 | CommandExpression at: TernaryExpression.ps1:1:8:1:23 | TernaryExpression.ps1:1:8:1:23 | ...?...:... |
-| TernaryExpression.ps1:1:9:1:16 | CommandExpression at: TernaryExpression.ps1:1:9:1:16 | TernaryExpression.ps1:1:9:1:16 | ...+... |
+| BinaryExpression.ps1:1:9:1:10 | 1 | BinaryExpression.ps1:1:9:1:10 | 1 |
+| BinaryExpression.ps1:2:9:2:10 | 2 | BinaryExpression.ps1:2:9:2:10 | 2 |
+| BinaryExpression.ps1:3:11:3:24 | ...+... | BinaryExpression.ps1:3:11:3:24 | ...+... |
+| BinaryExpression.ps1:4:1:4:8 | result | BinaryExpression.ps1:4:1:4:8 | result |
+| ExpandableString.ps1:1:1:1:40 | ExpandableStringExpression at: ExpandableString.ps1:1:1:1:40 | ExpandableString.ps1:1:1:1:40 | ExpandableStringExpression at: ExpandableString.ps1:1:1:1:40 |
+| ExpandableString.ps1:1:23:1:38 | (no string representation) | file://:0:0:0:0 | (no string representation) |
+| SubExpression.ps1:1:1:1:24 | ArrayExpression at: SubExpression.ps1:1:1:1:24 | SubExpression.ps1:1:1:1:24 | ArrayExpression at: SubExpression.ps1:1:1:1:24 |
+| SubExpression.ps1:2:1:2:22 | ArrayExpression at: SubExpression.ps1:2:1:2:22 | SubExpression.ps1:2:1:2:22 | ArrayExpression at: SubExpression.ps1:2:1:2:22 |
+| TernaryExpression.ps1:1:8:1:23 | ...?...:... | TernaryExpression.ps1:1:8:1:23 | ...?...:... |
+| TernaryExpression.ps1:1:9:1:16 | ...+... | TernaryExpression.ps1:1:9:1:16 | ...+... |
 invokeMemoryExpression
-| SubExpression.ps1:1:1:1:24 | ArrayExpression at: SubExpression.ps1:1:1:1:24 | file://:0:0:0:0 | (no string representation) | 0 | SubExpression.ps1:1:21:1:23 | ConstantExpression at: SubExpression.ps1:1:21:1:23 |
+| SubExpression.ps1:1:1:1:24 | ArrayExpression at: SubExpression.ps1:1:1:1:24 | file://:0:0:0:0 | (no string representation) | 0 | SubExpression.ps1:1:21:1:23 | 10 |
 expandableString
 | ExpandableString.ps1:1:1:1:40 | ExpandableStringExpression at: ExpandableString.ps1:1:1:1:40 | 0 | ExpandableString.ps1:1:8:1:13 | name |
 | ExpandableString.ps1:1:1:1:40 | ExpandableStringExpression at: ExpandableString.ps1:1:1:1:40 | 1 | file://:0:0:0:0 | (no string representation) |

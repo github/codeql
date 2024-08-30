@@ -6,7 +6,7 @@ query predicate binaryExpr(BinaryExpr e, Expr e1, Expr e2) {
 }
 
 query predicate cmdExpr(CmdExpr cmd, Expr e) {
-    e = cmd.getExpression()
+    e = cmd.getExpr()
 }
 
 query predicate invokeMemoryExpression(InvokeMemberExpression invoke, Expr e, int i, Expr arg) {

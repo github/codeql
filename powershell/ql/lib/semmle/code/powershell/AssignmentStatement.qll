@@ -9,5 +9,5 @@ class AssignStmt extends @assignment_statement, Stmt {
 
   Stmt getRightHandSide() { assignment_statement(this, _, _, result) }
 
-  override string toString() { result = "AssignmentStatement at: " + this.getLocation().toString() }
+  override string toString() { result = "...=..." }
 }
