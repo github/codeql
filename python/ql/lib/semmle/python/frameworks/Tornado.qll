@@ -605,4 +605,25 @@ module Tornado {
 
     override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
   }
+
+    /**
+   * A call to the `tornado.web.RequestHandler.set_header` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_header
+   */
+  class TornadoRequestHandlerSetHeaderCall extends Http::Server::ResponseHeaderWrite::Range,
+    DataFlow::MethodCallNode
+  {
+    TornadoRequestHandlerSetHeaderCall() {
+      this.calls(TornadoModule::Web::RequestHandler::instance(), "set_header")
+    }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
+
+    override predicate nameAllowsNewline() { none() }
+
+    override predicate valueAllowsNewline() { none() }
+  }
 }

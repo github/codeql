@@ -15,6 +15,7 @@ private import semmle.python.frameworks.Anyio
 private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.Baize
 private import semmle.python.frameworks.BSon
+private import semmle.python.frameworks.Bottle
 private import semmle.python.frameworks.CassandraDriver
 private import semmle.python.frameworks.Cherrypy
 private import semmle.python.frameworks.ClickhouseDriver
