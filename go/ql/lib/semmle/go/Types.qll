@@ -1225,29 +1225,71 @@ class ComparableType extends NamedType {
   ComparableType() { this.getName() = "comparable" }
 }
 
+pragma[nomagic]
+private predicate unpackTupleType(TupleType tt, TOptType c0, TOptType c1, TOptType c2, int nComponents) {
+  nComponents = count(int i | component_types(tt, i, _, _)) and
+  (
+    if nComponents >= 1
+    then c0 = MkSomeType(tt.getComponentType(0))
+    else c0 = MkNoType()
+  ) and
+  (
+    if nComponents >= 2
+    then c1 = MkSomeType(tt.getComponentType(1))
+    else c1 = MkNoType()
+  ) and
+  (
+    if nComponents >= 3
+    then c2 = MkSomeType(tt.getComponentType(2))
+    else c2 = MkNoType()
+  )
+}
+
+pragma[nomagic]
+private predicate unpackAndUnaliasTupleType(TupleType tt, TOptType c0, TOptType c1, TOptType c2, int nComponents) {
+  exists(
+    OptType c0a, OptType c1a, OptType c2a
+  |
+    unpackTupleType(tt, c0a, c1a, c2a, nComponents) and
+    c0 = c0a.getDeepUnaliasedType() and
+    c1 = c1a.getDeepUnaliasedType() and
+    c2 = c2a.getDeepUnaliasedType()
+  )
+}
+
 /** A tuple type. */
 class TupleType extends @tupletype, CompositeType {
   /** Gets the `i`th component type of this tuple type. */
   Type getComponentType(int i) { component_types(this, i, _, result) }
 
+  private TupleType getCandidateDeepUnaliasedType() {
+    exists(
+      OptType c0, OptType c1, OptType c2, int nComponents
+    |
+      unpackAndUnaliasTupleType(this, c0, c1, c2, nComponents) and
+      unpackTupleType(result, c0, c1, c2, nComponents)
+    )
+  }
+
   private predicate isDeepUnaliasedTypeUpTo(TupleType tt, int i) {
-    tt.getComponentType(i) = this.getDeepUnaliasedType() and
+    tt = this.getCandidateDeepUnaliasedType() and
+    i >= 3 and
     (
-      i = 0
+      i = 3
       or
       this.isDeepUnaliasedTypeUpTo(tt, i - 1)
+    ) and
+    exists(Type tp | component_types(this, i, _, tp) |
+      component_types(tt, i, _, tp.getDeepUnaliasedType())
     )
   }
 
   override TupleType getDeepUnaliasedType() {
-    exists(int nComponents |
-      nComponents = count(int i | exists(this.getComponentType(i))) and
-      nComponents = count(int i | exists(result.getComponentType(i)))
-    |
+    result = this.getCandidateDeepUnaliasedType() and
+    exists(int nComponents | nComponents = count(int i | component_types(this, i, _, _)) |
       this.isDeepUnaliasedTypeUpTo(result, nComponents - 1)
       or
-      // I don't think Go allows empty tuples in any context, but this is at least harmless.
-      nComponents = 0
+      nComponents <= 3
     )
   }
 
