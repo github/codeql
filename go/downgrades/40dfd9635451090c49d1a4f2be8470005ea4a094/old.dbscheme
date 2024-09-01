@@ -209,6 +209,9 @@ alias_rhs(unique int alias: @typealias ref, int tp: @type ref);
 #keyset[parent, index]
 component_types(int parent: @compositetype ref, int index: int ref, string name: string ref, int tp: @type ref);
 
+#keyset[parent, index]
+component_tags(int parent: @compositetype ref, int index: int ref, string tag: string ref);
+
 array_length(unique int tp: @arraytype ref, string len: string ref);
 
 type_objects(unique int tp: @type ref, int object: @object ref);
