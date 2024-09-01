@@ -1665,6 +1665,13 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 				}
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type(), transparentAliases)
+
+				// meth.Id() will be equal to meth.Name() for an exported method, or
+				// packge-qualified otherwise.
+				privateMethodId := meth.Id()
+				if privateMethodId != meth.Name() {
+					dbscheme.InterfacePrivateMethodIdsTable.Emit(tw, lbl, i, privateMethodId)
+				}
 			}
 			for i := 0; i < tp.NumEmbeddeds(); i++ {
 				component := tp.EmbeddedType(i)

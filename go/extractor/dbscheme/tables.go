@@ -1166,6 +1166,13 @@ var ComponentTagsTable = NewTable("component_tags",
 	StringColumn("tag"),
 ).KeySet("parent", "index")
 
+// InterfacePrivateMethodIdsTable is the table associating interface types with their private method ids
+var InterfacePrivateMethodIdsTable = NewTable("interface_private_method_ids",
+	EntityColumn(InterfaceType, "interface"),
+	IntColumn("index"),
+	StringColumn("id"),
+).KeySet("interface", "index")
+
 // ArrayLengthTable is the table associating array types with their length (represented as a string
 // since Go array lengths are 64-bit and hence do not always fit into a QL integer)
 var ArrayLengthTable = NewTable("array_length",
