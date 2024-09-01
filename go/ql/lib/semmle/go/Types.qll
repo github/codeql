@@ -1229,7 +1229,9 @@ class SignatureType extends @signaturetype, CompositeType {
       (
         nParams <= 5
         or
-        this.hasDeepUnaliasedParameterTypesUpTo(result, nParams - 1) and
+        this.hasDeepUnaliasedParameterTypesUpTo(result, nParams - 1)
+      ) and
+      (
         nResults <= 3
         or
         this.hasDeepUnaliasedResultTypesUpTo(result, nResults - 1)
