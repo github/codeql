@@ -915,6 +915,101 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   override string toString() { result = "type set literal type" }
 }
 
+private newtype TOptInterfaceComponent =
+  MkNoIComponent() or
+  MkSomeIComponent(string name, Type tp) { component_types(any(InterfaceType i), _, name, tp) }
+
+private class OptInterfaceComponent extends TOptInterfaceComponent {
+  OptInterfaceComponent getWithDeepUnaliasedType() {
+    this = MkNoIComponent() and result = MkNoIComponent()
+    or
+    exists(string name, Type tp |
+      this = MkSomeIComponent(name, tp) and
+      result = MkSomeIComponent(name, tp.getDeepUnaliasedType())
+    )
+  }
+
+  string toString() { result = "interface component" }
+}
+
+private class InterfaceComponent extends MkSomeIComponent {
+  string toString() { result = "interface component" }
+
+  predicate isComponentOf(InterfaceType intf, int i) {
+    exists(string name, Type tp |
+      component_types(intf, i, name, tp) and
+      this = MkSomeIComponent(name, tp)
+    )
+  }
+}
+
+pragma[nomagic]
+predicate unpackInterfaceType(
+  InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
+  TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+) {
+  nComponents = count(int i | component_types(intf, i, _, _) and i >= 0) and
+  nEmbeds = count(int i | component_types(intf, i, _, _) and i < 0) and
+  (
+    if nComponents >= 1
+    then c0 = any(InterfaceComponent ic | ic.isComponentOf(intf, 0))
+    else c0 = MkNoIComponent()
+  ) and
+  (
+    if nComponents >= 2
+    then c1 = any(InterfaceComponent ic | ic.isComponentOf(intf, 1))
+    else c1 = MkNoIComponent()
+  ) and
+  (
+    if nComponents >= 3
+    then c2 = any(InterfaceComponent ic | ic.isComponentOf(intf, 2))
+    else c2 = MkNoIComponent()
+  ) and
+  (
+    if nComponents >= 4
+    then c3 = any(InterfaceComponent ic | ic.isComponentOf(intf, 3))
+    else c3 = MkNoIComponent()
+  ) and
+  (
+    if nComponents >= 5
+    then c4 = any(InterfaceComponent ic | ic.isComponentOf(intf, 4))
+    else c4 = MkNoIComponent()
+  ) and
+  (
+    if nEmbeds >= 1
+    then e1 = any(InterfaceComponent ic | ic.isComponentOf(intf, -1))
+    else e1 = MkNoIComponent()
+  ) and
+  (
+    if nEmbeds >= 2
+    then e2 = any(InterfaceComponent ic | ic.isComponentOf(intf, -2))
+    else e2 = MkNoIComponent()
+  )
+}
+
+pragma[nomagic]
+predicate unpackAndUnaliasInterfaceType(
+  InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
+  TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+) {
+  exists(
+    OptInterfaceComponent c0a, OptInterfaceComponent c1a, OptInterfaceComponent c2a,
+    OptInterfaceComponent c3a, OptInterfaceComponent c4a, OptInterfaceComponent e1a,
+    OptInterfaceComponent e2a
+  |
+    unpackInterfaceType(intf, c0a, c1a, c2a, c3a, c4a, e1a, e2a, nComponents, nEmbeds) and
+    c0 = c0a.getWithDeepUnaliasedType() and
+    c1 = c1a.getWithDeepUnaliasedType() and
+    c2 = c2a.getWithDeepUnaliasedType() and
+    c3 = c3a.getWithDeepUnaliasedType() and
+    c4 = c4a.getWithDeepUnaliasedType() and
+    e1 = e1a.getWithDeepUnaliasedType() and
+    e2 = e2a.getWithDeepUnaliasedType()
+  )
+}
+
 /** An interface type. */
 class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
@@ -1006,6 +1101,58 @@ class InterfaceType extends @interfacetype, CompositeType {
           .getUnderlyingType()
           .(InterfaceType)
           .getAnEmbeddedTypeSetLiteral()
+  }
+
+  private InterfaceType getDeepUnaliasedTypeCandidate() {
+    exists(
+      OptInterfaceComponent c0, OptInterfaceComponent c1, OptInterfaceComponent c2,
+      OptInterfaceComponent c3, OptInterfaceComponent c4, OptInterfaceComponent e1,
+      OptInterfaceComponent e2, int nComponents, int nEmbeds
+    |
+      unpackAndUnaliasInterfaceType(this, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds) and
+      unpackInterfaceType(result, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds)
+    )
+  }
+
+  private predicate hasDeepUnaliasedComponentTypesUpTo(InterfaceType unaliased, int i) {
+    unaliased = this.getDeepUnaliasedTypeCandidate() and
+    i >= 5 and
+    (
+      i = 5 or
+      this.hasDeepUnaliasedComponentTypesUpTo(unaliased, i - 1)
+    ) and
+    exists(string name, Type tp | component_types(this, i, name, tp) |
+      component_types(unaliased, i, name, tp.getDeepUnaliasedType())
+    )
+  }
+
+  private predicate hasDeepUnaliasedEmbeddedTypesUpTo(InterfaceType unaliased, int i) {
+    unaliased = this.getDeepUnaliasedTypeCandidate() and
+    i >= 3 and
+    (
+      i = 3 or
+      this.hasDeepUnaliasedEmbeddedTypesUpTo(unaliased, i - 1)
+    ) and
+    exists(string name, Type tp | component_types(this, -i, name, tp) |
+      component_types(unaliased, -i, name, tp.getDeepUnaliasedType())
+    )
+  }
+
+  override InterfaceType getDeepUnaliasedType() {
+    result = this.getDeepUnaliasedTypeCandidate() and
+    exists(int nComponents |
+      nComponents = count(int i | component_types(this, i, _, _) and i >= 0)
+    |
+      this.hasDeepUnaliasedComponentTypesUpTo(result, nComponents - 1)
+      or
+      nComponents <= 5
+    ) and
+    exists(int nEmbeds | nEmbeds = count(int i | component_types(this, i, _, _) and i < 0) |
+      // Note no -1 here, because the first embedded type is at -1
+      this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds)
+      or
+      nEmbeds <= 2
+    )
   }
 
   language[monotonicAggregates]
