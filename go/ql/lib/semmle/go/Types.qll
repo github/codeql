@@ -915,6 +915,16 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   override string toString() { result = "type set literal type" }
 }
 
+private predicate isInterfaceComponentWithQualifiedName(
+  InterfaceType intf, int idx, string qualifiedName, Type tp
+) {
+  exists(string name | component_types(intf, idx, name, tp) |
+    interface_private_method_ids(intf, idx, qualifiedName)
+    or
+    not interface_private_method_ids(intf, idx, _) and qualifiedName = name
+  )
+}
+
 private newtype TOptInterfaceComponent =
   MkNoIComponent() or
   MkSomeIComponent(string name, Type tp) { component_types(any(InterfaceType i), _, name, tp) }
@@ -947,10 +957,12 @@ pragma[nomagic]
 predicate unpackInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
-  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
+  boolean isComparable
 ) {
-  nComponents = count(int i | component_types(intf, i, _, _) and i >= 0) and
-  nEmbeds = count(int i | component_types(intf, i, _, _) and i < 0) and
+  nComponents = count(int i | isInterfaceComponentWithQualifiedName(intf, i, _, _) and i >= 0) and
+  nEmbeds = count(int i | isInterfaceComponentWithQualifiedName(intf, i, _, _) and i < 0) and
+  (if intf.isOrEmbedsComparable() then isComparable = true else isComparable = false) and
   (
     if nComponents >= 1
     then c0 = any(InterfaceComponent ic | ic.isComponentOf(intf, 0))
@@ -992,14 +1004,15 @@ pragma[nomagic]
 predicate unpackAndUnaliasInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
-  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
+  boolean isComparable
 ) {
   exists(
     OptInterfaceComponent c0a, OptInterfaceComponent c1a, OptInterfaceComponent c2a,
     OptInterfaceComponent c3a, OptInterfaceComponent c4a, OptInterfaceComponent e1a,
     OptInterfaceComponent e2a
   |
-    unpackInterfaceType(intf, c0a, c1a, c2a, c3a, c4a, e1a, e2a, nComponents, nEmbeds) and
+    unpackInterfaceType(intf, c0a, c1a, c2a, c3a, c4a, e1a, e2a, nComponents, nEmbeds, isComparable) and
     c0 = c0a.getWithDeepUnaliasedType() and
     c1 = c1a.getWithDeepUnaliasedType() and
     c2 = c2a.getWithDeepUnaliasedType() and
@@ -1107,10 +1120,11 @@ class InterfaceType extends @interfacetype, CompositeType {
     exists(
       OptInterfaceComponent c0, OptInterfaceComponent c1, OptInterfaceComponent c2,
       OptInterfaceComponent c3, OptInterfaceComponent c4, OptInterfaceComponent e1,
-      OptInterfaceComponent e2, int nComponents, int nEmbeds
+      OptInterfaceComponent e2, int nComponents, int nEmbeds, boolean isComparable
     |
-      unpackAndUnaliasInterfaceType(this, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds) and
-      unpackInterfaceType(result, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds)
+      unpackAndUnaliasInterfaceType(this, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds,
+        isComparable) and
+      unpackInterfaceType(result, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds, isComparable)
     )
   }
 
