@@ -545,6 +545,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage1 implements StageSig {
       class Ap = Unit;
 
+      class ApNil = Unit;
+
       private class Cc = boolean;
 
       /* Begin: Stage 1 logic. */
@@ -1297,6 +1299,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private signature module StageSig {
       class Ap;
 
+      class ApNil extends Ap;
+
       predicate revFlow(NodeEx node);
 
       predicate revFlowAp(NodeEx node, Ap ap);
@@ -1346,8 +1350,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         class ApNil extends Ap;
 
-        bindingset[result, ap]
-        ApApprox getApprox(Ap ap);
+        bindingset[ap, node]
+        ApApprox getApproxAtNode(Ap ap, NodeEx node);
+
+        bindingset[ap, approx]
+        predicate isValidApprox(Ap ap, ApApprox approx);
 
         Typ getTyp(DataFlowType t);
 
@@ -1446,6 +1453,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node) and result = getTyp(node.getDataFlowType())
         }
 
+        private ApApprox nilApprox() { result instanceof PrevStage::ApNil }
+
         pragma[nomagic]
         private predicate flowThroughOutOfCall(
           DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
@@ -1529,7 +1538,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           summaryCtx = TSummaryCtxNone() and
           t = getNodeTyp(node) and
           ap instanceof ApNil and
-          apa = getApprox(ap)
+          apa = nilApprox()
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, t0, ap, apa) and
@@ -1550,14 +1559,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Content c, Typ t0, Ap ap0 |
             fwdFlowStore(_, t0, ap0, c, t, node, state, cc, summaryCtx) and
             ap = apCons(c, t0, ap0) and
-            apa = getApprox(ap)
+            apa = getApproxAtNode(ap, node)
           )
           or
           // read
           exists(Typ t0, Ap ap0, Content c |
             fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx) and
             fwdFlowConsCand(t0, ap0, c, t, ap) and
-            apa = getApprox(ap)
+            apa = getApproxAtNode(ap, node)
           )
           or
           // flow into a callable
@@ -2045,7 +2054,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             exists(NodeEx node, FlowState state |
               sourceNode(node, state) and
               (if hasSourceCallCtx() then cc = true else cc = false) and
-              PrevStage::revFlow(node, state, getApprox(any(ApNil nil))) and
+              PrevStage::revFlow(node, state, nilApprox()) and
               c = node.getEnclosingCallable()
             )
             or
@@ -2081,8 +2090,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             not outBarrier(ret, state) and
             kind = ret.getKind() and
             parameterFlowThroughAllowed(p, kind) and
-            argApa = getApprox(argAp) and
-            PrevStage::returnMayFlowThrough(ret, pragma[only_bind_into](argApa), apa, kind)
+            PrevStage::returnMayFlowThrough(ret, pragma[only_bind_into](argApa), apa, kind) and
+            isValidApprox(argAp, argApa)
           )
         }
 
@@ -2423,7 +2432,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           revFlow(pragma[only_bind_into](p), state, TReturnCtxMaybeFlowThrough(pos),
             apSome(returnAp), pragma[only_bind_into](ap)) and
           parameterFlowThroughAllowed(p, pos.getKind()) and
-          PrevStage::parameterMayFlowThrough(p, getApprox(ap))
+          PrevStage::parameterMayFlowThrough(p, getApproxAtNode(ap, p))
         }
 
         pragma[nomagic]
@@ -2698,20 +2707,22 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate localFlowExit(NodeEx node, FlowState state, Ap ap) {
             revFlow(node, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             (
-              exists(NodeEx next, Ap apNext | revFlow(next, pragma[only_bind_into](state), apNext) |
-                jumpStepEx(node, next) and
-                apNext = ap
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), ap)
+              |
+                jumpStepEx(node, next)
                 or
                 additionalJumpStep(node, next, _) and
-                apNext = ap and
                 ap instanceof ApNil
                 or
-                callEdgeArgParam(_, _, node, next, _, ap) and
-                apNext = ap
+                callEdgeArgParam(_, _, node, next, _, ap)
                 or
-                callEdgeReturn(_, _, node, _, next, _, ap) and
-                apNext = ap
-                or
+                callEdgeReturn(_, _, node, _, next, _, ap)
+              )
+              or
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), _)
+              |
                 storeStepCand(node, _, _, next, _, _)
                 or
                 readStepCand(node, _, next)
@@ -3626,37 +3637,51 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class Typ = Unit;
 
-      class Ap = Boolean;
+      class Ap instanceof int {
+        Ap() { this = [0 .. Config::accessPathLimit()] }
 
-      class ApNil extends Ap {
-        ApNil() { this = false }
+        string toString() { result = "depth=" + this }
       }
 
-      bindingset[result, ap]
-      PrevStage::Ap getApprox(Ap ap) { any() }
+      class ApNil extends Ap {
+        ApNil() { this = 0 }
+      }
+
+      bindingset[ap, node]
+      PrevStage::Ap getApproxAtNode(Ap ap, NodeEx node) { any() }
+
+      bindingset[ap, approx]
+      predicate isValidApprox(Ap ap, PrevStage::Ap approx) { any() }
 
       Typ getTyp(DataFlowType t) { any() }
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) {
-        result = true and
+        result = tail + 1 and
         exists(c) and
-        exists(t) and
-        if tail = true then Config::accessPathLimit() > 1 else any()
+        exists(t)
       }
 
       class ApHeadContent = Unit;
 
       pragma[inline]
-      ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+      ApHeadContent getHeadContent(Ap ap) { exists(result) and ap > 0 }
 
       ApHeadContent projectToHeadContent(Content c) { any() }
 
-      class ApOption = BooleanOption;
+      class ApOption instanceof int {
+        ApOption() { this instanceof Ap or this = -1 }
 
-      ApOption apNone() { result = TBooleanNone() }
+        string toString() {
+          this = -1 and result = "<none>"
+          or
+          result = this.(Ap).toString()
+        }
+      }
 
-      ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+      ApOption apNone() { result = -1 }
+
+      ApOption apSome(Ap ap) { result = ap }
 
       import CachedCallContextSensitivity
       import NoLocalCallContext
@@ -3696,7 +3721,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         (
           notExpectsContent(node)
           or
-          ap = true and
+          ap > 0 and
           expectsContentCand(node)
         )
       }
@@ -3726,7 +3751,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = ApproxAccessPathFrontNil;
 
-      PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+      bindingset[ap, approx]
+      predicate isValidApprox(Ap ap, PrevStage::Ap approx) {
+        if ap instanceof ApNil then approx = 0 else approx > 0
+      }
+
+      bindingset[ap, node]
+      PrevStage::Ap getApproxAtNode(Ap ap, NodeEx node) {
+        if ap = TApproxFrontNil()
+        then result = 0
+        else (
+          PrevStage::revFlow(node, _, _, _, result) and result >= 1
+        )
+      }
 
       Typ getTyp(DataFlowType t) { any() }
 
@@ -3853,7 +3890,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = AccessPathFrontNil;
 
-      PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
+      bindingset[ap, node]
+      PrevStage::Ap getApproxAtNode(Ap ap, NodeEx node) { result = ap.toApprox() and exists(node) }
+
+      bindingset[ap, approx]
+      predicate isValidApprox(Ap ap, PrevStage::Ap approx) { approx = ap.toApprox() }
 
       Typ getTyp(DataFlowType t) { result = t }
 
@@ -4142,7 +4183,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class ApNil = AccessPathApproxNil;
 
       pragma[nomagic]
-      PrevStage::Ap getApprox(Ap ap) { result = ap.getFront() }
+      private PrevStage::Ap getApprox(Ap ap) { result = ap.getFront() }
+
+      bindingset[ap, node]
+      PrevStage::Ap getApproxAtNode(Ap ap, NodeEx node) { result = getApprox(ap) and exists(node) }
+
+      bindingset[ap, approx]
+      predicate isValidApprox(Ap ap, PrevStage::Ap approx) { approx = getApprox(ap) }
 
       Typ getTyp(DataFlowType t) { result = t }
 
@@ -4345,7 +4392,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class ApNil = AccessPathNil;
 
       pragma[nomagic]
-      PrevStage::Ap getApprox(Ap ap) { result = ap.getApprox() }
+      private PrevStage::Ap getApprox(Ap ap) { result = ap.getApprox() }
+
+      bindingset[ap, node]
+      PrevStage::Ap getApproxAtNode(Ap ap, NodeEx node) { result = getApprox(ap) and exists(node) }
+
+      bindingset[ap, approx]
+      predicate isValidApprox(Ap ap, PrevStage::Ap approx) { approx = getApprox(ap) }
 
       Typ getTyp(DataFlowType t) { result = t }
 
