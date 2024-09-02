@@ -610,6 +610,7 @@ Type unalias(Type t) {
 }
 
 predicate containsAliases(Type t) { t != t.getDeepUnaliasedType() }
+
 // END ALIASES.QLL
 from CompositeType ct, int i, string name, Type tp
 where

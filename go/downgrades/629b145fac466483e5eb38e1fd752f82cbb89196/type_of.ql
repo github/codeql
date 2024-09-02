@@ -610,6 +610,7 @@ Type unalias(Type t) {
 }
 
 predicate containsAliases(Type t) { t != t.getDeepUnaliasedType() }
+
 // END ALIASES.QLL
 class Expr extends @expr {
   string toString() { result = "expr" }
