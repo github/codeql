@@ -616,9 +616,8 @@ class Object extends @object {
   string toString() { result = "object" }
 }
 
-from Object o, Type t
-where objecttypes(o, t)
-and not exists(StructType st | fieldstructs(o, st) and containsAliases(st))
-// Note this means that type alises really do have an object in the new database;
-// they just have types that resolve to the target of the alias, not the alias itself.
-select o, t.getDeepUnaliasedType()
+from Object o, int kind, string name
+where
+  objects(o, kind, name) and
+  not exists(StructType st | fieldstructs(o, st) and containsAliases(st))
+select o, kind, name

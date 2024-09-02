@@ -612,13 +612,14 @@ Type unalias(Type t) {
 predicate containsAliases(Type t) { t != t.getDeepUnaliasedType() }
 
 // END ALIASES.QLL
-class Object extends @object {
-  string toString() { result = "object" }
+class TypeParamType extends @typeparamtype {
+  string toString() { result = "type parameter" }
 }
 
-from Object o, Type t
-where objecttypes(o, t)
-and not exists(StructType st | fieldstructs(o, st) and containsAliases(st))
-// Note this means that type alises really do have an object in the new database;
-// they just have types that resolve to the target of the alias, not the alias itself.
-select o, t.getDeepUnaliasedType()
+class TypeParamParentObject extends @typeparamparentobject {
+  string toString() { result = "type parameter parent object" }
+}
+
+from TypeParamType tp, string name, CompositeType bound, TypeParamParentObject parent, int idx
+where typeparam(tp, name, bound, parent, idx)
+select tp, name, bound.getDeepUnaliasedType(), parent, idx
