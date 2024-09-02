@@ -210,6 +210,16 @@ func (l *Labeler) ReceiverObjectID(object types.Object, methlbl Label) (Label, b
 	return label, exists
 }
 
+func (l *Labeler) FieldIDNoCache(field *types.Var, idx int, structlbl Label) Label {
+	name := field.Name()
+	// there can be multiple fields with the blank identifier, so use index to
+	// distinguish them
+	if field.Name() == "_" {
+		name = fmt.Sprintf("_%d", idx)
+	}
+	return l.GlobalID(fmt.Sprintf("{%v},%s;field", structlbl, name))
+}
+
 // FieldID associates a label with the given field and returns it, together with
 // a flag indicating whether the field already had a label associated with it;
 // the field must belong to `structlbl`, since that label is used to construct
@@ -218,13 +228,7 @@ func (l *Labeler) ReceiverObjectID(object types.Object, methlbl Label) (Label, b
 func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bool) {
 	label, exists := l.objectLabels[field]
 	if !exists {
-		name := field.Name()
-		// there can be multiple fields with the blank identifier, so use index to
-		// distinguish them
-		if field.Name() == "_" {
-			name = fmt.Sprintf("_%d", idx)
-		}
-		label = l.GlobalID(fmt.Sprintf("{%v},%s;field", structlbl, name))
+		label = l.FieldIDNoCache(field, idx, structlbl)
 		l.objectLabels[field] = label
 	}
 	return label, exists

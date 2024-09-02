@@ -1702,20 +1702,28 @@ func extractTypeWithFlags(tw *trap.Writer, tp types.Type, transparentAliases boo
 			for i := 0; i < tp.NumFields(); i++ {
 				field := tp.Field(i).Origin()
 
-				if !transparentAliases {
-					// ensure the field is associated with a label - note that
-					// struct fields do not have a parent scope, so they are not
-					// dealt with by `extractScopes`.
+				// ensure the field is associated with a label - note that
+				// struct fields do not have a parent scope, so they are not
+				// dealt with by `extractScopes`.
 
-					// Skip this when extracting a type with transparent aliases;
-					// this is not the definitive version of the type.
-					fieldlbl, exists := tw.Labeler.FieldID(field, i, lbl)
-					if !exists {
-						extractObject(tw, field, fieldlbl)
-					}
-
-					dbscheme.FieldStructsTable.Emit(tw, fieldlbl, lbl)
+				// For the transparentAliases case we bypass the object-label cache
+				// because we're extracting a field relative to a synthetic field
+				// that has a different type and therefore label, whereas the label
+				// cache is indexed by object, not type-label.
+				var fieldlbl trap.Label
+				var exists bool
+				if transparentAliases {
+					fieldlbl = tw.Labeler.FieldIDNoCache(field, i, lbl)
+					exists = false
+				} else {
+					fieldlbl, exists = tw.Labeler.FieldID(field, i, lbl)
 				}
+
+				if !exists {
+					extractObject(tw, field, fieldlbl)
+				}
+
+				dbscheme.FieldStructsTable.Emit(tw, fieldlbl, lbl)
 
 				name := field.Name()
 				if field.Embedded() {
