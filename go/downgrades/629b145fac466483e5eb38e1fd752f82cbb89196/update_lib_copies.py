@@ -26,7 +26,7 @@ for f in glob.glob(os.path.join(thisdir, "*.ql")):
     somelibcontentf = f
     somelibcontent = libcontent
 
-for (f, (content, libcontent)) in toupdate.items();
+for (f, (content, libcontent)) in toupdate.items():
   if libcontent != somelibcontent:
     raise Exception("Files that include aliases.qll disagree about its content (e.g., files %s and %s)" % (somelibcontentf, f))
 
