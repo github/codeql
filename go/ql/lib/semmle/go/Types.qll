@@ -894,7 +894,7 @@ private predicate isInterfaceComponentWithQualifiedName(
   exists(string name | component_types(intf, idx, name, tp) |
     interface_private_method_ids(intf, idx, qualifiedName)
     or
-    not exists(interface_private_method_ids(intf, idx, _)) and qualifiedName = name
+    not interface_private_method_ids(intf, idx, _) and qualifiedName = name
   )
 }
 
