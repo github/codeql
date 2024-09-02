@@ -1507,9 +1507,18 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 	extractNodeLocation(tw, spec, lbl)
 }
 
+// If the given type is a type alias, this function resolves it to its underlying type.
+func resolveTypeAlias(tp types.Type) types.Type {
+	if _, ok := tp.(*types.Alias); ok {
+		return tp.Underlying()
+	}
+	return tp
+}
+
 // extractType extracts type information for `tp` and returns its associated label;
 // types are only extracted once, so the second time `extractType` is invoked it simply returns the label
 func extractType(tw *trap.Writer, tp types.Type) trap.Label {
+	tp = resolveTypeAlias(tp)
 	lbl, exists := getTypeLabel(tw, tp)
 	if !exists {
 		var kind int
@@ -1666,6 +1675,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 // is constructed from their globally unique ID. This prevents cyclic type keys
 // since type recursion in Go always goes through named types.
 func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
+	tp = resolveTypeAlias(tp)
 	lbl, exists := tw.Labeler.TypeLabels[tp]
 	if !exists {
 		switch tp := tp.(type) {
