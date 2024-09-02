@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.psi.*
 
@@ -136,7 +137,10 @@ OLD: KE1
 */
 
     fun useType(t: KaType, context: TypeContext = TypeContext.OTHER): TypeResults {
-        TODO()
+        when (t) {
+            is KaClassType -> return useClassType(t)
+            else -> TODO()
+        }
 /*
 OLD: KE1
         when (t) {
@@ -555,18 +559,28 @@ OLD: KE1
 
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
+*/
     private fun addClassLabel(
-        cBeforeReplacement: IrClass,
+        c: KaClassType, // TODO cBeforeReplacement: IrClass,
+/*
+OLD: KE1
         argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?,
         inReceiverContext: Boolean = false
+*/
     ): TypeResult<DbClassorinterface> {
+/*
+OLD: KE1
         val replaced =
             tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
         val replacedClass = replaced.first
         val replacedArgsIncludingOuterClasses = replaced.second
 
-        val classLabelResult = getClassLabel(replacedClass, replacedArgsIncludingOuterClasses)
+*/
+        val classLabelResult = getClassLabel(c /* TODO replacedClass, replacedArgsIncludingOuterClasses */)
+        TODO()
 
+/*
+OLD: KE1
         var instanceSeenBefore = true
 
         val classLabel: Label<out DbClassorinterface> =
@@ -608,8 +622,11 @@ OLD: KE1
                 fqName.asString()
             }
         return TypeResult(classLabel, signature, classLabelResult.shortName)
+*/
     }
 
+/*
+OLD: KE1
     private fun tryReplaceParcelizeRawType(c: IrClass): Pair<IrClass, List<IrTypeArgument>?>? {
         if (
             c.superTypes.isNotEmpty() ||
@@ -703,7 +720,17 @@ OLD: KE1
             }
         return TypeResults(javaResult, kotlinResult)
     }
+*/
+    fun useClassType(
+        c: KaClassType
+    ): TypeResults {
+        val javaResult = addClassLabel(c)
+        val kotlinResult = TODO()
+        return TypeResults(javaResult, kotlinResult)
+    }
 
+/*
+OLD: KE1
     // Given either a primitive array or a boxed array, returns primitive arrays unchanged,
     // but returns boxed arrays with a nullable, invariant component type, with any nested arrays
     // similarly transformed. For example, Array<out Array<in E>> would become Array<Array<E?>?>
@@ -1946,19 +1973,29 @@ OLD: KE1
             }
         }
     }
+*/
 
-    data class ClassLabelResults(val classLabel: String, val shortName: String)
+    data class ClassLabelResults(val classLabel: String /* TODO , val shortName: String */)
 
+/*
+OLD: KE1
     /**
      * This returns the `X` in c's label `@"class;X"`.
      *
      * `argsIncludingOuterClasses` can be null to describe a raw generic type. For non-generic types
      * it will be zero-length list.
      */
+*/
     private fun getUnquotedClassLabel(
-        c: IrClass,
+        c: KaClassType,
+/*
+OLD: KE1
         argsIncludingOuterClasses: List<IrTypeArgument>?
+*/
     ): ClassLabelResults {
+        TODO()
+/*
+OLD: KE1
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
         val label =
@@ -1998,18 +2035,27 @@ OLD: KE1
             label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
             shortNamePrefix + typeArgsShortName
         )
+*/
     }
 
+/*
+OLD: KE1
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
+*/
     fun getClassLabel(
-        c: IrClass,
+        c: KaClassType,
+/*
+OLD: KE1
         argsIncludingOuterClasses: List<IrTypeArgument>?
+*/
     ): ClassLabelResults {
-        val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
-        return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"", unquotedLabel.shortName)
+        val unquotedLabel = getUnquotedClassLabel(c /* TODO , argsIncludingOuterClasses */)
+        return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"" /* TODO , unquotedLabel.shortName */)
     }
 
+/*
+OLD: KE1
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         // For source classes, the label doesn't include any type arguments
         val classTypeResult = addClassLabel(c, listOf())
