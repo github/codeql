@@ -271,6 +271,20 @@ predicate unpackAndUnaliasInterfaceType(
 
 /** An interface type. */
 class InterfaceType extends @interfacetype, CompositeType {
+  private Type getMethodType(int i, string name) {
+    i >= 0 and component_types(this, i, name, result)
+  }
+
+  /**
+   * Holds if `tp` is a directly embedded type with index `index`.
+   *
+   * `tp` (or its underlying type) is either a type set literal type or an
+   * interface type.
+   */
+  private predicate hasDirectlyEmbeddedType(int index, Type tp) {
+    index >= 0 and component_types(this, -(index + 1), _, tp)
+  }
+
   private InterfaceType getDeepUnaliasedTypeCandidate() {
     exists(
       OptInterfaceComponent c0, OptInterfaceComponent c1, OptInterfaceComponent c2,
@@ -289,35 +303,32 @@ class InterfaceType extends @interfacetype, CompositeType {
       i = 5 or
       this.hasDeepUnaliasedComponentTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, i, name, tp) |
-      component_types(unaliased, i, name, tp.getDeepUnaliasedType())
+    exists(string name |
+      unaliased.getMethodType(i, name) = this.getMethodType(i, name).getDeepUnaliasedType()
     )
   }
 
   private predicate hasDeepUnaliasedEmbeddedTypesUpTo(InterfaceType unaliased, int i) {
     unaliased = this.getDeepUnaliasedTypeCandidate() and
-    i >= 3 and
+    i >= 2 and
     (
-      i = 3 or
+      i = 2 or
       this.hasDeepUnaliasedEmbeddedTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, -i, name, tp) |
-      component_types(unaliased, -i, name, tp.getDeepUnaliasedType())
+    exists(Type tp | this.hasDirectlyEmbeddedType(i, tp) |
+      unaliased.hasDirectlyEmbeddedType(i, tp.getDeepUnaliasedType())
     )
   }
 
   override InterfaceType getDeepUnaliasedType() {
     result = this.getDeepUnaliasedTypeCandidate() and
-    exists(int nComponents |
-      nComponents = count(int i | component_types(this, i, _, _) and i >= 0)
-    |
+    exists(int nComponents | nComponents = count(int i | exists(this.getMethodType(i, _))) |
       this.hasDeepUnaliasedComponentTypesUpTo(result, nComponents - 1)
       or
       nComponents <= 5
     ) and
-    exists(int nEmbeds | nEmbeds = count(int i | component_types(this, i, _, _) and i < 0) |
-      // Note no -1 here, because the first embedded type is at -1
-      this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds)
+    exists(int nEmbeds | nEmbeds = count(int i | this.hasDirectlyEmbeddedType(i, _)) |
+      this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds - 1)
       or
       nEmbeds <= 2
     )
@@ -366,9 +377,7 @@ class TupleType extends @tupletype, CompositeType {
       or
       this.isDeepUnaliasedTypeUpTo(tt, i - 1)
     ) and
-    exists(Type tp | component_types(this, i, _, tp) |
-      component_types(tt, i, _, tp.getDeepUnaliasedType())
-    )
+    tt.getComponentType(i).getDeepUnaliasedType() = this.getComponentType(i)
   }
 
   override TupleType getDeepUnaliasedType() {
