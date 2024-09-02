@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.psi.*
 
 /*
@@ -132,8 +133,12 @@ OLD: KE1
         val typeResult: TypeResult<DbClassorinterface>,
         val javaClass: IrClass
     )
+*/
 
-    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
+    fun useType(t: KaType, context: TypeContext = TypeContext.OTHER): TypeResults {
+        TODO()
+/*
+OLD: KE1
         when (t) {
             is IrSimpleType -> return useSimpleType(t, context)
             else -> {
@@ -141,8 +146,11 @@ OLD: KE1
                 return extractErrorType()
             }
         }
+*/
     }
 
+/*
+OLD: KE1
     private fun extractJavaErrorType(): TypeResult<DbErrortype> {
         val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") { tw.writeError_type(it) }
         return TypeResult(typeId, "<CodeQL error type>", "<CodeQL error type>")
@@ -833,6 +841,7 @@ OLD: KE1
 
         return ArrayInfo(recInfo.elementTypeResults, typeResults, dimensions)
     }
+*/
 
     enum class TypeContext {
         RETURN,
@@ -840,6 +849,8 @@ OLD: KE1
         OTHER
     }
 
+/*
+OLD: KE1
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information

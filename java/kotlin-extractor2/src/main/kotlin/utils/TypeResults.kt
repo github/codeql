@@ -14,14 +14,21 @@ OLD: KE1
  * arguments ("InnerClass<E>" or "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or
  * an array ("componentShortName[]").
  */
+*/
 data class TypeResultGeneric<SignatureType, out LabelType : AnyDbType>(
     val id: Label<out LabelType>,
+/*
+OLD: KE1
     val signature: SignatureType?,
     val shortName: String
+*/
 ) {
+/*
+OLD: KE1
     fun <U : AnyDbType> cast(): TypeResultGeneric<SignatureType, U> {
         @Suppress("UNCHECKED_CAST") return this as TypeResultGeneric<SignatureType, U>
     }
+*/
 }
 
 data class TypeResultsGeneric<SignatureType>(
@@ -29,12 +36,17 @@ data class TypeResultsGeneric<SignatureType>(
     val kotlinResult: TypeResultGeneric<SignatureType, DbKt_type>
 )
 
+/*
+OLD: KE1
 typealias TypeResult<T> = TypeResultGeneric<String, T>
 
 typealias TypeResultWithoutSignature<T> = TypeResultGeneric<Unit, T>
+*/
 
 typealias TypeResults = TypeResultsGeneric<String>
 
+/*
+OLD: KE1
 typealias TypeResultsWithoutSignatures = TypeResultsGeneric<Unit>
 
 fun <T : AnyDbType> TypeResult<T>.forgetSignature(): TypeResultWithoutSignature<T> {
