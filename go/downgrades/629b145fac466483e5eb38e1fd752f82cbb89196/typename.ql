@@ -174,9 +174,21 @@ class PointerType extends @pointertype, CompositeType {
   }
 }
 
+private predicate isInterfaceComponentWithQualifiedName(
+  InterfaceType intf, int idx, string qualifiedName, Type tp
+) {
+  exists(string name | component_types(intf, idx, name, tp) |
+    interface_private_method_ids(intf, idx, qualifiedName)
+    or
+    not interface_private_method_ids(intf, idx, _) and qualifiedName = name
+  )
+}
+
 private newtype TOptInterfaceComponent =
   MkNoIComponent() or
-  MkSomeIComponent(string name, Type tp) { component_types(any(InterfaceType i), _, name, tp) }
+  MkSomeIComponent(string name, Type tp) {
+    isInterfaceComponentWithQualifiedName(any(InterfaceType i), _, name, tp)
+  }
 
 private class OptInterfaceComponent extends TOptInterfaceComponent {
   OptInterfaceComponent getWithDeepUnaliasedType() {
@@ -196,7 +208,7 @@ private class InterfaceComponent extends MkSomeIComponent {
 
   predicate isComponentOf(InterfaceType intf, int i) {
     exists(string name, Type tp |
-      component_types(intf, i, name, tp) and
+      isInterfaceComponentWithQualifiedName(intf, i, name, tp) and
       this = MkSomeIComponent(name, tp)
     )
   }
@@ -206,10 +218,16 @@ pragma[nomagic]
 predicate unpackInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
-  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
+  boolean isComparable
 ) {
-  nComponents = count(int i | component_types(intf, i, _, _) and i >= 0) and
-  nEmbeds = count(int i | component_types(intf, i, _, _) and i < 0) and
+  nComponents = count(int i | isInterfaceComponentWithQualifiedName(intf, i, _, _) and i >= 0) and
+  nEmbeds = count(int i | isInterfaceComponentWithQualifiedName(intf, i, _, _) and i < 0) and
+  (
+    if intf = any(ComparableType comparable).getBaseType()
+    then isComparable = true
+    else isComparable = false
+  ) and
   (
     if nComponents >= 1
     then c0 = any(InterfaceComponent ic | ic.isComponentOf(intf, 0))
@@ -251,14 +269,15 @@ pragma[nomagic]
 predicate unpackAndUnaliasInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
-  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds
+  TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
+  boolean isComparable
 ) {
   exists(
     OptInterfaceComponent c0a, OptInterfaceComponent c1a, OptInterfaceComponent c2a,
     OptInterfaceComponent c3a, OptInterfaceComponent c4a, OptInterfaceComponent e1a,
     OptInterfaceComponent e2a
   |
-    unpackInterfaceType(intf, c0a, c1a, c2a, c3a, c4a, e1a, e2a, nComponents, nEmbeds) and
+    unpackInterfaceType(intf, c0a, c1a, c2a, c3a, c4a, e1a, e2a, nComponents, nEmbeds, isComparable) and
     c0 = c0a.getWithDeepUnaliasedType() and
     c1 = c1a.getWithDeepUnaliasedType() and
     c2 = c2a.getWithDeepUnaliasedType() and
@@ -271,14 +290,29 @@ predicate unpackAndUnaliasInterfaceType(
 
 /** An interface type. */
 class InterfaceType extends @interfacetype, CompositeType {
+  private Type getMethodType(int i, string name) {
+    i >= 0 and isInterfaceComponentWithQualifiedName(this, i, name, result)
+  }
+
+  /**
+   * Holds if `tp` is a directly embedded type with index `index`.
+   *
+   * `tp` (or its underlying type) is either a type set literal type or an
+   * interface type.
+   */
+  private predicate hasDirectlyEmbeddedType(int index, Type tp) {
+    index >= 0 and isInterfaceComponentWithQualifiedName(this, -(index + 1), _, tp)
+  }
+
   private InterfaceType getDeepUnaliasedTypeCandidate() {
     exists(
       OptInterfaceComponent c0, OptInterfaceComponent c1, OptInterfaceComponent c2,
       OptInterfaceComponent c3, OptInterfaceComponent c4, OptInterfaceComponent e1,
-      OptInterfaceComponent e2, int nComponents, int nEmbeds
+      OptInterfaceComponent e2, int nComponents, int nEmbeds, boolean isComparable
     |
-      unpackAndUnaliasInterfaceType(this, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds) and
-      unpackInterfaceType(result, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds)
+      unpackAndUnaliasInterfaceType(this, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds,
+        isComparable) and
+      unpackInterfaceType(result, c0, c1, c2, c3, c4, e1, e2, nComponents, nEmbeds, isComparable)
     )
   }
 
@@ -289,35 +323,32 @@ class InterfaceType extends @interfacetype, CompositeType {
       i = 5 or
       this.hasDeepUnaliasedComponentTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, i, name, tp) |
-      component_types(unaliased, i, name, tp.getDeepUnaliasedType())
+    exists(string name |
+      unaliased.getMethodType(i, name) = this.getMethodType(i, name).getDeepUnaliasedType()
     )
   }
 
   private predicate hasDeepUnaliasedEmbeddedTypesUpTo(InterfaceType unaliased, int i) {
     unaliased = this.getDeepUnaliasedTypeCandidate() and
-    i >= 3 and
+    i >= 2 and
     (
-      i = 3 or
+      i = 2 or
       this.hasDeepUnaliasedEmbeddedTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, -i, name, tp) |
-      component_types(unaliased, -i, name, tp.getDeepUnaliasedType())
+    exists(Type tp | this.hasDirectlyEmbeddedType(i, tp) |
+      unaliased.hasDirectlyEmbeddedType(i, tp.getDeepUnaliasedType())
     )
   }
 
   override InterfaceType getDeepUnaliasedType() {
     result = this.getDeepUnaliasedTypeCandidate() and
-    exists(int nComponents |
-      nComponents = count(int i | component_types(this, i, _, _) and i >= 0)
-    |
+    exists(int nComponents | nComponents = count(int i | exists(this.getMethodType(i, _))) |
       this.hasDeepUnaliasedComponentTypesUpTo(result, nComponents - 1)
       or
       nComponents <= 5
     ) and
-    exists(int nEmbeds | nEmbeds = count(int i | component_types(this, i, _, _) and i < 0) |
-      // Note no -1 here, because the first embedded type is at -1
-      this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds)
+    exists(int nEmbeds | nEmbeds = count(int i | this.hasDirectlyEmbeddedType(i, _)) |
+      this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds - 1)
       or
       nEmbeds <= 2
     )
@@ -366,9 +397,7 @@ class TupleType extends @tupletype, CompositeType {
       or
       this.isDeepUnaliasedTypeUpTo(tt, i - 1)
     ) and
-    exists(Type tp | component_types(this, i, _, tp) |
-      component_types(tt, i, _, tp.getDeepUnaliasedType())
-    )
+    tt.getComponentType(i) = this.getComponentType(i).getDeepUnaliasedType()
   }
 
   override TupleType getDeepUnaliasedType() {
@@ -549,6 +578,18 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
   }
 }
 
+/** A named type. */
+class NamedType extends @namedtype, CompositeType {
+  Type getBaseType() { underlying_type(this, result) }
+}
+
+/**
+ * The predeclared `comparable` type.
+ */
+class ComparableType extends NamedType {
+  ComparableType() { typename(this, "comparable") }
+}
+
 /** An alias type. */
 class AliasType extends @typealias, CompositeType {
   /** Gets the aliased type (i.e. that appears on the RHS of the alias definition). */
@@ -570,8 +611,6 @@ Type unalias(Type t) {
 
 predicate containsAliases(Type t) { t != t.getDeepUnaliasedType() }
 // END ALIASES.QLL
-
-
 // The schema for types and typename are:
 //
 // types(unique int id: @type, int kind: int ref);

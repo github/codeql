@@ -212,6 +212,9 @@ component_types(int parent: @compositetype ref, int index: int ref, string name:
 #keyset[parent, index]
 component_tags(int parent: @compositetype ref, int index: int ref, string tag: string ref);
 
+#keyset[interface, index]
+interface_private_method_ids(int interface: @interfacetype ref, int index: int ref, string id: string ref);
+
 array_length(unique int tp: @arraytype ref, string len: string ref);
 
 type_objects(unique int tp: @type ref, int object: @object ref);
