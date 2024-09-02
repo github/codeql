@@ -36,10 +36,10 @@ data class TypeResultsGeneric<SignatureType>(
     val kotlinResult: TypeResultGeneric<SignatureType, DbKt_type>
 )
 
-/*
-OLD: KE1
 typealias TypeResult<T> = TypeResultGeneric<String, T>
 
+/*
+OLD: KE1
 typealias TypeResultWithoutSignature<T> = TypeResultGeneric<Unit, T>
 */
 
