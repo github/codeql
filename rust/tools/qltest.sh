@@ -8,7 +8,7 @@ QLTEST_LOG="$CODEQL_EXTRACTOR_RUST_LOG_DIR"/qltest.log
 
 EXTRACTOR="$CODEQL_EXTRACTOR_RUST_ROOT/tools/$CODEQL_PLATFORM/extractor"
 for src in *.rs; do
-  echo -e "[package]\nname = \"test\"\n[lib]\npath=\"$src\"\n" > Cargo.toml
+  echo -e "[package]\nname = \"test\"\nversion=\"0.0.1\"\n[lib]\npath=\"$src\"\n" > Cargo.toml
   env=()
   opts=("$src")
   opts+=($(sed -n '1 s=//codeql-extractor-options:==p' $src))
