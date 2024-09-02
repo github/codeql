@@ -37,7 +37,7 @@ fn main() -> anyhow::Result<()> {
     for input in cfg.inputs {
         let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &no_progress).context("loading inputs")?;
         let crates =  <dyn DefDatabase>::crate_graph(&db);
-        for crate_id in crates.iter().take(1) {
+        for crate_id in crates.iter() {
             let krate = Crate::from(crate_id);
             let name = krate.display_name(&db);
             let crate_name = name.as_ref().map(|n| n.canonical_name().as_str()).unwrap_or("");
