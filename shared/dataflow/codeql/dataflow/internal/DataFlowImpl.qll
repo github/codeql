@@ -545,6 +545,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage1 implements StageSig {
       class Ap = Unit;
 
+      class ApNil = Ap;
+
       private class Cc = boolean;
 
       /* Begin: Stage 1 logic. */
@@ -1297,6 +1299,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private signature module StageSig {
       class Ap;
 
+      class ApNil extends Ap;
+
       predicate revFlow(NodeEx node);
 
       predicate revFlowAp(NodeEx node, Ap ap);
@@ -1723,6 +1727,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, DataFlowCallable c, ParamNodeEx p, ApApprox apa, boolean emptyAp
         );
 
+        private signature predicate flowThroughSig();
+
         /**
          * Exposes the inlined predicate `fwdFlowIn`, which is used to calculate both
          * flow in and flow through.
@@ -1731,10 +1737,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * need to record the argument that flows into the parameter.
          *
          * For flow through, we do need to record the argument, however, we can restrict
-         * this to arguments that may actually flow through, using `callRestrictionSig`,
+         * this to arguments that may actually flow through, using `flowThroughSig`,
          * which reduces the argument-to-parameter fan-in significantly.
          */
-        private module FwdFlowIn<callRestrictionSig/5 callRestriction> {
+        private module FwdFlowIn<flowThroughSig/0 flowThrough> {
           pragma[nomagic]
           private predicate callEdgeArgParamRestricted(
             DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp,
@@ -1742,11 +1748,27 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ) {
             exists(boolean allowsFieldFlow |
               PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa) and
-              callRestriction(call, c, p, apa, emptyAp)
+              if emptyAp = true then apa instanceof PrevStage::ApNil else any()
             |
-              allowsFieldFlow = true
-              or
-              emptyAp = true
+              if
+                PrevStage::callMayFlowThroughRev(call) and
+                PrevStage::parameterMayFlowThrough(p, apa)
+              then
+                emptyAp = true and
+                flowThrough()
+                or
+                emptyAp = false and
+                allowsFieldFlow = true and
+                if allowsFieldFlowThrough(call, c) then flowThrough() else not flowThrough()
+              else (
+                not flowThrough() and
+                (
+                  emptyAp = true
+                  or
+                  emptyAp = false and
+                  allowsFieldFlow = true
+                )
+              )
             )
           }
 
@@ -1876,21 +1898,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
         }
 
-        bindingset[call, c, p, apa]
-        private predicate callRestrictionNoFlowThrough(
-          DataFlowCall call, DataFlowCallable c, ParamNodeEx p, ApApprox apa, boolean emptyAp
-        ) {
-          (
-            if
-              PrevStage::callMayFlowThroughRev(call) and
-              PrevStage::parameterMayFlowThrough(p, apa)
-            then not allowsFieldFlowThrough(call, c) and emptyAp = false
-            else emptyAp = [false, true]
-          ) and
-          exists(c)
-        }
+        private predicate bottom() { none() }
 
-        private module FwdFlowInNoThrough = FwdFlowIn<callRestrictionNoFlowThrough/5>;
+        private module FwdFlowInNoThrough = FwdFlowIn<bottom/0>;
 
         pragma[nomagic]
         private predicate fwdFlowInNoFlowThrough(
@@ -1899,21 +1909,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           FwdFlowInNoThrough::fwdFlowIn(_, _, _, p, state, _, innercc, _, t, ap, apa, _)
         }
 
-        bindingset[call, c, p, apa]
-        private predicate callRestrictionFlowThrough(
-          DataFlowCall call, DataFlowCallable c, ParamNodeEx p, ApApprox apa, boolean emptyAp
-        ) {
-          PrevStage::callMayFlowThroughRev(call) and
-          PrevStage::parameterMayFlowThrough(p, apa) and
-          (
-            emptyAp = true
-            or
-            allowsFieldFlowThrough(call, c) and
-            emptyAp = false
-          )
-        }
+        private predicate top() { any() }
 
-        private module FwdFlowInThrough = FwdFlowIn<callRestrictionFlowThrough/5>;
+        private module FwdFlowInThrough = FwdFlowIn<top/0>;
 
         pragma[nomagic]
         private predicate fwdFlowInFlowThrough(
