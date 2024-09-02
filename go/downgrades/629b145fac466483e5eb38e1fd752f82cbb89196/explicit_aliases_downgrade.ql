@@ -611,17 +611,132 @@ Type unalias(Type t) {
 
 predicate containsAliases(Type t) { t != t.getDeepUnaliasedType() }
 
-// END ALIASES.QLL
 class Object extends @object {
   string toString() { result = "object" }
 }
 
-// The schema for types and typename are:
-//
-// types(unique int id: @type, int kind: int ref);
-// type_objects(unique int tp: @type ref, int object: @object ref);
-from Type type, Object object
-where
+class Ident extends @ident {
+  string toString() { result = "identifier" }
+}
+
+class Expr extends @expr {
+  string toString() { result = "expr" }
+}
+
+class TypeParamType extends @typeparamtype {
+  string toString() { result = "type parameter" }
+}
+
+class TypeParamParentObject extends @typeparamparentobject {
+  string toString() { result = "type parameter parent object" }
+}
+
+// Redirect references to e.g. a struct field `x MyInt`
+// onto the corresponding field `x int` of the unaliased type.
+Object getReplacementField(Object o) {
+  exists(StructType st, StructType unaliasedSt, string name |
+    fieldstructs(o, st) and
+    unaliasedSt = st.getDeepUnaliasedType() and
+    objects(o, _, name) and
+    fieldstructs(result, unaliasedSt) and
+    objects(result, _, name)
+  )
+}
+
+query predicate new_array_length(ArrayType at, string length) {
+  array_length(at, length) and
+  not containsAliases(at)
+}
+
+query predicate new_base_type(PointerType pt, Type base) {
+  base_type(pt, base) and
+  not containsAliases(pt)
+}
+
+query predicate new_component_types(CompositeType ct, int i, string name, Type tp) {
+  component_types(ct, i, name, tp) and
+  not containsAliases(ct)
+}
+
+query predicate new_defs(Ident i, Object replacementO) {
+  exists(Object o | defs(i, o) |
+    replacementO = getReplacementField(o)
+    or
+    not exists(getReplacementField(o)) and replacementO = o
+  )
+}
+
+query predicate new_element_type(CompositeType ct, Type et) {
+  element_type(ct, et) and
+  not containsAliases(ct)
+}
+
+query predicate new_fieldstructs(Object field, StructType st) {
+  fieldstructs(field, st) and
+  not containsAliases(st)
+}
+
+query predicate new_key_type(MapType mt, Type kt) {
+  key_type(mt, kt) and
+  not containsAliases(mt)
+}
+
+query predicate new_objects(Object o, int kind, string name) {
+  objects(o, kind, name) and
+  not exists(StructType st | fieldstructs(o, st) and containsAliases(st))
+}
+
+query predicate new_objecttypes(Object o, Type newT) {
+  exists(Type t |
+    objecttypes(o, t) and
+    not exists(StructType st | fieldstructs(o, st) and containsAliases(st))
+  |
+    // Note this means that type alises really do have an object in the new database;
+    // they just have types that resolve to the target of the alias, not the alias itself.
+    newT = t.getDeepUnaliasedType()
+  )
+}
+
+query predicate new_type_objects(Type type, Object object) {
   type_objects(type, object) and
   not containsAliases(type)
-select type, object
+}
+
+query predicate new_type_of(Expr e, Type newT) {
+  exists(Type t | type_of(e, t) | newT = t.getDeepUnaliasedType())
+}
+
+query predicate new_typename(Type type, string name) {
+  typename(type, name) and
+  not containsAliases(type)
+}
+
+query predicate new_typeparam(
+  TypeParamType tp, string name, CompositeType newBound, TypeParamParentObject parent, int idx
+) {
+  exists(Type bound | typeparam(tp, name, bound, parent, idx) |
+    newBound = bound.getDeepUnaliasedType()
+  )
+}
+
+query predicate new_types(Type t, int kind) {
+  types(t, kind) and
+  not containsAliases(t)
+}
+
+query predicate new_underlying_type(NamedType nt, Type newUnderlyingType) {
+  exists(Type ut | underlying_type(nt, ut) | newUnderlyingType = ut.getDeepUnaliasedType())
+}
+
+query predicate new_uses(Ident i, Object replacementO) {
+  exists(Object o | uses(i, o) |
+    replacementO = getReplacementField(o)
+    or
+    not exists(getReplacementField(o)) and replacementO = o
+  )
+}
+
+query predicate new_variadic(Type t) {
+  variadic(t) and
+  not containsAliases(t)
+}
