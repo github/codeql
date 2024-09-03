@@ -6,6 +6,9 @@ inputs:
     description: 'The CodeQL channel to use'
     required: false
     default: 'nightly'
+  tag_name:
+    description: 'The tag name of the CodeQL release to use. Leave blank to use the latest release.'
+    required: false
 
 runs:
   using: composite
@@ -15,9 +18,13 @@ runs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         CHANNEL: ${{ inputs.channel }}
+        VERSION: ${{ inputs.version }}
       run: |
         gh extension install github/gh-codeql
         gh codeql set-channel "$CHANNEL"
+        if [[ -n "$VERSION" ]]; then
+          gh codeql set-version "$VERSION"
+        fi
         gh codeql version
         printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
         gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
