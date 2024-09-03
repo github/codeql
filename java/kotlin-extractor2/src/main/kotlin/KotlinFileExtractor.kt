@@ -2317,29 +2317,29 @@ OLD: KE1
 /*
 OLD: KE1
         locId: Label<out DbLocation>,
-        shortName: String,
 */
+        shortName: String,
         returnType: KaType,
-/*
-OLD: KE1
         paramsSignature: String,
         parentId: Label<out DbReftype>,
+/*
+OLD: KE1
         sourceDeclaration: Label<out DbMethod>,
         origin: IrDeclarationOrigin?,
         extractTypeAccess: Boolean
 */
     ) {
         val returnTypeResults = useType(returnType, TypeContext.RETURN)
-/*
-OLD: KE1
         tw.writeMethods(
             id,
             shortName,
             "$shortName$paramsSignature",
             returnTypeResults.javaResult.id,
             parentId,
-            sourceDeclaration
+            id, // OLD: KE1: sourceDeclaration
         )
+/*
+OLD: KE1
         tw.writeMethodsKotlinType(id, returnTypeResults.kotlinResult.id)
         when (origin) {
             IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
@@ -2528,8 +2528,11 @@ OLD: KE1
                         extendedType.kotlinResult.id
                     )
                 }
+*/
 
-                val paramsSignature =
+                val paramsSignature = "()" // TODO:
+/*
+OLD: KE1
                     paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") {
                         signatureOrWarn(it.javaResult, f)
                     }
@@ -2575,13 +2578,13 @@ OLD: KE1
 /*
 OLD: KE1
                         locId,
-                        shortNames.nameInDB,
 */
+                        f.getNameAsName()!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
                         f.returnType, // OLD: KE1: substReturnType,
-/*
-OLD: KE1
                         paramsSignature,
                         parentId,
+/*
+OLD: KE1
                         sourceDeclaration.cast(),
                         if (extractOrigin) f.origin else null,
                         extractMethodAndParameterTypeAccesses
