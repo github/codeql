@@ -591,6 +591,9 @@ OLD: KE1
 
                 extractClassLaterIfExternal(replacedClass)
 */
+                // TODO: This shouldn't be done here, but keeping it simple for now
+                val pkgId = extractPackage(c.classId.packageFqName.asString())
+                tw.writeClasses_or_interfaces(it, c.classId.relativeClassName.asString(), pkgId, it)
             }
 
 /*
