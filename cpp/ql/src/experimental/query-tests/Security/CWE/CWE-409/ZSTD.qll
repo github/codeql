@@ -9,8 +9,8 @@ import DecompressionBomb
 /**
  * The `ZSTD_decompress`  function is used in flow sink.
  */
-class ZSTDDecompressFunction extends DecompressionFunction {
-  ZSTDDecompressFunction() { this.hasGlobalName(["ZSTD_decompress"]) }
+class ZstdDecompressFunction extends DecompressionFunction {
+  ZstdDecompressFunction() { this.hasGlobalName(["ZSTD_decompress"]) }
 
   override int getArchiveParameterIndex() { result = 2 }
 }
@@ -18,8 +18,8 @@ class ZSTDDecompressFunction extends DecompressionFunction {
 /**
  * The `ZSTD_decompressDCtx` function is used in flow sink.
  */
-class ZSTDDecompressDCtxFunction extends DecompressionFunction {
-  ZSTDDecompressDCtxFunction() { this.hasGlobalName(["ZSTD_decompressDCtx"]) }
+class ZstdDecompressDctxFunction extends DecompressionFunction {
+  ZstdDecompressDctxFunction() { this.hasGlobalName(["ZSTD_decompressDCtx"]) }
 
   override int getArchiveParameterIndex() { result = 3 }
 }
@@ -27,8 +27,8 @@ class ZSTDDecompressDCtxFunction extends DecompressionFunction {
 /**
  * The `ZSTD_decompressStream` function is used in flow sink.
  */
-class ZSTDDecompressStreamFunction extends DecompressionFunction {
-  ZSTDDecompressStreamFunction() { this.hasGlobalName(["ZSTD_decompressStream"]) }
+class ZstdDecompressStreamFunction extends DecompressionFunction {
+  ZstdDecompressStreamFunction() { this.hasGlobalName(["ZSTD_decompressStream"]) }
 
   override int getArchiveParameterIndex() { result = 2 }
 }
@@ -36,17 +36,36 @@ class ZSTDDecompressStreamFunction extends DecompressionFunction {
 /**
  * The `ZSTD_decompress_usingDDict` function is used in flow sink.
  */
-class ZSTDDecompressUsingDictFunction extends DecompressionFunction {
-  ZSTDDecompressUsingDictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
+class ZstdDecompressUsingDdictFunction extends DecompressionFunction {
+  ZstdDecompressUsingDdictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
 
   override int getArchiveParameterIndex() { result = 3 }
 }
 
 /**
- * The `ZSTD_decompress_usingDDict` function is used in flow sink.
+ * The `fopen_orDie` function as a flow step.
  */
-class ZSTDDecompressUsingDDictFunction extends DecompressionFunction {
-  ZSTDDecompressUsingDDictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
+class FopenOrDieFunction extends DecompressionFlowStep {
+  FopenOrDieFunction() { this.hasGlobalName("fopen_orDie") }
 
-  override int getArchiveParameterIndex() { result = 3 }
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(FunctionCall fc | fc.getTarget() = this |
+      node1.asIndirectExpr() = fc.getArgument(0) and
+      node2.asExpr() = fc
+    )
+  }
+}
+
+/**
+ * The `fread_orDie` function as a flow step.
+ */
+class FreadOrDieFunction extends DecompressionFlowStep {
+  FreadOrDieFunction() { this.hasGlobalName("fread_orDie") }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(FunctionCall fc | fc.getTarget() = this |
+      node1.asIndirectExpr() = fc.getArgument(2) and
+      node2.asIndirectExpr() = fc.getArgument(0)
+    )
+  }
 }
