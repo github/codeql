@@ -1516,7 +1516,7 @@ func isAlias(tp types.Type) bool {
 // If the given type is a type alias, this function resolves it to its underlying type.
 func resolveTypeAlias(tp types.Type) types.Type {
 	if isAlias(tp) {
-		return tp.Underlying()
+		return types.Unalias(tp) // tp.Underlying()
 	}
 	return tp
 }
