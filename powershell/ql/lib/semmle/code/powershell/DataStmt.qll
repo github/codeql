@@ -11,5 +11,5 @@ class DataStmt extends @data_statement, Stmt {
 
   Expr getACmdAllowed() { result = this.getCmdAllowed(_) }
 
-  StmtBlock getBody() { data_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
+  StmtBlock getBody() { data_statement(this, result) }
 }

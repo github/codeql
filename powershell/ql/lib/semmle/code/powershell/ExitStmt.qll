@@ -6,7 +6,7 @@ class ExitStmt extends @exit_statement, Stmt {
   override string toString() { if this.hasPipeline() then result = "exit ..." else result = "exit" }
 
   /** ..., if any. */
-  PipelineBase getPipeline() { exit_statement_pipeline(this, result) } // TODO: Change @ast to @pipeline_base in dbscheme
+  PipelineBase getPipeline() { exit_statement_pipeline(this, result) }
 
   predicate hasPipeline() { exists(this.getPipeline()) }
 }

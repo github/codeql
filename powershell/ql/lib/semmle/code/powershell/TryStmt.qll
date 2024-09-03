@@ -12,6 +12,6 @@ class TryStmt extends @try_statement, Stmt {
   /** ..., if any. */
   StmtBlock getFinally() { try_statement_finally(this, result) }
 
-  StmtBlock getBody() { try_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
+  StmtBlock getBody() { try_statement(this, result) }
 
 }
