@@ -119,9 +119,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateDecryptor", "()", "", "Argument[this]", "encryption-decryptor", "df-generated"]
-      - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateDecryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-decryptor", "df-generated"]
       - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateEncryptor", "()", "", "Argument[this]", "encryption-encryptor", "df-generated"]
-      - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateEncryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-encryptor", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

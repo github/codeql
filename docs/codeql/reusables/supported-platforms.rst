@@ -4,9 +4,7 @@
    :stub-columns: 1
 
    Operating system,Supported versions,Supported CPU architectures
-   Linux,"Ubuntu 18.04
-
-   Ubuntu 20.04
+   Linux,"Ubuntu 20.04
 
    Ubuntu 21.04
 

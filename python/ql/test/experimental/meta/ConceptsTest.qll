@@ -405,7 +405,10 @@ module HttpServerHttpRedirectResponseTest implements TestSig {
 
 module HttpServerCookieWriteTest implements TestSig {
   string getARelevantTag() {
-    result in ["CookieWrite", "CookieRawHeader", "CookieName", "CookieValue"]
+    result in [
+        "CookieWrite", "CookieRawHeader", "CookieName", "CookieValue", "CookieSecure",
+        "CookieHttpOnly", "CookieSameSite"
+      ]
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -428,6 +431,20 @@ module HttpServerCookieWriteTest implements TestSig {
         element = cookieWrite.toString() and
         value = prettyNodeForInlineTest(cookieWrite.getValueArg()) and
         tag = "CookieValue"
+        or
+        element = cookieWrite.toString() and
+        value = any(boolean b | cookieWrite.hasSecureFlag(b)).toString() and
+        tag = "CookieSecure"
+        or
+        element = cookieWrite.toString() and
+        value = any(boolean b | cookieWrite.hasHttpOnlyFlag(b)).toString() and
+        tag = "CookieHttpOnly"
+        or
+        element = cookieWrite.toString() and
+        value =
+          any(Http::Server::CookieWrite::SameSiteValue v | cookieWrite.hasSameSiteAttribute(v))
+              .toString() and
+        tag = "CookieSameSite"
       )
     )
   }

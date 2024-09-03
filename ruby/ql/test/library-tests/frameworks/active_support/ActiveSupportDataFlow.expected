@@ -1,5 +1,4 @@
-testFailures
-| hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
+models
 edges
 | active_support.rb:180:5:180:5 | x [element 0] | active_support.rb:181:9:181:9 | x [element 0] | provenance |  |
 | active_support.rb:180:9:180:18 | call to [] [element 0] | active_support.rb:180:5:180:5 | x [element 0] | provenance |  |
@@ -497,6 +496,8 @@ nodes
 | hash_extensions.rb:126:10:126:14 | multi [element 0] | semmle.label | multi [element 0] |
 | hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
 subpaths
+testFailures
+| hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source | call to source |
 | active_support.rb:188:10:188:13 | ...[...] | active_support.rb:186:10:186:18 | call to source | active_support.rb:188:10:188:13 | ...[...] | $@ | active_support.rb:186:10:186:18 | call to source | call to source |

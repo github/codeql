@@ -190,37 +190,29 @@ namespace Semmle.Extraction.CSharp
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var trapPath = transformedSourcePath.GetTrapPath(Logger, options.TrapCompression);
-                var upToDate = false;
-
-                // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
-
-                upToDate = FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
                 var currentTaskId = IncrementTaskCount();
                 ReportProgressTaskStarted(currentTaskId, sourcePath);
 
-                if (!upToDate)
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                // Ensure that the file itself is populated in case the source file is totally empty
+                var root = tree.GetRoot();
+                Entities.File.Create(cx, root.SyntaxTree.FilePath);
+
+                var csNode = (CSharpSyntaxNode)root;
+                var directiveVisitor = new DirectiveVisitor(cx);
+                csNode.Accept(directiveVisitor);
+                foreach (var branch in directiveVisitor.BranchesTaken)
                 {
-                    var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
-                    // Ensure that the file itself is populated in case the source file is totally empty
-                    var root = tree.GetRoot();
-                    Entities.File.Create(cx, root.SyntaxTree.FilePath);
-
-                    var csNode = (CSharpSyntaxNode)root;
-                    var directiveVisitor = new DirectiveVisitor(cx);
-                    csNode.Accept(directiveVisitor);
-                    foreach (var branch in directiveVisitor.BranchesTaken)
-                    {
-                        cx.TrapStackSuffix.Add(branch);
-                    }
-                    csNode.Accept(new CompilationUnitVisitor(cx));
-                    cx.PopulateAll();
-                    CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
-                    cx.PopulateAll();
+                    cx.TrapStackSuffix.Add(branch);
                 }
+                csNode.Accept(new CompilationUnitVisitor(cx));
+                cx.PopulateAll();
+                CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
+                cx.PopulateAll();
 
-                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -266,12 +258,6 @@ namespace Semmle.Extraction.CSharp
         public void AnalyseCompilation()
         {
             extractionTasks.Add(() => DoAnalyseCompilation());
-        }
-
-        private static bool FileIsUpToDate(string src, string dest)
-        {
-            return File.Exists(dest) &&
-                File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
         private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)

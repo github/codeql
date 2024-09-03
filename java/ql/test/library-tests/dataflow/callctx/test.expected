@@ -1,0 +1,114 @@
+models
+edges
+| A.java:9:8:9:15 | x : Object | A.java:10:11:10:11 | x : Object | provenance |  |
+| A.java:9:8:9:15 | x : Object | A.java:10:11:10:11 | x : Object | provenance |  |
+| A.java:10:11:10:11 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:10:11:10:11 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:13:19:13:26 | x : Object | A.java:14:11:14:11 | x : Object | provenance |  |
+| A.java:13:19:13:26 | x : Object | A.java:14:11:14:11 | x : Object | provenance |  |
+| A.java:13:19:13:26 | x : Object | A.java:14:11:14:11 | x : Object | provenance |  |
+| A.java:14:11:14:11 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:14:11:14:11 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:14:11:14:11 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:14:11:14:11 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:17:19:17:26 | x : Object | A.java:18:16:18:16 | x : Object | provenance |  |
+| A.java:17:19:17:26 | x : Object | A.java:18:16:18:16 | x : Object | provenance |  |
+| A.java:17:19:17:26 | x : Object | A.java:18:16:18:16 | x : Object | provenance |  |
+| A.java:18:16:18:16 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:18:16:18:16 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:18:16:18:16 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:18:16:18:16 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:21:14:21:21 | x : Object | A.java:23:12:23:13 | c1 | provenance |  |
+| A.java:30:8:30:15 | x : Object | A.java:31:13:31:13 | x : Object | provenance |  |
+| A.java:31:13:31:13 | x : Object | A.java:9:8:9:15 | x : Object | provenance |  |
+| A.java:34:14:34:21 | x : Object | A.java:36:12:36:13 | c2 | provenance |  |
+| A.java:40:16:40:26 | source(...) : Object | A.java:17:19:17:26 | x : Object | provenance |  |
+| A.java:44:31:44:38 | x : Object | A.java:45:12:45:12 | x : Object | provenance |  |
+| A.java:44:31:44:38 | x : Object | A.java:45:12:45:12 | x : Object | provenance |  |
+| A.java:44:31:44:38 | x : Object | A.java:45:12:45:12 | x : Object | provenance |  |
+| A.java:45:12:45:12 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:45:12:45:12 | x : Object | A.java:21:14:21:21 | x : Object | provenance |  |
+| A.java:45:12:45:12 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:45:12:45:12 | x : Object | A.java:34:14:34:21 | x : Object | provenance |  |
+| A.java:49:16:49:28 | source(...) : Object | A.java:13:19:13:26 | x : Object | provenance |  |
+| A.java:50:16:50:28 | source(...) : Object | A.java:17:19:17:26 | x : Object | provenance |  |
+| A.java:51:17:51:29 | source(...) : Object | A.java:44:31:44:38 | x : Object | provenance |  |
+| A.java:53:12:53:23 | source(...) : Object | A.java:9:8:9:15 | x : Object | provenance |  |
+| A.java:54:23:54:36 | source(...) : Object | A.java:13:19:13:26 | x : Object | provenance |  |
+| A.java:55:23:55:36 | source(...) : Object | A.java:17:19:17:26 | x : Object | provenance |  |
+| A.java:56:24:56:37 | source(...) : Object | A.java:44:31:44:38 | x : Object | provenance |  |
+| A.java:58:12:58:23 | source(...) : Object | A.java:30:8:30:15 | x : Object | provenance |  |
+| A.java:59:23:59:36 | source(...) : Object | A.java:13:19:13:26 | x : Object | provenance |  |
+| A.java:60:23:60:36 | source(...) : Object | A.java:17:19:17:26 | x : Object | provenance |  |
+| A.java:61:24:61:37 | source(...) : Object | A.java:44:31:44:38 | x : Object | provenance |  |
+| A.java:65:15:65:22 | x : Object | A.java:66:11:66:11 | x : Object | provenance |  |
+| A.java:65:15:65:22 | x : Object | A.java:66:11:66:11 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:69:14:69:21 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:75:14:75:21 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:75:14:75:21 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:81:14:81:21 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:81:14:81:21 | x : Object | provenance |  |
+| A.java:66:11:66:11 | x : Object | A.java:87:14:87:21 | x : Object | provenance |  |
+| A.java:69:14:69:21 | x : Object | A.java:70:12:70:12 | x | provenance |  |
+| A.java:75:14:75:21 | x : Object | A.java:76:12:76:12 | x | provenance |  |
+| A.java:81:14:81:21 | x : Object | A.java:82:12:82:12 | x | provenance |  |
+| A.java:87:14:87:21 | x : Object | A.java:88:12:88:12 | x | provenance |  |
+| A.java:93:12:93:22 | source(...) : Object | A.java:65:15:65:22 | x : Object | provenance |  |
+| A.java:96:14:96:26 | source(...) : Object | A.java:65:15:65:22 | x : Object | provenance |  |
+nodes
+| A.java:9:8:9:15 | x : Object | semmle.label | x : Object |
+| A.java:9:8:9:15 | x : Object | semmle.label | x : Object |
+| A.java:10:11:10:11 | x : Object | semmle.label | x : Object |
+| A.java:10:11:10:11 | x : Object | semmle.label | x : Object |
+| A.java:13:19:13:26 | x : Object | semmle.label | x : Object |
+| A.java:13:19:13:26 | x : Object | semmle.label | x : Object |
+| A.java:13:19:13:26 | x : Object | semmle.label | x : Object |
+| A.java:14:11:14:11 | x : Object | semmle.label | x : Object |
+| A.java:14:11:14:11 | x : Object | semmle.label | x : Object |
+| A.java:14:11:14:11 | x : Object | semmle.label | x : Object |
+| A.java:17:19:17:26 | x : Object | semmle.label | x : Object |
+| A.java:17:19:17:26 | x : Object | semmle.label | x : Object |
+| A.java:17:19:17:26 | x : Object | semmle.label | x : Object |
+| A.java:18:16:18:16 | x : Object | semmle.label | x : Object |
+| A.java:18:16:18:16 | x : Object | semmle.label | x : Object |
+| A.java:18:16:18:16 | x : Object | semmle.label | x : Object |
+| A.java:21:14:21:21 | x : Object | semmle.label | x : Object |
+| A.java:23:12:23:13 | c1 | semmle.label | c1 |
+| A.java:30:8:30:15 | x : Object | semmle.label | x : Object |
+| A.java:31:13:31:13 | x : Object | semmle.label | x : Object |
+| A.java:34:14:34:21 | x : Object | semmle.label | x : Object |
+| A.java:36:12:36:13 | c2 | semmle.label | c2 |
+| A.java:40:16:40:26 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:44:31:44:38 | x : Object | semmle.label | x : Object |
+| A.java:44:31:44:38 | x : Object | semmle.label | x : Object |
+| A.java:44:31:44:38 | x : Object | semmle.label | x : Object |
+| A.java:45:12:45:12 | x : Object | semmle.label | x : Object |
+| A.java:45:12:45:12 | x : Object | semmle.label | x : Object |
+| A.java:45:12:45:12 | x : Object | semmle.label | x : Object |
+| A.java:49:16:49:28 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:50:16:50:28 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:51:17:51:29 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:53:12:53:23 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:54:23:54:36 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:55:23:55:36 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:56:24:56:37 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:58:12:58:23 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:59:23:59:36 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:60:23:60:36 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:61:24:61:37 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:65:15:65:22 | x : Object | semmle.label | x : Object |
+| A.java:65:15:65:22 | x : Object | semmle.label | x : Object |
+| A.java:66:11:66:11 | x : Object | semmle.label | x : Object |
+| A.java:66:11:66:11 | x : Object | semmle.label | x : Object |
+| A.java:69:14:69:21 | x : Object | semmle.label | x : Object |
+| A.java:70:12:70:12 | x | semmle.label | x |
+| A.java:75:14:75:21 | x : Object | semmle.label | x : Object |
+| A.java:76:12:76:12 | x | semmle.label | x |
+| A.java:81:14:81:21 | x : Object | semmle.label | x : Object |
+| A.java:82:12:82:12 | x | semmle.label | x |
+| A.java:87:14:87:21 | x : Object | semmle.label | x : Object |
+| A.java:88:12:88:12 | x | semmle.label | x |
+| A.java:93:12:93:22 | source(...) : Object | semmle.label | source(...) : Object |
+| A.java:96:14:96:26 | source(...) : Object | semmle.label | source(...) : Object |
+subpaths
+testFailures

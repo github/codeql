@@ -1,9 +1,19 @@
-from create_database_utils import *
+import os
+import commands
+from build_fixture import build_fixture
 
-for var in ['CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN',
-            'CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN']:
-    if var in os.environ:
-        del(os.environ[var])
 
-run_codeql_database_create(['"%s" build.py' % sys.executable], lang="java")
+@build_fixture
+def build():
+    commands.run("kotlinc KotlinDefault.kt")
+    os.environ["CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN"] = "true"
+    commands.run("kotlinc KotlinDisabled.kt")
+    del os.environ["CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN"]
+    os.environ["CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN"] = "true"
+    commands.run("kotlinc KotlinEnabled.kt")
 
+
+def test(codeql, java_full, build):
+    os.environ.pop("CODEQL_EXTRACTOR_JAVA_AGENT_ENABLE_KOTLIN", None)
+    os.environ.pop("CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN", None)
+    codeql.database.create(command=build)

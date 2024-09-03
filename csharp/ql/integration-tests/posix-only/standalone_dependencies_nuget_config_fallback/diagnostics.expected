@@ -28,7 +28,7 @@
 }
 {
   "markdownMessage": "Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
-  "severity": "warning",
+  "severity": "note",
   "source": {
     "extractorName": "csharp",
     "id": "csharp/autobuilder/buildless/unreachable-feed",

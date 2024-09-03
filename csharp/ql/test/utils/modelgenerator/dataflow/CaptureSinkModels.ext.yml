@@ -6,6 +6,13 @@ extensions:
       - [ "Sinks", "NewSinks", False, "Sink", "(System.Object)", "", "Argument[0]", "test-sink", "manual"]
       - [ "Sinks", "NewSinks", False, "Sink2", "(System.Object)", "", "Argument[0]", "test-sink2", "manual"]
       - [ "Sinks", "NewSinks", False, "ManualSinkAlreadyDefined", "(System.Object)", "", "Argument[0]", "test-sink", "manual"]
+      - [ "Sinks", "NewSinks", False, "SaveAndGet", "(System.Object)", "", "Argument[0]", "test-sink", "df-generated"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - [ "Sinks", "NewSinks", False, "SaveAndGet", "(System.Object)", "", "ReturnValue", "test-source", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all

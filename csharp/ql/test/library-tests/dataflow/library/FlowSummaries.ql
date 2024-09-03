@@ -1,10 +1,10 @@
 import shared.FlowSummaries
 import semmle.code.csharp.dataflow.internal.ExternalFlow
 
-final private class NeutralCallableFinal = NeutralCallable;
-
-class RelevantNeutralCallable extends NeutralCallableFinal {
-  final string getCallableCsv() { result = getSignature(this) }
+module R implements RelevantNeutralCallableSig<NeutralSummaryCallable> {
+  class RelevantNeutralCallable extends NeutralSummaryCallable {
+    final string getCallableCsv() { result = getSignature(this) }
+  }
 }
 
 class RelevantSourceCallable extends SourceCallable {
@@ -16,5 +16,5 @@ class RelevantSinkCallable extends SinkCallable {
 }
 
 import TestSummaryOutput<IncludeSummarizedCallable>
-import TestNeutralOutput<RelevantNeutralCallable>
+import TestNeutralOutput<NeutralSummaryCallable, R>
 import External::TestSourceSinkOutput<RelevantSourceCallable, RelevantSinkCallable>

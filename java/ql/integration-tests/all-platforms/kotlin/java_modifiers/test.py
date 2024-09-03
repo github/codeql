@@ -1,10 +1,11 @@
-from create_database_utils import *
-import glob
+import commands
+import pathlib
 
-# Compile Java untraced. Note the Java source is hidden under `javasrc` so the Kotlin compiler 
-# will certainly reference the jar, not the source or class file for extlib.Lib
 
-os.mkdir('build')
-runSuccessfully(["javac"] + glob.glob("libsrc/extlib/*.java") + ["-d", "build"])
-runSuccessfully(["jar", "cf", "extlib.jar", "-C", "build", "extlib"])
-run_codeql_database_create(["kotlinc test.kt -cp extlib.jar"], lang="java")
+def test(codeql, java_full):
+    # Compile Java untraced. Note the Java source is hidden under `javasrc` so the Kotlin compiler
+    # will certainly reference the jar, not the source or class file for extlib.Lib
+    java_srcs = pathlib.Path("libsrc", "extlib").glob("*.java")
+    commands.run(["javac", *java_srcs, "-d", "build"])
+    commands.run("jar cf extlib.jar -C build extlib")
+    codeql.database.create(command="kotlinc test.kt -cp extlib.jar")

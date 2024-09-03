@@ -556,7 +556,7 @@ private predicate interpretSummary(
   )
 }
 
-private predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
     neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
@@ -613,44 +613,6 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() { interpretNeutral(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-}
-
-/**
- * A callable where there exists a MaD sink model that applies to it.
- */
-private class SinkModelCallableAdapter extends SinkModelCallable {
-  private Provenance provenance;
-
-  SinkModelCallableAdapter() {
-    SourceSinkInterpretationInput::sinkElement(this, _, _, provenance, _)
-  }
-
-  override predicate hasProvenance(Provenance p) { provenance = p }
-}
+final class SourceCallable = SourceModelCallable;
 
 final class SinkCallable = SinkModelCallable;
-
-/**
- * A callable where there exists a MaD source model that applies to it.
- */
-private class SourceModelCallableAdapter extends SourceModelCallable {
-  private Provenance provenance;
-
-  SourceModelCallableAdapter() {
-    SourceSinkInterpretationInput::sourceElement(this, _, _, provenance, _)
-  }
-
-  override predicate hasProvenance(Provenance p) { provenance = p }
-}
-
-final class SourceCallable = SourceModelCallable;
