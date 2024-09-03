@@ -26,7 +26,11 @@ on:
       tag:
         description: "Version tag to create"
         required: false
-
+      channel:
+        description: Channel from which to download the CodeQL CLI (defaults to 'nightly')
+        required: false
+        default: nightly
+        
 env:
   CARGO_TERM_COLOR: always
 
