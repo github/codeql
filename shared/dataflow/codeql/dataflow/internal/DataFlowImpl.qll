@@ -1722,11 +1722,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           if ap instanceof ApNil then emptyAp = true else emptyAp = false
         }
 
-        bindingset[call, c, p, apa]
-        private signature predicate callRestrictionSig(
-          DataFlowCall call, DataFlowCallable c, ParamNodeEx p, ApApprox apa, boolean emptyAp
-        );
-
         private signature predicate flowThroughSig();
 
         /**
@@ -1737,8 +1732,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * need to record the argument that flows into the parameter.
          *
          * For flow through, we do need to record the argument, however, we can restrict
-         * this to arguments that may actually flow through, using `flowThroughSig`,
-         * which reduces the argument-to-parameter fan-in significantly.
+         * this to arguments that may actually flow through, which reduces the
+         * argument-to-parameter fan-in significantly.
          */
         private module FwdFlowIn<flowThroughSig/0 flowThrough> {
           pragma[nomagic]
@@ -1747,14 +1742,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             ApApprox apa
           ) {
             exists(boolean allowsFieldFlow |
-              PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa) and
-              if emptyAp = true then apa instanceof PrevStage::ApNil else any()
+              PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa)
             |
               if
                 PrevStage::callMayFlowThroughRev(call) and
                 PrevStage::parameterMayFlowThrough(p, apa)
               then
                 emptyAp = true and
+                apa instanceof PrevStage::ApNil and
                 flowThrough()
                 or
                 emptyAp = false and
@@ -1763,7 +1758,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               else (
                 not flowThrough() and
                 (
-                  emptyAp = true
+                  emptyAp = true and
+                  apa instanceof PrevStage::ApNil
                   or
                   emptyAp = false and
                   allowsFieldFlow = true
