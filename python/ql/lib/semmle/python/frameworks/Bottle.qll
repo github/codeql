@@ -1,6 +1,6 @@
 /**
  * Provides classes modeling security-relevant aspects of the `bottle` PyPI package.
- * See https://www.tornadoweb.org/en/stable/.
+ * See https://bottlepy.org/docs/dev/.
  */
 
 private import python
@@ -14,28 +14,24 @@ private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
  * INTERNAL: Do not use.
  *
  * Provides models for the `bottle` PyPI package.
- * See https://www.tornadoweb.org/en/stable/.
+ * See https://bottlepy.org/docs/dev/.
  */
 module Bottle {
   module BottleModule {
     API::Node bottle() { result = API::moduleImport("bottle") }
 
     module Response {
-      API::Node response() {
-        result = bottle().getMember("response")
-        //or
-        //result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
-      }
+      API::Node response() { result = bottle().getMember("response") }
 
       /**
-       * A call to the `bottle.web.RequestHandler.set_header` method.
+       * A call to the `bottle.web.RequestHandler.set_header` or `bottle.web.RequestHandler.add_header` method.
        *
-       * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_header
+       * See https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_header
        */
-      class BottleRequestHandlerSetHeaderCall extends Http::Server::ResponseHeaderWrite::Range,
+      class BottleResponseHandlerSetHeaderCall extends Http::Server::ResponseHeaderWrite::Range,
         DataFlow::MethodCallNode
       {
-        BottleRequestHandlerSetHeaderCall() {
+        BottleResponseHandlerSetHeaderCall() {
           this = response().getMember(["set_header", "add_header"]).getACall()
         }
 
@@ -58,15 +54,13 @@ module Bottle {
         private class Request extends RemoteFlowSource::Range {
           Request() { this = request().asSource() }
 
-          //or
-          //result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
           override string getSourceType() { result = "bottle.request" }
         }
 
         /**
          * Taint propagation for `bottle.request`.
          *
-         * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
+         * See https://bottlepy.org/docs/dev/api.html#bottle.request
          */
         private class InstanceTaintSteps extends InstanceTaintStepsHelper {
           InstanceTaintSteps() { this = "bottle.request" }
@@ -86,11 +80,7 @@ module Bottle {
       }
 
       module Header {
-        API::Node instance() {
-          result = bottle().getMember("response").getMember("headers")
-          //or
-          //result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
-        }
+        API::Node instance() { result = bottle().getMember("response").getMember("headers") }
 
         /** A dict-like write to a response header. */
         class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range, DataFlow::Node {
@@ -105,12 +95,10 @@ module Bottle {
             )
           }
 
-          //name = instance().getASubscript().getIndex().asSink()
           override DataFlow::Node getNameArg() { result = name.asSink() }
 
           override DataFlow::Node getValueArg() { result = value.asSink() }
 
-          // TODO: These checks perhaps could be made more precise.
           override predicate nameAllowsNewline() { none() }
 
           override predicate valueAllowsNewline() { none() }
