@@ -389,9 +389,7 @@ class Field extends Variable {
   /**
    * Gets the tag associated with this field, or the empty string if this field has no tag.
    */
-  string getTag() {
-    declaringType.hasOwnFieldWithTag(_, this.getName(), this.getType(), _, result)
-  }
+  string getTag() { declaringType.hasOwnFieldWithTag(_, this.getName(), this.getType(), _, result) }
 }
 
 /**
