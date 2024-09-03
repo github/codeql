@@ -7,3 +7,8 @@ type T struct {
 type G struct {
 	g int
 }
+
+type MixedExportedAndNot {
+        Exported()
+        notExported()
+}

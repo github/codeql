@@ -458,6 +458,17 @@ class StructType extends @structtype, CompositeType {
   }
 
   /**
+   * Holds if this struct contains a field `name` with type `tp` and tag `tag`;
+   * `isEmbedded` is true if the field is embedded.
+   *
+   * Note that this predicate does not take promoted fields into account.
+   */
+  predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
+    this.hasOwnField(i, name, tp, isEmbedded) and
+    component_tags(this, i, tag)
+  }
+
+  /**
    * Get a field with the name `name`; `isEmbedded` is true if the field is embedded.
    *
    * Note that this does not take promoted fields into account.
@@ -575,10 +586,12 @@ class StructType extends @structtype, CompositeType {
   override string pp() {
     result =
       "struct { " +
-        concat(int i, string name, Type tp |
-          component_types(this, i, name, tp)
+        concat(int i, string name, Type tp, string tag, string tagToPrint |
+          component_types(this, i, name, tp) and
+          component_tags(this, i, tag) and
+          (if tag = "" then tagToPrint = "" else tagToPrint = " `" + tag + "`")
         |
-          name + " " + tp.pp(), "; " order by i
+          name + " " + tp.pp() + tagToPrint, "; " order by i
         ) + " }"
   }
 
@@ -745,6 +758,31 @@ class InterfaceType extends @interfacetype, CompositeType {
     // set literals. Note also that methods coming from embedded interfaces
     // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
+  }
+
+  /**
+   * Gets the type of method `id` of this interface type.
+   *
+   * This differs from `getMethodType` in that if the method is not exported, the `id`
+   * will be package-qualified. This means that the set of `id`s` together with any
+   * embedded types fully distinguishes the interface from any other, whereas the set
+   * of names matched by `getMethodName` may be ambiguous between interfaces with matching
+   * exported methods and unexported methods that have matching names but belong to
+   * different packages.
+   *
+   * For example, `interface { Exported() int; notExported() int }` declared in two
+   * different packages defines two distinct types, but they appear identical according to
+   * `getMethodType`.
+   */
+  Type getMethodTypeById(string id) {
+    exists(int i, string name | i >= 0 |
+      component_types(this, i, name, result) and
+      (
+        interface_private_method_ids(this, i, id)
+        or
+        name = id and not interface_private_method_ids(this, i, _)
+      )
+    )
   }
 
   override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
