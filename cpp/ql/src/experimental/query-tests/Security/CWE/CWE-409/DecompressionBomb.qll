@@ -5,7 +5,6 @@ import ZlibGzopen
 import ZlibInflator
 import ZlibUncompress
 import LibArchive
-import XZ
 import ZSTD
 import Bzip2
 import Brotli
