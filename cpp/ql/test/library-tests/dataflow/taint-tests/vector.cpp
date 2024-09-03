@@ -115,8 +115,8 @@ void test_vector_swap() {
 	v3.swap(v4);
 
 	sink(v1);
-	sink(v2); // $ MISSING:ir ast
-	sink(v3); // $ MISSING:ir ast
+	sink(v2); // $ ir MISSING: ast
+	sink(v3); // $ ir MISSING: ast
 	sink(v4);
 }
 
