@@ -1,0 +1,4 @@
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string | string |
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignatureAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature | func(T) T |
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.SecondAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.FirstAlias | string |
+| github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.TypeAlias | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericArray | [10]T |

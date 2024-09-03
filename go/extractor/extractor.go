@@ -1607,15 +1607,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			extractUnderlyingType(tw, lbl, underlying)
 			trackInstantiatedStructFields(tw, tp, origintp)
 
-			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
-			if entitylbl == trap.InvalidLabel {
-				log.Printf("Omitting type-object binding for unknown object %v.\n", origintp.Obj())
-			} else {
-				if !exists {
-					extractObject(tw, origintp.Obj(), entitylbl)
-				}
-				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
-			}
+			extractTypeObject(tw, lbl, origintp.Obj())
 
 			// ensure all methods have labels - note that methods do not have a
 			// parent scope, so they are not dealt with by `extractScopes`
@@ -1647,6 +1639,12 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				}
 				extractComponentType(tw, lbl, i, tildeStr, term.Type())
 			}
+		case *types.Alias:
+			kind = dbscheme.TypeAlias.Index()
+			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
+			dbscheme.AliasRhsTable.Emit(tw, lbl, extractType(tw, tp.Rhs()))
+
+			extractTypeObject(tw, lbl, tp.Obj())
 		default:
 			log.Fatalf("unexpected type %T", tp)
 		}
@@ -1790,12 +1788,38 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				fmt.Fprintf(&b, "{%s}", compLbl)
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
+		case *types.Alias:
+			// Ensure that the definition of the aliased type gets extracted
+			// (which may be an alias in itself).
+			extractType(tw, tp.Rhs())
+
+			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			if entitylbl == trap.InvalidLabel {
+				panic(fmt.Sprintf("Cannot construct label for alias type %v (underlying object is %v).\n", tp, tp.Obj()))
+			}
+			if !exists {
+				extractObject(tw, tp.Obj(), entitylbl)
+			}
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};aliastype", entitylbl))
 		default:
 			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
 		tw.Labeler.TypeLabels[tp] = lbl
 	}
 	return lbl, exists
+}
+
+// extractTypeObject extracts a single type object and emits it to the type object table.
+func extractTypeObject(tw *trap.Writer, lbl trap.Label, entity *types.TypeName) {
+	entitylbl, exists := tw.Labeler.LookupObjectID(entity, lbl)
+	if entitylbl == trap.InvalidLabel {
+		log.Printf("Omitting type-object binding for unknown object %v.\n", entity)
+	} else {
+		if !exists {
+			extractObject(tw, entity, entitylbl)
+		}
+		dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
+	}
 }
 
 // extractKeyType extracts `key` as the key type of the map type `mp`

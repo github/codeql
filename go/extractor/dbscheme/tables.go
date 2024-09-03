@@ -861,6 +861,9 @@ var NamedType = TypeKind.NewBranch("@namedtype", CompositeType)
 // TypeSetLiteral is the type of type set literals
 var TypeSetLiteral = TypeKind.NewBranch("@typesetliteraltype", CompositeType)
 
+// TypeAlias is the type of type aliases
+var TypeAlias = TypeKind.NewBranch("@typealias", CompositeType)
+
 // PackageType is the type of packages
 var PackageType = NewPrimaryKeyType("@package")
 
@@ -1139,6 +1142,12 @@ var BaseTypeTable = NewTable("base_type",
 // underlying type
 var UnderlyingTypeTable = NewTable("underlying_type",
 	EntityColumn(NamedType, "named").Unique(),
+	EntityColumn(TypeType, "tp"),
+)
+
+// AliasRhsTable is the table associating type aliases with their RHS.
+var AliasRhsTable = NewTable("alias_rhs",
+	EntityColumn(TypeAlias, "alias").Unique(),
 	EntityColumn(TypeType, "tp"),
 )
 
