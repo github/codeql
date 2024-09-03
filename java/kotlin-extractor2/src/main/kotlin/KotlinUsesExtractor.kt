@@ -577,19 +577,24 @@ OLD: KE1
 
 */
         val classLabelResult = getClassLabel(c /* TODO replacedClass, replacedArgsIncludingOuterClasses */)
-        TODO()
 
 /*
 OLD: KE1
         var instanceSeenBefore = true
+*/
 
         val classLabel: Label<out DbClassorinterface> =
             tw.getLabelFor(classLabelResult.classLabel) {
+/*
+OLD: KE1
                 instanceSeenBefore = false
 
                 extractClassLaterIfExternal(replacedClass)
+*/
             }
 
+/*
+OLD: KE1
         if (
             replacedArgsIncludingOuterClasses == null ||
                 replacedArgsIncludingOuterClasses.isNotEmpty()
@@ -621,8 +626,8 @@ OLD: KE1
             } else {
                 fqName.asString()
             }
-        return TypeResult(classLabel, signature, classLabelResult.shortName)
 */
+        return TypeResult(classLabel /* TODO , signature, classLabelResult.shortName */)
     }
 
 /*
@@ -675,7 +680,9 @@ OLD: KE1
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
+*/
 
+// TODO
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> =
             tw.getLabelFor("@\"FakeKotlinPackage\"", { tw.writePackages(it, "fake.kotlin") })
@@ -692,6 +699,7 @@ OLD: KE1
         return fakeKotlinTypeId
     }
 
+/*
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useSimpleTypeClass(
@@ -725,7 +733,7 @@ OLD: KE1
         c: KaClassType
     ): TypeResults {
         val javaResult = addClassLabel(c)
-        val kotlinResult = TODO()
+        val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
         return TypeResults(javaResult, kotlinResult)
     }
 
