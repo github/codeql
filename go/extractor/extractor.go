@@ -1507,9 +1507,15 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 	extractNodeLocation(tw, spec, lbl)
 }
 
+// Determines whether the given type is an alias.
+func isAlias(tp types.Type) bool {
+	_, ok := tp.(*types.Alias)
+	return ok
+}
+
 // If the given type is a type alias, this function resolves it to its underlying type.
 func resolveTypeAlias(tp types.Type) types.Type {
-	if _, ok := tp.(*types.Alias); ok {
+	if isAlias(tp) {
 		return tp.Underlying()
 	}
 	return tp
