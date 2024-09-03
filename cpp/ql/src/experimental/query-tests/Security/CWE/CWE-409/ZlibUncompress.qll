@@ -13,5 +13,5 @@ import DecompressionBomb
 class UncompressFunction extends DecompressionFunction {
   UncompressFunction() { this.hasGlobalName(["uncompress", "uncompress2"]) }
 
-  override int getArchiveParameterIndex() { result = 0 }
+  override int getArchiveParameterIndex() { result = 2 }
 }
