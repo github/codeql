@@ -5,7 +5,6 @@
 
 private import python
 private import semmle.python.Concepts
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
@@ -17,14 +16,18 @@ private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
  * See https://bottlepy.org/docs/dev/.
  */
 module Bottle {
-  module BottleModule {
-    API::Node bottle() { result = API::moduleImport("bottle") }
+  /** Gets a reference to the `bottle` module. */
+  API::Node bottle() { result = API::moduleImport("bottle") }
 
+  /** Provides models for the `bottle` module. */
+  module BottleModule {
+    /** Provides models for the `bottle.response` module */
     module Response {
+      /** Gets a reference to the `bottle.response` module. */
       API::Node response() { result = bottle().getMember("response") }
 
       /**
-       * A call to the `bottle.web.RequestHandler.set_header` or `bottle.web.RequestHandler.add_header` method.
+       * A call to the `bottle.BaseResponse.set_header` or `bottle.BaseResponse.add_header` method.
        *
        * See https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_header
        */
@@ -48,7 +51,9 @@ module Bottle {
         override predicate valueAllowsNewline() { none() }
       }
 
+      /** Provides models for the `bottle.request` module */
       module Request {
+        /** Gets a reference to the `bottle.request` module. */
         API::Node request() { result = bottle().getMember("request") }
 
         private class Request extends RemoteFlowSource::Range {
