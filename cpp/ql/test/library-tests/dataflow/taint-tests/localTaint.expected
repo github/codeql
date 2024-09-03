@@ -6597,38 +6597,45 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:729:27:729:32 | endptr | taint.cpp:729:26:729:32 | & ... |  |
 | taint.cpp:731:7:731:12 | ref arg endptr | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:732:8:732:13 | endptr | taint.cpp:732:7:732:13 | * ... | TAINT |
-| taint.cpp:738:17:738:31 | call to indirect_source | taint.cpp:739:30:739:35 | source |  |
-| taint.cpp:739:22:739:28 | call to realloc | taint.cpp:740:7:740:10 | dest |  |
-| taint.cpp:739:30:739:35 | source | taint.cpp:739:22:739:28 | call to realloc | TAINT |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:744:5:744:10 | buffer |  |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:745:27:745:32 | buffer |  |
-| taint.cpp:744:4:744:10 | * ... | taint.cpp:744:3:744:10 | * ... | TAINT |
-| taint.cpp:744:5:744:10 | buffer | taint.cpp:744:4:744:10 | * ... | TAINT |
-| taint.cpp:744:14:744:19 | call to source | taint.cpp:744:3:744:21 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:743:40:743:45 | buffer |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:745:3:745:37 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:746:10:746:15 | buffer |  |
-| taint.cpp:745:27:745:32 | buffer | taint.cpp:745:19:745:25 | call to realloc | TAINT |
-| taint.cpp:746:9:746:15 | * ... | taint.cpp:746:8:746:15 | * ... | TAINT |
-| taint.cpp:746:10:746:15 | buffer | taint.cpp:746:9:746:15 | * ... | TAINT |
-| taint.cpp:751:31:751:34 | path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:751:31:751:34 | path | taint.cpp:752:10:752:13 | path |  |
-| taint.cpp:751:31:751:34 | path | taint.cpp:753:10:753:13 | path |  |
-| taint.cpp:751:43:751:46 | data | taint.cpp:751:43:751:46 | data |  |
-| taint.cpp:751:43:751:46 | data | taint.cpp:753:22:753:25 | data |  |
-| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:753:10:753:13 | path |  |
-| taint.cpp:752:16:752:19 | %s | taint.cpp:752:10:752:13 | ref arg path | TAINT |
-| taint.cpp:752:22:752:26 | abc | taint.cpp:752:10:752:13 | ref arg path | TAINT |
-| taint.cpp:753:10:753:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:753:16:753:19 | %s | taint.cpp:753:10:753:13 | ref arg path | TAINT |
-| taint.cpp:753:22:753:25 | data | taint.cpp:753:10:753:13 | ref arg path | TAINT |
-| taint.cpp:753:22:753:25 | ref arg data | taint.cpp:751:43:751:46 | data |  |
-| taint.cpp:757:7:757:10 | path | taint.cpp:758:21:758:24 | path |  |
-| taint.cpp:757:7:757:10 | path | taint.cpp:759:8:759:11 | path |  |
-| taint.cpp:758:21:758:24 | ref arg path | taint.cpp:759:8:759:11 | path |  |
-| taint.cpp:759:8:759:11 | path | taint.cpp:759:7:759:11 | * ... |  |
-| taint.cpp:769:37:769:42 | call to source | taint.cpp:770:7:770:9 | obj |  |
+| taint.cpp:739:17:739:31 | call to indirect_source | taint.cpp:740:30:740:35 | source |  |
+| taint.cpp:740:22:740:28 | call to realloc | taint.cpp:741:7:741:10 | dest |  |
+| taint.cpp:740:30:740:35 | source | taint.cpp:740:22:740:28 | call to realloc | TAINT |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:745:5:745:10 | buffer |  |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:746:27:746:32 | buffer |  |
+| taint.cpp:745:4:745:10 | * ... | taint.cpp:745:3:745:10 | * ... | TAINT |
+| taint.cpp:745:5:745:10 | buffer | taint.cpp:745:4:745:10 | * ... | TAINT |
+| taint.cpp:745:14:745:19 | call to source | taint.cpp:745:3:745:21 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:744:40:744:45 | buffer |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:746:3:746:37 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:747:10:747:15 | buffer |  |
+| taint.cpp:746:27:746:32 | buffer | taint.cpp:746:19:746:25 | call to realloc | TAINT |
+| taint.cpp:747:9:747:15 | * ... | taint.cpp:747:8:747:15 | * ... | TAINT |
+| taint.cpp:747:10:747:15 | buffer | taint.cpp:747:9:747:15 | * ... | TAINT |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:753:2:753:2 | a |  |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:2 | a [post update] | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:16 | ... = ... | taint.cpp:753:5:753:5 | x [post update] |  |
+| taint.cpp:753:9:753:14 | call to source | taint.cpp:753:2:753:16 | ... = ... |  |
+| taint.cpp:754:14:754:20 | call to realloc | taint.cpp:755:7:755:8 | a2 |  |
+| taint.cpp:754:22:754:22 | a | taint.cpp:754:14:754:20 | call to realloc | TAINT |
+| taint.cpp:760:31:760:34 | path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:761:10:761:13 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:762:22:762:25 | data |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:761:16:761:19 | %s | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:761:22:761:26 | abc | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:762:10:762:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:762:16:762:19 | %s | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | data | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | ref arg data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:767:21:767:24 | path |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:767:21:767:24 | ref arg path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:768:8:768:11 | path | taint.cpp:768:7:768:11 | * ... |  |
+| taint.cpp:778:37:778:42 | call to source | taint.cpp:779:7:779:9 | obj |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
