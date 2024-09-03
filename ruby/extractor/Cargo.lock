@@ -105,9 +105,12 @@ checksum = "79296716171880943b8470b5f8d03aa55eb2e645a4874bdbb28adb49162e012c"
 
 [[package]]
 name = "cc"
-version = "1.0.98"
+version = "1.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41c270e7540d725e65ac7f1b212ac8ce349719624d7bcff99f8e2e488e8cf03f"
+checksum = "57b6a275aa2903740dc87da01c62040406b8812552e97129a63ea8850a17c6e6"
+dependencies = [
+ "shlex",
+]
 
 [[package]]
 name = "cfg-if"
@@ -356,7 +359,7 @@ dependencies = [
  "bstr",
  "log",
  "regex-automata 0.4.6",
- "regex-syntax 0.8.3",
+ "regex-syntax 0.8.4",
 ]
 
 [[package]]
@@ -580,14 +583,14 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.10.4"
+version = "1.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c117dbdfde9c8308975b6a18d71f3f385c89461f7b3fb054288ecf2a2058ba4c"
+checksum = "4219d74c6b67a3654a9fbebc4b419e22126d13d2f3c4a07ee0cb61ff79a79619"
 dependencies = [
  "aho-corasick",
  "memchr",
  "regex-automata 0.4.6",
- "regex-syntax 0.8.3",
+ "regex-syntax 0.8.4",
 ]
 
 [[package]]
@@ -607,7 +610,7 @@ checksum = "86b83b8b9847f9bf95ef68afb0b8e6cdb80f498442f5179a29fad448fcc1eaea"
 dependencies = [
  "aho-corasick",
  "memchr",
- "regex-syntax 0.8.3",
+ "regex-syntax 0.8.4",
 ]
 
 [[package]]
@@ -618,9 +621,9 @@ checksum = "f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1"
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
+checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
 
 [[package]]
 name = "ryu"
@@ -667,6 +670,12 @@ checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
 ]
+
+[[package]]
+name = "shlex"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
 name = "smallvec"
@@ -764,47 +773,56 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter"
-version = "0.22.6"
-source = "git+https://github.com/redsun82/tree-sitter.git?rev=1f5c1112ceaa8fc6aff61d1852690407670d2a96#1f5c1112ceaa8fc6aff61d1852690407670d2a96"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "20f4cd3642c47a85052a887d86704f4eac272969f61b686bdd3f772122aabaff"
 dependencies = [
  "cc",
  "regex",
+ "regex-syntax 0.8.4",
+ "tree-sitter-language",
 ]
 
 [[package]]
 name = "tree-sitter-embedded-template"
-version = "0.21.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=38d5004a797298dc42c85e7706c5ceac46a3f29f#38d5004a797298dc42c85e7706c5ceac46a3f29f"
+version = "0.23.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template.git?rev=62b0a6e45900a7dff7c37da95fec20a09968ba52#62b0a6e45900a7dff7c37da95fec20a09968ba52"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter-language",
 ]
 
 [[package]]
 name = "tree-sitter-json"
-version = "0.21.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-json#94f5c527b2965465956c2000ed6134dd24daf2a7"
+version = "0.23.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-json#8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter-language",
 ]
 
 [[package]]
+name = "tree-sitter-language"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2545046bd1473dac6c626659cc2567c6c0ff302fc8b84a56c4243378276f7f57"
+
+[[package]]
 name = "tree-sitter-ql"
-version = "0.22.5"
-source = "git+https://github.com/tree-sitter/tree-sitter-ql#42becd6f8f7bae82c818fa3abb1b6ff34b552310"
+version = "0.23.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-ql#c73c31c89cb0019ef56fe8bc1723e7c36e0be607"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter-language",
 ]
 
 [[package]]
 name = "tree-sitter-ruby"
-version = "0.21.0"
-source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=0ffe457fb6aabf064f173fd30ea356845cef2513#0ffe457fb6aabf064f173fd30ea356845cef2513"
+version = "0.23.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-ruby.git?rev=a66579f70d6f50ffd81a16fc3d3358e2ac173c88#a66579f70d6f50ffd81a16fc3d3358e2ac173c88"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter-language",
 ]
 
 [[package]]
