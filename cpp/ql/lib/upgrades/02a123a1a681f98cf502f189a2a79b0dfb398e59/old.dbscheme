@@ -1210,7 +1210,6 @@ conversionkinds(
             | @reference_to
             | @ref_indirect
             | @temp_init
-            | @c11_generic
             ;
 
 /*
@@ -1793,7 +1792,6 @@ case @expr.kind of
 | 386 = @isscopedenum
 | 387 = @istriviallyrelocatable
 | 388 = @datasizeof
-| 389 = @c11_generic
 ;
 
 @var_args_expr = @vastartexpr
