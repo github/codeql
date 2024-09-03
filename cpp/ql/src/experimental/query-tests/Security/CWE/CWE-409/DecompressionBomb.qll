@@ -6,7 +6,6 @@ import ZlibInflator
 import ZlibUncompress
 import LibArchive
 import ZSTD
-import Bzip2
 import Brotli
 
 /**
