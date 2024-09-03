@@ -127,7 +127,7 @@ string captureQualifierFlow(DataFlowSummaryTargetApi api) {
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
   ) and
-  result = Printing::asValueModel(api, qualifierString(), "ReturnValue")
+  result = Printing::asLiftedValueModel(api, qualifierString(), "ReturnValue")
 }
 
 private int accessPathLimit0() { result = 2 }
@@ -237,7 +237,7 @@ string captureThroughFlow0(
     input = parameterNodeAsInput(p) and
     output = getOutput(returnNodeExt) and
     input != output and
-    result = Printing::asTaintModel(api, input, output)
+    result = Printing::asLiftedTaintModel(api, input, output)
   )
 }
 
@@ -291,26 +291,269 @@ private string getContent(PropagateContentFlow::AccessPath ap, int i) {
   )
 }
 
+/**
+ * Gets the MaD string representation of a store step access path.
+ */
 private string printStoreAccessPath(PropagateContentFlow::AccessPath ap) {
   result = concat(int i | | getContent(ap, i), "" order by i)
 }
 
+/**
+ * Gets the MaD string representation of a read step access path.
+ */
 private string printReadAccessPath(PropagateContentFlow::AccessPath ap) {
   result = concat(int i | | getContent(ap, i), "" order by i desc)
 }
 
-string captureContentFlow(DataFlowSummaryTargetApi api) {
+/**
+ * Holds if the access path `ap` contains a field or synthetic field access.
+ */
+private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
+  exists(ContentSet head, PropagateContentFlow::AccessPath tail |
+    head = ap.getHead() and
+    tail = ap.getTail() and
+    (mentionsField(tail) or isField(head))
+  )
+}
+
+private predicate apiFlow(
+  DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, PropagateContentFlow::AccessPath reads,
+  ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath stores, boolean preservesValue
+) {
+  PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
+  returnNodeExt.getEnclosingCallable() = api and
+  p.getEnclosingCallable() = api
+}
+
+/**
+ * A class of APIs relevant for modeling using content flow.
+ * The following heuristic is applied:
+ * Content flow is only relevant for an API, if
+ *    #content flow <= 2 * #parameters + 3
+ * If an API produces more content flow, it is likely that
+ * 1. Types are not sufficiently constrained leading to a combinatorial
+ * explosion in dispatch and thus in the generated summaries.
+ * 2. It is a reasonable approximation to use the non-content based flow
+ * detection instead, as reads and stores would use a significant
+ * part of an objects internal state.
+ */
+private class ContentDataFlowSummaryTargetApi extends DataFlowSummaryTargetApi {
+  ContentDataFlowSummaryTargetApi() {
+    count(string input, string output |
+      exists(
+        DataFlow::ParameterNode p, PropagateContentFlow::AccessPath reads,
+        ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath stores
+      |
+        apiFlow(this, p, reads, returnNodeExt, stores, _) and
+        input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
+        output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores)
+      )
+    ) <= 2 * this.getNumberOfParameters() + 3
+  }
+}
+
+pragma[nomagic]
+private predicate apiContentFlow(
+  ContentDataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
+  PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+  PropagateContentFlow::AccessPath stores, boolean preservesValue
+) {
+  PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
+  returnNodeExt.getEnclosingCallable() = api and
+  p.getEnclosingCallable() = api
+}
+
+/**
+ * Holds if any of the content sets in `path` translates into a synthetic field.
+ */
+private predicate hasSyntheticContent(PropagateContentFlow::AccessPath path) {
+  exists(PropagateContentFlow::AccessPath tail, ContentSet head |
+    head = path.getHead() and
+    tail = path.getTail() and
+    (
+      exists(getSyntheticName(head)) or
+      hasSyntheticContent(tail)
+    )
+  )
+}
+
+/**
+ * A module containing predicates for validating access paths containing content sets
+ * that translates into synthetic fields, when used for generated summary models.
+ */
+private module AccessPathSyntheticValidation {
+  /**
+   * Holds if there exists an API that has content flow from `read` (on type `t1`)
+   * to `store` (on type `t2`).
+   */
+  private predicate step(
+    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
+  ) {
+    exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
+      p.getType() = t1 and
+      returnNodeExt.getType() = t2 and
+      apiContentFlow(_, p, read, returnNodeExt, store, _)
+    )
+  }
+
+  /**
+   * Holds if there exists an API that has content flow from `read` (on type `t1`)
+   * to `store` (on type `t2`), where `read` does not have synthetic content and `store` does.
+   *
+   * Step A -> Synth.
+   */
+  private predicate synthPathEntry(
+    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
+  ) {
+    not hasSyntheticContent(read) and
+    hasSyntheticContent(store) and
+    step(t1, read, t2, store)
+  }
+
+  /**
+   * Holds if there exists an API that has content flow from `read` (on type `t1`)
+   * to `store` (on type `t2`), where `read` has synthetic content
+   * and `store` does not.
+   *
+   * Step Synth -> A.
+   */
+  private predicate synthPathExit(
+    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
+  ) {
+    hasSyntheticContent(read) and
+    not hasSyntheticContent(store) and
+    step(t1, read, t2, store)
+  }
+
+  /**
+   * Takes one or more synthetic steps.
+   * Synth ->+ Synth
+   */
+  private predicate synthPathStepRec(
+    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
+  ) {
+    hasSyntheticContent(read) and
+    hasSyntheticContent(store) and
+    (
+      step(t1, read, t2, store)
+      or
+      exists(PropagateContentFlow::AccessPath mid, Type midType |
+        step(t1, read, midType, mid) and synthPathStepRec(midType, mid.reverse(), t2, store)
+      )
+    )
+  }
+
+  /**
+   * Holds if there exists a path of steps from `read` to an exit.
+   *
+   * read ->* Synth -> A
+   */
+  private predicate reachesSynthExit(Type t, PropagateContentFlow::AccessPath read) {
+    synthPathExit(t, read, _, _)
+    or
+    exists(PropagateContentFlow::AccessPath mid, Type midType |
+      synthPathStepRec(t, read, midType, mid) and synthPathExit(midType, mid.reverse(), _, _)
+    )
+  }
+
+  /**
+   * Holds if there exists a path of steps from an entry to `store`.
+   *
+   * A -> Synth ->* store
+   */
+  private predicate synthEntryReaches(Type t, PropagateContentFlow::AccessPath store) {
+    synthPathEntry(_, _, t, store)
+    or
+    exists(PropagateContentFlow::AccessPath mid, Type midType |
+      synthPathEntry(_, _, midType, mid) and synthPathStepRec(midType, mid.reverse(), t, store)
+    )
+  }
+
+  /**
+   * Holds if at least one of the access paths `read` (on type `t1`) and `store` (on type `t2`)
+   * contain content that will be translated into a synthetic field, when being used in
+   * a MaD summary model, and if there is a range of APIs, such that
+   * when chaining their flow access paths, there exists access paths `A` and `B` where
+   * A ->* read -> store ->* B and where `A` and `B` do not contain content that will
+   * be translated into a synthetic field.
+   *
+   * This is needed because we don't want to include summaries that reads from or
+   * stores into a "dead" synthetic field.
+   *
+   * Example:
+   * Assume we have a type `t` (in this case `t1` = `t2`) with methods `getX` and
+   * `setX`, which gets and sets a private field `X` on `t`.
+   * This would lead to the following content flows
+   * getX : Argument[this].SyntheticField[t.X] -> ReturnValue.
+   * setX : Argument[0] -> Argument[this].SyntheticField[t.X]
+   * As the reads and stores are on synthetic fields we should only make summaries
+   * if both of these methods exist.
+   */
+  pragma[nomagic]
+  predicate acceptReadStore(
+    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
+  ) {
+    synthPathEntry(t1, read, t2, store) and reachesSynthExit(t2, store.reverse())
+    or
+    exists(PropagateContentFlow::AccessPath store0 | store0.reverse() = read |
+      synthEntryReaches(t1, store0) and synthPathExit(t1, read, t2, store)
+      or
+      synthEntryReaches(t1, store0) and
+      step(t1, read, t2, store) and
+      reachesSynthExit(t2, store.reverse())
+    )
+  }
+}
+
+/**
+ * Holds, if the API `api` has relevant flow from `read` on `p` to `store` on `returnNodeExt`.
+ * Flow is considered relevant,
+ * 1. If `read` or `store` do not contain a content set that translates into a synthetic field.
+ * 2. If `read` or `store` contain a content set that translates into a synthetic field, and if
+ * the synthetic content is "live" on the relevant declaring type.
+ */
+private predicate apiRelevantContentFlow(
+  ContentDataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
+  PropagateContentFlow::AccessPath read, ReturnNodeExt returnNodeExt,
+  PropagateContentFlow::AccessPath store, boolean preservesValue
+) {
+  apiContentFlow(api, p, read, returnNodeExt, store, preservesValue) and
+  (
+    not hasSyntheticContent(read) and not hasSyntheticContent(store)
+    or
+    AccessPathSyntheticValidation::acceptReadStore(p.getType(), read, returnNodeExt.getType(), store)
+  )
+}
+
+pragma[nomagic]
+private predicate captureContentFlow0(
+  ContentDataFlowSummaryTargetApi api, string input, string output, boolean preservesValue,
+  boolean lift
+) {
   exists(
-    DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input, string output,
-    PropagateContentFlow::AccessPath reads, PropagateContentFlow::AccessPath stores,
-    boolean preservesValue
+    DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath reads,
+    PropagateContentFlow::AccessPath stores
   |
-    PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-    returnNodeExt.getEnclosingCallable() = api and
+    apiRelevantContentFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
     input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
     output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
     input != output and
-    result = Printing::asModel(api, input, output, preservesValue)
+    (if mentionsField(reads) or mentionsField(stores) then lift = false else lift = true)
+  )
+}
+
+/**
+ * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
+ * the return value or a parameter).
+ *
+ * Models are lifted to the best type in case the read and store access paths do not
+ * contain a field or synthetic field access.
+ */
+string captureContentFlow(ContentDataFlowSummaryTargetApi api) {
+  exists(string input, string output, boolean lift, boolean preservesValue |
+    captureContentFlow0(api, input, output, _, lift) and
+    preservesValue = max(boolean p | captureContentFlow0(api, input, output, p, lift)) and
+    result = Printing::asModel(api, input, output, preservesValue, lift)
   )
 }
 
