@@ -4,12 +4,10 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.security.FlowSources
-import semmle.code.cpp.commons.File
 import DecompressionBomb
 
 /**
- * The `BZ2_bzDecompress` function as a Flow source
+ * The `BZ2_bzDecompress` function is used in flow sink
  */
 class BZ2BzDecompressFunction extends DecompressionFunction {
   BZ2BzDecompressFunction() { this.hasGlobalName(["BZ2_bzDecompress"]) }

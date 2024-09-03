@@ -4,7 +4,6 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.security.FlowSources
 import DecompressionBomb
 
 /**
@@ -17,4 +16,18 @@ class Archive_read_data_block extends DecompressionFunction {
   }
 
   override int getArchiveParameterIndex() { result = 0 }
+}
+
+/**
+ * The `archive_read_open_filename` function as a flow step.
+ */
+class ReadOpenFunction extends DecompressionFlowStep {
+  ReadOpenFunction() { this.hasGlobalName("archive_read_open_filename") }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(FunctionCall fc | fc.getTarget() = this |
+      node1.asIndirectExpr() = fc.getArgument(1) and
+      node2.asIndirectExpr() = fc.getArgument(0)
+    )
+  }
 }

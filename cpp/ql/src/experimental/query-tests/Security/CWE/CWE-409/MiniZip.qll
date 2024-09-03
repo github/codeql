@@ -4,7 +4,6 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.security.FlowSources
 import DecompressionBomb
 
 /**
@@ -18,7 +17,7 @@ class Mz_zip_entry extends DecompressionFunction {
 }
 
 /**
- * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow source.
+ * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow sink.
  * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
  */
 class Mz_zip_reader_entry extends DecompressionFunction {
@@ -42,7 +41,7 @@ class UnzOpenFunction extends DecompressionFunction {
 }
 
 /**
- * The `mz_zip_reader_open_file` and `mz_zip_reader_open_file_in_memory` functions as a flow source.
+ * The `mz_zip_reader_open_file` and `mz_zip_reader_open_file_in_memory` functions as a flow step.
  */
 class ReaderOpenFunction extends DecompressionFlowStep {
   ReaderOpenFunction() {
