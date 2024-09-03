@@ -22,7 +22,7 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc, DecompressionFunction f | fc.getTarget() = f |
-      fc.getArgument(f.getArchiveParameterIndex()) = sink.asExpr() 
+      fc.getArgument(f.getArchiveParameterIndex()) = [sink.asExpr(), sink.asIndirectExpr()]
     )
   }
 

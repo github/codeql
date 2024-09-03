@@ -1,4 +1,3 @@
-
 #define Z_NULL  0
 #  define FAR
 typedef unsigned char Byte;
@@ -145,9 +144,32 @@ int UnsafeGzgets(char *fileName) {
     return 0;
 }
 
+typedef unsigned long uLong;
+typedef long unsigned int size_t;
+typedef uLong uLongf;
+typedef unsigned char Bytef;
+#define Z_OK            0
+
+int uncompress(Bytef *dest, uLongf *destLen,
+               const Bytef *source, uLong sourceLen) { return 0; }
+
+bool InflateString(const unsigned char *input, const unsigned char *output, size_t output_length) {
+    uLong source_length;
+    source_length = (uLong) 500;
+    uLong destination_length;
+    destination_length = (uLong) output_length;
+
+    int result = uncompress((Bytef *) output, &destination_length,
+                            (Bytef *) input, source_length);
+
+    return result == Z_OK;
+}
+
 int main(int argc, char **argv) {
     UnsafeGzfread(argv[2]);
     UnsafeGzgets(argv[2]);
     UnsafeInflate(argv[2]);
     UnsafeGzread(argv[2]);
+    const unsigned char *output;
+    InflateString(reinterpret_cast<const unsigned char *>(argv[1]), output, 1024 * 1024 * 1024);
 }

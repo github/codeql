@@ -1,0 +1,93 @@
+edges
+| zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:63:25:63:35 | *a | provenance |  |
+| zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:52:25:52:25 | *a | provenance |  |
+| zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:69:17:69:26 | & ... | provenance | Config |
+| zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:70:13:70:22 | & ... | provenance | Config |
+| zlibTest.cpp:69:17:69:26 | & ... | zlibTest.cpp:70:13:70:22 | & ... | provenance |  |
+| zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:94:29:94:36 | *fileName | provenance |  |
+| zlibTest.cpp:94:22:94:27 | call to gzopen | zlibTest.cpp:94:22:94:27 | call to gzopen | provenance |  |
+| zlibTest.cpp:94:22:94:27 | call to gzopen | zlibTest.cpp:101:32:101:38 | inFileZ | provenance |  |
+| zlibTest.cpp:94:29:94:36 | *fileName | zlibTest.cpp:93:24:93:31 | *fileName | provenance |  |
+| zlibTest.cpp:94:29:94:36 | *fileName | zlibTest.cpp:94:22:94:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:115:29:115:36 | *fileName | provenance |  |
+| zlibTest.cpp:115:22:115:27 | call to gzopen | zlibTest.cpp:115:22:115:27 | call to gzopen | provenance |  |
+| zlibTest.cpp:115:22:115:27 | call to gzopen | zlibTest.cpp:121:38:121:44 | inFileZ | provenance |  |
+| zlibTest.cpp:115:29:115:36 | *fileName | zlibTest.cpp:114:25:114:32 | *fileName | provenance |  |
+| zlibTest.cpp:115:29:115:36 | *fileName | zlibTest.cpp:115:22:115:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:132:29:132:36 | *fileName | provenance |  |
+| zlibTest.cpp:132:22:132:27 | call to gzopen | zlibTest.cpp:132:22:132:27 | call to gzopen | provenance |  |
+| zlibTest.cpp:132:22:132:27 | call to gzopen | zlibTest.cpp:139:25:139:31 | inFileZ | provenance |  |
+| zlibTest.cpp:132:29:132:36 | *fileName | zlibTest.cpp:131:24:131:31 | *fileName | provenance |  |
+| zlibTest.cpp:132:29:132:36 | *fileName | zlibTest.cpp:132:22:132:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:156:41:156:45 | *input | zlibTest.cpp:163:29:163:43 | *input | provenance |  |
+| zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:169:19:169:25 | *access to array | provenance |  |
+| zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:170:18:170:24 | *access to array | provenance |  |
+| zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:171:19:171:25 | *access to array | provenance |  |
+| zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
+| zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:114:25:114:32 | *fileName | provenance |  |
+| zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | provenance |  |
+| zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | zlibTest.cpp:170:18:170:24 | *access to array | provenance |  |
+| zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | zlibTest.cpp:171:19:171:25 | *access to array | provenance |  |
+| zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
+| zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:170:18:170:24 | *access to array | zlibTest.cpp:131:24:131:31 | *fileName | provenance |  |
+| zlibTest.cpp:170:18:170:24 | *access to array | zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument | provenance |  |
+| zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument | zlibTest.cpp:171:19:171:25 | *access to array | provenance |  |
+| zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
+| zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:52:25:52:25 | *a | provenance |  |
+| zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument | provenance |  |
+| zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
+| zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:172:18:172:24 | *access to array | zlibTest.cpp:93:24:93:31 | *fileName | provenance |  |
+| zlibTest.cpp:172:18:172:24 | *access to array | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | provenance |  |
+| zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:174:19:174:66 | *access to array | zlibTest.cpp:156:41:156:45 | *input | provenance |  |
+nodes
+| zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
+| zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
+| zlibTest.cpp:63:25:63:35 | *a | semmle.label | *a |
+| zlibTest.cpp:69:17:69:26 | & ... | semmle.label | & ... |
+| zlibTest.cpp:70:13:70:22 | & ... | semmle.label | & ... |
+| zlibTest.cpp:93:24:93:31 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:93:24:93:31 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:94:22:94:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:94:22:94:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:94:29:94:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:101:32:101:38 | inFileZ | semmle.label | inFileZ |
+| zlibTest.cpp:114:25:114:32 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:114:25:114:32 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:115:22:115:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:115:22:115:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:115:29:115:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:121:38:121:44 | inFileZ | semmle.label | inFileZ |
+| zlibTest.cpp:131:24:131:31 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:131:24:131:31 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:132:22:132:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:132:22:132:27 | call to gzopen | semmle.label | call to gzopen |
+| zlibTest.cpp:132:29:132:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:139:25:139:31 | inFileZ | semmle.label | inFileZ |
+| zlibTest.cpp:156:41:156:45 | *input | semmle.label | *input |
+| zlibTest.cpp:163:29:163:43 | *input | semmle.label | *input |
+| zlibTest.cpp:168:27:168:30 | **argv | semmle.label | **argv |
+| zlibTest.cpp:169:19:169:25 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | semmle.label | UnsafeGzfread output argument |
+| zlibTest.cpp:170:18:170:24 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument | semmle.label | UnsafeGzgets output argument |
+| zlibTest.cpp:171:19:171:25 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument | semmle.label | UnsafeInflate output argument |
+| zlibTest.cpp:172:18:172:24 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | semmle.label | UnsafeGzread output argument |
+| zlibTest.cpp:174:19:174:66 | *access to array | semmle.label | *access to array |
+subpaths
+| zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument |
+| zlibTest.cpp:170:18:170:24 | *access to array | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument |
+| zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument |
+| zlibTest.cpp:172:18:172:24 | *access to array | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument |
+#select
+| zlibTest.cpp:70:13:70:22 | & ... | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:70:13:70:22 | & ... | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
+| zlibTest.cpp:101:32:101:38 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:101:32:101:38 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
+| zlibTest.cpp:121:38:121:44 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:121:38:121:44 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
+| zlibTest.cpp:139:25:139:31 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:139:25:139:31 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
+| zlibTest.cpp:163:29:163:43 | *input | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:163:29:163:43 | *input | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
