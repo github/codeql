@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.*
 
@@ -2308,19 +2309,29 @@ OLD: KE1
         )
         tw.writeConstrsKotlinType(id, unitType.kotlinResult.id)
     }
+*/
 
+    // TODO: Can this be inlined?
     private fun extractMethod(
         id: Label<out DbMethod>,
+/*
+OLD: KE1
         locId: Label<out DbLocation>,
         shortName: String,
-        returnType: IrType,
+*/
+        returnType: KaType,
+/*
+OLD: KE1
         paramsSignature: String,
         parentId: Label<out DbReftype>,
         sourceDeclaration: Label<out DbMethod>,
         origin: IrDeclarationOrigin?,
         extractTypeAccess: Boolean
+*/
     ) {
         val returnTypeResults = useType(returnType, TypeContext.RETURN)
+/*
+OLD: KE1
         tw.writeMethods(
             id,
             shortName,
@@ -2350,8 +2361,11 @@ OLD: KE1
         if (extractTypeAccess) {
             extractTypeAccessRecursive(returnType, locId, id, -1)
         }
+*/
     }
 
+/*
+OLD: KE1
     private fun signatureOrWarn(t: TypeResult<*>, associatedElement: IrElement?) =
         t.signature
             ?: "<signature unavailable>"
@@ -2421,6 +2435,7 @@ OLD: KE1
         }
 */
 
+    // TODO: Can this be inlined?
     private fun forceExtractFunction(
         f: KtFunction,
         parentId: Label<out DbReftype>,
@@ -2553,19 +2568,28 @@ OLD: KE1
                     )
                 } else {
                     val shortNames = getFunctionShortName(f)
+*/
                     val methodId = id.cast<DbMethod>()
                     extractMethod(
                         methodId,
+/*
+OLD: KE1
                         locId,
                         shortNames.nameInDB,
-                        substReturnType,
+*/
+                        f.returnType, // OLD: KE1: substReturnType,
+/*
+OLD: KE1
                         paramsSignature,
                         parentId,
                         sourceDeclaration.cast(),
                         if (extractOrigin) f.origin else null,
                         extractMethodAndParameterTypeAccesses
+*/
                     )
 
+/*
+OLD: KE1
                     if (shortNames.nameInDB != shortNames.kotlinName) {
                         tw.writeKtFunctionOriginalNames(methodId, shortNames.kotlinName)
                     }
