@@ -2,7 +2,7 @@
  * @name Command Injection
  * @description Variable expression executed as command
  * @kind problem
- * @id powershell/command-injection
+ * @id powershell/tainted-command
  * @problem.severity warning
  * @precision low
  * @tags security
