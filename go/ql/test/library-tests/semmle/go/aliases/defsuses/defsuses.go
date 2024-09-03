@@ -10,7 +10,7 @@ func Test1() int {
 	obj.x = 2
 
 	var ptr *S2
-	ptr = &S1
+	ptr = &obj
 
 	return ptr.x
 }

@@ -1,29 +1,29 @@
 lowLevelDefs
 | defsuses.go:3:6:3:13 | IntAlias | defsuses.go:3:6:3:13 | IntAlias (1 declaration sites) |
 | defsuses.go:5:6:5:7 | S1 | defsuses.go:5:6:5:7 | S1 (1 declaration sites) |
-| defsuses.go:5:20:5:20 | x | defsuses.go:5:20:5:20 | x (2 declaration sites) |
-| defsuses.go:5:20:5:20 | x | defsuses.go:6:20:6:20 | x (2 declaration sites) |
+| defsuses.go:5:19:5:19 | x | defsuses.go:5:19:5:19 | x (2 declaration sites) |
+| defsuses.go:5:19:5:19 | x | defsuses.go:6:19:6:19 | x (2 declaration sites) |
 | defsuses.go:6:6:6:7 | S2 | defsuses.go:6:6:6:7 | S2 (1 declaration sites) |
-| defsuses.go:6:20:6:20 | x | defsuses.go:5:20:5:20 | x (2 declaration sites) |
-| defsuses.go:6:20:6:20 | x | defsuses.go:6:20:6:20 | x (2 declaration sites) |
+| defsuses.go:6:19:6:19 | x | defsuses.go:5:19:5:19 | x (2 declaration sites) |
+| defsuses.go:6:19:6:19 | x | defsuses.go:6:19:6:19 | x (2 declaration sites) |
 | defsuses.go:8:6:8:10 | Test1 | defsuses.go:8:6:8:10 | Test1 (1 declaration sites) |
 | defsuses.go:9:2:9:4 | obj | defsuses.go:9:2:9:4 | obj (1 declaration sites) |
 | defsuses.go:12:6:12:8 | ptr | defsuses.go:12:6:12:8 | ptr (1 declaration sites) |
 lowLevelUses
 | defsuses.go:3:17:3:19 | int | file://:0:0:0:0 | int (0 declaration sites) |
-| defsuses.go:5:22:5:24 | int | file://:0:0:0:0 | int (0 declaration sites) |
-| defsuses.go:6:22:6:29 | IntAlias | defsuses.go:3:6:3:13 | IntAlias (1 declaration sites) |
+| defsuses.go:5:21:5:23 | int | file://:0:0:0:0 | int (0 declaration sites) |
+| defsuses.go:6:21:6:28 | IntAlias | defsuses.go:3:6:3:13 | IntAlias (1 declaration sites) |
 | defsuses.go:8:14:8:16 | int | file://:0:0:0:0 | int (0 declaration sites) |
 | defsuses.go:9:9:9:10 | S1 | defsuses.go:5:6:5:7 | S1 (1 declaration sites) |
 | defsuses.go:10:2:10:4 | obj | defsuses.go:9:2:9:4 | obj (1 declaration sites) |
-| defsuses.go:10:6:10:6 | x | defsuses.go:5:20:5:20 | x (2 declaration sites) |
-| defsuses.go:10:6:10:6 | x | defsuses.go:6:20:6:20 | x (2 declaration sites) |
+| defsuses.go:10:6:10:6 | x | defsuses.go:5:19:5:19 | x (2 declaration sites) |
+| defsuses.go:10:6:10:6 | x | defsuses.go:6:19:6:19 | x (2 declaration sites) |
 | defsuses.go:12:11:12:12 | S2 | defsuses.go:6:6:6:7 | S2 (1 declaration sites) |
 | defsuses.go:13:2:13:4 | ptr | defsuses.go:12:6:12:8 | ptr (1 declaration sites) |
-| defsuses.go:13:9:13:10 | S1 | defsuses.go:5:6:5:7 | S1 (1 declaration sites) |
+| defsuses.go:13:9:13:11 | obj | defsuses.go:9:2:9:4 | obj (1 declaration sites) |
 | defsuses.go:15:9:15:11 | ptr | defsuses.go:12:6:12:8 | ptr (1 declaration sites) |
-| defsuses.go:15:13:15:13 | x | defsuses.go:5:20:5:20 | x (2 declaration sites) |
-| defsuses.go:15:13:15:13 | x | defsuses.go:6:20:6:20 | x (2 declaration sites) |
+| defsuses.go:15:13:15:13 | x | defsuses.go:5:19:5:19 | x (2 declaration sites) |
+| defsuses.go:15:13:15:13 | x | defsuses.go:6:19:6:19 | x (2 declaration sites) |
 distinctDefinedXs
 | 1 |
 distinctUsedXs
