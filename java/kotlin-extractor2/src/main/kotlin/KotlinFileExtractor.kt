@@ -2547,8 +2547,12 @@ OLD: KE1
                     typeSubstitution?.let {
                         it(adjustedReturnType, TypeContext.RETURN, pluginContext)
                     } ?: adjustedReturnType
+*/
 
                 val locId =
+                        tw.getLocation(f)
+/*
+OLD: KE1
                     overriddenAttributes?.sourceLoc
                         ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
@@ -2605,8 +2609,11 @@ OLD: KE1
                           // depending on the -Xjvm-default setting.
                     }
                 }
+*/
 
                 tw.writeHasLocation(id, locId)
+/*
+OLD: KE1
                 val body = f.body
                 if (body != null && extractBody) {
                     if (typeSubstitution != null)

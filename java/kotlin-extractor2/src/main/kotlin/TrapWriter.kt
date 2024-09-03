@@ -4,6 +4,7 @@ package com.github.codeql
 OLD: KE1
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 */
+import com.intellij.psi.PsiElement
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
@@ -373,7 +374,23 @@ OLD: KE1
     private fun getEndOffset(e: IrElement): Int {
         return e.endOffset
     }
+*/
 
+    /** Gets a label for the location of `e`. */
+    fun getLocation(e: PsiElement): Label<DbLocation> {
+        val range = e.getTextRange()
+        val document = e.getContainingFile().getViewProvider().getDocument()
+        val start = range.getStartOffset()
+        val startLine0 = document.getLineNumber(start)
+        val startCol0 = start - document.getLineStartOffset(startLine0)
+        val end = range.getEndOffset()
+        val endLine0 = document.getLineNumber(end)
+        val endCol1 = end - document.getLineStartOffset(endLine0)
+        return getLocation(fileId, startLine0 + 1, startCol0 + 1, endLine0 + 1, endCol1)
+    }
+
+/*
+OLD: KE1
     /** Gets a label for the location of `e`. */
     fun getLocation(e: IrElement): Label<DbLocation> {
         return getLocation(getStartOffset(e), getEndOffset(e))
