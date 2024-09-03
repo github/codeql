@@ -6,6 +6,3 @@
 
 import java
 private import semmle.code.java.security.WebviewDebuggingEnabledQuery as WebviewDebuggingEnabledQuery
-
-deprecated class WebviewDebugEnabledConfig =
-  WebviewDebuggingEnabledQuery::WebviewDebugEnabledConfig;

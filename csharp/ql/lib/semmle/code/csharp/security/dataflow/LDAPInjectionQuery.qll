@@ -27,21 +27,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `LdapInjection` instead.
- *
- * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "LDAPInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
  */
 module LdapInjectionConfig implements DataFlow::ConfigSig {

@@ -17,29 +17,6 @@ import codeql.ruby.TaintTracking
  */
 deprecated module StoredXss {
   import XSS::StoredXss
-
-  /**
-   * DEPRECATED.
-   *
-   * A taint-tracking configuration for reasoning about Stored XSS.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "StoredXss" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      isAdditionalXssTaintStep(node1, node2)
-    }
-  }
-
   import TaintTracking::Global<StoredXssConfig>
 }
 

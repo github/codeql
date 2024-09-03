@@ -40,29 +40,6 @@ private class TypeType extends RefType {
   }
 }
 
-/**
- * DEPRECATED: Use `SensitiveLoggerConfiguration` module instead.
- *
- * A data-flow configuration for identifying potentially-sensitive data flowing to a log output.
- */
-deprecated class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
-  SensitiveLoggerConfiguration() { this = "SensitiveLoggerConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof SensitiveLoggerSource }
-
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "log-injection") }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer.asExpr() instanceof LiveLiteral or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof NumberType or
-    sanitizer.getType() instanceof TypeType
-  }
-
-  override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
-}
-
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SensitiveLoggerSource }

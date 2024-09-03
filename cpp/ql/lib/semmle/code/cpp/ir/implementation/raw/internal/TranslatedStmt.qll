@@ -268,9 +268,6 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
   final override Locatable getAst() { result = stmt }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Function getFunction() { result = stmt.getEnclosingFunction() }
 }
 
