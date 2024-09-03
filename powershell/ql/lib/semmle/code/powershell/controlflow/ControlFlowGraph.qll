@@ -90,6 +90,10 @@ module SuccessorTypes {
     final override string toString() { result = "break" }
   }
 
+  class ContinueSuccessor extends SuccessorType, CfgImpl::TContinueSuccessor {
+    final override string toString() { result = "continue" }
+  }
+
   class RaiseSuccessor extends SuccessorType, CfgImpl::TRaiseSuccessor {
     final override string toString() { result = "raise" }
   }

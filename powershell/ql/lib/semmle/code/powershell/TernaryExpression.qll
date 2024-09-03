@@ -10,4 +10,14 @@ class ConditionalExpr extends @ternary_expression, Expr {
   Expr getIfFalse() { ternary_expression(this, _, result, _) }
 
   Expr getIfTrue() { ternary_expression(this, _, _, result) }
+
+  Expr getBranch(boolean value) {
+    value = true and
+    result = this.getIfTrue()
+    or
+    value = false and
+    result = this.getIfFalse()
+  }
+
+  Expr getABranch() { result = this.getBranch(_) }
 }

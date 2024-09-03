@@ -22,6 +22,7 @@ import semmle.code.powershell.ScriptBlock
 import semmle.code.powershell.StringLiteral
 import semmle.code.powershell.AssignmentStatement
 import semmle.code.powershell.BinaryExpression
+import semmle.code.powershell.UnaryExpression
 import semmle.code.powershell.ScriptBlockExpr
 import semmle.code.powershell.TernaryExpression
 import semmle.code.powershell.UsingExpression
@@ -47,7 +48,7 @@ import semmle.code.powershell.UsingStmt
 import semmle.code.powershell.Type
 import semmle.code.powershell.Member
 import semmle.code.powershell.PropertyMember
-import semmle.code.powershell.FunctionMember
+import semmle.code.powershell.Function
 import semmle.code.powershell.TryStmt
 import semmle.code.powershell.IfStmt
 import semmle.code.powershell.ExitStmt
@@ -65,6 +66,5 @@ import semmle.code.powershell.ParenExpression
 import semmle.code.powershell.Chainable
 import semmle.code.powershell.Pipeline
 import semmle.code.powershell.StringConstantExpression
-import semmle.code.powershell.FunctionDefinition
 import semmle.code.powershell.InvokeMemberExpression
 import semmle.code.powershell.CommentEntity

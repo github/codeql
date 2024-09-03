@@ -15,11 +15,18 @@ private newtype TCompletion =
   TBooleanCompletion(boolean b) { b in [false, true] } or
   TReturnCompletion() or
   TBreakCompletion() or
+  TContinueCompletion() or
   TRaiseCompletion() or
   TExitCompletion()
 
 pragma[noinline]
-private predicate completionIsValidForStmt(Ast n, Completion c) { none() }
+private predicate completionIsValidForStmt(Ast n, Completion c) {
+  n instanceof BreakStmt and
+  c instanceof BreakCompletion
+  or
+  n instanceof ContinueStmt and
+  c instanceof ContinueCompletion
+}
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
@@ -49,19 +56,10 @@ abstract class Completion extends TCompletion {
    * Holds if this completion will continue a loop when it is the completion
    * of a loop body.
    */
-  predicate continuesLoop() { this instanceof NormalCompletion }
-
-  /**
-   * Gets the inner completion. This is either the inner completion,
-   * when the completion is nested, or the completion itself.
-   */
-  Completion getInnerCompletion() { result = this }
-
-  /**
-   * Gets the outer completion. This is either the outer completion,
-   * when the completion is nested, or the completion itself.
-   */
-  Completion getOuterCompletion() { result = this }
+  predicate continuesLoop() {
+    this instanceof NormalCompletion or
+    this instanceof ContinueCompletion
+  }
 
   /** Gets a successor type that matches this completion. */
   abstract SuccessorType getAMatchingSuccessorType();
@@ -85,7 +83,50 @@ private predicate mustHaveBooleanCompletion(Ast n) { inBooleanContext(n) }
  * Holds if `n` is used in a Boolean context. That is, the value
  * that `n` evaluates to determines a true/false branch successor.
  */
-private predicate inBooleanContext(Ast n) { none() }
+private predicate inBooleanContext(Ast n) {
+  n = any(IfStmt ifStmt).getACondition()
+  or
+  n = any(WhileStmt whileStmt).getCondition()
+  or
+  n = any(DoWhileStmt doWhileStmt).getCondition()
+  or
+  n = any(ForStmt forStmt).getCondition()
+  or
+  n = any(DoUntilStmt doUntilStmt).getCondition()
+  or
+  exists(ConditionalExpr cond |
+    n = cond.getCondition()
+    or
+    inBooleanContext(cond) and
+    n = cond.getABranch()
+  )
+  or
+  exists(LogicalAndExpr parent |
+    n = parent.getLeft()
+    or
+    inBooleanContext(parent) and
+    n = parent.getRight()
+  )
+  or
+  exists(LogicalOrExpr parent |
+    n = parent.getLeft()
+    or
+    inBooleanContext(parent) and
+    n = parent.getRight()
+  )
+  or
+  n = any(NotExpr parent | inBooleanContext(parent)).getOperand()
+  or
+  exists(Pipeline pipeline |
+    inBooleanContext(pipeline) and
+    n = pipeline.getComponent(pipeline.getNumberOfComponents() - 1)
+  )
+  or
+  exists(CmdExpr cmdExpr |
+    inBooleanContext(cmdExpr) and
+    n = cmdExpr.getExpr()
+  )
+}
 
 /**
  * A completion that represents normal evaluation of a statement or an
@@ -157,6 +198,16 @@ class BreakCompletion extends Completion, TBreakCompletion {
   override BreakSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "break" }
+}
+
+/**
+ * A completion that represents evaluation of a statement or an
+ * expression resulting in a continuation of a loop.
+ */
+class ContinueCompletion extends Completion, TContinueCompletion {
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
+
+  override string toString() { result = "continue" }
 }
 
 /**

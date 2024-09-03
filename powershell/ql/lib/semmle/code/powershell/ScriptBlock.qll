@@ -1,7 +1,13 @@
 import powershell
 
 class ScriptBlock extends @script_block, Ast {
-  override string toString() { result = this.getLocation().getFile().getBaseName() }
+  predicate isTopLevel() { not exists(this.getParent()) }
+
+  override string toString() {
+    if this.isTopLevel()
+    then result = this.getLocation().getFile().getBaseName()
+    else result = "{...}"
+  }
 
   override SourceLocation getLocation() { script_block_location(this, result) }
 
