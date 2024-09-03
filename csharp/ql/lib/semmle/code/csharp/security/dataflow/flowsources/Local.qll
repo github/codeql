@@ -76,3 +76,16 @@ abstract class WindowsRegistrySource extends LocalFlowSource {
 private class ExternalWindowsRegistrySource extends WindowsRegistrySource {
   ExternalWindowsRegistrySource() { sourceNode(this, "windows-registry") }
 }
+
+/**
+ * A dataflow source that represents the reading from stdin.
+ */
+abstract class StdinSource extends LocalFlowSource {
+  override string getThreatModel() { result = "stdin" }
+
+  override string getSourceType() { result = "read from stdin" }
+}
+
+private class ExternalStdinSource extends StdinSource {
+  ExternalStdinSource() { sourceNode(this, "stdin") }
+}

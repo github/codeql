@@ -175,14 +175,6 @@ module NetHttp {
     override Http::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
   }
 
-  private class RedirectCall extends Http::Redirect::Range, DataFlow::CallNode {
-    RedirectCall() { this.getTarget().hasQualifiedName("net/http", "Redirect") }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(2) }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
-  }
-
   /** A call to a function in the `net/http` package that performs an HTTP request to a URL. */
   private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
@@ -288,9 +280,11 @@ module NetHttp {
   }
 
   /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
    * The File system access sinks
    */
-  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  deprecated class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
     HttpServeFile() {
       exists(Function f |
         f.hasQualifiedName("net/http", "ServeFile") and

@@ -39,7 +39,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   final Callable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable(_)
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -88,7 +88,7 @@ class ExprNode extends Node, TExprNode {
 
 pragma[nomagic]
 private predicate isParameterOf0(DataFlowCallable c, ParameterPosition ppos, Parameter p) {
-  p.getCallable() = c.asCallable() and
+  p.getCallable() = c.asCallable(_) and
   p.getPosition() = ppos.getPosition()
 }
 

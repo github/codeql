@@ -128,11 +128,14 @@ def safe__custom_json_response(request):
 
 def setting_cookie(request):
     resp = HttpResponse() # $ HttpResponse mimetype=text/html
-    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2"
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.headers["Set-Cookie"] = "key2=value2" # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
     resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
     resp.delete_cookie("key4") # $ CookieWrite CookieName="key4"
     resp.delete_cookie(key="key4") # $ CookieWrite CookieName="key4"
-    resp["Set-Cookie"] = "key5=value5" # $ headerWriteName="Set-Cookie" headerWriteValue="key5=value5" CookieWrite CookieRawHeader="key5=value5"
+    resp["Set-Cookie"] = "key5=value5" # $ headerWriteName="Set-Cookie" headerWriteValue="key5=value5" CookieWrite CookieRawHeader="key5=value5" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(key="key6", value="value6", secure=True, httponly=False, samesite="None") # $ CookieWrite CookieName="key6" CookieValue="value6" CookieSecure=true CookieHttpOnly=false CookieSameSite=None 
+    kwargs = {'secure': True}
+    resp.set_cookie(key="key7", value="value7", **kwargs) # $ CookieWrite CookieName="key7" CookieValue="value7"
     return resp

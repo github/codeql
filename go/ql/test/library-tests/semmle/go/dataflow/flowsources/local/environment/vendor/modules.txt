@@ -1,0 +1,9 @@
+# github.com/hashicorp/go-envparse v0.1.0
+## explicit
+github.com/hashicorp/go-envparse
+# github.com/joho/godotenv v1.5.1
+## explicit
+github.com/joho/godotenv
+# github.com/kelseyhightower/envconfig v1.4.0
+## explicit
+github.com/kelseyhightower/envconfig

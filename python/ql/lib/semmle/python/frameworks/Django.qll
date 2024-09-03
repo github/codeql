@@ -2170,7 +2170,7 @@ module PrivateDjango {
         /**
          * A call to `set_cookie` on a HTTP Response.
          */
-        class DjangoResponseSetCookieCall extends Http::Server::CookieWrite::Range,
+        class DjangoResponseSetCookieCall extends Http::Server::SetCookieCall,
           DataFlow::MethodCallNode
         {
           DjangoResponseSetCookieCall() {

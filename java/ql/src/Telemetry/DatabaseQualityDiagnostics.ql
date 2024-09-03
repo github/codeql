@@ -34,7 +34,7 @@ class DbQualityDiagnostic extends TDbQualityDiagnostic {
 }
 
 query predicate diagnosticAttributes(DbQualityDiagnostic e, string key, string value) {
-  e = e and // Quieten warning about unconstrained 'e'
+  exists(e) and // Quieten warning about unconstrained 'e'
   key = ["visibilityCliSummaryTable", "visibilityTelemetry", "visibilityStatusPage"] and
   value = "true"
 }

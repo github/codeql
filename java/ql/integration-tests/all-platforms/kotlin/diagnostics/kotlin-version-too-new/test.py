@@ -1,11 +1,15 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
+import commands
+import pathlib
 
-import glob
-import os.path
 
-os.mkdir('fake-kotlinc-classes')
-runSuccessfully(["javac"] + [os.path.relpath(x, "fake-kotlinc-source") for x in glob.glob("fake-kotlinc-source/**/*.java", recursive = True)] + ["-d", "../fake-kotlinc-classes"], cwd = "fake-kotlinc-source")
-run_codeql_database_create(["java -cp fake-kotlinc-classes driver.Main"], lang = "java", runFunction = runUnsuccessfully, db = None)
-
-check_diagnostics()
+def test(codeql, java_full):
+    fake_kotlin_classes = pathlib.Path("fake-kotlinc-classes")
+    fake_kotlin_classes.mkdir()
+    for source_file in pathlib.Path("fake-kotlinc-source").rglob("*.java"):
+        commands.run(
+            f"javac {source_file.relative_to("fake-kotlinc-source")} -d {fake_kotlin_classes.absolute()}",
+            _cwd="fake-kotlinc-source",
+        )
+    codeql.database.create(
+        command=[f"java -cp {fake_kotlin_classes} driver.Main"], _assert_failure=True
+    )

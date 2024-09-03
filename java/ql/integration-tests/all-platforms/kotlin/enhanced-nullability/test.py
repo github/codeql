@@ -1,6 +1,11 @@
-from create_database_utils import *
-import glob
+import pathlib
 
-os.mkdir('build')
-runSuccessfully(["javac"] + glob.glob("*.java") + ["-d", "build"])
-run_codeql_database_create(["javac " + " ".join(glob.glob("*.java")) + " -d build", "kotlinc -language-version 1.9 user.kt -cp build"], lang="java")
+
+def test(codeql, java_full):
+    java_srcs = " ".join([str(s) for s in pathlib.Path().glob("*.java")])
+    codeql.database.create(
+        command=[
+            f"javac {java_srcs} -d build",
+            "kotlinc -language-version 1.9 user.kt -cp build",
+        ]
+    )

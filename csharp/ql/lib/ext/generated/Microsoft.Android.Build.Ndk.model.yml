@@ -15,6 +15,11 @@ extensions:
       - ["Microsoft.Android.Build.Ndk", "NdkVersion", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.Android.Build.Ndk", "Ndk", False, "get_NdkPath", "()", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Android.Build.Ndk", "AndroidArch", "AndroidArch", "(System.String,System.String,System.String)", "summary", "df-generated"]

@@ -40,15 +40,12 @@ import semmle.go.frameworks.ElazarlGoproxy
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Fasthttp
-import semmle.go.frameworks.Fiber
-import semmle.go.frameworks.Gin
 import semmle.go.frameworks.GinCors
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.GoJose
 import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.Gqlgen
-import semmle.go.frameworks.Iris
 import semmle.go.frameworks.Jwt
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
 import semmle.go.frameworks.K8sIoApiCoreV1

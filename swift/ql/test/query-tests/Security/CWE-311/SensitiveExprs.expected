@@ -182,3 +182,14 @@
 | testURL.swift:75:53:75:69 | call to get_cert_string() | label:get_cert_string, type:credential |
 | testURL.swift:96:51:96:51 | certificate | label:certificate, type:credential |
 | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:password, type:password |
+| testURL.swift:116:52:116:52 | email | label:email, type:private information |
+| testURL.swift:117:28:117:28 | email | label:email, type:private information |
+| testURL.swift:118:53:118:53 | secret_key | label:secret_key, type:credential |
+| testURL.swift:119:60:119:60 | email | label:email, type:private information |
+| testURL.swift:123:52:123:52 | phone_number | label:phone_number, type:private information |
+| testURL.swift:124:25:124:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:125:31:125:31 | phone_number | label:phone_number, type:private information |
+| testURL.swift:126:28:126:28 | phone_number | label:phone_number, type:private information |
+| testURL.swift:127:25:127:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:131:37:131:37 | account_no | label:account_no, type:private information |
+| testURL.swift:132:39:132:39 | account_no | label:account_no, type:private information |

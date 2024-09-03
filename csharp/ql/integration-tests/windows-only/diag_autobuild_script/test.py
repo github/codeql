@@ -1,5 +1,6 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
+import runs_on
 
-run_codeql_database_create([], db=None, lang="csharp", runFunction=runUnsuccessfully)
-check_diagnostics()
+
+@runs_on.windows
+def test(codeql, csharp):
+    codeql.database.create(_assert_failure=True)

@@ -9,6 +9,11 @@ extensions:
       - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", True, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[this]", "Argument[1].Element", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "DotNetReferenceAssembliesPathResolver", False, "Resolve", "()", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.DependencyModel.Resolution", "AppBaseCompilationAssemblyResolver", "AppBaseCompilationAssemblyResolver", "(System.String)", "summary", "df-generated"]

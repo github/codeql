@@ -1,7 +1,2 @@
-import platform
-from create_database_utils import *
-
-gradle_cmd = "gradlew.bat" if platform.system() == "Windows" else "./gradlew"
-
-run_codeql_database_create(
-    ["%s build --no-daemon --no-build-cache" % gradle_cmd], lang="java")
+def test(codeql, java_full, gradle_7_6):
+    codeql.database.create(command=f"{gradle_7_6} build")

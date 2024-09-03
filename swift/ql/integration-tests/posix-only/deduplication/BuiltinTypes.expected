@@ -2,7 +2,6 @@
 | Builtin.Executor | BuiltinExecutorType |
 | Builtin.FPIEEE32 | BuiltinFloatType |
 | Builtin.FPIEEE64 | BuiltinFloatType |
-| Builtin.FPIEEE80 | BuiltinFloatType |
 | Builtin.Int1 | BuiltinIntegerType |
 | Builtin.Int8 | BuiltinIntegerType |
 | Builtin.Int16 | BuiltinIntegerType |
