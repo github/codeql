@@ -5,7 +5,6 @@ import ZlibGzopen
 import ZlibInflator
 import ZlibUncompress
 import LibArchive
-import LibMiniz
 import XZ
 import ZSTD
 import Bzip2

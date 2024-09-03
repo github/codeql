@@ -18,21 +18,6 @@ class Mz_zip_entry extends DecompressionFunction {
 }
 
 /**
- * The `mz_zip_entry` function is used in flow steps.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md)
- */
-class Mz_zip_entry_flow_steps extends DecompressionFlowStep {
-  Mz_zip_entry_flow_steps() { this.hasGlobalName("mz_zip_entry_read") }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc.getArgument(1)
-    )
-  }
-}
-
-/**
  * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow source.
  * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
  */
@@ -44,34 +29,30 @@ class Mz_zip_reader_entry extends DecompressionFunction {
       ])
   }
 
-  override int getArchiveParameterIndex() { result = 1 }
+  override int getArchiveParameterIndex() { result = 0 }
 }
 
 /**
- * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow steps.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
+ * The `UnzOpen*` functions are used in flow sink.
  */
-class Mz_zip_reader_entry_flow_steps extends DecompressionFlowStep {
-  Mz_zip_reader_entry_flow_steps() { this instanceof Mz_zip_reader_entry }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc.getArgument(1)
-    )
-  }
-}
-
-/**
- * The `UnzOpen` function as a flow source.
- */
-class UnzOpenFunction extends DecompressionFlowStep {
+class UnzOpenFunction extends DecompressionFunction {
   UnzOpenFunction() { this.hasGlobalName(["UnzOpen", "unzOpen64", "unzOpen2", "unzOpen2_64"]) }
 
+  override int getArchiveParameterIndex() { result = 0 }
+}
+
+/**
+ * The `mz_zip_reader_open_file` and `mz_zip_reader_open_file_in_memory` functions as a flow source.
+ */
+class ReaderOpenFunction extends DecompressionFlowStep {
+  ReaderOpenFunction() {
+    this.hasGlobalName(["mz_zip_reader_open_file_in_memory", "mz_zip_reader_open_file"])
+  }
+
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(FunctionCall fc | fc.getTarget() = this |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc
+      node1.asIndirectExpr() = fc.getArgument(1) and
+      node2.asIndirectExpr() = fc.getArgument(0)
     )
   }
 }

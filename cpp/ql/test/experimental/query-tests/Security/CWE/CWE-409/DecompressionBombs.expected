@@ -1,6 +1,37 @@
 edges
 | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | provenance |  |
 | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | provenance | TaintFunction |
+| brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:54:41:54:47 | *access to array | provenance |  |
+| brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | provenance |  |
+| minizipTest.cpp:28:46:28:48 | *buf | minizipTest.cpp:28:46:28:48 | *buf | provenance |  |
+| minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | provenance |  |
+| minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | provenance | TaintFunction |
+| minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:54:41:54:47 | *access to array | provenance |  |
+| minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | provenance |  |
+| minizipTest.cpp:42:52:42:67 | *access to array | minizipTest.cpp:28:46:28:48 | *buf | provenance |  |
+| minizipTest.cpp:42:52:42:67 | *access to array | minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | provenance |  |
+| minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | minizipTest.cpp:42:52:42:67 | *access to array | provenance |  |
+| minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | minizipTest.cpp:54:41:54:47 | *access to array | provenance |  |
+| minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | minizipTest.cpp:69:13:69:19 | *access to array | provenance |  |
+| minizipTest.cpp:54:29:54:38 | **zip_reader | minizipTest.cpp:60:30:60:39 | **zip_reader | provenance |  |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | minizipTest.cpp:54:29:54:38 | mz_zip_reader_open_file output argument | provenance |  |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | minizipTest.cpp:55:36:55:45 | *zip_reader | provenance |  |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | minizipTest.cpp:60:30:60:39 | *zip_reader | provenance |  |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | minizipTest.cpp:109:39:109:44 | *handle | provenance |  |
+| minizipTest.cpp:54:29:54:38 | mz_zip_reader_open_file output argument | minizipTest.cpp:55:36:55:45 | *zip_reader | provenance |  |
+| minizipTest.cpp:54:29:54:38 | mz_zip_reader_open_file output argument | minizipTest.cpp:60:30:60:39 | *zip_reader | provenance |  |
+| minizipTest.cpp:54:41:54:47 | *access to array | minizipTest.cpp:54:29:54:38 | **zip_reader | provenance | Config |
+| minizipTest.cpp:54:41:54:47 | *access to array | minizipTest.cpp:54:29:54:38 | *zip_reader | provenance | Config |
+| minizipTest.cpp:55:36:55:45 | *zip_reader | minizipTest.cpp:55:36:55:45 | mz_zip_reader_goto_first_entry output argument | provenance |  |
+| minizipTest.cpp:55:36:55:45 | *zip_reader | minizipTest.cpp:101:46:101:50 | *pVoid | provenance |  |
+| minizipTest.cpp:55:36:55:45 | mz_zip_reader_goto_first_entry output argument | minizipTest.cpp:60:30:60:39 | *zip_reader | provenance |  |
+| minizipTest.cpp:101:46:101:50 | *pVoid | minizipTest.cpp:101:46:101:50 | *pVoid | provenance |  |
+| minizipTest.cpp:109:39:109:44 | *handle | minizipTest.cpp:109:39:109:44 | *handle | provenance |  |
 | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:63:25:63:35 | *a | provenance |  |
 | zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:52:25:52:25 | *a | provenance |  |
 | zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:69:17:69:26 | & ... | provenance | Config |
@@ -50,6 +81,25 @@ nodes
 | brotliTest.cpp:29:32:29:35 | **argv | semmle.label | **argv |
 | brotliTest.cpp:31:42:31:60 | *access to array | semmle.label | *access to array |
 | brotliTest.cpp:37:35:37:40 | *input2 | semmle.label | *input2 |
+| minizipTest.cpp:28:46:28:48 | *buf | semmle.label | *buf |
+| minizipTest.cpp:28:46:28:48 | *buf | semmle.label | *buf |
+| minizipTest.cpp:36:32:36:35 | **argv | semmle.label | **argv |
+| minizipTest.cpp:42:52:42:67 | *access to array | semmle.label | *access to array |
+| minizipTest.cpp:42:52:42:67 | *access to array | semmle.label | *access to array |
+| minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument | semmle.label | mz_zip_entry_read output argument |
+| minizipTest.cpp:54:29:54:38 | **zip_reader | semmle.label | **zip_reader |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | semmle.label | *zip_reader |
+| minizipTest.cpp:54:29:54:38 | mz_zip_reader_open_file output argument | semmle.label | mz_zip_reader_open_file output argument |
+| minizipTest.cpp:54:41:54:47 | *access to array | semmle.label | *access to array |
+| minizipTest.cpp:55:36:55:45 | *zip_reader | semmle.label | *zip_reader |
+| minizipTest.cpp:55:36:55:45 | mz_zip_reader_goto_first_entry output argument | semmle.label | mz_zip_reader_goto_first_entry output argument |
+| minizipTest.cpp:60:30:60:39 | **zip_reader | semmle.label | **zip_reader |
+| minizipTest.cpp:60:30:60:39 | *zip_reader | semmle.label | *zip_reader |
+| minizipTest.cpp:69:13:69:19 | *access to array | semmle.label | *access to array |
+| minizipTest.cpp:101:46:101:50 | *pVoid | semmle.label | *pVoid |
+| minizipTest.cpp:101:46:101:50 | *pVoid | semmle.label | *pVoid |
+| minizipTest.cpp:109:39:109:44 | *handle | semmle.label | *handle |
+| minizipTest.cpp:109:39:109:44 | *handle | semmle.label | *handle |
 | zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
 | zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
 | zlibTest.cpp:63:25:63:35 | *a | semmle.label | *a |
@@ -86,13 +136,38 @@ nodes
 | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | semmle.label | UnsafeGzread output argument |
 | zlibTest.cpp:174:19:174:66 | *access to array | semmle.label | *access to array |
 subpaths
+| minizipTest.cpp:42:52:42:67 | *access to array | minizipTest.cpp:28:46:28:48 | *buf | minizipTest.cpp:28:46:28:48 | *buf | minizipTest.cpp:42:52:42:67 | mz_zip_entry_read output argument |
+| minizipTest.cpp:54:29:54:38 | *zip_reader | minizipTest.cpp:109:39:109:44 | *handle | minizipTest.cpp:109:39:109:44 | *handle | minizipTest.cpp:54:29:54:38 | mz_zip_reader_open_file output argument |
+| minizipTest.cpp:55:36:55:45 | *zip_reader | minizipTest.cpp:101:46:101:50 | *pVoid | minizipTest.cpp:101:46:101:50 | *pVoid | minizipTest.cpp:55:36:55:45 | mz_zip_reader_goto_first_entry output argument |
 | zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument |
 | zlibTest.cpp:170:18:170:24 | *access to array | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument |
 | zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument |
 | zlibTest.cpp:172:18:172:24 | *access to array | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument |
 #select
 | brotliTest.cpp:31:42:31:60 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| brotliTest.cpp:31:42:31:60 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| brotliTest.cpp:31:42:31:60 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| brotliTest.cpp:31:42:31:60 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
 | brotliTest.cpp:37:35:37:40 | *input2 | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| brotliTest.cpp:37:35:37:40 | *input2 | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| brotliTest.cpp:37:35:37:40 | *input2 | minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| brotliTest.cpp:37:35:37:40 | *input2 | minizipTest.cpp:36:32:36:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:42:52:42:67 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:42:52:42:67 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:42:52:42:67 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:42:52:42:67 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:42:52:42:67 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | **zip_reader | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:60:30:60:39 | **zip_reader | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | **zip_reader | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:60:30:60:39 | **zip_reader | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | **zip_reader | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:60:30:60:39 | **zip_reader | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | **zip_reader | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:60:30:60:39 | **zip_reader | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | *zip_reader | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:60:30:60:39 | *zip_reader | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | *zip_reader | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:60:30:60:39 | *zip_reader | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | *zip_reader | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:60:30:60:39 | *zip_reader | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:60:30:60:39 | *zip_reader | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:60:30:60:39 | *zip_reader | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:69:13:69:19 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:69:13:69:19 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
+| minizipTest.cpp:69:13:69:19 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| minizipTest.cpp:69:13:69:19 | *access to array | minizipTest.cpp:36:32:36:35 | **argv | minizipTest.cpp:69:13:69:19 | *access to array | This Decompression output $@. | minizipTest.cpp:36:32:36:35 | **argv | is not limited |
 | zlibTest.cpp:70:13:70:22 | & ... | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:70:13:70:22 | & ... | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
 | zlibTest.cpp:101:32:101:38 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:101:32:101:38 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
 | zlibTest.cpp:121:38:121:44 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:121:38:121:44 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
