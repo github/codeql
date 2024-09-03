@@ -2001,12 +2001,11 @@ OLD: KE1
         argsIncludingOuterClasses: List<IrTypeArgument>?
 */
     ): ClassLabelResults {
-        TODO()
+        val pkg = c.classId.packageFqName.asString()
+        val cls = c.classId.relativeClassName.asString()
+        val label =
 /*
 OLD: KE1
-        val pkg = c.packageFqName?.asString() ?: ""
-        val cls = c.name.asString()
-        val label =
             if (c.isAnonymousObject) "{${useAnonymousClass(c).javaResult.id}}"
             else
                 when (val parent = c.parent) {
@@ -2020,7 +2019,10 @@ OLD: KE1
                         "{${useField(parent)}}.$cls"
                     }
                     else -> {
+*/
                         if (pkg.isEmpty()) cls else "$pkg.$cls"
+/*
+OLD: KE1
                     }
                 }
 
@@ -2038,12 +2040,15 @@ OLD: KE1
                     it.shortName
                 }
         val shortNamePrefix = if (c.isAnonymousObject) "" else cls
+*/
 
         return ClassLabelResults(
-            label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
+            label // OLD: KE1: + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
+/*
+OLD: KE1
             shortNamePrefix + typeArgsShortName
-        )
 */
+        )
     }
 
 /*
