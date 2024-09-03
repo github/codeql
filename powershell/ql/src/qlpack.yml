@@ -1,0 +1,11 @@
+name: microsoft-sdl/powershell-queries
+version: 0.0.1
+groups:
+  - powershell
+  - microsoft-all
+  - queries
+extractor: powershell
+dependencies:
+  microsoft-sdl/powershell-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+warnOnImplicitThis: true
