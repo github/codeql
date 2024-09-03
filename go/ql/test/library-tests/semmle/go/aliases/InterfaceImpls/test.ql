@@ -5,6 +5,7 @@ query predicate callTargets(DataFlow::CallNode cn, FuncDef target, string target
 }
 
 from InterfaceType i, Type impl
-where i.hasMethod("ImplementMe", _)
-and impl.implements(i)
+where
+  i.hasMethod("ImplementMe", _) and
+  impl.implements(i)
 select i, impl
