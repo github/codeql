@@ -8,7 +8,7 @@ type G struct {
 	g int
 }
 
-type MixedExportedAndNot {
+type MixedExportedAndNot interface {
         Exported()
         notExported()
 }

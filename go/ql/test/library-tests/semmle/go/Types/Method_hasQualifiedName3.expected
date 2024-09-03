@@ -59,3 +59,5 @@
 | pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 | T | half |
 | pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 | T3 | half |
 | pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 | T4 | half |
+| pkg2/tst.go:12:9:12:16 | Exported | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 | MixedExportedAndNot | Exported |
+| pkg2/tst.go:13:9:13:19 | notExported | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 | MixedExportedAndNot | notExported |
