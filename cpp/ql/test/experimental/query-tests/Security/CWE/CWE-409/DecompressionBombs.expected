@@ -1,4 +1,6 @@
 edges
+| brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | provenance |  |
+| brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | provenance | TaintFunction |
 | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:63:25:63:35 | *a | provenance |  |
 | zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:52:25:52:25 | *a | provenance |  |
 | zlibTest.cpp:63:25:63:35 | *a | zlibTest.cpp:69:17:69:26 | & ... | provenance | Config |
@@ -45,6 +47,9 @@ edges
 | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
 | zlibTest.cpp:174:19:174:66 | *access to array | zlibTest.cpp:156:41:156:45 | *input | provenance |  |
 nodes
+| brotliTest.cpp:29:32:29:35 | **argv | semmle.label | **argv |
+| brotliTest.cpp:31:42:31:60 | *access to array | semmle.label | *access to array |
+| brotliTest.cpp:37:35:37:40 | *input2 | semmle.label | *input2 |
 | zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
 | zlibTest.cpp:52:25:52:25 | *a | semmle.label | *a |
 | zlibTest.cpp:63:25:63:35 | *a | semmle.label | *a |
@@ -86,6 +91,8 @@ subpaths
 | zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument |
 | zlibTest.cpp:172:18:172:24 | *access to array | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:93:24:93:31 | *fileName | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument |
 #select
+| brotliTest.cpp:31:42:31:60 | *access to array | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:31:42:31:60 | *access to array | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
+| brotliTest.cpp:37:35:37:40 | *input2 | brotliTest.cpp:29:32:29:35 | **argv | brotliTest.cpp:37:35:37:40 | *input2 | This Decompression output $@. | brotliTest.cpp:29:32:29:35 | **argv | is not limited |
 | zlibTest.cpp:70:13:70:22 | & ... | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:70:13:70:22 | & ... | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
 | zlibTest.cpp:101:32:101:38 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:101:32:101:38 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
 | zlibTest.cpp:121:38:121:44 | inFileZ | zlibTest.cpp:168:27:168:30 | **argv | zlibTest.cpp:121:38:121:44 | inFileZ | This Decompression output $@. | zlibTest.cpp:168:27:168:30 | **argv | is not limited |
