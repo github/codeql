@@ -2612,18 +2612,21 @@ OLD: KE1
 */
 
                 tw.writeHasLocation(id, locId)
+                val body = f.getBodyExpression()
+                if (body != null /* TODO && extractBody */) {
 /*
 OLD: KE1
-                val body = f.body
-                if (body != null && extractBody) {
                     if (typeSubstitution != null)
                         logger.errorElement(
                             "Type substitution should only be used to extract a function prototype, not the body",
                             f
                         )
-                    extractBody(body, id)
+*/
+                    // extractBody(body, id)
                 }
 
+/*
+OLD: KE1
                 extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
 
                 if (f.isInline) {
