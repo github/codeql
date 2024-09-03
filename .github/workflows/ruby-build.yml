@@ -122,11 +122,6 @@ jobs:
         uses: ./.github/actions/fetch-codeql
         with:
           channel: ${{ github.event.inputs.channel }}
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: ruby-build
       - name: Build Query Pack
         run: |
           PACKS=${{ runner.temp }}/query-packs
