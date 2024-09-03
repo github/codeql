@@ -727,7 +727,9 @@ class C11GenericExpr extends Conversion, @c11_generic {
    * ```
    * this holds for 0.
    */
-  predicate isSelectedAssociation(int n) { this.getAssociationExpr(n) instanceof ReuseExpr }
+  predicate isSelectedAssociation(int n) {
+    this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+  }
 }
 
 /**
