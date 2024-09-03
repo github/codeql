@@ -84,8 +84,10 @@ module Bottle {
         }
       }
 
-      module Header {
-        API::Node instance() { result = bottle().getMember("response").getMember("headers") }
+      /** Provides models for the `bottle.headers` module */
+      module Headers {
+        /** Gets a reference to the `bottle.headers` module. */
+        API::Node headers() { result = bottle().getMember("response").getMember("headers") }
 
         /** A dict-like write to a response header. */
         class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range, DataFlow::Node {
@@ -94,7 +96,7 @@ module Bottle {
 
           HeaderWriteSubscript() {
             exists(API::Node holder |
-              holder = instance() and
+              holder = headers() and
               this = holder.asSource() and
               value = holder.getSubscriptAt(name)
             )
