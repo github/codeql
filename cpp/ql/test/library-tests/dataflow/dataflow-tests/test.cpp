@@ -1046,6 +1046,14 @@ void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	sink(*buf); // $ ir MISSING: ast
 }
 
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	int *src = indirect_source();
+	int *dest = (int*)realloc(src, sizeof(int));
+	sink(*dest); // $ ir, MISSING: ast
+}
+
 void flow_out_of_address_with_local_flow() {
   MyStruct a;
   a.content = nullptr;
