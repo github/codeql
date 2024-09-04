@@ -2622,7 +2622,7 @@ OLD: KE1
                             f
                         )
 */
-                    // extractBody(body, id)
+                    extractBody(body, id)
                 }
 
 /*
@@ -2939,36 +2939,44 @@ OLD: KE1
             // TODO: extract annotations
         }
     }
+*/
 
-    private fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
+    private fun extractBody(b: KtExpression, callable: Label<out DbCallable>) {
         with("body", b) {
             when (b) {
-                is IrBlockBody -> extractBlockBody(b, callable)
+                is KtBlockExpression -> extractBlockBody(b, callable)
+/*
+OLD: KE1
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
-                is IrExpressionBody -> extractExpressionBody(b, callable)
-                else -> {
-                    logger.errorElement("Unrecognised IrBody: " + b.javaClass, b)
-                }
+                else -> extractExpressionBody(b, callable)
+*/
+                else -> TODO()
             }
         }
     }
 
+    // TODO: Can this be inlined?
     private fun extractBlockBody(callable: Label<out DbCallable>, locId: Label<DbLocation>) =
         tw.getFreshIdLabel<DbBlock>().also {
             tw.writeStmts_block(it, callable, 0, callable)
             tw.writeHasLocation(it, locId)
         }
 
-    private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
+    private fun extractBlockBody(b: KtBlockExpression, callable: Label<out DbCallable>) {
         with("block body", b) {
             extractBlockBody(callable, tw.getLocation(b)).also {
                 for ((sIdx, stmt) in b.statements.withIndex()) {
-                    extractStatement(stmt, callable, it, sIdx)
+/*
+OLD: KE1
+                    extractExpression(stmt, callable, it, sIdx)
+*/
                 }
             }
         }
     }
 
+/*
+OLD: KE1
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
         with("synthetic body", b) {
             val kind = b.kind

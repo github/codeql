@@ -106,8 +106,6 @@ TODO: Inline this if it can remain private
         }
     }
 
-/*
-OLD: KE1
     /** Returns a label for a fresh ID (i.e. a new label bound to `*`). */
     fun <T : AnyDbType> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
@@ -115,6 +113,8 @@ OLD: KE1
         return label
     }
 
+/*
+OLD: KE1
     /**
      * It is not easy to assign keys to local variables, so they get given `*` IDs. However, the
      * same variable may be referred to from distant places in the IR, so we need a way to find out
