@@ -668,6 +668,22 @@ void test27(){
 	}
 }
 
+typedef struct _MYSTRUCT {
+    unsigned long  a;
+    unsigned short b;
+    unsigned char  z[ 100 ];
+} MYSTRUCT;
+
+
+const MYSTRUCT _myStruct = { 0 };
+typedef const MYSTRUCT& MYSTRUCTREF;
+
+// False positive case due to use of typedefs
+int test27(MYSTRUCTREF g)
+{
+	return memcmp(&g, &_myStruct, sizeof(MYSTRUCT)); // GOOD
+}
+
 
 int tests_main(int argc, char *argv[])
 {
