@@ -11,7 +11,7 @@ type Impl1 struct{}
 
 func (recv Impl1) ImplementMe(callable func(struct{ x IntAlias })) {}
 
-// Implementation via unalising
+// Implementation via unaliasing
 type Impl2 struct{}
 
 func (recv Impl2) ImplementMe(callable func(struct{ x int })) {}
@@ -36,6 +36,13 @@ type Impl5 struct{}
 type Impl5Alias = IntAlias
 
 func (recv Impl5) ImplementMe(callable func(struct{ x Impl5Alias })) {}
+
+// Implementation via defining the method on an alias
+type Impl6 struct{}
+
+type Impl6Alias = Impl6
+
+func (recv Impl6Alias) ImplementMe(callable func(struct{ x int })) {}
 
 func Caller(target Target) {
 	target.ImplementMe(nil)
