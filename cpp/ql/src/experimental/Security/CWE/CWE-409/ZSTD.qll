@@ -63,8 +63,26 @@ class FreadOrDieFunctionStep extends DecompressionFlowStep {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(FunctionCall fc | fc.getTarget().hasGlobalName("fread_orDie") |
-      node1.asIndirectExpr() = fc.getArgument(2) and
+      node1.asExpr() = fc.getArgument(2) and
       node2.asIndirectExpr() = fc.getArgument(0)
+    )
+  }
+}
+
+/**
+ * The `src` member of a `ZSTD_inBuffer` variable is used in a flow steps.
+ */
+class SrcMember extends DecompressionFlowStep {
+  SrcMember() { this = "SrcMember" }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(VariableAccess inBufferAccess, Field srcField, ClassAggregateLiteral c |
+      inBufferAccess.getType().hasName("ZSTD_inBuffer") and
+      srcField.hasName("src")
+    |
+      node2.asExpr() = inBufferAccess and
+      inBufferAccess.getTarget().getInitializer().getExpr() = c and
+      node1.asIndirectExpr() = c.getFieldExpr(srcField, _)
     )
   }
 }
