@@ -7,7 +7,7 @@ import DecompressionBomb
 
 /**
  * The `mz_zip_entry` function is used in flow sink.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md)
+ * See https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md.
  */
 class Mz_zip_entry extends DecompressionFunction {
   Mz_zip_entry() { this.hasGlobalName("mz_zip_entry_read") }
@@ -17,7 +17,7 @@ class Mz_zip_entry extends DecompressionFunction {
 
 /**
  * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow sink.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
+ * See https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md.
  */
 class Mz_zip_reader_entry extends DecompressionFunction {
   Mz_zip_reader_entry() {

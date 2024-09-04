@@ -6,7 +6,8 @@ import cpp
 import DecompressionBomb
 
 /**
- * The `BrotliDecoderDecompress` function is used in flow sink. * Ref: https://www.brotli.org/decode.html#af68
+ * The `BrotliDecoderDecompress` function is used in flow sink.
+ * See https://www.brotli.org/decode.html.
  */
 class BrotliDecoderDecompressFunction extends DecompressionFunction {
   BrotliDecoderDecompressFunction() { this.hasGlobalName("BrotliDecoderDecompress") }
@@ -15,7 +16,8 @@ class BrotliDecoderDecompressFunction extends DecompressionFunction {
 }
 
 /**
- * The `BrotliDecoderDecompressStream` function is used in flow sink. * Ref: https://www.brotli.org/decode.html#a234
+ * The `BrotliDecoderDecompressStream` function is used in flow sink.
+ * See https://www.brotli.org/decode.html.
  */
 class BrotliDecoderDecompressStreamFunction extends DecompressionFunction {
   BrotliDecoderDecompressStreamFunction() { this.hasGlobalName("BrotliDecoderDecompressStream") }

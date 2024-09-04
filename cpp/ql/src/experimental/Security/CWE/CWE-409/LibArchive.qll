@@ -7,7 +7,7 @@ import DecompressionBomb
 
 /**
  * The `archive_read_data*` functions are used in flow sink.
- * [Examples](https://github.com/libarchive/libarchive/wiki/Examples)
+ * See https://github.com/libarchive/libarchive/wiki/Examples.
  */
 class Archive_read_data_block extends DecompressionFunction {
   Archive_read_data_block() {
