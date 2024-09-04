@@ -1,25 +1,16 @@
 typedef struct _IO_FILE FILE;
 
-static FILE *fopen_orDie(const char *filename, const char *instruction) {
-    return nullptr;
-}
+FILE *fopen_orDie(const char *filename, const char *instruction);
 
 typedef long unsigned int size_t;
 
-static const size_t ZSTD_DStreamInSize() {
-    return 0;
-}
+const size_t ZSTD_DStreamInSize();
 
-static void *const malloc_orDie(const size_t size) {
-    return nullptr;
-}
+void *const malloc_orDie(const size_t size);
 
-static const size_t ZSTD_DStreamOutSize() {
-    return 0;
-}
+const size_t ZSTD_DStreamOutSize();
 
-struct ZSTD_DCtx {
-};
+struct ZSTD_DCtx;
 
 typedef struct ZSTD_inBuffer_s {
     const void *src;
@@ -32,44 +23,25 @@ typedef struct ZSTD_outBuffer_s {
     size_t pos;
 } ZSTD_outBuffer;
 
-static ZSTD_DCtx *const ZSTD_createDCtx() {
-    return nullptr;
-}
+ZSTD_DCtx *const ZSTD_createDCtx();
 
-static void CHECK(bool b, const char *string) {
+void CHECK(bool b, const char *string);
 
-}
+size_t fread_orDie(void *const pVoid, const size_t read, FILE *const pFile);
 
-static size_t fread_orDie(void *const pVoid, const size_t read, FILE *const pFile) {
-}
+void CHECK_ZSTD(const size_t ret);
 
-static void CHECK_ZSTD(const size_t ret) {
+void fwrite_orDie(void *const pVoid, size_t pos, FILE *const pFile);
 
-}
+void exit(int i);
 
-static void fwrite_orDie(void *const pVoid, size_t pos, FILE *const pFile) {
+void fclose_orDie(FILE *const pFile);
 
-}
+void free(void *const pVoid);
 
-static void exit(int i) {
+const size_t ZSTD_decompressStream(ZSTD_DCtx *const pCtx, ZSTD_outBuffer *pS, ZSTD_inBuffer *pS1);
 
-}
-
-static void fclose_orDie(FILE *const pFile) {
-
-}
-
-static void free(void *const pVoid) {
-
-}
-
-static const size_t ZSTD_decompressStream(ZSTD_DCtx *const pCtx, ZSTD_outBuffer *pS, ZSTD_inBuffer *pS1) {
-
-}
-
-static void ZSTD_freeDCtx(ZSTD_DCtx *const pCtx) {
-
-}
+void ZSTD_freeDCtx(ZSTD_DCtx *const pCtx);
 
 static void decompressFile_orDie(const char *fname) {
     FILE *const fin = fopen_orDie(fname, "rb");

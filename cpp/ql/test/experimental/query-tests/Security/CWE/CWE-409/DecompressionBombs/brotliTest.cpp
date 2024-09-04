@@ -9,9 +9,6 @@ BrotliDecoderResult BrotliDecoderDecompress(
         size_t *decoded_size,
         uint8_t decoded_buffer[]) { return static_cast<BrotliDecoderResult>(0); };
 
-struct {
-} BrotliDecoderStateStruct;
-
 void strncpy(char *string, const char *string1, int i);
 
 typedef struct BrotliDecoderStateStruct BrotliDecoderState;

@@ -25,9 +25,7 @@ int32_t mz_zip_reader_entry_save(void *pVoid, int stream, int write);
 
 void UnzOpen(const char *string);
 
-int32_t mz_zip_entry_read(void *pVoid, void *buf, int32_t i) {
-    return 0;
-}
+int32_t mz_zip_entry_read(void *pVoid, void *buf, int32_t i);
 
 void *mz_zip_create() {
     return nullptr;
@@ -70,51 +68,26 @@ int minizip_test(int argc, const char **argv) {
     return 0;
 }
 
-void UnzOpen(const char *path) {
+void UnzOpen(const char *path);
 
-}
+int32_t mz_zip_reader_entry_save(void *pVoid, int stream, int write);
 
-int32_t mz_zip_reader_entry_save(void *pVoid, int stream, int write) {
-    return 0;
-}
+void mz_zip_reader_delete(void **pVoid);
 
-void mz_zip_reader_delete(void **pVoid) {
+void mz_zip_reader_close(void *pVoid);
 
-}
+void mz_stream_os_delete(void **pVoid);
 
-void mz_zip_reader_close(void *pVoid) {
+void mz_stream_os_close(void *pVoid);
 
-}
+int32_t mz_stream_os_open(void *pVoid, const char *path, int write);
 
-void mz_stream_os_delete(void **pVoid) {
+int32_t mz_zip_reader_goto_first_entry(void *pVoid);
 
-}
+void *mz_zip_reader_create();
 
-void mz_stream_os_close(void *pVoid) {
+int32_t mz_zip_reader_open_file(void *handle, const char *path);
 
-}
+int32_t mz_zip_reader_open_file_in_memory(void *handle, const char *path);
 
-int32_t mz_stream_os_open(void *pVoid, const char *path, int write) {
-    return 0;
-}
-
-int32_t mz_zip_reader_goto_first_entry(void *pVoid) {
-    return 0;
-}
-
-void *mz_zip_reader_create() {
-    return nullptr;
-}
-
-int32_t mz_zip_reader_open_file(void *handle, const char *path) {
-    return 0;
-}
-
-int32_t mz_zip_reader_open_file_in_memory(void *handle, const char *path) {
-    return 0;
-}
-
-void *mz_stream_os_create() {
-    return nullptr;
-}
-
+void *mz_stream_os_create();

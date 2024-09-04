@@ -7,81 +7,44 @@
 #define    ARCHIVE_WARN    (-20)    /* Partial success. */
 
 
-int archive_read_next_header(struct archive *a, struct archive_entry **entry) {
-    return 1;
-}
+int archive_read_next_header(struct archive *a, struct archive_entry **entry);
 
-static struct archive *archive_read_new() {
-    return nullptr;
-}
+struct archive *archive_read_new();
 
-static archive *archive_write_disk_new() {
-    return nullptr;
-}
+archive *archive_write_disk_new();
 
-static void archive_read_support_format_all(archive *pArchive) {
+void archive_read_support_format_all(archive *pArchive);
 
-}
+void archive_read_support_filter_all(archive *pArchive);
 
-static void archive_read_support_filter_all(archive *pArchive) {
+void archive_write_disk_set_options(archive *pArchive, int flags);
 
-}
+void archive_write_disk_set_standard_lookup(archive *pArchive);
 
-static void archive_write_disk_set_options(archive *pArchive, int flags) {
+int archive_read_open_filename(archive *pArchive, const char *filename, int i);
 
-}
+struct archive_entry;
 
-static void archive_write_disk_set_standard_lookup(archive *pArchive) {
+int archive_write_header(archive *pArchive, archive_entry *entry);
 
-}
-
-static int archive_read_open_filename(archive *pArchive, const char *filename, int i) {}
-
-static void archive_error_string(archive *pArchive) {
-
-}
-
-struct archive_entry {
-};
-
-static int archive_write_header(archive *pArchive, archive_entry *entry) {
-    return 0;
-}
-
-static int archive_entry_size(archive_entry *pEntry) {
-}
+int archive_entry_size(archive_entry *pEntry);
 
 typedef int size_t;
 typedef int la_int64_t;
 
-static int archive_read_data_block(archive *pArchive, const void **pVoid, size_t *pInt, la_int64_t *pInt1) {
-    return 0;
-}
+int archive_read_data_block(archive *pArchive, const void **pVoid, size_t *pInt, la_int64_t *pInt1);
 
-static int archive_write_data_block(archive *pArchive, const void *pVoid, size_t size, la_int64_t offset) {
-    return 0;
-}
+int archive_write_data_block(archive *pArchive, const void *pVoid, size_t size, la_int64_t offset);
 
-static int archive_write_finish_entry(archive *pArchive) {
-    return 0;
-}
+int archive_write_finish_entry(archive *pArchive);
 
-static void archive_read_close(archive *pArchive) {
+void archive_read_close(archive *pArchive);
 
-}
+void archive_read_free(archive *pArchive);
 
-static void archive_read_free(archive *pArchive) {
+void archive_write_close(archive *pArchive);
 
-}
-
-static void archive_write_close(archive *pArchive) {
-
-}
-
-static void archive_write_free(archive *pArchive) {
-
-}
-
+void archive_write_free(archive *pArchive);
 
 static int copy_data(struct archive *ar, struct archive *aw) {
     int r;
