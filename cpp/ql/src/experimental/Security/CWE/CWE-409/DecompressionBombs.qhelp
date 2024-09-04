@@ -3,8 +3,8 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
-<p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause denial of service attacks.</p>
+<p>Attackers can compress a huge file consisting of repeated similiar bytes into a small compressed file.</p>
 </overview>
 <recommendation>
 
@@ -14,12 +14,12 @@
 <example>
 
 <p>
-Reading uncompressed Gzip file within a loop and check for a threshold size in each cycle.
+Reading an uncompressed Gzip file within a loop and check for a threshold size in each cycle.
 </p>
 <sample src="example_good.cpp"/>
 
 <p>
-An Unsafe Approach can be this example which we don't check for uncompressed size.
+The following example is unsafe, as we do not check the uncompressed size.
 </p>
 <sample src="example_bad.cpp" />
 
@@ -28,11 +28,11 @@ An Unsafe Approach can be this example which we don't check for uncompressed siz
 <references>
 
 <li>
-<a href="https://zlib.net/manual.html">Zlib Documentation</a>
+<a href="https://zlib.net/manual.html">Zlib documentation</a>
 </li>
 
 <li>
-<a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attacks</a>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">An explanation of the attack</a>
 </li>
 
 </references>
