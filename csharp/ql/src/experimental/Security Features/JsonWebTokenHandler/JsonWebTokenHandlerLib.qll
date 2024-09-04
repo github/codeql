@@ -19,27 +19,6 @@ class TokenValidationParametersPropertySensitiveValidation extends Property {
 }
 
 /**
- * DEPRECATED: Use `FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation` instead.
- *
- * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
- */
-deprecated class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration
-{
-  FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
-    this = "FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().getValue() = "false" and
-    source.asExpr().getType() instanceof BoolType
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
-  }
-}
-
-/**
  * A dataflow configuration from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
 private module FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidationConfig

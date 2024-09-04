@@ -47,9 +47,6 @@ class OspreyMethodDefinition extends MethodCallExpr {
   /** Get the API to which this method belongs. */
   OspreyApi getApi() { this.getReceiver() = result.getAnAccess() }
 
-  /** DEPRECATED: Alias for getApi */
-  deprecated OspreyApi getAPI() { result = this.getApi() }
-
   /** Get the verb which this method implements. */
   string getVerb() { result = this.getMethodName() }
 

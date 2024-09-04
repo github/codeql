@@ -169,14 +169,6 @@ abstract deprecated class Configuration extends string {
   predicate hasFlowToExpr(DataFlowExpr sink) { this.hasFlowTo(exprNode(sink)) }
 
   /**
-   * DEPRECATED: Use `FlowExploration<explorationLimit>` instead.
-   *
-   * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
-   * measured in approximate number of interprocedural steps.
-   */
-  deprecated int explorationLimit() { none() }
-
-  /**
    * Holds if hidden nodes should be included in the data flow graph.
    *
    * This feature should only be used for debugging or when the data flow graph
