@@ -298,7 +298,7 @@ signature module InputSig<LocationSig Location> {
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
 
-  predicate knownSourceModel(Node sink, string model);
+  predicate knownSourceModel(Node source, string model);
 
   predicate knownSinkModel(Node sink, string model);
 

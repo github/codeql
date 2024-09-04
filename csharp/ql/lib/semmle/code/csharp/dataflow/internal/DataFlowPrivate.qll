@@ -3075,6 +3075,7 @@ ContentApprox getContentApprox(Content c) {
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module SyntheticFields {
+  private import semmle.code.csharp.dataflow.internal.ExternalFlow
   private import semmle.code.csharp.frameworks.system.threading.Tasks
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
 }
