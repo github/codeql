@@ -1,8 +1,6 @@
 import go
 
-int countDecls(Entity e) {
-  result = count(Ident decl | decl = e.getDeclaration())
-}
+int countDecls(Entity e) { result = count(Ident decl | decl = e.getDeclaration()) }
 
 query predicate entities(string fp, Entity e, int c, Type ty) {
   c = countDecls(e) and
