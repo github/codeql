@@ -1,4 +1,4 @@
- class Function extends @function {
+class Function extends @function {
   string toString() { none() }
 }
 
