@@ -151,7 +151,7 @@ typedef unsigned char Bytef;
 #define Z_OK            0
 
 int uncompress(Bytef *dest, uLongf *destLen,
-               const Bytef *source, uLong sourceLen) { return 0; }
+               const Bytef *source, uLong sourceLen);
 
 bool InflateString(const unsigned char *input, const unsigned char *output, size_t output_length) {
     uLong source_length;
@@ -165,7 +165,7 @@ bool InflateString(const unsigned char *input, const unsigned char *output, size
     return result == Z_OK;
 }
 
-int zlib_test(int argc, char **argv) {
+void zlib_test(int argc, char **argv) {
     UnsafeGzfread(argv[2]);
     UnsafeGzgets(argv[2]);
     UnsafeInflate(argv[2]);

@@ -31,7 +31,7 @@ void *mz_zip_create() {
     return nullptr;
 }
 
-int minizip_test(int argc, const char **argv) {
+void minizip_test(int argc, const char **argv) {
     void *zip_handle = mz_zip_create();
     int32_t bytes_read;
     int32_t err;
@@ -65,29 +65,4 @@ int minizip_test(int argc, const char **argv) {
 
 
     UnzOpen(argv[3]); // BAD
-    return 0;
 }
-
-void UnzOpen(const char *path);
-
-int32_t mz_zip_reader_entry_save(void *pVoid, int stream, int write);
-
-void mz_zip_reader_delete(void **pVoid);
-
-void mz_zip_reader_close(void *pVoid);
-
-void mz_stream_os_delete(void **pVoid);
-
-void mz_stream_os_close(void *pVoid);
-
-int32_t mz_stream_os_open(void *pVoid, const char *path, int write);
-
-int32_t mz_zip_reader_goto_first_entry(void *pVoid);
-
-void *mz_zip_reader_create();
-
-int32_t mz_zip_reader_open_file(void *handle, const char *path);
-
-int32_t mz_zip_reader_open_file_in_memory(void *handle, const char *path);
-
-void *mz_stream_os_create();

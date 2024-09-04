@@ -1,7 +1,7 @@
 edges
-| brotliTest.cpp:26:40:26:43 | **argv | brotliTest.cpp:26:40:26:43 | **argv | provenance |  |
-| brotliTest.cpp:26:40:26:43 | **argv | brotliTest.cpp:28:42:28:60 | *access to array | provenance |  |
-| brotliTest.cpp:26:40:26:43 | **argv | brotliTest.cpp:34:35:34:40 | *input2 | provenance | TaintFunction |
+| brotliTest.cpp:26:41:26:44 | **argv | brotliTest.cpp:26:41:26:44 | **argv | provenance |  |
+| brotliTest.cpp:26:41:26:44 | **argv | brotliTest.cpp:28:42:28:60 | *access to array | provenance |  |
+| brotliTest.cpp:26:41:26:44 | **argv | brotliTest.cpp:34:35:34:40 | *input2 | provenance | TaintFunction |
 | libarchiveTests.cpp:49:38:49:39 | *ar | libarchiveTests.cpp:49:38:49:39 | *ar | provenance |  |
 | libarchiveTests.cpp:49:38:49:39 | *ar | libarchiveTests.cpp:56:33:56:34 | *ar | provenance |  |
 | libarchiveTests.cpp:68:33:68:40 | *filename | libarchiveTests.cpp:86:40:86:47 | *filename | provenance |  |
@@ -10,30 +10,30 @@ edges
 | libarchiveTests.cpp:92:23:92:23 | *a | libarchiveTests.cpp:49:38:49:39 | *ar | provenance |  |
 | libarchiveTests.cpp:92:23:92:23 | *a | libarchiveTests.cpp:92:23:92:23 | copy_data output argument | provenance |  |
 | libarchiveTests.cpp:92:23:92:23 | copy_data output argument | libarchiveTests.cpp:92:23:92:23 | *a | provenance |  |
-| libarchiveTests.cpp:107:44:107:47 | **argv | libarchiveTests.cpp:107:44:107:47 | **argv | provenance |  |
-| libarchiveTests.cpp:107:44:107:47 | **argv | libarchiveTests.cpp:108:13:108:19 | *access to array | provenance |  |
+| libarchiveTests.cpp:107:45:107:48 | **argv | libarchiveTests.cpp:107:45:107:48 | **argv | provenance |  |
+| libarchiveTests.cpp:107:45:107:48 | **argv | libarchiveTests.cpp:108:13:108:19 | *access to array | provenance |  |
 | libarchiveTests.cpp:108:13:108:19 | *access to array | libarchiveTests.cpp:68:33:68:40 | *filename | provenance |  |
 | main.cpp:7:33:7:36 | **argv | main.cpp:8:23:8:26 | **argv | provenance |  |
 | main.cpp:7:33:7:36 | **argv | main.cpp:9:27:9:30 | **argv | provenance |  |
 | main.cpp:7:33:7:36 | **argv | main.cpp:10:24:10:27 | **argv | provenance |  |
 | main.cpp:7:33:7:36 | **argv | main.cpp:11:21:11:24 | **argv | provenance |  |
-| main.cpp:8:23:8:26 | **argv | brotliTest.cpp:26:40:26:43 | **argv | provenance |  |
+| main.cpp:8:23:8:26 | **argv | brotliTest.cpp:26:41:26:44 | **argv | provenance |  |
 | main.cpp:8:23:8:26 | **argv | main.cpp:8:23:8:26 | brotli_test output argument | provenance |  |
 | main.cpp:8:23:8:26 | brotli_test output argument | main.cpp:9:27:9:30 | **argv | provenance |  |
 | main.cpp:8:23:8:26 | brotli_test output argument | main.cpp:10:24:10:27 | **argv | provenance |  |
 | main.cpp:8:23:8:26 | brotli_test output argument | main.cpp:11:21:11:24 | **argv | provenance |  |
-| main.cpp:9:27:9:30 | **argv | libarchiveTests.cpp:107:44:107:47 | **argv | provenance |  |
+| main.cpp:9:27:9:30 | **argv | libarchiveTests.cpp:107:45:107:48 | **argv | provenance |  |
 | main.cpp:9:27:9:30 | **argv | main.cpp:9:27:9:30 | libarchive_test output argument | provenance |  |
 | main.cpp:9:27:9:30 | libarchive_test output argument | main.cpp:10:24:10:27 | **argv | provenance |  |
 | main.cpp:9:27:9:30 | libarchive_test output argument | main.cpp:11:21:11:24 | **argv | provenance |  |
 | main.cpp:10:24:10:27 | **argv | main.cpp:10:24:10:27 | minizip_test output argument | provenance |  |
-| main.cpp:10:24:10:27 | **argv | minizipTest.cpp:34:41:34:44 | **argv | provenance |  |
+| main.cpp:10:24:10:27 | **argv | minizipTest.cpp:34:42:34:45 | **argv | provenance |  |
 | main.cpp:10:24:10:27 | minizip_test output argument | main.cpp:11:21:11:24 | **argv | provenance |  |
-| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:168:32:168:35 | **argv | provenance |  |
-| minizipTest.cpp:34:41:34:44 | **argv | minizipTest.cpp:34:41:34:44 | **argv | provenance |  |
-| minizipTest.cpp:34:41:34:44 | **argv | minizipTest.cpp:40:52:40:67 | *access to array | provenance |  |
-| minizipTest.cpp:34:41:34:44 | **argv | minizipTest.cpp:52:41:52:47 | *access to array | provenance |  |
-| minizipTest.cpp:34:41:34:44 | **argv | minizipTest.cpp:67:13:67:19 | *access to array | provenance |  |
+| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:168:33:168:36 | **argv | provenance |  |
+| minizipTest.cpp:34:42:34:45 | **argv | minizipTest.cpp:34:42:34:45 | **argv | provenance |  |
+| minizipTest.cpp:34:42:34:45 | **argv | minizipTest.cpp:40:52:40:67 | *access to array | provenance |  |
+| minizipTest.cpp:34:42:34:45 | **argv | minizipTest.cpp:52:41:52:47 | *access to array | provenance |  |
+| minizipTest.cpp:34:42:34:45 | **argv | minizipTest.cpp:67:13:67:19 | *access to array | provenance |  |
 | minizipTest.cpp:52:29:52:38 | **zip_reader | minizipTest.cpp:58:30:58:39 | **zip_reader | provenance |  |
 | minizipTest.cpp:52:29:52:38 | *zip_reader | minizipTest.cpp:58:30:58:39 | *zip_reader | provenance |  |
 | minizipTest.cpp:52:41:52:47 | *access to array | minizipTest.cpp:52:29:52:38 | **zip_reader | provenance | Config |
@@ -59,11 +59,11 @@ edges
 | zlibTest.cpp:132:29:132:36 | *fileName | zlibTest.cpp:131:24:131:31 | *fileName | provenance |  |
 | zlibTest.cpp:132:29:132:36 | *fileName | zlibTest.cpp:132:22:132:27 | call to gzopen | provenance | Config |
 | zlibTest.cpp:156:41:156:45 | *input | zlibTest.cpp:163:29:163:43 | *input | provenance |  |
-| zlibTest.cpp:168:32:168:35 | **argv | zlibTest.cpp:169:19:169:25 | *access to array | provenance |  |
-| zlibTest.cpp:168:32:168:35 | **argv | zlibTest.cpp:170:18:170:24 | *access to array | provenance |  |
-| zlibTest.cpp:168:32:168:35 | **argv | zlibTest.cpp:171:19:171:25 | *access to array | provenance |  |
-| zlibTest.cpp:168:32:168:35 | **argv | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
-| zlibTest.cpp:168:32:168:35 | **argv | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
+| zlibTest.cpp:168:33:168:36 | **argv | zlibTest.cpp:169:19:169:25 | *access to array | provenance |  |
+| zlibTest.cpp:168:33:168:36 | **argv | zlibTest.cpp:170:18:170:24 | *access to array | provenance |  |
+| zlibTest.cpp:168:33:168:36 | **argv | zlibTest.cpp:171:19:171:25 | *access to array | provenance |  |
+| zlibTest.cpp:168:33:168:36 | **argv | zlibTest.cpp:172:18:172:24 | *access to array | provenance |  |
+| zlibTest.cpp:168:33:168:36 | **argv | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
 | zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:114:25:114:32 | *fileName | provenance |  |
 | zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | provenance |  |
 | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | zlibTest.cpp:170:18:170:24 | *access to array | provenance |  |
@@ -84,8 +84,8 @@ edges
 | zlibTest.cpp:172:18:172:24 | UnsafeGzread output argument | zlibTest.cpp:174:19:174:66 | *access to array | provenance |  |
 | zlibTest.cpp:174:19:174:66 | *access to array | zlibTest.cpp:156:41:156:45 | *input | provenance |  |
 nodes
-| brotliTest.cpp:26:40:26:43 | **argv | semmle.label | **argv |
-| brotliTest.cpp:26:40:26:43 | **argv | semmle.label | **argv |
+| brotliTest.cpp:26:41:26:44 | **argv | semmle.label | **argv |
+| brotliTest.cpp:26:41:26:44 | **argv | semmle.label | **argv |
 | brotliTest.cpp:28:42:28:60 | *access to array | semmle.label | *access to array |
 | brotliTest.cpp:34:35:34:40 | *input2 | semmle.label | *input2 |
 | libarchiveTests.cpp:49:38:49:39 | *ar | semmle.label | *ar |
@@ -96,8 +96,8 @@ nodes
 | libarchiveTests.cpp:86:40:86:47 | *filename | semmle.label | *filename |
 | libarchiveTests.cpp:92:23:92:23 | *a | semmle.label | *a |
 | libarchiveTests.cpp:92:23:92:23 | copy_data output argument | semmle.label | copy_data output argument |
-| libarchiveTests.cpp:107:44:107:47 | **argv | semmle.label | **argv |
-| libarchiveTests.cpp:107:44:107:47 | **argv | semmle.label | **argv |
+| libarchiveTests.cpp:107:45:107:48 | **argv | semmle.label | **argv |
+| libarchiveTests.cpp:107:45:107:48 | **argv | semmle.label | **argv |
 | libarchiveTests.cpp:108:13:108:19 | *access to array | semmle.label | *access to array |
 | main.cpp:7:33:7:36 | **argv | semmle.label | **argv |
 | main.cpp:8:23:8:26 | **argv | semmle.label | **argv |
@@ -107,8 +107,8 @@ nodes
 | main.cpp:10:24:10:27 | **argv | semmle.label | **argv |
 | main.cpp:10:24:10:27 | minizip_test output argument | semmle.label | minizip_test output argument |
 | main.cpp:11:21:11:24 | **argv | semmle.label | **argv |
-| minizipTest.cpp:34:41:34:44 | **argv | semmle.label | **argv |
-| minizipTest.cpp:34:41:34:44 | **argv | semmle.label | **argv |
+| minizipTest.cpp:34:42:34:45 | **argv | semmle.label | **argv |
+| minizipTest.cpp:34:42:34:45 | **argv | semmle.label | **argv |
 | minizipTest.cpp:40:52:40:67 | *access to array | semmle.label | *access to array |
 | minizipTest.cpp:52:29:52:38 | **zip_reader | semmle.label | **zip_reader |
 | minizipTest.cpp:52:29:52:38 | *zip_reader | semmle.label | *zip_reader |
@@ -141,7 +141,7 @@ nodes
 | zlibTest.cpp:139:25:139:31 | inFileZ | semmle.label | inFileZ |
 | zlibTest.cpp:156:41:156:45 | *input | semmle.label | *input |
 | zlibTest.cpp:163:29:163:43 | *input | semmle.label | *input |
-| zlibTest.cpp:168:32:168:35 | **argv | semmle.label | **argv |
+| zlibTest.cpp:168:33:168:36 | **argv | semmle.label | **argv |
 | zlibTest.cpp:169:19:169:25 | *access to array | semmle.label | *access to array |
 | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument | semmle.label | UnsafeGzfread output argument |
 | zlibTest.cpp:170:18:170:24 | *access to array | semmle.label | *access to array |
@@ -153,9 +153,9 @@ nodes
 | zlibTest.cpp:174:19:174:66 | *access to array | semmle.label | *access to array |
 subpaths
 | libarchiveTests.cpp:92:23:92:23 | *a | libarchiveTests.cpp:49:38:49:39 | *ar | libarchiveTests.cpp:49:38:49:39 | *ar | libarchiveTests.cpp:92:23:92:23 | copy_data output argument |
-| main.cpp:8:23:8:26 | **argv | brotliTest.cpp:26:40:26:43 | **argv | brotliTest.cpp:26:40:26:43 | **argv | main.cpp:8:23:8:26 | brotli_test output argument |
-| main.cpp:9:27:9:30 | **argv | libarchiveTests.cpp:107:44:107:47 | **argv | libarchiveTests.cpp:107:44:107:47 | **argv | main.cpp:9:27:9:30 | libarchive_test output argument |
-| main.cpp:10:24:10:27 | **argv | minizipTest.cpp:34:41:34:44 | **argv | minizipTest.cpp:34:41:34:44 | **argv | main.cpp:10:24:10:27 | minizip_test output argument |
+| main.cpp:8:23:8:26 | **argv | brotliTest.cpp:26:41:26:44 | **argv | brotliTest.cpp:26:41:26:44 | **argv | main.cpp:8:23:8:26 | brotli_test output argument |
+| main.cpp:9:27:9:30 | **argv | libarchiveTests.cpp:107:45:107:48 | **argv | libarchiveTests.cpp:107:45:107:48 | **argv | main.cpp:9:27:9:30 | libarchive_test output argument |
+| main.cpp:10:24:10:27 | **argv | minizipTest.cpp:34:42:34:45 | **argv | minizipTest.cpp:34:42:34:45 | **argv | main.cpp:10:24:10:27 | minizip_test output argument |
 | zlibTest.cpp:169:19:169:25 | *access to array | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:114:25:114:32 | *fileName | zlibTest.cpp:169:19:169:25 | UnsafeGzfread output argument |
 | zlibTest.cpp:170:18:170:24 | *access to array | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:131:24:131:31 | *fileName | zlibTest.cpp:170:18:170:24 | UnsafeGzgets output argument |
 | zlibTest.cpp:171:19:171:25 | *access to array | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:52:25:52:25 | *a | zlibTest.cpp:171:19:171:25 | UnsafeInflate output argument |

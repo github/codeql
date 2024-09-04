@@ -83,8 +83,7 @@ static void decompressFile_orDie(const char *fname) {
 }
 
 
-int zstd_test(int argc, const char **argv) {
+void zstd_test(int argc, const char **argv) {
     const char *const inFilename = argv[1];
     decompressFile_orDie(inFilename);
-    return 0;
 }
