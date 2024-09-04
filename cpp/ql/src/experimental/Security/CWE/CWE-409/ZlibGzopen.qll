@@ -3,7 +3,6 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**
@@ -44,11 +43,11 @@ class GzReadFunction extends DecompressionFunction {
  *
  * `gzdopen(int fd, const char *mode)`
  */
-class GzdopenFunction extends DecompressionFlowStep {
-  GzdopenFunction() { this.hasGlobalName("gzdopen") }
+class GzdopenFunctionStep extends DecompressionFlowStep {
+  GzdopenFunctionStep() { this = "GzdopenFunctionStep" }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
+    exists(FunctionCall fc | fc.getTarget().hasGlobalName("gzdopen") |
       node1.asExpr() = fc.getArgument(0) and
       node2.asExpr() = fc
     )
@@ -60,11 +59,11 @@ class GzdopenFunction extends DecompressionFlowStep {
  *
  * `gzopen(const char *path, const char *mode)`
  */
-class GzopenFunction extends DecompressionFlowStep {
-  GzopenFunction() { this.hasGlobalName("gzopen") }
+class GzopenFunctionStep extends DecompressionFlowStep {
+  GzopenFunctionStep() { this = "GzopenFunctionStep" }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
+    exists(FunctionCall fc | fc.getTarget().hasGlobalName("gzopen") |
       node1.asIndirectExpr() = fc.getArgument(0) and
       node2.asExpr() = fc
     )

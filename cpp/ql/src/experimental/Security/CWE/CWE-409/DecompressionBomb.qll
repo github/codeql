@@ -18,6 +18,9 @@ abstract class DecompressionFunction extends Function {
 /**
  * The Decompression Flow Steps, extend this class to define new decompression sinks.
  */
-abstract class DecompressionFlowStep extends Function {
+abstract class DecompressionFlowStep extends string {
+  bindingset[this]
+  DecompressionFlowStep() { any() }
+
   abstract predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2);
 }

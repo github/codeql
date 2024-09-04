@@ -3,31 +3,30 @@
  * @description User-controlled data that flows into decompression library APIs without checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
- * @precision high
- * @id cpp/data-decompression
+ * @precision low
+ * @id cpp/data-decompression-bomb
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 import DecompressionBomb
+
+predicate isSink(FunctionCall fc, DataFlow::Node sink) {
+  exists(DecompressionFunction f | fc.getTarget() = f |
+    fc.getArgument(f.getArchiveParameterIndex()) = [sink.asExpr(), sink.asIndirectExpr()]
+  )
+}
 
 module DecompressionTaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(FunctionCall fc, DecompressionFunction f | fc.getTarget() = f |
-      fc.getArgument(f.getArchiveParameterIndex()) = [sink.asExpr(), sink.asIndirectExpr()]
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { isSink(_, sink) }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(DecompressionFlowStep f).isAdditionalFlowStep(node1, node2) or
-    nextInAdditionalFlowStep(node1, node2)
+    any(DecompressionFlowStep s).isAdditionalFlowStep(node1, node2)
   }
 }
 
@@ -35,7 +34,7 @@ module DecompressionTaint = TaintTracking::Global<DecompressionTaintConfig>;
 
 import DecompressionTaint::PathGraph
 
-from DecompressionTaint::PathNode source, DecompressionTaint::PathNode sink
-where DecompressionTaint::flowPath(source, sink)
-select sink.getNode(), source, sink, "This Decompression output $@.", source.getNode(),
-  "is not limited"
+from DecompressionTaint::PathNode source, DecompressionTaint::PathNode sink, FunctionCall fc
+where DecompressionTaint::flowPath(source, sink) and isSink(fc, sink.getNode())
+select sink.getNode(), source, sink, "The decompression output of $@ is not limited", fc,
+  fc.getTarget().getName()

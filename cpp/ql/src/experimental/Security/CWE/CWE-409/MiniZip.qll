@@ -3,12 +3,11 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**
  * The `mz_zip_entry` function is used in flow sink.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md)
+ * See https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md.
  */
 class Mz_zip_entry extends DecompressionFunction {
   Mz_zip_entry() { this.hasGlobalName("mz_zip_entry_read") }
@@ -18,7 +17,7 @@ class Mz_zip_entry extends DecompressionFunction {
 
 /**
  * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in flow sink.
- * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
+ * See https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md.
  */
 class Mz_zip_reader_entry extends DecompressionFunction {
   Mz_zip_reader_entry() {
@@ -43,13 +42,13 @@ class UnzOpenFunction extends DecompressionFunction {
 /**
  * The `mz_zip_reader_open_file` and `mz_zip_reader_open_file_in_memory` functions as a flow step.
  */
-class ReaderOpenFunction extends DecompressionFlowStep {
-  ReaderOpenFunction() {
-    this.hasGlobalName(["mz_zip_reader_open_file_in_memory", "mz_zip_reader_open_file"])
-  }
+class ReaderOpenFunctionStep extends DecompressionFlowStep {
+  ReaderOpenFunctionStep() { this = "ReaderOpenFunctionStep" }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
+    exists(FunctionCall fc |
+      fc.getTarget().hasGlobalName(["mz_zip_reader_open_file_in_memory", "mz_zip_reader_open_file"])
+    |
       node1.asIndirectExpr() = fc.getArgument(1) and
       node2.asIndirectExpr() = fc.getArgument(0)
     )

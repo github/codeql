@@ -3,12 +3,11 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**
  * The `archive_read_data*` functions are used in flow sink.
- * [Examples](https://github.com/libarchive/libarchive/wiki/Examples)
+ * See https://github.com/libarchive/libarchive/wiki/Examples.
  */
 class Archive_read_data_block extends DecompressionFunction {
   Archive_read_data_block() {
@@ -21,11 +20,11 @@ class Archive_read_data_block extends DecompressionFunction {
 /**
  * The `archive_read_open_filename` function as a flow step.
  */
-class ReadOpenFunction extends DecompressionFlowStep {
-  ReadOpenFunction() { this.hasGlobalName("archive_read_open_filename") }
+class ReadOpenFunctionStep extends DecompressionFlowStep {
+  ReadOpenFunctionStep() { this = "ReadOpenFunction" }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
+    exists(FunctionCall fc | fc.getTarget().hasGlobalName("archive_read_open_filename") |
       node1.asIndirectExpr() = fc.getArgument(1) and
       node2.asIndirectExpr() = fc.getArgument(0)
     )
