@@ -5,13 +5,13 @@
  */
 
 import semmle.code.cpp.models.interfaces.Allocation
-import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * An allocation function (such as `realloc`) that has an argument for the size
  * in bytes, and an argument for an existing pointer that is to be reallocated.
  */
-private class ReallocAllocationFunction extends AllocationFunction, TaintFunction {
+private class ReallocAllocationFunction extends AllocationFunction, DataFlowFunction {
   int sizeArg;
   int reallocArg;
 
@@ -44,7 +44,7 @@ private class ReallocAllocationFunction extends AllocationFunction, TaintFunctio
 
   override int getReallocPtrArg() { result = reallocArg }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(this.getReallocPtrArg()) and output.isReturnValueDeref()
   }
 }
