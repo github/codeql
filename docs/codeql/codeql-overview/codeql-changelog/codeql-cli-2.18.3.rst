@@ -91,21 +91,6 @@ C#
 *   Added some new :code:`local` source models. Most prominently :code:`System.IO.Path.GetTempPath` and :code:`System.Environment.GetFolderPath`. This might produce more alerts, if the :code:`local` threat model is enabled.
 *   The extractor has been changed to not skip source files that have already been seen. This has an impact on source files that are compiled multiple times in the build process. Source files with conditional compilation preprocessor directives (such as :code:`#if`) are now extracted for each set of preprocessor symbols that are used during the build process.
 
-Golang
-""""""
-
-*   Local source models for reading and parsing environment variables have been added for the following libraries:
-
-    *   os
-    *   syscall
-    *   github.com/caarlos0/env
-    *   github.com/gobuffalo/envy
-    *   github.com/hashicorp/go-envparse
-    *   github.com/joho/godotenv
-    *   github.com/kelseyhightower/envconfig
-    
-*   Local source models have been added for the APIs which open files in the :code:`io/fs`, :code:`io/ioutil` and :code:`os` packages in the Go standard library. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data%3E>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
-
 Java/Kotlin
 """""""""""
 
