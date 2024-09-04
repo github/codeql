@@ -47,7 +47,7 @@ module Os {
   private class Stdin extends SourceNode {
     Stdin() {
       exists(Variable osStdin | osStdin.hasQualifiedName("os", "Stdin") |
-        this.asExpr() = osStdin.getARead().asExpr()
+        this = osStdin.getARead()
       )
     }
 
