@@ -9,11 +9,11 @@ def glibc_symbols_check(name, binary):
 
     py_test(
         name = name,
-        srcs = ["//misc/bazel/internal:check_glibc_symbols.py"],
-        main = "//misc/bazel/internal:check_glibc_symbols.py",
+        srcs = ["@codeql//misc/bazel/internal:check_glibc_symbols.py"],
+        main = "@codeql//misc/bazel/internal:check_glibc_symbols.py",
         data = [binary],
         args = ["$(location :%s)" % binary],
-        target_compatible_with = ["@platforms//os:linux", "//misc/bazel/platforms:bundled"],
+        target_compatible_with = ["@platforms//os:linux", "@codeql//misc/bazel/platforms:bundled"],
         size = "medium",
         tags = ["glibc-symbols-check"],
     )
