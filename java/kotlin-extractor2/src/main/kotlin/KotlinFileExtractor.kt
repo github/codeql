@@ -2966,10 +2966,7 @@ OLD: KE1
         with("block body", b) {
             extractBlockBody(callable, tw.getLocation(b)).also {
                 for ((sIdx, stmt) in b.statements.withIndex()) {
-/*
-OLD: KE1
-                    extractExpression(stmt, callable, it, sIdx)
-*/
+                    extractExpression(stmt, callable, StmtParent(it, sIdx))
                 }
             }
         }
@@ -5446,22 +5443,30 @@ OLD: KE1
             logger.errorElement("Unexpected constructor call type: ${e.javaClass}", e)
         }
     }
+*/
 
     abstract inner class StmtExprParent {
-        abstract fun stmt(e: IrExpression, callable: Label<out DbCallable>): StmtParent
-
+        abstract fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent
+/*
+OLD: KE1
         abstract fun expr(e: IrExpression, callable: Label<out DbCallable>): ExprParent
+*/
     }
 
     inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int) : StmtExprParent() {
-        override fun stmt(e: IrExpression, callable: Label<out DbCallable>) = this
+        override fun stmt(e: KtExpression, callable: Label<out DbCallable>) = this
 
+/*
+OLD: KE1
         override fun expr(e: IrExpression, callable: Label<out DbCallable>) =
             extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
                 ExprParent(id, 0, id)
             }
+*/
     }
 
+/*
+OLD: KE1
     inner class ExprParent(
         val parent: Label<out DbExprparent>,
         val idx: Int,
@@ -5929,14 +5934,17 @@ OLD: KE1
             tw.writeExprsKotlinType(it, typeResults.kotlinResult.id)
             extractExprContext(it, locId, callable, enclosingStmt)
         }
+*/
 
     private fun extractExpression(
-        e: IrExpression,
+        e: KtExpression,
         callable: Label<out DbCallable>,
         parent: StmtExprParent
     ) {
         with("expression", e) {
             when (e) {
+/*
+OLD: KE1
                 is IrDelegatingConstructorCall -> {
                     val stmtParent = parent.stmt(e, callable)
 
@@ -6014,14 +6022,20 @@ OLD: KE1
                     tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
                     extractBreakContinue(e, id)
                 }
-                is IrReturn -> {
+*/
+                is KtReturnExpression -> {
+/*
+OLD: KE1
                     val stmtParent = parent.stmt(e, callable)
                     val id = tw.getFreshIdLabel<DbReturnstmt>()
                     val locId = tw.getLocation(e)
                     tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
                     tw.writeHasLocation(id, locId)
                     extractExpressionExpr(e.value, callable, id, 0, id)
+*/
                 }
+/*
+OLD: KE1
                 is IrTry -> {
                     val stmtParent = parent.stmt(e, callable)
                     val id = tw.getFreshIdLabel<DbTrystmt>()
@@ -6631,14 +6645,17 @@ OLD: KE1
                         callable
                     )
                 }
+*/
                 else -> {
-                    logger.errorElement("Unrecognised IrExpression: " + e.javaClass, e)
+                    logger.errorElement("Unrecognised KtExpression: " + e.javaClass, e)
                 }
             }
             return
         }
     }
 
+/*
+OLD: KE1
     private fun extractBlock(
         e: IrContainerExpression,
         statements: List<IrStatement>,

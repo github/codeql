@@ -156,24 +156,15 @@ OLD: KE1
         }
     }
 
-/*
-OLD: KE1
-    /**
-     * The label for the 'unknown' file ID. Users will want to use `unknownLocation` instead. This
-     * is lazy, as we don't want to define it in a TRAP file unless the TRAP file actually contains
-     * something in the 'unknown' file.
-     */
-    private val unknownFileId: Label<DbFile> by lazy {
-        val unknownFileLabel = "@\";sourcefile\""
-        getLabelFor(unknownFileLabel, { writeFiles(it, "") })
-    }
-
     /**
      * The label for the 'unknown' location. This is lazy, as we don't want to define it in a TRAP
      * file unless the TRAP file actually contains something with an 'unknown' location.
      */
-    val unknownLocation: Label<DbLocation> by lazy { getWholeFileLocation(unknownFileId) }
-*/
+    val unknownLocation: Label<DbLocation> by lazy {
+        val unknownFileLabel = "@\";sourcefile\""
+        val unknownFileId = getLabelFor(unknownFileLabel, { writeFiles(it, "") })
+        getWholeFileLocation(unknownFileId)
+    }
 
     /**
      * Returns the label for the file `filePath`. If `populateFileTables` is true, then this also

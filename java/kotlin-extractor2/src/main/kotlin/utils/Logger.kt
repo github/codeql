@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.intellij.psi.PsiElement
 import java.io.File
 import java.io.FileWriter
 import java.io.OutputStreamWriter
@@ -162,11 +163,8 @@ OLD: KE1
         severity: Severity,
         msg: String,
         extraInfo: String?,
-/*
-OLD: KE1
         locationString: String? = null,
         mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
-*/
     ) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if (diagnosticLoc == null) "<unknown location>" else diagnosticLoc
@@ -203,7 +201,10 @@ OLD: KE1
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
-        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg /* TODO , locationString, mkLocationId */)
+        // Now that we have passed the early returns above, we know that
+        // we're actually going to need the location, so let's create it
+        val locationId = mkLocationId()
+        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg, locationString, locationId)
     }
 
     private fun emitDiagnostic(
@@ -212,23 +213,12 @@ OLD: KE1
         diagnosticLocStr: String,
         msg: String,
         fullMsg: String,
-/*
-OLD: KE1
         locationString: String? = null,
-        mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
-*/
+        locationId: Label<DbLocation>
     ) {
-/*
-OLD: KE1
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
-*/
-        val locStr = "" // TODO: Replace with above
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
-/*
-OLD: KE1
-        // We don't actually make the location until after the `return` above
-        val locationId = mkLocationId()
         val diagLabel = dtw.getFreshIdLabel<DbDiagnostic>()
         dtw.writeDiagnostics(
             diagLabel,
@@ -239,6 +229,8 @@ OLD: KE1
             "${logMessage.timestamp} $fullMsg",
             locationId
         )
+/*
+OLD: KE1
         dtw.writeDiagnostic_for(
             diagLabel,
             StringLabel("compilation"),
@@ -295,7 +287,7 @@ OLD: KE1
                 val message =
                     "Total of $count diagnostics (reached limit of ${diagnosticCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
-                    emitDiagnostic(dtw, severity, "Limit", message, message)
+                    emitDiagnostic(dtw, severity, "Limit", message, message, null, dtw.unknownLocation)
                 }
             }
         }
@@ -382,18 +374,18 @@ OLD: KE1
             mkLocationId
         )
     }
+*/
 
-    fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
-        val locationString = ftw.getLocationString(element)
+    fun errorElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) {
+        val locationString = "TODO" // OLD: KE1: ftw.getLocationString(element)
         val mkLocationId = { ftw.getLocation(element) }
         loggerBase.diagnostic(
             ftw.getDiagnosticTrapWriter(),
             Severity.Error,
             msg,
-            exn?.stackTraceToString(),
+            null, // OLD: KE1: exn?.stackTraceToString(),
             locationString,
             mkLocationId
         )
     }
-*/
 }
