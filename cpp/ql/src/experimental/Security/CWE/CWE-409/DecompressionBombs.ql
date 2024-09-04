@@ -3,7 +3,7 @@
  * @description User-controlled data that flows into decompression library APIs without checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @precision low
  * @id cpp/data-decompression-bomb
  * @tags security
  *       experimental
