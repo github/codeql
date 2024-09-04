@@ -13,7 +13,7 @@ use common::{create_source_dir, expect_trap_file, SourceArchive};
 fn simple_extractor() {
     let language = simple::LanguageSpec {
         prefix: "ql",
-        ts_language: tree_sitter_ql::language(),
+        ts_language: tree_sitter_ql::LANGUAGE.into(),
         node_types: tree_sitter_ql::NODE_TYPES,
         file_globs: vec!["*.qll".into()],
     };

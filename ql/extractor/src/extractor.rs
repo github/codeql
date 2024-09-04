@@ -27,25 +27,25 @@ pub fn run(options: Options) -> std::io::Result<()> {
         languages: vec![
             simple::LanguageSpec {
                 prefix: "ql",
-                ts_language: tree_sitter_ql::language(),
+                ts_language: tree_sitter_ql::LANGUAGE.into(),
                 node_types: tree_sitter_ql::NODE_TYPES,
                 file_globs: vec!["*.ql".into(), "*.qll".into()],
             },
             simple::LanguageSpec {
                 prefix: "dbscheme",
-                ts_language: tree_sitter_ql_dbscheme::language(),
+                ts_language: tree_sitter_ql_dbscheme::LANGUAGE.into(),
                 node_types: tree_sitter_ql_dbscheme::NODE_TYPES,
                 file_globs: vec!["*.dbscheme".into()],
             },
             simple::LanguageSpec {
                 prefix: "json",
-                ts_language: tree_sitter_json::language(),
+                ts_language: tree_sitter_json::LANGUAGE.into(),
                 node_types: tree_sitter_json::NODE_TYPES,
                 file_globs: vec!["*.json".into(), "*.jsonl".into(), "*.jsonc".into()],
             },
             simple::LanguageSpec {
                 prefix: "blame",
-                ts_language: tree_sitter_blame::language(),
+                ts_language: tree_sitter_blame::LANGUAGE.into(),
                 node_types: tree_sitter_blame::NODE_TYPES,
                 file_globs: vec!["*.blame".into()],
             },
