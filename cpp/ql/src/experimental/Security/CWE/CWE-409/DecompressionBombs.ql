@@ -26,8 +26,7 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSink(_, sink) }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(DecompressionFlowStep f).isAdditionalFlowStep(node1, node2) or
-    nextInAdditionalFlowStep(node1, node2)
+    any(DecompressionFlowStep s).isAdditionalFlowStep(node1, node2)
   }
 }
 

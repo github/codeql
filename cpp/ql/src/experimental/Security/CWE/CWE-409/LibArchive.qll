@@ -20,11 +20,11 @@ class Archive_read_data_block extends DecompressionFunction {
 /**
  * The `archive_read_open_filename` function as a flow step.
  */
-class ReadOpenFunction extends DecompressionFlowStep {
-  ReadOpenFunction() { this.hasGlobalName("archive_read_open_filename") }
+class ReadOpenFunctionStep extends DecompressionFlowStep {
+  ReadOpenFunctionStep() { this = "ReadOpenFunction"}
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() = this |
+    exists(FunctionCall fc | fc.getTarget().hasGlobalName("archive_read_open_filename") |
       node1.asIndirectExpr() = fc.getArgument(1) and
       node2.asIndirectExpr() = fc.getArgument(0)
     )

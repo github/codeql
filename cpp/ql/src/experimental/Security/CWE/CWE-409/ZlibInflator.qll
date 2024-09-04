@@ -19,16 +19,21 @@ class InflateFunction extends DecompressionFunction {
 }
 
 /**
- * The `next_in` member of a `z_stream` variable is used in flow steps.
+ * The `next_in` member of a `z_stream` variable is used in a flow steps.
  */
-predicate nextInAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(Variable nextInVar, VariableAccess zStreamAccess |
-    nextInVar.getDeclaringType().hasName("z_stream") and
-    nextInVar.hasName("next_in") and
-    zStreamAccess.getType().hasName("z_stream")
-  |
-    nextInVar.getAnAccess().getQualifier().(VariableAccess).getTarget() = zStreamAccess.getTarget() and
-    node1.asIndirectExpr() = nextInVar.getAnAssignedValue() and
-    node2.asExpr() = zStreamAccess
-  )
+class NextInMemberStep extends DecompressionFlowStep {
+  NextInMemberStep() { this = "NextInMemberStep" }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(Variable nextInVar, VariableAccess zStreamAccess |
+      nextInVar.getDeclaringType().hasName("z_stream") and
+      nextInVar.hasName("next_in") and
+      zStreamAccess.getType().hasName("z_stream")
+    |
+      nextInVar.getAnAccess().getQualifier().(VariableAccess).getTarget() =
+        zStreamAccess.getTarget() and
+      node1.asIndirectExpr() = nextInVar.getAnAssignedValue() and
+      node2.asExpr() = zStreamAccess
+    )
+  }
 }
