@@ -1,6 +1,6 @@
 load("@rules_rust//rust:defs.bzl", "rust_binary")
-load("@semmle_code//buildutils-internal:glibc_symbols_check.bzl", "glibc_symbols_check")
-load("@semmle_code//buildutils-internal:lipo.bzl", "universal_binary")
+load("//misc/bazel:glibc_symbols_check.bzl", "glibc_symbols_check")
+load("//misc/bazel:lipo.bzl", "universal_binary")
 
 def codeql_rust_binary(
         name,

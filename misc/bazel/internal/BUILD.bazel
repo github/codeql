@@ -1,1 +1,1 @@
-exports_files(["install.py"])
+exports_files(glob(["*.py"]))
