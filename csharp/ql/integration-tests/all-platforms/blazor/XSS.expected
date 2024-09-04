@@ -1,4 +1,6 @@
 edges
 nodes
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | semmle.label | access to property QueryParam |
 subpaths
 #select
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | User-provided value |

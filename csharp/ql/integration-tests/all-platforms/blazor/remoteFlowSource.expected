@@ -1,0 +1,2 @@
+| BlazorTest/Components/Pages/TestPage.razor:19:38:19:47 | access to property QueryParam | ASP.NET Core component query string |
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | ASP.NET Core component query string |
