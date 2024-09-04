@@ -3,14 +3,13 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**
  * The `ZSTD_decompress`  function is used in flow sink.
  */
 class ZstdDecompressFunction extends DecompressionFunction {
-  ZstdDecompressFunction() { this.hasGlobalName(["ZSTD_decompress"]) }
+  ZstdDecompressFunction() { this.hasGlobalName("ZSTD_decompress") }
 
   override int getArchiveParameterIndex() { result = 2 }
 }
@@ -19,7 +18,7 @@ class ZstdDecompressFunction extends DecompressionFunction {
  * The `ZSTD_decompressDCtx` function is used in flow sink.
  */
 class ZstdDecompressDctxFunction extends DecompressionFunction {
-  ZstdDecompressDctxFunction() { this.hasGlobalName(["ZSTD_decompressDCtx"]) }
+  ZstdDecompressDctxFunction() { this.hasGlobalName("ZSTD_decompressDCtx") }
 
   override int getArchiveParameterIndex() { result = 3 }
 }
@@ -28,7 +27,7 @@ class ZstdDecompressDctxFunction extends DecompressionFunction {
  * The `ZSTD_decompressStream` function is used in flow sink.
  */
 class ZstdDecompressStreamFunction extends DecompressionFunction {
-  ZstdDecompressStreamFunction() { this.hasGlobalName(["ZSTD_decompressStream"]) }
+  ZstdDecompressStreamFunction() { this.hasGlobalName("ZSTD_decompressStream") }
 
   override int getArchiveParameterIndex() { result = 2 }
 }
@@ -37,7 +36,7 @@ class ZstdDecompressStreamFunction extends DecompressionFunction {
  * The `ZSTD_decompress_usingDDict` function is used in flow sink.
  */
 class ZstdDecompressUsingDdictFunction extends DecompressionFunction {
-  ZstdDecompressUsingDdictFunction() { this.hasGlobalName(["ZSTD_decompress_usingDDict"]) }
+  ZstdDecompressUsingDdictFunction() { this.hasGlobalName("ZSTD_decompress_usingDDict") }
 
   override int getArchiveParameterIndex() { result = 3 }
 }

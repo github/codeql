@@ -3,7 +3,6 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**

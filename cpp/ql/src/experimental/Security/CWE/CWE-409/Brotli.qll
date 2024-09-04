@@ -3,14 +3,13 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.dataflow.TaintTracking
 import DecompressionBomb
 
 /**
  * The `BrotliDecoderDecompress` function is used in flow sink. * Ref: https://www.brotli.org/decode.html#af68
  */
 class BrotliDecoderDecompressFunction extends DecompressionFunction {
-  BrotliDecoderDecompressFunction() { this.hasGlobalName(["BrotliDecoderDecompress"]) }
+  BrotliDecoderDecompressFunction() { this.hasGlobalName("BrotliDecoderDecompress") }
 
   override int getArchiveParameterIndex() { result = 1 }
 }
@@ -19,7 +18,7 @@ class BrotliDecoderDecompressFunction extends DecompressionFunction {
  * The `BrotliDecoderDecompressStream` function is used in flow sink. * Ref: https://www.brotli.org/decode.html#a234
  */
 class BrotliDecoderDecompressStreamFunction extends DecompressionFunction {
-  BrotliDecoderDecompressStreamFunction() { this.hasGlobalName(["BrotliDecoderDecompressStream"]) }
+  BrotliDecoderDecompressStreamFunction() { this.hasGlobalName("BrotliDecoderDecompressStream") }
 
   override int getArchiveParameterIndex() { result = 2 }
 }
