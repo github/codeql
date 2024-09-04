@@ -2,6 +2,10 @@
 
 .. _about-codeql:
 
+.. meta::
+   :description: Introduction to CodeQL, a language and toolchain for code analysis.
+   :keywords: CodeQL, code analysis, CodeQL analysis, security vulnerabilities, variant analysis, resources, tutorials, interactive training, GitHub Security Lab, security researchers, CodeQL databases
+
 About CodeQL
 ============
 

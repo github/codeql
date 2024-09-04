@@ -2,6 +2,10 @@
 
 .. _running-codeql-queries:
 
+.. meta::
+   :description: Overview of how to run CodeQL queries locally, in GitHub, or in your CI system.
+   :keywords: CodeQL, code analysis, CodeQL analysis, code scanning, GitHub code scanning, writing a new query, testing a new query, code scanning alerts
+
 Running CodeQL queries
 ======================
 
