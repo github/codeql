@@ -4,18 +4,17 @@ newtype TEntityWithDeclInfo =
   MkEntityWithDeclInfo(Entity e, int nDecls) { nDecls = count(e.getDeclaration()) and nDecls > 0 }
 
 class EntityWithDeclInfo extends TEntityWithDeclInfo {
-  string toString() {
-    exists(Entity e, int nDecls | this = MkEntityWithDeclInfo(e, nDecls) |
-      result = e.toString() + " (" + nDecls + " declaration sites)"
-    )
-  }
+  Entity e;
+  int nDecls;
+
+  EntityWithDeclInfo() { this = MkEntityWithDeclInfo(e, nDecls) }
+
+  string toString() { result = e.toString() + " (" + nDecls + " declaration sites)" }
 
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(Entity e | this = MkEntityWithDeclInfo(e, _) |
-      e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
+    e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

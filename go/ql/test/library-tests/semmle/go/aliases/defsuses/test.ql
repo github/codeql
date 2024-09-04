@@ -3,18 +3,18 @@ import go
 newtype TEntityWithDeclInfo = MkEntityWithDeclInfo(Entity e)
 
 class EntityWithDeclInfo extends TEntityWithDeclInfo {
+  Entity e;
+
+  EntityWithDeclInfo() { this = MkEntityWithDeclInfo(e) }
+
   string toString() {
-    exists(Entity e | this = MkEntityWithDeclInfo(e) |
-      result = e.toString() + " (" + count(e.getDeclaration()) + " declaration sites)"
-    )
+    result = e.toString() + " (" + count(e.getDeclaration()) + " declaration sites)"
   }
 
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(Entity e | this = MkEntityWithDeclInfo(e) |
-      e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
+    e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
