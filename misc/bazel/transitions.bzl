@@ -15,11 +15,18 @@ def _platform_transition_impl(_settings, attr):
 # Transition to attr.platform
 platform_transition = _make_platform_transition(_platform_transition_impl)
 
-def _get_platform_for_arch(settings, arch):
-    platform = str(settings["//command_line_option:platforms"][0])
-    if "host_toolchain" in platform:
-        return "//toolchain/platforms:host_toolchain_%s" % arch
-    return "//toolchain/platforms:bundled_toolchain_%s" % arch
+def _get_platform_for_arch(platform, arch):
+    # temporary, for backward compatibility with internal repo while we move stuff around
+    if ("cc_configure_toolchain//:default_platform" in platform or
+        "//toolchains/platforms" in platform):
+        if "host_toolchain" in platform:
+            return "@semmle_code//toolchain/platforms:host_toolchain_%s" % arch
+        return "@semmle_code//toolchain/platforms:bundled_toolchain_%s" % arch
+    if "bundled_toolchain" in platform:
+        return "@codeql//misc/bazel/platforms:bundled_toolchain_%s" % arch
+
+    # this default also covers bazel's own default
+    return "@codeql//misc/bazel/platforms:host_toolchain_%s" % arch
 
 def _x86_32_transition_impl(settings, _attr):
     return {"//command_line_option:platforms": [_get_platform_for_arch(settings, "x86_32")]}
@@ -45,12 +52,15 @@ def get_transition_attrs(transition_rule):
     }
 
 def _universal_binary_transition_impl(settings, _attr):
-    # Create a split transition from any macOS cpu to a list of all macOS cpus
+    # Create a split transition from any macOS cpu to a list of all macOS cpus, but only if compiling in opt mode
     # Do nothing on other platforms, so that the lipo transition is a no-op
-    if settings["//command_line_option:cpu"].startswith("darwin"):
+    platform = str(settings["//command_line_option:platforms"][0])
+    cpu = settings["//command_line_option:cpu"]
+    compilation_mode = str(settings["//command_line_option:compilation_mode"])
+    if cpu.startswith("darwin") and compilation_mode == "opt":
         return {
-            "x86_64": {"//command_line_option:platforms": [_get_platform_for_arch(settings, "x86_64")]},
-            "arm64": {"//command_line_option:platforms": [_get_platform_for_arch(settings, "arm64")]},
+            "x86_64": {"//command_line_option:platforms": [_get_platform_for_arch(platform, "x86_64")]},
+            "arm64": {"//command_line_option:platforms": [_get_platform_for_arch(platform, "arm64")]},
         }
     else:
         return None
@@ -60,6 +70,7 @@ universal_binary_transition = transition(
     inputs = [
         "//command_line_option:cpu",
         "//command_line_option:platforms",
+        "//command_line_option:compilation_mode",
     ],
     outputs = ["//command_line_option:platforms"],
 )
