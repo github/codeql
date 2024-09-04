@@ -926,9 +926,6 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   abstract Locatable getAst();
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
-
   /** Gets the location of this element. */
   Location getLocation() { result = this.getAst().getLocation() }
 

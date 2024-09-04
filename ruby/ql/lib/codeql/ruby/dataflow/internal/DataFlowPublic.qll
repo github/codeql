@@ -1323,11 +1323,6 @@ class CallableNode extends StmtSequenceNode {
    * Gets a data flow node whose value is about to be returned by this callable.
    */
   Node getAReturnNode() { result = getAReturnNode(callable) }
-
-  /**
-   * DEPRECATED. Use `getAReturnNode` instead.
-   */
-  deprecated Node getAReturningNode() { result = this.getAReturnNode() }
 }
 
 /**

@@ -286,9 +286,6 @@ abstract class BaseAstNode extends PrintAstNode {
    * Gets the AST represented by this node.
    */
   final Locatable getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
 }
 
 /**

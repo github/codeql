@@ -100,11 +100,6 @@ private module FindRegexMode {
   private string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 }
 
-/**
- * DEPRECATED: Use `RegExp` instead.
- */
-deprecated class Regex = RegExp;
-
 /** A StringLiteral used as a regular expression */
 class RegExp extends Expr instanceof StringLiteral {
   DataFlow::Node use;
