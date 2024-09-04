@@ -2950,7 +2950,7 @@ OLD: KE1
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
                 else -> extractExpressionBody(b, callable)
 */
-                else -> TODO()
+                else -> {} // TODO
             }
         }
     }
@@ -6024,13 +6024,13 @@ OLD: KE1
                 }
 */
                 is KtReturnExpression -> {
-/*
-OLD: KE1
                     val stmtParent = parent.stmt(e, callable)
                     val id = tw.getFreshIdLabel<DbReturnstmt>()
                     val locId = tw.getLocation(e)
                     tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
                     tw.writeHasLocation(id, locId)
+/*
+OLD: KE1
                     extractExpressionExpr(e.value, callable, id, 0, id)
 */
                 }
