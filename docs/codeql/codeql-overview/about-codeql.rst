@@ -45,6 +45,8 @@ queries. Then, develop or iterate over the query to automatically find logical
 variants of the same bug that could be missed using traditional manual
 techniques.
 
+When you have a query that finds variants of a vulnerability, you can use multi-repository variant analysis to run that query across a large number of codebases, and identify all of the places where that vulnerability exists. For more information, see `Running CodeQL queries at scale with multi-repository variant analysis <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries-at-scale-with-multi-repository-variant-analysis>`__ in the GitHub docs.
+
 CodeQL analysis
 ---------------
 
