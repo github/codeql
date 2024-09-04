@@ -33,7 +33,7 @@ void *mz_zip_create() {
     return nullptr;
 }
 
-int main(int argc, const char *argv[]) {
+int minizip_test(int argc, const char **argv) {
     void *zip_handle = mz_zip_create();
     int32_t bytes_read;
     int32_t err;

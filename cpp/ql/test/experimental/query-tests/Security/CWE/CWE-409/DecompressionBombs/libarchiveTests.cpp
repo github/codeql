@@ -141,7 +141,7 @@ static void extract(const char *filename) {
 }
 
 
-int main(int argc, const char *argv[]) {
+int libarchive_test(int argc, const char **argv) {
     extract(argv[1]);
     return 0;
 }

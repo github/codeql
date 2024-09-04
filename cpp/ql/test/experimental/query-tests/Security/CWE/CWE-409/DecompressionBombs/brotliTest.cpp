@@ -26,7 +26,7 @@ namespace std {
     }
 }
 
-int main(int argc, const char *argv[]) {
+int brotli_test(int argc, const char **argv) {
     uint8_t *output = nullptr;
     BrotliDecoderDecompress(1024 * 1024, (uint8_t *) argv[2],
                             reinterpret_cast<size_t *>(1024 * 1024 * 1024), output);

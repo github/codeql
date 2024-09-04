@@ -165,7 +165,7 @@ bool InflateString(const unsigned char *input, const unsigned char *output, size
     return result == Z_OK;
 }
 
-int main(int argc, char **argv) {
+int zlib_test(int argc, char **argv) {
     UnsafeGzfread(argv[2]);
     UnsafeGzgets(argv[2]);
     UnsafeInflate(argv[2]);
