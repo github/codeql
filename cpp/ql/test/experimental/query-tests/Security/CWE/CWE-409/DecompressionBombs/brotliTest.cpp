@@ -25,13 +25,13 @@ namespace std {
 
 int brotli_test(int argc, const char **argv) {
     uint8_t *output = nullptr;
-    BrotliDecoderDecompress(1024 * 1024, (uint8_t *) argv[2],
+    BrotliDecoderDecompress(1024 * 1024, (uint8_t *) argv[2], // BAD
                             reinterpret_cast<size_t *>(1024 * 1024 * 1024), output);
     uint8_t **output2 = nullptr;
     const uint8_t **input2 = nullptr;
     std::strncpy(reinterpret_cast<char *>(input2), argv[2], 32);
     BrotliDecoderDecompressStream(0, reinterpret_cast<size_t *>(1024 * 1024),
-                                  input2, reinterpret_cast<size_t *>(1024 * 1024 * 1024),
+                                  input2, reinterpret_cast<size_t *>(1024 * 1024 * 1024), // BAD
                                   output2,
                                   reinterpret_cast<size_t *>(1024 * 1024 * 1024));
     return 0;

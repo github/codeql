@@ -53,7 +53,7 @@ static int copy_data(struct archive *ar, struct archive *aw) {
     la_int64_t offset;
 
     for (;;) {
-        archive_read_data_block(ar, &buff, &size, &offset);
+        archive_read_data_block(ar, &buff, &size, &offset); // BAD
         if (r == ARCHIVE_EOF)
             return (ARCHIVE_OK);
         if (r < ARCHIVE_OK)

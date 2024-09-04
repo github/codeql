@@ -67,7 +67,7 @@ int UnsafeInflate(char *a) {
     // uLong  total_out; /* total number of bytes output so far */
     // the actual DE-compression work.
     inflateInit(&infstream);
-    inflate(&infstream, Z_NO_FLUSH);
+    inflate(&infstream, Z_NO_FLUSH); // BAD
     inflateEnd(&infstream);
 
 
@@ -98,7 +98,7 @@ int UnsafeGzread(char *fileName) {
     unsigned char unzipBuffer[8192];
     unsigned int unzippedBytes;
     while (true) {
-        unzippedBytes = gzread(inFileZ, unzipBuffer, 8192);
+        unzippedBytes = gzread(inFileZ, unzipBuffer, 8192); // BAD
         if (unzippedBytes > 0) {
             std::cout << unzippedBytes;
         } else {
@@ -118,7 +118,7 @@ int UnsafeGzfread(char *fileName) {
     }
     while (true) {
         char buffer[1000];
-        if (!gzfread(buffer, 999, 1, inFileZ)) {
+        if (!gzfread(buffer, 999, 1, inFileZ)) { // BAD
             break;
         }
     }
@@ -136,7 +136,7 @@ int UnsafeGzgets(char *fileName) {
     char *buffer = new char[4000000000];
     char *result;
     while (true) {
-        result = gzgets(inFileZ, buffer, 1000000000);
+        result = gzgets(inFileZ, buffer, 1000000000); // BAD
         if (result == nullptr) {
             break;
         }
@@ -160,7 +160,7 @@ bool InflateString(const unsigned char *input, const unsigned char *output, size
     destination_length = (uLong) output_length;
 
     int result = uncompress((Bytef *) output, &destination_length,
-                            (Bytef *) input, source_length);
+                            (Bytef *) input, source_length); // BAD
 
     return result == Z_OK;
 }

@@ -37,7 +37,7 @@ int minizip_test(int argc, const char **argv) {
     int32_t err;
     char buf[4096];
     do {
-        bytes_read = mz_zip_entry_read(zip_handle, (char *) argv[1], sizeof(buf));
+        bytes_read = mz_zip_entry_read(zip_handle, (char *) argv[1], sizeof(buf)); // BAD
         if (bytes_read < 0) {
             err = bytes_read;
         }
@@ -55,7 +55,7 @@ int minizip_test(int argc, const char **argv) {
     mz_stream_os_open(entry_stream, entry_path, 1);
     int file_stream;
     int mz_stream_os_write;
-    mz_zip_reader_entry_save(zip_reader, file_stream, mz_stream_os_write);
+    mz_zip_reader_entry_save(zip_reader, file_stream, mz_stream_os_write); // BAD
     // the above sink is same as "mz_zip_reader_entry_save", "mz_zip_reader_entry_read", "mz_zip_reader_entry_save_process",
     // "mz_zip_reader_entry_save_file", "mz_zip_reader_entry_save_buffer", "mz_zip_reader_save_all" and "mz_zip_entry_read" functions
     mz_stream_os_close(entry_stream);
@@ -64,7 +64,7 @@ int minizip_test(int argc, const char **argv) {
     mz_zip_reader_delete(&zip_reader);
 
 
-    UnzOpen(argv[3]);
+    UnzOpen(argv[3]); // BAD
     return 0;
 }
 
