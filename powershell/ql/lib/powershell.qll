@@ -45,12 +45,15 @@ import semmle.code.powershell.ContinueStmt
 import semmle.code.powershell.BreakStmt
 import semmle.code.powershell.ReturnStmt
 import semmle.code.powershell.UsingStmt
+import semmle.code.powershell.ThrowStmt
+import semmle.code.powershell.ErrorStmt
 import semmle.code.powershell.Type
 import semmle.code.powershell.Member
 import semmle.code.powershell.PropertyMember
 import semmle.code.powershell.Function
 import semmle.code.powershell.TryStmt
 import semmle.code.powershell.IfStmt
+import semmle.code.powershell.SwitchStmt
 import semmle.code.powershell.ExitStmt
 import semmle.code.powershell.LabeledStmt
 import semmle.code.powershell.DynamicStmt
@@ -66,5 +69,11 @@ import semmle.code.powershell.ParenExpression
 import semmle.code.powershell.Chainable
 import semmle.code.powershell.Pipeline
 import semmle.code.powershell.StringConstantExpression
+import semmle.code.powershell.MemberExpr
 import semmle.code.powershell.InvokeMemberExpression
+import semmle.code.powershell.SubExpression
+import semmle.code.powershell.ConvertExpr
+import semmle.code.powershell.IndexExpr
+import semmle.code.powershell.HashTable
+import semmle.code.powershell.SplitExpr
 import semmle.code.powershell.CommentEntity

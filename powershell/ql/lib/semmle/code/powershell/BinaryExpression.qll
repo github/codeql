@@ -86,6 +86,10 @@ abstract private class AbstractCaseInsensitiveComparisonExpr extends AbstractCom
 
 final class CaseInsensitiveComparisonExpr = AbstractCaseInsensitiveComparisonExpr;
 
+abstract private class AbstractCaseSensitiveComparisonExpr extends AbstractComparisonExpr { }
+
+final class CaseSensitiveComparisonExpr = AbstractCaseSensitiveComparisonExpr;
+
 class EqExpr extends AbstractCaseInsensitiveComparisonExpr {
   EqExpr() { this.getKind() = 60 }
 
@@ -98,11 +102,29 @@ class NeExpr extends AbstractCaseInsensitiveComparisonExpr {
   final override string toString() { result = "... -ne ..." }
 }
 
+class CEqExpr extends AbstractCaseSensitiveComparisonExpr {
+  CEqExpr() { this.getKind() = 76 }
+
+  final override string toString() { result = "... -ceq ..." }
+}
+
+class CNeExpr extends AbstractCaseSensitiveComparisonExpr {
+  CNeExpr() { this.getKind() = 77 }
+
+  final override string toString() { result = "... -cne ..." }
+}
+
 abstract private class AbstractRelationalExpr extends AbstractComparisonExpr { }
 
 final class RelationalExpr = AbstractRelationalExpr;
 
 abstract private class AbstractCaseInsensitiveRelationalExpr extends AbstractRelationalExpr { }
+
+final class CaseInsensitiveRelationalExpr = AbstractCaseInsensitiveRelationalExpr;
+
+abstract private class AbstractCaseSensitiveRelationalExpr extends AbstractRelationalExpr { }
+
+final class CaseSensitiveRelationalExpr = AbstractCaseSensitiveRelationalExpr;
 
 class GeExpr extends AbstractCaseInsensitiveRelationalExpr {
   GeExpr() { this.getKind() = 62 }
@@ -126,6 +148,30 @@ class LeExpr extends AbstractCaseInsensitiveRelationalExpr {
   LeExpr() { this.getKind() = 65 }
 
   final override string toString() { result = "... -le ..." }
+}
+
+class CGeExpr extends AbstractCaseSensitiveRelationalExpr {
+  CGeExpr() { this.getKind() = 78 }
+
+  final override string toString() { result = "... -cge ..." }
+}
+
+class CGtExpr extends AbstractCaseSensitiveRelationalExpr {
+  CGtExpr() { this.getKind() = 79 }
+
+  final override string toString() { result = "... -cgt ..." }
+}
+
+class CLtExpr extends AbstractCaseSensitiveRelationalExpr {
+  CLtExpr() { this.getKind() = 80 }
+
+  final override string toString() { result = "... -clt ..." }
+}
+
+class CLeExpr extends AbstractCaseSensitiveRelationalExpr {
+  CLeExpr() { this.getKind() = 81 }
+
+  final override string toString() { result = "... -cle ..." }
 }
 
 class LikeExpr extends AbstractCaseInsensitiveComparisonExpr {
@@ -238,18 +284,20 @@ class LogicalXorExpr extends AbstractLogicalBinaryExpr {
   final override string toString() { result = "... -xor ..." }
 }
 
-abstract private class AbstractStringExpr extends BinaryExpr { }
-
-final class StringExpr = AbstractStringExpr;
-
-class JoinExpr extends AbstractStringExpr {
+class JoinExpr extends BinaryExpr {
   JoinExpr() { this.getKind() = 59 }
 
   final override string toString() { result = "... -join ..." }
 }
 
-class SplitExpr extends AbstractStringExpr {
-  SplitExpr() { this.getKind() = 75 }
+class SequenceExpr extends BinaryExpr {
+  SequenceExpr() { this.getKind() = 33 }
 
-  final override string toString() { result = "... -split ..." }
+  final override string toString() { result = "[..]" }
+}
+
+class FormatExpr extends BinaryExpr {
+  FormatExpr() { this.getKind() = 50 }
+
+  final override string toString() { result = "... -f ..." }
 }
