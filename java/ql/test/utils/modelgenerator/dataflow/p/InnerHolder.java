@@ -37,8 +37,14 @@ public final class InnerHolder {
   }
 
   // summary=p;InnerHolder;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
-  // contentbased-summary=p;InnerHolder;false;getValue;();;Argument[this].SyntheticField[p.InnerHolder.context].SyntheticField[p.InnerHolder$Context.value];ReturnValue;value;df-generated
+  // contentbased-summary=p;InnerHolder;false;getValue;();;Argument[this].SyntheticField[p.InnerHolder.sb];ReturnValue;taint;df-generated
   public String getValue() {
+    return sb.toString();
+  }
+
+  // summary=p;InnerHolder;false;getContextValue;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;InnerHolder;false;getContextValue;();;Argument[this].SyntheticField[p.InnerHolder.context].SyntheticField[p.InnerHolder$Context.value];ReturnValue;value;df-generated
+  public String getContextValue() {
     return context.getValue();
   }
 }
