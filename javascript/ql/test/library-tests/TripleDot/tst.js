@@ -138,3 +138,28 @@ function t13() {
     }
     target("safe", ...source('t13.1'));
 }
+
+function t14() {
+    function target(x, y, ...rest) {
+        sink(x); // $ hasValueFlow=t14.1
+        sink(y); // $ hasValueFlow=t14.1
+        sink(rest.pop()); // $ hasValueFlow=t14.1
+        sink(rest); // $ hasTaintFlow=t14.1
+    }
+    const args = new Array(Math.floor(Math.random() * 10));
+    args.push(source('t14.1'));
+    target(...args);
+}
+
+function t15() {
+    function target(safe, x, y, ...rest) {
+        sink(safe); // $ SPURIOUS: hasTaintFlow=t15.1
+        sink(x); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
+        sink(y); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
+        sink(rest.pop()); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
+        sink(rest); // $ hasTaintFlow=t15.1
+    }
+    const args = new Array(Math.floor(Math.random() * 10));
+    args.push(source('t15.1'));
+    target('safe', ...args);
+}
