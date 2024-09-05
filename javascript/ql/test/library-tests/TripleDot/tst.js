@@ -163,3 +163,12 @@ function t15() {
     args.push(source('t15.1'));
     target('safe', ...args);
 }
+
+function t16() {
+    let array = new Array(Math.floor(Math.random() * 10))
+    array.push(source("t16.1"));
+    sink(array[0]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
+    sink(array[1]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
+    sink(array[2]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
+    sink(array); // $ hasTaintFlow=t16.1
+}
