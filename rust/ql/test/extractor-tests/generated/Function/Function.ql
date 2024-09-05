@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from Function x, string getName
+from Function x, string getName, Expr getBody
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getName = x.getName()
-select x, "getName:", getName
+  getName = x.getName() and
+  getBody = x.getBody()
+select x, "getName:", getName, "getBody:", getBody

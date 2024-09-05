@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Declaration
+import codeql.rust.elements.Expr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Function` and should not
@@ -24,5 +25,13 @@ module Generated {
      * Gets the name of this function.
      */
     string getName() { result = Synth::convertFunctionToRaw(this).(Raw::Function).getName() }
+
+    /**
+     * Gets the body of this function.
+     */
+    Expr getBody() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getBody())
+    }
   }
 }

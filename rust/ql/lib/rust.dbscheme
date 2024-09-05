@@ -29,6 +29,11 @@ files(
 
 @locatable =
   @declaration
+| @expr
+| @match_arm
+| @pat
+| @stmt
+| @type_ref
 ;
 
 #keyset[id]
@@ -64,9 +69,373 @@ db_locations(
 | @module
 ;
 
+@expr =
+  @array
+| @await
+| @become
+| @binary_op
+| @block
+| @box
+| @break
+| @call
+| @cast
+| @closure
+| @const
+| @continue
+| @field
+| @if
+| @index
+| @inline_asm
+| @let
+| @literal
+| @loop
+| @match
+| @method_call
+| @missing_expr
+| @offset_of
+| @path
+| @range
+| @record_lit
+| @ref
+| @return
+| @tuple
+| @unary_expr
+| @underscore
+| @yeet
+| @yield
+;
+
+match_arms(
+  unique int id: @match_arm,
+  int pat: @pat ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+match_arm_guards(
+  int id: @match_arm ref,
+  int guard: @expr ref
+);
+
+@pat =
+  @bind_pat
+| @box_pat
+| @const_block_pat
+| @lit_pat
+| @missing_pat
+| @or_pat
+| @path_pat
+| @range_pat
+| @record_pat
+| @ref_pat
+| @slice_pat
+| @tuple_pat
+| @tuple_struct_pat
+| @wild_pat
+;
+
+@stmt =
+  @expr_stmt
+| @if_let
+| @item_stmt
+;
+
+type_refs(
+  unique int id: @type_ref
+);
+
+arrays(
+  unique int id: @array
+);
+
+awaits(
+  unique int id: @await,
+  int expr: @expr ref
+);
+
+becomes(
+  unique int id: @become,
+  int expr: @expr ref
+);
+
+binary_ops(
+  unique int id: @binary_op,
+  int lhs: @expr ref,
+  int rhs: @expr ref
+);
+
+#keyset[id]
+binary_op_ops(
+  int id: @binary_op ref,
+  string op: string ref
+);
+
+bind_pats(
+  unique int id: @bind_pat,
+  string binding_id: string ref
+);
+
+#keyset[id]
+bind_pat_subpats(
+  int id: @bind_pat ref,
+  int subpat: @pat ref
+);
+
+@block =
+  @async
+| @unsafe
+;
+
+#keyset[id, index]
+block_statements(
+  int id: @block ref,
+  int index: int ref,
+  int statement: @stmt ref
+);
+
+#keyset[id]
+block_tails(
+  int id: @block ref,
+  int tail: @expr ref
+);
+
+#keyset[id]
+block_labels(
+  int id: @block ref,
+  string label: string ref
+);
+
+boxes(
+  unique int id: @box,
+  int expr: @expr ref
+);
+
+box_pats(
+  unique int id: @box_pat,
+  int inner: @pat ref
+);
+
+breaks(
+  unique int id: @break
+);
+
+#keyset[id]
+break_exprs(
+  int id: @break ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+break_labels(
+  int id: @break ref,
+  string label: string ref
+);
+
+calls(
+  unique int id: @call,
+  int callee: @expr ref
+);
+
+#keyset[id, index]
+call_args(
+  int id: @call ref,
+  int index: int ref,
+  int arg: @expr ref
+);
+
+#keyset[id]
+call_is_assignee_expr(
+  int id: @call ref
+);
+
+casts(
+  unique int id: @cast,
+  int expr: @expr ref,
+  int type_ref: @type_ref ref
+);
+
+closures(
+  unique int id: @closure,
+  int body: @expr ref
+);
+
+#keyset[id, index]
+closure_args(
+  int id: @closure ref,
+  int index: int ref,
+  int arg: @pat ref
+);
+
+#keyset[id, index]
+closure_arg_types(
+  int id: @closure ref,
+  int index: int ref,
+  int arg_type: @type_ref ref
+);
+
+#keyset[id]
+closure_ret_types(
+  int id: @closure ref,
+  int ret_type: @type_ref ref
+);
+
+#keyset[id]
+closure_is_move(
+  int id: @closure ref
+);
+
+consts(
+  unique int id: @const
+);
+
+const_block_pats(
+  unique int id: @const_block_pat,
+  int expr: @expr ref
+);
+
+continues(
+  unique int id: @continue
+);
+
+#keyset[id]
+continue_labels(
+  int id: @continue ref,
+  string label: string ref
+);
+
+expr_stmts(
+  unique int id: @expr_stmt,
+  int expr: @expr ref
+);
+
+#keyset[id]
+expr_stmt_has_semi(
+  int id: @expr_stmt ref
+);
+
+fields(
+  unique int id: @field,
+  int expr: @expr ref,
+  string name: string ref
+);
+
 functions(
   unique int id: @function,
-  string name: string ref
+  string name: string ref,
+  int body: @expr ref
+);
+
+ifs(
+  unique int id: @if,
+  int condition: @expr ref,
+  int then_branch: @expr ref
+);
+
+#keyset[id]
+if_else_branches(
+  int id: @if ref,
+  int else_branch: @expr ref
+);
+
+if_lets(
+  unique int id: @if_let,
+  int pat: @pat ref
+);
+
+#keyset[id]
+if_let_type_refs(
+  int id: @if_let ref,
+  int type_ref: @type_ref ref
+);
+
+#keyset[id]
+if_let_initializers(
+  int id: @if_let ref,
+  int initializer: @expr ref
+);
+
+#keyset[id]
+if_let_else_branches(
+  int id: @if_let ref,
+  int else_branch: @expr ref
+);
+
+indices(
+  unique int id: @index,
+  int base: @expr ref,
+  int index: @expr ref
+);
+
+#keyset[id]
+index_is_assignee_expr(
+  int id: @index ref
+);
+
+inline_asms(
+  unique int id: @inline_asm
+);
+
+item_stmts(
+  unique int id: @item_stmt
+);
+
+lets(
+  unique int id: @let,
+  int pat: @pat ref,
+  int expr: @expr ref
+);
+
+lit_pats(
+  unique int id: @lit_pat,
+  int expr: @expr ref
+);
+
+literals(
+  unique int id: @literal
+);
+
+loops(
+  unique int id: @loop,
+  int body: @expr ref
+);
+
+#keyset[id]
+loop_labels(
+  int id: @loop ref,
+  string label: string ref
+);
+
+matches(
+  unique int id: @match,
+  int expr: @expr ref
+);
+
+#keyset[id, index]
+match_branches(
+  int id: @match ref,
+  int index: int ref,
+  int branch: @match_arm ref
+);
+
+method_calls(
+  unique int id: @method_call,
+  int receiver: @expr ref,
+  string method_name: string ref
+);
+
+#keyset[id, index]
+method_call_args(
+  int id: @method_call ref,
+  int index: int ref,
+  int arg: @expr ref
+);
+
+missing_exprs(
+  unique int id: @missing_expr
+);
+
+missing_pats(
+  unique int id: @missing_pat
 );
 
 modules(
@@ -78,4 +447,197 @@ module_declarations(
   int id: @module ref,
   int index: int ref,
   int declaration: @declaration ref
+);
+
+offset_ofs(
+  unique int id: @offset_of
+);
+
+or_pats(
+  unique int id: @or_pat
+);
+
+#keyset[id, index]
+or_pat_args(
+  int id: @or_pat ref,
+  int index: int ref,
+  int arg: @pat ref
+);
+
+paths(
+  unique int id: @path
+);
+
+path_pats(
+  unique int id: @path_pat
+);
+
+ranges(
+  unique int id: @range
+);
+
+#keyset[id]
+range_lhs(
+  int id: @range ref,
+  int lhs: @expr ref
+);
+
+#keyset[id]
+range_rhs(
+  int id: @range ref,
+  int rhs: @expr ref
+);
+
+#keyset[id]
+range_is_inclusive(
+  int id: @range ref
+);
+
+range_pats(
+  unique int id: @range_pat
+);
+
+#keyset[id]
+range_pat_starts(
+  int id: @range_pat ref,
+  int start: @pat ref
+);
+
+#keyset[id]
+range_pat_ends(
+  int id: @range_pat ref,
+  int end: @pat ref
+);
+
+record_lits(
+  unique int id: @record_lit
+);
+
+record_pats(
+  unique int id: @record_pat
+);
+
+refs(
+  unique int id: @ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+ref_is_raw(
+  int id: @ref ref
+);
+
+#keyset[id]
+ref_is_mut(
+  int id: @ref ref
+);
+
+ref_pats(
+  unique int id: @ref_pat,
+  int pat: @pat ref
+);
+
+#keyset[id]
+ref_pat_is_mut(
+  int id: @ref_pat ref
+);
+
+returns(
+  unique int id: @return
+);
+
+#keyset[id]
+return_exprs(
+  int id: @return ref,
+  int expr: @expr ref
+);
+
+slice_pats(
+  unique int id: @slice_pat
+);
+
+#keyset[id, index]
+slice_pat_prefixes(
+  int id: @slice_pat ref,
+  int index: int ref,
+  int prefix: @pat ref
+);
+
+tuples(
+  unique int id: @tuple
+);
+
+#keyset[id, index]
+tuple_exprs(
+  int id: @tuple ref,
+  int index: int ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+tuple_is_assignee_expr(
+  int id: @tuple ref
+);
+
+tuple_pats(
+  unique int id: @tuple_pat
+);
+
+#keyset[id, index]
+tuple_pat_args(
+  int id: @tuple_pat ref,
+  int index: int ref,
+  int arg: @pat ref
+);
+
+#keyset[id]
+tuple_pat_ellipses(
+  int id: @tuple_pat ref,
+  int ellipsis: int ref
+);
+
+tuple_struct_pats(
+  unique int id: @tuple_struct_pat
+);
+
+unary_exprs(
+  unique int id: @unary_expr,
+  int expr: @expr ref,
+  string op: string ref
+);
+
+underscores(
+  unique int id: @underscore
+);
+
+wild_pats(
+  unique int id: @wild_pat
+);
+
+yeets(
+  unique int id: @yeet
+);
+
+#keyset[id]
+yeet_exprs(
+  int id: @yeet ref,
+  int expr: @expr ref
+);
+
+yields(
+  unique int id: @yield
+);
+
+#keyset[id]
+yield_exprs(
+  int id: @yield ref,
+  int expr: @expr ref
+);
+
+asyncs(
+  unique int id: @async
+);
+
+unsaves(
+  unique int id: @unsafe
 );
