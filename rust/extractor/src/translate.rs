@@ -94,10 +94,15 @@ impl CrateTranslator<'_> {
             ModuleDef::Function(function) => {
                 let name = function.name(self.db);
                 let location = self.emit_location(function);
+                let body = self.trap.emit(generated::MissingExpr {
+                    id: TrapId::Star,
+                    location: None,
+                });
                 labels.push(self.trap.emit(generated::Function {
                     id: trap_key![module_label, name.as_str()],
                     location,
                     name: name.as_str().into(),
+                    body,
                 }));
             }
             ModuleDef::Adt(_) => {}
