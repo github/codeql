@@ -367,8 +367,9 @@ OLD: KE1
     }
 */
 
-    /** Gets a label for the location of `e`. */
-    fun getLocation(e: PsiElement): Label<DbLocation> {
+    private data class Location(val startLine: Int, val startColumn: Int, val endLine: Int, val endColumn: Int)
+
+    private fun getLocationInfo(e: PsiElement): Location {
         val range = e.getTextRange()
         val document = e.getContainingFile().getViewProvider().getDocument()
         val start = range.getStartOffset()
@@ -377,7 +378,14 @@ OLD: KE1
         val end = range.getEndOffset()
         val endLine0 = document.getLineNumber(end)
         val endCol1 = end - document.getLineStartOffset(endLine0)
-        return getLocation(fileId, startLine0 + 1, startCol0 + 1, endLine0 + 1, endCol1)
+        // TODO: unknown/synthetic locations?
+        return Location(startLine0 + 1, startCol0 + 1, endLine0 + 1, endCol1)
+    }
+
+    /** Gets a label for the location of `e`. */
+    fun getLocation(e: PsiElement): Label<DbLocation> {
+        val loc = getLocationInfo(e)
+        return getLocation(fileId, loc.startLine, loc.startColumn, loc.endLine, loc.endColumn)
     }
 
 /*
@@ -395,19 +403,27 @@ OLD: KE1
         // we can do is return a whole-file location.
         return getWholeFileLocation()
     }
+*/
+
     /**
      * Gets the location of `e` as a human-readable string. Only used in log messages and exception
      * messages.
      */
-    open fun getLocationString(e: IrElement): String {
+    /* TODO open */ fun getLocationString(e: PsiElement): String {
+        val loc = getLocationInfo(e)
+        return "file://$filePath:${loc.startLine}:${loc.startColumn}:${loc.endLine}:${loc.endColumn}"
+
+/*
+OLD: KE1
         // We don't have a FileEntry to look up the offsets in, so all
         // we can do is return a whole-file location. We omit the
         // `:0:0:0:0` so that it is easy to distinguish from a location
         // where we have actually determined the start/end lines/columns
         // to be 0.
         return "file://$filePath"
-    }
 */
+    }
+
     /** Gets a label for the location representing the whole of this file. */
     fun getWholeFileLocation(): Label<DbLocation> {
         return getWholeFileLocation(fileId)

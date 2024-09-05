@@ -5447,46 +5447,48 @@ OLD: KE1
 
     abstract inner class StmtExprParent {
         abstract fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent
-/*
-OLD: KE1
-        abstract fun expr(e: IrExpression, callable: Label<out DbCallable>): ExprParent
-*/
+        abstract fun expr(e: KtExpression, callable: Label<out DbCallable>): ExprParent
     }
 
     inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int) : StmtExprParent() {
         override fun stmt(e: KtExpression, callable: Label<out DbCallable>) = this
 
-/*
-OLD: KE1
-        override fun expr(e: IrExpression, callable: Label<out DbCallable>) =
+        override fun expr(e: KtExpression, callable: Label<out DbCallable>) =
             extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
                 ExprParent(id, 0, id)
             }
-*/
     }
 
-/*
-OLD: KE1
     inner class ExprParent(
         val parent: Label<out DbExprparent>,
         val idx: Int,
         val enclosingStmt: Label<out DbStmt>
     ) : StmtExprParent() {
-        override fun stmt(e: IrExpression, callable: Label<out DbCallable>): StmtParent {
+        override fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent {
             val id = tw.getFreshIdLabel<DbStmtexpr>()
-            val type = useType(e.type)
-            val locId = tw.getLocation(e)
-            tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
+            val et = e.expressionType
+            if (et != null) {
+                val type = useType(et)
+                val locId = tw.getLocation(e)
+                tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
+            } else {
+                logger.errorElement("Unexpected null type: ${e.javaClass}", e)
+            }
+/*
+OLD: KE1
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, locId, callable, enclosingStmt)
+*/
             return StmtParent(id, 0)
         }
 
-        override fun expr(e: IrExpression, callable: Label<out DbCallable>): ExprParent {
+        override fun expr(e: KtExpression, callable: Label<out DbCallable>): ExprParent {
             return this
         }
     }
 
+/*
+OLD: KE1
     private fun getStatementOriginOperator(origin: IrStatementOrigin?) =
         when (origin) {
             IrStatementOrigin.PLUSEQ -> "plus"
@@ -5816,6 +5818,7 @@ OLD: KE1
 
         return false
     }
+*/
 
     private fun extractExpressionStmt(
         locId: Label<DbLocation>,
@@ -5828,6 +5831,8 @@ OLD: KE1
             tw.writeHasLocation(it, locId)
         }
 
+/*
+OLD: KE1
     private fun extractExpressionStmt(
         e: IrExpression,
         callable: Label<out DbCallable>,
@@ -6029,10 +6034,11 @@ OLD: KE1
                     val locId = tw.getLocation(e)
                     tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
                     tw.writeHasLocation(id, locId)
-/*
-OLD: KE1
-                    extractExpressionExpr(e.value, callable, id, 0, id)
-*/
+                    val returned = e.getReturnedExpression()
+                    if (returned != null) {
+                        extractExpression(returned, callable, ExprParent(id, 0, id))
+                    }
+                    // TODO: e.getLabeledExpression()
                 }
 /*
 OLD: KE1
