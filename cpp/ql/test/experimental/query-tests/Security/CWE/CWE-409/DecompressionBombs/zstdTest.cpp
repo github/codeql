@@ -36,7 +36,7 @@ void zstd_test(int argc, const char **argv) {
         ZSTD_inBuffer input = {buffIn, read, 0};
         while (input.pos < input.size) {
             ZSTD_outBuffer output = {buffOut, buffOutSize, 0};
-            size_t const ret = ZSTD_decompressStream(dctx, &output, &input);
+            size_t const ret = ZSTD_decompressStream(dctx, &output, &input); // BAD  
             CHECK_ZSTD(ret);
         }
     }
