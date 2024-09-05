@@ -1052,7 +1052,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   exists(Function f |
     // When the first parameter is a rest parameter, flow into the rest parameter as a local flow step
     // to ensure we preserve knowledge about array indices
-    (node1 = TStaticParameterArrayNode(f) or node1 = TDynamicParameterArrayNode(f))
+    node1 = TStaticParameterArrayNode(f) or node1 = TDynamicParameterArrayNode(f)
   |
     // rest parameter at initial position
     exists(Parameter rest |
@@ -1163,7 +1163,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElementUnknown()
   )
   or
-  // Prepare to store spread arguments into the dynamic arguments array, when it isn't the initial spread argument
+  // Prepare to store spread arguments into the dynamic arguments array, when it isn't the initial argument
   exists(InvokeExpr invoke, int n, Expr argument, Content storeContent |
     invoke.getArgument(n).stripParens().(SpreadElement).getOperand() = argument and
     n > 0 and // n=0 is handled as a value step
