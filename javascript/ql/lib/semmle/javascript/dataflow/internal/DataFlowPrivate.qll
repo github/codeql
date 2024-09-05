@@ -1173,7 +1173,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     then
       c = ContentSet::arrayElement() and // unknown start index when not the first spread operator
       storeContent.isUnknownArrayElement()
-    else storeContent.asArrayIndex() = n + c.asArrayIndex()
+    else (
+      storeContent.asArrayIndex() = n + c.asArrayIndex()
+      or
+      storeContent.isUnknownArrayElement() and c.asSingleton() = storeContent
+    )
   )
   or
   exists(FlowSummaryNode parameter, ParameterPosition pos |

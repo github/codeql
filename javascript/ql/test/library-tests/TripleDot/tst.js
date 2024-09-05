@@ -153,10 +153,10 @@ function t14() {
 
 function t15() {
     function target(safe, x, y, ...rest) {
-        sink(safe); // $ SPURIOUS: hasTaintFlow=t15.1
-        sink(x); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
-        sink(y); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
-        sink(rest.pop()); // $ MISSING: hasValueFlow=t15.1 SPURIOUS: hasTaintFlow=t15.1
+        sink(safe); // $ SPURIOUS: hasValueFlow=t15.1
+        sink(x); // $ hasValueFlow=t15.1
+        sink(y); // $ hasValueFlow=t15.1
+        sink(rest.pop()); // $ hasValueFlow=t15.1
         sink(rest); // $ hasTaintFlow=t15.1
     }
     const args = new Array(Math.floor(Math.random() * 10));
