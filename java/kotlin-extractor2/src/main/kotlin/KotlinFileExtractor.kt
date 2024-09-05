@@ -7109,7 +7109,6 @@ OLD: KE1
                     t.isLongType -> {
                         // OLD: KE1: Was: exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
                         tw.getFreshIdLabel<DbLongliteral>().also { id ->
-                            val t = e.expressionType
                             if (t == null) {
                                 TODO()
                             }
