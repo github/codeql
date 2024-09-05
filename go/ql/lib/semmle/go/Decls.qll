@@ -667,7 +667,7 @@ class ReceiverDecl extends FieldBase, Documentable, ExprParent {
  * func f4(input string) (output string, err error) { return}
  * func f5(e error) (x, y int) { return }
  * ```
- * 
+ *
  * Note: `x, y int` is a single `ResultVariableDecl` even though it declares
  * two different result variables. Use the member predicate `getTypeExpr()` to
  * get `int`, `getNameExpr(0)` to get `x` and `getNameExpr(1)` to get `y`.
