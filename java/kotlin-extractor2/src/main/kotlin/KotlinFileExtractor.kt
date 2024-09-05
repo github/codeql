@@ -2,8 +2,10 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.parsing.parseNumericLiteral
 
 /*
 OLD: KE1
@@ -890,7 +892,7 @@ OLD: KE1
 
         return when (v) {
             is IrConst<*> -> {
-                extractConstant(v, parent, idx, null, null, overrideId = exprId())
+                extractConstant(v, null, parent, idx, null, overrideId = exprId())
             }
             is IrGetEnumValue -> {
                 extractEnumValue(
@@ -2948,9 +2950,8 @@ OLD: KE1
 /*
 OLD: KE1
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
-                else -> extractExpressionBody(b, callable)
 */
-                else -> {} // TODO
+                else -> extractExpressionBody(b, callable)
             }
         }
     }
@@ -2987,17 +2988,19 @@ OLD: KE1
             }
         }
     }
+*/
 
-    private fun extractExpressionBody(b: IrExpressionBody, callable: Label<out DbCallable>) {
-        with("expression body", b) {
-            val locId = tw.getLocation(b)
+    private fun extractExpressionBody(e: KtExpression, callable: Label<out DbCallable>) {
+        with("expression body", e) {
+            val locId = tw.getLocation(e)
             extractExpressionBody(callable, locId).also { returnId ->
-                extractExpressionExpr(b.expression, callable, returnId, 0, returnId)
+                extractExpression(e, callable, ExprParent(returnId, 0, returnId))
             }
         }
     }
 
-    fun extractExpressionBody(
+    // TODO: Inline this? It used to be public
+    private fun extractExpressionBody(
         callable: Label<out DbCallable>,
         locId: Label<DbLocation>
     ): Label<out DbStmt> {
@@ -3008,6 +3011,8 @@ OLD: KE1
         }
     }
 
+/*
+OLD: KE1
     private fun getVariableLocationProvider(v: IrVariable): IrElement {
         val init = v.initializer
         if (v.startOffset < 0 && init != null) {
@@ -5891,24 +5896,36 @@ OLD: KE1
             tw.writeExprsKotlinType(it, typeResults.kotlinResult.id)
             extractExprContext(it, locId, callable, enclosingStmt)
         }
+*/
 
     private fun extractConstantInteger(
+        text: String,
+        t: KaType,
         v: Number,
         locId: Label<DbLocation>,
         parent: Label<out DbExprparent>,
         idx: Int,
         callable: Label<out DbCallable>?,
         enclosingStmt: Label<out DbStmt>?,
+/*
+OLD: KE1
         overrideId: Label<out DbExpr>? = null
+*/
     ) =
-        exprIdOrFresh<DbIntegerliteral>(overrideId).also {
-            val type = useType(pluginContext.irBuiltIns.intType)
+        // OLD: KE1: Was: exprIdOrFresh<DbIntegerliteral>(overrideId).also {
+        tw.getFreshIdLabel<DbIntegerliteral>().also {
+            val type = useType(t)
             tw.writeExprs_integerliteral(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
-            tw.writeNamestrings(v.toString(), v.toString(), it)
+            tw.writeNamestrings(text, v.toString(), it)
+/*
+OLD: KE1
             extractExprContext(it, locId, callable, enclosingStmt)
+*/
         }
 
+/*
+OLD: KE1
     private fun extractNull(
         t: IrType,
         locId: Label<DbLocation>,
@@ -6164,16 +6181,19 @@ OLD: KE1
                         extractExpressionExpr(a, callable, id, i, exprParent.enclosingStmt)
                     }
                 }
-                is IrConst<*> -> {
+*/
+                is KtConstantExpression -> {
                     val exprParent = parent.expr(e, callable)
                     extractConstant(
                         e,
+                        callable,
                         exprParent.parent,
                         exprParent.idx,
-                        callable,
                         exprParent.enclosingStmt
                     )
                 }
+/*
+OLD: KE1
                 is IrGetValue -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = e.symbol.owner
@@ -7035,39 +7055,91 @@ OLD: KE1
         s.toCharArray().joinToString(separator = "", prefix = "\"", postfix = "\"") { c ->
             escapeCharForQuotedLiteral(c)
         }
+*/
 
     private fun extractConstant(
-        e: IrConst<*>,
+        e: KtConstantExpression,
+        enclosingCallable: Label<out DbCallable>, // OLD: KE1: ?,
+        // TODO: Pass ExprParent rather than these 3?
         parent: Label<out DbExprparent>,
         idx: Int,
-        enclosingCallable: Label<out DbCallable>?,
-        enclosingStmt: Label<out DbStmt>?,
+        enclosingStmt: Label<out DbStmt>, // OLD: KE1: ?,
+/*
+OLD: KE1
         overrideId: Label<out DbExpr>? = null
+*/
     ): Label<out DbExpr>? {
+        val text = e.text
+        if (text == null) {
+            TODO()
+        }
 
-        val v = e.value
-        return when {
-            v is Number && (v is Int || v is Short || v is Byte) -> {
-                extractConstantInteger(
-                    v,
-                    tw.getLocation(e),
-                    parent,
-                    idx,
-                    enclosingCallable,
-                    enclosingStmt,
-                    overrideId = overrideId
-                )
-            }
-            v is Long -> {
-                exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
-                    val type = useType(e.type)
-                    val locId = tw.getLocation(e)
-                    tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                    tw.writeNamestrings(v.toString(), v.toString(), id)
+        val elementType = e.node.elementType
+        when (elementType) {
+            KtNodeTypes.INTEGER_CONSTANT -> {
+                val t = e.expressionType
+                val i = parseNumericLiteral(text, elementType)
+                println("=== parsed")
+                println(text)
+                println(i)
+                println(i?.javaClass)
+                when {
+                    i == null -> {
+                        TODO()
+                    }
+                    t == null -> {
+                        TODO()
+                    }
+                    t.isIntType || t.isShortType || t.isByteType -> {
+                        extractConstantInteger(
+                            text,
+                            t,
+                            i,
+                            tw.getLocation(e),
+                            parent,
+                            idx,
+                            enclosingCallable,
+                            enclosingStmt,
+/*
+OLD: KE1
+                            overrideId = overrideId
+*/
+                        )
+                    }
+                    t.isLongType -> {
+                        // OLD: KE1: Was: exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
+                        tw.getFreshIdLabel<DbLongliteral>().also { id ->
+                            val t = e.expressionType
+                            if (t == null) {
+                                TODO()
+                            }
+                            val type = useType(t)
+                            val locId = tw.getLocation(e)
+                            tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
+                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+/*
+OLD: KE1
+                            extractExprContext(id, locId, enclosingCallable, enclosingStmt)
+*/
+                            tw.writeNamestrings(text, i.toString(), id)
+                        }
+                    }
+                    else -> {
+                        TODO()
+                    }
                 }
             }
+            else -> {
+                TODO()
+            }
+        }
+
+        // TODO: Wrong
+        return null
+/*
+OLD: KE1
+        val v = e.value
+        return when {
             v is Float -> {
                 exprIdOrFresh<DbFloatingpointliteral>(overrideId).also { id ->
                     val type = useType(e.type)
@@ -7133,8 +7205,11 @@ OLD: KE1
                 null.also { logger.errorElement("Unrecognised IrConst: " + v.javaClass, e) }
             }
         }
+*/
     }
 
+/*
+OLD: KE1
     private fun IrValueParameter.isExtensionReceiver(): Boolean {
         val parentFun = parent as? IrFunction ?: return false
         return parentFun.extensionReceiverParameter == this
