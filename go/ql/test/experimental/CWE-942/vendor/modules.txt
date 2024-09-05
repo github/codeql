@@ -1,78 +1,160 @@
-# github.com/gin-contrib/cors v1.4.0
-## explicit
-github.com/gin-contrib/cors
-# github.com/gin-gonic/gin v1.9.1
-## explicit
-github.com/gin-gonic/gin
 # github.com/bytedance/sonic v1.9.1
-## explicit
+## explicit; go 1.15
 github.com/bytedance/sonic
+github.com/bytedance/sonic/ast
+github.com/bytedance/sonic/decoder
+github.com/bytedance/sonic/encoder
+github.com/bytedance/sonic/internal/caching
+github.com/bytedance/sonic/internal/cpu
+github.com/bytedance/sonic/internal/decoder
+github.com/bytedance/sonic/internal/encoder
+github.com/bytedance/sonic/internal/jit
+github.com/bytedance/sonic/internal/loader
+github.com/bytedance/sonic/internal/native
+github.com/bytedance/sonic/internal/native/avx
+github.com/bytedance/sonic/internal/native/avx2
+github.com/bytedance/sonic/internal/native/sse
+github.com/bytedance/sonic/internal/native/types
+github.com/bytedance/sonic/internal/resolver
+github.com/bytedance/sonic/internal/rt
+github.com/bytedance/sonic/loader
+github.com/bytedance/sonic/option
+github.com/bytedance/sonic/unquote
+github.com/bytedance/sonic/utf8
 # github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311
-## explicit
+## explicit; go 1.15
 github.com/chenzhuoyu/base64x
 # github.com/gabriel-vasile/mimetype v1.4.2
-## explicit
+## explicit; go 1.20
 github.com/gabriel-vasile/mimetype
+github.com/gabriel-vasile/mimetype/internal/charset
+github.com/gabriel-vasile/mimetype/internal/json
+github.com/gabriel-vasile/mimetype/internal/magic
+# github.com/gin-contrib/cors v1.4.0
+## explicit; go 1.13
+github.com/gin-contrib/cors
 # github.com/gin-contrib/sse v0.1.0
-## explicit
+## explicit; go 1.12
 github.com/gin-contrib/sse
+# github.com/gin-gonic/gin v1.9.1
+## explicit; go 1.20
+github.com/gin-gonic/gin
+github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/internal/bytesconv
+github.com/gin-gonic/gin/internal/json
+github.com/gin-gonic/gin/render
 # github.com/go-playground/locales v0.14.1
-## explicit
+## explicit; go 1.17
 github.com/go-playground/locales
+github.com/go-playground/locales/currency
 # github.com/go-playground/universal-translator v0.18.1
-## explicit
+## explicit; go 1.18
 github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.14.0
-## explicit
+## explicit; go 1.18
 github.com/go-playground/validator/v10
 # github.com/goccy/go-json v0.10.2
-## explicit
+## explicit; go 1.12
 github.com/goccy/go-json
+github.com/goccy/go-json/internal/decoder
+github.com/goccy/go-json/internal/encoder
+github.com/goccy/go-json/internal/encoder/vm
+github.com/goccy/go-json/internal/encoder/vm_color
+github.com/goccy/go-json/internal/encoder/vm_color_indent
+github.com/goccy/go-json/internal/encoder/vm_indent
+github.com/goccy/go-json/internal/errors
+github.com/goccy/go-json/internal/runtime
 # github.com/json-iterator/go v1.1.12
-## explicit
+## explicit; go 1.12
 github.com/json-iterator/go
 # github.com/klauspost/cpuid/v2 v2.2.4
-## explicit
+## explicit; go 1.15
 github.com/klauspost/cpuid/v2
 # github.com/leodido/go-urn v1.2.4
-## explicit
+## explicit; go 1.16
 github.com/leodido/go-urn
 # github.com/mattn/go-isatty v0.0.19
-## explicit
+## explicit; go 1.15
 github.com/mattn/go-isatty
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
-## explicit
+## explicit; go 1.12
 github.com/modern-go/reflect2
 # github.com/pelletier/go-toml/v2 v2.0.8
-## explicit
+## explicit; go 1.16
 github.com/pelletier/go-toml/v2
+github.com/pelletier/go-toml/v2/internal/characters
+github.com/pelletier/go-toml/v2/internal/danger
+github.com/pelletier/go-toml/v2/internal/tracker
+github.com/pelletier/go-toml/v2/unstable
 # github.com/twitchyliquid64/golang-asm v0.15.1
-## explicit
-github.com/twitchyliquid64/golang-asm
+## explicit; go 1.13
+github.com/twitchyliquid64/golang-asm/asm/arch
+github.com/twitchyliquid64/golang-asm/bio
+github.com/twitchyliquid64/golang-asm/dwarf
+github.com/twitchyliquid64/golang-asm/goobj
+github.com/twitchyliquid64/golang-asm/obj
+github.com/twitchyliquid64/golang-asm/obj/arm
+github.com/twitchyliquid64/golang-asm/obj/arm64
+github.com/twitchyliquid64/golang-asm/obj/mips
+github.com/twitchyliquid64/golang-asm/obj/ppc64
+github.com/twitchyliquid64/golang-asm/obj/riscv
+github.com/twitchyliquid64/golang-asm/obj/s390x
+github.com/twitchyliquid64/golang-asm/obj/wasm
+github.com/twitchyliquid64/golang-asm/obj/x86
+github.com/twitchyliquid64/golang-asm/objabi
+github.com/twitchyliquid64/golang-asm/src
+github.com/twitchyliquid64/golang-asm/sys
+github.com/twitchyliquid64/golang-asm/unsafeheader
 # github.com/ugorji/go/codec v1.2.11
-## explicit
+## explicit; go 1.11
 github.com/ugorji/go/codec
 # golang.org/x/arch v0.3.0
-## explicit
-golang.org/x/arch
-# golang.org/x/crypto v0.9.0
-## explicit
-golang.org/x/crypto
-# golang.org/x/net v0.10.0
-## explicit
-golang.org/x/net
-# golang.org/x/sys v0.8.0
-## explicit
-golang.org/x/sys
-# golang.org/x/text v0.9.0
-## explicit
-golang.org/x/text
+## explicit; go 1.17
+golang.org/x/arch/x86/x86asm
+# golang.org/x/crypto v0.21.0
+## explicit; go 1.18
+golang.org/x/crypto/sha3
+# golang.org/x/net v0.23.0
+## explicit; go 1.18
+golang.org/x/net/html
+golang.org/x/net/html/atom
+golang.org/x/net/http/httpguts
+golang.org/x/net/http2
+golang.org/x/net/http2/h2c
+golang.org/x/net/http2/hpack
+golang.org/x/net/idna
+# golang.org/x/sys v0.18.0
+## explicit; go 1.18
+golang.org/x/sys/cpu
+golang.org/x/sys/unix
+# golang.org/x/text v0.14.0
+## explicit; go 1.18
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/secure/bidirule
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
 # google.golang.org/protobuf v1.30.0
-## explicit
-google.golang.org/protobuf
+## explicit; go 1.11
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genid
+google.golang.org/protobuf/internal/order
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
