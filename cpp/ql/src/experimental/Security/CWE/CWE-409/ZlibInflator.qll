@@ -25,15 +25,13 @@ class NextInMemberStep extends DecompressionFlowStep {
   NextInMemberStep() { this = "NextInMemberStep" }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(Variable nextInVar, VariableAccess zStreamAccess |
+    exists(Variable nextInVar |
       nextInVar.getDeclaringType().hasName("z_stream") and
-      nextInVar.hasName("next_in") and
-      zStreamAccess.getType().hasName("z_stream")
+      nextInVar.hasName("next_in")
     |
-      nextInVar.getAnAccess().getQualifier().(VariableAccess).getTarget() =
-        zStreamAccess.getTarget() and
       node1.asIndirectExpr() = nextInVar.getAnAssignedValue() and
-      node2.asExpr() = zStreamAccess
+      node2.asExpr() =
+        nextInVar.getAnAccess().getQualifier().(VariableAccess).getTarget().getAnAccess()
     )
   }
 }
