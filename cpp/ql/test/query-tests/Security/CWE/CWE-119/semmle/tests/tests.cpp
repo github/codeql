@@ -679,7 +679,7 @@ const MYSTRUCT _myStruct = { 0 };
 typedef const MYSTRUCT& MYSTRUCTREF;
 
 // False positive case due to use of typedefs
-int test27(MYSTRUCTREF g)
+int test28(MYSTRUCTREF g)
 {
 	return memcmp(&g, &_myStruct, sizeof(MYSTRUCT)); // GOOD
 }
