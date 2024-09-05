@@ -7,6 +7,8 @@ use ra_ap_hir::AdtId::{EnumId, StructId, UnionId};
 use ra_ap_hir::{Crate, ModuleDefId};
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_project_model::CargoConfig;
+use ra_ap_project_model::RustLibSource;
+use ra_ap_vfs::AbsPathBuf;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -30,18 +32,19 @@ fn main() -> anyhow::Result<()> {
     };
 
     let config = CargoConfig {
+        sysroot: Some(RustLibSource::Discover),
         ..Default::default()
     };
-    let no_progress = |_| ();
+    let progress = |t| (println!("progress: {}", t));
     let load_config = LoadCargoConfig {
         load_out_dirs_from_check: true,
         with_proc_macro_server: ProcMacroServerChoice::Sysroot,
         prefill_caches: false,
     };
     for input in cfg.inputs {
-        let (db, vfs, _macro_server) =
-            load_workspace_at(&input, &config, &load_config, &no_progress)
-                .context("loading inputs")?;
+        let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &progress)
+            .context("loading inputs")?;
+        _macro_server.expect("no macro server");
         let crates = <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter() {
             let krate = Crate::from(crate_id);
