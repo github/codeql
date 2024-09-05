@@ -41,26 +41,6 @@ private module AuthCookieNameConfig implements DataFlow::ConfigSig {
 private module AuthCookieName = DataFlow::Global<AuthCookieNameConfig>;
 
 /**
- * DEPRECATED: Use `CookieOptionsTracking` instead.
- *
- * Tracks creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)` call as a third parameter.
- */
-deprecated class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
-  CookieOptionsTrackingConfiguration() { this = "CookieOptionsTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(ObjectCreation).getType() instanceof MicrosoftAspNetCoreHttpCookieOptions
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MicrosoftAspNetCoreHttpResponseCookies iResponse, MethodCall mc |
-      iResponse.getAppendMethod() = mc.getTarget() and
-      mc.getArgument(2) = sink.asExpr()
-    )
-  }
-}
-
-/**
  * Configuration module tracking creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)`
  * calls as a third parameter.
  */
@@ -133,28 +113,6 @@ Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
  * Checks if the given property was explicitly set to a value.
  */
 predicate isPropertySet(ObjectCreation oc, string prop) { exists(getAValueForProp(oc, _, prop)) }
-
-/**
- * DEPRECATED: Use `OnAppendCookieSecureTracking` instead.
- *
- * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
- */
-deprecated class OnAppendCookieSecureTrackingConfig extends OnAppendCookieTrackingConfig {
-  OnAppendCookieSecureTrackingConfig() { this = "OnAppendCookieSecureTrackingConfig" }
-
-  override string propertyName() { result = "Secure" }
-}
-
-/**
- * DEPRECATED: Use `OnAppendCookieHttpOnlyTracking` instead.
- *
- * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
- */
-deprecated class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig {
-  OnAppendCookieHttpOnlyTrackingConfig() { this = "OnAppendCookieHttpOnlyTrackingConfig" }
-
-  override string propertyName() { result = "HttpOnly" }
-}
 
 /**
  * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.

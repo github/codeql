@@ -6,7 +6,6 @@ private import java
 private import semmle.code.Location as Location
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.security.PathCreation
 private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs

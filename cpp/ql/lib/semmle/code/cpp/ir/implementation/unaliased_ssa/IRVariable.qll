@@ -50,9 +50,6 @@ abstract private class AbstractIRVariable extends TIRVariable {
    */
   abstract Language::AST getAst();
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = this.getAst() }
-
   /**
    * Gets an identifier string for the variable. This identifier is unique
    * within the function.
@@ -95,9 +92,6 @@ class IRUserVariable extends AbstractIRVariable, TIRUserVariable {
   final override string toString() { result = this.getVariable().toString() }
 
   final override Language::AST getAst() { result = var }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override string getUniqueId() {
     result = this.getVariable().toString() + " " + this.getVariable().getLocation().toString()
@@ -162,9 +156,6 @@ abstract private class AbstractIRGeneratedVariable extends AbstractIRVariable {
   final override Language::LanguageType getLanguageType() { result = type }
 
   final override Language::AST getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
 
   override string toString() { result = this.getBaseString() + this.getLocationString() }
 

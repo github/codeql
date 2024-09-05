@@ -128,6 +128,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
   or
+  // The children of C11 _Generic expressions are just surface syntax.
+  exists(C11GenericExpr generic | generic.getAChild() = expr)
+  or
   // Do not translate implicit destructor calls for unnamed temporary variables that are
   // conditionally constructed (until we have a mechanism for calling these only when the
   // temporary's constructor was run)
@@ -431,6 +434,9 @@ predicate ignoreLoad(Expr expr) {
     or
     // The load is duplicated from the right operand.
     isExtractorFrontendVersion65OrHigher() and expr instanceof CommaExpr
+    or
+    // The load is duplicated from the chosen expression.
+    expr instanceof C11GenericExpr
     or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
@@ -919,9 +925,6 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the AST node being translated.
    */
   abstract Locatable getAst();
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
 
   /** Gets the location of this element. */
   Location getLocation() { result = this.getAst().getLocation() }
