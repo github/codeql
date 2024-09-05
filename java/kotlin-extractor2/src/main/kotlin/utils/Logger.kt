@@ -377,7 +377,7 @@ OLD: KE1
 */
 
     fun errorElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) {
-        val locationString = "TODO" // OLD: KE1: ftw.getLocationString(element)
+        val locationString = ftw.getLocationString(element)
         val mkLocationId = { ftw.getLocation(element) }
         loggerBase.diagnostic(
             ftw.getDiagnosticTrapWriter(),
