@@ -1,7 +1,17 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: sinkModel
     data:
       - ["Microsoft.AspNetCore.Components", "MarkupString", False, "MarkupString", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
       - ["Microsoft.AspNetCore.Components", "MarkupString", False, "op_Explicit", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data: []

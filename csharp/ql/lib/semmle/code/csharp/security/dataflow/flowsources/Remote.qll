@@ -12,7 +12,6 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
-private import semmle.code.csharp.frameworks.microsoft.Blazor
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
@@ -27,7 +26,8 @@ abstract class RemoteFlowSource extends SourceNode {
  * A module for importing frameworks that defines remote flow sources.
  */
 private module RemoteFlowSources {
-  private import semmle.code.csharp.frameworks.ServiceStack
+  private import semmle.code.csharp.frameworks.ServiceStack as ServiceStack
+  private import semmle.code.csharp.frameworks.microsoft.Blazor as Blazor
 }
 
 /** A data flow source of remote user input (ASP.NET). */
@@ -74,33 +74,6 @@ class AspNetQueryStringRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow
   }
 
   override string getSourceType() { result = "ASP.NET query string" }
-}
-
-/** A data flow source of remote user input (ASP.NET Core component query string). */
-class AspNetComponentQueryStringRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ExprNode {
-  AspNetComponentQueryStringRemoteFlowSource() {
-    exists(Property p |
-      p = any(Component c).getACascadingParameterProperty() and
-      p.getAnAttribute().getType() instanceof SupplyParameterFromQueryAttributeClass and
-      this.getExpr() = p.getGetter().getACall()
-    )
-  }
-
-  override string getSourceType() { result = "ASP.NET Core component query string" }
-}
-
-/** A data flow source of remote user input (ASP.NET Core component route parameter). */
-class AspNetComponentRouteParameterRemoteFlowSource extends AspNetRemoteFlowSource,
-  DataFlow::ExprNode
-{
-  AspNetComponentRouteParameterRemoteFlowSource() {
-    exists(Property p |
-      p = any(Component c).getARouteParameterProperty() and
-      this.getExpr() = p.getGetter().getACall()
-    )
-  }
-
-  override string getSourceType() { result = "ASP.NET Core component route parameter" }
 }
 
 /** A data flow source of remote user input (ASP.NET unvalidated request data). */

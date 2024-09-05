@@ -1,8 +1,13 @@
 edges
+| BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | provenance |  |
+| BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | BlazorTest/Components/Pages/TestPage.razor:29:53:29:63 | access to property InputValue1 | provenance |  Sink:MaD:142 |
 nodes
 | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | semmle.label | access to property UrlParam |
 | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | semmle.label | access to property QueryParam |
+| BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | semmle.label | access to property InputValue1 : String |
+| BlazorTest/Components/Pages/TestPage.razor:29:53:29:63 | access to property InputValue1 | semmle.label | access to property InputValue1 |
 subpaths
 #select
 | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam | User-provided value |
 | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam | User-provided value |
+| BlazorTest/Components/Pages/TestPage.razor:29:53:29:63 | access to property InputValue1 | BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | BlazorTest/Components/Pages/TestPage.razor:29:53:29:63 | access to property InputValue1 | $@ flows to here and is written to HTML or JavaScript. | BlazorTest/Components/Pages/TestPage.razor:27:29:27:39 | access to property InputValue1 : String | User-provided value |
