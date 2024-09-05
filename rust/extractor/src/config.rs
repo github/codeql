@@ -1,11 +1,14 @@
-use std::path::PathBuf;
 use anyhow::Context;
-use serde::{Deserialize, Serialize, Serializer, Deserializer};
-use serde_with;
-use figment::{Figment, providers::{Env, Serialized}};
-use clap::{Parser, ArgAction, ValueEnum};
 use clap::builder::PossibleValue;
+use clap::{ArgAction, Parser, ValueEnum};
 use codeql_extractor::trap;
+use figment::{
+    providers::{Env, Serialized},
+    Figment,
+};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde_with;
+use std::path::PathBuf;
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, ValueEnum)]
 #[serde(rename_all = "lowercase")]
@@ -65,11 +68,14 @@ impl Config {
         let mut cli_args = CliArgs::parse();
         if let Some(inputs_file) = cli_args.inputs_file.take() {
             let inputs_list = std::fs::read_to_string(inputs_file).context("reading file list")?;
-            cli_args.inputs.extend(inputs_list.split("\n").map(PathBuf::from));
+            cli_args
+                .inputs
+                .extend(inputs_list.split("\n").map(PathBuf::from));
         }
         Ok(Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Serialized::defaults(cli_args))
-            .extract().context("loading configuration")?)
+            .extract()
+            .context("loading configuration")?)
     }
 }

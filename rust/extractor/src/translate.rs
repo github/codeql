@@ -1,20 +1,20 @@
+use crate::archive::Archiver;
+use crate::trap::{AsTrapKeyPart, TrapFile, TrapId};
+use crate::{generated, trap_key};
+use anyhow;
+use codeql_extractor::trap;
+use ra_ap_hir::HasSource;
+use ra_ap_hir::{Crate, Module, ModuleDef};
+use ra_ap_ide_db::line_index::LineIndex;
+use ra_ap_ide_db::{LineIndexDatabase, RootDatabase};
+use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::AstNode;
+use ra_ap_vfs::{AbsPath, FileId, Vfs};
 use std::collections::HashMap;
 use std::fs;
-use std::path::{PathBuf};
-use crate::trap::{TrapFile, TrapId, AsTrapKeyPart};
-use crate::{generated, trap_key};
-use ra_ap_hir::{Crate, Module, ModuleDef};
-use anyhow;
-use ra_ap_hir::{HasSource};
-use ra_ap_vfs::{AbsPath, FileId, Vfs};
-use ra_ap_syntax::ast::HasName;
-use crate::archive::Archiver;
 use std::io::Result;
+use std::path::PathBuf;
 use triomphe::Arc;
-use ra_ap_ide_db::{LineIndexDatabase, RootDatabase};
-use ra_ap_ide_db::line_index::LineIndex;
-use ra_ap_syntax::AstNode;
-use codeql_extractor::trap;
 
 #[derive(Clone)]
 struct FileData {
@@ -29,7 +29,6 @@ pub struct CrateTranslator<'a> {
     archiver: &'a Archiver,
     file_labels: HashMap<PathBuf, FileData>,
 }
-
 
 impl CrateTranslator<'_> {
     pub fn new<'a>(
@@ -56,9 +55,13 @@ impl CrateTranslator<'_> {
                 self.archiver.archive(&canonical);
                 canonical = fs::canonicalize(&canonical).unwrap_or(canonical);
                 let name = canonical.to_string_lossy();
-                let label = self.trap.emit(generated::DbFile { id: trap_key!["file;", name.as_ref()], name: String::from(name) });
+                let label = self.trap.emit(generated::DbFile {
+                    id: trap_key!["file;", name.as_ref()],
+                    name: String::from(name),
+                });
                 let line_index = <dyn LineIndexDatabase>::line_index(self.db, file_id);
-                self.file_labels.insert(canonical.clone(), FileData { label, line_index });
+                self.file_labels
+                    .insert(canonical.clone(), FileData { label, line_index });
             }
             self.file_labels.get(&canonical).cloned()
         })
@@ -68,7 +71,8 @@ impl CrateTranslator<'_> {
     where
         T::Ast: AstNode,
     {
-        entity.source(self.db)
+        entity
+            .source(self.db)
             .and_then(|source| source.file_id.file_id().map(|f| (f.file_id(), source)))
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
             .and_then(|(data, source)| {
@@ -79,7 +83,12 @@ impl CrateTranslator<'_> {
             })
     }
 
-    fn emit_definition(&mut self, module_label: trap::Label, id: ModuleDef, labels: &mut Vec<trap::Label>) {
+    fn emit_definition(
+        &mut self,
+        module_label: trap::Label,
+        id: ModuleDef,
+        labels: &mut Vec<trap::Label>,
+    ) {
         match id {
             ModuleDef::Module(_) => {}
             ModuleDef::Function(function) => {
@@ -115,7 +124,7 @@ impl CrateTranslator<'_> {
         });
     }
 
-    pub fn emit_crate(&mut self) -> std::io::Result<()>  {
+    pub fn emit_crate(&mut self) -> std::io::Result<()> {
         self.emit_file(self.krate.root_file(self.db));
         let mut map = HashMap::<Module, trap::Label>::new();
         for module in self.krate.modules(self.db) {

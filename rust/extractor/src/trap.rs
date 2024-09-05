@@ -1,14 +1,14 @@
+use crate::config::Compression;
+use crate::generated;
+use crate::{config, path};
+use codeql_extractor::trap;
+use log::{debug, trace};
+use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
 use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
-use log::{debug, trace};
-use crate::{config, path};
-use codeql_extractor::trap;
-use ra_ap_ide_db::line_index::LineCol;
-use crate::config::Compression;
-use crate::generated;
 
 //TODO: typed labels
 pub trait AsTrapKeyPart {
@@ -81,7 +81,12 @@ pub struct TrapFile {
 }
 
 impl TrapFile {
-    pub fn emit_location(&mut self, file_label: trap::Label, start: LineCol, end: LineCol) -> trap::Label {
+    pub fn emit_location(
+        &mut self,
+        file_label: trap::Label,
+        start: LineCol,
+        end: LineCol,
+    ) -> trap::Label {
         let start_line = start.line as usize;
         let start_column = start.col as usize;
         let end_line = end.line as usize;
@@ -119,7 +124,8 @@ impl TrapFile {
 
     pub fn commit(&self) -> std::io::Result<()> {
         std::fs::create_dir_all(self.path.parent().unwrap())?;
-        self.writer.write_to_file(&self.path, self.compression.into())
+        self.writer
+            .write_to_file(&self.path, self.compression.into())
     }
 }
 
@@ -141,11 +147,15 @@ impl TrapFileProvider {
     pub fn create(&self, category: &str, key: &Path) -> TrapFile {
         let mut path = PathBuf::from(category);
         path.push(path::key(key));
-        path.set_extension(path.extension().map(|e| {
-            let mut o: OsString = e.to_owned();
-            o.push(".trap");
-            o
-        }).unwrap_or("trap".into()));
+        path.set_extension(
+            path.extension()
+                .map(|e| {
+                    let mut o: OsString = e.to_owned();
+                    o.push(".trap");
+                    o
+                })
+                .unwrap_or("trap".into()),
+        );
         debug!("creating trap file {}", path.display());
         path = self.trap_dir.join(path);
         TrapFile {

@@ -1,11 +1,11 @@
-use std::path::{Path, PathBuf};
-use std::fs;
 use crate::path;
 use anyhow;
 use log::{debug, warn};
+use std::fs;
+use std::path::{Path, PathBuf};
 
 pub struct Archiver {
-    pub root: PathBuf
+    pub root: PathBuf,
 }
 
 impl Archiver {
@@ -20,7 +20,7 @@ impl Archiver {
         dest.push(path::key(source));
         let parent = dest.parent().unwrap();
         if fs::metadata(&dest).is_ok() {
-            return Ok(())
+            return Ok(());
         }
         fs::create_dir_all(parent)?;
         fs::copy(source, dest)?;
