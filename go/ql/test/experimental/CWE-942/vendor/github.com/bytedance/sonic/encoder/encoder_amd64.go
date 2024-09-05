@@ -1,4 +1,4 @@
-// +build amd64,go1.15,!go1.21
+// +build amd64,go1.16,!go1.23
 
 /*
  * Copyright 2023 ByteDance Inc.
@@ -58,6 +58,13 @@ const (
     // ValidateString indicates that encoder should validate the input string
     // before encoding it into JSON.
     ValidateString Options = encoder.ValidateString
+
+    // NoValidateJSONMarshaler indicates that the encoder should not validate the output string
+    // after encoding the JSONMarshaler to JSON.
+    NoValidateJSONMarshaler Options = encoder.NoValidateJSONMarshaler
+
+    // NoEncoderNewline indicates that the encoder should not add a newline after every message
+    NoEncoderNewline Options = encoder.NoEncoderNewline
 
     // CompatibleWithStd is used to be compatible with std encoder.
     CompatibleWithStd Options = encoder.CompatibleWithStd

@@ -8,13 +8,14 @@ import (
 )
 
 type cors struct {
-	allowAllOrigins  bool
-	allowCredentials bool
-	allowOriginFunc  func(string) bool
-	allowOrigins     []string
-	normalHeaders    http.Header
-	preflightHeaders http.Header
-	wildcardOrigins  [][]string
+	allowAllOrigins           bool
+	allowCredentials          bool
+	allowOriginFunc           func(string) bool
+	allowOrigins              []string
+	normalHeaders             http.Header
+	preflightHeaders          http.Header
+	wildcardOrigins           [][]string
+	optionsResponseStatusCode int
 }
 
 var (
@@ -48,14 +49,19 @@ func newCors(config Config) *cors {
 		}
 	}
 
+	if config.OptionsResponseStatusCode == 0 {
+		config.OptionsResponseStatusCode = http.StatusNoContent
+	}
+
 	return &cors{
-		allowOriginFunc:  config.AllowOriginFunc,
-		allowAllOrigins:  config.AllowAllOrigins,
-		allowCredentials: config.AllowCredentials,
-		allowOrigins:     normalize(config.AllowOrigins),
-		normalHeaders:    generateNormalHeaders(config),
-		preflightHeaders: generatePreflightHeaders(config),
-		wildcardOrigins:  config.parseWildcardRules(),
+		allowOriginFunc:           config.AllowOriginFunc,
+		allowAllOrigins:           config.AllowAllOrigins,
+		allowCredentials:          config.AllowCredentials,
+		allowOrigins:              normalize(config.AllowOrigins),
+		normalHeaders:             generateNormalHeaders(config),
+		preflightHeaders:          generatePreflightHeaders(config),
+		wildcardOrigins:           config.parseWildcardRules(),
+		optionsResponseStatusCode: config.OptionsResponseStatusCode,
 	}
 }
 
@@ -80,7 +86,7 @@ func (cors *cors) applyCors(c *gin.Context) {
 
 	if c.Request.Method == "OPTIONS" {
 		cors.handlePreflight(c)
-		defer c.AbortWithStatus(http.StatusNoContent) // Using 204 is better than 200 when the request status is OPTIONS
+		defer c.AbortWithStatus(cors.optionsResponseStatusCode)
 	} else {
 		cors.handleNormal(c)
 	}

@@ -93,8 +93,10 @@ func encodeJsonMarshaler(buf *[]byte, val json.Marshaler, opt Options) error {
         if opt & CompactMarshaler != 0 {
             return compact(buf, ret)
         }
-        if ok, s := Valid(ret); !ok {
-            return error_marshaler(ret, s)
+        if opt & NoValidateJSONMarshaler == 0 {
+            if ok, s := Valid(ret); !ok {
+                return error_marshaler(ret, s)
+            }
         }
         *buf = append(*buf, ret...)
         return nil
@@ -152,17 +154,17 @@ var (
 )
 
 var (
-    _F_assertI2I = jit.Func(assertI2I)
+    _F_assertI2I = jit.Func(rt.AssertI2I2)
 )
 
 func asText(v unsafe.Pointer) (string, error) {
-    text := assertI2I(_T_encoding_TextMarshaler, *(*rt.GoIface)(v))
+    text := rt.AssertI2I2(_T_encoding_TextMarshaler, *(*rt.GoIface)(v))
     r, e := (*(*encoding.TextMarshaler)(unsafe.Pointer(&text))).MarshalText()
     return rt.Mem2Str(r), e
 }
 
 func asJson(v unsafe.Pointer) (string, error) {
-    text := assertI2I(_T_json_Marshaler, *(*rt.GoIface)(v))
+    text := rt.AssertI2I2(_T_json_Marshaler, *(*rt.GoIface)(v))
     r, e := (*(*json.Marshaler)(unsafe.Pointer(&text))).MarshalJSON()
     return rt.Mem2Str(r), e
 }

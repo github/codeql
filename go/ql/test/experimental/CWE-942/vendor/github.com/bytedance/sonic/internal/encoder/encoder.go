@@ -40,6 +40,8 @@ const (
     bitNoQuoteTextMarshaler
     bitNoNullSliceOrMap
     bitValidateString
+    bitNoValidateJSONMarshaler
+    bitNoEncoderNewline 
 
     // used for recursive compile
     bitPointerValue = 63
@@ -71,6 +73,13 @@ const (
     // ValidateString indicates that encoder should validate the input string
     // before encoding it into JSON.
     ValidateString       Options = 1 << bitValidateString
+
+    // NoValidateJSONMarshaler indicates that the encoder should not validate the output string
+    // after encoding the JSONMarshaler to JSON.
+    NoValidateJSONMarshaler Options = 1 << bitNoValidateJSONMarshaler
+
+    // NoEncoderNewline indicates that the encoder should not add a newline after every message
+    NoEncoderNewline Options = 1 << bitNoEncoderNewline
   
     // CompatibleWithStd is used to be compatible with std encoder.
     CompatibleWithStd Options = SortMapKeys | EscapeHTML | CompactMarshaler
@@ -114,6 +123,25 @@ func (self *Encoder) SetValidateString(f bool) {
         self.Opts &= ^ValidateString
     }
 }
+
+// SetNoValidateJSONMarshaler specifies if option NoValidateJSONMarshaler opens
+func (self *Encoder) SetNoValidateJSONMarshaler(f bool) {
+    if f {
+        self.Opts |= NoValidateJSONMarshaler
+    } else {
+        self.Opts &= ^NoValidateJSONMarshaler
+    }
+}
+
+// SetNoEncoderNewline specifies if option NoEncoderNewline opens
+func (self *Encoder) SetNoEncoderNewline(f bool) {
+    if f {
+        self.Opts |= NoEncoderNewline
+    } else {
+        self.Opts &= ^NoEncoderNewline
+    }
+}
+
 
 // SetCompactMarshaler specifies if option CompactMarshaler opens
 func (self *Encoder) SetCompactMarshaler(f bool) {
@@ -292,7 +320,6 @@ func Pretouch(vt reflect.Type, opts ...option.CompileOption) error {
     cfg := option.DefaultCompileOptions()
     for _, opt := range opts {
         opt(&cfg)
-        break
     }
     return pretouchRec(map[reflect.Type]uint8{vt: 0}, cfg)
 }

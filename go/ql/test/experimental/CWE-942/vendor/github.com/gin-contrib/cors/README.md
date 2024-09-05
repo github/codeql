@@ -75,7 +75,8 @@ func main() {
   router.Run()
 }
 ```
-note: while Default() allows all origins, DefaultConfig() does not and you will still have to use AllowAllOrigins
+
+Note: while Default() allows all origins, DefaultConfig() does not and you will still have to use AllowAllOrigins.
 
 ### Default() allows all origins
 
@@ -90,3 +91,5 @@ func main() {
   router.Run()
 }
 ```
+
+Using all origins disables the ability for Gin to set cookies for clients. When dealing with credentials, don't allow all origins.

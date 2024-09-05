@@ -1,8 +1,7 @@
 project_name: queue
 
 builds:
-  -
-    # If true, skip the build.
+  - # If true, skip the build.
     # Useful for library projects.
     # Default is false
     skip: true
@@ -38,10 +37,10 @@ changelog:
     - title: Features
       regexp: "^.*feat[(\\w)]*:+.*$"
       order: 0
-    - title: 'Bug fixes'
+    - title: "Bug fixes"
       regexp: "^.*fix[(\\w)]*:+.*$"
       order: 1
-    - title: 'Enhancements'
+    - title: "Enhancements"
       regexp: "^.*chore[(\\w)]*:+.*$"
       order: 2
     - title: Others
@@ -52,6 +51,6 @@ changelog:
     # the changelog
     # Default is empty
     exclude:
-      - '^docs'
-      - 'CICD'
+      - "^docs"
+      - "CICD"
       - typo

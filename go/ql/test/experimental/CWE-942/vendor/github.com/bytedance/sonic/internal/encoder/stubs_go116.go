@@ -1,4 +1,4 @@
-// +build go1.15,!go1.17
+// +build go1.16,!go1.17
 
 /*
  * Copyright 2021 ByteDance Inc.
@@ -37,10 +37,6 @@ func memmove(to unsafe.Pointer, from unsafe.Pointer, n uintptr)
 //go:linkname growslice runtime.growslice
 //goland:noinspection GoUnusedParameter
 func growslice(et *rt.GoType, old rt.GoSlice, cap int) rt.GoSlice
-
-//go:linkname assertI2I runtime.assertI2I
-//goland:noinspection GoUnusedParameter
-func assertI2I(inter *rt.GoType, i rt.GoIface) rt.GoIface
 
 //go:linkname mapiternext runtime.mapiternext
 //goland:noinspection GoUnusedParameter

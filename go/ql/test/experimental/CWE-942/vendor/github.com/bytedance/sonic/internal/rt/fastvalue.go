@@ -211,3 +211,24 @@ func findReflectRtypeItab() *GoItab {
     v := reflect.TypeOf(struct{}{})
     return (*GoIface)(unsafe.Pointer(&v)).Itab
 }
+
+func AssertI2I2(t *GoType, i GoIface) (r GoIface) {
+    inter := IfaceType(t)
+	tab := i.Itab
+	if tab == nil {
+		return
+	}
+	if (*GoInterfaceType)(tab.it) != inter {
+		tab = Getitab(inter, tab.Vt, true)
+		if tab == nil {
+			return
+		}
+	}
+	r.Itab = tab
+	r.Value = i.Value
+	return
+}
+
+//go:noescape
+//go:linkname Getitab runtime.getitab
+func Getitab(inter *GoInterfaceType, typ *GoType, canfail bool) *GoItab

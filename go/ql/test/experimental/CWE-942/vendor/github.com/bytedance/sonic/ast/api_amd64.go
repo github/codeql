@@ -1,4 +1,4 @@
-// +build amd64,go1.15,!go1.21
+// +build amd64,go1.16,!go1.23
 
 /*
  * Copyright 2022 ByteDance Inc.
@@ -87,7 +87,13 @@ func encodeBase64(src []byte) string {
 
 func (self *Parser) decodeValue() (val types.JsonState) {
     sv := (*rt.GoString)(unsafe.Pointer(&self.s))
-    self.p = native.Value(sv.Ptr, sv.Len, self.p, &val, 0)
+    flag := types.F_USE_NUMBER
+    if self.dbuf != nil {
+        flag = 0
+        val.Dbuf = self.dbuf
+        val.Dcap = types.MaxDigitNums
+    }
+    self.p = native.Value(sv.Ptr, sv.Len, self.p, &val, uint64(flag))
     return
 }
 
@@ -124,28 +130,4 @@ func (self *Parser) getByPath(path ...interface{}) (int, types.ParsingError) {
         return self.p, types.ParsingError(-start)
     }
     return start, 0
-}
-
-func (self *Searcher) GetByPath(path ...interface{}) (Node, error) {
-    var err types.ParsingError
-    var start int
-
-    self.parser.p = 0
-    start, err = self.parser.getByPath(path...)
-    if err != 0 {
-        // for compatibility with old version
-        if err == types.ERR_NOT_FOUND {
-            return Node{}, ErrNotExist
-        }
-        if err == types.ERR_UNSUPPORT_TYPE {
-            panic("path must be either int(>=0) or string")
-        }
-        return Node{}, self.parser.syntaxError(err)
-    }
-
-    t := switchRawType(self.parser.s[start])
-    if t == _V_NONE {
-        return Node{}, self.parser.ExportError(err)
-    }
-    return newRawNode(self.parser.s[start:self.parser.p], t), nil
 }

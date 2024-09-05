@@ -38,10 +38,6 @@ func memmove(to unsafe.Pointer, from unsafe.Pointer, n uintptr)
 //goland:noinspection GoUnusedParameter
 func growslice(et *rt.GoType, old rt.GoSlice, cap int) rt.GoSlice
 
-//go:linkname assertI2I runtime.assertI2I2
-//goland:noinspection GoUnusedParameter
-func assertI2I(inter *rt.GoType, i rt.GoIface) rt.GoIface
-
 //go:linkname mapiternext runtime.mapiternext
 //goland:noinspection GoUnusedParameter
 func mapiternext(it *rt.GoMapIterator)

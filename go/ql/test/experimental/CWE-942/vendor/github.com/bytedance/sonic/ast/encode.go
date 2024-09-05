@@ -19,8 +19,6 @@ package ast
 import (
     `sync`
     `unicode/utf8`
-
-    `github.com/bytedance/sonic/internal/rt`
 )
 
 const (
@@ -165,18 +163,18 @@ func (self *Node) encodeFalse(buf *[]byte) error {
 }
 
 func (self *Node) encodeNumber(buf *[]byte) error {
-    str := rt.StrFrom(self.p, self.v)
+    str := self.toString()
     *buf = append(*buf, str...)
     return nil
 }
 
 func (self *Node) encodeString(buf *[]byte) error {
-    if self.v == 0 {
+    if self.l == 0 {
         *buf = append(*buf, '"', '"')
         return nil
     }
 
-    quote(buf, rt.StrFrom(self.p, self.v))
+    quote(buf, self.toString())
     return nil
 }
 
@@ -195,16 +193,17 @@ func (self *Node) encodeArray(buf *[]byte) error {
     
     *buf = append(*buf, '[')
 
-    var p = (*Node)(self.p)
-    err := p.encode(buf)
-    if err != nil {
-        return err
-    }
-    for i := 1; i < nb; i++ {
-        *buf = append(*buf, ',')
-        p = p.unsafe_next()
-        err := p.encode(buf)
-        if err != nil {
+    var started bool
+    for i := 0; i < nb; i++ {
+        n := self.nodeAt(i)
+        if !n.Exists() {
+            continue
+        }
+        if started {
+            *buf = append(*buf, ',')
+        }
+        started = true
+        if err := n.encode(buf); err != nil {
             return err
         }
     }
@@ -240,16 +239,17 @@ func (self *Node) encodeObject(buf *[]byte) error {
     
     *buf = append(*buf, '{')
 
-    var p = (*Pair)(self.p)
-    err := p.encode(buf)
-    if err != nil {
-        return err
-    }
-    for i := 1; i < nb; i++ {
-        *buf = append(*buf, ',')
-        p = p.unsafe_next()
-        err := p.encode(buf)
-        if err != nil {
+    var started bool
+    for i := 0; i < nb; i++ {
+        n := self.pairAt(i)
+        if n == nil || !n.Value.Exists() {
+            continue
+        }
+        if started {
+            *buf = append(*buf, ',')
+        }
+        started = true
+        if err := n.encode(buf); err != nil {
             return err
         }
     }
