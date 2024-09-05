@@ -68,7 +68,7 @@ impl Config {
             let inputs_list = std::fs::read_to_string(inputs_file).context("reading file list")?;
             cli_args
                 .inputs
-                .extend(inputs_list.split("\n").map(PathBuf::from));
+                .extend(inputs_list.split_terminator("\n").map(PathBuf::from));
         }
         Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
