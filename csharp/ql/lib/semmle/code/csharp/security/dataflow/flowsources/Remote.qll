@@ -89,6 +89,20 @@ class AspNetComponentQueryStringRemoteFlowSource extends AspNetRemoteFlowSource,
   override string getSourceType() { result = "ASP.NET Core component query string" }
 }
 
+/** A data flow source of remote user input (ASP.NET Core component route parameter). */
+class AspNetComponentRouteParameterRemoteFlowSource extends AspNetRemoteFlowSource,
+  DataFlow::ExprNode
+{
+  AspNetComponentRouteParameterRemoteFlowSource() {
+    exists(Property p |
+      p = any(Component c).getARouteParameterProperty() and
+      this.getExpr() = p.getGetter().getACall()
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core component route parameter" }
+}
+
 /** A data flow source of remote user input (ASP.NET unvalidated request data). */
 class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSource,
   DataFlow::ExprNode

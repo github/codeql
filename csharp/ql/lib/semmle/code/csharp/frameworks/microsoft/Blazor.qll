@@ -31,6 +31,11 @@ class SupplyParameterFromQueryAttributeClass extends MicrosoftAspNetCoreComponen
   SupplyParameterFromQueryAttributeClass() { this.hasName("SupplyParameterFromQueryAttribute") }
 }
 
+/** The `Microsoft.AspNetCore.Components.ParameterAttribute` class. */
+class ParameterAttributeClass extends MicrosoftAspNetCoreComponentsClass {
+  ParameterAttributeClass() { this.hasName("ParameterAttribute") }
+}
+
 /** The `Microsoft.AspNetCore.Components.CascadingParameterAttributeBase` class. */
 class CascadingParameterAttributeBaseClass extends MicrosoftAspNetCoreComponentsClass {
   CascadingParameterAttributeBaseClass() { this.hasName("CascadingParameterAttributeBase") }
@@ -57,5 +62,27 @@ class Component extends Class {
   Property getACascadingParameterProperty() {
     result = this.getAProperty() and
     result.getAnAttribute().getType().getBaseClass() instanceof CascadingParameterAttributeBaseClass
+  }
+
+  private string getRouteAttributeUrl() {
+    exists(Attribute a |
+      a = this.getAnAttribute() and
+      a.getType().hasFullyQualifiedName("Microsoft.AspNetCore.Components", "RouteAttribute") and
+      result = a.getArgument(0).getValue()
+    )
+  }
+
+  private string getARouteParameter() {
+    result = this.getRouteAttributeUrl().splitAt("{").regexpCapture("\\*?([^:?}]+)[:?}](.*)", 1)
+  }
+
+  /** Gets a property whose value is populated from route parameters. */
+  Property getARouteParameterProperty() {
+    exists(string urlParamName |
+      urlParamName = this.getARouteParameter() and
+      result = this.getAProperty() and
+      result.getName().toLowerCase() = urlParamName.toLowerCase() and
+      result.getAnAttribute().getType() instanceof ParameterAttributeClass
+    )
   }
 }
