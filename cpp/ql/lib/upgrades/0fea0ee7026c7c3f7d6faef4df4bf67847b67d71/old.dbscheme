@@ -384,22 +384,10 @@ function_return_type(
  */
 coroutine(
   unique int function: @function ref,
-  int traits: @type ref
+  int traits: @type ref,
+  int handle: @variable ref,
+  int promise: @variable ref
 );
-
-/*
-case @coroutine_placeholder_variable.kind of
-  1 = @handle
-| 2 = @promise
-| 3 = @init_await_resume
-;
-*/
-
-coroutine_placeholder_variable(
-  unique int placeholder_variable: @variable ref,
-  int kind: int ref,
-  int function: @function ref
-)
 
 /** The `new` function used for allocating the coroutine state, if any. */
 coroutine_new(
@@ -840,6 +828,22 @@ variable_template_argument_value(
     int index: int ref,
     int arg_value: @expr ref
 );
+
+/*
+  Fixed point types
+  precision(1) = short, precision(2) = default, precision(3) = long
+  is_unsigned(1) = unsigned is_unsigned(2) = signed
+  is_fract_type(1) = declared with _Fract
+  saturating(1) = declared with _Sat
+*/
+/* TODO
+fixedpointtypes(
+    unique int id: @fixedpointtype,
+    int precision: int ref,
+    int is_unsigned: int ref,
+    int is_fract_type: int ref,
+    int saturating: int ref);
+*/
 
 routinetypes(
     unique int id: @routinetype,
