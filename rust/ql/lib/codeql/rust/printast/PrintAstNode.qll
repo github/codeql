@@ -1,5 +1,5 @@
 /**
- * Provides classes used to pretty-print a Swift AST as a graph.
+ * Provides classes used to pretty-print a Rust AST as a graph.
  * This is factored out of `PrintAst.qll` for testing purposes.
  */
 
@@ -20,7 +20,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
    * Holds if the AST for `e` should be printed. By default, holds for all.
    */
-  predicate shouldPrint(Locatable e) { not e instanceof Diagnostics and not e instanceof MacroRole }
+  predicate shouldPrint(Locatable e) { any() }
 }
 
 private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).shouldPrint(e) }
@@ -88,21 +88,7 @@ class PrintLocatable extends PrintAstNode, TPrintLocatable {
   final override predicate shouldBePrinted() { shouldPrint(ast) }
 
   override predicate hasChild(PrintAstNode child, int index, string label) {
-    exists(Locatable c, int i, string accessor |
-      c = getChildAndAccessor(ast, i, accessor) and
-      (
-        // use even indexes for normal children, leaving odd slots for conversions if any
-        child = TPrintLocatable(c) and index = 2 * i and label = accessor
-        or
-        child = TPrintLocatable(c.getFullyUnresolved().(Unresolved)) and
-        index = 2 * i + 1 and
-        (
-          if c instanceof Expr
-          then label = accessor + ".getFullyConverted()"
-          else label = accessor + ".getFullyUnresolved()"
-        )
-      )
-    )
+    child = TPrintLocatable(any(Locatable c | c = getChildAndAccessor(ast, index, label)))
   }
 
   final override Locatable getAstNode() { result = ast }
@@ -121,9 +107,4 @@ class PrintUnresolved extends PrintLocatable {
     // only print immediate unresolved children from the "parallel" AST
     child = TPrintLocatable(getImmediateChildAndAccessor(ast, index, label).(Unresolved))
   }
-}
-
-private predicate hasPropertyWrapperElement(VarDecl d, Locatable a) {
-  a = [d.getPropertyWrapperBackingVar(), d.getPropertyWrapperProjectionVar()] or
-  a = [d.getPropertyWrapperBackingVarBinding(), d.getPropertyWrapperProjectionVarBinding()]
 }

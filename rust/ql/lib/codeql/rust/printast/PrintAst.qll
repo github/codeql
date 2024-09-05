@@ -1,5 +1,5 @@
 /**
- * Provides queries to pretty-print a Swift AST as a graph.
+ * Provides queries to pretty-print a Rust AST as a graph.
  */
 
 import PrintAstNode
