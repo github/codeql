@@ -29,4 +29,16 @@ int TryExceptTest(int x) {
   return 0;
 }
 
+void unexplained_loop_regression()
+{
+  __try
+  {
+    ExRaiseAccessViolation(0);
+  }
+  __except (EXCEPTION_EXECUTE_HANDLER)
+  {
+    ExRaiseAccessViolation(1);
+  }
+}
+
 // semmle-extractor-options: --microsoft

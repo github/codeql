@@ -3156,6 +3156,53 @@ ir.c:
 #   21|   Block 5
 #   21|     v21_11(void) = Unreached : 
 
+#   32| void unexplained_loop_regression()
+#   32|   Block 0
+#   32|     v32_1(void)           = EnterFunction                           : 
+#   32|     m32_2(unknown)        = AliasedDefinition                       : 
+#   32|     m32_3(unknown)        = InitializeNonLocal                      : 
+#   32|     m32_4(unknown)        = Chi                                     : total:m32_2, partial:m32_3
+#   36|     r36_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   36|     r36_2(int)            = Constant[0]                             : 
+#   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
+#   36|     m36_4(unknown)        = ^CallSideEffect                         : ~m32_4
+#   36|     m36_5(unknown)        = Chi                                     : total:m32_4, partial:m36_4
+#-----|   Exception -> Block 3
+
+#   39|   Block 1
+#   39|     r39_1(int)  = Constant[0]       : 
+#   39|     r39_2(bool) = CompareEQ         : r38_2, r39_1
+#   39|     v39_3(void) = ConditionalBranch : r39_2
+#-----|   False (back edge) -> Block 2
+#-----|   True -> Block 5
+
+#   39|   Block 2
+#   39|     r39_4(int)  = Constant[1]       : 
+#   39|     r39_5(bool) = CompareEQ         : r38_2, r39_4
+#   39|     v39_6(void) = ConditionalBranch : r39_5
+#-----|   False -> Block 5
+#-----|   True (back edge) -> Block 4
+
+#   38|   Block 3
+#   38|     m38_1(unknown) = Phi               : from 0:~m36_5, from 4:~m40_5
+#   38|     r38_2(int)     = Constant[1]       : 
+#   39|     r39_7(int)     = Constant[-1]      : 
+#   39|     r39_8(bool)    = CompareEQ         : r38_2, r39_7
+#   39|     v39_9(void)    = ConditionalBranch : r39_8
+#-----|   False (back edge) -> Block 1
+#-----|   True -> Block 5
+
+#   40|   Block 4
+#   40|     r40_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   40|     r40_2(int)            = Constant[1]                             : 
+#   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
+#   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m38_1
+#   40|     m40_5(unknown)        = Chi                                     : total:m38_1, partial:m40_4
+#-----|   Exception (back edge) -> Block 3
+
+#   32|   Block 5
+#   32|     v32_5(void) = Unreached : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
