@@ -115,7 +115,6 @@ edges
 | zstdTest.cpp:35:32:35:37 | *buffIn | zstdTest.cpp:36:32:36:37 | *buffIn | provenance |  |
 | zstdTest.cpp:35:52:35:54 | fin | zstdTest.cpp:35:32:35:37 | **buffIn | provenance | Config |
 | zstdTest.cpp:35:52:35:54 | fin | zstdTest.cpp:35:32:35:37 | *buffIn | provenance | Config |
-| zstdTest.cpp:35:52:35:54 | fin | zstdTest.cpp:35:52:35:54 | fin | provenance |  |
 | zstdTest.cpp:36:32:36:37 | **buffIn | zstdTest.cpp:35:32:35:37 | **buffIn | provenance |  |
 | zstdTest.cpp:36:32:36:37 | **buffIn | zstdTest.cpp:39:69:39:74 | & ... | provenance | Config |
 | zstdTest.cpp:36:32:36:37 | **buffIn | zstdTest.cpp:39:69:39:74 | & ... | provenance | Config |
