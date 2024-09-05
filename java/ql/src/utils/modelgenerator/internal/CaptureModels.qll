@@ -279,24 +279,24 @@ private module PropagateContentFlowConfig implements ContentDataFlow::ConfigSig 
 
 private module PropagateContentFlow = ContentDataFlow::Global<PropagateContentFlowConfig>;
 
-private string printStoreAccessPath(PropagateContentFlow::AccessPath ap) {
-  not exists(ap.getHead()) and result = ""
-  or
+private string getContent(PropagateContentFlow::AccessPath ap, int i) {
   exists(ContentSet head, PropagateContentFlow::AccessPath tail |
     head = ap.getHead() and
-    tail = ap.getTail() and
-    result = "." + printContent(head) + printStoreAccessPath(tail)
+    tail = ap.getTail()
+  |
+    i = 0 and
+    result = "." + printContent(head)
+    or
+    i > 0 and result = getContent(tail, i - 1)
   )
 }
 
+private string printStoreAccessPath(PropagateContentFlow::AccessPath ap) {
+  result = concat(int i | | getContent(ap, i), "" order by i)
+}
+
 private string printReadAccessPath(PropagateContentFlow::AccessPath ap) {
-  not exists(ap.getHead()) and result = ""
-  or
-  exists(ContentSet head, PropagateContentFlow::AccessPath tail |
-    head = ap.getHead() and
-    tail = ap.getTail() and
-    result = printReadAccessPath(tail) + "." + printContent(head)
-  )
+  result = concat(int i | | getContent(ap, i), "" order by i desc)
 }
 
 string captureContentFlow(DataFlowSummaryTargetApi api) {
