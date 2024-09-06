@@ -2,7 +2,7 @@
 
 ## Description
 
-The security of the workflow and the repository could be compromised by GitHub Actions workflows that utilize third-party GitHub Actions with known vulnerabilities.
+The security of the workflow and the repository could be compromised by GitHub Actions workflows that utilize GitHub Actions with known vulnerabilities.
 
 ## Recommendations
 

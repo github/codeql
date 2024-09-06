@@ -1,6 +1,6 @@
 /**
- * @name Use of known vulnerable 3rd party action.
- * @description The workflow is using a known vulnerable 3rd party action.
+ * @name Use of a known vulnerable action.
+ * @description The workflow is using an action with known vulnerabilities.
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
