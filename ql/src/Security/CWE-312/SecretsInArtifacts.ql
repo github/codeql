@@ -41,5 +41,5 @@ where
     or
     checkout.getArgument("path") + ["", "/*"] = upload.getArgument("path")
   )
-select upload, "A secret is exposed in a public artifact uploaded by $@", upload,
+select upload, "A secret is exposed in an artifact uploaded by $@", upload,
   "actions/upload-artifact"
