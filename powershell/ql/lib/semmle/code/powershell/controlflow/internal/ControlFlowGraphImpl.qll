@@ -52,7 +52,7 @@ private module CfgInput implements CfgShared::InputSig<Location> {
   }
 
   predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
+    t instanceof Cfg::SuccessorTypes::ThrowSuccessor or
     t instanceof Cfg::SuccessorTypes::ExitSuccessor
   }
 }
@@ -543,6 +543,79 @@ module Trees {
     override AstNode getChildNode(int i) { result = super.getElement(i) }
   }
 
+  class CatchClauseTree extends PreOrderTree instanceof CatchClause {
+    final override predicate propagatesAbnormal(Ast child) { none() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(super.getBody(), last, c)
+      or
+      // The last catch type failed to matchs
+      last(super.getCatchType(super.getNumberOfCatchTypes() - 1), last, c) and
+      c.(MatchCompletion).isNonMatch()
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Preorder: Flow from the catch clause to the first catch type to test,
+      // or to the body if this is a catch all
+      pred = this and
+      completionIsSimple(c) and
+      (
+        first(super.getCatchType(0), succ)
+        or
+        super.isCatchAll() and
+        first(super.getBody(), succ)
+      )
+      or
+      // Flow from a catch type to the next catch type when it fails to match
+      exists(int i, boolean match |
+        last(super.getCatchType(i), pred, c) and
+        match = c.(MatchCompletion).getValue()
+      |
+        match = true and
+        first(super.getBody(), succ)
+        or
+        match = false and
+        first(super.getCatchType(i + 1), succ)
+      )
+    }
+  }
+
+  class TryStmtBlock extends PreOrderTree instanceof TryStmt {
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getFinally() }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(super.getFinally(), last, c)
+      or
+      not super.hasFinally() and
+      (
+        // Body exits without an exception
+        last(super.getBody(), last, c) and
+        completionIsNormal(c)
+        or
+        // In case there's an exception we exit by evaluating one of the catch clauses
+        // Note that there will always be at least one catch clause if there is no `try`.
+        last(super.getACatchClause(), last, c)
+      )
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Preorder: The try/catch statment flows to the body
+      pred = this and
+      first(super.getBody(), succ) and
+      completionIsSimple(c)
+      or
+      // Flow from the body to the finally when the body didn't throw
+      last(super.getBody(), pred, c) and
+      if c instanceof ThrowCompletion
+      then first(super.getCatchClause(0), succ)
+      else first(super.getFinally(), succ)
+    }
+  }
+
+  class ThrowStmtTree extends StandardPreOrderTree instanceof ThrowStmt {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getPipeline() }
+  }
+
   class ConstExprTree extends LeafTree instanceof ConstExpr { }
 
   class CmdExprTree extends StandardPreOrderTree instanceof CmdExpr {
@@ -577,7 +650,7 @@ private module Cached {
     TReturnSuccessor() or
     TBreakSuccessor() or
     TContinueSuccessor() or
-    TRaiseSuccessor() or
+    TThrowSuccessor() or
     TExitSuccessor() or
     TMatchingSuccessor(Boolean b)
 }

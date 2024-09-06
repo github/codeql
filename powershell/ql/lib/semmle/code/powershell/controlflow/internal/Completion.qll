@@ -17,9 +17,14 @@ private newtype TCompletion =
   TReturnCompletion() or
   TBreakCompletion() or
   TContinueCompletion() or
-  TRaiseCompletion() or
+  TThrowCompletion() or
   TExitCompletion() or
   TMatchingCompletion(Boolean b)
+
+private predicate commandThrows(Cmd c, boolean unconditional) {
+  c.getNamedArgument("ErrorAction").(StringConstExpr).getValue().getValue() = "Stop" and
+  if c.getName() = "Write-Error" then unconditional = true else unconditional = false
+}
 
 pragma[noinline]
 private predicate completionIsValidForStmt(Ast n, Completion c) {
@@ -28,6 +33,16 @@ private predicate completionIsValidForStmt(Ast n, Completion c) {
   or
   n instanceof ContinueStmt and
   c instanceof ContinueCompletion
+  or
+  n instanceof ThrowStmt and
+  c instanceof ThrowCompletion
+  or
+  exists(boolean unconditional | commandThrows(n, unconditional) |
+    c instanceof ThrowCompletion
+    or
+    unconditional = false and
+    c instanceof SimpleCompletion
+  )
 }
 
 /** A completion of a statement or an expression. */
@@ -157,6 +172,8 @@ private predicate inBooleanContext(Ast n) {
  */
 private predicate inMatchingContext(Ast n) {
   n = any(SwitchStmt switch).getAPattern()
+  or
+  n = any(CatchClause cc).getACatchType()
 }
 
 /**
@@ -257,10 +274,10 @@ class ContinueCompletion extends Completion, TContinueCompletion {
  * A completion that represents evaluation of a statement or an
  * expression resulting in a thrown exception.
  */
-class RaiseCompletion extends Completion, TRaiseCompletion {
-  override RaiseSuccessor getAMatchingSuccessorType() { any() }
+class ThrowCompletion extends Completion, TThrowCompletion {
+  override ThrowSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "raise" }
+  override string toString() { result = "throw" }
 }
 
 /**

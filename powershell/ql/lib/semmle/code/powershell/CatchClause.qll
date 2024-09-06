@@ -11,6 +11,8 @@ class CatchClause extends @catch_clause, Ast {
 
   TypeConstraint getACatchType() { result = this.getCatchType(_) }
 
+  int getNumberOfCatchTypes() { result = count(this.getCatchType(_)) }
+
   predicate isCatchAll() { catch_clause(this, _, true) } // TODO: Should be equivalent to not exists(this.getACatchType())
 
   TryStmt getTryStmt() { result.getACatchClause() = this }
