@@ -26,7 +26,7 @@ class ActionsCheckoutStep extends Actions::Step {
 /**
  * A `with:`/`persist-credentials` field sibling to `uses: actions/checkout`.
  */
-class ActionsCheckoutWithPersistCredentials extends YamlNode, YamlString {
+class ActionsCheckoutWithPersistCredentials extends YamlNode, YamlScalar {
   ActionsCheckoutStep step;
 
   ActionsCheckoutWithPersistCredentials() {
