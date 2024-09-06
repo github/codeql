@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Label
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Loop` and should not
@@ -30,7 +31,9 @@ module Generated {
     /**
      * Gets the label of this loop, if it exists.
      */
-    string getLabel() { result = Synth::convertLoopToRaw(this).(Raw::Loop).getLabel() }
+    Label getLabel() {
+      result = Synth::convertLabelFromRaw(Synth::convertLoopToRaw(this).(Raw::Loop).getLabel())
+    }
 
     /**
      * Holds if `getLabel()` exists.

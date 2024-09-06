@@ -122,6 +122,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TLabel(Raw::Label id) { constructLabel(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TLet(Raw::Let id) { constructLet(id) } or
     /**
      * INTERNAL: Do not use.
@@ -259,7 +263,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAstNode = TDeclaration or TExpr or TMatchArm or TPat or TStmt or TTypeRef;
+  class TAstNode = TDeclaration or TExpr or TLabel or TMatchArm or TPat or TStmt or TTypeRef;
 
   /**
    * INTERNAL: Do not use.
@@ -489,6 +493,13 @@ module Synth {
    */
   cached
   TItemStmt convertItemStmtFromRaw(Raw::Element e) { result = TItemStmt(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLabel`, if possible.
+   */
+  cached
+  TLabel convertLabelFromRaw(Raw::Element e) { result = TLabel(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -737,6 +748,8 @@ module Synth {
     result = convertDeclarationFromRaw(e)
     or
     result = convertExprFromRaw(e)
+    or
+    result = convertLabelFromRaw(e)
     or
     result = convertMatchArmFromRaw(e)
     or
@@ -1118,6 +1131,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TLabel` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertLabelToRaw(TLabel e) { e = TLabel(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TLet` to a raw DB element, if possible.
    */
   cached
@@ -1363,6 +1383,8 @@ module Synth {
     result = convertDeclarationToRaw(e)
     or
     result = convertExprToRaw(e)
+    or
+    result = convertLabelToRaw(e)
     or
     result = convertMatchArmToRaw(e)
     or

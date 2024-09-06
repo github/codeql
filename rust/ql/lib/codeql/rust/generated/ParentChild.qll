@@ -146,6 +146,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfLabel(Label e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -940,6 +953,8 @@ private module Impl {
     result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLabel(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
     or

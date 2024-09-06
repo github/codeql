@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.BlockBase
+import codeql.rust.elements.Label
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Block` and should not
@@ -23,7 +24,9 @@ module Generated {
     /**
      * Gets the label of this block, if it exists.
      */
-    string getLabel() { result = Synth::convertBlockToRaw(this).(Raw::Block).getLabel() }
+    Label getLabel() {
+      result = Synth::convertLabelFromRaw(Synth::convertBlockToRaw(this).(Raw::Block).getLabel())
+    }
 
     /**
      * Holds if `getLabel()` exists.

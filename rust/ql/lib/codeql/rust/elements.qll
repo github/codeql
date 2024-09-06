@@ -35,6 +35,7 @@ import codeql.rust.elements.IfLet
 import codeql.rust.elements.Index
 import codeql.rust.elements.InlineAsm
 import codeql.rust.elements.ItemStmt
+import codeql.rust.elements.Label
 import codeql.rust.elements.Let
 import codeql.rust.elements.LitPat
 import codeql.rust.elements.Literal

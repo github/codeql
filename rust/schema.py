@@ -81,6 +81,11 @@ class Pat(AstNode):
     pass
 
 
+@qltest.skip
+class Label(AstNode):
+    name: string
+
+
 @qltest.collapse_hierarchy
 class Stmt(AstNode):
     pass
@@ -144,7 +149,7 @@ class BlockBase(Expr):
 
 
 class Block(BlockBase):
-    label: optional[string]
+    label: optional[Label]
 
 #     Async {
 #         id: Option<BlockId>,
@@ -181,7 +186,7 @@ class UnsafeBlock(BlockBase):
 
 class Loop(Expr):
     body: Expr
-    label: optional[string]
+    label: optional[Label]
 
 #     Call {
 #         callee: ExprId,
@@ -238,7 +243,7 @@ class Match(Expr):
 
 
 class Continue(Expr):
-    label: optional[string]
+    label: optional[Label]
 
 #     Break {
 #         expr: Option<ExprId>,
@@ -248,7 +253,7 @@ class Continue(Expr):
 
 class Break(Expr):
     expr: optional[Expr]
-    label: optional[string]
+    label: optional[Label]
 
 
 #     Return {

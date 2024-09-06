@@ -54,6 +54,7 @@ locations(
 @ast_node =
   @declaration
 | @expr
+| @label
 | @match_arm
 | @pat
 | @stmt
@@ -108,6 +109,11 @@ db_locations(
 | @yeet
 | @yield
 ;
+
+labels(
+  unique int id: @label,
+  string name: string ref
+);
 
 match_arms(
   unique int id: @match_arm,
@@ -227,7 +233,7 @@ break_exprs(
 #keyset[id]
 break_labels(
   int id: @break ref,
-  string label: string ref
+  int label: @label ref
 );
 
 calls(
@@ -299,7 +305,7 @@ continues(
 #keyset[id]
 continue_labels(
   int id: @continue ref,
-  string label: string ref
+  int label: @label ref
 );
 
 expr_stmts(
@@ -401,7 +407,7 @@ loops(
 #keyset[id]
 loop_labels(
   int id: @loop ref,
-  string label: string ref
+  int label: @label ref
 );
 
 matches(
@@ -644,7 +650,7 @@ blocks(
 #keyset[id]
 block_labels(
   int id: @block ref,
-  string label: string ref
+  int label: @label ref
 );
 
 unsafe_blocks(

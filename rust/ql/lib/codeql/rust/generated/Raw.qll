@@ -92,6 +92,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class Label extends @label, AstNode {
+    override string toString() { result = "Label" }
+
+    /**
+     * Gets the name of this label.
+     */
+    string getName() { labels(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class MatchArm extends @match_arm, AstNode {
     override string toString() { result = "MatchArm" }
 
@@ -251,7 +263,7 @@ module Raw {
     /**
      * Gets the label of this break, if it exists.
      */
-    string getLabel() { break_labels(this, result) }
+    Label getLabel() { break_labels(this, result) }
   }
 
   /**
@@ -353,7 +365,7 @@ module Raw {
     /**
      * Gets the label of this continue, if it exists.
      */
-    string getLabel() { continue_labels(this, result) }
+    Label getLabel() { continue_labels(this, result) }
   }
 
   /**
@@ -542,7 +554,7 @@ module Raw {
     /**
      * Gets the label of this loop, if it exists.
      */
-    string getLabel() { loop_labels(this, result) }
+    Label getLabel() { loop_labels(this, result) }
   }
 
   /**
@@ -871,7 +883,7 @@ module Raw {
     /**
      * Gets the label of this block, if it exists.
      */
-    string getLabel() { block_labels(this, result) }
+    Label getLabel() { block_labels(this, result) }
   }
 
   /**

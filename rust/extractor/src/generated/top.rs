@@ -42,6 +42,26 @@ impl TrapEntry for DbLocation {
 }
 
 #[derive(Debug)]
+pub struct Label {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+    pub name: String,
+}
+
+impl TrapEntry for Label {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("labels", vec![trap::Arg::Label(id), self.name.into()]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct MatchArm {
     pub id: TrapId,
     pub location: Option<trap::Label>,
@@ -238,7 +258,7 @@ pub struct Break {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub expr: Option<trap::Label>,
-    pub label: Option<String>,
+    pub label: Option<trap::Label>,
 }
 
 impl TrapEntry for Break {
@@ -388,7 +408,7 @@ impl TrapEntry for ConstBlockPat {
 pub struct Continue {
     pub id: TrapId,
     pub location: Option<trap::Label>,
-    pub label: Option<String>,
+    pub label: Option<trap::Label>,
 }
 
 impl TrapEntry for Continue {
@@ -658,7 +678,7 @@ pub struct Loop {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub body: trap::Label,
-    pub label: Option<String>,
+    pub label: Option<trap::Label>,
 }
 
 impl TrapEntry for Loop {
@@ -1272,7 +1292,7 @@ pub struct Block {
     pub location: Option<trap::Label>,
     pub statements: Vec<trap::Label>,
     pub tail: Option<trap::Label>,
-    pub label: Option<String>,
+    pub label: Option<trap::Label>,
 }
 
 impl TrapEntry for Block {
