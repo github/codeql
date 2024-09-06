@@ -814,6 +814,8 @@ impl TrapEntry for Module {
 pub struct OffsetOf {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub container: trap::Label,
+    pub fields: Vec<String>,
 }
 
 impl TrapEntry for OffsetOf {
@@ -822,9 +824,12 @@ impl TrapEntry for OffsetOf {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("offset_ofs", vec![trap::Arg::Label(id)]);
+        out.add_tuple("offset_ofs", vec![trap::Arg::Label(id), self.container.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, &v) in self.fields.iter().enumerate() {
+            out.add_tuple("offset_of_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
 }

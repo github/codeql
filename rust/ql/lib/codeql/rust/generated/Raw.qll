@@ -632,6 +632,16 @@ module Raw {
    */
   class OffsetOf extends @offset_of, Expr {
     override string toString() { result = "OffsetOf" }
+
+    /**
+     * Gets the container of this offset of.
+     */
+    TypeRef getContainer() { offset_ofs(this, result) }
+
+    /**
+     * Gets the `index`th field of this offset of (0-based).
+     */
+    string getField(int index) { offset_of_fields(this, index, result) }
   }
 
   /**

@@ -437,7 +437,9 @@ class Underscore(Expr):
 
 
 class OffsetOf(Expr):
-    pass
+    container: TypeRef
+    fields: list[string]
+
 #     InlineAsm(InlineAsm),
 
 

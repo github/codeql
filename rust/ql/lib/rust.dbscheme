@@ -456,7 +456,15 @@ module_declarations(
 );
 
 offset_ofs(
-  unique int id: @offset_of
+  unique int id: @offset_of,
+  int container: @type_ref ref
+);
+
+#keyset[id, index]
+offset_of_fields(
+  int id: @offset_of ref,
+  int index: int ref,
+  string field: string ref
 );
 
 or_pats(
