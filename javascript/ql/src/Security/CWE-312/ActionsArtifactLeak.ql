@@ -108,5 +108,4 @@ where
       upload_path.getStep() = upload
     )
   )
-select upload, "A secret is exposed in an artifact uploaded by $@", upload,
-  "actions/upload-artifact"
+select upload, "A secret may be exposed in an artifact."
