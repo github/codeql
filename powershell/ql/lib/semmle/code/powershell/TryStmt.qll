@@ -14,4 +14,5 @@ class TryStmt extends @try_statement, Stmt {
 
   StmtBlock getBody() { try_statement(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
 
+  predicate hasFinally() { exists(this.getFinally()) }
 }

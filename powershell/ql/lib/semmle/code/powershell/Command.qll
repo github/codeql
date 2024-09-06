@@ -15,9 +15,28 @@ class Cmd extends @command, CmdBase {
 
   CmdElement getElement(int i) { command_command_element(this, i, result) }
 
-  Redirection getRedirection(int i) { command_redirection(this, i, result) }
+  StringConstExpr getCmdName() { result = this.getElement(0) }
 
-  CmdElement getAnElement() { result = this.getElement(_) }
+  Expr getArgument(int i) {
+    result =
+      rank[i + 1](CmdElement e, int j |
+        e = this.getElement(j) and
+        not e instanceof CmdParameter and
+        j > 0 // 0'th element is the command name itself
+      |
+        e order by j
+      )
+  }
+
+  Expr getNamedArgument(string name) {
+    exists(int i, CmdParameter p |
+      this.getElement(i) = p and
+      p.getName() = name and
+      result = p.getArgument()
+    )
+  }
+
+  Redirection getRedirection(int i) { command_redirection(this, i, result) }
 
   Redirection getARedirection() { result = this.getRedirection(_) }
 }

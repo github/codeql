@@ -7,7 +7,11 @@ class StringLiteral extends @string_literal {
 
   /** Get the full string literal with all its parts concatenated */
   string toString() {
-    result = concat(int i | i = [0 .. getNumContinuations()] | getContinuation(i), "\n")
+    result = this.getValue()
+  }
+
+  string getValue() {
+    result = concat(int i | i = [0 .. this.getNumContinuations()] | this.getContinuation(i), "\n")
   }
 
   SourceLocation getLocation() { string_literal_location(this, result) }

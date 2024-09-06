@@ -13,6 +13,10 @@ class IfStmt extends @if_statement, Stmt {
 
   StmtBlock getThen(int i) { if_statement_clause(this, i, _, result) } // TODO: Change @ast to @statement_block in dbscheme
 
+  int getNumberOfConditions() { result = count(this.getACondition()) }
+
+  StmtBlock getAThen() { result = this.getThen(_) }
+
   /** ..., if any. */
   StmtBlock getElse() { if_statement_else(this, result) } // TODO: Change @ast to @stmt_block in dbscheme
 
