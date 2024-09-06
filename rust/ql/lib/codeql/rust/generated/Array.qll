@@ -17,7 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Array` class directly.
    * Use the subclass `Array`, where the following predicates are available.
    */
-  class Array extends Synth::TArray, Expr {
-    override string getAPrimaryQlClass() { result = "Array" }
-  }
+  class Array extends Synth::TArray, Expr { }
 }

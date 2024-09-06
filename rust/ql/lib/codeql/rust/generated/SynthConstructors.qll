@@ -3,7 +3,6 @@
  * This module exports all modules providing `Element` subclasses.
  */
 
-import codeql.rust.elements.ArrayConstructor
 import codeql.rust.elements.AsyncBlockConstructor
 import codeql.rust.elements.AwaitConstructor
 import codeql.rust.elements.BecomeConstructor
@@ -21,6 +20,7 @@ import codeql.rust.elements.ConstBlockPatConstructor
 import codeql.rust.elements.ContinueConstructor
 import codeql.rust.elements.DbFileConstructor
 import codeql.rust.elements.DbLocationConstructor
+import codeql.rust.elements.ElementListConstructor
 import codeql.rust.elements.ExprStmtConstructor
 import codeql.rust.elements.FieldConstructor
 import codeql.rust.elements.FunctionConstructor
@@ -50,6 +50,7 @@ import codeql.rust.elements.RecordLitConstructor
 import codeql.rust.elements.RecordPatConstructor
 import codeql.rust.elements.RefConstructor
 import codeql.rust.elements.RefPatConstructor
+import codeql.rust.elements.RepeatConstructor
 import codeql.rust.elements.ReturnConstructor
 import codeql.rust.elements.SlicePatConstructor
 import codeql.rust.elements.TupleConstructor

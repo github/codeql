@@ -143,9 +143,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Array extends @array, Expr {
-    override string toString() { result = "Array" }
-  }
+  class Array extends @array, Expr { }
 
   /**
    * INTERNAL: Do not use.
@@ -899,6 +897,40 @@ module Raw {
      * Gets the label of this block, if it exists.
      */
     Label getLabel() { block_labels(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ElementList extends @element_list, Array {
+    override string toString() { result = "ElementList" }
+
+    /**
+     * Gets the `index`th element of this element list (0-based).
+     */
+    Expr getElement(int index) { element_list_elements(this, index, result) }
+
+    /**
+     * Holds if this element list is assignee expression.
+     */
+    predicate isAssigneeExpr() { element_list_is_assignee_expr(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Repeat extends @repeat, Array {
+    override string toString() { result = "Repeat" }
+
+    /**
+     * Gets the initializer of this repeat.
+     */
+    Expr getInitializer() { repeats(this, result, _) }
+
+    /**
+     * Gets the repeat of this repeat.
+     */
+    Expr getRepeat() { repeats(this, _, result) }
   }
 
   /**

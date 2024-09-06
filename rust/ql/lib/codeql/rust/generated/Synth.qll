@@ -18,10 +18,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TArray(Raw::Array id) { constructArray(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TAsyncBlock(Raw::AsyncBlock id) { constructAsyncBlock(id) } or
     /**
      * INTERNAL: Do not use.
@@ -87,6 +83,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TElementList(Raw::ElementList id) { constructElementList(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -206,6 +206,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TRepeat(Raw::Repeat id) { constructRepeat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TReturn(Raw::Return id) { constructReturn(id) } or
     /**
      * INTERNAL: Do not use.
@@ -263,6 +267,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TArray = TElementList or TRepeat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TAstNode = TDeclaration or TExpr or TLabel or TMatchArm or TPat or TStmt or TTypeRef;
 
   /**
@@ -311,13 +320,6 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TIfLet or TItemStmt;
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TArray`, if possible.
-   */
-  cached
-  TArray convertArrayFromRaw(Raw::Element e) { result = TArray(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -437,6 +439,13 @@ module Synth {
    */
   cached
   TDbLocation convertDbLocationFromRaw(Raw::Element e) { result = TDbLocation(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TElementList`, if possible.
+   */
+  cached
+  TElementList convertElementListFromRaw(Raw::Element e) { result = TElementList(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -643,6 +652,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRepeat`, if possible.
+   */
+  cached
+  TRepeat convertRepeatFromRaw(Raw::Element e) { result = TRepeat(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TReturn`, if possible.
    */
   cached
@@ -738,6 +754,17 @@ module Synth {
    */
   cached
   TYield convertYieldFromRaw(Raw::Element e) { result = TYield(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TArray`, if possible.
+   */
+  cached
+  TArray convertArrayFromRaw(Raw::Element e) {
+    result = convertElementListFromRaw(e)
+    or
+    result = convertRepeatFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -949,13 +976,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TArray` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertArrayToRaw(TArray e) { e = TArray(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TAsyncBlock` to a raw DB element, if possible.
    */
   cached
@@ -1072,6 +1092,13 @@ module Synth {
    */
   cached
   Raw::Element convertDbLocationToRaw(TDbLocation e) { e = TDbLocation(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TElementList` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertElementListToRaw(TElementList e) { e = TElementList(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1278,6 +1305,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TRepeat` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRepeatToRaw(TRepeat e) { e = TRepeat(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TReturn` to a raw DB element, if possible.
    */
   cached
@@ -1373,6 +1407,17 @@ module Synth {
    */
   cached
   Raw::Element convertYieldToRaw(TYield e) { e = TYield(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TArray` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertArrayToRaw(TArray e) {
+    result = convertElementListToRaw(e)
+    or
+    result = convertRepeatToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.

@@ -925,6 +925,34 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfElementList(
+    ElementList e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArray, int n |
+      b = 0 and
+      bArray = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArray(e, i, _)) | i) and
+      n = bArray and
+      (
+        none()
+        or
+        result = getImmediateChildOfArray(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfRepeat(Repeat e, int index, string partialPredicateCall) {
+    exists(int b, int bArray, int n |
+      b = 0 and
+      bArray = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArray(e, i, _)) | i) and
+      n = bArray and
+      (
+        none()
+        or
+        result = getImmediateChildOfArray(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnsafeBlock(
     UnsafeBlock e, int index, string partialPredicateCall
   ) {
@@ -959,8 +987,6 @@ private module Impl {
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
     or
     result = getImmediateChildOfTypeRef(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfArray(e, index, partialAccessor)
     or
     result = getImmediateChildOfAwait(e, index, partialAccessor)
     or
@@ -1065,6 +1091,10 @@ private module Impl {
     result = getImmediateChildOfAsyncBlock(e, index, partialAccessor)
     or
     result = getImmediateChildOfBlock(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfElementList(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRepeat(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnsafeBlock(e, index, partialAccessor)
   }

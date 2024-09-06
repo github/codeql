@@ -25,6 +25,7 @@ import codeql.rust.elements.DbFile
 import codeql.rust.elements.DbLocation
 import codeql.rust.elements.Declaration
 import codeql.rust.elements.Element
+import codeql.rust.elements.ElementList
 import codeql.rust.elements.Expr
 import codeql.rust.elements.ExprStmt
 import codeql.rust.elements.Field
@@ -59,6 +60,7 @@ import codeql.rust.elements.RecordLit
 import codeql.rust.elements.RecordPat
 import codeql.rust.elements.Ref
 import codeql.rust.elements.RefPat
+import codeql.rust.elements.Repeat
 import codeql.rust.elements.Return
 import codeql.rust.elements.SlicePat
 import codeql.rust.elements.Stmt

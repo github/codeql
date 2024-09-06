@@ -154,9 +154,10 @@ type_refs(
   unique int id: @type_ref
 );
 
-arrays(
-  unique int id: @array
-);
+@array =
+  @element_list
+| @repeat
+;
 
 awaits(
   unique int id: @await,
@@ -660,6 +661,28 @@ blocks(
 block_labels(
   int id: @block ref,
   int label: @label ref
+);
+
+element_lists(
+  unique int id: @element_list
+);
+
+#keyset[id, index]
+element_list_elements(
+  int id: @element_list ref,
+  int index: int ref,
+  int element: @expr ref
+);
+
+#keyset[id]
+element_list_is_assignee_expr(
+  int id: @element_list ref
+);
+
+repeats(
+  unique int id: @repeat,
+  int initializer: @expr ref,
+  int repeat: @expr ref
 );
 
 unsafe_blocks(

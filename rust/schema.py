@@ -425,6 +425,20 @@ class Array(Expr):
     pass
 #     Literal(Literal),
 
+# ElementList { elements: Box<[ExprId]>, is_assignee_expr: bool },
+
+
+class ElementList(Array):
+    elements: list[Expr]
+    is_assignee_expr: predicate
+
+# Repeat { initializer: ExprId, repeat: ExprId },
+
+
+class Repeat(Array):
+    initializer: Expr
+    repeat: Expr
+
 
 class Literal(Expr):
     pass
