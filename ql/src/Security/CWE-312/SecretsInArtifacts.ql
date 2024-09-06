@@ -1,9 +1,10 @@
 /**
- * @name Secret In Artifacts
- * @description Secrets are exposed in GitHub Artifacts
+ * @name Storage of sensitive information in GitHub Actions artifact
+ * @description Including sensitive information in a GitHub Actions artifact can
+ *              expose it to an attacker.
  * @kind problem
  * @problem.severity error
- * @security-severity 9.0
+ * @security-severity 7.5
  * @precision high
  * @id actions/secrets-in-artifacts
  * @tags actions
