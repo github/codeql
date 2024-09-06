@@ -254,11 +254,8 @@ module Public {
     /** Gets the singleton content to be accessed. */
     Content asSingleton() { this = MkSingletonContent(result) }
 
-    /** Gets the property name to be accessed. */
-    PropertyName asPropertyName() {
-      // TODO: array indices should be mapped to a ContentSet that also reads from UnknownArrayElement
-      result = this.asSingleton().asPropertyName()
-    }
+    /** Gets the property name to be accessed, provided that this is a singleton content set. */
+    PropertyName asPropertyName() { result = this.asSingleton().asPropertyName() }
 
     /** Gets the array index to be accessed. */
     int asArrayIndex() { result = this.asSingleton().asArrayIndex() }
