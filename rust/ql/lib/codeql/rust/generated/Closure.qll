@@ -41,7 +41,7 @@ module Generated {
     final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
 
     /**
-     * Gets the `index`th argument type of this closure (0-based).
+     * Gets the `index`th argument type of this closure (0-based), if it exists.
      */
     TypeRef getArgType(int index) {
       result =
@@ -51,14 +51,14 @@ module Generated {
     }
 
     /**
+     * Holds if `getArgType(index)` exists.
+     */
+    final predicate hasArgType(int index) { exists(this.getArgType(index)) }
+
+    /**
      * Gets any of the argument types of this closure.
      */
     final TypeRef getAnArgType() { result = this.getArgType(_) }
-
-    /**
-     * Gets the number of argument types of this closure.
-     */
-    final int getNumberOfArgTypes() { result = count(int i | exists(this.getArgType(i))) }
 
     /**
      * Gets the ret type of this closure, if it exists.

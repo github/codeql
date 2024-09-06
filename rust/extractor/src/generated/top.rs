@@ -334,7 +334,7 @@ pub struct Closure {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub args: Vec<trap::Label>,
-    pub arg_types: Vec<trap::Label>,
+    pub arg_types: Vec<Option<trap::Label>>,
     pub ret_type: Option<trap::Label>,
     pub body: trap::Label,
     pub is_move: bool,
@@ -354,7 +354,9 @@ impl TrapEntry for Closure {
             out.add_tuple("closure_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         for (i, &v) in self.arg_types.iter().enumerate() {
-            out.add_tuple("closure_arg_types", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            if let Some(vv) = v {
+                out.add_tuple("closure_arg_types", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            }
         }
         if let Some(v) = self.ret_type {
             out.add_tuple("closure_ret_types", vec![trap::Arg::Label(id), v.into()]);

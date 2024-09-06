@@ -317,7 +317,7 @@ module Raw {
     Pat getArg(int index) { closure_args(this, index, result) }
 
     /**
-     * Gets the `index`th argument type of this closure (0-based).
+     * Gets the `index`th argument type of this closure (0-based), if it exists.
      */
     TypeRef getArgType(int index) { closure_arg_types(this, index, result) }
 

@@ -402,7 +402,7 @@ class Index(Expr):
 
 class Closure(Expr):
     args: list[Pat]
-    arg_types: list[TypeRef]
+    arg_types: list[optional[TypeRef]]
     ret_type: optional[TypeRef]
     body: Expr
     # TODO
