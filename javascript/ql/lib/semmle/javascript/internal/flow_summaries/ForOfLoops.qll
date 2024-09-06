@@ -48,10 +48,10 @@ class ForOfLoopStep extends AdditionalFlowInternal {
   ) {
     exists(ForOfStmt stmt |
       pred = getSynthesizedNode(stmt, "for-of-map-key") and
-      contents.asArrayIndex() = 0
+      contents.asSingleton().asArrayIndex() = 0
       or
       pred = getSynthesizedNode(stmt, "for-of-map-value") and
-      contents.asArrayIndex() = 1
+      contents.asSingleton().asArrayIndex() = 1
     |
       succ = DataFlow::lvalueNode(stmt.getLValue())
     )

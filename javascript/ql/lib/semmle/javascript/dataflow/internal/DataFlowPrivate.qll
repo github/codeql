@@ -1162,7 +1162,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TRestParameterStoreNode(function, content)
   |
     // shift known array indices
-    c.asArrayIndex() = content.asArrayIndex() + restIndex
+    c.asSingleton().asArrayIndex() = content.asArrayIndex() + restIndex
     or
     content.isUnknownArrayElement() and // TODO: don't read unknown array elements from static array
     c = ContentSet::arrayElementUnknown()
@@ -1179,7 +1179,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElement() and // unknown start index when not the first spread operator
       storeContent.isUnknownArrayElement()
     else (
-      storeContent.asArrayIndex() = n + c.asArrayIndex()
+      storeContent.asArrayIndex() = n + c.asSingleton().asArrayIndex()
       or
       storeContent.isUnknownArrayElement() and c.asSingleton() = storeContent
     )
@@ -1190,7 +1190,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1 = TFlowSummaryDynamicParameterArrayNode(parameter.getSummarizedCallable()) and
     node2 = parameter and
     (
-      c.asArrayIndex() = pos.asPositional()
+      c.asSingleton().asArrayIndex() = pos.asPositional()
       or
       c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
     )
@@ -1261,7 +1261,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(InvokeExpr invoke, int n |
     node1 = TValueNode(invoke.getArgument(n)) and
     node2 = TStaticArgumentArrayNode(invoke) and
-    c.asArrayIndex() = n and
+    c.asSingleton().asArrayIndex() = n and
     not n >= firstSpreadArgumentIndex(invoke)
   )
   or

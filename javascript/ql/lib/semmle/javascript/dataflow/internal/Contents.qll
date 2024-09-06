@@ -257,9 +257,6 @@ module Public {
     /** Gets the property name to be accessed, provided that this is a singleton content set. */
     PropertyName asPropertyName() { result = this.asSingleton().asPropertyName() }
 
-    /** Gets the array index to be accessed. */
-    int asArrayIndex() { result = this.asSingleton().asArrayIndex() }
-
     /**
      * Gets a string representation of this content set.
      */
