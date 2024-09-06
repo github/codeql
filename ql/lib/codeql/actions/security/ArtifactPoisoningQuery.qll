@@ -26,8 +26,10 @@ class GitHubDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, Us
       exists(this.getArgument("github-token"))
       or
       // There is an artifact upload step in the same workflow which can be influenced by an attacker on a checkout step
-      exists(UsesStep checkout, UsesStep upload |
-        this.getEnclosingWorkflow().getAJob().(LocalJob).getAStep() = checkout and
+      exists(LocalJob job, UsesStep checkout, UsesStep upload |
+        this.getEnclosingWorkflow().getAJob() = job and
+        job.getAStep() = checkout and
+        job.getATriggerEvent().getName() = "pull_request_target" and
         checkout.getCallee() = "actions/checkout" and
         checkout.getAFollowingStep() = upload and
         upload.getCallee() = "actions/upload-artifact"

@@ -14,7 +14,6 @@ edges
 | .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance |  |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | provenance |  |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | provenance |  |
-| .github/workflows/artifactpoisoning82.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning82.yml:31:14:31:27 | python test.py | provenance |  |
 nodes
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | semmle.label | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
@@ -46,8 +45,5 @@ nodes
 | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | semmle.label | sed -f config foo.md > bar.md\n |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | semmle.label | python test.py |
-| .github/workflows/artifactpoisoning82.yml:28:9:31:6 | Uses Step | semmle.label | Uses Step |
-| .github/workflows/artifactpoisoning82.yml:31:14:31:27 | python test.py | semmle.label | python test.py |
 subpaths
 #select
-| .github/workflows/artifactpoisoning82.yml:31:14:31:27 | python test.py | .github/workflows/artifactpoisoning82.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning82.yml:31:14:31:27 | python test.py | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning82.yml:31:14:31:27 | python test.py | python test.py |
