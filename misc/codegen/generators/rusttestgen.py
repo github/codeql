@@ -25,6 +25,10 @@ class Function:
         if self.params:
             self.params[0].first = True
 
+    @property
+    def has_generic_params(self) -> bool:
+        return bool(self.generic_params)
+
 
 @dataclasses.dataclass
 class TestCode:
