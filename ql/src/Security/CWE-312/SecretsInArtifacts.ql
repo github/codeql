@@ -35,6 +35,12 @@ where
       "v4.2.0", "694cdabd8bdb0f10b2cea11669e1bf5453eed0a6", //
       "v4.1.0", "1eb3cb2b3e0f29609092a73eb033bb759a334595", //
       "v4.0.0", "c7d193f32edcb7bfad88892161225aeda64e9392", //
-    ]
+    ] and
+  (
+    not exists(checkout.getArgument("path")) and
+    upload.getArgument("path") = [".", "*"]
+    or
+    checkout.getArgument("path") + ["", "/*"] = upload.getArgument("path")
+  )
 select upload, "A secret is exposed in a public artifact uploaded by $@", upload,
   "actions/upload-artifact"
