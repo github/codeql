@@ -1,0 +1,4 @@
+| .github/workflows/test.yml:9:9:14:2 | name: " ... tifact" | A secret is exposed in an artifact uploaded by $@ | .github/workflows/test.yml:9:9:14:2 | name: " ... tifact" | actions/upload-artifact |
+| .github/workflows/test.yml:27:9:32:2 | name: " ... tifact" | A secret is exposed in an artifact uploaded by $@ | .github/workflows/test.yml:27:9:32:2 | name: " ... tifact" | actions/upload-artifact |
+| .github/workflows/test.yml:38:9:43:2 | name: " ... tifact" | A secret is exposed in an artifact uploaded by $@ | .github/workflows/test.yml:38:9:43:2 | name: " ... tifact" | actions/upload-artifact |
+| .github/workflows/test.yml:49:9:54:2 | name: " ... tifact" | A secret is exposed in an artifact uploaded by $@ | .github/workflows/test.yml:49:9:54:2 | name: " ... tifact" | actions/upload-artifact |
