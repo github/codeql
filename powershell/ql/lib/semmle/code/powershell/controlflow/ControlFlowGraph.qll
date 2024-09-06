@@ -69,10 +69,11 @@ module SuccessorTypes {
    * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`)
    * or a matching successor (`MatchingSuccessor`)
    */
-  class ConditionalSuccessor extends SuccessorType {
+  abstract class ConditionalSuccessor extends SuccessorType {
     boolean value;
 
-    ConditionalSuccessor() { this = CfgImpl::TBooleanSuccessor(value) }
+    bindingset[value]
+    ConditionalSuccessor() { any() }
 
     /** Gets the Boolean value of this successor. */
     final boolean getValue() { result = value }
@@ -80,7 +81,13 @@ module SuccessorTypes {
     override string toString() { result = this.getValue().toString() }
   }
 
-  class BooleanSuccessor extends ConditionalSuccessor, CfgImpl::TBooleanSuccessor { }
+  class BooleanSuccessor extends ConditionalSuccessor, CfgImpl::TBooleanSuccessor {
+    BooleanSuccessor() { this = CfgImpl::TBooleanSuccessor(value) }
+  }
+
+  class MatchingSuccessor extends ConditionalSuccessor, CfgImpl::TMatchingSuccessor {
+    MatchingSuccessor() { this = CfgImpl::TMatchingSuccessor(value) }
+  }
 
   class ReturnSuccessor extends SuccessorType, CfgImpl::TReturnSuccessor {
     final override string toString() { result = "return" }
@@ -94,8 +101,8 @@ module SuccessorTypes {
     final override string toString() { result = "continue" }
   }
 
-  class RaiseSuccessor extends SuccessorType, CfgImpl::TRaiseSuccessor {
-    final override string toString() { result = "raise" }
+  class ThrowSuccessor extends SuccessorType, CfgImpl::TThrowSuccessor {
+    final override string toString() { result = "throw" }
   }
 
   class ExitSuccessor extends SuccessorType, CfgImpl::TExitSuccessor {

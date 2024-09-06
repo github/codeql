@@ -5,6 +5,7 @@
 
 private import powershell
 private import codeql.controlflow.Cfg as CfgShared
+private import codeql.util.Boolean
 private import semmle.code.powershell.controlflow.ControlFlowGraph
 private import Completion
 
@@ -418,6 +419,108 @@ module Trees {
     }
   }
 
+  class IfStmtTree extends PreOrderTree instanceof IfStmt {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = super.getACondition()
+      or
+      child = super.getAThen()
+      or
+      child = super.getElse()
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      last(super.getAThen(), last, c)
+      or
+      last(super.getElse(), last, c)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      this = pred and
+      first(super.getCondition(0), succ) and
+      completionIsSimple(c)
+      or
+      exists(int i, boolean value |
+        last(super.getCondition(i), pred, c) and value = c.(BooleanCompletion).getValue()
+      |
+        value = true and
+        first(super.getThen(i), succ)
+        or
+        value = false and
+        (
+          first(super.getCondition(i + 1), succ)
+          or
+          i = super.getNumberOfConditions() - 1 and
+          first(super.getElse(), succ)
+        )
+      )
+    }
+  }
+
+  class SwitchStmtTree extends PreOrderTree instanceof SwitchStmt {
+    final override predicate propagatesAbnormal(AstNode child) {
+      child = super.getCondition()
+      or
+      child = super.getACase()
+      or
+      child = super.getDefault()
+      or
+      child = super.getAPattern()
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      // There are no cases and no default
+      not exists(super.getACase()) and
+      not exists(super.getDefault()) and
+      last(super.getCondition(), last, c) and
+      completionIsNormal(c)
+      or
+      // The last element can be the last statement in the default block
+      last(super.getDefault(), last, c)
+      or
+      // ... or any of the last elements in a case block
+      last(super.getACase(), last, c)
+      or
+      // No default and we reached the final pattern and failed to match
+      not exists(super.getDefault()) and
+      last(super.getPattern(super.getNumberOfCases() - 1), last, c) and
+      c.(MatchCompletion).isNonMatch()
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Preorder: Flow from the switch to the condition
+      pred = this and
+      first(super.getCondition(), succ) and
+      completionIsSimple(c)
+      or
+      // Flow from the condition to the first pattern
+      last(super.getCondition(), pred, c) and
+      completionIsNormal(c) and
+      first(super.getPattern(0), succ)
+      or
+      // Flow from a match to:
+      // 1. the corresponding case if the match succeeds, or
+      // 2. the next pattern if the match failed, or
+      // 3. the default case if this is the last pattern and the match failed.
+      exists(int i, boolean match |
+        last(super.getPattern(i), pred, c) and c.(MatchCompletion).getValue() = match
+      |
+        // Case 1
+        match = true and
+        first(super.getCase(i), succ)
+        or
+        match = false and
+        (
+          // Case 2
+          first(super.getPattern(i + 1), succ)
+          or
+          // Case 3
+          i = super.getNumberOfCases() - 1 and
+          first(super.getDefault(), succ)
+        )
+      )
+    }
+  }
+
   class GotoStmtTree extends LeafTree instanceof GotoStmt { }
 
   class FunctionStmtTree extends LeafTree instanceof Function { }
@@ -470,12 +573,13 @@ private module Cached {
   cached
   newtype TSuccessorType =
     TSuccessorSuccessor() or
-    TBooleanSuccessor(boolean b) { b in [false, true] } or
+    TBooleanSuccessor(Boolean b) or
     TReturnSuccessor() or
     TBreakSuccessor() or
     TContinueSuccessor() or
     TRaiseSuccessor() or
-    TExitSuccessor()
+    TExitSuccessor() or
+    TMatchingSuccessor(Boolean b)
 }
 
 import Cached
