@@ -13,15 +13,15 @@ type EmbedsPkg2IntStruct = struct{ pkg2.IntStruct }
 
 func FEmbedded() {
 
-  x := source()
-  pkg1Struct := EmbedsPkg1IntStruct{pkg1.IntStruct{x}}
+	x := source()
+	pkg1Struct := EmbedsPkg1IntStruct{pkg1.IntStruct{x}}
 
-  GEmbedded(&pkg1Struct)
+	GEmbedded(&pkg1Struct)
 
 }
 
 func GEmbedded(pkg2Struct *EmbedsPkg2IntStruct) {
 
-  sink(pkg2Struct.Field) // $ hasValueFlow="selection of Field"
+	sink(pkg2Struct.Field) // $ hasValueFlow="selection of Field"
 
 }

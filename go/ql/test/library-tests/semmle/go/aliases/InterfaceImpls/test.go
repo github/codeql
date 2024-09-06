@@ -6,8 +6,8 @@ type Target = interface {
 	ImplementMe(callable func(struct{ x IntAlias }))
 }
 
-func source() func(struct{ x IntAlias }) { return nil }
-func sink(fptr func(struct{ x IntAlias })) { }
+func source() func(struct{ x IntAlias })   { return nil }
+func sink(fptr func(struct{ x IntAlias })) {}
 
 // Simple direct implementation
 type Impl1 struct{}

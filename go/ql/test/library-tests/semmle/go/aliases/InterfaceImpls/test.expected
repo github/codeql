@@ -1,11 +1,11 @@
 callTargets
-| test.go:15:70:15:83 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:20:65:20:78 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:27:54:27:67 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:34:60:34:73 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:41:72:41:85 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:48:70:48:83 | call to sink | test.go:10:1:10:46 | function declaration | sink |
-| test.go:51:14:51:21 | call to source | test.go:9:1:9:55 | function declaration | source |
+| test.go:15:70:15:83 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:20:65:20:78 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:27:54:27:67 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:34:60:34:73 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:41:72:41:85 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:48:70:48:83 | call to sink | test.go:10:1:10:45 | function declaration | sink |
+| test.go:51:14:51:21 | call to source | test.go:9:1:9:57 | function declaration | source |
 | test.go:52:2:52:29 | call to ImplementMe | test.go:15:1:15:85 | function declaration | ImplementMe |
 | test.go:52:2:52:29 | call to ImplementMe | test.go:20:1:20:80 | function declaration | ImplementMe |
 | test.go:52:2:52:29 | call to ImplementMe | test.go:27:1:27:69 | function declaration | ImplementMe |
