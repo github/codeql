@@ -103,12 +103,10 @@ class Component extends Class {
     )
   }
 
-  predicate hasPropertySetOnSubComponent(
+  predicate hasAddComponentParameter(
     MethodCall addCall, ValueOrRefType componentType, Property p, Expr value
   ) {
-    exists(
-      int i, int j, int k, MethodCall openCall, Callable enclosing, Expr cast, Expr typeCheckCall
-    |
+    exists(int i, int j, int k, MethodCall openCall, Callable enclosing |
       this.hasSubComponent(openCall, i, _, j, componentType, enclosing) and
       p = componentType.getABaseType*().getAProperty() and
       // The below doesn't work for InputText:
@@ -116,7 +114,15 @@ class Component extends Class {
       k in [i + 1 .. j - 1] and
       addCall = this.getRenderTreeBuilderCall(k, "AddComponentParameter", enclosing) and
       p.getName() = addCall.getArgument(1).getValue() and
-      cast = addCall.getArgument(2) and
+      value = addCall.getArgument(2)
+    )
+  }
+
+  predicate hasPropertySetOnSubComponent(
+    MethodCall addCall, ValueOrRefType componentType, Property p, Expr value
+  ) {
+    exists(Expr cast, Expr typeCheckCall |
+      this.hasAddComponentParameter(addCall, componentType, p, cast) and
       (
         if cast.(CastExpr).getTargetType().hasFullyQualifiedName("System", "Object")
         then typeCheckCall = cast.(CastExpr).getExpr()
@@ -230,6 +236,42 @@ private class InputBaseValuePropertyJumpNode extends DataFlow::NonLocalJumpNode 
       access.getTarget() = member and
       access.hasThisQualifier() and
       access instanceof AssignableRead
+    )
+  }
+}
+
+// TODO: why doesn't the below summary work?
+// - ["Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder", False, "AddComponentParameter", "(System.Int32,System.String,System.Object)", "", "Argument[2]", "Argument[1]", "taint", "manual"]
+private class ComponentPropertyAssignmentJumpNodePart1 extends DataFlow::NonLocalJumpNode {
+  MethodCall mc;
+
+  ComponentPropertyAssignmentJumpNodePart1() {
+    any(Component c).hasAddComponentParameter(mc, _, _, this.asExpr())
+    // and this.asExpr() = mc.getArgument(2) // The above line enforces this already. Leaving this here for easier readability.
+  }
+
+  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+    preservesValue = false and
+    result.asExpr() = mc.getArgument(1)
+  }
+}
+
+private class ComponentPropertyAssignmentJumpNodePart2 extends DataFlow::NonLocalJumpNode {
+  Property p;
+  MethodCall mc;
+
+  ComponentPropertyAssignmentJumpNodePart2() {
+    any(Component c).hasAddComponentParameter(mc, _, p, _) and
+    this.asExpr() = mc.getArgument(1)
+  }
+
+  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+    preservesValue = false and
+    exists(PropertyRead read |
+      result.asExpr() = read and
+      read.getTarget() = p and
+      read.hasThisQualifier()
+      // todo: should we limit this to property reads that happen inside the `BuildRenderTree`?
     )
   }
 }
