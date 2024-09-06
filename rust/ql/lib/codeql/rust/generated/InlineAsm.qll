@@ -19,5 +19,13 @@ module Generated {
    */
   class InlineAsm extends Synth::TInlineAsm, Expr {
     override string getAPrimaryQlClass() { result = "InlineAsm" }
+
+    /**
+     * Gets the expression of this inline asm.
+     */
+    Expr getExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertInlineAsmToRaw(this).(Raw::InlineAsm).getExpr())
+    }
   }
 }

@@ -581,6 +581,7 @@ impl TrapEntry for Index {
 pub struct InlineAsm {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub expr: trap::Label,
 }
 
 impl TrapEntry for InlineAsm {
@@ -589,7 +590,7 @@ impl TrapEntry for InlineAsm {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("inline_asms", vec![trap::Arg::Label(id)]);
+        out.add_tuple("inline_asms", vec![trap::Arg::Label(id), self.expr.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }

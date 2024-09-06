@@ -495,6 +495,11 @@ module Raw {
    */
   class InlineAsm extends @inline_asm, Expr {
     override string toString() { result = "InlineAsm" }
+
+    /**
+     * Gets the expression of this inline asm.
+     */
+    Expr getExpr() { inline_asms(this, result) }
   }
 
   /**

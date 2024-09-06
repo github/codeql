@@ -377,7 +377,8 @@ index_is_assignee_expr(
 );
 
 inline_asms(
-  unique int id: @inline_asm
+  unique int id: @inline_asm,
+  int expr: @expr ref
 );
 
 item_stmts(

@@ -442,7 +442,7 @@ class OffsetOf(Expr):
 
 
 class InlineAsm(Expr):
-    pass
+    expr: Expr
 
 
 #    Let {
