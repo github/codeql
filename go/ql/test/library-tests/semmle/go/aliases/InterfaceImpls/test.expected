@@ -1,22 +1,22 @@
 callTargets
-| test.go:15:70:15:83 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:20:65:20:78 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:27:54:27:67 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:34:60:34:73 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:41:72:41:85 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:48:70:48:83 | call to sink | test.go:10:1:10:45 | function declaration | sink |
-| test.go:51:14:51:21 | call to source | test.go:9:1:9:57 | function declaration | source |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:15:1:15:85 | function declaration | ImplementMe |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:20:1:20:80 | function declaration | ImplementMe |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:27:1:27:69 | function declaration | ImplementMe |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:34:1:34:75 | function declaration | ImplementMe |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:41:1:41:87 | function declaration | ImplementMe |
-| test.go:52:2:52:29 | call to ImplementMe | test.go:48:1:48:85 | function declaration | ImplementMe |
+| test.go:18:70:18:83 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:23:65:23:78 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:30:54:30:67 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:37:60:37:73 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:44:72:44:85 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:51:70:51:83 | call to sink | test.go:13:1:13:45 | function declaration | sink |
+| test.go:54:14:54:21 | call to source | test.go:12:1:12:57 | function declaration | source |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:18:1:18:85 | function declaration | ImplementMe |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:23:1:23:80 | function declaration | ImplementMe |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:30:1:30:69 | function declaration | ImplementMe |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:37:1:37:75 | function declaration | ImplementMe |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:44:1:44:87 | function declaration | ImplementMe |
+| test.go:55:2:55:29 | call to ImplementMe | test.go:51:1:51:85 | function declaration | ImplementMe |
 #select
 | file://:0:0:0:0 | basic interface type | file://:0:0:0:0 | basic interface type |
-| file://:0:0:0:0 | basic interface type | test.go:13:6:13:10 | Impl1 |
-| file://:0:0:0:0 | basic interface type | test.go:18:6:18:10 | Impl2 |
-| file://:0:0:0:0 | basic interface type | test.go:23:6:23:10 | Impl3 |
-| file://:0:0:0:0 | basic interface type | test.go:30:6:30:10 | Impl4 |
-| file://:0:0:0:0 | basic interface type | test.go:37:6:37:10 | Impl5 |
-| file://:0:0:0:0 | basic interface type | test.go:44:6:44:10 | Impl6 |
+| file://:0:0:0:0 | basic interface type | test.go:16:6:16:10 | Impl1 |
+| file://:0:0:0:0 | basic interface type | test.go:21:6:21:10 | Impl2 |
+| file://:0:0:0:0 | basic interface type | test.go:26:6:26:10 | Impl3 |
+| file://:0:0:0:0 | basic interface type | test.go:33:6:33:10 | Impl4 |
+| file://:0:0:0:0 | basic interface type | test.go:40:6:40:10 | Impl5 |
+| file://:0:0:0:0 | basic interface type | test.go:47:6:47:10 | Impl6 |
