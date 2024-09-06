@@ -11,6 +11,7 @@ import codeql.rust.elements.Become
 import codeql.rust.elements.BinaryOp
 import codeql.rust.elements.BindPat
 import codeql.rust.elements.Block
+import codeql.rust.elements.BlockBase
 import codeql.rust.elements.Box
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.Break

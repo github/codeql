@@ -138,9 +138,12 @@ class Let(Expr):
 #     },
 
 
-class Block(Expr):
+class BlockBase(Expr):
     statements: list[Stmt]
     tail: optional[Expr]
+
+
+class Block(BlockBase):
     label: optional[string]
 
 #     Async {
@@ -150,7 +153,7 @@ class Block(Expr):
 #     },
 
 
-class AsyncBlock(Block):
+class AsyncBlock(BlockBase):
     pass
 
 #     Const(ConstBlockId),
@@ -167,7 +170,7 @@ class Const(Expr):
 #     },
 
 
-class UnsafeBlock(Block):
+class UnsafeBlock(BlockBase):
     pass
 
 #     Loop {

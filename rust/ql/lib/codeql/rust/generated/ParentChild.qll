@@ -263,7 +263,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfBlock(Block e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfBlockBase(BlockBase e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
@@ -887,14 +887,27 @@ private module Impl {
   }
 
   private Element getImmediateChildOfAsyncBlock(AsyncBlock e, int index, string partialPredicateCall) {
-    exists(int b, int bBlock, int n |
+    exists(int b, int bBlockBase, int n |
       b = 0 and
-      bBlock = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlock(e, i, _)) | i) and
-      n = bBlock and
+      bBlockBase = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlockBase(e, i, _)) | i) and
+      n = bBlockBase and
       (
         none()
         or
-        result = getImmediateChildOfBlock(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfBlockBase(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBlock(Block e, int index, string partialPredicateCall) {
+    exists(int b, int bBlockBase, int n |
+      b = 0 and
+      bBlockBase = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlockBase(e, i, _)) | i) and
+      n = bBlockBase and
+      (
+        none()
+        or
+        result = getImmediateChildOfBlockBase(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -902,14 +915,14 @@ private module Impl {
   private Element getImmediateChildOfUnsafeBlock(
     UnsafeBlock e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bBlock, int n |
+    exists(int b, int bBlockBase, int n |
       b = 0 and
-      bBlock = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlock(e, i, _)) | i) and
-      n = bBlock and
+      bBlockBase = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlockBase(e, i, _)) | i) and
+      n = bBlockBase and
       (
         none()
         or
-        result = getImmediateChildOfBlock(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfBlockBase(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -1035,6 +1048,8 @@ private module Impl {
     result = getImmediateChildOfYield(e, index, partialAccessor)
     or
     result = getImmediateChildOfAsyncBlock(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBlock(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnsafeBlock(e, index, partialAccessor)
   }

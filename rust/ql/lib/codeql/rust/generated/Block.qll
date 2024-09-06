@@ -6,8 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Expr
-import codeql.rust.elements.Stmt
+import codeql.rust.elements.BlockBase
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Block` and should not
@@ -18,36 +17,8 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Block` class directly.
    * Use the subclass `Block`, where the following predicates are available.
    */
-  class Block extends Synth::TBlock, Expr {
-    /**
-     * Gets the `index`th statement of this block (0-based).
-     */
-    Stmt getStatement(int index) {
-      result =
-        Synth::convertStmtFromRaw(Synth::convertBlockToRaw(this).(Raw::Block).getStatement(index))
-    }
-
-    /**
-     * Gets any of the statements of this block.
-     */
-    final Stmt getAStatement() { result = this.getStatement(_) }
-
-    /**
-     * Gets the number of statements of this block.
-     */
-    final int getNumberOfStatements() { result = count(int i | exists(this.getStatement(i))) }
-
-    /**
-     * Gets the tail of this block, if it exists.
-     */
-    Expr getTail() {
-      result = Synth::convertExprFromRaw(Synth::convertBlockToRaw(this).(Raw::Block).getTail())
-    }
-
-    /**
-     * Holds if `getTail()` exists.
-     */
-    final predicate hasTail() { exists(this.getTail()) }
+  class Block extends Synth::TBlock, BlockBase {
+    override string getAPrimaryQlClass() { result = "Block" }
 
     /**
      * Gets the label of this block, if it exists.

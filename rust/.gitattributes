@@ -14,6 +14,8 @@
 /ql/lib/codeql/rust/elements/BindPat.qll linguist-generated
 /ql/lib/codeql/rust/elements/BindPatConstructor.qll linguist-generated
 /ql/lib/codeql/rust/elements/Block.qll linguist-generated
+/ql/lib/codeql/rust/elements/BlockBase.qll linguist-generated
+/ql/lib/codeql/rust/elements/BlockConstructor.qll linguist-generated
 /ql/lib/codeql/rust/elements/Box.qll linguist-generated
 /ql/lib/codeql/rust/elements/BoxConstructor.qll linguist-generated
 /ql/lib/codeql/rust/elements/BoxPat.qll linguist-generated
@@ -128,6 +130,7 @@
 /ql/lib/codeql/rust/generated/BinaryOp.qll linguist-generated
 /ql/lib/codeql/rust/generated/BindPat.qll linguist-generated
 /ql/lib/codeql/rust/generated/Block.qll linguist-generated
+/ql/lib/codeql/rust/generated/BlockBase.qll linguist-generated
 /ql/lib/codeql/rust/generated/Box.qll linguist-generated
 /ql/lib/codeql/rust/generated/BoxPat.qll linguist-generated
 /ql/lib/codeql/rust/generated/Break.qll linguist-generated

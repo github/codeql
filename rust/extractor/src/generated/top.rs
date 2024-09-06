@@ -1245,7 +1245,6 @@ pub struct AsyncBlock {
     pub location: Option<trap::Label>,
     pub statements: Vec<trap::Label>,
     pub tail: Option<trap::Label>,
-    pub label: Option<String>,
 }
 
 impl TrapEntry for AsyncBlock {
@@ -1259,10 +1258,38 @@ impl TrapEntry for AsyncBlock {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
         for (i, &v) in self.statements.iter().enumerate() {
-            out.add_tuple("block_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
-            out.add_tuple("block_tails", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_base_tails", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Block {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+    pub statements: Vec<trap::Label>,
+    pub tail: Option<trap::Label>,
+    pub label: Option<String>,
+}
+
+impl TrapEntry for Block {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("blocks", vec![trap::Arg::Label(id)]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, &v) in self.statements.iter().enumerate() {
+            out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if let Some(v) = self.tail {
+            out.add_tuple("block_base_tails", vec![trap::Arg::Label(id), v.into()]);
         }
         if let Some(v) = self.label {
             out.add_tuple("block_labels", vec![trap::Arg::Label(id), v.into()]);
@@ -1276,7 +1303,6 @@ pub struct UnsafeBlock {
     pub location: Option<trap::Label>,
     pub statements: Vec<trap::Label>,
     pub tail: Option<trap::Label>,
-    pub label: Option<String>,
 }
 
 impl TrapEntry for UnsafeBlock {
@@ -1290,13 +1316,10 @@ impl TrapEntry for UnsafeBlock {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
         for (i, &v) in self.statements.iter().enumerate() {
-            out.add_tuple("block_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
-            out.add_tuple("block_tails", vec![trap::Arg::Label(id), v.into()]);
-        }
-        if let Some(v) = self.label {
-            out.add_tuple("block_labels", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_base_tails", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }

@@ -78,7 +78,7 @@ db_locations(
 | @await
 | @become
 | @binary_op
-| @block
+| @block_base
 | @box
 | @break
 | @call
@@ -185,28 +185,23 @@ bind_pat_subpats(
   int subpat: @pat ref
 );
 
-@block =
+@block_base =
   @async_block
+| @block
 | @unsafe_block
 ;
 
 #keyset[id, index]
-block_statements(
-  int id: @block ref,
+block_base_statements(
+  int id: @block_base ref,
   int index: int ref,
   int statement: @stmt ref
 );
 
 #keyset[id]
-block_tails(
-  int id: @block ref,
+block_base_tails(
+  int id: @block_base ref,
   int tail: @expr ref
-);
-
-#keyset[id]
-block_labels(
-  int id: @block ref,
-  string label: string ref
 );
 
 boxes(
@@ -640,6 +635,16 @@ yield_exprs(
 
 async_blocks(
   unique int id: @async_block
+);
+
+blocks(
+  unique int id: @block
+);
+
+#keyset[id]
+block_labels(
+  int id: @block ref,
+  string label: string ref
 );
 
 unsafe_blocks(

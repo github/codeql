@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Block
+import codeql.rust.elements.BlockBase
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsyncBlock` and should not
@@ -17,7 +17,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::AsyncBlock` class directly.
    * Use the subclass `AsyncBlock`, where the following predicates are available.
    */
-  class AsyncBlock extends Synth::TAsyncBlock, Block {
+  class AsyncBlock extends Synth::TAsyncBlock, BlockBase {
     override string getAPrimaryQlClass() { result = "AsyncBlock" }
   }
 }

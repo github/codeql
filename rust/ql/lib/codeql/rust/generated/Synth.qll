@@ -42,6 +42,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBlock(Raw::Block id) { constructBlock(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBox(Raw::Box id) { constructBox(id) } or
     /**
      * INTERNAL: Do not use.
@@ -260,7 +264,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TBlock = TAsyncBlock or TUnsafeBlock;
+  class TBlockBase = TAsyncBlock or TBlock or TUnsafeBlock;
 
   /**
    * INTERNAL: Do not use.
@@ -271,7 +275,7 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArray or TAwait or TBecome or TBinaryOp or TBlock or TBox or TBreak or TCall or TCast or
+    TArray or TAwait or TBecome or TBinaryOp or TBlockBase or TBox or TBreak or TCall or TCast or
         TClosure or TConst or TContinue or TField or TIf or TIndex or TInlineAsm or TLet or
         TLiteral or TLoop or TMatch or TMethodCall or TMissingExpr or TOffsetOf or TPath or
         TRange or TRecordLit or TRef or TReturn or TTuple or TUnaryOp or TUnderscore or TYeet or
@@ -345,6 +349,13 @@ module Synth {
    */
   cached
   TBindPat convertBindPatFromRaw(Raw::Element e) { result = TBindPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBlock`, if possible.
+   */
+  cached
+  TBlock convertBlockFromRaw(Raw::Element e) { result = TBlock(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -738,11 +749,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TBlock`, if possible.
+   * Converts a raw DB element to a synthesized `TBlockBase`, if possible.
    */
   cached
-  TBlock convertBlockFromRaw(Raw::Element e) {
+  TBlockBase convertBlockBaseFromRaw(Raw::Element e) {
     result = convertAsyncBlockFromRaw(e)
+    or
+    result = convertBlockFromRaw(e)
     or
     result = convertUnsafeBlockFromRaw(e)
   }
@@ -785,7 +798,7 @@ module Synth {
     or
     result = convertBinaryOpFromRaw(e)
     or
-    result = convertBlockFromRaw(e)
+    result = convertBlockBaseFromRaw(e)
     or
     result = convertBoxFromRaw(e)
     or
@@ -962,6 +975,13 @@ module Synth {
    */
   cached
   Raw::Element convertBindPatToRaw(TBindPat e) { e = TBindPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TBlock` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertBlockToRaw(TBlock e) { e = TBlock(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1355,11 +1375,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBlock` to a raw DB element, if possible.
+   * Converts a synthesized `TBlockBase` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBlockToRaw(TBlock e) {
+  Raw::Element convertBlockBaseToRaw(TBlockBase e) {
     result = convertAsyncBlockToRaw(e)
+    or
+    result = convertBlockToRaw(e)
     or
     result = convertUnsafeBlockToRaw(e)
   }
@@ -1402,7 +1424,7 @@ module Synth {
     or
     result = convertBinaryOpToRaw(e)
     or
-    result = convertBlockToRaw(e)
+    result = convertBlockBaseToRaw(e)
     or
     result = convertBoxToRaw(e)
     or

@@ -9,6 +9,7 @@ import codeql.rust.elements.AwaitConstructor
 import codeql.rust.elements.BecomeConstructor
 import codeql.rust.elements.BinaryOpConstructor
 import codeql.rust.elements.BindPatConstructor
+import codeql.rust.elements.BlockConstructor
 import codeql.rust.elements.BoxConstructor
 import codeql.rust.elements.BoxPatConstructor
 import codeql.rust.elements.BreakConstructor

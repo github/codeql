@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Block
+import codeql.rust.elements.BlockBase
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnsafeBlock` and should not
@@ -17,7 +17,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::UnsafeBlock` class directly.
    * Use the subclass `UnsafeBlock`, where the following predicates are available.
    */
-  class UnsafeBlock extends Synth::TUnsafeBlock, Block {
+  class UnsafeBlock extends Synth::TUnsafeBlock, BlockBase {
     override string getAPrimaryQlClass() { result = "UnsafeBlock" }
   }
 }

@@ -201,21 +201,16 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Block extends @block, Expr {
+  class BlockBase extends @block_base, Expr {
     /**
-     * Gets the `index`th statement of this block (0-based).
+     * Gets the `index`th statement of this block base (0-based).
      */
-    Stmt getStatement(int index) { block_statements(this, index, result) }
+    Stmt getStatement(int index) { block_base_statements(this, index, result) }
 
     /**
-     * Gets the tail of this block, if it exists.
+     * Gets the tail of this block base, if it exists.
      */
-    Expr getTail() { block_tails(this, result) }
-
-    /**
-     * Gets the label of this block, if it exists.
-     */
-    string getLabel() { block_labels(this, result) }
+    Expr getTail() { block_base_tails(this, result) }
   }
 
   /**
@@ -863,14 +858,26 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class AsyncBlock extends @async_block, Block {
+  class AsyncBlock extends @async_block, BlockBase {
     override string toString() { result = "AsyncBlock" }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class UnsafeBlock extends @unsafe_block, Block {
+  class Block extends @block, BlockBase {
+    override string toString() { result = "Block" }
+
+    /**
+     * Gets the label of this block, if it exists.
+     */
+    string getLabel() { block_labels(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class UnsafeBlock extends @unsafe_block, BlockBase {
     override string toString() { result = "UnsafeBlock" }
   }
 }
