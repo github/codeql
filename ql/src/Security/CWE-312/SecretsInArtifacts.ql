@@ -8,7 +8,6 @@
  * @id actions/secrets-in-artifacts
  * @tags actions
  *       security
- *       experimental
  *       external/cwe/cwe-312
  */
 
