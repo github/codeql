@@ -5,6 +5,8 @@ import (
 	"test.com/basename/pkg2"
 )
 
+// Tests that dataflow behaves as expected when loads and stores from a field traverse embeddings that use different type names.
+
 // pkg2.IntStruct is an alias for pkg1.IntStruct
 // Note trickery with packages is necessary so that Go will assign the fields the same name as well as the same type.
 

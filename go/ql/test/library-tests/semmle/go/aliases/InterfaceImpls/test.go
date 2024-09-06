@@ -1,5 +1,8 @@
 package intfs
 
+// Tests that dataflow and interface implementation behave as expected when an interface
+// is implemented using a non-equal but identical type, i.e. an equal type after alias resolution.
+
 type IntAlias = int
 
 type Target = interface {
