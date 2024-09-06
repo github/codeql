@@ -1103,7 +1103,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1 = read.getBase() and
     node2 = read
   |
-    c.asPropertyName() = read.getPropertyName()
+    exists(PropertyName name | read.getPropertyName() = name |
+      not exists(name.asArrayIndex()) and
+      c = ContentSet::property(name)
+      or
+      c = ContentSet::arrayElementKnown(name.asArrayIndex())
+    )
     or
     not exists(read.getPropertyName()) and
     c = ContentSet::arrayElement()

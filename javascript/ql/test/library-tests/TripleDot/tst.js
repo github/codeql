@@ -134,7 +134,7 @@ function t13() {
         sink(x); // $ SPURIOUS: hasTaintFlow=t13.1
         sink(y); // $ hasTaintFlow=t13.1
         sink(rest); // $ hasTaintFlow=t13.1
-        sink(rest[0]); // $ MISSING: hasTaintFlow=t13.1
+        sink(rest[0]); // $ hasTaintFlow=t13.1
     }
     target("safe", ...source('t13.1'));
 }
@@ -167,8 +167,8 @@ function t15() {
 function t16() {
     let array = new Array(Math.floor(Math.random() * 10))
     array.push(source("t16.1"));
-    sink(array[0]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
-    sink(array[1]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
-    sink(array[2]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
+    sink(array[0]); // $ hasValueFlow=t16.1
+    sink(array[1]); // $ hasValueFlow=t16.1
+    sink(array[2]); // $ hasValueFlow=t16.1
     sink(array); // $ hasTaintFlow=t16.1
 }
