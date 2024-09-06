@@ -56,7 +56,6 @@ class Module(Declaration):
     # TODO name
     declarations: list[Declaration] | child
 
-@rust.doc_test_function("my_test", lifetimes="ab", T="Eq", x="&'a [T]", y="&'b [T]", return_type="&'a [T]")
 class Function(Declaration):
     """
     A function declaration. For example
