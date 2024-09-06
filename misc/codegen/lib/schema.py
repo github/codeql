@@ -94,6 +94,7 @@ class Class:
     default_doc_name: Optional[str] = None
     hideable: bool = False
     test_with: Optional[str] = None
+    rust_doc_test_function: Optional["FunctionInfo"] = None  # TODO: parametrized pragmas
 
     @property
     def final(self):
@@ -202,3 +203,10 @@ def split_doc(doc):
     while trimmed and not trimmed[0]:
         trimmed.pop(0)
     return trimmed
+
+
+@dataclass
+class FunctionInfo:
+    name: str
+    params: dict[str, str]
+    return_type: str

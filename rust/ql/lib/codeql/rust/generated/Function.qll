@@ -14,6 +14,17 @@ import codeql.rust.elements.Declaration
  */
 module Generated {
   /**
+   * A function declaration. For example
+   * ```
+   * fn foo(x: u32) -> u64 { (x + 1).into()
+   *  }
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::Function` class directly.
    * Use the subclass `Function`, where the following predicates are available.
    */

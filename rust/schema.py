@@ -56,5 +56,19 @@ class Module(Declaration):
     # TODO name
     declarations: list[Declaration] | child
 
+@rust.doc_test_function("my_test", lifetimes="ab", T="Eq", x="&'a [T]", y="&'b [T]", return_type="&'a [T]")
 class Function(Declaration):
+    """
+    A function declaration. For example
+    ```
+    fn foo(x: u32) -> u64 { (x + 1).into()
+     }
+    ```
+    A function declaration within a trait might not have a body:
+    ```
+    trait Trait {
+        fn bar();
+    }
+    ```
+    """
     name: string

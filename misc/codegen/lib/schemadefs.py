@@ -52,6 +52,7 @@ class _SynthModifier(_schema.PropertyModifier, _Namespace):
 qltest = _Namespace()
 ql = _Namespace()
 cpp = _Namespace()
+rust = _Namespace()
 synth = _SynthModifier()
 
 
@@ -155,6 +156,14 @@ ql.hideable = _annotate(hideable=True)
 _Pragma("ql_internal")
 
 _Pragma("cpp_skip")
+
+_Pragma("rust_skip_doc_test")
+
+rust.doc_test_function = lambda name, *, lifetimes=(), return_type="()", **kwargs: _annotate(
+    rust_doc_test_function=_schema.FunctionInfo(name,
+                                                params={f"'{lifetime}": "" for lifetime in lifetimes} | kwargs,
+                                                return_type=return_type)
+)
 
 
 def group(name: str = "") -> _ClassDecorator:
