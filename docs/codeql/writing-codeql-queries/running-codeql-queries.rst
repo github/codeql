@@ -10,12 +10,12 @@ There are several options available for running one or more CodeQL queries on a 
 Work through a CodeQL tutorial
 ------------------------------
 
-If you're working through a CodeQL tutorial, the CodeQL extension for Visual Studio Code makes it easy to run the queries in the tutorial. Unless you want to run the query on a specific code base, it's easiest to run queries on one of the many CodeQL databases that are available on GitHub. To get started, see "`Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__".
+If you're working through a CodeQL tutorial, the CodeQL extension for Visual Studio Code allows you to run the queries in the tutorial. Unless you want to run the query on a specific code base, it's easiest to run queries on one of the many CodeQL databases that are available on GitHub. To get started, see "`Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__".
 
 Develop a new CodeQL query
 --------------------------
 
-If you're developing a new query, the CodeQL extension for Visual Studio Code makes it easy to run a query and compare the results with previous runs as you refine the query. The extension also provides autocomplete suggestions, syntax highlighting, and other features that make it easier to write and debug queries. To get started, see "`Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__".
+If you're developing a new query, the CodeQL extension for Visual Studio Code allows you to run a query and compare the results with previous runs as you refine the query. The extension also provides autocomplete suggestions, syntax highlighting, and other features that make it easier to write and debug queries. To get started, see "`Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__".
 
 When you're ready to test the query on a wide range of codebases, you can choose from the pre-defined sets of CodeQL databases or define a custom group of codebases to run the query against. For more information, see "`Running CodeQL queries at scale with multi-repository variant analysis <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries-at-scale-with-multi-repository-variant-analysis>`__".
 
