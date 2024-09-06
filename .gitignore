@@ -65,3 +65,6 @@ node_modules/
 
 # bazel-built in-tree extractor packs
 /*/extractor-pack
+
+# Jetbrains IDE files
+.idea
