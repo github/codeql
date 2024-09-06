@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Locatable
 import codeql.rust.elements.Pat
 
 /**
@@ -19,7 +19,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MatchArm` class directly.
    * Use the subclass `MatchArm`, where the following predicates are available.
    */
-  class MatchArm extends Synth::TMatchArm, Locatable {
+  class MatchArm extends Synth::TMatchArm, AstNode {
     override string getAPrimaryQlClass() { result = "MatchArm" }
 
     /**

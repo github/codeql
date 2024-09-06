@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Locatable
+import codeql.rust.elements.AstNode
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Pat` and should not
@@ -17,5 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Pat` class directly.
    * Use the subclass `Pat`, where the following predicates are available.
    */
-  class Pat extends Synth::TPat, Locatable { }
+  class Pat extends Synth::TPat, AstNode { }
 }

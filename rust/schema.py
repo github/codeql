@@ -57,7 +57,12 @@ class Locatable(Element):
     location: optional[Location]
 
 
-class Declaration(Locatable):
+@qltest.skip
+class AstNode(Locatable):
+    pass
+
+
+class Declaration(AstNode):
     pass
 
 
@@ -67,22 +72,22 @@ class Module(Declaration):
 
 
 @qltest.collapse_hierarchy
-class Expr(Locatable):
+class Expr(AstNode):
     pass
 
 
 @qltest.collapse_hierarchy
-class Pat(Locatable):
+class Pat(AstNode):
     pass
 
 
 @qltest.collapse_hierarchy
-class Stmt(Locatable):
+class Stmt(AstNode):
     pass
 
 
 @qltest.collapse_hierarchy
-class TypeRef(Locatable):
+class TypeRef(AstNode):
     # TODO
     pass
 
@@ -112,8 +117,8 @@ class Path(Expr):
 
 class If(Expr):
     condition: Expr
-    then_branch: Expr
-    else_branch: optional[Expr]
+    then: Expr
+    else_: optional[Expr]
 
 #     Let {
 #         pat: PatId,
@@ -145,7 +150,7 @@ class Block(Expr):
 #     },
 
 
-class Async(Block):
+class AsyncBlock(Block):
     pass
 
 #     Const(ConstBlockId),
@@ -162,7 +167,7 @@ class Const(Expr):
 #     },
 
 
-class Unsafe(Block):
+class UnsafeBlock(Block):
     pass
 
 #     Loop {
@@ -210,7 +215,7 @@ class MethodCall(Expr):
 
 
 @qltest.skip
-class MatchArm(Locatable):
+class MatchArm(AstNode):
     pat: Pat
     guard: optional[Expr]
     expr: Expr
@@ -335,7 +340,7 @@ class Box(Expr):
 #     },
 
 
-class UnaryExpr(Expr):
+class UnaryOp(Expr):
     expr: Expr
     op: string
 

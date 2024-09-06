@@ -4,7 +4,7 @@
  */
 
 import codeql.rust.elements.ArrayConstructor
-import codeql.rust.elements.AsyncConstructor
+import codeql.rust.elements.AsyncBlockConstructor
 import codeql.rust.elements.AwaitConstructor
 import codeql.rust.elements.BecomeConstructor
 import codeql.rust.elements.BinaryOpConstructor
@@ -54,9 +54,9 @@ import codeql.rust.elements.TupleConstructor
 import codeql.rust.elements.TuplePatConstructor
 import codeql.rust.elements.TupleStructPatConstructor
 import codeql.rust.elements.TypeRefConstructor
-import codeql.rust.elements.UnaryExprConstructor
+import codeql.rust.elements.UnaryOpConstructor
 import codeql.rust.elements.UnderscoreConstructor
-import codeql.rust.elements.UnsafeConstructor
+import codeql.rust.elements.UnsafeBlockConstructor
 import codeql.rust.elements.WildPatConstructor
 import codeql.rust.elements.YeetConstructor
 import codeql.rust.elements.YieldConstructor

@@ -28,22 +28,22 @@ module Generated {
     }
 
     /**
-     * Gets the then branch of this if.
+     * Gets the then of this if.
      */
-    Expr getThenBranch() {
-      result = Synth::convertExprFromRaw(Synth::convertIfToRaw(this).(Raw::If).getThenBranch())
+    Expr getThen() {
+      result = Synth::convertExprFromRaw(Synth::convertIfToRaw(this).(Raw::If).getThen())
     }
 
     /**
-     * Gets the else branch of this if, if it exists.
+     * Gets the else of this if, if it exists.
      */
-    Expr getElseBranch() {
-      result = Synth::convertExprFromRaw(Synth::convertIfToRaw(this).(Raw::If).getElseBranch())
+    Expr getElse() {
+      result = Synth::convertExprFromRaw(Synth::convertIfToRaw(this).(Raw::If).getElse())
     }
 
     /**
-     * Holds if `getElseBranch()` exists.
+     * Holds if `getElse()` exists.
      */
-    final predicate hasElseBranch() { exists(this.getElseBranch()) }
+    final predicate hasElse() { exists(this.getElse()) }
   }
 }

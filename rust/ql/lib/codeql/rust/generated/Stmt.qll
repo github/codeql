@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Locatable
+import codeql.rust.elements.AstNode
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Stmt` and should not
@@ -17,5 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Stmt` class directly.
    * Use the subclass `Stmt`, where the following predicates are available.
    */
-  class Stmt extends Synth::TStmt, Locatable { }
+  class Stmt extends Synth::TStmt, AstNode { }
 }

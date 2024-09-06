@@ -22,7 +22,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TAsync(Raw::Async id) { constructAsync(id) } or
+    TAsyncBlock(Raw::AsyncBlock id) { constructAsyncBlock(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -222,7 +222,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnaryExpr(Raw::UnaryExpr id) { constructUnaryExpr(id) } or
+    TUnaryOp(Raw::UnaryOp id) { constructUnaryOp(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -238,7 +238,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnsafe(Raw::Unsafe id) { constructUnsafe(id) } or
+    TUnsafeBlock(Raw::UnsafeBlock id) { constructUnsafeBlock(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -255,7 +255,12 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TBlock = TAsync or TUnsafe;
+  class TAstNode = TDeclaration or TExpr or TMatchArm or TPat or TStmt or TTypeRef;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TBlock = TAsyncBlock or TUnsafeBlock;
 
   /**
    * INTERNAL: Do not use.
@@ -269,7 +274,7 @@ module Synth {
     TArray or TAwait or TBecome or TBinaryOp or TBlock or TBox or TBreak or TCall or TCast or
         TClosure or TConst or TContinue or TField or TIf or TIndex or TInlineAsm or TLet or
         TLiteral or TLoop or TMatch or TMethodCall or TMissingExpr or TOffsetOf or TPath or
-        TRange or TRecordLit or TRef or TReturn or TTuple or TUnaryExpr or TUnderscore or TYeet or
+        TRange or TRecordLit or TRef or TReturn or TTuple or TUnaryOp or TUnderscore or TYeet or
         TYield;
 
   /**
@@ -280,7 +285,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocatable = TDeclaration or TExpr or TMatchArm or TPat or TStmt or TTypeRef;
+  class TLocatable = TAstNode;
 
   /**
    * INTERNAL: Do not use.
@@ -308,10 +313,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TAsync`, if possible.
+   * Converts a raw element to a synthesized `TAsyncBlock`, if possible.
    */
   cached
-  TAsync convertAsyncFromRaw(Raw::Element e) { result = TAsync(e) }
+  TAsyncBlock convertAsyncBlockFromRaw(Raw::Element e) { result = TAsyncBlock(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -658,10 +663,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnaryExpr`, if possible.
+   * Converts a raw element to a synthesized `TUnaryOp`, if possible.
    */
   cached
-  TUnaryExpr convertUnaryExprFromRaw(Raw::Element e) { result = TUnaryExpr(e) }
+  TUnaryOp convertUnaryOpFromRaw(Raw::Element e) { result = TUnaryOp(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -686,10 +691,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnsafe`, if possible.
+   * Converts a raw element to a synthesized `TUnsafeBlock`, if possible.
    */
   cached
-  TUnsafe convertUnsafeFromRaw(Raw::Element e) { result = TUnsafe(e) }
+  TUnsafeBlock convertUnsafeBlockFromRaw(Raw::Element e) { result = TUnsafeBlock(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -714,13 +719,32 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAstNode`, if possible.
+   */
+  cached
+  TAstNode convertAstNodeFromRaw(Raw::Element e) {
+    result = convertDeclarationFromRaw(e)
+    or
+    result = convertExprFromRaw(e)
+    or
+    result = convertMatchArmFromRaw(e)
+    or
+    result = convertPatFromRaw(e)
+    or
+    result = convertStmtFromRaw(e)
+    or
+    result = convertTypeRefFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TBlock`, if possible.
    */
   cached
   TBlock convertBlockFromRaw(Raw::Element e) {
-    result = convertAsyncFromRaw(e)
+    result = convertAsyncBlockFromRaw(e)
     or
-    result = convertUnsafeFromRaw(e)
+    result = convertUnsafeBlockFromRaw(e)
   }
 
   /**
@@ -811,7 +835,7 @@ module Synth {
     or
     result = convertTupleFromRaw(e)
     or
-    result = convertUnaryExprFromRaw(e)
+    result = convertUnaryOpFromRaw(e)
     or
     result = convertUnderscoreFromRaw(e)
     or
@@ -836,19 +860,7 @@ module Synth {
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
   cached
-  TLocatable convertLocatableFromRaw(Raw::Element e) {
-    result = convertDeclarationFromRaw(e)
-    or
-    result = convertExprFromRaw(e)
-    or
-    result = convertMatchArmFromRaw(e)
-    or
-    result = convertPatFromRaw(e)
-    or
-    result = convertStmtFromRaw(e)
-    or
-    result = convertTypeRefFromRaw(e)
-  }
+  TLocatable convertLocatableFromRaw(Raw::Element e) { result = convertAstNodeFromRaw(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -918,10 +930,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAsync` to a raw DB element, if possible.
+   * Converts a synthesized `TAsyncBlock` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertAsyncToRaw(TAsync e) { e = TAsync(result) }
+  Raw::Element convertAsyncBlockToRaw(TAsyncBlock e) { e = TAsyncBlock(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1268,10 +1280,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnaryExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TUnaryOp` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnaryExprToRaw(TUnaryExpr e) { e = TUnaryExpr(result) }
+  Raw::Element convertUnaryOpToRaw(TUnaryOp e) { e = TUnaryOp(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1296,10 +1308,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnsafe` to a raw DB element, if possible.
+   * Converts a synthesized `TUnsafeBlock` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnsafeToRaw(TUnsafe e) { e = TUnsafe(result) }
+  Raw::Element convertUnsafeBlockToRaw(TUnsafeBlock e) { e = TUnsafeBlock(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1324,13 +1336,32 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAstNode` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertAstNodeToRaw(TAstNode e) {
+    result = convertDeclarationToRaw(e)
+    or
+    result = convertExprToRaw(e)
+    or
+    result = convertMatchArmToRaw(e)
+    or
+    result = convertPatToRaw(e)
+    or
+    result = convertStmtToRaw(e)
+    or
+    result = convertTypeRefToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBlock` to a raw DB element, if possible.
    */
   cached
   Raw::Element convertBlockToRaw(TBlock e) {
-    result = convertAsyncToRaw(e)
+    result = convertAsyncBlockToRaw(e)
     or
-    result = convertUnsafeToRaw(e)
+    result = convertUnsafeBlockToRaw(e)
   }
 
   /**
@@ -1421,7 +1452,7 @@ module Synth {
     or
     result = convertTupleToRaw(e)
     or
-    result = convertUnaryExprToRaw(e)
+    result = convertUnaryOpToRaw(e)
     or
     result = convertUnderscoreToRaw(e)
     or
@@ -1446,19 +1477,7 @@ module Synth {
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLocatableToRaw(TLocatable e) {
-    result = convertDeclarationToRaw(e)
-    or
-    result = convertExprToRaw(e)
-    or
-    result = convertMatchArmToRaw(e)
-    or
-    result = convertPatToRaw(e)
-    or
-    result = convertStmtToRaw(e)
-    or
-    result = convertTypeRefToRaw(e)
-  }
+  Raw::Element convertLocatableToRaw(TLocatable e) { result = convertAstNodeToRaw(e) }
 
   /**
    * INTERNAL: Do not use.

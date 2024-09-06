@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Locatable
+import codeql.rust.elements.AstNode
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Expr` and should not
@@ -17,5 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Expr` class directly.
    * Use the subclass `Expr`, where the following predicates are available.
    */
-  class Expr extends Synth::TExpr, Locatable { }
+  class Expr extends Synth::TExpr, AstNode { }
 }

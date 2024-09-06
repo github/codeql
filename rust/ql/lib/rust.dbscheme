@@ -28,12 +28,7 @@ files(
 );
 
 @locatable =
-  @declaration
-| @expr
-| @match_arm
-| @pat
-| @stmt
-| @type_ref
+  @ast_node
 ;
 
 #keyset[id]
@@ -55,6 +50,15 @@ locations(
   int end_line: int ref,
   int end_column: int ref
 );
+
+@ast_node =
+  @declaration
+| @expr
+| @match_arm
+| @pat
+| @stmt
+| @type_ref
+;
 
 db_files(
   unique int id: @db_file
@@ -99,7 +103,7 @@ db_locations(
 | @ref
 | @return
 | @tuple
-| @unary_expr
+| @unary_op
 | @underscore
 | @yeet
 | @yield
@@ -182,8 +186,8 @@ bind_pat_subpats(
 );
 
 @block =
-  @async
-| @unsafe
+  @async_block
+| @unsafe_block
 ;
 
 #keyset[id, index]
@@ -328,13 +332,13 @@ functions(
 ifs(
   unique int id: @if,
   int condition: @expr ref,
-  int then_branch: @expr ref
+  int then: @expr ref
 );
 
 #keyset[id]
-if_else_branches(
+if_elses(
   int id: @if ref,
-  int else_branch: @expr ref
+  int else: @expr ref
 );
 
 if_lets(
@@ -600,8 +604,8 @@ tuple_struct_pats(
   unique int id: @tuple_struct_pat
 );
 
-unary_exprs(
-  unique int id: @unary_expr,
+unary_ops(
+  unique int id: @unary_op,
   int expr: @expr ref,
   string op: string ref
 );
@@ -634,10 +638,10 @@ yield_exprs(
   int expr: @expr ref
 );
 
-asyncs(
-  unique int id: @async
+async_blocks(
+  unique int id: @async_block
 );
 
-unsaves(
-  unique int id: @unsafe
+unsafe_blocks(
+  unique int id: @unsafe_block
 );

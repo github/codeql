@@ -478,8 +478,8 @@ pub struct If {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub condition: trap::Label,
-    pub then_branch: trap::Label,
-    pub else_branch: Option<trap::Label>,
+    pub then: trap::Label,
+    pub else_: Option<trap::Label>,
 }
 
 impl TrapEntry for If {
@@ -488,12 +488,12 @@ impl TrapEntry for If {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("ifs", vec![trap::Arg::Label(id), self.condition.into(), self.then_branch.into()]);
+        out.add_tuple("ifs", vec![trap::Arg::Label(id), self.condition.into(), self.then.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        if let Some(v) = self.else_branch {
-            out.add_tuple("if_else_branches", vec![trap::Arg::Label(id), v.into()]);
+        if let Some(v) = self.else_ {
+            out.add_tuple("if_elses", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
@@ -1135,20 +1135,20 @@ impl TrapEntry for TupleStructPat {
 }
 
 #[derive(Debug)]
-pub struct UnaryExpr {
+pub struct UnaryOp {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub expr: trap::Label,
     pub op: String,
 }
 
-impl TrapEntry for UnaryExpr {
+impl TrapEntry for UnaryOp {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unary_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.op.into()]);
+        out.add_tuple("unary_ops", vec![trap::Arg::Label(id), self.expr.into(), self.op.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -1240,7 +1240,7 @@ impl TrapEntry for Yield {
 }
 
 #[derive(Debug)]
-pub struct Async {
+pub struct AsyncBlock {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub statements: Vec<trap::Label>,
@@ -1248,13 +1248,13 @@ pub struct Async {
     pub label: Option<String>,
 }
 
-impl TrapEntry for Async {
+impl TrapEntry for AsyncBlock {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("asyncs", vec![trap::Arg::Label(id)]);
+        out.add_tuple("async_blocks", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -1271,7 +1271,7 @@ impl TrapEntry for Async {
 }
 
 #[derive(Debug)]
-pub struct Unsafe {
+pub struct UnsafeBlock {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub statements: Vec<trap::Label>,
@@ -1279,13 +1279,13 @@ pub struct Unsafe {
     pub label: Option<String>,
 }
 
-impl TrapEntry for Unsafe {
+impl TrapEntry for UnsafeBlock {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unsaves", vec![trap::Arg::Label(id)]);
+        out.add_tuple("unsafe_blocks", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }

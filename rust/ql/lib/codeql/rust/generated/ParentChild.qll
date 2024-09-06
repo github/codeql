@@ -49,6 +49,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfDbFile(DbFile e, int index, string partialPredicateCall) {
     exists(int b, int bFile, int n |
       b = 0 and
@@ -71,86 +84,6 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfDeclaration(
-    Declaration e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfExpr(Expr e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfPat(Pat e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfStmt(Stmt e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfTypeRef(TypeRef e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -181,6 +114,86 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfDeclaration(
+    Declaration e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfExpr(Expr e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPat(Pat e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStmt(Stmt e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeRef(TypeRef e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -808,7 +821,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfUnaryExpr(UnaryExpr e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfUnaryOp(UnaryOp e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
@@ -873,7 +886,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfAsync(Async e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfAsyncBlock(AsyncBlock e, int index, string partialPredicateCall) {
     exists(int b, int bBlock, int n |
       b = 0 and
       bBlock = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlock(e, i, _)) | i) and
@@ -886,7 +899,9 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfUnsafe(Unsafe e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfUnsafeBlock(
+    UnsafeBlock e, int index, string partialPredicateCall
+  ) {
     exists(int b, int bBlock, int n |
       b = 0 and
       bBlock = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBlock(e, i, _)) | i) and
@@ -909,13 +924,13 @@ private module Impl {
     or
     result = getImmediateChildOfDbLocation(e, index, partialAccessor)
     or
-    result = getImmediateChildOfMatchArm(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfTypeRef(e, index, partialAccessor)
-    or
     result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMatchArm(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeRef(e, index, partialAccessor)
     or
     result = getImmediateChildOfArray(e, index, partialAccessor)
     or
@@ -1009,7 +1024,7 @@ private module Impl {
     or
     result = getImmediateChildOfTupleStructPat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfUnaryExpr(e, index, partialAccessor)
+    result = getImmediateChildOfUnaryOp(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnderscore(e, index, partialAccessor)
     or
@@ -1019,9 +1034,9 @@ private module Impl {
     or
     result = getImmediateChildOfYield(e, index, partialAccessor)
     or
-    result = getImmediateChildOfAsync(e, index, partialAccessor)
+    result = getImmediateChildOfAsyncBlock(e, index, partialAccessor)
     or
-    result = getImmediateChildOfUnsafe(e, index, partialAccessor)
+    result = getImmediateChildOfUnsafeBlock(e, index, partialAccessor)
   }
 }
 

@@ -63,6 +63,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class AstNode extends @ast_node, Locatable { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class DbFile extends @db_file, File {
     override string toString() { result = "DbFile" }
   }
@@ -77,17 +82,17 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Declaration extends @declaration, Locatable { }
+  class Declaration extends @declaration, AstNode { }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Expr extends @expr, Locatable { }
+  class Expr extends @expr, AstNode { }
 
   /**
    * INTERNAL: Do not use.
    */
-  class MatchArm extends @match_arm, Locatable {
+  class MatchArm extends @match_arm, AstNode {
     override string toString() { result = "MatchArm" }
 
     /**
@@ -109,17 +114,17 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pat extends @pat, Locatable { }
+  class Pat extends @pat, AstNode { }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Stmt extends @stmt, Locatable { }
+  class Stmt extends @stmt, AstNode { }
 
   /**
    * INTERNAL: Do not use.
    */
-  class TypeRef extends @type_ref, Locatable {
+  class TypeRef extends @type_ref, AstNode {
     override string toString() { result = "TypeRef" }
   }
 
@@ -419,14 +424,14 @@ module Raw {
     Expr getCondition() { ifs(this, result, _) }
 
     /**
-     * Gets the then branch of this if.
+     * Gets the then of this if.
      */
-    Expr getThenBranch() { ifs(this, _, result) }
+    Expr getThen() { ifs(this, _, result) }
 
     /**
-     * Gets the else branch of this if, if it exists.
+     * Gets the else of this if, if it exists.
      */
-    Expr getElseBranch() { if_else_branches(this, result) }
+    Expr getElse() { if_elses(this, result) }
   }
 
   /**
@@ -803,18 +808,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class UnaryExpr extends @unary_expr, Expr {
-    override string toString() { result = "UnaryExpr" }
+  class UnaryOp extends @unary_op, Expr {
+    override string toString() { result = "UnaryOp" }
 
     /**
-     * Gets the expression of this unary expression.
+     * Gets the expression of this unary op.
      */
-    Expr getExpr() { unary_exprs(this, result, _) }
+    Expr getExpr() { unary_ops(this, result, _) }
 
     /**
-     * Gets the op of this unary expression.
+     * Gets the op of this unary op.
      */
-    string getOp() { unary_exprs(this, _, result) }
+    string getOp() { unary_ops(this, _, result) }
   }
 
   /**
@@ -858,14 +863,14 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Async extends @async, Block {
-    override string toString() { result = "Async" }
+  class AsyncBlock extends @async_block, Block {
+    override string toString() { result = "AsyncBlock" }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Unsafe extends @unsafe, Block {
-    override string toString() { result = "Unsafe" }
+  class UnsafeBlock extends @unsafe_block, Block {
+    override string toString() { result = "UnsafeBlock" }
   }
 }

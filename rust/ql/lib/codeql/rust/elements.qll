@@ -4,7 +4,8 @@
  */
 
 import codeql.rust.elements.Array
-import codeql.rust.elements.Async
+import codeql.rust.elements.AstNode
+import codeql.rust.elements.AsyncBlock
 import codeql.rust.elements.Await
 import codeql.rust.elements.Become
 import codeql.rust.elements.BinaryOp
@@ -63,11 +64,11 @@ import codeql.rust.elements.Tuple
 import codeql.rust.elements.TuplePat
 import codeql.rust.elements.TupleStructPat
 import codeql.rust.elements.TypeRef
-import codeql.rust.elements.UnaryExpr
+import codeql.rust.elements.UnaryOp
 import codeql.rust.elements.Underscore
 import codeql.rust.elements.UnknownFile
 import codeql.rust.elements.UnknownLocation
-import codeql.rust.elements.Unsafe
+import codeql.rust.elements.UnsafeBlock
 import codeql.rust.elements.WildPat
 import codeql.rust.elements.Yeet
 import codeql.rust.elements.Yield
