@@ -1,12 +1,15 @@
 | E | Ordered |
 | E | comparable |
 | E | interface { } |
+| E | interface { ~uint16 \| ~uint32 } |
 | E1 | interface { } |
 | E2 | interface { } |
 | Edge | EdgeConstraint |
 | Edge | interface { } |
 | F | floaty |
 | K | comparable |
+| K | interface { } |
+| N | interface { int64 \| uint64 } |
 | Node | NodeConstraint |
 | Node | interface { } |
 | S | interface { } |
@@ -15,6 +18,7 @@
 | S2 | interface { ~[]E2 } |
 | SF2 | interface { } |
 | SG2 | interface { } |
+| Slice | interface { ~[]E } |
 | T | Ordered |
 | T | comparable |
 | T | interface { string \| []uint8 } |
@@ -27,4 +31,5 @@
 | TG2 | interface { } |
 | U | interface { } |
 | V | interface { int64 \| float64 } |
+| V | interface { } |
 | bytes | interface { []uint8 \| string } |
