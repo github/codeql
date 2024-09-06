@@ -1052,6 +1052,8 @@ pub struct SlicePat {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub prefix: Vec<trap::Label>,
+    pub slice: Option<trap::Label>,
+    pub suffix: Vec<trap::Label>,
 }
 
 impl TrapEntry for SlicePat {
@@ -1066,6 +1068,12 @@ impl TrapEntry for SlicePat {
         }
         for (i, &v) in self.prefix.iter().enumerate() {
             out.add_tuple("slice_pat_prefixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if let Some(v) = self.slice {
+            out.add_tuple("slice_pat_slice", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, &v) in self.suffix.iter().enumerate() {
+            out.add_tuple("slice_pat_suffixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
 }

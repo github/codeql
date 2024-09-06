@@ -782,6 +782,16 @@ module Raw {
      * Gets the `index`th prefix of this slice pat (0-based).
      */
     Pat getPrefix(int index) { slice_pat_prefixes(this, index, result) }
+
+    /**
+     * Gets the slice of this slice pat, if it exists.
+     */
+    Pat getSlice() { slice_pat_slice(this, result) }
+
+    /**
+     * Gets the `index`th suffix of this slice pat (0-based).
+     */
+    Pat getSuffix(int index) { slice_pat_suffixes(this, index, result) }
   }
 
   /**

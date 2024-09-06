@@ -578,6 +578,19 @@ slice_pat_prefixes(
   int prefix: @pat ref
 );
 
+#keyset[id]
+slice_pat_slice(
+  int id: @slice_pat ref,
+  int slice: @pat ref
+);
+
+#keyset[id, index]
+slice_pat_suffixes(
+  int id: @slice_pat ref,
+  int index: int ref,
+  int suffix: @pat ref
+);
+
 tuples(
   unique int id: @tuple
 );

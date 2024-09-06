@@ -531,6 +531,8 @@ class RangePat(Pat):
 
 class SlicePat(Pat):
     prefix: list[Pat]
+    slice: optional[Pat]
+    suffix: list[Pat]
     # Path(Box<Path>),
 
 

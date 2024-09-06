@@ -37,5 +37,36 @@ module Generated {
      * Gets the number of prefixes of this slice pat.
      */
     final int getNumberOfPrefixes() { result = count(int i | exists(this.getPrefix(i))) }
+
+    /**
+     * Gets the slice of this slice pat, if it exists.
+     */
+    Pat getSlice() {
+      result =
+        Synth::convertPatFromRaw(Synth::convertSlicePatToRaw(this).(Raw::SlicePat).getSlice())
+    }
+
+    /**
+     * Holds if `getSlice()` exists.
+     */
+    final predicate hasSlice() { exists(this.getSlice()) }
+
+    /**
+     * Gets the `index`th suffix of this slice pat (0-based).
+     */
+    Pat getSuffix(int index) {
+      result =
+        Synth::convertPatFromRaw(Synth::convertSlicePatToRaw(this).(Raw::SlicePat).getSuffix(index))
+    }
+
+    /**
+     * Gets any of the suffixes of this slice pat.
+     */
+    final Pat getASuffix() { result = this.getSuffix(_) }
+
+    /**
+     * Gets the number of suffixes of this slice pat.
+     */
+    final int getNumberOfSuffixes() { result = count(int i | exists(this.getSuffix(i))) }
   }
 }
