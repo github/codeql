@@ -461,9 +461,9 @@ module Raw {
     Expr getInitializer() { if_let_initializers(this, result) }
 
     /**
-     * Gets the else branch of this if let, if it exists.
+     * Gets the else of this if let, if it exists.
      */
-    Expr getElseBranch() { if_let_else_branches(this, result) }
+    Expr getElse() { if_let_elses(this, result) }
   }
 
   /**

@@ -57,16 +57,15 @@ module Generated {
     final predicate hasInitializer() { exists(this.getInitializer()) }
 
     /**
-     * Gets the else branch of this if let, if it exists.
+     * Gets the else of this if let, if it exists.
      */
-    Expr getElseBranch() {
-      result =
-        Synth::convertExprFromRaw(Synth::convertIfLetToRaw(this).(Raw::IfLet).getElseBranch())
+    Expr getElse() {
+      result = Synth::convertExprFromRaw(Synth::convertIfLetToRaw(this).(Raw::IfLet).getElse())
     }
 
     /**
-     * Holds if `getElseBranch()` exists.
+     * Holds if `getElse()` exists.
      */
-    final predicate hasElseBranch() { exists(this.getElseBranch()) }
+    final predicate hasElse() { exists(this.getElse()) }
   }
 }

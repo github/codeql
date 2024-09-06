@@ -472,7 +472,7 @@ class IfLet(Stmt):
     pat: Pat
     type_ref: optional[TypeRef]
     initializer: optional[Expr]
-    else_branch: optional[Expr]
+    else_: optional[Expr]
 #     Expr {
 #         expr: ExprId,
 #         has_semi: bool,

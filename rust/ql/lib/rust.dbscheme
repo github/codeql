@@ -361,9 +361,9 @@ if_let_initializers(
 );
 
 #keyset[id]
-if_let_else_branches(
+if_let_elses(
   int id: @if_let ref,
-  int else_branch: @expr ref
+  int else: @expr ref
 );
 
 indices(

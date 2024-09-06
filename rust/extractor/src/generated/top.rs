@@ -508,7 +508,7 @@ pub struct IfLet {
     pub pat: trap::Label,
     pub type_ref: Option<trap::Label>,
     pub initializer: Option<trap::Label>,
-    pub else_branch: Option<trap::Label>,
+    pub else_: Option<trap::Label>,
 }
 
 impl TrapEntry for IfLet {
@@ -527,8 +527,8 @@ impl TrapEntry for IfLet {
         if let Some(v) = self.initializer {
             out.add_tuple("if_let_initializers", vec![trap::Arg::Label(id), v.into()]);
         }
-        if let Some(v) = self.else_branch {
-            out.add_tuple("if_let_else_branches", vec![trap::Arg::Label(id), v.into()]);
+        if let Some(v) = self.else_ {
+            out.add_tuple("if_let_elses", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
