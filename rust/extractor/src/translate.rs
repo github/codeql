@@ -9,7 +9,7 @@ use ra_ap_hir::{Crate, Module, ModuleDef};
 use ra_ap_hir_def::body::{Body, BodySourceMap};
 use ra_ap_hir_def::hir::{CaptureBy, ExprId, LabelId, MatchArm, PatId, Statement};
 use ra_ap_ide_db::line_index::LineIndex;
-use ra_ap_ide_db::{LineIndexDatabase, RootDatabase};
+use ra_ap_ide_db::{label, LineIndexDatabase, RootDatabase};
 use ra_ap_syntax::ast::RangeOp;
 use ra_ap_syntax::{AstNode, Edition};
 use ra_ap_vfs::{FileId, Vfs};
@@ -137,8 +137,9 @@ impl CrateTranslator<'_> {
         label_id: ra_ap_hir_def::hir::LabelId,
         source_map: &BodySourceMap,
     ) -> Option<trap::Label> {
-        let source = source_map.label_syntax(label_id);
-        self.emit_location_ast_ptr(source)
+        // 'catch' a panic if the source map is incomplete
+        let source = std::panic::catch_unwind(|| source_map.label_syntax(label_id)).ok();
+        source.and_then(|source| self.emit_location_ast_ptr(source))
     }
     fn emit_location<T: HasSource>(&mut self, entity: T) -> Option<trap::Label>
     where
