@@ -280,7 +280,7 @@ impl TrapEntry for Call {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.args.iter().enumerate() {
+        for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("call_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
@@ -331,11 +331,11 @@ impl TrapEntry for Closure {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.args.iter().enumerate() {
+        for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("closure_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
-        for (i, &v) in self.arg_types.iter().enumerate() {
-            if let Some(vv) = v {
+        for (i, v) in self.arg_types.into_iter().enumerate() {
+            if let Some(v) = v {
                 out.add_tuple("closure_arg_types", vec![trap::Arg::Label(id), i.into(), v.into()]);
             }
         }
@@ -699,7 +699,7 @@ impl TrapEntry for Match {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.branches.iter().enumerate() {
+        for (i, v) in self.branches.into_iter().enumerate() {
             out.add_tuple("match_branches", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -724,7 +724,7 @@ impl TrapEntry for MethodCall {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.args.iter().enumerate() {
+        for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("method_call_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -785,7 +785,7 @@ impl TrapEntry for Module {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.declarations.iter().enumerate() {
+        for (i, v) in self.declarations.into_iter().enumerate() {
             out.add_tuple("module_declarations", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -809,7 +809,7 @@ impl TrapEntry for OffsetOf {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.fields.iter().enumerate() {
+        for (i, v) in self.fields.into_iter().enumerate() {
             out.add_tuple("offset_of_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -832,7 +832,7 @@ impl TrapEntry for OrPat {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.args.iter().enumerate() {
+        for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("or_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -1066,13 +1066,13 @@ impl TrapEntry for SlicePat {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.prefix.iter().enumerate() {
+        for (i, v) in self.prefix.into_iter().enumerate() {
             out.add_tuple("slice_pat_prefixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.slice {
             out.add_tuple("slice_pat_slice", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.suffix.iter().enumerate() {
+        for (i, v) in self.suffix.into_iter().enumerate() {
             out.add_tuple("slice_pat_suffixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
     }
@@ -1096,7 +1096,7 @@ impl TrapEntry for Tuple {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.exprs.iter().enumerate() {
+        for (i, v) in self.exprs.into_iter().enumerate() {
             out.add_tuple("tuple_exprs", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
@@ -1123,7 +1123,7 @@ impl TrapEntry for TuplePat {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.args.iter().enumerate() {
+        for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("tuple_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.ellipsis {
@@ -1274,7 +1274,7 @@ impl TrapEntry for AsyncBlock {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.statements.iter().enumerate() {
+        for (i, v) in self.statements.into_iter().enumerate() {
             out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
@@ -1302,7 +1302,7 @@ impl TrapEntry for Block {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.statements.iter().enumerate() {
+        for (i, v) in self.statements.into_iter().enumerate() {
             out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
@@ -1332,7 +1332,7 @@ impl TrapEntry for ElementList {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.elements.iter().enumerate() {
+        for (i, v) in self.elements.into_iter().enumerate() {
             out.add_tuple("element_list_elements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
@@ -1380,7 +1380,7 @@ impl TrapEntry for UnsafeBlock {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, &v) in self.statements.iter().enumerate() {
+        for (i, v) in self.statements.into_iter().enumerate() {
             out.add_tuple("block_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {

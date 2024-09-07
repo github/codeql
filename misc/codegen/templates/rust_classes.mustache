@@ -35,12 +35,12 @@ impl TrapEntry for {{name}} {
         {{/is_repeated}}
         {{/is_optional}}
         {{#is_repeated}}
-        for (i, &v) in self.{{field_name}}.iter().enumerate() {
+        for (i, v) in self.{{field_name}}.into_iter().enumerate() {
             {{^is_optional}}
             out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
             {{/is_optional}}
             {{#is_optional}}
-            if let Some(vv) = v {
+            if let Some(v) = v {
                 out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
             }
             {{/is_optional}}
