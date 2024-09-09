@@ -649,7 +649,7 @@ ContentApprox getContentApprox(Content c) {
   or
   c instanceof MkCapturedContent and result = TApproxCapturedContent()
   or
-  c instanceof MkCallbackArgument and result = TApproxCallbackArgument()
+  c instanceof MkArgumentContent and result = TApproxCallbackArgument()
 }
 
 cached
@@ -1216,7 +1216,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(DataFlow::FunctionNode function, int n |
     node1 = TFunctionSelfReferenceNode(function.getFunction()) and
     node2 = function.getParameter(n) and
-    c.asSingleton() = MkCallbackArgument(n)
+    c.asSingleton() = MkArgumentContent(n)
   )
   or
   exists(Function function, Parameter param, int n |
@@ -1224,7 +1224,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
     param = function.getParameter(n) and
     node2 = TImplicitArgumentNode(param) and
-    c.asSingleton() = MkCallbackArgument(n)
+    c.asSingleton() = MkArgumentContent(n)
   )
 }
 
@@ -1313,7 +1313,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(ContinuationCall call, int n |
     node1 = call.getArgument(n) and
     node2 = call.getCalleeNode().getPostUpdateNode() and
-    c.asSingleton() = MkCallbackArgument(n)
+    c.asSingleton() = MkArgumentContent(n)
   )
 }
 

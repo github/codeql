@@ -85,7 +85,7 @@ module Private {
     MkPromiseValue() or
     MkPromiseError() or
     MkCapturedContent(LocalVariable v) { v.isCaptured() } or
-    MkCallbackArgument(int index) { index = [0 .. getMaxArity()] }
+    MkArgumentContent(int index) { index = [0 .. getMaxArity()] }
 
   cached
   newtype TContentSet =
@@ -181,7 +181,7 @@ module Public {
     predicate isMapValueWithKnownKey(string key) { this = MkMapValueWithKnownKey(key) }
 
     /** Gets the callback argument index represented by this content, if any. */
-    int asCallbackArgumentIndex() { this = MkCallbackArgument(result) }
+    int asCallbackArgumentIndex() { this = MkArgumentContent(result) }
   }
 
   /**
