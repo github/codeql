@@ -36,7 +36,7 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
         else:
             table_name = inflection.tableize(table_name)
     args = dict(
-        field_name=p.name + ("_" if p.name in rust.keywords else ""),
+        field_name=rust.avoid_keywords(p.name),
         base_type=_get_type(p.type),
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,
@@ -86,20 +86,24 @@ def generate(opts, renderer):
     processor = Processor(schemaloader.load_file(opts.schema))
     out = opts.rust_output
     groups = set()
-    for group, classes in processor.get_classes().items():
-        group = group or "top"
-        groups.add(group)
+    with renderer.manage(generated=out.rglob("*.rs"),
+                         stubs=(),
+                         registry=out / ".generated.list",
+                         force=opts.force) as renderer:
+        for group, classes in processor.get_classes().items():
+            group = group or "top"
+            groups.add(group)
+            renderer.render(
+                rust.ClassList(
+                    classes,
+                    opts.schema,
+                ),
+                out / f"{group}.rs",
+            )
         renderer.render(
-            rust.ClassList(
-                classes,
+            rust.ModuleList(
+                groups,
                 opts.schema,
             ),
-            out / f"{group}.rs",
+            out / f"mod.rs",
         )
-    renderer.render(
-        rust.ModuleList(
-            groups,
-            opts.schema,
-        ),
-        out / f"mod.rs",
-    )
