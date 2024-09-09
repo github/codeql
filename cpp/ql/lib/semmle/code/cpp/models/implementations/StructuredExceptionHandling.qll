@@ -15,8 +15,8 @@ class WindowsDriverFunction extends ThrowingFunction {
 class UndefinedFunction extends ThrowingFunction {
   UndefinedFunction() {
     exists(Stmt t, Call c |
-      (t instanceof TryStmt or t instanceof MicrosoftTryStmt) and
-      t.getChild(0).(Stmt).getAChild*() = c and
+      t.(TryStmt).getStmt().getAChild*() = c or
+      t.(MicrosoftTryStmt).getStmt().getAChild*() = c
       this = c.getTarget() and
       not this.hasDefinition() and
       // Ideally do not mark any function as an UndefinedFunction if it is
