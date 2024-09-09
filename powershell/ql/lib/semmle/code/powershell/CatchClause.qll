@@ -16,4 +16,24 @@ class CatchClause extends @catch_clause, Ast {
   predicate isCatchAll() { not exists(this.getACatchType()) }
 
   TryStmt getTryStmt() { result.getACatchClause() = this }
+
+  predicate isLast() {
+    exists(TryStmt ts, int last |
+      ts = this.getTryStmt() and
+      last = max(int i | exists(ts.getCatchClause(i))) and
+      this = ts.getCatchClause(last)
+    )
+  }
+}
+
+class GeneralCatchClause extends CatchClause {
+  GeneralCatchClause() { this.isCatchAll() }
+
+  override string toString() { result = "catch {...}" }
+}
+
+class SpecificCatchClause extends CatchClause {
+  SpecificCatchClause() { not this.isCatchAll() }
+
+  override string toString() { result = "catch[...] {...}" }
 }

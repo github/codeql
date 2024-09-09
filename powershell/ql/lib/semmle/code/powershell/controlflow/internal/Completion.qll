@@ -8,16 +8,23 @@ private import powershell
 private import semmle.code.powershell.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl as CfgImpl
 private import SuccessorTypes
+private import codeql.util.Boolean
 
 // TODO: We most likely need a TrapCompletion as well
 private newtype TCompletion =
   TSimpleCompletion() or
-  TBooleanCompletion(boolean b) { b in [false, true] } or
+  TBooleanCompletion(Boolean b) or
   TReturnCompletion() or
   TBreakCompletion() or
   TContinueCompletion() or
-  TRaiseCompletion() or
-  TExitCompletion()
+  TThrowCompletion() or
+  TExitCompletion() or
+  TMatchingCompletion(Boolean b)
+
+private predicate commandThrows(Cmd c, boolean unconditional) {
+  c.getNamedArgument("ErrorAction").(StringConstExpr).getValue().getValue() = "Stop" and
+  if c.getName() = "Write-Error" then unconditional = true else unconditional = false
+}
 
 pragma[noinline]
 private predicate completionIsValidForStmt(Ast n, Completion c) {
@@ -26,6 +33,16 @@ private predicate completionIsValidForStmt(Ast n, Completion c) {
   or
   n instanceof ContinueStmt and
   c instanceof ContinueCompletion
+  or
+  n instanceof ThrowStmt and
+  c instanceof ThrowCompletion
+  or
+  exists(boolean unconditional | commandThrows(n, unconditional) |
+    c instanceof ThrowCompletion
+    or
+    unconditional = false and
+    c instanceof SimpleCompletion
+  )
 }
 
 /** A completion of a statement or an expression. */
@@ -39,6 +56,14 @@ abstract class Completion extends TCompletion {
       or
       not isBooleanConstant(n, _) and
       this = TBooleanCompletion(_)
+    )
+    or
+    mustHaveMatchingCompletion(n) and
+    (
+      exists(boolean value | isMatchingConstant(n, value) | this = TMatchingCompletion(value))
+      or
+      not isMatchingConstant(n, _) and
+      this = TMatchingCompletion(_)
     )
   }
 
@@ -74,10 +99,17 @@ private predicate isBooleanConstant(Ast n, boolean value) {
   none() // TODO
 }
 
+private predicate isMatchingConstant(Ast n, boolean value) {
+  inMatchingContext(n) and
+  none() // TODO
+}
+
 /**
  * Holds if a normal completion of `n` must be a Boolean completion.
  */
 private predicate mustHaveBooleanCompletion(Ast n) { inBooleanContext(n) }
+
+private predicate mustHaveMatchingCompletion(Ast n) { inMatchingContext(n) }
 
 /**
  * Holds if `n` is used in a Boolean context. That is, the value
@@ -129,6 +161,22 @@ private predicate inBooleanContext(Ast n) {
 }
 
 /**
+ * From: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_switch?view=powershell-7.4:
+ * ```
+ * switch [-regex | -wildcard | -exact] [-casesensitive] (<test-expression>)
+ * {
+ *    "string" | number | variable | { <value-scriptblock> } { <action-scriptblock> }
+ *    default { <action-scriptblock> } # optional
+ * }
+ * ```
+ */
+private predicate inMatchingContext(Ast n) {
+  n = any(SwitchStmt switch).getAPattern()
+  or
+  n = any(CatchClause cc).getACatchType()
+}
+
+/**
  * A completion that represents normal evaluation of a statement or an
  * expression.
  */
@@ -159,7 +207,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, NormalCompletion, TBooleanCompletion {
+class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
   /** Gets the dual Boolean completion. */
@@ -178,6 +226,18 @@ class TrueCompletion extends BooleanCompletion {
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
   FalseCompletion() { this.getValue() = false }
+}
+
+class MatchCompletion extends ConditionalCompletion, TMatchingCompletion {
+  MatchCompletion() { this = TMatchingCompletion(value) }
+
+  override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  predicate isMatch() { this.getValue() = true }
+
+  predicate isNonMatch() { this.getValue() = false }
+
+  override string toString() { if this.isMatch() then result = "match" else result = "nonmatch" }
 }
 
 /**
@@ -214,10 +274,10 @@ class ContinueCompletion extends Completion, TContinueCompletion {
  * A completion that represents evaluation of a statement or an
  * expression resulting in a thrown exception.
  */
-class RaiseCompletion extends Completion, TRaiseCompletion {
-  override RaiseSuccessor getAMatchingSuccessorType() { any() }
+class ThrowCompletion extends Completion, TThrowCompletion {
+  override ThrowSuccessor getAMatchingSuccessorType() { any() }
 
-  override string toString() { result = "raise" }
+  override string toString() { result = "throw" }
 }
 
 /**
