@@ -66,7 +66,14 @@ public class BasicFlow
 
 public class CollectionFlow
 {
-    private string tainted;
+    private readonly string tainted;
+
+    // summary=Models;CollectionFlow;false;CollectionFlow;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;CollectionFlow;false;CollectionFlow;(System.String);;Argument[0];Argument[this].SyntheticField[Models.CollectionFlow.tainted];value;df-generated
+    public CollectionFlow(string s)
+    {
+        tainted = s;
+    }
 
     // summary=Models;CollectionFlow;false;ReturnArrayElement;(System.Object[]);;Argument[0].Element;ReturnValue;taint;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnArrayElement;(System.Object[]);;Argument[0].Element;ReturnValue;value;df-generated
@@ -177,7 +184,14 @@ public class CollectionFlow
 
 public class IEnumerableFlow
 {
-    private string tainted;
+    private readonly string tainted;
+
+    // summary=Models;IEnumerableFlow;false;IEnumerableFlow;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;IEnumerableFlow;false;IEnumerableFlow;(System.String);;Argument[0];Argument[this].SyntheticField[Models.IEnumerableFlow.tainted];value;df-generated
+    public IEnumerableFlow(string s)
+    {
+        tainted = s;
+    }
 
     // SPURIOUS-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0].Element;ReturnValue;taint;df-generated
     // contentbased-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;df-generated
@@ -611,10 +625,17 @@ public class Inheritance
 
     public class DImpl : D
     {
-        private string tainted;
+        private readonly string tainted;
+
+        // summary=Models;Inheritance+DImpl;false;DImpl;(System.String);;Argument[0];Argument[this];taint;df-generated
+        // contentbased-summary=Models;Inheritance+DImpl;false;DImpl;(System.String);;Argument[0];Argument[this].SyntheticField[Models.Inheritance+DImpl.tainted];value;df-generated
+        public DImpl(string s)
+        {
+            tainted = s;
+        }
 
         // summary=Models;Inheritance+IPublic3;true;get_Prop;();;Argument[this];ReturnValue;taint;df-generated
-        // contentbased-summary=Models;Inheritance+IPublic3;true;get_Prop;();;Argument[this].SyntheticField[Models.Inheritance+DImpl.tainted];ReturnValue;value;df-generated
+        // contentbased-summary=Models;Inheritance+DImpl;true;get_Prop;();;Argument[this].SyntheticField[Models.Inheritance+DImpl.tainted];ReturnValue;value;df-generated
         public override string Prop { get { return tainted; } }
     }
 }
