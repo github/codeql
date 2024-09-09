@@ -1219,10 +1219,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   exists(Function function, ArgumentPosition pos |
-    // TODO: check same container
-    // TODO: do not generate for capture-related post-update nodes
-    node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
+    node1.(DataFlow::ExprPostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
     node2 = TImplicitArgumentNode(function, pos) and
+    sameContainer(node1, node2) and
     c.asSingleton() = MkArgumentContent(pos)
   )
 }
