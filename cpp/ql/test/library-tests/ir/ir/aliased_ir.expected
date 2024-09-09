@@ -3203,6 +3203,53 @@ ir.c:
 #   32|   Block 5
 #   32|     v32_5(void) = Unreached : 
 
+#   44| void try_with_finally()
+#   44|   Block 0
+#   44|     v44_1(void)       = EnterFunction      : 
+#   44|     m44_2(unknown)    = AliasedDefinition  : 
+#   44|     m44_3(unknown)    = InitializeNonLocal : 
+#   44|     m44_4(unknown)    = Chi                : total:m44_2, partial:m44_3
+#   46|     r46_1(glval<int>) = VariableAddress[x] : 
+#   46|     r46_2(int)        = Constant[0]        : 
+#   46|     m46_3(int)        = Store[x]           : &:r46_1, r46_2
+#   49|     r49_1(int)        = Constant[1]        : 
+#   49|     r49_2(glval<int>) = VariableAddress[x] : 
+#   49|     m49_3(int)        = Store[x]           : &:r49_2, r49_1
+#   53|     r53_1(int)        = Constant[2]        : 
+#   53|     r53_2(glval<int>) = VariableAddress[x] : 
+#   53|     m53_3(int)        = Store[x]           : &:r53_2, r53_1
+#   55|     v55_1(void)       = NoOp               : 
+#   44|     v44_5(void)       = ReturnVoid         : 
+#   44|     v44_6(void)       = AliasedUse         : m44_3
+#   44|     v44_7(void)       = ExitFunction       : 
+
+#   57| void throw_in_try_with_finally()
+#   57|   Block 0
+#   57|     v57_1(void)           = EnterFunction                           : 
+#   57|     m57_2(unknown)        = AliasedDefinition                       : 
+#   57|     m57_3(unknown)        = InitializeNonLocal                      : 
+#   57|     m57_4(unknown)        = Chi                                     : total:m57_2, partial:m57_3
+#   59|     r59_1(glval<int>)     = VariableAddress[x]                      : 
+#   59|     r59_2(int)            = Constant[0]                             : 
+#   59|     m59_3(int)            = Store[x]                                : &:r59_1, r59_2
+#   62|     r62_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   62|     r62_2(int)            = Constant[0]                             : 
+#   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
+#   62|     m62_4(unknown)        = ^CallSideEffect                         : ~m57_4
+#   62|     m62_5(unknown)        = Chi                                     : total:m57_4, partial:m62_4
+
+#   70| void throw_in_try_with_throw_in_finally()
+#   70|   Block 0
+#   70|     v70_1(void)           = EnterFunction                           : 
+#   70|     m70_2(unknown)        = AliasedDefinition                       : 
+#   70|     m70_3(unknown)        = InitializeNonLocal                      : 
+#   70|     m70_4(unknown)        = Chi                                     : total:m70_2, partial:m70_3
+#   73|     r73_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   73|     r73_2(int)            = Constant[0]                             : 
+#   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
+#   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
+#   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0

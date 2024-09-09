@@ -4501,6 +4501,100 @@ ir.c:
 #   40|                 Value = [Literal] 1
 #   40|                 ValueCategory = prvalue
 #   42|     getStmt(1): [ReturnStmt] return ...
+#   44| [TopLevelFunction] void try_with_finally()
+#   44|   <params>: 
+#   45|   getEntryPoint(): [BlockStmt] { ... }
+#   46|     getStmt(0): [DeclStmt] declaration
+#   46|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   46|           Type = [IntType] int
+#   46|         getVariable().getInitializer(): [Initializer] initializer for x
+#   46|           getExpr(): [Literal] 0
+#   46|               Type = [IntType] int
+#   46|               Value = [Literal] 0
+#   46|               ValueCategory = prvalue
+#   47|     getStmt(1): [MicrosoftTryFinallyStmt] __try { ... } __finally { ... }
+#   48|       getStmt(): [BlockStmt] { ... }
+#   49|         getStmt(0): [ExprStmt] ExprStmt
+#   49|           getExpr(): [AssignExpr] ... = ...
+#   49|               Type = [IntType] int
+#   49|               ValueCategory = prvalue
+#   49|             getLValue(): [VariableAccess] x
+#   49|                 Type = [IntType] int
+#   49|                 ValueCategory = lvalue
+#   49|             getRValue(): [Literal] 1
+#   49|                 Type = [IntType] int
+#   49|                 Value = [Literal] 1
+#   49|                 ValueCategory = prvalue
+#   52|       getFinally(): [BlockStmt] { ... }
+#   53|         getStmt(0): [ExprStmt] ExprStmt
+#   53|           getExpr(): [AssignExpr] ... = ...
+#   53|               Type = [IntType] int
+#   53|               ValueCategory = prvalue
+#   53|             getLValue(): [VariableAccess] x
+#   53|                 Type = [IntType] int
+#   53|                 ValueCategory = lvalue
+#   53|             getRValue(): [Literal] 2
+#   53|                 Type = [IntType] int
+#   53|                 Value = [Literal] 2
+#   53|                 ValueCategory = prvalue
+#   55|     getStmt(2): [ReturnStmt] return ...
+#   57| [TopLevelFunction] void throw_in_try_with_finally()
+#   57|   <params>: 
+#   58|   getEntryPoint(): [BlockStmt] { ... }
+#   59|     getStmt(0): [DeclStmt] declaration
+#   59|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   59|           Type = [IntType] int
+#   59|         getVariable().getInitializer(): [Initializer] initializer for x
+#   59|           getExpr(): [Literal] 0
+#   59|               Type = [IntType] int
+#   59|               Value = [Literal] 0
+#   59|               ValueCategory = prvalue
+#   60|     getStmt(1): [MicrosoftTryFinallyStmt] __try { ... } __finally { ... }
+#   61|       getStmt(): [BlockStmt] { ... }
+#   62|         getStmt(0): [ExprStmt] ExprStmt
+#   62|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   62|               Type = [VoidType] void
+#   62|               ValueCategory = prvalue
+#   62|             getArgument(0): [Literal] 0
+#   62|                 Type = [IntType] int
+#   62|                 Value = [Literal] 0
+#   62|                 ValueCategory = prvalue
+#   65|       getFinally(): [BlockStmt] { ... }
+#   66|         getStmt(0): [ExprStmt] ExprStmt
+#   66|           getExpr(): [AssignExpr] ... = ...
+#   66|               Type = [IntType] int
+#   66|               ValueCategory = prvalue
+#   66|             getLValue(): [VariableAccess] x
+#   66|                 Type = [IntType] int
+#   66|                 ValueCategory = lvalue
+#   66|             getRValue(): [Literal] 1
+#   66|                 Type = [IntType] int
+#   66|                 Value = [Literal] 1
+#   66|                 ValueCategory = prvalue
+#   68|     getStmt(2): [ReturnStmt] return ...
+#   70| [TopLevelFunction] void throw_in_try_with_throw_in_finally()
+#   70|   <params>: 
+#   71|   getEntryPoint(): [BlockStmt] { ... }
+#   72|     getStmt(0): [MicrosoftTryFinallyStmt] __try { ... } __finally { ... }
+#   72|       getStmt(): [BlockStmt] { ... }
+#   73|         getStmt(0): [ExprStmt] ExprStmt
+#   73|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   73|               Type = [VoidType] void
+#   73|               ValueCategory = prvalue
+#   73|             getArgument(0): [Literal] 0
+#   73|                 Type = [IntType] int
+#   73|                 Value = [Literal] 0
+#   73|                 ValueCategory = prvalue
+#   75|       getFinally(): [BlockStmt] { ... }
+#   76|         getStmt(0): [ExprStmt] ExprStmt
+#   76|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   76|               Type = [VoidType] void
+#   76|               ValueCategory = prvalue
+#   76|             getArgument(0): [Literal] 0
+#   76|                 Type = [IntType] int
+#   76|                 Value = [Literal] 0
+#   76|                 ValueCategory = prvalue
+#   78|     getStmt(1): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
