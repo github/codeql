@@ -1,6 +1,6 @@
 import powershell
 
-class TypeExpression extends @type_expression, Expr {
+class TypeNameExpr extends @type_expression, Expr {
   string getName() { type_expression(this, result, _) }
 
   string getFullyQualifiedName() { type_expression(this, _, result) }

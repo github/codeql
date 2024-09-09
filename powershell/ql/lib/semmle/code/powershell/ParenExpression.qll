@@ -1,7 +1,7 @@
 import powershell
 
-class ParenExpression extends @paren_expression, Expr {
-  PipelineBase getExpression() { paren_expression(this, result) }
+class ParenExpr extends @paren_expression, Expr {
+  PipelineBase getExpr() { paren_expression(this, result) }
 
   override SourceLocation getLocation() { paren_expression_location(this, result) }
 
