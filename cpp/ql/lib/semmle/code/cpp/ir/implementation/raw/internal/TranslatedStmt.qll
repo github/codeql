@@ -79,11 +79,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareOneBranch() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
-    or
-    // unwind stack
-    tag = UnwindTag() and
-    opcode instanceof Opcode::Unwind and
-    resultType = getVoidType()
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -156,7 +151,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
       // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
       // we should continue execution at the point where the exception occurred. But we don't have
       // any instruction to model this behavior.
-      result = this.getInstruction(UnwindTag())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateZero())
@@ -176,7 +171,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareZeroBranch() and
     (
       kind instanceof TrueEdge and
-      result = this.getInstruction(UnwindTag())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateOne())
@@ -196,10 +191,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareOneBranch() and
     kind instanceof TrueEdge and
     result = this.getTranslatedHandler().getFirstInstruction(any(GotoEdge edge))
-    or
-    // Unwind -> Parent
-    tag = UnwindTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -215,8 +206,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   override Instruction getALastInstructionInternal() {
     result = this.getTranslatedHandler().getALastInstruction()
-    or
-    result = this.getInstruction(UnwindTag())
   }
 
   private TranslatedExpr getTranslatedCondition() {
@@ -236,6 +225,12 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
   }
 
   final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
+
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    // A throw from within a `__except` block flows to the handler for the parent of
+    // the `__try`.
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
+  }
 }
 
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
