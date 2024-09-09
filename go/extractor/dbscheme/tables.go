@@ -1211,7 +1211,7 @@ var VariadicTable = NewTable("variadic",
 
 // TypeParamTable is the table describing type parameter types
 var TypeParamTable = NewTable("typeparam",
-	EntityColumn(TypeParamType, "tp").Unique(),
+	EntityColumn(TypeParamType, "tp"),
 	StringColumn("name"),
 	EntityColumn(CompositeType, "bound"),
 	EntityColumn(TypeParamParentObjectType, "parent"),
