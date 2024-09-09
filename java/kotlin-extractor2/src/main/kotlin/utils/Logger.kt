@@ -7,11 +7,7 @@ import java.io.OutputStreamWriter
 import java.io.Writer
 import java.text.SimpleDateFormat
 import java.util.Date
-/*
-OLD: KE1
 import java.util.Stack
-import org.jetbrains.kotlin.ir.IrElement
-*/
 
 /**
  * Counts the number of times each diagnostic message (based on the
@@ -97,15 +93,12 @@ class LogMessage(private val kind: String, private val message: String) {
     }
 }
 
-/*
-OLD: KE1
 data class ExtractorContext(
     val kind: String,
-    val element: IrElement,
+    val element: PsiElement,
     val name: String,
     val loc: String
 )
-*/
 
 interface BasicLogger {
     abstract fun trace(dtw: DiagnosticTrapWriter, msg: String)
@@ -172,6 +165,7 @@ OLD: KE1
         severity: Severity,
         msg: String,
         extraInfo: String?,
+        extractorContextStack: Stack<ExtractorContext>?,
         locationString: String? = null,
         mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
     ) {
@@ -199,14 +193,14 @@ OLD: KE1
             fullMsgBuilder.append(extraInfo)
         }
 
-/*
-OLD: KE1
-        val iter = extractorContextStack.listIterator(extractorContextStack.size)
-        while (iter.hasPrevious()) {
-            val x = iter.previous()
-            fullMsgBuilder.append("  ...while extracting a ${x.kind} (${x.name}) at ${x.loc}\n")
+        if (extractorContextStack != null) {
+            val iter = extractorContextStack.listIterator(extractorContextStack.size)
+            while (iter.hasPrevious()) {
+                val x = iter.previous()
+                fullMsgBuilder.append("  ...while extracting a ${x.kind} (${x.name}) at ${x.loc}\n")
+            }
         }
-*/
+
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
@@ -275,14 +269,22 @@ OLD: KE1
     }
 
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+        warn(dtw, msg, extraInfo, null)
+    }
+
+    fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, extractorContextStack: Stack<ExtractorContext>?) {
         if (verbosity >= 2) {
-            diagnostic(dtw, Severity.Warn, msg, extraInfo)
+            diagnostic(dtw, Severity.Warn, msg, extraInfo, extractorContextStack)
         }
     }
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+        error(dtw, msg, extraInfo, null)
+    }
+
+    fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, extractorContextStack: Stack<ExtractorContext>?) {
         if (verbosity >= 1) {
-            diagnostic(dtw, Severity.Error, msg, extraInfo)
+            diagnostic(dtw, Severity.Error, msg, extraInfo, extractorContextStack)
         }
     }
 
@@ -316,10 +318,7 @@ OLD: KE1
  * Logger is the high-level interface for writint log messages.
  */
 open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): BasicLogger {
-/*
-OLD: KE1
     val extractorContextStack = Stack<ExtractorContext>()
-*/
 
     override fun flush() {
         dtw.flush()
@@ -355,7 +354,7 @@ OLD: KE1
     }
 
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.warn(dtw, msg, extraInfo)
+        loggerBase.warn(dtw, msg, extraInfo, extractorContextStack)
     }
 
     private fun warn(msg: String, extraInfo: String?) {
@@ -371,7 +370,7 @@ OLD: KE1
     }
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.error(dtw, msg, extraInfo)
+        loggerBase.error(dtw, msg, extraInfo, extractorContextStack)
     }
 
     private fun error(msg: String, extraInfo: String?) {
@@ -413,6 +412,7 @@ OLD: KE1
             Severity.Error,
             msg,
             null, // OLD: KE1: exn?.stackTraceToString(),
+            extractorContextStack,
             locationString,
             mkLocationId
         )

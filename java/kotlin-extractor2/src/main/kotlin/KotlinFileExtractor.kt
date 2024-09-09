@@ -119,30 +119,21 @@ OLD: KE1
                 is KtNamed -> element.getNameAsName()?.asString() ?: "<missing name>"
                 else -> "<no name>"
             }
-/*
-OLD: KE1
         val loc = tw.getLocationString(element)
-        val context = logger.loggerBase.extractorContextStack
+        val context = logger.extractorContextStack
         context.push(ExtractorContext(kind, element, name, loc))
         try {
             val depth = context.size
             val depthDescription = "${"-".repeat(depth)} (${depth.toString()})"
             logger.trace("$depthDescription: Starting a $kind ($name) at $loc")
-*/
             val result = f()
-/*
-OLD: KE1
             logger.trace("$depthDescription: Finished a $kind ($name) at $loc")
-*/
             return result
-/*
-OLD: KE1
         } catch (exception: Exception) {
             throw Exception("While extracting a $kind ($name) at $loc", exception)
         } finally {
             context.pop()
         }
-*/
     }
 
     fun extractFileContents(file: KtFile, id: Label<DbFile>) {
