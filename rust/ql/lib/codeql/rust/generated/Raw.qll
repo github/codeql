@@ -452,33 +452,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class IfLet extends @if_let, Stmt {
-    override string toString() { result = "IfLet" }
-
-    /**
-     * Gets the pat of this if let.
-     */
-    Pat getPat() { if_lets(this, result) }
-
-    /**
-     * Gets the type reference of this if let, if it exists.
-     */
-    TypeRef getTypeRef() { if_let_type_refs(this, result) }
-
-    /**
-     * Gets the initializer of this if let, if it exists.
-     */
-    Expr getInitializer() { if_let_initializers(this, result) }
-
-    /**
-     * Gets the else of this if let, if it exists.
-     */
-    Expr getElse() { if_let_elses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class Index extends @index, Expr {
     override string toString() { result = "Index" }
 
@@ -532,6 +505,33 @@ module Raw {
      * Gets the expression of this let.
      */
     Expr getExpr() { lets(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class LetStmt extends @let_stmt, Stmt {
+    override string toString() { result = "LetStmt" }
+
+    /**
+     * Gets the pat of this let statement.
+     */
+    Pat getPat() { let_stmts(this, result) }
+
+    /**
+     * Gets the type reference of this let statement, if it exists.
+     */
+    TypeRef getTypeRef() { let_stmt_type_refs(this, result) }
+
+    /**
+     * Gets the initializer of this let statement, if it exists.
+     */
+    Expr getInitializer() { let_stmt_initializers(this, result) }
+
+    /**
+     * Gets the else of this let statement, if it exists.
+     */
+    Expr getElse() { let_stmt_elses(this, result) }
   }
 
   /**

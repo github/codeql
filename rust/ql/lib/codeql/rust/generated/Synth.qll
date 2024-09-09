@@ -106,10 +106,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TIfLet(Raw::IfLet id) { constructIfLet(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TIndex(Raw::Index id) { constructIndex(id) } or
     /**
      * INTERNAL: Do not use.
@@ -127,6 +123,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TLet(Raw::Let id) { constructLet(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TLetStmt(Raw::LetStmt id) { constructLetStmt(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -319,7 +319,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TStmt = TExprStmt or TIfLet or TItemStmt;
+  class TStmt = TExprStmt or TItemStmt or TLetStmt;
 
   /**
    * INTERNAL: Do not use.
@@ -477,13 +477,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TIfLet`, if possible.
-   */
-  cached
-  TIfLet convertIfLetFromRaw(Raw::Element e) { result = TIfLet(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIndex`, if possible.
    */
   cached
@@ -516,6 +509,13 @@ module Synth {
    */
   cached
   TLet convertLetFromRaw(Raw::Element e) { result = TLet(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLetStmt`, if possible.
+   */
+  cached
+  TLetStmt convertLetStmtFromRaw(Raw::Element e) { result = TLetStmt(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -969,9 +969,9 @@ module Synth {
   TStmt convertStmtFromRaw(Raw::Element e) {
     result = convertExprStmtFromRaw(e)
     or
-    result = convertIfLetFromRaw(e)
-    or
     result = convertItemStmtFromRaw(e)
+    or
+    result = convertLetStmtFromRaw(e)
   }
 
   /**
@@ -1130,13 +1130,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TIfLet` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertIfLetToRaw(TIfLet e) { e = TIfLet(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TIndex` to a raw DB element, if possible.
    */
   cached
@@ -1169,6 +1162,13 @@ module Synth {
    */
   cached
   Raw::Element convertLetToRaw(TLet e) { e = TLet(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLetStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertLetStmtToRaw(TLetStmt e) { e = TLetStmt(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1622,8 +1622,8 @@ module Synth {
   Raw::Element convertStmtToRaw(TStmt e) {
     result = convertExprStmtToRaw(e)
     or
-    result = convertIfLetToRaw(e)
-    or
     result = convertItemStmtToRaw(e)
+    or
+    result = convertLetStmtToRaw(e)
   }
 }

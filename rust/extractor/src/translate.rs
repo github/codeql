@@ -359,7 +359,7 @@ impl CrateTranslator<'_> {
                     initializer.map(|initializer| self.emit_expr(initializer, body, source_map));
                 let else_ = else_branch.map(|else_| self.emit_expr(else_, body, source_map));
 
-                self.trap.emit(generated::IfLet {
+                self.trap.emit(generated::LetStmt {
                     id: TrapId::Star,
                     location,
                     pat,

@@ -480,7 +480,7 @@ class InlineAsm(Expr):
 #         else_branch: Option<ExprId>,
 #     },
 
-class IfLet(Stmt):
+class LetStmt(Stmt):
     pat: Pat | child
     type_ref: optional[TypeRef] | child
     initializer: optional[Expr] | child

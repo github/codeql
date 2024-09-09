@@ -146,8 +146,8 @@ match_arm_guards(
 
 @stmt =
   @expr_stmt
-| @if_let
 | @item_stmt
+| @let_stmt
 ;
 
 type_refs(
@@ -343,29 +343,6 @@ if_elses(
   int else: @expr ref
 );
 
-if_lets(
-  unique int id: @if_let,
-  int pat: @pat ref
-);
-
-#keyset[id]
-if_let_type_refs(
-  int id: @if_let ref,
-  int type_ref: @type_ref ref
-);
-
-#keyset[id]
-if_let_initializers(
-  int id: @if_let ref,
-  int initializer: @expr ref
-);
-
-#keyset[id]
-if_let_elses(
-  int id: @if_let ref,
-  int else: @expr ref
-);
-
 indices(
   unique int id: @index,
   int base: @expr ref,
@@ -390,6 +367,29 @@ lets(
   unique int id: @let,
   int pat: @pat ref,
   int expr: @expr ref
+);
+
+let_stmts(
+  unique int id: @let_stmt,
+  int pat: @pat ref
+);
+
+#keyset[id]
+let_stmt_type_refs(
+  int id: @let_stmt ref,
+  int type_ref: @type_ref ref
+);
+
+#keyset[id]
+let_stmt_initializers(
+  int id: @let_stmt ref,
+  int initializer: @expr ref
+);
+
+#keyset[id]
+let_stmt_elses(
+  int id: @let_stmt ref,
+  int else: @expr ref
 );
 
 lit_pats(

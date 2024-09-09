@@ -32,12 +32,12 @@ import codeql.rust.elements.Field
 import codeql.rust.elements.File
 import codeql.rust.elements.Function
 import codeql.rust.elements.If
-import codeql.rust.elements.IfLet
 import codeql.rust.elements.Index
 import codeql.rust.elements.InlineAsm
 import codeql.rust.elements.ItemStmt
 import codeql.rust.elements.Label
 import codeql.rust.elements.Let
+import codeql.rust.elements.LetStmt
 import codeql.rust.elements.LitPat
 import codeql.rust.elements.Literal
 import codeql.rust.elements.Locatable

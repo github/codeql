@@ -502,38 +502,6 @@ impl TrapEntry for If {
 }
 
 #[derive(Debug)]
-pub struct IfLet {
-    pub id: TrapId,
-    pub location: Option<trap::Label>,
-    pub pat: trap::Label,
-    pub type_ref: Option<trap::Label>,
-    pub initializer: Option<trap::Label>,
-    pub else_: Option<trap::Label>,
-}
-
-impl TrapEntry for IfLet {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("if_lets", vec![trap::Arg::Label(id), self.pat.into()]);
-        if let Some(v) = self.location {
-            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
-        }
-        if let Some(v) = self.type_ref {
-            out.add_tuple("if_let_type_refs", vec![trap::Arg::Label(id), v.into()]);
-        }
-        if let Some(v) = self.initializer {
-            out.add_tuple("if_let_initializers", vec![trap::Arg::Label(id), v.into()]);
-        }
-        if let Some(v) = self.else_ {
-            out.add_tuple("if_let_elses", vec![trap::Arg::Label(id), v.into()]);
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct Index {
     pub id: TrapId,
     pub location: Option<trap::Label>,
@@ -614,6 +582,38 @@ impl TrapEntry for Let {
         out.add_tuple("lets", vec![trap::Arg::Label(id), self.pat.into(), self.expr.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LetStmt {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+    pub pat: trap::Label,
+    pub type_ref: Option<trap::Label>,
+    pub initializer: Option<trap::Label>,
+    pub else_: Option<trap::Label>,
+}
+
+impl TrapEntry for LetStmt {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("let_stmts", vec![trap::Arg::Label(id), self.pat.into()]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if let Some(v) = self.type_ref {
+            out.add_tuple("let_stmt_type_refs", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if let Some(v) = self.initializer {
+            out.add_tuple("let_stmt_initializers", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if let Some(v) = self.else_ {
+            out.add_tuple("let_stmt_elses", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }

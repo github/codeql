@@ -48,8 +48,6 @@
 /lib/codeql/rust/elements/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/If.qll linguist-generated
 /lib/codeql/rust/elements/IfConstructor.qll linguist-generated
-/lib/codeql/rust/elements/IfLet.qll linguist-generated
-/lib/codeql/rust/elements/IfLetConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Index.qll linguist-generated
 /lib/codeql/rust/elements/IndexConstructor.qll linguist-generated
 /lib/codeql/rust/elements/InlineAsm.qll linguist-generated
@@ -60,6 +58,8 @@
 /lib/codeql/rust/elements/LabelConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Let.qll linguist-generated
 /lib/codeql/rust/elements/LetConstructor.qll linguist-generated
+/lib/codeql/rust/elements/LetStmt.qll linguist-generated
+/lib/codeql/rust/elements/LetStmtConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LitPat.qll linguist-generated
 /lib/codeql/rust/elements/LitPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Literal.qll linguist-generated
@@ -156,12 +156,12 @@
 /lib/codeql/rust/generated/File.qll linguist-generated
 /lib/codeql/rust/generated/Function.qll linguist-generated
 /lib/codeql/rust/generated/If.qll linguist-generated
-/lib/codeql/rust/generated/IfLet.qll linguist-generated
 /lib/codeql/rust/generated/Index.qll linguist-generated
 /lib/codeql/rust/generated/InlineAsm.qll linguist-generated
 /lib/codeql/rust/generated/ItemStmt.qll linguist-generated
 /lib/codeql/rust/generated/Label.qll linguist-generated
 /lib/codeql/rust/generated/Let.qll linguist-generated
+/lib/codeql/rust/generated/LetStmt.qll linguist-generated
 /lib/codeql/rust/generated/LitPat.qll linguist-generated
 /lib/codeql/rust/generated/Literal.qll linguist-generated
 /lib/codeql/rust/generated/Locatable.qll linguist-generated

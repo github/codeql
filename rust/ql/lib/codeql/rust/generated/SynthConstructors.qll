@@ -25,12 +25,12 @@ import codeql.rust.elements.ExprStmtConstructor
 import codeql.rust.elements.FieldConstructor
 import codeql.rust.elements.FunctionConstructor
 import codeql.rust.elements.IfConstructor
-import codeql.rust.elements.IfLetConstructor
 import codeql.rust.elements.IndexConstructor
 import codeql.rust.elements.InlineAsmConstructor
 import codeql.rust.elements.ItemStmtConstructor
 import codeql.rust.elements.LabelConstructor
 import codeql.rust.elements.LetConstructor
+import codeql.rust.elements.LetStmtConstructor
 import codeql.rust.elements.LitPatConstructor
 import codeql.rust.elements.LiteralConstructor
 import codeql.rust.elements.LoopConstructor

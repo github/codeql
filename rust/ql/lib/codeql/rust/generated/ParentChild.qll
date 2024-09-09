@@ -555,31 +555,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfIfLet(IfLet e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int n, int nPat, int nTypeRef, int nInitializer, int nElse |
-      b = 0 and
-      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
-      n = bStmt and
-      nPat = n + 1 and
-      nTypeRef = nPat + 1 and
-      nInitializer = nTypeRef + 1 and
-      nElse = nInitializer + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
-        or
-        index = nPat and result = e.getTypeRef() and partialPredicateCall = "TypeRef()"
-        or
-        index = nTypeRef and result = e.getInitializer() and partialPredicateCall = "Initializer()"
-        or
-        index = nInitializer and result = e.getElse() and partialPredicateCall = "Else()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfIndex(Index e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nBase, int nIndex |
       b = 0 and
@@ -643,6 +618,31 @@ private module Impl {
         index = n and result = e.getPat() and partialPredicateCall = "Pat()"
         or
         index = nPat and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfLetStmt(LetStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nPat, int nTypeRef, int nInitializer, int nElse |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nPat = n + 1 and
+      nTypeRef = nPat + 1 and
+      nInitializer = nTypeRef + 1 and
+      nElse = nInitializer + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
+        or
+        index = nPat and result = e.getTypeRef() and partialPredicateCall = "TypeRef()"
+        or
+        index = nTypeRef and result = e.getInitializer() and partialPredicateCall = "Initializer()"
+        or
+        index = nInitializer and result = e.getElse() and partialPredicateCall = "Else()"
       )
     )
   }
@@ -1235,8 +1235,6 @@ private module Impl {
     or
     result = getImmediateChildOfIf(e, index, partialAccessor)
     or
-    result = getImmediateChildOfIfLet(e, index, partialAccessor)
-    or
     result = getImmediateChildOfIndex(e, index, partialAccessor)
     or
     result = getImmediateChildOfInlineAsm(e, index, partialAccessor)
@@ -1244,6 +1242,8 @@ private module Impl {
     result = getImmediateChildOfItemStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfLet(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLetStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfLitPat(e, index, partialAccessor)
     or
