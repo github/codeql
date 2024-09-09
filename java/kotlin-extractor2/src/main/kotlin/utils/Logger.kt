@@ -278,22 +278,19 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
         }
     }
 
-/*
-OLD: KE1
     fun printLimitedDiagnosticCounts(dtw: DiagnosticTrapWriter) {
-        for ((caller, info) in diagnosticCounter.diagnosticInfo) {
-            val severity = info.first
-            val count = info.second
+        for ((caller, count) in diagnosticCounter.diagnosticInfo) {
+            val callDescription = caller.first
+            val severity = caller.second
             if (count >= diagnosticCounter.diagnosticLimit) {
                 val message =
                     "Total of $count diagnostics (reached limit of ${diagnosticCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
-                    emitDiagnostic(dtw, severity, "Limit", message, message, null, dtw.unknownLocation)
+                    emitDiagnostic(dtw, null, severity, "Limit", message, message, null, dtw.unknownLocation)
                 }
             }
         }
     }
-*/
 
     override fun flush() {
         logStream.flush()
