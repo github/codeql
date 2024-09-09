@@ -1,13 +1,11 @@
 use anyhow::Context;
-use clap::builder::PossibleValue;
 use clap::{ArgAction, Parser, ValueEnum};
 use codeql_extractor::trap;
 use figment::{
     providers::{Env, Serialized},
     Figment,
 };
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde_with;
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, ValueEnum)]
@@ -19,11 +17,11 @@ pub enum Compression {
     Gzip,
 }
 
-impl Into<trap::Compression> for Compression {
-    fn into(self) -> trap::Compression {
-        match self {
-            Compression::None => trap::Compression::None,
-            Compression::Gzip => trap::Compression::Gzip,
+impl From<Compression> for trap::Compression {
+    fn from(val: Compression) -> Self {
+        match val {
+            Compression::None => Self::None,
+            Compression::Gzip => Self::Gzip,
         }
     }
 }
@@ -72,10 +70,10 @@ impl Config {
                 .inputs
                 .extend(inputs_list.split("\n").map(PathBuf::from));
         }
-        Ok(Figment::new()
+        Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Serialized::defaults(cli_args))
             .extract()
-            .context("loading configuration")?)
+            .context("loading configuration")
     }
 }
