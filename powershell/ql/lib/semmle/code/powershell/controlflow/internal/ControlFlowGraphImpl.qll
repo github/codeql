@@ -543,6 +543,8 @@ module Trees {
     override AstNode getChildNode(int i) { result = super.getElement(i) }
   }
 
+  class TypeConstraintTree extends LeafTree instanceof TypeConstraint { }
+
   class CatchClauseTree extends PreOrderTree instanceof CatchClause {
     final override predicate propagatesAbnormal(Ast child) { none() }
 

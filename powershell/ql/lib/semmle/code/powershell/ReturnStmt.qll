@@ -7,7 +7,7 @@ class ReturnStmt extends @return_statement, Stmt {
     if this.hasPipeline() then result = "return ..." else result = "return"
   }
 
-  PipelineBase getPipeline() { return_statement_pipeline(this, result) } // TODO: Change @ast to @pipeline_base in dbscheme
+  PipelineBase getPipeline() { return_statement_pipeline(this, result) }
 
   predicate hasPipeline() { exists(this.getPipeline()) }
 }
