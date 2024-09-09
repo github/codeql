@@ -120,7 +120,7 @@ OLD: KE1
                 else -> "<no name>"
             }
         val loc = tw.getLocationString(element)
-        val context = logger.extractorContextStack
+        val context = logger.loggerState.extractorContextStack
         context.push(ExtractorContext(kind, element, name, loc))
         try {
             val depth = context.size
