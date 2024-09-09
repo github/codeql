@@ -2,10 +2,10 @@ use crate::config::Compression;
 use crate::generated;
 use crate::{config, path};
 use codeql_extractor::trap;
-use log::{debug};
+use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
-use std::fmt::{Debug};
+use std::fmt::Debug;
 use std::path::{Path, PathBuf};
 
 //TODO: typed labels
@@ -85,10 +85,10 @@ impl TrapFile {
         start: LineCol,
         end: LineCol,
     ) -> trap::Label {
-        let start_line = start.line as usize;
-        let start_column = start.col as usize;
-        let end_line = end.line as usize;
-        let end_column = end.col as usize;
+        let start_line = 1 + start.line as usize;
+        let start_column = 1 + start.col as usize;
+        let end_line = 1 + end.line as usize;
+        let end_column = 1 + end.col as usize;
         let (ret, _) = self.writer.location_label(trap::Location {
             start_line,
             start_column,

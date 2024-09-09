@@ -11,7 +11,7 @@ use ra_ap_hir_def::hir::{CaptureBy, ExprId, LabelId, MatchArm, PatId, Statement}
 use ra_ap_ide_db::line_index::LineIndex;
 use ra_ap_ide_db::{label, LineIndexDatabase, RootDatabase};
 use ra_ap_syntax::ast::RangeOp;
-use ra_ap_syntax::{AstNode, Edition};
+use ra_ap_syntax::{AstNode, Edition, TextRange, TextSize};
 use ra_ap_vfs::{FileId, Vfs};
 use std::collections::HashMap;
 use std::fs;
@@ -81,11 +81,9 @@ impl CrateTranslator<'_> {
             .file_id()
             .map(|f| (f.file_id(), source))
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
-            .and_then(|(data, source)| {
+            .map(|(data, source)| {
                 let range = source.value.text_range();
-                let start = data.line_index.line_col(range.start());
-                let end = data.line_index.line_col(range.end());
-                Some(self.trap.emit_location(data.label, start, end))
+                self.emit_location_textrange(data, range)
             })
     }
 
@@ -151,12 +149,19 @@ impl CrateTranslator<'_> {
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
             .map(|(data, source)| {
                 let range = source.value.syntax().text_range();
-                let start = data.line_index.line_col(range.start());
-                let end = data.line_index.line_col(range.end());
-                self.trap.emit_location(data.label, start, end)
+                self.emit_location_textrange(data, range)
             })
     }
-
+    fn emit_location_textrange(&mut self, data: FileData, range: TextRange) -> trap::Label {
+        let start = data.line_index.line_col(range.start());
+        let end = data.line_index.line_col(
+            range
+                .end()
+                .checked_sub(TextSize::new(1))
+                .unwrap_or(range.end()),
+        );
+        self.trap.emit_location(data.label, start, end)
+    }
     fn emit_label(
         &mut self,
         label_id: LabelId,
