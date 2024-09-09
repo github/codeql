@@ -32,7 +32,7 @@ def generate(opts, renderer):
     schema = schemaloader.load_file(opts.schema)
     with renderer.manage(generated=opts.ql_test_output.rglob("gen_*.rs"),
                          stubs=(),
-                         registry=opts.generated_registry,
+                         registry=opts.ql_test_output / ".generated_tests.list",
                          force=opts.force) as renderer:
         for cls in schema.classes.values():
             if (qlgen.should_skip_qltest(cls, schema.classes) or

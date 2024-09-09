@@ -88,7 +88,7 @@ def generate(opts, renderer):
     groups = set()
     with renderer.manage(generated=out.rglob("*.rs"),
                          stubs=(),
-                         registry=opts.generated_registry,
+                         registry=out / ".generated.list",
                          force=opts.force) as renderer:
         for group, classes in processor.get_classes().items():
             group = group or "top"

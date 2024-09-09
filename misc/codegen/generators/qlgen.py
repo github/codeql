@@ -26,6 +26,7 @@ import re
 import subprocess
 import typing
 import itertools
+import os
 
 import inflection
 
@@ -370,8 +371,10 @@ def generate(opts, renderer):
 
     imports = {}
     generated_import_prefix = get_import(out, opts.root_dir)
+    registry = opts.generated_registry or pathlib.Path(
+        os.path.commonpath((out, stub_out, test_out)), ".generated.list")
 
-    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
+    with renderer.manage(generated=generated, stubs=stubs, registry=registry,
                          force=opts.force) as renderer:
 
         db_classes = [cls for name, cls in classes.items() if not data.classes[name].synth]
