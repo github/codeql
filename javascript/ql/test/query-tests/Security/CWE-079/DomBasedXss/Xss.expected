@@ -265,7 +265,9 @@ nodes
 | react-use-router.js:11:24:11:35 | router.query | semmle.label | router.query |
 | react-use-router.js:11:24:11:42 | router.query.foobar | semmle.label | router.query.foobar |
 | react-use-router.js:23:31:23:36 | [post update] router | semmle.label | [post update] router |
+| react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | semmle.label | [post update] router [ArrayElement] |
 | react-use-router.js:23:43:23:48 | router | semmle.label | router |
+| react-use-router.js:23:43:23:48 | router [ArrayElement] | semmle.label | router [ArrayElement] |
 | react-use-router.js:23:43:23:54 | router.query | semmle.label | router.query |
 | react-use-router.js:23:43:23:61 | router.query.foobar | semmle.label | router.query.foobar |
 | react-use-router.js:33:21:33:32 | router.query | semmle.label | router.query |
@@ -328,6 +330,11 @@ nodes
 | string-manipulations.js:9:36:9:57 | documen ... on.href | semmle.label | documen ... on.href |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | semmle.label | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | semmle.label | documen ... on.href |
+| tainted-url-suffix-arguments.js:3:17:3:17 | y | semmle.label | y |
+| tainted-url-suffix-arguments.js:6:22:6:22 | y | semmle.label | y |
+| tainted-url-suffix-arguments.js:11:11:11:36 | url | semmle.label | url |
+| tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | semmle.label | window.location.href |
+| tainted-url-suffix-arguments.js:12:17:12:19 | url | semmle.label | url |
 | tooltip.jsx:6:11:6:30 | source | semmle.label | source |
 | tooltip.jsx:6:20:6:30 | window.name | semmle.label | window.name |
 | tooltip.jsx:10:25:10:30 | source | semmle.label | source |
@@ -414,7 +421,6 @@ nodes
 | tst.js:64:25:64:48 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:65:25:65:48 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:68:16:68:20 | bar() | semmle.label | bar() |
-| tst.js:70:1:70:27 | [,docum ... search] | semmle.label | [,docum ... search] |
 | tst.js:70:1:70:27 | [,docum ... search] [1] | semmle.label | [,docum ... search] [1] |
 | tst.js:70:3:70:26 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:70:46:70:46 | x | semmle.label | x |
@@ -540,6 +546,7 @@ nodes
 | tst.js:421:20:421:27 | match[1] | semmle.label | match[1] |
 | tst.js:424:18:424:37 | window.location.hash | semmle.label | window.location.hash |
 | tst.js:424:18:424:48 | window. ... it('#') | semmle.label | window. ... it('#') |
+| tst.js:424:18:424:48 | window. ... it('#') [ArrayElement] | semmle.label | window. ... it('#') [ArrayElement] |
 | tst.js:424:18:424:51 | window. ... '#')[1] | semmle.label | window. ... '#')[1] |
 | tst.js:428:7:428:39 | target | semmle.label | target |
 | tst.js:428:16:428:39 | documen ... .search | semmle.label | documen ... .search |
@@ -590,6 +597,7 @@ nodes
 | various-concat-obfuscations.js:5:12:5:18 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | semmle.label | "<div>" ... ainted) |
 | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | semmle.label | "<div>" ... /div>") |
+| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | semmle.label | "<div>" ... /div>") [ArrayElement] |
 | various-concat-obfuscations.js:6:19:6:25 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | semmle.label | ["<div> ... /div>"] |
 | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() | semmle.label | ["<div> ... .join() |
@@ -600,6 +608,7 @@ nodes
 | various-concat-obfuscations.js:10:16:10:22 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | semmle.label | "<div i ... ainted) |
 | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | semmle.label | "<div i ... t("/>") |
+| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | semmle.label | "<div i ... t("/>") [ArrayElement] |
 | various-concat-obfuscations.js:11:24:11:30 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | semmle.label | ["<div  ... "\\"/>"] |
 | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() | semmle.label | ["<div  ... .join() |
@@ -614,6 +623,7 @@ nodes
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | semmle.label | '<div a ... ntent)) |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | semmle.label | '<div a ... ntent)) [ArrayElement] |
 | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | semmle.label | '<div a ... /div>') |
+| various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | semmle.label | '<div a ... /div>') [ArrayElement] |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | semmle.label | attrs |
 | various-concat-obfuscations.js:18:32:18:48 | attrs.defaultattr | semmle.label | attrs.defaultattr |
 | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | semmle.label | attrs.d ...  'left' |
@@ -621,6 +631,7 @@ nodes
 | various-concat-obfuscations.js:20:17:20:40 | documen ... .search | semmle.label | documen ... .search |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | semmle.label | documen ... h.attrs |
 | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | semmle.label | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | semmle.label | indirec ... .attrs) [ArrayElement] |
 | various-concat-obfuscations.js:21:17:21:40 | documen ... .search | semmle.label | documen ... .search |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | semmle.label | documen ... h.attrs |
 | winjs.js:2:7:2:53 | tainted | semmle.label | tainted |
@@ -882,9 +893,12 @@ edges
 | react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar | provenance |  |
 | react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | provenance |  |
 | react-use-router.js:23:31:23:36 | [post update] router | react-use-router.js:23:43:23:48 | router | provenance |  |
+| react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | react-use-router.js:23:43:23:48 | router [ArrayElement] | provenance |  |
 | react-use-router.js:23:43:23:48 | router | react-use-router.js:23:43:23:54 | router.query | provenance |  |
+| react-use-router.js:23:43:23:48 | router [ArrayElement] | react-use-router.js:23:43:23:54 | router.query | provenance |  |
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar | provenance |  |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:31:23:36 | [post update] router | provenance |  |
+| react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | provenance |  |
 | react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar | provenance |  |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state | provenance |  |
 | react-use-state.js:4:10:4:14 | state | react-use-state.js:4:9:4:49 | state | provenance |  |
@@ -939,6 +953,10 @@ edges
 | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | provenance | Config |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance |  |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | provenance | Config |
+| tainted-url-suffix-arguments.js:3:17:3:17 | y | tainted-url-suffix-arguments.js:6:22:6:22 | y | provenance |  |
+| tainted-url-suffix-arguments.js:11:11:11:36 | url | tainted-url-suffix-arguments.js:12:17:12:19 | url | provenance |  |
+| tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:11:11:11:36 | url | provenance |  |
+| tainted-url-suffix-arguments.js:12:17:12:19 | url | tainted-url-suffix-arguments.js:3:17:3:17 | y | provenance |  |
 | tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source | provenance |  |
 | tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source | provenance |  |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source | provenance |  |
@@ -1023,11 +1041,7 @@ edges
 | tst.js:60:34:60:34 | s | tst.js:62:18:62:18 | s | provenance |  |
 | tst.js:64:25:64:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
 | tst.js:65:25:65:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] | tst.js:70:46:70:46 | x | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] | tst.js:70:46:70:46 | x | provenance | Config |
 | tst.js:70:1:70:27 | [,docum ... search] [1] | tst.js:70:46:70:46 | x | provenance |  |
-| tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] | provenance |  |
-| tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] | provenance | Config |
 | tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] [1] | provenance |  |
 | tst.js:70:46:70:46 | x | tst.js:73:20:73:20 | x | provenance |  |
 | tst.js:107:7:107:44 | v | tst.js:110:18:110:18 | v | provenance |  |
@@ -1134,8 +1148,11 @@ edges
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] | provenance | Config |
 | tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') | provenance |  |
 | tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') | provenance | Config |
+| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') [ArrayElement] | provenance |  |
 | tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] | provenance |  |
 | tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] | provenance | Config |
+| tst.js:424:18:424:48 | window. ... it('#') [ArrayElement] | tst.js:424:18:424:51 | window. ... '#')[1] | provenance |  |
+| tst.js:424:18:424:48 | window. ... it('#') [ArrayElement] | tst.js:424:18:424:51 | window. ... '#')[1] | provenance | Config |
 | tst.js:428:7:428:39 | target | tst.js:430:18:430:23 | target | provenance |  |
 | tst.js:428:16:428:39 | documen ... .search | tst.js:428:7:428:39 | target | provenance |  |
 | tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') | provenance |  |
@@ -1184,12 +1201,16 @@ edges
 | various-concat-obfuscations.js:4:14:4:20 | tainted | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | provenance | Config |
 | various-concat-obfuscations.js:5:12:5:18 | tainted | various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` | provenance | Config |
 | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | provenance |  |
+| various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | provenance |  |
+| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | provenance |  |
 | various-concat-obfuscations.js:6:19:6:25 | tainted | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | provenance | Config |
 | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() | provenance |  |
 | various-concat-obfuscations.js:7:14:7:20 | tainted | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | provenance | Config |
 | various-concat-obfuscations.js:9:19:9:25 | tainted | various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" | provenance | Config |
 | various-concat-obfuscations.js:10:16:10:22 | tainted | various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` | provenance | Config |
 | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | provenance |  |
+| various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | provenance |  |
+| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | provenance |  |
 | various-concat-obfuscations.js:11:24:11:30 | tainted | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | provenance | Config |
 | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() | provenance |  |
 | various-concat-obfuscations.js:12:19:12:25 | tainted | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | provenance | Config |
@@ -1202,7 +1223,9 @@ edges
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | provenance |  |
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
+| various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
+| various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | various-concat-obfuscations.js:18:32:18:48 | attrs.defaultattr | provenance |  |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | various-concat-obfuscations.js:18:32:18:48 | attrs.defaultattr | provenance | Config |
 | various-concat-obfuscations.js:18:32:18:48 | attrs.defaultattr | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | provenance |  |
@@ -1211,10 +1234,12 @@ edges
 | various-concat-obfuscations.js:20:17:20:40 | documen ... .search | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | provenance | Config |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | provenance |  |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) | provenance | Config |
+| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | provenance |  |
 | various-concat-obfuscations.js:21:17:21:40 | documen ... .search | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | provenance |  |
 | various-concat-obfuscations.js:21:17:21:40 | documen ... .search | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | provenance | Config |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | provenance |  |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | provenance | Config |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | provenance | Config |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted | provenance |  |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted | provenance |  |
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) | provenance |  |
@@ -1232,6 +1257,7 @@ subpaths
 | tst.js:58:26:58:30 | bar() | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:58:21:58:31 | chop(bar()) |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] |
 #select
 | addEventListener.js:2:20:2:29 | event.data | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:29 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:1:43:1:47 | event | user-provided value |
 | addEventListener.js:6:20:6:23 | data | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:6:20:6:23 | data | Cross-site scripting vulnerability due to $@. | addEventListener.js:5:43:5:48 | {data} | user-provided value |
@@ -1356,6 +1382,7 @@ subpaths
 | string-manipulations.js:8:16:8:48 | documen ... mLeft() | string-manipulations.js:8:16:8:37 | documen ... on.href | string-manipulations.js:8:16:8:48 | documen ... mLeft() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:8:16:8:37 | documen ... on.href | user-provided value |
 | string-manipulations.js:9:16:9:58 | String. ... n.href) | string-manipulations.js:9:36:9:57 | documen ... on.href | string-manipulations.js:9:16:9:58 | String. ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:9:36:9:57 | documen ... on.href | user-provided value |
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:44 | documen ... on.href | user-provided value |
+| tainted-url-suffix-arguments.js:6:22:6:22 | y | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | tainted-url-suffix-arguments.js:6:22:6:22 | y | Cross-site scripting vulnerability due to $@. | tainted-url-suffix-arguments.js:11:17:11:36 | window.location.href | user-provided value |
 | tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:18:51:18:59 | provide() | tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:18:51:18:59 | provide() | Cross-site scripting vulnerability due to $@. | tooltip.jsx:22:20:22:30 | window.name | user-provided value |

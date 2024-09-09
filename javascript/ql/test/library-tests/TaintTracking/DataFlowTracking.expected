@@ -1,6 +1,8 @@
 legacyDataFlowDifference
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] | only flow with NEW data flow library |
 | bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y | only flow with OLD data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) | only flow with NEW data flow library |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) | only flow with NEW data flow library |
 | call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) | only flow with NEW data flow library |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
@@ -22,8 +24,11 @@ legacyDataFlowDifference
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
 | nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y | only flow with NEW data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary | only flow with NEW data flow library |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
@@ -177,9 +182,12 @@ flow
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:102:10:102:10 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |

@@ -14,7 +14,6 @@ edges
 | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] [1] | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | provenance |  |
-| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] [1] | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } [y, z] | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } [z] | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } [y, z] | provenance |  |

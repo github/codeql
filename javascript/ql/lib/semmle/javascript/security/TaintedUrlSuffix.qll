@@ -54,7 +54,7 @@ module TaintedUrlSuffix {
     // Inherit all ordinary taint steps except `x -> x.p` steps
     srclbl = label() and
     dstlbl = label() and
-    TaintTracking::sharedTaintStep(src, dst) and
+    TaintTracking::AdditionalTaintStep::step(src, dst) and
     not isSafeLocationProp(dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.

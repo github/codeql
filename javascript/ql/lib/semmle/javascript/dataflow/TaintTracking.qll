@@ -260,6 +260,14 @@ module TaintTracking {
     )
   }
 
+  private class HeapLegacyTaintStep extends LegacyTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      // arrays with tainted elements are tainted (in old data flow)
+      succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and
+      not any(PromiseAllCreation call).getArrayNode() = succ
+    }
+  }
+
   /**
    * A taint propagating data flow edge through object or array elements and
    * promises.
@@ -273,10 +281,6 @@ module TaintTracking {
       or
       // spreading a tainted value into an array literal gives a tainted array
       succ.(DataFlow::ArrayCreationNode).getASpreadArgument() = pred
-      or
-      // arrays with tainted elements and objects with tainted property names are tainted
-      succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and
-      not any(PromiseAllCreation call).getArrayNode() = succ
       or
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and

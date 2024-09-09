@@ -274,6 +274,7 @@ flow
 | flow.js:136:15:136:22 | "source" | flow.js:142:7:142:19 | await async() |
 | flow.js:136:15:136:22 | "source" | flow.js:155:9:155:9 | e |
 exclusiveTaintFlow
+| flow2.js:2:15:2:22 | "source" | flow2.js:5:8:5:10 | arr |
 | flow.js:136:15:136:22 | "source" | flow.js:141:7:141:13 | async() |
 | flow.js:160:15:160:22 | "source" | flow.js:164:39:164:39 | x |
 | flow.js:160:15:160:22 | "source" | flow.js:167:7:167:9 | foo |
@@ -466,3 +467,4 @@ typetrack
 valueFlowDifference
 | flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 | only flow with NEW data flow library |
 taintFlowDifference
+| flow2.js:2:15:2:22 | "source" | flow2.js:5:8:5:10 | arr | only flow with NEW data flow library |

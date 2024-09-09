@@ -1,7 +1,7 @@
 /**
- * Contains a summary for relevant methods on arrays, except Array.prototype.join which is currently special-cased in StringConcatenation.qll.
+ * Contains a summary for relevant methods on arrays.
  *
- * Note that some of Array methods are modelled in `AmbiguousCoreMethods.qll`, and `join` and `toString` are special-cased elsewhere.
+ * Note that some of Array methods are modelled in `AmbiguousCoreMethods.qll`, and `toString` is special-cased elsewhere.
  */
 
 private import javascript
@@ -101,17 +101,31 @@ class ArrayConstructorSummary extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = true and
-    (
-      input = "Argument[0..]" and
-      output = "ReturnValue.ArrayElement"
-      or
-      input = "Argument[arguments-array].WithArrayElement" and
-      output = "ReturnValue"
-    )
+    input = "Argument[0..]" and
+    output = "ReturnValue.ArrayElement"
     or
-    // TODO: workaround for WithArrayElement not being converted to a taint step
     preservesValue = false and
-    input = "Argument[arguments-array]" and
+    input = "Argument[0..]" and
+    output = "ReturnValue"
+  }
+}
+
+/**
+ * A call to `join` with a separator argument.
+ *
+ * Calls without separators are modelled in `StringConcatenation.qll`.
+ */
+class Join extends SummarizedCallable {
+  Join() { this = "Array#join" }
+
+  override InstanceCall getACallSimple() {
+    result.getMethodName() = "join" and
+    result.getNumArgument() = [0, 1]
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    input = "Argument[this].ArrayElement" and
     output = "ReturnValue"
   }
 }
@@ -417,8 +431,7 @@ class PushLike extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = true and
-    // TODO: make it so `arguments-array` is handled without needing to reference it explicitly in every flow-summary
-    input = ["Argument[0..]", "Argument[arguments-array].ArrayElement"] and
+    input = "Argument[0..]" and
     output = "Argument[this].ArrayElement"
   }
 }

@@ -35,8 +35,6 @@ private predicate positionName(ParameterPosition pos, string operand) {
   or
   pos.isFunctionSelfReference() and operand = "function"
   or
-  pos.isArgumentsArray() and operand = "arguments-array"
-  or
   operand = pos.asPositionalLowerBound() + ".."
 }
 

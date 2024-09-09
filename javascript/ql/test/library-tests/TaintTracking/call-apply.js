@@ -30,7 +30,7 @@ sink(foo1.call(null, source, "")); // NOT OK
 sink(foo2.call(null, source, "")); // OK
 
 sink(foo1.apply(null, [source, ""])); // NOT OK
-sink(foo2.apply(null, [source, ""])); // OK [INCONSISTENCY]
+sink(foo2.apply(null, [source, ""])); // OK
 sink(foo1_apply([source, ""])); // NOT OK
 
 foo1_apply_sink([source, ""]); // This works, because we don't need a return after a call (the sink is inside the called function).
@@ -38,7 +38,7 @@ foo1_apply_sink([source, ""]); // This works, because we don't need a return aft
 sink(foo1_apply.apply(["", source])); // OK
 
 sink(foo1_call([source, ""])); // NOT OK
-sink(foo1_call(["", source])); // OK [INCONSISTENCY]
+sink(foo1_call(["", source])); // OK
 
 
 var obj = {
@@ -56,7 +56,7 @@ sink(foo(obj)); // NOT OK
 
 function argumentsObject() {
   function sinkArguments1() {
-    sink(arguments[1]); // OK [INCONSISTENCY]
+    sink(arguments[1]); // OK
   }
   function sinkArguments0() {
     sink(arguments[0]); // NOT OK

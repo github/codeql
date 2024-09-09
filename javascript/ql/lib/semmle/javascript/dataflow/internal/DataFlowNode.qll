@@ -15,6 +15,12 @@ private import semmle.javascript.dataflow.internal.VariableCapture as VariableCa
 
 cached
 private module Cached {
+  private Content dynamicArgumentsContent() {
+    result.asArrayIndex() = [0 .. 10]
+    or
+    result.isUnknownArrayElement()
+  }
+
   /**
    * The raw data type underlying `DataFlow::Node`.
    */
@@ -33,6 +39,25 @@ private module Cached {
     } or
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TFunctionSelfReferenceNode(Function f) or
+    TStaticArgumentArrayNode(InvokeExpr node) or
+    TDynamicArgumentArrayNode(InvokeExpr node) { node.isSpreadArgument(_) } or
+    TStaticParameterArrayNode(Function f) {
+      f.getAParameter().isRestParameter() or f.usesArgumentsObject()
+    } or
+    TDynamicParameterArrayNode(Function f) or
+    /** Data about to be stored in the rest parameter object. Needed for shifting array indices. */
+    TRestParameterStoreNode(Function f, Content storeContent) {
+      f.getRestParameter().getIndex() > 0 and
+      storeContent = dynamicArgumentsContent()
+    } or
+    /** Data about to be stored in the dynamic argument array of an invocation. Needed for shifting array indices. */
+    TDynamicArgumentStoreNode(InvokeExpr invoke, Content storeContent) {
+      invoke.isSpreadArgument(_) and
+      storeContent = dynamicArgumentsContent()
+    } or
+    TApplyCallTaintNode(MethodCallExpr node) {
+      node.getMethodName() = "apply" and exists(node.getArgument(1))
+    } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
@@ -43,7 +68,7 @@ private module Cached {
     TExceptionalInvocationReturnNode(InvokeExpr e) or
     TGlobalAccessPathRoot() or
     TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
-    TReflectiveParametersNode(Function f) or
+    TReflectiveParametersNode(Function f) { f.usesArgumentsObject() } or
     TExprPostUpdateNode(AST::ValueNode e) {
       e = any(InvokeExpr invoke).getAnArgument() or
       e = any(PropAccess access).getBase() or
@@ -58,6 +83,7 @@ private module Cached {
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
     TConstructorThisPostUpdate(Constructor ctor) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFlowSummaryDynamicParameterArrayNode(FlowSummaryImpl::Public::SummarizedCallable callable) or
     TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
       // NOTE: This dependency goes through the 'Steps' module whose instantiation depends on the call graph,
       //       but the specific predicate we're referering to does not use that information.
@@ -96,7 +122,8 @@ private class TEarlyStageNode =
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or
-      TExprPostUpdateNode or TConstructorThisArgumentNode;
+      TExprPostUpdateNode or TConstructorThisArgumentNode or TStaticArgumentArrayNode or
+      TDynamicArgumentArrayNode or TStaticParameterArrayNode or TDynamicParameterArrayNode;
 
 /**
  * A data-flow node that is not a flow summary node.
