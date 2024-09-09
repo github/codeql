@@ -223,17 +223,22 @@ class ApplyCallTaintNode extends DataFlow::Node, TApplyCallTaintNode {
  * An argument that is passed to the given parameter at the implied lambda call site.
  */
 class ImplicitArgumentNode extends DataFlow::Node, TImplicitArgumentNode {
-  private Parameter parameter;
+  private Function function;
+  private ArgumentPosition pos;
 
-  ImplicitArgumentNode() { this = TImplicitArgumentNode(parameter) }
+  ImplicitArgumentNode() { this = TImplicitArgumentNode(function, pos) }
 
-  Function getFunction() { result.getAParameter() = parameter }
+  Function getFunction() { result = function }
+
+  ArgumentPosition getArgumentPosition() { result = pos }
 
   override StmtContainer getContainer() { result = this.getFunction().getEnclosingContainer() }
 
-  override string toString() { result = "[implicit argument] " + parameter.toString() }
+  override string toString() {
+    result = "[implicit argument] " + pos + " to " + function.describe()
+  }
 
-  override Location getLocation() { result = parameter.getLocation() }
+  override Location getLocation() { result = function.getLocation() }
 }
 
 cached
@@ -432,7 +437,7 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   pos.isFunctionSelfReference() and n = call.asImpliedLambdaCall().flow()
   or
-  n = TImplicitArgumentNode(call.asImpliedLambdaCall().getParameter(pos.asPositional())) // TODO: rest parameters
+  n = TImplicitArgumentNode(call.asImpliedLambdaCall(), pos)
   or
   exists(Function fun |
     call.asImpliedLambdaCall() = fun and
@@ -1213,18 +1218,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   )
   or
-  exists(DataFlow::FunctionNode function, int n |
-    node1 = TFunctionSelfReferenceNode(function.getFunction()) and
-    node2 = function.getParameter(n) and
-    c.asSingleton() = MkArgumentContent(n)
-  )
-  or
-  exists(Function function, Parameter param, int n |
+  exists(Function function, ArgumentPosition pos |
     // TODO: check same container
+    // TODO: do not generate for capture-related post-update nodes
     node1.(PostUpdateNode).getPreUpdateNode().getALocalSource() = TValueNode(function) and
-    param = function.getParameter(n) and
-    node2 = TImplicitArgumentNode(param) and
-    c.asSingleton() = MkArgumentContent(n)
+    node2 = TImplicitArgumentNode(function, pos) and
+    c.asSingleton() = MkArgumentContent(pos)
   )
 }
 
@@ -1310,10 +1309,11 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElementUnknown()
   )
   or
-  exists(ContinuationCall call, int n |
-    node1 = call.getArgument(n) and
+  exists(ContinuationCall call, ArgumentPosition pos |
+    isArgumentNodeImpl(node1, MkOrdinaryCall(call), pos) and
+    not node1 instanceof TImplicitArgumentNode and
     node2 = call.getCalleeNode().getPostUpdateNode() and
-    c.asSingleton() = MkArgumentContent(n)
+    c.asSingleton() = MkArgumentContent(pos)
   )
 }
 

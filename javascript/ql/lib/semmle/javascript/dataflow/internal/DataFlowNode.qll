@@ -58,7 +58,15 @@ private module Cached {
     TApplyCallTaintNode(MethodCallExpr node) {
       node.getMethodName() = "apply" and exists(node.getArgument(1))
     } or
-    TImplicitArgumentNode(Parameter p) { p = any(Function f).getAParameter() } or
+    TImplicitArgumentNode(Function f, DataFlowPrivate::ArgumentPosition pos) {
+      pos.asPositional() <= f.getNumParameter()
+      or
+      pos.isThis()
+      or
+      pos.isDynamicArgumentArray()
+      or
+      pos.isStaticArgumentArray()
+    } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
