@@ -17,6 +17,7 @@ class UndefinedFunction extends ThrowingFunction {
     exists(Stmt t, Call c |
       t.(TryStmt).getStmt().getAChild*() = c or
       t.(MicrosoftTryStmt).getStmt().getAChild*() = c
+    |
       this = c.getTarget() and
       not this.hasDefinition() and
       // Ideally do not mark any function as an UndefinedFunction if it is
