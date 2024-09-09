@@ -3250,6 +3250,18 @@ ir.c:
 #   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
 #   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
 
+#   80| void raise_access_violation()
+#   80|   Block 0
+#   80|     v80_1(void)           = EnterFunction                           : 
+#   80|     m80_2(unknown)        = AliasedDefinition                       : 
+#   80|     m80_3(unknown)        = InitializeNonLocal                      : 
+#   80|     m80_4(unknown)        = Chi                                     : total:m80_2, partial:m80_3
+#   81|     r81_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   81|     r81_2(int)            = Constant[1]                             : 
+#   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
+#   81|     m81_4(unknown)        = ^CallSideEffect                         : ~m80_4
+#   81|     m81_5(unknown)        = Chi                                     : total:m80_4, partial:m81_4
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
