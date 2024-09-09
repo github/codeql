@@ -141,9 +141,9 @@ OLD: KE1
         val globalExtensionState = KotlinExtractorGlobalState()
 */
         doAnalysis(compression, trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
+        loggerBase.printLimitedDiagnosticCounts(dtw)
 /*
 OLD: KE1
-        loggerBase.printLimitedDiagnosticCounts(tw)
         logPeakMemoryUsage(logger, "after extractor")
 */
         logger.info("Extraction completed")
