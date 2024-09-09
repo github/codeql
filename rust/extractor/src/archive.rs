@@ -1,5 +1,4 @@
 use crate::path;
-use anyhow;
 use log::{debug, warn};
 use std::fs;
 use std::path::{Path, PathBuf};

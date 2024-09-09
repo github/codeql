@@ -2,12 +2,10 @@ use crate::config::Compression;
 use crate::generated;
 use crate::{config, path};
 use codeql_extractor::trap;
-use log::{debug, trace};
+use log::{debug};
 use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
-use std::fmt::{Debug, Display, Formatter};
-use std::fs::File;
-use std::io::Write;
+use std::fmt::{Debug};
 use std::path::{Path, PathBuf};
 
 //TODO: typed labels

@@ -1,18 +1,15 @@
 use crate::archive::Archiver;
 use crate::trap::{AsTrapKeyPart, TrapFile, TrapId};
 use crate::{generated, trap_key};
-use anyhow;
 use codeql_extractor::trap;
 use ra_ap_hir::HasSource;
 use ra_ap_hir::{Crate, Module, ModuleDef};
 use ra_ap_ide_db::line_index::LineIndex;
 use ra_ap_ide_db::{LineIndexDatabase, RootDatabase};
-use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::AstNode;
-use ra_ap_vfs::{AbsPath, FileId, Vfs};
+use ra_ap_vfs::{FileId, Vfs};
 use std::collections::HashMap;
 use std::fs;
-use std::io::Result;
 use std::path::PathBuf;
 use triomphe::Arc;
 
@@ -75,11 +72,11 @@ impl CrateTranslator<'_> {
             .source(self.db)
             .and_then(|source| source.file_id.file_id().map(|f| (f.file_id(), source)))
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
-            .and_then(|(data, source)| {
+            .map(|(data, source)| {
                 let range = source.value.syntax().text_range();
                 let start = data.line_index.line_col(range.start());
                 let end = data.line_index.line_col(range.end());
-                Some(self.trap.emit_location(data.label, start, end))
+                self.trap.emit_location(data.label, start, end)
             })
     }
 
@@ -94,10 +91,15 @@ impl CrateTranslator<'_> {
             ModuleDef::Function(function) => {
                 let name = function.name(self.db);
                 let location = self.emit_location(function);
+                let body = self.trap.emit(generated::MissingExpr {
+                    id: TrapId::Star,
+                    location: None,
+                });
                 labels.push(self.trap.emit(generated::Function {
                     id: trap_key![module_label, name.as_str()],
                     location,
                     name: name.as_str().into(),
+                    body,
                 }));
             }
             ModuleDef::Adt(_) => {}

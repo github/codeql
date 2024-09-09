@@ -1,16 +1,11 @@
 use crate::trap::TrapId;
 use anyhow::Context;
-use log;
 use ra_ap_hir::db::DefDatabase;
-use ra_ap_hir::sym::ge;
-use ra_ap_hir::AdtId::{EnumId, StructId, UnionId};
-use ra_ap_hir::{Crate, ModuleDefId};
+use ra_ap_hir::{Crate};
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_project_model::CargoConfig;
 use ra_ap_project_model::RustLibSource;
-use ra_ap_vfs::AbsPathBuf;
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 
 mod archive;
 mod config;
