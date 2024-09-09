@@ -513,7 +513,7 @@ OLD: KE1
         // so start off with a PlainTrapWriter
         val tw =
             PlainTrapWriter(
-                loggerBase,
+                logger,
                 TrapLabelManager(),
                 trapFileBW,
                 fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
