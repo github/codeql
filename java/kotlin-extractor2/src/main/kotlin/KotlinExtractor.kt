@@ -200,10 +200,6 @@ fun doAnalysis(
     val checkTrapIdentical = false // TODO
 
     val psiFiles = session.modulesWithFiles.getValue(sourceModule)
-/*
-OLD: KE1
-            moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
-*/
     var fileNumber = 0
     val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
     for (psiFile in psiFiles) {
