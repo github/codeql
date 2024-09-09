@@ -57,6 +57,11 @@ keywords = {
     "try",
 }
 
+
+def avoid_keywords(s: str) -> str:
+    return s + "_" if s in keywords else s
+
+
 _field_overrides = [
     (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]
@@ -82,8 +87,7 @@ class Field:
     first: bool = False
 
     def __post_init__(self):
-        if self.field_name in keywords:
-            self.field_name += "_"
+        self.field_name = avoid_keywords(self.field_name)
 
     @property
     def type(self) -> str:

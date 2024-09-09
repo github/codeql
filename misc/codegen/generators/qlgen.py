@@ -287,7 +287,7 @@ def _is_under_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[
         _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases)
 
 
-def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
         cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierarchy(
         cls, lookup)
@@ -413,7 +413,7 @@ def generate(opts, renderer):
 
         if test_out:
             for c in data.classes.values():
-                if _should_skip_qltest(c, data.classes):
+                if should_skip_qltest(c, data.classes):
                     continue
                 test_with = data.classes[c.test_with] if c.test_with else c
                 test_dir = test_out / test_with.group / test_with.name

@@ -98,6 +98,18 @@ class TypeRef(AstNode):
 
 
 class Function(Declaration):
+    """
+    A function declaration. For example
+    ```
+    fn foo(x: u32) -> u64 { (x + 1).into() }
+    ```
+    A function declaration within a trait might not have a body:
+    ```
+    trait Trait {
+        fn bar();
+    }
+    ```
+    """
     name: string
     body: Expr
 
