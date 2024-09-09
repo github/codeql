@@ -159,11 +159,7 @@ _Pragma("cpp_skip")
 
 _Pragma("rust_skip_doc_test")
 
-rust.doc_test_function = lambda name, *, lifetimes=(), return_type="()", **kwargs: _annotate(
-    rust_doc_test_function=_schema.FunctionInfo(name,
-                                                params={f"'{lifetime}": "" for lifetime in lifetimes} | kwargs,
-                                                return_type=return_type)
-)
+rust.doc_test_signature = lambda signature: _annotate(rust_doc_test_function=signature)
 
 
 def group(name: str = "") -> _ClassDecorator:

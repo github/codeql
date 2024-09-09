@@ -203,10 +203,3 @@ def split_doc(doc):
     while trimmed and not trimmed[0]:
         trimmed.pop(0)
     return trimmed
-
-
-@dataclass
-class FunctionInfo:
-    name: str
-    params: dict[str, str]
-    return_type: str

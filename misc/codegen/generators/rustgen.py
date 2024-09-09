@@ -36,7 +36,7 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
         else:
             table_name = inflection.tableize(table_name)
     args = dict(
-        field_name=p.name + ("_" if p.name in rust.keywords else ""),
+        field_name=rust.avoid_keywords(p.name),
         base_type=_get_type(p.type),
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,
