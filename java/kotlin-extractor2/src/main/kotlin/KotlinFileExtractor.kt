@@ -5847,6 +5847,7 @@ OLD: KE1
     ) {
         extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
     }
+*/
 
     private fun extractExprContext(
         id: Label<out DbExpr>,
@@ -5859,6 +5860,8 @@ OLD: KE1
         enclosingStmt?.let { tw.writeStatementEnclosingExpr(id, it) }
     }
 
+/*
+OLD: KE1
     private fun extractEqualsExpression(
         locId: Label<DbLocation>,
         parent: Label<out DbExprparent>,
@@ -5909,10 +5912,7 @@ OLD: KE1
             tw.writeExprs_integerliteral(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
             tw.writeNamestrings(text, v.toString(), it)
-/*
-OLD: KE1
             extractExprContext(it, locId, callable, enclosingStmt)
-*/
         }
 
 /*
