@@ -1,12 +1,21 @@
 def get_cert():
     return "<CERT>"
 
+def get_password():
+    return "password"
 
 def write_cert(filename):
     cert = get_cert()
     with open(filename, "w") as file:
-        file.write(cert) # NOT OK
+        file.write(cert) # OK
         lines = [cert + "\n"]
+        file.writelines(lines) # OK
+
+def write_password(filename):
+    password = get_password()
+    with open(filename, "w") as file:
+        file.write(password) # NOT OK
+        lines = [password + "\n"]
         file.writelines(lines) # NOT OK
 
 def FPs():

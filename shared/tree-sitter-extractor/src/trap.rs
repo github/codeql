@@ -7,6 +7,7 @@ use flate2::write::GzEncoder;
 
 #[derive(Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct Location {
+    pub file_label: Label,
     pub start_line: usize,
     pub start_column: usize,
     pub end_line: usize,
@@ -136,7 +137,7 @@ impl fmt::Display for Entry {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd)]
 // Identifiers of the form #0, #1...
 pub struct Label(u32);
 
