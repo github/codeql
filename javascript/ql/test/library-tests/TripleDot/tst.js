@@ -172,3 +172,26 @@ function t16() {
     sink(array[2]); // $ MISSING: hasValueFlow=t16.1 SPURIOUS: hasTaintFlow=t16.1
     sink(array); // $ hasTaintFlow=t16.1
 }
+
+function t17() {
+    function foo(param, callback) {
+        sink(param); // $ hasValueFlow=t17.1 hasValueFlow=t17.2
+        callback(...[param]);
+        return param;
+    }
+
+    let ret1 = foo(source('t17.1'), p => {
+        sink(p); // $ hasValueFlow=t17.1
+    });
+    sink(ret1); // $ hasValueFlow=t17.1
+
+    let ret2 = foo(source('t17.2'), p => {
+        sink(p); // $ hasValueFlow=t17.2
+    });
+    sink(ret2); // $ hasValueFlow=t17.2
+
+    let ret3 = foo('safe', p => {
+        sink(p);
+    });
+    sink(ret3);
+}
