@@ -107,13 +107,22 @@ data class ExtractorContext(
 )
 */
 
+interface BasicLogger {
+    abstract fun trace(dtw: DiagnosticTrapWriter, msg: String)
+    abstract fun debug(dtw: DiagnosticTrapWriter, msg: String)
+    abstract fun info(dtw: DiagnosticTrapWriter, msg: String)
+    abstract fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?)
+    abstract fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?)
+    abstract fun flush()
+}
+
 /**
  * LoggerBase actually writes log messages to a log file, and to
  * the DiagnosticTrapWriter that it is passed.
  * It is only usde directly from the DiagnosticTrapWriter. Everything
  * else will use a Logger that wraps it (and the DiagnosticTrapWriter).
  */
-open class LoggerBase(val diagnosticCounter: DiagnosticCounter) {
+class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
     private val verbosity: Int
 
     init {
@@ -241,7 +250,7 @@ OLD: KE1
         logStream.write(logMessage.toJsonLine())
     }
 
-    fun trace(dtw: DiagnosticTrapWriter, msg: String) {
+    override fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("TRACE", msg)
             dtw.writeComment(logMessage.toText())
@@ -249,7 +258,7 @@ OLD: KE1
         }
     }
 
-    fun debug(dtw: DiagnosticTrapWriter, msg: String) {
+    override fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
             dtw.writeComment(logMessage.toText())
@@ -257,7 +266,7 @@ OLD: KE1
         }
     }
 
-    fun info(dtw: DiagnosticTrapWriter, msg: String) {
+    override fun info(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 3) {
             val logMessage = LogMessage("INFO", msg)
             dtw.writeComment(logMessage.toText())
@@ -265,13 +274,13 @@ OLD: KE1
         }
     }
 
-    fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+    override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 2) {
             diagnostic(dtw, Severity.Warn, msg, extraInfo)
         }
     }
 
-    fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+    override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 1) {
             diagnostic(dtw, Severity.Error, msg, extraInfo)
         }
@@ -294,7 +303,7 @@ OLD: KE1
     }
 */
 
-    fun flush() {
+    override fun flush() {
         logStream.flush()
     }
 
@@ -306,35 +315,51 @@ OLD: KE1
 /**
  * Logger is the high-level interface for writint log messages.
  */
-open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
+open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): BasicLogger {
 /*
 OLD: KE1
     val extractorContextStack = Stack<ExtractorContext>()
 */
 
-    fun flush() {
+    override fun flush() {
         dtw.flush()
         loggerBase.flush()
     }
 
-    fun trace(msg: String) {
+    override fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         loggerBase.trace(dtw, msg)
+    }
+
+    fun trace(msg: String) {
+        trace(dtw, msg)
     }
 
     fun trace(msg: String, exn: Throwable) {
         trace(msg + "\n" + exn.stackTraceToString())
     }
 
-    fun debug(msg: String) {
+    override fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         loggerBase.debug(dtw, msg)
     }
 
-    fun info(msg: String) {
+    fun debug(msg: String) {
+        debug(dtw, msg)
+    }
+
+    override fun info(dtw: DiagnosticTrapWriter, msg: String) {
         loggerBase.info(dtw, msg)
     }
 
-    private fun warn(msg: String, extraInfo: String?) {
+    fun info(msg: String) {
+        info(dtw, msg)
+    }
+
+    override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         loggerBase.warn(dtw, msg, extraInfo)
+    }
+
+    private fun warn(msg: String, extraInfo: String?) {
+        warn(dtw, msg, extraInfo)
     }
 
     fun warn(msg: String, exn: Throwable) {
@@ -345,8 +370,12 @@ OLD: KE1
         warn(msg, null)
     }
 
-    private fun error(msg: String, extraInfo: String?) {
+    override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo)
+    }
+
+    private fun error(msg: String, extraInfo: String?) {
+        error(dtw, msg, extraInfo)
     }
 
     fun error(msg: String) {
