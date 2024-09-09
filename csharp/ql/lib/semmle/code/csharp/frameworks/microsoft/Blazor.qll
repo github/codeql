@@ -3,6 +3,7 @@
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /** The `Microsoft.AspNetCore.Components` namespace. */
 class MicrosoftAspNetCoreComponentsNamespace extends Namespace {
@@ -240,29 +241,13 @@ private class InputBaseValuePropertyJumpNode extends DataFlow::NonLocalJumpNode 
   }
 }
 
-// TODO: why doesn't the below summary work?
-// - ["Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder", False, "AddComponentParameter", "(System.Int32,System.String,System.Object)", "", "Argument[2]", "Argument[1]", "taint", "manual"]
-private class ComponentPropertyAssignmentJumpNodePart1 extends DataFlow::NonLocalJumpNode {
-  MethodCall mc;
-
-  ComponentPropertyAssignmentJumpNodePart1() {
-    any(Component c).hasAddComponentParameter(mc, _, _, this.asExpr())
-    // and this.asExpr() = mc.getArgument(2) // The above line enforces this already. Leaving this here for easier readability.
-  }
-
-  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
-    preservesValue = false and
-    result.asExpr() = mc.getArgument(1)
-  }
-}
-
-private class ComponentPropertyAssignmentJumpNodePart2 extends DataFlow::NonLocalJumpNode {
+private class ComponentPropertyAssignmentJumpNode extends DataFlow::NonLocalJumpNode {
   Property p;
   MethodCall mc;
 
-  ComponentPropertyAssignmentJumpNodePart2() {
+  ComponentPropertyAssignmentJumpNode() {
     any(Component c).hasAddComponentParameter(mc, _, p, _) and
-    this.asExpr() = mc.getArgument(1)
+    this.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() = mc.getArgument(1)
   }
 
   override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
