@@ -69,7 +69,7 @@ OLD: KE1
  * they must all share the same `TrapLabelManager` and `BufferedWriter`.
  */
 abstract class TrapWriter(
-    protected val loggerBase: LoggerBase,
+    protected val basicLogger: BasicLogger,
     val lm: TrapLabelManager,
     private val bw: BufferedWriter
 ) {
@@ -235,7 +235,7 @@ OLD: KE1
         val len = str.length
         val newLen = UTF8Util.encodablePrefixLength(str, MAX_STRLEN)
         if (newLen < len) {
-            loggerBase.warn(
+            basicLogger.warn(
                 this.getDiagnosticTrapWriter(),
                 "Truncated string of length $len",
                 "Truncated string of length $len, starting '${str.take(100)}', ending '${str.takeLast(100)}'"
@@ -254,7 +254,7 @@ OLD: KE1
      */
     fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
         FileTrapWriter(
-            loggerBase,
+            basicLogger,
             lm,
             bw,
             this.getDiagnosticTrapWriter(),
@@ -269,7 +269,7 @@ OLD: KE1
 */
     fun makeSourceFileTrapWriter(file: KtFile, populateFileTables: Boolean) =
         SourceFileTrapWriter(
-            loggerBase,
+            basicLogger,
             lm,
             bw,
             this.getDiagnosticTrapWriter(),
@@ -280,11 +280,11 @@ OLD: KE1
 
 /** A `PlainTrapWriter` has no additional context of its own. */
 class PlainTrapWriter(
-    loggerBase: LoggerBase,
+    basicLogger: BasicLogger,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val dtw: DiagnosticTrapWriter
-) : TrapWriter(loggerBase, lm, bw) {
+) : TrapWriter(basicLogger, lm, bw) {
     override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
         return dtw
     }
@@ -295,8 +295,8 @@ class PlainTrapWriter(
  * the #compilation label defined. In practice, this means that it is a TrapWriter for the
  * invocation TRAP file.
  */
-class DiagnosticTrapWriter(loggerBase: LoggerBase, lm: TrapLabelManager, bw: BufferedWriter) :
-    TrapWriter(loggerBase, lm, bw) {
+class DiagnosticTrapWriter(basicLogger: BasicLogger, lm: TrapLabelManager, bw: BufferedWriter) :
+    TrapWriter(basicLogger, lm, bw) {
     override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
         return this
     }
@@ -313,13 +313,13 @@ OLD: KE1
  */
 */
 open class FileTrapWriter(
-    loggerBase: LoggerBase,
+    basicLogger: BasicLogger,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     val dtw: DiagnosticTrapWriter,
     val filePath: String,
     populateFileTables: Boolean
-) : TrapWriter(loggerBase, lm, bw) {
+) : TrapWriter(basicLogger, lm, bw) {
 
     /** The ID for the file that we are extracting from. */
     val fileId = mkFileId(filePath, populateFileTables)
@@ -442,13 +442,13 @@ OLD: KE1
  */
 */
 class SourceFileTrapWriter(
-    loggerBase: LoggerBase,
+    basicLogger: BasicLogger,
     lm: TrapLabelManager,
     bw: BufferedWriter,
     dtw: DiagnosticTrapWriter,
     val ktFile: KtFile,
     populateFileTables: Boolean
-) : FileTrapWriter(loggerBase, lm, bw, dtw, ktFile.virtualFilePath, populateFileTables) {
+) : FileTrapWriter(basicLogger, lm, bw, dtw, ktFile.virtualFilePath, populateFileTables) {
 /*
 OLD: KE1
     /**
@@ -460,7 +460,7 @@ OLD: KE1
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
             if (startOffset != endOffset) {
-                loggerBase.warn(
+                basicLogger.warn(
                     dtw,
                     "Location with inconsistent offsets (start $startOffset, end $endOffset)",
                     null
@@ -471,7 +471,7 @@ OLD: KE1
 
         if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
             if (startOffset != endOffset) {
-                loggerBase.warn(
+                basicLogger.warn(
                     dtw,
                     "Location with inconsistent offsets (start $startOffset, end $endOffset)",
                     null
@@ -496,7 +496,7 @@ OLD: KE1
     override fun getLocationString(e: IrElement): String {
         if (e.startOffset == UNDEFINED_OFFSET || e.endOffset == UNDEFINED_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                loggerBase.warn(
+                basicLogger.warn(
                     dtw,
                     "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
                     null
@@ -507,7 +507,7 @@ OLD: KE1
 
         if (e.startOffset == SYNTHETIC_OFFSET || e.endOffset == SYNTHETIC_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                loggerBase.warn(
+                basicLogger.warn(
                     dtw,
                     "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
                     null
