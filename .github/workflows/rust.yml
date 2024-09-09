@@ -28,6 +28,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Format
+        working-directory: rust/extractor
+        shell: bash
+        run: |
+          cargo fmt --check
       - name: Compilation
         working-directory: rust/extractor
         shell: bash
@@ -38,15 +43,9 @@ jobs:
         run: |
           cargo clippy --fix
           git diff --exit-code
-      - name: Format
-        working-directory: rust/extractor
-        shell: bash
-        run: |
-          cargo fmt --check
       - name: Code generation
-        working-directory: rust/extractor
         shell: bash
         run: |
-          bazel run codegen
+          bazel run //rust/codegen
           git add .
           git diff --exit-code HEAD
