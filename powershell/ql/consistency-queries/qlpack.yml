@@ -1,0 +1,9 @@
+name: codeql/powershell-consistency-queries
+groups: 
+  - powershell
+  - microsoft-all
+  - test
+  - consistency-queries
+dependencies:
+  microsoft-sdl/powershell-all: ${workspace}
+warnOnImplicitThis: true
