@@ -165,7 +165,7 @@ OLD: KE1
         severity: Severity,
         msg: String,
         extraInfo: String?,
-        extractorContextStack: Stack<ExtractorContext>?,
+        loggerState: LoggerState?,
         locationString: String? = null,
         mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }
     ) {
@@ -193,7 +193,8 @@ OLD: KE1
             fullMsgBuilder.append(extraInfo)
         }
 
-        if (extractorContextStack != null) {
+        if (loggerState != null) {
+            val extractorContextStack = loggerState.extractorContextStack
             val iter = extractorContextStack.listIterator(extractorContextStack.size)
             while (iter.hasPrevious()) {
                 val x = iter.previous()
@@ -272,9 +273,9 @@ OLD: KE1
         warn(dtw, msg, extraInfo, null)
     }
 
-    fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, extractorContextStack: Stack<ExtractorContext>?) {
+    fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, loggerState: LoggerState?) {
         if (verbosity >= 2) {
-            diagnostic(dtw, Severity.Warn, msg, extraInfo, extractorContextStack)
+            diagnostic(dtw, Severity.Warn, msg, extraInfo, loggerState)
         }
     }
 
@@ -282,9 +283,9 @@ OLD: KE1
         error(dtw, msg, extraInfo, null)
     }
 
-    fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, extractorContextStack: Stack<ExtractorContext>?) {
+    fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, loggerState: LoggerState?) {
         if (verbosity >= 1) {
-            diagnostic(dtw, Severity.Error, msg, extraInfo, extractorContextStack)
+            diagnostic(dtw, Severity.Error, msg, extraInfo, loggerState)
         }
     }
 
@@ -314,11 +315,15 @@ OLD: KE1
     }
 }
 
+data class LoggerState (
+    val extractorContextStack: Stack<ExtractorContext>
+)
+
 /**
  * Logger is the high-level interface for writint log messages.
  */
 open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): BasicLogger {
-    val extractorContextStack = Stack<ExtractorContext>()
+    val loggerState = LoggerState(Stack<ExtractorContext>())
 
     override fun flush() {
         dtw.flush()
@@ -354,7 +359,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.warn(dtw, msg, extraInfo, extractorContextStack)
+        loggerBase.warn(dtw, msg, extraInfo, loggerState)
     }
 
     private fun warn(msg: String, extraInfo: String?) {
@@ -370,7 +375,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.error(dtw, msg, extraInfo, extractorContextStack)
+        loggerBase.error(dtw, msg, extraInfo, loggerState)
     }
 
     private fun error(msg: String, extraInfo: String?) {
@@ -412,7 +417,7 @@ OLD: KE1
             Severity.Error,
             msg,
             null, // OLD: KE1: exn?.stackTraceToString(),
-            extractorContextStack,
+            loggerState,
             locationString,
             mkLocationId
         )
