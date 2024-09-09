@@ -701,3 +701,140 @@ public class NestedFieldFlow
         return new NestedFieldFlow() { FieldA = x };
     }
 }
+
+public class SyntheticFields
+{
+    private string value1;
+    private string value2;
+    private string value3;
+
+    private string chainBegin;
+    private string chainEnd;
+
+    private string brokenChainBegin;
+    private string brokenChainEnd;
+
+    // summary=Models;SyntheticFields;false;SyntheticFields;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;SyntheticFields;(System.String);;Argument[0];Argument[this].SyntheticField[Models.SyntheticFields.value1];value;df-generated
+    public SyntheticFields(string v1)
+    {
+        value1 = v1;
+    }
+
+    // summary=Models;SyntheticFields;false;GetValue1;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;GetValue1;();;Argument[this].SyntheticField[Models.SyntheticFields.value1];ReturnValue;value;df-generated
+    public string GetValue1()
+    {
+        return value1;
+    }
+
+    // summary=Models;SyntheticFields;false;GetValue2;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;GetValue2;();;Argument[this].SyntheticField[Models.SyntheticFields.value2];ReturnValue;value;df-generated
+    public string GetValue2()
+    {
+        return value2;
+    }
+
+    // summary=Models;SyntheticFields;false;SetValue2;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;SetValue2;(System.String);;Argument[0];Argument[this].SyntheticField[Models.SyntheticFields.value2];value;df-generated
+    public void SetValue2(string v2)
+    {
+        value2 = v2;
+    }
+
+    // summary=Models;SyntheticFields;false;SetValue3;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // No content based summary as value3 is a dead synthetic field.
+    public void SetValue3(string v3)
+    {
+        value3 = v3;
+    }
+
+    // summary=Models;SyntheticFields;false;SetChainBegin;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;SetChainBegin;(System.String);;Argument[0];Argument[this].SyntheticField[Models.SyntheticFields.chainBegin];value;df-generated
+    public void SetChainBegin(string v)
+    {
+        chainBegin = v;
+    }
+
+    // neutral=Models;SyntheticFields;CopyChainValue;();summary;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;CopyChainValue;();;Argument[this].SyntheticField[Models.SyntheticFields.chainBegin];Argument[this].SyntheticField[Models.SyntheticFields.chainEnd];value;df-generated
+    public void CopyChainValue()
+    {
+        chainEnd = chainBegin;
+    }
+
+    // summary=Models;SyntheticFields;false;GetChainEnd;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;GetChainEnd;();;Argument[this].SyntheticField[Models.SyntheticFields.chainEnd];ReturnValue;value;df-generated
+    public string GetChainEnd()
+    {
+        return chainEnd;
+    }
+
+    // summary=Models;SyntheticFields;false;SetBrokenChainBegin;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // No content based summary as brokenChainBegin is a dead synthetic field.
+    public void SetBrokenChainBegin(string v)
+    {
+        brokenChainBegin = v;
+    }
+
+    // summary=Models;SyntheticFields;false;GetBrokenChainEnd;();;Argument[this];ReturnValue;taint;df-generated
+    // No content based summary as brokenChainEnd is a dead synthetic field.
+    public string GetBrokenChainEnd()
+    {
+        return brokenChainEnd;
+    }
+
+    public class InnerSyntheticFields
+    {
+        private readonly string value;
+
+        // summary=Models;SyntheticFields+InnerSyntheticFields;false;InnerSyntheticFields;(System.String);;Argument[0];Argument[this];taint;df-generated
+        // contentbased-summary=Models;SyntheticFields+InnerSyntheticFields;false;InnerSyntheticFields;(System.String);;Argument[0];Argument[this].SyntheticField[Models.SyntheticFields+InnerSyntheticFields.value];value;df-generated
+        public InnerSyntheticFields(string v)
+        {
+            value = v;
+        }
+
+        // summary=Models;SyntheticFields+InnerSyntheticFields;false;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // contentbased-summary=Models;SyntheticFields+InnerSyntheticFields;false;GetValue;();;Argument[this].SyntheticField[Models.SyntheticFields+InnerSyntheticFields.value];ReturnValue;value;df-generated
+        public string GetValue()
+        {
+            return value;
+        }
+    }
+
+    // summary=Models;SyntheticFields;false;MakeInner;(System.String);;Argument[0];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticFields;false;MakeInner;(System.String);;Argument[0];ReturnValue.SyntheticField[Models.SyntheticFields+InnerSyntheticFields.value];value;df-generated
+    public InnerSyntheticFields MakeInner(string v)
+    {
+        return new InnerSyntheticFields(v);
+    }
+}
+
+public class SyntheticProperties
+{
+    private string Prop1 { get; set; }
+
+    private string Prop2 { get; set; }
+
+    // summary=Models;SyntheticProperties;false;SyntheticProperties;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // contentbased-summary=Models;SyntheticProperties;false;SyntheticProperties;(System.String);;Argument[0];Argument[this].SyntheticField[Models.SyntheticProperties.Prop1];value;df-generated
+    public SyntheticProperties(string v1)
+    {
+        Prop1 = v1;
+    }
+
+    // summary=Models;SyntheticProperties;false;GetProp1;();;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticProperties;false;GetProp1;();;Argument[this].SyntheticField[Models.SyntheticProperties.Prop1];ReturnValue;value;df-generated
+    public string GetProp1()
+    {
+        return Prop1;
+    }
+
+    // summary=Models;SyntheticProperties;false;SetProp2;(System.String);;Argument[0];Argument[this];taint;df-generated
+    // No content based summary as Prop2 is a dead synthetic field.
+    public void SetProp2(string v)
+    {
+        Prop2 = v;
+    }
+}
