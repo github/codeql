@@ -2972,6 +2972,69 @@ ir.c:
 #   40|     mu40_4(unknown)       = ^CallSideEffect                         : ~m?
 #-----|   Exception (back edge) -> Block 4
 
+#   44| void try_with_finally()
+#   44|   Block 0
+#   44|     v44_1(void)       = EnterFunction      : 
+#   44|     mu44_2(unknown)   = AliasedDefinition  : 
+#   44|     mu44_3(unknown)   = InitializeNonLocal : 
+#   46|     r46_1(glval<int>) = VariableAddress[x] : 
+#   46|     r46_2(int)        = Constant[0]        : 
+#   46|     mu46_3(int)       = Store[x]           : &:r46_1, r46_2
+#   49|     r49_1(int)        = Constant[1]        : 
+#   49|     r49_2(glval<int>) = VariableAddress[x] : 
+#   49|     mu49_3(int)       = Store[x]           : &:r49_2, r49_1
+#   53|     r53_1(int)        = Constant[2]        : 
+#   53|     r53_2(glval<int>) = VariableAddress[x] : 
+#   53|     mu53_3(int)       = Store[x]           : &:r53_2, r53_1
+#   55|     v55_1(void)       = NoOp               : 
+#   44|     v44_4(void)       = ReturnVoid         : 
+#   44|     v44_5(void)       = AliasedUse         : ~m?
+#   44|     v44_6(void)       = ExitFunction       : 
+
+#   57| void throw_in_try_with_finally()
+#   57|   Block 0
+#   57|     v57_1(void)           = EnterFunction                           : 
+#   57|     mu57_2(unknown)       = AliasedDefinition                       : 
+#   57|     mu57_3(unknown)       = InitializeNonLocal                      : 
+#   59|     r59_1(glval<int>)     = VariableAddress[x]                      : 
+#   59|     r59_2(int)            = Constant[0]                             : 
+#   59|     mu59_3(int)           = Store[x]                                : &:r59_1, r59_2
+#   62|     r62_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   62|     r62_2(int)            = Constant[0]                             : 
+#   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
+#   62|     mu62_4(unknown)       = ^CallSideEffect                         : ~m?
+
+#   66|   Block 1
+#   66|     r66_1(int)        = Constant[1]        : 
+#   66|     r66_2(glval<int>) = VariableAddress[x] : 
+#   66|     mu66_3(int)       = Store[x]           : &:r66_2, r66_1
+#   68|     v68_1(void)       = NoOp               : 
+#   57|     v57_4(void)       = ReturnVoid         : 
+#   57|     v57_5(void)       = AliasedUse         : ~m?
+#   57|     v57_6(void)       = ExitFunction       : 
+
+#   70| void throw_in_try_with_throw_in_finally()
+#   70|   Block 0
+#   70|     v70_1(void)           = EnterFunction                           : 
+#   70|     mu70_2(unknown)       = AliasedDefinition                       : 
+#   70|     mu70_3(unknown)       = InitializeNonLocal                      : 
+#   73|     r73_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   73|     r73_2(int)            = Constant[0]                             : 
+#   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
+#   73|     mu73_4(unknown)       = ^CallSideEffect                         : ~m?
+
+#   76|   Block 1
+#   76|     r76_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   76|     r76_2(int)            = Constant[0]                             : 
+#   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
+#   76|     mu76_4(unknown)       = ^CallSideEffect                         : ~m?
+
+#   78|   Block 2
+#   78|     v78_1(void) = NoOp         : 
+#   70|     v70_4(void) = ReturnVoid   : 
+#   70|     v70_5(void) = AliasedUse   : ~m?
+#   70|     v70_6(void) = ExitFunction : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
