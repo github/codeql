@@ -525,6 +525,23 @@ private predicate apiRelevantContentFlow(
   )
 }
 
+pragma[nomagic]
+private predicate captureContentFlow0(
+  ContentDataFlowSummaryTargetApi api, string input, string output, boolean preservesValue,
+  boolean lift
+) {
+  exists(
+    DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath reads,
+    PropagateContentFlow::AccessPath stores
+  |
+    apiRelevantContentFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
+    input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
+    output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
+    input != output and
+    (if mentionsField(reads) or mentionsField(stores) then lift = false else lift = true)
+  )
+}
+
 /**
  * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
  * the return value or a parameter).
@@ -533,16 +550,9 @@ private predicate apiRelevantContentFlow(
  * contain a field or synthetic field access.
  */
 string captureContentFlow(ContentDataFlowSummaryTargetApi api) {
-  exists(
-    DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input, string output,
-    PropagateContentFlow::AccessPath reads, PropagateContentFlow::AccessPath stores,
-    boolean preservesValue, boolean lift
-  |
-    apiRelevantContentFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
-    input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
-    output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
-    input != output and
-    (if mentionsField(reads) or mentionsField(stores) then lift = false else lift = true) and
+  exists(string input, string output, boolean lift, boolean preservesValue |
+    captureContentFlow0(api, input, output, _, lift) and
+    preservesValue = max(boolean p | captureContentFlow0(api, input, output, p, lift)) and
     result = Printing::asModel(api, input, output, preservesValue, lift)
   )
 }
