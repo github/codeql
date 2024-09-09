@@ -1,3 +1,9 @@
+## 1.2.0
+
+### Major Analysis Improvements
+
+* Go 1.23 is now supported.
+
 ## 1.1.5
 
 ### Minor Analysis Improvements
