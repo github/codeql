@@ -68,7 +68,7 @@ class PrintAstNode extends TPrintAstNode {
 }
 
 private string prettyPrint(Locatable e) {
-  result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + concat(e.toString())
+  result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + e
 }
 
 private class Unresolved extends Locatable {
