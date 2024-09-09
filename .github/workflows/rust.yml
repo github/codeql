@@ -1,0 +1,52 @@
+name: "Rust"
+
+on:
+  pull_request:
+    paths:
+      - "rust/**"
+      - "misc/bazel/**"
+      - "misc/codegen/**"
+      - "shared/**"
+      - "MODULE.bazel"
+      - .github/workflows/rust.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - rust-experiment
+      - main
+      - rc/*
+      - codeql-cli-*
+
+permissions:
+  contents: read
+
+jobs:
+  cargo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compilation
+        working-directory: rust/extractor
+        shell: bash
+        run: cargo check
+      - name: Clippy
+        working-directory: rust/extractor
+        shell: bash
+        run: |
+          cargo clippy --fix
+          git diff --exit-code
+      - name: Format
+        working-directory: rust/extractor
+        shell: bash
+        run: |
+          cargo fmt --check
+      - name: Code generation
+        working-directory: rust/extractor
+        shell: bash
+        run: |
+          bazel run codegen
+          git add .
+          git diff --exit-code HEAD
