@@ -153,11 +153,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     or
     node1 = base and
     node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
-    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    c =
+      any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType().getDeepUnaliasedType())
   )
   or
   node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+  c =
+    any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType().getDeepUnaliasedType())
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
@@ -172,7 +174,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+  c =
+    any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType().getDeepUnaliasedType())
   or
   exists(FieldReadNode read |
     node2 = read and
