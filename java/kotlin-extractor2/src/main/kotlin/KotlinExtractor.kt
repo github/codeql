@@ -204,7 +204,7 @@ fun doAnalysis(
 OLD: KE1
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
 */
-    var fileIndex = 0
+    var fileNumber = 0
     val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
     for (psiFile in psiFiles) {
         if (psiFile is KtFile) {
@@ -217,16 +217,13 @@ OLD: KE1
                 val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 try {
                     val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
-/*
-OLD: KE1
-                loggerBase.setFileNumber(fileIndex)
-*/
                     fileDiagnosticTrapWriter.writeCompilation_compiling_files(
                         compilation,
-                        fileIndex,
+                        fileNumber,
                         fileDiagnosticTrapWriter.fileId
                     )
                     doFile(
+                        fileNumber,
                         compression,
 /*
 OLD: KE1
@@ -248,7 +245,7 @@ OLD: KE1
                     )
                     fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
                         compilation,
-                        fileIndex,
+                        fileNumber,
                         fileExtractionProblems.extractionResult()
                     )
                 // We catch Throwable rather than Exception, as we want to
@@ -262,7 +259,7 @@ OLD: KE1
 */
                 }
             }
-            fileIndex += 1
+            fileNumber += 1
         } else {
             System.out.println("Warning: Not a KtFile")
         }
@@ -450,6 +447,7 @@ class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblem
 
 context (KaSession)
 private fun doFile(
+    fileNumber: Int,
     compression: Compression,
 /*
 OLD: KE1
@@ -487,7 +485,7 @@ OLD: KE1
     }
 
     val srcFilePath = srcFile.virtualFilePath
-    val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter)
+    val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter, fileNumber)
     logger.info("Extracting file $srcFilePath")
     logger.flush()
 

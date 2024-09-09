@@ -149,17 +149,6 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
         return null
     }
 
-/*
-OLD: KE1
-    private var file_number = -1
-    private var file_number_diagnostic_number = 0
-
-    fun setFileNumber(index: Int) {
-        file_number = index
-        file_number_diagnostic_number = 0
-    }
-*/
-
     fun diagnostic(
         dtw: DiagnosticTrapWriter,
         severity: Severity,
@@ -208,11 +197,12 @@ OLD: KE1
         // Now that we have passed the early returns above, we know that
         // we're actually going to need the location, so let's create it
         val locationId = mkLocationId()
-        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg, locationString, locationId)
+        emitDiagnostic(dtw, loggerState, severity, diagnosticLocStr, msg, fullMsg, locationString, locationId)
     }
 
     private fun emitDiagnostic(
         dtw: DiagnosticTrapWriter,
+        loggerState: LoggerState?,
         severity: Severity,
         diagnosticLocStr: String,
         msg: String,
@@ -233,15 +223,14 @@ OLD: KE1
             "${logMessage.timestamp} $fullMsg",
             locationId
         )
-/*
-OLD: KE1
-        dtw.writeDiagnostic_for(
-            diagLabel,
-            StringLabel("compilation"),
-            file_number,
-            file_number_diagnostic_number++
-        )
-*/
+        if (loggerState != null) {
+            dtw.writeDiagnostic_for(
+                diagLabel,
+                StringLabel("compilation"),
+                loggerState.fileNumber,
+                loggerState.fileDiagnosticCount++
+            )
+        }
         logStream.write(logMessage.toJsonLine())
     }
 
@@ -315,16 +304,10 @@ OLD: KE1
     }
 }
 
-data class LoggerState (
-    val extractorContextStack: Stack<ExtractorContext>
-)
-
 /**
  * Logger is the high-level interface for writint log messages.
  */
 open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): BasicLogger {
-    val loggerState = LoggerState(Stack<ExtractorContext>())
-
     override fun flush() {
         dtw.flush()
         loggerBase.flush()
@@ -359,7 +342,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.warn(dtw, msg, extraInfo, loggerState)
+        loggerBase.warn(dtw, msg, extraInfo, null)
     }
 
     private fun warn(msg: String, extraInfo: String?) {
@@ -375,7 +358,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
-        loggerBase.error(dtw, msg, extraInfo, loggerState)
+        loggerBase.error(dtw, msg, extraInfo, null)
     }
 
     private fun error(msg: String, extraInfo: String?) {
@@ -391,8 +374,21 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 }
 
-class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter) :
+data class LoggerState (
+    val extractorContextStack: Stack<ExtractorContext>,
+    val fileNumber: Int,
+    var fileDiagnosticCount: Int
+)
+
+class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: Int) :
     Logger(loggerBase, ftw.getDiagnosticTrapWriter()) {
+
+    val loggerState = LoggerState(Stack<ExtractorContext>(), fileNumber, 0)
+
+    override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+        loggerBase.warn(dtw, msg, extraInfo, loggerState)
+    }
+
 /*
 OLD: KE1
     fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
@@ -408,6 +404,10 @@ OLD: KE1
         )
     }
 */
+
+    override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
+        loggerBase.error(dtw, msg, extraInfo, loggerState)
+    }
 
     fun errorElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) {
         val locationString = ftw.getLocationString(element)
