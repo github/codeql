@@ -5,9 +5,9 @@ class Configuration extends @configuration_definition, Stmt {
 
   override string toString() { result = "Configuration" }
 
-  Expr getName() { configuration_definition(this, _, _, result) } // TODO: Change @ast to @expression in dbscheme
+  Expr getName() { configuration_definition(this, _, _, result) }
 
-  ScriptBlockExpr getBody() { configuration_definition(this, result, _, _) } // TODO: Change @ast to @script_block in dbscheme
+  ScriptBlockExpr getBody() { configuration_definition(this, result, _, _) }
 
   predicate isMeta() { configuration_definition(this, _, 1, _) }
 
