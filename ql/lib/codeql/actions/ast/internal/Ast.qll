@@ -153,17 +153,18 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
   YamlNode key;
   YamlString value;
   string rawExpression;
-  string expression;
+  string fullExpression;
   int exprOffset;
 
   ExpressionImpl() {
     this = TExpressionNode(key, value, rawExpression, exprOffset - 1) and
     if rawExpression.trim().regexpMatch("\\$\\{\\{.*\\}\\}")
-    then expression = rawExpression.trim().regexpCapture("\\$\\{\\{\\s*(.*)\\s*\\}\\}", 1).trim()
-    else expression = rawExpression.trim()
+    then
+      fullExpression = rawExpression.trim().regexpCapture("\\$\\{\\{\\s*(.*)\\s*\\}\\}", 1).trim()
+    else fullExpression = rawExpression.trim()
   }
 
-  override string toString() { result = expression }
+  override string toString() { result = fullExpression }
 
   override AstNodeImpl getAChildNode() { none() }
 
@@ -173,7 +174,9 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
 
   override YamlNode getNode() { none() }
 
-  string getExpression() { result = expression }
+  string getExpression() { result = fullExpression }
+
+  string getFullExpression() { result = fullExpression }
 
   string getRawExpression() { result = rawExpression }
 
@@ -1262,12 +1265,15 @@ class RunImpl extends StepImpl {
  */
 bindingset[s]
 string getASimpleReferenceExpression(string s, int offset) {
+  // If the expression is ${{ inputs.foo == "foo" }} we should not consider it as a simple reference
+  // check that expression matches a simple reference or several simple references ORed with ||
+  s.regexpMatch("([A-Za-z0-9'\\\"_\\[\\]\\*\\(\\)\\.\\-]+)(\\s*\\|\\|\\s*[A-Za-z0-9'\\\"_\\[\\]\\*\\(\\)\\.\\-]+)*") and
   // We use `regexpFind` to obtain *all* matches of `${{...}}`,
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.trim()
         .regexpFind("[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+", _, offset)
-        .regexpCapture("([A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)", 1)
+        .regexpCapture("([A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)", _)
 }
 
 bindingset[s]
@@ -1319,18 +1325,28 @@ string getAJsonReferenceAccessPath(string s, int offset) {
 }
 
 /**
- * A ${{}} expression accessing a context variable such as steps, needs, jobs, env, inputs, or matrix.
+ * A ${{}} expression accessing a sigcle context variable such as steps, needs, jobs, env, inputs, or matrix.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
 abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
+  string expression;
+
   SimpleReferenceExpressionImpl() {
-    exists(getASimpleReferenceExpression(expression, _)) or
-    exists(getAJsonReferenceExpression(expression, _))
+    (
+      expression = getASimpleReferenceExpression(this.getFullExpression(), _)
+      or
+      exists(getAJsonReferenceExpression(this.getFullExpression(), _)) and
+      expression = this.getFullExpression()
+    )
   }
+
+  override string getExpression() { result = expression }
 
   abstract string getFieldName();
 
   abstract AstNodeImpl getTarget();
+
+  override string toString() { result = expression }
 }
 
 class JsonReferenceExpressionImpl extends ExpressionImpl {
@@ -1338,8 +1354,8 @@ class JsonReferenceExpressionImpl extends ExpressionImpl {
   string accessPath;
 
   JsonReferenceExpressionImpl() {
-    innerExpression = getAJsonReferenceExpression(expression, _) and
-    accessPath = getAJsonReferenceAccessPath(expression, _)
+    innerExpression = getAJsonReferenceExpression(this.getExpression(), _) and
+    accessPath = getAJsonReferenceAccessPath(this.getExpression(), _)
   }
 
   string getInnerExpression() { result = innerExpression }
