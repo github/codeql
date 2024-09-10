@@ -80,11 +80,6 @@ module TaintedUrlSuffix {
         name = StringOps::substringMethodName() and
         not call.getArgument(0).getIntValue() = 0
         or
-        // Split around '#' or '?' and extract the suffix
-        name = "split" and
-        call.getArgument(0).getStringValue() = ["#", "?"] and
-        not exists(call.getAPropertyRead("0")) // Avoid false flow to the prefix
-        or
         // Replace '#' and '?' with nothing
         name = "replace" and
         call.getArgument(0).getStringValue() = ["#", "?"] and
