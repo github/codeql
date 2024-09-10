@@ -126,7 +126,7 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
-ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() }
+ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stage::ref() }
 
 private module FlowSummaryStepInput implements Private::StepsInputSig {
   DataFlowCall getACall(SummarizedCallable sc) {
@@ -238,3 +238,12 @@ ContentSet decodeUnknownWithoutContent(AccessPathSyntax::AccessPathTokenBase tok
  */
 bindingset[token]
 ContentSet decodeUnknownWithContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
+
+cached
+module Stage {
+  cached
+  predicate ref() { 1 = 1 }
+
+  cached
+  predicate backref() { optionalStep(_, _, _) }
+}
