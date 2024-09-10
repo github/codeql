@@ -109,6 +109,42 @@ edges
 | .github/workflows/poc.yml:30:9:36:6 | Uses Step | .github/workflows/poc.yml:36:9:38:6 | Uses Step |
 | .github/workflows/poc.yml:36:9:38:6 | Uses Step | .github/workflows/poc.yml:38:9:43:6 | Uses Step |
 | .github/workflows/poc.yml:38:9:43:6 | Uses Step | .github/workflows/poc.yml:43:9:47:2 | Uses Step |
+| .github/workflows/pr-workflow.yml:57:9:60:6 | Uses Step | .github/workflows/pr-workflow.yml:60:9:70:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:60:9:70:6 | Uses Step | .github/workflows/pr-workflow.yml:70:9:78:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:70:9:78:6 | Uses Step | .github/workflows/pr-workflow.yml:78:9:81:2 | Run Step: ok |
+| .github/workflows/pr-workflow.yml:103:9:109:6 | Uses Step | .github/workflows/pr-workflow.yml:109:9:124:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:109:9:124:6 | Uses Step | .github/workflows/pr-workflow.yml:124:9:126:2 | Run Step |
+| .github/workflows/pr-workflow.yml:139:9:144:6 | Uses Step | .github/workflows/pr-workflow.yml:144:9:147:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:144:9:147:6 | Uses Step | .github/workflows/pr-workflow.yml:147:9:148:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:147:9:148:6 | Uses Step | .github/workflows/pr-workflow.yml:148:9:154:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:148:9:154:6 | Uses Step | .github/workflows/pr-workflow.yml:154:9:158:6 | Run Step |
+| .github/workflows/pr-workflow.yml:154:9:158:6 | Run Step | .github/workflows/pr-workflow.yml:158:9:196:2 | Run Step: ok |
+| .github/workflows/pr-workflow.yml:209:9:216:6 | Uses Step | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | .github/workflows/pr-workflow.yml:227:9:230:2 | Run Step: ok |
+| .github/workflows/pr-workflow.yml:243:9:250:6 | Uses Step | .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step | .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step | .github/workflows/pr-workflow.yml:261:9:265:2 | Run Step: ok |
+| .github/workflows/pr-workflow.yml:277:9:284:6 | Uses Step | .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step | .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step | .github/workflows/pr-workflow.yml:295:9:298:2 | Run Step: ok |
+| .github/workflows/pr-workflow.yml:309:9:314:6 | Run Step | .github/workflows/pr-workflow.yml:314:9:318:6 | Run Step |
+| .github/workflows/pr-workflow.yml:314:9:318:6 | Run Step | .github/workflows/pr-workflow.yml:318:9:323:2 | Run Step |
+| .github/workflows/pr-workflow.yml:337:9:343:6 | Uses Step | .github/workflows/pr-workflow.yml:343:9:346:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:343:9:346:6 | Uses Step | .github/workflows/pr-workflow.yml:346:9:351:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:346:9:351:6 | Uses Step | .github/workflows/pr-workflow.yml:351:9:355:6 | Run Step |
+| .github/workflows/pr-workflow.yml:351:9:355:6 | Run Step | .github/workflows/pr-workflow.yml:355:9:369:2 | Uses Step |
+| .github/workflows/pr-workflow.yml:380:9:386:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step | .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step | .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step | .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step | .github/workflows/pr-workflow.yml:423:9:432:2 | Uses Step |
+| .github/workflows/pr-workflow.yml:444:9:449:6 | Uses Step | .github/workflows/pr-workflow.yml:449:9:452:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:449:9:452:6 | Uses Step | .github/workflows/pr-workflow.yml:452:9:453:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:452:9:453:6 | Uses Step | .github/workflows/pr-workflow.yml:453:9:459:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:453:9:459:6 | Uses Step | .github/workflows/pr-workflow.yml:459:9:462:6 | Run Step |
+| .github/workflows/pr-workflow.yml:459:9:462:6 | Run Step | .github/workflows/pr-workflow.yml:462:9:463:48 | Run Step: ok |
 | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | .github/workflows/priv_pull_request_checkout.yml:20:9:23:52 | Run Step |
 | .github/workflows/test1.yml:18:9:21:6 | Uses Step | .github/workflows/test1.yml:21:9:24:6 | Run Step |
 | .github/workflows/test1.yml:21:9:24:6 | Run Step | .github/workflows/test1.yml:24:9:25:39 | Run Step |
@@ -170,6 +206,7 @@ edges
 | .github/workflows/mend.yml:29:9:33:28 | Uses Step | .github/workflows/mend.yml:22:9:29:6 | Uses Step | .github/workflows/mend.yml:29:9:33:28 | Uses Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/poc2.yml:52:9:58:24 | Run Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:52:9:58:24 | Run Step | Execution of untrusted code on a privileged workflow. |
+| .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/test5.yml:32:9:34:2 | Run Step | .github/workflows/test5.yml:28:9:32:6 | Uses Step | .github/workflows/test5.yml:32:9:34:2 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/test5.yml:58:9:60:2 | Run Step | .github/workflows/test5.yml:54:9:58:6 | Uses Step | .github/workflows/test5.yml:58:9:60:2 | Run Step | Execution of untrusted code on a privileged workflow. |
 | .github/workflows/test5.yml:68:9:68:43 | Run Step | .github/workflows/test5.yml:64:9:68:6 | Uses Step | .github/workflows/test5.yml:68:9:68:43 | Run Step | Execution of untrusted code on a privileged workflow. |
