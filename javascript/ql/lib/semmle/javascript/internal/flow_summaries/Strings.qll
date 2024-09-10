@@ -55,12 +55,44 @@ class StringSplit extends SummarizedCallable {
   StringSplit() { this = "String#split" }
 
   override DataFlow::MethodCallNode getACallSimple() {
-    result.getMethodName() = "split" and result.getNumArgument() = 1
+    result.getMethodName() = "split" and
+    result.getNumArgument() = [1, 2] and
+    not result.getArgument(0).getStringValue() = ["#", "?"]
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = false and
     input = "Argument[this]" and
     output = "ReturnValue.ArrayElement"
+  }
+}
+
+/**
+ * A call of form `x.split("#")` or `x.split("?")`.
+ *
+ * These are of special significance when tracking a tainted URL suffix, such as `window.location.href`,
+ * because the first element of the resulting array should not be considered tainted.
+ *
+ * This summary defaults to the same behaviour as the general `.split()` case, but it contains optional steps
+ * and barriers named `tainted-url-suffix` that should be activated when tracking a tainted URL suffix.
+ */
+class StringSplitHashOrQuestionMark extends SummarizedCallable {
+  StringSplitHashOrQuestionMark() { this = "String#split with '#' or '?'" }
+
+  override DataFlow::MethodCallNode getACallSimple() {
+    result.getMethodName() = "split" and
+    result.getNumArgument() = [1, 2] and
+    result.getArgument(0).getStringValue() = ["#", "?"]
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    (
+      input = "Argument[this].OptionalBarrier[tainted-url-suffix]" and
+      output = "ReturnValue.ArrayElement"
+      or
+      input = "Argument[this].OptionalStep[tainted-url-suffix]" and
+      output = "ReturnValue.ArrayElement[1]" // TODO: support ArrayElement[1..]
+    )
   }
 }
