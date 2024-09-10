@@ -16,9 +16,9 @@ numberOfTypeParameters
 | genericFunctions.go:132:6:132:10 | Graph | 2 |
 | genericFunctions.go:134:6:134:8 | New | 2 |
 | genericFunctions.go:138:29:138:40 | ShortestPath | 2 |
-| genericFunctions.go:150:6:150:36 | multipleAnonymousTypeParamsFunc | 1 |
-| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 1 |
-| genericFunctions.go:154:51:154:51 | f | 1 |
+| genericFunctions.go:150:6:150:36 | multipleAnonymousTypeParamsFunc | 3 |
+| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 3 |
+| genericFunctions.go:154:51:154:51 | f | 3 |
 #select
 | cmp.Compare | 0 | T | Ordered |
 | cmp.Less | 0 | T | Ordered |

@@ -1776,7 +1776,8 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
 			parentlbl := getTypeParamParentLabel(tw, tp)
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
+			idx := tp.Index()
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
