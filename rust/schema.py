@@ -62,6 +62,11 @@ class AstNode(Locatable):
     pass
 
 
+@qltest.skip
+class Unimplemented(AstNode):
+    pass
+
+
 class Declaration(AstNode):
     pass
 
@@ -111,19 +116,19 @@ class Function(Declaration):
     ```
     """
     name: string
-    body: Expr
+    body: Expr | child
 
 
 #     Missing,
 class MissingExpr(Expr):
     pass
 
+
 #     Path(Path),
 
 
-class Path(Expr):
-    # TODO
-    pass
+class PathExpr(Expr):
+    path: Unimplemented | child
 
 #     If {
 #         condition: ExprId,
@@ -132,10 +137,10 @@ class Path(Expr):
 #     },
 
 
-class If(Expr):
-    condition: Expr
-    then: Expr
-    else_: optional[Expr]
+class IfExpr(Expr):
+    condition: Expr | child
+    then: Expr | child
+    else_: optional[Expr] | child
 
 #     Let {
 #         pat: PatId,
@@ -143,9 +148,9 @@ class If(Expr):
 #     },
 
 
-class Let(Expr):
-    pat: Pat
-    expr: Expr
+class LetExpr(Expr):
+    pat: Pat | child
+    expr: Expr | child
 
 #     Block {
 #         id: Option<BlockId>,
@@ -155,13 +160,13 @@ class Let(Expr):
 #     },
 
 
-class BlockBase(Expr):
-    statements: list[Stmt]
-    tail: optional[Expr]
+class BlockExprBase(Expr):
+    statements: list[Stmt] | child
+    tail: optional[Expr] | child
 
 
-class Block(BlockBase):
-    label: optional[Label]
+class BlockExpr(BlockExprBase):
+    label: optional[Label] | child
 
 #     Async {
 #         id: Option<BlockId>,
@@ -170,14 +175,14 @@ class Block(BlockBase):
 #     },
 
 
-class AsyncBlock(BlockBase):
+class AsyncBlockExpr(BlockExprBase):
     pass
 
 #     Const(ConstBlockId),
 
 
-class Const(Expr):
-    pass
+class ConstExpr(Expr):
+    expr: Expr | child
 
 #     // FIXME: Fold this into Block with an unsafe flag?
 #     Unsafe {
@@ -187,7 +192,7 @@ class Const(Expr):
 #     },
 
 
-class UnsafeBlock(BlockBase):
+class UnsafeBlockExpr(BlockExprBase):
     pass
 
 #     Loop {
@@ -196,9 +201,9 @@ class UnsafeBlock(BlockBase):
 #     },
 
 
-class Loop(Expr):
-    body: Expr
-    label: optional[Label]
+class LoopExpr(Expr):
+    body: Expr | child
+    label: optional[Label] | child
 
 #     Call {
 #         callee: ExprId,
@@ -207,9 +212,9 @@ class Loop(Expr):
 #     },
 
 
-class Call(Expr):
-    callee: Expr
-    args: list[Expr]
+class CallExpr(Expr):
+    callee: Expr | child
+    args: list[Expr] | child
     is_assignee_expr: predicate
 
 #     MethodCall {
@@ -220,12 +225,11 @@ class Call(Expr):
 #     },
 
 
-class MethodCall(Expr):
-    receiver: Expr
+class MethodCallExpr(Expr):
+    receiver: Expr | child
     method_name: string
-    args: list[Expr]
-    # TODO
-    # generic_args: optional[GenericArgs]
+    args: list[Expr] | child
+    generic_args: optional[Unimplemented] | child
 
 # pub struct MatchArm {
 #     pub pat: PatId,
@@ -236,26 +240,26 @@ class MethodCall(Expr):
 
 @qltest.skip
 class MatchArm(AstNode):
-    pat: Pat
-    guard: optional[Expr]
-    expr: Expr
+    pat: Pat | child
+    guard: optional[Expr] | child
+    expr: Expr | child
 #     Match {
 #         expr: ExprId,
 #         arms: Box<[MatchArm]>,
 #     },
 
 
-class Match(Expr):
-    expr: Expr
-    branches: list[MatchArm]
+class MatchExpr(Expr):
+    expr: Expr | child
+    branches: list[MatchArm] | child
 
 #     Continue {
 #         label: Option<LabelId>,
 #     },
 
 
-class Continue(Expr):
-    label: optional[Label]
+class ContinueExpr(Expr):
+    label: optional[Label] | child
 
 #     Break {
 #         expr: Option<ExprId>,
@@ -263,39 +267,39 @@ class Continue(Expr):
 #     },
 
 
-class Break(Expr):
-    expr: optional[Expr]
-    label: optional[Label]
+class BreakExpr(Expr):
+    expr: optional[Expr] | child
+    label: optional[Label] | child
 
 
 #     Return {
 #         expr: Option<ExprId>,
 #     },
 
-class Return(Expr):
-    expr: optional[Expr]
+class ReturnExpr(Expr):
+    expr: optional[Expr] | child
 #     Become {
 #         expr: ExprId,
 #     },
 
 
-class Become(Expr):
-    expr: Expr
+class BecomeExpr(Expr):
+    expr: Expr | child
 #     Yield {
 #         expr: Option<ExprId>,
 #     },
 
 
-class Yield(Expr):
-    expr: optional[Expr]
+class YieldExpr(Expr):
+    expr: optional[Expr] | child
 
 #     Yeet {
 #         expr: Option<ExprId>,
 #     },
 
 
-class Yeet(Expr):
-    expr: optional[Expr]
+class YeetExpr(Expr):
+    expr: optional[Expr] | child
 #     RecordLit {
 #         path: Option<Box<Path>>,
 #         fields: Box<[RecordLitField]>,
@@ -305,9 +309,22 @@ class Yeet(Expr):
 #     },
 
 
-class RecordLit(Expr):
-    # TODO
-    pass
+class RecordFieldPat(AstNode):
+    name: string
+    pat: Pat | child
+
+
+class RecordLitField(AstNode):
+    name: string
+    expr: Expr | child
+
+
+class RecordLitExpr(Expr):
+    path: optional[Unimplemented] | child
+    fields: list[RecordLitField] | child
+    spread: optional[Expr] | child
+    has_ellipsis: predicate
+    is_assignee_expr: predicate
 
 
 #     Field {
@@ -315,8 +332,8 @@ class RecordLit(Expr):
 #         name: Name,
 #     },
 
-class Field(Expr):
-    expr: Expr
+class FieldExpr(Expr):
+    expr: Expr | child
     name: string
 
 #     Await {
@@ -324,8 +341,8 @@ class Field(Expr):
 #     },
 
 
-class Await(Expr):
-    expr: Expr
+class AwaitExpr(Expr):
+    expr: Expr | child
 
 #     Cast {
 #         expr: ExprId,
@@ -333,9 +350,9 @@ class Await(Expr):
 #     },
 
 
-class Cast(Expr):
-    expr: Expr
-    type_ref: TypeRef
+class CastExpr(Expr):
+    expr: Expr | child
+    type_ref: TypeRef | child
 #     Ref {
 #         expr: ExprId,
 #         rawness: Rawness,
@@ -343,8 +360,8 @@ class Cast(Expr):
 #     },
 
 
-class Ref(Expr):
-    expr: Expr
+class RefExpr(Expr):
+    expr: Expr | child
     is_raw: predicate
     is_mut: predicate
 #     Box {
@@ -352,16 +369,16 @@ class Ref(Expr):
 #     },
 
 
-class Box(Expr):
-    expr: Expr
+class BoxExpr(Expr):
+    expr: Expr | child
 #     UnaryOp {
 #         expr: ExprId,
 #         op: UnaryOp,
 #     },
 
 
-class UnaryOp(Expr):
-    expr: Expr
+class UnaryOpExpr(Expr):
+    expr: Expr | child
     op: string
 
 
@@ -372,9 +389,9 @@ class UnaryOp(Expr):
 #     },
 
 
-class BinaryOp(Expr):
-    lhs: Expr
-    rhs: Expr
+class BinaryOpExpr(Expr):
+    lhs: Expr | child
+    rhs: Expr | child
     op: optional[string]
 
 
@@ -385,9 +402,9 @@ class BinaryOp(Expr):
 #     },
 
 
-class Range(Expr):
-    lhs: optional[Expr]
-    rhs: optional[Expr]
+class RangeExpr(Expr):
+    lhs: optional[Expr] | child
+    rhs: optional[Expr] | child
     is_inclusive: predicate
 
 #     Index {
@@ -397,9 +414,9 @@ class Range(Expr):
 #     },
 
 
-class Index(Expr):
-    base: Expr
-    index: Expr
+class IndexExpr(Expr):
+    base: Expr | child
+    index: Expr | child
     is_assignee_expr: predicate
 
 #     Closure {
@@ -412,13 +429,12 @@ class Index(Expr):
 #     },
 
 
-class Closure(Expr):
-    args: list[Pat]
-    arg_types: list[optional[TypeRef]]
-    ret_type: optional[TypeRef]
-    body: Expr
-    # TODO
-    # closure_kind: ClosureKind
+class ClosureExpr(Expr):
+    args: list[Pat] | child
+    arg_types: list[optional[TypeRef]] | child
+    ret_type: optional[TypeRef] | child
+    body: Expr | child
+    closure_kind: string
     is_move: predicate
 #     Tuple {
 #         exprs: Box<[ExprId]>,
@@ -426,51 +442,51 @@ class Closure(Expr):
 #     },
 
 
-class Tuple(Expr):
-    exprs: list[Expr]
+class TupleExpr(Expr):
+    exprs: list[Expr] | child
     is_assignee_expr: predicate
 
 #     Array(Array),
 
 
-class Array(Expr):
+class ArrayExpr(Expr):
     pass
 #     Literal(Literal),
 
 # ElementList { elements: Box<[ExprId]>, is_assignee_expr: bool },
 
 
-class ElementList(Array):
-    elements: list[Expr]
+class ElementListExpr(ArrayExpr):
+    elements: list[Expr] | child
     is_assignee_expr: predicate
 
 # Repeat { initializer: ExprId, repeat: ExprId },
 
 
-class Repeat(Array):
-    initializer: Expr
-    repeat: Expr
+class RepeatExpr(ArrayExpr):
+    initializer: Expr | child
+    repeat: Expr | child
 
 
-class Literal(Expr):
+class LiteralExpr(Expr):
     pass
 #     Underscore,
 
 
-class Underscore(Expr):
+class UnderscoreExpr(Expr):
     pass
 #     OffsetOf(OffsetOf),
 
 
-class OffsetOf(Expr):
-    container: TypeRef
+class OffsetOfExpr(Expr):
+    container: TypeRef | child
     fields: list[string]
 
 #     InlineAsm(InlineAsm),
 
 
-class InlineAsm(Expr):
-    expr: Expr
+class InlineAsmExpr(Expr):
+    expr: Expr | child
 
 
 #    Let {
@@ -480,11 +496,11 @@ class InlineAsm(Expr):
 #         else_branch: Option<ExprId>,
 #     },
 
-class IfLet(Stmt):
-    pat: Pat
-    type_ref: optional[TypeRef]
-    initializer: optional[Expr]
-    else_: optional[Expr]
+class LetStmt(Stmt):
+    pat: Pat | child
+    type_ref: optional[TypeRef] | child
+    initializer: optional[Expr] | child
+    else_: optional[Expr] | child
 #     Expr {
 #         expr: ExprId,
 #         has_semi: bool,
@@ -492,8 +508,8 @@ class IfLet(Stmt):
 
 
 class ExprStmt(Stmt):
-    expr: Expr
-    has_semi: predicate
+    expr: Expr | child
+    has_semicolon: predicate
 
 #     // At the moment, we only use this to figure out if a return expression
 #     // is really the last statement of a block. See #16566
@@ -517,73 +533,78 @@ class WildPat(Pat):
 
 
 class TuplePat(Pat):
-    args: list[Pat]
-    ellipsis: optional[int]
+    args: list[Pat] | child
+    ellipsis_index: optional[int]
 
     # Or(Box<[PatId]>),
 
 
 class OrPat(Pat):
-    args: list[Pat]
-    # Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
+    args: list[Pat] | child
+
+
+# Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
 
 
 class RecordPat(Pat):
-    # TODO
-    pass
+    path: optional[Unimplemented] | child
+    args: list[RecordFieldPat] | child
+    has_ellipsis: predicate
 
     # Range { start: Option<Box<LiteralOrConst>>, end: Option<Box<LiteralOrConst>> },
 
 
 class RangePat(Pat):
-    start: optional[Pat]
-    end: optional[Pat]
+    start: optional[Pat] | child
+    end: optional[Pat] | child
     # Slice { prefix: Box<[PatId]>, slice: Option<PatId>, suffix: Box<[PatId]> },
 
 
 class SlicePat(Pat):
-    prefix: list[Pat]
-    slice: optional[Pat]
-    suffix: list[Pat]
+    prefix: list[Pat] | child
+    slice: optional[Pat] | child
+    suffix: list[Pat] | child
     # Path(Box<Path>),
 
 
 class PathPat(Pat):
-    pass
+    path: Unimplemented | child
+
     # Lit(ExprId),
 
 
 class LitPat(Pat):
-    expr: Expr
+    expr: Expr | child
 
     # Bind { id: BindingId, subpat: Option<PatId> },
 
 
 class BindPat(Pat):
     binding_id: string
-    subpat: optional[Pat]
+    subpat: optional[Pat] | child
 
     # TupleStruct { path: Option<Box<Path>>, args: Box<[PatId]>, ellipsis: Option<u32> },
 
 
 class TupleStructPat(Pat):
-    # TODO
-    pass
+    path: optional[Unimplemented] | child
+    args: list[Pat] | child
+    ellipsis_index: optional[int]
 
     # Ref { pat: PatId, mutability: Mutability },
 
 
 class RefPat(Pat):
-    pat: Pat
+    pat: Pat | child
     is_mut: predicate
 
     # Box { inner: PatId },
 
 
 class BoxPat(Pat):
-    inner: Pat
+    inner: Pat | child
     # ConstBlock(ExprId),
 
 
 class ConstBlockPat(Pat):
-    expr: Expr
+    expr: Expr | child

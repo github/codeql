@@ -32,6 +32,7 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub extract_dependencies: bool,
     pub verbose: u8,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
@@ -68,10 +69,11 @@ impl Config {
             let inputs_list = std::fs::read_to_string(inputs_file).context("reading file list")?;
             cli_args
                 .inputs
-                .extend(inputs_list.split("\n").map(PathBuf::from));
+                .extend(inputs_list.split_terminator("\n").map(PathBuf::from));
         }
         Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
+            .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args))
             .extract()
             .context("loading configuration")

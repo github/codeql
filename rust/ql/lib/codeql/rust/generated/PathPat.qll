@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Pat
+import codeql.rust.elements.Unimplemented
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathPat` and should not
@@ -19,5 +20,13 @@ module Generated {
    */
   class PathPat extends Synth::TPathPat, Pat {
     override string getAPrimaryQlClass() { result = "PathPat" }
+
+    /**
+     * Gets the path of this path pat.
+     */
+    Unimplemented getPath() {
+      result =
+        Synth::convertUnimplementedFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
+    }
   }
 }

@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Pat
+import codeql.rust.elements.Unimplemented
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TupleStructPat` and should not
@@ -19,5 +20,52 @@ module Generated {
    */
   class TupleStructPat extends Synth::TTupleStructPat, Pat {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
+
+    /**
+     * Gets the path of this tuple struct pat, if it exists.
+     */
+    Unimplemented getPath() {
+      result =
+        Synth::convertUnimplementedFromRaw(Synth::convertTupleStructPatToRaw(this)
+              .(Raw::TupleStructPat)
+              .getPath())
+    }
+
+    /**
+     * Holds if `getPath()` exists.
+     */
+    final predicate hasPath() { exists(this.getPath()) }
+
+    /**
+     * Gets the `index`th argument of this tuple struct pat (0-based).
+     */
+    Pat getArg(int index) {
+      result =
+        Synth::convertPatFromRaw(Synth::convertTupleStructPatToRaw(this)
+              .(Raw::TupleStructPat)
+              .getArg(index))
+    }
+
+    /**
+     * Gets any of the arguments of this tuple struct pat.
+     */
+    final Pat getAnArg() { result = this.getArg(_) }
+
+    /**
+     * Gets the number of arguments of this tuple struct pat.
+     */
+    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+
+    /**
+     * Gets the ellipsis index of this tuple struct pat, if it exists.
+     */
+    int getEllipsisIndex() {
+      result = Synth::convertTupleStructPatToRaw(this).(Raw::TupleStructPat).getEllipsisIndex()
+    }
+
+    /**
+     * Holds if `getEllipsisIndex()` exists.
+     */
+    final predicate hasEllipsisIndex() { exists(this.getEllipsisIndex()) }
   }
 }

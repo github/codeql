@@ -30,8 +30,8 @@ module Generated {
     }
 
     /**
-     * Holds if this expression statement has semi.
+     * Holds if this expression statement has semicolon.
      */
-    predicate hasSemi() { Synth::convertExprStmtToRaw(this).(Raw::ExprStmt).hasSemi() }
+    predicate hasSemicolon() { Synth::convertExprStmtToRaw(this).(Raw::ExprStmt).hasSemicolon() }
   }
 }

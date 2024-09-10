@@ -5,6 +5,7 @@ use ra_ap_hir::Crate;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_project_model::CargoConfig;
 use ra_ap_project_model::RustLibSource;
+use ra_ap_vfs::AbsPathBuf;
 use std::path::PathBuf;
 
 mod archive;
@@ -13,6 +14,19 @@ pub mod generated;
 pub mod path;
 mod translate;
 pub mod trap;
+
+fn find_project_manifests(
+    files: &[PathBuf],
+) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
+    let current = std::env::current_dir()?;
+    let abs_files: Vec<_> = files
+        .iter()
+        .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
+        .collect();
+    Ok(ra_ap_project_model::ProjectManifest::discover_all(
+        &abs_files,
+    ))
+}
 
 fn main() -> anyhow::Result<()> {
     let cfg = config::Config::extract().context("failed to load configuration")?;
@@ -28,18 +42,26 @@ fn main() -> anyhow::Result<()> {
 
     let config = CargoConfig {
         sysroot: Some(RustLibSource::Discover),
+        target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(cfg.scratch_dir)
+            .map(|x| x.join("target"))
+            .ok(),
         ..Default::default()
     };
-    let progress = |t| (println!("progress: {}", t));
+    let progress = |t| (log::info!("progress: {}", t));
     let load_config = LoadCargoConfig {
         load_out_dirs_from_check: true,
         with_proc_macro_server: ProcMacroServerChoice::Sysroot,
         prefill_caches: false,
     };
-    for input in cfg.inputs {
-        let (db, vfs, _macro_server) = load_workspace_at(&input, &config, &load_config, &progress)
-            .context("loading inputs")?;
-        _macro_server.expect("no macro server");
+    let projects = find_project_manifests(&cfg.inputs).context("loading inputs")?;
+    for project in projects {
+        let (db, vfs, _macro_server) = load_workspace_at(
+            project.manifest_path().as_ref(),
+            &config,
+            &load_config,
+            &progress,
+        )?;
+
         let crates = <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter() {
             let krate = Crate::from(crate_id);
@@ -56,9 +78,16 @@ fn main() -> anyhow::Result<()> {
                     crate_id.into_raw().into_u32()
                 )),
             );
-            translate::CrateTranslator::new(&db, trap, &krate, &vfs, &archiver)
-                .emit_crate()
-                .context("writing trap file")?;
+            translate::CrateTranslator::new(
+                &db,
+                trap,
+                &krate,
+                &vfs,
+                &archiver,
+                cfg.extract_dependencies,
+            )
+            .emit_crate()
+            .context("writing trap file")?;
         }
     }
     Ok(())

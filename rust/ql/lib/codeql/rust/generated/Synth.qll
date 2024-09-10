@@ -18,19 +18,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TAsyncBlock(Raw::AsyncBlock id) { constructAsyncBlock(id) } or
+    TAsyncBlockExpr(Raw::AsyncBlockExpr id) { constructAsyncBlockExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TAwait(Raw::Await id) { constructAwait(id) } or
+    TAwaitExpr(Raw::AwaitExpr id) { constructAwaitExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TBecome(Raw::Become id) { constructBecome(id) } or
+    TBecomeExpr(Raw::BecomeExpr id) { constructBecomeExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TBinaryOp(Raw::BinaryOp id) { constructBinaryOp(id) } or
+    TBinaryOpExpr(Raw::BinaryOpExpr id) { constructBinaryOpExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -38,11 +38,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TBlock(Raw::Block id) { constructBlock(id) } or
+    TBlockExpr(Raw::BlockExpr id) { constructBlockExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TBox(Raw::Box id) { constructBox(id) } or
+    TBoxExpr(Raw::BoxExpr id) { constructBoxExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -50,23 +50,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TBreak(Raw::Break id) { constructBreak(id) } or
+    TBreakExpr(Raw::BreakExpr id) { constructBreakExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TCall(Raw::Call id) { constructCall(id) } or
+    TCallExpr(Raw::CallExpr id) { constructCallExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TCast(Raw::Cast id) { constructCast(id) } or
+    TCastExpr(Raw::CastExpr id) { constructCastExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TClosure(Raw::Closure id) { constructClosure(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TConst(Raw::Const id) { constructConst(id) } or
+    TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -74,7 +70,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TContinue(Raw::Continue id) { constructContinue(id) } or
+    TConstExpr(Raw::ConstExpr id) { constructConstExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TContinueExpr(Raw::ContinueExpr id) { constructContinueExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -86,7 +86,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TElementList(Raw::ElementList id) { constructElementList(id) } or
+    TElementListExpr(Raw::ElementListExpr id) { constructElementListExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -94,7 +94,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TField(Raw::Field id) { constructField(id) } or
+    TFieldExpr(Raw::FieldExpr id) { constructFieldExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -102,19 +102,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TIf(Raw::If id) { constructIf(id) } or
+    TIfExpr(Raw::IfExpr id) { constructIfExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TIfLet(Raw::IfLet id) { constructIfLet(id) } or
+    TIndexExpr(Raw::IndexExpr id) { constructIndexExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TIndex(Raw::Index id) { constructIndex(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TInlineAsm(Raw::InlineAsm id) { constructInlineAsm(id) } or
+    TInlineAsmExpr(Raw::InlineAsmExpr id) { constructInlineAsmExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -126,7 +122,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLet(Raw::Let id) { constructLet(id) } or
+    TLetExpr(Raw::LetExpr id) { constructLetExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TLetStmt(Raw::LetStmt id) { constructLetStmt(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -134,15 +134,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLiteral(Raw::Literal id) { constructLiteral(id) } or
+    TLiteralExpr(Raw::LiteralExpr id) { constructLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TLoop(Raw::Loop id) { constructLoop(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TMatch(Raw::Match id) { constructMatch(id) } or
+    TLoopExpr(Raw::LoopExpr id) { constructLoopExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -150,7 +146,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TMethodCall(Raw::MethodCall id) { constructMethodCall(id) } or
+    TMatchExpr(Raw::MatchExpr id) { constructMatchExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TMethodCallExpr(Raw::MethodCallExpr id) { constructMethodCallExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -166,7 +166,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TOffsetOf(Raw::OffsetOf id) { constructOffsetOf(id) } or
+    TOffsetOfExpr(Raw::OffsetOfExpr id) { constructOffsetOfExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -174,7 +174,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TPath(Raw::Path id) { constructPath(id) } or
+    TPathExpr(Raw::PathExpr id) { constructPathExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -182,7 +182,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRange(Raw::Range id) { constructRange(id) } or
+    TRangeExpr(Raw::RangeExpr id) { constructRangeExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -190,7 +190,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRecordLit(Raw::RecordLit id) { constructRecordLit(id) } or
+    TRecordFieldPat(Raw::RecordFieldPat id) { constructRecordFieldPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRecordLitExpr(Raw::RecordLitExpr id) { constructRecordLitExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRecordLitField(Raw::RecordLitField id) { constructRecordLitField(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -198,7 +206,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRef(Raw::Ref id) { constructRef(id) } or
+    TRefExpr(Raw::RefExpr id) { constructRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -206,11 +214,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRepeat(Raw::Repeat id) { constructRepeat(id) } or
+    TRepeatExpr(Raw::RepeatExpr id) { constructRepeatExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TReturn(Raw::Return id) { constructReturn(id) } or
+    TReturnExpr(Raw::ReturnExpr id) { constructReturnExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -218,7 +226,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TTuple(Raw::Tuple id) { constructTuple(id) } or
+    TTupleExpr(Raw::TupleExpr id) { constructTupleExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -234,11 +242,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnaryOp(Raw::UnaryOp id) { constructUnaryOp(id) } or
+    TUnaryOpExpr(Raw::UnaryOpExpr id) { constructUnaryOpExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TUnderscore(Raw::Underscore id) { constructUnderscore(id) } or
+    TUnderscoreExpr(Raw::UnderscoreExpr id) { constructUnderscoreExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TUnimplemented(Raw::Unimplemented id) { constructUnimplemented(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -250,7 +262,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnsafeBlock(Raw::UnsafeBlock id) { constructUnsafeBlock(id) } or
+    TUnsafeBlockExpr(Raw::UnsafeBlockExpr id) { constructUnsafeBlockExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -258,26 +270,28 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TYeet(Raw::Yeet id) { constructYeet(id) } or
+    TYeetExpr(Raw::YeetExpr id) { constructYeetExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TYield(Raw::Yield id) { constructYield(id) }
+    TYieldExpr(Raw::YieldExpr id) { constructYieldExpr(id) }
 
   /**
    * INTERNAL: Do not use.
    */
-  class TArray = TElementList or TRepeat;
+  class TArrayExpr = TElementListExpr or TRepeatExpr;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TAstNode = TDeclaration or TExpr or TLabel or TMatchArm or TPat or TStmt or TTypeRef;
+  class TAstNode =
+    TDeclaration or TExpr or TLabel or TMatchArm or TPat or TRecordFieldPat or TRecordLitField or
+        TStmt or TTypeRef or TUnimplemented;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TBlockBase = TAsyncBlock or TBlock or TUnsafeBlock;
+  class TBlockExprBase = TAsyncBlockExpr or TBlockExpr or TUnsafeBlockExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -288,11 +302,12 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArray or TAwait or TBecome or TBinaryOp or TBlockBase or TBox or TBreak or TCall or TCast or
-        TClosure or TConst or TContinue or TField or TIf or TIndex or TInlineAsm or TLet or
-        TLiteral or TLoop or TMatch or TMethodCall or TMissingExpr or TOffsetOf or TPath or
-        TRange or TRecordLit or TRef or TReturn or TTuple or TUnaryOp or TUnderscore or TYeet or
-        TYield;
+    TArrayExpr or TAwaitExpr or TBecomeExpr or TBinaryOpExpr or TBlockExprBase or TBoxExpr or
+        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TConstExpr or TContinueExpr or
+        TFieldExpr or TIfExpr or TIndexExpr or TInlineAsmExpr or TLetExpr or TLiteralExpr or
+        TLoopExpr or TMatchExpr or TMethodCallExpr or TMissingExpr or TOffsetOfExpr or TPathExpr or
+        TRangeExpr or TRecordLitExpr or TRefExpr or TReturnExpr or TTupleExpr or TUnaryOpExpr or
+        TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -319,35 +334,35 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TStmt = TExprStmt or TIfLet or TItemStmt;
+  class TStmt = TExprStmt or TItemStmt or TLetStmt;
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TAsyncBlock`, if possible.
+   * Converts a raw element to a synthesized `TAsyncBlockExpr`, if possible.
    */
   cached
-  TAsyncBlock convertAsyncBlockFromRaw(Raw::Element e) { result = TAsyncBlock(e) }
+  TAsyncBlockExpr convertAsyncBlockExprFromRaw(Raw::Element e) { result = TAsyncBlockExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TAwait`, if possible.
+   * Converts a raw element to a synthesized `TAwaitExpr`, if possible.
    */
   cached
-  TAwait convertAwaitFromRaw(Raw::Element e) { result = TAwait(e) }
+  TAwaitExpr convertAwaitExprFromRaw(Raw::Element e) { result = TAwaitExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBecome`, if possible.
+   * Converts a raw element to a synthesized `TBecomeExpr`, if possible.
    */
   cached
-  TBecome convertBecomeFromRaw(Raw::Element e) { result = TBecome(e) }
+  TBecomeExpr convertBecomeExprFromRaw(Raw::Element e) { result = TBecomeExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBinaryOp`, if possible.
+   * Converts a raw element to a synthesized `TBinaryOpExpr`, if possible.
    */
   cached
-  TBinaryOp convertBinaryOpFromRaw(Raw::Element e) { result = TBinaryOp(e) }
+  TBinaryOpExpr convertBinaryOpExprFromRaw(Raw::Element e) { result = TBinaryOpExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -358,17 +373,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBlock`, if possible.
+   * Converts a raw element to a synthesized `TBlockExpr`, if possible.
    */
   cached
-  TBlock convertBlockFromRaw(Raw::Element e) { result = TBlock(e) }
+  TBlockExpr convertBlockExprFromRaw(Raw::Element e) { result = TBlockExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBox`, if possible.
+   * Converts a raw element to a synthesized `TBoxExpr`, if possible.
    */
   cached
-  TBox convertBoxFromRaw(Raw::Element e) { result = TBox(e) }
+  TBoxExpr convertBoxExprFromRaw(Raw::Element e) { result = TBoxExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -379,38 +394,31 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBreak`, if possible.
+   * Converts a raw element to a synthesized `TBreakExpr`, if possible.
    */
   cached
-  TBreak convertBreakFromRaw(Raw::Element e) { result = TBreak(e) }
+  TBreakExpr convertBreakExprFromRaw(Raw::Element e) { result = TBreakExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TCall`, if possible.
+   * Converts a raw element to a synthesized `TCallExpr`, if possible.
    */
   cached
-  TCall convertCallFromRaw(Raw::Element e) { result = TCall(e) }
+  TCallExpr convertCallExprFromRaw(Raw::Element e) { result = TCallExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TCast`, if possible.
+   * Converts a raw element to a synthesized `TCastExpr`, if possible.
    */
   cached
-  TCast convertCastFromRaw(Raw::Element e) { result = TCast(e) }
+  TCastExpr convertCastExprFromRaw(Raw::Element e) { result = TCastExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TClosure`, if possible.
+   * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   cached
-  TClosure convertClosureFromRaw(Raw::Element e) { result = TClosure(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TConst`, if possible.
-   */
-  cached
-  TConst convertConstFromRaw(Raw::Element e) { result = TConst(e) }
+  TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -421,10 +429,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TContinue`, if possible.
+   * Converts a raw element to a synthesized `TConstExpr`, if possible.
    */
   cached
-  TContinue convertContinueFromRaw(Raw::Element e) { result = TContinue(e) }
+  TConstExpr convertConstExprFromRaw(Raw::Element e) { result = TConstExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TContinueExpr`, if possible.
+   */
+  cached
+  TContinueExpr convertContinueExprFromRaw(Raw::Element e) { result = TContinueExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -442,10 +457,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TElementList`, if possible.
+   * Converts a raw element to a synthesized `TElementListExpr`, if possible.
    */
   cached
-  TElementList convertElementListFromRaw(Raw::Element e) { result = TElementList(e) }
+  TElementListExpr convertElementListExprFromRaw(Raw::Element e) { result = TElementListExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -456,10 +471,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TField`, if possible.
+   * Converts a raw element to a synthesized `TFieldExpr`, if possible.
    */
   cached
-  TField convertFieldFromRaw(Raw::Element e) { result = TField(e) }
+  TFieldExpr convertFieldExprFromRaw(Raw::Element e) { result = TFieldExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -470,31 +485,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TIf`, if possible.
+   * Converts a raw element to a synthesized `TIfExpr`, if possible.
    */
   cached
-  TIf convertIfFromRaw(Raw::Element e) { result = TIf(e) }
+  TIfExpr convertIfExprFromRaw(Raw::Element e) { result = TIfExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TIfLet`, if possible.
+   * Converts a raw element to a synthesized `TIndexExpr`, if possible.
    */
   cached
-  TIfLet convertIfLetFromRaw(Raw::Element e) { result = TIfLet(e) }
+  TIndexExpr convertIndexExprFromRaw(Raw::Element e) { result = TIndexExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TIndex`, if possible.
+   * Converts a raw element to a synthesized `TInlineAsmExpr`, if possible.
    */
   cached
-  TIndex convertIndexFromRaw(Raw::Element e) { result = TIndex(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TInlineAsm`, if possible.
-   */
-  cached
-  TInlineAsm convertInlineAsmFromRaw(Raw::Element e) { result = TInlineAsm(e) }
+  TInlineAsmExpr convertInlineAsmExprFromRaw(Raw::Element e) { result = TInlineAsmExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -512,10 +520,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLet`, if possible.
+   * Converts a raw element to a synthesized `TLetExpr`, if possible.
    */
   cached
-  TLet convertLetFromRaw(Raw::Element e) { result = TLet(e) }
+  TLetExpr convertLetExprFromRaw(Raw::Element e) { result = TLetExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLetStmt`, if possible.
+   */
+  cached
+  TLetStmt convertLetStmtFromRaw(Raw::Element e) { result = TLetStmt(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -526,24 +541,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLiteral`, if possible.
+   * Converts a raw element to a synthesized `TLiteralExpr`, if possible.
    */
   cached
-  TLiteral convertLiteralFromRaw(Raw::Element e) { result = TLiteral(e) }
+  TLiteralExpr convertLiteralExprFromRaw(Raw::Element e) { result = TLiteralExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLoop`, if possible.
+   * Converts a raw element to a synthesized `TLoopExpr`, if possible.
    */
   cached
-  TLoop convertLoopFromRaw(Raw::Element e) { result = TLoop(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TMatch`, if possible.
-   */
-  cached
-  TMatch convertMatchFromRaw(Raw::Element e) { result = TMatch(e) }
+  TLoopExpr convertLoopExprFromRaw(Raw::Element e) { result = TLoopExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -554,10 +562,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TMethodCall`, if possible.
+   * Converts a raw element to a synthesized `TMatchExpr`, if possible.
    */
   cached
-  TMethodCall convertMethodCallFromRaw(Raw::Element e) { result = TMethodCall(e) }
+  TMatchExpr convertMatchExprFromRaw(Raw::Element e) { result = TMatchExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMethodCallExpr`, if possible.
+   */
+  cached
+  TMethodCallExpr convertMethodCallExprFromRaw(Raw::Element e) { result = TMethodCallExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -582,10 +597,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOffsetOf`, if possible.
+   * Converts a raw element to a synthesized `TOffsetOfExpr`, if possible.
    */
   cached
-  TOffsetOf convertOffsetOfFromRaw(Raw::Element e) { result = TOffsetOf(e) }
+  TOffsetOfExpr convertOffsetOfExprFromRaw(Raw::Element e) { result = TOffsetOfExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -596,10 +611,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPath`, if possible.
+   * Converts a raw element to a synthesized `TPathExpr`, if possible.
    */
   cached
-  TPath convertPathFromRaw(Raw::Element e) { result = TPath(e) }
+  TPathExpr convertPathExprFromRaw(Raw::Element e) { result = TPathExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -610,10 +625,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRange`, if possible.
+   * Converts a raw element to a synthesized `TRangeExpr`, if possible.
    */
   cached
-  TRange convertRangeFromRaw(Raw::Element e) { result = TRange(e) }
+  TRangeExpr convertRangeExprFromRaw(Raw::Element e) { result = TRangeExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -624,10 +639,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRecordLit`, if possible.
+   * Converts a raw element to a synthesized `TRecordFieldPat`, if possible.
    */
   cached
-  TRecordLit convertRecordLitFromRaw(Raw::Element e) { result = TRecordLit(e) }
+  TRecordFieldPat convertRecordFieldPatFromRaw(Raw::Element e) { result = TRecordFieldPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRecordLitExpr`, if possible.
+   */
+  cached
+  TRecordLitExpr convertRecordLitExprFromRaw(Raw::Element e) { result = TRecordLitExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRecordLitField`, if possible.
+   */
+  cached
+  TRecordLitField convertRecordLitFieldFromRaw(Raw::Element e) { result = TRecordLitField(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -638,10 +667,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRef`, if possible.
+   * Converts a raw element to a synthesized `TRefExpr`, if possible.
    */
   cached
-  TRef convertRefFromRaw(Raw::Element e) { result = TRef(e) }
+  TRefExpr convertRefExprFromRaw(Raw::Element e) { result = TRefExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -652,17 +681,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRepeat`, if possible.
+   * Converts a raw element to a synthesized `TRepeatExpr`, if possible.
    */
   cached
-  TRepeat convertRepeatFromRaw(Raw::Element e) { result = TRepeat(e) }
+  TRepeatExpr convertRepeatExprFromRaw(Raw::Element e) { result = TRepeatExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TReturn`, if possible.
+   * Converts a raw element to a synthesized `TReturnExpr`, if possible.
    */
   cached
-  TReturn convertReturnFromRaw(Raw::Element e) { result = TReturn(e) }
+  TReturnExpr convertReturnExprFromRaw(Raw::Element e) { result = TReturnExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -673,10 +702,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TTuple`, if possible.
+   * Converts a raw element to a synthesized `TTupleExpr`, if possible.
    */
   cached
-  TTuple convertTupleFromRaw(Raw::Element e) { result = TTuple(e) }
+  TTupleExpr convertTupleExprFromRaw(Raw::Element e) { result = TTupleExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -701,17 +730,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnaryOp`, if possible.
+   * Converts a raw element to a synthesized `TUnaryOpExpr`, if possible.
    */
   cached
-  TUnaryOp convertUnaryOpFromRaw(Raw::Element e) { result = TUnaryOp(e) }
+  TUnaryOpExpr convertUnaryOpExprFromRaw(Raw::Element e) { result = TUnaryOpExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnderscore`, if possible.
+   * Converts a raw element to a synthesized `TUnderscoreExpr`, if possible.
    */
   cached
-  TUnderscore convertUnderscoreFromRaw(Raw::Element e) { result = TUnderscore(e) }
+  TUnderscoreExpr convertUnderscoreExprFromRaw(Raw::Element e) { result = TUnderscoreExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnimplemented`, if possible.
+   */
+  cached
+  TUnimplemented convertUnimplementedFromRaw(Raw::Element e) { result = TUnimplemented(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -729,10 +765,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnsafeBlock`, if possible.
+   * Converts a raw element to a synthesized `TUnsafeBlockExpr`, if possible.
    */
   cached
-  TUnsafeBlock convertUnsafeBlockFromRaw(Raw::Element e) { result = TUnsafeBlock(e) }
+  TUnsafeBlockExpr convertUnsafeBlockExprFromRaw(Raw::Element e) { result = TUnsafeBlockExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -743,27 +779,27 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TYeet`, if possible.
+   * Converts a raw element to a synthesized `TYeetExpr`, if possible.
    */
   cached
-  TYeet convertYeetFromRaw(Raw::Element e) { result = TYeet(e) }
+  TYeetExpr convertYeetExprFromRaw(Raw::Element e) { result = TYeetExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TYield`, if possible.
+   * Converts a raw element to a synthesized `TYieldExpr`, if possible.
    */
   cached
-  TYield convertYieldFromRaw(Raw::Element e) { result = TYield(e) }
+  TYieldExpr convertYieldExprFromRaw(Raw::Element e) { result = TYieldExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TArray`, if possible.
+   * Converts a raw DB element to a synthesized `TArrayExpr`, if possible.
    */
   cached
-  TArray convertArrayFromRaw(Raw::Element e) {
-    result = convertElementListFromRaw(e)
+  TArrayExpr convertArrayExprFromRaw(Raw::Element e) {
+    result = convertElementListExprFromRaw(e)
     or
-    result = convertRepeatFromRaw(e)
+    result = convertRepeatExprFromRaw(e)
   }
 
   /**
@@ -782,22 +818,28 @@ module Synth {
     or
     result = convertPatFromRaw(e)
     or
+    result = convertRecordFieldPatFromRaw(e)
+    or
+    result = convertRecordLitFieldFromRaw(e)
+    or
     result = convertStmtFromRaw(e)
     or
     result = convertTypeRefFromRaw(e)
+    or
+    result = convertUnimplementedFromRaw(e)
   }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TBlockBase`, if possible.
+   * Converts a raw DB element to a synthesized `TBlockExprBase`, if possible.
    */
   cached
-  TBlockBase convertBlockBaseFromRaw(Raw::Element e) {
-    result = convertAsyncBlockFromRaw(e)
+  TBlockExprBase convertBlockExprBaseFromRaw(Raw::Element e) {
+    result = convertAsyncBlockExprFromRaw(e)
     or
-    result = convertBlockFromRaw(e)
+    result = convertBlockExprFromRaw(e)
     or
-    result = convertUnsafeBlockFromRaw(e)
+    result = convertUnsafeBlockExprFromRaw(e)
   }
 
   /**
@@ -830,71 +872,71 @@ module Synth {
    */
   cached
   TExpr convertExprFromRaw(Raw::Element e) {
-    result = convertArrayFromRaw(e)
+    result = convertArrayExprFromRaw(e)
     or
-    result = convertAwaitFromRaw(e)
+    result = convertAwaitExprFromRaw(e)
     or
-    result = convertBecomeFromRaw(e)
+    result = convertBecomeExprFromRaw(e)
     or
-    result = convertBinaryOpFromRaw(e)
+    result = convertBinaryOpExprFromRaw(e)
     or
-    result = convertBlockBaseFromRaw(e)
+    result = convertBlockExprBaseFromRaw(e)
     or
-    result = convertBoxFromRaw(e)
+    result = convertBoxExprFromRaw(e)
     or
-    result = convertBreakFromRaw(e)
+    result = convertBreakExprFromRaw(e)
     or
-    result = convertCallFromRaw(e)
+    result = convertCallExprFromRaw(e)
     or
-    result = convertCastFromRaw(e)
+    result = convertCastExprFromRaw(e)
     or
-    result = convertClosureFromRaw(e)
+    result = convertClosureExprFromRaw(e)
     or
-    result = convertConstFromRaw(e)
+    result = convertConstExprFromRaw(e)
     or
-    result = convertContinueFromRaw(e)
+    result = convertContinueExprFromRaw(e)
     or
-    result = convertFieldFromRaw(e)
+    result = convertFieldExprFromRaw(e)
     or
-    result = convertIfFromRaw(e)
+    result = convertIfExprFromRaw(e)
     or
-    result = convertIndexFromRaw(e)
+    result = convertIndexExprFromRaw(e)
     or
-    result = convertInlineAsmFromRaw(e)
+    result = convertInlineAsmExprFromRaw(e)
     or
-    result = convertLetFromRaw(e)
+    result = convertLetExprFromRaw(e)
     or
-    result = convertLiteralFromRaw(e)
+    result = convertLiteralExprFromRaw(e)
     or
-    result = convertLoopFromRaw(e)
+    result = convertLoopExprFromRaw(e)
     or
-    result = convertMatchFromRaw(e)
+    result = convertMatchExprFromRaw(e)
     or
-    result = convertMethodCallFromRaw(e)
+    result = convertMethodCallExprFromRaw(e)
     or
     result = convertMissingExprFromRaw(e)
     or
-    result = convertOffsetOfFromRaw(e)
+    result = convertOffsetOfExprFromRaw(e)
     or
-    result = convertPathFromRaw(e)
+    result = convertPathExprFromRaw(e)
     or
-    result = convertRangeFromRaw(e)
+    result = convertRangeExprFromRaw(e)
     or
-    result = convertRecordLitFromRaw(e)
+    result = convertRecordLitExprFromRaw(e)
     or
-    result = convertRefFromRaw(e)
+    result = convertRefExprFromRaw(e)
     or
-    result = convertReturnFromRaw(e)
+    result = convertReturnExprFromRaw(e)
     or
-    result = convertTupleFromRaw(e)
+    result = convertTupleExprFromRaw(e)
     or
-    result = convertUnaryOpFromRaw(e)
+    result = convertUnaryOpExprFromRaw(e)
     or
-    result = convertUnderscoreFromRaw(e)
+    result = convertUnderscoreExprFromRaw(e)
     or
-    result = convertYeetFromRaw(e)
+    result = convertYeetExprFromRaw(e)
     or
-    result = convertYieldFromRaw(e)
+    result = convertYieldExprFromRaw(e)
   }
 
   /**
@@ -969,38 +1011,38 @@ module Synth {
   TStmt convertStmtFromRaw(Raw::Element e) {
     result = convertExprStmtFromRaw(e)
     or
-    result = convertIfLetFromRaw(e)
-    or
     result = convertItemStmtFromRaw(e)
+    or
+    result = convertLetStmtFromRaw(e)
   }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAsyncBlock` to a raw DB element, if possible.
+   * Converts a synthesized `TAsyncBlockExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertAsyncBlockToRaw(TAsyncBlock e) { e = TAsyncBlock(result) }
+  Raw::Element convertAsyncBlockExprToRaw(TAsyncBlockExpr e) { e = TAsyncBlockExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAwait` to a raw DB element, if possible.
+   * Converts a synthesized `TAwaitExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertAwaitToRaw(TAwait e) { e = TAwait(result) }
+  Raw::Element convertAwaitExprToRaw(TAwaitExpr e) { e = TAwaitExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBecome` to a raw DB element, if possible.
+   * Converts a synthesized `TBecomeExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBecomeToRaw(TBecome e) { e = TBecome(result) }
+  Raw::Element convertBecomeExprToRaw(TBecomeExpr e) { e = TBecomeExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBinaryOp` to a raw DB element, if possible.
+   * Converts a synthesized `TBinaryOpExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBinaryOpToRaw(TBinaryOp e) { e = TBinaryOp(result) }
+  Raw::Element convertBinaryOpExprToRaw(TBinaryOpExpr e) { e = TBinaryOpExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1011,17 +1053,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBlock` to a raw DB element, if possible.
+   * Converts a synthesized `TBlockExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBlockToRaw(TBlock e) { e = TBlock(result) }
+  Raw::Element convertBlockExprToRaw(TBlockExpr e) { e = TBlockExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBox` to a raw DB element, if possible.
+   * Converts a synthesized `TBoxExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBoxToRaw(TBox e) { e = TBox(result) }
+  Raw::Element convertBoxExprToRaw(TBoxExpr e) { e = TBoxExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1032,38 +1074,31 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBreak` to a raw DB element, if possible.
+   * Converts a synthesized `TBreakExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBreakToRaw(TBreak e) { e = TBreak(result) }
+  Raw::Element convertBreakExprToRaw(TBreakExpr e) { e = TBreakExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCall` to a raw DB element, if possible.
+   * Converts a synthesized `TCallExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertCallToRaw(TCall e) { e = TCall(result) }
+  Raw::Element convertCallExprToRaw(TCallExpr e) { e = TCallExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCast` to a raw DB element, if possible.
+   * Converts a synthesized `TCastExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertCastToRaw(TCast e) { e = TCast(result) }
+  Raw::Element convertCastExprToRaw(TCastExpr e) { e = TCastExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TClosure` to a raw DB element, if possible.
+   * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertClosureToRaw(TClosure e) { e = TClosure(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TConst` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertConstToRaw(TConst e) { e = TConst(result) }
+  Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1074,10 +1109,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TContinue` to a raw DB element, if possible.
+   * Converts a synthesized `TConstExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertContinueToRaw(TContinue e) { e = TContinue(result) }
+  Raw::Element convertConstExprToRaw(TConstExpr e) { e = TConstExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TContinueExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertContinueExprToRaw(TContinueExpr e) { e = TContinueExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1095,10 +1137,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TElementList` to a raw DB element, if possible.
+   * Converts a synthesized `TElementListExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertElementListToRaw(TElementList e) { e = TElementList(result) }
+  Raw::Element convertElementListExprToRaw(TElementListExpr e) { e = TElementListExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1109,10 +1151,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TField` to a raw DB element, if possible.
+   * Converts a synthesized `TFieldExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertFieldToRaw(TField e) { e = TField(result) }
+  Raw::Element convertFieldExprToRaw(TFieldExpr e) { e = TFieldExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1123,31 +1165,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TIf` to a raw DB element, if possible.
+   * Converts a synthesized `TIfExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertIfToRaw(TIf e) { e = TIf(result) }
+  Raw::Element convertIfExprToRaw(TIfExpr e) { e = TIfExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TIfLet` to a raw DB element, if possible.
+   * Converts a synthesized `TIndexExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertIfLetToRaw(TIfLet e) { e = TIfLet(result) }
+  Raw::Element convertIndexExprToRaw(TIndexExpr e) { e = TIndexExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TIndex` to a raw DB element, if possible.
+   * Converts a synthesized `TInlineAsmExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertIndexToRaw(TIndex e) { e = TIndex(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TInlineAsm` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertInlineAsmToRaw(TInlineAsm e) { e = TInlineAsm(result) }
+  Raw::Element convertInlineAsmExprToRaw(TInlineAsmExpr e) { e = TInlineAsmExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1165,10 +1200,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLet` to a raw DB element, if possible.
+   * Converts a synthesized `TLetExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLetToRaw(TLet e) { e = TLet(result) }
+  Raw::Element convertLetExprToRaw(TLetExpr e) { e = TLetExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLetStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertLetStmtToRaw(TLetStmt e) { e = TLetStmt(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1179,24 +1221,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLiteral` to a raw DB element, if possible.
+   * Converts a synthesized `TLiteralExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLiteralToRaw(TLiteral e) { e = TLiteral(result) }
+  Raw::Element convertLiteralExprToRaw(TLiteralExpr e) { e = TLiteralExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLoop` to a raw DB element, if possible.
+   * Converts a synthesized `TLoopExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLoopToRaw(TLoop e) { e = TLoop(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TMatch` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertMatchToRaw(TMatch e) { e = TMatch(result) }
+  Raw::Element convertLoopExprToRaw(TLoopExpr e) { e = TLoopExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1207,10 +1242,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TMethodCall` to a raw DB element, if possible.
+   * Converts a synthesized `TMatchExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertMethodCallToRaw(TMethodCall e) { e = TMethodCall(result) }
+  Raw::Element convertMatchExprToRaw(TMatchExpr e) { e = TMatchExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMethodCallExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMethodCallExprToRaw(TMethodCallExpr e) { e = TMethodCallExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1235,10 +1277,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TOffsetOf` to a raw DB element, if possible.
+   * Converts a synthesized `TOffsetOfExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertOffsetOfToRaw(TOffsetOf e) { e = TOffsetOf(result) }
+  Raw::Element convertOffsetOfExprToRaw(TOffsetOfExpr e) { e = TOffsetOfExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1249,10 +1291,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TPath` to a raw DB element, if possible.
+   * Converts a synthesized `TPathExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertPathToRaw(TPath e) { e = TPath(result) }
+  Raw::Element convertPathExprToRaw(TPathExpr e) { e = TPathExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1263,10 +1305,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRange` to a raw DB element, if possible.
+   * Converts a synthesized `TRangeExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRangeToRaw(TRange e) { e = TRange(result) }
+  Raw::Element convertRangeExprToRaw(TRangeExpr e) { e = TRangeExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1277,10 +1319,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRecordLit` to a raw DB element, if possible.
+   * Converts a synthesized `TRecordFieldPat` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRecordLitToRaw(TRecordLit e) { e = TRecordLit(result) }
+  Raw::Element convertRecordFieldPatToRaw(TRecordFieldPat e) { e = TRecordFieldPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRecordLitExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRecordLitExprToRaw(TRecordLitExpr e) { e = TRecordLitExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRecordLitField` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRecordLitFieldToRaw(TRecordLitField e) { e = TRecordLitField(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1291,10 +1347,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRef` to a raw DB element, if possible.
+   * Converts a synthesized `TRefExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRefToRaw(TRef e) { e = TRef(result) }
+  Raw::Element convertRefExprToRaw(TRefExpr e) { e = TRefExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1305,17 +1361,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRepeat` to a raw DB element, if possible.
+   * Converts a synthesized `TRepeatExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRepeatToRaw(TRepeat e) { e = TRepeat(result) }
+  Raw::Element convertRepeatExprToRaw(TRepeatExpr e) { e = TRepeatExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TReturn` to a raw DB element, if possible.
+   * Converts a synthesized `TReturnExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertReturnToRaw(TReturn e) { e = TReturn(result) }
+  Raw::Element convertReturnExprToRaw(TReturnExpr e) { e = TReturnExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1326,10 +1382,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTuple` to a raw DB element, if possible.
+   * Converts a synthesized `TTupleExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertTupleToRaw(TTuple e) { e = TTuple(result) }
+  Raw::Element convertTupleExprToRaw(TTupleExpr e) { e = TTupleExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1354,17 +1410,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnaryOp` to a raw DB element, if possible.
+   * Converts a synthesized `TUnaryOpExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnaryOpToRaw(TUnaryOp e) { e = TUnaryOp(result) }
+  Raw::Element convertUnaryOpExprToRaw(TUnaryOpExpr e) { e = TUnaryOpExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnderscore` to a raw DB element, if possible.
+   * Converts a synthesized `TUnderscoreExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnderscoreToRaw(TUnderscore e) { e = TUnderscore(result) }
+  Raw::Element convertUnderscoreExprToRaw(TUnderscoreExpr e) { e = TUnderscoreExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnimplemented` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertUnimplementedToRaw(TUnimplemented e) { e = TUnimplemented(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1382,10 +1445,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnsafeBlock` to a raw DB element, if possible.
+   * Converts a synthesized `TUnsafeBlockExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnsafeBlockToRaw(TUnsafeBlock e) { e = TUnsafeBlock(result) }
+  Raw::Element convertUnsafeBlockExprToRaw(TUnsafeBlockExpr e) { e = TUnsafeBlockExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1396,27 +1459,27 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TYeet` to a raw DB element, if possible.
+   * Converts a synthesized `TYeetExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertYeetToRaw(TYeet e) { e = TYeet(result) }
+  Raw::Element convertYeetExprToRaw(TYeetExpr e) { e = TYeetExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TYield` to a raw DB element, if possible.
+   * Converts a synthesized `TYieldExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertYieldToRaw(TYield e) { e = TYield(result) }
+  Raw::Element convertYieldExprToRaw(TYieldExpr e) { e = TYieldExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TArray` to a raw DB element, if possible.
+   * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertArrayToRaw(TArray e) {
-    result = convertElementListToRaw(e)
+  Raw::Element convertArrayExprToRaw(TArrayExpr e) {
+    result = convertElementListExprToRaw(e)
     or
-    result = convertRepeatToRaw(e)
+    result = convertRepeatExprToRaw(e)
   }
 
   /**
@@ -1435,22 +1498,28 @@ module Synth {
     or
     result = convertPatToRaw(e)
     or
+    result = convertRecordFieldPatToRaw(e)
+    or
+    result = convertRecordLitFieldToRaw(e)
+    or
     result = convertStmtToRaw(e)
     or
     result = convertTypeRefToRaw(e)
+    or
+    result = convertUnimplementedToRaw(e)
   }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBlockBase` to a raw DB element, if possible.
+   * Converts a synthesized `TBlockExprBase` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBlockBaseToRaw(TBlockBase e) {
-    result = convertAsyncBlockToRaw(e)
+  Raw::Element convertBlockExprBaseToRaw(TBlockExprBase e) {
+    result = convertAsyncBlockExprToRaw(e)
     or
-    result = convertBlockToRaw(e)
+    result = convertBlockExprToRaw(e)
     or
-    result = convertUnsafeBlockToRaw(e)
+    result = convertUnsafeBlockExprToRaw(e)
   }
 
   /**
@@ -1483,71 +1552,71 @@ module Synth {
    */
   cached
   Raw::Element convertExprToRaw(TExpr e) {
-    result = convertArrayToRaw(e)
+    result = convertArrayExprToRaw(e)
     or
-    result = convertAwaitToRaw(e)
+    result = convertAwaitExprToRaw(e)
     or
-    result = convertBecomeToRaw(e)
+    result = convertBecomeExprToRaw(e)
     or
-    result = convertBinaryOpToRaw(e)
+    result = convertBinaryOpExprToRaw(e)
     or
-    result = convertBlockBaseToRaw(e)
+    result = convertBlockExprBaseToRaw(e)
     or
-    result = convertBoxToRaw(e)
+    result = convertBoxExprToRaw(e)
     or
-    result = convertBreakToRaw(e)
+    result = convertBreakExprToRaw(e)
     or
-    result = convertCallToRaw(e)
+    result = convertCallExprToRaw(e)
     or
-    result = convertCastToRaw(e)
+    result = convertCastExprToRaw(e)
     or
-    result = convertClosureToRaw(e)
+    result = convertClosureExprToRaw(e)
     or
-    result = convertConstToRaw(e)
+    result = convertConstExprToRaw(e)
     or
-    result = convertContinueToRaw(e)
+    result = convertContinueExprToRaw(e)
     or
-    result = convertFieldToRaw(e)
+    result = convertFieldExprToRaw(e)
     or
-    result = convertIfToRaw(e)
+    result = convertIfExprToRaw(e)
     or
-    result = convertIndexToRaw(e)
+    result = convertIndexExprToRaw(e)
     or
-    result = convertInlineAsmToRaw(e)
+    result = convertInlineAsmExprToRaw(e)
     or
-    result = convertLetToRaw(e)
+    result = convertLetExprToRaw(e)
     or
-    result = convertLiteralToRaw(e)
+    result = convertLiteralExprToRaw(e)
     or
-    result = convertLoopToRaw(e)
+    result = convertLoopExprToRaw(e)
     or
-    result = convertMatchToRaw(e)
+    result = convertMatchExprToRaw(e)
     or
-    result = convertMethodCallToRaw(e)
+    result = convertMethodCallExprToRaw(e)
     or
     result = convertMissingExprToRaw(e)
     or
-    result = convertOffsetOfToRaw(e)
+    result = convertOffsetOfExprToRaw(e)
     or
-    result = convertPathToRaw(e)
+    result = convertPathExprToRaw(e)
     or
-    result = convertRangeToRaw(e)
+    result = convertRangeExprToRaw(e)
     or
-    result = convertRecordLitToRaw(e)
+    result = convertRecordLitExprToRaw(e)
     or
-    result = convertRefToRaw(e)
+    result = convertRefExprToRaw(e)
     or
-    result = convertReturnToRaw(e)
+    result = convertReturnExprToRaw(e)
     or
-    result = convertTupleToRaw(e)
+    result = convertTupleExprToRaw(e)
     or
-    result = convertUnaryOpToRaw(e)
+    result = convertUnaryOpExprToRaw(e)
     or
-    result = convertUnderscoreToRaw(e)
+    result = convertUnderscoreExprToRaw(e)
     or
-    result = convertYeetToRaw(e)
+    result = convertYeetExprToRaw(e)
     or
-    result = convertYieldToRaw(e)
+    result = convertYieldExprToRaw(e)
   }
 
   /**
@@ -1622,8 +1691,8 @@ module Synth {
   Raw::Element convertStmtToRaw(TStmt e) {
     result = convertExprStmtToRaw(e)
     or
-    result = convertIfLetToRaw(e)
-    or
     result = convertItemStmtToRaw(e)
+    or
+    result = convertLetStmtToRaw(e)
   }
 }
