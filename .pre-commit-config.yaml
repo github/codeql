@@ -76,3 +76,10 @@ repos:
         language: system
         entry: bazel run //rust/codegen -- --quiet
         pass_filenames: false
+
+      - id: rust-lint
+        name: Run fmt and clippy on Rust code
+        files: ^rust/extractor/(.*rs|Cargo.toml)$
+        language: system
+        entry: python3 rust/lint.py
+        pass_filenames: false
