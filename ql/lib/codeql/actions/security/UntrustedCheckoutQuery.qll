@@ -1,11 +1,89 @@
 import actions
-import codeql.actions.DataFlow
+private import codeql.actions.DataFlow
+private import codeql.actions.TaintTracking
 
-string getStepCWD() {
-  // TODO: This should be the path of the git command.
-  // Read if from the step's CWD, workspace or look for a cd command.
-  result = "?"
+/**
+ * A taint-tracking configuration for PR HEAD references flowing
+ * into actions/checkout's ref argument.
+ */
+private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    // `ref` argument contains the PR id/number or head ref
+    exists(Expression e |
+      source.asExpr() = e and
+      (
+        containsHeadRef(e.getExpression()) or
+        containsPullRequestNumber(e.getExpression())
+      )
+    )
+    or
+    // 3rd party actions returning the PR head ref
+    exists(StepsExpression e, UsesStep step |
+      source.asExpr() = e and
+      e.getStepId() = step.getId() and
+      (
+        step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_ref"
+        or
+        step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_ref"
+        or
+        step.getCallee() = "alessbell/pull-request-comment-branch" and e.getFieldName() = "head_ref"
+        or
+        step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_ref"
+        or
+        step.getCallee() = "potiuk/get-workflow-origin" and
+        e.getFieldName() = ["sourceHeadBranch", "pullRequestNumber"]
+        or
+        step.getCallee() = "github/branch-deploy" and e.getFieldName() = ["ref", "fork_ref"]
+      )
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Uses uses |
+      uses.getCallee() = "actions/checkout" and
+      uses.getArgumentExpr("ref") = sink.asExpr()
+    )
+  }
 }
+
+module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCheckoutConfig>;
+
+private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    // `ref` argument contains the PR head/merge commit sha
+    exists(Expression e |
+      source.asExpr() = e and
+      containsHeadSHA(e.getExpression())
+    )
+    or
+    // 3rd party actions returning the PR head sha
+    exists(StepsExpression e, UsesStep step |
+      source.asExpr() = e and
+      e.getStepId() = step.getId() and
+      (
+        step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_sha"
+        or
+        step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_sha"
+        or
+        step.getCallee() = "alessbell/pull-request-comment-branch" and e.getFieldName() = "head_sha"
+        or
+        step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_sha"
+        or
+        step.getCallee() = "potiuk/get-workflow-origin" and
+        e.getFieldName() = ["sourceHeadSha", "mergeCommitSha"]
+      )
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Uses uses |
+      uses.getCallee() = "actions/checkout" and
+      uses.getArgumentExpr("ref") = sink.asExpr()
+    )
+  }
+}
+
+module ActionsSHACheckoutFlow = TaintTracking::Global<ActionsSHACheckoutConfig>;
 
 bindingset[s]
 predicate containsPullRequestNumber(string s) {
@@ -73,6 +151,12 @@ predicate containsHeadRef(string s) {
   )
 }
 
+private string getStepCWD() {
+  // TODO: This should be the path of the git command.
+  // Read if from the step's CWD, workspace or look for a cd command.
+  result = "?"
+}
+
 /** Checkout of a Pull Request HEAD */
 abstract class PRHeadCheckoutStep extends Step {
   abstract string getPath();
@@ -89,35 +173,9 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
   ActionsMutableRefCheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      // ref argument contains the PR id/number or head ref/sha
-      exists(Expression e |
-        (
-          containsHeadRef(e.getExpression()) or
-          containsPullRequestNumber(e.getExpression())
-        ) and
-        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
-      )
-      or
-      // 3rd party actions returning the PR head sha/ref
-      exists(UsesStep step |
-        (
-          step.getCallee() =
-            [
-              "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
-              "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
-            ] and
-          // TODO: This should be read step of the head_sha or head_ref output vars
-          this.getArgument("ref").regexpMatch(".*(head_ref).*")
-          or
-          step.getCallee() = "potiuk/get-workflow-origin" and
-          // TODO: This should be read step of the ref output var
-          this.getArgument("ref").matches("%." + ["sourceHeadBranch", "pullRequestNumber"])
-          or
-          step.getCallee() = "github/branch-deploy" and
-          // TODO: This should be read step of the ref output var
-          this.getArgument("ref").matches("%.ref%")
-        ) and
-        DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
+      exists(ActionsMutableRefCheckoutFlow::PathNode sink |
+        ActionsMutableRefCheckoutFlow::flowPath(_, sink) and
+        sink.getNode().asExpr() = this.getArgumentExpr("ref")
       )
       or
       // heuristic base on the step id and field name
@@ -159,27 +217,9 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   ActionsSHACheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      // ref argument contains the PR id/number or head ref/sha
-      exists(Expression e |
-        containsHeadSHA(e.getExpression()) and
-        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
-      )
-      or
-      // 3rd party actions returning the PR head sha/ref
-      exists(UsesStep step |
-        (
-          step.getCallee() =
-            [
-              "eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch",
-              "alessbell/pull-request-comment-branch", "gotson/pull-request-comment-branch"
-            ] and
-          this.getArgument("ref").regexpMatch(".*(head_sha).*")
-          or
-          step.getCallee() = "potiuk/get-workflow-origin" and
-          // TODO: This should be read step of the ref output var
-          this.getArgument("ref").matches("%." + ["sourceHeadSha", "mergeCommitSha"])
-        ) and
-        DataFlow::hasLocalFlowExpr(step, this.getArgumentExpr("ref"))
+      exists(ActionsSHACheckoutFlow::PathNode sink |
+        ActionsSHACheckoutFlow::flowPath(_, sink) and
+        sink.getNode().asExpr() = this.getArgumentExpr("ref")
       )
       or
       // heuristic base on the step id and field name
