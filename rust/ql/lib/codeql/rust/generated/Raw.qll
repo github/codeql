@@ -103,6 +103,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A match arm. For example:
+   * ```
+   * match x {
+   *     Some(y) => y,
+   *     None => 0,
+   * }
+   * ```
+   * ```
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * }
+   * ```
    */
   class MatchArm extends @match_arm, AstNode {
     override string toString() { result = "MatchArm" }
@@ -147,6 +160,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field in a record literal. For example `a: 1` in:
+   * ```
+   * Foo { a: 1, b: 2 };
+   * ```
    */
   class RecordLitField extends @record_lit_field, AstNode {
     override string toString() { result = "RecordLitField" }
@@ -183,11 +200,23 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An array expression. For example:
+   * ```
+   * [1, 2, 3];
+   * [1; 10];
+   * ```
    */
   class ArrayExpr extends @array_expr, Expr { }
 
   /**
    * INTERNAL: Do not use.
+   * An `await` expression. For example:
+   * ```
+   * async {
+   *     let x = foo().await;
+   *     x
+   * }
+   * ```
    */
   class AwaitExpr extends @await_expr, Expr {
     override string toString() { result = "AwaitExpr" }
@@ -200,6 +229,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `become` expression. For example:
+   * ```
+   * fn fact_a(n: i32, a: i32) -> i32 {
+   *      if n == 0 {
+   *          a
+   *      } else {
+   *          become fact_a(n - 1, n * a)
+   *      }
+   *  }    ```
    */
   class BecomeExpr extends @become_expr, Expr {
     override string toString() { result = "BecomeExpr" }
@@ -212,6 +250,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A binary operation expression. For example:
+   * ```
+   * x + y;
+   * x && y;
+   * x <= y;
+   * x = y;
+   * x += y;
+   * ```
    */
   class BinaryOpExpr extends @binary_op_expr, Expr {
     override string toString() { result = "BinaryOpExpr" }
@@ -266,6 +312,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A box expression. For example:
+   * ```
+   * let x = #[rustc_box] Box::new(42);
+   * ```
    */
   class BoxExpr extends @box_expr, Expr {
     override string toString() { result = "BoxExpr" }
@@ -290,6 +340,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A break expression. For example:
+   * ```
+   * loop {
+   *     if not_ready() {
+   *         break;
+   *      }
+   * }
+   * ```
+   * ```
+   * let x = 'label: loop {
+   *     if done() {
+   *         break 'label 42;
+   *     }
+   * };
+   * ```
    */
   class BreakExpr extends @break_expr, Expr {
     override string toString() { result = "BreakExpr" }
@@ -307,6 +372,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function call expression. For example:
+   * ```
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * foo(1) = 4;
+   * ```
    */
   class CallExpr extends @call_expr, Expr {
     override string toString() { result = "CallExpr" }
@@ -329,6 +401,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A cast expression. For example:
+   * ```
+   * value as u64;
+   * ```
    */
   class CastExpr extends @cast_expr, Expr {
     override string toString() { result = "CastExpr" }
@@ -346,6 +422,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A closure expression. For example:
+   * ```
+   * |x| x + 1;
+   * move |x: i32| -> i32 { x + 1 };
+   * async |x: i32, y| x + y;
+   *  #[coroutine]
+   * |x| yield x;
+   *  #[coroutine]
+   *  static |x| yield x;
+   * ```
    */
   class ClosureExpr extends @closure_expr, Expr {
     override string toString() { result = "ClosureExpr" }
@@ -395,6 +481,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `const` block expression. For example:
+   * ```
+   * if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
+   *     return false;
+   * }
+   * ```
    */
   class ConstExpr extends @const_expr, Expr {
     override string toString() { result = "ConstExpr" }
@@ -407,6 +499,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A continue expression. For example:
+   * ```
+   * loop {
+   *     if not_ready() {
+   *         continue;
+   *     }
+   * }
+   * ```
+   * ```
+   * 'label: loop {
+   *     if not_ready() {
+   *         continue 'label;
+   *     }
+   * }
+   * ```
    */
   class ContinueExpr extends @continue_expr, Expr {
     override string toString() { result = "ContinueExpr" }
@@ -419,6 +526,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression statement. For example:
+   * ```
+   * start();
+   * finish()
+   * use std::env;
+   * ```
    */
   class ExprStmt extends @expr_stmt, Stmt {
     override string toString() { result = "ExprStmt" }
@@ -436,6 +549,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field access expression. For example:
+   * ```
+   * x.foo
+   * ```
    */
   class FieldExpr extends @field_expr, Expr {
     override string toString() { result = "FieldExpr" }
@@ -480,6 +597,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An `if` expression. For example:
+   * ```
+   * if x == 42 {
+   *     println!("that's the answer");
+   * }
+   * ```
+   * ```
+   * let y = if x > 0 {
+   *     1
+   * } else {
+   *     0
+   * }
+   * ```
    */
   class IfExpr extends @if_expr, Expr {
     override string toString() { result = "IfExpr" }
@@ -502,6 +632,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An index expression. For example:
+   * ```
+   * list[42];
+   * list[42] = 1;
+   * ```
    */
   class IndexExpr extends @index_expr, Expr {
     override string toString() { result = "IndexExpr" }
@@ -524,6 +659,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```
+   * unsafe {
+   *     builtin # asm(_);
+   * }
+   * ```
    */
   class InlineAsmExpr extends @inline_asm_expr, Expr {
     override string toString() { result = "InlineAsmExpr" }
@@ -536,6 +677,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An item statement. For example:
+   * ```
+   * fn print_hello() {
+   *     println!("Hello, world!");
+   * }
+   * print_hello();
+   * ```
    */
   class ItemStmt extends @item_stmt, Stmt {
     override string toString() { result = "ItemStmt" }
@@ -543,6 +691,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `let` expression. For example:
+   * ```
+   * if let Some(x) = maybe_some {
+   *     println!("{}", x);
+   * }
+   * ```
    */
   class LetExpr extends @let_expr, Expr {
     override string toString() { result = "LetExpr" }
@@ -560,6 +714,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A let statement. For example:
+   * ```
+   * let x = 42;
+   * let x: i32 = 42;
+   * let x: i32;
+   * let x;
+   * let (x, y) = (1, 2);
+   * let Some(x) = std::env::var("FOO") else {
+   *     return;
+   * };
    */
   class LetStmt extends @let_stmt, Stmt {
     override string toString() { result = "LetStmt" }
@@ -599,6 +763,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A literal expression. For example:
+   * ```
+   * 42;
+   * 42.0;
+   * "Hello, world!";
+   * b"Hello, world!";
+   * 'x';
+   * b'x';
+   * r"Hello, world!";
+   * true;
    */
   class LiteralExpr extends @literal_expr, Expr {
     override string toString() { result = "LiteralExpr" }
@@ -606,6 +780,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A loop expression. For example:
+   * ```
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
    */
   class LoopExpr extends @loop_expr, Expr {
     override string toString() { result = "LoopExpr" }
@@ -623,6 +819,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A match expression. For example:
+   * ```
+   * match x {
+   *     Some(y) => y,
+   *     None => 0,
+   * }
+   * ```
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * }
+   * ```
    */
   class MatchExpr extends @match_expr, Expr {
     override string toString() { result = "MatchExpr" }
@@ -640,6 +848,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A method call expression. For example:
+   * ```
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
    */
   class MethodCallExpr extends @method_call_expr, Expr {
     override string toString() { result = "MethodCallExpr" }
@@ -667,6 +879,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A missing expression, used as a place holder for incomplete syntax, as well as bodies of functions that are defined externally.
+   *
+   * ```
+   * let x = non_existing_macro!();
+   * ```
    */
   class MissingExpr extends @missing_expr, Expr {
     override string toString() { result = "MissingExpr" }
@@ -693,6 +910,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   *  An `offset_of` expression. For example:
+   * ```
+   * builtin # offset_of(Struct, field);
+   * ```
    */
   class OffsetOfExpr extends @offset_of_expr, Expr {
     override string toString() { result = "OffsetOfExpr" }
@@ -722,6 +943,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path expression. For example:
+   * ```
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <Type as Trait>::foo;
+   * ```
    */
   class PathExpr extends @path_expr, Expr {
     override string toString() { result = "PathExpr" }
@@ -746,6 +974,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A range expression. For example:
+   * ```
+   * let x = 1..=10;
+   * let x = 1..10;
+   * let x = 10..;
+   * let x = ..10;
+   * let x = ..=10;
+   * let x = ..;
+   * ```
    */
   class RangeExpr extends @range_expr, Expr {
     override string toString() { result = "RangeExpr" }
@@ -785,6 +1022,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A record literal expression. For example:
+   * ```
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * Foo { a: 1, b: 2 }[2] = 10;
+   * Foo { .. } = second;
+   * ```
    */
   class RecordLitExpr extends @record_lit_expr, Expr {
     override string toString() { result = "RecordLitExpr" }
@@ -839,6 +1083,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A reference expression. For example:
+   * ```
+   *     let ref_const = &foo;
+   *     let ref_mut = &mut foo;
+   *     let raw_const: &mut i32 = &raw const foo;
+   *     let raw_mut: &mut i32 = &raw mut foo;
+   * ```
    */
   class RefExpr extends @ref_expr, Expr {
     override string toString() { result = "RefExpr" }
@@ -878,6 +1129,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A return expression. For example:
+   * ```
+   * fn some_value() -> i32 {
+   *     return 42;
+   * }
+   * ```
+   * ```
+   * fn no_value() -> () {
+   *     return;
+   * }
+   * ```
    */
   class ReturnExpr extends @return_expr, Expr {
     override string toString() { result = "ReturnExpr" }
@@ -912,6 +1174,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple expression. For example:
+   * ```
+   * (1, "one");
+   * (2, "two")[0] = 3;
+   * ```
    */
   class TupleExpr extends @tuple_expr, Expr {
     override string toString() { result = "TupleExpr" }
@@ -968,6 +1235,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A unary operation expression. For example:
+   * ```
+   * let x = -42
+   * let y = !true
+   * let z = *ptr
+   * ```
    */
   class UnaryOpExpr extends @unary_op_expr, Expr {
     override string toString() { result = "UnaryOpExpr" }
@@ -985,6 +1258,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An underscore expression. For example:
+   * ```
+   * _ = 42;
+   * ```
    */
   class UnderscoreExpr extends @underscore_expr, Expr {
     override string toString() { result = "UnderscoreExpr" }
@@ -999,6 +1276,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `yeet` expression. For example:
+   * ```
+   * if x < size {
+   *    do yeet "index out of bounds";
+   * }
+   * ```
    */
   class YeetExpr extends @yeet_expr, Expr {
     override string toString() { result = "YeetExpr" }
@@ -1011,6 +1294,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `yield` expression. For example:
+   * ```
+   * let one = #[coroutine]
+   *     || {
+   *         yield 1;
+   *     };
+   * ```
    */
   class YieldExpr extends @yield_expr, Expr {
     override string toString() { result = "YieldExpr" }
@@ -1023,6 +1313,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An async block expression. For example:
+   * ```
+   * async {
+   *    let x = 42;
+   *    x
+   * }.await
+   * ```
    */
   class AsyncBlockExpr extends @async_block_expr, BlockExprBase {
     override string toString() { result = "AsyncBlockExpr" }
@@ -1030,6 +1327,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A block expression. For example:
+   * ```
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
    */
   class BlockExpr extends @block_expr, BlockExprBase {
     override string toString() { result = "BlockExpr" }
@@ -1042,6 +1351,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An element list expression. For example:
+   * ```
+   * [1, 2, 3, 4, 5];
+   * [1, 2, 3, 4, 5][0] = 6;
+   * ```
    */
   class ElementListExpr extends @element_list_expr, ArrayExpr {
     override string toString() { result = "ElementListExpr" }
@@ -1059,6 +1373,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A repeat expression. For example:
+   * ```
+   * [1; 10];
    */
   class RepeatExpr extends @repeat_expr, ArrayExpr {
     override string toString() { result = "RepeatExpr" }
@@ -1076,6 +1393,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An unsafe block expression. For example:
+   * ```
+   * let layout = unsafe {
+   *     let x = 42;
+   *     Layout::from_size_align_unchecked(size, align)
+   * };
+   * ```
    */
   class UnsafeBlockExpr extends @unsafe_block_expr, BlockExprBase {
     override string toString() { result = "UnsafeBlockExpr" }

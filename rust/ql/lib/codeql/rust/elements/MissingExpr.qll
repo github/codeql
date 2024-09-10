@@ -5,4 +5,11 @@
 
 private import codeql.rust.generated.MissingExpr
 
+/**
+ * A missing expression, used as a place holder for incomplete syntax, as well as bodies of functions that are defined externally.
+ *
+ * ```
+ * let x = non_existing_macro!();
+ * ```
+ */
 class MissingExpr extends Generated::MissingExpr { }

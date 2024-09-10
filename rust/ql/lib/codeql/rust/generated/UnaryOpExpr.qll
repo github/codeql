@@ -14,6 +14,12 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A unary operation expression. For example:
+   * ```
+   * let x = -42
+   * let y = !true
+   * let z = *ptr
+   * ```
    * INTERNAL: Do not reference the `Generated::UnaryOpExpr` class directly.
    * Use the subclass `UnaryOpExpr`, where the following predicates are available.
    */

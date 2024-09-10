@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.UnaryOpExpr
 
+/**
+ * A unary operation expression. For example:
+ * ```
+ * let x = -42
+ * let y = !true
+ * let z = *ptr
+ * ```
+ */
 class UnaryOpExpr extends Generated::UnaryOpExpr { }

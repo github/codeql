@@ -15,6 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A field in a record literal. For example `a: 1` in:
+   * ```
+   * Foo { a: 1, b: 2 };
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordLitField` class directly.
    * Use the subclass `RecordLitField`, where the following predicates are available.
    */

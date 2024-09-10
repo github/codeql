@@ -1,0 +1,2 @@
+| gen_if_expr.rs:5:5:7:5 | IfExpr | getCondition: | gen_if_expr.rs:5:8:5:14 | BinaryOpExpr | getThen: | gen_if_expr.rs:5:16:7:5 | BlockExpr | hasElse: | no |
+| gen_if_expr.rs:8:13:12:5 | IfExpr | getCondition: | gen_if_expr.rs:8:16:8:20 | BinaryOpExpr | getThen: | gen_if_expr.rs:8:22:10:5 | BlockExpr | hasElse: | yes |

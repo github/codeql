@@ -5,4 +5,11 @@
 
 private import codeql.rust.generated.IndexExpr
 
+/**
+ * An index expression. For example:
+ * ```
+ * list[42];
+ * list[42] = 1;
+ * ```
+ */
 class IndexExpr extends Generated::IndexExpr { }

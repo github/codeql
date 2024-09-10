@@ -76,7 +76,6 @@ class Module(Declaration):
     declarations: list[Declaration] | child
 
 
-@qltest.collapse_hierarchy
 class Expr(AstNode):
     pass
 
@@ -91,7 +90,6 @@ class Label(AstNode):
     name: string
 
 
-@qltest.collapse_hierarchy
 class Stmt(AstNode):
     pass
 
@@ -119,15 +117,31 @@ class Function(Declaration):
     body: Expr | child
 
 
-#     Missing,
+@rust.doc_test_signature("() -> ()")
 class MissingExpr(Expr):
+    """
+    A missing expression, used as a place holder for incomplete syntax, as well as bodies of functions that are defined externally.
+
+    ```
+    let x = non_existing_macro!();
+    ```
+    """
     pass
 
 
 #     Path(Path),
 
-
+@rust.doc_test_signature("() -> ()")
 class PathExpr(Expr):
+    """
+    A path expression. For example:
+    ```
+    let x = variable;
+    let x = foo::bar;
+    let y = <T>::foo;
+    let z = <Type as Trait>::foo;
+    ```
+    """
     path: Unimplemented | child
 
 #     If {
@@ -137,7 +151,23 @@ class PathExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class IfExpr(Expr):
+    """
+    An `if` expression. For example:
+    ```
+    if x == 42 {
+        println!("that's the answer");
+    }
+    ```
+    ```
+    let y = if x > 0 {
+        1
+    } else {
+        0
+    }
+    ```
+    """
     condition: Expr | child
     then: Expr | child
     else_: optional[Expr] | child
@@ -148,7 +178,16 @@ class IfExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("(maybe_some: Option<String>) -> ()")
 class LetExpr(Expr):
+    """
+    A `let` expression. For example:
+    ```
+    if let Some(x) = maybe_some {
+        println!("{}", x);
+    }
+    ```
+    """
     pat: Pat | child
     expr: Expr | child
 
@@ -165,7 +204,22 @@ class BlockExprBase(Expr):
     tail: optional[Expr] | child
 
 
+@rust.doc_test_signature("() -> ()")
 class BlockExpr(BlockExprBase):
+    """
+    A block expression. For example:
+    ```
+    {
+        let x = 42;
+    }
+    ```
+    ```
+    'label: {
+        let x = 42;
+        x
+    }
+    ```
+    """
     label: optional[Label] | child
 
 #     Async {
@@ -175,13 +229,30 @@ class BlockExpr(BlockExprBase):
 #     },
 
 
+@rust.doc_test_signature("() -> i32")
 class AsyncBlockExpr(BlockExprBase):
+    """
+    An async block expression. For example:
+    ```
+    async {
+       let x = 42;
+       x
+    }.await
+    ```
+    """
     pass
 
-#     Const(ConstBlockId),
 
-
+@rust.doc_test_signature("() -> bool")
 class ConstExpr(Expr):
+    """
+    A `const` block expression. For example:
+    ```
+    if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
+        return false;
+    }
+    ```
+    """
     expr: Expr | child
 
 #     // FIXME: Fold this into Block with an unsafe flag?
@@ -192,7 +263,17 @@ class ConstExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class UnsafeBlockExpr(BlockExprBase):
+    """
+    An unsafe block expression. For example:
+    ```
+    let layout = unsafe {
+        let x = 42;
+        Layout::from_size_align_unchecked(size, align)
+    };
+    ```
+    """
     pass
 
 #     Loop {
@@ -201,7 +282,32 @@ class UnsafeBlockExpr(BlockExprBase):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class LoopExpr(Expr):
+    """
+    A loop expression. For example:
+    ```
+    loop {
+        println!("Hello, world (again)!");
+    };
+    ```
+    ```
+    'label: loop {
+        println!("Hello, world (once)!");
+        break 'label;
+    };
+    ```
+    ```
+    let mut x = 0;
+    loop {
+        if x < 10 {
+            x += 1;
+        } else {
+            break;
+        }
+    };
+    ```
+    """
     body: Expr | child
     label: optional[Label] | child
 
@@ -212,7 +318,17 @@ class LoopExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class CallExpr(Expr):
+    """
+    A function call expression. For example:
+    ```
+    foo(42);
+    foo::<u32, u64>(42);
+    foo[0](42);
+    foo(1) = 4;
+    ```
+    """
     callee: Expr | child
     args: list[Expr] | child
     is_assignee_expr: predicate
@@ -225,7 +341,14 @@ class CallExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class MethodCallExpr(Expr):
+    """
+    A method call expression. For example:
+    ```
+    x.foo(42);
+    x.foo::<u32, u64>(42);
+    """
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
@@ -238,8 +361,23 @@ class MethodCallExpr(Expr):
 # }
 
 
-@qltest.skip
+@rust.doc_test_signature("(x: i32) -> i32")
 class MatchArm(AstNode):
+    """
+    A match arm. For example:
+    ```
+    match x {
+        Some(y) => y,
+        None => 0,
+    }
+    ```
+    ```
+    match x {
+        Some(y) if y != 0 => 1 / y,
+        _ => 0,
+    }
+    ```
+    """
     pat: Pat | child
     guard: optional[Expr] | child
     expr: Expr | child
@@ -249,7 +387,22 @@ class MatchArm(AstNode):
 #     },
 
 
+@rust.doc_test_signature("(x: i32) -> i32")
 class MatchExpr(Expr):
+    """
+    A match expression. For example:
+    ```
+    match x {
+        Some(y) => y,
+        None => 0,
+    }
+    ```
+    match x {
+        Some(y) if y != 0 => 1 / y,
+        _ => 0,
+    }
+    ```
+    """
     expr: Expr | child
     branches: list[MatchArm] | child
 
@@ -258,7 +411,25 @@ class MatchExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class ContinueExpr(Expr):
+    """
+    A continue expression. For example:
+    ```
+    loop {
+        if not_ready() {
+            continue;
+        }
+    }
+    ```
+    ```
+    'label: loop {
+        if not_ready() {
+            continue 'label;
+        }
+    }
+    ```
+    """
     label: optional[Label] | child
 
 #     Break {
@@ -267,7 +438,25 @@ class ContinueExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class BreakExpr(Expr):
+    """
+    A break expression. For example:
+    ```
+    loop {
+        if not_ready() {
+            break;
+         }
+    }
+    ```
+    ```
+    let x = 'label: loop {
+        if done() {
+            break 'label 42;
+        }
+    };
+    ```
+  """
     expr: optional[Expr] | child
     label: optional[Label] | child
 
@@ -277,6 +466,19 @@ class BreakExpr(Expr):
 #     },
 
 class ReturnExpr(Expr):
+    """
+    A return expression. For example:
+    ```
+    fn some_value() -> i32 {
+        return 42;
+    }
+    ```
+    ```
+    fn no_value() -> () {
+        return;
+    }
+    ```
+    """
     expr: optional[Expr] | child
 #     Become {
 #         expr: ExprId,
@@ -284,13 +486,34 @@ class ReturnExpr(Expr):
 
 
 class BecomeExpr(Expr):
+    """
+    A `become` expression. For example:
+    ```
+    fn fact_a(n: i32, a: i32) -> i32 {
+         if n == 0 {
+             a
+         } else {
+             become fact_a(n - 1, n * a)
+         }
+     }    ```
+     """
     expr: Expr | child
 #     Yield {
 #         expr: Option<ExprId>,
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class YieldExpr(Expr):
+    """
+    A `yield` expression. For example:
+    ```
+    let one = #[coroutine]
+        || {
+            yield 1;
+        };
+    ```
+    """
     expr: optional[Expr] | child
 
 #     Yeet {
@@ -298,7 +521,16 @@ class YieldExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class YeetExpr(Expr):
+    """
+    A `yeet` expression. For example:
+    ```
+    if x < size {
+       do yeet "index out of bounds";
+    }
+    ```
+    """
     expr: optional[Expr] | child
 #     RecordLit {
 #         path: Option<Box<Path>>,
@@ -309,17 +541,29 @@ class YeetExpr(Expr):
 #     },
 
 
-class RecordFieldPat(AstNode):
-    name: string
-    pat: Pat | child
-
-
+@rust.doc_test_signature("() -> ()")
 class RecordLitField(AstNode):
+    """
+    A field in a record literal. For example `a: 1` in:
+    ```
+    Foo { a: 1, b: 2 };
+    ```
+    """
     name: string
     expr: Expr | child
 
 
+@rust.doc_test_signature("() -> ()")
 class RecordLitExpr(Expr):
+    """
+    A record literal expression. For example:
+    ```
+    let first = Foo { a: 1, b: 2 };
+    let second = Foo { a: 2, ..first };
+    Foo { a: 1, b: 2 }[2] = 10;
+    Foo { .. } = second;
+    ```
+    """
     path: optional[Unimplemented] | child
     fields: list[RecordLitField] | child
     spread: optional[Expr] | child
@@ -331,8 +575,14 @@ class RecordLitExpr(Expr):
 #         expr: ExprId,
 #         name: Name,
 #     },
-
+@rust.doc_test_signature("() -> ()")
 class FieldExpr(Expr):
+    """
+    A field access expression. For example:
+    ```
+    x.foo
+    ```
+    """
     expr: Expr | child
     name: string
 
@@ -341,7 +591,17 @@ class FieldExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class AwaitExpr(Expr):
+    """
+    An `await` expression. For example:
+    ```
+    async {
+        let x = foo().await;
+        x
+    }
+    ```
+    """
     expr: Expr | child
 
 #     Cast {
@@ -350,7 +610,14 @@ class AwaitExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class CastExpr(Expr):
+    """
+    A cast expression. For example:
+    ```
+    value as u64;
+    ```
+    """
     expr: Expr | child
     type_ref: TypeRef | child
 #     Ref {
@@ -360,7 +627,17 @@ class CastExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class RefExpr(Expr):
+    """
+    A reference expression. For example:
+    ```
+        let ref_const = &foo;
+        let ref_mut = &mut foo;
+        let raw_const: &mut i32 = &raw const foo;
+        let raw_mut: &mut i32 = &raw mut foo;
+    ```
+    """
     expr: Expr | child
     is_raw: predicate
     is_mut: predicate
@@ -369,7 +646,14 @@ class RefExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class BoxExpr(Expr):
+    """
+    A box expression. For example:
+    ```
+    let x = #[rustc_box] Box::new(42);
+    ```
+    """
     expr: Expr | child
 #     UnaryOp {
 #         expr: ExprId,
@@ -377,7 +661,16 @@ class BoxExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class UnaryOpExpr(Expr):
+    """
+    A unary operation expression. For example:
+    ```
+    let x = -42
+    let y = !true
+    let z = *ptr
+    ```
+    """
     expr: Expr | child
     op: string
 
@@ -387,9 +680,18 @@ class UnaryOpExpr(Expr):
 #         rhs: ExprId,
 #         op: Option<BinaryOp>,
 #     },
-
-
+@rust.doc_test_signature("() -> ()")
 class BinaryOpExpr(Expr):
+    """
+    A binary operation expression. For example:
+    ```
+    x + y;
+    x && y;
+    x <= y;
+    x = y;
+    x += y;
+    ```
+    """
     lhs: Expr | child
     rhs: Expr | child
     op: optional[string]
@@ -402,7 +704,19 @@ class BinaryOpExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class RangeExpr(Expr):
+    """
+    A range expression. For example:
+    ```
+    let x = 1..=10;
+    let x = 1..10;
+    let x = 10..;
+    let x = ..10;
+    let x = ..=10;
+    let x = ..;
+    ```
+    """
     lhs: optional[Expr] | child
     rhs: optional[Expr] | child
     is_inclusive: predicate
@@ -414,7 +728,15 @@ class RangeExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class IndexExpr(Expr):
+    """
+    An index expression. For example:
+    ```
+    list[42];
+    list[42] = 1;
+    ```
+    """
     base: Expr | child
     index: Expr | child
     is_assignee_expr: predicate
@@ -429,7 +751,20 @@ class IndexExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class ClosureExpr(Expr):
+    """
+    A closure expression. For example:
+    ```
+    |x| x + 1;
+    move |x: i32| -> i32 { x + 1 };
+    async |x: i32, y| x + y;
+     #[coroutine]
+    |x| yield x;
+     #[coroutine]
+     static |x| yield x;
+    ```
+    """
     args: list[Pat] | child
     arg_types: list[optional[TypeRef]] | child
     ret_type: optional[TypeRef] | child
@@ -442,7 +777,15 @@ class ClosureExpr(Expr):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class TupleExpr(Expr):
+    """
+    A tuple expression. For example:
+    ```
+    (1, "one");
+    (2, "two")[0] = 3;
+    ```
+    """
     exprs: list[Expr] | child
     is_assignee_expr: predicate
 
@@ -450,42 +793,99 @@ class TupleExpr(Expr):
 
 
 class ArrayExpr(Expr):
+    """
+    An array expression. For example:
+    ```
+    [1, 2, 3];
+    [1; 10];
+    ```
+    """
     pass
 #     Literal(Literal),
 
 # ElementList { elements: Box<[ExprId]>, is_assignee_expr: bool },
 
 
+@rust.doc_test_signature("() -> ()")
 class ElementListExpr(ArrayExpr):
+    """
+    An element list expression. For example:
+    ```
+    [1, 2, 3, 4, 5];
+    [1, 2, 3, 4, 5][0] = 6;
+    ```
+    """
     elements: list[Expr] | child
     is_assignee_expr: predicate
 
 # Repeat { initializer: ExprId, repeat: ExprId },
 
 
+@rust.doc_test_signature("() -> ()")
 class RepeatExpr(ArrayExpr):
+    """
+    A repeat expression. For example:
+    ```
+    [1; 10];
+    """
     initializer: Expr | child
     repeat: Expr | child
 
 
+@rust.doc_test_signature("() -> ()")
 class LiteralExpr(Expr):
+    """
+    A literal expression. For example:
+    ```
+    42;
+    42.0;
+    "Hello, world!";
+    b"Hello, world!";
+    'x';
+    b'x';
+    r"Hello, world!";
+    true;
+    """
     pass
 #     Underscore,
 
 
+@rust.doc_test_signature("() -> ()")
 class UnderscoreExpr(Expr):
+    """
+    An underscore expression. For example:
+    ```
+    _ = 42;
+    ```
+    """
     pass
 #     OffsetOf(OffsetOf),
 
 
+@rust.doc_test_signature("() -> ()")
 class OffsetOfExpr(Expr):
+    """
+     An `offset_of` expression. For example:
+    ```
+    builtin # offset_of(Struct, field);
+    ```
+    """
     container: TypeRef | child
     fields: list[string]
 
 #     InlineAsm(InlineAsm),
 
 
+@rust.doc_test_signature("() -> ()")
 class InlineAsmExpr(Expr):
+    """
+    An inline assembly expression. For example:
+    ```
+    unsafe {
+        builtin # asm(_);
+    }
+    ```
+    """
     expr: Expr | child
 
 
@@ -496,7 +896,21 @@ class InlineAsmExpr(Expr):
 #         else_branch: Option<ExprId>,
 #     },
 
+@rust.doc_test_signature("() -> ()")
 class LetStmt(Stmt):
+    """
+    A let statement. For example:
+    ``` 
+    let x = 42;
+    let x: i32 = 42;
+    let x: i32;
+    let x;
+    let (x, y) = (1, 2);
+    let Some(x) = std::env::var("FOO") else {
+        return;
+    };
+
+    """
     pat: Pat | child
     type_ref: optional[TypeRef] | child
     initializer: optional[Expr] | child
@@ -507,7 +921,16 @@ class LetStmt(Stmt):
 #     },
 
 
+@rust.doc_test_signature("() -> ()")
 class ExprStmt(Stmt):
+    """
+    An expression statement. For example:
+    ```
+    start();
+    finish()
+    use std::env;
+    ```
+    """
     expr: Expr | child
     has_semicolon: predicate
 
@@ -516,7 +939,18 @@ class ExprStmt(Stmt):
 #     Item,
 
 
+# At the HIR-level, we don't have items, only some markers without location indicating where they used to be.
+@qltest.skip
 class ItemStmt(Stmt):
+    """
+    An item statement. For example:
+    ```
+    fn print_hello() {
+        println!("Hello, world!");
+    }
+    print_hello();
+    ```
+    """
     pass
 
     # Missing,
@@ -542,6 +976,10 @@ class TuplePat(Pat):
 class OrPat(Pat):
     args: list[Pat] | child
 
+
+class RecordFieldPat(AstNode):
+    name: string
+    pat: Pat | child
 
 # Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
 

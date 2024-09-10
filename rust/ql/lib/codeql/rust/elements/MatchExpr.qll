@@ -5,4 +5,18 @@
 
 private import codeql.rust.generated.MatchExpr
 
+/**
+ * A match expression. For example:
+ * ```
+ * match x {
+ *     Some(y) => y,
+ *     None => 0,
+ * }
+ * ```
+ * match x {
+ *     Some(y) if y != 0 => 1 / y,
+ *     _ => 0,
+ * }
+ * ```
+ */
 class MatchExpr extends Generated::MatchExpr { }

@@ -5,4 +5,14 @@
 
 private import codeql.rust.generated.BinaryOpExpr
 
+/**
+ * A binary operation expression. For example:
+ * ```
+ * x + y;
+ * x && y;
+ * x <= y;
+ * x = y;
+ * x += y;
+ * ```
+ */
 class BinaryOpExpr extends Generated::BinaryOpExpr { }

@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.OffsetOfExpr
 
+/**
+ *  An `offset_of` expression. For example:
+ * ```
+ * builtin # offset_of(Struct, field);
+ * ```
+ */
 class OffsetOfExpr extends Generated::OffsetOfExpr { }

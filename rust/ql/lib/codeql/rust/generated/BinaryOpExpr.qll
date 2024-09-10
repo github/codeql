@@ -14,6 +14,14 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A binary operation expression. For example:
+   * ```
+   * x + y;
+   * x && y;
+   * x <= y;
+   * x = y;
+   * x += y;
+   * ```
    * INTERNAL: Do not reference the `Generated::BinaryOpExpr` class directly.
    * Use the subclass `BinaryOpExpr`, where the following predicates are available.
    */

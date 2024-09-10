@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.RecordLitField
 
+/**
+ * A field in a record literal. For example `a: 1` in:
+ * ```
+ * Foo { a: 1, b: 2 };
+ * ```
+ */
 class RecordLitField extends Generated::RecordLitField { }

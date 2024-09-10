@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.InlineAsmExpr
 
+/**
+ * An inline assembly expression. For example:
+ * ```
+ * unsafe {
+ *     builtin # asm(_);
+ * }
+ * ```
+ */
 class InlineAsmExpr extends Generated::InlineAsmExpr { }

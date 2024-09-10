@@ -14,6 +14,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A box expression. For example:
+   * ```
+   * let x = #[rustc_box] Box::new(42);
+   * ```
    * INTERNAL: Do not reference the `Generated::BoxExpr` class directly.
    * Use the subclass `BoxExpr`, where the following predicates are available.
    */

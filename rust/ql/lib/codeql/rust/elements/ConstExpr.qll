@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.ConstExpr
 
+/**
+ * A `const` block expression. For example:
+ * ```
+ * if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
+ *     return false;
+ * }
+ * ```
+ */
 class ConstExpr extends Generated::ConstExpr { }

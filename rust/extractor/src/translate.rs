@@ -387,7 +387,10 @@ impl CrateTranslator<'_> {
         }
     }
     fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> trap::Label {
-        self.emit_unimplemented(None)
+        self.trap.emit(generated::TypeRef {
+            id: TrapId::Star,
+            location: None,
+        })
     }
     fn emit_match_arm(
         &mut self,

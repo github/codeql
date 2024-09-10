@@ -15,6 +15,13 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A path expression. For example:
+   * ```
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <Type as Trait>::foo;
+   * ```
    * INTERNAL: Do not reference the `Generated::PathExpr` class directly.
    * Use the subclass `PathExpr`, where the following predicates are available.
    */

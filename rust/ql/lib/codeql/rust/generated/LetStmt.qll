@@ -17,6 +17,16 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A let statement. For example:
+   * ```
+   * let x = 42;
+   * let x: i32 = 42;
+   * let x: i32;
+   * let x;
+   * let (x, y) = (1, 2);
+   * let Some(x) = std::env::var("FOO") else {
+   *     return;
+   * };
    * INTERNAL: Do not reference the `Generated::LetStmt` class directly.
    * Use the subclass `LetStmt`, where the following predicates are available.
    */

@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.MethodCallExpr
 
+/**
+ * A method call expression. For example:
+ * ```
+ * x.foo(42);
+ * x.foo::<u32, u64>(42);
+ */
 class MethodCallExpr extends Generated::MethodCallExpr { }

@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.PathExpr
 
+/**
+ * A path expression. For example:
+ * ```
+ * let x = variable;
+ * let x = foo::bar;
+ * let y = <T>::foo;
+ * let z = <Type as Trait>::foo;
+ * ```
+ */
 class PathExpr extends Generated::PathExpr { }

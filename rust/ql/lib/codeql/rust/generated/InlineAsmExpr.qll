@@ -14,6 +14,12 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An inline assembly expression. For example:
+   * ```
+   * unsafe {
+   *     builtin # asm(_);
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::InlineAsmExpr` class directly.
    * Use the subclass `InlineAsmExpr`, where the following predicates are available.
    */
