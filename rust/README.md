@@ -1,12 +1,15 @@
 # Rust on CodeQL
 
+> [!WARNING]
+> Rust support for CodeQL is experimental. No support is offered. QL and database interfaces will change and break without notice or deprecation periods.
+
 ## Development
 
 ### Dependencies
 
 At present you need to be in the `rust-experiment` branch (or a branch on top of that) in both the `semmle-code` and `codeql` repos.
 
-TODO: are there any dependencies that aren't already CodeQL dependencies?  bazel and rustc?
+If you don't have the `semmle-code` repo you may need to install Bazel manually, e.g. from https://github.com/bazelbuild/bazelisk.
 
 ### Building the Rust Extractor
 
