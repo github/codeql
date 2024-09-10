@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
@@ -45,6 +46,11 @@ module TaintedUrlSuffix {
       ]
   }
 
+  predicate isBarrier(Node node, FlowLabel label) {
+    label = label() and
+    DataFlowPrivate::optionalBarrier(node, "tainted-url-suffix")
+  }
+
   /**
    * Holds if there is a flow step `src -> dst` involving the URL suffix taint label.
    *
@@ -56,6 +62,10 @@ module TaintedUrlSuffix {
     dstlbl = label() and
     TaintTracking::AdditionalTaintStep::step(src, dst) and
     not isSafeLocationProp(dst)
+    or
+    srclbl = label() and
+    dstlbl.isTaint() and
+    DataFlowPrivate::optionalStep(src, "tainted-url-suffix", dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
     srclbl = label() and

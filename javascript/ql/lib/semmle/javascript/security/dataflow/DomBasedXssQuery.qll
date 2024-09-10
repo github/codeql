@@ -76,6 +76,8 @@ module DomBasedXssConfig implements DataFlow::StateConfigSig {
     isOptionallySanitizedNode(node) and
     lbl = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
     or
+    TaintedUrlSuffix::isBarrier(node, lbl)
+    or
     node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(lbl)
   }
 
