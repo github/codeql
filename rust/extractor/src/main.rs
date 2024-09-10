@@ -2,9 +2,8 @@ use crate::trap::TrapId;
 use anyhow::Context;
 use ra_ap_hir::db::DefDatabase;
 use ra_ap_hir::Crate;
-use ra_ap_load_cargo::{load_workspace, LoadCargoConfig, ProcMacroServerChoice};
+use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_project_model::CargoConfig;
-use ra_ap_project_model::ProjectWorkspace;
 use ra_ap_project_model::RustLibSource;
 use ra_ap_vfs::AbsPathBuf;
 use std::path::PathBuf;
@@ -16,8 +15,8 @@ pub mod path;
 mod translate;
 pub mod trap;
 
-pub fn find_project_manifests(
-    files: &Vec<PathBuf>,
+fn find_project_manifests(
+    files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
     let current = std::env::current_dir()?;
     let abs_files: Vec<_> = files
@@ -53,14 +52,13 @@ fn main() -> anyhow::Result<()> {
     };
     let projects = find_project_manifests(&cfg.inputs).context("loading inputs")?;
     for project in projects {
-        let mut workspace = ProjectWorkspace::load(project, &config, &progress)?;
+        let (db, vfs, _macro_server) = load_workspace_at(
+            project.manifest_path().as_ref(),
+            &config,
+            &load_config,
+            &progress,
+        )?;
 
-        if load_config.load_out_dirs_from_check {
-            let build_scripts = workspace.run_build_scripts(&config, &progress)?;
-            workspace.set_build_scripts(build_scripts)
-        }
-
-        let (db, vfs, _macro_server) = load_workspace(workspace, &config.extra_env, &load_config)?;
         let crates = <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter() {
             let krate = Crate::from(crate_id);

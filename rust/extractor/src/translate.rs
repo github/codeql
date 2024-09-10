@@ -69,7 +69,7 @@ impl CrateTranslator<'_> {
         })
     }
 
-    fn emit_location_ast_ptr<T>(
+    fn emit_location_for_ast_ptr<T>(
         &mut self,
         source: ra_ap_hir::InFile<ra_ap_syntax::AstPtr<T>>,
     ) -> Option<trap::Label>
@@ -83,26 +83,26 @@ impl CrateTranslator<'_> {
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
             .map(|(data, source)| {
                 let range = source.value.text_range();
-                self.emit_location_textrange(data, range)
+                self.emit_location_for_textrange(data, range)
             })
     }
 
-    fn emit_location_expr(
+    fn emit_location_for_expr(
         &mut self,
         expr: ra_ap_hir_def::hir::ExprId,
         source_map: &BodySourceMap,
     ) -> Option<trap::Label> {
         let source = source_map.expr_syntax(expr).ok()?;
-        self.emit_location_ast_ptr(source)
+        self.emit_location_for_ast_ptr(source)
     }
 
-    fn emit_location_pat(
+    fn emit_location_for_pat(
         &mut self,
         pat_id: ra_ap_hir_def::hir::PatId,
         source_map: &BodySourceMap,
     ) -> Option<trap::Label> {
         let source = source_map.pat_syntax(pat_id).ok()?;
-        self.emit_location_ast_ptr(source)
+        self.emit_location_for_ast_ptr(source)
     }
 
     fn emit_literal_or_const_pat(
@@ -130,14 +130,14 @@ impl CrateTranslator<'_> {
         }
     }
 
-    fn emit_location_label(
+    fn emit_location_for_label(
         &mut self,
         label_id: ra_ap_hir_def::hir::LabelId,
         source_map: &BodySourceMap,
     ) -> Option<trap::Label> {
         // 'catch' a panic if the source map is incomplete
         let source = std::panic::catch_unwind(|| source_map.label_syntax(label_id)).ok();
-        source.and_then(|source| self.emit_location_ast_ptr(source))
+        source.and_then(|source| self.emit_location_for_ast_ptr(source))
     }
     fn emit_location<T: HasSource>(&mut self, entity: T) -> Option<trap::Label>
     where
@@ -149,10 +149,10 @@ impl CrateTranslator<'_> {
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
             .map(|(data, source)| {
                 let range = source.value.syntax().text_range();
-                self.emit_location_textrange(data, range)
+                self.emit_location_for_textrange(data, range)
             })
     }
-    fn emit_location_textrange(&mut self, data: FileData, range: TextRange) -> trap::Label {
+    fn emit_location_for_textrange(&mut self, data: FileData, range: TextRange) -> trap::Label {
         let start = data.line_index.line_col(range.start());
         let end = data.line_index.line_col(
             range
@@ -168,7 +168,7 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_label(label_id, source_map);
+        let location: Option<trap::Label> = self.emit_location_for_label(label_id, source_map);
         let label = &body.labels[label_id];
         self.trap.emit(generated::Label {
             id: TrapId::Star,
@@ -177,7 +177,7 @@ impl CrateTranslator<'_> {
         })
     }
     fn emit_pat(&mut self, pat_id: PatId, body: &Body, source_map: &BodySourceMap) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_pat(pat_id, source_map);
+        let location: Option<trap::Label> = self.emit_location_for_pat(pat_id, source_map);
         let pat = &body.pats[pat_id];
         match pat {
             ra_ap_hir_def::hir::Pat::Missing => self.trap.emit(generated::MissingPat {
@@ -329,7 +329,7 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_pat(arm.pat, source_map);
+        let location: Option<trap::Label> = self.emit_location_for_pat(arm.pat, source_map);
         let pat = self.emit_pat(arm.pat, body, source_map);
         let guard = arm.guard.map(|g| self.emit_expr(g, body, source_map));
         let expr = self.emit_expr(arm.expr, body, source_map);
@@ -355,7 +355,7 @@ impl CrateTranslator<'_> {
                 else_branch,
             } => {
                 // TODO: find a way to get the location of the entire statement
-                let location = self.emit_location_pat(*pat, source_map);
+                let location = self.emit_location_for_pat(*pat, source_map);
                 let pat = self.emit_pat(*pat, body, source_map);
                 let type_ref = type_ref
                     .as_ref()
@@ -374,7 +374,7 @@ impl CrateTranslator<'_> {
                 })
             }
             Statement::Expr { expr, has_semi } => {
-                let location = self.emit_location_expr(*expr, source_map);
+                let location = self.emit_location_for_expr(*expr, source_map);
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::ExprStmt {
                     id: TrapId::Star,
@@ -395,7 +395,7 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_expr(expr_id, source_map);
+        let location: Option<trap::Label> = self.emit_location_for_expr(expr_id, source_map);
         let expr = &body[expr_id];
         match expr {
             ra_ap_hir_def::hir::Expr::Missing => self.trap.emit(generated::MissingExpr {
