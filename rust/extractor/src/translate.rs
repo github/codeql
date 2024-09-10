@@ -114,7 +114,7 @@ impl CrateTranslator<'_> {
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(literal) => {
-                let expr = self.trap.emit(generated::Literal {
+                let expr = self.trap.emit(generated::LiteralExpr {
                     id: TrapId::Star,
                     location: None,
                 });
@@ -193,12 +193,12 @@ impl CrateTranslator<'_> {
                     .into_iter()
                     .map(|pat| self.emit_pat(*pat, body, source_map))
                     .collect();
-                let ellipsis = ellipsis.and_then(|x| x.try_into().ok());
+                let ellipsis_index = ellipsis.and_then(|x| x.try_into().ok());
                 self.trap.emit(generated::TuplePat {
                     id: TrapId::Star,
                     location,
                     args,
-                    ellipsis,
+                    ellipsis_index,
                 })
             }
             ra_ap_hir_def::hir::Pat::Or(args) => {
@@ -380,7 +380,7 @@ impl CrateTranslator<'_> {
                     id: TrapId::Star,
                     location,
                     expr,
-                    has_semi: *has_semi,
+                    has_semicolon: *has_semi,
                 })
             }
             Statement::Item => self.trap.emit(generated::ItemStmt {
@@ -402,7 +402,7 @@ impl CrateTranslator<'_> {
                 id: TrapId::Star,
                 location,
             }),
-            ra_ap_hir_def::hir::Expr::Path(_) => self.trap.emit(generated::Path {
+            ra_ap_hir_def::hir::Expr::Path(_) => self.trap.emit(generated::PathExpr {
                 id: TrapId::Star,
                 location,
             }),
@@ -414,7 +414,7 @@ impl CrateTranslator<'_> {
                 let condition = self.emit_expr(*condition, body, source_map);
                 let then = self.emit_expr(*then_branch, body, source_map);
                 let else_ = else_branch.map(|x| self.emit_expr(x, body, source_map));
-                self.trap.emit(generated::If {
+                self.trap.emit(generated::IfExpr {
                     id: TrapId::Star,
                     location,
                     condition,
@@ -425,7 +425,7 @@ impl CrateTranslator<'_> {
             ra_ap_hir_def::hir::Expr::Let { pat, expr } => {
                 let pat = self.emit_pat(*pat, body, source_map);
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Let {
+                self.trap.emit(generated::LetExpr {
                     id: TrapId::Star,
                     location,
                     pat,
@@ -444,7 +444,7 @@ impl CrateTranslator<'_> {
                     .collect();
                 let tail = tail.map(|expr_id| self.emit_expr(expr_id, body, source_map));
                 let label = label.map(|l| self.emit_label(l, body, source_map));
-                self.trap.emit(generated::Block {
+                self.trap.emit(generated::BlockExpr {
                     id: TrapId::Star,
                     location,
                     statements,
@@ -462,14 +462,14 @@ impl CrateTranslator<'_> {
                     .map(|stmt| self.emit_stmt(stmt, body, source_map))
                     .collect();
                 let tail = tail.map(|expr_id| self.emit_expr(expr_id, body, source_map));
-                self.trap.emit(generated::AsyncBlock {
+                self.trap.emit(generated::AsyncBlockExpr {
                     id: TrapId::Star,
                     location,
                     statements,
                     tail,
                 })
             }
-            ra_ap_hir_def::hir::Expr::Const(_) => self.trap.emit(generated::Const {
+            ra_ap_hir_def::hir::Expr::Const(_) => self.trap.emit(generated::ConstExpr {
                 id: TrapId::Star,
                 location,
             }),
@@ -483,7 +483,7 @@ impl CrateTranslator<'_> {
                     .map(|stmt| self.emit_stmt(stmt, body, source_map))
                     .collect();
                 let tail = tail.map(|expr_id| self.emit_expr(expr_id, body, source_map));
-                self.trap.emit(generated::UnsafeBlock {
+                self.trap.emit(generated::UnsafeBlockExpr {
                     id: TrapId::Star,
                     location,
                     statements,
@@ -496,7 +496,7 @@ impl CrateTranslator<'_> {
             } => {
                 let loop_body = self.emit_expr(*loop_body, body, source_map);
                 let label = label.map(|l| self.emit_label(l, body, source_map));
-                self.trap.emit(generated::Loop {
+                self.trap.emit(generated::LoopExpr {
                     id: TrapId::Star,
                     location,
                     body: loop_body,
@@ -513,7 +513,7 @@ impl CrateTranslator<'_> {
                     .into_iter()
                     .map(|e| self.emit_expr(*e, body, source_map))
                     .collect();
-                self.trap.emit(generated::Call {
+                self.trap.emit(generated::CallExpr {
                     id: TrapId::Star,
                     location,
                     callee,
@@ -533,7 +533,7 @@ impl CrateTranslator<'_> {
                     .map(|e| self.emit_expr(*e, body, source_map))
                     .collect();
 
-                self.trap.emit(generated::MethodCall {
+                self.trap.emit(generated::MethodCallExpr {
                     id: TrapId::Star,
                     location,
                     receiver,
@@ -548,7 +548,7 @@ impl CrateTranslator<'_> {
                     .map(|e| self.emit_match_arm(e, body, source_map))
                     .collect();
 
-                self.trap.emit(generated::Match {
+                self.trap.emit(generated::MatchExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -557,7 +557,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Continue { label } => {
                 let label = label.map(|l| self.emit_label(l, body, source_map));
-                self.trap.emit(generated::Continue {
+                self.trap.emit(generated::ContinueExpr {
                     id: TrapId::Star,
                     location,
                     label,
@@ -566,7 +566,7 @@ impl CrateTranslator<'_> {
             ra_ap_hir_def::hir::Expr::Break { expr, label } => {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
                 let label = label.map(|l| self.emit_label(l, body, source_map));
-                self.trap.emit(generated::Break {
+                self.trap.emit(generated::BreakExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -575,7 +575,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Return { expr } => {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
-                self.trap.emit(generated::Return {
+                self.trap.emit(generated::ReturnExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -583,7 +583,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Become { expr } => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Become {
+                self.trap.emit(generated::BecomeExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -591,7 +591,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Yield { expr } => {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
-                self.trap.emit(generated::Yield {
+                self.trap.emit(generated::YieldExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -599,7 +599,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Yeet { expr } => {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
-                self.trap.emit(generated::Yeet {
+                self.trap.emit(generated::YeetExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -611,13 +611,13 @@ impl CrateTranslator<'_> {
                 spread,
                 ellipsis,
                 is_assignee_expr,
-            } => self.trap.emit(generated::RecordLit {
+            } => self.trap.emit(generated::RecordLitExpr {
                 id: TrapId::Star,
                 location,
             }),
             ra_ap_hir_def::hir::Expr::Field { expr, name } => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Field {
+                self.trap.emit(generated::FieldExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -626,7 +626,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Await { expr } => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Await {
+                self.trap.emit(generated::AwaitExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -635,7 +635,7 @@ impl CrateTranslator<'_> {
             ra_ap_hir_def::hir::Expr::Cast { expr, type_ref } => {
                 let expr: trap::Label = self.emit_expr(*expr, body, source_map);
                 let type_ref: trap::Label = self.emit_type_ref(type_ref.as_ref());
-                self.trap.emit(generated::Cast {
+                self.trap.emit(generated::CastExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -648,7 +648,7 @@ impl CrateTranslator<'_> {
                 mutability,
             } => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Ref {
+                self.trap.emit(generated::RefExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -658,7 +658,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Box { expr } => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::Box {
+                self.trap.emit(generated::BoxExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -671,7 +671,7 @@ impl CrateTranslator<'_> {
                     ra_ap_syntax::ast::UnaryOp::Not => "!",
                     ra_ap_syntax::ast::UnaryOp::Neg => "-",
                 };
-                self.trap.emit(generated::UnaryOp {
+                self.trap.emit(generated::UnaryOpExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -682,7 +682,7 @@ impl CrateTranslator<'_> {
                 let lhs = self.emit_expr(*lhs, body, source_map);
                 let rhs = self.emit_expr(*rhs, body, source_map);
                 let op = op.map(|op| format!("{op}"));
-                self.trap.emit(generated::BinaryOp {
+                self.trap.emit(generated::BinaryOpExpr {
                     id: TrapId::Star,
                     location,
                     lhs,
@@ -697,7 +697,7 @@ impl CrateTranslator<'_> {
             } => {
                 let lhs = lhs.map(|lhs| self.emit_expr(lhs, body, source_map));
                 let rhs = rhs.map(|rhs| self.emit_expr(rhs, body, source_map));
-                self.trap.emit(generated::Range {
+                self.trap.emit(generated::RangeExpr {
                     id: TrapId::Star,
                     location,
                     lhs,
@@ -712,7 +712,7 @@ impl CrateTranslator<'_> {
             } => {
                 let base = self.emit_expr(*base, body, source_map);
                 let index = self.emit_expr(*index, body, source_map);
-                self.trap.emit(generated::Index {
+                self.trap.emit(generated::IndexExpr {
                     id: TrapId::Star,
                     location,
                     base,
@@ -744,7 +744,7 @@ impl CrateTranslator<'_> {
                             .map(|arg_type| self.emit_type_ref(arg_type))
                     })
                     .collect();
-                self.trap.emit(generated::Closure {
+                self.trap.emit(generated::ClosureExpr {
                     id: TrapId::Star,
                     location,
                     args,
@@ -762,7 +762,7 @@ impl CrateTranslator<'_> {
                     .into_iter()
                     .map(|expr| self.emit_expr(*expr, body, source_map))
                     .collect();
-                self.trap.emit(generated::Tuple {
+                self.trap.emit(generated::TupleExpr {
                     id: TrapId::Star,
                     location,
                     exprs,
@@ -777,7 +777,7 @@ impl CrateTranslator<'_> {
                     .into_iter()
                     .map(|expr| self.emit_expr(*expr, body, source_map))
                     .collect();
-                self.trap.emit(generated::ElementList {
+                self.trap.emit(generated::ElementListExpr {
                     id: TrapId::Star,
                     location,
                     elements,
@@ -791,25 +791,25 @@ impl CrateTranslator<'_> {
                 let initializer: trap::Label = self.emit_expr(*initializer, body, source_map);
                 let repeat: trap::Label = self.emit_expr(*repeat, body, source_map);
 
-                self.trap.emit(generated::Repeat {
+                self.trap.emit(generated::RepeatExpr {
                     id: TrapId::Star,
                     location,
                     initializer,
                     repeat,
                 })
             }
-            ra_ap_hir_def::hir::Expr::Literal(literal) => self.trap.emit(generated::Literal {
+            ra_ap_hir_def::hir::Expr::Literal(literal) => self.trap.emit(generated::LiteralExpr {
                 id: TrapId::Star,
                 location,
             }),
-            ra_ap_hir_def::hir::Expr::Underscore => self.trap.emit(generated::Underscore {
+            ra_ap_hir_def::hir::Expr::Underscore => self.trap.emit(generated::UnderscoreExpr {
                 id: TrapId::Star,
                 location,
             }),
             ra_ap_hir_def::hir::Expr::OffsetOf(offset) => {
                 let container = self.emit_type_ref(&offset.container);
                 let fields = offset.fields.iter().map(|x| x.as_str().into()).collect();
-                self.trap.emit(generated::OffsetOf {
+                self.trap.emit(generated::OffsetOfExpr {
                     id: TrapId::Star,
                     location,
                     container,
@@ -818,7 +818,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::InlineAsm(asm) => {
                 let expr = self.emit_expr(asm.e, body, source_map);
-                self.trap.emit(generated::InlineAsm {
+                self.trap.emit(generated::InlineAsmExpr {
                     id: TrapId::Star,
                     location,
                     expr,

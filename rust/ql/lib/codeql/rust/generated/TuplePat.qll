@@ -39,13 +39,15 @@ module Generated {
     final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
 
     /**
-     * Gets the ellipsis of this tuple pat, if it exists.
+     * Gets the ellipsis index of this tuple pat, if it exists.
      */
-    int getEllipsis() { result = Synth::convertTuplePatToRaw(this).(Raw::TuplePat).getEllipsis() }
+    int getEllipsisIndex() {
+      result = Synth::convertTuplePatToRaw(this).(Raw::TuplePat).getEllipsisIndex()
+    }
 
     /**
-     * Holds if `getEllipsis()` exists.
+     * Holds if `getEllipsisIndex()` exists.
      */
-    final predicate hasEllipsis() { exists(this.getEllipsis()) }
+    final predicate hasEllipsisIndex() { exists(this.getEllipsisIndex()) }
   }
 }

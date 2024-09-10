@@ -62,6 +62,11 @@ class AstNode(Locatable):
     pass
 
 
+@qltest.skip
+class Unimplemented(AstNode):
+    pass
+
+
 class Declaration(AstNode):
     pass
 
@@ -121,7 +126,7 @@ class MissingExpr(Expr):
 #     Path(Path),
 
 
-class Path(Expr):
+class PathExpr(Expr):
     # TODO
     pass
 
@@ -132,7 +137,7 @@ class Path(Expr):
 #     },
 
 
-class If(Expr):
+class IfExpr(Expr):
     condition: Expr | child
     then: Expr | child
     else_: optional[Expr] | child
@@ -143,7 +148,7 @@ class If(Expr):
 #     },
 
 
-class Let(Expr):
+class LetExpr(Expr):
     pat: Pat | child
     expr: Expr | child
 
@@ -155,12 +160,12 @@ class Let(Expr):
 #     },
 
 
-class BlockBase(Expr):
+class BlockExprBase(Expr):
     statements: list[Stmt] | child
     tail: optional[Expr] | child
 
 
-class Block(BlockBase):
+class BlockExpr(BlockExprBase):
     label: optional[Label] | child
 
 #     Async {
@@ -170,13 +175,13 @@ class Block(BlockBase):
 #     },
 
 
-class AsyncBlock(BlockBase):
+class AsyncBlockExpr(BlockExprBase):
     pass
 
 #     Const(ConstBlockId),
 
 
-class Const(Expr):
+class ConstExpr(Expr):
     pass
 
 #     // FIXME: Fold this into Block with an unsafe flag?
@@ -187,7 +192,7 @@ class Const(Expr):
 #     },
 
 
-class UnsafeBlock(BlockBase):
+class UnsafeBlockExpr(BlockExprBase):
     pass
 
 #     Loop {
@@ -196,7 +201,7 @@ class UnsafeBlock(BlockBase):
 #     },
 
 
-class Loop(Expr):
+class LoopExpr(Expr):
     body: Expr | child
     label: optional[Label] | child
 
@@ -207,7 +212,7 @@ class Loop(Expr):
 #     },
 
 
-class Call(Expr):
+class CallExpr(Expr):
     callee: Expr | child
     args: list[Expr] | child
     is_assignee_expr: predicate
@@ -220,7 +225,7 @@ class Call(Expr):
 #     },
 
 
-class MethodCall(Expr):
+class MethodCallExpr(Expr):
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
@@ -245,7 +250,7 @@ class MatchArm(AstNode):
 #     },
 
 
-class Match(Expr):
+class MatchExpr(Expr):
     expr: Expr | child
     branches: list[MatchArm] | child
 
@@ -254,7 +259,7 @@ class Match(Expr):
 #     },
 
 
-class Continue(Expr):
+class ContinueExpr(Expr):
     label: optional[Label] | child
 
 #     Break {
@@ -263,7 +268,7 @@ class Continue(Expr):
 #     },
 
 
-class Break(Expr):
+class BreakExpr(Expr):
     expr: optional[Expr] | child
     label: optional[Label] | child
 
@@ -272,21 +277,21 @@ class Break(Expr):
 #         expr: Option<ExprId>,
 #     },
 
-class Return(Expr):
+class ReturnExpr(Expr):
     expr: optional[Expr] | child
 #     Become {
 #         expr: ExprId,
 #     },
 
 
-class Become(Expr):
+class BecomeExpr(Expr):
     expr: Expr | child
 #     Yield {
 #         expr: Option<ExprId>,
 #     },
 
 
-class Yield(Expr):
+class YieldExpr(Expr):
     expr: optional[Expr] | child
 
 #     Yeet {
@@ -294,7 +299,7 @@ class Yield(Expr):
 #     },
 
 
-class Yeet(Expr):
+class YeetExpr(Expr):
     expr: optional[Expr] | child
 #     RecordLit {
 #         path: Option<Box<Path>>,
@@ -305,7 +310,7 @@ class Yeet(Expr):
 #     },
 
 
-class RecordLit(Expr):
+class RecordLitExpr(Expr):
     # TODO
     pass
 
@@ -315,7 +320,7 @@ class RecordLit(Expr):
 #         name: Name,
 #     },
 
-class Field(Expr):
+class FieldExpr(Expr):
     expr: Expr | child
     name: string
 
@@ -324,7 +329,7 @@ class Field(Expr):
 #     },
 
 
-class Await(Expr):
+class AwaitExpr(Expr):
     expr: Expr | child
 
 #     Cast {
@@ -333,7 +338,7 @@ class Await(Expr):
 #     },
 
 
-class Cast(Expr):
+class CastExpr(Expr):
     expr: Expr | child
     type_ref: TypeRef | child
 #     Ref {
@@ -343,7 +348,7 @@ class Cast(Expr):
 #     },
 
 
-class Ref(Expr):
+class RefExpr(Expr):
     expr: Expr | child
     is_raw: predicate
     is_mut: predicate
@@ -352,7 +357,7 @@ class Ref(Expr):
 #     },
 
 
-class Box(Expr):
+class BoxExpr(Expr):
     expr: Expr | child
 #     UnaryOp {
 #         expr: ExprId,
@@ -360,7 +365,7 @@ class Box(Expr):
 #     },
 
 
-class UnaryOp(Expr):
+class UnaryOpExpr(Expr):
     expr: Expr | child
     op: string
 
@@ -372,7 +377,7 @@ class UnaryOp(Expr):
 #     },
 
 
-class BinaryOp(Expr):
+class BinaryOpExpr(Expr):
     lhs: Expr | child
     rhs: Expr | child
     op: optional[string]
@@ -385,7 +390,7 @@ class BinaryOp(Expr):
 #     },
 
 
-class Range(Expr):
+class RangeExpr(Expr):
     lhs: optional[Expr] | child
     rhs: optional[Expr] | child
     is_inclusive: predicate
@@ -397,7 +402,7 @@ class Range(Expr):
 #     },
 
 
-class Index(Expr):
+class IndexExpr(Expr):
     base: Expr | child
     index: Expr | child
     is_assignee_expr: predicate
@@ -412,7 +417,7 @@ class Index(Expr):
 #     },
 
 
-class Closure(Expr):
+class ClosureExpr(Expr):
     args: list[Pat] | child
     arg_types: list[optional[TypeRef]] | child
     ret_type: optional[TypeRef] | child
@@ -426,50 +431,50 @@ class Closure(Expr):
 #     },
 
 
-class Tuple(Expr):
+class TupleExpr(Expr):
     exprs: list[Expr] | child
     is_assignee_expr: predicate
 
 #     Array(Array),
 
 
-class Array(Expr):
+class ArrayExpr(Expr):
     pass
 #     Literal(Literal),
 
 # ElementList { elements: Box<[ExprId]>, is_assignee_expr: bool },
 
 
-class ElementList(Array):
+class ElementListExpr(ArrayExpr):
     elements: list[Expr] | child
     is_assignee_expr: predicate
 
 # Repeat { initializer: ExprId, repeat: ExprId },
 
 
-class Repeat(Array):
+class RepeatExpr(ArrayExpr):
     initializer: Expr | child
     repeat: Expr | child
 
 
-class Literal(Expr):
+class LiteralExpr(Expr):
     pass
 #     Underscore,
 
 
-class Underscore(Expr):
+class UnderscoreExpr(Expr):
     pass
 #     OffsetOf(OffsetOf),
 
 
-class OffsetOf(Expr):
+class OffsetOfExpr(Expr):
     container: TypeRef | child
     fields: list[string]
 
 #     InlineAsm(InlineAsm),
 
 
-class InlineAsm(Expr):
+class InlineAsmExpr(Expr):
     expr: Expr | child
 
 
@@ -493,7 +498,7 @@ class LetStmt(Stmt):
 
 class ExprStmt(Stmt):
     expr: Expr | child
-    has_semi: predicate
+    has_semicolon: predicate
 
 #     // At the moment, we only use this to figure out if a return expression
 #     // is really the last statement of a block. See #16566
@@ -518,7 +523,7 @@ class WildPat(Pat):
 
 class TuplePat(Pat):
     args: list[Pat] | child
-    ellipsis: optional[int]
+    ellipsis_index: optional[int]
 
     # Or(Box<[PatId]>),
 

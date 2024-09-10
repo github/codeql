@@ -143,52 +143,59 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Array extends @array, Expr { }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class Await extends @await, Expr {
-    override string toString() { result = "Await" }
-
-    /**
-     * Gets the expression of this await.
-     */
-    Expr getExpr() { awaits(this, result) }
+  class Unimplemented extends @unimplemented, AstNode {
+    override string toString() { result = "Unimplemented" }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Become extends @become, Expr {
-    override string toString() { result = "Become" }
+  class ArrayExpr extends @array_expr, Expr { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class AwaitExpr extends @await_expr, Expr {
+    override string toString() { result = "AwaitExpr" }
 
     /**
-     * Gets the expression of this become.
+     * Gets the expression of this await expression.
      */
-    Expr getExpr() { becomes(this, result) }
+    Expr getExpr() { await_exprs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class BinaryOp extends @binary_op, Expr {
-    override string toString() { result = "BinaryOp" }
+  class BecomeExpr extends @become_expr, Expr {
+    override string toString() { result = "BecomeExpr" }
 
     /**
-     * Gets the lhs of this binary op.
+     * Gets the expression of this become expression.
      */
-    Expr getLhs() { binary_ops(this, result, _) }
+    Expr getExpr() { become_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class BinaryOpExpr extends @binary_op_expr, Expr {
+    override string toString() { result = "BinaryOpExpr" }
 
     /**
-     * Gets the rhs of this binary op.
+     * Gets the lhs of this binary op expression.
      */
-    Expr getRhs() { binary_ops(this, _, result) }
+    Expr getLhs() { binary_op_exprs(this, result, _) }
 
     /**
-     * Gets the op of this binary op, if it exists.
+     * Gets the rhs of this binary op expression.
      */
-    string getOp() { binary_op_ops(this, result) }
+    Expr getRhs() { binary_op_exprs(this, _, result) }
+
+    /**
+     * Gets the op of this binary op expression, if it exists.
+     */
+    string getOp() { binary_op_expr_ops(this, result) }
   }
 
   /**
@@ -211,28 +218,28 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class BlockBase extends @block_base, Expr {
+  class BlockExprBase extends @block_expr_base, Expr {
     /**
-     * Gets the `index`th statement of this block base (0-based).
+     * Gets the `index`th statement of this block expression base (0-based).
      */
-    Stmt getStatement(int index) { block_base_statements(this, index, result) }
+    Stmt getStatement(int index) { block_expr_base_statements(this, index, result) }
 
     /**
-     * Gets the tail of this block base, if it exists.
+     * Gets the tail of this block expression base, if it exists.
      */
-    Expr getTail() { block_base_tails(this, result) }
+    Expr getTail() { block_expr_base_tails(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Box extends @box, Expr {
-    override string toString() { result = "Box" }
+  class BoxExpr extends @box_expr, Expr {
+    override string toString() { result = "BoxExpr" }
 
     /**
-     * Gets the expression of this box.
+     * Gets the expression of this box expression.
      */
-    Expr getExpr() { boxes(this, result) }
+    Expr getExpr() { box_exprs(this, result) }
   }
 
   /**
@@ -250,96 +257,89 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Break extends @break, Expr {
-    override string toString() { result = "Break" }
+  class BreakExpr extends @break_expr, Expr {
+    override string toString() { result = "BreakExpr" }
 
     /**
-     * Gets the expression of this break, if it exists.
+     * Gets the expression of this break expression, if it exists.
      */
-    Expr getExpr() { break_exprs(this, result) }
+    Expr getExpr() { break_expr_exprs(this, result) }
 
     /**
-     * Gets the label of this break, if it exists.
+     * Gets the label of this break expression, if it exists.
      */
-    Label getLabel() { break_labels(this, result) }
+    Label getLabel() { break_expr_labels(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Call extends @call, Expr {
-    override string toString() { result = "Call" }
+  class CallExpr extends @call_expr, Expr {
+    override string toString() { result = "CallExpr" }
 
     /**
-     * Gets the callee of this call.
+     * Gets the callee of this call expression.
      */
-    Expr getCallee() { calls(this, result) }
+    Expr getCallee() { call_exprs(this, result) }
 
     /**
-     * Gets the `index`th argument of this call (0-based).
+     * Gets the `index`th argument of this call expression (0-based).
      */
-    Expr getArg(int index) { call_args(this, index, result) }
+    Expr getArg(int index) { call_expr_args(this, index, result) }
 
     /**
-     * Holds if this call is assignee expression.
+     * Holds if this call expression is assignee expression.
      */
-    predicate isAssigneeExpr() { call_is_assignee_expr(this) }
+    predicate isAssigneeExpr() { call_expr_is_assignee_expr(this) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Cast extends @cast, Expr {
-    override string toString() { result = "Cast" }
+  class CastExpr extends @cast_expr, Expr {
+    override string toString() { result = "CastExpr" }
 
     /**
-     * Gets the expression of this cast.
+     * Gets the expression of this cast expression.
      */
-    Expr getExpr() { casts(this, result, _) }
+    Expr getExpr() { cast_exprs(this, result, _) }
 
     /**
-     * Gets the type reference of this cast.
+     * Gets the type reference of this cast expression.
      */
-    TypeRef getTypeRef() { casts(this, _, result) }
+    TypeRef getTypeRef() { cast_exprs(this, _, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Closure extends @closure, Expr {
-    override string toString() { result = "Closure" }
+  class ClosureExpr extends @closure_expr, Expr {
+    override string toString() { result = "ClosureExpr" }
 
     /**
-     * Gets the `index`th argument of this closure (0-based).
+     * Gets the `index`th argument of this closure expression (0-based).
      */
-    Pat getArg(int index) { closure_args(this, index, result) }
+    Pat getArg(int index) { closure_expr_args(this, index, result) }
 
     /**
-     * Gets the `index`th argument type of this closure (0-based), if it exists.
+     * Gets the `index`th argument type of this closure expression (0-based), if it exists.
      */
-    TypeRef getArgType(int index) { closure_arg_types(this, index, result) }
+    TypeRef getArgType(int index) { closure_expr_arg_types(this, index, result) }
 
     /**
-     * Gets the ret type of this closure, if it exists.
+     * Gets the ret type of this closure expression, if it exists.
      */
-    TypeRef getRetType() { closure_ret_types(this, result) }
+    TypeRef getRetType() { closure_expr_ret_types(this, result) }
 
     /**
-     * Gets the body of this closure.
+     * Gets the body of this closure expression.
      */
-    Expr getBody() { closures(this, result) }
+    Expr getBody() { closure_exprs(this, result) }
 
     /**
-     * Holds if this closure is move.
+     * Holds if this closure expression is move.
      */
-    predicate isMove() { closure_is_move(this) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class Const extends @const, Expr {
-    override string toString() { result = "Const" }
+    predicate isMove() { closure_expr_is_move(this) }
   }
 
   /**
@@ -357,13 +357,20 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Continue extends @continue, Expr {
-    override string toString() { result = "Continue" }
+  class ConstExpr extends @const_expr, Expr {
+    override string toString() { result = "ConstExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ContinueExpr extends @continue_expr, Expr {
+    override string toString() { result = "ContinueExpr" }
 
     /**
-     * Gets the label of this continue, if it exists.
+     * Gets the label of this continue expression, if it exists.
      */
-    Label getLabel() { continue_labels(this, result) }
+    Label getLabel() { continue_expr_labels(this, result) }
   }
 
   /**
@@ -378,26 +385,26 @@ module Raw {
     Expr getExpr() { expr_stmts(this, result) }
 
     /**
-     * Holds if this expression statement has semi.
+     * Holds if this expression statement has semicolon.
      */
-    predicate hasSemi() { expr_stmt_has_semi(this) }
+    predicate hasSemicolon() { expr_stmt_has_semicolon(this) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Field extends @field, Expr {
-    override string toString() { result = "Field" }
+  class FieldExpr extends @field_expr, Expr {
+    override string toString() { result = "FieldExpr" }
 
     /**
-     * Gets the expression of this field.
+     * Gets the expression of this field expression.
      */
-    Expr getExpr() { fields(this, result, _) }
+    Expr getExpr() { field_exprs(this, result, _) }
 
     /**
-     * Gets the name of this field.
+     * Gets the name of this field expression.
      */
-    string getName() { fields(this, _, result) }
+    string getName() { field_exprs(this, _, result) }
   }
 
   /**
@@ -430,57 +437,57 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class If extends @if, Expr {
-    override string toString() { result = "If" }
+  class IfExpr extends @if_expr, Expr {
+    override string toString() { result = "IfExpr" }
 
     /**
-     * Gets the condition of this if.
+     * Gets the condition of this if expression.
      */
-    Expr getCondition() { ifs(this, result, _) }
+    Expr getCondition() { if_exprs(this, result, _) }
 
     /**
-     * Gets the then of this if.
+     * Gets the then of this if expression.
      */
-    Expr getThen() { ifs(this, _, result) }
+    Expr getThen() { if_exprs(this, _, result) }
 
     /**
-     * Gets the else of this if, if it exists.
+     * Gets the else of this if expression, if it exists.
      */
-    Expr getElse() { if_elses(this, result) }
+    Expr getElse() { if_expr_elses(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Index extends @index, Expr {
-    override string toString() { result = "Index" }
+  class IndexExpr extends @index_expr, Expr {
+    override string toString() { result = "IndexExpr" }
 
     /**
-     * Gets the base of this index.
+     * Gets the base of this index expression.
      */
-    Expr getBase() { indices(this, result, _) }
+    Expr getBase() { index_exprs(this, result, _) }
 
     /**
-     * Gets the index of this index.
+     * Gets the index of this index expression.
      */
-    Expr getIndex() { indices(this, _, result) }
+    Expr getIndex() { index_exprs(this, _, result) }
 
     /**
-     * Holds if this index is assignee expression.
+     * Holds if this index expression is assignee expression.
      */
-    predicate isAssigneeExpr() { index_is_assignee_expr(this) }
+    predicate isAssigneeExpr() { index_expr_is_assignee_expr(this) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class InlineAsm extends @inline_asm, Expr {
-    override string toString() { result = "InlineAsm" }
+  class InlineAsmExpr extends @inline_asm_expr, Expr {
+    override string toString() { result = "InlineAsmExpr" }
 
     /**
-     * Gets the expression of this inline asm.
+     * Gets the expression of this inline asm expression.
      */
-    Expr getExpr() { inline_asms(this, result) }
+    Expr getExpr() { inline_asm_exprs(this, result) }
   }
 
   /**
@@ -493,18 +500,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Let extends @let, Expr {
-    override string toString() { result = "Let" }
+  class LetExpr extends @let_expr, Expr {
+    override string toString() { result = "LetExpr" }
 
     /**
-     * Gets the pat of this let.
+     * Gets the pat of this let expression.
      */
-    Pat getPat() { lets(this, result, _) }
+    Pat getPat() { let_exprs(this, result, _) }
 
     /**
-     * Gets the expression of this let.
+     * Gets the expression of this let expression.
      */
-    Expr getExpr() { lets(this, _, result) }
+    Expr getExpr() { let_exprs(this, _, result) }
   }
 
   /**
@@ -549,64 +556,64 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Literal extends @literal, Expr {
-    override string toString() { result = "Literal" }
+  class LiteralExpr extends @literal_expr, Expr {
+    override string toString() { result = "LiteralExpr" }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Loop extends @loop, Expr {
-    override string toString() { result = "Loop" }
+  class LoopExpr extends @loop_expr, Expr {
+    override string toString() { result = "LoopExpr" }
 
     /**
-     * Gets the body of this loop.
+     * Gets the body of this loop expression.
      */
-    Expr getBody() { loops(this, result) }
+    Expr getBody() { loop_exprs(this, result) }
 
     /**
-     * Gets the label of this loop, if it exists.
+     * Gets the label of this loop expression, if it exists.
      */
-    Label getLabel() { loop_labels(this, result) }
+    Label getLabel() { loop_expr_labels(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Match extends @match, Expr {
-    override string toString() { result = "Match" }
+  class MatchExpr extends @match_expr, Expr {
+    override string toString() { result = "MatchExpr" }
 
     /**
-     * Gets the expression of this match.
+     * Gets the expression of this match expression.
      */
-    Expr getExpr() { matches(this, result) }
+    Expr getExpr() { match_exprs(this, result) }
 
     /**
-     * Gets the `index`th branch of this match (0-based).
+     * Gets the `index`th branch of this match expression (0-based).
      */
-    MatchArm getBranch(int index) { match_branches(this, index, result) }
+    MatchArm getBranch(int index) { match_expr_branches(this, index, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class MethodCall extends @method_call, Expr {
-    override string toString() { result = "MethodCall" }
+  class MethodCallExpr extends @method_call_expr, Expr {
+    override string toString() { result = "MethodCallExpr" }
 
     /**
-     * Gets the receiver of this method call.
+     * Gets the receiver of this method call expression.
      */
-    Expr getReceiver() { method_calls(this, result, _) }
+    Expr getReceiver() { method_call_exprs(this, result, _) }
 
     /**
-     * Gets the method name of this method call.
+     * Gets the method name of this method call expression.
      */
-    string getMethodName() { method_calls(this, _, result) }
+    string getMethodName() { method_call_exprs(this, _, result) }
 
     /**
-     * Gets the `index`th argument of this method call (0-based).
+     * Gets the `index`th argument of this method call expression (0-based).
      */
-    Expr getArg(int index) { method_call_args(this, index, result) }
+    Expr getArg(int index) { method_call_expr_args(this, index, result) }
   }
 
   /**
@@ -638,18 +645,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class OffsetOf extends @offset_of, Expr {
-    override string toString() { result = "OffsetOf" }
+  class OffsetOfExpr extends @offset_of_expr, Expr {
+    override string toString() { result = "OffsetOfExpr" }
 
     /**
-     * Gets the container of this offset of.
+     * Gets the container of this offset of expression.
      */
-    TypeRef getContainer() { offset_ofs(this, result) }
+    TypeRef getContainer() { offset_of_exprs(this, result) }
 
     /**
-     * Gets the `index`th field of this offset of (0-based).
+     * Gets the `index`th field of this offset of expression (0-based).
      */
-    string getField(int index) { offset_of_fields(this, index, result) }
+    string getField(int index) { offset_of_expr_fields(this, index, result) }
   }
 
   /**
@@ -667,8 +674,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Path extends @path, Expr {
-    override string toString() { result = "Path" }
+  class PathExpr extends @path_expr, Expr {
+    override string toString() { result = "PathExpr" }
   }
 
   /**
@@ -681,23 +688,23 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Range extends @range, Expr {
-    override string toString() { result = "Range" }
+  class RangeExpr extends @range_expr, Expr {
+    override string toString() { result = "RangeExpr" }
 
     /**
-     * Gets the lhs of this range, if it exists.
+     * Gets the lhs of this range expression, if it exists.
      */
-    Expr getLhs() { range_lhs(this, result) }
+    Expr getLhs() { range_expr_lhs(this, result) }
 
     /**
-     * Gets the rhs of this range, if it exists.
+     * Gets the rhs of this range expression, if it exists.
      */
-    Expr getRhs() { range_rhs(this, result) }
+    Expr getRhs() { range_expr_rhs(this, result) }
 
     /**
-     * Holds if this range is inclusive.
+     * Holds if this range expression is inclusive.
      */
-    predicate isInclusive() { range_is_inclusive(this) }
+    predicate isInclusive() { range_expr_is_inclusive(this) }
   }
 
   /**
@@ -720,8 +727,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class RecordLit extends @record_lit, Expr {
-    override string toString() { result = "RecordLit" }
+  class RecordLitExpr extends @record_lit_expr, Expr {
+    override string toString() { result = "RecordLitExpr" }
   }
 
   /**
@@ -734,23 +741,23 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Ref extends @ref, Expr {
-    override string toString() { result = "Ref" }
+  class RefExpr extends @ref_expr, Expr {
+    override string toString() { result = "RefExpr" }
 
     /**
-     * Gets the expression of this reference.
+     * Gets the expression of this reference expression.
      */
-    Expr getExpr() { refs(this, result) }
+    Expr getExpr() { ref_exprs(this, result) }
 
     /**
-     * Holds if this reference is raw.
+     * Holds if this reference expression is raw.
      */
-    predicate isRaw() { ref_is_raw(this) }
+    predicate isRaw() { ref_expr_is_raw(this) }
 
     /**
-     * Holds if this reference is mut.
+     * Holds if this reference expression is mut.
      */
-    predicate isMut() { ref_is_mut(this) }
+    predicate isMut() { ref_expr_is_mut(this) }
   }
 
   /**
@@ -773,13 +780,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Return extends @return, Expr {
-    override string toString() { result = "Return" }
+  class ReturnExpr extends @return_expr, Expr {
+    override string toString() { result = "ReturnExpr" }
 
     /**
-     * Gets the expression of this return, if it exists.
+     * Gets the expression of this return expression, if it exists.
      */
-    Expr getExpr() { return_exprs(this, result) }
+    Expr getExpr() { return_expr_exprs(this, result) }
   }
 
   /**
@@ -807,18 +814,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Tuple extends @tuple, Expr {
-    override string toString() { result = "Tuple" }
+  class TupleExpr extends @tuple_expr, Expr {
+    override string toString() { result = "TupleExpr" }
 
     /**
-     * Gets the `index`th expression of this tuple (0-based).
+     * Gets the `index`th expression of this tuple expression (0-based).
      */
-    Expr getExpr(int index) { tuple_exprs(this, index, result) }
+    Expr getExpr(int index) { tuple_expr_exprs(this, index, result) }
 
     /**
-     * Holds if this tuple is assignee expression.
+     * Holds if this tuple expression is assignee expression.
      */
-    predicate isAssigneeExpr() { tuple_is_assignee_expr(this) }
+    predicate isAssigneeExpr() { tuple_expr_is_assignee_expr(this) }
   }
 
   /**
@@ -833,9 +840,9 @@ module Raw {
     Pat getArg(int index) { tuple_pat_args(this, index, result) }
 
     /**
-     * Gets the ellipsis of this tuple pat, if it exists.
+     * Gets the ellipsis index of this tuple pat, if it exists.
      */
-    int getEllipsis() { tuple_pat_ellipses(this, result) }
+    int getEllipsisIndex() { tuple_pat_ellipsis_indices(this, result) }
   }
 
   /**
@@ -848,25 +855,25 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class UnaryOp extends @unary_op, Expr {
-    override string toString() { result = "UnaryOp" }
+  class UnaryOpExpr extends @unary_op_expr, Expr {
+    override string toString() { result = "UnaryOpExpr" }
 
     /**
-     * Gets the expression of this unary op.
+     * Gets the expression of this unary op expression.
      */
-    Expr getExpr() { unary_ops(this, result, _) }
+    Expr getExpr() { unary_op_exprs(this, result, _) }
 
     /**
-     * Gets the op of this unary op.
+     * Gets the op of this unary op expression.
      */
-    string getOp() { unary_ops(this, _, result) }
+    string getOp() { unary_op_exprs(this, _, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Underscore extends @underscore, Expr {
-    override string toString() { result = "Underscore" }
+  class UnderscoreExpr extends @underscore_expr, Expr {
+    override string toString() { result = "UnderscoreExpr" }
   }
 
   /**
@@ -879,84 +886,84 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Yeet extends @yeet, Expr {
-    override string toString() { result = "Yeet" }
+  class YeetExpr extends @yeet_expr, Expr {
+    override string toString() { result = "YeetExpr" }
 
     /**
-     * Gets the expression of this yeet, if it exists.
+     * Gets the expression of this yeet expression, if it exists.
      */
-    Expr getExpr() { yeet_exprs(this, result) }
+    Expr getExpr() { yeet_expr_exprs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Yield extends @yield, Expr {
-    override string toString() { result = "Yield" }
+  class YieldExpr extends @yield_expr, Expr {
+    override string toString() { result = "YieldExpr" }
 
     /**
-     * Gets the expression of this yield, if it exists.
+     * Gets the expression of this yield expression, if it exists.
      */
-    Expr getExpr() { yield_exprs(this, result) }
+    Expr getExpr() { yield_expr_exprs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class AsyncBlock extends @async_block, BlockBase {
-    override string toString() { result = "AsyncBlock" }
+  class AsyncBlockExpr extends @async_block_expr, BlockExprBase {
+    override string toString() { result = "AsyncBlockExpr" }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Block extends @block, BlockBase {
-    override string toString() { result = "Block" }
+  class BlockExpr extends @block_expr, BlockExprBase {
+    override string toString() { result = "BlockExpr" }
 
     /**
-     * Gets the label of this block, if it exists.
+     * Gets the label of this block expression, if it exists.
      */
-    Label getLabel() { block_labels(this, result) }
+    Label getLabel() { block_expr_labels(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class ElementList extends @element_list, Array {
-    override string toString() { result = "ElementList" }
+  class ElementListExpr extends @element_list_expr, ArrayExpr {
+    override string toString() { result = "ElementListExpr" }
 
     /**
-     * Gets the `index`th element of this element list (0-based).
+     * Gets the `index`th element of this element list expression (0-based).
      */
-    Expr getElement(int index) { element_list_elements(this, index, result) }
+    Expr getElement(int index) { element_list_expr_elements(this, index, result) }
 
     /**
-     * Holds if this element list is assignee expression.
+     * Holds if this element list expression is assignee expression.
      */
-    predicate isAssigneeExpr() { element_list_is_assignee_expr(this) }
+    predicate isAssigneeExpr() { element_list_expr_is_assignee_expr(this) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class Repeat extends @repeat, Array {
-    override string toString() { result = "Repeat" }
+  class RepeatExpr extends @repeat_expr, ArrayExpr {
+    override string toString() { result = "RepeatExpr" }
 
     /**
-     * Gets the initializer of this repeat.
+     * Gets the initializer of this repeat expression.
      */
-    Expr getInitializer() { repeats(this, result, _) }
+    Expr getInitializer() { repeat_exprs(this, result, _) }
 
     /**
-     * Gets the repeat of this repeat.
+     * Gets the repeat of this repeat expression.
      */
-    Expr getRepeat() { repeats(this, _, result) }
+    Expr getRepeat() { repeat_exprs(this, _, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    */
-  class UnsafeBlock extends @unsafe_block, BlockBase {
-    override string toString() { result = "UnsafeBlock" }
+  class UnsafeBlockExpr extends @unsafe_block_expr, BlockExprBase {
+    override string toString() { result = "UnsafeBlockExpr" }
   }
 }
