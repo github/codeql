@@ -1,7 +1,9 @@
+private import codeql.util.Boolean
+
 cached
 newtype TSuccessorType =
   TSuccessorSuccessor() or
-  TBooleanSuccessor(boolean b) { b in [false, true] } or
+  TBooleanSuccessor(Boolean b) or
   TReturnSuccessor()
 
 /** The type of a control flow successor. */

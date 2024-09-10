@@ -1,11 +1,12 @@
-private import rust
+private import codeql.util.Boolean
 private import codeql.rust.controlflow.ControlFlowGraph
+private import rust
 private import SuccessorType
 private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
-  TBooleanCompletion(boolean b) { b in [false, true] } or
+  TBooleanCompletion(Boolean b) or
   TReturnCompletion()
 
 /** A completion of a statement or an expression. */
@@ -82,3 +83,12 @@ class ReturnCompletion extends TReturnCompletion, Completion {
 
   override string toString() { result = "return" }
 }
+
+/** Hold if `c` represents normal evaluation of a statement or an expression. */
+predicate completionIsNormal(Completion c) { c instanceof NormalCompletion }
+
+/** Hold if `c` represents simple and normal evaluation of a statement or an expression. */
+predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
+
+/** Holds if `c` is a valid completion for `n`. */
+predicate completionIsValidFor(Completion c, AstNode n) { c.isValidFor(n) }

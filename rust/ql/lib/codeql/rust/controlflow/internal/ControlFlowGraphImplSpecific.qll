@@ -11,11 +11,11 @@ module CfgInput implements InputSig<Rust::Location> {
 
   class Completion = C::Completion;
 
-  predicate completionIsNormal(Completion c) { c instanceof C::NormalCompletion }
+  predicate completionIsNormal = C::completionIsNormal/1;
 
-  predicate completionIsSimple(Completion c) { c instanceof C::SimpleCompletion }
+  predicate completionIsSimple = C::completionIsSimple/1;
 
-  predicate completionIsValidFor(Completion c, AstNode e) { c.isValidFor(e) }
+  predicate completionIsValidFor = C::completionIsValidFor/2;
 
   /** An AST node with an associated control-flow graph. */
   class CfgScope = Scope::CfgScope;
