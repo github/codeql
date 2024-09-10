@@ -7,8 +7,6 @@
 
 ### Dependencies
 
-At present you need to be in the `rust-experiment` branch (or a branch on top of that) in both the `semmle-code` and `codeql` repos.
-
 If you don't have the `semmle-code` repo you may need to install Bazel manually, e.g. from https://github.com/bazelbuild/bazelisk.
 
 ### Building the Rust Extractor
