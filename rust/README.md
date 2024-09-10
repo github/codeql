@@ -21,7 +21,7 @@ You now need to create a [per-user CodeQL configuration file](https://docs.githu
 ```
 --search-path Users/YOURUSERNAME/semmle-code/ql
 ```
-(or wherever the `ql` directory is on your system)
+(or wherever the `codeql` checkout is on your system)
 
 You can now use the Rust extractor e.g. to run Rust tests from the command line or in VSCode.
 
