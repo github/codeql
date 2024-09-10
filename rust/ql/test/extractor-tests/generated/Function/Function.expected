@@ -1,1 +1,1 @@
-| gen_function.rs:2:0:3:40 | foo | getName: | foo | getBody: | file://:0:0:0:0 | (no string representation) |
+| gen_function.rs:3:1:4:40 | foo | getName: | foo | getBody: | gen_function.rs:4:23:4:40 | BlockExpr |
