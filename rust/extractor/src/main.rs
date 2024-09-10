@@ -78,9 +78,16 @@ fn main() -> anyhow::Result<()> {
                     crate_id.into_raw().into_u32()
                 )),
             );
-            translate::CrateTranslator::new(&db, trap, &krate, &vfs, &archiver)
-                .emit_crate()
-                .context("writing trap file")?;
+            translate::CrateTranslator::new(
+                &db,
+                trap,
+                &krate,
+                &vfs,
+                &archiver,
+                cfg.extract_dependencies,
+            )
+            .emit_crate()
+            .context("writing trap file")?;
         }
     }
     Ok(())

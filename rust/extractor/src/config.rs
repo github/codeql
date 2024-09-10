@@ -32,6 +32,7 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub extract_dependencies: bool,
     pub verbose: u8,
     pub compression: Compression,
     pub inputs: Vec<PathBuf>,
@@ -72,6 +73,7 @@ impl Config {
         }
         Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
+            .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args))
             .extract()
             .context("loading configuration")
