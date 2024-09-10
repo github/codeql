@@ -373,7 +373,7 @@ function test() {
   // NOT OK
   $('myId').html(target)
 
-  // OK
+  // OK [INCONSISTENCY] (TODO: fix)
   $('myid').html(document.location.href.split("?")[0]);
 }
 

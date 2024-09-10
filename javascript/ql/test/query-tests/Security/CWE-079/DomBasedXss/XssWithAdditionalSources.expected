@@ -519,6 +519,9 @@ nodes
 | tst.js:371:7:371:39 | target | semmle.label | target |
 | tst.js:371:16:371:39 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:374:18:374:23 | target | semmle.label | target |
+| tst.js:377:18:377:39 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:377:18:377:50 | documen ... it("?") [ArrayElement] | semmle.label | documen ... it("?") [ArrayElement] |
+| tst.js:377:18:377:53 | documen ... "?")[0] | semmle.label | documen ... "?")[0] |
 | tst.js:381:7:381:39 | target | semmle.label | target |
 | tst.js:381:7:381:39 | target [taint3] | semmle.label | target [taint3] |
 | tst.js:381:7:381:39 | target [taint8] | semmle.label | target [taint8] |
@@ -1137,6 +1140,8 @@ edges
 | tst.js:355:19:355:42 | documen ... .search | tst.js:355:10:355:42 | target | provenance |  |
 | tst.js:371:7:371:39 | target | tst.js:374:18:374:23 | target | provenance |  |
 | tst.js:371:16:371:39 | documen ... .search | tst.js:371:7:371:39 | target | provenance |  |
+| tst.js:377:18:377:39 | documen ... on.href | tst.js:377:18:377:50 | documen ... it("?") [ArrayElement] | provenance |  |
+| tst.js:377:18:377:50 | documen ... it("?") [ArrayElement] | tst.js:377:18:377:53 | documen ... "?")[0] | provenance |  |
 | tst.js:381:7:381:39 | target | tst.js:384:18:384:23 | target | provenance |  |
 | tst.js:381:7:381:39 | target | tst.js:386:18:386:23 | target | provenance |  |
 | tst.js:381:7:381:39 | target | tst.js:397:18:397:23 | target | provenance |  |
