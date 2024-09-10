@@ -155,6 +155,20 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
   )
 }
 
+predicate controlledCWD(Step artifact) {
+  artifact instanceof UntrustedArtifactDownloadStep or
+  // This shoould be:
+  // artifact instanceof PRHeadCheckoutStep
+  // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
+  // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
+  // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
+  artifact.(Uses).getCallee() = "actions/checkout" or
+  artifact instanceof GitMutableRefCheckout or
+  artifact instanceof GitSHACheckout or
+  artifact instanceof GhMutableRefCheckout or
+  artifact instanceof GhSHACheckout
+}
+
 /**
  * A downloaded artifact that gets assigned to a Run step output.
  * - uses: actions/download-artifact@v2
@@ -165,10 +179,7 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Run run, Step artifact, string content, string key, string value |
-    (
-      artifact instanceof UntrustedArtifactDownloadStep or
-      artifact instanceof PRHeadCheckoutStep
-    ) and
+    controlledCWD(artifact) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
@@ -207,10 +218,7 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
  */
 predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(Run run, string content, string key, string value, Step artifact |
-    (
-      artifact instanceof UntrustedArtifactDownloadStep or
-      artifact instanceof PRHeadCheckoutStep
-    ) and
+    controlledCWD(artifact) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
@@ -246,25 +254,20 @@ predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataF
  */
 predicate artifactDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Step artifact, Run run |
-    (
-      artifact instanceof UntrustedArtifactDownloadStep or
-      artifact instanceof PRHeadCheckoutStep
-    ) and
+    controlledCWD(artifact) and
     pred.asExpr() = artifact and
     succ.asExpr() = run.getScriptScalar() and
     artifact.getAFollowingStep() = run
   )
 }
 
+//
 /**
  * A download artifact step followed by a envvar-injection uses step .
  */
 predicate artifactDownloadToUsesStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Step artifact, Uses uses |
-    (
-      artifact instanceof UntrustedArtifactDownloadStep or
-      artifact instanceof PRHeadCheckoutStep
-    ) and
+    controlledCWD(artifact) and
     madSink(succ, "envvar-injection") and
     pred.asExpr() = artifact and
     succ.asExpr() = uses and
