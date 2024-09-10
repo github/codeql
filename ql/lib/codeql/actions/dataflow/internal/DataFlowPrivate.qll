@@ -86,7 +86,7 @@ class DataFlowCall instanceof Cfg::Node {
   int totalorder() { none() }
 
   /** Gets the location of this call. */
-  Location getLocation() { result = this.getLocation() }
+  Location getLocation() { result = this.(Cfg::Node).getLocation() }
 }
 
 /**
@@ -97,7 +97,17 @@ class DataFlowCallable instanceof Cfg::CfgScope {
 
   string getName() {
     if this instanceof ReusableWorkflow
-    then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
+    then
+      result =
+        this.(ReusableWorkflow)
+            .getLocation()
+            .getFile()
+            .getRelativePath()
+            .suffix(this.(ReusableWorkflow)
+                    .getLocation()
+                    .getFile()
+                    .getRelativePath()
+                    .indexOf("/.github/workflows") + 1)
     else
       if this instanceof CompositeAction
       then
@@ -118,7 +128,7 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   int totalorder() { none() }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = this.getLocation() }
+  Location getLocation() { result = this.(Cfg::CfgScope).getLocation() }
 }
 
 newtype TReturnKind = TNormalReturn()
@@ -380,8 +390,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
   madStoreStep(node1, node2, c) or
   envToOutputStoreStep(node1, node2, c) or
-  artifactToOutputStoreStep(node1, node2, c) or
   envToEnvStoreStep(node1, node2, c) or
+  artifactToOutputStoreStep(node1, node2, c) or
   artifactToEnvStoreStep(node1, node2, c)
 }
 
