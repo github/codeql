@@ -1035,6 +1035,11 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     FlowSummaryPrivate::Steps::summaryReadStep(input, MkAwaited(), output) and
     node1 = TFlowSummaryNode(input) and
     node2 = TFlowSummaryNode(output)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryPrivate::Steps::summaryReadStep(input, MkOptionalBarrier(_), output) and
+    node1 = TFlowSummaryNode(input) and
+    node2 = TFlowSummaryNode(output)
   )
   or
   VariableCaptureOutput::localFlowStep(getClosureNode(node1), getClosureNode(node2))
@@ -1389,3 +1394,20 @@ class ArgumentNode extends DataFlow::Node {
 class ParameterNode extends DataFlow::Node {
   ParameterNode() { isParameterNodeImpl(this, _, _) }
 }
+
+cached
+private module OptionalSteps {
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      MkOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryPrivate::Steps::summaryReadStep(_, MkOptionalBarrier(name),
+      node.(FlowSummaryNode).getSummaryNode())
+  }
+}
+
+import OptionalSteps

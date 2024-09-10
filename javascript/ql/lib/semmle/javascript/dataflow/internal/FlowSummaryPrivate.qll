@@ -95,6 +95,10 @@ private string encodeContentAux(ContentSet cs, string arg) {
   cs = MkAnyPropertyDeep() and result = "AnyMemberDeep" and arg = ""
   or
   cs = MkArrayElementDeep() and result = "ArrayElementDeep" and arg = ""
+  or
+  cs = MkOptionalStep(arg) and result = "OptionalStep"
+  or
+  cs = MkOptionalBarrier(arg) and result = "OptionalBarrier"
 }
 
 /**
