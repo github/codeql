@@ -1203,11 +1203,13 @@ public class TypeScriptASTConverter {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     Expression attributes = convertChild(node, "attributes");
     if (hasChild(node, "exportClause")) {
+      JsonElement exportClauseNode = node.get("exportClause");
       boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
+      boolean isNamespaceExportNode = hasKind(exportClauseNode, "NamespaceExport");
       List<ExportSpecifier> specifiers =
-          hasKind(node.get("exportClause"), "NamespaceExport")
-              ? Collections.singletonList(convertChild(node, "exportClause"))
-              : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
+          isNamespaceExportNode
+              ? Collections.singletonList(convertNodeAsIdentifier(exportClauseNode.getAsJsonObject()))
+              : convertChildren(exportClauseNode.getAsJsonObject(), "elements");
       return new ExportNamedDeclaration(loc, null, specifiers, source, attributes, hasTypeKeyword);
     } else {
       return new ExportAllDeclaration(loc, source, attributes);
