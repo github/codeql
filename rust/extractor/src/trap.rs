@@ -90,6 +90,7 @@ impl TrapFile {
         let end_line = 1 + end.line as usize;
         let end_column = 1 + end.col as usize;
         let (ret, _) = self.writer.location_label(trap::Location {
+            file_label,
             start_line,
             start_column,
             end_line,

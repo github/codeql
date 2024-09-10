@@ -4474,6 +4474,33 @@ ir.c:
 #   29|           Type = [IntType] int
 #   29|           Value = [Literal] 0
 #   29|           ValueCategory = prvalue
+#   32| [TopLevelFunction] void unexplained_loop_regression()
+#   32|   <params>: 
+#   33|   getEntryPoint(): [BlockStmt] { ... }
+#   34|     getStmt(0): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   35|       getStmt(): [BlockStmt] { ... }
+#   36|         getStmt(0): [ExprStmt] ExprStmt
+#   36|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   36|               Type = [VoidType] void
+#   36|               ValueCategory = prvalue
+#   36|             getArgument(0): [Literal] 0
+#   36|                 Type = [IntType] int
+#   36|                 Value = [Literal] 0
+#   36|                 ValueCategory = prvalue
+#   38|       getCondition(): [Literal] 1
+#   38|           Type = [IntType] int
+#   38|           Value = [Literal] 1
+#   38|           ValueCategory = prvalue
+#   39|       getExcept(): [BlockStmt] { ... }
+#   40|         getStmt(0): [ExprStmt] ExprStmt
+#   40|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   40|               Type = [VoidType] void
+#   40|               ValueCategory = prvalue
+#   40|             getArgument(0): [Literal] 1
+#   40|                 Type = [IntType] int
+#   40|                 Value = [Literal] 1
+#   40|                 ValueCategory = prvalue
+#   42|     getStmt(1): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
