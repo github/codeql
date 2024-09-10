@@ -3241,6 +3241,16 @@ ir.c:
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     m62_4(unknown)        = ^CallSideEffect                         : ~m57_4
 #   62|     m62_5(unknown)        = Chi                                     : total:m57_4, partial:m62_4
+#-----|   Exception -> Block 1
+
+#   66|   Block 1
+#   66|     r66_1(int)        = Constant[1]        : 
+#   66|     r66_2(glval<int>) = VariableAddress[x] : 
+#   66|     m66_3(int)        = Store[x]           : &:r66_2, r66_1
+#   68|     v68_1(void)       = NoOp               : 
+#   57|     v57_5(void)       = ReturnVoid         : 
+#   57|     v57_6(void)       = AliasedUse         : ~m62_5
+#   57|     v57_7(void)       = ExitFunction       : 
 
 #   70| void throw_in_try_with_throw_in_finally()
 #   70|   Block 0
@@ -3253,6 +3263,20 @@ ir.c:
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
 #   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
+#-----|   Exception -> Block 2
+
+#   70|   Block 1
+#   70|     v70_5(void) = Unwind       : 
+#   70|     v70_6(void) = AliasedUse   : ~m76_5
+#   70|     v70_7(void) = ExitFunction : 
+
+#   76|   Block 2
+#   76|     r76_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   76|     r76_2(int)            = Constant[0]                             : 
+#   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
+#   76|     m76_4(unknown)        = ^CallSideEffect                         : ~m73_5
+#   76|     m76_5(unknown)        = Chi                                     : total:m73_5, partial:m76_4
+#-----|   Exception -> Block 1
 
 #   80| void raise_access_violation()
 #   80|   Block 0
