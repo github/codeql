@@ -938,7 +938,7 @@ impl CrateTranslator<'_> {
                 let body = if self.extract_dependencies || self.krate.origin(self.db).is_local() {
                     let (body, source_map) = self.db.body_with_source_map(def.into());
                     let txt = body.pretty_print(self.db, def.into(), Edition::Edition2021);
-                    println!("{}", &txt);
+                    log::trace!("{}", &txt);
                     self.emit_expr(body.body_expr, &body, &source_map)
                 } else {
                     self.trap.emit(generated::MissingExpr {
