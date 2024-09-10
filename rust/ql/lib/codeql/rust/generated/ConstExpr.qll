@@ -19,5 +19,13 @@ module Generated {
    */
   class ConstExpr extends Synth::TConstExpr, Expr {
     override string getAPrimaryQlClass() { result = "ConstExpr" }
+
+    /**
+     * Gets the expression of this const expression.
+     */
+    Expr getExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertConstExprToRaw(this).(Raw::ConstExpr).getExpr())
+    }
   }
 }

@@ -7,6 +7,8 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
+import codeql.rust.elements.RecordLitField
+import codeql.rust.elements.Unimplemented
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordLitExpr` and should not
@@ -19,5 +21,69 @@ module Generated {
    */
   class RecordLitExpr extends Synth::TRecordLitExpr, Expr {
     override string getAPrimaryQlClass() { result = "RecordLitExpr" }
+
+    /**
+     * Gets the path of this record lit expression, if it exists.
+     */
+    Unimplemented getPath() {
+      result =
+        Synth::convertUnimplementedFromRaw(Synth::convertRecordLitExprToRaw(this)
+              .(Raw::RecordLitExpr)
+              .getPath())
+    }
+
+    /**
+     * Holds if `getPath()` exists.
+     */
+    final predicate hasPath() { exists(this.getPath()) }
+
+    /**
+     * Gets the `index`th field of this record lit expression (0-based).
+     */
+    RecordLitField getField(int index) {
+      result =
+        Synth::convertRecordLitFieldFromRaw(Synth::convertRecordLitExprToRaw(this)
+              .(Raw::RecordLitExpr)
+              .getField(index))
+    }
+
+    /**
+     * Gets any of the fields of this record lit expression.
+     */
+    final RecordLitField getAField() { result = this.getField(_) }
+
+    /**
+     * Gets the number of fields of this record lit expression.
+     */
+    final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
+
+    /**
+     * Gets the spread of this record lit expression, if it exists.
+     */
+    Expr getSpread() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertRecordLitExprToRaw(this)
+              .(Raw::RecordLitExpr)
+              .getSpread())
+    }
+
+    /**
+     * Holds if `getSpread()` exists.
+     */
+    final predicate hasSpread() { exists(this.getSpread()) }
+
+    /**
+     * Holds if this record lit expression has ellipsis.
+     */
+    predicate hasEllipsis() {
+      Synth::convertRecordLitExprToRaw(this).(Raw::RecordLitExpr).hasEllipsis()
+    }
+
+    /**
+     * Holds if this record lit expression is assignee expression.
+     */
+    predicate isAssigneeExpr() {
+      Synth::convertRecordLitExprToRaw(this).(Raw::RecordLitExpr).isAssigneeExpr()
+    }
   }
 }

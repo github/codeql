@@ -86,6 +86,13 @@ module Generated {
     }
 
     /**
+     * Gets the closure kind of this closure expression.
+     */
+    string getClosureKind() {
+      result = Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getClosureKind()
+    }
+
+    /**
      * Holds if this closure expression is move.
      */
     predicate isMove() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isMove() }

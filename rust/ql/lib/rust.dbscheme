@@ -57,6 +57,8 @@ locations(
 | @label
 | @match_arm
 | @pat
+| @record_field_pat
+| @record_lit_field
 | @stmt
 | @type_ref
 | @unimplemented
@@ -144,6 +146,18 @@ match_arm_guards(
 | @tuple_struct_pat
 | @wild_pat
 ;
+
+record_field_pats(
+  unique int id: @record_field_pat,
+  string name: string ref,
+  int pat: @pat ref
+);
+
+record_lit_fields(
+  unique int id: @record_lit_field,
+  string name: string ref,
+  int expr: @expr ref
+);
 
 @stmt =
   @expr_stmt
@@ -267,7 +281,8 @@ cast_exprs(
 
 closure_exprs(
   unique int id: @closure_expr,
-  int body: @expr ref
+  int body: @expr ref,
+  string closure_kind: string ref
 );
 
 #keyset[id, index]
@@ -301,7 +316,8 @@ const_block_pats(
 );
 
 const_exprs(
-  unique int id: @const_expr
+  unique int id: @const_expr,
+  int expr: @expr ref
 );
 
 continue_exprs(
@@ -442,6 +458,12 @@ method_call_expr_args(
   int arg: @expr ref
 );
 
+#keyset[id]
+method_call_expr_generic_args(
+  int id: @method_call_expr ref,
+  int generic_args: @unimplemented ref
+);
+
 missing_exprs(
   unique int id: @missing_expr
 );
@@ -485,11 +507,13 @@ or_pat_args(
 );
 
 path_exprs(
-  unique int id: @path_expr
+  unique int id: @path_expr,
+  int path: @unimplemented ref
 );
 
 path_pats(
-  unique int id: @path_pat
+  unique int id: @path_pat,
+  int path: @unimplemented ref
 );
 
 range_exprs(
@@ -533,8 +557,55 @@ record_lit_exprs(
   unique int id: @record_lit_expr
 );
 
+#keyset[id]
+record_lit_expr_paths(
+  int id: @record_lit_expr ref,
+  int path: @unimplemented ref
+);
+
+#keyset[id, index]
+record_lit_expr_fields(
+  int id: @record_lit_expr ref,
+  int index: int ref,
+  int field: @record_lit_field ref
+);
+
+#keyset[id]
+record_lit_expr_spreads(
+  int id: @record_lit_expr ref,
+  int spread: @expr ref
+);
+
+#keyset[id]
+record_lit_expr_has_ellipsis(
+  int id: @record_lit_expr ref
+);
+
+#keyset[id]
+record_lit_expr_is_assignee_expr(
+  int id: @record_lit_expr ref
+);
+
 record_pats(
   unique int id: @record_pat
+);
+
+#keyset[id]
+record_pat_paths(
+  int id: @record_pat ref,
+  int path: @unimplemented ref
+);
+
+#keyset[id, index]
+record_pat_args(
+  int id: @record_pat ref,
+  int index: int ref,
+  int arg: @record_field_pat ref
+);
+
+#keyset[id]
+record_pat_has_ellipsis(
+  int id: @record_pat ref
 );
 
 ref_exprs(
@@ -631,6 +702,25 @@ tuple_pat_ellipsis_indices(
 
 tuple_struct_pats(
   unique int id: @tuple_struct_pat
+);
+
+#keyset[id]
+tuple_struct_pat_paths(
+  int id: @tuple_struct_pat ref,
+  int path: @unimplemented ref
+);
+
+#keyset[id, index]
+tuple_struct_pat_args(
+  int id: @tuple_struct_pat ref,
+  int index: int ref,
+  int arg: @pat ref
+);
+
+#keyset[id]
+tuple_struct_pat_ellipsis_indices(
+  int id: @tuple_struct_pat ref,
+  int ellipsis_index: int ref
 );
 
 unary_op_exprs(

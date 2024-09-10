@@ -91,8 +91,12 @@
 /lib/codeql/rust/elements/RangeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/RangePat.qll linguist-generated
 /lib/codeql/rust/elements/RangePatConstructor.qll linguist-generated
+/lib/codeql/rust/elements/RecordFieldPat.qll linguist-generated
+/lib/codeql/rust/elements/RecordFieldPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/RecordLitExpr.qll linguist-generated
 /lib/codeql/rust/elements/RecordLitExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/RecordLitField.qll linguist-generated
+/lib/codeql/rust/elements/RecordLitFieldConstructor.qll linguist-generated
 /lib/codeql/rust/elements/RecordPat.qll linguist-generated
 /lib/codeql/rust/elements/RecordPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/RefExpr.qll linguist-generated
@@ -185,7 +189,9 @@
 /lib/codeql/rust/generated/RangeExpr.qll linguist-generated
 /lib/codeql/rust/generated/RangePat.qll linguist-generated
 /lib/codeql/rust/generated/Raw.qll linguist-generated
+/lib/codeql/rust/generated/RecordFieldPat.qll linguist-generated
 /lib/codeql/rust/generated/RecordLitExpr.qll linguist-generated
+/lib/codeql/rust/generated/RecordLitField.qll linguist-generated
 /lib/codeql/rust/generated/RecordPat.qll linguist-generated
 /lib/codeql/rust/generated/RefExpr.qll linguist-generated
 /lib/codeql/rust/generated/RefPat.qll linguist-generated
@@ -213,5 +219,7 @@
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
 /test/extractor-tests/generated/Module/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Pat/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/RecordFieldPat/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/RecordLitField/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Stmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/TypeRef/MISSING_SOURCE.txt linguist-generated

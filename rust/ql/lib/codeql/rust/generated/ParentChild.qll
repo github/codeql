@@ -194,6 +194,42 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfRecordFieldPat(
+    RecordFieldPat e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nPat |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfRecordLitField(
+    RecordLitField e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nExpr |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfStmt(Stmt e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -477,14 +513,17 @@ private module Impl {
   }
 
   private Element getImmediateChildOfConstExpr(ConstExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int n, int nExpr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
+      nExpr = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
       )
     )
   }
@@ -745,12 +784,13 @@ private module Impl {
   private Element getImmediateChildOfMethodCallExpr(
     MethodCallExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nReceiver, int nArg |
+    exists(int b, int bExpr, int n, int nReceiver, int nArg, int nGenericArgs |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nReceiver = n + 1 and
       nArg = nReceiver + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
+      nGenericArgs = nArg + 1 and
       (
         none()
         or
@@ -760,6 +800,8 @@ private module Impl {
         or
         result = e.getArg(index - nReceiver) and
         partialPredicateCall = "Arg(" + (index - nReceiver).toString() + ")"
+        or
+        index = nArg and result = e.getGenericArgs() and partialPredicateCall = "GenericArgs()"
       )
     )
   }
@@ -846,27 +888,33 @@ private module Impl {
   }
 
   private Element getImmediateChildOfPathExpr(PathExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int n, int nPath |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
+      nPath = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
 
   private Element getImmediateChildOfPathPat(PathPat e, int index, string partialPredicateCall) {
-    exists(int b, int bPat, int n |
+    exists(int b, int bPat, int n, int nPath |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
       n = bPat and
+      nPath = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -912,27 +960,44 @@ private module Impl {
   private Element getImmediateChildOfRecordLitExpr(
     RecordLitExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int n, int nPath, int nField, int nSpread |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
+      nPath = n + 1 and
+      nField = nPath + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nSpread = nField + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        result = e.getField(index - nPath) and
+        partialPredicateCall = "Field(" + (index - nPath).toString() + ")"
+        or
+        index = nField and result = e.getSpread() and partialPredicateCall = "Spread()"
       )
     )
   }
 
   private Element getImmediateChildOfRecordPat(RecordPat e, int index, string partialPredicateCall) {
-    exists(int b, int bPat, int n |
+    exists(int b, int bPat, int n, int nPath, int nArg |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
       n = bPat and
+      nPath = n + 1 and
+      nArg = nPath + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        result = e.getArg(index - nPath) and
+        partialPredicateCall = "Arg(" + (index - nPath).toString() + ")"
       )
     )
   }
@@ -1046,14 +1111,21 @@ private module Impl {
   private Element getImmediateChildOfTupleStructPat(
     TupleStructPat e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bPat, int n |
+    exists(int b, int bPat, int n, int nPath, int nArg |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
       n = bPat and
+      nPath = n + 1 and
+      nArg = nPath + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        result = e.getArg(index - nPath) and
+        partialPredicateCall = "Arg(" + (index - nPath).toString() + ")"
       )
     )
   }
@@ -1240,6 +1312,10 @@ private module Impl {
     result = getImmediateChildOfLabel(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRecordFieldPat(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRecordLitField(e, index, partialAccessor)
     or
     result = getImmediateChildOfTypeRef(e, index, partialAccessor)
     or

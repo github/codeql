@@ -89,6 +89,48 @@ impl TrapEntry for MatchArm {
 }
 
 #[derive(Debug)]
+pub struct RecordFieldPat {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+    pub name: String,
+    pub pat: trap::Label,
+}
+
+impl TrapEntry for RecordFieldPat {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_field_pats", vec![trap::Arg::Label(id), self.name.into(), self.pat.into()]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct RecordLitField {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+    pub name: String,
+    pub expr: trap::Label,
+}
+
+impl TrapEntry for RecordLitField {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_lit_fields", vec![trap::Arg::Label(id), self.name.into(), self.expr.into()]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct TypeRef {
     pub id: TrapId,
     pub location: Option<trap::Label>,
@@ -339,6 +381,7 @@ pub struct ClosureExpr {
     pub arg_types: Vec<Option<trap::Label>>,
     pub ret_type: Option<trap::Label>,
     pub body: trap::Label,
+    pub closure_kind: String,
     pub is_move: bool,
 }
 
@@ -348,7 +391,7 @@ impl TrapEntry for ClosureExpr {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("closure_exprs", vec![trap::Arg::Label(id), self.body.into()]);
+        out.add_tuple("closure_exprs", vec![trap::Arg::Label(id), self.body.into(), self.closure_kind.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -393,6 +436,7 @@ impl TrapEntry for ConstBlockPat {
 pub struct ConstExpr {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub expr: trap::Label,
 }
 
 impl TrapEntry for ConstExpr {
@@ -401,7 +445,7 @@ impl TrapEntry for ConstExpr {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("const_exprs", vec![trap::Arg::Label(id)]);
+        out.add_tuple("const_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -733,6 +777,7 @@ pub struct MethodCallExpr {
     pub receiver: trap::Label,
     pub method_name: String,
     pub args: Vec<trap::Label>,
+    pub generic_args: Option<trap::Label>,
 }
 
 impl TrapEntry for MethodCallExpr {
@@ -747,6 +792,9 @@ impl TrapEntry for MethodCallExpr {
         }
         for (i, v) in self.args.into_iter().enumerate() {
             out.add_tuple("method_call_expr_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if let Some(v) = self.generic_args {
+            out.add_tuple("method_call_expr_generic_args", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
@@ -863,6 +911,7 @@ impl TrapEntry for OrPat {
 pub struct PathExpr {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub path: trap::Label,
 }
 
 impl TrapEntry for PathExpr {
@@ -871,7 +920,7 @@ impl TrapEntry for PathExpr {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("path_exprs", vec![trap::Arg::Label(id)]);
+        out.add_tuple("path_exprs", vec![trap::Arg::Label(id), self.path.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -882,6 +931,7 @@ impl TrapEntry for PathExpr {
 pub struct PathPat {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub path: trap::Label,
 }
 
 impl TrapEntry for PathPat {
@@ -890,7 +940,7 @@ impl TrapEntry for PathPat {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("path_pats", vec![trap::Arg::Label(id)]);
+        out.add_tuple("path_pats", vec![trap::Arg::Label(id), self.path.into()]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -959,6 +1009,11 @@ impl TrapEntry for RangePat {
 pub struct RecordLitExpr {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub path: Option<trap::Label>,
+    pub fields: Vec<trap::Label>,
+    pub spread: Option<trap::Label>,
+    pub has_ellipsis: bool,
+    pub is_assignee_expr: bool,
 }
 
 impl TrapEntry for RecordLitExpr {
@@ -971,6 +1026,21 @@ impl TrapEntry for RecordLitExpr {
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
+        if let Some(v) = self.path {
+            out.add_tuple("record_lit_expr_paths", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, v) in self.fields.into_iter().enumerate() {
+            out.add_tuple("record_lit_expr_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if let Some(v) = self.spread {
+            out.add_tuple("record_lit_expr_spreads", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if self.has_ellipsis {
+            out.add_tuple("record_lit_expr_has_ellipsis", vec![trap::Arg::Label(id)]);
+        }
+        if self.is_assignee_expr {
+            out.add_tuple("record_lit_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+        }
     }
 }
 
@@ -978,6 +1048,9 @@ impl TrapEntry for RecordLitExpr {
 pub struct RecordPat {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub path: Option<trap::Label>,
+    pub args: Vec<trap::Label>,
+    pub has_ellipsis: bool,
 }
 
 impl TrapEntry for RecordPat {
@@ -989,6 +1062,15 @@ impl TrapEntry for RecordPat {
         out.add_tuple("record_pats", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if let Some(v) = self.path {
+            out.add_tuple("record_pat_paths", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, v) in self.args.into_iter().enumerate() {
+            out.add_tuple("record_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if self.has_ellipsis {
+            out.add_tuple("record_pat_has_ellipsis", vec![trap::Arg::Label(id)]);
         }
     }
 }
@@ -1157,6 +1239,9 @@ impl TrapEntry for TuplePat {
 pub struct TupleStructPat {
     pub id: TrapId,
     pub location: Option<trap::Label>,
+    pub path: Option<trap::Label>,
+    pub args: Vec<trap::Label>,
+    pub ellipsis_index: Option<usize>,
 }
 
 impl TrapEntry for TupleStructPat {
@@ -1168,6 +1253,15 @@ impl TrapEntry for TupleStructPat {
         out.add_tuple("tuple_struct_pats", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+        if let Some(v) = self.path {
+            out.add_tuple("tuple_struct_pat_paths", vec![trap::Arg::Label(id), v.into()]);
+        }
+        for (i, v) in self.args.into_iter().enumerate() {
+            out.add_tuple("tuple_struct_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        }
+        if let Some(v) = self.ellipsis_index {
+            out.add_tuple("tuple_struct_pat_ellipsis_indices", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }

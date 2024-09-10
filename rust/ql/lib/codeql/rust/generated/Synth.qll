@@ -190,7 +190,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TRecordFieldPat(Raw::RecordFieldPat id) { constructRecordFieldPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TRecordLitExpr(Raw::RecordLitExpr id) { constructRecordLitExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRecordLitField(Raw::RecordLitField id) { constructRecordLitField(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -277,7 +285,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TDeclaration or TExpr or TLabel or TMatchArm or TPat or TStmt or TTypeRef or TUnimplemented;
+    TDeclaration or TExpr or TLabel or TMatchArm or TPat or TRecordFieldPat or TRecordLitField or
+        TStmt or TTypeRef or TUnimplemented;
 
   /**
    * INTERNAL: Do not use.
@@ -630,10 +639,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRecordFieldPat`, if possible.
+   */
+  cached
+  TRecordFieldPat convertRecordFieldPatFromRaw(Raw::Element e) { result = TRecordFieldPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TRecordLitExpr`, if possible.
    */
   cached
   TRecordLitExpr convertRecordLitExprFromRaw(Raw::Element e) { result = TRecordLitExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRecordLitField`, if possible.
+   */
+  cached
+  TRecordLitField convertRecordLitFieldFromRaw(Raw::Element e) { result = TRecordLitField(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -794,6 +817,10 @@ module Synth {
     result = convertMatchArmFromRaw(e)
     or
     result = convertPatFromRaw(e)
+    or
+    result = convertRecordFieldPatFromRaw(e)
+    or
+    result = convertRecordLitFieldFromRaw(e)
     or
     result = convertStmtFromRaw(e)
     or
@@ -1292,10 +1319,24 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TRecordFieldPat` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRecordFieldPatToRaw(TRecordFieldPat e) { e = TRecordFieldPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TRecordLitExpr` to a raw DB element, if possible.
    */
   cached
   Raw::Element convertRecordLitExprToRaw(TRecordLitExpr e) { e = TRecordLitExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRecordLitField` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRecordLitFieldToRaw(TRecordLitField e) { e = TRecordLitField(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1456,6 +1497,10 @@ module Synth {
     result = convertMatchArmToRaw(e)
     or
     result = convertPatToRaw(e)
+    or
+    result = convertRecordFieldPatToRaw(e)
+    or
+    result = convertRecordLitFieldToRaw(e)
     or
     result = convertStmtToRaw(e)
     or

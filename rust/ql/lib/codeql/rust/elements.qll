@@ -56,7 +56,9 @@ import codeql.rust.elements.PathExpr
 import codeql.rust.elements.PathPat
 import codeql.rust.elements.RangeExpr
 import codeql.rust.elements.RangePat
+import codeql.rust.elements.RecordFieldPat
 import codeql.rust.elements.RecordLitExpr
+import codeql.rust.elements.RecordLitField
 import codeql.rust.elements.RecordPat
 import codeql.rust.elements.RefExpr
 import codeql.rust.elements.RefPat

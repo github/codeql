@@ -46,7 +46,9 @@ import codeql.rust.elements.PathExprConstructor
 import codeql.rust.elements.PathPatConstructor
 import codeql.rust.elements.RangeExprConstructor
 import codeql.rust.elements.RangePatConstructor
+import codeql.rust.elements.RecordFieldPatConstructor
 import codeql.rust.elements.RecordLitExprConstructor
+import codeql.rust.elements.RecordLitFieldConstructor
 import codeql.rust.elements.RecordPatConstructor
 import codeql.rust.elements.RefExprConstructor
 import codeql.rust.elements.RefPatConstructor

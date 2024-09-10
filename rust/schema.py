@@ -123,12 +123,12 @@ class Function(Declaration):
 class MissingExpr(Expr):
     pass
 
+
 #     Path(Path),
 
 
 class PathExpr(Expr):
-    # TODO
-    pass
+    path: Unimplemented | child
 
 #     If {
 #         condition: ExprId,
@@ -182,7 +182,7 @@ class AsyncBlockExpr(BlockExprBase):
 
 
 class ConstExpr(Expr):
-    pass
+    expr: Expr | child
 
 #     // FIXME: Fold this into Block with an unsafe flag?
 #     Unsafe {
@@ -229,8 +229,7 @@ class MethodCallExpr(Expr):
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
-    # TODO
-    # generic_args: optional[GenericArgs]
+    generic_args: optional[Unimplemented] | child
 
 # pub struct MatchArm {
 #     pub pat: PatId,
@@ -310,9 +309,22 @@ class YeetExpr(Expr):
 #     },
 
 
+class RecordFieldPat(AstNode):
+    name: string
+    pat: Pat | child
+
+
+class RecordLitField(AstNode):
+    name: string
+    expr: Expr | child
+
+
 class RecordLitExpr(Expr):
-    # TODO
-    pass
+    path: optional[Unimplemented] | child
+    fields: list[RecordLitField] | child
+    spread: optional[Expr] | child
+    has_ellipsis: predicate
+    is_assignee_expr: predicate
 
 
 #     Field {
@@ -422,8 +434,7 @@ class ClosureExpr(Expr):
     arg_types: list[optional[TypeRef]] | child
     ret_type: optional[TypeRef] | child
     body: Expr | child
-    # TODO
-    # closure_kind: ClosureKind
+    closure_kind: string
     is_move: predicate
 #     Tuple {
 #         exprs: Box<[ExprId]>,
@@ -530,12 +541,15 @@ class TuplePat(Pat):
 
 class OrPat(Pat):
     args: list[Pat] | child
-    # Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
+
+
+# Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
 
 
 class RecordPat(Pat):
-    # TODO
-    pass
+    path: optional[Unimplemented] | child
+    args: list[RecordFieldPat] | child
+    has_ellipsis: predicate
 
     # Range { start: Option<Box<LiteralOrConst>>, end: Option<Box<LiteralOrConst>> },
 
@@ -554,7 +568,8 @@ class SlicePat(Pat):
 
 
 class PathPat(Pat):
-    pass
+    path: Unimplemented | child
+
     # Lit(ExprId),
 
 
@@ -572,8 +587,9 @@ class BindPat(Pat):
 
 
 class TupleStructPat(Pat):
-    # TODO
-    pass
+    path: optional[Unimplemented] | child
+    args: list[Pat] | child
+    ellipsis_index: optional[int]
 
     # Ref { pat: PatId, mutability: Mutability },
 

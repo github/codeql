@@ -7,6 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Unimplemented
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MethodCallExpr` and should not
@@ -56,5 +57,20 @@ module Generated {
      * Gets the number of arguments of this method call expression.
      */
     final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+
+    /**
+     * Gets the generic arguments of this method call expression, if it exists.
+     */
+    Unimplemented getGenericArgs() {
+      result =
+        Synth::convertUnimplementedFromRaw(Synth::convertMethodCallExprToRaw(this)
+              .(Raw::MethodCallExpr)
+              .getGenericArgs())
+    }
+
+    /**
+     * Holds if `getGenericArgs()` exists.
+     */
+    final predicate hasGenericArgs() { exists(this.getGenericArgs()) }
   }
 }

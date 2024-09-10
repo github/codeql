@@ -131,6 +131,40 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class RecordFieldPat extends @record_field_pat, AstNode {
+    override string toString() { result = "RecordFieldPat" }
+
+    /**
+     * Gets the name of this record field pat.
+     */
+    string getName() { record_field_pats(this, result, _) }
+
+    /**
+     * Gets the pat of this record field pat.
+     */
+    Pat getPat() { record_field_pats(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class RecordLitField extends @record_lit_field, AstNode {
+    override string toString() { result = "RecordLitField" }
+
+    /**
+     * Gets the name of this record lit field.
+     */
+    string getName() { record_lit_fields(this, result, _) }
+
+    /**
+     * Gets the expression of this record lit field.
+     */
+    Expr getExpr() { record_lit_fields(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class Stmt extends @stmt, AstNode { }
 
   /**
@@ -334,7 +368,12 @@ module Raw {
     /**
      * Gets the body of this closure expression.
      */
-    Expr getBody() { closure_exprs(this, result) }
+    Expr getBody() { closure_exprs(this, result, _) }
+
+    /**
+     * Gets the closure kind of this closure expression.
+     */
+    string getClosureKind() { closure_exprs(this, _, result) }
 
     /**
      * Holds if this closure expression is move.
@@ -359,6 +398,11 @@ module Raw {
    */
   class ConstExpr extends @const_expr, Expr {
     override string toString() { result = "ConstExpr" }
+
+    /**
+     * Gets the expression of this const expression.
+     */
+    Expr getExpr() { const_exprs(this, result) }
   }
 
   /**
@@ -614,6 +658,11 @@ module Raw {
      * Gets the `index`th argument of this method call expression (0-based).
      */
     Expr getArg(int index) { method_call_expr_args(this, index, result) }
+
+    /**
+     * Gets the generic arguments of this method call expression, if it exists.
+     */
+    Unimplemented getGenericArgs() { method_call_expr_generic_args(this, result) }
   }
 
   /**
@@ -676,6 +725,11 @@ module Raw {
    */
   class PathExpr extends @path_expr, Expr {
     override string toString() { result = "PathExpr" }
+
+    /**
+     * Gets the path of this path expression.
+     */
+    Unimplemented getPath() { path_exprs(this, result) }
   }
 
   /**
@@ -683,6 +737,11 @@ module Raw {
    */
   class PathPat extends @path_pat, Pat {
     override string toString() { result = "PathPat" }
+
+    /**
+     * Gets the path of this path pat.
+     */
+    Unimplemented getPath() { path_pats(this, result) }
   }
 
   /**
@@ -729,6 +788,31 @@ module Raw {
    */
   class RecordLitExpr extends @record_lit_expr, Expr {
     override string toString() { result = "RecordLitExpr" }
+
+    /**
+     * Gets the path of this record lit expression, if it exists.
+     */
+    Unimplemented getPath() { record_lit_expr_paths(this, result) }
+
+    /**
+     * Gets the `index`th field of this record lit expression (0-based).
+     */
+    RecordLitField getField(int index) { record_lit_expr_fields(this, index, result) }
+
+    /**
+     * Gets the spread of this record lit expression, if it exists.
+     */
+    Expr getSpread() { record_lit_expr_spreads(this, result) }
+
+    /**
+     * Holds if this record lit expression has ellipsis.
+     */
+    predicate hasEllipsis() { record_lit_expr_has_ellipsis(this) }
+
+    /**
+     * Holds if this record lit expression is assignee expression.
+     */
+    predicate isAssigneeExpr() { record_lit_expr_is_assignee_expr(this) }
   }
 
   /**
@@ -736,6 +820,21 @@ module Raw {
    */
   class RecordPat extends @record_pat, Pat {
     override string toString() { result = "RecordPat" }
+
+    /**
+     * Gets the path of this record pat, if it exists.
+     */
+    Unimplemented getPath() { record_pat_paths(this, result) }
+
+    /**
+     * Gets the `index`th argument of this record pat (0-based).
+     */
+    RecordFieldPat getArg(int index) { record_pat_args(this, index, result) }
+
+    /**
+     * Holds if this record pat has ellipsis.
+     */
+    predicate hasEllipsis() { record_pat_has_ellipsis(this) }
   }
 
   /**
@@ -850,6 +949,21 @@ module Raw {
    */
   class TupleStructPat extends @tuple_struct_pat, Pat {
     override string toString() { result = "TupleStructPat" }
+
+    /**
+     * Gets the path of this tuple struct pat, if it exists.
+     */
+    Unimplemented getPath() { tuple_struct_pat_paths(this, result) }
+
+    /**
+     * Gets the `index`th argument of this tuple struct pat (0-based).
+     */
+    Pat getArg(int index) { tuple_struct_pat_args(this, index, result) }
+
+    /**
+     * Gets the ellipsis index of this tuple struct pat, if it exists.
+     */
+    int getEllipsisIndex() { tuple_struct_pat_ellipsis_indices(this, result) }
   }
 
   /**
