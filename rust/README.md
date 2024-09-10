@@ -17,9 +17,9 @@ bazel run @codeql//rust:rust-installer
 ```
 You now need to create a [per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file) and specify the option:
 ```
---search-path Users/YOURUSERNAME/semmle-code/ql
+--search-path PATH/TO/semmle-code/ql
 ```
-(or wherever the `codeql` checkout is on your system)
+(wherever the `codeql` checkout is on your system)
 
 You can now use the Rust extractor e.g. to run Rust tests from the command line or in VSCode.
 
