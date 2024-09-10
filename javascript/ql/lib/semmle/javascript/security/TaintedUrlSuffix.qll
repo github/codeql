@@ -46,6 +46,12 @@ module TaintedUrlSuffix {
       ]
   }
 
+  /**
+   * Holds if `node` should be a barrier for the given `label`.
+   *
+   * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
+   * label.
+   */
   predicate isBarrier(Node node, FlowLabel label) {
     label = label() and
     DataFlowPrivate::optionalBarrier(node, "tainted-url-suffix")
