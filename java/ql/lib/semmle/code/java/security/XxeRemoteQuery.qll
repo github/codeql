@@ -9,7 +9,7 @@ private import semmle.code.java.security.XxeQuery
  * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.
  */
 module XxeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XxeSink }
 

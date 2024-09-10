@@ -9,7 +9,7 @@ import semmle.code.java.security.regexp.RegexInjection
  * A taint-tracking configuration for untrusted user input used to construct regular expressions.
  */
 module RegexInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 

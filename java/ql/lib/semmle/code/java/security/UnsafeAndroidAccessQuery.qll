@@ -10,7 +10,7 @@ import semmle.code.java.security.UnsafeAndroidAccess
  * A taint configuration tracking flow from untrusted inputs to a resource fetching call.
  */
 module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
 

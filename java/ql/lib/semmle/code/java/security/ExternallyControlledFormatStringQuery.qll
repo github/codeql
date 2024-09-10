@@ -16,7 +16,7 @@ private class StringFormatSink extends ApiSinkNode {
  * A taint-tracking configuration for externally controlled format string vulnerabilities.
  */
 module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof StringFormatSink }
 

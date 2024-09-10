@@ -10,7 +10,7 @@ import semmle.code.java.security.GroovyInjection
  * that is used to evaluate a Groovy expression.
  */
 module GroovyInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof GroovyInjectionSink }
 

@@ -9,7 +9,7 @@ import semmle.code.java.security.AndroidIntentRedirection
 
 /** A taint tracking configuration for tainted Intents being used to start Android components. */
 module IntentRedirectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -36,7 +36,7 @@ private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
  * flowing directly to sinks that start Android components.
  */
 private module SameIntentBeingRelaunchedConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
@@ -72,7 +72,7 @@ private class IntentWithTaintedComponent extends DataFlow::Node {
  * A taint tracking configuration for tainted data flowing to an `Intent`'s component.
  */
 private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     any(IntentSetComponent setComponent).getSink() = sink.asExpr()
