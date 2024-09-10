@@ -42,6 +42,9 @@ fn main() -> anyhow::Result<()> {
 
     let config = CargoConfig {
         sysroot: Some(RustLibSource::Discover),
+        target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(cfg.scratch_dir)
+            .map(|x| x.join("target"))
+            .ok(),
         ..Default::default()
     };
     let progress = |t| (println!("progress: {}", t));
