@@ -402,7 +402,7 @@ impl CrateTranslator<'_> {
                 id: TrapId::Star,
                 location,
             }),
-            ra_ap_hir_def::hir::Expr::Path(_) => self.trap.emit(generated::PathExpr {
+            ra_ap_hir_def::hir::Expr::Path(path) => self.trap.emit(generated::PathExpr {
                 id: TrapId::Star,
                 location,
             }),
@@ -469,7 +469,7 @@ impl CrateTranslator<'_> {
                     tail,
                 })
             }
-            ra_ap_hir_def::hir::Expr::Const(_) => self.trap.emit(generated::ConstExpr {
+            ra_ap_hir_def::hir::Expr::Const(const_block) => self.trap.emit(generated::ConstExpr {
                 id: TrapId::Star,
                 location,
             }),
@@ -834,7 +834,7 @@ impl CrateTranslator<'_> {
         labels: &mut Vec<trap::Label>,
     ) {
         match id {
-            ModuleDef::Module(_) => {}
+            ModuleDef::Module(module) => {}
             ModuleDef::Function(function) => {
                 let def: ra_ap_hir::DefWithBody = function.into();
                 let (body, source_map) = self.db.body_with_source_map(def.into());
@@ -852,15 +852,15 @@ impl CrateTranslator<'_> {
                     body,
                 }));
             }
-            ModuleDef::Adt(_) => {}
-            ModuleDef::Variant(_) => {}
-            ModuleDef::Const(_) => {}
-            ModuleDef::Static(_) => {}
-            ModuleDef::Trait(_) => {}
-            ModuleDef::TraitAlias(_) => {}
-            ModuleDef::TypeAlias(_) => {}
-            ModuleDef::BuiltinType(_) => {}
-            ModuleDef::Macro(_) => {}
+            ModuleDef::Adt(adt) => {}
+            ModuleDef::Variant(variant) => {}
+            ModuleDef::Const(const_) => {}
+            ModuleDef::Static(static_) => {}
+            ModuleDef::Trait(trait_) => {}
+            ModuleDef::TraitAlias(alias_) => {}
+            ModuleDef::TypeAlias(type_alias_) => {}
+            ModuleDef::BuiltinType(builtin_type_) => {}
+            ModuleDef::Macro(macro_) => {}
         }
     }
 
