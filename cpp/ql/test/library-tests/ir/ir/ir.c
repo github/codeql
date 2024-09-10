@@ -77,4 +77,8 @@ void throw_in_try_with_throw_in_finally()
   }
 }
 
+void raise_access_violation() {
+  ExRaiseAccessViolation(1);
+}
+
 // semmle-extractor-options: --microsoft

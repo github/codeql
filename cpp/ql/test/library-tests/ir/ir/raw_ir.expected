@@ -3035,6 +3035,22 @@ ir.c:
 #   70|     v70_5(void) = AliasedUse   : ~m?
 #   70|     v70_6(void) = ExitFunction : 
 
+#   80| void raise_access_violation()
+#   80|   Block 0
+#   80|     v80_1(void)           = EnterFunction                           : 
+#   80|     mu80_2(unknown)       = AliasedDefinition                       : 
+#   80|     mu80_3(unknown)       = InitializeNonLocal                      : 
+#   81|     r81_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   81|     r81_2(int)            = Constant[1]                             : 
+#   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
+#   81|     mu81_4(unknown)       = ^CallSideEffect                         : ~m?
+
+#   82|   Block 1
+#   82|     v82_1(void) = NoOp         : 
+#   80|     v80_4(void) = ReturnVoid   : 
+#   80|     v80_5(void) = AliasedUse   : ~m?
+#   80|     v80_6(void) = ExitFunction : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0

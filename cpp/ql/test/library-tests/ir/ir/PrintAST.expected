@@ -4595,6 +4595,18 @@ ir.c:
 #   76|                 Value = [Literal] 0
 #   76|                 ValueCategory = prvalue
 #   78|     getStmt(1): [ReturnStmt] return ...
+#   80| [TopLevelFunction] void raise_access_violation()
+#   80|   <params>: 
+#   80|   getEntryPoint(): [BlockStmt] { ... }
+#   81|     getStmt(0): [ExprStmt] ExprStmt
+#   81|       getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   81|           Type = [VoidType] void
+#   81|           ValueCategory = prvalue
+#   81|         getArgument(0): [Literal] 1
+#   81|             Type = [IntType] int
+#   81|             Value = [Literal] 1
+#   81|             ValueCategory = prvalue
+#   82|     getStmt(1): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
