@@ -28,6 +28,12 @@ module Logrus {
     }
   }
 
+  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
+    LogCall() { this = any(LogFunction f).getACall() }
+
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+  }
+
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {
     int argOffset;
 

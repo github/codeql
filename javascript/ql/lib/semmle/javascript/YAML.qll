@@ -54,12 +54,3 @@ private class MyYmlNode extends Locatable instanceof YamlNode {
 
   override string toString() { result = YamlNode.super.toString() }
 }
-
-/** DEPRECATED: Alias for YamlNode */
-deprecated class YAMLNode = YamlNode;
-
-/** DEPRECATED: Alias for YamlValue */
-deprecated class YAMLValue = YamlValue;
-
-/** DEPRECATED: Alias for YamlScalar */
-deprecated class YAMLScalar = YamlScalar;

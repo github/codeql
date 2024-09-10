@@ -44,9 +44,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "packages"), "package", logger);
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "legacypackages"), "legacy package", logger);
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "missingpackages"), "missing package", logger);
+            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("packages"), "package", logger);
+            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
+            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("missingpackages"), "missing package", logger);
         }
 
         public string? TryRestore(string package)
@@ -338,7 +338,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
-            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "nugetconfig"), "generated nuget config", logger);
+            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath("nugetconfig"), "generated nuget config", logger);
             var nugetConfig = fallbackNugetFeeds is null
                 ? GetNugetConfig()
                 : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
@@ -771,19 +771,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Computes a unique temp directory for the packages associated
-        /// with this source tree. Use a SHA1 of the directory name.
+        /// Returns the full path to a temporary directory with the given subfolder name.
         /// </summary>
-        /// <returns>The full path of the temp directory.</returns>
+        private static string ComputeTempDirectoryPath(string subfolderName)
+        {
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
+        }
+
+        /// <summary>
+        /// Computes a unique temporary directory path based on the source directory and the subfolder name.
+        /// </summary>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
         {
-            var bytes = Encoding.Unicode.GetBytes(srcDir);
-            var sha = SHA1.HashData(bytes);
-            var sb = new StringBuilder();
-            foreach (var b in sha.Take(8))
-                sb.AppendFormat("{0:x2}", b);
-
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), sb.ToString(), subfolderName);
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);
         }
     }
 }

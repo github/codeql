@@ -140,6 +140,7 @@ jobs:
           path: |
             ${{ runner.temp }}/query-packs/*
           retention-days: 1
+          include-hidden-files: true
 
   package:
     runs-on: ubuntu-latest
@@ -176,6 +177,7 @@ jobs:
           name: codeql-ruby-pack
           path: ruby/codeql-ruby.zip
           retention-days: 1
+          include-hidden-files: true
       - uses: actions/download-artifact@v3
         with:
           name: codeql-ruby-queries
@@ -193,6 +195,7 @@ jobs:
           name: codeql-ruby-bundle
           path: ruby/codeql-ruby-bundle.zip
           retention-days: 1
+          include-hidden-files: true
 
   test:
     defaults:

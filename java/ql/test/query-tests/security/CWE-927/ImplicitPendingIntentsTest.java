@@ -32,8 +32,8 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
+            ctx.startActivities(new Intent[] {fwdIntent}); // $ MISSING: hasImplicitPendingIntent
             ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
-            ctx.startActivities(new Intent[] {fwdIntent}); // $hasImplicitPendingIntent
             ctx.startService(fwdIntent); // Safe
             ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
 

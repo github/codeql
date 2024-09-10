@@ -71,9 +71,6 @@ class MemoryLocation extends TMemoryLocation {
   final string getUniqueId() { result = var.getUniqueId() }
 
   final predicate canReuseSsa() { canReuseSsaForVariable(var) }
-
-  /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { this.canReuseSsa() }
 }
 
 predicate canReuseSsaForOldResult(Instruction instr) { none() }

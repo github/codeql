@@ -213,16 +213,30 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
+bindingset[p]
+private string cleanPackage(string p) {
+  exists(string noPrefix |
+    p = fixedVersionPrefix() + noPrefix
+    or
+    not p = fixedVersionPrefix() + any(string s) and
+    noPrefix = p
+  |
+    result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
+  )
+}
+
 private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
+  exists(string p | package = cleanPackage(p) |
+    sourceModel(p, _, _, _, _, _, _, _, _, _) or
+    sinkModel(p, _, _, _, _, _, _, _, _, _) or
+    summaryModel(p, _, _, _, _, _, _, _, _, _, _)
+  )
 }
 
 private predicate packageLink(string shortpkg, string longpkg) {
   relevantPackage(shortpkg) and
   relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+  longpkg.prefix(longpkg.indexOf("/")) = shortpkg
 }
 
 private predicate canonicalPackage(string package) {
@@ -245,26 +259,28 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
+        string ext, string output, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
+        subpkg = cleanPackage(x) and
+        sourceModel(x, type, subtypes, name, signature, ext, output, kind, provenance, _)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
+        string ext, string input, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
+        subpkg = cleanPackage(x) and
+        sinkModel(x, type, subtypes, name, signature, ext, input, kind, provenance, _)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
+        string ext, string input, string output, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
-          _)
+        subpkg = cleanPackage(x) and
+        summaryModel(x, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
       )
   )
 }
