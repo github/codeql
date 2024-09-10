@@ -124,9 +124,6 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() }
 
-/** Gets the return kind corresponding to specification `"ReturnValue"`. */
-MkNormalReturnKind getReturnValueKind() { any() }
-
 private module FlowSummaryStepInput implements Private::StepsInputSig {
   DataFlowCall getACall(SummarizedCallable sc) {
     exists(LibraryCallable callable | callable = sc |
