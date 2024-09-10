@@ -1,1 +1,1 @@
-| gen_function.rs:2:0:3:40 | foo | getName: | foo |
+| gen_function.rs:2:0:3:40 | foo | getName: | foo | getBody: | file://:0:0:0:0 | (no string representation) |
