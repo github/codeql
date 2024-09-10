@@ -108,7 +108,11 @@ private module SourceVariableImpl {
    */
   predicate isPlainFieldOrPropAccess(FieldOrPropAccess fpa, FieldOrProp fp, Callable c) {
     fieldOrPropAccessInCallable(fpa, fp, c) and
-    (ownFieldOrPropAccess(fpa) or fp.isStatic())
+    (
+      ownFieldOrPropAccess(fpa)
+      or
+      fp.isStatic() and not fp instanceof EnumConstant
+    )
   }
 
   /**

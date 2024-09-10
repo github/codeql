@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: neutralModel
-    data:
-      # summary neutrals
-      - ["java.util.logging", "LogRecord", "getResourceBundle", "()", "summary", "df-manual"]
-      - ["java.util.logging", "LogRecord", "setParameters", "", "summary", "df-manual"]

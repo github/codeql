@@ -98,6 +98,18 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     }
 
     /**
+     * Gets the summary model for `api` with `input` and `output`.
+     */
+    bindingset[input, output, preservesValue]
+    string asModel(Printing::SummaryApi api, string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      result = asValueModel(api, input, output)
+      or
+      preservesValue = false and
+      result = asTaintModel(api, input, output)
+    }
+
+    /**
      * Gets the sink model for `api` with `input` and `kind`.
      */
     bindingset[input, kind]

@@ -153,9 +153,6 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override Locatable getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   /**
    * Gets the expression that is doing the initialization.
    */
@@ -528,9 +525,6 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
 
   final override Locatable getAst() { result = ast }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Declaration getFunction() {
     result = getEnclosingFunction(ast) or
     result = getEnclosingVariable(ast).(GlobalOrNamespaceVariable) or
@@ -700,9 +694,6 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   final override Locatable getAst() { result = initList }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override Declaration getFunction() {
     result = getEnclosingFunction(initList)
@@ -912,9 +903,6 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
 
   final override Locatable getAst() { result = call }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override TranslatedElement getChild(int id) {
     id = 0 and
     result = this.getStructorCall()
@@ -1057,9 +1045,6 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
   TranslatedConstructorBareInit() { this = TTranslatedConstructorBareInit(init) }
 
   override Locatable getAst() { result = init }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override string toString() { result = "construct base (no constructor)" }
 

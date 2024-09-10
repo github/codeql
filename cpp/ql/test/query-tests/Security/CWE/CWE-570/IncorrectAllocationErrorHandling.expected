@@ -17,3 +17,4 @@
 | test.cpp:229:15:229:35 | new | This allocation cannot throw. $@ is unnecessary. | test.cpp:231:16:231:19 | { ... } | This catch block |
 | test.cpp:242:14:242:34 | new | This allocation cannot throw. $@ is unnecessary. | test.cpp:243:34:243:36 | { ... } | This catch block |
 | test.cpp:276:17:276:31 | new[] | This allocation cannot return null. $@ is unnecessary. | test.cpp:277:8:277:12 | ! ... | This check |
+| test.cpp:288:19:288:47 | new[] | This allocation cannot throw. $@ is unnecessary. | test.cpp:291:30:293:5 | { ... } | This catch block |

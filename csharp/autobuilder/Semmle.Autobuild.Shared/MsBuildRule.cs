@@ -157,7 +157,8 @@ namespace Semmle.Autobuild.Shared
             BuildScript.DownloadFile(
                 FileUtils.NugetExeUrl,
                 path,
-                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"))
+                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"),
+                builder.Logger)
             &
             BuildScript.Create(_ =>
             {
