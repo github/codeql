@@ -28,7 +28,7 @@ function m3() {
 function m4() {
   const flowIntoArrayElement = mkSummary("Argument[0]", "ReturnValue.ArrayElement");
   sink(flowIntoArrayElement(source()).pop()); // NOT OK
-  sink(flowIntoArrayElement(source())[0]); // NOT OK [INCONSISTENCY]
+  sink(flowIntoArrayElement(source())[0]); // NOT OK
   sink(flowIntoArrayElement(source())[Math.random()]); // NOT OK
   sink(flowIntoArrayElement(source()).prop); // OK
 }

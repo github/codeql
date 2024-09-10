@@ -1,4 +1,5 @@
 legacyDataFlowDifference
+| arrays.js:2:16:2:23 | "source" | arrays.js:58:8:58:13 | arr[0] | only flow with NEW data flow library |
 flow
 | arrays.js:2:16:2:23 | "source" | arrays.js:5:8:5:14 | obj.foo |
 | arrays.js:2:16:2:23 | "source" | arrays.js:11:10:11:15 | arr[i] |
@@ -6,6 +7,7 @@ flow
 | arrays.js:2:16:2:23 | "source" | arrays.js:16:23:16:23 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:20:8:20:16 | arr.pop() |
 | arrays.js:2:16:2:23 | "source" | arrays.js:39:8:39:24 | arr4_spread.pop() |
+| arrays.js:2:16:2:23 | "source" | arrays.js:58:8:58:13 | arr[0] |
 | arrays.js:2:16:2:23 | "source" | arrays.js:61:10:61:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:65:10:65:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:69:10:69:10 | x |
