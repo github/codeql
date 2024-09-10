@@ -35,7 +35,7 @@ module ClientSideUrlRedirect {
    * hence are only partially user-controlled.
    */
   abstract class DocumentUrl extends DataFlow::FlowLabel {
-    DocumentUrl() { this = "document.url" }
+    DocumentUrl() { this = "document.url" } // TODO: replace with TaintedUrlSuffix
   }
 
   /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
