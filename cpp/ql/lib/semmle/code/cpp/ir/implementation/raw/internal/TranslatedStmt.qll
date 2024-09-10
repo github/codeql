@@ -578,7 +578,7 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
 /**
  * A C/C++ `try` statement, or a `__try __except` or `__try __finally` statement.
  */
-private class TryOrMicrosoftTryStmt extends Stmt {
+class TryOrMicrosoftTryStmt extends Stmt {
   TryOrMicrosoftTryStmt() {
     this instanceof TryStmt or
     this instanceof MicrosoftTryStmt

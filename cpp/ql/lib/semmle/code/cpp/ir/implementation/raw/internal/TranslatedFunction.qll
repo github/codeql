@@ -5,7 +5,6 @@ private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
-private import semmle.code.cpp.models.interfaces.Throwing
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -210,14 +209,12 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
-        exists(TryStmt try | try.getEnclosingFunction() = func)
-        or
-        exists(MicrosoftTryStmt try | try.getEnclosingFunction() = func)
+        exists(TryOrMicrosoftTryStmt try | try.getEnclosingFunction() = func)
         or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
-        exists(FunctionCall call | call.getTarget().(ThrowingFunction).mayThrowException(true) |
-          call.getEnclosingFunction() = func
+        exists(FunctionCall call | call.getEnclosingFunction() = func |
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException()
         )
       )
       or
