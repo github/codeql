@@ -1208,7 +1208,7 @@ public class TypeScriptASTConverter {
       boolean isNamespaceExportNode = hasKind(exportClauseNode, "NamespaceExport");
       List<ExportSpecifier> specifiers =
           isNamespaceExportNode
-              ? Collections.singletonList(convertNodeAsIdentifier(exportClauseNode.getAsJsonObject()))
+              ? Collections.singletonList(convertChild(node, "exportClause"))
               : convertChildren(exportClauseNode.getAsJsonObject(), "elements");
       return new ExportNamedDeclaration(loc, null, specifiers, source, attributes, hasTypeKeyword);
     } else {
@@ -1229,7 +1229,9 @@ public class TypeScriptASTConverter {
 
   private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
     // Convert the "* as ns" from an export declaration.
-    return new ExportNamespaceSpecifier(loc, convertChild(node, "name"));
+    JsonObject exportedNamespaceToken = node.get("name").getAsJsonObject();
+    Identifier exportedNamespaceIdentifier = convertNodeAsIdentifier(exportedNamespaceToken);
+    return new ExportNamespaceSpecifier(loc, exportedNamespaceIdentifier);
   }
 
   private Node convertExpressionStatement(JsonObject node, SourceLocation loc) throws ParseError {
