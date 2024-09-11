@@ -376,13 +376,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
         // Case: a function like "return someBarrierGuard(arg)"
         // or "return !someBarrierGuard(arg) && otherCond(...)"
         exists(boolean outcome |
-          ret = getUniqueOutputNode(fd, outp) and
           guardChecks(g, arg.asExpr(), outcome) and
-          // This predicate's contract is (p holds of ret ==> arg is checked),
-          // (and we have (this has outcome ==> arg is checked))
-          // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
-          // so we need to swap outcome and (specifically boolean) p:
-          DataFlow::booleanProperty(outcome).checkOn(ret, p.asBoolean(), g)
+          guardingFunctionHelper(g, outp, p, fd, ret, outcome)
         )
         or
         // Case: a function like "return guardProxy(arg)"
@@ -407,6 +402,24 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       )
     )
   }
+}
+
+/**
+ * Holds when `ret` is the unique output `outp` node of `fd`, `g` is a
+ * subexpression of `ret`, and when `ret` has value `outcome` then property `p`
+ * holds of `g`.
+ */
+bindingset[g, outp, p, fd, ret, outcome]
+pragma[inline_late]
+private predicate guardingFunctionHelper(
+  Node g, FunctionOutput outp, DataFlow::Property p, FuncDecl fd, Node ret, boolean outcome
+) {
+  ret = getUniqueOutputNode(fd, outp) and
+  // This predicate's contract is (p holds of ret ==> arg is checked),
+  // (and we have (this has outcome ==> arg is checked))
+  // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
+  // so we need to swap outcome and (specifically boolean) p:
+  DataFlow::booleanProperty(pragma[only_bind_into](outcome)).checkOn(ret, p.asBoolean(), g)
 }
 
 DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {
