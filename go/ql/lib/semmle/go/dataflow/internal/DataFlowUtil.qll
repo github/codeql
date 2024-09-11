@@ -409,7 +409,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  * subexpression of `ret`, and when `ret` has value `outcome` then property `p`
  * holds of `g`.
  */
-bindingset[g, outp, p, fd, ret, outcome]
+bindingset[g]
 pragma[inline_late]
 private predicate guardingFunctionHelper(
   Node g, FunctionOutput outp, DataFlow::Property p, FuncDecl fd, Node ret, boolean outcome
