@@ -391,8 +391,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
           c = f2.getACall() and
           arg = inp2.getNode(c) and
           (
-            // See comment above ("This method's contract...") for rationale re: the inversion of
-            // `p` and `outpProp` here:
+            // See comment in `guardingFunctionHelper` ("This predicate's
+            // contract...") for the rationale behind the inversion of `p` and
+            // `outpProp` here:
             outpProp.checkOn(ret, p.asBoolean(), outp2.getNode(c))
             or
             // The particular case where p is non-boolean (i.e., nil or non-nil), and we directly return `c`:
