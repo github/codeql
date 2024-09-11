@@ -319,6 +319,67 @@ module HttpServerHttpResponseTest implements TestSig {
   }
 }
 
+module HttpResponseHeaderWriteTest implements TestSig {
+  string getARelevantTag() {
+    result =
+      [
+        "headerWriteNameUnsanitized", "headerWriteName", "headerWriteValueUnsanitized",
+        "headerWriteValue", "headerWriteBulk", "headerWriteBulkUnsanitized"
+      ]
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    (
+      exists(Http::Server::ResponseHeaderWrite write, DataFlow::Node node |
+        location = node.getLocation() and
+        element = node.toString()
+      |
+        node = write.getNameArg() and
+        (
+          if write.nameAllowsNewline()
+          then tag = "headerWriteNameUnsanitized"
+          else tag = "headerWriteName"
+        ) and
+        value = prettyNodeForInlineTest(node)
+        or
+        node = write.getValueArg() and
+        (
+          if write.valueAllowsNewline()
+          then tag = "headerWriteValueUnsanitized"
+          else tag = "headerWriteValue"
+        ) and
+        value = prettyNodeForInlineTest(node)
+      )
+      or
+      exists(Http::Server::ResponseHeaderBulkWrite write, DataFlow::Node node |
+        node = write.getBulkArg() and
+        location = node.getLocation() and
+        element = node.toString() and
+        (
+          tag = "headerWriteBulk" and
+          value = prettyNodeForInlineTest(node)
+          or
+          tag = "headerWriteBulkUnsanitized" and
+          (
+            write.nameAllowsNewline() and
+            not write.valueAllowsNewline() and
+            value = "name"
+            or
+            not write.nameAllowsNewline() and
+            write.valueAllowsNewline() and
+            value = "value"
+            or
+            write.nameAllowsNewline() and
+            write.valueAllowsNewline() and
+            value = "name,value"
+          )
+        )
+      )
+    )
+  }
+}
+
 module HttpServerHttpRedirectResponseTest implements TestSig {
   string getARelevantTag() { result in ["HttpRedirectResponse", "redirectLocation"] }
 
@@ -344,7 +405,10 @@ module HttpServerHttpRedirectResponseTest implements TestSig {
 
 module HttpServerCookieWriteTest implements TestSig {
   string getARelevantTag() {
-    result in ["CookieWrite", "CookieRawHeader", "CookieName", "CookieValue"]
+    result in [
+        "CookieWrite", "CookieRawHeader", "CookieName", "CookieValue", "CookieSecure",
+        "CookieHttpOnly", "CookieSameSite"
+      ]
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -367,6 +431,20 @@ module HttpServerCookieWriteTest implements TestSig {
         element = cookieWrite.toString() and
         value = prettyNodeForInlineTest(cookieWrite.getValueArg()) and
         tag = "CookieValue"
+        or
+        element = cookieWrite.toString() and
+        value = any(boolean b | cookieWrite.hasSecureFlag(b)).toString() and
+        tag = "CookieSecure"
+        or
+        element = cookieWrite.toString() and
+        value = any(boolean b | cookieWrite.hasHttpOnlyFlag(b)).toString() and
+        tag = "CookieHttpOnly"
+        or
+        element = cookieWrite.toString() and
+        value =
+          any(Http::Server::CookieWrite::SameSiteValue v | cookieWrite.hasSameSiteAttribute(v))
+              .toString() and
+        tag = "CookieSameSite"
       )
     )
   }
@@ -559,7 +637,8 @@ import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
     EscapingTest>,
   MergeTests5<HttpServerRouteSetupTest, HttpServerRequestHandlerTest, HttpServerHttpResponseTest,
-    HttpServerHttpRedirectResponseTest, HttpServerCookieWriteTest>,
+    HttpServerHttpRedirectResponseTest,
+    MergeTests<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest>>,
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,

@@ -6,10 +6,3 @@ extensions:
     data:
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "CommandLineConfigurationProvider", "(System.Collections.Generic.IEnumerable<System.String>,System.Collections.Generic.IDictionary<System.String,System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "Load", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "get_Args", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "set_Args", "(System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "get_Args", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "get_SwitchMappings", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "set_Args", "(System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "set_SwitchMappings", "(System.Collections.Generic.IDictionary<System.String,System.String>)", "summary", "df-generated"]

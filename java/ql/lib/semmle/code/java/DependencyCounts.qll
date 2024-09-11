@@ -107,7 +107,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
       or
       // the type accessed in a pattern-switch case statement in `t`.
       exists(PatternCase pc | elem = pc and t = pc.getEnclosingCallable().getDeclaringType() |
-        usesType(pc.getPattern().getAChildExpr*().getType(), dep)
+        usesType(pc.getAPattern().getAChildExpr*().getType(), dep)
       )
     )
 }

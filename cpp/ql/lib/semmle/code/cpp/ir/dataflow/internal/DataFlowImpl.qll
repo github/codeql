@@ -1,3 +1,4 @@
+private import semmle.code.cpp.Location
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImpl
-import MakeImpl<CppDataFlow>
+import MakeImpl<Location, CppDataFlow>

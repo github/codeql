@@ -19,18 +19,53 @@ private module DispatchImpl {
     )
   }
 
+  private predicate hasExactManualModel(Call c, Callable tgt) {
+    tgt = c.getCallee().getSourceDeclaration() and
+    (
+      exists(Impl::Public::SummarizedCallable sc |
+        sc.getACall() = c and sc.hasExactModel() and sc.hasManualModel()
+      )
+      or
+      exists(Impl::Public::NeutralSummaryCallable nc |
+        nc.getACall() = c and nc.hasExactModel() and nc.hasManualModel()
+      )
+    )
+  }
+
   private Callable sourceDispatch(Call c) {
+    not hasExactManualModel(c, result) and
     result = VirtualDispatch::viableCallable(c) and
     if VirtualDispatch::lowConfidenceDispatchTarget(c, result)
     then not hasHighConfidenceTarget(c)
     else any()
   }
 
-  /** Gets a viable implementation of the target of the given `Call`. */
+  /**
+   * Gets a viable implementation of the target of the given `Call`.
+   * The following heuristic is applied for finding the appropriate callable:
+   * In general, dispatch to both any existing model and any viable source dispatch.
+   * However, if the model is generated and the static call target is in the source then
+   * we trust the source more than the model and skip dispatch to the model.
+   * Vice versa, if the model is manual and the source dispatch has a comparatively low
+   * confidence then we only dispatch to the model. Additionally, manual models that
+   * match a source dispatch exactly take precedence over the source.
+   */
   DataFlowCallable viableCallable(DataFlowCall c) {
-    result.asCallable() = sourceDispatch(c.asCall())
-    or
-    result.asSummarizedCallable().getACall() = c.asCall()
+    exists(Call call | call = c.asCall() |
+      result.asCallable() = sourceDispatch(call)
+      or
+      not (
+        // Only use summarized callables with generated summaries in case
+        // the static call target is not in the source code.
+        // Note that if applyGeneratedModel holds it implies that there doesn't
+        // exist a manual model.
+        exists(Callable staticTarget | staticTarget = call.getCallee().getSourceDeclaration() |
+          staticTarget.fromSource() and not staticTarget.isStub()
+        ) and
+        result.asSummarizedCallable().applyGeneratedModel()
+      ) and
+      result.asSummarizedCallable().getACall() = call
+    )
   }
 
   /**
@@ -122,12 +157,18 @@ private module DispatchImpl {
     mayBenefitFromCallContext(call.asCall(), _, _)
   }
 
+  bindingset[call, tgt]
+  pragma[inline_late]
+  private predicate viableCallableFilter(DataFlowCall call, DataFlowCallable tgt) {
+    tgt = viableCallable(call)
+  }
+
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    result = viableCallable(call) and
+    viableCallableFilter(call, result) and
     exists(int i, Callable c, Method def, RefType t, boolean exact, MethodCall ma |
       ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and

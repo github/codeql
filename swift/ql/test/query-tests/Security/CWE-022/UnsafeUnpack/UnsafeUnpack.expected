@@ -1,0 +1,13 @@
+edges
+| UnsafeUnpack.swift:62:9:62:48 | call to Data.init(contentsOf:options:) | UnsafeUnpack.swift:62:60:62:60 | source | provenance | Config |
+| UnsafeUnpack.swift:62:60:62:60 | source | UnsafeUnpack.swift:64:27:64:27 | source | provenance |  |
+| UnsafeUnpack.swift:62:60:62:60 | source | UnsafeUnpack.swift:67:39:67:39 | source | provenance |  |
+nodes
+| UnsafeUnpack.swift:62:9:62:48 | call to Data.init(contentsOf:options:) | semmle.label | call to Data.init(contentsOf:options:) |
+| UnsafeUnpack.swift:62:60:62:60 | source | semmle.label | source |
+| UnsafeUnpack.swift:64:27:64:27 | source | semmle.label | source |
+| UnsafeUnpack.swift:67:39:67:39 | source | semmle.label | source |
+subpaths
+#select
+| UnsafeUnpack.swift:64:27:64:27 | source | UnsafeUnpack.swift:62:9:62:48 | call to Data.init(contentsOf:options:) | UnsafeUnpack.swift:64:27:64:27 | source | Unsafe unpacking from a malicious zip retrieved from a remote location. |
+| UnsafeUnpack.swift:67:39:67:39 | source | UnsafeUnpack.swift:62:9:62:48 | call to Data.init(contentsOf:options:) | UnsafeUnpack.swift:67:39:67:39 | source | Unsafe unpacking from a malicious zip retrieved from a remote location. |

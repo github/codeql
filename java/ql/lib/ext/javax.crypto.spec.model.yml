@@ -26,3 +26,9 @@ extensions:
       - ["javax.crypto.spec", "PBEParameterSpec", False, "PBEParameterSpec", "", "", "Argument[0]", "encryption-salt", "manual"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],String)", "", "Argument[0]", "credentials-key", "hq-generated"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],int,int,String)", "", "Argument[0]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],String)", "summary", "df-manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],int,int,String)", "summary", "df-manual"]

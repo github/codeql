@@ -231,18 +231,18 @@ query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGeneri
 
 query predicate test28(UnboundGeneric ug, string s) {
   ug.fromSource() and
-  s = ug.getFullyQualifiedNameWithTypes()
+  s = getFullyQualifiedNameWithTypes(ug)
 }
 
 query predicate test29(ConstructedGeneric cg, string s) {
   cg.fromSource() and
-  s = cg.getFullyQualifiedNameWithTypes()
+  s = getFullyQualifiedNameWithTypes(cg)
 }
 
 query predicate test30(Declaration d, string s) {
   d.fromSource() and
   d instanceof @generic and
-  s = d.getFullyQualifiedNameWithTypes() and
+  s = getFullyQualifiedNameWithTypes(d) and
   d != d.getUnboundDeclaration() and
   not d instanceof Generic
 }
@@ -263,21 +263,17 @@ query predicate test33(ConstructedMethod cm, string s1, string s2) {
   exists(string namespace, string type, string name |
     cm.hasFullyQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
   ) and
-  cm.getFullyQualifiedNameWithTypes() = s2
+  getFullyQualifiedNameWithTypes(cm) = s2
 }
 
 query predicate test34(UnboundGeneric ug, string s1, string s2) {
   ug.fromSource() and
-  exists(string qualifier, string name |
-    ug.hasFullyQualifiedName(qualifier, name) and s1 = getQualifiedName(qualifier, name)
-  ) and
-  ug.getFullyQualifiedNameWithTypes() = s2
+  s1 = ug.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(ug)
 }
 
 query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
   gm.fromSource() and
-  exists(string namespace, string type, string name |
-    gm.hasFullyQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
-  ) and
-  gm.getFullyQualifiedNameWithTypes() = s2
+  s1 = gm.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(gm)
 }

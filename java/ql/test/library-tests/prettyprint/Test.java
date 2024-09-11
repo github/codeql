@@ -45,6 +45,13 @@ public class Test {
 
     if (o instanceof R(S(var x), var y)) { }
 
+    switch(o) {
+      case String _, Integer _:
+      case R(S(_), _):
+      default:
+        break;
+    }
+
   }
 
 }

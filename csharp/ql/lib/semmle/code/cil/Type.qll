@@ -11,7 +11,7 @@ private import semmle.code.csharp.commons.QualifiedName
  *
  * Either a type (`Type`), a method(`Method`), or a namespace (`Namespace`).
  */
-class TypeContainer extends DotNet::NamedElement, @cil_type_container {
+deprecated class TypeContainer extends DotNet::NamedElement, @cil_type_container {
   /** Gets the parent of this type container, if any. */
   TypeContainer getParent() { none() }
 
@@ -19,7 +19,7 @@ class TypeContainer extends DotNet::NamedElement, @cil_type_container {
 }
 
 /** A namespace. */
-class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
+deprecated class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
   override string toString() { result = this.getFullName() }
 
   override Namespace getParent() { result = this.getParentNamespace() }
@@ -32,7 +32,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
 /**
  * A type.
  */
-class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
+deprecated class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   override TypeContainer getParent() { cil_type(this, _, _, result, _) }
 
   override string getName() { cil_type(this, result, _, _, _) }

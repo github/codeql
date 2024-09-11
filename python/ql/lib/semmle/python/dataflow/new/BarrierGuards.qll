@@ -5,7 +5,7 @@ private import semmle.python.dataflow.new.DataFlow
 
 private predicate stringConstCompare(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
   exists(CompareNode cn | cn = g |
-    exists(StrConst str_const, Cmpop op |
+    exists(StringLiteral str_const, Cmpop op |
       op = any(Eq eq) and branch = true
       or
       op = any(NotEq ne) and branch = false
@@ -21,7 +21,7 @@ private predicate stringConstCompare(DataFlow::GuardNode g, ControlFlowNode node
       op = any(NotIn ni) and branch = false
     |
       forall(ControlFlowNode elem | elem = str_const_iterable.getAnElement() |
-        elem.getNode() instanceof StrConst
+        elem.getNode() instanceof StringLiteral
       ) and
       cn.operands(node, op, str_const_iterable)
     )

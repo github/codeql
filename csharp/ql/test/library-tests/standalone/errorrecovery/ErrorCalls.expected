@@ -1,6 +1,10 @@
+| errors.cs:13:11:13:12 | errors.cs:13:11:13:12 | call to constructor Object | Object |
 | errors.cs:22:31:22:40 | errors.cs:22:31:22:40 | call to method  | none |
 | errors.cs:41:21:41:28 | errors.cs:41:21:41:28 | object creation of type C1 | C1 |
 | errors.cs:42:13:42:19 | errors.cs:42:13:42:19 | call to method m1 | m1 |
 | errors.cs:43:13:43:19 | errors.cs:43:13:43:19 | call to method m2 | m2 |
 | errors.cs:44:13:44:38 | errors.cs:44:13:44:38 | call to method WriteLine | WriteLine |
+| errors.cs:48:11:48:12 | errors.cs:48:11:48:12 | call to constructor Object | Object |
 | errors.cs:51:17:51:25 | errors.cs:51:17:51:25 | object creation of type C2 | none |
+| errors.cs:65:11:65:12 | errors.cs:65:11:65:12 | call to constructor Object | Object |
+| errors.cs:70:11:70:12 | errors.cs:70:11:70:12 | call to constructor Object | Object |

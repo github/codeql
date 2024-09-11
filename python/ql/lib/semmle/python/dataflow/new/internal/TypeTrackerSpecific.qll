@@ -15,7 +15,7 @@ deprecated class OptionalTypeTrackerContent extends string {
   OptionalTypeTrackerContent() {
     this = ""
     or
-    this instanceof TypeTrackingImpl::TypeTrackingInput::Content
+    this = any(DataFlowPublic::AttributeContent dfc).getAttribute()
   }
 }
 

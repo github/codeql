@@ -1,0 +1,7 @@
+#select
+| src/test.go:0:0:0:0 | src/test.go |
+| src/todel.go:0:0:0:0 | src/todel.go |
+htmlFiles
+extractionErrors
+| Extraction failed in test.go with error \tother declaration of test | 2 |
+| Extraction failed in todel.go with error test redeclared in this block | 2 |

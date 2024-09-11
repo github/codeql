@@ -46,7 +46,8 @@ class SpuriousArguments extends Expr {
 
   SpuriousArguments() {
     this = invk.getArgument(maxArity(invk)).asExpr() and
-    not invk.isIncomplete()
+    not invk.isIncomplete() and
+    not invk.getAstNode() instanceof TaggedTemplateExpr
   }
 
   /**

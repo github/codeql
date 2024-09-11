@@ -6,6 +6,11 @@
 #include <regex>
 #include <vector>
 
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+
+#include "swift/logging/Formatters.h"
+
 #include <binlog/binlog.hpp>
 #include <binlog/TextOutputStream.hpp>
 #include <binlog/EventFilter.hpp>
@@ -58,7 +63,7 @@
 #define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                                  \
   do {                                                                               \
     auto _now = ::binlog::clockNow();                                                \
-    const ::codeql::Diagnostic& _id = ID;                                       \
+    const ::codeql::Diagnostic& _id = ID;                                            \
     ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                     \
                             fmt::format(FORMAT __VA_OPT__(, ) __VA_ARGS__));         \
     LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT, \

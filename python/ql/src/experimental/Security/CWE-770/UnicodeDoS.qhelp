@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a remote user-controlled data can reach a costly Unicode normalization with either form, NFKC or NFKD, an attack such as the One Million Unicode Characters, could lead to a denial of service on Windows OS.</p> 
+
+<p>And, with the use of special Unicode characters, like U+2100 (℀) or U+2105 (℅), the payload size could be tripled after the compatibility normalization.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure limiting the size of any incoming data that would go through a costly operations, including a Windows Unicode normalization with NFKC or NFKD. Such a recommandation would avoid a potential denial of service.</p>
+
+</recommendation>
+
+<example>
+<p>
+In this example a simple user-controlled data reaches a Unicode normalization with the form "NFKC".
+</p>
+
+<sample src="bad.py" />
+
+<p>To fix this vulnerability, we need restrain the size of the user input.</p> 
+
+<p>For example, we can use the <code>len()</code> builtin function to limit the size of the user input.</p> 
+
+<sample src="good.py" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://hackerone.com/reports/2258758">CVE-2023-46695: Potential denial of service vulnerability in Django UsernameField on Windows.</a>
+  </li>
+</references>
+</qhelp>

@@ -239,8 +239,8 @@ class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
   override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
     context.appliesTo(node) and
-    node.getNode().(StrConst).getText() = this.strValue() and
-    node.getNode().(StrConst).isUnicode()
+    node.getNode().(StringLiteral).getText() = this.strValue() and
+    node.getNode().(StringLiteral).isUnicode()
   }
 
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("unicode")) }
@@ -272,8 +272,8 @@ class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
   override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
     context.appliesTo(node) and
-    node.getNode().(StrConst).getText() = this.strValue() and
-    not node.getNode().(StrConst).isUnicode()
+    node.getNode().(StringLiteral).getText() = this.strValue() and
+    not node.getNode().(StringLiteral).isUnicode()
   }
 
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("bytes")) }

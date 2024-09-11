@@ -125,9 +125,11 @@ module WebSocketRequestCall {
 }
 
 /**
+ * DEPRECATED: Use `WebSocketReader` or `RemoteFlowSource::Range` instead.
+ *
  * A message written to a WebSocket, considered as a flow sink for reflected XSS.
  */
-class WebSocketReaderAsSource extends UntrustedFlowSource::Range {
+deprecated class WebSocketReaderAsSource extends RemoteFlowSource::Range {
   WebSocketReaderAsSource() {
     exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
   }

@@ -21,7 +21,7 @@ where
   exists(Expr test | test = a.getTest() |
     value = test.(IntegerLiteral).getN()
     or
-    value = "\"" + test.(StrConst).getS() + "\""
+    value = "\"" + test.(StringLiteral).getS() + "\""
     or
     value = test.(NameConstant).toString()
   ) and

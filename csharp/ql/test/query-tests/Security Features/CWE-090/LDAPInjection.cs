@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlClient;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Web;
@@ -27,6 +28,20 @@ public class LDAPInjectionHandler : IHttpHandler
         DirectoryEntry de = new DirectoryEntry("LDAP://Cn=" + userName);
         DirectoryEntry de2 = new DirectoryEntry();
         de2.Path = "LDAP://Cn=" + userName;
+
+        using (SqlConnection connection = new SqlConnection(""))
+        {
+            connection.Open();
+            SqlCommand customerCommand = new SqlCommand("SELECT * FROM customers", connection);
+            SqlDataReader customerReader = customerCommand.ExecuteReader();
+
+            while (customerReader.Read())
+            {
+                // BAD: Read from database, write it straight to a response
+                DirectorySearcher ds4 = new DirectorySearcher("accountname=" + customerReader.GetString(1));
+            }
+            customerReader.Close();
+        }
     }
 
     public string LDAPEncode(string value)

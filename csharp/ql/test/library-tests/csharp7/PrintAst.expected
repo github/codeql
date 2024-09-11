@@ -2,25 +2,17 @@ CSharp7.cs:
 #    5| [Class] Literals
 #    7|   5: [Field] x
 #    7|     -1: [TypeMention] int
-#    7|     1: [AssignExpr] ... = ...
-#    7|       0: [FieldAccess] access to field x
-#    7|       1: [IntLiteral] 11
+#    7|     1: [IntLiteral] 11
 #    8|   6: [Field] y
 #    8|     -1: [TypeMention] int
-#    8|     1: [AssignExpr] ... = ...
-#    8|       0: [FieldAccess] access to field y
-#    8|       1: [IntLiteral] 123456
+#    8|     1: [IntLiteral] 123456
 #    9|   7: [Field] z
 #    9|     -1: [TypeMention] int
-#    9|     1: [AssignExpr] ... = ...
-#    9|       0: [FieldAccess] access to field z
-#    9|       1: [IntLiteral] 128
+#    9|     1: [IntLiteral] 128
 #   12| [Class] ExpressionBodiedMembers
 #   14|   4: [Field] field
 #   14|     -1: [TypeMention] int
-#   14|     1: [AssignExpr] ... = ...
-#   14|       0: [FieldAccess] access to field field
-#   14|       1: [IntLiteral] 0
+#   14|     1: [IntLiteral] 0
 #   15|   5: [Method] Foo
 #   15|     -1: [TypeMention] int
 #   15|     4: [FieldAccess] access to field field

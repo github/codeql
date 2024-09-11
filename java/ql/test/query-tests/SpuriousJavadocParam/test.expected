@@ -12,3 +12,6 @@
 | Test.java:112:6:112:12 | @param | @param tag "<X>" does not match any actual type parameter of type "GenericClass". |
 | Test.java:118:6:118:12 | @param | @param tag "T" does not match any actual type parameter of type "GenericInterface". |
 | Test.java:119:6:119:12 | @param | @param tag "<X>" does not match any actual type parameter of type "GenericInterface". |
+| Test.java:125:6:125:12 | @param | @param tag "k" does not match any actual type parameter or record parameter of record "SomeRecord". |
+| Test.java:131:6:131:12 | @param | @param tag "<U>" does not match any actual type parameter or record parameter of record "GenericRecord". |
+| Test.java:133:6:133:12 | @param | @param tag "k" does not match any actual type parameter or record parameter of record "GenericRecord". |

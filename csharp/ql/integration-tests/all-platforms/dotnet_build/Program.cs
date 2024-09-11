@@ -1,1 +1,1 @@
-﻿Console.WriteLine(args[0]);
+﻿Console.WriteLine($"<arguments>{string.Join(",", args)}</arguments>");

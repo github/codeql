@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/valyala/fasthttp` package.
  */
 
@@ -175,9 +175,11 @@ module Fasthttp {
    */
   module Functions {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * A function that doesn't sanitize user-provided file paths.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Function f |
           f.hasQualifiedName(packagePath(),
@@ -213,13 +215,15 @@ module Fasthttp {
     }
 
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A function that sends HTTP requests.
      *
      * Get* send a HTTP GET request.
      * Post send a HTTP POST request.
      * These functions first argument is a URL.
      */
-    class RequestForgerySink extends RequestForgery::Sink {
+    deprecated class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
         exists(Function f |
           f.hasQualifiedName(packagePath(), ["Get", "GetDeadline", "GetTimeout", "Post"]) and
@@ -233,10 +237,12 @@ module Fasthttp {
     }
 
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A function that create initial connection to a TCP address.
      * Following Functions only accept TCP address + Port in their first argument.
      */
-    class RequestForgerySinkDial extends RequestForgery::Sink {
+    deprecated class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
         exists(Function f |
           f.hasQualifiedName(packagePath(),
@@ -252,14 +258,23 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.URI Type.
    */
-  module URI {
+  deprecated module URI {
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",
             ["FullURI", "LastPathSegment", "Path", "PathOriginal", "QueryString", "String"]) and
@@ -270,16 +285,25 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.Args Type.
    */
-  module Args {
+  deprecated module Args {
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
      * When support for lambdas has been implemented we should model "VisitAll".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
@@ -290,15 +314,19 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.TCPDialer Type.
    */
-  module TcpDialer {
+  deprecated module TcpDialer {
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A method that create initial connection to a TCP address.
      * Provide Methods which can be used as dangerous RequestForgery Sinks.
      * Following Methods only accept TCP address + Port in their first argument.
      */
-    class RequestForgerySinkDial extends RequestForgery::Sink {
+    deprecated class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "TCPDialer",
@@ -314,16 +342,20 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.Client Type.
    */
-  module Client {
+  deprecated module Client {
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A method that sends HTTP requests.
      * Get* send a HTTP GET request.
      * Post send a HTTP POST request.
      * these Functions first arguments is a URL.
      */
-    class RequestForgerySink extends RequestForgery::Sink {
+    deprecated class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Client", ["Get", "GetDeadline", "GetTimeout", "Post"]) and
@@ -338,16 +370,20 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide modeling for fasthttp.HostClient Type.
    */
-  module HostClient {
+  deprecated module HostClient {
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A method that sends HTTP requests.
      * Get* send a HTTP GET request.
      * Post send a HTTP POST request.
      * these Functions first arguments is a URL.
      */
-    class RequestForgerySink extends RequestForgery::Sink {
+    deprecated class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "HostClient",
@@ -365,12 +401,14 @@ module Fasthttp {
   /**
    * Provide modeling for fasthttp.Response Type.
    */
-  module Response {
+  deprecated module Response {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * A Method that sends files from its input.
      * It does not check the input path against path traversal attacks, So it is a dangerous method.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Method mcn |
           mcn.hasQualifiedName(packagePath(), "Response", "SendFile") and
@@ -387,10 +425,17 @@ module Fasthttp {
    */
   module Request {
     /**
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
+     * DEPRECATED: Use `RemoteFlowSource::range` instead.
+     *
      * The methods as Remote user controllable source which can be many part of request.
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
             [
@@ -409,12 +454,14 @@ module Fasthttp {
     }
 
     /**
+     * DEPRECATED: Use `RequestForgery::Sink` instead.
+     *
      * A method that create the URL and Host parts of a `Request` type.
      *
      * This instance of `Request` type can be used in some functions/methods
      * like `func Do(req *Request, resp *Response) error` that will lead to server side request forgery vulnerability.
      */
-    class RequestForgerySink extends RequestForgery::Sink {
+    deprecated class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
@@ -434,9 +481,11 @@ module Fasthttp {
    */
   module RequestCtx {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * The Methods that don't sanitize user provided file paths.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Method mcn |
           mcn.hasQualifiedName(packagePath(), "RequestCtx", ["SendFile", "SendFileBytes"]) and
@@ -448,28 +497,19 @@ module Fasthttp {
     }
 
     /**
-     * The Methods that can be dangerous if they take user controlled URL as their first argument.
+     * DEPRECATED: Use `RemoteFlowSource` instead.
      */
-    class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-      Redirect() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "RequestCtx", ["Redirect", "RedirectBytes"]) and
-          this = m.getACall()
-        )
-      }
-
-      override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-      override Http::ResponseWriter getResponseWriter() { none() }
-    }
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
 
     /**
+     * DEPRECATED: Use `RemoteFlowSource` instead.
+     *
      * The methods as Remote user controllable source which are generally related to HTTP request.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
             [
@@ -483,16 +523,25 @@ module Fasthttp {
   }
 
   /**
+   * DEPRECATED
+   *
    * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources.
    */
-  module RequestHeader {
+  deprecated module RequestHeader {
     /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     */
+    deprecated class UntrustedFlowSource = RemoteFlowSource;
+
+    /**
+     * DEPRECATED: Use `RemoteFlowSource::Range` instead.
+     *
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *
      * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
-    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-      UntrustedFlowSource() {
+    deprecated class RemoteFlowSource extends RemoteFlowSource::Range instanceof DataFlow::Node {
+      RemoteFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",
             [

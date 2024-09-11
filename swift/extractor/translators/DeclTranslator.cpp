@@ -269,8 +269,8 @@ void DeclTranslator::fillOperatorDecl(const swift::OperatorDecl& decl,
 
 void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
   entry.name = decl.getNameStr().str();
-  for (auto& typeLoc : decl.getInherited()) {
-    if (auto type = typeLoc.getType()) {
+  for (auto& inherited : decl.getInherited().getEntries()) {
+    if (auto type = inherited.getType()) {
       entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
@@ -289,7 +289,7 @@ void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& d
 
 void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
   entry.name = decl.getNameStr().str();
-  entry.type = dispatcher.fetchLabel(decl.getType());
+  entry.type = dispatcher.fetchLabel(decl.getTypeInContext());
   entry.parent_pattern = dispatcher.fetchOptionalLabel(decl.getParentPattern());
   entry.parent_initializer = dispatcher.fetchOptionalLabel(decl.getParentInitializer());
   if (decl.hasAttachedPropertyWrapper()) {

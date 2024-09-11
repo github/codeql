@@ -41,7 +41,13 @@ open class CommentExtractor(
                 tw.getExistingLabelFor<DbTop>(label)
             }
         if (existingLabel == null) {
-            logger.warn("Couldn't get existing label for $label")
+            // Sometimes we don't extract elements.
+            // The actual extractor logic is a bit more nuanced than
+            // just "isFake", but just checking isFake is good enough
+            // to not bother with a warning.
+            if (element !is IrDeclarationWithVisibility || !fileExtractor.isFake(element)) {
+                logger.warn("Couldn't get existing label for $label")
+            }
             return null
         }
         return existingLabel

@@ -1,5 +1,8 @@
 name: Check change note
 
+permissions:
+  pull-requests: read
+
 on:
   pull_request_target:
     types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]

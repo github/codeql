@@ -1,0 +1,24 @@
+models
+edges
+| barrier_flow.rb:2:5:2:5 | x | barrier_flow.rb:4:10:4:10 | x | provenance |  |
+| barrier_flow.rb:2:9:2:17 | call to source | barrier_flow.rb:2:5:2:5 | x | provenance |  |
+| barrier_flow.rb:8:5:8:5 | x | barrier_flow.rb:11:14:11:14 | x | provenance |  |
+| barrier_flow.rb:8:9:8:17 | call to source | barrier_flow.rb:8:5:8:5 | x | provenance |  |
+| barrier_flow.rb:24:5:24:5 | x | barrier_flow.rb:26:10:26:10 | x | provenance |  |
+| barrier_flow.rb:24:9:24:17 | call to source | barrier_flow.rb:24:5:24:5 | x | provenance |  |
+nodes
+| barrier_flow.rb:2:5:2:5 | x | semmle.label | x |
+| barrier_flow.rb:2:9:2:17 | call to source | semmle.label | call to source |
+| barrier_flow.rb:4:10:4:10 | x | semmle.label | x |
+| barrier_flow.rb:8:5:8:5 | x | semmle.label | x |
+| barrier_flow.rb:8:9:8:17 | call to source | semmle.label | call to source |
+| barrier_flow.rb:11:14:11:14 | x | semmle.label | x |
+| barrier_flow.rb:24:5:24:5 | x | semmle.label | x |
+| barrier_flow.rb:24:9:24:17 | call to source | semmle.label | call to source |
+| barrier_flow.rb:26:10:26:10 | x | semmle.label | x |
+subpaths
+testFailures
+#select
+| barrier_flow.rb:4:10:4:10 | x | barrier_flow.rb:2:9:2:17 | call to source | barrier_flow.rb:4:10:4:10 | x | $@ | barrier_flow.rb:2:9:2:17 | call to source | call to source |
+| barrier_flow.rb:11:14:11:14 | x | barrier_flow.rb:8:9:8:17 | call to source | barrier_flow.rb:11:14:11:14 | x | $@ | barrier_flow.rb:8:9:8:17 | call to source | call to source |
+| barrier_flow.rb:26:10:26:10 | x | barrier_flow.rb:24:9:24:17 | call to source | barrier_flow.rb:26:10:26:10 | x | $@ | barrier_flow.rb:24:9:24:17 | call to source | call to source |

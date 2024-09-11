@@ -664,14 +664,6 @@ module DataFlow {
   }
 }
 
-deprecated private class DataFlowType extends TaintKind {
-  // this only exists to avoid an empty recursion error in the type checker
-  DataFlowType() {
-    this = "Data flow" and
-    1 = 2
-  }
-}
-
 pragma[noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {
   dictnode.(DictNode).getAValue() = itemnode

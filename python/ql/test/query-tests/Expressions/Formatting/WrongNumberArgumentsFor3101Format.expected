@@ -1,6 +1,6 @@
-| test.py:20:1:20:49 | Attribute() | Too few arguments for string format. Format $@ requires at least 1, but 0 are provided. | test.py:4:17:4:31 | Str | "{name!r}, {0}" |
-| test.py:21:1:21:50 | format() | Too few arguments for string format. Format $@ requires at least 1, but 0 are provided. | test.py:9:17:9:31 | Str | "{name!r}, {0}" |
-| test.py:23:1:23:32 | Attribute() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:5:20:5:29 | Str | "{0}, {1}" |
-| test.py:24:1:24:33 | format() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:10:20:10:29 | Str | "{0}, {1}" |
-| test.py:26:1:26:32 | Attribute() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:6:20:6:27 | Str | "{}, {}" |
-| test.py:27:1:27:33 | format() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:11:20:11:27 | Str | "{}, {}" |
+| test.py:20:1:20:49 | Attribute() | Too few arguments for string format. Format $@ requires at least 1, but 0 are provided. | test.py:4:17:4:31 | StringLiteral | "{name!r}, {0}" |
+| test.py:21:1:21:50 | format() | Too few arguments for string format. Format $@ requires at least 1, but 0 are provided. | test.py:9:17:9:31 | StringLiteral | "{name!r}, {0}" |
+| test.py:23:1:23:32 | Attribute() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:5:20:5:29 | StringLiteral | "{0}, {1}" |
+| test.py:24:1:24:33 | format() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:10:20:10:29 | StringLiteral | "{0}, {1}" |
+| test.py:26:1:26:32 | Attribute() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:6:20:6:27 | StringLiteral | "{}, {}" |
+| test.py:27:1:27:33 | format() | Too few arguments for string format. Format $@ requires at least 2, but 1 is provided. | test.py:11:20:11:27 | StringLiteral | "{}, {}" |

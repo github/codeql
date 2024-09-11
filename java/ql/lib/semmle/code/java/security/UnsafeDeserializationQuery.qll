@@ -3,6 +3,7 @@
  */
 
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.frameworks.Kryo
@@ -235,7 +236,7 @@ predicate unsafeDeserialization(MethodCall ma, Expr sink) {
 }
 
 /** A sink for unsafe deserialization. */
-class UnsafeDeserializationSink extends DataFlow::ExprNode {
+class UnsafeDeserializationSink extends ApiSinkNode, DataFlow::ExprNode {
   UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
 
   /** Gets a call that triggers unsafe deserialization. */
@@ -311,25 +312,6 @@ private predicate isUnsafeDeserializationTaintStep(DataFlow::Node pred, DataFlow
   createJacksonTreeNodeStep(pred, succ)
   or
   intentFlowsToParcel(pred, succ)
-}
-
-/**
- * DEPRECATED: Use `UnsafeDeserializationFlow` instead.
- *
- * Tracks flows from remote user input to a deserialization sink.
- */
-deprecated class UnsafeDeserializationConfig extends TaintTracking::Configuration {
-  UnsafeDeserializationConfig() { this = "UnsafeDeserializationConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    isUnsafeDeserializationTaintStep(pred, succ)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
 }
 
 /** Tracks flows from remote user input to a deserialization sink. */
@@ -428,30 +410,6 @@ private predicate isUnsafeTypeAdditionalTaintStep(DataFlow::Node fromNode, DataF
 }
 
 /**
- * DEPRECATED: Use `UnsafeTypeFlow` instead.
- *
- * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
- * passed to a deserialization method.
- *
- * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
- */
-deprecated class UnsafeTypeConfig extends TaintTracking2::Configuration {
-  UnsafeTypeConfig() { this = "UnsafeTypeConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeTypeSink }
-
-  /**
-   * Holds if `fromNode` to `toNode` is a dataflow step that resolves a class
-   * or at least looks like resolving a class.
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    isUnsafeTypeAdditionalTaintStep(fromNode, toNode)
-  }
-}
-
-/**
  * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
  * passed to a deserialization method.
  *
@@ -479,21 +437,6 @@ module UnsafeTypeConfig implements DataFlow::ConfigSig {
  */
 module UnsafeTypeFlow = TaintTracking::Global<UnsafeTypeConfig>;
 
-/**
- * DEPRECATED: Use `EnableJacksonDefaultTypingFlow` instead.
- *
- * Tracks flow from `enableDefaultTyping` calls to a subsequent Jackson deserialization method call.
- */
-deprecated class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration {
-  EnableJacksonDefaultTypingConfig() { this = "EnableJacksonDefaultTypingConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    any(EnableJacksonDefaultTyping ma).getQualifier() = src.asExpr()
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
-}
-
 private module EnableJacksonDefaultTypingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     any(EnableJacksonDefaultTyping ma).getQualifier() = src.asExpr()
@@ -520,32 +463,6 @@ private predicate isObjectMapperBuilderAdditionalFlowStep(
     fromNode.asExpr() = ma.getQualifier() and
     ma = toNode.asExpr()
   )
-}
-
-/**
- * DEPRECATED: Use `SafeObjectMapperFlow` instead.
- *
- * Tracks flow from calls that set a type validator to a subsequent Jackson deserialization method call,
- * including across builder method calls.
- *
- * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
- */
-deprecated class SafeObjectMapperConfig extends DataFlow2::Configuration {
-  SafeObjectMapperConfig() { this = "SafeObjectMapperConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src instanceof SetPolymorphicTypeValidatorSource
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
-
-  /**
-   * Holds if `fromNode` to `toNode` is a dataflow step
-   * that configures or creates an `ObjectMapper` via a builder.
-   */
-  override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    isObjectMapperBuilderAdditionalFlowStep(fromNode, toNode)
-  }
 }
 
 /**

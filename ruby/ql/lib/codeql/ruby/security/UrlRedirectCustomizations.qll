@@ -84,6 +84,12 @@ module UrlRedirect {
   class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
 
   /**
+   * A string concatenation against a constant list, considered as a sanitizer-guard.
+   */
+  class StringConstArrayInclusionAsSanitizer extends Sanitizer, StringConstArrayInclusionCallBarrier
+  { }
+
+  /**
    * Some methods will propagate taint to their return values.
    * Here we cover a few common ones related to `ActionController::Parameters`.
    * TODO: use ApiGraphs or something to restrict these method calls to the correct receiver, rather

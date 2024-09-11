@@ -75,8 +75,10 @@ class PreBasicBlock extends ControlFlowElement {
 
   predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
+  pragma[inline]
   predicate strictlyDominates(PreBasicBlock bb) { this.immediatelyDominates+(bb) }
 
+  pragma[inline]
   predicate dominates(PreBasicBlock bb) {
     bb = this
     or
@@ -97,6 +99,7 @@ class ConditionBlock extends PreBasicBlock {
     )
   }
 
+  pragma[nomagic]
   private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
     exists(ControlFlowElement last, Completion c |
       last = this.getLastElement() and

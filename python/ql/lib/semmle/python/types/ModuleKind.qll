@@ -15,7 +15,7 @@ private predicate is_script(ModuleObject m) {
   (
     m.getModule().getFile().getExtension() != ".py"
     or
-    exists(If i, Name name, StrConst main, Cmpop op |
+    exists(If i, Name name, StringLiteral main, Cmpop op |
       i.getScope() = m.getModule() and
       op instanceof Eq and
       i.getTest().(Compare).compares(name, op, main) and

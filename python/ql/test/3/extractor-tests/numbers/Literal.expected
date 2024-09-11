@@ -1,0 +1,6 @@
+| 2 | IntegerLiteral | 1000000000000000 | 1_000_000_000_000_000 |
+| 3 | IntegerLiteral | 4294967295 | 0x_FF_FF_FF_FF |
+| 4 | IntegerLiteral | 3218 | 0b_1100_1001_0010 |
+| 5 | IntegerLiteral | 12345678 | 1_2_3_4_5_6_7_8 |
+| 6 | IntegerLiteral | 12 | 1_2 |
+| 7 | FloatLiteral | 1.234e+57 | 1_2.3_4E+5_6 |

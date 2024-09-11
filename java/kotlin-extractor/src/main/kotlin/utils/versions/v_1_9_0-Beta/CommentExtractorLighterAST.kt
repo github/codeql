@@ -1,6 +1,7 @@
 package com.github.codeql.comments
 
 import com.github.codeql.*
+import com.github.codeql.utils.versions.*
 import com.intellij.lang.LighterASTNode
 import com.intellij.util.diff.FlyweightCapableTreeStructure
 import org.jetbrains.kotlin.fir.backend.FirMetadataSource
@@ -15,6 +16,9 @@ import org.jetbrains.kotlin.kdoc.lexer.KDocTokens
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.util.getChildren
 
+// TODO: This doesn't give owners to as many comments as the PSI extractor does.
+// See the library-tests/comments tests for details.
+
 class CommentExtractorLighterAST(
     fileExtractor: KotlinFileExtractor,
     file: IrFile,
@@ -23,7 +27,7 @@ class CommentExtractorLighterAST(
     // Returns true if it extracted the comments; false otherwise.
     fun extract(): Boolean {
         val sourceElement =
-            (file.metadata as? FirMetadataSource.File)?.files?.elementAtOrNull(0)?.source
+            (file.metadata as? FirMetadataSource.File)?.firFile?.source
         val treeStructure = sourceElement?.treeStructure
         if (treeStructure == null) {
             return false

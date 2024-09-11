@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Sensitive information such as passwords or two-factor authentication (2FA) codes should not be exposed in a system notification.
+      Notifications should not be considered secure, as other untrusted applications may be able to use a
+     <code>NotificationListenerService</code> to read the contents of notifications.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+    Do not expose sensitive data in notifications.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+    In the following sample, the <code>password</code> is sent as part of a notification. 
+    This can allow another application to read this password.
+    </p>
+
+    <sample src="AndroidSensitiveNotifications.java"/>
+  </example>
+
+  <references>
+    <li>
+      OWASP Mobile Application Security: <a href="https://mas.owasp.org/MASTG/Android/0x05d-Testing-Data-Storage/#app-notifications">Android Data Storage - Application Notifications</a> 
+    </li>
+  </references>
+
+</qhelp>

@@ -20,7 +20,7 @@ runs:
         codeql test run \
           --threads=0 \
           --ram 50000 \
-          --search-path "${{ github.workspace }}/swift/extractor-pack" \
+          --search-path "$GITHUB_WORKSPACE" \
           --check-databases \
           --check-unused-labels \
           --check-repeated-labels \
@@ -32,3 +32,4 @@ runs:
           swift/ql/test
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}

@@ -49,7 +49,7 @@ private module Authlib {
     }
 
     override string getAlgorithmString() {
-      exists(StrConst str |
+      exists(StringLiteral str |
         DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getAlgorithm()) and
         result = str.getText()
       )

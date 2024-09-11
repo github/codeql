@@ -9,7 +9,7 @@ import Declaration
  * A general parameterizable entity, such as a callable, delegate type, accessor,
  * indexer, or function pointer type.
  */
-class Parameterizable extends Declaration, @dotnet_parameterizable {
+deprecated class Parameterizable extends Declaration, @dotnet_parameterizable {
   /** Gets raw parameter `i`, including the `this` parameter at index 0. */
   Parameter getRawParameter(int i) { none() }
 

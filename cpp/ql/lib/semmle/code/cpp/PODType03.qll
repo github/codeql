@@ -104,9 +104,6 @@ predicate isPodClass03(Class c) {
   )
 }
 
-/** DEPRECATED: Alias for isPodClass03 */
-deprecated predicate isPODClass03 = isPodClass03/1;
-
 /**
  * Holds if `t` is a POD type, according to the rules specified in
  * C++03 3.9(10):
@@ -126,6 +123,3 @@ predicate isPodType03(Type t) {
     isPodType03(ut.(SpecifiedType).getUnspecifiedType())
   )
 }
-
-/** DEPRECATED: Alias for isPodType03 */
-deprecated predicate isPODType03 = isPodType03/1;

@@ -4,6 +4,7 @@ private import csharp
 private import codeql.util.Unit
 private import codeql.util.FilePath
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 /** A call to the `View` method */
 private class ViewCall extends MethodCall {
@@ -214,4 +215,63 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
 
   /** Holds if this string is the `idx`th path that will be searched for the `vc` call. */
   predicate hasViewCallWithIndex(ViewCall vc, int idx) { vc = vc_ and idx = idx_ }
+}
+
+/** A subclass of `Microsoft.AspNetCore.Mvc.RazorPages.PageModel` */
+class PageModelClass extends Class {
+  PageModelClass() {
+    this.getABaseType+().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "PageModel")
+  }
+
+  /** Gets a handler method such as `OnGetAsync` */
+  Method getAHandlerMethod() {
+    result = this.getAMethod() and
+    result.getName().matches("On%") and
+    not exists(Attribute attr |
+      attr = result.getAnAttribute() and
+      attr.getType()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "NonHandlerAttribute")
+    )
+  }
+
+  /** Gets the Razor Page that has this PageModel. */
+  RazorViewClass getPage() {
+    exists(Property modelProp |
+      modelProp.hasName("Model") and
+      modelProp.getType() = this and
+      modelProp.getDeclaringType() = result
+    )
+  }
+}
+
+private MethodCall getAPageCall(PageModelClass pm) {
+  result.getEnclosingCallable() = pm.getAHandlerMethod() and
+  result
+      .getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "PageModel",
+        ["Page", "RedirectToPage"])
+}
+
+private ThisAccess getThisCallInVoidHandler(PageModelClass pm) {
+  result.getEnclosingCallable() = pm.getAHandlerMethod() and
+  result.getEnclosingCallable().getReturnType() instanceof VoidType
+}
+
+private class PageModelJumpNode extends DataFlow::NonLocalJumpNode {
+  PageModelClass pm;
+
+  PageModelJumpNode() {
+    this.asExpr() = getAPageCall(pm).getQualifier()
+    or
+    this.(PostUpdateNode).getPreUpdateNode().asExpr() = getThisCallInVoidHandler(pm)
+  }
+
+  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+    preservesValue = true and
+    exists(PropertyAccess modelProp |
+      result.asExpr() = modelProp and
+      modelProp.getTarget().hasName("Model") and
+      modelProp.getEnclosingCallable().getDeclaringType() = pm.getPage()
+    )
+  }
 }

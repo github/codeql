@@ -7,7 +7,7 @@ private import CIL
 /**
  * Provides classes for working with static single assignment (SSA) form.
  */
-module Ssa {
+deprecated module Ssa {
   private import internal.SsaImpl as SsaImpl
 
   /** An SSA definition. */
@@ -23,14 +23,6 @@ module Ssa {
       )
     }
 
-    /** Gets a first read of this SSA definition. */
-    deprecated final ReadAccess getAFirstRead() { result = SsaImpl::getAFirstRead(this) }
-
-    /** Holds if `first` and `second` are adjacent reads of this SSA definition. */
-    deprecated final predicate hasAdjacentReads(ReadAccess first, ReadAccess second) {
-      SsaImpl::hasAdjacentReads(this, first, second)
-    }
-
     private Definition getAPhiInput() { result = this.(PhiNode).getAnInput() }
 
     /**
@@ -43,7 +35,7 @@ module Ssa {
     }
 
     /** Gets the location of this SSA definition. */
-    Location getLocation() { result = this.getVariableUpdate().getLocation() }
+    override Location getLocation() { result = this.getVariableUpdate().getLocation() }
   }
 
   /** A phi node. */
@@ -52,15 +44,5 @@ module Ssa {
 
     /** Gets an input to this phi node. */
     final Definition getAnInput() { result = SsaImpl::getAPhiInput(this) }
-
-    /**
-     * Holds if if `def` is an input to this phi node, and a reference to `def` at
-     * index `i` in basic block `bb` can reach this phi node without going through
-     * other references.
-     */
-    deprecated final predicate hasLastInputRef(Definition def, BasicBlock bb, int i) {
-      SsaImpl::lastRefRedef(def, bb, i, this) and
-      def = SsaImpl::getAPhiInput(this)
-    }
   }
 }

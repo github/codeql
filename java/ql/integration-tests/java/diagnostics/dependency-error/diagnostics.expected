@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "A dependency failed to download. Check that all dependencies are available, and [supply credentials for any private dependencies](https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md#set-up-secrets-in-github-action-workflows).\n\n",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/dependency-download-failure",
+    "name": "Failed to download a dependency"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

@@ -7,10 +7,17 @@ module AstTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(GuardCondition g, Expr checked, boolean isTrue) {
-    g.(FunctionCall).getTarget().getName() = "guarded" and
-    checked = g.(FunctionCall).getArgument(0) and
-    isTrue = true
+  predicate testBarrierGuard(GuardCondition g, Expr checked, boolean branch) {
+    exists(Call call, boolean b |
+      checked = call.getArgument(0) and
+      g.comparesEq(call, 0, b, any(BooleanValue bv | bv.getValue() = branch))
+    |
+      call.getTarget().hasName("guarded") and
+      b = false
+      or
+      call.getTarget().hasName("unsafe") and
+      b = true
+    )
   }
 
   /** Common data flow configuration to be used by tests. */
@@ -49,18 +56,69 @@ module IRTest {
   import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.IR
   private import semmle.code.cpp.controlflow.IRGuards
+  private import semmle.code.cpp.models.interfaces.DataFlow
+
+  boolean isOne(string s) {
+    s = "1" and result = true
+    or
+    s = "0" and result = false
+  }
+
+  /**
+   * A model of a test function called `strdup_ptr_xyz` where `x, y, z in {0, 1}`.
+   * `x` is 1 if there's flow from the argument to the function return,
+   * `y` is 1 if there's flow from the first indirection of the argument to
+   * the first indirection of the function return, and
+   * `z` is 1 if there's flow from the second indirection of the argument to
+   * the second indirection of the function return.
+   */
+  class StrDupPtr extends DataFlowFunction {
+    boolean argToReturnFlow;
+    boolean argIndToReturnInd;
+    boolean argIndInToReturnIndInd;
+
+    StrDupPtr() {
+      exists(string r |
+        r = "strdup_ptr_([01])([01])([01])" and
+        argToReturnFlow = isOne(this.getName().regexpCapture(r, 1)) and
+        argIndToReturnInd = isOne(this.getName().regexpCapture(r, 2)) and
+        argIndInToReturnIndInd = isOne(this.getName().regexpCapture(r, 3))
+      )
+    }
+
+    /**
+     * Flow from `**ptr` to `**return`
+     */
+    override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+      argToReturnFlow = true and
+      input.isParameter(0) and
+      output.isReturnValue()
+      or
+      argIndToReturnInd = true and
+      input.isParameterDeref(0, 1) and
+      output.isReturnValueDeref(1)
+      or
+      argIndInToReturnIndInd = true and
+      input.isParameterDeref(0, 2) and
+      output.isReturnValueDeref(2)
+    }
+  }
 
   /**
    * A `BarrierGuard` that stops flow to all occurrences of `x` within statement
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
-    exists(Call call |
-      call = g.getUnconvertedResultExpression() and
-      call.getTarget().hasName("guarded") and
-      checked = call.getArgument(0) and
-      isTrue = true
+  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean branch) {
+    exists(CallInstruction call, boolean b |
+      checked = call.getArgument(0).getUnconvertedResultExpression() and
+      g.comparesEq(call.getAUse(), 0, b, any(BooleanValue bv | bv.getValue() = branch))
+    |
+      call.getStaticCallTarget().hasName("guarded") and
+      b = false
+      or
+      call.getStaticCallTarget().hasName("unsafe") and
+      b = true
     )
   }
 
@@ -92,6 +150,9 @@ module IRTest {
         sink.asExpr() = e
         or
         call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = e
+        or
+        call.getTarget().getName() = "indirect_sink_const_ref" and
         sink.asIndirectExpr() = e
       )
     }

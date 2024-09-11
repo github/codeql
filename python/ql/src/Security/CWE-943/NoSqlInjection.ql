@@ -3,6 +3,7 @@
  * @description Building a NoSQL query from user-controlled sources is vulnerable to insertion of
  *              malicious NoSQL code by the user.
  * @kind path-problem
+ * @precision high
  * @problem.severity error
  * @security-severity 8.8
  * @id py/nosql-injection

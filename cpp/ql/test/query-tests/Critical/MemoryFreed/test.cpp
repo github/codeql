@@ -114,7 +114,7 @@ int main()
 		mc2->method2();
 		delete mc2;
 	}
-	
+
 	{
 		void *v1 = malloc(100);
 		int *i2 = (int *)malloc(100);
@@ -197,4 +197,42 @@ void test_strndupa_dealloc() {
 	char msg[] = "OctoCat";
 	char *cpy = strndupa(msg, 4);
     free(cpy); // BAD [NOT DETECTED]
+}
+
+// ---
+
+struct DataPair {
+	char *data1;
+	char *data2;
+};
+
+void test_reassignment() {
+	char *a = (char *)malloc(128);
+	char *b = (char *)malloc(128);
+
+	free(a);
+	a[0] = 0; // BAD
+
+	a = b;
+	a[0] = 0; // GOOD
+
+	free(a);
+	a[0] = 0; // BAD
+
+	DataPair p;
+	p.data1 = new char[128];
+	p.data2 = new char[128];
+	p.data1[0] = 0; // GOOD
+	p.data2[0] = 0; // GOOD
+
+	delete [] p.data1;
+	p.data1[0] = 0; // BAD
+	p.data2[0] = 0; // GOOD
+
+	p.data1 = new char[128];
+	p.data1[0] = 0; // GOOD
+	p.data2[0] = 0; // GOOD
+
+	delete [] p.data1;
+	delete [] p.data2;
 }

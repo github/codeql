@@ -237,7 +237,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   override predicate isStrict() {
     // check for explicit strict mode directive
-    exists(StrictModeDecl smd | this = smd.getContainer()) or
+    exists(Directive::StrictModeDecl smd | this = smd.getContainer()) or
     // check for enclosing strict function
     StmtContainer.super.isStrict() or
     // all parts of a class definition are strict code

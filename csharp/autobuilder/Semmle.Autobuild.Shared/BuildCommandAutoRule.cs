@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
+using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
@@ -53,7 +55,7 @@ namespace Semmle.Autobuild.Shared
 
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
-            builder.Log(Severity.Info, "Attempting to locate build script");
+            builder.Logger.LogInfo("Attempting to locate build script");
 
             // a list of extensions for files that we consider to be scripts on the current platform
             var extensions = builder.Actions.IsWindows() ? winExtensions : linuxExtensions;
@@ -79,11 +81,6 @@ namespace Semmle.Autobuild.Shared
             return chmodScript & withDotNet(builder, environment =>
             {
                 var command = new CommandBuilder(builder.Actions, dir, environment);
-
-                // A specific Visual Studio version may be required
-                var vsTools = MsBuildRule.GetVcVarsBatFile(builder);
-                if (vsTools is not null)
-                    command.CallBatFile(vsTools.Path);
 
                 command.RunCommand(this.ScriptPath);
                 return command.Script;

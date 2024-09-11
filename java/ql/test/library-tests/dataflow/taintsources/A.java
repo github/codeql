@@ -43,7 +43,12 @@ public class A {
     };
     sink(new URL("test").openConnection().getInputStream()); // $hasRemoteValueFlow
     sink(new Socket("test", 1234).getInputStream()); // $hasRemoteValueFlow
-    sink(InetAddress.getByName("test").getHostName()); // $hasRemoteValueFlow
+    sink(InetAddress.getByName("test").getHostName()); // $hasReverseDnsValueFlow
+    sink(InetAddress.getLocalHost().getHostName());
+    sink(InetAddress.getLoopbackAddress().getHostName());
+    sink(InetAddress.getByName("test").getCanonicalHostName()); // $hasReverseDnsValueFlow
+    sink(InetAddress.getLocalHost().getCanonicalHostName());
+    sink(InetAddress.getLoopbackAddress().getCanonicalHostName());
 
     sink(System.in); // $hasLocalValueFlow
     sink(new FileInputStream("test")); // $hasLocalValueFlow

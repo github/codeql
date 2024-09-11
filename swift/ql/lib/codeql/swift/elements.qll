@@ -227,6 +227,7 @@ import codeql.swift.elements.stmt.ReturnStmt
 import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.stmt.StmtCondition
 import codeql.swift.elements.stmt.SwitchStmt
+import codeql.swift.elements.stmt.ThenStmt
 import codeql.swift.elements.stmt.ThrowStmt
 import codeql.swift.elements.stmt.WhileStmt
 import codeql.swift.elements.stmt.YieldStmt

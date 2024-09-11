@@ -76,13 +76,6 @@ class TypeDecl extends Generated::TypeDecl {
   TypeDecl getABaseTypeDecl() { result = this.getABaseType().(AnyGenericType).getDeclaration() }
 
   /**
-   * Gets a declaration that has this type as its `index`th base type.
-   *
-   * DEPRECATED: The index is not very meaningful here. Use `getADerivedTypeDecl` or `getABaseTypeDecl`.
-   */
-  deprecated TypeDecl getDerivedTypeDecl(int i) { result.getBaseTypeDecl(i) = this }
-
-  /**
    * Gets the declaration of any type derived from this type declaration. Expands protocols
    * added in extensions and expands type aliases. For example in the following code, `B`
    * is derived from `A`.
@@ -109,13 +102,13 @@ class TypeDecl extends Generated::TypeDecl {
   cached
   string getFullName() {
     not this.getEnclosingDecl() instanceof TypeDecl and
-    not this.getEnclosingDecl() instanceof ExtensionDecl and
+    not count(this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl()) = 1 and
     result = this.getName()
     or
     result = this.getEnclosingDecl().(TypeDecl).getFullName() + "." + this.getName()
     or
     result =
-      this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() + "." +
-        this.getName()
+      unique(NominalTypeDecl td | td = this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl())
+            .getFullName() + "." + this.getName()
   }
 }

@@ -1,11 +1,15 @@
+#select
+| Test.cs:10:36:10:46 | access to local variable libraryName | Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:10:36:10:46 | access to local variable libraryName | This assembly path depends on a $@. | Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | user-provided value |
 edges
-| Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:7:26:7:63 | access to indexer : String |
-| Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:10:36:10:46 | access to local variable libraryName |
-| Test.cs:7:26:7:63 | access to indexer : String | Test.cs:10:36:10:46 | access to local variable libraryName |
+| Test.cs:7:12:7:22 | access to local variable libraryName : String | Test.cs:10:36:10:46 | access to local variable libraryName | provenance |  |
+| Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:7:12:7:22 | access to local variable libraryName : String | provenance |  |
+| Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:7:26:7:63 | access to indexer : String | provenance | MaD:1 |
+| Test.cs:7:26:7:63 | access to indexer : String | Test.cs:7:12:7:22 | access to local variable libraryName : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| Test.cs:7:12:7:22 | access to local variable libraryName : String | semmle.label | access to local variable libraryName : String |
 | Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:7:26:7:63 | access to indexer : String | semmle.label | access to indexer : String |
 | Test.cs:10:36:10:46 | access to local variable libraryName | semmle.label | access to local variable libraryName |
 subpaths
-#select
-| Test.cs:10:36:10:46 | access to local variable libraryName | Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | Test.cs:10:36:10:46 | access to local variable libraryName | This assembly path depends on a $@. | Test.cs:7:26:7:48 | access to property QueryString : NameValueCollection | user-provided value |

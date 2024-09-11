@@ -14,7 +14,7 @@
 import python
 
 predicate main_eq_name(If i) {
-  exists(Name n, StrConst m, Compare c |
+  exists(Name n, StringLiteral m, Compare c |
     i.getTest() = c and
     c.getLeft() = n and
     c.getAComparator() = m and

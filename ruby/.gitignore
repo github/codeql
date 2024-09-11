@@ -1,5 +1,4 @@
 extractor/target
-extractor-pack
 .vscode/launch.json
 .cache
 ql/test/**/*.testproj

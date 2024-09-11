@@ -26,6 +26,7 @@ typeTracking
 | tst.js:2:16:2:23 | source() | tst.js:37:14:37:14 | e |
 | tst.js:2:16:2:23 | source() | tst.js:41:14:41:14 | e |
 | tst.js:2:16:2:23 | source() | tst.js:45:14:45:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:49:14:49:14 | e |
 | tst.js:2:16:2:23 | source() | tst.js:53:8:53:21 | map.get("key") |
 | tst.js:2:16:2:23 | source() | tst.js:59:8:59:22 | map2.get("foo") |
 | tst.js:2:16:2:23 | source() | tst.js:64:8:64:26 | map3.get(unknown()) |

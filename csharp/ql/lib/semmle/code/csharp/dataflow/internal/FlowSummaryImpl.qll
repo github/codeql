@@ -3,6 +3,7 @@
  */
 
 private import csharp
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
@@ -12,8 +13,14 @@ private import DataFlowImplSpecific::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
-module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
   class SummarizedCallableBase = UnboundCallable;
+
+  predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
+    interpretNeutral(c, kind, provenance) and
+    // isExact is not needed for C#.
+    isExact = false
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
 
@@ -39,13 +46,14 @@ module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
     result = "delegate-self"
   }
 
-  string encodeContent(ContentSet c, string arg) {
+  private string encodeCont(Content c, string arg) {
     c = TElementContent() and result = "Element" and arg = ""
     or
-    exists(Field f | c = TFieldContent(f) and result = "Field" and arg = f.getFullyQualifiedName())
-    or
-    exists(Property p |
-      c = TPropertyContent(p) and result = "Property" and arg = p.getFullyQualifiedName()
+    exists(Field f, string qualifier, string name |
+      c = TFieldContent(f) and
+      f.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Field"
     )
     or
     exists(SyntheticField f |
@@ -53,15 +61,29 @@ module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
     )
   }
 
+  string encodeContent(ContentSet c, string arg) {
+    exists(Content cont |
+      c.isSingleton(cont) and
+      result = encodeCont(cont, arg)
+    )
+    or
+    exists(Property p, string qualifier, string name |
+      c.isProperty(p) and
+      p.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Property"
+    )
+  }
+
   string encodeWithoutContent(ContentSet c, string arg) {
     result = "WithoutElement" and
-    c = TElementContent() and
+    c.isElement() and
     arg = ""
   }
 
   string encodeWithContent(ContentSet c, string arg) {
     result = "WithElement" and
-    c = TElementContent() and
+    c.isElement() and
     arg = ""
   }
 
@@ -80,7 +102,7 @@ module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::CsharpDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::CsharpDataFlow, Input> as Impl
 
 private module TypesInput implements Impl::Private::TypesInputSig {
   DataFlowType getSyntheticGlobalType(Impl::Private::SyntheticGlobal sg) {
@@ -88,16 +110,25 @@ private module TypesInput implements Impl::Private::TypesInputSig {
     result.asGvnType() = Gvn::getGlobalValueNumber(any(ObjectType t))
   }
 
-  DataFlowType getContentType(ContentSet c) {
+  private DataFlowType getContType(Content c) {
     exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
       t = c.(FieldContent).getField().getType()
-      or
-      t = c.(PropertyContent).getProperty().getType()
       or
       t = c.(SyntheticFieldContent).getField().getType()
       or
       c instanceof ElementContent and
       t instanceof ObjectType // we don't know what the actual element type is
+    )
+  }
+
+  DataFlowType getContentType(ContentSet c) {
+    exists(Content cont |
+      c.isSingleton(cont) and
+      result = getContType(cont)
+    )
+    or
+    exists(Property p |
+      c.isProperty(p) and result.asGvnType() = Gvn::getGlobalValueNumber(p.getType())
     )
   }
 
@@ -154,26 +185,34 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   private import csharp as Cs
 
   class Element = Cs::Element;
 
-  predicate sourceElement(Element e, string output, string kind) {
+  predicate sourceElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, _) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind) {
+  predicate sinkElement(
+    Element e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, _) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -252,7 +291,7 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
   }
 
   private module SummaryComponentInternal = Impl::Private::SummaryComponent;
@@ -288,17 +327,16 @@ module Private {
     }
 
     /** Gets a summary component that represents an element in a collection. */
-    SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
+    SummaryComponent element() { result = content(any(ContentSet cs | cs.isElement())) }
 
     /** Gets a summary component for property `p`. */
     SummaryComponent property(Property p) {
-      result =
-        content(any(DataFlow::PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
+      result = content(any(DataFlow::ContentSet c | c.isProperty(p.getUnboundDeclaration())))
     }
 
     /** Gets a summary component for field `f`. */
     SummaryComponent field(Field f) {
-      result = content(any(DataFlow::FieldContent c | c.getField() = f.getUnboundDeclaration()))
+      result = content(any(DataFlow::ContentSet c | c.isField(f.getUnboundDeclaration())))
     }
 
     /** Gets a summary component that represents the return value of a call. */
@@ -358,63 +396,6 @@ private module BidirectionalImports {
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
-private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(RecordType r).getAMember() and
-  exists(string name |
-    c.getParameter(i).getName() = name and
-    c.getDeclaringType().getAMember(name) = p
-  )
-}
-
-private class RecordConstructorFlow extends Impl::Private::SummarizedCallableImpl {
-  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
-
-  predicate propagatesFlowImpl(
-    Impl::Private::SummaryComponentStack input, Impl::Private::SummaryComponentStack output,
-    boolean preservesValue
-  ) {
-    exists(int i, Property p |
-      recordConstructorFlow(this, i, p) and
-      input = Private::SummaryComponentStack::argument(i) and
-      output =
-        Private::SummaryComponentStack::propertyOf(p, Private::SummaryComponentStack::return()) and
-      preservesValue = true
-    )
-  }
-
-  override predicate propagatesFlow(
-    Impl::Private::SummaryComponentStack input, Impl::Private::SummaryComponentStack output,
-    boolean preservesValue
-  ) {
-    this.propagatesFlowImpl(input, output, preservesValue)
-  }
-
-  override predicate hasProvenance(Public::Provenance provenance) { provenance = "manual" }
-}
-
-// see `SummarizedCallableImpl` qldoc
-private class RecordConstructorFlowAdapter extends Impl::Public::SummarizedCallable instanceof RecordConstructorFlow
-{
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
-
-  override predicate hasProvenance(Public::Provenance provenance) {
-    RecordConstructorFlow.super.hasProvenance(provenance)
-  }
-}
-
-private class RecordConstructorFlowRequiredSummaryComponentStack extends Impl::Private::RequiredSummaryComponentStack
-{
-  override predicate required(
-    Impl::Private::SummaryComponent head, Impl::Private::SummaryComponentStack tail
-  ) {
-    exists(Property p |
-      recordConstructorFlow(_, _, p) and
-      head = Private::SummaryComponent::property(p) and
-      tail = Private::SummaryComponentStack::return()
-    )
-  }
-}
-
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 private predicate mayInvokeCallback(Callable c, int n) {
@@ -428,10 +409,13 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
 
   SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[delegate-self]" and
-    preservesValue = true
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Public::Provenance provenance) { provenance = "hq-generated" }

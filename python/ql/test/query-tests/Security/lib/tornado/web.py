@@ -1,2 +1,0 @@
-class RequestHandler(object):
-    pass

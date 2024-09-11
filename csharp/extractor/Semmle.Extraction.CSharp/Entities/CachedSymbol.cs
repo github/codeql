@@ -53,6 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
                     break;
                 case RefKind.RefReadOnly:
+                case RefKind.RefReadOnlyParameter:
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
                     break;
             }
@@ -81,12 +82,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// The location which is stored in the database and is used when highlighting source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.BestOrDefault();
 
         /// <summary>
         /// The full text span of the entity, e.g. for binding comments.
         /// </summary>
-        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.FirstOrDefault();
+        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.BestOrDefault();
 
         public virtual IEnumerable<Extraction.Entities.Location> Locations
         {

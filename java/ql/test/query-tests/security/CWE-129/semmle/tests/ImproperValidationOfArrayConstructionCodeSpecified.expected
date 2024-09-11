@@ -1,5 +1,5 @@
 edges
-| Test.java:105:16:105:16 | 0 : Number | Test.java:107:27:107:30 | size |
+| Test.java:105:16:105:16 | 0 : Number | Test.java:107:27:107:30 | size | provenance |  |
 nodes
 | Test.java:105:16:105:16 | 0 : Number | semmle.label | 0 : Number |
 | Test.java:107:27:107:30 | size | semmle.label | size |

@@ -3,6 +3,8 @@ display_name: "QL"
 version: 0.0.1
 column_kind: "utf8"
 legacy_qltest_extraction: true
+build_modes:
+  - none
 github_api_languages:
   - CodeQL
 scc_languages:

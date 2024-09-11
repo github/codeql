@@ -53,8 +53,7 @@ New Features
     |link-code-paths-and-code-paths-ignore-configuration-1|_.
     
 *   In the VS Code extension, recursive calls will be marked with inlay hints. These can be disabled with the global inlay hints setting
-    (:code:`editor.inlayHints.enabled`). If you just want to disable them for
-    codeql the settings can be scoped to just codeql files (language id is :code:`ql`).
+    (:code:`editor.inlayHints.enabled`). If you just want to disable them for codeql the settings can be scoped to just codeql files (language id is :code:`ql`).
     See `Language Specific Editor Settings <https://code.visualstudio.com/docs/getstarted/settings#_language-specific-editor-settings>`__ in the VS Code documentation for more information.
     
 *   The CLI now gives a more helpful error message when asked to run queries on a database that has not been finalized.

@@ -233,6 +233,7 @@ module PasswordHeuristics {
   predicate isDummyPassword(string password) {
     password.length() < 4
     or
+    password.length() <= 100 and
     count(password.charAt(_)) <= 2 // aaaaaaaa or bBbBbB or ghghghghghgh or the like
     or
     password

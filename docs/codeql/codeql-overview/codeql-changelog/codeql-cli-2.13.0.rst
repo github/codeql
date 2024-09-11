@@ -73,7 +73,7 @@ New Features
 Known Issues
 ~~~~~~~~~~~~
 
-*   We recommend that customers using the CodeQL CLI in a third party CI system do not upgrade to this release, due to an issue with :code:`codeql  github upload-results`. Instead, please use CodeQL 2.12.5, or, when available, CodeQL 2.12.7 or 2.13.1. For more information, see the
+*   We recommend that customers using the CodeQL CLI in a third party CI system do not upgrade to this release, due to an issue with :code:`codeql github upload-results`. Instead, please use CodeQL 2.12.5, or, when available, CodeQL 2.12.7 or 2.13.1. For more information, see the
     "Known issues" section for CodeQL 2.12.6.
 
 Query Packs

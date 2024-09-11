@@ -8,7 +8,7 @@ import CIL
  * The average number of instructions per method,
  * below which an assembly is probably a stub.
  */
-private float stubInstructionThreshold() { result = 5.1 }
+deprecated private float stubInstructionThreshold() { result = 5.1 }
 
 cached
 private module Cached {
@@ -18,7 +18,7 @@ private module Cached {
    * Look at the average number of instructions per method.
    */
   cached
-  predicate assemblyIsStubImpl(Assembly asm) {
+  deprecated predicate assemblyIsStubImpl(Assembly asm) {
     exists(int totalInstructions, int totalImplementations |
       totalInstructions = count(Instruction i | i.getImplementation().getLocation() = asm) and
       totalImplementations =
@@ -28,7 +28,7 @@ private module Cached {
   }
 
   cached
-  predicate bestImplementation(MethodImplementation mi) {
+  deprecated predicate bestImplementation(MethodImplementation mi) {
     exists(Assembly asm |
       asm = mi.getLocation() and
       (assemblyIsStubImpl(asm) implies asm.getFile().extractedQlTest()) and
@@ -45,13 +45,13 @@ private module Cached {
 
 private import Cached
 
-predicate assemblyIsStub = assemblyIsStubImpl/1;
+deprecated predicate assemblyIsStub = assemblyIsStubImpl/1;
 
 /**
  * A method implementation that is the "best" one for a particular method,
  * if there are several potential implementations to choose between, and
  * excludes implementations that are probably from stub/reference assemblies.
  */
-class BestImplementation extends MethodImplementation {
+deprecated class BestImplementation extends MethodImplementation {
   BestImplementation() { bestImplementation(this) }
 }

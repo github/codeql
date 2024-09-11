@@ -36,7 +36,7 @@
 		<p>
 
 			For JavaScript in the browser,
-			<code>RandomSource.getRandomValues</code> provides a cryptographically
+			<code>crypto.getRandomValues</code> provides a cryptographically
 			secure pseudo-random number generator.
 
 		</p>
@@ -69,7 +69,7 @@
 
 	<references>
 		<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
-		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/RandomSource/getRandomValues">RandomSource.getRandomValues</a>.</li>
+		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues">Crypto: getRandomValues()</a>.</li>
 		<li>NodeJS: <a href="https://nodejs.org/api/crypto.html#crypto_crypto_randombytes_size_callback">crypto.randomBytes</a></li>
 	</references>
 </qhelp>

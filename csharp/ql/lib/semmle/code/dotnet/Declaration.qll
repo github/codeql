@@ -7,7 +7,7 @@ import Type
 private import semmle.code.csharp.commons.QualifiedName
 
 /** A declaration. */
-class Declaration extends NamedElement, @dotnet_declaration {
+deprecated class Declaration extends NamedElement, @dotnet_declaration {
   /** Gets the name of this declaration, without additional decoration such as `<...>`. */
   string getUndecoratedName() { none() }
 
@@ -50,7 +50,7 @@ class Declaration extends NamedElement, @dotnet_declaration {
 }
 
 /** A member of a type. */
-class Member extends Declaration, @dotnet_member {
+deprecated class Member extends Declaration, @dotnet_member {
   /** Holds if this member is declared `public`. */
   predicate isPublic() { none() }
 
@@ -102,7 +102,7 @@ class Member extends Declaration, @dotnet_member {
 }
 
 /** A property. */
-class Property extends Member, @dotnet_property {
+deprecated class Property extends Member, @dotnet_property {
   /** Gets the getter of this property, if any. */
   Callable getGetter() { none() }
 
@@ -114,7 +114,7 @@ class Property extends Member, @dotnet_property {
 }
 
 /** An event. */
-class Event extends Member, @dotnet_event {
+deprecated class Event extends Member, @dotnet_event {
   /** Gets the adder of this event, if any. */
   Callable getAdder() { none() }
 

@@ -77,6 +77,14 @@ class Generator:
                          self.projectNameIn, '--output', self.projectDirIn])
         remove_files(self.projectDirIn, '.cs')
 
+        # Clear possibly inherited Directory.Build.props and Directory.Build.targets:
+        with open(os.path.join(self.workDir, 'Directory.Build.props'), 'w') as f:
+            f.write('<Project>\n')
+            f.write('</Project>\n')
+        with open(os.path.join(self.workDir, 'Directory.Build.targets'), 'w') as f:
+            f.write('<Project>\n')
+            f.write('</Project>\n')
+
     def run_cmd(self, cmd, msg="Failed to run command"):
         run_cmd_cwd(cmd, self.workDir, msg)
 
@@ -110,7 +118,7 @@ class Generator:
         bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
         jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 
-        sdk_version = '8.0.100'
+        sdk_version = '8.0.101'
         print("\n* Creating new global.json file and setting SDK to " + sdk_version)
         self.run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', self.workDir])
 

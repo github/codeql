@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.versions.*
 import com.intellij.lang.LighterASTNode
 import com.intellij.util.diff.FlyweightCapableTreeStructure
 import org.jetbrains.kotlin.KtSourceElement
@@ -14,7 +15,7 @@ class LinesOfCodeLighterAST(val logger: FileLogger, val tw: FileTrapWriter, val 
 
     fun linesOfCodeInFile(id: Label<DbFile>): Boolean {
         val sourceElement =
-            (file.metadata as? FirMetadataSource.File)?.files?.elementAtOrNull(0)?.source
+            (file.metadata as? FirMetadataSource.File)?.firFile?.source
         if (sourceElement == null) {
             return false
         }

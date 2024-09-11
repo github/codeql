@@ -96,7 +96,7 @@ func main() {
 func fasthttpServer() {
 	ln, _ := net.Listen("tcp4", "127.0.0.1:8080")
 	requestHandler := func(requestCtx *fasthttp.RequestCtx) {
-		filePath := requestCtx.QueryArgs().Peek("filePath") // $ UntrustedFlowSource="call to Peek"
+		filePath := requestCtx.QueryArgs().Peek("filePath") // $ RemoteFlowSource="call to Peek"
 		// File System Access
 		filePath_string := string(filePath)
 		_ = requestCtx.Response.SendFile(filePath_string) // $ FileSystemAccess=filePath_string
@@ -112,67 +112,67 @@ func fasthttpServer() {
 		dstReader := &bufio.Reader{}
 		// user controlled methods as source
 		requestHeader := &fasthttp.RequestHeader{}
-		requestHeader.Header()                         // $ UntrustedFlowSource="call to Header"
-		requestHeader.TrailerHeader()                  // $ UntrustedFlowSource="call to TrailerHeader"
-		requestHeader.String()                         // $ UntrustedFlowSource="call to String"
-		requestHeader.RequestURI()                     // $ UntrustedFlowSource="call to RequestURI"
-		requestHeader.Host()                           // $ UntrustedFlowSource="call to Host"
-		requestHeader.UserAgent()                      // $ UntrustedFlowSource="call to UserAgent"
-		requestHeader.ContentEncoding()                // $ UntrustedFlowSource="call to ContentEncoding"
-		requestHeader.ContentType()                    // $ UntrustedFlowSource="call to ContentType"
-		requestHeader.Cookie("ACookie")                // $ UntrustedFlowSource="call to Cookie"
-		requestHeader.CookieBytes([]byte("ACookie"))   // $ UntrustedFlowSource="call to CookieBytes"
-		requestHeader.MultipartFormBoundary()          // $ UntrustedFlowSource="call to MultipartFormBoundary"
-		requestHeader.Peek("AHeaderName")              // $ UntrustedFlowSource="call to Peek"
-		requestHeader.PeekAll("AHeaderName")           // $ UntrustedFlowSource="call to PeekAll"
-		requestHeader.PeekBytes([]byte("AHeaderName")) // $ UntrustedFlowSource="call to PeekBytes"
-		requestHeader.PeekKeys()                       // $ UntrustedFlowSource="call to PeekKeys"
-		requestHeader.PeekTrailerKeys()                // $ UntrustedFlowSource="call to PeekTrailerKeys"
-		requestHeader.Referer()                        // $ UntrustedFlowSource="call to Referer"
-		requestHeader.RawHeaders()                     // $ UntrustedFlowSource="call to RawHeaders"
+		requestHeader.Header()                         // $ RemoteFlowSource="call to Header"
+		requestHeader.TrailerHeader()                  // $ RemoteFlowSource="call to TrailerHeader"
+		requestHeader.String()                         // $ RemoteFlowSource="call to String"
+		requestHeader.RequestURI()                     // $ RemoteFlowSource="call to RequestURI"
+		requestHeader.Host()                           // $ RemoteFlowSource="call to Host"
+		requestHeader.UserAgent()                      // $ RemoteFlowSource="call to UserAgent"
+		requestHeader.ContentEncoding()                // $ RemoteFlowSource="call to ContentEncoding"
+		requestHeader.ContentType()                    // $ RemoteFlowSource="call to ContentType"
+		requestHeader.Cookie("ACookie")                // $ RemoteFlowSource="call to Cookie"
+		requestHeader.CookieBytes([]byte("ACookie"))   // $ RemoteFlowSource="call to CookieBytes"
+		requestHeader.MultipartFormBoundary()          // $ RemoteFlowSource="call to MultipartFormBoundary"
+		requestHeader.Peek("AHeaderName")              // $ RemoteFlowSource="call to Peek"
+		requestHeader.PeekAll("AHeaderName")           // $ RemoteFlowSource="call to PeekAll"
+		requestHeader.PeekBytes([]byte("AHeaderName")) // $ RemoteFlowSource="call to PeekBytes"
+		requestHeader.PeekKeys()                       // $ RemoteFlowSource="call to PeekKeys"
+		requestHeader.PeekTrailerKeys()                // $ RemoteFlowSource="call to PeekTrailerKeys"
+		requestHeader.Referer()                        // $ RemoteFlowSource="call to Referer"
+		requestHeader.RawHeaders()                     // $ RemoteFlowSource="call to RawHeaders"
 		// multipart.Form is already implemented
 		// requestCtx.MultipartForm()
-		requestCtx.URI().Path()            // $ UntrustedFlowSource="call to Path"
-		requestCtx.URI().PathOriginal()    // $ UntrustedFlowSource="call to PathOriginal"
-		requestCtx.URI().FullURI()         // $ UntrustedFlowSource="call to FullURI"
-		requestCtx.URI().LastPathSegment() // $ UntrustedFlowSource="call to LastPathSegment"
-		requestCtx.URI().QueryString()     // $ UntrustedFlowSource="call to QueryString"
-		requestCtx.URI().String()          // $ UntrustedFlowSource="call to String"
+		requestCtx.URI().Path()            // $ RemoteFlowSource="call to Path"
+		requestCtx.URI().PathOriginal()    // $ RemoteFlowSource="call to PathOriginal"
+		requestCtx.URI().FullURI()         // $ RemoteFlowSource="call to FullURI"
+		requestCtx.URI().LastPathSegment() // $ RemoteFlowSource="call to LastPathSegment"
+		requestCtx.URI().QueryString()     // $ RemoteFlowSource="call to QueryString"
+		requestCtx.URI().String()          // $ RemoteFlowSource="call to String"
 
 		//or requestCtx.PostArgs()
-		requestCtx.URI().QueryArgs().Peek("arg1")                   // $ UntrustedFlowSource="call to Peek"
-		requestCtx.URI().QueryArgs().PeekBytes([]byte("arg1"))      // $ UntrustedFlowSource="call to PeekBytes"
-		requestCtx.URI().QueryArgs().PeekMulti("arg1")              // $ UntrustedFlowSource="call to PeekMulti"
-		requestCtx.URI().QueryArgs().PeekMultiBytes([]byte("arg1")) // $ UntrustedFlowSource="call to PeekMultiBytes"
-		requestCtx.URI().QueryArgs().QueryString()                  // $ UntrustedFlowSource="call to QueryString"
-		requestCtx.URI().QueryArgs().String()                       // $ UntrustedFlowSource="call to String"
-		requestCtx.String()                                         // $ UntrustedFlowSource="call to String"
+		requestCtx.URI().QueryArgs().Peek("arg1")                   // $ RemoteFlowSource="call to Peek"
+		requestCtx.URI().QueryArgs().PeekBytes([]byte("arg1"))      // $ RemoteFlowSource="call to PeekBytes"
+		requestCtx.URI().QueryArgs().PeekMulti("arg1")              // $ RemoteFlowSource="call to PeekMulti"
+		requestCtx.URI().QueryArgs().PeekMultiBytes([]byte("arg1")) // $ RemoteFlowSource="call to PeekMultiBytes"
+		requestCtx.URI().QueryArgs().QueryString()                  // $ RemoteFlowSource="call to QueryString"
+		requestCtx.URI().QueryArgs().String()                       // $ RemoteFlowSource="call to String"
+		requestCtx.String()                                         // $ RemoteFlowSource="call to String"
 
-		requestCtx.Path() // $ UntrustedFlowSource="call to Path"
+		requestCtx.Path() // $ RemoteFlowSource="call to Path"
 		// multipart.Form is already implemented
 		// requestCtx.FormFile("FileName")
 		// requestCtx.FormValue("ValueName")
-		requestCtx.Referer()           // $ UntrustedFlowSource="call to Referer"
-		requestCtx.PostBody()          // $ UntrustedFlowSource="call to PostBody"
-		requestCtx.RequestBodyStream() // $ UntrustedFlowSource="call to RequestBodyStream"
-		requestCtx.RequestURI()        // $ UntrustedFlowSource="call to RequestURI"
-		requestCtx.UserAgent()         // $ UntrustedFlowSource="call to UserAgent"
-		requestCtx.Host()              // $ UntrustedFlowSource="call to Host"
+		requestCtx.Referer()           // $ RemoteFlowSource="call to Referer"
+		requestCtx.PostBody()          // $ RemoteFlowSource="call to PostBody"
+		requestCtx.RequestBodyStream() // $ RemoteFlowSource="call to RequestBodyStream"
+		requestCtx.RequestURI()        // $ RemoteFlowSource="call to RequestURI"
+		requestCtx.UserAgent()         // $ RemoteFlowSource="call to UserAgent"
+		requestCtx.Host()              // $ RemoteFlowSource="call to Host"
 
-		requestCtx.Request.Host()                         // $ UntrustedFlowSource="call to Host"
-		requestCtx.Request.Body()                         // $ UntrustedFlowSource="call to Body"
-		requestCtx.Request.RequestURI()                   // $ UntrustedFlowSource="call to RequestURI"
-		body1, _ := requestCtx.Request.BodyGunzip()       // $ UntrustedFlowSource="... := ...[0]"
-		body2, _ := requestCtx.Request.BodyInflate()      // $ UntrustedFlowSource="... := ...[0]"
-		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ UntrustedFlowSource="... := ...[0]"
-		body4, _ := requestCtx.Request.BodyUncompressed() // $ UntrustedFlowSource="... := ...[0]"
+		requestCtx.Request.Host()                         // $ RemoteFlowSource="call to Host"
+		requestCtx.Request.Body()                         // $ RemoteFlowSource="call to Body"
+		requestCtx.Request.RequestURI()                   // $ RemoteFlowSource="call to RequestURI"
+		body1, _ := requestCtx.Request.BodyGunzip()       // $ RemoteFlowSource="... := ...[0]"
+		body2, _ := requestCtx.Request.BodyInflate()      // $ RemoteFlowSource="... := ...[0]"
+		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ RemoteFlowSource="... := ...[0]"
+		body4, _ := requestCtx.Request.BodyUncompressed() // $ RemoteFlowSource="... := ...[0]"
 		fmt.Println(body1, body2, body3, body4)
-		requestCtx.Request.BodyStream() // $ UntrustedFlowSource="call to BodyStream"
+		requestCtx.Request.BodyStream() // $ RemoteFlowSource="call to BodyStream"
 
-		requestCtx.Request.ReadBody(dstReader, 100, 1000)               // $ UntrustedFlowSource="dstReader"
-		requestCtx.Request.ReadLimitBody(dstReader, 100)                // $ UntrustedFlowSource="dstReader"
-		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true) // $ UntrustedFlowSource="dstReader"
-		requestCtx.Request.ContinueReadBody(dstReader, 100)             // $ UntrustedFlowSource="dstReader"
+		requestCtx.Request.ReadBody(&bufio.Reader{}, 100, 1000)               // $ RemoteFlowSource="&..."
+		requestCtx.Request.ReadLimitBody(&bufio.Reader{}, 100)                // $ RemoteFlowSource="&..."
+		requestCtx.Request.ContinueReadBodyStream(&bufio.Reader{}, 100, true) // $ RemoteFlowSource="&..."
+		requestCtx.Request.ContinueReadBody(&bufio.Reader{}, 100)             // $ RemoteFlowSource="&..."
 
 		// Response methods
 		// Xss Sinks Related method

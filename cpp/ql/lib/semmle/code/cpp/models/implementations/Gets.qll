@@ -27,6 +27,8 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
     output.isReturnValue()
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(2) }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(2) and
     output.isParameterDeref(0)
@@ -109,4 +111,22 @@ private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunctio
   override predicate hasArrayWithUnknownSize(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+}
+
+/**
+ * A model for `getc` and similar functions that are flow sources.
+ */
+private class GetcSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";;false;getc;;;ReturnValue;remote", ";;false;getwc;;;ReturnValue;remote",
+        ";;false;_getc_nolock;;;ReturnValue;remote", ";;false;_getwc_nolock;;;ReturnValue;remote",
+        ";;false;getch;;;ReturnValue;local", ";;false;_getch;;;ReturnValue;local",
+        ";;false;_getwch;;;ReturnValue;local", ";;false;_getch_nolock;;;ReturnValue;local",
+        ";;false;_getwch_nolock;;;ReturnValue;local", ";;false;getchar;;;ReturnValue;local",
+        ";;false;getwchar;;;ReturnValue;local", ";;false;_getchar_nolock;;;ReturnValue;local",
+        ";;false;_getwchar_nolock;;;ReturnValue;local",
+      ]
+  }
 }

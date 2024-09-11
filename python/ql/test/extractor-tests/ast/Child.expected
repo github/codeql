@@ -1,0 +1,364 @@
+| test.py:0:0 | Module test | test.py:5:1 | ClassDef |
+| test.py:0:0 | Module test | test.py:11:1 | FunctionDef |
+| test.py:0:0 | Module test | test.py:14:1 | FunctionDef |
+| test.py:0:0 | Module test | test.py:17:1 | FunctionDef |
+| test.py:0:0 | Module test | test.py:51:1 | FunctionDef |
+| test.py:0:0 | Module test | test.py:96:1 | ClassDef |
+| test.py:0:0 | Module test | test.py:100:1 | AnnAssign |
+| test.py:0:0 | Module test | test.py:101:1 | AnnAssign |
+| test.py:0:0 | Module test | test.py:102:1 | AnnAssign |
+| test.py:0:0 | Module test | test.py:103:1 | AnnAssign |
+| test.py:0:0 | Module test | test.py:107:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:108:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:111:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:115:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:116:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:119:1 | FunctionDef |
+| test.py:0:0 | Module test | test.py:141:1 | ExprStmt |
+| test.py:0:0 | Module test | test.py:142:1 | ExprStmt |
+| test.py:2:2 | deco1() | test.py:2:2 | deco1 |
+| test.py:2:2 | deco1() | test.py:3:2 | deco2()() |
+| test.py:3:2 | deco2() | test.py:3:2 | deco2 |
+| test.py:3:2 | deco2()() | test.py:3:2 | deco2() |
+| test.py:3:2 | deco2()() | test.py:4:2 | Attribute() |
+| test.py:4:2 | Attribute | test.py:4:2 | Attribute |
+| test.py:4:2 | Attribute | test.py:4:2 | deco3 |
+| test.py:4:2 | Attribute() | test.py:4:2 | Attribute |
+| test.py:4:2 | Attribute() | test.py:5:1 | ClassExpr |
+| test.py:5:1 | Class C | test.py:7:5 | FunctionDef |
+| test.py:5:1 | ClassDef | test.py:2:2 | deco1() |
+| test.py:5:1 | ClassDef | test.py:5:7 | C |
+| test.py:5:1 | ClassExpr | test.py:5:1 | Class C |
+| test.py:5:1 | ClassExpr | test.py:5:9 | Base |
+| test.py:7:5 | Function __init__ | test.py:7:18 | self |
+| test.py:7:5 | Function __init__ | test.py:8:9 | Pass |
+| test.py:7:5 | FunctionDef | test.py:7:5 | FunctionExpr |
+| test.py:7:5 | FunctionDef | test.py:7:9 | __init__ |
+| test.py:7:5 | FunctionExpr | test.py:7:5 | Function __init__ |
+| test.py:10:2 | Attribute | test.py:10:2 | deco4 |
+| test.py:10:2 | Attribute() | test.py:10:2 | Attribute |
+| test.py:10:2 | Attribute()() | test.py:10:2 | Attribute() |
+| test.py:10:2 | Attribute()() | test.py:11:1 | FunctionExpr |
+| test.py:11:1 | Function f | test.py:12:5 | Pass |
+| test.py:11:1 | FunctionDef | test.py:10:2 | Attribute()() |
+| test.py:11:1 | FunctionDef | test.py:11:5 | f |
+| test.py:11:1 | FunctionExpr | test.py:11:1 | Function f |
+| test.py:14:1 | Function f | test.py:14:7 | pos0 |
+| test.py:14:1 | Function f | test.py:14:13 | pos1 |
+| test.py:14:1 | Function f | test.py:14:20 | args |
+| test.py:14:1 | Function f | test.py:14:28 | kwargs |
+| test.py:14:1 | Function f | test.py:15:5 | Pass |
+| test.py:14:1 | FunctionDef | test.py:14:1 | FunctionExpr |
+| test.py:14:1 | FunctionDef | test.py:14:5 | f |
+| test.py:14:1 | FunctionExpr | test.py:14:1 | Function f |
+| test.py:17:1 | Function simple_stmts | test.py:18:5 | Pass |
+| test.py:17:1 | Function simple_stmts | test.py:19:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:19:13 | Delete |
+| test.py:17:1 | Function simple_stmts | test.py:19:20 | Pass |
+| test.py:17:1 | Function simple_stmts | test.py:20:5 | If |
+| test.py:17:1 | Function simple_stmts | test.py:24:5 | AssignStmt |
+| test.py:17:1 | Function simple_stmts | test.py:44:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:45:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:46:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:47:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:48:5 | ExprStmt |
+| test.py:17:1 | Function simple_stmts | test.py:49:5 | ExprStmt |
+| test.py:17:1 | FunctionDef | test.py:17:1 | FunctionExpr |
+| test.py:17:1 | FunctionDef | test.py:17:5 | simple_stmts |
+| test.py:17:1 | FunctionExpr | test.py:17:1 | Function simple_stmts |
+| test.py:19:5 | ExprStmt | test.py:19:5 | foo() |
+| test.py:19:5 | foo() | test.py:19:5 | foo |
+| test.py:19:13 | Delete | test.py:19:17 | x |
+| test.py:20:5 | If | test.py:20:8 | thing |
+| test.py:20:5 | If | test.py:21:9 | For |
+| test.py:21:9 | For | test.py:21:13 | a |
+| test.py:21:9 | For | test.py:21:18 | b |
+| test.py:21:9 | For | test.py:22:13 | Pass |
+| test.py:24:5 | AssignStmt | test.py:24:5 | tmp |
+| test.py:24:5 | AssignStmt | test.py:25:9 | Yield |
+| test.py:25:9 | Yield | test.py:25:15 | Tuple |
+| test.py:25:15 | Tuple | test.py:25:15 | IntegerLiteral |
+| test.py:25:15 | Tuple | test.py:26:9 | name |
+| test.py:25:15 | Tuple | test.py:27:9 | Attribute |
+| test.py:25:15 | Tuple | test.py:28:9 | BinaryExpr |
+| test.py:25:15 | Tuple | test.py:29:9 | BinaryExpr |
+| test.py:25:15 | Tuple | test.py:30:9 | BinaryExpr |
+| test.py:25:15 | Tuple | test.py:31:9 | Attribute |
+| test.py:25:15 | Tuple | test.py:32:9 | Subscript |
+| test.py:25:15 | Tuple | test.py:33:9 | Lambda |
+| test.py:25:15 | Tuple | test.py:34:9 | BoolExpr |
+| test.py:25:15 | Tuple | test.py:35:9 | Compare |
+| test.py:25:15 | Tuple | test.py:36:9 | DictComp |
+| test.py:25:15 | Tuple | test.py:37:9 | SetComp |
+| test.py:25:15 | Tuple | test.py:38:9 | ListComp |
+| test.py:25:15 | Tuple | test.py:39:9 | List |
+| test.py:25:15 | Tuple | test.py:40:9 | Dict |
+| test.py:25:15 | Tuple | test.py:41:9 | Tuple |
+| test.py:25:15 | Tuple | test.py:42:10 | Tuple |
+| test.py:27:9 | Attribute | test.py:27:9 | attr |
+| test.py:28:9 | BinaryExpr | test.py:28:9 | a |
+| test.py:28:9 | BinaryExpr | test.py:28:13 | b |
+| test.py:29:9 | BinaryExpr | test.py:29:9 | IntegerLiteral |
+| test.py:29:9 | BinaryExpr | test.py:29:13 | IntegerLiteral |
+| test.py:30:9 | BinaryExpr | test.py:30:9 | FloatLiteral |
+| test.py:30:9 | BinaryExpr | test.py:30:15 | IntegerLiteral |
+| test.py:31:9 | Attribute | test.py:31:9 | Attribute |
+| test.py:31:9 | Attribute | test.py:31:9 | a |
+| test.py:32:9 | Attribute | test.py:32:9 | a() |
+| test.py:32:9 | Subscript | test.py:32:9 | Attribute |
+| test.py:32:9 | Subscript | test.py:32:15 | c |
+| test.py:32:9 | a() | test.py:32:9 | a |
+| test.py:33:9 | Function lambda | test.py:33:16 | x |
+| test.py:33:9 | Function lambda | test.py:33:19 | Return |
+| test.py:33:9 | Lambda | test.py:33:9 | Function lambda |
+| test.py:33:19 | BinaryExpr | test.py:33:19 | x |
+| test.py:33:19 | BinaryExpr | test.py:33:21 | IntegerLiteral |
+| test.py:33:19 | Return | test.py:33:19 | BinaryExpr |
+| test.py:34:9 | BoolExpr | test.py:34:9 | p |
+| test.py:34:9 | BoolExpr | test.py:34:14 | BoolExpr |
+| test.py:34:14 | BoolExpr | test.py:34:14 | q |
+| test.py:34:14 | BoolExpr | test.py:34:20 | BinaryExpr |
+| test.py:34:20 | BinaryExpr | test.py:34:20 | r |
+| test.py:34:20 | BinaryExpr | test.py:34:24 | s |
+| test.py:35:9 | Compare | test.py:35:9 | a |
+| test.py:35:9 | Compare | test.py:35:13 | b |
+| test.py:35:9 | Compare | test.py:35:17 | c |
+| test.py:35:9 | Compare | test.py:35:22 | IntegerLiteral |
+| test.py:36:9 | DictComp | test.py:36:9 | Function dictcomp |
+| test.py:36:9 | DictComp | test.py:36:26 | x |
+| test.py:36:9 | For | test.py:36:9 | .0 |
+| test.py:36:9 | For | test.py:36:9 | For |
+| test.py:36:9 | For | test.py:36:11 | ExprStmt |
+| test.py:36:9 | For | test.py:36:21 | z |
+| test.py:36:9 | For | test.py:36:32 | y |
+| test.py:36:9 | For | test.py:36:37 | z |
+| test.py:36:9 | Function dictcomp | test.py:36:9 | .0 |
+| test.py:36:9 | Function dictcomp | test.py:36:9 | For |
+| test.py:36:11 | ExprStmt | test.py:36:11 | Yield |
+| test.py:36:11 | Tuple | test.py:36:11 | IntegerLiteral |
+| test.py:36:11 | Tuple | test.py:36:15 | y |
+| test.py:36:11 | Yield | test.py:36:11 | Tuple |
+| test.py:37:9 | For | test.py:37:9 | .0 |
+| test.py:37:9 | For | test.py:37:9 | For |
+| test.py:37:9 | For | test.py:37:12 | ExprStmt |
+| test.py:37:9 | For | test.py:37:22 | z |
+| test.py:37:9 | For | test.py:37:33 | y |
+| test.py:37:9 | For | test.py:37:38 | z |
+| test.py:37:9 | Function setcomp | test.py:37:9 | .0 |
+| test.py:37:9 | Function setcomp | test.py:37:9 | For |
+| test.py:37:9 | SetComp | test.py:37:9 | Function setcomp |
+| test.py:37:9 | SetComp | test.py:37:27 | x |
+| test.py:37:12 | ExprStmt | test.py:37:12 | Yield |
+| test.py:37:12 | Tuple | test.py:37:12 | IntegerLiteral |
+| test.py:37:12 | Tuple | test.py:37:15 | y |
+| test.py:37:12 | Yield | test.py:37:12 | Tuple |
+| test.py:38:9 | For | test.py:38:9 | .0 |
+| test.py:38:9 | For | test.py:38:11 | ExprStmt |
+| test.py:38:9 | For | test.py:38:20 | y |
+| test.py:38:9 | Function listcomp | test.py:38:9 | .0 |
+| test.py:38:9 | Function listcomp | test.py:38:9 | For |
+| test.py:38:9 | ListComp | test.py:38:9 | Function listcomp |
+| test.py:38:9 | ListComp | test.py:38:25 | z |
+| test.py:38:11 | BinaryExpr | test.py:38:11 | y |
+| test.py:38:11 | BinaryExpr | test.py:38:14 | IntegerLiteral |
+| test.py:38:11 | ExprStmt | test.py:38:11 | Yield |
+| test.py:38:11 | Yield | test.py:38:11 | BinaryExpr |
+| test.py:42:10 | Tuple | test.py:42:10 | IntegerLiteral |
+| test.py:44:5 | ExprStmt | test.py:44:5 | foo() |
+| test.py:44:5 | foo() | test.py:44:5 | foo |
+| test.py:44:5 | foo() | test.py:44:9 | IntegerLiteral |
+| test.py:45:5 | ExprStmt | test.py:45:5 | foo() |
+| test.py:45:5 | foo() | test.py:45:5 | foo |
+| test.py:45:5 | foo() | test.py:45:9 | Keyword |
+| test.py:45:9 | Keyword | test.py:45:11 | IntegerLiteral |
+| test.py:46:5 | ExprStmt | test.py:46:5 | foo() |
+| test.py:46:5 | foo() | test.py:46:5 | foo |
+| test.py:46:5 | foo() | test.py:46:9 | IntegerLiteral |
+| test.py:46:5 | foo() | test.py:46:11 | IntegerLiteral |
+| test.py:46:5 | foo() | test.py:46:13 | Starred |
+| test.py:46:13 | Starred | test.py:46:14 | t |
+| test.py:47:5 | ExprStmt | test.py:47:5 | foo() |
+| test.py:47:5 | foo() | test.py:47:5 | foo |
+| test.py:47:5 | foo() | test.py:47:9 | IntegerLiteral |
+| test.py:47:5 | foo() | test.py:47:11 | Keyword |
+| test.py:47:5 | foo() | test.py:47:15 | Starred |
+| test.py:47:11 | Keyword | test.py:47:13 | IntegerLiteral |
+| test.py:47:15 | Starred | test.py:47:16 | t |
+| test.py:48:5 | ExprStmt | test.py:48:5 | foo() |
+| test.py:48:5 | foo() | test.py:48:5 | foo |
+| test.py:48:5 | foo() | test.py:48:9 | IntegerLiteral |
+| test.py:48:5 | foo() | test.py:48:11 | Keyword |
+| test.py:48:5 | foo() | test.py:48:15 | Starred |
+| test.py:48:5 | foo() | test.py:48:18 | DictUnpacking |
+| test.py:48:11 | Keyword | test.py:48:13 | IntegerLiteral |
+| test.py:48:15 | Starred | test.py:48:16 | t |
+| test.py:48:18 | DictUnpacking | test.py:48:20 | d |
+| test.py:49:5 | ExprStmt | test.py:49:5 | f() |
+| test.py:49:5 | f() | test.py:49:5 | f |
+| test.py:49:5 | f() | test.py:49:7 | DictUnpacking |
+| test.py:49:7 | DictUnpacking | test.py:49:9 | d |
+| test.py:51:1 | Function compound_stmts | test.py:52:5 | If |
+| test.py:51:1 | Function compound_stmts | test.py:56:5 | While |
+| test.py:51:1 | Function compound_stmts | test.py:61:5 | For |
+| test.py:51:1 | Function compound_stmts | test.py:63:5 | With |
+| test.py:51:1 | Function compound_stmts | test.py:65:5 | Try |
+| test.py:51:1 | Function compound_stmts | test.py:69:5 | Try |
+| test.py:51:1 | Function compound_stmts | test.py:73:5 | Try |
+| test.py:51:1 | Function compound_stmts | test.py:77:5 | Try |
+| test.py:51:1 | Function compound_stmts | test.py:81:5 | Try |
+| test.py:51:1 | Function compound_stmts | test.py:87:5 | Try |
+| test.py:51:1 | FunctionDef | test.py:51:1 | FunctionExpr |
+| test.py:51:1 | FunctionDef | test.py:51:5 | compound_stmts |
+| test.py:51:1 | FunctionExpr | test.py:51:1 | Function compound_stmts |
+| test.py:52:5 | If | test.py:52:8 | cond |
+| test.py:52:5 | If | test.py:53:9 | Return |
+| test.py:52:5 | If | test.py:55:9 | Raise |
+| test.py:53:9 | Return | test.py:53:16 | x |
+| test.py:55:9 | Raise | test.py:55:15 | y |
+| test.py:56:5 | While | test.py:56:11 | True |
+| test.py:56:5 | While | test.py:57:9 | If |
+| test.py:57:9 | If | test.py:57:12 | cond |
+| test.py:57:9 | If | test.py:58:13 | Break |
+| test.py:57:9 | If | test.py:60:13 | Continue |
+| test.py:61:5 | For | test.py:61:9 | x |
+| test.py:61:5 | For | test.py:61:14 | y |
+| test.py:61:5 | For | test.py:62:9 | Pass |
+| test.py:63:5 | With | test.py:63:10 | a |
+| test.py:63:5 | With | test.py:63:15 | b |
+| test.py:63:5 | With | test.py:63:18 | With |
+| test.py:63:18 | With | test.py:63:18 | c |
+| test.py:63:18 | With | test.py:63:23 | d |
+| test.py:63:18 | With | test.py:64:9 | ExprStmt |
+| test.py:64:9 | ExprStmt | test.py:64:9 | body |
+| test.py:65:5 | Try | test.py:66:9 | ExprStmt |
+| test.py:65:5 | Try | test.py:67:5 | ExceptStmt |
+| test.py:66:9 | ExprStmt | test.py:66:9 | t1 |
+| test.py:67:5 | ExceptStmt | test.py:68:9 | ExprStmt |
+| test.py:68:9 | ExprStmt | test.py:68:9 | e1 |
+| test.py:69:5 | Try | test.py:70:9 | ExprStmt |
+| test.py:69:5 | Try | test.py:71:5 | ExceptStmt |
+| test.py:70:9 | ExprStmt | test.py:70:9 | t2 |
+| test.py:71:5 | ExceptStmt | test.py:71:12 | Exception |
+| test.py:71:5 | ExceptStmt | test.py:72:9 | ExprStmt |
+| test.py:72:9 | ExprStmt | test.py:72:9 | e2 |
+| test.py:73:5 | Try | test.py:74:9 | ExprStmt |
+| test.py:73:5 | Try | test.py:75:5 | ExceptStmt |
+| test.py:74:9 | ExprStmt | test.py:74:9 | t3 |
+| test.py:75:5 | ExceptStmt | test.py:75:12 | Exception |
+| test.py:75:5 | ExceptStmt | test.py:75:25 | ex |
+| test.py:75:5 | ExceptStmt | test.py:76:9 | ExprStmt |
+| test.py:76:9 | ExprStmt | test.py:76:9 | e3 |
+| test.py:77:5 | Try | test.py:78:9 | ExprStmt |
+| test.py:77:5 | Try | test.py:80:9 | ExprStmt |
+| test.py:78:9 | ExprStmt | test.py:78:9 | t4 |
+| test.py:80:9 | ExprStmt | test.py:80:9 | f4 |
+| test.py:81:5 | Try | test.py:82:9 | ExprStmt |
+| test.py:81:5 | Try | test.py:83:5 | ExceptStmt |
+| test.py:81:5 | Try | test.py:86:9 | ExprStmt |
+| test.py:82:9 | ExprStmt | test.py:82:9 | t5 |
+| test.py:83:5 | ExceptStmt | test.py:83:12 | Exception |
+| test.py:83:5 | ExceptStmt | test.py:83:25 | ex |
+| test.py:83:5 | ExceptStmt | test.py:84:9 | ExprStmt |
+| test.py:84:9 | ExprStmt | test.py:84:9 | e5 |
+| test.py:86:9 | ExprStmt | test.py:86:9 | f5 |
+| test.py:87:5 | Try | test.py:88:9 | ExprStmt |
+| test.py:87:5 | Try | test.py:90:9 | Try |
+| test.py:88:9 | ExprStmt | test.py:88:9 | t6 |
+| test.py:90:9 | Try | test.py:91:13 | ExprStmt |
+| test.py:90:9 | Try | test.py:93:13 | ExprStmt |
+| test.py:91:13 | ExprStmt | test.py:91:13 | t7 |
+| test.py:93:13 | ExprStmt | test.py:93:13 | f7 |
+| test.py:96:1 | Class WhyUseParens | test.py:97:5 | Pass |
+| test.py:96:1 | ClassDef | test.py:96:1 | ClassExpr |
+| test.py:96:1 | ClassDef | test.py:96:7 | WhyUseParens |
+| test.py:96:1 | ClassExpr | test.py:96:1 | Class WhyUseParens |
+| test.py:100:1 | AnnAssign | test.py:100:1 | x |
+| test.py:100:1 | AnnAssign | test.py:100:4 | IntegerLiteral |
+| test.py:101:1 | AnnAssign | test.py:101:1 | x |
+| test.py:101:1 | AnnAssign | test.py:101:4 | y |
+| test.py:102:1 | AnnAssign | test.py:102:1 | x |
+| test.py:102:1 | AnnAssign | test.py:102:4 | Dict |
+| test.py:102:4 | Dict | test.py:102:5 | KeyValuePair |
+| test.py:102:5 | KeyValuePair | test.py:102:5 | Subscript |
+| test.py:102:5 | KeyValuePair | test.py:102:13 | BinaryExpr |
+| test.py:102:5 | Subscript | test.py:102:5 | Subscript |
+| test.py:102:5 | Subscript | test.py:102:5 | y |
+| test.py:102:5 | Subscript | test.py:102:7 | a |
+| test.py:102:5 | Subscript | test.py:102:10 | b |
+| test.py:102:13 | BinaryExpr | test.py:102:13 | z |
+| test.py:102:13 | BinaryExpr | test.py:102:15 | q |
+| test.py:103:1 | AnnAssign | test.py:103:1 | x |
+| test.py:103:1 | AnnAssign | test.py:103:4 | f() |
+| test.py:103:4 | f() | test.py:103:4 | f |
+| test.py:103:4 | f() | test.py:103:6 | IntegerLiteral |
+| test.py:103:4 | f() | test.py:103:9 | Keyword |
+| test.py:103:4 | f() | test.py:103:14 | Starred |
+| test.py:103:9 | Keyword | test.py:103:11 | IntegerLiteral |
+| test.py:103:14 | Starred | test.py:103:15 | t |
+| test.py:107:1 | ExprStmt | test.py:107:1 | Fstring |
+| test.py:107:1 | Fstring | test.py:107:1 | StringLiteral |
+| test.py:107:1 | Fstring | test.py:107:12 | value |
+| test.py:107:1 | Fstring | test.py:107:22 | StringLiteral |
+| test.py:108:1 | ExprStmt | test.py:108:1 | Fstring |
+| test.py:108:1 | Fstring | test.py:108:1 | StringLiteral |
+| test.py:108:1 | Fstring | test.py:108:12 | value |
+| test.py:108:1 | Fstring | test.py:108:19 | width |
+| test.py:108:1 | Fstring | test.py:108:27 | precision |
+| test.py:108:1 | Fstring | test.py:108:37 | StringLiteral |
+| test.py:111:1 | ExprStmt | test.py:111:1 | Fstring |
+| test.py:111:1 | Fstring | test.py:111:1 | StringLiteral |
+| test.py:111:1 | Fstring | test.py:111:8 | IfExp |
+| test.py:111:1 | Fstring | test.py:111:40 | StringLiteral |
+| test.py:111:1 | Fstring | test.py:111:58 | cls |
+| test.py:111:1 | Fstring | test.py:111:61 | StringLiteral |
+| test.py:111:8 | IfExp | test.py:111:8 | StringLiteral |
+| test.py:111:8 | IfExp | test.py:111:18 | Compare |
+| test.py:111:8 | IfExp | test.py:111:35 | StringLiteral |
+| test.py:111:18 | Compare | test.py:111:18 | alen |
+| test.py:111:18 | Compare | test.py:111:25 | elen |
+| test.py:115:1 | ExprStmt | test.py:115:1 | Repr |
+| test.py:115:1 | Repr | test.py:115:2 | backticks |
+| test.py:116:1 | ExprStmt | test.py:116:1 | Repr |
+| test.py:116:1 | Repr | test.py:116:2 | Tuple |
+| test.py:116:2 | Tuple | test.py:116:2 | why |
+| test.py:116:2 | Tuple | test.py:116:7 | are |
+| test.py:116:2 | Tuple | test.py:116:12 | we |
+| test.py:116:2 | Tuple | test.py:116:16 | still |
+| test.py:116:2 | Tuple | test.py:116:23 | supporting |
+| test.py:116:2 | Tuple | test.py:116:35 | Compare |
+| test.py:116:35 | Compare | test.py:116:35 | this |
+| test.py:116:35 | Compare | test.py:116:43 | IntegerLiteral |
+| test.py:119:1 | Function numeric_literals | test.py:121:5 | AssignStmt |
+| test.py:119:1 | FunctionDef | test.py:119:1 | FunctionExpr |
+| test.py:119:1 | FunctionDef | test.py:119:5 | numeric_literals |
+| test.py:119:1 | FunctionExpr | test.py:119:1 | Function numeric_literals |
+| test.py:121:5 | AssignStmt | test.py:121:5 | tmp |
+| test.py:121:5 | AssignStmt | test.py:122:9 | Tuple |
+| test.py:122:9 | Tuple | test.py:122:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:123:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:124:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:125:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:126:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:127:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:128:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:129:9 | FloatLiteral |
+| test.py:122:9 | Tuple | test.py:130:9 | FloatLiteral |
+| test.py:122:9 | Tuple | test.py:131:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:132:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:133:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:134:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:135:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:136:9 | IntegerLiteral |
+| test.py:122:9 | Tuple | test.py:137:9 | ImaginaryLiteral |
+| test.py:141:1 | ExprStmt | test.py:141:1 | print() |
+| test.py:141:1 | print() | test.py:141:1 | print |
+| test.py:141:1 | print() | test.py:141:7 | Fstring |
+| test.py:141:7 | Fstring | test.py:141:7 | StringLiteral |
+| test.py:141:7 | Fstring | test.py:141:10 | StringLiteral |
+| test.py:141:7 | Fstring | test.py:141:15 | StringLiteral |
+| test.py:142:1 | ExprStmt | test.py:142:1 | print() |
+| test.py:142:1 | print() | test.py:142:1 | print |
+| test.py:142:1 | print() | test.py:142:7 | Fstring |
+| test.py:142:7 | Fstring | test.py:142:7 | StringLiteral |
+| test.py:142:7 | Fstring | test.py:142:10 | StringLiteral |
+| test.py:142:7 | Fstring | test.py:142:15 | StringLiteral |

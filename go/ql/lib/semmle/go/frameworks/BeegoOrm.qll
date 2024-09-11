@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/astaxie/beego/orm` subpackage.
  */
 
@@ -7,7 +7,7 @@ import go
 private import semmle.go.security.StoredXssCustomizations
 
 /**
- * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the [Beego ORM](https://github.com/astaxie/beego/orm) subpackage.
  */
 module BeegoOrm {
@@ -18,11 +18,13 @@ module BeegoOrm {
     DbSink() {
       exists(Method m, string methodName, int argNum |
         m.hasQualifiedName(packagePath(), "DB", methodName) and
-        methodName in [
-            "Exec", "ExecContext", "Prepare", "PrepareContext", "Query", "QueryContext", "QueryRow",
-            "QueryRowContext"
-          ] and
-        if methodName.matches("%Context") then argNum = 1 else argNum = 0
+        (
+          methodName = ["Exec", "Prepare", "Query", "QueryRow"] and
+          argNum = 0
+          or
+          methodName = ["ExecContext", "PrepareContext", "QueryContext", "QueryRowContext"] and
+          argNum = 1
+        )
       |
         this = m.getACall().getArgument(argNum)
       )

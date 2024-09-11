@@ -59,11 +59,27 @@ private predicate isInternal(CompilationUnit cu) {
   cu.getPackage().getName().matches("%internal%")
 }
 
+/** A method relating to lambda flow. */
+private class LambdaFlowMethod extends Method {
+  LambdaFlowMethod() {
+    this.hasQualifiedName("java.lang", "Runnable", "run") or
+    this.hasQualifiedName("java.util", "Comparator",
+      ["comparing", "comparingDouble", "comparingInt", "comparingLong"]) or
+    this.hasQualifiedName("java.util.function", "BiConsumer", "accept") or
+    this.hasQualifiedName("java.util.function", "BiFunction", "apply") or
+    this.hasQualifiedName("java.util.function", "Consumer", "accept") or
+    this.hasQualifiedName("java.util.function", "Function", "apply") or
+    this.hasQualifiedName("java.util.function", "Supplier", "get")
+  }
+}
+
 /** Holds if the given callable is not worth modeling. */
 predicate isUninterestingForModels(Callable c) {
   isInTestFile(c.getCompilationUnit().getFile()) or
   isInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
+  c instanceof ToStringMethod or
+  c instanceof LambdaFlowMethod or
   c instanceof StaticInitializer or
   exists(FunctionalExpr funcExpr | c = funcExpr.asMethod()) or
   c.getDeclaringType() instanceof TestLibrary or

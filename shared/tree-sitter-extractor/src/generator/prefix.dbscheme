@@ -33,6 +33,12 @@ containerparent(
   unique int child: @container ref
 );
 
+/*- Empty location -*/
+
+empty_location(
+  int location: @location_default ref
+);
+
 /*- Source location prefix -*/
 
 /**

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Biometric local authentication such as fingerprint recognition can be used to protect sensitive data or actions within an application. 
+However, if this authentication does not use a <code>KeyStore</code>-backed key, it can be bypassed by a privileged malicious application, or by an attacker with physical access using application hooking tools such as Frida.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Generate a secure key in the Android <code>KeyStore</code>. Ensure that the <code>onAuthenticationSuccess</code> callback for a biometric prompt uses it 
+in a way that is required for the sensitive parts of the application to function, such as by using it to decrypt sensitive data or credentials. 
+</p>
+</recommendation>
+
+<example>
+<p>In the following (bad) case, no <code>CryptoObject</code> is required for the biometric prompt to grant access, so it can be bypassed.</p>
+<sample src="AndroidInsecureLocalAuthenticationBad.java" />
+<p>In the following (good) case, a secret key is generated in the Android <code>KeyStore</code>. The application requires this secret key for access, using it to decrypt data.</p>
+<sample src="AndroidInsecureLocalAuthenticationGood.java" />
+</example>
+
+<references>
+<li>
+OWASP Mobile Application Security: <a href="https://mas.owasp.org/MASTG/Android/0x05f-Testing-Local-Authentication/">Android Local Authentication</a>
+</li>
+<li>
+OWASP Mobile Application Security: <a href="https://mas.owasp.org/MASTG/tests/android/MASVS-AUTH/MASTG-TEST-0018/">Testing Biometric Authentication</a>
+</li>
+<li>
+WithSecure: <a href="https://labs.withsecure.com/publications/how-secure-is-your-android-keystore-authentication">How Secure is your Android Keystore Authentication?</a>
+</li>
+<li>
+Android Developers: <a href="https://developer.android.com/training/sign-in/biometric-auth">Biometric Authentication</a>
+</li>
+
+</references>
+</qhelp>

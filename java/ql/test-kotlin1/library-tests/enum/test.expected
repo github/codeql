@@ -37,7 +37,6 @@
 | kotlin.Enum | Enum | compareTo |
 | kotlin.Enum | Enum | describeConstable |
 | kotlin.Enum | Enum | equals |
-| kotlin.Enum | Enum | finalize |
 | kotlin.Enum | Enum | getDeclaringClass |
 | kotlin.Enum | Enum | hashCode |
 | kotlin.Enum | Enum | name |

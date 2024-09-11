@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.TYPEOF,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             var ret = new Expression(info);

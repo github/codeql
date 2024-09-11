@@ -1154,9 +1154,6 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
-    /** DEPRECATED: Alias for `DjangoHttp` */
-    deprecated module http = DjangoHttp;
-
     /** Provides models for the `django.http` module */
     module DjangoHttp {
       // ---------------------------------------------------------------------------
@@ -2173,7 +2170,7 @@ module PrivateDjango {
         /**
          * A call to `set_cookie` on a HTTP Response.
          */
-        class DjangoResponseSetCookieCall extends Http::Server::CookieWrite::Range,
+        class DjangoResponseSetCookieCall extends Http::Server::SetCookieCall,
           DataFlow::MethodCallNode
         {
           DjangoResponseSetCookieCall() {
@@ -2241,6 +2238,71 @@ module PrivateDjango {
           override DataFlow::Node getNameArg() { result = index }
 
           override DataFlow::Node getValueArg() { result = value }
+        }
+
+        /**
+         * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+         * `response.headers[name] = value`.
+         */
+        class DjangoResponseHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseHeaderSubscriptWrite() {
+            exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              headerLookup
+                  .accesses(DjangoImpl::DjangoHttp::Response::HttpResponse::instance(), "headers") and
+              exists(DataFlow::Node subscriptObj |
+                subscriptObj.asCfgNode() = subscript.getObject()
+              |
+                headerLookup.flowsTo(subscriptObj)
+              ) and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
+        }
+
+        /**
+         * A dict-like write to an item of an HTTP response, which is treated as a header write,
+         * such as `response[headerName] = value`
+         */
+        class DjangoResponseSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseSubscriptWrite() {
+            exists(SubscriptNode subscript |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              subscript.getObject() =
+                DjangoImpl::DjangoHttp::Response::HttpResponse::instance().asCfgNode() and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
         }
       }
     }
@@ -2865,14 +2927,14 @@ module PrivateDjango {
         //
         // This also strongly implies that `mw` is in fact a Django middleware setting and
         // not just a variable named `MIDDLEWARE`.
-        list.getAnElt().(StrConst).getText() =
+        list.getAnElt().(StringLiteral).getText() =
           "django.contrib.auth.middleware.AuthenticationMiddleware"
       )
     }
 
     override boolean getVerificationSetting() {
       if
-        list.getAnElt().(StrConst).getText() in [
+        list.getAnElt().(StringLiteral).getText() in [
             "django.middleware.csrf.CsrfViewMiddleware",
             // see https://github.com/mozilla/django-session-csrf
             "session_csrf.CsrfMiddleware"
@@ -2927,6 +2989,11 @@ module PrivateDjango {
   private class DjangoAllowedUrl extends UrlRedirect::Sanitizer {
     DjangoAllowedUrl() {
       this = DataFlow::BarrierGuard<djangoUrlHasAllowedHostAndScheme/3>::getABarrierNode()
+    }
+
+    override predicate sanitizes(UrlRedirect::FlowState state) {
+      // sanitize all flow states
+      any()
     }
   }
 }

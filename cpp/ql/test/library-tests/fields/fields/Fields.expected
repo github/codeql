@@ -1,13 +1,18 @@
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:4:9:4:12 | name | public | CharPointerType | char |
+| fields.cpp:3:8:3:12 | Entry | fields.cpp:4:9:4:12 | name | public | PointerOrArrayOrReferenceType | char |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:5:8:5:8 | t | public | Enum |  |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:6:9:6:9 | s | public | CharPointerType | char |
+| fields.cpp:3:8:3:12 | Entry | fields.cpp:6:9:6:9 | s | public | PointerOrArrayOrReferenceType | char |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:7:7:7:7 | i | public | IntType |  |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:7:7:7:7 | i | public | MicrosoftInt32Type |  |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:9:7:9:14 | internal | private | IntType |  |
 | fields.cpp:3:8:3:12 | Entry | fields.cpp:9:7:9:14 | internal | private | MicrosoftInt32Type |  |
+| fields.cpp:12:7:12:10 | Name | fields.cpp:13:15:13:15 | s | private | PointerOrArrayOrReferenceType | const char |
 | fields.cpp:12:7:12:10 | Name | fields.cpp:13:15:13:15 | s | private | PointerType | const char |
+| fields.cpp:16:7:16:11 | Table | fields.cpp:17:9:17:9 | p | private | PointerOrArrayOrReferenceType | Name |
 | fields.cpp:16:7:16:11 | Table | fields.cpp:17:9:17:9 | p | private | PointerType | Name |
 | fields.cpp:16:7:16:11 | Table | fields.cpp:18:7:18:8 | sz | private | IntType |  |
 | fields.cpp:16:7:16:11 | Table | fields.cpp:18:7:18:8 | sz | private | MicrosoftInt32Type |  |
 | fields.cpp:26:7:26:10 | Date | fields.cpp:28:16:28:26 | cache_valid | private | BoolType |  |
 | fields.cpp:26:7:26:10 | Date | fields.cpp:30:17:30:21 | cache | public | CharPointerType | char |
+| fields.cpp:26:7:26:10 | Date | fields.cpp:30:17:30:21 | cache | public | PointerOrArrayOrReferenceType | char |

@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
 
@@ -125,6 +126,13 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
 
 private import semmle.python.internal.CachedStages
@@ -148,6 +156,7 @@ class Node extends TNode {
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -157,8 +166,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     Stages::DataFlow::ref() and
@@ -211,6 +219,12 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+
+  /** Gets the data-flow node corresponding to the first tuple (*) argument of the call corresponding to this data-flow node, if any. */
+  Node getStarArg() { result.asCfgNode() = node.getStarArg() }
+
+  /** Gets the data-flow node corresponding to a dictionary (**) argument of the call corresponding to this data-flow node, if any. */
+  Node getKwargs() { result.asCfgNode() = node.getKwargs() }
 }
 
 /**
@@ -467,7 +481,7 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -484,7 +498,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -499,7 +513,7 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 
   override string toString() { result = "StarPatternElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -605,9 +619,20 @@ newtype TContent =
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
-    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    // {"key": ...}
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
+    // func(key=...)
     key = any(Keyword kw).getArg()
+    or
+    // d["key"] = ...
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+    or
+    // d.setdefault("key", ...)
+    exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
+      key = call.getArg(0).getNode().(StringLiteral).getText()
+    )
   } or
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
@@ -627,12 +652,14 @@ newtype TContent =
     //   name = any(AccessPathToken a).getAnArgument("Attribute")
     // instead we use a qltest to alert if we write a new summary in QL that uses an
     // attribute -- see
-    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
     attr in ["re", "string", "pattern"]
     or
     //
     // 2) summaries in data-extension files
-    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
   } or

@@ -482,19 +482,61 @@ func parsePositiveInt2(value string) (int, error) {
 	return int(i64), nil
 }
 
-func typeAssertion(s string) {
-	n, err := strconv.ParseInt(s, 10, 0)
-	if err == nil {
-		var itf interface{} = n
-		i32 := itf.(int32)
-		println(i32)
-	}
-
-}
-
 func dealWithArchSizeCorrectly(s string) uint {
 	if i, err := strconv.ParseUint(s, 10, 64); err == nil && i < math.MaxUint {
 		return uint(i)
 	}
 	return 0
+}
+
+func typeSwitch1(s string) {
+	i64, _ := strconv.ParseInt(s, 10, 64)
+	var input any = i64
+	switch v := input.(type) {
+	case int16, string:
+		if _, ok := input.(string); ok {
+			return
+		}
+		_ = int16(v.(int16))
+		_ = int8(v.(int16)) // $ hasValueFlow="type assertion"
+	case int32:
+		_ = int32(v)
+		_ = int8(v) // $ hasValueFlow="v"
+	case int64:
+		_ = int8(v) // $ hasValueFlow="v"
+	default:
+		_ = int8(v.(int64)) // $ hasValueFlow="type assertion"
+	}
+}
+
+func typeSwitch2(s string) {
+	i64, _ := strconv.ParseInt(s, 10, 64)
+	var input any = i64
+	switch input.(type) {
+	case int16, string:
+		if _, ok := input.(string); ok {
+			return
+		}
+		_ = int16(input.(int16))
+		_ = int8(input.(int16)) // $ hasValueFlow="type assertion"
+	case int32:
+		_ = int32(input.(int32))
+		_ = int8(input.(int32)) // $ hasValueFlow="type assertion"
+	case int64:
+		_ = int8(input.(int64)) // $ hasValueFlow="type assertion"
+	default:
+		_ = int8(input.(int64)) // $ hasValueFlow="type assertion"
+	}
+}
+
+func checkedTypeAssertion(s string) {
+	i64, _ := strconv.ParseInt(s, 10, 64)
+	var input any = i64
+	if v, ok := input.(int16); ok {
+		// Need to account for the fact that within this case clause, v is an int16
+		_ = int16(v)
+		_ = int8(v) // $ hasValueFlow="v"
+	} else if v, ok := input.(int32); ok {
+		_ = int16(v) // $ hasValueFlow="v"
+	}
 }

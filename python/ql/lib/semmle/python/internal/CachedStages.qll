@@ -194,7 +194,7 @@ module Stages {
       or
       exists(any(DataFlowPublic::Node node).toString())
       or
-      any(DataFlowPublic::Node node).hasLocationInfo(_, _, _, _, _)
+      exists(any(DataFlowPublic::Node node).getLocation())
       or
       DataFlowDispatch::resolveCall(_, _, _)
       or

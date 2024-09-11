@@ -139,9 +139,6 @@ class HttpServletRequestGetRequestUriMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
-deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
-
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
  */

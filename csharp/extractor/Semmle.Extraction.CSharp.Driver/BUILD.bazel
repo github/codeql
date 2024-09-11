@@ -1,0 +1,15 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_binary",
+)
+
+codeql_csharp_binary(
+    name = "Semmle.Extraction.CSharp.Driver",
+    srcs = glob([
+        "*.cs",
+    ]),
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Extraction.CSharp",
+    ],
+)

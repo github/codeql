@@ -16,17 +16,30 @@ private import codeql.ruby.DataFlow
  */
 class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
+  boolean directResponse;
 
   TyphoeusHttpRequest() {
     this = requestNode.asSource() and
-    requestNode =
-      API::getTopLevelMember("Typhoeus")
-          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+    (
+      directResponse = true and
+      requestNode =
+        API::getTopLevelMember("Typhoeus")
+            .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+      or
+      directResponse = false and
+      requestNode = API::getTopLevelMember("Typhoeus").getMember("Request").getInstance()
+    )
   }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
-  override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+  override DataFlow::Node getResponseBody() {
+    directResponse = true and
+    result = getBodyFromResponse(requestNode)
+    or
+    directResponse = false and
+    result = getResponseBodyFromRequest(requestNode)
+  }
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
@@ -55,3 +68,36 @@ private module TyphoeusDisablesCertificateValidationConfig implements DataFlow::
 
 private module TyphoeusDisablesCertificateValidationFlow =
   DataFlow::Global<TyphoeusDisablesCertificateValidationConfig>;
+
+/** Gets the response body from the given `requestNode` representing a Typhoeus request */
+bindingset[requestNode]
+pragma[inline_late]
+private DataFlow::Node getResponseBodyFromRequest(API::Node requestNode) {
+  result =
+    [
+      getBodyFromResponse(getResponseFromRequest(requestNode)),
+      requestNode.getMethod("on_body").getBlock().getParameter(0).asSource()
+    ]
+}
+
+/** Gets the response from the given `requestNode` representing a Typhoeus request */
+bindingset[requestNode]
+pragma[inline_late]
+private API::Node getResponseFromRequest(API::Node requestNode) {
+  result =
+    [
+      requestNode.getReturn(["run", "response"]),
+      requestNode
+          // on_headers does not carry a response body
+          .getMethod(["on_complete", "on_success", "on_failure", "on_progress"])
+          .getBlock()
+          .getParameter(0)
+    ]
+}
+
+/** Gets the response body from the given `responseNode` representing a Typhoeus response */
+bindingset[responseNode]
+pragma[inline_late]
+private DataFlow::Node getBodyFromResponse(API::Node responseNode) {
+  result = responseNode.getAMethodCall(["body", "response_body"])
+}

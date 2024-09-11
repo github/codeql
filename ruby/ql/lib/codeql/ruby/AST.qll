@@ -137,7 +137,12 @@ class AstNode extends TAstNode {
 
 /** A Ruby source file */
 class RubyFile extends File {
-  RubyFile() { ruby_ast_node_info(_, this, _, _) }
+  RubyFile() {
+    exists(Location loc |
+      ruby_ast_node_location(_, loc) and
+      this = loc.getFile()
+    )
+  }
 
   /** Gets a token in this file. */
   private Ruby::Token getAToken() { result.getLocation().getFile() = this }

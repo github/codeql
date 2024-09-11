@@ -1,0 +1,1 @@
+The Windows autobuilder that used to live in this directory moved to `csharp/autobuilder/Semmle.Autobuild.Cpp`.

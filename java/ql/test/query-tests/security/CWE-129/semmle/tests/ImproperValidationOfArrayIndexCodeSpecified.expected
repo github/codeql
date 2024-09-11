@@ -1,12 +1,12 @@
 edges
-| ../../../../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/RandomUtils.java:34:14:34:14 | 0 : Number | Test.java:59:17:59:42 | nextInt(...) : Number |
-| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:44:30:44:34 | index |
-| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:48:32:48:36 | index |
-| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:52:39:52:43 | index |
-| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:62:30:62:34 | index |
-| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:66:32:66:36 | index |
-| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:70:39:70:43 | index |
-| Test.java:112:17:112:17 | 0 : Number | Test.java:115:32:115:36 | index |
+| ../../../../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/RandomUtils.java:34:14:34:14 | 0 : Number | Test.java:59:17:59:42 | nextInt(...) : Number | provenance |  |
+| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:44:30:44:34 | index | provenance |  |
+| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:48:32:48:36 | index | provenance |  |
+| Test.java:41:17:41:48 | nextInt(...) : Number | Test.java:52:39:52:43 | index | provenance |  |
+| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:62:30:62:34 | index | provenance |  |
+| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:66:32:66:36 | index | provenance |  |
+| Test.java:59:17:59:42 | nextInt(...) : Number | Test.java:70:39:70:43 | index | provenance |  |
+| Test.java:112:17:112:17 | 0 : Number | Test.java:115:32:115:36 | index | provenance |  |
 nodes
 | ../../../../../stubs/apache-commons-lang3-3.7/org/apache/commons/lang3/RandomUtils.java:34:14:34:14 | 0 : Number | semmle.label | 0 : Number |
 | Test.java:41:17:41:48 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |

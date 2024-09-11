@@ -19,53 +19,55 @@
 | expressions.cs:85:22:85:36 | access to constant constant | expressions.cs:85:22:85:27 | access to type Nested |
 | expressions.cs:85:41:85:51 | access to indexer | expressions.cs:85:41:85:44 | this access |
 | expressions.cs:87:13:87:20 | access to array element | expressions.cs:87:13:87:17 | access to local variable array |
-| expressions.cs:137:17:137:22 | access to field f | expressions.cs:137:17:137:20 | this access |
-| expressions.cs:138:17:138:55 | call to method MainAccesses | expressions.cs:138:17:138:20 | base access |
-| expressions.cs:148:13:148:40 | call to method WriteLine | expressions.cs:148:13:148:19 | access to type Console |
-| expressions.cs:157:13:157:41 | call to method WriteLine | expressions.cs:157:13:157:19 | access to type Console |
-| expressions.cs:162:32:162:35 | access to property Name | expressions.cs:162:32:162:35 | this access |
-| expressions.cs:163:31:163:31 | access to field f | expressions.cs:163:31:163:31 | this access |
-| expressions.cs:173:27:173:30 | access to method M1 | expressions.cs:173:27:173:27 | access to type C |
-| expressions.cs:174:21:174:24 | access to method M2 | expressions.cs:174:21:174:21 | access to type C |
-| expressions.cs:182:27:182:30 | access to method M3 | expressions.cs:182:27:182:27 | access to local variable c |
-| expressions.cs:189:52:189:54 | access to method F | expressions.cs:189:52:189:52 | access to type X |
-| expressions.cs:190:36:190:38 | access to method G | expressions.cs:190:36:190:36 | access to type X |
-| expressions.cs:197:25:197:37 | access to local function LocalFunction | expressions.cs:197:25:197:37 | this access |
-| expressions.cs:198:19:198:31 | access to local function LocalFunction | expressions.cs:198:19:198:31 | this access |
-| expressions.cs:233:17:233:21 | access to event Click | expressions.cs:233:17:233:21 | this access |
+| expressions.cs:89:13:89:26 | access to array element | expressions.cs:89:13:89:23 | access to local variable inlinearray |
+| expressions.cs:138:17:138:22 | access to field f | expressions.cs:138:17:138:20 | this access |
+| expressions.cs:139:17:139:55 | call to method MainAccesses | expressions.cs:139:17:139:20 | base access |
+| expressions.cs:149:13:149:40 | call to method WriteLine | expressions.cs:149:13:149:19 | access to type Console |
+| expressions.cs:158:13:158:41 | call to method WriteLine | expressions.cs:158:13:158:19 | access to type Console |
+| expressions.cs:163:32:163:35 | access to property Name | expressions.cs:163:32:163:35 | this access |
+| expressions.cs:164:31:164:31 | access to field f | expressions.cs:164:31:164:31 | this access |
+| expressions.cs:174:27:174:30 | access to method M1 | expressions.cs:174:27:174:27 | access to type C |
+| expressions.cs:175:21:175:24 | access to method M2 | expressions.cs:175:21:175:21 | access to type C |
+| expressions.cs:183:27:183:30 | access to method M3 | expressions.cs:183:27:183:27 | access to local variable c |
+| expressions.cs:190:52:190:54 | access to method F | expressions.cs:190:52:190:52 | access to type X |
+| expressions.cs:191:36:191:38 | access to method G | expressions.cs:191:36:191:36 | access to type X |
+| expressions.cs:198:25:198:37 | access to local function LocalFunction | expressions.cs:198:25:198:37 | this access |
+| expressions.cs:199:19:199:31 | access to local function LocalFunction | expressions.cs:199:19:199:31 | this access |
 | expressions.cs:234:17:234:21 | access to event Click | expressions.cs:234:17:234:21 | this access |
-| expressions.cs:239:13:239:17 | access to event Click | expressions.cs:239:13:239:17 | this access |
-| expressions.cs:251:13:251:20 | access to field OkButton | expressions.cs:251:13:251:20 | this access |
+| expressions.cs:235:17:235:21 | access to event Click | expressions.cs:235:17:235:21 | this access |
+| expressions.cs:240:13:240:17 | access to event Click | expressions.cs:240:13:240:17 | this access |
 | expressions.cs:252:13:252:20 | access to field OkButton | expressions.cs:252:13:252:20 | this access |
-| expressions.cs:252:13:252:26 | access to event Click | expressions.cs:252:13:252:20 | access to field OkButton |
-| expressions.cs:252:48:252:60 | access to method OkButtonClick | expressions.cs:252:48:252:60 | this access |
-| expressions.cs:253:13:253:24 | access to field CancelButton | expressions.cs:253:13:253:24 | this access |
+| expressions.cs:253:13:253:20 | access to field OkButton | expressions.cs:253:13:253:20 | this access |
+| expressions.cs:253:13:253:26 | access to event Click | expressions.cs:253:13:253:20 | access to field OkButton |
+| expressions.cs:253:48:253:60 | access to method OkButtonClick | expressions.cs:253:48:253:60 | this access |
 | expressions.cs:254:13:254:24 | access to field CancelButton | expressions.cs:254:13:254:24 | this access |
-| expressions.cs:254:13:254:30 | access to event Click | expressions.cs:254:13:254:24 | access to field CancelButton |
-| expressions.cs:254:52:254:68 | access to method CancelButtonClick | expressions.cs:254:52:254:68 | this access |
-| expressions.cs:278:44:278:52 | access to property Length | expressions.cs:278:44:278:45 | access to parameter iv |
-| expressions.cs:279:33:279:41 | access to property Length | expressions.cs:279:33:279:34 | access to parameter iv |
-| expressions.cs:280:17:280:23 | access to indexer | expressions.cs:280:17:280:20 | access to local variable temp |
-| expressions.cs:280:27:280:31 | access to indexer | expressions.cs:280:27:280:28 | access to parameter iv |
-| expressions.cs:314:13:314:22 | access to field value | expressions.cs:314:13:314:16 | this access |
-| expressions.cs:319:20:319:26 | access to field value | expressions.cs:319:20:319:20 | access to parameter d |
-| expressions.cs:345:37:345:37 | access to field x | expressions.cs:345:37:345:37 | this access |
-| expressions.cs:345:48:345:48 | access to field x | expressions.cs:345:48:345:48 | this access |
-| expressions.cs:346:37:346:37 | access to field y | expressions.cs:346:37:346:37 | this access |
-| expressions.cs:346:48:346:48 | access to field y | expressions.cs:346:48:346:48 | this access |
-| expressions.cs:355:40:355:41 | access to field p1 | expressions.cs:355:40:355:41 | this access |
-| expressions.cs:355:52:355:53 | access to field p1 | expressions.cs:355:52:355:53 | this access |
-| expressions.cs:356:40:356:41 | access to field p2 | expressions.cs:356:40:356:41 | this access |
-| expressions.cs:356:52:356:53 | access to field p2 | expressions.cs:356:52:356:53 | this access |
-| expressions.cs:363:15:363:16 | access to field p1 | expressions.cs:363:15:363:16 | this access |
-| expressions.cs:364:15:364:16 | access to field p2 | expressions.cs:364:15:364:16 | this access |
-| expressions.cs:366:40:366:41 | access to field p1 | expressions.cs:366:40:366:41 | this access |
-| expressions.cs:367:40:367:41 | access to field p2 | expressions.cs:367:40:367:41 | this access |
-| expressions.cs:375:22:375:33 | access to field phoneNumbers | expressions.cs:375:22:375:33 | this access |
-| expressions.cs:377:43:377:46 | access to field name | expressions.cs:377:43:377:46 | this access |
-| expressions.cs:377:57:377:60 | access to field name | expressions.cs:377:57:377:60 | this access |
-| expressions.cs:378:57:378:68 | access to field phoneNumbers | expressions.cs:378:57:378:68 | this access |
-| expressions.cs:454:29:454:47 | call to method WriteLine | expressions.cs:454:29:454:35 | access to type Console |
-| expressions.cs:482:17:482:26 | access to field value | expressions.cs:482:17:482:20 | this access |
-| expressions.cs:487:32:487:39 | access to field value | expressions.cs:487:32:487:33 | access to parameter c1 |
-| expressions.cs:487:43:487:50 | access to field value | expressions.cs:487:43:487:44 | access to parameter c2 |
+| expressions.cs:255:13:255:24 | access to field CancelButton | expressions.cs:255:13:255:24 | this access |
+| expressions.cs:255:13:255:30 | access to event Click | expressions.cs:255:13:255:24 | access to field CancelButton |
+| expressions.cs:255:52:255:68 | access to method CancelButtonClick | expressions.cs:255:52:255:68 | this access |
+| expressions.cs:279:44:279:52 | access to property Length | expressions.cs:279:44:279:45 | access to parameter iv |
+| expressions.cs:280:33:280:41 | access to property Length | expressions.cs:280:33:280:34 | access to parameter iv |
+| expressions.cs:281:17:281:23 | access to indexer | expressions.cs:281:17:281:20 | access to local variable temp |
+| expressions.cs:281:27:281:31 | access to indexer | expressions.cs:281:27:281:28 | access to parameter iv |
+| expressions.cs:315:13:315:22 | access to field value | expressions.cs:315:13:315:16 | this access |
+| expressions.cs:320:20:320:26 | access to field value | expressions.cs:320:20:320:20 | access to parameter d |
+| expressions.cs:346:37:346:37 | access to field x | expressions.cs:346:37:346:37 | this access |
+| expressions.cs:346:48:346:48 | access to field x | expressions.cs:346:48:346:48 | this access |
+| expressions.cs:347:37:347:37 | access to field y | expressions.cs:347:37:347:37 | this access |
+| expressions.cs:347:48:347:48 | access to field y | expressions.cs:347:48:347:48 | this access |
+| expressions.cs:356:40:356:41 | access to field p1 | expressions.cs:356:40:356:41 | this access |
+| expressions.cs:356:52:356:53 | access to field p1 | expressions.cs:356:52:356:53 | this access |
+| expressions.cs:357:40:357:41 | access to field p2 | expressions.cs:357:40:357:41 | this access |
+| expressions.cs:357:52:357:53 | access to field p2 | expressions.cs:357:52:357:53 | this access |
+| expressions.cs:364:15:364:16 | access to field p1 | expressions.cs:364:15:364:16 | this access |
+| expressions.cs:365:15:365:16 | access to field p2 | expressions.cs:365:15:365:16 | this access |
+| expressions.cs:367:40:367:41 | access to field p1 | expressions.cs:367:40:367:41 | this access |
+| expressions.cs:368:40:368:41 | access to field p2 | expressions.cs:368:40:368:41 | this access |
+| expressions.cs:376:22:376:33 | access to field phoneNumbers | expressions.cs:376:22:376:33 | this access |
+| expressions.cs:378:43:378:46 | access to field name | expressions.cs:378:43:378:46 | this access |
+| expressions.cs:378:57:378:60 | access to field name | expressions.cs:378:57:378:60 | this access |
+| expressions.cs:379:57:379:68 | access to field phoneNumbers | expressions.cs:379:57:379:68 | this access |
+| expressions.cs:455:29:455:47 | call to method WriteLine | expressions.cs:455:29:455:35 | access to type Console |
+| expressions.cs:483:17:483:26 | access to field value | expressions.cs:483:17:483:20 | this access |
+| expressions.cs:488:32:488:39 | access to field value | expressions.cs:488:32:488:33 | access to parameter c1 |
+| expressions.cs:488:43:488:50 | access to field value | expressions.cs:488:43:488:44 | access to parameter c2 |
+| expressions.cs:530:21:530:25 | call to method Api | expressions.cs:530:21:530:25 | this access |

@@ -1,0 +1,6 @@
+sh_library(
+    name = "sh_runfiles",
+    srcs = ["runfiles.sh"],
+    visibility = ["//visibility:public"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)

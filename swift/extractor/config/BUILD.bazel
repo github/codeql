@@ -2,7 +2,7 @@ load("//swift:rules.bzl", "swift_cc_library")
 
 swift_cc_library(
     name = "config",
-    srcs = glob(["*.cpp"]),
+    srcs = [],
     hdrs = glob(["*.h"]),
     visibility = ["//swift:__subpackages__"],
 )

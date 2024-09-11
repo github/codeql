@@ -71,10 +71,13 @@ private class SummarizedCallableWithCallback extends SummarizedCallable {
 
   SummarizedCallableWithCallback() { mayInvokeCallback(this.asCallable(), pos) }
 
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[-1]" and
-    preservesValue = true
+    preservesValue = true and
+    model = "heuristic-callback"
   }
 
   override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }

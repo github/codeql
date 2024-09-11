@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.annotation.processing", "Completion", True, "getMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completion", True, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "FilerException", True, "FilerException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Processor", True, "init", "(ProcessingEnvironment)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWithAny", "(Set)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWithAny", "(TypeElement[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.annotation.processing", "ProcessingEnvironment", "isPreviewEnabled", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "Processor", "getCompletions", "(Element,AnnotationMirror,ExecutableElement,String)", "summary", "df-generated"]
+      - ["javax.annotation.processing", "Processor", "getSupportedAnnotationTypes", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "Processor", "getSupportedOptions", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "Processor", "getSupportedSourceVersion", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "Processor", "process", "(Set,RoundEnvironment)", "summary", "df-generated"]

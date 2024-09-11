@@ -244,7 +244,13 @@ public class Parser {
     this.exprAllowed = true;
 
     // Figure out if it's a module code.
-    this.strict = this.inModule = options.sourceType().equals("module");
+    this.inModule = options.sourceType().equals("module");
+
+    // We don't care to report syntax errors in code that might be using strict mode. In
+    // the end, we don't know whether that code is put through additional build steps
+    // causing our alleged syntax errors to disappear. Therefore, we hardcode
+    // this.strict to false.
+    this.strict = false;
 
     // Used to signify the start of a potential arrow function
     this.potentialArrowAt = -1;
@@ -323,18 +329,13 @@ public class Parser {
     this.nextToken();
   }
 
-  // Toggle strict mode. Re-reads the next number or string to please
-  // pedantic tests (`"use strict"; 010;` should fail).
+  // DEPRECATED. When we respected strict mode, this method was used to toggle strict
+  // mode (and would re-read the next number or string to please pedantic tests (`"use
+  // strict"; 010;` should fail)).
 
   public void setStrict(boolean strict) {
-    this.strict = strict;
-    if (this.type != TokenType.num && this.type != TokenType.string) return;
-    this.pos = this.start;
-    while (this.pos < this.lineStart) {
-      this.lineStart = this.input.lastIndexOf("\n", this.lineStart - 2) + 1;
-      --this.curLine;
-    }
-    this.nextToken();
+    // always false
+    return;
   }
 
   public TokContext curContext() {
@@ -3107,7 +3108,7 @@ public class Parser {
       if (stmt != null) body.add(stmt);
       if (first && allowStrict && this.isUseStrict(stmt)) {
         oldStrict = this.strict;
-        this.setStrict(this.strict = true);
+        this.setStrict(true);
       }
       first = false;
     }
@@ -3546,7 +3547,19 @@ public class Parser {
 
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(this.type == TokenType._default);
-      Identifier exported = this.eatContextual("as") ? this.parseIdent(true) : local;
+      Identifier exported;
+      if (!this.eatContextual("as")) {
+        exported = local;
+      } else {
+        if (this.type == TokenType.string) {
+          // e.g. `export { Foo_new as "Foo::new" }`
+          Expression string = this.parseExprAtom(null);
+          String str = ((Literal)string).getStringValue();
+          exported = this.finishNode(new Identifier(loc, str));
+        } else {
+          exported = this.parseIdent(true);
+        }
+      }
       checkExport(exports, exported.getName(), exported.getLoc().getStart());
       nodes.add(this.finishNode(new ExportSpecifier(loc, local, exported)));
     }
@@ -3628,7 +3641,22 @@ public class Parser {
 
   protected ImportSpecifier parseImportSpecifier() {
     SourceLocation loc = new SourceLocation(this.startLoc);
-    Identifier imported = this.parseIdent(true), local;
+    Identifier imported, local;
+
+    if (this.type == TokenType.string) {
+      // Arbitrary Module Namespace Identifiers
+      // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
+      Expression string = this.parseExprAtom(null);    
+      String str = ((Literal)string).getStringValue();
+      imported = this.finishNode(new Identifier(loc, str));
+      // only makes sense if there is a local identifier
+      if (!this.isContextual("as")) {
+        this.raiseRecoverable(this.start, "Unexpected string");
+      }
+    } else {
+      imported = this.parseIdent(true);
+    }
+
     if (this.eatContextual("as")) {
       local = this.parseIdent(false);
     } else {
