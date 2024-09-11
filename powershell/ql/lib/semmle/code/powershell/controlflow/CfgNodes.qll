@@ -48,5 +48,28 @@ class ExprCfgNode extends AstCfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps an AST statement. */
+class StmtCfgNode extends AstCfgNode {
+  override string getAPrimaryQlClass() { result = "StmtCfgNode" }
+
+  Stmt s;
+
+  StmtCfgNode() { s = this.getAstNode() }
+
+  /** Gets the underlying expression. */
+  Stmt getStmt() { result = s }
+}
+
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes { }
+
+module StmtNodes {
+  /** A control-flow node that wraps a `Cmd` AST expression. */
+  class CallCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "CallCfgNode" }
+
+    override Cmd s;
+
+    override Cmd getStmt() { result = super.getStmt() }
+  }
+}
