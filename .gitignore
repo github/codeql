@@ -68,3 +68,6 @@ node_modules/
 
 # Jetbrains IDE files
 .idea
+
+# cargo build directory
+/target

@@ -1,5 +1,3 @@
-[workspace]
-
 [package]
 name = "codeql-rust"
 version = "0.1.0"
@@ -27,9 +25,4 @@ triomphe = "0.1.13"
 # Ideally, we'd like to pull this in via a relative path.
 # However, our bazel/rust tooling chokes on this, c.f. https://github.com/bazelbuild/rules_rust/issues/1525
 # Therefore, we have a pretty bad hack in place instead, see README.md in the codeql-extractor-fake-crate directory.
-codeql-extractor = { path = "codeql-extractor-fake-crate" }
-
-[patch.crates-io]
-# patch for build script bug preventing bazel build
-# see https://github.com/rust-lang/rustc_apfloat/pull/17
-rustc_apfloat = { git = "https://github.com/redsun82/rustc_apfloat.git", rev = "096d585100636bc2e9f09d7eefec38c5b334d47b" }
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

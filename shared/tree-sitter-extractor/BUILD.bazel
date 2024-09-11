@@ -1,5 +1,5 @@
-load("@ruby_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -12,5 +12,5 @@ rust_library(
     compile_data = [
         "src/generator/prefix.dbscheme",
     ],
-    deps = all_crate_deps(package_name = "ruby/extractor/codeql-extractor-fake-crate"),
+    deps = all_crate_deps(),
 )
