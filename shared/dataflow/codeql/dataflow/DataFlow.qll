@@ -431,6 +431,12 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+
+    /**
+     * Holds to filter out data flows whose source and sink are both not in the
+     * `AlertFiltering` location range.
+     */
+    default predicate filterForSourceOrSinkAlerts() { none() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -547,6 +553,12 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+
+    /**
+     * Holds to filter out data flows whose source and sink are both not in the
+     * `AlertFiltering` location range.
+     */
+    default predicate filterForSourceOrSinkAlerts() { none() }
   }
 }
 
@@ -625,6 +637,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   module Global<ConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
+      import FilteredSourceSink<Config>
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
@@ -647,6 +660,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
    */
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
+      import FilteredStateSourceSink<Config>
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;

@@ -283,6 +283,14 @@ deprecated private module Config implements FullStateConfigSig {
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
 
   predicate includeHiddenNodes() { any(Configuration config).includeHiddenNodes() }
+
+  predicate filterForSourceOrSinkAlerts() { none() }
+
+  predicate isFilteredSource(Node source, FlowState state) { isSource(source, state) }
+
+  predicate isFilteredSink(Node sink, FlowState state) { isSink(sink, state) }
+
+  predicate isFilteredSink(Node sink) { isSink(sink) }
 }
 
 deprecated private import Impl<Config> as I
