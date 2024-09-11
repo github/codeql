@@ -280,6 +280,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * callable of `lambdaCall`.
      */
     pragma[nomagic]
+    pragma[no_dynamic_join_order]
     predicate revLambdaFlow(
       DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
       boolean toJump, DataFlowCallOption lastCall
@@ -1349,6 +1350,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
+        pragma[no_dynamic_join_order]
         predicate parameterValueFlow(ParamNode p, Node node, ReadStepTypesOption read, string model) {
           parameterValueFlow0(p, node, read, model) and
           if node instanceof CastingNode
@@ -1750,7 +1752,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   bindingset[t1, t2]
   pragma[inline_late]
   predicate compatibleTypesFilter(DataFlowType t1, DataFlowType t2) {
-    compatibleTypesCached(t1, t2)
+    compatibleTypesCached(pragma[only_bind_out](t1), pragma[only_bind_into](t2))
   }
 
   bindingset[t1, t2]
@@ -2018,6 +2020,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * the current data flow stage has reached the call of `arg` from one of its
      * call targets.
      */
+    pragma[no_dynamic_join_order]
     private predicate typeFlowArgTypeFromReturn(ArgNode arg, DataFlowType t) {
       exists(ParamNode p, DataFlowType t1, DataFlowType t2 |
         dataFlowTakenCallEdgeOut(_, _, arg, p) and

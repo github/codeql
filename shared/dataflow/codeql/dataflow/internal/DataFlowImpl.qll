@@ -1498,6 +1498,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
+        pragma[no_dynamic_join_order]
         private predicate fwdFlow0(
           NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa
         ) {
