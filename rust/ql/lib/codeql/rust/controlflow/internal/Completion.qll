@@ -2,7 +2,6 @@ private import codeql.util.Boolean
 private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
 private import SuccessorType
-private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -63,7 +62,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e = any(If c).getCondition() }
+  override predicate isValidForSpecific(AstNode e) { e = any(IfExpr c).getCondition() }
 
   /** Gets the dual Boolean completion. */
   override BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
@@ -79,7 +78,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
 class ReturnCompletion extends TReturnCompletion, Completion {
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof Return }
+  override predicate isValidForSpecific(AstNode e) { e instanceof ReturnExpr }
 
   override string toString() { result = "return" }
 }

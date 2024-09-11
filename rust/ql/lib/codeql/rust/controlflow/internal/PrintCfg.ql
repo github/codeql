@@ -33,7 +33,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements Impl::ViewCfgQueryInputSig<File> {
+private module ViewCfgQueryInput implements Impl::ViewCfgQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;

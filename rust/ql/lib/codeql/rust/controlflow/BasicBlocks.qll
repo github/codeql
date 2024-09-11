@@ -1,16 +1,17 @@
 private import rust
 private import ControlFlowGraph
 private import internal.SuccessorType
-private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as Impl
 private import codeql.rust.generated.Raw
 private import codeql.rust.generated.Synth
+
+final class BasicBlock = BasicBlockImpl;
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
  */
-class BasicBlock extends TBasicBlockStart {
+private class BasicBlockImpl extends TBasicBlockStart {
   /** Gets the scope of this basic block. */
   CfgScope getScope() { result = this.getAPredecessor().getScope() }
 
@@ -163,7 +164,7 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof Impl::En
  * An entry basic block, that is, a basic block whose first node is
  * an entry node.
  */
-class EntryBasicBlock extends BasicBlock {
+class EntryBasicBlock extends BasicBlockImpl {
   EntryBasicBlock() { entryBB(this) }
 
   override CfgScope getScope() {
@@ -175,7 +176,7 @@ class EntryBasicBlock extends BasicBlock {
  * An annotated exit basic block, that is, a basic block whose last node is
  * an annotated exit node.
  */
-class AnnotatedExitBasicBlock extends BasicBlock {
+class AnnotatedExitBasicBlock extends BasicBlockImpl {
   private boolean normal;
 
   AnnotatedExitBasicBlock() {
@@ -193,7 +194,7 @@ class AnnotatedExitBasicBlock extends BasicBlock {
  * An exit basic block, that is, a basic block whose last node is
  * an exit node.
  */
-class ExitBasicBlock extends BasicBlock {
+class ExitBasicBlock extends BasicBlockImpl {
   ExitBasicBlock() { this.getLastNode() instanceof Impl::ExitNode }
 }
 
@@ -220,7 +221,7 @@ private module JoinBlockPredecessors {
 }
 
 /** A basic block with more than one predecessor. */
-class JoinBlock extends BasicBlock {
+class JoinBlock extends BasicBlockImpl {
   JoinBlock() { this.getFirstNode().isJoin() }
 
   /**
@@ -231,12 +232,12 @@ class JoinBlock extends BasicBlock {
 }
 
 /** A basic block that is an immediate predecessor of a join block. */
-class JoinBlockPredecessor extends BasicBlock {
+class JoinBlockPredecessor extends BasicBlockImpl {
   JoinBlockPredecessor() { this.getASuccessor() instanceof JoinBlock }
 }
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
-class ConditionBlock extends BasicBlock {
+class ConditionBlock extends BasicBlockImpl {
   ConditionBlock() { this.getLastNode().isCondition() }
 
   /**

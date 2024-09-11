@@ -1,5 +1,4 @@
 /**
- * @kind graph
  * @id rust/controlflow/cfg
  */
 
