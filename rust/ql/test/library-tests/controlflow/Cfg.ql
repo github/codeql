@@ -4,8 +4,11 @@
 
 import rust
 import codeql.rust.controlflow.ControlFlowGraph
+import TestUtils
 
 class MyRelevantNode extends CfgNode {
+  MyRelevantNode() { toBeTested(this.getScope()) }
+
   string getOrderDisambiguation() { result = "" }
 }
 

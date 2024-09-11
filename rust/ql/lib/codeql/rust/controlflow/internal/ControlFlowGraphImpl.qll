@@ -63,18 +63,17 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-class FunctionTree extends LeafTree instanceof Function { }
+class FunctionTree extends StandardPostOrderTree instanceof Function {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getBody() }
+}
 
 class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
   override ControlFlowTree getChildNode(int i) {
     result = super.getStatement(i)
     or
-    exists(int last |
-      last + 1 = i and
-      exists(super.getStatement(last)) and
-      not exists(super.getStatement(last + 1)) and
-      result = super.getTail()
-    )
+    not exists(super.getStatement(i)) and
+    (exists(super.getStatement(i - 1)) or i = 0) and
+    result = super.getTail()
   }
 }
 
@@ -123,3 +122,8 @@ class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
 }
 
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
+
+class PathExprTree extends LeafTree instanceof PathExpr { }
+
+// A leaf tree for unimplemented nodes in the AST.
+class UnimplementedTree extends LeafTree instanceof Unimplemented { }

@@ -4,8 +4,8 @@ private import rust
 private import internal.ControlFlowGraphImpl
 private import internal.Completion
 private import internal.SuccessorType
-private import codeql.rust.controlflow.BasicBlocks
 private import internal.Scope as Scope
+private import BasicBlocks
 
 final class CfgScope = Scope::CfgScope;
 
