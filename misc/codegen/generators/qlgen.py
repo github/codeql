@@ -26,6 +26,7 @@ import re
 import subprocess
 import typing
 import itertools
+import os
 
 import inflection
 
@@ -287,7 +288,7 @@ def _is_under_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[
         _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases)
 
 
-def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
         cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierarchy(
         cls, lookup)
@@ -370,8 +371,10 @@ def generate(opts, renderer):
 
     imports = {}
     generated_import_prefix = get_import(out, opts.root_dir)
+    registry = opts.generated_registry or pathlib.Path(
+        os.path.commonpath((out, stub_out, test_out)), ".generated.list")
 
-    with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
+    with renderer.manage(generated=generated, stubs=stubs, registry=registry,
                          force=opts.force) as renderer:
 
         db_classes = [cls for name, cls in classes.items() if not data.classes[name].synth]
@@ -413,7 +416,7 @@ def generate(opts, renderer):
 
         if test_out:
             for c in data.classes.values():
-                if _should_skip_qltest(c, data.classes):
+                if should_skip_qltest(c, data.classes):
                     continue
                 test_with = data.classes[c.test_with] if c.test_with else c
                 test_dir = test_out / test_with.group / test_with.name
