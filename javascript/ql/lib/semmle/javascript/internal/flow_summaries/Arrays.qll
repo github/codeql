@@ -484,7 +484,7 @@ class Shift extends SummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = true and
-    input = "Argument[this].ArrayElement" and
+    input = "Argument[this].ArrayElement[0]" and
     output = "ReturnValue"
   }
 }
