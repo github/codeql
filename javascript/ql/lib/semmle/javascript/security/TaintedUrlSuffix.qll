@@ -44,7 +44,7 @@ module TaintedUrlSuffix {
    */
   predicate isBarrier(Node node, FlowLabel label) {
     label = label() and
-    DataFlowPrivate::optionalBarrier(node, "tainted-url-suffix")
+    DataFlowPrivate::optionalBarrier(node, "split-url-suffix")
   }
 
   /**
@@ -55,7 +55,11 @@ module TaintedUrlSuffix {
   predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
     srclbl = label() and
     dstlbl.isTaint() and
-    DataFlowPrivate::optionalStep(src, "tainted-url-suffix", dst)
+    DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
+    or
+    srclbl = label() and
+    dstlbl = label() and
+    DataFlowPrivate::optionalStep(src, "split-url-suffix-pre", dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
     srclbl = label() and

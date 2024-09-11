@@ -5,14 +5,14 @@ function t1() {
 
     sink(href); // $ flow=tainted-url-suffix
 
-    sink(href.split('#')[0]); // $ MISSING: flow=tainted-url-suffix
+    sink(href.split('#')[0]); // $ flow=tainted-url-suffix
     sink(href.split('#')[1]); // $ flow=taint
-    sink(href.split('#').pop()); // $ flow=taint
+    sink(href.split('#').pop()); // $ flow=taint flow=tainted-url-suffix
     sink(href.split('#')[2]); // $ MISSING: flow=taint // currently the split() summary only propagates to index 1
 
-    sink(href.split('?')[0]); // $ MISSING: flow=tainted-url-suffix
+    sink(href.split('?')[0]); // $ flow=tainted-url-suffix
     sink(href.split('?')[1]); // $ flow=taint
-    sink(href.split('?').pop()); // $ flow=taint
+    sink(href.split('?').pop()); // $ flow=taint flow=tainted-url-suffix
     sink(href.split('?')[2]); // $ MISSING: flow=taint
 
     sink(href.split(blah())[0]); // $ flow=tainted-url-suffix

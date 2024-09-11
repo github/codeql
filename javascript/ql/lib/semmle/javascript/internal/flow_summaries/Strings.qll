@@ -88,10 +88,13 @@ class StringSplitHashOrQuestionMark extends SummarizedCallable {
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = false and
     (
-      input = "Argument[this].OptionalBarrier[tainted-url-suffix]" and
+      input = "Argument[this].OptionalBarrier[split-url-suffix]" and
       output = "ReturnValue.ArrayElement"
       or
-      input = "Argument[this].OptionalStep[tainted-url-suffix]" and
+      input = "Argument[this].OptionalStep[split-url-suffix-pre]" and
+      output = "ReturnValue.ArrayElement[0]"
+      or
+      input = "Argument[this].OptionalStep[split-url-suffix-post]" and
       output = "ReturnValue.ArrayElement[1]" // TODO: support ArrayElement[1..]
     )
   }
