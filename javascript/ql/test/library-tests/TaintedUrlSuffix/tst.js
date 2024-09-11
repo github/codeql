@@ -5,7 +5,7 @@ function t1() {
 
     sink(href); // $ flow=tainted-url-suffix
 
-    sink(href.split('#')[0]); // $ MISSING: flow=tainted-url-suffix SPURIOUS: flow=taint
+    sink(href.split('#')[0]); // $ MISSING: flow=tainted-url-suffix
     sink(href.split('#')[1]); // $ flow=taint
     sink(href.split('#').pop()); // $ flow=taint
     sink(href.split('#')[2]); // $ flow=taint

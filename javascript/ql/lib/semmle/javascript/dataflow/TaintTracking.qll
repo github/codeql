@@ -255,7 +255,7 @@ module TaintTracking {
     exists(StringSplitCall c |
       c.getBaseString().getALocalSource() =
         [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")] and
-      c.getSeparator() = "?" and
+      c.getSeparator() = ["?", "#"] and
       read = c.getAPropertyRead("0")
     )
   }
