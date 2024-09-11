@@ -15,7 +15,7 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
-private import semmle.code.csharp.frameworks.microsoft.Blazor
+private import semmle.code.csharp.frameworks.microsoft.Blazor as Blazor
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.internal.Location
@@ -778,6 +778,11 @@ module LocalFlow {
       t = any(TypeParameter tp | not tp.isValueType())
       or
       t.(Struct).isRef()
+      or
+      // TODO: This is probably not something that we'd want in the final Blazor support.
+      // One way of getting around this problem would be to flow data directly from `value` in `callback.InvokeAsync(value)` to the subscribed event handler.
+      // We're currently flowing data to `callback`, and from there to the subscribed event handler.
+      Blazor::Helpers::isComponentEventCallbackInvokeQualifier(arg.getExpr(), _)
     ) and
     not exists(getALastEvalNode(result))
   }

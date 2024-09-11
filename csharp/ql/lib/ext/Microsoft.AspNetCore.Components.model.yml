@@ -17,4 +17,5 @@ extensions:
     data:
       - ["Microsoft.AspNetCore.Components.CompilerServices", "RuntimeHelpers", False, "TypeCheck<T>", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder", False, "AddComponentParameter", "(System.Int32,System.String,System.Object)", "", "Argument[2]", "Argument[1]", "taint", "manual"]
-
+      # The below summary is flowing data to a non-ref struct arg, so we needed to extend DataFlowPrivate::getAPostUpdateNodeForArg
+      - ["Microsoft.AspNetCore.Components", "EventCallback<TValue>", False, "InvokeAsync", "(TValue)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
