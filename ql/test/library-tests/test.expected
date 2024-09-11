@@ -1327,10 +1327,18 @@ scopes
 | .github/workflows/poisonable_steps.yml:1:1:46:111 | on: push |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 sources
+| AvraamMavridis/files-changed-action | * | output.CHANGED_FILES | filename | manual |
+| AvraamMavridis/files-changed-action | * | output.CHANGED_FILES_EXTENSIONS | filename | manual |
+| Rishabh510/Path-lister-action | * | output.paths | filename | manual |
+| WyriHaximus/github-action-files-in-commit | * | output.files | filename | manual |
+| ab185508/file-type-finder | * | output.extaddpaths | filename | manual |
+| ab185508/file-type-finder | * | output.names | filename | manual |
+| ab185508/file-type-finder | * | output.paths | filename | manual |
 | ahmadnassri/action-changed-files | * | output.files | filename | manual |
 | ahmadnassri/action-changed-files | * | output.json | json | manual |
 | alessbell/pull-request-comment-branch | * | output.head_ref | branch | manual |
 | amannn/action-semantic-pull-request | * | output.error_message | text | manual |
+| ankitjain28may/list-files-in-pr | * | output.pullRequestFiles | filename | manual |
 | cypress-io/github-action | * | env.GH_BRANCH | branch | manual |
 | dawidd6/action-download-artifact | * | output.artifacts | artifact | manual |
 | eficode/resolve-pr-refs | * | output.head_ref | branch | manual |
@@ -1345,16 +1353,30 @@ sources
 | jitterbit/get-changed-files | * | output.modified | filename | manual |
 | jitterbit/get-changed-files | * | output.removed | filename | manual |
 | jitterbit/get-changed-files | * | output.renamed | filename | manual |
+| jsmith/changes-since-last-tag | * | output.added | filename | manual |
+| jsmith/changes-since-last-tag | * | output.files | filename | manual |
+| jsmith/changes-since-last-tag | * | output.modified | filename | manual |
+| jsmith/changes-since-last-tag | * | output.removed | filename | manual |
+| jsmith/changes-since-last-tag | * | output.renamed | filename | manual |
+| karpikpl/list-changed-files-action | * | output.changed_files | filename | manual |
 | khan/pull-request-comment-trigger | * | output.comment_body | text | manual |
+| knu/changed-files | * | output.changed_files | filename | manual |
+| knu/changed-files | * | output.changed_files_json | filename | manual |
+| knu/changed-files | * | output.matched_files | filename | manual |
+| knu/changed-files | * | output.matched_files_json | filename | manual |
 | lots0logs/gh-action-get-changed-files | * | output.added | PR changed files | manual |
 | lots0logs/gh-action-get-changed-files | * | output.all | PR changed files | manual |
 | lots0logs/gh-action-get-changed-files | * | output.modified | PR changed files | manual |
 | lots0logs/gh-action-get-changed-files | * | output.renamed | PR changed files | manual |
 | marocchino/on_artifact | * | output.* | artifact | manual |
+| martinhaintz/ga-file-list | * | output.file_names | filename | manual |
+| martinhaintz/ga-file-list | * | output.files | filename | manual |
 | peter-murray/issue-body-parser-action | * | output.* | text | manual |
 | potiuk/get-workflow-origin | * | output.sourceHeadBranch | branch | manual |
 | puppeteer/puppeteer/.github/workflows/changed-packages.yml | * | output.changes | filename | manual |
 | redhat-plumbers-in-action/download-artifact | * | output.* | artifact | manual |
+| the-coding-turtle/ga-file-list | * | output.file_names | filename | manual |
+| the-coding-turtle/ga-file-list | * | output.files | filename | manual |
 | tj-actions/branch-names | * | output.current_branch | branch | manual |
 | tj-actions/branch-names | * | output.head_ref_branch | branch | manual |
 | trilom/file-changes-action | * | output.files | filename | manual |
@@ -1362,7 +1384,9 @@ sources
 | trilom/file-changes-action | * | output.files_modified | filename | manual |
 | trilom/file-changes-action | * | output.files_removed | filename | manual |
 | tzkhan/pr-update-action | * | output.headMatch | branch | manual |
+| w3f/action-find-old-files | * | output.files | filename | manual |
 | xt0rted/pull-request-comment-branch | * | output.head_ref | branch | manual |
+| yumemi-inc/changed-files | * | output.files | filename | manual |
 summaries
 | ActionsTools/read-json-action | * | artifact | output.* | taint | manual |
 | BrycensRanch/read-properties-action | * | artifact | output.* | taint | manual |
