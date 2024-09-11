@@ -3167,41 +3167,45 @@ ir.c:
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     m36_4(unknown)        = ^CallSideEffect                         : ~m32_4
 #   36|     m36_5(unknown)        = Chi                                     : total:m32_4, partial:m36_4
-#-----|   Exception -> Block 3
+#-----|   Exception -> Block 4
 
-#   39|   Block 1
-#   39|     r39_1(int)  = Constant[0]       : 
-#   39|     r39_2(bool) = CompareEQ         : r38_2, r39_1
-#   39|     v39_3(void) = ConditionalBranch : r39_2
-#-----|   False (back edge) -> Block 2
-#-----|   True -> Block 5
+#   32|   Block 1
+#   32|     v32_5(void) = Unwind       : 
+#   32|     v32_6(void) = AliasedUse   : ~m40_5
+#   32|     v32_7(void) = ExitFunction : 
 
 #   39|   Block 2
-#   39|     r39_4(int)  = Constant[1]       : 
-#   39|     r39_5(bool) = CompareEQ         : r38_2, r39_4
-#   39|     v39_6(void) = ConditionalBranch : r39_5
-#-----|   False -> Block 5
-#-----|   True (back edge) -> Block 4
+#   39|     r39_1(int)  = Constant[0]       : 
+#   39|     r39_2(bool) = CompareEQ         : r38_1, r39_1
+#   39|     v39_3(void) = ConditionalBranch : r39_2
+#-----|   False -> Block 3
+#-----|   True -> Block 6
 
-#   38|   Block 3
-#   38|     m38_1(unknown) = Phi               : from 0:~m36_5, from 4:~m40_5
-#   38|     r38_2(int)     = Constant[1]       : 
-#   39|     r39_7(int)     = Constant[-1]      : 
-#   39|     r39_8(bool)    = CompareEQ         : r38_2, r39_7
-#   39|     v39_9(void)    = ConditionalBranch : r39_8
-#-----|   False (back edge) -> Block 1
+#   39|   Block 3
+#   39|     r39_4(int)  = Constant[1]       : 
+#   39|     r39_5(bool) = CompareEQ         : r38_1, r39_4
+#   39|     v39_6(void) = ConditionalBranch : r39_5
+#-----|   False -> Block 6
 #-----|   True -> Block 5
 
-#   40|   Block 4
+#   38|   Block 4
+#   38|     r38_1(int)  = Constant[1]       : 
+#   39|     r39_7(int)  = Constant[-1]      : 
+#   39|     r39_8(bool) = CompareEQ         : r38_1, r39_7
+#   39|     v39_9(void) = ConditionalBranch : r39_8
+#-----|   False -> Block 2
+#-----|   True -> Block 6
+
+#   40|   Block 5
 #   40|     r40_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
 #   40|     r40_2(int)            = Constant[1]                             : 
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
-#   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m38_1
-#   40|     m40_5(unknown)        = Chi                                     : total:m38_1, partial:m40_4
-#-----|   Exception (back edge) -> Block 3
+#   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m36_5
+#   40|     m40_5(unknown)        = Chi                                     : total:m36_5, partial:m40_4
+#-----|   Exception -> Block 1
 
-#   32|   Block 5
-#   32|     v32_5(void) = Unreached : 
+#   32|   Block 6
+#   32|     v32_8(void) = Unreached : 
 
 #   44| void try_with_finally()
 #   44|   Block 0
@@ -3261,6 +3265,12 @@ ir.c:
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     m81_4(unknown)        = ^CallSideEffect                         : ~m80_4
 #   81|     m81_5(unknown)        = Chi                                     : total:m80_4, partial:m81_4
+#-----|   Exception -> Block 1
+
+#   80|   Block 1
+#   80|     v80_5(void) = Unwind       : 
+#   80|     v80_6(void) = AliasedUse   : ~m81_5
+#   80|     v80_7(void) = ExitFunction : 
 
 ir.cpp:
 #    1| void Constants()

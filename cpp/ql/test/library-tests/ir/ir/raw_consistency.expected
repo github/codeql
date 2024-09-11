@@ -9,23 +9,8 @@ instructionWithoutSuccessor
 | ir.c:62:5:62:26 | CallSideEffect: call to ExRaiseAccessViolation | Instruction 'CallSideEffect: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:57:6:57:30 | void throw_in_try_with_finally() | void throw_in_try_with_finally() |
 | ir.c:73:5:73:26 | CallSideEffect: call to ExRaiseAccessViolation | Instruction 'CallSideEffect: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:70:6:70:39 | void throw_in_try_with_throw_in_finally() | void throw_in_try_with_throw_in_finally() |
 | ir.c:76:5:76:26 | CallSideEffect: call to ExRaiseAccessViolation | Instruction 'CallSideEffect: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:70:6:70:39 | void throw_in_try_with_throw_in_finally() | void throw_in_try_with_throw_in_finally() |
-| ir.c:81:3:81:24 | CallSideEffect: call to ExRaiseAccessViolation | Instruction 'CallSideEffect: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:80:6:80:27 | void raise_access_violation() | void raise_access_violation() |
 ambiguousSuccessors
 unexplainedLoop
-| ir.c:38:13:38:37 | Constant: 1 | Instruction 'Constant: 1' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:40:5:40:26 | Call: call to ExRaiseAccessViolation | Instruction 'Call: call to ExRaiseAccessViolation' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:40:5:40:26 | CallSideEffect: call to ExRaiseAccessViolation | Instruction 'CallSideEffect: call to ExRaiseAccessViolation' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:40:5:40:26 | FunctionAddress: call to ExRaiseAccessViolation | Instruction 'FunctionAddress: call to ExRaiseAccessViolation' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:40:28:40:28 | Constant: 1 | Instruction 'Constant: 1' is part of an unexplained loop in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
@@ -36,10 +21,6 @@ containsLoopOfForwardEdges
 missingIRType
 multipleIRTypes
 lostReachability
-| ir.c:39:3:41:3 | Constant: { ... } | Block 'Constant: { ... }' is not reachable by traversing only forward edges in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | Constant: { ... } | Block 'Constant: { ... }' is not reachable by traversing only forward edges in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:39:3:41:3 | Unwind: { ... } | Block 'Unwind: { ... }' is not reachable by traversing only forward edges in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:40:5:40:26 | FunctionAddress: call to ExRaiseAccessViolation | Block 'FunctionAddress: call to ExRaiseAccessViolation' is not reachable by traversing only forward edges in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
