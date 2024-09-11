@@ -19,10 +19,10 @@ module Generated {
   {{#doc}}
    * {{.}}
   {{/doc}}
-   * INTERNAL: Do not reference the `Generated::{{name}}` class directly.
+   * INTERNAL: Do not reference the `Generated::{{name}}Impl` class directly.
    * Use the subclass `{{name}}`, where the following predicates are available.
    */
-  class {{name}} extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
+  class {{name}}Impl extends Synth::T{{name}}{{#bases2}}, {{.}}{{/bases2}} {
   {{#root}}
     /**
      * Gets the string representation of this element.
@@ -167,4 +167,13 @@ module Generated {
     {{/is_unordered}}
     {{/properties}}
   }
+
+  /**
+  {{#doc}}
+   * {{.}}
+  {{/doc}}
+   * INTERNAL: Do not reference the `Generated::{{name}}` class directly.
+   * Use the subclass `{{name}}`, where the following predicates are available.
+   */
+  final class {{name}} extends {{#bases3}} {{.}}{{/bases3}} { }
 }

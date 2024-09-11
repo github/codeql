@@ -7,9 +7,13 @@ private import {{import_prefix}}.Synth
 {{/has_synth_accessors}}
 
 {{>ql_stub_class_qldoc}}
-class {{name}} extends Generated::{{name}} {
+class {{name}}Impl extends Generated::{{name}}Impl {
     {{#synth_accessors}}
     private
     cached {{type}} getUnderlying{{argument}}() { this = Synth::T{{name}}({{#constructorparams}}{{^first}},{{/first}}{{param}}{{/constructorparams}})}
     {{/synth_accessors}}
 }
+
+private final class {{name}}ImplFinal = {{name}}Impl;
+
+final class {{name}} extends {{name}}ImplFinal, Generated::{{name}} { }

@@ -163,7 +163,10 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         properties.append(prop)
     return ql.Class(
         name=cls.name,
-        bases=cls.bases,
+        bases=[c for c in cls.bases],
+        # bases2=[base + "_Gen::" + base + "Impl" for base in cls.bases],
+        bases2=[base + "Impl" for base in cls.bases],
+        bases3=[cls.name + "Impl"]  if len(cls.bases) == 0 else [base + "Impl" for base in cls.bases], #[base + "_Gen::" + base for base in cls.bases],
         final=not cls.derived,
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
@@ -207,7 +210,10 @@ def get_ql_synth_class(cls: schema.Class):
 
 def get_import(file: pathlib.Path, root_dir: pathlib.Path):
     stem = file.relative_to(root_dir / "ql/lib").with_suffix("")
-    return str(stem).replace("/", ".")
+    res = str(stem).replace("/", ".")
+    # if ".elements." in res:
+    #     return res.replace("elements","generated") + "::Generated"
+    return res
 
 
 def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
@@ -383,12 +389,24 @@ def generate(opts, renderer):
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
             imports[c.name] = get_import(stub_out / c.path, opts.root_dir)
+            # imports["Generated::" + c.name] = get_import(stub_out / c.path, opts.root_dir)
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
-            c.imports = [imports[t] for t in get_classes_used_by(c)]
+            c.imports = [
+                imports[t].replace("elements","generated") + "::Generated as " + t + "_Gen" if ".elements." in imports[t] else imports[t]
+ for t in get_classes_used_by(c)
+                ]
+            c.imports = c.imports + [
+                imports[t] for t in get_classes_used_by(c)
+                ]
             c.import_prefix = generated_import_prefix
+            # old_bases = c.bases
+            # c.bases = [base.with_suffix(str(base) + "_Gen::") for base in c.bases]
+            # for base in c.bases:
+            #     base.add_suffix(str(base) + "_Gen::")
             renderer.render(c, qll)
+            # c.bases = old_bases
 
         for c in data.classes.values():
             path = _get_path(c)
@@ -402,7 +420,7 @@ def generate(opts, renderer):
                 _patch_class_qldoc(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not name in classes or not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -410,7 +428,7 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
+                imports=[elements_module] + [i for name, i in imports.items() if not name in classes or classes[name].internal],
             ),
             out / 'ParentChild.qll')
 

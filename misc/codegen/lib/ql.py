@@ -94,6 +94,11 @@ class Base:
     def __str__(self):
         return self.base
 
+    def with_suffix(self, suffix):
+        base = suffix + self.base
+        prev = self.prev if self.prev is "" else suffix + self.prev
+        return Base(base, prev)
+
 
 @dataclass
 class Class:
@@ -101,6 +106,8 @@ class Class:
 
     name: str
     bases: List[Base] = field(default_factory=list)
+    bases2: List[Base] = field(default_factory=list)
+    bases3: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
@@ -115,6 +122,8 @@ class Class:
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
+        self.bases2 = [Base(str(b), str(prev)) for b, prev in zip(self.bases2, itertools.chain([""], self.bases2))]
+        self.bases3 = [Base(str(b), str(prev)) for b, prev in zip(self.bases3, itertools.chain([""], self.bases3))]
         if self.properties:
             self.properties[0].first = True
 
