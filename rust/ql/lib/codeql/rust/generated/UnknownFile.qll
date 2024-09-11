@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.File::Generated as File_Gen
 import codeql.rust.elements.File
+import codeql.rust.elements.FileImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnknownFile` and should not

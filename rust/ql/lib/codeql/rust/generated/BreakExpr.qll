@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Expr::Generated as Expr_Gen
-import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
+import codeql.rust.elements.ExprImpl
+import codeql.rust.elements.LabelImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BreakExpr` and should not

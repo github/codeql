@@ -6,12 +6,12 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Expr::Generated as Expr_Gen
-import codeql.rust.generated.Pat::Generated as Pat_Gen
-import codeql.rust.generated.TypeRef::Generated as TypeRef_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.TypeRef
+import codeql.rust.elements.ExprImpl
+import codeql.rust.elements.PatImpl
+import codeql.rust.elements.TypeRefImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not

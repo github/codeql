@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.BlockExprBase::Generated as BlockExprBase_Gen
-import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.BlockExprBase
 import codeql.rust.elements.Label
+import codeql.rust.elements.BlockExprBaseImpl
+import codeql.rust.elements.LabelImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BlockExpr` and should not

@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.AstNodeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Stmt` and should not

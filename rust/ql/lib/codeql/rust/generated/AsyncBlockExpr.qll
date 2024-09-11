@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.BlockExprBase::Generated as BlockExprBase_Gen
 import codeql.rust.elements.BlockExprBase
+import codeql.rust.elements.BlockExprBaseImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsyncBlockExpr` and should not

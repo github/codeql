@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Stmt::Generated as Stmt_Gen
 import codeql.rust.elements.Stmt
+import codeql.rust.elements.StmtImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ItemStmt` and should not

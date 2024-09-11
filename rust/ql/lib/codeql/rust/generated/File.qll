@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Element::Generated as Element_Gen
 import codeql.rust.elements.Element
+import codeql.rust.elements.ElementImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `File` and should not

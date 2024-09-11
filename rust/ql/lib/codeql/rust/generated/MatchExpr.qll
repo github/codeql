@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Expr::Generated as Expr_Gen
-import codeql.rust.generated.MatchArm::Generated as MatchArm_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.MatchArm
+import codeql.rust.elements.ExprImpl
+import codeql.rust.elements.MatchArmImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MatchExpr` and should not

@@ -179,6 +179,20 @@ class Stub:
     def has_qldoc(self) -> bool:
         return bool(self.doc) or self.internal
 
+@dataclass
+class StubFinal:
+    template: ClassVar = 'ql_stub_final'
+
+    name: str
+    base_import: str
+    import_prefix: str
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc) or self.internal
+
 
 @dataclass
 class DbClasses:

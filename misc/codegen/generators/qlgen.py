@@ -242,6 +242,10 @@ def format(codeql, files):
 
 
 def _get_path(cls: schema.Class) -> pathlib.Path:
+    return pathlib.Path(cls.group or "", cls.name+"Impl").with_suffix(".qll")
+
+
+def _get_path2(cls: schema.Class) -> pathlib.Path:
     return pathlib.Path(cls.group or "", cls.name).with_suffix(".qll")
 
 
@@ -324,6 +328,11 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
                    doc=cls.doc, synth_accessors=accessors,
                    internal="ql_internal" in cls.pragmas)
 
+def _get_stub2(cls: schema.Class, base_import: str, generated_import_prefix: str) -> ql.StubFinal:
+    return ql.StubFinal(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
+                   doc=cls.doc,
+                   internal="ql_internal" in cls.pragmas)
+
 
 _stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
 
@@ -389,16 +398,22 @@ def generate(opts, renderer):
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
             imports[c.name] = get_import(stub_out / c.path, opts.root_dir)
+            # imports[c.name+"Impl"] = get_import(stub_out / c.path, opts.root_dir)+"Impl"
             # imports["Generated::" + c.name] = get_import(stub_out / c.path, opts.root_dir)
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
+#             c.imports = [
+#                 imports[t].replace("elements","generated") + "::Generated as " + t + "_Gen" if ".elements." in imports[t] else imports[t]
+#  for t in get_classes_used_by(c)
+#                 ]
+#             c.imports = c.imports + [
+#                 imports[t] for t in get_classes_used_by(c)
+#                 ]
             c.imports = [
-                imports[t].replace("elements","generated") + "::Generated as " + t + "_Gen" if ".elements." in imports[t] else imports[t]
- for t in get_classes_used_by(c)
-                ]
-            c.imports = c.imports + [
                 imports[t] for t in get_classes_used_by(c)
+                ] + [
+                imports[t]+"Impl" for t in get_classes_used_by(c)
                 ]
             c.import_prefix = generated_import_prefix
             # old_bases = c.bases
@@ -410,14 +425,21 @@ def generate(opts, renderer):
 
         for c in data.classes.values():
             path = _get_path(c)
+            path2 = _get_path2(c)
             stub_file = stub_out / path
-            base_import = get_import(out / path, opts.root_dir)
+            base_import = get_import(out / path2, opts.root_dir)
             stub = _get_stub(c, base_import, generated_import_prefix)
+            print(base_import)
+            print(path)
+            # exit
             if not renderer.is_customized_stub(stub_file):
                 renderer.render(stub, stub_file)
             else:
                 qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
                 _patch_class_qldoc(c.name, qldoc, stub_file)
+            stub2 = _get_stub2(c, base_import, generated_import_prefix)
+            stub_file2 = stub_out / path2
+            renderer.render(stub2, stub_file2)
 
         # for example path/to/elements -> path/to/elements.qll
         renderer.render(ql.ImportList([i for name, i in imports.items() if not name in classes or not classes[name].internal]),

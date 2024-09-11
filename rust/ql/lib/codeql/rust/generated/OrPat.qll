@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
+import codeql.rust.elements.PatImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `OrPat` and should not

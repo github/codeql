@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.ArrayExpr::Generated as ArrayExpr_Gen
-import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.ArrayExprImpl
+import codeql.rust.elements.ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RepeatExpr` and should not

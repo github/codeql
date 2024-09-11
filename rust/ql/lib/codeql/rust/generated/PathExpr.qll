@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Expr::Generated as Expr_Gen
-import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.ExprImpl
+import codeql.rust.elements.UnimplementedImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathExpr` and should not

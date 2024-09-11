@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Pat::Generated as Pat_Gen
-import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.PatImpl
+import codeql.rust.elements.UnimplementedImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathPat` and should not

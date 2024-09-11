@@ -6,8 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Declaration::Generated as Declaration_Gen
 import codeql.rust.elements.Declaration
+import codeql.rust.elements.DeclarationImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Module` and should not

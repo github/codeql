@@ -6,10 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.generated.Element::Generated as Element_Gen
-import codeql.rust.generated.Location::Generated as Location_Gen
 import codeql.rust.elements.Element
 import codeql.rust.elements.Location
+import codeql.rust.elements.ElementImpl
+import codeql.rust.elements.LocationImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Locatable` and should not
