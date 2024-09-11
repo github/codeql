@@ -419,7 +419,7 @@ private predicate guardingFunctionHelper(
   // (and we have (this has outcome ==> arg is checked))
   // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
   // so we need to swap outcome and (specifically boolean) p:
-  DataFlow::booleanProperty(pragma[only_bind_into](outcome)).checkOn(ret, p.asBoolean(), g)
+  DataFlow::booleanProperty(outcome).checkOn(ret, p.asBoolean(), g)
 }
 
 DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {
