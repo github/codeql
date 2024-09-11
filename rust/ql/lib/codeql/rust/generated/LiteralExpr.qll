@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::LiteralExprImpl` class directly.
+   * Use the subclass `LiteralExpr`, where the following predicates are available.
+   */
+  class LiteralExprImpl extends Synth::TLiteralExpr, ExprImpl {
+    override string getAPrimaryQlClass() { result = "LiteralExpr" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::LiteralExpr` class directly.
    * Use the subclass `LiteralExpr`, where the following predicates are available.
    */
-  class LiteralExpr extends Synth::TLiteralExpr, Expr {
-    override string getAPrimaryQlClass() { result = "LiteralExpr" }
-  }
+  final class LiteralExpr extends ExprImpl { }
 }

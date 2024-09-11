@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.MatchArm::Generated as MatchArm_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.MatchArm
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.MatchArm
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::MatchExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::MatchExprImpl` class directly.
    * Use the subclass `MatchExpr`, where the following predicates are available.
    */
-  class MatchExpr extends Synth::TMatchExpr, Expr {
+  class MatchExprImpl extends Synth::TMatchExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "MatchExpr" }
 
     /**
@@ -49,4 +51,10 @@ module Generated {
      */
     final int getNumberOfBranches() { result = count(int i | exists(this.getBranch(i))) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::MatchExpr` class directly.
+   * Use the subclass `MatchExpr`, where the following predicates are available.
+   */
+  final class MatchExpr extends ExprImpl { }
 }

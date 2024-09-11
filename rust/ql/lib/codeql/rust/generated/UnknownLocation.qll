@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Location::Generated as Location_Gen
 import codeql.rust.elements.Location
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Location
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::UnknownLocationImpl` class directly.
+   * Use the subclass `UnknownLocation`, where the following predicates are available.
+   */
+  class UnknownLocationImpl extends Synth::TUnknownLocation, LocationImpl {
+    override string getAPrimaryQlClass() { result = "UnknownLocation" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::UnknownLocation` class directly.
    * Use the subclass `UnknownLocation`, where the following predicates are available.
    */
-  class UnknownLocation extends Synth::TUnknownLocation, Location {
-    override string getAPrimaryQlClass() { result = "UnknownLocation" }
-  }
+  final class UnknownLocation extends LocationImpl { }
 }

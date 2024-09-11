@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.OffsetOfExpr
 
-class OffsetOfExpr extends Generated::OffsetOfExpr { }
+class OffsetOfExprImpl extends Generated::OffsetOfExprImpl { }
+
+final private class OffsetOfExprImplFinal = OffsetOfExprImpl;
+
+final class OffsetOfExpr extends OffsetOfExprImplFinal, Generated::OffsetOfExpr { }

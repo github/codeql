@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.YeetExpr
 
-class YeetExpr extends Generated::YeetExpr { }
+class YeetExprImpl extends Generated::YeetExprImpl { }
+
+final private class YeetExprImplFinal = YeetExprImpl;
+
+final class YeetExpr extends YeetExprImplFinal, Generated::YeetExpr { }

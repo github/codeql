@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::Label` class directly.
+   * INTERNAL: Do not reference the `Generated::LabelImpl` class directly.
    * Use the subclass `Label`, where the following predicates are available.
    */
-  class Label extends Synth::TLabel, AstNode {
+  class LabelImpl extends Synth::TLabel, AstNodeImpl {
     override string getAPrimaryQlClass() { result = "Label" }
 
     /**
@@ -25,4 +26,10 @@ module Generated {
      */
     string getName() { result = Synth::convertLabelToRaw(this).(Raw::Label).getName() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::Label` class directly.
+   * Use the subclass `Label`, where the following predicates are available.
+   */
+  final class Label extends AstNodeImpl { }
 }

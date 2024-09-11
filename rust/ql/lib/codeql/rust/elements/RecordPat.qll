@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RecordPat
 
-class RecordPat extends Generated::RecordPat { }
+class RecordPatImpl extends Generated::RecordPatImpl { }
+
+final private class RecordPatImplFinal = RecordPatImpl;
+
+final class RecordPat extends RecordPatImplFinal, Generated::RecordPat { }

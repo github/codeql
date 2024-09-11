@@ -4,7 +4,7 @@
 
 private import codeql.rust.generated.Location
 
-class Location extends Generated::Location {
+class LocationImpl extends Generated::LocationImpl {
   /**
    * Holds if this location is described by `path`, `startLine`, `startColumn`, `endLine` and `endColumn`.
    */
@@ -27,3 +27,5 @@ class Location extends Generated::Location {
     )
   }
 }
+
+final class Location = LocationImpl;

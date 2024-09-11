@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Unimplemented
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::MethodCallExprImpl` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
-  class MethodCallExpr extends Synth::TMethodCallExpr, Expr {
+  class MethodCallExprImpl extends Synth::TMethodCallExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 
     /**
@@ -73,4 +75,10 @@ module Generated {
      */
     final predicate hasGenericArgs() { exists(this.getGenericArgs()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
+   * Use the subclass `MethodCallExpr`, where the following predicates are available.
+   */
+  final class MethodCallExpr extends ExprImpl { }
 }

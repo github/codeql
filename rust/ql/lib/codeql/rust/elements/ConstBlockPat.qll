@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ConstBlockPat
 
-class ConstBlockPat extends Generated::ConstBlockPat { }
+class ConstBlockPatImpl extends Generated::ConstBlockPatImpl { }
+
+final private class ConstBlockPatImplFinal = ConstBlockPatImpl;
+
+final class ConstBlockPat extends ConstBlockPatImplFinal, Generated::ConstBlockPat { }

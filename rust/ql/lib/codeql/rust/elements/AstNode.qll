@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.AstNode
 
-class AstNode extends Generated::AstNode { }
+class AstNodeImpl extends Generated::AstNodeImpl { }
+
+final private class AstNodeImplFinal = AstNodeImpl;
+
+final class AstNode extends AstNodeImplFinal, Generated::AstNode { }

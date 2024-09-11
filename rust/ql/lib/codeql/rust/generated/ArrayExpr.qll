@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,8 +15,14 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::ArrayExprImpl` class directly.
+   * Use the subclass `ArrayExpr`, where the following predicates are available.
+   */
+  class ArrayExprImpl extends Synth::TArrayExpr, ExprImpl { }
+
+  /**
    * INTERNAL: Do not reference the `Generated::ArrayExpr` class directly.
    * Use the subclass `ArrayExpr`, where the following predicates are available.
    */
-  class ArrayExpr extends Synth::TArrayExpr, Expr { }
+  final class ArrayExpr extends ExprImpl { }
 }

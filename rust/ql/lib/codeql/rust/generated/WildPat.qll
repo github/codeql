@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::WildPatImpl` class directly.
+   * Use the subclass `WildPat`, where the following predicates are available.
+   */
+  class WildPatImpl extends Synth::TWildPat, PatImpl {
+    override string getAPrimaryQlClass() { result = "WildPat" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::WildPat` class directly.
    * Use the subclass `WildPat`, where the following predicates are available.
    */
-  class WildPat extends Synth::TWildPat, Pat {
-    override string getAPrimaryQlClass() { result = "WildPat" }
-  }
+  final class WildPat extends PatImpl { }
 }

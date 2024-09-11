@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::UnderscoreExprImpl` class directly.
+   * Use the subclass `UnderscoreExpr`, where the following predicates are available.
+   */
+  class UnderscoreExprImpl extends Synth::TUnderscoreExpr, ExprImpl {
+    override string getAPrimaryQlClass() { result = "UnderscoreExpr" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::UnderscoreExpr` class directly.
    * Use the subclass `UnderscoreExpr`, where the following predicates are available.
    */
-  class UnderscoreExpr extends Synth::TUnderscoreExpr, Expr {
-    override string getAPrimaryQlClass() { result = "UnderscoreExpr" }
-  }
+  final class UnderscoreExpr extends ExprImpl { }
 }

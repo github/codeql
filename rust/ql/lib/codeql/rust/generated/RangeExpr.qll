@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RangeExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::RangeExprImpl` class directly.
    * Use the subclass `RangeExpr`, where the following predicates are available.
    */
-  class RangeExpr extends Synth::TRangeExpr, Expr {
+  class RangeExprImpl extends Synth::TRangeExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "RangeExpr" }
 
     /**
@@ -51,4 +52,10 @@ module Generated {
      */
     predicate isInclusive() { Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).isInclusive() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RangeExpr` class directly.
+   * Use the subclass `RangeExpr`, where the following predicates are available.
+   */
+  final class RangeExpr extends ExprImpl { }
 }

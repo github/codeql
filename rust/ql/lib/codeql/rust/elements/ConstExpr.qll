@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ConstExpr
 
-class ConstExpr extends Generated::ConstExpr { }
+class ConstExprImpl extends Generated::ConstExprImpl { }
+
+final private class ConstExprImplFinal = ConstExprImpl;
+
+final class ConstExpr extends ConstExprImplFinal, Generated::ConstExpr { }

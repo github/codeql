@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.MethodCallExpr
 
-class MethodCallExpr extends Generated::MethodCallExpr { }
+class MethodCallExprImpl extends Generated::MethodCallExprImpl { }
+
+final private class MethodCallExprImplFinal = MethodCallExprImpl;
+
+final class MethodCallExpr extends MethodCallExprImplFinal, Generated::MethodCallExpr { }

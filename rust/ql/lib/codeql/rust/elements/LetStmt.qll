@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.LetStmt
 
-class LetStmt extends Generated::LetStmt { }
+class LetStmtImpl extends Generated::LetStmtImpl { }
+
+final private class LetStmtImplFinal = LetStmtImpl;
+
+final class LetStmt extends LetStmtImplFinal, Generated::LetStmt { }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.UnderscoreExpr
 
-class UnderscoreExpr extends Generated::UnderscoreExpr { }
+class UnderscoreExprImpl extends Generated::UnderscoreExprImpl { }
+
+final private class UnderscoreExprImplFinal = UnderscoreExprImpl;
+
+final class UnderscoreExpr extends UnderscoreExprImplFinal, Generated::UnderscoreExpr { }

@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Stmt::Generated as Stmt_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::ExprStmt` class directly.
+   * INTERNAL: Do not reference the `Generated::ExprStmtImpl` class directly.
    * Use the subclass `ExprStmt`, where the following predicates are available.
    */
-  class ExprStmt extends Synth::TExprStmt, Stmt {
+  class ExprStmtImpl extends Synth::TExprStmt, StmtImpl {
     override string getAPrimaryQlClass() { result = "ExprStmt" }
 
     /**
@@ -34,4 +36,10 @@ module Generated {
      */
     predicate hasSemicolon() { Synth::convertExprStmtToRaw(this).(Raw::ExprStmt).hasSemicolon() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::ExprStmt` class directly.
+   * Use the subclass `ExprStmt`, where the following predicates are available.
+   */
+  final class ExprStmt extends StmtImpl { }
 }

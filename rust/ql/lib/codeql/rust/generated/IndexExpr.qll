@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::IndexExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::IndexExprImpl` class directly.
    * Use the subclass `IndexExpr`, where the following predicates are available.
    */
-  class IndexExpr extends Synth::TIndexExpr, Expr {
+  class IndexExprImpl extends Synth::TIndexExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "IndexExpr" }
 
     /**
@@ -43,4 +44,10 @@ module Generated {
       Synth::convertIndexExprToRaw(this).(Raw::IndexExpr).isAssigneeExpr()
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::IndexExpr` class directly.
+   * Use the subclass `IndexExpr`, where the following predicates are available.
+   */
+  final class IndexExpr extends ExprImpl { }
 }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RecordLitExpr
 
-class RecordLitExpr extends Generated::RecordLitExpr { }
+class RecordLitExprImpl extends Generated::RecordLitExprImpl { }
+
+final private class RecordLitExprImplFinal = RecordLitExprImpl;
+
+final class RecordLitExpr extends RecordLitExprImplFinal, Generated::RecordLitExpr { }

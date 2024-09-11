@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BreakExpr
 
-class BreakExpr extends Generated::BreakExpr { }
+class BreakExprImpl extends Generated::BreakExprImpl { }
+
+final private class BreakExprImplFinal = BreakExprImpl;
+
+final class BreakExpr extends BreakExprImplFinal, Generated::BreakExpr { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RefExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::RefExprImpl` class directly.
    * Use the subclass `RefExpr`, where the following predicates are available.
    */
-  class RefExpr extends Synth::TRefExpr, Expr {
+  class RefExprImpl extends Synth::TRefExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "RefExpr" }
 
     /**
@@ -37,4 +38,10 @@ module Generated {
      */
     predicate isMut() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isMut() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RefExpr` class directly.
+   * Use the subclass `RefExpr`, where the following predicates are available.
+   */
+  final class RefExpr extends ExprImpl { }
 }

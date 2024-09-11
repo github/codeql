@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::IfExprImpl` class directly.
    * Use the subclass `IfExpr`, where the following predicates are available.
    */
-  class IfExpr extends Synth::TIfExpr, Expr {
+  class IfExprImpl extends Synth::TIfExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "IfExpr" }
 
     /**
@@ -47,4 +48,10 @@ module Generated {
      */
     final predicate hasElse() { exists(this.getElse()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
+   * Use the subclass `IfExpr`, where the following predicates are available.
+   */
+  final class IfExpr extends ExprImpl { }
 }

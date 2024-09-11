@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.ArrayExpr::Generated as ArrayExpr_Gen
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.Expr
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RepeatExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::RepeatExprImpl` class directly.
    * Use the subclass `RepeatExpr`, where the following predicates are available.
    */
-  class RepeatExpr extends Synth::TRepeatExpr, ArrayExpr {
+  class RepeatExprImpl extends Synth::TRepeatExpr, ArrayExprImpl {
     override string getAPrimaryQlClass() { result = "RepeatExpr" }
 
     /**
@@ -39,4 +41,10 @@ module Generated {
         Synth::convertExprFromRaw(Synth::convertRepeatExprToRaw(this).(Raw::RepeatExpr).getRepeat())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RepeatExpr` class directly.
+   * Use the subclass `RepeatExpr`, where the following predicates are available.
+   */
+  final class RepeatExpr extends ArrayExprImpl { }
 }

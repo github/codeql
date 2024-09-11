@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Unimplemented
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::PathExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::PathExprImpl` class directly.
    * Use the subclass `PathExpr`, where the following predicates are available.
    */
-  class PathExpr extends Synth::TPathExpr, Expr {
+  class PathExprImpl extends Synth::TPathExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "PathExpr" }
 
     /**
@@ -31,4 +33,10 @@ module Generated {
               .getPath())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::PathExpr` class directly.
+   * Use the subclass `PathExpr`, where the following predicates are available.
+   */
+  final class PathExpr extends ExprImpl { }
 }

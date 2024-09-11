@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::BreakExprImpl` class directly.
    * Use the subclass `BreakExpr`, where the following predicates are available.
    */
-  class BreakExpr extends Synth::TBreakExpr, Expr {
+  class BreakExprImpl extends Synth::TBreakExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "BreakExpr" }
 
     /**
@@ -47,4 +49,10 @@ module Generated {
      */
     final predicate hasLabel() { exists(this.getLabel()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
+   * Use the subclass `BreakExpr`, where the following predicates are available.
+   */
+  final class BreakExpr extends ExprImpl { }
 }

@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
+import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Unimplemented
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::PathPat` class directly.
+   * INTERNAL: Do not reference the `Generated::PathPatImpl` class directly.
    * Use the subclass `PathPat`, where the following predicates are available.
    */
-  class PathPat extends Synth::TPathPat, Pat {
+  class PathPatImpl extends Synth::TPathPat, PatImpl {
     override string getAPrimaryQlClass() { result = "PathPat" }
 
     /**
@@ -29,4 +31,10 @@ module Generated {
         Synth::convertUnimplementedFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::PathPat` class directly.
+   * Use the subclass `PathPat`, where the following predicates are available.
+   */
+  final class PathPat extends PatImpl { }
 }

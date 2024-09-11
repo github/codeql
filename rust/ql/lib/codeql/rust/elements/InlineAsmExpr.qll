@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.InlineAsmExpr
 
-class InlineAsmExpr extends Generated::InlineAsmExpr { }
+class InlineAsmExprImpl extends Generated::InlineAsmExprImpl { }
+
+final private class InlineAsmExprImplFinal = InlineAsmExprImpl;
+
+final class InlineAsmExpr extends InlineAsmExprImplFinal, Generated::InlineAsmExpr { }

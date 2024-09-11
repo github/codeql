@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::AwaitExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::AwaitExprImpl` class directly.
    * Use the subclass `AwaitExpr`, where the following predicates are available.
    */
-  class AwaitExpr extends Synth::TAwaitExpr, Expr {
+  class AwaitExprImpl extends Synth::TAwaitExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "AwaitExpr" }
 
     /**
@@ -28,4 +29,10 @@ module Generated {
         Synth::convertExprFromRaw(Synth::convertAwaitExprToRaw(this).(Raw::AwaitExpr).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::AwaitExpr` class directly.
+   * Use the subclass `AwaitExpr`, where the following predicates are available.
+   */
+  final class AwaitExpr extends ExprImpl { }
 }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.File::Generated as File_Gen
 import codeql.rust.elements.File
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.File
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::UnknownFileImpl` class directly.
+   * Use the subclass `UnknownFile`, where the following predicates are available.
+   */
+  class UnknownFileImpl extends Synth::TUnknownFile, FileImpl {
+    override string getAPrimaryQlClass() { result = "UnknownFile" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::UnknownFile` class directly.
    * Use the subclass `UnknownFile`, where the following predicates are available.
    */
-  class UnknownFile extends Synth::TUnknownFile, File {
-    override string getAPrimaryQlClass() { result = "UnknownFile" }
-  }
+  final class UnknownFile extends FileImpl { }
 }

@@ -4,6 +4,8 @@
 
 private import codeql.rust.generated.UnknownFile
 
-class UnknownFile extends Generated::UnknownFile {
+class UnknownFileImpl extends Generated::UnknownFileImpl {
   override string getName() { result = "" }
 }
+
+final class UnknownFile = UnknownFileImpl;

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BlockExpr
 
-class BlockExpr extends Generated::BlockExpr { }
+class BlockExprImpl extends Generated::BlockExprImpl { }
+
+final private class BlockExprImplFinal = BlockExprImpl;
+
+final class BlockExpr extends BlockExprImplFinal, Generated::BlockExpr { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,8 +15,14 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::ExprImpl` class directly.
+   * Use the subclass `Expr`, where the following predicates are available.
+   */
+  class ExprImpl extends Synth::TExpr, AstNodeImpl { }
+
+  /**
    * INTERNAL: Do not reference the `Generated::Expr` class directly.
    * Use the subclass `Expr`, where the following predicates are available.
    */
-  class Expr extends Synth::TExpr, AstNode { }
+  final class Expr extends AstNodeImpl { }
 }

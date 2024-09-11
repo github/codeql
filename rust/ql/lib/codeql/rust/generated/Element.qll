@@ -13,10 +13,10 @@ private import codeql.rust.generated.Raw
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::Element` class directly.
+   * INTERNAL: Do not reference the `Generated::ElementImpl` class directly.
    * Use the subclass `Element`, where the following predicates are available.
    */
-  class Element extends Synth::TElement {
+  class ElementImpl extends Synth::TElement {
     /**
      * Gets the string representation of this element.
      */
@@ -54,4 +54,10 @@ module Generated {
       result = this.getResolveStep().resolve()
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::Element` class directly.
+   * Use the subclass `Element`, where the following predicates are available.
+   */
+  final class Element extends ElementImpl { }
 }

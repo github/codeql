@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.CallExpr
 
-class CallExpr extends Generated::CallExpr { }
+class CallExprImpl extends Generated::CallExprImpl { }
+
+final private class CallExprImplFinal = CallExprImpl;
+
+final class CallExpr extends CallExprImplFinal, Generated::CallExpr { }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Unimplemented
 
-class Unimplemented extends Generated::Unimplemented { }
+class UnimplementedImpl extends Generated::UnimplementedImpl { }
+
+final private class UnimplementedImplFinal = UnimplementedImpl;
+
+final class Unimplemented extends UnimplementedImplFinal, Generated::Unimplemented { }

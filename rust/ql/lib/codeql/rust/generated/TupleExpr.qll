@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::TupleExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::TupleExprImpl` class directly.
    * Use the subclass `TupleExpr`, where the following predicates are available.
    */
-  class TupleExpr extends Synth::TTupleExpr, Expr {
+  class TupleExprImpl extends Synth::TTupleExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "TupleExpr" }
 
     /**
@@ -45,4 +46,10 @@ module Generated {
       Synth::convertTupleExprToRaw(this).(Raw::TupleExpr).isAssigneeExpr()
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::TupleExpr` class directly.
+   * Use the subclass `TupleExpr`, where the following predicates are available.
+   */
+  final class TupleExpr extends ExprImpl { }
 }

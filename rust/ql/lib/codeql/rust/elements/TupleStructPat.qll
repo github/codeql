@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.TupleStructPat
 
-class TupleStructPat extends Generated::TupleStructPat { }
+class TupleStructPatImpl extends Generated::TupleStructPatImpl { }
+
+final private class TupleStructPatImplFinal = TupleStructPatImpl;
+
+final class TupleStructPat extends TupleStructPatImplFinal, Generated::TupleStructPat { }

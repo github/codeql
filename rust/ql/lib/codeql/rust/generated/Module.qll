@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Declaration::Generated as Declaration_Gen
 import codeql.rust.elements.Declaration
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Declaration
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::Module` class directly.
+   * INTERNAL: Do not reference the `Generated::ModuleImpl` class directly.
    * Use the subclass `Module`, where the following predicates are available.
    */
-  class Module extends Synth::TModule, Declaration {
+  class ModuleImpl extends Synth::TModule, DeclarationImpl {
     override string getAPrimaryQlClass() { result = "Module" }
 
     /**
@@ -40,4 +41,10 @@ module Generated {
      */
     final int getNumberOfDeclarations() { result = count(int i | exists(this.getDeclaration(i))) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::Module` class directly.
+   * Use the subclass `Module`, where the following predicates are available.
+   */
+  final class Module extends DeclarationImpl { }
 }

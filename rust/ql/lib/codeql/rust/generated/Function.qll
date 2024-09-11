@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Declaration::Generated as Declaration_Gen
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Declaration
 import codeql.rust.elements.Expr
 
@@ -25,10 +27,10 @@ module Generated {
    *     fn bar();
    * }
    * ```
-   * INTERNAL: Do not reference the `Generated::Function` class directly.
+   * INTERNAL: Do not reference the `Generated::FunctionImpl` class directly.
    * Use the subclass `Function`, where the following predicates are available.
    */
-  class Function extends Synth::TFunction, Declaration {
+  class FunctionImpl extends Synth::TFunction, DeclarationImpl {
     override string getAPrimaryQlClass() { result = "Function" }
 
     /**
@@ -44,4 +46,20 @@ module Generated {
         Synth::convertExprFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getBody())
     }
   }
+
+  /**
+   * A function declaration. For example
+   * ```
+   * fn foo(x: u32) -> u64 { (x + 1).into() }
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
+   * INTERNAL: Do not reference the `Generated::Function` class directly.
+   * Use the subclass `Function`, where the following predicates are available.
+   */
+  final class Function extends DeclarationImpl { }
 }

@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Element::Generated as Element_Gen
+import codeql.rust.generated.File::Generated as File_Gen
 import codeql.rust.elements.Element
 import codeql.rust.elements.File
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.File
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::Location` class directly.
+   * INTERNAL: Do not reference the `Generated::LocationImpl` class directly.
    * Use the subclass `Location`, where the following predicates are available.
    */
-  class Location extends Synth::TLocation, Element {
+  class LocationImpl extends Synth::TLocation, ElementImpl {
     /**
      * Gets the file of this location.
      */
@@ -49,4 +51,10 @@ module Generated {
      */
     int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::Location` class directly.
+   * Use the subclass `Location`, where the following predicates are available.
+   */
+  final class Location extends ElementImpl { }
 }

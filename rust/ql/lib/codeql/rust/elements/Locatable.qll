@@ -6,12 +6,12 @@ private import codeql.rust.generated.Locatable
 private import codeql.rust.elements.File
 private import codeql.rust.elements.UnknownLocation
 
-class Locatable extends Generated::Locatable {
+class LocatableImpl extends Generated::LocatableImpl {
   pragma[nomagic]
   override Location getLocation() {
-    result = Generated::Locatable.super.getLocation()
+    result = Generated::LocatableImpl.super.getLocation()
     or
-    not exists(Generated::Locatable.super.getLocation()) and
+    not exists(Generated::LocatableImpl.super.getLocation()) and
     result instanceof UnknownLocation
   }
 
@@ -20,3 +20,5 @@ class Locatable extends Generated::Locatable {
    */
   File getFile() { result = this.getLocation().getFile() }
 }
+
+final class Locatable = LocatableImpl;

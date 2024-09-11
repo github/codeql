@@ -6,6 +6,9 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
@@ -16,10 +19,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::MatchArm` class directly.
+   * INTERNAL: Do not reference the `Generated::MatchArmImpl` class directly.
    * Use the subclass `MatchArm`, where the following predicates are available.
    */
-  class MatchArm extends Synth::TMatchArm, AstNode {
+  class MatchArmImpl extends Synth::TMatchArm, AstNodeImpl {
     override string getAPrimaryQlClass() { result = "MatchArm" }
 
     /**
@@ -50,4 +53,10 @@ module Generated {
         Synth::convertExprFromRaw(Synth::convertMatchArmToRaw(this).(Raw::MatchArm).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::MatchArm` class directly.
+   * Use the subclass `MatchArm`, where the following predicates are available.
+   */
+  final class MatchArm extends AstNodeImpl { }
 }

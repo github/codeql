@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Element::Generated as Element_Gen
 import codeql.rust.elements.Element
 
 /**
@@ -14,13 +15,19 @@ import codeql.rust.elements.Element
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::File` class directly.
+   * INTERNAL: Do not reference the `Generated::FileImpl` class directly.
    * Use the subclass `File`, where the following predicates are available.
    */
-  class File extends Synth::TFile, Element {
+  class FileImpl extends Synth::TFile, ElementImpl {
     /**
      * Gets the name of this file.
      */
     string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::File` class directly.
+   * Use the subclass `File`, where the following predicates are available.
+   */
+  final class File extends ElementImpl { }
 }

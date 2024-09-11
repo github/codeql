@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RefPat
 
-class RefPat extends Generated::RefPat { }
+class RefPatImpl extends Generated::RefPatImpl { }
+
+final private class RefPatImplFinal = RefPatImpl;
+
+final class RefPat extends RefPatImplFinal, Generated::RefPat { }

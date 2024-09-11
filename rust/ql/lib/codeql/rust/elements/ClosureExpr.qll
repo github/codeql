@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ClosureExpr
 
-class ClosureExpr extends Generated::ClosureExpr { }
+class ClosureExprImpl extends Generated::ClosureExprImpl { }
+
+final private class ClosureExprImplFinal = ClosureExprImpl;
+
+final class ClosureExpr extends ClosureExprImplFinal, Generated::ClosureExpr { }

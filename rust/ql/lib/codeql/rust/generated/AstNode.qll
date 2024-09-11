@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Locatable::Generated as Locatable_Gen
 import codeql.rust.elements.Locatable
 
 /**
@@ -14,8 +15,14 @@ import codeql.rust.elements.Locatable
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::AstNodeImpl` class directly.
+   * Use the subclass `AstNode`, where the following predicates are available.
+   */
+  class AstNodeImpl extends Synth::TAstNode, LocatableImpl { }
+
+  /**
    * INTERNAL: Do not reference the `Generated::AstNode` class directly.
    * Use the subclass `AstNode`, where the following predicates are available.
    */
-  class AstNode extends Synth::TAstNode, Locatable { }
+  final class AstNode extends LocatableImpl { }
 }

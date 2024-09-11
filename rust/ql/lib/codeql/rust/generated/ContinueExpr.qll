@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::ContinueExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::ContinueExprImpl` class directly.
    * Use the subclass `ContinueExpr`, where the following predicates are available.
    */
-  class ContinueExpr extends Synth::TContinueExpr, Expr {
+  class ContinueExprImpl extends Synth::TContinueExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "ContinueExpr" }
 
     /**
@@ -36,4 +38,10 @@ module Generated {
      */
     final predicate hasLabel() { exists(this.getLabel()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::ContinueExpr` class directly.
+   * Use the subclass `ContinueExpr`, where the following predicates are available.
+   */
+  final class ContinueExpr extends ExprImpl { }
 }

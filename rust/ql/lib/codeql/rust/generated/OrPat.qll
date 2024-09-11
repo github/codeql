@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::OrPat` class directly.
+   * INTERNAL: Do not reference the `Generated::OrPatImpl` class directly.
    * Use the subclass `OrPat`, where the following predicates are available.
    */
-  class OrPat extends Synth::TOrPat, Pat {
+  class OrPatImpl extends Synth::TOrPat, PatImpl {
     override string getAPrimaryQlClass() { result = "OrPat" }
 
     /**
@@ -37,4 +38,10 @@ module Generated {
      */
     final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::OrPat` class directly.
+   * Use the subclass `OrPat`, where the following predicates are available.
+   */
+  final class OrPat extends PatImpl { }
 }

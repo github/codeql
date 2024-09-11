@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.BlockExprBase::Generated as BlockExprBase_Gen
 import codeql.rust.elements.BlockExprBase
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.BlockExprBase
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::UnsafeBlockExprImpl` class directly.
+   * Use the subclass `UnsafeBlockExpr`, where the following predicates are available.
+   */
+  class UnsafeBlockExprImpl extends Synth::TUnsafeBlockExpr, BlockExprBaseImpl {
+    override string getAPrimaryQlClass() { result = "UnsafeBlockExpr" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::UnsafeBlockExpr` class directly.
    * Use the subclass `UnsafeBlockExpr`, where the following predicates are available.
    */
-  class UnsafeBlockExpr extends Synth::TUnsafeBlockExpr, BlockExprBase {
-    override string getAPrimaryQlClass() { result = "UnsafeBlockExpr" }
-  }
+  final class UnsafeBlockExpr extends BlockExprBaseImpl { }
 }

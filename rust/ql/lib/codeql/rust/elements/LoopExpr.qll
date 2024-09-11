@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.LoopExpr
 
-class LoopExpr extends Generated::LoopExpr { }
+class LoopExprImpl extends Generated::LoopExprImpl { }
+
+final private class LoopExprImplFinal = LoopExprImpl;
+
+final class LoopExpr extends LoopExprImplFinal, Generated::LoopExpr { }

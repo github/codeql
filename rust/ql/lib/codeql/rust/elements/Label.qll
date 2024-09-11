@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Label
 
-class Label extends Generated::Label { }
+class LabelImpl extends Generated::LabelImpl { }
+
+final private class LabelImplFinal = LabelImpl;
+
+final class Label extends LabelImplFinal, Generated::Label { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BoxExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::BoxExprImpl` class directly.
    * Use the subclass `BoxExpr`, where the following predicates are available.
    */
-  class BoxExpr extends Synth::TBoxExpr, Expr {
+  class BoxExprImpl extends Synth::TBoxExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "BoxExpr" }
 
     /**
@@ -27,4 +28,10 @@ module Generated {
       result = Synth::convertExprFromRaw(Synth::convertBoxExprToRaw(this).(Raw::BoxExpr).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BoxExpr` class directly.
+   * Use the subclass `BoxExpr`, where the following predicates are available.
+   */
+  final class BoxExpr extends ExprImpl { }
 }

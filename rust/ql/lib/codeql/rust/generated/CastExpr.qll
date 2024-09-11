@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.TypeRef::Generated as TypeRef_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.TypeRef
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::CastExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::CastExprImpl` class directly.
    * Use the subclass `CastExpr`, where the following predicates are available.
    */
-  class CastExpr extends Synth::TCastExpr, Expr {
+  class CastExprImpl extends Synth::TCastExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "CastExpr" }
 
     /**
@@ -37,4 +39,10 @@ module Generated {
         Synth::convertTypeRefFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getTypeRef())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::CastExpr` class directly.
+   * Use the subclass `CastExpr`, where the following predicates are available.
+   */
+  final class CastExpr extends ExprImpl { }
 }

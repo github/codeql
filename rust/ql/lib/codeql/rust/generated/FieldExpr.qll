@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::FieldExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::FieldExprImpl` class directly.
    * Use the subclass `FieldExpr`, where the following predicates are available.
    */
-  class FieldExpr extends Synth::TFieldExpr, Expr {
+  class FieldExprImpl extends Synth::TFieldExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "FieldExpr" }
 
     /**
@@ -33,4 +34,10 @@ module Generated {
      */
     string getName() { result = Synth::convertFieldExprToRaw(this).(Raw::FieldExpr).getName() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::FieldExpr` class directly.
+   * Use the subclass `FieldExpr`, where the following predicates are available.
+   */
+  final class FieldExpr extends ExprImpl { }
 }

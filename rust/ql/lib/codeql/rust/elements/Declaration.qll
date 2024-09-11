@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Declaration
 
-class Declaration extends Generated::Declaration { }
+class DeclarationImpl extends Generated::DeclarationImpl { }
+
+final private class DeclarationImplFinal = DeclarationImpl;
+
+final class Declaration extends DeclarationImplFinal, Generated::Declaration { }

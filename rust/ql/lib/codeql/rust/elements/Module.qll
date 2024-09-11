@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Module
 
-class Module extends Generated::Module { }
+class ModuleImpl extends Generated::ModuleImpl { }
+
+final private class ModuleImplFinal = ModuleImpl;
+
+final class Module extends ModuleImplFinal, Generated::Module { }

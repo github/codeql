@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.MatchExpr
 
-class MatchExpr extends Generated::MatchExpr { }
+class MatchExprImpl extends Generated::MatchExprImpl { }
+
+final private class MatchExprImplFinal = MatchExprImpl;
+
+final class MatchExpr extends MatchExprImplFinal, Generated::MatchExpr { }

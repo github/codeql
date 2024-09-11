@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.TupleExpr
 
-class TupleExpr extends Generated::TupleExpr { }
+class TupleExprImpl extends Generated::TupleExprImpl { }
+
+final private class TupleExprImplFinal = TupleExprImpl;
+
+final class TupleExpr extends TupleExprImplFinal, Generated::TupleExpr { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::ReturnExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::ReturnExprImpl` class directly.
    * Use the subclass `ReturnExpr`, where the following predicates are available.
    */
-  class ReturnExpr extends Synth::TReturnExpr, Expr {
+  class ReturnExprImpl extends Synth::TReturnExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "ReturnExpr" }
 
     /**
@@ -33,4 +34,10 @@ module Generated {
      */
     final predicate hasExpr() { exists(this.getExpr()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::ReturnExpr` class directly.
+   * Use the subclass `ReturnExpr`, where the following predicates are available.
+   */
+  final class ReturnExpr extends ExprImpl { }
 }

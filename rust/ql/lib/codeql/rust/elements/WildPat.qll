@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.WildPat
 
-class WildPat extends Generated::WildPat { }
+class WildPatImpl extends Generated::WildPatImpl { }
+
+final private class WildPatImplFinal = WildPatImpl;
+
+final class WildPat extends WildPatImplFinal, Generated::WildPat { }

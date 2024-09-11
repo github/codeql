@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,8 +15,14 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::StmtImpl` class directly.
+   * Use the subclass `Stmt`, where the following predicates are available.
+   */
+  class StmtImpl extends Synth::TStmt, AstNodeImpl { }
+
+  /**
    * INTERNAL: Do not reference the `Generated::Stmt` class directly.
    * Use the subclass `Stmt`, where the following predicates are available.
    */
-  class Stmt extends Synth::TStmt, AstNode { }
+  final class Stmt extends AstNodeImpl { }
 }

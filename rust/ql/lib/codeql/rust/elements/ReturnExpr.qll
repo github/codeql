@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ReturnExpr
 
-class ReturnExpr extends Generated::ReturnExpr { }
+class ReturnExprImpl extends Generated::ReturnExprImpl { }
+
+final private class ReturnExprImplFinal = ReturnExprImpl;
+
+final class ReturnExpr extends ReturnExprImplFinal, Generated::ReturnExpr { }

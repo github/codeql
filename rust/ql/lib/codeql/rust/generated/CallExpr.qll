@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::CallExprImpl` class directly.
    * Use the subclass `CallExpr`, where the following predicates are available.
    */
-  class CallExpr extends Synth::TCallExpr, Expr {
+  class CallExprImpl extends Synth::TCallExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "CallExpr" }
 
     /**
@@ -53,4 +54,10 @@ module Generated {
       Synth::convertCallExprToRaw(this).(Raw::CallExpr).isAssigneeExpr()
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
+   * Use the subclass `CallExpr`, where the following predicates are available.
+   */
+  final class CallExpr extends ExprImpl { }
 }

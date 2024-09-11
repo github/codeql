@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BindPat
 
-class BindPat extends Generated::BindPat { }
+class BindPatImpl extends Generated::BindPatImpl { }
+
+final private class BindPatImplFinal = BindPatImpl;
+
+final class BindPat extends BindPatImplFinal, Generated::BindPat { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.BlockExprBase::Generated as BlockExprBase_Gen
 import codeql.rust.elements.BlockExprBase
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.BlockExprBase
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::AsyncBlockExprImpl` class directly.
+   * Use the subclass `AsyncBlockExpr`, where the following predicates are available.
+   */
+  class AsyncBlockExprImpl extends Synth::TAsyncBlockExpr, BlockExprBaseImpl {
+    override string getAPrimaryQlClass() { result = "AsyncBlockExpr" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::AsyncBlockExpr` class directly.
    * Use the subclass `AsyncBlockExpr`, where the following predicates are available.
    */
-  class AsyncBlockExpr extends Synth::TAsyncBlockExpr, BlockExprBase {
-    override string getAPrimaryQlClass() { result = "AsyncBlockExpr" }
-  }
+  final class AsyncBlockExpr extends BlockExprBaseImpl { }
 }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.AwaitExpr
 
-class AwaitExpr extends Generated::AwaitExpr { }
+class AwaitExprImpl extends Generated::AwaitExprImpl { }
+
+final private class AwaitExprImplFinal = AwaitExprImpl;
+
+final class AwaitExpr extends AwaitExprImplFinal, Generated::AwaitExpr { }

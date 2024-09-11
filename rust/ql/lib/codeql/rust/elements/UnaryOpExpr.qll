@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.UnaryOpExpr
 
-class UnaryOpExpr extends Generated::UnaryOpExpr { }
+class UnaryOpExprImpl extends Generated::UnaryOpExprImpl { }
+
+final private class UnaryOpExprImplFinal = UnaryOpExprImpl;
+
+final class UnaryOpExpr extends UnaryOpExprImplFinal, Generated::UnaryOpExpr { }

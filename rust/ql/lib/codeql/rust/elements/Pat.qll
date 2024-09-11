@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Pat
 
-class Pat extends Generated::Pat { }
+class PatImpl extends Generated::PatImpl { }
+
+final private class PatImplFinal = PatImpl;
+
+final class Pat extends PatImplFinal, Generated::Pat { }

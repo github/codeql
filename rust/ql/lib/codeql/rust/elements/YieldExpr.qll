@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.YieldExpr
 
-class YieldExpr extends Generated::YieldExpr { }
+class YieldExprImpl extends Generated::YieldExprImpl { }
+
+final private class YieldExprImplFinal = YieldExprImpl;
+
+final class YieldExpr extends YieldExprImplFinal, Generated::YieldExpr { }

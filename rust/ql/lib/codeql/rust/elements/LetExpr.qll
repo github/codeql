@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.LetExpr
 
-class LetExpr extends Generated::LetExpr { }
+class LetExprImpl extends Generated::LetExprImpl { }
+
+final private class LetExprImplFinal = LetExprImpl;
+
+final class LetExpr extends LetExprImplFinal, Generated::LetExpr { }

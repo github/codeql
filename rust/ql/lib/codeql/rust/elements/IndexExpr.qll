@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.IndexExpr
 
-class IndexExpr extends Generated::IndexExpr { }
+class IndexExprImpl extends Generated::IndexExprImpl { }
+
+final private class IndexExprImplFinal = IndexExprImpl;
+
+final class IndexExpr extends IndexExprImplFinal, Generated::IndexExpr { }

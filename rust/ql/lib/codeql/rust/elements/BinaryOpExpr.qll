@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BinaryOpExpr
 
-class BinaryOpExpr extends Generated::BinaryOpExpr { }
+class BinaryOpExprImpl extends Generated::BinaryOpExprImpl { }
+
+final private class BinaryOpExprImplFinal = BinaryOpExprImpl;
+
+final class BinaryOpExpr extends BinaryOpExprImplFinal, Generated::BinaryOpExpr { }

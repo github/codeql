@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.TypeRef
 
-class TypeRef extends Generated::TypeRef { }
+class TypeRefImpl extends Generated::TypeRefImpl { }
+
+final private class TypeRefImplFinal = TypeRefImpl;
+
+final class TypeRef extends TypeRefImplFinal, Generated::TypeRef { }

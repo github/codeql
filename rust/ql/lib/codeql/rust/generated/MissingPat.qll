@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::MissingPatImpl` class directly.
+   * Use the subclass `MissingPat`, where the following predicates are available.
+   */
+  class MissingPatImpl extends Synth::TMissingPat, PatImpl {
+    override string getAPrimaryQlClass() { result = "MissingPat" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::MissingPat` class directly.
    * Use the subclass `MissingPat`, where the following predicates are available.
    */
-  class MissingPat extends Synth::TMissingPat, Pat {
-    override string getAPrimaryQlClass() { result = "MissingPat" }
-  }
+  final class MissingPat extends PatImpl { }
 }

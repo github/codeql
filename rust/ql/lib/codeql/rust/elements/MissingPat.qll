@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.MissingPat
 
-class MissingPat extends Generated::MissingPat { }
+class MissingPatImpl extends Generated::MissingPatImpl { }
+
+final private class MissingPatImplFinal = MissingPatImpl;
+
+final class MissingPat extends MissingPatImplFinal, Generated::MissingPat { }

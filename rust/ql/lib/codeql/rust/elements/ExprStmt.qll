@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ExprStmt
 
-class ExprStmt extends Generated::ExprStmt { }
+class ExprStmtImpl extends Generated::ExprStmtImpl { }
+
+final private class ExprStmtImplFinal = ExprStmtImpl;
+
+final class ExprStmt extends ExprStmtImplFinal, Generated::ExprStmt { }

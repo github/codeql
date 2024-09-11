@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Pat
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RecordFieldPat` class directly.
+   * INTERNAL: Do not reference the `Generated::RecordFieldPatImpl` class directly.
    * Use the subclass `RecordFieldPat`, where the following predicates are available.
    */
-  class RecordFieldPat extends Synth::TRecordFieldPat, AstNode {
+  class RecordFieldPatImpl extends Synth::TRecordFieldPat, AstNodeImpl {
     override string getAPrimaryQlClass() { result = "RecordFieldPat" }
 
     /**
@@ -38,4 +40,10 @@ module Generated {
               .getPat())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RecordFieldPat` class directly.
+   * Use the subclass `RecordFieldPat`, where the following predicates are available.
+   */
+  final class RecordFieldPat extends AstNodeImpl { }
 }

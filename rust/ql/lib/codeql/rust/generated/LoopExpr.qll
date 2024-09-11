@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::LoopExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::LoopExprImpl` class directly.
    * Use the subclass `LoopExpr`, where the following predicates are available.
    */
-  class LoopExpr extends Synth::TLoopExpr, Expr {
+  class LoopExprImpl extends Synth::TLoopExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "LoopExpr" }
 
     /**
@@ -42,4 +44,10 @@ module Generated {
      */
     final predicate hasLabel() { exists(this.getLabel()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::LoopExpr` class directly.
+   * Use the subclass `LoopExpr`, where the following predicates are available.
+   */
+  final class LoopExpr extends ExprImpl { }
 }

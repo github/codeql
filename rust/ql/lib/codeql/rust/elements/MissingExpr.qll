@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.MissingExpr
 
-class MissingExpr extends Generated::MissingExpr { }
+class MissingExprImpl extends Generated::MissingExprImpl { }
+
+final private class MissingExprImplFinal = MissingExprImpl;
+
+final class MissingExpr extends MissingExprImplFinal, Generated::MissingExpr { }

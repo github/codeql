@@ -6,6 +6,9 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
+import codeql.rust.generated.TypeRef::Generated as TypeRef_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.TypeRef
@@ -16,10 +19,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::ClosureExprImpl` class directly.
    * Use the subclass `ClosureExpr`, where the following predicates are available.
    */
-  class ClosureExpr extends Synth::TClosureExpr, Expr {
+  class ClosureExprImpl extends Synth::TClosureExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
 
     /**
@@ -97,4 +100,10 @@ module Generated {
      */
     predicate isMove() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isMove() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.
+   * Use the subclass `ClosureExpr`, where the following predicates are available.
+   */
+  final class ClosureExpr extends ExprImpl { }
 }

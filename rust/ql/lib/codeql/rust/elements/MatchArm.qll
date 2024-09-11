@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.MatchArm
 
-class MatchArm extends Generated::MatchArm { }
+class MatchArmImpl extends Generated::MatchArmImpl { }
+
+final private class MatchArmImplFinal = MatchArmImpl;
+
+final class MatchArm extends MatchArmImplFinal, Generated::MatchArm { }

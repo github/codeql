@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ElementListExpr
 
-class ElementListExpr extends Generated::ElementListExpr { }
+class ElementListExprImpl extends Generated::ElementListExprImpl { }
+
+final private class ElementListExprImplFinal = ElementListExprImpl;
+
+final class ElementListExpr extends ElementListExprImplFinal, Generated::ElementListExpr { }

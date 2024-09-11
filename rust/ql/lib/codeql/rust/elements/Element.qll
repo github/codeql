@@ -4,8 +4,10 @@
 
 private import codeql.rust.generated.Element
 
-class Element extends Generated::Element {
+class ElementImpl extends Generated::ElementImpl {
   override string toString() { result = this.getAPrimaryQlClass() }
 
   predicate isUnknown() { none() } // compatibility with test generation, to be fixed
 }
+
+final class Element = ElementImpl;

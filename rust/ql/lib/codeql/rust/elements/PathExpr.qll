@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.PathExpr
 
-class PathExpr extends Generated::PathExpr { }
+class PathExprImpl extends Generated::PathExprImpl { }
+
+final private class PathExprImplFinal = PathExprImpl;
+
+final class PathExpr extends PathExprImplFinal, Generated::PathExpr { }

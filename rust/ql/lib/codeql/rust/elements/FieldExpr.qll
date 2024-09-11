@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.FieldExpr
 
-class FieldExpr extends Generated::FieldExpr { }
+class FieldExprImpl extends Generated::FieldExprImpl { }
+
+final private class FieldExprImplFinal = FieldExprImpl;
+
+final class FieldExpr extends FieldExprImplFinal, Generated::FieldExpr { }

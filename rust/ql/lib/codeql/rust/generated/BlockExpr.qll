@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.BlockExprBase::Generated as BlockExprBase_Gen
+import codeql.rust.generated.Label::Generated as Label_Gen
 import codeql.rust.elements.BlockExprBase
 import codeql.rust.elements.Label
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::BlockExprImpl` class directly.
    * Use the subclass `BlockExpr`, where the following predicates are available.
    */
-  class BlockExpr extends Synth::TBlockExpr, BlockExprBase {
+  class BlockExprImpl extends Synth::TBlockExpr, BlockExprBaseImpl {
     override string getAPrimaryQlClass() { result = "BlockExpr" }
 
     /**
@@ -34,4 +36,10 @@ module Generated {
      */
     final predicate hasLabel() { exists(this.getLabel()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
+   * Use the subclass `BlockExpr`, where the following predicates are available.
+   */
+  final class BlockExpr extends BlockExprBaseImpl { }
 }

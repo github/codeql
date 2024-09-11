@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::TypeRefImpl` class directly.
+   * Use the subclass `TypeRef`, where the following predicates are available.
+   */
+  class TypeRefImpl extends Synth::TTypeRef, AstNodeImpl {
+    override string getAPrimaryQlClass() { result = "TypeRef" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::TypeRef` class directly.
    * Use the subclass `TypeRef`, where the following predicates are available.
    */
-  class TypeRef extends Synth::TTypeRef, AstNode {
-    override string getAPrimaryQlClass() { result = "TypeRef" }
-  }
+  final class TypeRef extends AstNodeImpl { }
 }

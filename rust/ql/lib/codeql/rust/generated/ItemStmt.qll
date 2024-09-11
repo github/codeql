@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Stmt::Generated as Stmt_Gen
 import codeql.rust.elements.Stmt
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::ItemStmtImpl` class directly.
+   * Use the subclass `ItemStmt`, where the following predicates are available.
+   */
+  class ItemStmtImpl extends Synth::TItemStmt, StmtImpl {
+    override string getAPrimaryQlClass() { result = "ItemStmt" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::ItemStmt` class directly.
    * Use the subclass `ItemStmt`, where the following predicates are available.
    */
-  class ItemStmt extends Synth::TItemStmt, Stmt {
-    override string getAPrimaryQlClass() { result = "ItemStmt" }
-  }
+  final class ItemStmt extends StmtImpl { }
 }

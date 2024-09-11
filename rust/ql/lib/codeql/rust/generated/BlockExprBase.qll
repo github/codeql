@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Stmt::Generated as Stmt_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BlockExprBase` class directly.
+   * INTERNAL: Do not reference the `Generated::BlockExprBaseImpl` class directly.
    * Use the subclass `BlockExprBase`, where the following predicates are available.
    */
-  class BlockExprBase extends Synth::TBlockExprBase, Expr {
+  class BlockExprBaseImpl extends Synth::TBlockExprBase, ExprImpl {
     /**
      * Gets the `index`th statement of this block expression base (0-based).
      */
@@ -54,4 +56,10 @@ module Generated {
      */
     final predicate hasTail() { exists(this.getTail()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BlockExprBase` class directly.
+   * Use the subclass `BlockExprBase`, where the following predicates are available.
+   */
+  final class BlockExprBase extends ExprImpl { }
 }

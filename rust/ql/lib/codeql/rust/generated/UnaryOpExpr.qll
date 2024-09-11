@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::UnaryOpExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::UnaryOpExprImpl` class directly.
    * Use the subclass `UnaryOpExpr`, where the following predicates are available.
    */
-  class UnaryOpExpr extends Synth::TUnaryOpExpr, Expr {
+  class UnaryOpExprImpl extends Synth::TUnaryOpExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "UnaryOpExpr" }
 
     /**
@@ -33,4 +34,10 @@ module Generated {
      */
     string getOp() { result = Synth::convertUnaryOpExprToRaw(this).(Raw::UnaryOpExpr).getOp() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::UnaryOpExpr` class directly.
+   * Use the subclass `UnaryOpExpr`, where the following predicates are available.
+   */
+  final class UnaryOpExpr extends ExprImpl { }
 }

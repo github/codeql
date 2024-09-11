@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BoxExpr
 
-class BoxExpr extends Generated::BoxExpr { }
+class BoxExprImpl extends Generated::BoxExprImpl { }
+
+final private class BoxExprImplFinal = BoxExprImpl;
+
+final class BoxExpr extends BoxExprImplFinal, Generated::BoxExpr { }

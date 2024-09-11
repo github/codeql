@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.UnsafeBlockExpr
 
-class UnsafeBlockExpr extends Generated::UnsafeBlockExpr { }
+class UnsafeBlockExprImpl extends Generated::UnsafeBlockExprImpl { }
+
+final private class UnsafeBlockExprImplFinal = UnsafeBlockExprImpl;
+
+final class UnsafeBlockExpr extends UnsafeBlockExprImplFinal, Generated::UnsafeBlockExpr { }

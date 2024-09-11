@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RangePat` class directly.
+   * INTERNAL: Do not reference the `Generated::RangePatImpl` class directly.
    * Use the subclass `RangePat`, where the following predicates are available.
    */
-  class RangePat extends Synth::TRangePat, Pat {
+  class RangePatImpl extends Synth::TRangePat, PatImpl {
     override string getAPrimaryQlClass() { result = "RangePat" }
 
     /**
@@ -45,4 +46,10 @@ module Generated {
      */
     final predicate hasEnd() { exists(this.getEnd()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RangePat` class directly.
+   * Use the subclass `RangePat`, where the following predicates are available.
+   */
+  final class RangePat extends PatImpl { }
 }

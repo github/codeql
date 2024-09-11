@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.TypeRef::Generated as TypeRef_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.TypeRef
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::OffsetOfExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::OffsetOfExprImpl` class directly.
    * Use the subclass `OffsetOfExpr`, where the following predicates are available.
    */
-  class OffsetOfExpr extends Synth::TOffsetOfExpr, Expr {
+  class OffsetOfExprImpl extends Synth::TOffsetOfExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "OffsetOfExpr" }
 
     /**
@@ -48,4 +50,10 @@ module Generated {
      */
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::OffsetOfExpr` class directly.
+   * Use the subclass `OffsetOfExpr`, where the following predicates are available.
+   */
+  final class OffsetOfExpr extends ExprImpl { }
 }

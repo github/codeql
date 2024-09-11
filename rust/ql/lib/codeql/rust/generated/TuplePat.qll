@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::TuplePat` class directly.
+   * INTERNAL: Do not reference the `Generated::TuplePatImpl` class directly.
    * Use the subclass `TuplePat`, where the following predicates are available.
    */
-  class TuplePat extends Synth::TTuplePat, Pat {
+  class TuplePatImpl extends Synth::TTuplePat, PatImpl {
     override string getAPrimaryQlClass() { result = "TuplePat" }
 
     /**
@@ -50,4 +51,10 @@ module Generated {
      */
     final predicate hasEllipsisIndex() { exists(this.getEllipsisIndex()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::TuplePat` class directly.
+   * Use the subclass `TuplePat`, where the following predicates are available.
+   */
+  final class TuplePat extends PatImpl { }
 }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::MissingExprImpl` class directly.
+   * Use the subclass `MissingExpr`, where the following predicates are available.
+   */
+  class MissingExprImpl extends Synth::TMissingExpr, ExprImpl {
+    override string getAPrimaryQlClass() { result = "MissingExpr" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::MissingExpr` class directly.
    * Use the subclass `MissingExpr`, where the following predicates are available.
    */
-  class MissingExpr extends Synth::TMissingExpr, Expr {
-    override string getAPrimaryQlClass() { result = "MissingExpr" }
-  }
+  final class MissingExpr extends ExprImpl { }
 }

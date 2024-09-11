@@ -6,6 +6,10 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
+import codeql.rust.generated.Stmt::Generated as Stmt_Gen
+import codeql.rust.generated.TypeRef::Generated as TypeRef_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
@@ -17,10 +21,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::LetStmt` class directly.
+   * INTERNAL: Do not reference the `Generated::LetStmtImpl` class directly.
    * Use the subclass `LetStmt`, where the following predicates are available.
    */
-  class LetStmt extends Synth::TLetStmt, Stmt {
+  class LetStmtImpl extends Synth::TLetStmt, StmtImpl {
     override string getAPrimaryQlClass() { result = "LetStmt" }
 
     /**
@@ -68,4 +72,10 @@ module Generated {
      */
     final predicate hasElse() { exists(this.getElse()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::LetStmt` class directly.
+   * Use the subclass `LetStmt`, where the following predicates are available.
+   */
+  final class LetStmt extends StmtImpl { }
 }

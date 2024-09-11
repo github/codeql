@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.OrPat
 
-class OrPat extends Generated::OrPat { }
+class OrPatImpl extends Generated::OrPatImpl { }
+
+final private class OrPatImplFinal = OrPatImpl;
+
+final class OrPat extends OrPatImplFinal, Generated::OrPat { }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RangeExpr
 
-class RangeExpr extends Generated::RangeExpr { }
+class RangeExprImpl extends Generated::RangeExprImpl { }
+
+final private class RangeExprImplFinal = RangeExprImpl;
+
+final class RangeExpr extends RangeExprImplFinal, Generated::RangeExpr { }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.LitPat
 
-class LitPat extends Generated::LitPat { }
+class LitPatImpl extends Generated::LitPatImpl { }
+
+final private class LitPatImplFinal = LitPatImpl;
+
+final class LitPat extends LitPatImplFinal, Generated::LitPat { }

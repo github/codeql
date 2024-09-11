@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::ConstBlockPat` class directly.
+   * INTERNAL: Do not reference the `Generated::ConstBlockPatImpl` class directly.
    * Use the subclass `ConstBlockPat`, where the following predicates are available.
    */
-  class ConstBlockPat extends Synth::TConstBlockPat, Pat {
+  class ConstBlockPatImpl extends Synth::TConstBlockPat, PatImpl {
     override string getAPrimaryQlClass() { result = "ConstBlockPat" }
 
     /**
@@ -31,4 +33,10 @@ module Generated {
               .getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::ConstBlockPat` class directly.
+   * Use the subclass `ConstBlockPat`, where the following predicates are available.
+   */
+  final class ConstBlockPat extends PatImpl { }
 }

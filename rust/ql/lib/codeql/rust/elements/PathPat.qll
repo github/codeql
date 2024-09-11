@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.PathPat
 
-class PathPat extends Generated::PathPat { }
+class PathPatImpl extends Generated::PathPatImpl { }
+
+final private class PathPatImplFinal = PathPatImpl;
+
+final class PathPat extends PathPatImplFinal, Generated::PathPat { }

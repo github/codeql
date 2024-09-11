@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.File::Generated as File_Gen
 import codeql.rust.elements.File
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.File
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::DbFileImpl` class directly.
+   * Use the subclass `DbFile`, where the following predicates are available.
+   */
+  class DbFileImpl extends Synth::TDbFile, FileImpl {
+    override string getAPrimaryQlClass() { result = "DbFile" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::DbFile` class directly.
    * Use the subclass `DbFile`, where the following predicates are available.
    */
-  class DbFile extends Synth::TDbFile, File {
-    override string getAPrimaryQlClass() { result = "DbFile" }
-  }
+  final class DbFile extends FileImpl { }
 }

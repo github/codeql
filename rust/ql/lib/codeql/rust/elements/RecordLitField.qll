@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RecordLitField
 
-class RecordLitField extends Generated::RecordLitField { }
+class RecordLitFieldImpl extends Generated::RecordLitFieldImpl { }
+
+final private class RecordLitFieldImplFinal = RecordLitFieldImpl;
+
+final class RecordLitField extends RecordLitFieldImplFinal, Generated::RecordLitField { }

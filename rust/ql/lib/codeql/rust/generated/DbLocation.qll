@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Location::Generated as Location_Gen
 import codeql.rust.elements.Location
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.Location
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::DbLocationImpl` class directly.
+   * Use the subclass `DbLocation`, where the following predicates are available.
+   */
+  class DbLocationImpl extends Synth::TDbLocation, LocationImpl {
+    override string getAPrimaryQlClass() { result = "DbLocation" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::DbLocation` class directly.
    * Use the subclass `DbLocation`, where the following predicates are available.
    */
-  class DbLocation extends Synth::TDbLocation, Location {
-    override string getAPrimaryQlClass() { result = "DbLocation" }
-  }
+  final class DbLocation extends LocationImpl { }
 }

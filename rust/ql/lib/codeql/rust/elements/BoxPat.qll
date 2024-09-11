@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BoxPat
 
-class BoxPat extends Generated::BoxPat { }
+class BoxPatImpl extends Generated::BoxPatImpl { }
+
+final private class BoxPatImplFinal = BoxPatImpl;
+
+final class BoxPat extends BoxPatImplFinal, Generated::BoxPat { }

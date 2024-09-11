@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.DbLocation
 
-class DbLocation extends Generated::DbLocation { }
+class DbLocationImpl extends Generated::DbLocationImpl { }
+
+final private class DbLocationImplFinal = DbLocationImpl;
+
+final class DbLocation extends DbLocationImplFinal, Generated::DbLocation { }

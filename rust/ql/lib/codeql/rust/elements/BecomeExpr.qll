@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.BecomeExpr
 
-class BecomeExpr extends Generated::BecomeExpr { }
+class BecomeExprImpl extends Generated::BecomeExprImpl { }
+
+final private class BecomeExprImplFinal = BecomeExprImpl;
+
+final class BecomeExpr extends BecomeExprImplFinal, Generated::BecomeExpr { }

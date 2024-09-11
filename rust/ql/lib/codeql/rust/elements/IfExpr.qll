@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.IfExpr
 
-class IfExpr extends Generated::IfExpr { }
+class IfExprImpl extends Generated::IfExprImpl { }
+
+final private class IfExprImplFinal = IfExprImpl;
+
+final class IfExpr extends IfExprImplFinal, Generated::IfExpr { }

@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ArrayExpr
 
-class ArrayExpr extends Generated::ArrayExpr { }
+class ArrayExprImpl extends Generated::ArrayExprImpl { }
+
+final private class ArrayExprImplFinal = ArrayExprImpl;
+
+final class ArrayExpr extends ArrayExprImplFinal, Generated::ArrayExpr { }

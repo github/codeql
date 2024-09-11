@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.SlicePat
 
-class SlicePat extends Generated::SlicePat { }
+class SlicePatImpl extends Generated::SlicePatImpl { }
+
+final private class SlicePatImplFinal = SlicePatImpl;
+
+final class SlicePat extends SlicePatImplFinal, Generated::SlicePat { }

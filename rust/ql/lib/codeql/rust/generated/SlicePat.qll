@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::SlicePat` class directly.
+   * INTERNAL: Do not reference the `Generated::SlicePatImpl` class directly.
    * Use the subclass `SlicePat`, where the following predicates are available.
    */
-  class SlicePat extends Synth::TSlicePat, Pat {
+  class SlicePatImpl extends Synth::TSlicePat, PatImpl {
     override string getAPrimaryQlClass() { result = "SlicePat" }
 
     /**
@@ -69,4 +70,10 @@ module Generated {
      */
     final int getNumberOfSuffixes() { result = count(int i | exists(this.getSuffix(i))) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::SlicePat` class directly.
+   * Use the subclass `SlicePat`, where the following predicates are available.
+   */
+  final class SlicePat extends PatImpl { }
 }

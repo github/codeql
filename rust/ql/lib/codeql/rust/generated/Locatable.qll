@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Element::Generated as Element_Gen
+import codeql.rust.generated.Location::Generated as Location_Gen
 import codeql.rust.elements.Element
 import codeql.rust.elements.Location
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Location
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::Locatable` class directly.
+   * INTERNAL: Do not reference the `Generated::LocatableImpl` class directly.
    * Use the subclass `Locatable`, where the following predicates are available.
    */
-  class Locatable extends Synth::TLocatable, Element {
+  class LocatableImpl extends Synth::TLocatable, ElementImpl {
     /**
      * Gets the location of this locatable, if it exists.
      */
@@ -34,4 +36,10 @@ module Generated {
      */
     final predicate hasLocation() { exists(this.getLocation()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::Locatable` class directly.
+   * Use the subclass `Locatable`, where the following predicates are available.
+   */
+  final class Locatable extends ElementImpl { }
 }

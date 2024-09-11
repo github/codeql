@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,8 +15,14 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::DeclarationImpl` class directly.
+   * Use the subclass `Declaration`, where the following predicates are available.
+   */
+  class DeclarationImpl extends Synth::TDeclaration, AstNodeImpl { }
+
+  /**
    * INTERNAL: Do not reference the `Generated::Declaration` class directly.
    * Use the subclass `Declaration`, where the following predicates are available.
    */
-  class Declaration extends Synth::TDeclaration, AstNode { }
+  final class Declaration extends AstNodeImpl { }
 }

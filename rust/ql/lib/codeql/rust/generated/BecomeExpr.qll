@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BecomeExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::BecomeExprImpl` class directly.
    * Use the subclass `BecomeExpr`, where the following predicates are available.
    */
-  class BecomeExpr extends Synth::TBecomeExpr, Expr {
+  class BecomeExprImpl extends Synth::TBecomeExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "BecomeExpr" }
 
     /**
@@ -28,4 +29,10 @@ module Generated {
         Synth::convertExprFromRaw(Synth::convertBecomeExprToRaw(this).(Raw::BecomeExpr).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BecomeExpr` class directly.
+   * Use the subclass `BecomeExpr`, where the following predicates are available.
+   */
+  final class BecomeExpr extends ExprImpl { }
 }

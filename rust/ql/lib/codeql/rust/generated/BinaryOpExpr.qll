@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.Expr
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BinaryOpExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::BinaryOpExprImpl` class directly.
    * Use the subclass `BinaryOpExpr`, where the following predicates are available.
    */
-  class BinaryOpExpr extends Synth::TBinaryOpExpr, Expr {
+  class BinaryOpExprImpl extends Synth::TBinaryOpExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "BinaryOpExpr" }
 
     /**
@@ -46,4 +47,10 @@ module Generated {
      */
     final predicate hasOp() { exists(this.getOp()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BinaryOpExpr` class directly.
+   * Use the subclass `BinaryOpExpr`, where the following predicates are available.
+   */
+  final class BinaryOpExpr extends ExprImpl { }
 }

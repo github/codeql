@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RepeatExpr
 
-class RepeatExpr extends Generated::RepeatExpr { }
+class RepeatExprImpl extends Generated::RepeatExprImpl { }
+
+final private class RepeatExprImplFinal = RepeatExprImpl;
+
+final class RepeatExpr extends RepeatExprImplFinal, Generated::RepeatExpr { }

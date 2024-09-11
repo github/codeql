@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.DbFile
 
-class DbFile extends Generated::DbFile { }
+class DbFileImpl extends Generated::DbFileImpl { }
+
+final private class DbFileImplFinal = DbFileImpl;
+
+final class DbFile extends DbFileImplFinal, Generated::DbFile { }

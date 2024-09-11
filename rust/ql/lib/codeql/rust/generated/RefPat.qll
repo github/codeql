@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RefPat` class directly.
+   * INTERNAL: Do not reference the `Generated::RefPatImpl` class directly.
    * Use the subclass `RefPat`, where the following predicates are available.
    */
-  class RefPat extends Synth::TRefPat, Pat {
+  class RefPatImpl extends Synth::TRefPat, PatImpl {
     override string getAPrimaryQlClass() { result = "RefPat" }
 
     /**
@@ -32,4 +33,10 @@ module Generated {
      */
     predicate isMut() { Synth::convertRefPatToRaw(this).(Raw::RefPat).isMut() }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RefPat` class directly.
+   * Use the subclass `RefPat`, where the following predicates are available.
+   */
+  final class RefPat extends PatImpl { }
 }

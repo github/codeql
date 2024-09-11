@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BoxPat` class directly.
+   * INTERNAL: Do not reference the `Generated::BoxPatImpl` class directly.
    * Use the subclass `BoxPat`, where the following predicates are available.
    */
-  class BoxPat extends Synth::TBoxPat, Pat {
+  class BoxPatImpl extends Synth::TBoxPat, PatImpl {
     override string getAPrimaryQlClass() { result = "BoxPat" }
 
     /**
@@ -27,4 +28,10 @@ module Generated {
       result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getInner())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BoxPat` class directly.
+   * Use the subclass `BoxPat`, where the following predicates are available.
+   */
+  final class BoxPat extends PatImpl { }
 }

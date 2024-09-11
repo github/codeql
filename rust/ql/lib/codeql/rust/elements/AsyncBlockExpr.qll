@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.AsyncBlockExpr
 
-class AsyncBlockExpr extends Generated::AsyncBlockExpr { }
+class AsyncBlockExprImpl extends Generated::AsyncBlockExprImpl { }
+
+final private class AsyncBlockExprImplFinal = AsyncBlockExprImpl;
+
+final class AsyncBlockExpr extends AsyncBlockExprImplFinal, Generated::AsyncBlockExpr { }

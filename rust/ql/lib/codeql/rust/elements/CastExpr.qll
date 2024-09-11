@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.CastExpr
 
-class CastExpr extends Generated::CastExpr { }
+class CastExprImpl extends Generated::CastExprImpl { }
+
+final private class CastExprImplFinal = CastExprImpl;
+
+final class CastExpr extends CastExprImplFinal, Generated::CastExpr { }

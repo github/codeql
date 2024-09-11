@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::LitPat` class directly.
+   * INTERNAL: Do not reference the `Generated::LitPatImpl` class directly.
    * Use the subclass `LitPat`, where the following predicates are available.
    */
-  class LitPat extends Synth::TLitPat, Pat {
+  class LitPatImpl extends Synth::TLitPat, PatImpl {
     override string getAPrimaryQlClass() { result = "LitPat" }
 
     /**
@@ -28,4 +30,10 @@ module Generated {
       result = Synth::convertExprFromRaw(Synth::convertLitPatToRaw(this).(Raw::LitPat).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::LitPat` class directly.
+   * Use the subclass `LitPat`, where the following predicates are available.
+   */
+  final class LitPat extends PatImpl { }
 }

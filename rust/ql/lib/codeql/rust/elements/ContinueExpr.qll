@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ContinueExpr
 
-class ContinueExpr extends Generated::ContinueExpr { }
+class ContinueExprImpl extends Generated::ContinueExprImpl { }
+
+final private class ContinueExprImplFinal = ContinueExprImpl;
+
+final class ContinueExpr extends ContinueExprImplFinal, Generated::ContinueExpr { }

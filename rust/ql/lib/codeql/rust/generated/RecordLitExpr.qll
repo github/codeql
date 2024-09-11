@@ -6,6 +6,9 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.RecordLitField::Generated as RecordLitField_Gen
+import codeql.rust.generated.Unimplemented::Generated as Unimplemented_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.RecordLitField
 import codeql.rust.elements.Unimplemented
@@ -16,10 +19,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RecordLitExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::RecordLitExprImpl` class directly.
    * Use the subclass `RecordLitExpr`, where the following predicates are available.
    */
-  class RecordLitExpr extends Synth::TRecordLitExpr, Expr {
+  class RecordLitExprImpl extends Synth::TRecordLitExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "RecordLitExpr" }
 
     /**
@@ -86,4 +89,10 @@ module Generated {
       Synth::convertRecordLitExprToRaw(this).(Raw::RecordLitExpr).isAssigneeExpr()
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RecordLitExpr` class directly.
+   * Use the subclass `RecordLitExpr`, where the following predicates are available.
+   */
+  final class RecordLitExpr extends ExprImpl { }
 }

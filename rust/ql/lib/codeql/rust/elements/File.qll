@@ -6,7 +6,7 @@ private import codeql.rust.generated.File
 private import codeql.rust.elements.Location
 private import codeql.rust.elements.UnknownLocation
 
-class File extends Generated::File {
+class FileImpl extends Generated::FileImpl {
   /** toString */
   override string toString() { result = this.getAbsolutePath() }
 
@@ -109,3 +109,5 @@ class File extends Generated::File {
     )
   }
 }
+
+final class File = FileImpl;

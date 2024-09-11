@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.ItemStmt
 
-class ItemStmt extends Generated::ItemStmt { }
+class ItemStmtImpl extends Generated::ItemStmtImpl { }
+
+final private class ItemStmtImplFinal = ItemStmtImpl;
+
+final class ItemStmt extends ItemStmtImplFinal, Generated::ItemStmt { }

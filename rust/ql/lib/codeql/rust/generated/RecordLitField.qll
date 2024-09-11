@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
+import codeql.rust.generated.Expr::Generated as Expr_Gen
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::RecordLitField` class directly.
+   * INTERNAL: Do not reference the `Generated::RecordLitFieldImpl` class directly.
    * Use the subclass `RecordLitField`, where the following predicates are available.
    */
-  class RecordLitField extends Synth::TRecordLitField, AstNode {
+  class RecordLitFieldImpl extends Synth::TRecordLitField, AstNodeImpl {
     override string getAPrimaryQlClass() { result = "RecordLitField" }
 
     /**
@@ -38,4 +40,10 @@ module Generated {
               .getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::RecordLitField` class directly.
+   * Use the subclass `RecordLitField`, where the following predicates are available.
+   */
+  final class RecordLitField extends AstNodeImpl { }
 }

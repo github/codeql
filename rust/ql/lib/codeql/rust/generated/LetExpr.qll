@@ -6,6 +6,8 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Expr::Generated as Expr_Gen
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 
@@ -15,10 +17,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::LetExpr` class directly.
+   * INTERNAL: Do not reference the `Generated::LetExprImpl` class directly.
    * Use the subclass `LetExpr`, where the following predicates are available.
    */
-  class LetExpr extends Synth::TLetExpr, Expr {
+  class LetExprImpl extends Synth::TLetExpr, ExprImpl {
     override string getAPrimaryQlClass() { result = "LetExpr" }
 
     /**
@@ -35,4 +37,10 @@ module Generated {
       result = Synth::convertExprFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getExpr())
     }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::LetExpr` class directly.
+   * Use the subclass `LetExpr`, where the following predicates are available.
+   */
+  final class LetExpr extends ExprImpl { }
 }

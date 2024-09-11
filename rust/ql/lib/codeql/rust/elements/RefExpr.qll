@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RefExpr
 
-class RefExpr extends Generated::RefExpr { }
+class RefExprImpl extends Generated::RefExprImpl { }
+
+final private class RefExprImplFinal = RefExprImpl;
+
+final class RefExpr extends RefExprImplFinal, Generated::RefExpr { }

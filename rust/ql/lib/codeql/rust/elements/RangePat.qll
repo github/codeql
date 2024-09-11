@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.RangePat
 
-class RangePat extends Generated::RangePat { }
+class RangePatImpl extends Generated::RangePatImpl { }
+
+final private class RangePatImplFinal = RangePatImpl;
+
+final class RangePat extends RangePatImplFinal, Generated::RangePat { }

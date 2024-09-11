@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.LiteralExpr
 
-class LiteralExpr extends Generated::LiteralExpr { }
+class LiteralExprImpl extends Generated::LiteralExprImpl { }
+
+final private class LiteralExprImplFinal = LiteralExprImpl;
+
+final class LiteralExpr extends LiteralExprImplFinal, Generated::LiteralExpr { }

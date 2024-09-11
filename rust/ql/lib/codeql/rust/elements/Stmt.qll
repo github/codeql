@@ -5,4 +5,8 @@
 
 private import codeql.rust.generated.Stmt
 
-class Stmt extends Generated::Stmt { }
+class StmtImpl extends Generated::StmtImpl { }
+
+final private class StmtImplFinal = StmtImpl;
+
+final class Stmt extends StmtImplFinal, Generated::Stmt { }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.AstNode::Generated as AstNode_Gen
 import codeql.rust.elements.AstNode
 
 /**
@@ -14,10 +15,16 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * INTERNAL: Do not reference the `Generated::UnimplementedImpl` class directly.
+   * Use the subclass `Unimplemented`, where the following predicates are available.
+   */
+  class UnimplementedImpl extends Synth::TUnimplemented, AstNodeImpl {
+    override string getAPrimaryQlClass() { result = "Unimplemented" }
+  }
+
+  /**
    * INTERNAL: Do not reference the `Generated::Unimplemented` class directly.
    * Use the subclass `Unimplemented`, where the following predicates are available.
    */
-  class Unimplemented extends Synth::TUnimplemented, AstNode {
-    override string getAPrimaryQlClass() { result = "Unimplemented" }
-  }
+  final class Unimplemented extends AstNodeImpl { }
 }

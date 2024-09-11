@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.generated.Pat::Generated as Pat_Gen
 import codeql.rust.elements.Pat
 
 /**
@@ -14,10 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * INTERNAL: Do not reference the `Generated::BindPat` class directly.
+   * INTERNAL: Do not reference the `Generated::BindPatImpl` class directly.
    * Use the subclass `BindPat`, where the following predicates are available.
    */
-  class BindPat extends Synth::TBindPat, Pat {
+  class BindPatImpl extends Synth::TBindPat, PatImpl {
     override string getAPrimaryQlClass() { result = "BindPat" }
 
     /**
@@ -39,4 +40,10 @@ module Generated {
      */
     final predicate hasSubpat() { exists(this.getSubpat()) }
   }
+
+  /**
+   * INTERNAL: Do not reference the `Generated::BindPat` class directly.
+   * Use the subclass `BindPat`, where the following predicates are available.
+   */
+  final class BindPat extends PatImpl { }
 }

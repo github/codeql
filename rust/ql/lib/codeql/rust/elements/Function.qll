@@ -17,6 +17,10 @@ private import codeql.rust.generated.Function
  * }
  * ```
  */
-class Function extends Generated::Function {
+class FunctionImpl extends Generated::FunctionImpl {
   override string toString() { result = this.getName() }
 }
+
+final private class FunctionImplFinal = FunctionImpl;
+
+final class Function extends FunctionImplFinal, Generated::Function { }
