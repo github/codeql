@@ -36,16 +36,6 @@ module TaintedUrlSuffix {
     result.getKind().isUrl()
   }
 
-  /** Holds for `pred -> succ` is a step of form `x -> x.p` */
-  private predicate isSafeLocationProp(DataFlow::PropRead read) {
-    // Ignore properties that refer to the scheme, domain, port, auth, or path.
-    read.getPropertyName() =
-      [
-        "protocol", "scheme", "host", "hostname", "domain", "origin", "port", "path", "pathname",
-        "username", "password", "auth"
-      ]
-  }
-
   /**
    * Holds if `node` should be a barrier for the given `label`.
    *
@@ -63,12 +53,6 @@ module TaintedUrlSuffix {
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
   predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
-    // Inherit all ordinary taint steps except `x -> x.p` steps
-    srclbl = label() and
-    dstlbl = label() and
-    TaintTracking::AdditionalTaintStep::step(src, dst) and
-    not isSafeLocationProp(dst)
-    or
     srclbl = label() and
     dstlbl.isTaint() and
     DataFlowPrivate::optionalStep(src, "tainted-url-suffix", dst)
