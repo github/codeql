@@ -486,6 +486,11 @@ class Shift extends SummarizedCallable {
     preservesValue = true and
     input = "Argument[this].ArrayElement[0]" and
     output = "ReturnValue"
+    or
+    // ArrayElement[0] is not automatically converted to a taint step, so add it manually
+    preservesValue = false and
+    input = "Argument[this]" and
+    output = "ReturnValue"
   }
 }
 

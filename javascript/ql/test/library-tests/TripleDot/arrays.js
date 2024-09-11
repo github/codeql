@@ -13,3 +13,10 @@ function shiftUnknown() {
     sink(array.shift()); // $ hasValueFlow=shift.unkn
     sink(array.shift()); // $ hasValueFlow=shift.unkn
 }
+
+function shiftTaint() {
+    const array = source('shift.directly-tainted');
+    sink(array.shift()); // $ hasTaintFlow=shift.directly-tainted
+    sink(array.shift()); // $ hasTaintFlow=shift.directly-tainted
+    sink(array.shift()); // $ hasTaintFlow=shift.directly-tainted
+}
