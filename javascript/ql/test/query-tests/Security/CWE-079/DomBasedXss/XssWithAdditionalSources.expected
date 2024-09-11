@@ -550,7 +550,6 @@ nodes
 | tst.js:421:20:421:24 | match | semmle.label | match |
 | tst.js:421:20:421:27 | match[1] | semmle.label | match[1] |
 | tst.js:424:18:424:37 | window.location.hash | semmle.label | window.location.hash |
-| tst.js:424:18:424:48 | window. ... it('#') | semmle.label | window. ... it('#') |
 | tst.js:424:18:424:48 | window. ... it('#') [1] | semmle.label | window. ... it('#') [1] |
 | tst.js:424:18:424:51 | window. ... '#')[1] | semmle.label | window. ... '#')[1] |
 | tst.js:428:7:428:39 | target | semmle.label | target |
@@ -1171,13 +1170,8 @@ edges
 | tst.js:419:15:419:55 | window. ... (\\w+)/) | tst.js:419:7:419:55 | match | provenance |  |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] | provenance |  |
 | tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] | provenance | Config |
-| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') | provenance |  |
-| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') | provenance | Config |
 | tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') [1] | provenance | Config |
-| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] | provenance |  |
-| tst.js:424:18:424:48 | window. ... it('#') | tst.js:424:18:424:51 | window. ... '#')[1] | provenance | Config |
 | tst.js:424:18:424:48 | window. ... it('#') [1] | tst.js:424:18:424:51 | window. ... '#')[1] | provenance |  |
-| tst.js:424:18:424:48 | window. ... it('#') [1] | tst.js:424:18:424:51 | window. ... '#')[1] | provenance | Config |
 | tst.js:428:7:428:39 | target | tst.js:430:18:430:23 | target | provenance |  |
 | tst.js:428:16:428:39 | documen ... .search | tst.js:428:7:428:39 | target | provenance |  |
 | tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') | provenance |  |

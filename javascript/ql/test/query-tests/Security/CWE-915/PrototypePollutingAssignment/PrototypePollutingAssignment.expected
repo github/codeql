@@ -18,11 +18,16 @@ edges
 | lib.js:26:14:26:17 | path | lib.js:26:14:26:20 | path[0] | provenance | Config |
 | lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] | provenance | Config |
 | lib.js:30:9:30:52 | args | lib.js:32:14:32:17 | args | provenance |  |
+| lib.js:30:9:30:52 | args [ArrayElement] | lib.js:32:14:32:17 | args [ArrayElement] | provenance |  |
 | lib.js:30:16:30:52 | Array.p ... uments) | lib.js:30:9:30:52 | args | provenance |  |
+| lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | lib.js:30:9:30:52 | args [ArrayElement] | provenance |  |
 | lib.js:30:16:30:52 | reflective call | lib.js:30:16:30:52 | Array.p ... uments) | provenance |  |
+| lib.js:30:16:30:52 | reflective call [ArrayElement] | lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | provenance |  |
 | lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | reflective call | provenance | Config |
+| lib.js:30:43:30:51 | arguments | lib.js:30:16:30:52 | reflective call [ArrayElement] | provenance | Config |
 | lib.js:32:7:32:20 | path | lib.js:34:7:34:10 | path | provenance |  |
 | lib.js:32:14:32:17 | args | lib.js:32:14:32:20 | args[1] | provenance | Config |
+| lib.js:32:14:32:17 | args [ArrayElement] | lib.js:32:14:32:20 | args[1] | provenance |  |
 | lib.js:32:14:32:20 | args[1] | lib.js:32:7:32:20 | path | provenance |  |
 | lib.js:34:7:34:10 | path | lib.js:34:7:34:13 | path[0] | provenance | Config |
 | lib.js:34:7:34:13 | path[0] | lib.js:34:3:34:14 | obj[path[0]] | provenance | Config |
@@ -125,11 +130,15 @@ nodes
 | lib.js:26:14:26:17 | path | semmle.label | path |
 | lib.js:26:14:26:20 | path[0] | semmle.label | path[0] |
 | lib.js:30:9:30:52 | args | semmle.label | args |
+| lib.js:30:9:30:52 | args [ArrayElement] | semmle.label | args [ArrayElement] |
 | lib.js:30:16:30:52 | Array.p ... uments) | semmle.label | Array.p ... uments) |
+| lib.js:30:16:30:52 | Array.p ... uments) [ArrayElement] | semmle.label | Array.p ... uments) [ArrayElement] |
 | lib.js:30:16:30:52 | reflective call | semmle.label | reflective call |
+| lib.js:30:16:30:52 | reflective call [ArrayElement] | semmle.label | reflective call [ArrayElement] |
 | lib.js:30:43:30:51 | arguments | semmle.label | arguments |
 | lib.js:32:7:32:20 | path | semmle.label | path |
 | lib.js:32:14:32:17 | args | semmle.label | args |
+| lib.js:32:14:32:17 | args [ArrayElement] | semmle.label | args [ArrayElement] |
 | lib.js:32:14:32:20 | args[1] | semmle.label | args[1] |
 | lib.js:34:3:34:14 | obj[path[0]] | semmle.label | obj[path[0]] |
 | lib.js:34:7:34:10 | path | semmle.label | path |

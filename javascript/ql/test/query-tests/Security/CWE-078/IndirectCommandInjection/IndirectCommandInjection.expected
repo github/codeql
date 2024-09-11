@@ -7,33 +7,52 @@ edges
 | command-line-parameter-command-injection.js:10:6:10:33 | args | command-line-parameter-command-injection.js:11:14:11:17 | args | provenance |  |
 | command-line-parameter-command-injection.js:10:6:10:33 | args | command-line-parameter-command-injection.js:12:26:12:29 | args | provenance |  |
 | command-line-parameter-command-injection.js:10:6:10:33 | args | command-line-parameter-command-injection.js:14:18:14:21 | args | provenance |  |
+| command-line-parameter-command-injection.js:10:6:10:33 | args [ArrayElement] | command-line-parameter-command-injection.js:11:14:11:17 | args [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:10:6:10:33 | args [ArrayElement] | command-line-parameter-command-injection.js:12:26:12:29 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:10:6:10:33 | args [ArrayElement] | command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) | provenance |  |
 | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) | command-line-parameter-command-injection.js:10:6:10:33 | args | provenance |  |
 | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) [ArrayElement] | command-line-parameter-command-injection.js:10:6:10:33 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:11:14:11:17 | args | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | provenance |  |
+| command-line-parameter-command-injection.js:11:14:11:17 | args [ArrayElement] | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | provenance |  |
 | command-line-parameter-command-injection.js:12:26:12:29 | args | command-line-parameter-command-injection.js:12:14:12:32 | "cmd.sh " + args[0] | provenance |  |
+| command-line-parameter-command-injection.js:12:26:12:29 | args [ArrayElement] | command-line-parameter-command-injection.js:12:26:12:32 | args[0] | provenance |  |
+| command-line-parameter-command-injection.js:12:26:12:32 | args[0] | command-line-parameter-command-injection.js:12:14:12:32 | "cmd.sh " + args[0] | provenance |  |
 | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs | provenance |  |
 | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs | provenance |  |
 | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs | provenance |  |
+| command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:21 | args | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | provenance |  |
+| command-line-parameter-command-injection.js:14:18:14:21 | args | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | provenance |  |
+| command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | provenance |  |
+| command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs | command-line-parameter-command-injection.js:15:14:15:25 | fewerArgs[0] | provenance |  |
+| command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:15:14:15:25 | fewerArgs[0] | provenance |  |
 | command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs | command-line-parameter-command-injection.js:16:14:16:37 | "cmd.sh ... Args[0] | provenance |  |
+| command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:16:26:16:37 | fewerArgs[0] | provenance |  |
+| command-line-parameter-command-injection.js:16:26:16:37 | fewerArgs[0] | command-line-parameter-command-injection.js:16:14:16:37 | "cmd.sh ... Args[0] | provenance |  |
 | command-line-parameter-command-injection.js:18:6:18:24 | arg0 | command-line-parameter-command-injection.js:19:14:19:17 | arg0 | provenance |  |
 | command-line-parameter-command-injection.js:18:6:18:24 | arg0 | command-line-parameter-command-injection.js:20:26:20:29 | arg0 | provenance |  |
 | command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs | command-line-parameter-command-injection.js:18:6:18:24 | arg0 | provenance |  |
+| command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs [ArrayElement] | command-line-parameter-command-injection.js:18:13:18:24 | fewerArgs[0] | provenance |  |
+| command-line-parameter-command-injection.js:18:13:18:24 | fewerArgs[0] | command-line-parameter-command-injection.js:18:6:18:24 | arg0 | provenance |  |
 | command-line-parameter-command-injection.js:20:26:20:29 | arg0 | command-line-parameter-command-injection.js:20:14:20:29 | "cmd.sh " + arg0 | provenance |  |
 | command-line-parameter-command-injection.js:24:8:24:35 | args | command-line-parameter-command-injection.js:26:32:26:35 | args | provenance |  |
 | command-line-parameter-command-injection.js:24:8:24:35 | args | command-line-parameter-command-injection.js:27:32:27:35 | args | provenance |  |
+| command-line-parameter-command-injection.js:24:8:24:35 | args [ArrayElement] | command-line-parameter-command-injection.js:26:32:26:35 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:24:8:24:35 | args [ArrayElement] | command-line-parameter-command-injection.js:27:32:27:35 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:24:15:24:26 | process.argv | command-line-parameter-command-injection.js:24:15:24:35 | process ... lice(2) | provenance |  |
 | command-line-parameter-command-injection.js:24:15:24:26 | process.argv | command-line-parameter-command-injection.js:24:15:24:35 | process ... lice(2) [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:24:15:24:35 | process ... lice(2) | command-line-parameter-command-injection.js:24:8:24:35 | args | provenance |  |
 | command-line-parameter-command-injection.js:24:15:24:35 | process ... lice(2) [ArrayElement] | command-line-parameter-command-injection.js:24:8:24:35 | args [ArrayElement] | provenance |  |
 | command-line-parameter-command-injection.js:26:32:26:35 | args | command-line-parameter-command-injection.js:26:14:26:50 | `node $ ... ption"` | provenance |  |
+| command-line-parameter-command-injection.js:26:32:26:35 | args [ArrayElement] | command-line-parameter-command-injection.js:26:32:26:38 | args[0] | provenance |  |
+| command-line-parameter-command-injection.js:26:32:26:38 | args[0] | command-line-parameter-command-injection.js:26:14:26:50 | `node $ ... ption"` | provenance |  |
 | command-line-parameter-command-injection.js:27:32:27:35 | args | command-line-parameter-command-injection.js:27:32:27:45 | args.join(' ') | provenance |  |
 | command-line-parameter-command-injection.js:27:32:27:35 | args [ArrayElement] | command-line-parameter-command-injection.js:27:32:27:45 | args.join(' ') | provenance |  |
 | command-line-parameter-command-injection.js:27:32:27:45 | args.join(' ') | command-line-parameter-command-injection.js:27:14:27:57 | `node $ ... ption"` | provenance |  |
@@ -139,19 +158,29 @@ nodes
 | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) | semmle.label | process ... lice(2) |
 | command-line-parameter-command-injection.js:10:13:10:33 | process ... lice(2) [ArrayElement] | semmle.label | process ... lice(2) [ArrayElement] |
 | command-line-parameter-command-injection.js:11:14:11:17 | args | semmle.label | args |
+| command-line-parameter-command-injection.js:11:14:11:17 | args [ArrayElement] | semmle.label | args [ArrayElement] |
 | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | semmle.label | args[0] |
 | command-line-parameter-command-injection.js:12:14:12:32 | "cmd.sh " + args[0] | semmle.label | "cmd.sh " + args[0] |
 | command-line-parameter-command-injection.js:12:26:12:29 | args | semmle.label | args |
+| command-line-parameter-command-injection.js:12:26:12:29 | args [ArrayElement] | semmle.label | args [ArrayElement] |
+| command-line-parameter-command-injection.js:12:26:12:32 | args[0] | semmle.label | args[0] |
 | command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs | semmle.label | fewerArgs |
+| command-line-parameter-command-injection.js:14:6:14:30 | fewerArgs [ArrayElement] | semmle.label | fewerArgs [ArrayElement] |
 | command-line-parameter-command-injection.js:14:18:14:21 | args | semmle.label | args |
 | command-line-parameter-command-injection.js:14:18:14:21 | args [ArrayElement] | semmle.label | args [ArrayElement] |
 | command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) | semmle.label | args.slice(1) |
+| command-line-parameter-command-injection.js:14:18:14:30 | args.slice(1) [ArrayElement] | semmle.label | args.slice(1) [ArrayElement] |
 | command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs | semmle.label | fewerArgs |
+| command-line-parameter-command-injection.js:15:14:15:22 | fewerArgs [ArrayElement] | semmle.label | fewerArgs [ArrayElement] |
 | command-line-parameter-command-injection.js:15:14:15:25 | fewerArgs[0] | semmle.label | fewerArgs[0] |
 | command-line-parameter-command-injection.js:16:14:16:37 | "cmd.sh ... Args[0] | semmle.label | "cmd.sh ... Args[0] |
 | command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs | semmle.label | fewerArgs |
+| command-line-parameter-command-injection.js:16:26:16:34 | fewerArgs [ArrayElement] | semmle.label | fewerArgs [ArrayElement] |
+| command-line-parameter-command-injection.js:16:26:16:37 | fewerArgs[0] | semmle.label | fewerArgs[0] |
 | command-line-parameter-command-injection.js:18:6:18:24 | arg0 | semmle.label | arg0 |
 | command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs | semmle.label | fewerArgs |
+| command-line-parameter-command-injection.js:18:13:18:21 | fewerArgs [ArrayElement] | semmle.label | fewerArgs [ArrayElement] |
+| command-line-parameter-command-injection.js:18:13:18:24 | fewerArgs[0] | semmle.label | fewerArgs[0] |
 | command-line-parameter-command-injection.js:19:14:19:17 | arg0 | semmle.label | arg0 |
 | command-line-parameter-command-injection.js:20:14:20:29 | "cmd.sh " + arg0 | semmle.label | "cmd.sh " + arg0 |
 | command-line-parameter-command-injection.js:20:26:20:29 | arg0 | semmle.label | arg0 |
@@ -162,6 +191,8 @@ nodes
 | command-line-parameter-command-injection.js:24:15:24:35 | process ... lice(2) [ArrayElement] | semmle.label | process ... lice(2) [ArrayElement] |
 | command-line-parameter-command-injection.js:26:14:26:50 | `node $ ... ption"` | semmle.label | `node $ ... ption"` |
 | command-line-parameter-command-injection.js:26:32:26:35 | args | semmle.label | args |
+| command-line-parameter-command-injection.js:26:32:26:35 | args [ArrayElement] | semmle.label | args [ArrayElement] |
+| command-line-parameter-command-injection.js:26:32:26:38 | args[0] | semmle.label | args[0] |
 | command-line-parameter-command-injection.js:27:14:27:57 | `node $ ... ption"` | semmle.label | `node $ ... ption"` |
 | command-line-parameter-command-injection.js:27:32:27:35 | args | semmle.label | args |
 | command-line-parameter-command-injection.js:27:32:27:35 | args [ArrayElement] | semmle.label | args [ArrayElement] |
