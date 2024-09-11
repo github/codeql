@@ -1,4 +1,4 @@
-load("@rust_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(

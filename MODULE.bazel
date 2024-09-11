@@ -47,35 +47,23 @@ cp.from_cargo(
 )
 use_repo(cp, "py_deps")
 
-# crate_ruby, but shortened due to windows file paths
+# deps for ruby+rust, but shortened due to windows file paths
 r = use_extension(
     "@rules_rust//crate_universe:extension.bzl",
     "crate",
     isolate = True,
 )
 r.from_cargo(
-    name = "rd",
-    cargo_lockfile = "//ruby/extractor:Cargo.lock",
+    name = "r",
+    cargo_lockfile = "//:Cargo.lock",
     manifests = [
+        "//:Cargo.toml",
         "//ruby/extractor:Cargo.toml",
-        "//ruby/extractor/codeql-extractor-fake-crate:Cargo.toml",
-    ],
-)
-use_repo(r, ruby_deps = "rd")
-
-rsp = use_extension(
-    "@rules_rust//crate_universe:extension.bzl",
-    "crate",
-    isolate = True,
-)
-rsp.from_cargo(
-    name = "rs_deps",
-    cargo_lockfile = "//rust/extractor:Cargo.lock",
-    manifests = [
         "//rust/extractor:Cargo.toml",
+        "//shared/tree-sitter-extractor:Cargo.toml",
     ],
 )
-use_repo(rsp, rust_deps = "rs_deps")
+use_repo(r, tree_sitter_extractors_deps = "r")
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "8.0.101")
