@@ -75,8 +75,19 @@ module Conf {
 
     predicate isSink(DataFlow::Node sink) { sink in [nonReadingSink(), readingSink()] }
 
+    // This should emulate the implicit reads that happen during
+    // normal non-testing taint tracking; except that for sinks,
+    // we only want implicit reads for the ones we explicitly marked
+    // (with `ensure_tainted_with_reads` or `ensure_not_tainted_with_reads`).
+    //
+    // See `shared/dataflow/codeql/dataflow/TaintTracking.qll` and
+    // `AddTaintDefaults::allowImplicitRead`
     predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-      node = readingSink() and
+      (
+        node = readingSink()
+        or
+        TaintTracking::PythonTaintTracking::defaultAdditionalTaintStep(node, _, _)
+      ) and
       (
         c instanceof DataFlow::TupleElementContent
         or
