@@ -9,7 +9,7 @@ edition = "2021"
 [dependencies]
 tree-sitter = ">= 0.23.0"
 tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "62b0a6e45900a7dff7c37da95fec20a09968ba52" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "a66579f70d6f50ffd81a16fc3d3358e2ac173c88" }
+tree-sitter-ruby = { git = "https://github.com/hvitved/tree-sitter-ruby.git", rev = "0348984ccdd28777b1a8ccc88508cabff1ea89c8" }
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
