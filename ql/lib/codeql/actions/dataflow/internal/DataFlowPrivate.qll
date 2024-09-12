@@ -166,8 +166,7 @@ class DataFlowType extends TDataFlowType {
 
 string ppReprType(DataFlowType t) { none() }
 
-bindingset[t1, t2]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { t1 = t2 }
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
