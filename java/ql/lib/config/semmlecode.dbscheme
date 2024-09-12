@@ -485,7 +485,6 @@ typeVars(
   unique int id: @typevariable,
   string nodeName: string ref,
   int pos: int ref,
-  int kind: int ref, // deprecated
   int parentid: @classorinterfaceorcallable ref
 );
 
