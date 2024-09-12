@@ -11,7 +11,7 @@ extensions:
     data:
       - ["group:xorm", "Engine", True, "Alias", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "And", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Engine", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Engine.Exec has to be modeled in QL to select only the first syntactic argument
       - ["group:xorm", "Engine", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "In", "", "", "Argument[0]", "sql-injection", "manual"]
@@ -19,9 +19,7 @@ extensions:
       - ["group:xorm", "Engine", True, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "Or", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Engine", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Engine", True, "QueryString", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Engine", True, "QueryInterface", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Engine.Query, Engine.QueryInterface and Engine.QueryString have to be modeled in QL to select only the first syntactic argument
       - ["group:xorm", "Engine", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Engine", True, "SQL", "", "", "Argument[0]", "sql-injection", "manual"]
@@ -32,7 +30,7 @@ extensions:
       - ["group:xorm", "Engine", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "Alias", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "And", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Session", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Session.Exec has to be modeled in QL to select only the first syntactic argument
       - ["group:xorm", "Session", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "In", "", "", "Argument[0]", "sql-injection", "manual"]
@@ -40,9 +38,7 @@ extensions:
       - ["group:xorm", "Session", True, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "Or", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Session", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Session", True, "QueryString", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:xorm", "Session", True, "QueryInterface", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Session.Query, Session.QueryInterface and Session.QueryString have to be modeled in QL to select only the first syntactic argument
       - ["group:xorm", "Session", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:xorm", "Session", True, "SQL", "", "", "Argument[0]", "sql-injection", "manual"]

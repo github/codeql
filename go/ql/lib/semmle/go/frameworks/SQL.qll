@@ -188,7 +188,20 @@ module Gorm {
  */
 module Xorm {
   /** Gets the package name for Xorm. */
-  string packagePath() { result = package(["xorm.io/xorm", "github.com/go-xorm/xorm"], "") }
+  string packagePath() { FlowExtensions::packageGrouping("xorm", result) }
+
+  /** A model for sinks of XORM. */
+  private class XormSink extends SQL::QueryString::Range {
+    XormSink() {
+      exists(Method meth, string type, string name |
+        meth.hasQualifiedName(Xorm::packagePath(), type, name) and
+        type = ["Engine", "Session"] and
+        name = ["Exec", "Query", "QueryInterface", "QueryString"]
+      |
+        this = meth.getACall().getSyntacticArgument(0)
+      )
+    }
+  }
 }
 
 /**
