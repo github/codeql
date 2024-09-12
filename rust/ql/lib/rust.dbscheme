@@ -15,6 +15,7 @@ sourceLocationPrefix(
   @file
 | @locatable
 | @location
+| @unimplemented
 ;
 
 @file =
@@ -51,17 +52,25 @@ locations(
   int end_column: int ref
 );
 
+@unimplemented =
+  @generic_args
+| @path
+| @type_ref
+| @unimplemented_declaration
+;
+
 @ast_node =
   @declaration
 | @expr
+| @generic_args
 | @label
 | @match_arm
 | @pat
+| @path
 | @record_field_pat
 | @record_lit_field
 | @stmt
 | @type_ref
-| @unimplemented
 ;
 
 db_files(
@@ -75,6 +84,7 @@ db_locations(
 @declaration =
   @function
 | @module
+| @unimplemented_declaration
 ;
 
 @expr =
@@ -113,6 +123,10 @@ db_locations(
 | @yield_expr
 ;
 
+generic_args(
+  unique int id: @generic_args
+);
+
 labels(
   unique int id: @label,
   string name: string ref
@@ -147,6 +161,10 @@ match_arm_guards(
 | @wild_pat
 ;
 
+paths(
+  unique int id: @path
+);
+
 record_field_pats(
   unique int id: @record_field_pat,
   string name: string ref,
@@ -167,10 +185,6 @@ record_lit_fields(
 
 type_refs(
   unique int id: @type_ref
-);
-
-unimplementeds(
-  unique int id: @unimplemented
 );
 
 @array_expr =
@@ -461,7 +475,7 @@ method_call_expr_args(
 #keyset[id]
 method_call_expr_generic_args(
   int id: @method_call_expr ref,
-  int generic_args: @unimplemented ref
+  int generic_args: @generic_args ref
 );
 
 missing_exprs(
@@ -508,12 +522,12 @@ or_pat_args(
 
 path_exprs(
   unique int id: @path_expr,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 path_pats(
   unique int id: @path_pat,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 range_exprs(
@@ -560,7 +574,7 @@ record_lit_exprs(
 #keyset[id]
 record_lit_expr_paths(
   int id: @record_lit_expr ref,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 #keyset[id, index]
@@ -593,7 +607,7 @@ record_pats(
 #keyset[id]
 record_pat_paths(
   int id: @record_pat ref,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 #keyset[id, index]
@@ -707,7 +721,7 @@ tuple_struct_pats(
 #keyset[id]
 tuple_struct_pat_paths(
   int id: @tuple_struct_pat ref,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 #keyset[id, index]
@@ -731,6 +745,10 @@ unary_op_exprs(
 
 underscore_exprs(
   unique int id: @underscore_expr
+);
+
+unimplemented_declarations(
+  unique int id: @unimplemented_declaration
 );
 
 wild_pats(

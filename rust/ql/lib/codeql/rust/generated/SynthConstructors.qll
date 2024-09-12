@@ -24,6 +24,7 @@ import codeql.rust.elements.ElementListExprConstructor
 import codeql.rust.elements.ExprStmtConstructor
 import codeql.rust.elements.FieldExprConstructor
 import codeql.rust.elements.FunctionConstructor
+import codeql.rust.elements.GenericArgsConstructor
 import codeql.rust.elements.IfExprConstructor
 import codeql.rust.elements.IndexExprConstructor
 import codeql.rust.elements.InlineAsmExprConstructor
@@ -42,6 +43,7 @@ import codeql.rust.elements.MissingPatConstructor
 import codeql.rust.elements.ModuleConstructor
 import codeql.rust.elements.OffsetOfExprConstructor
 import codeql.rust.elements.OrPatConstructor
+import codeql.rust.elements.PathConstructor
 import codeql.rust.elements.PathExprConstructor
 import codeql.rust.elements.PathPatConstructor
 import codeql.rust.elements.RangeExprConstructor
@@ -61,7 +63,7 @@ import codeql.rust.elements.TupleStructPatConstructor
 import codeql.rust.elements.TypeRefConstructor
 import codeql.rust.elements.UnaryOpExprConstructor
 import codeql.rust.elements.UnderscoreExprConstructor
-import codeql.rust.elements.UnimplementedConstructor
+import codeql.rust.elements.UnimplementedDeclarationConstructor
 import codeql.rust.elements.UnsafeBlockExprConstructor
 import codeql.rust.elements.WildPatConstructor
 import codeql.rust.elements.YeetExprConstructor

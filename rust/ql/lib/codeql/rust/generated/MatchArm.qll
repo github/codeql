@@ -21,13 +21,13 @@ module Generated {
    * match x {
    *     Some(y) => y,
    *     None => 0,
-   * }
+   * };
    * ```
    * ```
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,
-   * }
+   * };
    * ```
    * INTERNAL: Do not reference the `Generated::MatchArm` class directly.
    * Use the subclass `MatchArm`, where the following predicates are available.

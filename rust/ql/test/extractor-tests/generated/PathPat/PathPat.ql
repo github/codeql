@@ -2,7 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-from PathPat x, Unimplemented getPath
+from PathPat x, Path getPath
 where
   toBeTested(x) and
   not x.isUnknown() and

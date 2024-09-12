@@ -63,6 +63,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class Unimplemented extends @unimplemented, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class AstNode extends @ast_node, Locatable { }
 
   /**
@@ -92,6 +97,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class GenericArgs extends @generic_args, AstNode, Unimplemented {
+    override string toString() { result = "GenericArgs" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A label. For example:
    * ```
    * 'label: loop {
@@ -116,13 +128,13 @@ module Raw {
    * match x {
    *     Some(y) => y,
    *     None => 0,
-   * }
+   * };
    * ```
    * ```
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,
-   * }
+   * };
    * ```
    */
   class MatchArm extends @match_arm, AstNode {
@@ -149,6 +161,13 @@ module Raw {
    * The base class for patterns.
    */
   class Pat extends @pat, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Path extends @path, AstNode, Unimplemented {
+    override string toString() { result = "Path" }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -201,15 +220,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class TypeRef extends @type_ref, AstNode {
+  class TypeRef extends @type_ref, AstNode, Unimplemented {
     override string toString() { result = "TypeRef" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class Unimplemented extends @unimplemented, AstNode {
-    override string toString() { result = "Unimplemented" }
   }
 
   /**
@@ -506,7 +518,7 @@ module Raw {
    * A const block pattern. For example:
    * ```
    * match x {
-   *     const { 1 + 2 + 3} => "ok",
+   *     const { 1 + 2 + 3 } => "ok",
    *     _ => "fail",
    * };
    * ```
@@ -613,7 +625,7 @@ module Raw {
    * INTERNAL: Do not use.
    * A function declaration. For example
    * ```
-   * fn foo(x: u32) -> u64 { (x + 1).into() }
+   * fn foo(x: u32) -> u64 {(x + 1).into()}
    * ```
    * A function declaration within a trait might not have a body:
    * ```
@@ -874,6 +886,7 @@ module Raw {
    *     None => 0,
    * }
    * ```
+   * ```
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,
@@ -922,7 +935,7 @@ module Raw {
     /**
      * Gets the generic arguments of this method call expression, if it exists.
      */
-    Unimplemented getGenericArgs() { method_call_expr_generic_args(this, result) }
+    GenericArgs getGenericArgs() { method_call_expr_generic_args(this, result) }
   }
 
   /**
@@ -953,6 +966,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A module declaration. For example:
+   * ```
+   * mod foo;
+   * ```
+   * ```
+   * mod bar {
+   *     pub fn baz() {}
+   * }
+   * ```
    */
   class Module extends @module, Declaration {
     override string toString() { result = "Module" }
@@ -1018,7 +1040,7 @@ module Raw {
     /**
      * Gets the path of this path expression.
      */
-    Unimplemented getPath() { path_exprs(this, result) }
+    Path getPath() { path_exprs(this, result) }
   }
 
   /**
@@ -1037,7 +1059,7 @@ module Raw {
     /**
      * Gets the path of this path pat.
      */
-    Unimplemented getPath() { path_pats(this, result) }
+    Path getPath() { path_pats(this, result) }
   }
 
   /**
@@ -1112,7 +1134,7 @@ module Raw {
     /**
      * Gets the path of this record lit expression, if it exists.
      */
-    Unimplemented getPath() { record_lit_expr_paths(this, result) }
+    Path getPath() { record_lit_expr_paths(this, result) }
 
     /**
      * Gets the `index`th field of this record lit expression (0-based).
@@ -1151,7 +1173,7 @@ module Raw {
     /**
      * Gets the path of this record pat, if it exists.
      */
-    Unimplemented getPath() { record_pat_paths(this, result) }
+    Path getPath() { record_pat_paths(this, result) }
 
     /**
      * Gets the `index`th argument of this record pat (0-based).
@@ -1330,7 +1352,7 @@ module Raw {
     /**
      * Gets the path of this tuple struct pat, if it exists.
      */
-    Unimplemented getPath() { tuple_struct_pat_paths(this, result) }
+    Path getPath() { tuple_struct_pat_paths(this, result) }
 
     /**
      * Gets the `index`th argument of this tuple struct pat (0-based).
@@ -1375,6 +1397,13 @@ module Raw {
    */
   class UnderscoreExpr extends @underscore_expr, Expr {
     override string toString() { result = "UnderscoreExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class UnimplementedDeclaration extends @unimplemented_declaration, Declaration, Unimplemented {
+    override string toString() { result = "UnimplementedDeclaration" }
   }
 
   /**

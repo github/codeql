@@ -33,6 +33,7 @@
 /MethodCallExpr/gen_method_call_expr.rs linguist-generated
 /MissingExpr/gen_missing_expr.rs linguist-generated
 /MissingPat/gen_missing_pat.rs linguist-generated
+/Module/gen_module.rs linguist-generated
 /OffsetOfExpr/gen_offset_of_expr.rs linguist-generated
 /OrPat/gen_or_pat.rs linguist-generated
 /PathExpr/gen_path_expr.rs linguist-generated

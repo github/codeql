@@ -102,6 +102,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TGenericArgs(Raw::GenericArgs id) { constructGenericArgs(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIfExpr(Raw::IfExpr id) { constructIfExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -171,6 +175,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TOrPat(Raw::OrPat id) { constructOrPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPath(Raw::Path id) { constructPath(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -250,7 +258,9 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnimplemented(Raw::Unimplemented id) { constructUnimplemented(id) } or
+    TUnimplementedDeclaration(Raw::UnimplementedDeclaration id) {
+      constructUnimplementedDeclaration(id)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -285,8 +295,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TDeclaration or TExpr or TLabel or TMatchArm or TPat or TRecordFieldPat or TRecordLitField or
-        TStmt or TTypeRef or TUnimplemented;
+    TDeclaration or TExpr or TGenericArgs or TLabel or TMatchArm or TPat or TPath or
+        TRecordFieldPat or TRecordLitField or TStmt or TTypeRef;
 
   /**
    * INTERNAL: Do not use.
@@ -296,7 +306,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TDeclaration = TFunction or TModule;
+  class TDeclaration = TFunction or TModule or TUnimplementedDeclaration;
 
   /**
    * INTERNAL: Do not use.
@@ -335,6 +345,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TItemStmt or TLetStmt;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TUnimplemented = TGenericArgs or TPath or TTypeRef or TUnimplementedDeclaration;
 
   /**
    * INTERNAL: Do not use.
@@ -485,6 +500,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TGenericArgs`, if possible.
+   */
+  cached
+  TGenericArgs convertGenericArgsFromRaw(Raw::Element e) { result = TGenericArgs(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIfExpr`, if possible.
    */
   cached
@@ -608,6 +630,13 @@ module Synth {
    */
   cached
   TOrPat convertOrPatFromRaw(Raw::Element e) { result = TOrPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPath`, if possible.
+   */
+  cached
+  TPath convertPathFromRaw(Raw::Element e) { result = TPath(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -744,10 +773,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnimplemented`, if possible.
+   * Converts a raw element to a synthesized `TUnimplementedDeclaration`, if possible.
    */
   cached
-  TUnimplemented convertUnimplementedFromRaw(Raw::Element e) { result = TUnimplemented(e) }
+  TUnimplementedDeclaration convertUnimplementedDeclarationFromRaw(Raw::Element e) {
+    result = TUnimplementedDeclaration(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -812,11 +843,15 @@ module Synth {
     or
     result = convertExprFromRaw(e)
     or
+    result = convertGenericArgsFromRaw(e)
+    or
     result = convertLabelFromRaw(e)
     or
     result = convertMatchArmFromRaw(e)
     or
     result = convertPatFromRaw(e)
+    or
+    result = convertPathFromRaw(e)
     or
     result = convertRecordFieldPatFromRaw(e)
     or
@@ -825,8 +860,6 @@ module Synth {
     result = convertStmtFromRaw(e)
     or
     result = convertTypeRefFromRaw(e)
-    or
-    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -851,6 +884,8 @@ module Synth {
     result = convertFunctionFromRaw(e)
     or
     result = convertModuleFromRaw(e)
+    or
+    result = convertUnimplementedDeclarationFromRaw(e)
   }
 
   /**
@@ -864,6 +899,8 @@ module Synth {
     result = convertLocatableFromRaw(e)
     or
     result = convertLocationFromRaw(e)
+    or
+    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -1018,6 +1055,21 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TUnimplemented`, if possible.
+   */
+  cached
+  TUnimplemented convertUnimplementedFromRaw(Raw::Element e) {
+    result = convertGenericArgsFromRaw(e)
+    or
+    result = convertPathFromRaw(e)
+    or
+    result = convertTypeRefFromRaw(e)
+    or
+    result = convertUnimplementedDeclarationFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TAsyncBlockExpr` to a raw DB element, if possible.
    */
   cached
@@ -1165,6 +1217,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TGenericArgs` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertGenericArgsToRaw(TGenericArgs e) { e = TGenericArgs(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TIfExpr` to a raw DB element, if possible.
    */
   cached
@@ -1288,6 +1347,13 @@ module Synth {
    */
   cached
   Raw::Element convertOrPatToRaw(TOrPat e) { e = TOrPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPath` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPathToRaw(TPath e) { e = TPath(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1424,10 +1490,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnimplemented` to a raw DB element, if possible.
+   * Converts a synthesized `TUnimplementedDeclaration` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnimplementedToRaw(TUnimplemented e) { e = TUnimplemented(result) }
+  Raw::Element convertUnimplementedDeclarationToRaw(TUnimplementedDeclaration e) {
+    e = TUnimplementedDeclaration(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1492,11 +1560,15 @@ module Synth {
     or
     result = convertExprToRaw(e)
     or
+    result = convertGenericArgsToRaw(e)
+    or
     result = convertLabelToRaw(e)
     or
     result = convertMatchArmToRaw(e)
     or
     result = convertPatToRaw(e)
+    or
+    result = convertPathToRaw(e)
     or
     result = convertRecordFieldPatToRaw(e)
     or
@@ -1505,8 +1577,6 @@ module Synth {
     result = convertStmtToRaw(e)
     or
     result = convertTypeRefToRaw(e)
-    or
-    result = convertUnimplementedToRaw(e)
   }
 
   /**
@@ -1531,6 +1601,8 @@ module Synth {
     result = convertFunctionToRaw(e)
     or
     result = convertModuleToRaw(e)
+    or
+    result = convertUnimplementedDeclarationToRaw(e)
   }
 
   /**
@@ -1544,6 +1616,8 @@ module Synth {
     result = convertLocatableToRaw(e)
     or
     result = convertLocationToRaw(e)
+    or
+    result = convertUnimplementedToRaw(e)
   }
 
   /**
@@ -1694,5 +1768,20 @@ module Synth {
     result = convertItemStmtToRaw(e)
     or
     result = convertLetStmtToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnimplemented` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertUnimplementedToRaw(TUnimplemented e) {
+    result = convertGenericArgsToRaw(e)
+    or
+    result = convertPathToRaw(e)
+    or
+    result = convertTypeRefToRaw(e)
+    or
+    result = convertUnimplementedDeclarationToRaw(e)
   }
 }

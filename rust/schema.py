@@ -63,7 +63,7 @@ class AstNode(Locatable):
 
 
 @qltest.skip
-class Unimplemented(AstNode):
+class Unimplemented(Element):
     pass
 
 
@@ -71,8 +71,23 @@ class Declaration(AstNode):
     pass
 
 
-class Module(Declaration):
+@qltest.skip
+class UnimplementedDeclaration(Declaration, Unimplemented):
+    pass
 
+
+class Module(Declaration):
+    """
+    A module declaration. For example:
+    ```
+    mod foo;
+    ```
+    ```
+    mod bar {
+        pub fn baz() {}
+    }
+    ```
+    """
     declarations: list[Declaration] | child
 
 
@@ -112,8 +127,15 @@ class Stmt(AstNode):
 
 
 @qltest.collapse_hierarchy
-class TypeRef(AstNode):
+class TypeRef(AstNode, Unimplemented):
+    pass
 
+
+class Path(AstNode, Unimplemented):
+    pass
+
+
+class GenericArgs(AstNode, Unimplemented):
     pass
 
 
@@ -121,7 +143,7 @@ class Function(Declaration):
     """
     A function declaration. For example
     ```
-    fn foo(x: u32) -> u64 { (x + 1).into() }
+    fn foo(x: u32) -> u64 {(x + 1).into()}
     ```
     A function declaration within a trait might not have a body:
     ```
@@ -157,7 +179,7 @@ class PathExpr(Expr):
     let z = <Type as Trait>::foo;
     ```
     """
-    path: Unimplemented | child
+    path: Path | child
 
 
 @rust.doc_test_signature("() -> ()")
@@ -318,7 +340,7 @@ class MethodCallExpr(Expr):
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
-    generic_args: optional[Unimplemented] | child
+    generic_args: optional[GenericArgs] | child
 
 
 @rust.doc_test_signature("(x: i32) -> i32")
@@ -329,13 +351,13 @@ class MatchArm(AstNode):
     match x {
         Some(y) => y,
         None => 0,
-    }
+    };
     ```
     ```
     match x {
         Some(y) if y != 0 => 1 / y,
         _ => 0,
-    }
+    };
     ```
     """
     pat: Pat | child
@@ -352,6 +374,7 @@ class MatchExpr(Expr):
         Some(y) => y,
         None => 0,
     }
+    ```
     ```
     match x {
         Some(y) if y != 0 => 1 / y,
@@ -490,7 +513,7 @@ class RecordLitExpr(Expr):
     Foo { .. } = second;
     ```
     """
-    path: optional[Unimplemented] | child
+    path: optional[Path] | child
     fields: list[RecordLitField] | child
     spread: optional[Expr] | child
     has_ellipsis: predicate
@@ -873,7 +896,7 @@ class RecordPat(Pat):
     ```
     """
 
-    path: optional[Unimplemented] | child
+    path: optional[Path] | child
     args: list[RecordFieldPat] | child
     has_ellipsis: predicate
 
@@ -921,7 +944,7 @@ class PathPat(Pat):
     }
     ```
     """
-    path: Unimplemented | child
+    path: Path | child
 
 
 @rust.doc_test_signature("() -> ()")
@@ -971,7 +994,7 @@ class TupleStructPat(Pat):
     };
     ```
     """
-    path: optional[Unimplemented] | child
+    path: optional[Path] | child
     args: list[Pat] | child
     ellipsis_index: optional[int]
 
@@ -1011,7 +1034,7 @@ class ConstBlockPat(Pat):
     A const block pattern. For example:
     ```
     match x {
-        const { 1 + 2 + 3} => "ok",
+        const { 1 + 2 + 3 } => "ok",
         _ => "fail",
     };
     ```

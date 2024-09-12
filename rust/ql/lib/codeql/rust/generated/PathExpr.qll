@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.Path
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathExpr` and should not
@@ -31,11 +31,9 @@ module Generated {
     /**
      * Gets the path of this path expression.
      */
-    Unimplemented getPath() {
+    Path getPath() {
       result =
-        Synth::convertUnimplementedFromRaw(Synth::convertPathExprToRaw(this)
-              .(Raw::PathExpr)
-              .getPath())
+        Synth::convertPathFromRaw(Synth::convertPathExprToRaw(this).(Raw::PathExpr).getPath())
     }
   }
 }

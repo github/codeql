@@ -18,7 +18,7 @@ module Generated {
    * A const block pattern. For example:
    * ```
    * match x {
-   *     const { 1 + 2 + 3} => "ok",
+   *     const { 1 + 2 + 3 } => "ok",
    *     _ => "fail",
    * };
    * ```

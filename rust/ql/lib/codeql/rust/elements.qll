@@ -31,6 +31,7 @@ import codeql.rust.elements.ExprStmt
 import codeql.rust.elements.FieldExpr
 import codeql.rust.elements.File
 import codeql.rust.elements.Function
+import codeql.rust.elements.GenericArgs
 import codeql.rust.elements.IfExpr
 import codeql.rust.elements.IndexExpr
 import codeql.rust.elements.InlineAsmExpr
@@ -52,6 +53,7 @@ import codeql.rust.elements.Module
 import codeql.rust.elements.OffsetOfExpr
 import codeql.rust.elements.OrPat
 import codeql.rust.elements.Pat
+import codeql.rust.elements.Path
 import codeql.rust.elements.PathExpr
 import codeql.rust.elements.PathPat
 import codeql.rust.elements.RangeExpr
@@ -73,6 +75,7 @@ import codeql.rust.elements.TypeRef
 import codeql.rust.elements.UnaryOpExpr
 import codeql.rust.elements.UnderscoreExpr
 import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.UnimplementedDeclaration
 import codeql.rust.elements.UnknownFile
 import codeql.rust.elements.UnknownLocation
 import codeql.rust.elements.UnsafeBlockExpr

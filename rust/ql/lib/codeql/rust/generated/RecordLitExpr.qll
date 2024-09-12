@@ -7,8 +7,8 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Path
 import codeql.rust.elements.RecordLitField
-import codeql.rust.elements.Unimplemented
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordLitExpr` and should not
@@ -32,9 +32,9 @@ module Generated {
     /**
      * Gets the path of this record lit expression, if it exists.
      */
-    Unimplemented getPath() {
+    Path getPath() {
       result =
-        Synth::convertUnimplementedFromRaw(Synth::convertRecordLitExprToRaw(this)
+        Synth::convertPathFromRaw(Synth::convertRecordLitExprToRaw(this)
               .(Raw::RecordLitExpr)
               .getPath())
     }

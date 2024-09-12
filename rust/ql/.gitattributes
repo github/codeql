@@ -46,6 +46,8 @@
 /lib/codeql/rust/elements/FieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/FieldExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/FunctionConstructor.qll linguist-generated
+/lib/codeql/rust/elements/GenericArgs.qll linguist-generated
+/lib/codeql/rust/elements/GenericArgsConstructor.qll linguist-generated
 /lib/codeql/rust/elements/IfExpr.qll linguist-generated
 /lib/codeql/rust/elements/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/IndexExpr.qll linguist-generated
@@ -83,6 +85,8 @@
 /lib/codeql/rust/elements/OrPat.qll linguist-generated
 /lib/codeql/rust/elements/OrPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Pat.qll linguist-generated
+/lib/codeql/rust/elements/Path.qll linguist-generated
+/lib/codeql/rust/elements/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/PathExpr.qll linguist-generated
 /lib/codeql/rust/elements/PathExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/PathPat.qll linguist-generated
@@ -123,7 +127,8 @@
 /lib/codeql/rust/elements/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Unimplemented.qll linguist-generated
-/lib/codeql/rust/elements/UnimplementedConstructor.qll linguist-generated
+/lib/codeql/rust/elements/UnimplementedDeclaration.qll linguist-generated
+/lib/codeql/rust/elements/UnimplementedDeclarationConstructor.qll linguist-generated
 /lib/codeql/rust/elements/UnsafeBlockExpr.qll linguist-generated
 /lib/codeql/rust/elements/UnsafeBlockExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/WildPat.qll linguist-generated
@@ -161,6 +166,7 @@
 /lib/codeql/rust/generated/FieldExpr.qll linguist-generated
 /lib/codeql/rust/generated/File.qll linguist-generated
 /lib/codeql/rust/generated/Function.qll linguist-generated
+/lib/codeql/rust/generated/GenericArgs.qll linguist-generated
 /lib/codeql/rust/generated/IfExpr.qll linguist-generated
 /lib/codeql/rust/generated/IndexExpr.qll linguist-generated
 /lib/codeql/rust/generated/InlineAsmExpr.qll linguist-generated
@@ -183,6 +189,7 @@
 /lib/codeql/rust/generated/OrPat.qll linguist-generated
 /lib/codeql/rust/generated/ParentChild.qll linguist-generated
 /lib/codeql/rust/generated/Pat.qll linguist-generated
+/lib/codeql/rust/generated/Path.qll linguist-generated
 /lib/codeql/rust/generated/PathExpr.qll linguist-generated
 /lib/codeql/rust/generated/PathPat.qll linguist-generated
 /lib/codeql/rust/generated/PureSynthConstructors.qll linguist-generated
@@ -208,6 +215,7 @@
 /lib/codeql/rust/generated/UnaryOpExpr.qll linguist-generated
 /lib/codeql/rust/generated/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/generated/Unimplemented.qll linguist-generated
+/lib/codeql/rust/generated/UnimplementedDeclaration.qll linguist-generated
 /lib/codeql/rust/generated/UnknownFile.qll linguist-generated
 /lib/codeql/rust/generated/UnknownLocation.qll linguist-generated
 /lib/codeql/rust/generated/UnsafeBlockExpr.qll linguist-generated
@@ -249,6 +257,7 @@
 /test/extractor-tests/generated/FieldExpr/FieldExpr.ql linguist-generated
 /test/extractor-tests/generated/File/File.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
+/test/extractor-tests/generated/GenericArgs/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/IfExpr/IfExpr.ql linguist-generated
 /test/extractor-tests/generated/IfExpr/IfExpr_getElse.ql linguist-generated
 /test/extractor-tests/generated/IndexExpr/IndexExpr.ql linguist-generated
@@ -272,11 +281,13 @@
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getGenericArgs.ql linguist-generated
 /test/extractor-tests/generated/MissingExpr/MissingExpr.ql linguist-generated
 /test/extractor-tests/generated/MissingPat/MissingPat.ql linguist-generated
-/test/extractor-tests/generated/Module/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/Module/Module.ql linguist-generated
+/test/extractor-tests/generated/Module/Module_getDeclaration.ql linguist-generated
 /test/extractor-tests/generated/OffsetOfExpr/OffsetOfExpr.ql linguist-generated
 /test/extractor-tests/generated/OffsetOfExpr/OffsetOfExpr_getField.ql linguist-generated
 /test/extractor-tests/generated/OrPat/OrPat.ql linguist-generated
 /test/extractor-tests/generated/OrPat/OrPat_getArg.ql linguist-generated
+/test/extractor-tests/generated/Path/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/PathExpr/PathExpr.ql linguist-generated
 /test/extractor-tests/generated/PathPat/PathPat.ql linguist-generated
 /test/extractor-tests/generated/RangeExpr/RangeExpr.ql linguist-generated

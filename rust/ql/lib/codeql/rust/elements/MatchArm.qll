@@ -11,13 +11,13 @@ private import codeql.rust.generated.MatchArm
  * match x {
  *     Some(y) => y,
  *     None => 0,
- * }
+ * };
  * ```
  * ```
  * match x {
  *     Some(y) if y != 0 => 1 / y,
  *     _ => 0,
- * }
+ * };
  * ```
  */
 class MatchArm extends Generated::MatchArm { }

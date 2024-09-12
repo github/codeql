@@ -49,6 +49,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnimplemented(
+    Unimplemented e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
     exists(int b, int bLocatable, int n |
       b = 0 and
@@ -146,6 +161,25 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfGenericArgs(
+    GenericArgs e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int bUnimplemented, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      bUnimplemented =
+        bAstNode + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnimplemented(e, i, _)) | i) and
+      n = bUnimplemented and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfUnimplemented(e, index - bAstNode, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfLabel(Label e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -190,6 +224,23 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPath(Path e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int bUnimplemented, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      bUnimplemented =
+        bAstNode + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnimplemented(e, i, _)) | i) and
+      n = bUnimplemented and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfUnimplemented(e, index - bAstNode, partialPredicateCall)
       )
     )
   }
@@ -244,29 +295,18 @@ private module Impl {
   }
 
   private Element getImmediateChildOfTypeRef(TypeRef e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n |
+    exists(int b, int bAstNode, int bUnimplemented, int n |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
+      bUnimplemented =
+        bAstNode + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnimplemented(e, i, _)) | i) and
+      n = bUnimplemented and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfUnimplemented(
-    Unimplemented e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bAstNode, int n |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      (
-        none()
         or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfUnimplemented(e, index - bAstNode, partialPredicateCall)
       )
     )
   }
@@ -1163,6 +1203,27 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnimplementedDeclaration(
+    UnimplementedDeclaration e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDeclaration, int bUnimplemented, int n |
+      b = 0 and
+      bDeclaration =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDeclaration(e, i, _)) | i) and
+      bUnimplemented =
+        bDeclaration + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfUnimplemented(e, i, _)) | i) and
+      n = bUnimplemented and
+      (
+        none()
+        or
+        result = getImmediateChildOfDeclaration(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfUnimplemented(e, index - bDeclaration, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfWildPat(WildPat e, int index, string partialPredicateCall) {
     exists(int b, int bPat, int n |
       b = 0 and
@@ -1309,17 +1370,19 @@ private module Impl {
     or
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
     or
+    result = getImmediateChildOfGenericArgs(e, index, partialAccessor)
+    or
     result = getImmediateChildOfLabel(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPath(e, index, partialAccessor)
     or
     result = getImmediateChildOfRecordFieldPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfRecordLitField(e, index, partialAccessor)
     or
     result = getImmediateChildOfTypeRef(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfUnimplemented(e, index, partialAccessor)
     or
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
@@ -1414,6 +1477,8 @@ private module Impl {
     result = getImmediateChildOfUnaryOpExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnderscoreExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnimplementedDeclaration(e, index, partialAccessor)
     or
     result = getImmediateChildOfWildPat(e, index, partialAccessor)
     or

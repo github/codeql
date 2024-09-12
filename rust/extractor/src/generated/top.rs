@@ -44,6 +44,25 @@ impl TrapEntry for DbLocation {
 }
 
 #[derive(Debug)]
+pub struct GenericArgs {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+}
+
+impl TrapEntry for GenericArgs {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("generic_args", vec![trap::Arg::Label(id)]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Label {
     pub id: TrapId,
     pub location: Option<trap::Label>,
@@ -84,6 +103,25 @@ impl TrapEntry for MatchArm {
         }
         if let Some(v) = self.guard {
             out.add_tuple("match_arm_guards", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Path {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+}
+
+impl TrapEntry for Path {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("paths", vec![trap::Arg::Label(id)]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
@@ -143,25 +181,6 @@ impl TrapEntry for TypeRef {
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
         out.add_tuple("type_refs", vec![trap::Arg::Label(id)]);
-        if let Some(v) = self.location {
-            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct Unimplemented {
-    pub id: TrapId,
-    pub location: Option<trap::Label>,
-}
-
-impl TrapEntry for Unimplemented {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unimplementeds", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }
@@ -1300,6 +1319,25 @@ impl TrapEntry for UnderscoreExpr {
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
         out.add_tuple("underscore_exprs", vec![trap::Arg::Label(id)]);
+        if let Some(v) = self.location {
+            out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct UnimplementedDeclaration {
+    pub id: TrapId,
+    pub location: Option<trap::Label>,
+}
+
+impl TrapEntry for UnimplementedDeclaration {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("unimplemented_declarations", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.location {
             out.add_tuple("locatable_locations", vec![trap::Arg::Label(id), v.into()]);
         }

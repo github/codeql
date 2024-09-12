@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.Path
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathPat` and should not
@@ -31,9 +31,8 @@ module Generated {
     /**
      * Gets the path of this path pat.
      */
-    Unimplemented getPath() {
-      result =
-        Synth::convertUnimplementedFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
+    Path getPath() {
+      result = Synth::convertPathFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
     }
   }
 }

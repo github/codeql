@@ -183,14 +183,11 @@ impl CrateTranslator<'_> {
         })
     }
 
-    fn emit_unimplemented(&mut self, location: Option<trap::Label>) -> trap::Label {
-        self.trap.emit(generated::Unimplemented {
+    fn emit_path(&mut self, _path: &Path, location: Option<trap::Label>) -> trap::Label {
+        self.trap.emit(generated::Path {
             id: TrapId::Star,
             location,
         })
-    }
-    fn emit_path(&mut self, _path: &Path, location: Option<trap::Label>) -> trap::Label {
-        self.emit_unimplemented(location)
     }
 
     fn emit_record_field_pat(
@@ -610,9 +607,12 @@ impl CrateTranslator<'_> {
                     .into_iter()
                     .map(|e| self.emit_expr(*e, body, source_map))
                     .collect();
-                let generic_args = generic_args
-                    .as_ref()
-                    .map(|_args| self.emit_unimplemented(None));
+                let generic_args = generic_args.as_ref().map(|_args| {
+                    self.trap.emit(generated::GenericArgs {
+                        id: TrapId::Star,
+                        location: None,
+                    })
+                });
                 self.trap.emit(generated::MethodCallExpr {
                     id: TrapId::Star,
                     location,
@@ -929,8 +929,12 @@ impl CrateTranslator<'_> {
         labels: &mut Vec<trap::Label>,
     ) {
         match id {
-            ModuleDef::Module(_) => {
-                self.emit_unimplemented(None);
+            ModuleDef::Module(_module) => {
+                let location = None;
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Function(function) => {
                 let def: ra_ap_hir::DefWithBody = function.into();
@@ -958,38 +962,66 @@ impl CrateTranslator<'_> {
             }
             ModuleDef::Adt(adt) => {
                 let location = self.emit_location(adt);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Variant(variant) => {
                 let location = self.emit_location(variant);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Const(const_) => {
                 let location = self.emit_location(const_);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Static(static_) => {
                 let location = self.emit_location(static_);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Trait(trait_) => {
                 let location = self.emit_location(trait_);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::TraitAlias(alias) => {
                 let location = self.emit_location(alias);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::TypeAlias(type_alias) => {
                 let location = self.emit_location(type_alias);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::BuiltinType(_builtin_type) => {
-                self.emit_unimplemented(None);
+                let location = None;
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
             ModuleDef::Macro(macro_) => {
                 let location = self.emit_location(macro_);
-                self.emit_unimplemented(location);
+                self.trap.emit(generated::UnimplementedDeclaration {
+                    id: TrapId::Star,
+                    location,
+                });
             }
         }
     }
