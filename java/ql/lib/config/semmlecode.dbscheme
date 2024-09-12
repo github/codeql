@@ -207,33 +207,6 @@ sourceLocationPrefix(
 );
 
 /*
- * Duplicate code
- */
-
-duplicateCode(
-  unique int id : @duplication,
-  string relativePath : string ref,
-  int equivClass : int ref
-);
-
-similarCode(
-  unique int id : @similarity,
-  string relativePath : string ref,
-  int equivClass : int ref
-);
-
-@duplication_or_similarity = @duplication | @similarity
-
-tokens(
-  int id : @duplication_or_similarity ref,
-  int offset : int ref,
-  int beginLine : int ref,
-  int beginColumn : int ref,
-  int endLine : int ref,
-  int endColumn : int ref
-);
-
-/*
  * SMAP
  */
 
