@@ -14,7 +14,6 @@ import semmle.code.powershell.Attribute
 import semmle.code.powershell.NamedAttributeArgument
 import semmle.code.powershell.TypeConstraint
 import semmle.code.powershell.VariableExpression
-import semmle.code.powershell.Parameter
 import semmle.code.powershell.ModuleSpecification
 import semmle.code.powershell.ParamBlock
 import semmle.code.powershell.NamedBlock
@@ -77,3 +76,4 @@ import semmle.code.powershell.IndexExpr
 import semmle.code.powershell.HashTable
 import semmle.code.powershell.SplitExpr
 import semmle.code.powershell.CommentEntity
+import semmle.code.powershell.Variable
