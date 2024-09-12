@@ -176,6 +176,8 @@ fun doAnalysis(
     val session = buildStandaloneAnalysisAPISession {
         registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
 
+        // TODO: Is there a better way we can do all this directly from k2args?
+
         buildKtModuleProvider {
             platform = JvmPlatforms.defaultJvmPlatform
             val sdk = addModule(
@@ -186,10 +188,23 @@ fun doAnalysis(
                     libraryName = "JDK"
                 }
             )
+            val lib = addModule(
+                buildKtLibraryModule {
+                    val classpath = k2args.classpath
+                    if (classpath != null) {
+                        for (cpEntry in classpath.split(File.pathSeparatorChar)) {
+                            addBinaryRoot(Paths.get(cpEntry))
+                        }
+                    }
+                    platform = JvmPlatforms.defaultJvmPlatform
+                    libraryName = "Library for classpath"
+                }
+            )
             sourceModule = addModule(
                 buildKtSourceModule {
                     addSourceRoots(k2args.freeArgs.map { Paths.get(it) })
                     addRegularDependency(sdk)
+                    addRegularDependency(lib)
                     platform = JvmPlatforms.defaultJvmPlatform
                     moduleName = "<source>"
                 }
