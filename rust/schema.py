@@ -72,7 +72,7 @@ class Declaration(AstNode):
 
 
 class Module(Declaration):
-    # TODO name
+
     declarations: list[Declaration] | child
 
 
@@ -96,7 +96,7 @@ class Stmt(AstNode):
 
 @qltest.collapse_hierarchy
 class TypeRef(AstNode):
-    # TODO
+
     pass
 
 
@@ -129,8 +129,6 @@ class MissingExpr(Expr):
     pass
 
 
-#     Path(Path),
-
 @rust.doc_test_signature("() -> ()")
 class PathExpr(Expr):
     """
@@ -143,12 +141,6 @@ class PathExpr(Expr):
     ```
     """
     path: Unimplemented | child
-
-#     If {
-#         condition: ExprId,
-#         then_branch: ExprId,
-#         else_branch: Option<ExprId>,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -172,11 +164,6 @@ class IfExpr(Expr):
     then: Expr | child
     else_: optional[Expr] | child
 
-#     Let {
-#         pat: PatId,
-#         expr: ExprId,
-#     },
-
 
 @rust.doc_test_signature("(maybe_some: Option<String>) -> ()")
 class LetExpr(Expr):
@@ -190,13 +177,6 @@ class LetExpr(Expr):
     """
     pat: Pat | child
     expr: Expr | child
-
-#     Block {
-#         id: Option<BlockId>,
-#         statements: Box<[Stmt]>,
-#         tail: Option<ExprId>,
-#         label: Option<LabelId>,
-#     },
 
 
 class BlockExprBase(Expr):
@@ -221,12 +201,6 @@ class BlockExpr(BlockExprBase):
     ```
     """
     label: optional[Label] | child
-
-#     Async {
-#         id: Option<BlockId>,
-#         statements: Box<[Stmt]>,
-#         tail: Option<ExprId>,
-#     },
 
 
 @rust.doc_test_signature("() -> i32")
@@ -255,13 +229,6 @@ class ConstExpr(Expr):
     """
     expr: Expr | child
 
-#     // FIXME: Fold this into Block with an unsafe flag?
-#     Unsafe {
-#         id: Option<BlockId>,
-#         statements: Box<[Stmt]>,
-#         tail: Option<ExprId>,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class UnsafeBlockExpr(BlockExprBase):
@@ -275,11 +242,6 @@ class UnsafeBlockExpr(BlockExprBase):
     ```
     """
     pass
-
-#     Loop {
-#         body: ExprId,
-#         label: Option<LabelId>,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -311,12 +273,6 @@ class LoopExpr(Expr):
     body: Expr | child
     label: optional[Label] | child
 
-#     Call {
-#         callee: ExprId,
-#         args: Box<[ExprId]>,
-#         is_assignee_expr: bool,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class CallExpr(Expr):
@@ -333,13 +289,6 @@ class CallExpr(Expr):
     args: list[Expr] | child
     is_assignee_expr: predicate
 
-#     MethodCall {
-#         receiver: ExprId,
-#         method_name: Name,
-#         args: Box<[ExprId]>,
-#         generic_args: Option<Box<GenericArgs>>,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class MethodCallExpr(Expr):
@@ -353,12 +302,6 @@ class MethodCallExpr(Expr):
     method_name: string
     args: list[Expr] | child
     generic_args: optional[Unimplemented] | child
-
-# pub struct MatchArm {
-#     pub pat: PatId,
-#     pub guard: Option<ExprId>,
-#     pub expr: ExprId,
-# }
 
 
 @rust.doc_test_signature("(x: i32) -> i32")
@@ -381,10 +324,6 @@ class MatchArm(AstNode):
     pat: Pat | child
     guard: optional[Expr] | child
     expr: Expr | child
-#     Match {
-#         expr: ExprId,
-#         arms: Box<[MatchArm]>,
-#     },
 
 
 @rust.doc_test_signature("(x: i32) -> i32")
@@ -405,10 +344,6 @@ class MatchExpr(Expr):
     """
     expr: Expr | child
     branches: list[MatchArm] | child
-
-#     Continue {
-#         label: Option<LabelId>,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -431,11 +366,6 @@ class ContinueExpr(Expr):
     ```
     """
     label: optional[Label] | child
-
-#     Break {
-#         expr: Option<ExprId>,
-#         label: Option<LabelId>,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -461,10 +391,6 @@ class BreakExpr(Expr):
     label: optional[Label] | child
 
 
-#     Return {
-#         expr: Option<ExprId>,
-#     },
-
 class ReturnExpr(Expr):
     """
     A return expression. For example:
@@ -480,9 +406,6 @@ class ReturnExpr(Expr):
     ```
     """
     expr: optional[Expr] | child
-#     Become {
-#         expr: ExprId,
-#     },
 
 
 class BecomeExpr(Expr):
@@ -498,9 +421,6 @@ class BecomeExpr(Expr):
      }    ```
      """
     expr: Expr | child
-#     Yield {
-#         expr: Option<ExprId>,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -516,10 +436,6 @@ class YieldExpr(Expr):
     """
     expr: optional[Expr] | child
 
-#     Yeet {
-#         expr: Option<ExprId>,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class YeetExpr(Expr):
@@ -532,13 +448,6 @@ class YeetExpr(Expr):
     ```
     """
     expr: optional[Expr] | child
-#     RecordLit {
-#         path: Option<Box<Path>>,
-#         fields: Box<[RecordLitField]>,
-#         spread: Option<ExprId>,
-#         ellipsis: bool,
-#         is_assignee_expr: bool,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -571,10 +480,6 @@ class RecordLitExpr(Expr):
     is_assignee_expr: predicate
 
 
-#     Field {
-#         expr: ExprId,
-#         name: Name,
-#     },
 @rust.doc_test_signature("() -> ()")
 class FieldExpr(Expr):
     """
@@ -585,10 +490,6 @@ class FieldExpr(Expr):
     """
     expr: Expr | child
     name: string
-
-#     Await {
-#         expr: ExprId,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -604,11 +505,6 @@ class AwaitExpr(Expr):
     """
     expr: Expr | child
 
-#     Cast {
-#         expr: ExprId,
-#         type_ref: Interned<TypeRef>,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class CastExpr(Expr):
@@ -620,11 +516,6 @@ class CastExpr(Expr):
     """
     expr: Expr | child
     type_ref: TypeRef | child
-#     Ref {
-#         expr: ExprId,
-#         rawness: Rawness,
-#         mutability: Mutability,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -641,9 +532,6 @@ class RefExpr(Expr):
     expr: Expr | child
     is_raw: predicate
     is_mut: predicate
-#     Box {
-#         expr: ExprId,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -655,10 +543,6 @@ class BoxExpr(Expr):
     ```
     """
     expr: Expr | child
-#     UnaryOp {
-#         expr: ExprId,
-#         op: UnaryOp,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -675,11 +559,6 @@ class UnaryOpExpr(Expr):
     op: string
 
 
-#     BinaryOp {
-#         lhs: ExprId,
-#         rhs: ExprId,
-#         op: Option<BinaryOp>,
-#     },
 @rust.doc_test_signature("() -> ()")
 class BinaryOpExpr(Expr):
     """
@@ -695,13 +574,6 @@ class BinaryOpExpr(Expr):
     lhs: Expr | child
     rhs: Expr | child
     op: optional[string]
-
-
-#     Range {
-#         lhs: Option<ExprId>,
-#         rhs: Option<ExprId>,
-#         range_type: RangeOp,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -721,12 +593,6 @@ class RangeExpr(Expr):
     rhs: optional[Expr] | child
     is_inclusive: predicate
 
-#     Index {
-#         base: ExprId,
-#         index: ExprId,
-#         is_assignee_expr: bool,
-#     },
-
 
 @rust.doc_test_signature("() -> ()")
 class IndexExpr(Expr):
@@ -740,15 +606,6 @@ class IndexExpr(Expr):
     base: Expr | child
     index: Expr | child
     is_assignee_expr: predicate
-
-#     Closure {
-#         args: Box<[PatId]>,
-#         arg_types: Box<[Option<Interned<TypeRef>>]>,
-#         ret_type: Option<Interned<TypeRef>>,
-#         body: ExprId,
-#         closure_kind: ClosureKind,
-#         capture_by: CaptureBy,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -771,10 +628,6 @@ class ClosureExpr(Expr):
     body: Expr | child
     closure_kind: string
     is_move: predicate
-#     Tuple {
-#         exprs: Box<[ExprId]>,
-#         is_assignee_expr: bool,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -789,8 +642,6 @@ class TupleExpr(Expr):
     exprs: list[Expr] | child
     is_assignee_expr: predicate
 
-#     Array(Array),
-
 
 class ArrayExpr(Expr):
     """
@@ -801,9 +652,6 @@ class ArrayExpr(Expr):
     ```
     """
     pass
-#     Literal(Literal),
-
-# ElementList { elements: Box<[ExprId]>, is_assignee_expr: bool },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -817,8 +665,6 @@ class ElementListExpr(ArrayExpr):
     """
     elements: list[Expr] | child
     is_assignee_expr: predicate
-
-# Repeat { initializer: ExprId, repeat: ExprId },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -847,7 +693,6 @@ class LiteralExpr(Expr):
     true;
     """
     pass
-#     Underscore,
 
 
 @rust.doc_test_signature("() -> ()")
@@ -859,7 +704,6 @@ class UnderscoreExpr(Expr):
     ```
     """
     pass
-#     OffsetOf(OffsetOf),
 
 
 @rust.doc_test_signature("() -> ()")
@@ -872,8 +716,6 @@ class OffsetOfExpr(Expr):
     """
     container: TypeRef | child
     fields: list[string]
-
-#     InlineAsm(InlineAsm),
 
 
 @rust.doc_test_signature("() -> ()")
@@ -888,13 +730,6 @@ class InlineAsmExpr(Expr):
     """
     expr: Expr | child
 
-
-#    Let {
-#         pat: PatId,
-#         type_ref: Option<Interned<TypeRef>>,
-#         initializer: Option<ExprId>,
-#         else_branch: Option<ExprId>,
-#     },
 
 @rust.doc_test_signature("() -> ()")
 class LetStmt(Stmt):
@@ -915,10 +750,6 @@ class LetStmt(Stmt):
     type_ref: optional[TypeRef] | child
     initializer: optional[Expr] | child
     else_: optional[Expr] | child
-#     Expr {
-#         expr: ExprId,
-#         has_semi: bool,
-#     },
 
 
 @rust.doc_test_signature("() -> ()")
@@ -933,10 +764,6 @@ class ExprStmt(Stmt):
     """
     expr: Expr | child
     has_semicolon: predicate
-
-#     // At the moment, we only use this to figure out if a return expression
-#     // is really the last statement of a block. See #16566
-#     Item,
 
 
 # At the HIR-level, we don't have items, only some markers without location indicating where they used to be.
@@ -953,24 +780,18 @@ class ItemStmt(Stmt):
     """
     pass
 
-    # Missing,
-
 
 class MissingPat(Pat):
     pass
-    # Wild,
 
 
 class WildPat(Pat):
     pass
-    # Tuple { args: Box<[PatId]>, ellipsis: Option<u32> },
 
 
 class TuplePat(Pat):
     args: list[Pat] | child
     ellipsis_index: optional[int]
-
-    # Or(Box<[PatId]>),
 
 
 class OrPat(Pat):
@@ -981,47 +802,35 @@ class RecordFieldPat(AstNode):
     name: string
     pat: Pat | child
 
-# Record { path: Option<Box<Path>>, args: Box<[RecordFieldPat]>, ellipsis: bool },
-
 
 class RecordPat(Pat):
     path: optional[Unimplemented] | child
     args: list[RecordFieldPat] | child
     has_ellipsis: predicate
 
-    # Range { start: Option<Box<LiteralOrConst>>, end: Option<Box<LiteralOrConst>> },
-
 
 class RangePat(Pat):
     start: optional[Pat] | child
     end: optional[Pat] | child
-    # Slice { prefix: Box<[PatId]>, slice: Option<PatId>, suffix: Box<[PatId]> },
 
 
 class SlicePat(Pat):
     prefix: list[Pat] | child
     slice: optional[Pat] | child
     suffix: list[Pat] | child
-    # Path(Box<Path>),
 
 
 class PathPat(Pat):
     path: Unimplemented | child
 
-    # Lit(ExprId),
-
 
 class LitPat(Pat):
     expr: Expr | child
-
-    # Bind { id: BindingId, subpat: Option<PatId> },
 
 
 class BindPat(Pat):
     binding_id: string
     subpat: optional[Pat] | child
-
-    # TupleStruct { path: Option<Box<Path>>, args: Box<[PatId]>, ellipsis: Option<u32> },
 
 
 class TupleStructPat(Pat):
@@ -1029,19 +838,14 @@ class TupleStructPat(Pat):
     args: list[Pat] | child
     ellipsis_index: optional[int]
 
-    # Ref { pat: PatId, mutability: Mutability },
-
 
 class RefPat(Pat):
     pat: Pat | child
     is_mut: predicate
 
-    # Box { inner: PatId },
-
 
 class BoxPat(Pat):
     inner: Pat | child
-    # ConstBlock(ExprId),
 
 
 class ConstBlockPat(Pat):
