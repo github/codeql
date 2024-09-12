@@ -20,6 +20,7 @@ import ProgressiveTaintTrackingTest
 import semmle.python.dataflow.new.RemoteFlowSources
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
+private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as RealTaintTracking
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |
@@ -86,13 +87,16 @@ module Conf {
       (
         node = readingSink()
         or
-        TaintTracking::PythonTaintTracking::defaultAdditionalTaintStep(node, _, _)
+        // TODO: This is what we need to add to the real configurations
+        any(TaintTracking::AdditionalTaintStep a).hasStep(node, _, _)
       ) and
-      (
-        c instanceof DataFlow::TupleElementContent
-        or
-        c instanceof DataFlow::DictionaryElementContent
-      )
+      // For our testing taint tracking, `defaultImplicitTaintRead` is `none`
+      RealTaintTracking::defaultImplicitTaintRead(node, c)
+    }
+
+    predicate test(DataFlow::Node node) {
+      allowImplicitRead(node, _) and
+      exists(node.getLocation().getFile().getRelativePath())
     }
   }
 }
