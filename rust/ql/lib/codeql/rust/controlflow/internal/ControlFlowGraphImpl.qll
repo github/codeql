@@ -97,12 +97,14 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edges from the condition to each branch
+    // Edges from the condition to the branches
     last(super.getCondition(), pred, c) and
     (
       first(super.getThen(), succ) and c.(BooleanCompletion).getValue() = true
       or
       first(super.getElse(), succ) and c.(BooleanCompletion).getValue() = false
+      or
+      not super.hasElse() and succ = this and c.(BooleanCompletion).getValue() = false
     )
     or
     // An edge from the then branch to the last node
