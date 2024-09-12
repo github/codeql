@@ -79,6 +79,27 @@ module SQL {
       }
     }
 
+    /**
+     * An argument to an API of the squirrel library that is directly interpreted as SQL without
+     * taking syntactic structure into account.
+     */
+    private class SquirrelQueryString extends Range {
+      SquirrelQueryString() {
+        exists(string sq, Method m, string builder |
+          FlowExtensions::packageGrouping("squirrel", sq) and
+          builder = ["DeleteBuilder", "SelectBuilder", "UpdateBuilder"]
+        |
+          m.hasQualifiedName(sq, builder, "Where") and
+          this = m.getACall().getArgument(0)
+        ) and
+        (
+          this.getType().getUnderlyingType() instanceof StringType
+          or
+          this.getType().getUnderlyingType().(SliceType).getElementType() instanceof StringType
+        )
+      }
+    }
+
     /** A string that might identify package `go-pg/pg` or a specific version of it. */
     private string gopg() { result = package("github.com/go-pg/pg", "") }
 

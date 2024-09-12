@@ -20,7 +20,7 @@ extensions:
       - ["group:squirrel", "DeleteBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
       - ["group:squirrel", "DeleteBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "DeleteBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "DeleteBuilder", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      # DeleteBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
 
       - ["group:squirrel", "InsertBuilder", True, "Columns", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
       - ["group:squirrel", "InsertBuilder", True, "Into", "", "", "Argument[0]", "sql-injection", "manual"]
@@ -40,7 +40,7 @@ extensions:
       - ["group:squirrel", "SelectBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "SelectBuilder", True, "RightJoin", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "SelectBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "SelectBuilder", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      # SelectBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
 
       - ["group:squirrel", "UpdateBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
@@ -48,4 +48,4 @@ extensions:
       - ["group:squirrel", "UpdateBuilder", True, "Set", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "UpdateBuilder", True, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "UpdateBuilder", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      # UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
