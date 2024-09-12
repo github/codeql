@@ -16,6 +16,7 @@ cat > Cargo.toml << EOF
 [package]
 name = "test"
 version="0.0.1"
+edition="2021"
 [lib]
 path="lib.rs"
 EOF
