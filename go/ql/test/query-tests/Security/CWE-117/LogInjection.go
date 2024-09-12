@@ -7,7 +7,7 @@ package main
 //go:generate depstubber -vendor github.com/davecgh/go-spew/spew "" Dump,Errorf,Print,Printf,Println,Fdump,Fprint,Fprintf,Fprintln
 //go:generate depstubber -vendor github.com/elazarl/goproxy ProxyCtx ""
 //go:generate depstubber -vendor github.com/golang/glog Level,Verbose Info,InfoDepth,Infof,Infoln,Error,ErrorDepth,Errorf,Errorln,Fatal,FatalDepth,Fatalf,Fatalln,Exit,ExitDepth,Exitf,Exitln,V
-//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Entry,Logger,Level Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,Panic,Panicf,Panicln,Print,Printf,Println,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithFields,WithField
+//go:generate depstubber -vendor github.com/sirupsen/logrus FieldLogger,Fields,Entry,Logger,Level Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,Panic,Panicf,Panicln,Print,Printf,Println,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithFields,WithField
 //go:generate depstubber -vendor go.uber.org/zap Logger,SugaredLogger NewProduction
 
 import (
@@ -293,6 +293,40 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		logger.Warningf(username, "") // $ hasTaintFlow="username"
 		logger.Warningf("", username) // $ hasTaintFlow="username"
 		logger.Warningln(username)    // $ hasTaintFlow="username"
+
+		var fieldlogger logrus.FieldLogger = entry
+		fieldlogger.Debug(username)        // $ hasTaintFlow="username"
+		fieldlogger.Debugf(username, "")   // $ hasTaintFlow="username"
+		fieldlogger.Debugf("", username)   // $ hasTaintFlow="username"
+		fieldlogger.Debugln(username)      // $ hasTaintFlow="username"
+		fieldlogger.Error(username)        // $ hasTaintFlow="username"
+		fieldlogger.Errorf(username, "")   // $ hasTaintFlow="username"
+		fieldlogger.Errorf("", username)   // $ hasTaintFlow="username"
+		fieldlogger.Errorln(username)      // $ hasTaintFlow="username"
+		fieldlogger.Fatal(username)        // $ hasTaintFlow="username"
+		fieldlogger.Fatalf(username, "")   // $ hasTaintFlow="username"
+		fieldlogger.Fatalf("", username)   // $ hasTaintFlow="username"
+		fieldlogger.Fatalln(username)      // $ hasTaintFlow="username"
+		fieldlogger.Info(username)         // $ hasTaintFlow="username"
+		fieldlogger.Infof(username, "")    // $ hasTaintFlow="username"
+		fieldlogger.Infof("", username)    // $ hasTaintFlow="username"
+		fieldlogger.Infoln(username)       // $ hasTaintFlow="username"
+		fieldlogger.Panic(username)        // $ hasTaintFlow="username"
+		fieldlogger.Panicf(username, "")   // $ hasTaintFlow="username"
+		fieldlogger.Panicf("", username)   // $ hasTaintFlow="username"
+		fieldlogger.Panicln(username)      // $ hasTaintFlow="username"
+		fieldlogger.Print(username)        // $ hasTaintFlow="username"
+		fieldlogger.Printf(username, "")   // $ hasTaintFlow="username"
+		fieldlogger.Printf("", username)   // $ hasTaintFlow="username"
+		fieldlogger.Println(username)      // $ hasTaintFlow="username"
+		fieldlogger.Warn(username)         // $ hasTaintFlow="username"
+		fieldlogger.Warnf(username, "")    // $ hasTaintFlow="username"
+		fieldlogger.Warnf("", username)    // $ hasTaintFlow="username"
+		fieldlogger.Warnln(username)       // $ hasTaintFlow="username"
+		fieldlogger.Warning(username)      // $ hasTaintFlow="username"
+		fieldlogger.Warningf(username, "") // $ hasTaintFlow="username"
+		fieldlogger.Warningf("", username) // $ hasTaintFlow="username"
+		fieldlogger.Warningln(username)    // $ hasTaintFlow="username"
 	}
 	// davecgh/go-spew/spew
 	{
