@@ -8,6 +8,7 @@ private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 
 class Locatable extends Generated::Locatable {
+  /** Gets the primary location of this element. */
   pragma[nomagic]
   final Location getLocation() {
     exists(Raw::Locatable raw |
