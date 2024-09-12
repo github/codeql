@@ -1,6 +1,6 @@
 package main
 
-//go:generate depstubber -vendor github.com/Masterminds/squirrel DeleteBuilder,InsertBuilder,SelectBuilder,UpdateBuilder Delete,Expr,Insert,Select,Update
+//go:generate depstubber -vendor github.com/Masterminds/squirrel DeleteBuilder,Eq,InsertBuilder,SelectBuilder,UpdateBuilder Delete,Expr,Insert,Select,Update
 
 import (
 	"github.com/Masterminds/squirrel"
@@ -44,4 +44,10 @@ func squirrelTest(querypart string) {
 	updateBuilder.Where(querypart)              // $ querystring=querypart
 	updateBuilder.Set(querypart, "")            // $ querystring=querypart
 	updateBuilder.Table(querypart)              // $ querystring=querypart
+
+	// safe
+	wrapped := squirrel.Eq{"id": querypart}
+	deleteBuilder.Where(wrapped)
+	selectBuilder.Where(wrapped)
+	updateBuilder.Where(wrapped)
 }
