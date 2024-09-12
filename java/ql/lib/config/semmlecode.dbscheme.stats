@@ -3966,17 +3966,6 @@
             </dependencies>
         </relation>
         <relation>
-            <name>snapshotDate</name>
-            <cardinality>1</cardinality>
-            <columnsizes>
-                <e>
-                    <k>snapshotDate</k>
-                    <v>1</v>
-                </e>
-            </columnsizes>
-            <dependencies/>
-        </relation>
-        <relation>
             <name>sourceLocationPrefix</name>
             <cardinality>569</cardinality>
             <columnsizes>
