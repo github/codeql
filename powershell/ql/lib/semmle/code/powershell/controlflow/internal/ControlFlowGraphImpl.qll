@@ -76,23 +76,10 @@ predicate succExit(CfgScope scope, Ast last, Completion c) { scope.exit(last, c)
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
-  class NonDefaultParameterTree extends LeafTree instanceof Parameter {
-    NonDefaultParameterTree() { not exists(super.getDefaultValue()) }
-  }
-
-  class DefaultParameterTree extends StandardPostOrderTree instanceof Parameter {
-    DefaultParameterTree() { exists(super.getDefaultValue()) }
-
-    override AstNode getChildNode(int i) {
-      i = 0 and
-      result = super.getDefaultValue()
-    }
-
-    final override predicate propagatesAbnormal(AstNode child) { child = super.getDefaultValue() }
-  }
-
   class ParameterBlockTree extends StandardPostOrderTree instanceof ParamBlock {
-    override AstNode getChildNode(int i) { result = super.getParameter(i) }
+    override AstNode getChildNode(int i) {
+      exists(Parameter p | p = super.getParameter(i) | result = p.getDefaultValue())
+    }
   }
 
   abstract class ScriptBlockTree extends ControlFlowTree instanceof ScriptBlock {
@@ -185,21 +172,31 @@ module Trees {
 
     FunctionScriptBlockTree() { func.getBody() = this }
 
-    AstNode getParameter(int i) { result = func.getFunctionParameter(i) }
+    Expr getDefaultValue(int i) {
+      exists(Parameter p |
+        p =
+          rank[i + 1](Parameter cand, int j |
+            cand.hasDefaultValue() and j = cand.getIndex()
+          |
+            cand order by j
+          ) and
+        result = p.getDefaultValue()
+      )
+    }
 
-    int getNumberOfParameters() { result = func.getNumberOfFunctionParameters() }
+  int getNumberOfDefaultValues() { result = count(int i | exists(this.getDefaultValue(i))) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Step to the first parameter
       pred = this and
-      first(this.getParameter(0), succ) and
+      first(this.getDefaultValue(0), succ) and
       completionIsSimple(c)
       or
       // Step to the next parameter
       exists(int i |
-        last(this.getParameter(i), pred, c) and
+        last(this.getDefaultValue(i), pred, c) and
         completionIsNormal(c) and
-        first(this.getParameter(i + 1), succ)
+        first(this.getDefaultValue(i + 1), succ)
       )
       or
       // Body steps
@@ -208,12 +205,12 @@ module Trees {
 
     final override predicate succEntry(AstNode n, Completion c) {
       // If there are no paramters we enter the body directly
-      not exists(this.getParameter(0)) and
+      not exists(this.getDefaultValue(_)) and
       n = this and
       completionIsSimple(c)
       or
       // Once we are done with the last parameter we enter the body
-      last(this.getParameter(this.getNumberOfParameters() - 1), n, c) and
+      last(this.getDefaultValue(this.getNumberOfDefaultValues() - 1), n, c) and
       completionIsNormal(c)
     }
   }
@@ -380,11 +377,11 @@ module Trees {
       or
       // Emptiness test to variable declaration
       pred = this and
-      first(super.getVariable(), succ) and
+      first(super.getVarAccess(), succ) and
       completionIsSimple(c)
       or
       // Variable declaration to body
-      last(super.getVariable(), succ, c) and
+      last(super.getVarAccess(), succ, c) and
       completionIsNormal(c) and
       first(this.getBody(), succ)
       or
