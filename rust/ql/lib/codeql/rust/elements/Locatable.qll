@@ -3,7 +3,6 @@
  */
 
 private import codeql.rust.generated.Locatable
-import codeql.files.FileSystem
 import codeql.Locations
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
