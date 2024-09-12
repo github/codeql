@@ -63,8 +63,16 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-class FunctionTree extends StandardPostOrderTree instanceof Function {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getBody() }
+class FunctionTree extends PostOrderTree instanceof Function {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getBody() }
+
+  override predicate first(AstNode node) { first(super.getBody(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getBody(), pred, c) and
+    (completionIsNormal(c) or c instanceof ReturnCompletion) and
+    succ = this
+  }
 }
 
 class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
