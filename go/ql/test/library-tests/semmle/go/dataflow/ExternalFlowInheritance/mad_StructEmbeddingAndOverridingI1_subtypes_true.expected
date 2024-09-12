@@ -1,0 +1,40 @@
+invalidModelRow
+paths
+| test.go:8:7:8:16 | call to Source | test.go:10:9:10:9 | y |
+| test.go:14:7:14:16 | call to Source | test.go:16:9:16:9 | y |
+| test.go:20:7:20:16 | call to Source | test.go:22:9:22:9 | y |
+| test.go:26:7:26:16 | call to Source | test.go:28:9:28:9 | y |
+| test.go:32:7:32:16 | call to Source | test.go:34:9:34:9 | y |
+| test.go:38:7:38:16 | call to Source | test.go:40:9:40:9 | y |
+| test.go:44:7:44:16 | call to Source | test.go:46:9:46:9 | y |
+| test.go:50:7:50:16 | call to Source | test.go:52:9:52:9 | y |
+| test.go:56:7:56:16 | call to Source | test.go:58:9:58:9 | y |
+| test.go:62:7:62:16 | call to Source | test.go:64:9:64:9 | y |
+| test.go:68:7:68:16 | call to Source | test.go:70:9:70:9 | y |
+| test.go:74:7:74:16 | call to Source | test.go:76:9:76:9 | y |
+sources
+| test.go:8:7:8:16 | call to Source |
+| test.go:14:7:14:16 | call to Source |
+| test.go:20:7:20:16 | call to Source |
+| test.go:26:7:26:16 | call to Source |
+| test.go:32:7:32:16 | call to Source |
+| test.go:38:7:38:16 | call to Source |
+| test.go:44:7:44:16 | call to Source |
+| test.go:50:7:50:16 | call to Source |
+| test.go:56:7:56:16 | call to Source |
+| test.go:62:7:62:16 | call to Source |
+| test.go:68:7:68:16 | call to Source |
+| test.go:74:7:74:16 | call to Source |
+sinks
+| test.go:10:9:10:9 | y |
+| test.go:16:9:16:9 | y |
+| test.go:22:9:22:9 | y |
+| test.go:28:9:28:9 | y |
+| test.go:34:9:34:9 | y |
+| test.go:40:9:40:9 | y |
+| test.go:46:9:46:9 | y |
+| test.go:52:9:52:9 | y |
+| test.go:58:9:58:9 | y |
+| test.go:64:9:64:9 | y |
+| test.go:70:9:70:9 | y |
+| test.go:76:9:76:9 | y |
