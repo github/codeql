@@ -53,13 +53,17 @@ module TaintedUrlSuffix {
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
   predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+    // Transition from tainted-url-suffix to general taint when entering the second array element
+    // of a split('#') or split('?') array.
+    //
+    //   x [tainted-url-suffix] --> x.split('#') [array element 1] [taint]
+    //
+    // Technically we should also preverse tainted-url-suffix when entering the first array element of such
+    // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
+    // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
     srclbl = label() and
     dstlbl.isTaint() and
     DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
-    or
-    srclbl = label() and
-    dstlbl = label() and
-    DataFlowPrivate::optionalStep(src, "split-url-suffix-pre", dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
     srclbl = label() and

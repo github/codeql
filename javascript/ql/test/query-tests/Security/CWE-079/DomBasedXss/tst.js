@@ -373,7 +373,7 @@ function test() {
   // NOT OK
   $('myId').html(target)
 
-  // OK
+  // OK - but only safe because contents are URI-encoded
   $('myid').html(document.location.href.split("?")[0]);
 }
 
