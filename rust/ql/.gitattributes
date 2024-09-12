@@ -257,7 +257,7 @@
 /test/extractor-tests/generated/FieldExpr/FieldExpr.ql linguist-generated
 /test/extractor-tests/generated/File/File.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
-/test/extractor-tests/generated/GenericArgs/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/GenericArgs/GenericArgs.ql linguist-generated
 /test/extractor-tests/generated/IfExpr/IfExpr.ql linguist-generated
 /test/extractor-tests/generated/IfExpr/IfExpr_getElse.ql linguist-generated
 /test/extractor-tests/generated/IndexExpr/IndexExpr.ql linguist-generated
@@ -287,7 +287,7 @@
 /test/extractor-tests/generated/OffsetOfExpr/OffsetOfExpr_getField.ql linguist-generated
 /test/extractor-tests/generated/OrPat/OrPat.ql linguist-generated
 /test/extractor-tests/generated/OrPat/OrPat_getArg.ql linguist-generated
-/test/extractor-tests/generated/Path/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/Path/Path.ql linguist-generated
 /test/extractor-tests/generated/PathExpr/PathExpr.ql linguist-generated
 /test/extractor-tests/generated/PathPat/PathPat.ql linguist-generated
 /test/extractor-tests/generated/RangeExpr/RangeExpr.ql linguist-generated
@@ -323,7 +323,7 @@
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getArg.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getEllipsisIndex.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getPath.ql linguist-generated
-/test/extractor-tests/generated/TypeRef/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/TypeRef/TypeRef.ql linguist-generated
 /test/extractor-tests/generated/UnaryOpExpr/UnaryOpExpr.ql linguist-generated
 /test/extractor-tests/generated/UnderscoreExpr/UnderscoreExpr.ql linguist-generated
 /test/extractor-tests/generated/UnsafeBlockExpr/UnsafeBlockExpr.ql linguist-generated

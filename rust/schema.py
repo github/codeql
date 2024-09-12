@@ -126,16 +126,36 @@ class Stmt(AstNode):
     pass
 
 
-@qltest.collapse_hierarchy
 class TypeRef(AstNode, Unimplemented):
+    """
+    The base class for type references.
+    ```
+    let x: i32;
+    let y: Vec<i32>;
+    let z: Option<i32>;
+    ```
+    """
     pass
 
 
 class Path(AstNode, Unimplemented):
+    """
+    A path. For example:
+    ```
+    foo::bar;
+    ```
+    """
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class GenericArgs(AstNode, Unimplemented):
+    """
+    The base class for generic arguments.
+    ```
+    x.foo::<u32, u64>(42);
+    ```
+    """
     pass
 
 

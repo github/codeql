@@ -19,6 +19,7 @@
 /ExprStmt/gen_expr_stmt.rs linguist-generated
 /FieldExpr/gen_field_expr.rs linguist-generated
 /Function/gen_function.rs linguist-generated
+/GenericArgs/gen_generic_args.rs linguist-generated
 /IfExpr/gen_if_expr.rs linguist-generated
 /IndexExpr/gen_index_expr.rs linguist-generated
 /InlineAsmExpr/gen_inline_asm_expr.rs linguist-generated
@@ -36,6 +37,7 @@
 /Module/gen_module.rs linguist-generated
 /OffsetOfExpr/gen_offset_of_expr.rs linguist-generated
 /OrPat/gen_or_pat.rs linguist-generated
+/Path/gen_path.rs linguist-generated
 /PathExpr/gen_path_expr.rs linguist-generated
 /PathPat/gen_path_pat.rs linguist-generated
 /RangeExpr/gen_range_expr.rs linguist-generated
@@ -52,6 +54,7 @@
 /TupleExpr/gen_tuple_expr.rs linguist-generated
 /TuplePat/gen_tuple_pat.rs linguist-generated
 /TupleStructPat/gen_tuple_struct_pat.rs linguist-generated
+/TypeRef/gen_type_ref.rs linguist-generated
 /UnaryOpExpr/gen_unary_op_expr.rs linguist-generated
 /UnderscoreExpr/gen_underscore_expr.rs linguist-generated
 /UnsafeBlockExpr/gen_unsafe_block_expr.rs linguist-generated

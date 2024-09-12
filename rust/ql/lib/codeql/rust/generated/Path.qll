@@ -15,6 +15,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A path. For example:
+   * ```
+   * foo::bar;
+   * ```
    * INTERNAL: Do not reference the `Generated::Path` class directly.
    * Use the subclass `Path`, where the following predicates are available.
    */

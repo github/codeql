@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.Path
 
+/**
+ * A path. For example:
+ * ```
+ * foo::bar;
+ * ```
+ */
 class Path extends Generated::Path { }

@@ -97,6 +97,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for generic arguments.
+   * ```
+   * x.foo::<u32, u64>(42);
+   * ```
    */
   class GenericArgs extends @generic_args, AstNode, Unimplemented {
     override string toString() { result = "GenericArgs" }
@@ -164,6 +168,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path. For example:
+   * ```
+   * foo::bar;
+   * ```
    */
   class Path extends @path, AstNode, Unimplemented {
     override string toString() { result = "Path" }
@@ -219,6 +227,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for type references.
+   * ```
+   * let x: i32;
+   * let y: Vec<i32>;
+   * let z: Option<i32>;
+   * ```
    */
   class TypeRef extends @type_ref, AstNode, Unimplemented {
     override string toString() { result = "TypeRef" }
