@@ -56,13 +56,13 @@ module LocalFlow {
 
 /** An argument of a call (including qualifier arguments and block arguments). */
 private class Argument extends CfgNodes::ExprCfgNode {
-  private CfgNodes::StmtNodes::CallCfgNode call;
+  private CfgNodes::StmtNodes::CmdCfgNode call;
   private ArgumentPosition arg;
 
   Argument() { none() }
 
   /** Holds if this expression is the `i`th argument of `c`. */
-  predicate isArgumentOf(CfgNodes::StmtNodes::CallCfgNode c, ArgumentPosition pos) {
+  predicate isArgumentOf(CfgNodes::StmtNodes::CmdCfgNode c, ArgumentPosition pos) {
     c = call and pos = arg
   }
 }
@@ -140,7 +140,7 @@ abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  abstract predicate sourceArgumentOf(CfgNodes::StmtNodes::CallCfgNode call, ArgumentPosition pos);
+  abstract predicate sourceArgumentOf(CfgNodes::StmtNodes::CmdCfgNode call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -293,7 +293,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
  * Holds if `call` is a from-source lambda call of kind `kind` where `receiver`
  * is the lambda expression.
  */
-predicate lambdaSourceCall(CfgNodes::StmtNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
+predicate lambdaSourceCall(CfgNodes::StmtNodes::CmdCfgNode call, LambdaCallKind kind, Node receiver) {
   none()
 }
 
