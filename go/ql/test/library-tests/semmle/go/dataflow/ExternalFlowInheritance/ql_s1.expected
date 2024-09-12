@@ -1,0 +1,16 @@
+invalidModelRow
+paths
+| test.go:8:7:8:16 | call to Source | test.go:10:9:10:9 | y |
+| test.go:20:7:20:16 | call to Source | test.go:22:9:22:9 | y |
+| test.go:32:7:32:16 | call to Source | test.go:34:9:34:9 | y |
+| test.go:56:7:56:16 | call to Source | test.go:58:9:58:9 | y |
+sources
+| test.go:8:7:8:16 | call to Source |
+| test.go:20:7:20:16 | call to Source |
+| test.go:32:7:32:16 | call to Source |
+| test.go:56:7:56:16 | call to Source |
+sinks
+| test.go:10:9:10:9 | y |
+| test.go:22:9:22:9 | y |
+| test.go:34:9:34:9 | y |
+| test.go:58:9:58:9 | y |
