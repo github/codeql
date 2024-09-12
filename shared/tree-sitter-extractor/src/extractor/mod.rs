@@ -154,7 +154,7 @@ fn global_location(writer: &mut trap::Writer, location: trap::Location) -> trap:
 
 /** Get the label for the given location, creating it as a fresh ID if we haven't seen the location
  * yet for this file. */
-fn location_label(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
+pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.location_label(location);
     if fresh {
         writer.add_tuple(
