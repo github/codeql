@@ -1,0 +1,2 @@
+| gen_or_pat.rs:6:9:6:22 | OrPat | 0 | gen_or_pat.rs:6:9:6:15 | TupleStructPat |
+| gen_or_pat.rs:6:9:6:22 | OrPat | 1 | gen_or_pat.rs:6:19:6:22 | PathPat |

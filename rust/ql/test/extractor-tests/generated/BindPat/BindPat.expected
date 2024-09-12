@@ -1,0 +1,2 @@
+| gen_bind_pat.rs:6:14:6:14 | BindPat | getBindingId: | y | hasSubpat: | no |
+| gen_bind_pat.rs:10:9:10:17 | BindPat | getBindingId: | y | hasSubpat: | yes |

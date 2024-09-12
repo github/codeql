@@ -15,6 +15,13 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A path pattern. For example:
+   * ```
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::PathPat` class directly.
    * Use the subclass `PathPat`, where the following predicates are available.
    */

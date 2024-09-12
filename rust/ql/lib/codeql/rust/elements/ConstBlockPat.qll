@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.ConstBlockPat
 
+/**
+ * A const block pattern. For example:
+ * ```
+ * match x {
+ *     const { 1 + 2 + 3} => "ok",
+ *     _ => "fail",
+ * };
+ * ```
+ */
 class ConstBlockPat extends Generated::ConstBlockPat { }

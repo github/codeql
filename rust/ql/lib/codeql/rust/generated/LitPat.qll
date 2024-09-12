@@ -15,6 +15,13 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A literal pattern. For example:
+   * ```
+   * match x {
+   *     42 => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::LitPat` class directly.
    * Use the subclass `LitPat`, where the following predicates are available.
    */

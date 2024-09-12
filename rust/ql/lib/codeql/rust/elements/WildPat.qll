@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.WildPat
 
+/**
+ * A wildcard pattern. For example:
+ * ```
+ * let _ = 42;
+ * ```
+ */
 class WildPat extends Generated::WildPat { }

@@ -14,6 +14,12 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * An or pattern. For example:
+   * ```
+   * match x {
+   *     Some(y) | None => 0,
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::OrPat` class directly.
    * Use the subclass `OrPat`, where the following predicates are available.
    */

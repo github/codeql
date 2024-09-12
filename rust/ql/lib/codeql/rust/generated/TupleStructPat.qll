@@ -15,6 +15,14 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A tuple struct pattern. For example:
+   * ```
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleStructPat` class directly.
    * Use the subclass `TupleStructPat`, where the following predicates are available.
    */

@@ -5,4 +5,19 @@
 
 private import codeql.rust.generated.BindPat
 
+/**
+ * A binding pattern. For example:
+ * ```
+ * match x {
+ *     Some(y) => y,
+ *     None => 0,
+ * };
+ * ```
+ * ```
+ * match x {
+ *     y@Some(_) => y,
+ *     None => 0,
+ * };
+ * ```
+ */
 class BindPat extends Generated::BindPat { }

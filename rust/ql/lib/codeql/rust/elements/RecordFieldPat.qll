@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.RecordFieldPat
 
+/**
+ * A field in a record pattern. For example `a: 1` in:
+ * ```
+ * let Foo { a: 1, b: 2 } = foo;
+ * ```
+ */
 class RecordFieldPat extends Generated::RecordFieldPat { }

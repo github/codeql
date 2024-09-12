@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.Stmt
 
+/**
+ * The base class for statements.
+ */
 class Stmt extends Generated::Stmt { }

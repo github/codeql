@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.LitPat
 
+/**
+ * A literal pattern. For example:
+ * ```
+ * match x {
+ *     42 => "ok",
+ *     _ => "fail",
+ * }
+ * ```
+ */
 class LitPat extends Generated::LitPat { }

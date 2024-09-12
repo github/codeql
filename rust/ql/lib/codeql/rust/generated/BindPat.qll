@@ -14,6 +14,19 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A binding pattern. For example:
+   * ```
+   * match x {
+   *     Some(y) => y,
+   *     None => 0,
+   * };
+   * ```
+   * ```
+   * match x {
+   *     y@Some(_) => y,
+   *     None => 0,
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::BindPat` class directly.
    * Use the subclass `BindPat`, where the following predicates are available.
    */

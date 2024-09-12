@@ -77,20 +77,37 @@ class Module(Declaration):
 
 
 class Expr(AstNode):
+    """
+    The base class for expressions.
+    """
     pass
 
 
-@qltest.collapse_hierarchy
 class Pat(AstNode):
+    """
+    The base class for patterns.
+    """
     pass
 
 
-@qltest.skip
+@rust.doc_test_signature("() -> ()")
 class Label(AstNode):
+    """
+    A label. For example:
+    ```
+    'label: loop {
+        println!("Hello, world (once)!");
+        break 'label;
+    };
+    ```
+    """
     name: string
 
 
 class Stmt(AstNode):
+    """
+    The base class for statements.
+    """
     pass
 
 
@@ -735,7 +752,7 @@ class InlineAsmExpr(Expr):
 class LetStmt(Stmt):
     """
     A let statement. For example:
-    ``` 
+    ```
     let x = 42;
     let x: i32 = 42;
     let x: i32;
@@ -781,72 +798,222 @@ class ItemStmt(Stmt):
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class MissingPat(Pat):
+    """
+    A missing pattern, used as a place holder for incomplete syntax.
+    ```
+    match Some(42) {
+        .. => "ok",
+        _ => "fail",
+    };
+    ```
+    """
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class WildPat(Pat):
+    """
+    A wildcard pattern. For example:
+    ```
+    let _ = 42;
+    ```
+    """
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class TuplePat(Pat):
+    """
+    A tuple pattern. For example:
+    ```
+    let (x, y) = (1, 2);
+    let (a, b, ..,  z) = (1, 2, 3, 4, 5);
+    ```
+    """
     args: list[Pat] | child
     ellipsis_index: optional[int]
 
 
+@rust.doc_test_signature("() -> ()")
 class OrPat(Pat):
+    """
+    An or pattern. For example:
+    ```
+    match x {
+        Some(y) | None => 0,
+    }
+    ```
+    """
     args: list[Pat] | child
 
 
+@rust.doc_test_signature("() -> ()")
 class RecordFieldPat(AstNode):
+    """
+    A field in a record pattern. For example `a: 1` in:
+    ```
+    let Foo { a: 1, b: 2 } = foo;
+    ```
+    """
     name: string
     pat: Pat | child
 
 
+@rust.doc_test_signature("() -> ()")
 class RecordPat(Pat):
+    """
+    A record pattern. For example:
+    ```
+    match x {
+        Foo { a: 1, b: 2 } => "ok",
+        Foo { .. } => "fail",
+    }
+    ```
+    """
+
     path: optional[Unimplemented] | child
     args: list[RecordFieldPat] | child
     has_ellipsis: predicate
 
 
+@rust.doc_test_signature("() -> ()")
 class RangePat(Pat):
+    """
+    A range pattern. For example:
+    ```
+    match x {
+        ..15 => "too cold",
+        16..=25 => "just right",
+        26.. => "too hot",
+    }
+    ```
+    """
     start: optional[Pat] | child
     end: optional[Pat] | child
 
 
+@rust.doc_test_signature("() -> ()")
 class SlicePat(Pat):
+    """
+    A slice pattern. For example:
+    ```
+    match x {
+        [1, 2, 3, 4, 5] => "ok",
+        [1, 2, ..] => "fail",
+        [x, y, .., z, 7] => "fail",
+    }
+    """
     prefix: list[Pat] | child
     slice: optional[Pat] | child
     suffix: list[Pat] | child
 
 
+@rust.doc_test_signature("() -> ()")
 class PathPat(Pat):
+    """
+    A path pattern. For example:
+    ```
+    match x {
+        Foo::Bar => "ok",
+        _ => "fail",
+    }
+    ```
+    """
     path: Unimplemented | child
 
 
+@rust.doc_test_signature("() -> ()")
 class LitPat(Pat):
+    """
+    A literal pattern. For example:
+    ```
+    match x {
+        42 => "ok",
+        _ => "fail",
+    }
+    ```
+    """
     expr: Expr | child
 
 
+@rust.doc_test_signature("() -> ()")
 class BindPat(Pat):
+    """
+    A binding pattern. For example:
+    ```
+    match x {
+        Some(y) => y,
+        None => 0,
+    };
+    ```
+    ```
+    match x {
+        y@Some(_) => y,
+        None => 0,
+    };
+    ```
+    """
     binding_id: string
     subpat: optional[Pat] | child
 
 
+@rust.doc_test_signature("() -> ()")
 class TupleStructPat(Pat):
+    """
+    A tuple struct pattern. For example:
+    ``` 
+    match x {
+        Tuple("a", 1, 2, 3) => "great",
+        Tuple(.., 3) => "fine",
+        Tuple(..) => "fail",
+    };
+    ```
+    """
     path: optional[Unimplemented] | child
     args: list[Pat] | child
     ellipsis_index: optional[int]
 
 
+@rust.doc_test_signature("() -> ()")
 class RefPat(Pat):
+    """
+    A reference pattern. For example:
+    ```
+    match x {
+        &mut Some(y) => y,
+        &None => 0,
+    };
+    ```
+    """
     pat: Pat | child
     is_mut: predicate
 
 
+@rust.doc_test_signature("() -> ()")
 class BoxPat(Pat):
+    """
+    A box pattern. For example:
+    ```
+    match x {
+        box Some(y) => y,
+        box None => 0,
+    };
+    ```
+    """
     inner: Pat | child
 
 
+@rust.doc_test_signature("() -> ()")
 class ConstBlockPat(Pat):
+    """
+    A const block pattern. For example:
+    ```
+    match x {
+        const { 1 + 2 + 3} => "ok",
+        _ => "fail",
+    };
+    ```
+    """
     expr: Expr | child

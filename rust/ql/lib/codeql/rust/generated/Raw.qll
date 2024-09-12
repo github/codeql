@@ -86,11 +86,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
 
   /**
    * INTERNAL: Do not use.
+   * A label. For example:
+   * ```
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
    */
   class Label extends @label, AstNode {
     override string toString() { result = "Label" }
@@ -138,11 +146,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for patterns.
    */
   class Pat extends @pat, AstNode { }
 
   /**
    * INTERNAL: Do not use.
+   * A field in a record pattern. For example `a: 1` in:
+   * ```
+   * let Foo { a: 1, b: 2 } = foo;
+   * ```
    */
   class RecordFieldPat extends @record_field_pat, AstNode {
     override string toString() { result = "RecordFieldPat" }
@@ -181,6 +194,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for statements.
    */
   class Stmt extends @stmt, AstNode { }
 
@@ -280,6 +294,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A binding pattern. For example:
+   * ```
+   * match x {
+   *     Some(y) => y,
+   *     None => 0,
+   * };
+   * ```
+   * ```
+   * match x {
+   *     y@Some(_) => y,
+   *     None => 0,
+   * };
+   * ```
    */
   class BindPat extends @bind_pat, Pat {
     override string toString() { result = "BindPat" }
@@ -328,6 +355,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A box pattern. For example:
+   * ```
+   * match x {
+   *     box Some(y) => y,
+   *     box None => 0,
+   * };
+   * ```
    */
   class BoxPat extends @box_pat, Pat {
     override string toString() { result = "BoxPat" }
@@ -469,6 +503,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A const block pattern. For example:
+   * ```
+   * match x {
+   *     const { 1 + 2 + 3} => "ok",
+   *     _ => "fail",
+   * };
+   * ```
    */
   class ConstBlockPat extends @const_block_pat, Pat {
     override string toString() { result = "ConstBlockPat" }
@@ -751,6 +792,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A literal pattern. For example:
+   * ```
+   * match x {
+   *     42 => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    */
   class LitPat extends @lit_pat, Pat {
     override string toString() { result = "LitPat" }
@@ -891,6 +939,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A missing pattern, used as a place holder for incomplete syntax.
+   * ```
+   * match Some(42) {
+   *     .. => "ok",
+   *     _ => "fail",
+   * };
+   * ```
    */
   class MissingPat extends @missing_pat, Pat {
     override string toString() { result = "MissingPat" }
@@ -931,6 +986,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An or pattern. For example:
+   * ```
+   * match x {
+   *     Some(y) | None => 0,
+   * }
+   * ```
    */
   class OrPat extends @or_pat, Pat {
     override string toString() { result = "OrPat" }
@@ -962,6 +1023,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path pattern. For example:
+   * ```
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    */
   class PathPat extends @path_pat, Pat {
     override string toString() { result = "PathPat" }
@@ -1005,6 +1073,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A range pattern. For example:
+   * ```
+   * match x {
+   *     ..15 => "too cold",
+   *     16..=25 => "just right",
+   *     26.. => "too hot",
+   * }
+   * ```
    */
   class RangePat extends @range_pat, Pat {
     override string toString() { result = "RangePat" }
@@ -1061,6 +1137,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A record pattern. For example:
+   * ```
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
    */
   class RecordPat extends @record_pat, Pat {
     override string toString() { result = "RecordPat" }
@@ -1112,6 +1195,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A reference pattern. For example:
+   * ```
+   * match x {
+   *     &mut Some(y) => y,
+   *     &None => 0,
+   * };
+   * ```
    */
   class RefPat extends @ref_pat, Pat {
     override string toString() { result = "RefPat" }
@@ -1152,6 +1242,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A slice pattern. For example:
+   * ```
+   * match x {
+   *     [1, 2, 3, 4, 5] => "ok",
+   *     [1, 2, ..] => "fail",
+   *     [x, y, .., z, 7] => "fail",
+   * }
    */
   class SlicePat extends @slice_pat, Pat {
     override string toString() { result = "SlicePat" }
@@ -1196,6 +1293,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple pattern. For example:
+   * ```
+   * let (x, y) = (1, 2);
+   * let (a, b, ..,  z) = (1, 2, 3, 4, 5);
+   * ```
    */
   class TuplePat extends @tuple_pat, Pat {
     override string toString() { result = "TuplePat" }
@@ -1213,6 +1315,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple struct pattern. For example:
+   * ```
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
    */
   class TupleStructPat extends @tuple_struct_pat, Pat {
     override string toString() { result = "TupleStructPat" }
@@ -1269,6 +1379,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A wildcard pattern. For example:
+   * ```
+   * let _ = 42;
+   * ```
    */
   class WildPat extends @wild_pat, Pat {
     override string toString() { result = "WildPat" }

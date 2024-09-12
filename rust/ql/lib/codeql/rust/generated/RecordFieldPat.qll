@@ -15,6 +15,10 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A field in a record pattern. For example `a: 1` in:
+   * ```
+   * let Foo { a: 1, b: 2 } = foo;
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordFieldPat` class directly.
    * Use the subclass `RecordFieldPat`, where the following predicates are available.
    */
