@@ -1,8 +1,6 @@
 load("@rules_rust//rust:defs.bzl", "rust_library")
 load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 
-package(default_visibility = ["//visibility:public"])
-
 rust_library(
     name = "codeql-extractor",
     srcs = glob([
@@ -13,4 +11,10 @@ rust_library(
         "src/generator/prefix.dbscheme",
     ],
     deps = all_crate_deps(),
+)
+
+alias(
+    name = "tree-sitter-extractor",
+    actual = ":codeql-extractor",
+    visibility = ["//visibility:public"],
 )
