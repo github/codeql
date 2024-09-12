@@ -141,16 +141,47 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
   override predicate first(AstNode node) { first(super.getBody(), node) }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge from the last node in the body to the loop itself
+    // Edge back to the start for final expression and continue expressions
     last(super.getBody(), pred, c) and
-    completionIsNormal(c) and
-    succ = this
+    (completionIsNormal(c) or c instanceof ContinueCompletion) and
+    this.first(succ)
     or
-    // Tie the knot with an edge from the loop back to the first node
-    pred = this and
-    first(super.getBody(), succ)
+    // Edge for exiting the loop with a break expressions
+    last(super.getBody(), pred, c) and
+    c instanceof BreakCompletion and
+    succ = this
   }
 }
+
+class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+
+  override predicate first(AstNode node) {
+    first(super.getExpr(), node)
+    or
+    not super.hasExpr() and node = this
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getExpr(), pred, c) and succ = this
+  }
+}
+
+class BreakExprTree extends PostOrderTree instanceof BreakExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+
+  override predicate first(AstNode node) {
+    first(super.getExpr(), node)
+    or
+    not super.hasExpr() and node = this
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getExpr(), pred, c) and succ = this
+  }
+}
+
+class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
 
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 

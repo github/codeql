@@ -6,6 +6,8 @@ private import SuccessorType
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
+  TBreakCompletion() or
+  TContinueCompletion() or
   TReturnCompletion()
 
 /** A completion of a statement or an expression. */
@@ -70,6 +72,28 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { result = "boolean(" + value + ")" }
+}
+
+/**
+ * A completion that represents a break.
+ */
+class BreakCompletion extends TBreakCompletion, Completion {
+  override BreakSuccessor getAMatchingSuccessorType() { any() }
+
+  override predicate isValidForSpecific(AstNode e) { e instanceof BreakExpr }
+
+  override string toString() { result = "break" }
+}
+
+/**
+ * A completion that represents a continue.
+ */
+class ContinueCompletion extends TContinueCompletion, Completion {
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
+
+  override predicate isValidForSpecific(AstNode e) { e instanceof ContinueExpr }
+
+  override string toString() { result = "continue" }
 }
 
 /**

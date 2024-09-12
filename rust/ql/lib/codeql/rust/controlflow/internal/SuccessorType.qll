@@ -4,6 +4,8 @@ cached
 newtype TSuccessorType =
   TSuccessorSuccessor() or
   TBooleanSuccessor(Boolean b) or
+  TBreakSuccessor() or
+  TContinueSuccessor() or
   TReturnSuccessor()
 
 /** The type of a control flow successor. */
@@ -32,9 +34,19 @@ abstract private class ConditionalSuccessor extends SuccessorTypeImpl {
   override string toString() { result = this.getValue().toString() }
 }
 
-/** A Boolean control flow successor. */
+/** A boolean control flow successor for a boolean conditon. */
 final class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
   BooleanSuccessor() { this = TBooleanSuccessor(value) }
+}
+
+/** A `break` control flow successor. */
+final class BreakSuccessor extends SuccessorTypeImpl, TBreakSuccessor {
+  final override string toString() { result = "break" }
+}
+
+/** A `continue` control flow successor. */
+final class ContinueSuccessor extends SuccessorTypeImpl, TContinueSuccessor {
+  final override string toString() { result = "continue" }
 }
 
 /**
