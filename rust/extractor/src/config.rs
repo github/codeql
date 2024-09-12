@@ -40,7 +40,8 @@ pub struct Config {
 
 impl Config {
     pub fn extract() -> anyhow::Result<Config> {
-        let args = argfile::expand_args(argfile::parse_fromfile, argfile::PREFIX)?;
+        let args = argfile::expand_args(argfile::parse_fromfile, argfile::PREFIX)
+            .context("expanding parameter files")?;
         let cli_args = CliConfig::parse_from(args);
         Figment::new()
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
