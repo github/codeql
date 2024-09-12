@@ -199,7 +199,7 @@ var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+
 // there is no `toolchain` directive, and the Go language version is not a valid toolchain version.
 func hasInvalidToolchainVersion(modFile *modfile.File) bool {
 	return modFile.Toolchain == nil && modFile.Go != nil &&
-		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_21)
+		!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && util.NewSemVer(modFile.Go.Version).IsAtLeast(toolchain.V1_23)
 }
 
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
