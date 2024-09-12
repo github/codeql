@@ -117,8 +117,37 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
   }
 }
 
+class ExprStmtTree extends StandardPostOrderTree instanceof ExprStmt {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
 class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
+class LetStmtTree extends StandardPostOrderTree instanceof LetStmt {
+  override ControlFlowTree getChildNode(int i) {
+    // TODO: For now we ignore the else branch (`super.getElse`). This branch
+    // is guaranteed to be diverging so will need special treatment in the CFG.
+    i = 0 and result = super.getInitializer()
+  }
+}
+
+class LoopExprTree extends PostOrderTree instanceof LoopExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getBody() }
+
+  override predicate first(AstNode node) { first(super.getBody(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge from the last node in the body to the loop itself
+    last(super.getBody(), pred, c) and
+    completionIsNormal(c) and
+    succ = this
+    or
+    // Tie the knot with an edge from the loop back to the first node
+    pred = this and
+    first(super.getBody(), succ)
+  }
 }
 
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
