@@ -474,7 +474,6 @@ getExprType
 | tst.ts:358:13:358:23 | tstModuleES | () => "a" \| "b" |
 | tst.ts:358:13:358:25 | tstModuleES() | "a" \| "b" |
 | tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
-| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
 | tst.ts:360:30:360:49 | './tstModuleCJS.cjs' | any |
 | tst.ts:362:1:362:7 | console | Console |
 | tst.ts:362:1:362:11 | console.log | (...data: any[]) => void |
