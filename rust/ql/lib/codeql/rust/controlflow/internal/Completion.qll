@@ -64,7 +64,11 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e = any(IfExpr c).getCondition() }
+  override predicate isValidForSpecific(AstNode e) {
+    e = any(IfExpr c).getCondition()
+    or
+    exists(BinaryOpExpr expr | expr.getOp() = ["&&", "||"] and expr.getLhs() = e)
+  }
 
   /** Gets the dual Boolean completion. */
   override BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }

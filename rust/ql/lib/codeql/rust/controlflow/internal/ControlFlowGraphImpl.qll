@@ -90,10 +90,54 @@ class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
 }
 
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
+  BinaryOpExprTree() { super.getOp() != "&&" and super.getOp() != "||" }
+
   override ControlFlowTree getChildNode(int i) {
     i = 0 and result = super.getLhs()
     or
     i = 1 and result = super.getRhs()
+  }
+}
+
+class LogicalOrBinaryOpExprTree extends PostOrderTree instanceof BinaryOpExpr {
+  LogicalOrBinaryOpExprTree() { super.getOp() = "||" }
+
+  final override predicate propagatesAbnormal(AstNode child) {
+    child = [super.getRhs(), super.getLhs()]
+  }
+
+  override predicate first(AstNode node) { first(super.getLhs(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getLhs(), pred, c) and
+    (
+      succ = this and c.(BooleanCompletion).getValue() = true
+      or
+      first(super.getRhs(), succ) and c.(BooleanCompletion).getValue() = false
+    )
+    or
+    last(super.getRhs(), pred, c) and succ = this
+  }
+}
+
+class LogicalAndBinaryOpExprTree extends PostOrderTree instanceof BinaryOpExpr {
+  LogicalAndBinaryOpExprTree() { super.getOp() = "&&" }
+
+  final override predicate propagatesAbnormal(AstNode child) {
+    child = [super.getRhs(), super.getLhs()]
+  }
+
+  override predicate first(AstNode node) { first(super.getLhs(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getLhs(), pred, c) and
+    (
+      succ = this and c.(BooleanCompletion).getValue() = false
+      or
+      first(super.getRhs(), succ) and c.(BooleanCompletion).getValue() = true
+    )
+    or
+    last(super.getRhs(), pred, c) and succ = this
   }
 }
 
