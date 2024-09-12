@@ -221,12 +221,12 @@ module Trees {
     final override predicate succEntry(Ast n, Completion c) { n = this and completionIsSimple(c) }
   }
 
-  class NamedBlockTree extends StandardPostOrderTree instanceof NamedBlock {
+  class NamedBlockTree extends StandardPreOrderTree instanceof NamedBlock {
     // TODO: Handle trap
-    override AstNode getChildNode(int i) { result = super.getStatement(i) }
+    override AstNode getChildNode(int i) { result = super.getStmt(i) }
   }
 
-  class AssignStmtTree extends StandardPostOrderTree instanceof AssignStmt {
+  class AssignStmtTree extends StandardPreOrderTree instanceof AssignStmt {
     override AstNode getChildNode(int i) {
       i = 0 and result = super.getLeftHandSide()
       or
@@ -348,6 +348,11 @@ module Trees {
       last(this.getBody(), pred, c) and
       completionIsNormal(c) and
       first(super.getIterator(), succ)
+      or
+      // Iterator -> condition
+      last(super.getIterator(), pred, c) and
+      completionIsNormal(c) and
+      first(super.getCondition(), succ)
     }
   }
 
@@ -381,7 +386,7 @@ module Trees {
       completionIsSimple(c)
       or
       // Variable declaration to body
-      last(super.getVarAccess(), succ, c) and
+      last(super.getVarAccess(), pred, c) and
       completionIsNormal(c) and
       first(this.getBody(), succ)
       or
