@@ -9,5 +9,6 @@
  */
 
 import rust
+import Stats
 
-select sum(File f | | f.getNumberOfLinesOfCode())
+select getLinesOfCode()

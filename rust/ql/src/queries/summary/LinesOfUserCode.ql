@@ -9,5 +9,6 @@
  */
 
 import rust
+import Stats
 
-select sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+select getLinesOfUserCode()
