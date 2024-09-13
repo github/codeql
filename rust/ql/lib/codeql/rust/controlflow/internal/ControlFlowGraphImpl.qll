@@ -69,45 +69,63 @@ class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
   }
 }
 
-class LogicalOrBinaryOpExprTree extends PostOrderTree instanceof BinaryOpExpr {
+class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
   LogicalOrBinaryOpExprTree() { super.getOp() = "||" }
 
   final override predicate propagatesAbnormal(AstNode child) {
     child = [super.getRhs(), super.getLhs()]
   }
 
-  override predicate first(AstNode node) { first(super.getLhs(), node) }
-
+  // override predicate first(AstNode node) { first(super.getLhs(), node) }
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getLhs(), pred, c) and
-    (
-      succ = this and c.(BooleanCompletion).getValue() = true
-      or
-      first(super.getRhs(), succ) and c.(BooleanCompletion).getValue() = false
-    )
+    // Edge to the first node in the lhs
+    pred = this and
+    first(super.getLhs(), succ) and
+    completionIsSimple(c)
     or
-    last(super.getRhs(), pred, c) and succ = this
+    // Edge from the last node in the lhs to the first node in the rhs
+    last(super.getLhs(), pred, c) and
+    first(super.getRhs(), succ) and
+    c.(BooleanCompletion).getValue() = false
+  }
+
+  override predicate last(AstNode node, Completion c) {
+    // Lhs. as the last node
+    last(super.getLhs(), node, c) and
+    c.(BooleanCompletion).getValue() = true
+    or
+    // Rhs. as the last node
+    last(super.getRhs(), node, c) // and
   }
 }
 
-class LogicalAndBinaryOpExprTree extends PostOrderTree instanceof BinaryOpExpr {
+class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
   LogicalAndBinaryOpExprTree() { super.getOp() = "&&" }
 
   final override predicate propagatesAbnormal(AstNode child) {
     child = [super.getRhs(), super.getLhs()]
   }
 
-  override predicate first(AstNode node) { first(super.getLhs(), node) }
-
+  // override predicate first(AstNode node) { first(super.getLhs(), node) }
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getLhs(), pred, c) and
-    (
-      succ = this and c.(BooleanCompletion).getValue() = false
-      or
-      first(super.getRhs(), succ) and c.(BooleanCompletion).getValue() = true
-    )
+    // Edge to the first node in the lhs
+    pred = this and
+    first(super.getLhs(), succ) and
+    completionIsSimple(c)
     or
-    last(super.getRhs(), pred, c) and succ = this
+    // Edge from the last node in the lhs to the first node in the rhs
+    last(super.getLhs(), pred, c) and
+    first(super.getRhs(), succ) and
+    c.(BooleanCompletion).getValue() = true
+  }
+
+  override predicate last(AstNode node, Completion c) {
+    // Lhs. as the last node
+    last(super.getLhs(), node, c) and
+    c.(BooleanCompletion).getValue() = false
+    or
+    // Rhs. as the last node
+    last(super.getRhs(), node, c)
   }
 }
 
