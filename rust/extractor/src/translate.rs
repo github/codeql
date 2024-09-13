@@ -113,14 +113,17 @@ impl CrateTranslator<'_> {
         pat: &ra_ap_hir_def::hir::LiteralOrConst,
         body: &Body,
         source_map: &BodySourceMap,
+        mut emit_location: impl FnMut(&mut CrateTranslator<'_>, trap::Label) -> (),
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
                 let expr = self.trap.emit(generated::Literal { id: TrapId::Star });
-                self.trap.emit(generated::LiteralPat {
+                let label = self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
                     expr,
-                })
+                });
+                emit_location(self, label);
+                label
             }
             ra_ap_hir_def::hir::LiteralOrConst::Const(inner) => {
                 self.emit_pat(*inner, body, source_map)
@@ -257,6 +260,7 @@ impl CrateTranslator<'_> {
                 ellipsis,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
+                path.map(|p| self.emit_location_for_pat(p, pat_id, source_map));
                 let flds = args
                     .into_iter()
                     .map(|arg| self.emit_record_field_pat(arg, body, source_map))
@@ -269,12 +273,16 @@ impl CrateTranslator<'_> {
                 })
             }
             ra_ap_hir_def::hir::Pat::Range { start, end } => {
-                let start = start
-                    .as_ref()
-                    .map(|x| self.emit_literal_or_const_pat(x, body, source_map));
-                let end = end
-                    .as_ref()
-                    .map(|x| self.emit_literal_or_const_pat(x, body, source_map));
+                let emit_location_for_const = |trans: &mut CrateTranslator<'_>, label| {
+                    trans.emit_location_for_pat(label, pat_id, source_map)
+                };
+                let start = start.as_ref().map(|x| {
+                    self.emit_literal_or_const_pat(x, body, source_map, emit_location_for_const)
+                });
+
+                let end = end.as_ref().map(|x| {
+                    self.emit_literal_or_const_pat(x, body, source_map, emit_location_for_const)
+                });
                 self.trap.emit(generated::RangePat {
                     id: TrapId::Star,
                     start,
@@ -304,6 +312,8 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Pat::Path(path) => {
                 let path = self.emit_path(path);
+                self.emit_location_for_pat(path, pat_id, source_map);
+
                 self.trap.emit(generated::PathPat {
                     id: TrapId::Star,
                     path,
@@ -330,6 +340,8 @@ impl CrateTranslator<'_> {
                 ellipsis,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
+                path.map(|p| self.emit_location_for_pat(p, pat_id, source_map));
+
                 let args = args
                     .into_iter()
                     .map(|arg| self.emit_pat(*arg, body, source_map))
@@ -447,6 +459,8 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Path(path) => {
                 let path = self.emit_path(path);
+                self.emit_location_for_expr(path, expr_id, source_map);
+
                 self.trap.emit(generated::PathExpr {
                     id: TrapId::Star,
                     path,
@@ -652,6 +666,8 @@ impl CrateTranslator<'_> {
                 is_assignee_expr,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
+                path.map(|p| self.emit_location_for_expr(p, expr_id, source_map));
+
                 let flds = fields
                     .into_iter()
                     .map(|field| self.emit_record_lit_field(field, body, source_map))
@@ -871,7 +887,7 @@ impl CrateTranslator<'_> {
         labels: &mut Vec<trap::Label>,
     ) {
         let label = match id {
-            ModuleDef::Module(_) => self
+            ModuleDef::Module(_module) => self
                 .trap
                 .emit(generated::UnimplementedDeclaration { id: TrapId::Star }),
             ModuleDef::Function(function) => {
