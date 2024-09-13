@@ -46,6 +46,7 @@ impl Config {
             .context("expanding parameter files")?;
         let cli_args = CliConfig::parse_from(args);
         Figment::new()
+            .merge(Env::prefixed("CODEQL_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args))
