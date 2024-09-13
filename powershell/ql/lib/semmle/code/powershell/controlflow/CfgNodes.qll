@@ -151,7 +151,7 @@ module ExprNodes {
 
   private class VarWriteAccessChildMapping extends VarAccessChildMapping, VarWriteAccess { }
 
-  class VariableWriteAccessCfgNode extends VarAccessCfgNode {
+  class VarWriteAccessCfgNode extends VarAccessCfgNode {
     override string getAPrimaryQlClass() { result = "VarWriteAccessCfgNode" }
 
     override VarWriteAccessChildMapping e;

@@ -111,7 +111,13 @@ private class AbstractVariable extends TVariable {
   }
 }
 
-class LocalVariable extends AbstractVariable, TLocalVariable {
+final class Variable = AbstractVariable;
+
+abstract class AbstractLocalScopeVariable extends AbstractVariable { }
+
+final class LocalScopeVariable = AbstractLocalScopeVariable;
+
+class LocalVariable extends AbstractLocalScopeVariable, TLocalVariable {
   string name;
   Scope scope;
 
@@ -135,7 +141,7 @@ class LocalVariable extends AbstractVariable, TLocalVariable {
   final override Scope getDeclaringScope() { result = scope }
 }
 
-class Parameter extends AbstractVariable, TParameter {
+class Parameter extends AbstractLocalScopeVariable, TParameter {
   ParameterImpl p;
 
   Parameter() { this = TParameter(p) }
@@ -156,5 +162,3 @@ class Parameter extends AbstractVariable, TParameter {
 
   int getIndex() { this.isFunctionParameter(_, result) }
 }
-
-final class Variable = AbstractVariable;

@@ -75,7 +75,7 @@ module Ssa {
    * An SSA definition that corresponds to a write.
    */
   class WriteDefinition extends Definition, SsaImpl::WriteDefinition {
-    private VariableWriteAccessCfgNode write;
+    private VarWriteAccessCfgNode write;
 
     WriteDefinition() {
       exists(BasicBlock bb, int i, Variable v |
@@ -85,7 +85,7 @@ module Ssa {
     }
 
     /** Gets the underlying write access. */
-    final VariableWriteAccessCfgNode getWriteAccess() { result = write }
+    final VarWriteAccessCfgNode getWriteAccess() { result = write }
 
     /**
      * Holds if this SSA definition assigns `value` to the underlying variable.
