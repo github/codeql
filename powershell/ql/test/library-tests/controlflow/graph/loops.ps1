@@ -38,7 +38,7 @@ function Test-DoUntil {
     } until ($a -ge 10)
 }
 
-function Tet-For {
+function Test-For {
     $a = 0
 
     for ($i = 0; $i -le 10; $i = $i + 1) {
@@ -54,3 +54,16 @@ function Test-ForEach {
         $a = $a + 1
     }
 }
+
+function Test-For-Ever {
+    $a = 0
+
+    for(;;)
+    {
+        if($a -le 10)
+        {
+            break;
+        }
+    }        
+}
+
