@@ -29,11 +29,6 @@ class AstNode(Locatable):
     pass
 
 
-@qltest.skip
-class Unimplemented(AstNode):
-    pass
-
-
 class Declaration(AstNode):
     pass
 
@@ -95,7 +90,7 @@ class MissingExpr(Expr):
 
 
 class PathExpr(Expr):
-    path: Unimplemented | child
+    path: "Unimplemented" | child
 
 #     If {
 #         condition: ExprId,
@@ -196,7 +191,7 @@ class MethodCallExpr(Expr):
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
-    generic_args: optional[Unimplemented] | child
+    generic_args: optional["Unimplemented"] | child
 
 # pub struct MatchArm {
 #     pub pat: PatId,
@@ -287,7 +282,7 @@ class RecordLitField(AstNode):
 
 
 class RecordLitExpr(Expr):
-    path: optional[Unimplemented] | child
+    path: optional["Unimplemented"] | child
     fields: list[RecordLitField] | child
     spread: optional[Expr] | child
     has_ellipsis: predicate
@@ -514,7 +509,7 @@ class OrPat(Pat):
 
 
 class RecordPat(Pat):
-    path: optional[Unimplemented] | child
+    path: optional["Unimplemented"] | child
     args: list[RecordFieldPat] | child
     has_ellipsis: predicate
 
@@ -535,7 +530,7 @@ class SlicePat(Pat):
 
 
 class PathPat(Pat):
-    path: Unimplemented | child
+    path: "Unimplemented" | child
 
     # Lit(ExprId),
 
@@ -554,7 +549,7 @@ class BindPat(Pat):
 
 
 class TupleStructPat(Pat):
-    path: optional[Unimplemented] | child
+    path: optional["Unimplemented"] | child
     args: list[Pat] | child
     ellipsis_index: optional[int]
 
@@ -575,3 +570,8 @@ class BoxPat(Pat):
 
 class ConstBlockPat(Pat):
     expr: Expr | child
+
+
+@qltest.skip
+class Unimplemented(Declaration, TypeRef):
+    pass

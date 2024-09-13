@@ -174,21 +174,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfUnimplemented(
-    Unimplemented e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bAstNode, int n |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfArrayExpr(ArrayExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n |
       b = 0 and
@@ -1081,6 +1066,26 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnimplemented(
+    Unimplemented e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDeclaration, int bTypeRef, int n |
+      b = 0 and
+      bDeclaration =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDeclaration(e, i, _)) | i) and
+      bTypeRef =
+        bDeclaration + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeRef(e, i, _)) | i) and
+      n = bTypeRef and
+      (
+        none()
+        or
+        result = getImmediateChildOfDeclaration(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfTypeRef(e, index - bDeclaration, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfWildPat(WildPat e, int index, string partialPredicateCall) {
     exists(int b, int bPat, int n |
       b = 0 and
@@ -1227,10 +1232,6 @@ private module Impl {
     or
     result = getImmediateChildOfRecordLitField(e, index, partialAccessor)
     or
-    result = getImmediateChildOfTypeRef(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfUnimplemented(e, index, partialAccessor)
-    or
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBecomeExpr(e, index, partialAccessor)
@@ -1324,6 +1325,8 @@ private module Impl {
     result = getImmediateChildOfUnaryOpExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnderscoreExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnimplemented(e, index, partialAccessor)
     or
     result = getImmediateChildOfWildPat(e, index, partialAccessor)
     or

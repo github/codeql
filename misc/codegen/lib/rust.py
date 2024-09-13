@@ -110,8 +110,9 @@ class Field:
 @dataclasses.dataclass
 class Class:
     name: str
-    table_name: str
+    table_name: str | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
+    ancestors: list[str] = dataclasses.field(default_factory=list)
 
     @property
     def single_field_entries(self):

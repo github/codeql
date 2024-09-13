@@ -111,16 +111,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class TypeRef extends @type_ref, AstNode {
-    override string toString() { result = "TypeRef" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class Unimplemented extends @unimplemented, AstNode {
-    override string toString() { result = "Unimplemented" }
-  }
+  class TypeRef extends @type_ref, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -929,6 +920,13 @@ module Raw {
    */
   class UnderscoreExpr extends @underscore_expr, Expr {
     override string toString() { result = "UnderscoreExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Unimplemented extends @unimplemented, Declaration, TypeRef {
+    override string toString() { result = "Unimplemented" }
   }
 
   /**

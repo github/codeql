@@ -137,12 +137,12 @@ locatable_locations(
 | @record_lit_field
 | @stmt
 | @type_ref
-| @unimplemented
 ;
 
 @declaration =
   @function
 | @module
+| @unimplemented
 ;
 
 @expr =
@@ -233,13 +233,9 @@ record_lit_fields(
 | @let_stmt
 ;
 
-type_refs(
-  unique int id: @type_ref
-);
-
-unimplementeds(
-  unique int id: @unimplemented
-);
+@type_ref =
+  @unimplemented
+;
 
 @array_expr =
   @element_list_expr
@@ -799,6 +795,10 @@ unary_op_exprs(
 
 underscore_exprs(
   unique int id: @underscore_expr
+);
+
+unimplementeds(
+  unique int id: @unimplemented
 );
 
 wild_pats(

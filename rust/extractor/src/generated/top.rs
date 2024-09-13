@@ -2,1222 +2,5008 @@
 
 #![cfg_attr(any(), rustfmt::skip)]
 
-use crate::trap::{TrapId, TrapEntry};
-use codeql_extractor::trap;
+use crate::trap;
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ElementTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ElementTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ElementTrapLabel> for trap::TrapId<Element> {
+    fn from(value: ElementTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ElementTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ElementTrapLabel> for trap::Arg {
+    fn from(value: ElementTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Element {
+    pub id: trap::TrapId<Element>,
+}
+
+impl trap::TrapEntry for Element {
+    fn class_name() -> &'static str { "Element" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("elements", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Element {
+    type Label = ElementTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LocatableTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LocatableTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LocatableTrapLabel> for trap::TrapId<Locatable> {
+    fn from(value: LocatableTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LocatableTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LocatableTrapLabel> for trap::Arg {
+    fn from(value: LocatableTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Locatable {
+    pub id: trap::TrapId<Locatable>,
+}
+
+impl trap::TrapEntry for Locatable {
+    fn class_name() -> &'static str { "Locatable" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("locatables", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Locatable {
+    type Label = LocatableTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct AstNodeTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for AstNodeTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<AstNodeTrapLabel> for trap::TrapId<AstNode> {
+    fn from(value: AstNodeTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for AstNodeTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<AstNodeTrapLabel> for trap::Arg {
+    fn from(value: AstNodeTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct AstNode {
+    pub id: trap::TrapId<AstNode>,
+}
+
+impl trap::TrapEntry for AstNode {
+    fn class_name() -> &'static str { "AstNode" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("ast_nodes", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for AstNode {
+    type Label = AstNodeTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct DeclarationTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for DeclarationTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<DeclarationTrapLabel> for trap::TrapId<Declaration> {
+    fn from(value: DeclarationTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for DeclarationTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<DeclarationTrapLabel> for trap::Arg {
+    fn from(value: DeclarationTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Declaration {
+    pub id: trap::TrapId<Declaration>,
+}
+
+impl trap::TrapEntry for Declaration {
+    fn class_name() -> &'static str { "Declaration" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("declarations", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Declaration {
+    type Label = DeclarationTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ExprTrapLabel> for trap::TrapId<Expr> {
+    fn from(value: ExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ExprTrapLabel> for trap::Arg {
+    fn from(value: ExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Expr {
+    pub id: trap::TrapId<Expr>,
+}
+
+impl trap::TrapEntry for Expr {
+    fn class_name() -> &'static str { "Expr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Expr {
+    type Label = ExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LabelTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LabelTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LabelTrapLabel> for trap::TrapId<Label> {
+    fn from(value: LabelTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LabelTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LabelTrapLabel> for trap::Arg {
+    fn from(value: LabelTrapLabel) -> Self {
+        value.0.into()
+    }
+}
 
 #[derive(Debug)]
 pub struct Label {
-    pub id: TrapId,
+    pub id: trap::TrapId<Label>,
     pub name: String,
 }
 
-impl TrapEntry for Label {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for Label {
+    fn class_name() -> &'static str { "Label" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("labels", vec![trap::Arg::Label(id), self.name.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("labels", vec![id.into(), self.name.into()]);
+    }
+}
+
+impl trap::TrapClass for Label {
+    type Label = LabelTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MatchArmTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for MatchArmTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<MatchArmTrapLabel> for trap::TrapId<MatchArm> {
+    fn from(value: MatchArmTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for MatchArmTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<MatchArmTrapLabel> for trap::Arg {
+    fn from(value: MatchArmTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct MatchArm {
-    pub id: TrapId,
-    pub pat: trap::Label,
-    pub guard: Option<trap::Label>,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<MatchArm>,
+    pub pat: PatTrapLabel,
+    pub guard: Option<ExprTrapLabel>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for MatchArm {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for MatchArm {
+    fn class_name() -> &'static str { "MatchArm" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("match_arms", vec![trap::Arg::Label(id), self.pat.into(), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("match_arms", vec![id.into(), self.pat.into(), self.expr.into()]);
         if let Some(v) = self.guard {
-            out.add_tuple("match_arm_guards", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("match_arm_guards", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for MatchArm {
+    type Label = MatchArmTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct PatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for PatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<PatTrapLabel> for trap::TrapId<Pat> {
+    fn from(value: PatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for PatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<PatTrapLabel> for trap::Arg {
+    fn from(value: PatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Pat {
+    pub id: trap::TrapId<Pat>,
+}
+
+impl trap::TrapEntry for Pat {
+    fn class_name() -> &'static str { "Pat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("pats", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Pat {
+    type Label = PatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RecordFieldPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RecordFieldPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RecordFieldPatTrapLabel> for trap::TrapId<RecordFieldPat> {
+    fn from(value: RecordFieldPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RecordFieldPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RecordFieldPatTrapLabel> for trap::Arg {
+    fn from(value: RecordFieldPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RecordFieldPat {
-    pub id: TrapId,
+    pub id: trap::TrapId<RecordFieldPat>,
     pub name: String,
-    pub pat: trap::Label,
+    pub pat: PatTrapLabel,
 }
 
-impl TrapEntry for RecordFieldPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RecordFieldPat {
+    fn class_name() -> &'static str { "RecordFieldPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_field_pats", vec![trap::Arg::Label(id), self.name.into(), self.pat.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_field_pats", vec![id.into(), self.name.into(), self.pat.into()]);
+    }
+}
+
+impl trap::TrapClass for RecordFieldPat {
+    type Label = RecordFieldPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RecordLitFieldTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RecordLitFieldTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RecordLitFieldTrapLabel> for trap::TrapId<RecordLitField> {
+    fn from(value: RecordLitFieldTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RecordLitFieldTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RecordLitFieldTrapLabel> for trap::Arg {
+    fn from(value: RecordLitFieldTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RecordLitField {
-    pub id: TrapId,
+    pub id: trap::TrapId<RecordLitField>,
     pub name: String,
-    pub expr: trap::Label,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for RecordLitField {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RecordLitField {
+    fn class_name() -> &'static str { "RecordLitField" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_lit_fields", vec![trap::Arg::Label(id), self.name.into(), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_lit_fields", vec![id.into(), self.name.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for RecordLitField {
+    type Label = RecordLitFieldTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct StmtTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for StmtTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<StmtTrapLabel> for trap::TrapId<Stmt> {
+    fn from(value: StmtTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for StmtTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<StmtTrapLabel> for trap::Arg {
+    fn from(value: StmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Stmt {
+    pub id: trap::TrapId<Stmt>,
+}
+
+impl trap::TrapEntry for Stmt {
+    fn class_name() -> &'static str { "Stmt" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("stmts", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Stmt {
+    type Label = StmtTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct TypeRefTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for TypeRefTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<TypeRefTrapLabel> for trap::TrapId<TypeRef> {
+    fn from(value: TypeRefTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for TypeRefTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<TypeRefTrapLabel> for trap::Arg {
+    fn from(value: TypeRefTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct TypeRef {
-    pub id: TrapId,
+    pub id: trap::TrapId<TypeRef>,
 }
 
-impl TrapEntry for TypeRef {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for TypeRef {
+    fn class_name() -> &'static str { "TypeRef" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("type_refs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("type_refs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for TypeRef {
+    type Label = TypeRefTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ArrayExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ArrayExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ArrayExprTrapLabel> for trap::TrapId<ArrayExpr> {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ArrayExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ArrayExprTrapLabel> for trap::Arg {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
-pub struct Unimplemented {
-    pub id: TrapId,
+pub struct ArrayExpr {
+    pub id: trap::TrapId<ArrayExpr>,
 }
 
-impl TrapEntry for Unimplemented {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ArrayExpr {
+    fn class_name() -> &'static str { "ArrayExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unimplementeds", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("array_exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for ArrayExpr {
+    type Label = ArrayExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct AwaitExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for AwaitExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<AwaitExprTrapLabel> for trap::TrapId<AwaitExpr> {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for AwaitExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<AwaitExprTrapLabel> for trap::Arg {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct AwaitExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<AwaitExpr>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for AwaitExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for AwaitExpr {
+    fn class_name() -> &'static str { "AwaitExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("await_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("await_exprs", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for AwaitExpr {
+    type Label = AwaitExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BecomeExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BecomeExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BecomeExprTrapLabel> for trap::TrapId<BecomeExpr> {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BecomeExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BecomeExprTrapLabel> for trap::Arg {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BecomeExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<BecomeExpr>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for BecomeExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BecomeExpr {
+    fn class_name() -> &'static str { "BecomeExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("become_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("become_exprs", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for BecomeExpr {
+    type Label = BecomeExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BinaryOpExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BinaryOpExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BinaryOpExprTrapLabel> for trap::TrapId<BinaryOpExpr> {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BinaryOpExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BinaryOpExprTrapLabel> for trap::Arg {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BinaryOpExpr {
-    pub id: TrapId,
-    pub lhs: trap::Label,
-    pub rhs: trap::Label,
+    pub id: trap::TrapId<BinaryOpExpr>,
+    pub lhs: ExprTrapLabel,
+    pub rhs: ExprTrapLabel,
     pub op: Option<String>,
 }
 
-impl TrapEntry for BinaryOpExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BinaryOpExpr {
+    fn class_name() -> &'static str { "BinaryOpExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("binary_op_exprs", vec![trap::Arg::Label(id), self.lhs.into(), self.rhs.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("binary_op_exprs", vec![id.into(), self.lhs.into(), self.rhs.into()]);
         if let Some(v) = self.op {
-            out.add_tuple("binary_op_expr_ops", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("binary_op_expr_ops", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for BinaryOpExpr {
+    type Label = BinaryOpExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BindPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BindPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BindPatTrapLabel> for trap::TrapId<BindPat> {
+    fn from(value: BindPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BindPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BindPatTrapLabel> for trap::Arg {
+    fn from(value: BindPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BindPat {
-    pub id: TrapId,
+    pub id: trap::TrapId<BindPat>,
     pub binding_id: String,
-    pub subpat: Option<trap::Label>,
+    pub subpat: Option<PatTrapLabel>,
 }
 
-impl TrapEntry for BindPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BindPat {
+    fn class_name() -> &'static str { "BindPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("bind_pats", vec![trap::Arg::Label(id), self.binding_id.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("bind_pats", vec![id.into(), self.binding_id.into()]);
         if let Some(v) = self.subpat {
-            out.add_tuple("bind_pat_subpats", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("bind_pat_subpats", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for BindPat {
+    type Label = BindPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BlockExprBaseTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BlockExprBaseTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BlockExprBaseTrapLabel> for trap::TrapId<BlockExprBase> {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BlockExprBaseTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BlockExprBaseTrapLabel> for trap::Arg {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct BlockExprBase {
+    pub id: trap::TrapId<BlockExprBase>,
+}
+
+impl trap::TrapEntry for BlockExprBase {
+    fn class_name() -> &'static str { "BlockExprBase" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("block_expr_bases", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for BlockExprBase {
+    type Label = BlockExprBaseTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BoxExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BoxExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BoxExprTrapLabel> for trap::TrapId<BoxExpr> {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BoxExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BoxExprTrapLabel> for trap::Arg {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BoxExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<BoxExpr>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for BoxExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BoxExpr {
+    fn class_name() -> &'static str { "BoxExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("box_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("box_exprs", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for BoxExpr {
+    type Label = BoxExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BoxPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BoxPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BoxPatTrapLabel> for trap::TrapId<BoxPat> {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BoxPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BoxPatTrapLabel> for trap::Arg {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BoxPat {
-    pub id: TrapId,
-    pub inner: trap::Label,
+    pub id: trap::TrapId<BoxPat>,
+    pub inner: PatTrapLabel,
 }
 
-impl TrapEntry for BoxPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BoxPat {
+    fn class_name() -> &'static str { "BoxPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("box_pats", vec![trap::Arg::Label(id), self.inner.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("box_pats", vec![id.into(), self.inner.into()]);
+    }
+}
+
+impl trap::TrapClass for BoxPat {
+    type Label = BoxPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BreakExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BreakExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BreakExprTrapLabel> for trap::TrapId<BreakExpr> {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BreakExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BreakExprTrapLabel> for trap::Arg {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BreakExpr {
-    pub id: TrapId,
-    pub expr: Option<trap::Label>,
-    pub label: Option<trap::Label>,
+    pub id: trap::TrapId<BreakExpr>,
+    pub expr: Option<ExprTrapLabel>,
+    pub label: Option<LabelTrapLabel>,
 }
 
-impl TrapEntry for BreakExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BreakExpr {
+    fn class_name() -> &'static str { "BreakExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("break_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("break_exprs", vec![id.into()]);
         if let Some(v) = self.expr {
-            out.add_tuple("break_expr_exprs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("break_expr_exprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.label {
-            out.add_tuple("break_expr_labels", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("break_expr_labels", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for BreakExpr {
+    type Label = BreakExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct CallExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for CallExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<CallExprTrapLabel> for trap::TrapId<CallExpr> {
+    fn from(value: CallExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for CallExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<CallExprTrapLabel> for trap::Arg {
+    fn from(value: CallExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct CallExpr {
-    pub id: TrapId,
-    pub callee: trap::Label,
-    pub args: Vec<trap::Label>,
+    pub id: trap::TrapId<CallExpr>,
+    pub callee: ExprTrapLabel,
+    pub args: Vec<ExprTrapLabel>,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for CallExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for CallExpr {
+    fn class_name() -> &'static str { "CallExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("call_exprs", vec![trap::Arg::Label(id), self.callee.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("call_exprs", vec![id.into(), self.callee.into()]);
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("call_expr_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("call_expr_args", vec![id.into(), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
-            out.add_tuple("call_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("call_expr_is_assignee_expr", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for CallExpr {
+    type Label = CallExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct CastExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for CastExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<CastExprTrapLabel> for trap::TrapId<CastExpr> {
+    fn from(value: CastExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for CastExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<CastExprTrapLabel> for trap::Arg {
+    fn from(value: CastExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct CastExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
-    pub type_ref: trap::Label,
+    pub id: trap::TrapId<CastExpr>,
+    pub expr: ExprTrapLabel,
+    pub type_ref: TypeRefTrapLabel,
 }
 
-impl TrapEntry for CastExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for CastExpr {
+    fn class_name() -> &'static str { "CastExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("cast_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.type_ref.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("cast_exprs", vec![id.into(), self.expr.into(), self.type_ref.into()]);
+    }
+}
+
+impl trap::TrapClass for CastExpr {
+    type Label = CastExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ClosureExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ClosureExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ClosureExprTrapLabel> for trap::TrapId<ClosureExpr> {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ClosureExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ClosureExprTrapLabel> for trap::Arg {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ClosureExpr {
-    pub id: TrapId,
-    pub args: Vec<trap::Label>,
-    pub arg_types: Vec<Option<trap::Label>>,
-    pub ret_type: Option<trap::Label>,
-    pub body: trap::Label,
+    pub id: trap::TrapId<ClosureExpr>,
+    pub args: Vec<PatTrapLabel>,
+    pub arg_types: Vec<Option<TypeRefTrapLabel>>,
+    pub ret_type: Option<TypeRefTrapLabel>,
+    pub body: ExprTrapLabel,
     pub closure_kind: String,
     pub is_move: bool,
 }
 
-impl TrapEntry for ClosureExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ClosureExpr {
+    fn class_name() -> &'static str { "ClosureExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("closure_exprs", vec![trap::Arg::Label(id), self.body.into(), self.closure_kind.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("closure_exprs", vec![id.into(), self.body.into(), self.closure_kind.into()]);
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("closure_expr_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("closure_expr_args", vec![id.into(), i.into(), v.into()]);
         }
         for (i, v) in self.arg_types.into_iter().enumerate() {
             if let Some(v) = v {
-                out.add_tuple("closure_expr_arg_types", vec![trap::Arg::Label(id), i.into(), v.into()]);
+                out.add_tuple("closure_expr_arg_types", vec![id.into(), i.into(), v.into()]);
             }
         }
         if let Some(v) = self.ret_type {
-            out.add_tuple("closure_expr_ret_types", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("closure_expr_ret_types", vec![id.into(), v.into()]);
         }
         if self.is_move {
-            out.add_tuple("closure_expr_is_move", vec![trap::Arg::Label(id)]);
+            out.add_tuple("closure_expr_is_move", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for ClosureExpr {
+    type Label = ClosureExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ConstBlockPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ConstBlockPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ConstBlockPatTrapLabel> for trap::TrapId<ConstBlockPat> {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ConstBlockPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ConstBlockPatTrapLabel> for trap::Arg {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ConstBlockPat {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<ConstBlockPat>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for ConstBlockPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ConstBlockPat {
+    fn class_name() -> &'static str { "ConstBlockPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("const_block_pats", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("const_block_pats", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for ConstBlockPat {
+    type Label = ConstBlockPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ConstExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ConstExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ConstExprTrapLabel> for trap::TrapId<ConstExpr> {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ConstExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ConstExprTrapLabel> for trap::Arg {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ConstExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<ConstExpr>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for ConstExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ConstExpr {
+    fn class_name() -> &'static str { "ConstExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("const_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("const_exprs", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for ConstExpr {
+    type Label = ConstExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ContinueExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ContinueExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ContinueExprTrapLabel> for trap::TrapId<ContinueExpr> {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ContinueExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ContinueExprTrapLabel> for trap::Arg {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ContinueExpr {
-    pub id: TrapId,
-    pub label: Option<trap::Label>,
+    pub id: trap::TrapId<ContinueExpr>,
+    pub label: Option<LabelTrapLabel>,
 }
 
-impl TrapEntry for ContinueExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ContinueExpr {
+    fn class_name() -> &'static str { "ContinueExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("continue_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("continue_exprs", vec![id.into()]);
         if let Some(v) = self.label {
-            out.add_tuple("continue_expr_labels", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("continue_expr_labels", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for ContinueExpr {
+    type Label = ContinueExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ExprStmtTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ExprStmtTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ExprStmtTrapLabel> for trap::TrapId<ExprStmt> {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ExprStmtTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ExprStmtTrapLabel> for trap::Arg {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ExprStmt {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<ExprStmt>,
+    pub expr: ExprTrapLabel,
     pub has_semicolon: bool,
 }
 
-impl TrapEntry for ExprStmt {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ExprStmt {
+    fn class_name() -> &'static str { "ExprStmt" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("expr_stmts", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("expr_stmts", vec![id.into(), self.expr.into()]);
         if self.has_semicolon {
-            out.add_tuple("expr_stmt_has_semicolon", vec![trap::Arg::Label(id)]);
+            out.add_tuple("expr_stmt_has_semicolon", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for ExprStmt {
+    type Label = ExprStmtTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct FieldExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for FieldExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<FieldExprTrapLabel> for trap::TrapId<FieldExpr> {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for FieldExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<FieldExprTrapLabel> for trap::Arg {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct FieldExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<FieldExpr>,
+    pub expr: ExprTrapLabel,
     pub name: String,
 }
 
-impl TrapEntry for FieldExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for FieldExpr {
+    fn class_name() -> &'static str { "FieldExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("field_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.name.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("field_exprs", vec![id.into(), self.expr.into(), self.name.into()]);
+    }
+}
+
+impl trap::TrapClass for FieldExpr {
+    type Label = FieldExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct FunctionTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for FunctionTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<FunctionTrapLabel> for trap::TrapId<Function> {
+    fn from(value: FunctionTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for FunctionTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<FunctionTrapLabel> for trap::Arg {
+    fn from(value: FunctionTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct Function {
-    pub id: TrapId,
+    pub id: trap::TrapId<Function>,
     pub name: String,
-    pub body: trap::Label,
+    pub body: ExprTrapLabel,
 }
 
-impl TrapEntry for Function {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for Function {
+    fn class_name() -> &'static str { "Function" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("functions", vec![trap::Arg::Label(id), self.name.into(), self.body.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("functions", vec![id.into(), self.name.into(), self.body.into()]);
+    }
+}
+
+impl trap::TrapClass for Function {
+    type Label = FunctionTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct IfExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for IfExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<IfExprTrapLabel> for trap::TrapId<IfExpr> {
+    fn from(value: IfExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for IfExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<IfExprTrapLabel> for trap::Arg {
+    fn from(value: IfExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct IfExpr {
-    pub id: TrapId,
-    pub condition: trap::Label,
-    pub then: trap::Label,
-    pub else_: Option<trap::Label>,
+    pub id: trap::TrapId<IfExpr>,
+    pub condition: ExprTrapLabel,
+    pub then: ExprTrapLabel,
+    pub else_: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for IfExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for IfExpr {
+    fn class_name() -> &'static str { "IfExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("if_exprs", vec![trap::Arg::Label(id), self.condition.into(), self.then.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("if_exprs", vec![id.into(), self.condition.into(), self.then.into()]);
         if let Some(v) = self.else_ {
-            out.add_tuple("if_expr_elses", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("if_expr_elses", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for IfExpr {
+    type Label = IfExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct IndexExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for IndexExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<IndexExprTrapLabel> for trap::TrapId<IndexExpr> {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for IndexExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<IndexExprTrapLabel> for trap::Arg {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct IndexExpr {
-    pub id: TrapId,
-    pub base: trap::Label,
-    pub index: trap::Label,
+    pub id: trap::TrapId<IndexExpr>,
+    pub base: ExprTrapLabel,
+    pub index: ExprTrapLabel,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for IndexExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for IndexExpr {
+    fn class_name() -> &'static str { "IndexExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("index_exprs", vec![trap::Arg::Label(id), self.base.into(), self.index.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("index_exprs", vec![id.into(), self.base.into(), self.index.into()]);
         if self.is_assignee_expr {
-            out.add_tuple("index_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("index_expr_is_assignee_expr", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for IndexExpr {
+    type Label = IndexExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct InlineAsmExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for InlineAsmExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<InlineAsmExprTrapLabel> for trap::TrapId<InlineAsmExpr> {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for InlineAsmExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<InlineAsmExprTrapLabel> for trap::Arg {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct InlineAsmExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<InlineAsmExpr>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for InlineAsmExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for InlineAsmExpr {
+    fn class_name() -> &'static str { "InlineAsmExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("inline_asm_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("inline_asm_exprs", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for InlineAsmExpr {
+    type Label = InlineAsmExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ItemStmtTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ItemStmtTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ItemStmtTrapLabel> for trap::TrapId<ItemStmt> {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ItemStmtTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ItemStmtTrapLabel> for trap::Arg {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ItemStmt {
-    pub id: TrapId,
+    pub id: trap::TrapId<ItemStmt>,
 }
 
-impl TrapEntry for ItemStmt {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ItemStmt {
+    fn class_name() -> &'static str { "ItemStmt" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("item_stmts", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("item_stmts", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for ItemStmt {
+    type Label = ItemStmtTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LetExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LetExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LetExprTrapLabel> for trap::TrapId<LetExpr> {
+    fn from(value: LetExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LetExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LetExprTrapLabel> for trap::Arg {
+    fn from(value: LetExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct LetExpr {
-    pub id: TrapId,
-    pub pat: trap::Label,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<LetExpr>,
+    pub pat: PatTrapLabel,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for LetExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for LetExpr {
+    fn class_name() -> &'static str { "LetExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("let_exprs", vec![trap::Arg::Label(id), self.pat.into(), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("let_exprs", vec![id.into(), self.pat.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for LetExpr {
+    type Label = LetExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LetStmtTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LetStmtTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LetStmtTrapLabel> for trap::TrapId<LetStmt> {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LetStmtTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LetStmtTrapLabel> for trap::Arg {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct LetStmt {
-    pub id: TrapId,
-    pub pat: trap::Label,
-    pub type_ref: Option<trap::Label>,
-    pub initializer: Option<trap::Label>,
-    pub else_: Option<trap::Label>,
+    pub id: trap::TrapId<LetStmt>,
+    pub pat: PatTrapLabel,
+    pub type_ref: Option<TypeRefTrapLabel>,
+    pub initializer: Option<ExprTrapLabel>,
+    pub else_: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for LetStmt {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for LetStmt {
+    fn class_name() -> &'static str { "LetStmt" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("let_stmts", vec![trap::Arg::Label(id), self.pat.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("let_stmts", vec![id.into(), self.pat.into()]);
         if let Some(v) = self.type_ref {
-            out.add_tuple("let_stmt_type_refs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("let_stmt_type_refs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.initializer {
-            out.add_tuple("let_stmt_initializers", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("let_stmt_initializers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.else_ {
-            out.add_tuple("let_stmt_elses", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("let_stmt_elses", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for LetStmt {
+    type Label = LetStmtTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LitPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LitPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LitPatTrapLabel> for trap::TrapId<LitPat> {
+    fn from(value: LitPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LitPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LitPatTrapLabel> for trap::Arg {
+    fn from(value: LitPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct LitPat {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<LitPat>,
+    pub expr: ExprTrapLabel,
 }
 
-impl TrapEntry for LitPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for LitPat {
+    fn class_name() -> &'static str { "LitPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("lit_pats", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("lit_pats", vec![id.into(), self.expr.into()]);
+    }
+}
+
+impl trap::TrapClass for LitPat {
+    type Label = LitPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LiteralExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LiteralExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LiteralExprTrapLabel> for trap::TrapId<LiteralExpr> {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LiteralExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LiteralExprTrapLabel> for trap::Arg {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct LiteralExpr {
-    pub id: TrapId,
+    pub id: trap::TrapId<LiteralExpr>,
 }
 
-impl TrapEntry for LiteralExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for LiteralExpr {
+    fn class_name() -> &'static str { "LiteralExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("literal_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("literal_exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for LiteralExpr {
+    type Label = LiteralExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct LoopExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for LoopExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<LoopExprTrapLabel> for trap::TrapId<LoopExpr> {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for LoopExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<LoopExprTrapLabel> for trap::Arg {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct LoopExpr {
-    pub id: TrapId,
-    pub body: trap::Label,
-    pub label: Option<trap::Label>,
+    pub id: trap::TrapId<LoopExpr>,
+    pub body: ExprTrapLabel,
+    pub label: Option<LabelTrapLabel>,
 }
 
-impl TrapEntry for LoopExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for LoopExpr {
+    fn class_name() -> &'static str { "LoopExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("loop_exprs", vec![trap::Arg::Label(id), self.body.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("loop_exprs", vec![id.into(), self.body.into()]);
         if let Some(v) = self.label {
-            out.add_tuple("loop_expr_labels", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("loop_expr_labels", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for LoopExpr {
+    type Label = LoopExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MatchExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for MatchExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<MatchExprTrapLabel> for trap::TrapId<MatchExpr> {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for MatchExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<MatchExprTrapLabel> for trap::Arg {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct MatchExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
-    pub branches: Vec<trap::Label>,
+    pub id: trap::TrapId<MatchExpr>,
+    pub expr: ExprTrapLabel,
+    pub branches: Vec<MatchArmTrapLabel>,
 }
 
-impl TrapEntry for MatchExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for MatchExpr {
+    fn class_name() -> &'static str { "MatchExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("match_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("match_exprs", vec![id.into(), self.expr.into()]);
         for (i, v) in self.branches.into_iter().enumerate() {
-            out.add_tuple("match_expr_branches", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("match_expr_branches", vec![id.into(), i.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for MatchExpr {
+    type Label = MatchExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MethodCallExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for MethodCallExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<MethodCallExprTrapLabel> for trap::TrapId<MethodCallExpr> {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for MethodCallExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<MethodCallExprTrapLabel> for trap::Arg {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct MethodCallExpr {
-    pub id: TrapId,
-    pub receiver: trap::Label,
+    pub id: trap::TrapId<MethodCallExpr>,
+    pub receiver: ExprTrapLabel,
     pub method_name: String,
-    pub args: Vec<trap::Label>,
-    pub generic_args: Option<trap::Label>,
+    pub args: Vec<ExprTrapLabel>,
+    pub generic_args: Option<UnimplementedTrapLabel>,
 }
 
-impl TrapEntry for MethodCallExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for MethodCallExpr {
+    fn class_name() -> &'static str { "MethodCallExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("method_call_exprs", vec![trap::Arg::Label(id), self.receiver.into(), self.method_name.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("method_call_exprs", vec![id.into(), self.receiver.into(), self.method_name.into()]);
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("method_call_expr_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("method_call_expr_args", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.generic_args {
-            out.add_tuple("method_call_expr_generic_args", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("method_call_expr_generic_args", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for MethodCallExpr {
+    type Label = MethodCallExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MissingExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for MissingExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<MissingExprTrapLabel> for trap::TrapId<MissingExpr> {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for MissingExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<MissingExprTrapLabel> for trap::Arg {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct MissingExpr {
-    pub id: TrapId,
+    pub id: trap::TrapId<MissingExpr>,
 }
 
-impl TrapEntry for MissingExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for MissingExpr {
+    fn class_name() -> &'static str { "MissingExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("missing_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("missing_exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for MissingExpr {
+    type Label = MissingExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MissingPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for MissingPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<MissingPatTrapLabel> for trap::TrapId<MissingPat> {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for MissingPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<MissingPatTrapLabel> for trap::Arg {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct MissingPat {
-    pub id: TrapId,
+    pub id: trap::TrapId<MissingPat>,
 }
 
-impl TrapEntry for MissingPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for MissingPat {
+    fn class_name() -> &'static str { "MissingPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("missing_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("missing_pats", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for MissingPat {
+    type Label = MissingPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ModuleTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ModuleTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ModuleTrapLabel> for trap::TrapId<Module> {
+    fn from(value: ModuleTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ModuleTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ModuleTrapLabel> for trap::Arg {
+    fn from(value: ModuleTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct Module {
-    pub id: TrapId,
-    pub declarations: Vec<trap::Label>,
+    pub id: trap::TrapId<Module>,
+    pub declarations: Vec<DeclarationTrapLabel>,
 }
 
-impl TrapEntry for Module {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for Module {
+    fn class_name() -> &'static str { "Module" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("modules", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("modules", vec![id.into()]);
         for (i, v) in self.declarations.into_iter().enumerate() {
-            out.add_tuple("module_declarations", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("module_declarations", vec![id.into(), i.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for Module {
+    type Label = ModuleTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct OffsetOfExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for OffsetOfExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<OffsetOfExprTrapLabel> for trap::TrapId<OffsetOfExpr> {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for OffsetOfExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<OffsetOfExprTrapLabel> for trap::Arg {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct OffsetOfExpr {
-    pub id: TrapId,
-    pub container: trap::Label,
+    pub id: trap::TrapId<OffsetOfExpr>,
+    pub container: TypeRefTrapLabel,
     pub fields: Vec<String>,
 }
 
-impl TrapEntry for OffsetOfExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for OffsetOfExpr {
+    fn class_name() -> &'static str { "OffsetOfExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("offset_of_exprs", vec![trap::Arg::Label(id), self.container.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("offset_of_exprs", vec![id.into(), self.container.into()]);
         for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("offset_of_expr_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("offset_of_expr_fields", vec![id.into(), i.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for OffsetOfExpr {
+    type Label = OffsetOfExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct OrPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for OrPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<OrPatTrapLabel> for trap::TrapId<OrPat> {
+    fn from(value: OrPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for OrPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<OrPatTrapLabel> for trap::Arg {
+    fn from(value: OrPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct OrPat {
-    pub id: TrapId,
-    pub args: Vec<trap::Label>,
+    pub id: trap::TrapId<OrPat>,
+    pub args: Vec<PatTrapLabel>,
 }
 
-impl TrapEntry for OrPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for OrPat {
+    fn class_name() -> &'static str { "OrPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("or_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("or_pats", vec![id.into()]);
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("or_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("or_pat_args", vec![id.into(), i.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for OrPat {
+    type Label = OrPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct PathExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for PathExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<PathExprTrapLabel> for trap::TrapId<PathExpr> {
+    fn from(value: PathExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for PathExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<PathExprTrapLabel> for trap::Arg {
+    fn from(value: PathExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct PathExpr {
-    pub id: TrapId,
-    pub path: trap::Label,
+    pub id: trap::TrapId<PathExpr>,
+    pub path: UnimplementedTrapLabel,
 }
 
-impl TrapEntry for PathExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for PathExpr {
+    fn class_name() -> &'static str { "PathExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("path_exprs", vec![trap::Arg::Label(id), self.path.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("path_exprs", vec![id.into(), self.path.into()]);
+    }
+}
+
+impl trap::TrapClass for PathExpr {
+    type Label = PathExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct PathPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for PathPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<PathPatTrapLabel> for trap::TrapId<PathPat> {
+    fn from(value: PathPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for PathPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<PathPatTrapLabel> for trap::Arg {
+    fn from(value: PathPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct PathPat {
-    pub id: TrapId,
-    pub path: trap::Label,
+    pub id: trap::TrapId<PathPat>,
+    pub path: UnimplementedTrapLabel,
 }
 
-impl TrapEntry for PathPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for PathPat {
+    fn class_name() -> &'static str { "PathPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("path_pats", vec![trap::Arg::Label(id), self.path.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("path_pats", vec![id.into(), self.path.into()]);
+    }
+}
+
+impl trap::TrapClass for PathPat {
+    type Label = PathPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RangeExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RangeExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RangeExprTrapLabel> for trap::TrapId<RangeExpr> {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RangeExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RangeExprTrapLabel> for trap::Arg {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RangeExpr {
-    pub id: TrapId,
-    pub lhs: Option<trap::Label>,
-    pub rhs: Option<trap::Label>,
+    pub id: trap::TrapId<RangeExpr>,
+    pub lhs: Option<ExprTrapLabel>,
+    pub rhs: Option<ExprTrapLabel>,
     pub is_inclusive: bool,
 }
 
-impl TrapEntry for RangeExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RangeExpr {
+    fn class_name() -> &'static str { "RangeExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("range_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("range_exprs", vec![id.into()]);
         if let Some(v) = self.lhs {
-            out.add_tuple("range_expr_lhs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("range_expr_lhs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.rhs {
-            out.add_tuple("range_expr_rhs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("range_expr_rhs", vec![id.into(), v.into()]);
         }
         if self.is_inclusive {
-            out.add_tuple("range_expr_is_inclusive", vec![trap::Arg::Label(id)]);
+            out.add_tuple("range_expr_is_inclusive", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RangeExpr {
+    type Label = RangeExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RangePatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RangePatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RangePatTrapLabel> for trap::TrapId<RangePat> {
+    fn from(value: RangePatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RangePatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RangePatTrapLabel> for trap::Arg {
+    fn from(value: RangePatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RangePat {
-    pub id: TrapId,
-    pub start: Option<trap::Label>,
-    pub end: Option<trap::Label>,
+    pub id: trap::TrapId<RangePat>,
+    pub start: Option<PatTrapLabel>,
+    pub end: Option<PatTrapLabel>,
 }
 
-impl TrapEntry for RangePat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RangePat {
+    fn class_name() -> &'static str { "RangePat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("range_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("range_pats", vec![id.into()]);
         if let Some(v) = self.start {
-            out.add_tuple("range_pat_starts", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("range_pat_starts", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.end {
-            out.add_tuple("range_pat_ends", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("range_pat_ends", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RangePat {
+    type Label = RangePatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RecordLitExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RecordLitExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RecordLitExprTrapLabel> for trap::TrapId<RecordLitExpr> {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RecordLitExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RecordLitExprTrapLabel> for trap::Arg {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RecordLitExpr {
-    pub id: TrapId,
-    pub path: Option<trap::Label>,
-    pub fields: Vec<trap::Label>,
-    pub spread: Option<trap::Label>,
+    pub id: trap::TrapId<RecordLitExpr>,
+    pub path: Option<UnimplementedTrapLabel>,
+    pub fields: Vec<RecordLitFieldTrapLabel>,
+    pub spread: Option<ExprTrapLabel>,
     pub has_ellipsis: bool,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for RecordLitExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RecordLitExpr {
+    fn class_name() -> &'static str { "RecordLitExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_lit_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_lit_exprs", vec![id.into()]);
         if let Some(v) = self.path {
-            out.add_tuple("record_lit_expr_paths", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("record_lit_expr_paths", vec![id.into(), v.into()]);
         }
         for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_lit_expr_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("record_lit_expr_fields", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.spread {
-            out.add_tuple("record_lit_expr_spreads", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("record_lit_expr_spreads", vec![id.into(), v.into()]);
         }
         if self.has_ellipsis {
-            out.add_tuple("record_lit_expr_has_ellipsis", vec![trap::Arg::Label(id)]);
+            out.add_tuple("record_lit_expr_has_ellipsis", vec![id.into()]);
         }
         if self.is_assignee_expr {
-            out.add_tuple("record_lit_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("record_lit_expr_is_assignee_expr", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RecordLitExpr {
+    type Label = RecordLitExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RecordPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RecordPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RecordPatTrapLabel> for trap::TrapId<RecordPat> {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RecordPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RecordPatTrapLabel> for trap::Arg {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RecordPat {
-    pub id: TrapId,
-    pub path: Option<trap::Label>,
-    pub args: Vec<trap::Label>,
+    pub id: trap::TrapId<RecordPat>,
+    pub path: Option<UnimplementedTrapLabel>,
+    pub args: Vec<RecordFieldPatTrapLabel>,
     pub has_ellipsis: bool,
 }
 
-impl TrapEntry for RecordPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RecordPat {
+    fn class_name() -> &'static str { "RecordPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_pats", vec![id.into()]);
         if let Some(v) = self.path {
-            out.add_tuple("record_pat_paths", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("record_pat_paths", vec![id.into(), v.into()]);
         }
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("record_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("record_pat_args", vec![id.into(), i.into(), v.into()]);
         }
         if self.has_ellipsis {
-            out.add_tuple("record_pat_has_ellipsis", vec![trap::Arg::Label(id)]);
+            out.add_tuple("record_pat_has_ellipsis", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RecordPat {
+    type Label = RecordPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RefExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RefExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RefExprTrapLabel> for trap::TrapId<RefExpr> {
+    fn from(value: RefExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RefExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RefExprTrapLabel> for trap::Arg {
+    fn from(value: RefExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RefExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<RefExpr>,
+    pub expr: ExprTrapLabel,
     pub is_raw: bool,
     pub is_mut: bool,
 }
 
-impl TrapEntry for RefExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RefExpr {
+    fn class_name() -> &'static str { "RefExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("ref_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("ref_exprs", vec![id.into(), self.expr.into()]);
         if self.is_raw {
-            out.add_tuple("ref_expr_is_raw", vec![trap::Arg::Label(id)]);
+            out.add_tuple("ref_expr_is_raw", vec![id.into()]);
         }
         if self.is_mut {
-            out.add_tuple("ref_expr_is_mut", vec![trap::Arg::Label(id)]);
+            out.add_tuple("ref_expr_is_mut", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RefExpr {
+    type Label = RefExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RefPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RefPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RefPatTrapLabel> for trap::TrapId<RefPat> {
+    fn from(value: RefPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RefPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RefPatTrapLabel> for trap::Arg {
+    fn from(value: RefPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RefPat {
-    pub id: TrapId,
-    pub pat: trap::Label,
+    pub id: trap::TrapId<RefPat>,
+    pub pat: PatTrapLabel,
     pub is_mut: bool,
 }
 
-impl TrapEntry for RefPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RefPat {
+    fn class_name() -> &'static str { "RefPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("ref_pats", vec![trap::Arg::Label(id), self.pat.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("ref_pats", vec![id.into(), self.pat.into()]);
         if self.is_mut {
-            out.add_tuple("ref_pat_is_mut", vec![trap::Arg::Label(id)]);
+            out.add_tuple("ref_pat_is_mut", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for RefPat {
+    type Label = RefPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ReturnExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ReturnExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ReturnExprTrapLabel> for trap::TrapId<ReturnExpr> {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ReturnExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ReturnExprTrapLabel> for trap::Arg {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ReturnExpr {
-    pub id: TrapId,
-    pub expr: Option<trap::Label>,
+    pub id: trap::TrapId<ReturnExpr>,
+    pub expr: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for ReturnExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ReturnExpr {
+    fn class_name() -> &'static str { "ReturnExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("return_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("return_exprs", vec![id.into()]);
         if let Some(v) = self.expr {
-            out.add_tuple("return_expr_exprs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("return_expr_exprs", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for ReturnExpr {
+    type Label = ReturnExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct SlicePatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for SlicePatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<SlicePatTrapLabel> for trap::TrapId<SlicePat> {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for SlicePatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<SlicePatTrapLabel> for trap::Arg {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct SlicePat {
-    pub id: TrapId,
-    pub prefix: Vec<trap::Label>,
-    pub slice: Option<trap::Label>,
-    pub suffix: Vec<trap::Label>,
+    pub id: trap::TrapId<SlicePat>,
+    pub prefix: Vec<PatTrapLabel>,
+    pub slice: Option<PatTrapLabel>,
+    pub suffix: Vec<PatTrapLabel>,
 }
 
-impl TrapEntry for SlicePat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for SlicePat {
+    fn class_name() -> &'static str { "SlicePat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("slice_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("slice_pats", vec![id.into()]);
         for (i, v) in self.prefix.into_iter().enumerate() {
-            out.add_tuple("slice_pat_prefixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("slice_pat_prefixes", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.slice {
-            out.add_tuple("slice_pat_slice", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("slice_pat_slice", vec![id.into(), v.into()]);
         }
         for (i, v) in self.suffix.into_iter().enumerate() {
-            out.add_tuple("slice_pat_suffixes", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("slice_pat_suffixes", vec![id.into(), i.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for SlicePat {
+    type Label = SlicePatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct TupleExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for TupleExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<TupleExprTrapLabel> for trap::TrapId<TupleExpr> {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for TupleExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<TupleExprTrapLabel> for trap::Arg {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct TupleExpr {
-    pub id: TrapId,
-    pub exprs: Vec<trap::Label>,
+    pub id: trap::TrapId<TupleExpr>,
+    pub exprs: Vec<ExprTrapLabel>,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for TupleExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for TupleExpr {
+    fn class_name() -> &'static str { "TupleExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("tuple_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("tuple_exprs", vec![id.into()]);
         for (i, v) in self.exprs.into_iter().enumerate() {
-            out.add_tuple("tuple_expr_exprs", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("tuple_expr_exprs", vec![id.into(), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
-            out.add_tuple("tuple_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("tuple_expr_is_assignee_expr", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for TupleExpr {
+    type Label = TupleExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct TuplePatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for TuplePatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<TuplePatTrapLabel> for trap::TrapId<TuplePat> {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for TuplePatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<TuplePatTrapLabel> for trap::Arg {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct TuplePat {
-    pub id: TrapId,
-    pub args: Vec<trap::Label>,
+    pub id: trap::TrapId<TuplePat>,
+    pub args: Vec<PatTrapLabel>,
     pub ellipsis_index: Option<usize>,
 }
 
-impl TrapEntry for TuplePat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for TuplePat {
+    fn class_name() -> &'static str { "TuplePat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("tuple_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("tuple_pats", vec![id.into()]);
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("tuple_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("tuple_pat_args", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.ellipsis_index {
-            out.add_tuple("tuple_pat_ellipsis_indices", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("tuple_pat_ellipsis_indices", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for TuplePat {
+    type Label = TuplePatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct TupleStructPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for TupleStructPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<TupleStructPatTrapLabel> for trap::TrapId<TupleStructPat> {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for TupleStructPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<TupleStructPatTrapLabel> for trap::Arg {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct TupleStructPat {
-    pub id: TrapId,
-    pub path: Option<trap::Label>,
-    pub args: Vec<trap::Label>,
+    pub id: trap::TrapId<TupleStructPat>,
+    pub path: Option<UnimplementedTrapLabel>,
+    pub args: Vec<PatTrapLabel>,
     pub ellipsis_index: Option<usize>,
 }
 
-impl TrapEntry for TupleStructPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for TupleStructPat {
+    fn class_name() -> &'static str { "TupleStructPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("tuple_struct_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("tuple_struct_pats", vec![id.into()]);
         if let Some(v) = self.path {
-            out.add_tuple("tuple_struct_pat_paths", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("tuple_struct_pat_paths", vec![id.into(), v.into()]);
         }
         for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("tuple_struct_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("tuple_struct_pat_args", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.ellipsis_index {
-            out.add_tuple("tuple_struct_pat_ellipsis_indices", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("tuple_struct_pat_ellipsis_indices", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for TupleStructPat {
+    type Label = TupleStructPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct UnaryOpExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for UnaryOpExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<UnaryOpExprTrapLabel> for trap::TrapId<UnaryOpExpr> {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for UnaryOpExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<UnaryOpExprTrapLabel> for trap::Arg {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct UnaryOpExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
+    pub id: trap::TrapId<UnaryOpExpr>,
+    pub expr: ExprTrapLabel,
     pub op: String,
 }
 
-impl TrapEntry for UnaryOpExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for UnaryOpExpr {
+    fn class_name() -> &'static str { "UnaryOpExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unary_op_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.op.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("unary_op_exprs", vec![id.into(), self.expr.into(), self.op.into()]);
+    }
+}
+
+impl trap::TrapClass for UnaryOpExpr {
+    type Label = UnaryOpExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct UnderscoreExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for UnderscoreExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<UnderscoreExprTrapLabel> for trap::TrapId<UnderscoreExpr> {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for UnderscoreExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<UnderscoreExprTrapLabel> for trap::Arg {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct UnderscoreExpr {
-    pub id: TrapId,
+    pub id: trap::TrapId<UnderscoreExpr>,
 }
 
-impl TrapEntry for UnderscoreExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for UnderscoreExpr {
+    fn class_name() -> &'static str { "UnderscoreExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("underscore_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("underscore_exprs", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for UnderscoreExpr {
+    type Label = UnderscoreExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct UnimplementedTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for UnimplementedTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<UnimplementedTrapLabel> for trap::TrapId<Unimplemented> {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for UnimplementedTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<UnimplementedTrapLabel> for trap::Arg {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+#[derive(Debug)]
+pub struct Unimplemented {
+    pub id: trap::TrapId<Unimplemented>,
+}
+
+impl trap::TrapEntry for Unimplemented {
+    fn class_name() -> &'static str { "Unimplemented" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("unimplementeds", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for Unimplemented {
+    type Label = UnimplementedTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct WildPatTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for WildPatTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<WildPatTrapLabel> for trap::TrapId<WildPat> {
+    fn from(value: WildPatTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for WildPatTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<WildPatTrapLabel> for trap::Arg {
+    fn from(value: WildPatTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct WildPat {
-    pub id: TrapId,
+    pub id: trap::TrapId<WildPat>,
 }
 
-impl TrapEntry for WildPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for WildPat {
+    fn class_name() -> &'static str { "WildPat" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("wild_pats", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("wild_pats", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for WildPat {
+    type Label = WildPatTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct YeetExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for YeetExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<YeetExprTrapLabel> for trap::TrapId<YeetExpr> {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for YeetExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<YeetExprTrapLabel> for trap::Arg {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct YeetExpr {
-    pub id: TrapId,
-    pub expr: Option<trap::Label>,
+    pub id: trap::TrapId<YeetExpr>,
+    pub expr: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for YeetExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for YeetExpr {
+    fn class_name() -> &'static str { "YeetExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("yeet_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("yeet_exprs", vec![id.into()]);
         if let Some(v) = self.expr {
-            out.add_tuple("yeet_expr_exprs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("yeet_expr_exprs", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for YeetExpr {
+    type Label = YeetExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct YieldExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for YieldExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<YieldExprTrapLabel> for trap::TrapId<YieldExpr> {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for YieldExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<YieldExprTrapLabel> for trap::Arg {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct YieldExpr {
-    pub id: TrapId,
-    pub expr: Option<trap::Label>,
+    pub id: trap::TrapId<YieldExpr>,
+    pub expr: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for YieldExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for YieldExpr {
+    fn class_name() -> &'static str { "YieldExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("yield_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("yield_exprs", vec![id.into()]);
         if let Some(v) = self.expr {
-            out.add_tuple("yield_expr_exprs", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("yield_expr_exprs", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for YieldExpr {
+    type Label = YieldExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct AsyncBlockExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for AsyncBlockExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<AsyncBlockExprTrapLabel> for trap::TrapId<AsyncBlockExpr> {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for AsyncBlockExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<AsyncBlockExprTrapLabel> for trap::Arg {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct AsyncBlockExpr {
-    pub id: TrapId,
-    pub statements: Vec<trap::Label>,
-    pub tail: Option<trap::Label>,
+    pub id: trap::TrapId<AsyncBlockExpr>,
+    pub statements: Vec<StmtTrapLabel>,
+    pub tail: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for AsyncBlockExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for AsyncBlockExpr {
+    fn class_name() -> &'static str { "AsyncBlockExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("async_block_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("async_block_exprs", vec![id.into()]);
         for (i, v) in self.statements.into_iter().enumerate() {
-            out.add_tuple("block_expr_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("block_expr_base_statements", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
-            out.add_tuple("block_expr_base_tails", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_expr_base_tails", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for AsyncBlockExpr {
+    type Label = AsyncBlockExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct BlockExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for BlockExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<BlockExprTrapLabel> for trap::TrapId<BlockExpr> {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for BlockExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<BlockExprTrapLabel> for trap::Arg {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct BlockExpr {
-    pub id: TrapId,
-    pub statements: Vec<trap::Label>,
-    pub tail: Option<trap::Label>,
-    pub label: Option<trap::Label>,
+    pub id: trap::TrapId<BlockExpr>,
+    pub statements: Vec<StmtTrapLabel>,
+    pub tail: Option<ExprTrapLabel>,
+    pub label: Option<LabelTrapLabel>,
 }
 
-impl TrapEntry for BlockExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for BlockExpr {
+    fn class_name() -> &'static str { "BlockExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("block_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("block_exprs", vec![id.into()]);
         for (i, v) in self.statements.into_iter().enumerate() {
-            out.add_tuple("block_expr_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("block_expr_base_statements", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
-            out.add_tuple("block_expr_base_tails", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_expr_base_tails", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.label {
-            out.add_tuple("block_expr_labels", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_expr_labels", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for BlockExpr {
+    type Label = BlockExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ElementListExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for ElementListExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<ElementListExprTrapLabel> for trap::TrapId<ElementListExpr> {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for ElementListExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<ElementListExprTrapLabel> for trap::Arg {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct ElementListExpr {
-    pub id: TrapId,
-    pub elements: Vec<trap::Label>,
+    pub id: trap::TrapId<ElementListExpr>,
+    pub elements: Vec<ExprTrapLabel>,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for ElementListExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for ElementListExpr {
+    fn class_name() -> &'static str { "ElementListExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("element_list_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("element_list_exprs", vec![id.into()]);
         for (i, v) in self.elements.into_iter().enumerate() {
-            out.add_tuple("element_list_expr_elements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("element_list_expr_elements", vec![id.into(), i.into(), v.into()]);
         }
         if self.is_assignee_expr {
-            out.add_tuple("element_list_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("element_list_expr_is_assignee_expr", vec![id.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for ElementListExpr {
+    type Label = ElementListExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct RepeatExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for RepeatExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<RepeatExprTrapLabel> for trap::TrapId<RepeatExpr> {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for RepeatExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<RepeatExprTrapLabel> for trap::Arg {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct RepeatExpr {
-    pub id: TrapId,
-    pub initializer: trap::Label,
-    pub repeat: trap::Label,
+    pub id: trap::TrapId<RepeatExpr>,
+    pub initializer: ExprTrapLabel,
+    pub repeat: ExprTrapLabel,
 }
 
-impl TrapEntry for RepeatExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for RepeatExpr {
+    fn class_name() -> &'static str { "RepeatExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("repeat_exprs", vec![trap::Arg::Label(id), self.initializer.into(), self.repeat.into()]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("repeat_exprs", vec![id.into(), self.initializer.into(), self.repeat.into()]);
+    }
+}
+
+impl trap::TrapClass for RepeatExpr {
+    type Label = RepeatExprTrapLabel;
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct UnsafeBlockExprTrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for UnsafeBlockExprTrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<UnsafeBlockExprTrapLabel> for trap::TrapId<UnsafeBlockExpr> {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for UnsafeBlockExprTrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<UnsafeBlockExprTrapLabel> for trap::Arg {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
     }
 }
 
 #[derive(Debug)]
 pub struct UnsafeBlockExpr {
-    pub id: TrapId,
-    pub statements: Vec<trap::Label>,
-    pub tail: Option<trap::Label>,
+    pub id: trap::TrapId<UnsafeBlockExpr>,
+    pub statements: Vec<StmtTrapLabel>,
+    pub tail: Option<ExprTrapLabel>,
 }
 
-impl TrapEntry for UnsafeBlockExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for UnsafeBlockExpr {
+    fn class_name() -> &'static str { "UnsafeBlockExpr" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unsafe_block_exprs", vec![trap::Arg::Label(id)]);
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+        out.add_tuple("unsafe_block_exprs", vec![id.into()]);
         for (i, v) in self.statements.into_iter().enumerate() {
-            out.add_tuple("block_expr_base_statements", vec![trap::Arg::Label(id), i.into(), v.into()]);
+            out.add_tuple("block_expr_base_statements", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.tail {
-            out.add_tuple("block_expr_base_tails", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("block_expr_base_tails", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl trap::TrapClass for UnsafeBlockExpr {
+    type Label = UnsafeBlockExprTrapLabel;
+}
+
+// Conversions
+impl From<LocatableTrapLabel> for ElementTrapLabel {
+    fn from(value: LocatableTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AstNodeTrapLabel> for ElementTrapLabel {
+    fn from(value: AstNodeTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AstNodeTrapLabel> for LocatableTrapLabel {
+    fn from(value: AstNodeTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<DeclarationTrapLabel> for AstNodeTrapLabel {
+    fn from(value: DeclarationTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<DeclarationTrapLabel> for ElementTrapLabel {
+    fn from(value: DeclarationTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<DeclarationTrapLabel> for LocatableTrapLabel {
+    fn from(value: DeclarationTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LabelTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LabelTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LabelTrapLabel> for ElementTrapLabel {
+    fn from(value: LabelTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LabelTrapLabel> for LocatableTrapLabel {
+    fn from(value: LabelTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchArmTrapLabel> for AstNodeTrapLabel {
+    fn from(value: MatchArmTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchArmTrapLabel> for ElementTrapLabel {
+    fn from(value: MatchArmTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchArmTrapLabel> for LocatableTrapLabel {
+    fn from(value: MatchArmTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: PatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PatTrapLabel> for ElementTrapLabel {
+    fn from(value: PatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PatTrapLabel> for LocatableTrapLabel {
+    fn from(value: PatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordFieldPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RecordFieldPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordFieldPatTrapLabel> for ElementTrapLabel {
+    fn from(value: RecordFieldPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordFieldPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: RecordFieldPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitFieldTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RecordLitFieldTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitFieldTrapLabel> for ElementTrapLabel {
+    fn from(value: RecordLitFieldTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitFieldTrapLabel> for LocatableTrapLabel {
+    fn from(value: RecordLitFieldTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<StmtTrapLabel> for AstNodeTrapLabel {
+    fn from(value: StmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<StmtTrapLabel> for ElementTrapLabel {
+    fn from(value: StmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<StmtTrapLabel> for LocatableTrapLabel {
+    fn from(value: StmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TypeRefTrapLabel> for AstNodeTrapLabel {
+    fn from(value: TypeRefTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TypeRefTrapLabel> for ElementTrapLabel {
+    fn from(value: TypeRefTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TypeRefTrapLabel> for LocatableTrapLabel {
+    fn from(value: TypeRefTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ArrayExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ArrayExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ArrayExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ArrayExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ArrayExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AwaitExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AwaitExprTrapLabel> for ElementTrapLabel {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AwaitExprTrapLabel> for ExprTrapLabel {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AwaitExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: AwaitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BecomeExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BecomeExprTrapLabel> for ElementTrapLabel {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BecomeExprTrapLabel> for ExprTrapLabel {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BecomeExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: BecomeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BinaryOpExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BinaryOpExprTrapLabel> for ElementTrapLabel {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BinaryOpExprTrapLabel> for ExprTrapLabel {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BinaryOpExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: BinaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BindPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BindPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BindPatTrapLabel> for ElementTrapLabel {
+    fn from(value: BindPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BindPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: BindPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BindPatTrapLabel> for PatTrapLabel {
+    fn from(value: BindPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprBaseTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprBaseTrapLabel> for ElementTrapLabel {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprBaseTrapLabel> for ExprTrapLabel {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprBaseTrapLabel> for LocatableTrapLabel {
+    fn from(value: BlockExprBaseTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxExprTrapLabel> for ElementTrapLabel {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxExprTrapLabel> for ExprTrapLabel {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: BoxExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxPatTrapLabel> for ElementTrapLabel {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BoxPatTrapLabel> for PatTrapLabel {
+    fn from(value: BoxPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BreakExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BreakExprTrapLabel> for ElementTrapLabel {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BreakExprTrapLabel> for ExprTrapLabel {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BreakExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: BreakExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CallExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: CallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CallExprTrapLabel> for ElementTrapLabel {
+    fn from(value: CallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CallExprTrapLabel> for ExprTrapLabel {
+    fn from(value: CallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CallExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: CallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CastExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: CastExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CastExprTrapLabel> for ElementTrapLabel {
+    fn from(value: CastExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CastExprTrapLabel> for ExprTrapLabel {
+    fn from(value: CastExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<CastExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: CastExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ClosureExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ClosureExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ClosureExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ClosureExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ClosureExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstBlockPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstBlockPatTrapLabel> for ElementTrapLabel {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstBlockPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstBlockPatTrapLabel> for PatTrapLabel {
+    fn from(value: ConstBlockPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ConstExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ConstExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ContinueExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ContinueExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ContinueExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ContinueExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ContinueExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprStmtTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprStmtTrapLabel> for ElementTrapLabel {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprStmtTrapLabel> for LocatableTrapLabel {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ExprStmtTrapLabel> for StmtTrapLabel {
+    fn from(value: ExprStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FieldExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FieldExprTrapLabel> for ElementTrapLabel {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FieldExprTrapLabel> for ExprTrapLabel {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FieldExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: FieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FunctionTrapLabel> for AstNodeTrapLabel {
+    fn from(value: FunctionTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FunctionTrapLabel> for DeclarationTrapLabel {
+    fn from(value: FunctionTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FunctionTrapLabel> for ElementTrapLabel {
+    fn from(value: FunctionTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<FunctionTrapLabel> for LocatableTrapLabel {
+    fn from(value: FunctionTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IfExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: IfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IfExprTrapLabel> for ElementTrapLabel {
+    fn from(value: IfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IfExprTrapLabel> for ExprTrapLabel {
+    fn from(value: IfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IfExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: IfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IndexExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IndexExprTrapLabel> for ElementTrapLabel {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IndexExprTrapLabel> for ExprTrapLabel {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<IndexExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: IndexExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<InlineAsmExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<InlineAsmExprTrapLabel> for ElementTrapLabel {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<InlineAsmExprTrapLabel> for ExprTrapLabel {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<InlineAsmExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: InlineAsmExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ItemStmtTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ItemStmtTrapLabel> for ElementTrapLabel {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ItemStmtTrapLabel> for LocatableTrapLabel {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ItemStmtTrapLabel> for StmtTrapLabel {
+    fn from(value: ItemStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetExprTrapLabel> for ElementTrapLabel {
+    fn from(value: LetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetExprTrapLabel> for ExprTrapLabel {
+    fn from(value: LetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: LetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetStmtTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetStmtTrapLabel> for ElementTrapLabel {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetStmtTrapLabel> for LocatableTrapLabel {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LetStmtTrapLabel> for StmtTrapLabel {
+    fn from(value: LetStmtTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LitPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LitPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LitPatTrapLabel> for ElementTrapLabel {
+    fn from(value: LitPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LitPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: LitPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LitPatTrapLabel> for PatTrapLabel {
+    fn from(value: LitPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LiteralExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LiteralExprTrapLabel> for ElementTrapLabel {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LiteralExprTrapLabel> for ExprTrapLabel {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LiteralExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: LiteralExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LoopExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LoopExprTrapLabel> for ElementTrapLabel {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LoopExprTrapLabel> for ExprTrapLabel {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<LoopExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: LoopExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchExprTrapLabel> for ElementTrapLabel {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchExprTrapLabel> for ExprTrapLabel {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MatchExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: MatchExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MethodCallExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MethodCallExprTrapLabel> for ElementTrapLabel {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MethodCallExprTrapLabel> for ExprTrapLabel {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MethodCallExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: MethodCallExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingExprTrapLabel> for ElementTrapLabel {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingExprTrapLabel> for ExprTrapLabel {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: MissingExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingPatTrapLabel> for ElementTrapLabel {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<MissingPatTrapLabel> for PatTrapLabel {
+    fn from(value: MissingPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ModuleTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ModuleTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ModuleTrapLabel> for DeclarationTrapLabel {
+    fn from(value: ModuleTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ModuleTrapLabel> for ElementTrapLabel {
+    fn from(value: ModuleTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ModuleTrapLabel> for LocatableTrapLabel {
+    fn from(value: ModuleTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OffsetOfExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OffsetOfExprTrapLabel> for ElementTrapLabel {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OffsetOfExprTrapLabel> for ExprTrapLabel {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OffsetOfExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: OffsetOfExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OrPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: OrPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OrPatTrapLabel> for ElementTrapLabel {
+    fn from(value: OrPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OrPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: OrPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<OrPatTrapLabel> for PatTrapLabel {
+    fn from(value: OrPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: PathExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathExprTrapLabel> for ElementTrapLabel {
+    fn from(value: PathExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathExprTrapLabel> for ExprTrapLabel {
+    fn from(value: PathExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: PathExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: PathPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathPatTrapLabel> for ElementTrapLabel {
+    fn from(value: PathPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: PathPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<PathPatTrapLabel> for PatTrapLabel {
+    fn from(value: PathPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangeExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangeExprTrapLabel> for ElementTrapLabel {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangeExprTrapLabel> for ExprTrapLabel {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangeExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: RangeExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangePatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RangePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangePatTrapLabel> for ElementTrapLabel {
+    fn from(value: RangePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangePatTrapLabel> for LocatableTrapLabel {
+    fn from(value: RangePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RangePatTrapLabel> for PatTrapLabel {
+    fn from(value: RangePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitExprTrapLabel> for ElementTrapLabel {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitExprTrapLabel> for ExprTrapLabel {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordLitExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: RecordLitExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordPatTrapLabel> for ElementTrapLabel {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RecordPatTrapLabel> for PatTrapLabel {
+    fn from(value: RecordPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RefExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefExprTrapLabel> for ElementTrapLabel {
+    fn from(value: RefExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefExprTrapLabel> for ExprTrapLabel {
+    fn from(value: RefExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: RefExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RefPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefPatTrapLabel> for ElementTrapLabel {
+    fn from(value: RefPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: RefPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RefPatTrapLabel> for PatTrapLabel {
+    fn from(value: RefPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ReturnExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ReturnExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ReturnExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ReturnExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ReturnExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<SlicePatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<SlicePatTrapLabel> for ElementTrapLabel {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<SlicePatTrapLabel> for LocatableTrapLabel {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<SlicePatTrapLabel> for PatTrapLabel {
+    fn from(value: SlicePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleExprTrapLabel> for ElementTrapLabel {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleExprTrapLabel> for ExprTrapLabel {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: TupleExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TuplePatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TuplePatTrapLabel> for ElementTrapLabel {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TuplePatTrapLabel> for LocatableTrapLabel {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TuplePatTrapLabel> for PatTrapLabel {
+    fn from(value: TuplePatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleStructPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleStructPatTrapLabel> for ElementTrapLabel {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleStructPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<TupleStructPatTrapLabel> for PatTrapLabel {
+    fn from(value: TupleStructPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnaryOpExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnaryOpExprTrapLabel> for ElementTrapLabel {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnaryOpExprTrapLabel> for ExprTrapLabel {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnaryOpExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: UnaryOpExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnderscoreExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnderscoreExprTrapLabel> for ElementTrapLabel {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnderscoreExprTrapLabel> for ExprTrapLabel {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnderscoreExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: UnderscoreExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnimplementedTrapLabel> for AstNodeTrapLabel {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnimplementedTrapLabel> for DeclarationTrapLabel {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnimplementedTrapLabel> for ElementTrapLabel {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnimplementedTrapLabel> for LocatableTrapLabel {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnimplementedTrapLabel> for TypeRefTrapLabel {
+    fn from(value: UnimplementedTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<WildPatTrapLabel> for AstNodeTrapLabel {
+    fn from(value: WildPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<WildPatTrapLabel> for ElementTrapLabel {
+    fn from(value: WildPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<WildPatTrapLabel> for LocatableTrapLabel {
+    fn from(value: WildPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<WildPatTrapLabel> for PatTrapLabel {
+    fn from(value: WildPatTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YeetExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YeetExprTrapLabel> for ElementTrapLabel {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YeetExprTrapLabel> for ExprTrapLabel {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YeetExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: YeetExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YieldExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YieldExprTrapLabel> for ElementTrapLabel {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YieldExprTrapLabel> for ExprTrapLabel {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<YieldExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: YieldExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AsyncBlockExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AsyncBlockExprTrapLabel> for BlockExprBaseTrapLabel {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AsyncBlockExprTrapLabel> for ElementTrapLabel {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AsyncBlockExprTrapLabel> for ExprTrapLabel {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<AsyncBlockExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: AsyncBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprTrapLabel> for BlockExprBaseTrapLabel {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprTrapLabel> for ElementTrapLabel {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprTrapLabel> for ExprTrapLabel {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<BlockExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: BlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ElementListExprTrapLabel> for ArrayExprTrapLabel {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ElementListExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ElementListExprTrapLabel> for ElementTrapLabel {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ElementListExprTrapLabel> for ExprTrapLabel {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<ElementListExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: ElementListExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RepeatExprTrapLabel> for ArrayExprTrapLabel {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RepeatExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RepeatExprTrapLabel> for ElementTrapLabel {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RepeatExprTrapLabel> for ExprTrapLabel {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<RepeatExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: RepeatExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnsafeBlockExprTrapLabel> for AstNodeTrapLabel {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnsafeBlockExprTrapLabel> for BlockExprBaseTrapLabel {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnsafeBlockExprTrapLabel> for ElementTrapLabel {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnsafeBlockExprTrapLabel> for ExprTrapLabel {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
+    }
+}
+impl From<UnsafeBlockExprTrapLabel> for LocatableTrapLabel {
+    fn from(value: UnsafeBlockExprTrapLabel) -> Self {
+        value.0.into()
     }
 }

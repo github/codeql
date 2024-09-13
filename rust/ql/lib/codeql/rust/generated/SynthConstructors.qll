@@ -56,7 +56,6 @@ import codeql.rust.elements.SlicePatConstructor
 import codeql.rust.elements.TupleExprConstructor
 import codeql.rust.elements.TuplePatConstructor
 import codeql.rust.elements.TupleStructPatConstructor
-import codeql.rust.elements.TypeRefConstructor
 import codeql.rust.elements.UnaryOpExprConstructor
 import codeql.rust.elements.UnderscoreExprConstructor
 import codeql.rust.elements.UnimplementedConstructor

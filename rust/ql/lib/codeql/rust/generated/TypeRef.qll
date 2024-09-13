@@ -17,7 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::TypeRef` class directly.
    * Use the subclass `TypeRef`, where the following predicates are available.
    */
-  class TypeRef extends Synth::TTypeRef, AstNode {
-    override string getAPrimaryQlClass() { result = "TypeRef" }
-  }
+  class TypeRef extends Synth::TTypeRef, AstNode { }
 }

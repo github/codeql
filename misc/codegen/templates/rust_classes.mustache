@@ -2,48 +2,77 @@
 
 #![cfg_attr(any(), rustfmt::skip)]
 
-use crate::trap::{TrapId, TrapEntry};
-use codeql_extractor::trap;
+use crate::trap;
 {{#classes}}
 
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct {{name}}TrapLabel(trap::UntypedLabel);
+
+impl From<trap::UntypedLabel> for {{name}}TrapLabel {
+    fn from(value: trap::UntypedLabel) -> Self {
+        Self(value)
+    }
+}
+
+impl  From<{{name}}TrapLabel> for trap::TrapId<{{name}}> {
+    fn from(value: {{name}}TrapLabel) -> Self {
+        Self::Label(value)
+    }
+}
+
+impl trap::Label for {{name}}TrapLabel {
+    fn as_untyped(&self) -> trap::UntypedLabel {
+        self.0
+    }
+}
+
+impl From<{{name}}TrapLabel> for trap::Arg {
+    fn from(value: {{name}}TrapLabel) -> Self {
+        value.0.into()
+    }
+}
+
+{{#table_name}}
 #[derive(Debug)]
 pub struct {{name}} {
-    pub id: TrapId,
+    pub id: trap::TrapId<{{name}}>,
     {{#fields}}
     pub {{field_name}}: {{type}},
     {{/fields}}
 }
 
-impl TrapEntry for {{name}} {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
+impl trap::TrapEntry for {{name}} {
+    fn class_name() -> &'static str { "{{name}}" }
+
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
         {{#single_field_entries}}
-        out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id){{#fields}}, self.{{field_name}}.into(){{/fields}}]);
+        out.add_tuple("{{table_name}}", vec![id.into(){{#fields}}, self.{{field_name}}.into(){{/fields}}]);
         {{/single_field_entries}}
         {{#fields}}
         {{#is_predicate}}
         if self.{{field_name}} {
-            out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id)]);
+            out.add_tuple("{{table_name}}", vec![id.into()]);
         }
         {{/is_predicate}}
         {{#is_optional}}
         {{^is_repeated}}
         if let Some(v) = self.{{field_name}} {
-            out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("{{table_name}}", vec![id.into(), v.into()]);
         }
         {{/is_repeated}}
         {{/is_optional}}
         {{#is_repeated}}
         for (i, v) in self.{{field_name}}.into_iter().enumerate() {
             {{^is_optional}}
-            out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
+            out.add_tuple("{{table_name}}", vec![id.into(){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
             {{/is_optional}}
             {{#is_optional}}
             if let Some(v) = v {
-                out.add_tuple("{{table_name}}", vec![trap::Arg::Label(id){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
+                out.add_tuple("{{table_name}}", vec![id.into(){{^is_unordered}}, i.into(){{/is_unordered}}, v.into()]);
             }
             {{/is_optional}}
         }
@@ -51,4 +80,26 @@ impl TrapEntry for {{name}} {
         {{/fields}}
     }
 }
+{{/table_name}}
+{{^table_name}}
+{{! virtual class, make it unbuildable }}
+pub struct {{name}} {
+    unused: ()
+}
+{{/table_name}}
+
+impl trap::TrapClass for {{name}} {
+    type Label = {{name}}TrapLabel;
+}
+{{/classes}}
+
+// Conversions
+{{#classes}}
+{{#ancestors}}
+impl From<{{name}}TrapLabel> for {{.}}TrapLabel {
+    fn from(value: {{name}}TrapLabel) -> Self {
+        value.0.into()
+    }
+}
+{{/ancestors}}
 {{/classes}}

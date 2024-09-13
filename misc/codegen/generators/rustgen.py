@@ -20,7 +20,7 @@ def _get_type(t: str) -> str:
         case "int":
             return "usize"
         case _ if t[0].isupper():
-            return "trap::Label"
+            return f"{t}TrapLabel"
         case "boolean":
             assert False, "boolean unsupported"
         case _:
@@ -57,6 +57,15 @@ def _get_properties(
         yield cls, p
 
 
+def _get_ancestors(
+    cls: schema.Class, lookup: dict[str, schema.Class]
+) -> typing.Iterable[schema.Class]:
+    for b in cls.bases:
+        base = lookup[b]
+        yield base
+        yield from _get_ancestors(base, lookup)
+
+
 class Processor:
     def __init__(self, data: schema.Schema):
         self._classmap = data.classes
@@ -69,14 +78,15 @@ class Processor:
                 _get_field(c, p)
                 for c, p in _get_properties(cls, self._classmap)
                 if "rust_skip" not in p.pragmas and not p.synth
-            ],
+            ] if not cls.derived else [],
+            ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
             table_name=inflection.tableize(cls.name),
         )
 
     def get_classes(self):
         ret = {"": []}
         for k, cls in self._classmap.items():
-            if not cls.synth and not cls.derived:
+            if not cls.synth:
                 ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 

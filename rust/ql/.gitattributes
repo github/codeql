@@ -113,7 +113,6 @@
 /lib/codeql/rust/elements/TupleStructPat.qll linguist-generated
 /lib/codeql/rust/elements/TupleStructPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/TypeRef.qll linguist-generated
-/lib/codeql/rust/elements/TypeRefConstructor.qll linguist-generated
 /lib/codeql/rust/elements/UnaryOpExpr.qll linguist-generated
 /lib/codeql/rust/elements/UnaryOpExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExpr.qll linguist-generated

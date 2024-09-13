@@ -5,14 +5,18 @@ use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
 use std::fmt::Debug;
+use std::hash::Hash;
 use std::path::{Path, PathBuf};
+
+pub use trap::Label as UntypedLabel;
+pub use trap::{Arg, Writer};
 
 //TODO: typed labels
 pub trait AsTrapKeyPart {
     fn as_key_part(&self) -> String;
 }
 
-impl AsTrapKeyPart for trap::Label {
+impl AsTrapKeyPart for UntypedLabel {
     fn as_key_part(&self) -> String {
         format!("{{{}}}", self)
     }
@@ -31,27 +35,27 @@ impl AsTrapKeyPart for &str {
 }
 
 #[derive(Debug, Clone)]
-pub enum TrapId {
+pub enum TrapId<T: TrapEntry> {
     Star,
     Key(String),
-    Label(trap::Label),
+    Label(T::Label),
 }
 
-impl From<String> for TrapId {
+impl<T: TrapEntry> From<String> for TrapId<T> {
     fn from(value: String) -> Self {
         TrapId::Key(value)
     }
 }
 
-impl From<&str> for TrapId {
+impl<T: TrapEntry> From<&str> for TrapId<T> {
     fn from(value: &str) -> Self {
         TrapId::Key(value.into())
     }
 }
 
-impl From<trap::Label> for TrapId {
-    fn from(value: trap::Label) -> Self {
-        TrapId::Label(value)
+impl<T: TrapEntry> From<UntypedLabel> for TrapId<T> {
+    fn from(value: UntypedLabel) -> Self {
+        TrapId::Label(value.into())
     }
 }
 
@@ -66,9 +70,23 @@ macro_rules! trap_key {
     }};
 }
 
-pub trait TrapEntry: std::fmt::Debug {
-    fn extract_id(&mut self) -> TrapId;
-    fn emit(self, id: trap::Label, out: &mut trap::Writer);
+pub trait Label: From<UntypedLabel> + Clone + Debug + Hash + Into<Arg> {
+    fn as_untyped(&self) -> UntypedLabel;
+
+    fn as_key_part(&self) -> String {
+        self.as_untyped().as_key_part()
+    }
+}
+
+pub trait TrapClass {
+    type Label: Label;
+}
+
+pub trait TrapEntry: std::fmt::Debug + TrapClass + Sized {
+    fn class_name() -> &'static str;
+
+    fn extract_id(&mut self) -> TrapId<Self>;
+    fn emit(self, id: Self::Label, out: &mut trap::Writer);
 }
 
 pub struct TrapFile {
@@ -78,10 +96,10 @@ pub struct TrapFile {
 }
 
 impl TrapFile {
-    pub fn emit_location(
+    pub fn emit_location<L: Label>(
         &mut self,
-        file_label: trap::Label,
-        entity_label: trap::Label,
+        file_label: UntypedLabel,
+        entity_label: L,
         start: LineCol,
         end: LineCol,
     ) {
@@ -101,10 +119,7 @@ impl TrapFile {
         );
         self.writer.add_tuple(
             "locatable_locations",
-            vec![
-                trap::Arg::Label(entity_label),
-                trap::Arg::Label(location_label),
-            ],
+            vec![entity_label.into(), location_label.into()],
         );
     }
 
@@ -112,17 +127,21 @@ impl TrapFile {
         extractor::populate_file(&mut self.writer, absolute_path)
     }
 
-    pub fn label(&mut self, id: TrapId) -> trap::Label {
+    pub fn label<T: TrapEntry>(&mut self, id: TrapId<T>) -> T::Label {
         match id {
-            TrapId::Star => self.writer.fresh_id(),
-            TrapId::Key(s) => self.writer.global_id(&s).0,
+            TrapId::Star => self.writer.fresh_id().into(),
+            TrapId::Key(s) => self
+                .writer
+                .global_id(&format!("{},{}", T::class_name(), s))
+                .0
+                .into(),
             TrapId::Label(l) => l,
         }
     }
 
-    pub fn emit<T: TrapEntry>(&mut self, mut e: T) -> trap::Label {
+    pub fn emit<T: TrapEntry>(&mut self, mut e: T) -> T::Label {
         let label = self.label(e.extract_id());
-        e.emit(label, &mut self.writer);
+        e.emit(label.clone(), &mut self.writer);
         label
     }
 

@@ -230,10 +230,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TTypeRef(Raw::TypeRef id) { constructTypeRef(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TUnaryOpExpr(Raw::UnaryOpExpr id) { constructUnaryOpExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -270,7 +266,7 @@ module Synth {
    */
   class TAstNode =
     TDeclaration or TExpr or TLabel or TMatchArm or TPat or TRecordFieldPat or TRecordLitField or
-        TStmt or TTypeRef or TUnimplemented;
+        TStmt or TTypeRef;
 
   /**
    * INTERNAL: Do not use.
@@ -280,7 +276,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TDeclaration = TFunction or TModule;
+  class TDeclaration = TFunction or TModule or TUnimplemented;
 
   /**
    * INTERNAL: Do not use.
@@ -309,6 +305,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TItemStmt or TLetStmt;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeRef = TUnimplemented;
 
   /**
    * INTERNAL: Do not use.
@@ -683,13 +684,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TTypeRef`, if possible.
-   */
-  cached
-  TTypeRef convertTypeRefFromRaw(Raw::Element e) { result = TTypeRef(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TUnaryOpExpr`, if possible.
    */
   cached
@@ -771,8 +765,6 @@ module Synth {
     result = convertStmtFromRaw(e)
     or
     result = convertTypeRefFromRaw(e)
-    or
-    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -797,6 +789,8 @@ module Synth {
     result = convertFunctionFromRaw(e)
     or
     result = convertModuleFromRaw(e)
+    or
+    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -933,6 +927,13 @@ module Synth {
     or
     result = convertLetStmtFromRaw(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeRef`, if possible.
+   */
+  cached
+  TTypeRef convertTypeRefFromRaw(Raw::Element e) { result = convertUnimplementedFromRaw(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1307,13 +1308,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTypeRef` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertTypeRefToRaw(TTypeRef e) { e = TTypeRef(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TUnaryOpExpr` to a raw DB element, if possible.
    */
   cached
@@ -1395,8 +1389,6 @@ module Synth {
     result = convertStmtToRaw(e)
     or
     result = convertTypeRefToRaw(e)
-    or
-    result = convertUnimplementedToRaw(e)
   }
 
   /**
@@ -1421,6 +1413,8 @@ module Synth {
     result = convertFunctionToRaw(e)
     or
     result = convertModuleToRaw(e)
+    or
+    result = convertUnimplementedToRaw(e)
   }
 
   /**
@@ -1557,4 +1551,11 @@ module Synth {
     or
     result = convertLetStmtToRaw(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeRef` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertTypeRefToRaw(TTypeRef e) { result = convertUnimplementedToRaw(e) }
 }
