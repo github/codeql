@@ -96,6 +96,7 @@ private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
+private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
@@ -194,8 +195,6 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
-  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
-
   private predicate getRelevantAccessPath(string path) {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
@@ -289,7 +288,7 @@ module ModelValidation {
       not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
       result = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
-      not ext.regexpMatch("|Attribute") and
+      not ext = ["", "Attribute", "Attribute.Getter", "Attribute.Setter"] and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
       or
       invalidProvenance(provenance) and
@@ -406,6 +405,30 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
   )
 }
 
+pragma[inline]
+private Declaration interpretExt(Declaration d, ExtPath ext) {
+  ext = "" and result = d
+  or
+  ext.getToken(0) = "Attribute" and
+  (
+    not exists(ext.getToken(1)) and
+    result.(Attributable).getAnAttribute().getType() = d and
+    not result instanceof Property and
+    not result instanceof Indexer
+    or
+    exists(string accessor | accessor = ext.getToken(1) |
+      result.(Accessor).getDeclaration().getAnAttribute().getType() = d and
+      (
+        result instanceof Getter and
+        accessor = "Getter"
+        or
+        result instanceof Setter and
+        accessor = "Setter"
+      )
+    )
+  )
+}
+
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 pragma[nomagic]
 Declaration interpretElement(
@@ -425,13 +448,17 @@ Declaration interpretElement(
       )
     )
   |
-    ext = "" and result = d
-    or
-    ext = "Attribute" and
-    result.(Attributable).getAnAttribute().getType() = d and
-    not result instanceof Property
+    result = interpretExt(d, ext)
   )
 }
+
+private predicate relevantExt(string ext) {
+  summaryModel(_, _, _, _, _, ext, _, _, _, _, _) or
+  sourceModel(_, _, _, _, _, ext, _, _, _, _) or
+  sinkModel(_, _, _, _, _, ext, _, _, _, _)
+}
+
+private class ExtPath = AccessPathSyntax::AccessPath<relevantExt/1>::AccessPath;
 
 private predicate parseSynthField(AccessPathToken c, string name) {
   c.getName() = "SyntheticField" and name = c.getAnArgument()
