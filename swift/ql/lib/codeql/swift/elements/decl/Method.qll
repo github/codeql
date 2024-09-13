@@ -12,7 +12,7 @@ private Decl getAMember(Decl ctx) {
 /**
  * A function that is a member of a class, struct, enum or protocol.
  */
-class Method extends Function {
+final class Method extends Function {
   Method() {
     this = getAMember(any(ClassDecl c))
     or
