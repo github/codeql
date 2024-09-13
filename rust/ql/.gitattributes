@@ -33,10 +33,6 @@
 /lib/codeql/rust/elements/ConstExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/ContinueExpr.qll linguist-generated
 /lib/codeql/rust/elements/ContinueExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/DbFile.qll linguist-generated
-/lib/codeql/rust/elements/DbFileConstructor.qll linguist-generated
-/lib/codeql/rust/elements/DbLocation.qll linguist-generated
-/lib/codeql/rust/elements/DbLocationConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Declaration.qll linguist-generated
 /lib/codeql/rust/elements/ElementListExpr.qll linguist-generated
 /lib/codeql/rust/elements/ElementListExprConstructor.qll linguist-generated
@@ -156,15 +152,12 @@
 /lib/codeql/rust/generated/ConstBlockPat.qll linguist-generated
 /lib/codeql/rust/generated/ConstExpr.qll linguist-generated
 /lib/codeql/rust/generated/ContinueExpr.qll linguist-generated
-/lib/codeql/rust/generated/DbFile.qll linguist-generated
-/lib/codeql/rust/generated/DbLocation.qll linguist-generated
 /lib/codeql/rust/generated/Declaration.qll linguist-generated
 /lib/codeql/rust/generated/Element.qll linguist-generated
 /lib/codeql/rust/generated/ElementListExpr.qll linguist-generated
 /lib/codeql/rust/generated/Expr.qll linguist-generated
 /lib/codeql/rust/generated/ExprStmt.qll linguist-generated
 /lib/codeql/rust/generated/FieldExpr.qll linguist-generated
-/lib/codeql/rust/generated/File.qll linguist-generated
 /lib/codeql/rust/generated/Function.qll linguist-generated
 /lib/codeql/rust/generated/GenericArgList.qll linguist-generated
 /lib/codeql/rust/generated/IdentPat.qll linguist-generated
@@ -177,7 +170,6 @@
 /lib/codeql/rust/generated/Literal.qll linguist-generated
 /lib/codeql/rust/generated/LiteralPat.qll linguist-generated
 /lib/codeql/rust/generated/Locatable.qll linguist-generated
-/lib/codeql/rust/generated/Location.qll linguist-generated
 /lib/codeql/rust/generated/LoopExpr.qll linguist-generated
 /lib/codeql/rust/generated/MatchArm.qll linguist-generated
 /lib/codeql/rust/generated/MatchExpr.qll linguist-generated
@@ -216,8 +208,6 @@
 /lib/codeql/rust/generated/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/generated/Unimplemented.qll linguist-generated
 /lib/codeql/rust/generated/UnimplementedDeclaration.qll linguist-generated
-/lib/codeql/rust/generated/UnknownFile.qll linguist-generated
-/lib/codeql/rust/generated/UnknownLocation.qll linguist-generated
 /lib/codeql/rust/generated/UnsafeBlockExpr.qll linguist-generated
 /lib/codeql/rust/generated/WildcardPat.qll linguist-generated
 /lib/codeql/rust/generated/YeetExpr.qll linguist-generated
@@ -254,7 +244,6 @@
 /test/extractor-tests/generated/ElementListExpr/ElementListExpr_getElement.ql linguist-generated
 /test/extractor-tests/generated/ExprStmt/ExprStmt.ql linguist-generated
 /test/extractor-tests/generated/FieldExpr/FieldExpr.ql linguist-generated
-/test/extractor-tests/generated/File/File.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
 /test/extractor-tests/generated/GenericArgList/GenericArgList.ql linguist-generated
 /test/extractor-tests/generated/IdentPat/IdentPat.ql linguist-generated

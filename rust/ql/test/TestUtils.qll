@@ -1,4 +1,3 @@
-private import codeql.rust.elements
+private import rust
 
-cached
 predicate toBeTested(Element e) { any() }

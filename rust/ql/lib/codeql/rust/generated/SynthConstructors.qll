@@ -18,8 +18,6 @@ import codeql.rust.elements.ClosureExprConstructor
 import codeql.rust.elements.ConstBlockPatConstructor
 import codeql.rust.elements.ConstExprConstructor
 import codeql.rust.elements.ContinueExprConstructor
-import codeql.rust.elements.DbFileConstructor
-import codeql.rust.elements.DbLocationConstructor
 import codeql.rust.elements.ElementListExprConstructor
 import codeql.rust.elements.ExprStmtConstructor
 import codeql.rust.elements.FieldExprConstructor

@@ -59,11 +59,7 @@ impl CrateTranslator<'_> {
             if !self.file_labels.contains_key(&canonical) {
                 self.archiver.archive(&canonical);
                 canonical = fs::canonicalize(&canonical).unwrap_or(canonical);
-                let name = canonical.to_string_lossy();
-                let label = self.trap.emit(generated::DbFile {
-                    id: trap_key!["file;", name.as_ref()],
-                    name: String::from(name),
-                });
+                let label = self.trap.emit_file(&canonical);
                 let line_index = <dyn LineIndexDatabase>::line_index(self.db, file_id);
                 self.file_labels
                     .insert(canonical.clone(), FileData { label, line_index });
@@ -74,56 +70,55 @@ impl CrateTranslator<'_> {
 
     fn emit_location_for_ast_ptr<T>(
         &mut self,
+        label: trap::Label,
         source: ra_ap_hir::InFile<ra_ap_syntax::AstPtr<T>>,
-    ) -> Option<trap::Label>
-    where
+    ) where
         T: AstNode,
     {
         source
             .file_id
             .file_id()
-            .map(|f| (f.file_id(), source))
-            .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
-            .map(|(data, source)| {
+            .map(|f| f.file_id())
+            .and_then(|file_id| self.emit_file(file_id))
+            .map(|data| {
                 let range = source.value.text_range();
-                self.emit_location_for_textrange(data, range)
-            })
+                self.emit_location_for_textrange(label, data, range)
+            });
     }
 
     fn emit_location_for_expr(
         &mut self,
+        label: trap::Label,
         expr: ra_ap_hir_def::hir::ExprId,
         source_map: &BodySourceMap,
-    ) -> Option<trap::Label> {
-        let source = source_map.expr_syntax(expr).ok()?;
-        self.emit_location_for_ast_ptr(source)
+    ) {
+        if let Ok(source) = source_map.expr_syntax(expr) {
+            self.emit_location_for_ast_ptr(label, source);
+        }
     }
 
     fn emit_location_for_pat(
         &mut self,
+        label: trap::Label,
         pat_id: ra_ap_hir_def::hir::PatId,
         source_map: &BodySourceMap,
-    ) -> Option<trap::Label> {
-        let source = source_map.pat_syntax(pat_id).ok()?;
-        self.emit_location_for_ast_ptr(source)
+    ) {
+        if let Ok(source) = source_map.pat_syntax(pat_id) {
+            self.emit_location_for_ast_ptr(label, source);
+        }
     }
 
     fn emit_literal_or_const_pat(
         &mut self,
         pat: &ra_ap_hir_def::hir::LiteralOrConst,
-        location: Option<trap::Label>,
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
-                let expr = self.trap.emit(generated::Literal {
-                    id: TrapId::Star,
-                    location: None,
-                });
+                let expr = self.trap.emit(generated::Literal { id: TrapId::Star });
                 self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -135,14 +130,17 @@ impl CrateTranslator<'_> {
 
     fn emit_location_for_label(
         &mut self,
+        label: trap::Label,
         label_id: ra_ap_hir_def::hir::LabelId,
         source_map: &BodySourceMap,
-    ) -> Option<trap::Label> {
+    ) {
         // 'catch' a panic if the source map is incomplete
         let source = std::panic::catch_unwind(|| source_map.label_syntax(label_id)).ok();
-        source.and_then(|source| self.emit_location_for_ast_ptr(source))
+        if let Some(source) = source {
+            self.emit_location_for_ast_ptr(label, source)
+        }
     }
-    fn emit_location<T: HasSource>(&mut self, entity: T) -> Option<trap::Label>
+    fn emit_location<T: HasSource>(&mut self, label: trap::Label, entity: T)
     where
         T::Ast: AstNode,
     {
@@ -152,10 +150,15 @@ impl CrateTranslator<'_> {
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
             .map(|(data, source)| {
                 let range = source.value.syntax().text_range();
-                self.emit_location_for_textrange(data, range)
-            })
+                self.emit_location_for_textrange(label, data, range);
+            });
     }
-    fn emit_location_for_textrange(&mut self, data: FileData, range: TextRange) -> trap::Label {
+    fn emit_location_for_textrange(
+        &mut self,
+        label: trap::Label,
+        data: FileData,
+        range: TextRange,
+    ) {
         let start = data.line_index.line_col(range.start());
         let end = data.line_index.line_col(
             range
@@ -163,7 +166,7 @@ impl CrateTranslator<'_> {
                 .checked_sub(TextSize::new(1))
                 .unwrap_or(range.end()),
         );
-        self.trap.emit_location(data.label, start, end)
+        self.trap.emit_location(data.label, label, start, end)
     }
     fn emit_label(
         &mut self,
@@ -171,20 +174,17 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_for_label(label_id, source_map);
         let label = &body.labels[label_id];
-        self.trap.emit(generated::Label {
+        let ret = self.trap.emit(generated::Label {
             id: TrapId::Star,
-            location,
             name: label.name.as_str().into(),
-        })
+        });
+        self.emit_location_for_label(ret, label_id, source_map);
+        ret
     }
 
-    fn emit_path(&mut self, _path: &Path, location: Option<trap::Label>) -> trap::Label {
-        self.trap.emit(generated::Path {
-            id: TrapId::Star,
-            location,
-        })
+    fn emit_path(&mut self, _path: &Path) -> trap::Label {
+        self.trap.emit(generated::Path { id: TrapId::Star })
     }
 
     fn emit_record_field_pat(
@@ -194,14 +194,14 @@ impl CrateTranslator<'_> {
         source_map: &BodySourceMap,
     ) -> trap::Label {
         let RecordFieldPat { name, pat } = field_pat;
-        let location = self.emit_location_for_pat(*pat, source_map);
-        let pat = self.emit_pat(*pat, body, source_map);
-        self.trap.emit(generated::RecordPatField {
+        let pat_label = self.emit_pat(*pat, body, source_map);
+        let ret = self.trap.emit(generated::RecordPatField {
             id: TrapId::Star,
-            location,
             name: name.as_str().into(),
-            pat,
-        })
+            pat: pat_label,
+        });
+        self.emit_location_for_pat(ret, *pat, source_map);
+        ret
     }
 
     fn emit_record_lit_field(
@@ -211,27 +211,24 @@ impl CrateTranslator<'_> {
         source_map: &BodySourceMap,
     ) -> trap::Label {
         let RecordLitField { name, expr } = field_expr;
-        let location = self.emit_location_for_expr(*expr, source_map);
-        let expr = self.emit_expr(*expr, body, source_map);
-        self.trap.emit(generated::RecordExprField {
+        let expr_label = self.emit_expr(*expr, body, source_map);
+        let ret = self.trap.emit(generated::RecordExprField {
             id: TrapId::Star,
-            location,
             name: name.as_str().into(),
-            expr,
-        })
+            expr: expr_label,
+        });
+        self.emit_location_for_expr(ret, *expr, source_map);
+        ret
     }
     fn emit_pat(&mut self, pat_id: PatId, body: &Body, source_map: &BodySourceMap) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_for_pat(pat_id, source_map);
         let pat = &body.pats[pat_id];
-        match pat {
-            ra_ap_hir_def::hir::Pat::Missing => self.trap.emit(generated::MissingPat {
-                id: TrapId::Star,
-                location,
-            }),
-            ra_ap_hir_def::hir::Pat::Wild => self.trap.emit(generated::WildcardPat {
-                id: TrapId::Star,
-                location,
-            }),
+        let ret = match pat {
+            ra_ap_hir_def::hir::Pat::Missing => {
+                self.trap.emit(generated::MissingPat { id: TrapId::Star })
+            }
+            ra_ap_hir_def::hir::Pat::Wild => {
+                self.trap.emit(generated::WildcardPat { id: TrapId::Star })
+            }
             ra_ap_hir_def::hir::Pat::Tuple { args, ellipsis } => {
                 let args = args
                     .into_iter()
@@ -240,7 +237,6 @@ impl CrateTranslator<'_> {
                 let ellipsis_index = ellipsis.and_then(|x| x.try_into().ok());
                 self.trap.emit(generated::TuplePat {
                     id: TrapId::Star,
-                    location,
                     args,
                     ellipsis_index,
                 })
@@ -252,7 +248,6 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::OrPat {
                     id: TrapId::Star,
-                    location,
                     args,
                 })
             }
@@ -261,14 +256,13 @@ impl CrateTranslator<'_> {
                 args,
                 ellipsis,
             } => {
-                let path = path.as_ref().map(|path| self.emit_path(path, location));
+                let path = path.as_ref().map(|path| self.emit_path(path));
                 let flds = args
                     .into_iter()
                     .map(|arg| self.emit_record_field_pat(arg, body, source_map))
                     .collect();
                 self.trap.emit(generated::RecordPat {
                     id: TrapId::Star,
-                    location,
                     path,
                     flds,
                     has_ellipsis: *ellipsis,
@@ -277,13 +271,12 @@ impl CrateTranslator<'_> {
             ra_ap_hir_def::hir::Pat::Range { start, end } => {
                 let start = start
                     .as_ref()
-                    .map(|x| self.emit_literal_or_const_pat(x, location, body, source_map));
+                    .map(|x| self.emit_literal_or_const_pat(x, body, source_map));
                 let end = end
                     .as_ref()
-                    .map(|x| self.emit_literal_or_const_pat(x, location, body, source_map));
+                    .map(|x| self.emit_literal_or_const_pat(x, body, source_map));
                 self.trap.emit(generated::RangePat {
                     id: TrapId::Star,
-                    location,
                     start,
                     end,
                 })
@@ -304,17 +297,15 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::SlicePat {
                     id: TrapId::Star,
-                    location,
                     prefix,
                     slice,
                     suffix,
                 })
             }
             ra_ap_hir_def::hir::Pat::Path(path) => {
-                let path = self.emit_path(path, location);
+                let path = self.emit_path(path);
                 self.trap.emit(generated::PathPat {
                     id: TrapId::Star,
-                    location,
                     path,
                 })
             }
@@ -322,7 +313,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -330,7 +320,6 @@ impl CrateTranslator<'_> {
                 let subpat = subpat.map(|pat| self.emit_pat(pat, body, source_map));
                 self.trap.emit(generated::IdentPat {
                     id: TrapId::Star,
-                    location,
                     subpat,
                     binding_id: body.bindings[*id].name.as_str().into(),
                 })
@@ -340,14 +329,13 @@ impl CrateTranslator<'_> {
                 args,
                 ellipsis,
             } => {
-                let path = path.as_ref().map(|path| self.emit_path(path, location));
+                let path = path.as_ref().map(|path| self.emit_path(path));
                 let args = args
                     .into_iter()
                     .map(|arg| self.emit_pat(*arg, body, source_map))
                     .collect();
                 self.trap.emit(generated::TupleStructPat {
                     id: TrapId::Star,
-                    location,
                     path,
                     args,
                     ellipsis_index: ellipsis.map(|x| x as usize),
@@ -357,7 +345,6 @@ impl CrateTranslator<'_> {
                 let pat = self.emit_pat(*pat, body, source_map);
                 self.trap.emit(generated::RefPat {
                     id: TrapId::Star,
-                    location,
                     pat,
                     is_mut: mutability.is_mut(),
                 })
@@ -366,7 +353,6 @@ impl CrateTranslator<'_> {
                 let inner = self.emit_pat(*inner, body, source_map);
                 self.trap.emit(generated::BoxPat {
                     id: TrapId::Star,
-                    location,
                     inner,
                 })
             }
@@ -374,17 +360,15 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::ConstBlockPat {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
-        }
+        };
+        self.emit_location_for_pat(ret, pat_id, source_map);
+        ret
     }
     fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> trap::Label {
-        self.trap.emit(generated::Type {
-            id: TrapId::Star,
-            location: None,
-        })
+        self.trap.emit(generated::Type { id: TrapId::Star })
     }
     fn emit_match_arm(
         &mut self,
@@ -392,17 +376,17 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_for_pat(arm.pat, source_map);
         let pat = self.emit_pat(arm.pat, body, source_map);
         let guard = arm.guard.map(|g| self.emit_expr(g, body, source_map));
         let expr = self.emit_expr(arm.expr, body, source_map);
-        self.trap.emit(generated::MatchArm {
+        let ret = self.trap.emit(generated::MatchArm {
             id: TrapId::Star,
-            location,
             pat,
             guard,
             expr,
-        })
+        });
+        self.emit_location_for_pat(ret, arm.pat, source_map);
+        ret
     }
     fn emit_stmt(
         &mut self,
@@ -417,9 +401,7 @@ impl CrateTranslator<'_> {
                 initializer,
                 else_branch,
             } => {
-                // TODO: find a way to get the location of the entire statement
-                let location = self.emit_location_for_pat(*pat, source_map);
-                let pat = self.emit_pat(*pat, body, source_map);
+                let pat_label = self.emit_pat(*pat, body, source_map);
                 let type_ = type_ref
                     .as_ref()
                     .map(|type_ref| self.emit_type_ref(type_ref));
@@ -427,29 +409,29 @@ impl CrateTranslator<'_> {
                     initializer.map(|initializer| self.emit_expr(initializer, body, source_map));
                 let else_ = else_branch.map(|else_| self.emit_expr(else_, body, source_map));
 
-                self.trap.emit(generated::LetStmt {
+                let ret = self.trap.emit(generated::LetStmt {
                     id: TrapId::Star,
-                    location,
-                    pat,
+                    pat: pat_label,
                     type_,
                     initializer,
                     else_,
-                })
+                });
+                // TODO: find a way to get the location of the entire statement
+                self.emit_location_for_pat(ret, *pat, source_map);
+                ret
             }
             Statement::Expr { expr, has_semi } => {
-                let location = self.emit_location_for_expr(*expr, source_map);
-                let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::ExprStmt {
+                let expr_label = self.emit_expr(*expr, body, source_map);
+                let ret = self.trap.emit(generated::ExprStmt {
                     id: TrapId::Star,
-                    location,
-                    expr,
+                    expr: expr_label,
                     has_semicolon: *has_semi,
-                })
+                });
+                // TODO: find a way to get the location of the entire statement
+                self.emit_location_for_expr(ret, *expr, source_map);
+                ret
             }
-            Statement::Item => self.trap.emit(generated::ItemStmt {
-                id: TrapId::Star,
-                location: None,
-            }),
+            Statement::Item => self.trap.emit(generated::ItemStmt { id: TrapId::Star }),
         }
     }
     fn emit_expr(
@@ -458,18 +440,15 @@ impl CrateTranslator<'_> {
         body: &Body,
         source_map: &BodySourceMap,
     ) -> trap::Label {
-        let location: Option<trap::Label> = self.emit_location_for_expr(expr_id, source_map);
         let expr = &body[expr_id];
-        match expr {
-            ra_ap_hir_def::hir::Expr::Missing => self.trap.emit(generated::MissingExpr {
-                id: TrapId::Star,
-                location,
-            }),
+        let ret = match expr {
+            ra_ap_hir_def::hir::Expr::Missing => {
+                self.trap.emit(generated::MissingExpr { id: TrapId::Star })
+            }
             ra_ap_hir_def::hir::Expr::Path(path) => {
-                let path = self.emit_path(path, location);
+                let path = self.emit_path(path);
                 self.trap.emit(generated::PathExpr {
                     id: TrapId::Star,
-                    location,
                     path,
                 })
             }
@@ -483,7 +462,6 @@ impl CrateTranslator<'_> {
                 let else_ = else_branch.map(|x| self.emit_expr(x, body, source_map));
                 self.trap.emit(generated::IfExpr {
                     id: TrapId::Star,
-                    location,
                     condition,
                     then,
                     else_,
@@ -494,7 +472,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::LetExpr {
                     id: TrapId::Star,
-                    location,
                     pat,
                     expr,
                 })
@@ -513,7 +490,6 @@ impl CrateTranslator<'_> {
                 let label = label.map(|l| self.emit_label(l, body, source_map));
                 self.trap.emit(generated::BlockExpr {
                     id: TrapId::Star,
-                    location,
                     statements,
                     tail,
                     label,
@@ -531,7 +507,6 @@ impl CrateTranslator<'_> {
                 let tail = tail.map(|expr_id| self.emit_expr(expr_id, body, source_map));
                 self.trap.emit(generated::AsyncBlockExpr {
                     id: TrapId::Star,
-                    location,
                     statements,
                     tail,
                 })
@@ -541,7 +516,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(expr_id, body, source_map);
                 self.trap.emit(generated::ConstExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -557,7 +531,6 @@ impl CrateTranslator<'_> {
                 let tail = tail.map(|expr_id| self.emit_expr(expr_id, body, source_map));
                 self.trap.emit(generated::UnsafeBlockExpr {
                     id: TrapId::Star,
-                    location,
                     statements,
                     tail,
                 })
@@ -570,7 +543,6 @@ impl CrateTranslator<'_> {
                 let label = label.map(|l| self.emit_label(l, body, source_map));
                 self.trap.emit(generated::LoopExpr {
                     id: TrapId::Star,
-                    location,
                     body: loop_body,
                     label,
                 })
@@ -587,7 +559,6 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::CallExpr {
                     id: TrapId::Star,
-                    location,
                     callee,
                     args,
                     is_assignee_expr: *is_assignee_expr,
@@ -605,14 +576,11 @@ impl CrateTranslator<'_> {
                     .map(|e| self.emit_expr(*e, body, source_map))
                     .collect();
                 let generic_args = generic_args.as_ref().map(|_args| {
-                    self.trap.emit(generated::GenericArgList {
-                        id: TrapId::Star,
-                        location: None,
-                    })
+                    self.trap
+                        .emit(generated::GenericArgList { id: TrapId::Star })
                 });
                 self.trap.emit(generated::MethodCallExpr {
                     id: TrapId::Star,
-                    location,
                     receiver,
                     method_name: method_name.as_str().into(),
                     args,
@@ -628,7 +596,6 @@ impl CrateTranslator<'_> {
 
                 self.trap.emit(generated::MatchExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     branches,
                 })
@@ -637,7 +604,6 @@ impl CrateTranslator<'_> {
                 let label = label.map(|l| self.emit_label(l, body, source_map));
                 self.trap.emit(generated::ContinueExpr {
                     id: TrapId::Star,
-                    location,
                     label,
                 })
             }
@@ -646,7 +612,6 @@ impl CrateTranslator<'_> {
                 let label = label.map(|l| self.emit_label(l, body, source_map));
                 self.trap.emit(generated::BreakExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     label,
                 })
@@ -655,7 +620,6 @@ impl CrateTranslator<'_> {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
                 self.trap.emit(generated::ReturnExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -663,7 +627,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::BecomeExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -671,7 +634,6 @@ impl CrateTranslator<'_> {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
                 self.trap.emit(generated::YieldExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -679,7 +641,6 @@ impl CrateTranslator<'_> {
                 let expr = expr.map(|e| self.emit_expr(e, body, source_map));
                 self.trap.emit(generated::YeetExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -690,7 +651,7 @@ impl CrateTranslator<'_> {
                 ellipsis,
                 is_assignee_expr,
             } => {
-                let path = path.as_ref().map(|path| self.emit_path(path, location));
+                let path = path.as_ref().map(|path| self.emit_path(path));
                 let flds = fields
                     .into_iter()
                     .map(|field| self.emit_record_lit_field(field, body, source_map))
@@ -698,7 +659,6 @@ impl CrateTranslator<'_> {
                 let spread = spread.map(|expr_id| self.emit_expr(expr_id, body, source_map));
                 self.trap.emit(generated::RecordExpr {
                     id: TrapId::Star,
-                    location,
                     path,
                     flds,
                     spread,
@@ -710,7 +670,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::FieldExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     name: name.as_str().into(),
                 })
@@ -719,7 +678,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::AwaitExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -728,7 +686,6 @@ impl CrateTranslator<'_> {
                 let type_: trap::Label = self.emit_type_ref(type_ref.as_ref());
                 self.trap.emit(generated::CastExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     type_,
                 })
@@ -741,7 +698,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::RefExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     is_mut: mutability.is_mut(),
                     is_raw: rawness.is_raw(),
@@ -751,7 +707,6 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(*expr, body, source_map);
                 self.trap.emit(generated::BoxExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
@@ -764,7 +719,6 @@ impl CrateTranslator<'_> {
                 };
                 self.trap.emit(generated::PrefixExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                     op: op.into(),
                 })
@@ -775,7 +729,6 @@ impl CrateTranslator<'_> {
                 let op = op.map(|op| format!("{op}"));
                 self.trap.emit(generated::BinExpr {
                     id: TrapId::Star,
-                    location,
                     lhs,
                     rhs,
                     op,
@@ -790,7 +743,6 @@ impl CrateTranslator<'_> {
                 let rhs = rhs.map(|rhs| self.emit_expr(rhs, body, source_map));
                 self.trap.emit(generated::RangeExpr {
                     id: TrapId::Star,
-                    location,
                     lhs,
                     rhs,
                     is_inclusive: *range_type == RangeOp::Inclusive,
@@ -805,7 +757,6 @@ impl CrateTranslator<'_> {
                 let index = self.emit_expr(*index, body, source_map);
                 self.trap.emit(generated::IndexExpr {
                     id: TrapId::Star,
-                    location,
                     base,
                     index,
                     is_assignee_expr: *is_assignee_expr,
@@ -837,7 +788,6 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::ClosureExpr {
                     id: TrapId::Star,
-                    location,
                     args,
                     arg_types,
                     body: expr,
@@ -856,7 +806,6 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::TupleExpr {
                     id: TrapId::Star,
-                    location,
                     exprs,
                     is_assignee_expr: *is_assignee_expr,
                 })
@@ -871,7 +820,6 @@ impl CrateTranslator<'_> {
                     .collect();
                 self.trap.emit(generated::ElementListExpr {
                     id: TrapId::Star,
-                    location,
                     elements,
                     is_assignee_expr: *is_assignee_expr,
                 })
@@ -885,25 +833,21 @@ impl CrateTranslator<'_> {
 
                 self.trap.emit(generated::RepeatExpr {
                     id: TrapId::Star,
-                    location,
                     initializer,
                     repeat,
                 })
             }
-            ra_ap_hir_def::hir::Expr::Literal(_literal) => self.trap.emit(generated::Literal {
-                id: TrapId::Star,
-                location,
-            }),
-            ra_ap_hir_def::hir::Expr::Underscore => self.trap.emit(generated::UnderscoreExpr {
-                id: TrapId::Star,
-                location,
-            }),
+            ra_ap_hir_def::hir::Expr::Literal(_literal) => {
+                self.trap.emit(generated::Literal { id: TrapId::Star })
+            }
+            ra_ap_hir_def::hir::Expr::Underscore => self
+                .trap
+                .emit(generated::UnderscoreExpr { id: TrapId::Star }),
             ra_ap_hir_def::hir::Expr::OffsetOf(offset) => {
                 let container = self.emit_type_ref(&offset.container);
                 let fields = offset.fields.iter().map(|x| x.as_str().into()).collect();
                 self.trap.emit(generated::OffsetOfExpr {
                     id: TrapId::Star,
-                    location,
                     container,
                     fields,
                 })
@@ -912,11 +856,12 @@ impl CrateTranslator<'_> {
                 let expr = self.emit_expr(asm.e, body, source_map);
                 self.trap.emit(generated::AsmExpr {
                     id: TrapId::Star,
-                    location,
                     expr,
                 })
             }
-        }
+        };
+        self.emit_location_for_expr(ret, expr_id, source_map);
+        ret
     }
 
     fn emit_definition(
@@ -925,96 +870,89 @@ impl CrateTranslator<'_> {
         id: ModuleDef,
         labels: &mut Vec<trap::Label>,
     ) {
-        match id {
-            ModuleDef::Module(_module) => {
-                let location = None;
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
-            }
+        let label = match id {
+            ModuleDef::Module(_) => self
+                .trap
+                .emit(generated::UnimplementedDeclaration { id: TrapId::Star }),
             ModuleDef::Function(function) => {
                 let def: ra_ap_hir::DefWithBody = function.into();
 
                 let name = function.name(self.db);
-                let location = self.emit_location(function);
 
                 let (body, source_map) = self.db.body_with_source_map(def.into());
                 let txt = body.pretty_print(self.db, def.into(), Edition::Edition2021);
                 log::trace!("{}", &txt);
                 let body = self.emit_expr(body.body_expr, &body, &source_map);
 
-                labels.push(self.trap.emit(generated::Function {
+                let label = self.trap.emit(generated::Function {
                     id: trap_key![module_label, name.as_str()],
-                    location,
                     name: name.as_str().into(),
                     body,
-                }))
+                });
+                self.emit_location(label, function);
+                label
             }
             ModuleDef::Adt(adt) => {
-                let location = self.emit_location(adt);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, adt);
+                label
             }
             ModuleDef::Variant(variant) => {
-                let location = self.emit_location(variant);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, variant);
+                label
             }
             ModuleDef::Const(const_) => {
-                let location = self.emit_location(const_);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, const_);
+                label
             }
             ModuleDef::Static(static_) => {
-                let location = self.emit_location(static_);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, static_);
+                label
             }
             ModuleDef::Trait(trait_) => {
-                let location = self.emit_location(trait_);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, trait_);
+                label
             }
             ModuleDef::TraitAlias(alias) => {
-                let location = self.emit_location(alias);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, alias);
+                label
             }
             ModuleDef::TypeAlias(type_alias) => {
-                let location = self.emit_location(type_alias);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, type_alias);
+                label
             }
-            ModuleDef::BuiltinType(_builtin_type) => {
-                let location = None;
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
-            }
+            ModuleDef::BuiltinType(_builtin_type) => self
+                .trap
+                .emit(generated::UnimplementedDeclaration { id: TrapId::Star }),
             ModuleDef::Macro(macro_) => {
-                let location = self.emit_location(macro_);
-                self.trap.emit(generated::UnimplementedDeclaration {
-                    id: TrapId::Star,
-                    location,
-                });
+                let label = self
+                    .trap
+                    .emit(generated::UnimplementedDeclaration { id: TrapId::Star });
+                self.emit_location(label, macro_);
+                label
             }
-        }
+        };
+        labels.push(label);
     }
 
     fn emit_module(&mut self, label: trap::Label, module: Module) {
@@ -1024,7 +962,6 @@ impl CrateTranslator<'_> {
         }
         self.trap.emit(generated::Module {
             id: label.into(),
-            location: None,
             declarations: children,
         });
     }
