@@ -3,8 +3,8 @@
 fn test_match_arm(x: i32) -> i32 {
     // A match arm. For example:
     match x {
-        Some(y) => y,
-        None => 0,
+        Option::Some(y) => y,
+        Option::None => 0,
     };
     match x {
         Some(y) if y != 0 => 1 / y,

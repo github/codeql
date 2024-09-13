@@ -17,14 +17,14 @@ module Generated {
    * A binding pattern. For example:
    * ```
    * match x {
-   *     Some(y) => y,
-   *     None => 0,
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
    * };
    * ```
    * ```
    * match x {
-   *     y@Some(_) => y,
-   *     None => 0,
+   *     y@Option::Some(_) => y,
+   *     Option::None => 0,
    * };
    * ```
    * INTERNAL: Do not reference the `Generated::IdentPat` class directly.

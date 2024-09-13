@@ -9,8 +9,7 @@ private import codeql.rust.generated.MissingPat
  * A missing pattern, used as a place holder for incomplete syntax.
  * ```
  * match Some(42) {
- *     .. => "ok",
- *     _ => "fail",
+ *     .. => "bad use of .. syntax",
  * };
  * ```
  */

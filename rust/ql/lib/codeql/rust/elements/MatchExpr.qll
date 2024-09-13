@@ -9,8 +9,8 @@ private import codeql.rust.generated.MatchExpr
  * A match expression. For example:
  * ```
  * match x {
- *     Some(y) => y,
- *     None => 0,
+ *     Option::Some(y) => y,
+ *     Option::None => 0,
  * }
  * ```
  * ```

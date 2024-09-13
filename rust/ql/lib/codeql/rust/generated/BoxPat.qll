@@ -17,8 +17,8 @@ module Generated {
    * A box pattern. For example:
    * ```
    * match x {
-   *     box Some(y) => y,
-   *     box None => 0,
+   *     box Option::Some(y) => y,
+   *     box Option::None => 0,
    * };
    * ```
    * INTERNAL: Do not reference the `Generated::BoxPat` class directly.

@@ -9,8 +9,8 @@ private import codeql.rust.generated.MatchArm
  * A match arm. For example:
  * ```
  * match x {
- *     Some(y) => y,
- *     None => 0,
+ *     Option::Some(y) => y,
+ *     Option::None => 0,
  * };
  * ```
  * ```

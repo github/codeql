@@ -380,8 +380,8 @@ class MatchArm(AstNode):
     A match arm. For example:
     ```
     match x {
-        Some(y) => y,
-        None => 0,
+        Option::Some(y) => y,
+        Option::None => 0,
     };
     ```
     ```
@@ -402,8 +402,8 @@ class MatchExpr(Expr):
     A match expression. For example:
     ```
     match x {
-        Some(y) => y,
-        None => 0,
+        Option::Some(y) => y,
+        Option::None => 0,
     }
     ```
     ```
@@ -858,8 +858,7 @@ class MissingPat(Pat):
     A missing pattern, used as a place holder for incomplete syntax.
     ```
     match Some(42) {
-        .. => "ok",
-        _ => "fail",
+        .. => "bad use of .. syntax",
     };
     ```
     """
@@ -896,7 +895,7 @@ class OrPat(Pat):
     An or pattern. For example:
     ```
     match x {
-        Some(y) | None => 0,
+        Option::Some(y) | Option::None => 0,
     }
     ```
     """
@@ -998,14 +997,14 @@ class IdentPat(Pat):
     A binding pattern. For example:
     ```
     match x {
-        Some(y) => y,
-        None => 0,
+        Option::Some(y) => y,
+        Option::None => 0,
     };
     ```
     ```
     match x {
-        y@Some(_) => y,
-        None => 0,
+        y@Option::Some(_) => y,
+        Option::None => 0,
     };
     ```
     """
@@ -1036,8 +1035,8 @@ class RefPat(Pat):
     A reference pattern. For example:
     ```
     match x {
-        &mut Some(y) => y,
-        &None => 0,
+        &mut Option::Some(y) => y,
+        &Option::None => 0,
     };
     ```
     """
@@ -1051,8 +1050,8 @@ class BoxPat(Pat):
     A box pattern. For example:
     ```
     match x {
-        box Some(y) => y,
-        box None => 0,
+        box Option::Some(y) => y,
+        box Option::None => 0,
     };
     ```
     """

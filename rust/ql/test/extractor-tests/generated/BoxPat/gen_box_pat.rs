@@ -3,7 +3,7 @@
 fn test_box_pat() -> () {
     // A box pattern. For example:
     match x {
-        box Some(y) => y,
-        box None => 0,
+        box Option::Some(y) => y,
+        box Option::None => 0,
     };
 }

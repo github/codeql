@@ -17,8 +17,8 @@ module Generated {
    * A reference pattern. For example:
    * ```
    * match x {
-   *     &mut Some(y) => y,
-   *     &None => 0,
+   *     &mut Option::Some(y) => y,
+   *     &Option::None => 0,
    * };
    * ```
    * INTERNAL: Do not reference the `Generated::RefPat` class directly.
