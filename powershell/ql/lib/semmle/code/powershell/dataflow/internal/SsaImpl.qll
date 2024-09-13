@@ -19,7 +19,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
 
-  class SourceVariable = LocalVariable;
+  class SourceVariable = LocalScopeVariable;
 
   /**
    * Holds if the statement at index `i` of basic block `bb` contains a write to variable `v`.
@@ -34,7 +34,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     certain = true
   }
 
-  predicate variableRead(BasicBlock bb, int i, LocalVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
   }
@@ -59,7 +59,7 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
 }
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
-private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v) {
+private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalScopeVariable v) {
   exists(VarReadAccess read |
     read.getVariable() = v and
     read = bb.getNode(i).getAstNode()
@@ -152,7 +152,7 @@ private module Cached {
    */
   cached
   predicate variableWriteActual(
-    Cfg::BasicBlock bb, int i, LocalVariable v, VariableWriteAccessCfgNode write
+    Cfg::BasicBlock bb, int i, LocalScopeVariable v, VarWriteAccessCfgNode write
   ) {
     exists(Cfg::CfgNode n |
       write.getVariable() = v and
@@ -164,7 +164,7 @@ private module Cached {
 
   cached
   VarReadAccessCfgNode getARead(Definition def) {
-    exists(LocalVariable v, Cfg::BasicBlock bb, int i |
+    exists(SsaInput::SourceVariable v, Cfg::BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       variableReadActual(bb, i, v) and
       result = bb.getNode(i)
