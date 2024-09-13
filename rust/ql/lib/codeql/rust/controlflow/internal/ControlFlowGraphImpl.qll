@@ -81,7 +81,7 @@ class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
   override ControlFlowTree getChildNode(int i) { result = super.getArg(i) }
 }
 
-class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
+class BinExprTree extends StandardPostOrderTree instanceof BinExpr {
   override ControlFlowTree getChildNode(int i) {
     i = 0 and result = super.getLhs()
     or
@@ -121,7 +121,7 @@ class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
+class LiteralTree extends LeafTree instanceof Literal { }
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
