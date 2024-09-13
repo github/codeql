@@ -1,6 +1,5 @@
-/**
- * The source location of the snapshot.
- */
-sourceLocationPrefix(
-  string prefix: string ref
+#keyset[id]
+locatable_locations(
+  int id: @locatable ref,
+  int location: @location_default ref
 );

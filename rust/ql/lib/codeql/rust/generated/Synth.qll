@@ -78,14 +78,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TDbFile(Raw::DbFile id) { constructDbFile(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TElementListExpr(Raw::ElementListExpr id) { constructElementListExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -254,14 +246,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnknownFile() or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TUnknownLocation() or
-    /**
-     * INTERNAL: Do not use.
-     */
     TUnsafeBlockExpr(Raw::UnsafeBlockExpr id) { constructUnsafeBlockExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -312,17 +296,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TFile = TDbFile or TUnknownFile;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TLocatable = TAstNode;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TLocation = TDbLocation or TUnknownLocation;
 
   /**
    * INTERNAL: Do not use.
@@ -440,20 +414,6 @@ module Synth {
    */
   cached
   TContinueExpr convertContinueExprFromRaw(Raw::Element e) { result = TContinueExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TDbFile`, if possible.
-   */
-  cached
-  TDbFile convertDbFileFromRaw(Raw::Element e) { result = TDbFile(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TDbLocation`, if possible.
-   */
-  cached
-  TDbLocation convertDbLocationFromRaw(Raw::Element e) { result = TDbLocation(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -751,20 +711,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnknownFile`, if possible.
-   */
-  cached
-  TUnknownFile convertUnknownFileFromRaw(Raw::Element e) { none() }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnknownLocation`, if possible.
-   */
-  cached
-  TUnknownLocation convertUnknownLocationFromRaw(Raw::Element e) { none() }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TUnsafeBlockExpr`, if possible.
    */
   cached
@@ -858,13 +804,7 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   cached
-  TElement convertElementFromRaw(Raw::Element e) {
-    result = convertFileFromRaw(e)
-    or
-    result = convertLocatableFromRaw(e)
-    or
-    result = convertLocationFromRaw(e)
-  }
+  TElement convertElementFromRaw(Raw::Element e) { result = convertLocatableFromRaw(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -941,32 +881,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TFile`, if possible.
-   */
-  cached
-  TFile convertFileFromRaw(Raw::Element e) {
-    result = convertDbFileFromRaw(e)
-    or
-    result = convertUnknownFileFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
   cached
   TLocatable convertLocatableFromRaw(Raw::Element e) { result = convertAstNodeFromRaw(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TLocation`, if possible.
-   */
-  cached
-  TLocation convertLocationFromRaw(Raw::Element e) {
-    result = convertDbLocationFromRaw(e)
-    or
-    result = convertUnknownLocationFromRaw(e)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -1120,20 +1038,6 @@ module Synth {
    */
   cached
   Raw::Element convertContinueExprToRaw(TContinueExpr e) { e = TContinueExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TDbFile` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertDbFileToRaw(TDbFile e) { e = TDbFile(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TDbLocation` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertDbLocationToRaw(TDbLocation e) { e = TDbLocation(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1431,20 +1335,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnknownFile` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertUnknownFileToRaw(TUnknownFile e) { none() }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TUnknownLocation` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertUnknownLocationToRaw(TUnknownLocation e) { none() }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TUnsafeBlockExpr` to a raw DB element, if possible.
    */
   cached
@@ -1538,13 +1428,7 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertElementToRaw(TElement e) {
-    result = convertFileToRaw(e)
-    or
-    result = convertLocatableToRaw(e)
-    or
-    result = convertLocationToRaw(e)
-  }
+  Raw::Element convertElementToRaw(TElement e) { result = convertLocatableToRaw(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1621,32 +1505,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TFile` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertFileToRaw(TFile e) {
-    result = convertDbFileToRaw(e)
-    or
-    result = convertUnknownFileToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
   cached
   Raw::Element convertLocatableToRaw(TLocatable e) { result = convertAstNodeToRaw(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TLocation` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertLocationToRaw(TLocation e) {
-    result = convertDbLocationToRaw(e)
-    or
-    result = convertUnknownLocationToRaw(e)
-  }
 
   /**
    * INTERNAL: Do not use.
