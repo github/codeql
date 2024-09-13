@@ -40,6 +40,12 @@ class File extends Container, Impl::File {
    */
   int getNumberOfLinesOfCode() {
     result =
-      count(int line | exists(Location loc | loc.getFile() = this and loc.getStartLine() = line and not loc instanceof EmptyLocation))
+      count(int line |
+        exists(Location loc |
+          loc.getFile() = this and
+          line = [loc.getStartLine(), loc.getEndLine()] and
+          not loc instanceof EmptyLocation
+        )
+      )
   }
 }
