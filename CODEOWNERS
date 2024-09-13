@@ -12,6 +12,14 @@
 /java/kotlin-extractor/ @github/codeql-kotlin
 /java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
+/rust/extractor/ @github/codeql-rust-extractor
+/rust/integration-tests/ @github/codeql-rust-extractor
+/rust/tools/ @github/codeql-rust-extractor
+/rust/ql/test/extractor-tests/ @github/codeql-rust-extractor
+/rust/ql/lib/ @github/codeql-rust-library
+/rust/ql/test/library-tests/ @github/codeql-rust-library
+/rust/ql/src/ @github/codeql-rust-queries
+/rust/ql/test/query-tests/ @github/codeql-rust-queries
 
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
