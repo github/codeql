@@ -1,10 +1,4 @@
 listUnimplemented
-| does_not_compile.rs:2:2:2:5 | Unimplemented | Not yet implemented. |
-| does_not_compile.rs:2:7:2:8 | Unimplemented | Not yet implemented. |
-| does_not_compile.rs:2:10:2:12 | Unimplemented | Not yet implemented. |
-| does_not_compile.rs:2:14:2:20 | Unimplemented | Not yet implemented. |
-| does_not_compile.rs:2:22:2:25 | Unimplemented | Not yet implemented. |
-| does_not_compile.rs:2:27:2:30 | Unimplemented | Not yet implemented. |
 | file:///Users/geoffw0/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/alloc.rs:39:5:39:48 | Unimplemented | Not yet implemented. |
 | file:///Users/geoffw0/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/alloc.rs:42:1:55:18 | Unimplemented | Not yet implemented. |
 | file:///Users/geoffw0/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/borrow.rs:30:1:80:1 | Unimplemented | Not yet implemented. |
@@ -2841,12 +2835,18 @@ listUnimplemented
 | file://:0:0:0:0 | Unimplemented | Not yet implemented. |
 | file://:0:0:0:0 | Unimplemented | Not yet implemented. |
 | file://:0:0:0:0 | Unimplemented | Not yet implemented. |
-| main.rs:16:5:16:22 | Unimplemented | Not yet implemented. |
-| main.rs:17:5:17:21 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
+| file://:0:0:0:0 | Unimplemented | Not yet implemented. |
 | my_struct.rs:2:1:13:1 | Unimplemented | Not yet implemented. |
-| my_struct.rs:24:9:27:9 | Unimplemented | Not yet implemented. |
-| my_struct.rs:25:19:25:30 | Unimplemented | Not yet implemented. |
-| my_struct.rs:29:5:29:5 | Unimplemented | Not yet implemented. |
 listMissingExpr
 | file://:0:0:0:0 | MissingExpr | Missing expression. |
 | file://:0:0:0:0 | MissingExpr | Missing expression. |
