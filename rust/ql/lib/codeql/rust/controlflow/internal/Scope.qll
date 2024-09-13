@@ -1,10 +1,19 @@
 private import rust
 private import Completion
+private import ControlFlowGraphImpl
 private import codeql.rust.generated.ParentChild
 
-abstract class CfgScope extends AstNode { }
+abstract class CfgScope extends AstNode {
+  abstract predicate scopeFirst(AstNode first);
 
-class FunctionScope extends CfgScope, Function { }
+  abstract predicate scopeLast(AstNode last, Completion c);
+}
+
+final class FunctionScope extends CfgScope, Function {
+  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
+
+  override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
+}
 
 /**
  * Gets the immediate parent of a non-`AstNode` element `e`.

@@ -49,31 +49,17 @@ module CfgInput implements InputSig<Location> {
   int maxSplits() { result = 0 }
 
   /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, AstNode first) {
-    scope.(CfgImpl::ControlFlowTree).first(first)
-  }
+  predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
-    scope.(CfgImpl::ControlFlowTree).last(last, c)
-  }
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
 }
 
 module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-class FunctionTree extends PostOrderTree instanceof Function {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getBody() }
-
-  override predicate first(AstNode node) { first(super.getBody(), node) }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getBody(), pred, c) and
-    (completionIsNormal(c) or c instanceof ReturnCompletion) and
-    succ = this
-  }
-}
+class FunctionTree extends LeafTree instanceof Function { }
 
 class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
   override ControlFlowTree getChildNode(int i) {
@@ -232,6 +218,8 @@ class BreakExprTree extends PostOrderTree instanceof BreakExpr {
     last(super.getExpr(), pred, c) and succ = this
   }
 }
+
+class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
 
 class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
 
