@@ -1,5 +1,7 @@
 private import codeql.swift.generated.expr.VarargExpansionExpr
 
-class VarargExpansionExpr extends Generated::VarargExpansionExpr {
-  override string toString() { result = this.getSubExpr().toString() }
+module Impl {
+  class VarargExpansionExpr extends Generated::VarargExpansionExpr {
+    override string toString() { result = this.getSubExpr().toString() }
+  }
 }

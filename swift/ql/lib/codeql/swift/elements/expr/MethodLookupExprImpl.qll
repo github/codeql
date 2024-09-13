@@ -7,25 +7,27 @@ private import codeql.swift.elements.decl.Method
 private import codeql.swift.generated.Raw
 private import codeql.swift.generated.Synth
 
-class MethodLookupExpr extends Generated::MethodLookupExpr {
-  override string toString() { result = "." + this.getMember().toString() }
+module Impl {
+  class MethodLookupExpr extends Generated::MethodLookupExpr {
+    override string toString() { result = "." + this.getMember().toString() }
 
-  override Expr getImmediateBase() {
-    result = Synth::convertExprFromRaw(this.getUnderlying().getBase())
+    override Expr getImmediateBase() {
+      result = Synth::convertExprFromRaw(this.getUnderlying().getBase())
+    }
+
+    override Decl getMember() {
+      result = this.getMethodRef().(DeclRefExpr).getDecl()
+      or
+      result = this.getMethodRef().(OtherInitializerRefExpr).getInitializer()
+    }
+
+    override Expr getImmediateMethodRef() {
+      result = Synth::convertExprFromRaw(this.getUnderlying().getFunction())
+    }
+
+    Method getMethod() { result = this.getMember() }
+
+    cached
+    private Raw::SelfApplyExpr getUnderlying() { this = Synth::TMethodLookupExpr(result) }
   }
-
-  override Decl getMember() {
-    result = this.getMethodRef().(DeclRefExpr).getDecl()
-    or
-    result = this.getMethodRef().(OtherInitializerRefExpr).getInitializer()
-  }
-
-  override Expr getImmediateMethodRef() {
-    result = Synth::convertExprFromRaw(this.getUnderlying().getFunction())
-  }
-
-  Method getMethod() { result = this.getMember() }
-
-  cached
-  private Raw::SelfApplyExpr getUnderlying() { this = Synth::TMethodLookupExpr(result) }
 }

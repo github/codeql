@@ -1,4 +1,4 @@
-private import ApplyExprExt
+private import MethodApplyExpr
 private import codeql.swift.elements.expr.CallExpr
 private import codeql.swift.elements.expr.ApplyExpr
 private import codeql.swift.elements.expr.SuperRefExpr

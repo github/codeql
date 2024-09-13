@@ -18,94 +18,96 @@ private import codeql.swift.elements.decl.PatternBindingDecl
 private import codeql.swift.elements.decl.EnumElementDecl
 private import codeql.swift.generated.ParentChild
 
-/**
- * A syntactic construct that can be matched against an expression,
- * occurring in switch cases, conditions, and variable bindings.
- */
-class Pattern extends Generated::Pattern {
+module Impl {
   /**
-   * Gets the expression that this top-level pattern is matched against, if any.
-   *
-   * For example, in `switch e { case p: ... }`, the pattern `p`
-   * is immediately matched against the expression `e`.
+   * A syntactic construct that can be matched against an expression,
+   * occurring in switch cases, conditions, and variable bindings.
    */
-  Expr getImmediateMatchingExpr() {
-    exists(ConditionElement c |
-      c.getPattern() = this and
-      result = c.getInitializer()
-    )
-    or
-    exists(SwitchStmt s |
-      s.getExpr() = result and
-      s.getACase().getALabel().getPattern() = this
-    )
-    or
-    exists(PatternBindingDecl v, int i |
-      v.getPattern(i) = pragma[only_bind_out](this) and
-      result = v.getInit(i)
-    )
-  }
-
-  /**
-   * Gets the expression that this pattern is matched against, if any.
-   * The expression and the pattern need not be top-level children of
-   * a pattern-matching construct, but they must match each other syntactically.
-   *
-   * For example, in `switch .some(e) { case let .some(p): ... }`, the pattern `p`
-   * is matched against the expression `e`.
-   */
-  pragma[nomagic]
-  Expr getMatchingExpr() {
-    result = this.getImmediateMatchingExpr()
-    or
-    exists(Pattern p | p.getMatchingExpr() = result |
-      this = p.(IsPattern).getSubPattern()
+  class Pattern extends Generated::Pattern {
+    /**
+     * Gets the expression that this top-level pattern is matched against, if any.
+     *
+     * For example, in `switch e { case p: ... }`, the pattern `p`
+     * is immediately matched against the expression `e`.
+     */
+    Expr getImmediateMatchingExpr() {
+      exists(ConditionElement c |
+        c.getPattern() = this and
+        result = c.getInitializer()
+      )
       or
-      this = p.(OptionalSomePattern).getSubPattern()
+      exists(SwitchStmt s |
+        s.getExpr() = result and
+        s.getACase().getALabel().getPattern() = this
+      )
       or
-      this = p.(TypedPattern).getSubPattern()
-    )
-    or
-    exists(TuplePattern p, TupleExpr e, int i |
-      p.getMatchingExpr() = e and
-      this = p.getElement(i) and
-      result = e.getElement(i)
-    )
-    or
-    exists(EnumElementPattern p, EnumElementExpr e, int i |
-      p.getMatchingExpr() = e and
-      this = p.getSubPattern(i) and
-      result = e.getArgument(i).getExpr() and
-      p.getElement() = e.getElement()
-    )
-  }
+      exists(PatternBindingDecl v, int i |
+        v.getPattern(i) = pragma[only_bind_out](this) and
+        result = v.getInit(i)
+      )
+    }
 
-  /** Holds if this pattern is matched against an expression. */
-  final predicate hasMatchingExpr() { exists(this.getMatchingExpr()) }
+    /**
+     * Gets the expression that this pattern is matched against, if any.
+     * The expression and the pattern need not be top-level children of
+     * a pattern-matching construct, but they must match each other syntactically.
+     *
+     * For example, in `switch .some(e) { case let .some(p): ... }`, the pattern `p`
+     * is matched against the expression `e`.
+     */
+    pragma[nomagic]
+    Expr getMatchingExpr() {
+      result = this.getImmediateMatchingExpr()
+      or
+      exists(Pattern p | p.getMatchingExpr() = result |
+        this = p.(IsPattern).getSubPattern()
+        or
+        this = p.(OptionalSomePattern).getSubPattern()
+        or
+        this = p.(TypedPattern).getSubPattern()
+      )
+      or
+      exists(TuplePattern p, TupleExpr e, int i |
+        p.getMatchingExpr() = e and
+        this = p.getElement(i) and
+        result = e.getElement(i)
+      )
+      or
+      exists(EnumElementPattern p, EnumElementExpr e, int i |
+        p.getMatchingExpr() = e and
+        this = p.getSubPattern(i) and
+        result = e.getArgument(i).getExpr() and
+        p.getElement() = e.getElement()
+      )
+    }
 
-  /**
-   * Gets the parent pattern of this pattern, if any.
-   */
-  final Pattern getEnclosingPattern() {
-    result = this.getFullyUnresolved().(Pattern).getImmediateEnclosingPattern()
-  }
+    /** Holds if this pattern is matched against an expression. */
+    final predicate hasMatchingExpr() { exists(this.getMatchingExpr()) }
 
-  /**
-   * Gets the parent pattern of this pattern, if any.
-   */
-  Pattern getImmediateEnclosingPattern() {
-    this = result.(EnumElementPattern).getImmediateSubPattern()
-    or
-    this = result.(OptionalSomePattern).getImmediateSubPattern()
-    or
-    this = result.(TuplePattern).getImmediateElement(_)
-    or
-    this = result.(BindingPattern).getImmediateSubPattern()
-    or
-    this = result.(IsPattern).getImmediateSubPattern()
-    or
-    this = result.(ParenPattern).getImmediateSubPattern()
-    or
-    this = result.(TypedPattern).getImmediateSubPattern()
+    /**
+     * Gets the parent pattern of this pattern, if any.
+     */
+    final Pattern getEnclosingPattern() {
+      result = this.getFullyUnresolved().(Pattern).getImmediateEnclosingPattern()
+    }
+
+    /**
+     * Gets the parent pattern of this pattern, if any.
+     */
+    Pattern getImmediateEnclosingPattern() {
+      this = result.(EnumElementPattern).getImmediateSubPattern()
+      or
+      this = result.(OptionalSomePattern).getImmediateSubPattern()
+      or
+      this = result.(TuplePattern).getImmediateElement(_)
+      or
+      this = result.(BindingPattern).getImmediateSubPattern()
+      or
+      this = result.(IsPattern).getImmediateSubPattern()
+      or
+      this = result.(ParenPattern).getImmediateSubPattern()
+      or
+      this = result.(TypedPattern).getImmediateSubPattern()
+    }
   }
 }

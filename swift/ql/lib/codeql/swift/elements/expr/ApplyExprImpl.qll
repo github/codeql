@@ -6,54 +6,56 @@ private import codeql.swift.elements.expr.DotSyntaxBaseIgnoredExpr
 private import codeql.swift.elements.expr.AutoClosureExpr
 private import codeql.swift.elements.decl.Method
 
-class ApplyExpr extends Generated::ApplyExpr {
-  Callable getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
+module Impl {
+  class ApplyExpr extends Generated::ApplyExpr {
+    Callable getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
 
-  /** Gets the method qualifier, if this is applying a method */
-  Expr getQualifier() { none() }
+    /** Gets the method qualifier, if this is applying a method */
+    Expr getQualifier() { none() }
 
-  /**
-   * Gets the argument of this `ApplyExpr` called `label` (if any).
-   */
-  final Argument getArgumentWithLabel(string label) {
-    result = this.getAnArgument() and
-    result.getLabel() = label
+    /**
+     * Gets the argument of this `ApplyExpr` called `label` (if any).
+     */
+    final Argument getArgumentWithLabel(string label) {
+      result = this.getAnArgument() and
+      result.getLabel() = label
+    }
+
+    override string toString() {
+      result = "call to " + this.getStaticTarget().toString()
+      or
+      not exists(this.getStaticTarget()) and
+      result = "call to ..."
+    }
   }
 
-  override string toString() {
-    result = "call to " + this.getStaticTarget().toString()
-    or
-    not exists(this.getStaticTarget()) and
-    result = "call to ..."
+  class MethodApplyExpr extends ApplyExpr {
+    private MethodLookupExpr method;
+
+    MethodApplyExpr() { method = this.getFunction() }
+
+    override Method getStaticTarget() { result = method.getMethod() }
+
+    override Expr getQualifier() { result = method.getBase() }
   }
-}
 
-class MethodApplyExpr extends ApplyExpr {
-  private MethodLookupExpr method;
+  private class PartialDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
+    private DotSyntaxBaseIgnoredExpr expr;
 
-  MethodApplyExpr() { method = this.getFunction() }
+    PartialDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
 
-  override Method getStaticTarget() { result = method.getMethod() }
+    override AutoClosureExpr getStaticTarget() { result = expr.getSubExpr() }
 
-  override Expr getQualifier() { result = method.getBase() }
-}
+    override Expr getQualifier() { result = expr.getQualifier() }
 
-private class PartialDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
-  private DotSyntaxBaseIgnoredExpr expr;
+    override string toString() { result = "call to " + expr }
+  }
 
-  PartialDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
+  private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
+    private PartialDotSyntaxBaseIgnoredApplyExpr expr;
 
-  override AutoClosureExpr getStaticTarget() { result = expr.getSubExpr() }
+    FullDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
 
-  override Expr getQualifier() { result = expr.getQualifier() }
-
-  override string toString() { result = "call to " + expr }
-}
-
-private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {
-  private PartialDotSyntaxBaseIgnoredApplyExpr expr;
-
-  FullDotSyntaxBaseIgnoredApplyExpr() { expr = this.getFunction() }
-
-  override AutoClosureExpr getStaticTarget() { result = expr.getStaticTarget().getExpr() }
+    override AutoClosureExpr getStaticTarget() { result = expr.getStaticTarget().getExpr() }
+  }
 }

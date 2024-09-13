@@ -4,12 +4,14 @@
 
 private import codeql.swift.generated.expr.BuiltinLiteralExpr
 
-/**
- * A Swift literal of a kind that is built in to the Swift language.
- */
-class BuiltinLiteralExpr extends Generated::BuiltinLiteralExpr {
+module Impl {
   /**
-   * Gets the value of this literal expression (as a string).
+   * A Swift literal of a kind that is built in to the Swift language.
    */
-  string getValueString() { none() }
+  class BuiltinLiteralExpr extends Generated::BuiltinLiteralExpr {
+    /**
+     * Gets the value of this literal expression (as a string).
+     */
+    string getValueString() { none() }
+  }
 }

@@ -1,7 +1,9 @@
 private import codeql.swift.generated.pattern.ParenPattern
 
-class ParenPattern extends Generated::ParenPattern {
-  final override Pattern getResolveStep() { result = this.getImmediateSubPattern() }
+module Impl {
+  class ParenPattern extends Generated::ParenPattern {
+    final override Pattern getResolveStep() { result = this.getImmediateSubPattern() }
 
-  override string toString() { result = "(...)" }
+    override string toString() { result = "(...)" }
+  }
 }

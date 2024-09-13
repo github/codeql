@@ -1,5 +1,7 @@
 private import codeql.swift.generated.pattern.AnyPattern
 
-class AnyPattern extends Generated::AnyPattern {
-  override string toString() { result = "_" }
+module Impl {
+  class AnyPattern extends Generated::AnyPattern {
+    override string toString() { result = "_" }
+  }
 }
