@@ -1050,7 +1050,7 @@ pub struct RecordExpr {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub path: Option<trap::Label>,
-    pub fields: Vec<trap::Label>,
+    pub flds: Vec<trap::Label>,
     pub spread: Option<trap::Label>,
     pub has_ellipsis: bool,
     pub is_assignee_expr: bool,
@@ -1069,8 +1069,8 @@ impl TrapEntry for RecordExpr {
         if let Some(v) = self.path {
             out.add_tuple("record_expr_paths", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_expr_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        for (i, v) in self.flds.into_iter().enumerate() {
+            out.add_tuple("record_expr_flds", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.spread {
             out.add_tuple("record_expr_spreads", vec![trap::Arg::Label(id), v.into()]);
@@ -1089,7 +1089,7 @@ pub struct RecordPat {
     pub id: TrapId,
     pub location: Option<trap::Label>,
     pub path: Option<trap::Label>,
-    pub args: Vec<trap::Label>,
+    pub flds: Vec<trap::Label>,
     pub has_ellipsis: bool,
 }
 
@@ -1106,8 +1106,8 @@ impl TrapEntry for RecordPat {
         if let Some(v) = self.path {
             out.add_tuple("record_pat_paths", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("record_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        for (i, v) in self.flds.into_iter().enumerate() {
+            out.add_tuple("record_pat_flds", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if self.has_ellipsis {
             out.add_tuple("record_pat_has_ellipsis", vec![trap::Arg::Label(id)]);

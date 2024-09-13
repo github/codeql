@@ -1008,13 +1008,13 @@ private module Impl {
   }
 
   private Element getImmediateChildOfRecordExpr(RecordExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nPath, int nField, int nSpread |
+    exists(int b, int bExpr, int n, int nPath, int nFld, int nSpread |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nPath = n + 1 and
-      nField = nPath + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
-      nSpread = nField + 1 and
+      nFld = nPath + 1 + max(int i | i = -1 or exists(e.getFld(i)) | i) and
+      nSpread = nFld + 1 and
       (
         none()
         or
@@ -1022,21 +1022,21 @@ private module Impl {
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
-        result = e.getField(index - nPath) and
-        partialPredicateCall = "Field(" + (index - nPath).toString() + ")"
+        result = e.getFld(index - nPath) and
+        partialPredicateCall = "Fld(" + (index - nPath).toString() + ")"
         or
-        index = nField and result = e.getSpread() and partialPredicateCall = "Spread()"
+        index = nFld and result = e.getSpread() and partialPredicateCall = "Spread()"
       )
     )
   }
 
   private Element getImmediateChildOfRecordPat(RecordPat e, int index, string partialPredicateCall) {
-    exists(int b, int bPat, int n, int nPath, int nArg |
+    exists(int b, int bPat, int n, int nPath, int nFld |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
       n = bPat and
       nPath = n + 1 and
-      nArg = nPath + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
+      nFld = nPath + 1 + max(int i | i = -1 or exists(e.getFld(i)) | i) and
       (
         none()
         or
@@ -1044,8 +1044,8 @@ private module Impl {
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
-        result = e.getArg(index - nPath) and
-        partialPredicateCall = "Arg(" + (index - nPath).toString() + ")"
+        result = e.getFld(index - nPath) and
+        partialPredicateCall = "Fld(" + (index - nPath).toString() + ")"
       )
     )
   }

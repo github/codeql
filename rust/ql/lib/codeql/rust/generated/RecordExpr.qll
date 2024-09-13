@@ -43,24 +43,24 @@ module Generated {
     final predicate hasPath() { exists(this.getPath()) }
 
     /**
-     * Gets the `index`th field of this record expression (0-based).
+     * Gets the `index`th fld of this record expression (0-based).
      */
-    RecordExprField getField(int index) {
+    RecordExprField getFld(int index) {
       result =
         Synth::convertRecordExprFieldFromRaw(Synth::convertRecordExprToRaw(this)
               .(Raw::RecordExpr)
-              .getField(index))
+              .getFld(index))
     }
 
     /**
-     * Gets any of the fields of this record expression.
+     * Gets any of the flds of this record expression.
      */
-    final RecordExprField getAField() { result = this.getField(_) }
+    final RecordExprField getAFld() { result = this.getFld(_) }
 
     /**
-     * Gets the number of fields of this record expression.
+     * Gets the number of flds of this record expression.
      */
-    final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
+    final int getNumberOfFlds() { result = count(int i | exists(this.getFld(i))) }
 
     /**
      * Gets the spread of this record expression, if it exists.

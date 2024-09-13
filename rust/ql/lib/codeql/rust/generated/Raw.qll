@@ -1174,9 +1174,9 @@ module Raw {
     Path getPath() { record_expr_paths(this, result) }
 
     /**
-     * Gets the `index`th field of this record expression (0-based).
+     * Gets the `index`th fld of this record expression (0-based).
      */
-    RecordExprField getField(int index) { record_expr_fields(this, index, result) }
+    RecordExprField getFld(int index) { record_expr_flds(this, index, result) }
 
     /**
      * Gets the spread of this record expression, if it exists.
@@ -1213,9 +1213,9 @@ module Raw {
     Path getPath() { record_pat_paths(this, result) }
 
     /**
-     * Gets the `index`th argument of this record pat (0-based).
+     * Gets the `index`th fld of this record pat (0-based).
      */
-    RecordPatField getArg(int index) { record_pat_args(this, index, result) }
+    RecordPatField getFld(int index) { record_pat_flds(this, index, result) }
 
     /**
      * Holds if this record pat has ellipsis.

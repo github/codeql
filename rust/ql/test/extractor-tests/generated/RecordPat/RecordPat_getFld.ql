@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordExpr x, int index
+from RecordPat x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getField(index)
+select x, index, x.getFld(index)

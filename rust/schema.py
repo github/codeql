@@ -536,7 +536,7 @@ class RecordExpr(Expr):
     ```
     """
     path: optional[Path] | child
-    fields: list[RecordExprField] | child
+    flds: list[RecordExprField] | child
     spread: optional[Expr] | child
     has_ellipsis: predicate
     is_assignee_expr: predicate
@@ -919,7 +919,7 @@ class RecordPat(Pat):
     """
 
     path: optional[Path] | child
-    args: list[RecordPatField] | child
+    flds: list[RecordPatField] | child
     has_ellipsis: predicate
 
 

@@ -584,10 +584,10 @@ record_expr_paths(
 );
 
 #keyset[id, index]
-record_expr_fields(
+record_expr_flds(
   int id: @record_expr ref,
   int index: int ref,
-  int field: @record_expr_field ref
+  int fld: @record_expr_field ref
 );
 
 #keyset[id]
@@ -617,10 +617,10 @@ record_pat_paths(
 );
 
 #keyset[id, index]
-record_pat_args(
+record_pat_flds(
   int id: @record_pat ref,
   int index: int ref,
-  int arg: @record_pat_field ref
+  int fld: @record_pat_field ref
 );
 
 #keyset[id]

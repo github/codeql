@@ -43,24 +43,24 @@ module Generated {
     final predicate hasPath() { exists(this.getPath()) }
 
     /**
-     * Gets the `index`th argument of this record pat (0-based).
+     * Gets the `index`th fld of this record pat (0-based).
      */
-    RecordPatField getArg(int index) {
+    RecordPatField getFld(int index) {
       result =
         Synth::convertRecordPatFieldFromRaw(Synth::convertRecordPatToRaw(this)
               .(Raw::RecordPat)
-              .getArg(index))
+              .getFld(index))
     }
 
     /**
-     * Gets any of the arguments of this record pat.
+     * Gets any of the flds of this record pat.
      */
-    final RecordPatField getAnArg() { result = this.getArg(_) }
+    final RecordPatField getAFld() { result = this.getFld(_) }
 
     /**
-     * Gets the number of arguments of this record pat.
+     * Gets the number of flds of this record pat.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+    final int getNumberOfFlds() { result = count(int i | exists(this.getFld(i))) }
 
     /**
      * Holds if this record pat has ellipsis.

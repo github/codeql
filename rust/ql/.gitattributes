@@ -298,12 +298,12 @@
 /test/extractor-tests/generated/RangePat/RangePat_getEnd.ql linguist-generated
 /test/extractor-tests/generated/RangePat/RangePat_getStart.ql linguist-generated
 /test/extractor-tests/generated/RecordExpr/RecordExpr.ql linguist-generated
-/test/extractor-tests/generated/RecordExpr/RecordExpr_getField.ql linguist-generated
+/test/extractor-tests/generated/RecordExpr/RecordExpr_getFld.ql linguist-generated
 /test/extractor-tests/generated/RecordExpr/RecordExpr_getPath.ql linguist-generated
 /test/extractor-tests/generated/RecordExpr/RecordExpr_getSpread.ql linguist-generated
 /test/extractor-tests/generated/RecordExprField/RecordExprField.ql linguist-generated
 /test/extractor-tests/generated/RecordPat/RecordPat.ql linguist-generated
-/test/extractor-tests/generated/RecordPat/RecordPat_getArg.ql linguist-generated
+/test/extractor-tests/generated/RecordPat/RecordPat_getFld.ql linguist-generated
 /test/extractor-tests/generated/RecordPat/RecordPat_getPath.ql linguist-generated
 /test/extractor-tests/generated/RecordPatField/RecordPatField.ql linguist-generated
 /test/extractor-tests/generated/RefExpr/RefExpr.ql linguist-generated

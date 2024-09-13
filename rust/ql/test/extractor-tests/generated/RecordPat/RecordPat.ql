@@ -2,11 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordPat x, string hasPath, int getNumberOfArgs, string hasEllipsis
+from RecordPat x, string hasPath, int getNumberOfFlds, string hasEllipsis
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  getNumberOfArgs = x.getNumberOfArgs() and
+  getNumberOfFlds = x.getNumberOfFlds() and
   if x.hasEllipsis() then hasEllipsis = "yes" else hasEllipsis = "no"
-select x, "hasPath:", hasPath, "getNumberOfArgs:", getNumberOfArgs, "hasEllipsis:", hasEllipsis
+select x, "hasPath:", hasPath, "getNumberOfFlds:", getNumberOfFlds, "hasEllipsis:", hasEllipsis

@@ -262,7 +262,7 @@ impl CrateTranslator<'_> {
                 ellipsis,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path, location));
-                let args = args
+                let flds = args
                     .into_iter()
                     .map(|arg| self.emit_record_field_pat(arg, body, source_map))
                     .collect();
@@ -270,7 +270,7 @@ impl CrateTranslator<'_> {
                     id: TrapId::Star,
                     location,
                     path,
-                    args,
+                    flds,
                     has_ellipsis: *ellipsis,
                 })
             }
@@ -691,7 +691,7 @@ impl CrateTranslator<'_> {
                 is_assignee_expr,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path, location));
-                let fields = fields
+                let flds = fields
                     .into_iter()
                     .map(|field| self.emit_record_lit_field(field, body, source_map))
                     .collect();
@@ -700,7 +700,7 @@ impl CrateTranslator<'_> {
                     id: TrapId::Star,
                     location,
                     path,
-                    fields,
+                    flds,
                     spread,
                     has_ellipsis: *ellipsis,
                     is_assignee_expr: *is_assignee_expr,
