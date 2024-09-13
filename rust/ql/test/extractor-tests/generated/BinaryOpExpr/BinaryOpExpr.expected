@@ -1,5 +1,0 @@
-| gen_binary_op_expr.rs:5:5:5:9 | BinaryOpExpr | getLhs: | gen_binary_op_expr.rs:5:5:5:5 | PathExpr | getRhs: | gen_binary_op_expr.rs:5:9:5:9 | PathExpr | hasOp: | yes |
-| gen_binary_op_expr.rs:6:5:6:10 | BinaryOpExpr | getLhs: | gen_binary_op_expr.rs:6:5:6:5 | PathExpr | getRhs: | gen_binary_op_expr.rs:6:10:6:10 | PathExpr | hasOp: | yes |
-| gen_binary_op_expr.rs:7:5:7:10 | BinaryOpExpr | getLhs: | gen_binary_op_expr.rs:7:5:7:5 | PathExpr | getRhs: | gen_binary_op_expr.rs:7:10:7:10 | PathExpr | hasOp: | yes |
-| gen_binary_op_expr.rs:8:5:8:9 | BinaryOpExpr | getLhs: | gen_binary_op_expr.rs:8:5:8:5 | PathExpr | getRhs: | gen_binary_op_expr.rs:8:9:8:9 | PathExpr | hasOp: | yes |
-| gen_binary_op_expr.rs:9:5:9:10 | BinaryOpExpr | getLhs: | gen_binary_op_expr.rs:9:5:9:5 | PathExpr | getRhs: | gen_binary_op_expr.rs:9:10:9:10 | PathExpr | hasOp: | yes |

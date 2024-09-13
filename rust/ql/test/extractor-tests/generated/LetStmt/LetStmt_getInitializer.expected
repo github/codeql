@@ -1,4 +1,4 @@
-| gen_let_stmt.rs:5:9:5:9 | LetStmt | gen_let_stmt.rs:5:13:5:14 | LiteralExpr |
-| gen_let_stmt.rs:6:9:6:9 | LetStmt | gen_let_stmt.rs:6:18:6:19 | LiteralExpr |
+| gen_let_stmt.rs:5:9:5:9 | LetStmt | gen_let_stmt.rs:5:13:5:14 | Literal |
+| gen_let_stmt.rs:6:9:6:9 | LetStmt | gen_let_stmt.rs:6:18:6:19 | Literal |
 | gen_let_stmt.rs:9:9:9:14 | LetStmt | gen_let_stmt.rs:9:18:9:23 | TupleExpr |
 | gen_let_stmt.rs:10:9:10:15 | LetStmt | gen_let_stmt.rs:10:19:10:38 | CallExpr |

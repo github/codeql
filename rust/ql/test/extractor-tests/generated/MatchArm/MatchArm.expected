@@ -1,4 +1,4 @@
 | gen_match_arm.rs:6:9:6:15 | MatchArm | getPat: | gen_match_arm.rs:6:9:6:15 | TupleStructPat | hasGuard: | no | getExpr: | gen_match_arm.rs:6:20:6:20 | PathExpr |
-| gen_match_arm.rs:7:9:7:12 | MatchArm | getPat: | gen_match_arm.rs:7:9:7:12 | PathPat | hasGuard: | no | getExpr: | gen_match_arm.rs:7:17:7:17 | LiteralExpr |
-| gen_match_arm.rs:10:9:10:15 | MatchArm | getPat: | gen_match_arm.rs:10:9:10:15 | TupleStructPat | hasGuard: | yes | getExpr: | gen_match_arm.rs:10:30:10:34 | BinaryOpExpr |
-| gen_match_arm.rs:11:9:11:9 | MatchArm | getPat: | gen_match_arm.rs:11:9:11:9 | WildPat | hasGuard: | no | getExpr: | gen_match_arm.rs:11:14:11:14 | LiteralExpr |
+| gen_match_arm.rs:7:9:7:12 | MatchArm | getPat: | gen_match_arm.rs:7:9:7:12 | PathPat | hasGuard: | no | getExpr: | gen_match_arm.rs:7:17:7:17 | Literal |
+| gen_match_arm.rs:10:9:10:15 | MatchArm | getPat: | gen_match_arm.rs:10:9:10:15 | TupleStructPat | hasGuard: | yes | getExpr: | gen_match_arm.rs:10:30:10:34 | BinExpr |
+| gen_match_arm.rs:11:9:11:9 | MatchArm | getPat: | gen_match_arm.rs:11:9:11:9 | WildcardPat | hasGuard: | no | getExpr: | gen_match_arm.rs:11:14:11:14 | Literal |

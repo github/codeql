@@ -1,0 +1,8 @@
+| gen_literal.rs:5:5:5:6 | Literal |
+| gen_literal.rs:6:5:6:8 | Literal |
+| gen_literal.rs:7:5:7:19 | Literal |
+| gen_literal.rs:8:5:8:20 | Literal |
+| gen_literal.rs:9:5:9:7 | Literal |
+| gen_literal.rs:10:5:10:8 | Literal |
+| gen_literal.rs:11:5:11:20 | Literal |
+| gen_literal.rs:12:5:12:8 | Literal |
