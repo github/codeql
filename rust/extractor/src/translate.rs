@@ -117,11 +117,11 @@ impl CrateTranslator<'_> {
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
-                let expr = self.trap.emit(generated::LiteralExpr {
+                let expr = self.trap.emit(generated::Literal {
                     id: TrapId::Star,
                     location: None,
                 });
-                self.trap.emit(generated::LitPat {
+                self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -196,7 +196,7 @@ impl CrateTranslator<'_> {
         let RecordFieldPat { name, pat } = field_pat;
         let location = self.emit_location_for_pat(*pat, source_map);
         let pat = self.emit_pat(*pat, body, source_map);
-        self.trap.emit(generated::RecordFieldPat {
+        self.trap.emit(generated::RecordPatField {
             id: TrapId::Star,
             location,
             name: name.as_str().into(),
@@ -213,7 +213,7 @@ impl CrateTranslator<'_> {
         let RecordLitField { name, expr } = field_expr;
         let location = self.emit_location_for_expr(*expr, source_map);
         let expr = self.emit_expr(*expr, body, source_map);
-        self.trap.emit(generated::RecordLitField {
+        self.trap.emit(generated::RecordExprField {
             id: TrapId::Star,
             location,
             name: name.as_str().into(),
@@ -228,7 +228,7 @@ impl CrateTranslator<'_> {
                 id: TrapId::Star,
                 location,
             }),
-            ra_ap_hir_def::hir::Pat::Wild => self.trap.emit(generated::WildPat {
+            ra_ap_hir_def::hir::Pat::Wild => self.trap.emit(generated::WildcardPat {
                 id: TrapId::Star,
                 location,
             }),
@@ -320,7 +320,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Pat::Lit(expr) => {
                 let expr = self.emit_expr(*expr, body, source_map);
-                self.trap.emit(generated::LitPat {
+                self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -328,7 +328,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Pat::Bind { id, subpat } => {
                 let subpat = subpat.map(|pat| self.emit_pat(pat, body, source_map));
-                self.trap.emit(generated::BindPat {
+                self.trap.emit(generated::IdentPat {
                     id: TrapId::Star,
                     location,
                     subpat,
@@ -381,7 +381,7 @@ impl CrateTranslator<'_> {
         }
     }
     fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> trap::Label {
-        self.trap.emit(generated::TypeRef {
+        self.trap.emit(generated::Type {
             id: TrapId::Star,
             location: None,
         })
@@ -420,7 +420,7 @@ impl CrateTranslator<'_> {
                 // TODO: find a way to get the location of the entire statement
                 let location = self.emit_location_for_pat(*pat, source_map);
                 let pat = self.emit_pat(*pat, body, source_map);
-                let type_ref = type_ref
+                let type_ = type_ref
                     .as_ref()
                     .map(|type_ref| self.emit_type_ref(type_ref));
                 let initializer =
@@ -431,7 +431,7 @@ impl CrateTranslator<'_> {
                     id: TrapId::Star,
                     location,
                     pat,
-                    type_ref,
+                    type_,
                     initializer,
                     else_,
                 })
@@ -605,7 +605,7 @@ impl CrateTranslator<'_> {
                     .map(|e| self.emit_expr(*e, body, source_map))
                     .collect();
                 let generic_args = generic_args.as_ref().map(|_args| {
-                    self.trap.emit(generated::GenericArgs {
+                    self.trap.emit(generated::GenericArgList {
                         id: TrapId::Star,
                         location: None,
                     })
@@ -696,7 +696,7 @@ impl CrateTranslator<'_> {
                     .map(|field| self.emit_record_lit_field(field, body, source_map))
                     .collect();
                 let spread = spread.map(|expr_id| self.emit_expr(expr_id, body, source_map));
-                self.trap.emit(generated::RecordLitExpr {
+                self.trap.emit(generated::RecordExpr {
                     id: TrapId::Star,
                     location,
                     path,
@@ -725,12 +725,12 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::Cast { expr, type_ref } => {
                 let expr: trap::Label = self.emit_expr(*expr, body, source_map);
-                let type_ref: trap::Label = self.emit_type_ref(type_ref.as_ref());
+                let type_: trap::Label = self.emit_type_ref(type_ref.as_ref());
                 self.trap.emit(generated::CastExpr {
                     id: TrapId::Star,
                     location,
                     expr,
-                    type_ref,
+                    type_,
                 })
             }
             ra_ap_hir_def::hir::Expr::Ref {
@@ -762,7 +762,7 @@ impl CrateTranslator<'_> {
                     ra_ap_syntax::ast::UnaryOp::Not => "!",
                     ra_ap_syntax::ast::UnaryOp::Neg => "-",
                 };
-                self.trap.emit(generated::UnaryOpExpr {
+                self.trap.emit(generated::PrefixExpr {
                     id: TrapId::Star,
                     location,
                     expr,
@@ -773,7 +773,7 @@ impl CrateTranslator<'_> {
                 let lhs = self.emit_expr(*lhs, body, source_map);
                 let rhs = self.emit_expr(*rhs, body, source_map);
                 let op = op.map(|op| format!("{op}"));
-                self.trap.emit(generated::BinaryOpExpr {
+                self.trap.emit(generated::BinExpr {
                     id: TrapId::Star,
                     location,
                     lhs,
@@ -890,7 +890,7 @@ impl CrateTranslator<'_> {
                     repeat,
                 })
             }
-            ra_ap_hir_def::hir::Expr::Literal(_literal) => self.trap.emit(generated::LiteralExpr {
+            ra_ap_hir_def::hir::Expr::Literal(_literal) => self.trap.emit(generated::Literal {
                 id: TrapId::Star,
                 location,
             }),
@@ -910,7 +910,7 @@ impl CrateTranslator<'_> {
             }
             ra_ap_hir_def::hir::Expr::InlineAsm(asm) => {
                 let expr = self.emit_expr(asm.e, body, source_map);
-                self.trap.emit(generated::InlineAsmExpr {
+                self.trap.emit(generated::AsmExpr {
                     id: TrapId::Star,
                     location,
                     expr,
