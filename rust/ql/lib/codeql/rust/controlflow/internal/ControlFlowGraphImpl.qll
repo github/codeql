@@ -59,6 +59,10 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
+class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
   BinaryOpExprTree() { super.getOp() != "&&" and super.getOp() != "||" }
 
@@ -129,7 +133,8 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
   }
 }
 
-class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
+// NOTE: This covers both normal blocks, async blocks, and unsafe blocks
+class BaseBlockExprTree extends StandardPostOrderTree instanceof BlockExprBase {
   override ControlFlowTree getChildNode(int i) {
     result = super.getStatement(i)
     or
@@ -154,10 +159,15 @@ class BreakExprTree extends PostOrderTree instanceof BreakExpr {
 }
 
 class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getArg(i) }
+  override ControlFlowTree getChildNode(int i) {
+    result = super.getCallee() and
+    result = super.getArg(i + 1)
+  }
 }
 
 class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
+
+class ConstExprTree extends LeafTree instanceof ConstExpr { }
 
 class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
 
@@ -239,6 +249,10 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
+class RecordLitExprTree extends StandardPostOrderTree instanceof RecordLitExpr {
+  override ControlFlowTree getChildNode(int i) { result = super.getField(i).getExpr() }
+}
+
 class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
 
@@ -251,6 +265,16 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     last(super.getExpr(), pred, c) and succ = this
   }
+}
+
+class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
+  override ControlFlowTree getChildNode(int i) { result = super.getExpr(i) }
+}
+
+class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
+
+class UnaryOpExprTree extends StandardPostOrderTree instanceof UnaryOpExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 // A leaf tree for unimplemented nodes in the AST.
