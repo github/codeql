@@ -126,6 +126,7 @@ class Stmt(AstNode):
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class TypeRef(AstNode, Unimplemented):
     """
     The base class for type references.
@@ -138,6 +139,7 @@ class TypeRef(AstNode, Unimplemented):
     pass
 
 
+@rust.doc_test_signature("() -> ()")
 class Path(AstNode, Unimplemented):
     """
     A path. For example:
