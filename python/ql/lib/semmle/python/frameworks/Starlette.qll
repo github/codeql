@@ -68,12 +68,12 @@ module Starlette {
     /**
      * Gets the dataflow node corresponding to the allowed CORS methods
      */
-    DataFlow::Node allowed_methods() { result = this.getArgByName("allow_methods") }
+    DataFlow::Node getMethods() { result = this.getArgByName("allow_methods") }
 
     /**
      * Gets the dataflow node corresponding to the allowed CORS headers
      */
-    DataFlow::Node allowed_headers() { result = this.getArgByName("allow_headers") }
+    DataFlow::Node getHeaders() { result = this.getArgByName("allow_headers") }
   }
 
   /**
