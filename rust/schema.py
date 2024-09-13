@@ -127,7 +127,7 @@ class Stmt(AstNode):
 
 
 @rust.doc_test_signature("() -> ()")
-class TypeRef(AstNode, Unimplemented):
+class Type(AstNode, Unimplemented):
     """
     The base class for type references.
     ```
@@ -151,7 +151,7 @@ class Path(AstNode, Unimplemented):
 
 
 @rust.doc_test_signature("() -> ()")
-class GenericArgs(AstNode, Unimplemented):
+class GenericArgList(AstNode, Unimplemented):
     """
     The base class for generic arguments.
     ```
@@ -362,7 +362,7 @@ class MethodCallExpr(Expr):
     receiver: Expr | child
     method_name: string
     args: list[Expr] | child
-    generic_args: optional[GenericArgs] | child
+    generic_args: optional[GenericArgList] | child
 
 
 @rust.doc_test_signature("(x: i32) -> i32")
@@ -513,9 +513,9 @@ class YeetExpr(Expr):
 
 
 @rust.doc_test_signature("() -> ()")
-class RecordLitField(AstNode):
+class RecordExprField(AstNode):
     """
-    A field in a record literal. For example `a: 1` in:
+    A field in a record expression. For example `a: 1` in:
     ```
     Foo { a: 1, b: 2 };
     ```
@@ -525,9 +525,9 @@ class RecordLitField(AstNode):
 
 
 @rust.doc_test_signature("() -> ()")
-class RecordLitExpr(Expr):
+class RecordExpr(Expr):
     """
-    A record literal expression. For example:
+    A record expression. For example:
     ```
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
@@ -536,7 +536,7 @@ class RecordLitExpr(Expr):
     ```
     """
     path: optional[Path] | child
-    fields: list[RecordLitField] | child
+    fields: list[RecordExprField] | child
     spread: optional[Expr] | child
     has_ellipsis: predicate
     is_assignee_expr: predicate
@@ -577,7 +577,7 @@ class CastExpr(Expr):
     ```
     """
     expr: Expr | child
-    type_ref: TypeRef | child
+    type: Type | child
 
 
 @rust.doc_test_signature("() -> ()")
@@ -608,7 +608,7 @@ class BoxExpr(Expr):
 
 
 @rust.doc_test_signature("() -> ()")
-class UnaryOpExpr(Expr):
+class PrefixExpr(Expr):
     """
     A unary operation expression. For example:
     ```
@@ -622,7 +622,7 @@ class UnaryOpExpr(Expr):
 
 
 @rust.doc_test_signature("() -> ()")
-class BinaryOpExpr(Expr):
+class BinExpr(Expr):
     """
     A binary operation expression. For example:
     ```
@@ -685,8 +685,8 @@ class ClosureExpr(Expr):
     ```
     """
     args: list[Pat] | child
-    arg_types: list[optional[TypeRef]] | child
-    ret_type: optional[TypeRef] | child
+    arg_types: list[optional[Type]] | child
+    ret_type: optional[Type] | child
     body: Expr | child
     closure_kind: string
     is_move: predicate
@@ -741,7 +741,7 @@ class RepeatExpr(ArrayExpr):
 
 
 @rust.doc_test_signature("() -> ()")
-class LiteralExpr(Expr):
+class Literal(Expr):
     """
     A literal expression. For example:
     ```
@@ -776,12 +776,12 @@ class OffsetOfExpr(Expr):
     builtin # offset_of(Struct, field);
     ```
     """
-    container: TypeRef | child
+    container: Type | child
     fields: list[string]
 
 
 @rust.doc_test_signature("() -> ()")
-class InlineAsmExpr(Expr):
+class AsmExpr(Expr):
     """
     An inline assembly expression. For example:
     ```
@@ -809,7 +809,7 @@ class LetStmt(Stmt):
 
     """
     pat: Pat | child
-    type_ref: optional[TypeRef] | child
+    type: optional[Type] | child
     initializer: optional[Expr] | child
     else_: optional[Expr] | child
 
@@ -858,7 +858,7 @@ class MissingPat(Pat):
 
 
 @rust.doc_test_signature("() -> ()")
-class WildPat(Pat):
+class WildcardPat(Pat):
     """
     A wildcard pattern. For example:
     ```
@@ -895,7 +895,7 @@ class OrPat(Pat):
 
 
 @rust.doc_test_signature("() -> ()")
-class RecordFieldPat(AstNode):
+class RecordPatField(AstNode):
     """
     A field in a record pattern. For example `a: 1` in:
     ```
@@ -919,7 +919,7 @@ class RecordPat(Pat):
     """
 
     path: optional[Path] | child
-    args: list[RecordFieldPat] | child
+    args: list[RecordPatField] | child
     has_ellipsis: predicate
 
 
@@ -970,7 +970,7 @@ class PathPat(Pat):
 
 
 @rust.doc_test_signature("() -> ()")
-class LitPat(Pat):
+class LiteralPat(Pat):
     """
     A literal pattern. For example:
     ```
@@ -984,7 +984,7 @@ class LitPat(Pat):
 
 
 @rust.doc_test_signature("() -> ()")
-class BindPat(Pat):
+class IdentPat(Pat):
     """
     A binding pattern. For example:
     ```
