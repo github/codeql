@@ -14,7 +14,7 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * A missing expression, used as a place holder for incomplete syntax, as well as bodies of functions that are defined externally.
+   * A missing expression, used as a placeholder for incomplete syntax.
    *
    * ```
    * let x = non_existing_macro!();
