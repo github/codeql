@@ -767,7 +767,10 @@ newtype TTranslatedElement =
   } or
   // A statement
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
+  // The `__except` block of a `__try __except` statement
   TTranslatedMicrosoftTryExceptHandler(MicrosoftTryExceptStmt stmt) or
+  // The `__finally` block of a `__try __finally` statement
+  TTranslatedMicrosoftTryFinallyHandler(MicrosoftTryFinallyStmt stmt) or
   // A function
   TTranslatedFunction(Function func) { translateFunction(func) } or
   // A constructor init list

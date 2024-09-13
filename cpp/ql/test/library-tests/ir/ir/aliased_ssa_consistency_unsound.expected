@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.c:62:5:62:26 | Chi: call to ExRaiseAccessViolation | Instruction 'Chi: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:57:6:57:30 | void throw_in_try_with_finally() | void throw_in_try_with_finally() |
-| ir.c:73:5:73:26 | Chi: call to ExRaiseAccessViolation | Instruction 'Chi: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:70:6:70:39 | void throw_in_try_with_throw_in_finally() | void throw_in_try_with_throw_in_finally() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
