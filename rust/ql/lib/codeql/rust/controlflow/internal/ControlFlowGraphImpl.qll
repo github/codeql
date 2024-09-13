@@ -59,22 +59,6 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-class FunctionTree extends LeafTree instanceof Function { }
-
-class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
-  override ControlFlowTree getChildNode(int i) {
-    result = super.getStatement(i)
-    or
-    not exists(super.getStatement(i)) and
-    (exists(super.getStatement(i - 1)) or i = 0) and
-    result = super.getTail()
-  }
-}
-
-class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getArg(i) }
-}
-
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
   BinaryOpExprTree() { super.getOp() != "&&" and super.getOp() != "||" }
 
@@ -127,6 +111,44 @@ class LogicalAndBinaryOpExprTree extends PostOrderTree instanceof BinaryOpExpr {
   }
 }
 
+class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
+  override ControlFlowTree getChildNode(int i) {
+    result = super.getStatement(i)
+    or
+    not exists(super.getStatement(i)) and
+    (exists(super.getStatement(i - 1)) or i = 0) and
+    result = super.getTail()
+  }
+}
+
+class BreakExprTree extends PostOrderTree instanceof BreakExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+
+  override predicate first(AstNode node) {
+    first(super.getExpr(), node)
+    or
+    not super.hasExpr() and node = this
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    last(super.getExpr(), pred, c) and succ = this
+  }
+}
+
+class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
+  override ControlFlowTree getChildNode(int i) { result = super.getArg(i) }
+}
+
+class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
+
+class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
+
+class ExprStmtTree extends StandardPostOrderTree instanceof ExprStmt {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
+class FunctionTree extends LeafTree instanceof Function { }
+
 class IfExprTree extends PostOrderTree instanceof IfExpr {
   override predicate first(AstNode node) { first(super.getCondition(), node) }
 
@@ -157,10 +179,6 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
   }
 }
 
-class ExprStmtTree extends StandardPostOrderTree instanceof ExprStmt {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
-}
-
 class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
@@ -172,6 +190,8 @@ class LetStmtTree extends StandardPostOrderTree instanceof LetStmt {
     i = 0 and result = super.getInitializer()
   }
 }
+
+class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
 class LoopExprTree extends PostOrderTree instanceof LoopExpr {
   override predicate propagatesAbnormal(AstNode child) { none() }
@@ -199,6 +219,8 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
   }
 }
 
+class PathExprTree extends LeafTree instanceof PathExpr { }
+
 class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
 
@@ -212,28 +234,6 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
     last(super.getExpr(), pred, c) and succ = this
   }
 }
-
-class BreakExprTree extends PostOrderTree instanceof BreakExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
-
-  override predicate first(AstNode node) {
-    first(super.getExpr(), node)
-    or
-    not super.hasExpr() and node = this
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this
-  }
-}
-
-class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
-
-class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
-
-class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
-
-class PathExprTree extends LeafTree instanceof PathExpr { }
 
 // A leaf tree for unimplemented nodes in the AST.
 class UnimplementedTree extends LeafTree instanceof Unimplemented { }
