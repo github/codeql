@@ -119,3 +119,9 @@ predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
 
 /** Holds if `c` is a valid completion for `n`. */
 predicate completionIsValidFor(Completion c, AstNode n) { c.isValidFor(n) }
+
+/** Holds if `c` is a completion that interacts with a loop such as `loop`, `for`, `while`. */
+predicate isLoopCompletion(Completion c) {
+  c instanceof BreakCompletion or
+  c instanceof ContinueCompletion
+}

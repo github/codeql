@@ -174,7 +174,7 @@ class LetStmtTree extends StandardPostOrderTree instanceof LetStmt {
 }
 
 class LoopExprTree extends PostOrderTree instanceof LoopExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getBody() }
+  override predicate propagatesAbnormal(AstNode child) { none() }
 
   override predicate first(AstNode node) { first(super.getBody(), node) }
 
@@ -188,6 +188,14 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
     last(super.getBody(), pred, c) and
     c instanceof BreakCompletion and
     succ = this
+  }
+
+  override predicate last(AstNode last, Completion c) {
+    super.last(last, c)
+    or
+    last(super.getBody(), last, c) and
+    not completionIsNormal(c) and
+    not isLoopCompletion(c)
   }
 }
 
