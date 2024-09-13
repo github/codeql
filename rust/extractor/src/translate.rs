@@ -32,7 +32,6 @@ pub struct CrateTranslator<'a> {
     krate: &'a Crate,
     vfs: &'a Vfs,
     archiver: &'a Archiver,
-    extract_dependencies: bool,
     file_labels: HashMap<PathBuf, FileData>,
 }
 
@@ -43,7 +42,6 @@ impl CrateTranslator<'_> {
         krate: &'a Crate,
         vfs: &'a Vfs,
         archiver: &'a Archiver,
-        extract_dependencies: bool,
     ) -> CrateTranslator<'a> {
         CrateTranslator {
             db,
@@ -51,7 +49,6 @@ impl CrateTranslator<'_> {
             krate,
             vfs,
             archiver,
-            extract_dependencies,
             file_labels: HashMap::new(),
         }
     }
@@ -942,17 +939,11 @@ impl CrateTranslator<'_> {
                 let name = function.name(self.db);
                 let location = self.emit_location(function);
 
-                let body = if self.extract_dependencies || self.krate.origin(self.db).is_local() {
-                    let (body, source_map) = self.db.body_with_source_map(def.into());
-                    let txt = body.pretty_print(self.db, def.into(), Edition::Edition2021);
-                    log::trace!("{}", &txt);
-                    self.emit_expr(body.body_expr, &body, &source_map)
-                } else {
-                    self.trap.emit(generated::MissingExpr {
-                        id: TrapId::Star,
-                        location: None,
-                    })
-                };
+                let (body, source_map) = self.db.body_with_source_map(def.into());
+                let txt = body.pretty_print(self.db, def.into(), Edition::Edition2021);
+                log::trace!("{}", &txt);
+                let body = self.emit_expr(body.body_expr, &body, &source_map);
+
                 labels.push(self.trap.emit(generated::Function {
                     id: trap_key![module_label, name.as_str()],
                     location,
