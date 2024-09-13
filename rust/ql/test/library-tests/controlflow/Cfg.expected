@@ -5,15 +5,15 @@ nodes
 | test.rs:1:1:7:1 | main | semmle.order | 4 |
 | test.rs:1:18:7:1 | BlockExpr | semmle.order | 5 |
 | test.rs:2:5:6:5 | IfExpr | semmle.order | 6 |
-| test.rs:2:8:2:12 | Literal | semmle.order | 7 |
-| test.rs:2:8:2:21 | BinExpr | semmle.order | 8 |
-| test.rs:2:17:2:21 | Literal | semmle.order | 9 |
+| test.rs:2:8:2:12 | LiteralExpr | semmle.order | 7 |
+| test.rs:2:8:2:21 | BinaryExpr | semmle.order | 8 |
+| test.rs:2:17:2:21 | LiteralExpr | semmle.order | 9 |
 | test.rs:2:23:4:5 | BlockExpr | semmle.order | 10 |
 | test.rs:3:9:3:20 | CallExpr | semmle.order | 11 |
-| test.rs:3:19:3:19 | Literal | semmle.order | 12 |
+| test.rs:3:19:3:19 | LiteralExpr | semmle.order | 12 |
 | test.rs:4:12:6:5 | BlockExpr | semmle.order | 13 |
 | test.rs:5:9:5:20 | CallExpr | semmle.order | 14 |
-| test.rs:5:19:5:19 | Literal | semmle.order | 15 |
+| test.rs:5:19:5:19 | LiteralExpr | semmle.order | 15 |
 | test.rs:9:1:16:1 | decrement | semmle.order | 16 |
 | test.rs:9:1:16:1 | enter decrement | semmle.order | 17 |
 | test.rs:9:1:16:1 | exit decrement | semmle.order | 18 |
@@ -21,17 +21,17 @@ nodes
 | test.rs:9:29:16:1 | BlockExpr | semmle.order | 20 |
 | test.rs:11:5:15:5 | IfExpr | semmle.order | 21 |
 | test.rs:11:8:11:8 | PathExpr | semmle.order | 22 |
-| test.rs:11:8:11:13 | BinExpr | semmle.order | 23 |
-| test.rs:11:13:11:13 | Literal | semmle.order | 24 |
+| test.rs:11:8:11:13 | BinaryExpr | semmle.order | 23 |
+| test.rs:11:13:11:13 | LiteralExpr | semmle.order | 24 |
 | test.rs:11:15:13:5 | BlockExpr | semmle.order | 25 |
-| test.rs:12:9:12:9 | Literal | semmle.order | 26 |
+| test.rs:12:9:12:9 | LiteralExpr | semmle.order | 26 |
 | test.rs:13:12:15:5 | BlockExpr | semmle.order | 27 |
 | test.rs:14:9:14:9 | PathExpr | semmle.order | 28 |
-| test.rs:14:9:14:13 | BinExpr | semmle.order | 29 |
-| test.rs:14:13:14:13 | Literal | semmle.order | 30 |
+| test.rs:14:9:14:13 | BinaryExpr | semmle.order | 29 |
+| test.rs:14:13:14:13 | LiteralExpr | semmle.order | 30 |
 edges
-| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | Literal | semmle.label |  |
-| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | Literal | semmle.order | 1 |
+| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | LiteralExpr | semmle.label |  |
+| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | LiteralExpr | semmle.order | 1 |
 | test.rs:1:1:7:1 | exit main (normal) | test.rs:1:1:7:1 | exit main | semmle.label |  |
 | test.rs:1:1:7:1 | exit main (normal) | test.rs:1:1:7:1 | exit main | semmle.order | 1 |
 | test.rs:1:1:7:1 | main | test.rs:1:1:7:1 | exit main (normal) | semmle.label |  |
@@ -40,26 +40,26 @@ edges
 | test.rs:1:18:7:1 | BlockExpr | test.rs:1:1:7:1 | main | semmle.order | 1 |
 | test.rs:2:5:6:5 | IfExpr | test.rs:1:18:7:1 | BlockExpr | semmle.label |  |
 | test.rs:2:5:6:5 | IfExpr | test.rs:1:18:7:1 | BlockExpr | semmle.order | 1 |
-| test.rs:2:8:2:12 | Literal | test.rs:2:17:2:21 | Literal | semmle.label |  |
-| test.rs:2:8:2:12 | Literal | test.rs:2:17:2:21 | Literal | semmle.order | 1 |
-| test.rs:2:8:2:21 | BinExpr | test.rs:3:19:3:19 | Literal | semmle.label | true |
-| test.rs:2:8:2:21 | BinExpr | test.rs:3:19:3:19 | Literal | semmle.order | 1 |
-| test.rs:2:8:2:21 | BinExpr | test.rs:5:19:5:19 | Literal | semmle.label | false |
-| test.rs:2:8:2:21 | BinExpr | test.rs:5:19:5:19 | Literal | semmle.order | 2 |
-| test.rs:2:17:2:21 | Literal | test.rs:2:8:2:21 | BinExpr | semmle.label |  |
-| test.rs:2:17:2:21 | Literal | test.rs:2:8:2:21 | BinExpr | semmle.order | 1 |
+| test.rs:2:8:2:12 | LiteralExpr | test.rs:2:17:2:21 | LiteralExpr | semmle.label |  |
+| test.rs:2:8:2:12 | LiteralExpr | test.rs:2:17:2:21 | LiteralExpr | semmle.order | 1 |
+| test.rs:2:8:2:21 | BinaryExpr | test.rs:3:19:3:19 | LiteralExpr | semmle.label | true |
+| test.rs:2:8:2:21 | BinaryExpr | test.rs:3:19:3:19 | LiteralExpr | semmle.order | 1 |
+| test.rs:2:8:2:21 | BinaryExpr | test.rs:5:19:5:19 | LiteralExpr | semmle.label | false |
+| test.rs:2:8:2:21 | BinaryExpr | test.rs:5:19:5:19 | LiteralExpr | semmle.order | 2 |
+| test.rs:2:17:2:21 | LiteralExpr | test.rs:2:8:2:21 | BinaryExpr | semmle.label |  |
+| test.rs:2:17:2:21 | LiteralExpr | test.rs:2:8:2:21 | BinaryExpr | semmle.order | 1 |
 | test.rs:2:23:4:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.label |  |
 | test.rs:2:23:4:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.order | 1 |
 | test.rs:3:9:3:20 | CallExpr | test.rs:2:23:4:5 | BlockExpr | semmle.label |  |
 | test.rs:3:9:3:20 | CallExpr | test.rs:2:23:4:5 | BlockExpr | semmle.order | 1 |
-| test.rs:3:19:3:19 | Literal | test.rs:3:9:3:20 | CallExpr | semmle.label |  |
-| test.rs:3:19:3:19 | Literal | test.rs:3:9:3:20 | CallExpr | semmle.order | 1 |
+| test.rs:3:19:3:19 | LiteralExpr | test.rs:3:9:3:20 | CallExpr | semmle.label |  |
+| test.rs:3:19:3:19 | LiteralExpr | test.rs:3:9:3:20 | CallExpr | semmle.order | 1 |
 | test.rs:4:12:6:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.label |  |
 | test.rs:4:12:6:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.order | 1 |
 | test.rs:5:9:5:20 | CallExpr | test.rs:4:12:6:5 | BlockExpr | semmle.label |  |
 | test.rs:5:9:5:20 | CallExpr | test.rs:4:12:6:5 | BlockExpr | semmle.order | 1 |
-| test.rs:5:19:5:19 | Literal | test.rs:5:9:5:20 | CallExpr | semmle.label |  |
-| test.rs:5:19:5:19 | Literal | test.rs:5:9:5:20 | CallExpr | semmle.order | 1 |
+| test.rs:5:19:5:19 | LiteralExpr | test.rs:5:9:5:20 | CallExpr | semmle.label |  |
+| test.rs:5:19:5:19 | LiteralExpr | test.rs:5:9:5:20 | CallExpr | semmle.order | 1 |
 | test.rs:9:1:16:1 | decrement | test.rs:9:1:16:1 | exit decrement (normal) | semmle.label |  |
 | test.rs:9:1:16:1 | decrement | test.rs:9:1:16:1 | exit decrement (normal) | semmle.order | 1 |
 | test.rs:9:1:16:1 | enter decrement | test.rs:11:8:11:8 | PathExpr | semmle.label |  |
@@ -70,23 +70,23 @@ edges
 | test.rs:9:29:16:1 | BlockExpr | test.rs:9:1:16:1 | decrement | semmle.order | 1 |
 | test.rs:11:5:15:5 | IfExpr | test.rs:9:29:16:1 | BlockExpr | semmle.label |  |
 | test.rs:11:5:15:5 | IfExpr | test.rs:9:29:16:1 | BlockExpr | semmle.order | 1 |
-| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | Literal | semmle.label |  |
-| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | Literal | semmle.order | 1 |
-| test.rs:11:8:11:13 | BinExpr | test.rs:12:9:12:9 | Literal | semmle.label | true |
-| test.rs:11:8:11:13 | BinExpr | test.rs:12:9:12:9 | Literal | semmle.order | 1 |
-| test.rs:11:8:11:13 | BinExpr | test.rs:14:9:14:9 | PathExpr | semmle.label | false |
-| test.rs:11:8:11:13 | BinExpr | test.rs:14:9:14:9 | PathExpr | semmle.order | 2 |
-| test.rs:11:13:11:13 | Literal | test.rs:11:8:11:13 | BinExpr | semmle.label |  |
-| test.rs:11:13:11:13 | Literal | test.rs:11:8:11:13 | BinExpr | semmle.order | 1 |
+| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | LiteralExpr | semmle.label |  |
+| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:11:8:11:13 | BinaryExpr | test.rs:12:9:12:9 | LiteralExpr | semmle.label | true |
+| test.rs:11:8:11:13 | BinaryExpr | test.rs:12:9:12:9 | LiteralExpr | semmle.order | 1 |
+| test.rs:11:8:11:13 | BinaryExpr | test.rs:14:9:14:9 | PathExpr | semmle.label | false |
+| test.rs:11:8:11:13 | BinaryExpr | test.rs:14:9:14:9 | PathExpr | semmle.order | 2 |
+| test.rs:11:13:11:13 | LiteralExpr | test.rs:11:8:11:13 | BinaryExpr | semmle.label |  |
+| test.rs:11:13:11:13 | LiteralExpr | test.rs:11:8:11:13 | BinaryExpr | semmle.order | 1 |
 | test.rs:11:15:13:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.label |  |
 | test.rs:11:15:13:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.order | 1 |
-| test.rs:12:9:12:9 | Literal | test.rs:11:15:13:5 | BlockExpr | semmle.label |  |
-| test.rs:12:9:12:9 | Literal | test.rs:11:15:13:5 | BlockExpr | semmle.order | 1 |
+| test.rs:12:9:12:9 | LiteralExpr | test.rs:11:15:13:5 | BlockExpr | semmle.label |  |
+| test.rs:12:9:12:9 | LiteralExpr | test.rs:11:15:13:5 | BlockExpr | semmle.order | 1 |
 | test.rs:13:12:15:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.label |  |
 | test.rs:13:12:15:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.order | 1 |
-| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | Literal | semmle.label |  |
-| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | Literal | semmle.order | 1 |
-| test.rs:14:9:14:13 | BinExpr | test.rs:13:12:15:5 | BlockExpr | semmle.label |  |
-| test.rs:14:9:14:13 | BinExpr | test.rs:13:12:15:5 | BlockExpr | semmle.order | 1 |
-| test.rs:14:13:14:13 | Literal | test.rs:14:9:14:13 | BinExpr | semmle.label |  |
-| test.rs:14:13:14:13 | Literal | test.rs:14:9:14:13 | BinExpr | semmle.order | 1 |
+| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | LiteralExpr | semmle.label |  |
+| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:14:9:14:13 | BinaryExpr | test.rs:13:12:15:5 | BlockExpr | semmle.label |  |
+| test.rs:14:9:14:13 | BinaryExpr | test.rs:13:12:15:5 | BlockExpr | semmle.order | 1 |
+| test.rs:14:13:14:13 | LiteralExpr | test.rs:14:9:14:13 | BinaryExpr | semmle.label |  |
+| test.rs:14:13:14:13 | LiteralExpr | test.rs:14:9:14:13 | BinaryExpr | semmle.order | 1 |
