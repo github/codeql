@@ -1,6 +1,10 @@
 import powershell
 
+private predicate isParameterName(@variable_expression ve) { parameter(_, ve, _, _) }
+
 class VarAccess extends @variable_expression, Expr {
+  VarAccess() { not isParameterName(this) }
+
   override string toString() { result = this.getUserPath() }
 
   override SourceLocation getLocation() { variable_expression_location(this, result) }
@@ -26,4 +30,22 @@ class VarAccess extends @variable_expression, Expr {
   boolean isVariable() { variable_expression(this, _, _, _, _, _, _, _, _, _, result, _) }
 
   boolean isDriveQualified() { variable_expression(this, _, _, _, _, _, _, _, _, _, _, result) }
+
+  Variable getVariable() { result.getAnAccess() = this }
+}
+
+private predicate isVariableWriteAccess(Expr e) {
+  e = any(AssignStmt assign).getLeftHandSide()
+  or
+  e = any(ConvertExpr convert | isVariableWriteAccess(convert)).getExpr()
+  or
+  e = any(ArrayLiteral array | isVariableWriteAccess(array)).getAnElement()
+}
+
+class VarReadAccess extends VarAccess {
+  VarReadAccess() { not this instanceof VarWriteAccess }
+}
+
+class VarWriteAccess extends VarAccess {
+  VarWriteAccess() { isVariableWriteAccess(this) }
 }

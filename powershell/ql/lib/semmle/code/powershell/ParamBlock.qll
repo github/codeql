@@ -13,7 +13,7 @@ class ParamBlock extends @param_block, Ast {
 
   Attribute getAnAttribute() { result = this.getAttribute(_) }
 
-  Parameter getParameter(int i) { param_block_parameter(this, i, result) }
+  Parameter getParameter(int i) { result.hasParameterBlock(this, i) }
 
   Parameter getAParameter() { result = this.getParameter(_) }
 }

@@ -9,11 +9,11 @@ query predicate cmdExpr(CmdExpr cmd, Expr e) {
     e = cmd.getExpr()
 }
 
-query predicate invokeMemoryExpression(InvokeMemberExpression invoke, Expr e, int i, Expr arg) {
-    e = invoke.getExpression() and
+query predicate invokeMemoryExpression(InvokeMemberExpr invoke, Expr e, int i, Expr arg) {
+    e = invoke.getBase() and
     arg = invoke.getArgument(i)
 }
 
-query predicate expandableString(ExpandableStringExpression expandable, int i, Expr e) {
+query predicate expandableString(ExpandableStringExpr expandable, int i, Expr e) {
     e = expandable.getExpr(i)
 }

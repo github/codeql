@@ -35,7 +35,7 @@ class NonMemberFunction extends @function_definition, Stmt, AbstractFunction {
 
   predicate isWorkflow() { function_definition(this, _, _, _, true) }
 
-  override Parameter getFunctionParameter(int i) { function_definition_parameter(this, i, result) }
+  override Parameter getFunctionParameter(int i) { result.isFunctionParameter(this, i) }
 }
 
 class MemberFunction extends @function_member, Member, AbstractFunction {
@@ -57,7 +57,7 @@ class MemberFunction extends @function_member, Member, AbstractFunction {
 
   predicate isConstructor() { function_member(this, _, true, _, _, _, _, _, _) }
 
-  override Parameter getFunctionParameter(int i) { function_member_parameter(this, i, result) }
+  override Parameter getFunctionParameter(int i) { result.isFunctionParameter(this, i) }
 
   TypeConstraint getTypeConstraint() { function_member_return_type(this, result) }
 }

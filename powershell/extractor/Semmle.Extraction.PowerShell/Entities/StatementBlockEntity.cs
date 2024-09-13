@@ -32,6 +32,8 @@ namespace Semmle.Extraction.PowerShell.Entities
                         EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Traps[index]));
                 }
             }
+            
+            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
         }
 
         public override bool NeedsPopulation => true;

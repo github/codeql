@@ -9,9 +9,9 @@ class NamedBlock extends @named_block, Ast {
 
   int getNumTraps() { named_block(this, _, result) }
 
-  Stmt getStatement(int i) { named_block_statement(this, i, result) }
+  Stmt getStmt(int i) { named_block_statement(this, i, result) }
 
-  Stmt getAStatement() { result = this.getStatement(_) }
+  Stmt getAStmt() { result = this.getStmt(_) }
 
   TrapStmt getTrap(int i) { named_block_trap(this, i, result) }
 

@@ -3,7 +3,12 @@ import powershell
 class Parameter extends @parameter, Ast {
   override string toString() { result = this.getName().toString() }
 
-  VarAccess getName() { parameter(this, result, _, _) }
+  string getName() {
+    exists(@variable_expression ve |
+      parameter(this, ve, _, _) and
+      variable_expression(ve, result, _, _, _, _, _, _, _, _, _, _)
+    )
+  }
 
   string getStaticType() { parameter(this, _, result, _) }
 
