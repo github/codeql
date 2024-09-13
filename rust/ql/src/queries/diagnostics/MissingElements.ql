@@ -1,26 +1,51 @@
 /**
  * @name Missing Elements
  * @description List all elements that weren't extracted due to unimplemented features or parse errors.
- * @kind diagnostic
  * @id rust/diagnostics/missing-elements
  */
 
 import rust
 
-query predicate listUnimplemented(AstNode n, string msg) {
-  // not extracted yet
-  n instanceof Unimplemented and
-  msg = "Not yet implemented."
+/**
+ * Gets `l.toString()`, but with any locations outside of the source location prefix cleaned up.
+ */
+bindingset[l]
+string cleanLocationString(Location l) {
+  if exists(l.getFile().getRelativePath()) or l instanceof EmptyLocation
+  then result = l.toString()
+  else l.getFile().getParentContainer().getAbsolutePath() + result = l.toString() // remove the directory from the string
 }
 
-query predicate listMissingExpr(Expr e, string msg) {
-  // gaps in the AST due to parse errors
-  e instanceof MissingExpr and
-  msg = "Missing expression."
+/**
+ * Gets a string along the lines of " (x2)", corresponding to the number `i`. For `i = 1`, the result is the empty string.
+ */
+bindingset[i]
+string multipleString(int i) {
+  i = 1 and result = ""
+  or
+  i > 1 and result = " (x" + i.toString() + ")"
 }
 
-query predicate listMissingPat(Pat p, string msg) {
+query predicate listUnimplemented(string location, string msg) {
+  // something that is not extracted yet
+  exists(int c |
+    c = strictcount(Unimplemented n | cleanLocationString(n.getLocation()) = location) and
+    msg = "Not yet implemented" + multipleString(c) + "."
+  )
+}
+
+query predicate listMissingExpr(string location, string msg) {
   // gaps in the AST due to parse errors
-  p instanceof MissingPat and
-  msg = "Missing pattern."
+  exists(int c |
+    c = strictcount(MissingExpr e | cleanLocationString(e.getLocation()) = location) and
+    msg = "Missing expression" + multipleString(c) + "."
+  )
+}
+
+query predicate listMissingPat(string location, string msg) {
+  // gaps in the AST due to parse errors
+  exists(int c |
+    c = strictcount(MissingPat p | cleanLocationString(p.getLocation()) = location) and
+    msg = "Missing pattern" + multipleString(c) + "."
+  )
 }
