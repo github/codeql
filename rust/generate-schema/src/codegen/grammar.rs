@@ -21,7 +21,7 @@ use crate::{
     project_root,
 };
 
-mod ast_src;
+pub mod ast_src;
 use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
 
 pub(crate) fn generate(check: bool) {
@@ -621,10 +621,16 @@ fn pluralize(s: &str) -> String {
 }
 
 impl Field {
-    fn is_many(&self) -> bool {
-        matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
+    pub fn is_many(&self) -> bool {
+        matches!(
+            self,
+            Field::Node {
+                cardinality: Cardinality::Many,
+                ..
+            }
+        )
     }
-    fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
+    pub fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
         match self {
             Field::Token(token) => {
                 let token: proc_macro2::TokenStream = token.parse().unwrap();
@@ -633,7 +639,7 @@ impl Field {
             _ => None,
         }
     }
-    fn method_name(&self) -> String {
+    pub fn method_name(&self) -> String {
         match self {
             Field::Token(name) => {
                 let name = match name.as_str() {
@@ -679,7 +685,7 @@ impl Field {
             }
         }
     }
-    fn ty(&self) -> proc_macro2::Ident {
+    pub fn ty(&self) -> proc_macro2::Ident {
         match self {
             Field::Token(_) => format_ident!("SyntaxToken"),
             Field::Node { ty, .. } => format_ident!("{}", ty),
@@ -696,7 +702,7 @@ fn clean_token_name(name: &str) -> String {
     }
 }
 
-fn lower(grammar: &Grammar) -> AstSrc {
+pub(crate) fn lower(grammar: &Grammar) -> AstSrc {
     let mut res = AstSrc {
         tokens:
             "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"

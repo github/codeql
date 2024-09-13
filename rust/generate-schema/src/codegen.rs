@@ -1,5 +1,4 @@
 pub mod grammar;
-
 pub fn reformat(x: String) -> String {
     x
 }
