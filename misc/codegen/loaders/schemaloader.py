@@ -135,7 +135,7 @@ def load(m: types.ModuleType) -> schema.Schema:
         if hasattr(defs, name):
             continue
         if name == "__includes":
-            includes = set(data)
+            includes = data
             continue
         if name.startswith("__"):
             continue

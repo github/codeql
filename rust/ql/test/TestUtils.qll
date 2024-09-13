@@ -1,13 +1,10 @@
-private import codeql.rust.elements
+private import rust
 
 cached
 predicate toBeTested(Element e) {
-  exists(File f |
-    f.getName().matches("%rust/ql/test%") and
-    (
-      e = f
-      or
-      e.(Locatable).getLocation().getFile() = f
-    )
-  )
+  not e instanceof Locatable or
+  fileIsInTest(e.(Locatable).getFile())
 }
+
+cached
+predicate fileIsInTest(File f) { f.getAbsolutePath().matches("%rust/ql/test%") }

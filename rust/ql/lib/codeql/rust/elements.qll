@@ -21,15 +21,12 @@ import codeql.rust.elements.ClosureExpr
 import codeql.rust.elements.ConstBlockPat
 import codeql.rust.elements.ConstExpr
 import codeql.rust.elements.ContinueExpr
-import codeql.rust.elements.DbFile
-import codeql.rust.elements.DbLocation
 import codeql.rust.elements.Declaration
 import codeql.rust.elements.Element
 import codeql.rust.elements.ElementListExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.ExprStmt
 import codeql.rust.elements.FieldExpr
-import codeql.rust.elements.File
 import codeql.rust.elements.Function
 import codeql.rust.elements.IfExpr
 import codeql.rust.elements.IndexExpr
@@ -41,7 +38,6 @@ import codeql.rust.elements.LetStmt
 import codeql.rust.elements.LitPat
 import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.Locatable
-import codeql.rust.elements.Location
 import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.MatchArm
 import codeql.rust.elements.MatchExpr
@@ -73,8 +69,6 @@ import codeql.rust.elements.TypeRef
 import codeql.rust.elements.UnaryOpExpr
 import codeql.rust.elements.UnderscoreExpr
 import codeql.rust.elements.Unimplemented
-import codeql.rust.elements.UnknownFile
-import codeql.rust.elements.UnknownLocation
 import codeql.rust.elements.UnsafeBlockExpr
 import codeql.rust.elements.WildPat
 import codeql.rust.elements.YeetExpr
