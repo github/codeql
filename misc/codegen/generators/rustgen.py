@@ -20,7 +20,7 @@ def _get_type(t: str) -> str:
         case "int":
             return "usize"
         case _ if t[0].isupper():
-            return f"{t}TrapLabel"
+            return f"trap::Label<{t}>"
         case "boolean":
             assert False, "boolean unsupported"
         case _:

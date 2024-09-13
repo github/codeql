@@ -1,5 +1,5 @@
 use crate::archive::Archiver;
-use crate::trap::{AsTrapKeyPart, Label, TrapFile, TrapId};
+use crate::trap::{AsTrapKeyPart, Label, TrapEntry, TrapFile, TrapId};
 use crate::{generated, trap_key};
 use codeql_extractor::trap;
 use ra_ap_hir::db::{DefDatabase, InternDatabase};
@@ -71,9 +71,9 @@ impl CrateTranslator<'_> {
         })
     }
 
-    fn emit_location_for_ast_ptr<L: Label, T: AstNode>(
+    fn emit_location_for_ast_ptr<E: TrapEntry, T: AstNode>(
         &mut self,
-        label: L,
+        label: Label<E>,
         source: ra_ap_hir::InFile<ra_ap_syntax::AstPtr<T>>,
     ) {
         source
@@ -89,7 +89,7 @@ impl CrateTranslator<'_> {
 
     fn emit_location_for_expr(
         &mut self,
-        label: generated::ElementTrapLabel, // TODO: should be ExprTrapLabel
+        label: Label<generated::Element>, // TODO: should be ExprTrapLabel
         expr: ra_ap_hir_def::hir::ExprId,
         source_map: &BodySourceMap,
     ) {
@@ -101,7 +101,7 @@ impl CrateTranslator<'_> {
     fn emit_location_for_pat(
         &mut self,
         // should be Pat, but we're using for other entities for now
-        label: generated::ElementTrapLabel,
+        label: Label<generated::Element>,
         pat_id: ra_ap_hir_def::hir::PatId,
         source_map: &BodySourceMap,
     ) {
@@ -115,7 +115,7 @@ impl CrateTranslator<'_> {
         pat: &ra_ap_hir_def::hir::LiteralOrConst,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::PatTrapLabel {
+    ) -> Label<generated::Pat> {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
                 let expr = self.trap.emit(generated::LiteralExpr { id: TrapId::Star });
@@ -132,9 +132,9 @@ impl CrateTranslator<'_> {
         }
     }
 
-    fn emit_location_for_label<T: Label>(
+    fn emit_location_for_label<E: TrapEntry>(
         &mut self,
-        label: T,
+        label: Label<E>,
         label_id: ra_ap_hir_def::hir::LabelId,
         source_map: &BodySourceMap,
     ) {
@@ -144,7 +144,7 @@ impl CrateTranslator<'_> {
             self.emit_location_for_ast_ptr(label, source)
         }
     }
-    fn emit_location<L: Label, T: HasSource>(&mut self, label: L, entity: T)
+    fn emit_location<E: TrapEntry, T: HasSource>(&mut self, label: Label<E>, entity: T)
     where
         T::Ast: AstNode,
     {
@@ -157,9 +157,9 @@ impl CrateTranslator<'_> {
                 self.emit_location_for_textrange(label, data, range);
             });
     }
-    fn emit_location_for_textrange<L: Label>(
+    fn emit_location_for_textrange<E: TrapEntry>(
         &mut self,
-        label: L,
+        label: Label<E>,
         data: FileData,
         range: TextRange,
     ) {
@@ -177,7 +177,7 @@ impl CrateTranslator<'_> {
         label_id: LabelId,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::LabelTrapLabel {
+    ) -> Label<generated::Label> {
         let label = &body.labels[label_id];
         let ret = self.trap.emit(generated::Label {
             id: TrapId::Star,
@@ -187,11 +187,11 @@ impl CrateTranslator<'_> {
         ret
     }
 
-    fn emit_unimplemented(&mut self) -> generated::UnimplementedTrapLabel {
+    fn emit_unimplemented(&mut self) -> Label<generated::Unimplemented> {
         self.trap
             .emit(generated::Unimplemented { id: TrapId::Star })
     }
-    fn emit_path(&mut self, _path: &Path) -> generated::UnimplementedTrapLabel {
+    fn emit_path(&mut self, _path: &Path) -> Label<generated::Unimplemented> {
         self.emit_unimplemented()
     }
 
@@ -200,7 +200,7 @@ impl CrateTranslator<'_> {
         field_pat: &RecordFieldPat,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::RecordFieldPatTrapLabel {
+    ) -> Label<generated::RecordFieldPat> {
         let RecordFieldPat { name, pat } = field_pat;
         let pat_label = self.emit_pat(*pat, body, source_map);
         let ret = self.trap.emit(generated::RecordFieldPat {
@@ -217,7 +217,7 @@ impl CrateTranslator<'_> {
         field_expr: &RecordLitField,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::RecordLitFieldTrapLabel {
+    ) -> Label<generated::RecordLitField> {
         let RecordLitField { name, expr } = field_expr;
         let expr_label = self.emit_expr(*expr, body, source_map);
         let ret = self.trap.emit(generated::RecordLitField {
@@ -234,9 +234,9 @@ impl CrateTranslator<'_> {
         pat_id: PatId,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::PatTrapLabel {
+    ) -> Label<generated::Pat> {
         let pat = &body.pats[pat_id];
-        let ret: generated::PatTrapLabel = match pat {
+        let ret: Label<generated::Pat> = match pat {
             ra_ap_hir_def::hir::Pat::Missing => self
                 .trap
                 .emit(generated::MissingPat { id: TrapId::Star })
@@ -407,7 +407,7 @@ impl CrateTranslator<'_> {
         self.emit_location_for_pat(ret.into(), pat_id, source_map);
         ret
     }
-    fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> generated::TypeRefTrapLabel {
+    fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> Label<generated::TypeRef> {
         self.emit_unimplemented().into()
     }
     fn emit_match_arm(
@@ -415,7 +415,7 @@ impl CrateTranslator<'_> {
         arm: &MatchArm,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::MatchArmTrapLabel {
+    ) -> Label<generated::MatchArm> {
         let pat = self.emit_pat(arm.pat, body, source_map);
         let guard = arm.guard.map(|g| self.emit_expr(g, body, source_map));
         let expr = self.emit_expr(arm.expr, body, source_map);
@@ -434,7 +434,7 @@ impl CrateTranslator<'_> {
         stmt: &Statement,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::StmtTrapLabel {
+    ) -> Label<generated::Stmt> {
         match stmt {
             Statement::Let {
                 pat,
@@ -483,9 +483,9 @@ impl CrateTranslator<'_> {
         expr_id: ExprId,
         body: &Body,
         source_map: &BodySourceMap,
-    ) -> generated::ExprTrapLabel {
+    ) -> Label<generated::Expr> {
         let expr = &body[expr_id];
-        let ret: generated::ExprTrapLabel = match expr {
+        let ret: Label<generated::Expr> = match expr {
             ra_ap_hir_def::hir::Expr::Missing => self
                 .trap
                 .emit(generated::MissingExpr { id: TrapId::Star })
@@ -976,11 +976,11 @@ impl CrateTranslator<'_> {
 
     fn emit_definition(
         &mut self,
-        module_label: generated::ModuleTrapLabel,
+        module_label: Label<generated::Module>,
         id: ModuleDef,
-        labels: &mut Vec<generated::DeclarationTrapLabel>,
+        labels: &mut Vec<Label<generated::Declaration>>,
     ) {
-        let label: generated::DeclarationTrapLabel = match id {
+        let label: Label<generated::Declaration> = match id {
             ModuleDef::Module(_) => self.emit_unimplemented().into(),
             ModuleDef::Function(function) => {
                 let def: ra_ap_hir::DefWithBody = function.into();
@@ -1050,7 +1050,7 @@ impl CrateTranslator<'_> {
         labels.push(label);
     }
 
-    fn emit_module(&mut self, label: generated::ModuleTrapLabel, module: Module) {
+    fn emit_module(&mut self, label: Label<generated::Module>, module: Module) {
         let mut children = Vec::new();
         for id in module.declarations(self.db) {
             self.emit_definition(label, id, &mut children);
@@ -1063,7 +1063,7 @@ impl CrateTranslator<'_> {
 
     pub fn emit_crate(&mut self) -> std::io::Result<()> {
         self.emit_file(self.krate.root_file(self.db));
-        let mut map = HashMap::<Module, generated::ModuleTrapLabel>::new();
+        let mut map = HashMap::<Module, Label<generated::Module>>::new();
         for module in self.krate.modules(self.db) {
             let mut key = String::new();
             if let Some(parent) = module.parent(self.db) {

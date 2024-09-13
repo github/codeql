@@ -5,33 +5,6 @@
 use crate::trap;
 {{#classes}}
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct {{name}}TrapLabel(trap::UntypedLabel);
-
-impl From<trap::UntypedLabel> for {{name}}TrapLabel {
-    fn from(value: trap::UntypedLabel) -> Self {
-        Self(value)
-    }
-}
-
-impl  From<{{name}}TrapLabel> for trap::TrapId<{{name}}> {
-    fn from(value: {{name}}TrapLabel) -> Self {
-        Self::Label(value)
-    }
-}
-
-impl trap::Label for {{name}}TrapLabel {
-    fn as_untyped(&self) -> trap::UntypedLabel {
-        self.0
-    }
-}
-
-impl From<{{name}}TrapLabel> for trap::Arg {
-    fn from(value: {{name}}TrapLabel) -> Self {
-        value.0.into()
-    }
-}
-
 {{#table_name}}
 #[derive(Debug)]
 pub struct {{name}} {
@@ -48,7 +21,7 @@ impl trap::TrapEntry for {{name}} {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
-    fn emit(self, id: Self::Label, out: &mut trap::Writer) {
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         {{#single_field_entries}}
         out.add_tuple("{{table_name}}", vec![id.into(){{#fields}}, self.{{field_name}}.into(){{/fields}}]);
         {{/single_field_entries}}
@@ -87,18 +60,14 @@ pub struct {{name}} {
     unused: ()
 }
 {{/table_name}}
-
-impl trap::TrapClass for {{name}} {
-    type Label = {{name}}TrapLabel;
-}
-{{/classes}}
-
-// Conversions
-{{#classes}}
 {{#ancestors}}
-impl From<{{name}}TrapLabel> for {{.}}TrapLabel {
-    fn from(value: {{name}}TrapLabel) -> Self {
-        value.0.into()
+
+impl From<trap::Label<{{name}}>> for trap::Label<{{.}}> {
+    fn from(value: trap::Label<{{name}}>) -> Self {
+        // SAFETY: this is safe because in the dbscheme {{name}} is a subclass of {{.}}
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
     }
 }
 {{/ancestors}}
