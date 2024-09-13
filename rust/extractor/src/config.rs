@@ -5,8 +5,10 @@ use figment::{
     providers::{Env, Serialized},
     Figment,
 };
+use num_traits::Zero;
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
+use std::ops::Not;
 use std::path::PathBuf;
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]

@@ -17,6 +17,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                 if p.path.is_ident(&format_ident!("bool")) {
                     return quote! {
                         #[arg(long)]
+                        #[serde(skip_serializing_if="<&bool>::not")]
                         #id: bool,
                     };
                 }
@@ -24,6 +25,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
             if id == &format_ident!("verbose") {
                 quote! {
                     #[arg(long, short, action=clap::ArgAction::Count)]
+                    #[serde(skip_serializing_if="u8::is_zero")]
                     #id: u8,
                 }
             } else if id == &format_ident!("inputs") {
