@@ -20,7 +20,7 @@ impl MyStruct {
 
 pub fn my_func() {
     let _a = 1;
-    let b: MyStruct =
+    let b =
         MyStruct {
             name: String::from("abc"),
             value: 123,
