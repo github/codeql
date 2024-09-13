@@ -1,7 +1,6 @@
 use crate::config::Compression;
-use crate::generated;
 use crate::{config, path};
-use codeql_extractor::trap;
+use codeql_extractor::{extractor, trap};
 use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
@@ -82,29 +81,35 @@ impl TrapFile {
     pub fn emit_location(
         &mut self,
         file_label: trap::Label,
+        entity_label: trap::Label,
         start: LineCol,
         end: LineCol,
-    ) -> trap::Label {
+    ) {
         let start_line = 1 + start.line as usize;
         let start_column = 1 + start.col as usize;
         let end_line = 1 + end.line as usize;
         let end_column = 1 + end.col as usize;
-        let (ret, _) = self.writer.location_label(trap::Location {
-            file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        });
-        self.emit(generated::DbLocation {
-            id: ret.into(),
-            file: file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        });
-        ret
+        let location_label = extractor::location_label(
+            &mut self.writer,
+            trap::Location {
+                file_label,
+                start_line,
+                start_column,
+                end_line,
+                end_column,
+            },
+        );
+        self.writer.add_tuple(
+            "locatable_locations",
+            vec![
+                trap::Arg::Label(entity_label),
+                trap::Arg::Label(location_label),
+            ],
+        );
+    }
+
+    pub fn emit_file(&mut self, absolute_path: &Path) -> trap::Label {
+        extractor::populate_file(&mut self.writer, absolute_path)
     }
 
     pub fn label(&mut self, id: TrapId) -> trap::Label {
@@ -157,9 +162,11 @@ impl TrapFileProvider {
         );
         debug!("creating trap file {}", path.display());
         path = self.trap_dir.join(path);
+        let mut writer = trap::Writer::new();
+        extractor::populate_empty_location(&mut writer);
         TrapFile {
             path,
-            writer: trap::Writer::new(),
+            writer,
             compression: self.compression,
         }
     }

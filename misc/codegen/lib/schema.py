@@ -118,7 +118,7 @@ class Class:
 @dataclass
 class Schema:
     classes: Dict[str, Class] = field(default_factory=dict)
-    includes: Set[str] = field(default_factory=set)
+    includes: List[str] = field(default_factory=list)
     null: Optional[str] = None
 
     @property
