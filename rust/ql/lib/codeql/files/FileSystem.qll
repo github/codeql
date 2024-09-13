@@ -33,4 +33,13 @@ class Folder = Impl::Folder;
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
   predicate fromSource() { any() }
+
+  /**
+   * Gets the number of lines containing code in this file. This value
+   * is approximate.
+   */
+  int getNumberOfLinesOfCode() {
+    result =
+      count(int line | exists(Location loc | loc.getFile() = this and loc.getStartLine() = line and not loc instanceof EmptyLocation))
+  }
 }
