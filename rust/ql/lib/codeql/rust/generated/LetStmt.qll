@@ -9,7 +9,7 @@ private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.Type
 
 /**
  * INTERNAL: This module contains the fully generated definition of `LetStmt` and should not
@@ -41,17 +41,16 @@ module Generated {
     }
 
     /**
-     * Gets the type reference of this let statement, if it exists.
+     * Gets the type of this let statement, if it exists.
      */
-    TypeRef getTypeRef() {
-      result =
-        Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTypeRef())
+    Type getType() {
+      result = Synth::convertTypeFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getType())
     }
 
     /**
-     * Holds if `getTypeRef()` exists.
+     * Holds if `getType()` exists.
      */
-    final predicate hasTypeRef() { exists(this.getTypeRef()) }
+    final predicate hasType() { exists(this.getType()) }
 
     /**
      * Gets the initializer of this let statement, if it exists.

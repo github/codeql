@@ -2,7 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-from OffsetOfExpr x, TypeRef getContainer, int getNumberOfFields
+from OffsetOfExpr x, Type getContainer, int getNumberOfFields
 where
   toBeTested(x) and
   not x.isUnknown() and

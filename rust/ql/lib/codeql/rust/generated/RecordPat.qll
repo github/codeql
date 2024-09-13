@@ -8,7 +8,7 @@ private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
-import codeql.rust.elements.RecordFieldPat
+import codeql.rust.elements.RecordPatField
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordPat` and should not
@@ -45,9 +45,9 @@ module Generated {
     /**
      * Gets the `index`th argument of this record pat (0-based).
      */
-    RecordFieldPat getArg(int index) {
+    RecordPatField getArg(int index) {
       result =
-        Synth::convertRecordFieldPatFromRaw(Synth::convertRecordPatToRaw(this)
+        Synth::convertRecordPatFieldFromRaw(Synth::convertRecordPatToRaw(this)
               .(Raw::RecordPat)
               .getArg(index))
     }
@@ -55,7 +55,7 @@ module Generated {
     /**
      * Gets any of the arguments of this record pat.
      */
-    final RecordFieldPat getAnArg() { result = this.getArg(_) }
+    final RecordPatField getAnArg() { result = this.getArg(_) }
 
     /**
      * Gets the number of arguments of this record pat.

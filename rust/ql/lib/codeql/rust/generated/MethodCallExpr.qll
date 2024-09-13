@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.GenericArgs
+import codeql.rust.elements.GenericArgList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MethodCallExpr` and should not
@@ -65,9 +65,9 @@ module Generated {
     /**
      * Gets the generic arguments of this method call expression, if it exists.
      */
-    GenericArgs getGenericArgs() {
+    GenericArgList getGenericArgs() {
       result =
-        Synth::convertGenericArgsFromRaw(Synth::convertMethodCallExprToRaw(this)
+        Synth::convertGenericArgListFromRaw(Synth::convertMethodCallExprToRaw(this)
               .(Raw::MethodCallExpr)
               .getGenericArgs())
     }

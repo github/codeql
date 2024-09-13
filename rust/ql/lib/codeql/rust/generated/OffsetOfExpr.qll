@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.Type
 
 /**
  * INTERNAL: This module contains the fully generated definition of `OffsetOfExpr` and should not
@@ -28,9 +28,9 @@ module Generated {
     /**
      * Gets the container of this offset of expression.
      */
-    TypeRef getContainer() {
+    Type getContainer() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertOffsetOfExprToRaw(this)
+        Synth::convertTypeFromRaw(Synth::convertOffsetOfExprToRaw(this)
               .(Raw::OffsetOfExpr)
               .getContainer())
     }

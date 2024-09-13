@@ -102,8 +102,8 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class GenericArgs extends @generic_args, AstNode, Unimplemented {
-    override string toString() { result = "GenericArgs" }
+  class GenericArgList extends @generic_arg_list, AstNode, Unimplemented {
+    override string toString() { result = "GenericArgList" }
   }
 
   /**
@@ -179,44 +179,44 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field in a record expression. For example `a: 1` in:
+   * ```
+   * Foo { a: 1, b: 2 };
+   * ```
+   */
+  class RecordExprField extends @record_expr_field, AstNode {
+    override string toString() { result = "RecordExprField" }
+
+    /**
+     * Gets the name of this record expression field.
+     */
+    string getName() { record_expr_fields(this, result, _) }
+
+    /**
+     * Gets the expression of this record expression field.
+     */
+    Expr getExpr() { record_expr_fields(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A field in a record pattern. For example `a: 1` in:
    * ```
    * let Foo { a: 1, b: 2 } = foo;
    * ```
    */
-  class RecordFieldPat extends @record_field_pat, AstNode {
-    override string toString() { result = "RecordFieldPat" }
+  class RecordPatField extends @record_pat_field, AstNode {
+    override string toString() { result = "RecordPatField" }
 
     /**
-     * Gets the name of this record field pat.
+     * Gets the name of this record pat field.
      */
-    string getName() { record_field_pats(this, result, _) }
+    string getName() { record_pat_fields(this, result, _) }
 
     /**
-     * Gets the pat of this record field pat.
+     * Gets the pat of this record pat field.
      */
-    Pat getPat() { record_field_pats(this, _, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A field in a record literal. For example `a: 1` in:
-   * ```
-   * Foo { a: 1, b: 2 };
-   * ```
-   */
-  class RecordLitField extends @record_lit_field, AstNode {
-    override string toString() { result = "RecordLitField" }
-
-    /**
-     * Gets the name of this record lit field.
-     */
-    string getName() { record_lit_fields(this, result, _) }
-
-    /**
-     * Gets the expression of this record lit field.
-     */
-    Expr getExpr() { record_lit_fields(this, _, result) }
+    Pat getPat() { record_pat_fields(this, _, result) }
   }
 
   /**
@@ -234,8 +234,8 @@ module Raw {
    * let z: Option<i32>;
    * ```
    */
-  class TypeRef extends @type_ref, AstNode, Unimplemented {
-    override string toString() { result = "TypeRef" }
+  class Type extends @type, AstNode, Unimplemented {
+    override string toString() { result = "Type" }
   }
 
   /**
@@ -247,6 +247,24 @@ module Raw {
    * ```
    */
   class ArrayExpr extends @array_expr, Expr { }
+
+  /**
+   * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```
+   * unsafe {
+   *     builtin # asm(_);
+   * }
+   * ```
+   */
+  class AsmExpr extends @asm_expr, Expr {
+    override string toString() { result = "AsmExpr" }
+
+    /**
+     * Gets the expression of this asm expression.
+     */
+    Expr getExpr() { asm_exprs(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -299,53 +317,23 @@ module Raw {
    * x += y;
    * ```
    */
-  class BinaryOpExpr extends @binary_op_expr, Expr {
-    override string toString() { result = "BinaryOpExpr" }
+  class BinExpr extends @bin_expr, Expr {
+    override string toString() { result = "BinExpr" }
 
     /**
-     * Gets the lhs of this binary op expression.
+     * Gets the lhs of this bin expression.
      */
-    Expr getLhs() { binary_op_exprs(this, result, _) }
+    Expr getLhs() { bin_exprs(this, result, _) }
 
     /**
-     * Gets the rhs of this binary op expression.
+     * Gets the rhs of this bin expression.
      */
-    Expr getRhs() { binary_op_exprs(this, _, result) }
+    Expr getRhs() { bin_exprs(this, _, result) }
 
     /**
-     * Gets the op of this binary op expression, if it exists.
+     * Gets the op of this bin expression, if it exists.
      */
-    string getOp() { binary_op_expr_ops(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A binding pattern. For example:
-   * ```
-   * match x {
-   *     Some(y) => y,
-   *     None => 0,
-   * };
-   * ```
-   * ```
-   * match x {
-   *     y@Some(_) => y,
-   *     None => 0,
-   * };
-   * ```
-   */
-  class BindPat extends @bind_pat, Pat {
-    override string toString() { result = "BindPat" }
-
-    /**
-     * Gets the binding of this bind pat.
-     */
-    string getBindingId() { bind_pats(this, result) }
-
-    /**
-     * Gets the subpat of this bind pat, if it exists.
-     */
-    Pat getSubpat() { bind_pat_subpats(this, result) }
+    string getOp() { bin_expr_ops(this, result) }
   }
 
   /**
@@ -475,9 +463,9 @@ module Raw {
     Expr getExpr() { cast_exprs(this, result, _) }
 
     /**
-     * Gets the type reference of this cast expression.
+     * Gets the type of this cast expression.
      */
-    TypeRef getTypeRef() { cast_exprs(this, _, result) }
+    Type getType() { cast_exprs(this, _, result) }
   }
 
   /**
@@ -504,12 +492,12 @@ module Raw {
     /**
      * Gets the `index`th argument type of this closure expression (0-based), if it exists.
      */
-    TypeRef getArgType(int index) { closure_expr_arg_types(this, index, result) }
+    Type getArgType(int index) { closure_expr_arg_types(this, index, result) }
 
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    TypeRef getRetType() { closure_expr_ret_types(this, result) }
+    Type getRetType() { closure_expr_ret_types(this, result) }
 
     /**
      * Gets the body of this closure expression.
@@ -664,6 +652,36 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A binding pattern. For example:
+   * ```
+   * match x {
+   *     Some(y) => y,
+   *     None => 0,
+   * };
+   * ```
+   * ```
+   * match x {
+   *     y@Some(_) => y,
+   *     None => 0,
+   * };
+   * ```
+   */
+  class IdentPat extends @ident_pat, Pat {
+    override string toString() { result = "IdentPat" }
+
+    /**
+     * Gets the binding of this ident pat.
+     */
+    string getBindingId() { ident_pats(this, result) }
+
+    /**
+     * Gets the subpat of this ident pat, if it exists.
+     */
+    Pat getSubpat() { ident_pat_subpats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * An `if` expression. For example:
    * ```
    * if x == 42 {
@@ -726,24 +744,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An inline assembly expression. For example:
-   * ```
-   * unsafe {
-   *     builtin # asm(_);
-   * }
-   * ```
-   */
-  class InlineAsmExpr extends @inline_asm_expr, Expr {
-    override string toString() { result = "InlineAsmExpr" }
-
-    /**
-     * Gets the expression of this inline asm expression.
-     */
-    Expr getExpr() { inline_asm_exprs(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An item statement. For example:
    * ```
    * fn print_hello() {
@@ -801,9 +801,9 @@ module Raw {
     Pat getPat() { let_stmts(this, result) }
 
     /**
-     * Gets the type reference of this let statement, if it exists.
+     * Gets the type of this let statement, if it exists.
      */
-    TypeRef getTypeRef() { let_stmt_type_refs(this, result) }
+    Type getType() { let_stmt_types(this, result) }
 
     /**
      * Gets the initializer of this let statement, if it exists.
@@ -814,25 +814,6 @@ module Raw {
      * Gets the else of this let statement, if it exists.
      */
     Expr getElse() { let_stmt_elses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A literal pattern. For example:
-   * ```
-   * match x {
-   *     42 => "ok",
-   *     _ => "fail",
-   * }
-   * ```
-   */
-  class LitPat extends @lit_pat, Pat {
-    override string toString() { result = "LitPat" }
-
-    /**
-     * Gets the expression of this lit pat.
-     */
-    Expr getExpr() { lit_pats(this, result) }
   }
 
   /**
@@ -848,8 +829,27 @@ module Raw {
    * r"Hello, world!";
    * true;
    */
-  class LiteralExpr extends @literal_expr, Expr {
-    override string toString() { result = "LiteralExpr" }
+  class Literal extends @literal, Expr {
+    override string toString() { result = "Literal" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A literal pattern. For example:
+   * ```
+   * match x {
+   *     42 => "ok",
+   *     _ => "fail",
+   * }
+   * ```
+   */
+  class LiteralPat extends @literal_pat, Pat {
+    override string toString() { result = "LiteralPat" }
+
+    /**
+     * Gets the expression of this literal pat.
+     */
+    Expr getExpr() { literal_pats(this, result) }
   }
 
   /**
@@ -949,7 +949,7 @@ module Raw {
     /**
      * Gets the generic arguments of this method call expression, if it exists.
      */
-    GenericArgs getGenericArgs() { method_call_expr_generic_args(this, result) }
+    GenericArgList getGenericArgs() { method_call_expr_generic_args(this, result) }
   }
 
   /**
@@ -1012,7 +1012,7 @@ module Raw {
     /**
      * Gets the container of this offset of expression.
      */
-    TypeRef getContainer() { offset_of_exprs(this, result) }
+    Type getContainer() { offset_of_exprs(this, result) }
 
     /**
      * Gets the `index`th field of this offset of expression (0-based).
@@ -1078,6 +1078,29 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A unary operation expression. For example:
+   * ```
+   * let x = -42
+   * let y = !true
+   * let z = *ptr
+   * ```
+   */
+  class PrefixExpr extends @prefix_expr, Expr {
+    override string toString() { result = "PrefixExpr" }
+
+    /**
+     * Gets the expression of this prefix expression.
+     */
+    Expr getExpr() { prefix_exprs(this, result, _) }
+
+    /**
+     * Gets the op of this prefix expression.
+     */
+    string getOp() { prefix_exprs(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A range expression. For example:
    * ```
    * let x = 1..=10;
@@ -1134,7 +1157,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A record literal expression. For example:
+   * A record expression. For example:
    * ```
    * let first = Foo { a: 1, b: 2 };
    * let second = Foo { a: 2, ..first };
@@ -1142,33 +1165,33 @@ module Raw {
    * Foo { .. } = second;
    * ```
    */
-  class RecordLitExpr extends @record_lit_expr, Expr {
-    override string toString() { result = "RecordLitExpr" }
+  class RecordExpr extends @record_expr, Expr {
+    override string toString() { result = "RecordExpr" }
 
     /**
-     * Gets the path of this record lit expression, if it exists.
+     * Gets the path of this record expression, if it exists.
      */
-    Path getPath() { record_lit_expr_paths(this, result) }
+    Path getPath() { record_expr_paths(this, result) }
 
     /**
-     * Gets the `index`th field of this record lit expression (0-based).
+     * Gets the `index`th field of this record expression (0-based).
      */
-    RecordLitField getField(int index) { record_lit_expr_fields(this, index, result) }
+    RecordExprField getField(int index) { record_expr_fields(this, index, result) }
 
     /**
-     * Gets the spread of this record lit expression, if it exists.
+     * Gets the spread of this record expression, if it exists.
      */
-    Expr getSpread() { record_lit_expr_spreads(this, result) }
+    Expr getSpread() { record_expr_spreads(this, result) }
 
     /**
-     * Holds if this record lit expression has ellipsis.
+     * Holds if this record expression has ellipsis.
      */
-    predicate hasEllipsis() { record_lit_expr_has_ellipsis(this) }
+    predicate hasEllipsis() { record_expr_has_ellipsis(this) }
 
     /**
-     * Holds if this record lit expression is assignee expression.
+     * Holds if this record expression is assignee expression.
      */
-    predicate isAssigneeExpr() { record_lit_expr_is_assignee_expr(this) }
+    predicate isAssigneeExpr() { record_expr_is_assignee_expr(this) }
   }
 
   /**
@@ -1192,7 +1215,7 @@ module Raw {
     /**
      * Gets the `index`th argument of this record pat (0-based).
      */
-    RecordFieldPat getArg(int index) { record_pat_args(this, index, result) }
+    RecordPatField getArg(int index) { record_pat_args(this, index, result) }
 
     /**
      * Holds if this record pat has ellipsis.
@@ -1381,29 +1404,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A unary operation expression. For example:
-   * ```
-   * let x = -42
-   * let y = !true
-   * let z = *ptr
-   * ```
-   */
-  class UnaryOpExpr extends @unary_op_expr, Expr {
-    override string toString() { result = "UnaryOpExpr" }
-
-    /**
-     * Gets the expression of this unary op expression.
-     */
-    Expr getExpr() { unary_op_exprs(this, result, _) }
-
-    /**
-     * Gets the op of this unary op expression.
-     */
-    string getOp() { unary_op_exprs(this, _, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An underscore expression. For example:
    * ```
    * _ = 42;
@@ -1427,8 +1427,8 @@ module Raw {
    * let _ = 42;
    * ```
    */
-  class WildPat extends @wild_pat, Pat {
-    override string toString() { result = "WildPat" }
+  class WildcardPat extends @wildcard_pat, Pat {
+    override string toString() { result = "WildcardPat" }
   }
 
   /**
