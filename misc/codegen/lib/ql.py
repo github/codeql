@@ -101,6 +101,7 @@ class Class:
 
     name: str
     bases: List[Base] = field(default_factory=list)
+    bases_impl: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
@@ -115,6 +116,8 @@ class Class:
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
+        self.bases_impl = [Base(str(b), str(prev)) for b, prev in zip(
+            self.bases_impl, itertools.chain([""], self.bases_impl))]
         if self.properties:
             self.properties[0].first = True
 
@@ -159,12 +162,25 @@ class Stub:
     base_import: str
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
-    internal: bool = False
     doc: List[str] = field(default_factory=list)
 
     @property
     def has_synth_accessors(self) -> bool:
         return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc)
+
+
+@dataclass
+class ClassPublic:
+    template: ClassVar = 'ql_class_public'
+
+    name: str
+    imports: List[str] = field(default_factory=list)
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
 
     @property
     def has_qldoc(self) -> bool:
