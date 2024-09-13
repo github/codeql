@@ -212,7 +212,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfType(Type e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfTypeRef(TypeRef e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int bUnimplemented, int n |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
@@ -290,7 +290,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfBinExpr(BinExpr e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfBinaryExpr(BinaryExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nLhs, int nRhs |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
@@ -665,7 +665,9 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfLiteral(Literal e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfLiteralExpr(
+    LiteralExpr e, int index, string partialPredicateCall
+  ) {
     exists(int b, int bExpr, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
@@ -1284,7 +1286,7 @@ private module Impl {
     or
     result = getImmediateChildOfRecordPatField(e, index, partialAccessor)
     or
-    result = getImmediateChildOfType(e, index, partialAccessor)
+    result = getImmediateChildOfTypeRef(e, index, partialAccessor)
     or
     result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
     or
@@ -1292,7 +1294,7 @@ private module Impl {
     or
     result = getImmediateChildOfBecomeExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfBinExpr(e, index, partialAccessor)
+    result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBoxExpr(e, index, partialAccessor)
     or
@@ -1330,7 +1332,7 @@ private module Impl {
     or
     result = getImmediateChildOfLetStmt(e, index, partialAccessor)
     or
-    result = getImmediateChildOfLiteral(e, index, partialAccessor)
+    result = getImmediateChildOfLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfLiteralPat(e, index, partialAccessor)
     or

@@ -24,6 +24,7 @@ class Element:
 class Locatable(Element):
     pass
 
+
 @qltest.skip
 class AstNode(Locatable):
     pass
@@ -103,7 +104,7 @@ class Stmt(AstNode):
 
 
 @rust.doc_test_signature("() -> ()")
-class Type(AstNode, Unimplemented):
+class TypeRef(AstNode, Unimplemented):
     """
     The base class for type references.
     ```
@@ -174,7 +175,7 @@ class PathExpr(Expr):
     let x = variable;
     let x = foo::bar;
     let y = <T>::foo;
-    let z = <Type as Trait>::foo;
+    let z = <TypeRef as Trait>::foo;
     ```
     """
     path: Path | child
@@ -553,7 +554,7 @@ class CastExpr(Expr):
     ```
     """
     expr: Expr | child
-    type: Type | child
+    type: TypeRef | child
 
 
 @rust.doc_test_signature("() -> ()")
@@ -598,7 +599,7 @@ class PrefixExpr(Expr):
 
 
 @rust.doc_test_signature("() -> ()")
-class BinExpr(Expr):
+class BinaryExpr(Expr):
     """
     A binary operation expression. For example:
     ```
@@ -661,8 +662,8 @@ class ClosureExpr(Expr):
     ```
     """
     args: list[Pat] | child
-    arg_types: list[optional[Type]] | child
-    ret_type: optional[Type] | child
+    arg_types: list[optional[TypeRef]] | child
+    ret_type: optional[TypeRef] | child
     body: Expr | child
     closure_kind: string
     is_move: predicate
@@ -717,7 +718,7 @@ class RepeatExpr(ArrayExpr):
 
 
 @rust.doc_test_signature("() -> ()")
-class Literal(Expr):
+class LiteralExpr(Expr):
     """
     A literal expression. For example:
     ```
@@ -752,7 +753,7 @@ class OffsetOfExpr(Expr):
     builtin # offset_of(Struct, field);
     ```
     """
-    container: Type | child
+    container: TypeRef | child
     fields: list[string]
 
 
@@ -785,7 +786,7 @@ class LetStmt(Stmt):
 
     """
     pat: Pat | child
-    type: optional[Type] | child
+    type: optional[TypeRef] | child
     initializer: optional[Expr] | child
     else_: optional[Expr] | child
 

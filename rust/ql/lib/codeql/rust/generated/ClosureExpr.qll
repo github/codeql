@@ -8,7 +8,7 @@ private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Type
+import codeql.rust.elements.TypeRef
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not
@@ -55,9 +55,9 @@ module Generated {
     /**
      * Gets the `index`th argument type of this closure expression (0-based), if it exists.
      */
-    Type getArgType(int index) {
+    TypeRef getArgType(int index) {
       result =
-        Synth::convertTypeFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertTypeRefFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
               .getArgType(index))
     }
@@ -70,14 +70,14 @@ module Generated {
     /**
      * Gets any of the argument types of this closure expression.
      */
-    final Type getAnArgType() { result = this.getArgType(_) }
+    final TypeRef getAnArgType() { result = this.getArgType(_) }
 
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    Type getRetType() {
+    TypeRef getRetType() {
       result =
-        Synth::convertTypeFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertTypeRefFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
               .getRetType())
     }

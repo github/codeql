@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from BinExpr x
+from BinaryExpr x
 where toBeTested(x) and not x.isUnknown()
 select x, x.getOp()

@@ -11,7 +11,7 @@ private import codeql.rust.generated.PathExpr
  * let x = variable;
  * let x = foo::bar;
  * let y = <T>::foo;
- * let z = <Type as Trait>::foo;
+ * let z = <TypeRef as Trait>::foo;
  * ```
  */
 class PathExpr extends Generated::PathExpr { }

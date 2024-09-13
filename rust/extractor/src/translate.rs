@@ -117,7 +117,7 @@ impl CrateTranslator<'_> {
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
-                let expr = self.trap.emit(generated::Literal { id: TrapId::Star });
+                let expr = self.trap.emit(generated::LiteralExpr { id: TrapId::Star });
                 let label = self.trap.emit(generated::LiteralPat {
                     id: TrapId::Star,
                     expr,
@@ -380,7 +380,7 @@ impl CrateTranslator<'_> {
         ret
     }
     fn emit_type_ref(&mut self, _type_ref: &TypeRef) -> trap::Label {
-        self.trap.emit(generated::Type { id: TrapId::Star })
+        self.trap.emit(generated::TypeRef { id: TrapId::Star })
     }
     fn emit_match_arm(
         &mut self,
@@ -743,7 +743,7 @@ impl CrateTranslator<'_> {
                 let lhs = self.emit_expr(*lhs, body, source_map);
                 let rhs = self.emit_expr(*rhs, body, source_map);
                 let op = op.map(|op| format!("{op}"));
-                self.trap.emit(generated::BinExpr {
+                self.trap.emit(generated::BinaryExpr {
                     id: TrapId::Star,
                     lhs,
                     rhs,
@@ -854,7 +854,7 @@ impl CrateTranslator<'_> {
                 })
             }
             ra_ap_hir_def::hir::Expr::Literal(_literal) => {
-                self.trap.emit(generated::Literal { id: TrapId::Star })
+                self.trap.emit(generated::LiteralExpr { id: TrapId::Star })
             }
             ra_ap_hir_def::hir::Expr::Underscore => self
                 .trap

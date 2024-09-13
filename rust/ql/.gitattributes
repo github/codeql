@@ -10,8 +10,8 @@
 /lib/codeql/rust/elements/AwaitExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/BecomeExpr.qll linguist-generated
 /lib/codeql/rust/elements/BecomeExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/BinExpr.qll linguist-generated
-/lib/codeql/rust/elements/BinExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/BinaryExpr.qll linguist-generated
+/lib/codeql/rust/elements/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/BlockExpr.qll linguist-generated
 /lib/codeql/rust/elements/BlockExprBase.qll linguist-generated
 /lib/codeql/rust/elements/BlockExprConstructor.qll linguist-generated
@@ -58,8 +58,8 @@
 /lib/codeql/rust/elements/LetExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LetStmt.qll linguist-generated
 /lib/codeql/rust/elements/LetStmtConstructor.qll linguist-generated
-/lib/codeql/rust/elements/Literal.qll linguist-generated
-/lib/codeql/rust/elements/LiteralConstructor.qll linguist-generated
+/lib/codeql/rust/elements/LiteralExpr.qll linguist-generated
+/lib/codeql/rust/elements/LiteralExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LiteralPat.qll linguist-generated
 /lib/codeql/rust/elements/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LoopExpr.qll linguist-generated
@@ -118,8 +118,8 @@
 /lib/codeql/rust/elements/TuplePatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/TupleStructPat.qll linguist-generated
 /lib/codeql/rust/elements/TupleStructPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/Type.qll linguist-generated
-/lib/codeql/rust/elements/TypeConstructor.qll linguist-generated
+/lib/codeql/rust/elements/TypeRef.qll linguist-generated
+/lib/codeql/rust/elements/TypeRefConstructor.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/Unimplemented.qll linguist-generated
@@ -140,7 +140,7 @@
 /lib/codeql/rust/generated/AsyncBlockExpr.qll linguist-generated
 /lib/codeql/rust/generated/AwaitExpr.qll linguist-generated
 /lib/codeql/rust/generated/BecomeExpr.qll linguist-generated
-/lib/codeql/rust/generated/BinExpr.qll linguist-generated
+/lib/codeql/rust/generated/BinaryExpr.qll linguist-generated
 /lib/codeql/rust/generated/BlockExpr.qll linguist-generated
 /lib/codeql/rust/generated/BlockExprBase.qll linguist-generated
 /lib/codeql/rust/generated/BoxExpr.qll linguist-generated
@@ -167,7 +167,7 @@
 /lib/codeql/rust/generated/Label.qll linguist-generated
 /lib/codeql/rust/generated/LetExpr.qll linguist-generated
 /lib/codeql/rust/generated/LetStmt.qll linguist-generated
-/lib/codeql/rust/generated/Literal.qll linguist-generated
+/lib/codeql/rust/generated/LiteralExpr.qll linguist-generated
 /lib/codeql/rust/generated/LiteralPat.qll linguist-generated
 /lib/codeql/rust/generated/Locatable.qll linguist-generated
 /lib/codeql/rust/generated/LoopExpr.qll linguist-generated
@@ -204,7 +204,7 @@
 /lib/codeql/rust/generated/TupleExpr.qll linguist-generated
 /lib/codeql/rust/generated/TuplePat.qll linguist-generated
 /lib/codeql/rust/generated/TupleStructPat.qll linguist-generated
-/lib/codeql/rust/generated/Type.qll linguist-generated
+/lib/codeql/rust/generated/TypeRef.qll linguist-generated
 /lib/codeql/rust/generated/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/generated/Unimplemented.qll linguist-generated
 /lib/codeql/rust/generated/UnimplementedDeclaration.qll linguist-generated
@@ -218,8 +218,8 @@
 /test/extractor-tests/generated/AsyncBlockExpr/AsyncBlockExpr_getTail.ql linguist-generated
 /test/extractor-tests/generated/AwaitExpr/AwaitExpr.ql linguist-generated
 /test/extractor-tests/generated/BecomeExpr/BecomeExpr.ql linguist-generated
-/test/extractor-tests/generated/BinExpr/BinExpr.ql linguist-generated
-/test/extractor-tests/generated/BinExpr/BinExpr_getOp.ql linguist-generated
+/test/extractor-tests/generated/BinaryExpr/BinaryExpr.ql linguist-generated
+/test/extractor-tests/generated/BinaryExpr/BinaryExpr_getOp.ql linguist-generated
 /test/extractor-tests/generated/BlockExpr/BlockExpr.ql linguist-generated
 /test/extractor-tests/generated/BlockExpr/BlockExpr_getLabel.ql linguist-generated
 /test/extractor-tests/generated/BlockExpr/BlockExpr_getStatement.ql linguist-generated
@@ -257,7 +257,7 @@
 /test/extractor-tests/generated/LetStmt/LetStmt_getElse.ql linguist-generated
 /test/extractor-tests/generated/LetStmt/LetStmt_getInitializer.ql linguist-generated
 /test/extractor-tests/generated/LetStmt/LetStmt_getType.ql linguist-generated
-/test/extractor-tests/generated/Literal/Literal.ql linguist-generated
+/test/extractor-tests/generated/LiteralExpr/LiteralExpr.ql linguist-generated
 /test/extractor-tests/generated/LiteralPat/LiteralPat.ql linguist-generated
 /test/extractor-tests/generated/LoopExpr/LoopExpr.ql linguist-generated
 /test/extractor-tests/generated/LoopExpr/LoopExpr_getLabel.ql linguist-generated
@@ -313,7 +313,7 @@
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getArg.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getEllipsisIndex.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getPath.ql linguist-generated
-/test/extractor-tests/generated/Type/Type.ql linguist-generated
+/test/extractor-tests/generated/TypeRef/TypeRef.ql linguist-generated
 /test/extractor-tests/generated/UnderscoreExpr/UnderscoreExpr.ql linguist-generated
 /test/extractor-tests/generated/UnsafeBlockExpr/UnsafeBlockExpr.ql linguist-generated
 /test/extractor-tests/generated/UnsafeBlockExpr/UnsafeBlockExpr_getStatement.ql linguist-generated

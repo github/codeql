@@ -7,7 +7,7 @@ import codeql.rust.elements.AsmExprConstructor
 import codeql.rust.elements.AsyncBlockExprConstructor
 import codeql.rust.elements.AwaitExprConstructor
 import codeql.rust.elements.BecomeExprConstructor
-import codeql.rust.elements.BinExprConstructor
+import codeql.rust.elements.BinaryExprConstructor
 import codeql.rust.elements.BlockExprConstructor
 import codeql.rust.elements.BoxExprConstructor
 import codeql.rust.elements.BoxPatConstructor
@@ -30,7 +30,7 @@ import codeql.rust.elements.ItemStmtConstructor
 import codeql.rust.elements.LabelConstructor
 import codeql.rust.elements.LetExprConstructor
 import codeql.rust.elements.LetStmtConstructor
-import codeql.rust.elements.LiteralConstructor
+import codeql.rust.elements.LiteralExprConstructor
 import codeql.rust.elements.LiteralPatConstructor
 import codeql.rust.elements.LoopExprConstructor
 import codeql.rust.elements.MatchArmConstructor
@@ -59,7 +59,7 @@ import codeql.rust.elements.SlicePatConstructor
 import codeql.rust.elements.TupleExprConstructor
 import codeql.rust.elements.TuplePatConstructor
 import codeql.rust.elements.TupleStructPatConstructor
-import codeql.rust.elements.TypeConstructor
+import codeql.rust.elements.TypeRefConstructor
 import codeql.rust.elements.UnderscoreExprConstructor
 import codeql.rust.elements.UnimplementedDeclarationConstructor
 import codeql.rust.elements.UnsafeBlockExprConstructor

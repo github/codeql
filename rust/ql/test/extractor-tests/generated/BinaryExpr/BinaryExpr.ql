@@ -2,7 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-from BinExpr x, Expr getLhs, Expr getRhs, string hasOp
+from BinaryExpr x, Expr getLhs, Expr getRhs, string hasOp
 where
   toBeTested(x) and
   not x.isUnknown() and

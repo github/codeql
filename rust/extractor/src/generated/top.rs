@@ -107,17 +107,17 @@ impl TrapEntry for RecordPatField {
 }
 
 #[derive(Debug)]
-pub struct Type {
+pub struct TypeRef {
     pub id: TrapId,
 }
 
-impl TrapEntry for Type {
+impl TrapEntry for TypeRef {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("types", vec![trap::Arg::Label(id)]);
+        out.add_tuple("type_refs", vec![trap::Arg::Label(id)]);
     }
 }
 
@@ -170,22 +170,22 @@ impl TrapEntry for BecomeExpr {
 }
 
 #[derive(Debug)]
-pub struct BinExpr {
+pub struct BinaryExpr {
     pub id: TrapId,
     pub lhs: trap::Label,
     pub rhs: trap::Label,
     pub op: Option<String>,
 }
 
-impl TrapEntry for BinExpr {
+impl TrapEntry for BinaryExpr {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("bin_exprs", vec![trap::Arg::Label(id), self.lhs.into(), self.rhs.into()]);
+        out.add_tuple("binary_exprs", vec![trap::Arg::Label(id), self.lhs.into(), self.rhs.into()]);
         if let Some(v) = self.op {
-            out.add_tuple("bin_expr_ops", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("binary_expr_ops", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
@@ -549,17 +549,17 @@ impl TrapEntry for LetStmt {
 }
 
 #[derive(Debug)]
-pub struct Literal {
+pub struct LiteralExpr {
     pub id: TrapId,
 }
 
-impl TrapEntry for Literal {
+impl TrapEntry for LiteralExpr {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("literals", vec![trap::Arg::Label(id)]);
+        out.add_tuple("literal_exprs", vec![trap::Arg::Label(id)]);
     }
 }
 

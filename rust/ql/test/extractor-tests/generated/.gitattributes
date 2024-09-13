@@ -4,7 +4,7 @@
 /AsyncBlockExpr/gen_async_block_expr.rs linguist-generated
 /AwaitExpr/gen_await_expr.rs linguist-generated
 /BecomeExpr/gen_become_expr.rs linguist-generated
-/BinExpr/gen_bin_expr.rs linguist-generated
+/BinaryExpr/gen_binary_expr.rs linguist-generated
 /BlockExpr/gen_block_expr.rs linguist-generated
 /BoxExpr/gen_box_expr.rs linguist-generated
 /BoxPat/gen_box_pat.rs linguist-generated
@@ -26,7 +26,7 @@
 /Label/gen_label.rs linguist-generated
 /LetExpr/gen_let_expr.rs linguist-generated
 /LetStmt/gen_let_stmt.rs linguist-generated
-/Literal/gen_literal.rs linguist-generated
+/LiteralExpr/gen_literal_expr.rs linguist-generated
 /LiteralPat/gen_literal_pat.rs linguist-generated
 /LoopExpr/gen_loop_expr.rs linguist-generated
 /MatchArm/gen_match_arm.rs linguist-generated
@@ -55,7 +55,7 @@
 /TupleExpr/gen_tuple_expr.rs linguist-generated
 /TuplePat/gen_tuple_pat.rs linguist-generated
 /TupleStructPat/gen_tuple_struct_pat.rs linguist-generated
-/Type/gen_type.rs linguist-generated
+/TypeRef/gen_type_ref.rs linguist-generated
 /UnderscoreExpr/gen_underscore_expr.rs linguist-generated
 /UnsafeBlockExpr/gen_unsafe_block_expr.rs linguist-generated
 /WildcardPat/gen_wildcard_pat.rs linguist-generated

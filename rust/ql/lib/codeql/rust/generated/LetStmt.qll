@@ -9,7 +9,7 @@ private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
-import codeql.rust.elements.Type
+import codeql.rust.elements.TypeRef
 
 /**
  * INTERNAL: This module contains the fully generated definition of `LetStmt` and should not
@@ -43,8 +43,9 @@ module Generated {
     /**
      * Gets the type of this let statement, if it exists.
      */
-    Type getType() {
-      result = Synth::convertTypeFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getType())
+    TypeRef getType() {
+      result =
+        Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getType())
     }
 
     /**

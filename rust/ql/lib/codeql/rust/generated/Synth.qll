@@ -34,7 +34,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TBinExpr(Raw::BinExpr id) { constructBinExpr(id) } or
+    TBinaryExpr(Raw::BinaryExpr id) { constructBinaryExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -126,7 +126,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLiteral(Raw::Literal id) { constructLiteral(id) } or
+    TLiteralExpr(Raw::LiteralExpr id) { constructLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -242,7 +242,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TType(Raw::Type id) { constructType(id) } or
+    TTypeRef(Raw::TypeRef id) { constructTypeRef(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -280,7 +280,7 @@ module Synth {
    */
   class TAstNode =
     TDeclaration or TExpr or TGenericArgList or TLabel or TMatchArm or TPat or TPath or
-        TRecordExprField or TRecordPatField or TStmt or TType;
+        TRecordExprField or TRecordPatField or TStmt or TTypeRef;
 
   /**
    * INTERNAL: Do not use.
@@ -296,12 +296,12 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinExpr or TBlockExprBase or TBoxExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TConstExpr or TContinueExpr or
-        TFieldExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteral or TLoopExpr or TMatchExpr or
-        TMethodCallExpr or TMissingExpr or TOffsetOfExpr or TPathExpr or TPrefixExpr or
-        TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTupleExpr or TUnderscoreExpr or
-        TYeetExpr or TYieldExpr;
+    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExprBase or
+        TBoxExpr or TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TConstExpr or
+        TContinueExpr or TFieldExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
+        TLoopExpr or TMatchExpr or TMethodCallExpr or TMissingExpr or TOffsetOfExpr or TPathExpr or
+        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTupleExpr or
+        TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -324,7 +324,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TUnimplemented = TGenericArgList or TPath or TType or TUnimplementedDeclaration;
+  class TUnimplemented = TGenericArgList or TPath or TTypeRef or TUnimplementedDeclaration;
 
   /**
    * INTERNAL: Do not use.
@@ -356,10 +356,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBinExpr`, if possible.
+   * Converts a raw element to a synthesized `TBinaryExpr`, if possible.
    */
   cached
-  TBinExpr convertBinExprFromRaw(Raw::Element e) { result = TBinExpr(e) }
+  TBinaryExpr convertBinaryExprFromRaw(Raw::Element e) { result = TBinaryExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -517,10 +517,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLiteral`, if possible.
+   * Converts a raw element to a synthesized `TLiteralExpr`, if possible.
    */
   cached
-  TLiteral convertLiteralFromRaw(Raw::Element e) { result = TLiteral(e) }
+  TLiteralExpr convertLiteralExprFromRaw(Raw::Element e) { result = TLiteralExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -720,10 +720,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TType`, if possible.
+   * Converts a raw element to a synthesized `TTypeRef`, if possible.
    */
   cached
-  TType convertTypeFromRaw(Raw::Element e) { result = TType(e) }
+  TTypeRef convertTypeRefFromRaw(Raw::Element e) { result = TTypeRef(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -806,7 +806,7 @@ module Synth {
     or
     result = convertStmtFromRaw(e)
     or
-    result = convertTypeFromRaw(e)
+    result = convertTypeRefFromRaw(e)
   }
 
   /**
@@ -860,7 +860,7 @@ module Synth {
     or
     result = convertBecomeExprFromRaw(e)
     or
-    result = convertBinExprFromRaw(e)
+    result = convertBinaryExprFromRaw(e)
     or
     result = convertBlockExprBaseFromRaw(e)
     or
@@ -886,7 +886,7 @@ module Synth {
     or
     result = convertLetExprFromRaw(e)
     or
-    result = convertLiteralFromRaw(e)
+    result = convertLiteralExprFromRaw(e)
     or
     result = convertLoopExprFromRaw(e)
     or
@@ -984,7 +984,7 @@ module Synth {
     or
     result = convertPathFromRaw(e)
     or
-    result = convertTypeFromRaw(e)
+    result = convertTypeRefFromRaw(e)
     or
     result = convertUnimplementedDeclarationFromRaw(e)
   }
@@ -1019,10 +1019,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBinExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TBinaryExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBinExprToRaw(TBinExpr e) { e = TBinExpr(result) }
+  Raw::Element convertBinaryExprToRaw(TBinaryExpr e) { e = TBinaryExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1180,10 +1180,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLiteral` to a raw DB element, if possible.
+   * Converts a synthesized `TLiteralExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLiteralToRaw(TLiteral e) { e = TLiteral(result) }
+  Raw::Element convertLiteralExprToRaw(TLiteralExpr e) { e = TLiteralExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1383,10 +1383,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TType` to a raw DB element, if possible.
+   * Converts a synthesized `TTypeRef` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertTypeToRaw(TType e) { e = TType(result) }
+  Raw::Element convertTypeRefToRaw(TTypeRef e) { e = TTypeRef(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1469,7 +1469,7 @@ module Synth {
     or
     result = convertStmtToRaw(e)
     or
-    result = convertTypeToRaw(e)
+    result = convertTypeRefToRaw(e)
   }
 
   /**
@@ -1523,7 +1523,7 @@ module Synth {
     or
     result = convertBecomeExprToRaw(e)
     or
-    result = convertBinExprToRaw(e)
+    result = convertBinaryExprToRaw(e)
     or
     result = convertBlockExprBaseToRaw(e)
     or
@@ -1549,7 +1549,7 @@ module Synth {
     or
     result = convertLetExprToRaw(e)
     or
-    result = convertLiteralToRaw(e)
+    result = convertLiteralExprToRaw(e)
     or
     result = convertLoopExprToRaw(e)
     or
@@ -1647,7 +1647,7 @@ module Synth {
     or
     result = convertPathToRaw(e)
     or
-    result = convertTypeToRaw(e)
+    result = convertTypeRefToRaw(e)
     or
     result = convertUnimplementedDeclarationToRaw(e)
   }

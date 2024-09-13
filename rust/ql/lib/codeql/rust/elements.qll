@@ -9,7 +9,7 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.AsyncBlockExpr
 import codeql.rust.elements.AwaitExpr
 import codeql.rust.elements.BecomeExpr
-import codeql.rust.elements.BinExpr
+import codeql.rust.elements.BinaryExpr
 import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BlockExprBase
 import codeql.rust.elements.BoxExpr
@@ -36,7 +36,7 @@ import codeql.rust.elements.ItemStmt
 import codeql.rust.elements.Label
 import codeql.rust.elements.LetExpr
 import codeql.rust.elements.LetStmt
-import codeql.rust.elements.Literal
+import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.LiteralPat
 import codeql.rust.elements.Locatable
 import codeql.rust.elements.LoopExpr
@@ -68,7 +68,7 @@ import codeql.rust.elements.Stmt
 import codeql.rust.elements.TupleExpr
 import codeql.rust.elements.TuplePat
 import codeql.rust.elements.TupleStructPat
-import codeql.rust.elements.Type
+import codeql.rust.elements.TypeRef
 import codeql.rust.elements.UnderscoreExpr
 import codeql.rust.elements.Unimplemented
 import codeql.rust.elements.UnimplementedDeclaration

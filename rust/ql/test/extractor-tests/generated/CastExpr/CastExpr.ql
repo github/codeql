@@ -2,7 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-from CastExpr x, Expr getExpr, Type getType
+from CastExpr x, Expr getExpr, TypeRef getType
 where
   toBeTested(x) and
   not x.isUnknown() and

@@ -177,8 +177,8 @@ module Raw {
    * let z: Option<i32>;
    * ```
    */
-  class Type extends @type, AstNode, Unimplemented {
-    override string toString() { result = "Type" }
+  class TypeRef extends @type_ref, AstNode, Unimplemented {
+    override string toString() { result = "TypeRef" }
   }
 
   /**
@@ -260,23 +260,23 @@ module Raw {
    * x += y;
    * ```
    */
-  class BinExpr extends @bin_expr, Expr {
-    override string toString() { result = "BinExpr" }
+  class BinaryExpr extends @binary_expr, Expr {
+    override string toString() { result = "BinaryExpr" }
 
     /**
-     * Gets the lhs of this bin expression.
+     * Gets the lhs of this binary expression.
      */
-    Expr getLhs() { bin_exprs(this, result, _) }
+    Expr getLhs() { binary_exprs(this, result, _) }
 
     /**
-     * Gets the rhs of this bin expression.
+     * Gets the rhs of this binary expression.
      */
-    Expr getRhs() { bin_exprs(this, _, result) }
+    Expr getRhs() { binary_exprs(this, _, result) }
 
     /**
-     * Gets the op of this bin expression, if it exists.
+     * Gets the op of this binary expression, if it exists.
      */
-    string getOp() { bin_expr_ops(this, result) }
+    string getOp() { binary_expr_ops(this, result) }
   }
 
   /**
@@ -408,7 +408,7 @@ module Raw {
     /**
      * Gets the type of this cast expression.
      */
-    Type getType() { cast_exprs(this, _, result) }
+    TypeRef getType() { cast_exprs(this, _, result) }
   }
 
   /**
@@ -435,12 +435,12 @@ module Raw {
     /**
      * Gets the `index`th argument type of this closure expression (0-based), if it exists.
      */
-    Type getArgType(int index) { closure_expr_arg_types(this, index, result) }
+    TypeRef getArgType(int index) { closure_expr_arg_types(this, index, result) }
 
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    Type getRetType() { closure_expr_ret_types(this, result) }
+    TypeRef getRetType() { closure_expr_ret_types(this, result) }
 
     /**
      * Gets the body of this closure expression.
@@ -746,7 +746,7 @@ module Raw {
     /**
      * Gets the type of this let statement, if it exists.
      */
-    Type getType() { let_stmt_types(this, result) }
+    TypeRef getType() { let_stmt_types(this, result) }
 
     /**
      * Gets the initializer of this let statement, if it exists.
@@ -772,8 +772,8 @@ module Raw {
    * r"Hello, world!";
    * true;
    */
-  class Literal extends @literal, Expr {
-    override string toString() { result = "Literal" }
+  class LiteralExpr extends @literal_expr, Expr {
+    override string toString() { result = "LiteralExpr" }
   }
 
   /**
@@ -954,7 +954,7 @@ module Raw {
     /**
      * Gets the container of this offset of expression.
      */
-    Type getContainer() { offset_of_exprs(this, result) }
+    TypeRef getContainer() { offset_of_exprs(this, result) }
 
     /**
      * Gets the `index`th field of this offset of expression (0-based).
@@ -987,7 +987,7 @@ module Raw {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <Type as Trait>::foo;
+   * let z = <TypeRef as Trait>::foo;
    * ```
    */
   class PathExpr extends @path_expr, Expr {

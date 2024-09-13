@@ -5,5 +5,5 @@ fn test_path_expr() -> () {
     let x = variable;
     let x = foo::bar;
     let y = <T>::foo;
-    let z = <Type as Trait>::foo;
+    let z = <TypeRef as Trait>::foo;
 }

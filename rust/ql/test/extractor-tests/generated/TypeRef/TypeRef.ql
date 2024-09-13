@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from Type x
+from TypeRef x
 where toBeTested(x) and not x.isUnknown()
 select x
