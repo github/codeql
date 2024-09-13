@@ -104,9 +104,7 @@ private class LdapClientDNSink extends LdapSink {
 deprecated class LdapInjectionConfiguration extends TaintTracking::Configuration {
   LdapInjectionConfiguration() { this = "Ldap injection" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof ActiveThreatModelSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
 
