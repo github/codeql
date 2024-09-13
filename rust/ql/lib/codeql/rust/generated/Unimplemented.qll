@@ -14,6 +14,7 @@ import codeql.rust.elements.Element
  */
 module Generated {
   /**
+   * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
    * INTERNAL: Do not reference the `Generated::Unimplemented` class directly.
    * Use the subclass `Unimplemented`, where the following predicates are available.
    */

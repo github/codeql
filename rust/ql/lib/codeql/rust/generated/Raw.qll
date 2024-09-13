@@ -62,6 +62,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
    */
   class Unimplemented extends @unimplemented, Element { }
 
@@ -86,6 +87,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for declarations.
    */
   class Declaration extends @declaration, AstNode { }
 
@@ -1415,6 +1417,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A declaration that is not yet extracted.
    */
   class UnimplementedDeclaration extends @unimplemented_declaration, Declaration, Unimplemented {
     override string toString() { result = "UnimplementedDeclaration" }

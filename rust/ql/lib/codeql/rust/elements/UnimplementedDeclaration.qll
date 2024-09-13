@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.UnimplementedDeclaration
 
+/**
+ * A declaration that is not yet extracted.
+ */
 class UnimplementedDeclaration extends Generated::UnimplementedDeclaration { }

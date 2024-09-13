@@ -64,15 +64,24 @@ class AstNode(Locatable):
 
 @qltest.skip
 class Unimplemented(Element):
+    """
+    The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
+    """
     pass
 
 
 class Declaration(AstNode):
+    """
+    The base class for declarations.
+    """
     pass
 
 
 @qltest.skip
 class UnimplementedDeclaration(Declaration, Unimplemented):
+    """
+    A declaration that is not yet extracted.
+    """
     pass
 
 

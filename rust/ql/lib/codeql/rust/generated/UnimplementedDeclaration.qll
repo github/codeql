@@ -15,6 +15,7 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A declaration that is not yet extracted.
    * INTERNAL: Do not reference the `Generated::UnimplementedDeclaration` class directly.
    * Use the subclass `UnimplementedDeclaration`, where the following predicates are available.
    */
