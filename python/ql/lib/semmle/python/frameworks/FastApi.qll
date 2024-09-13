@@ -39,7 +39,7 @@ module FastApi {
     /**
      * Gets the string corresponding to the middleware
      */
-    string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
   }
 
   /**
@@ -49,18 +49,18 @@ module FastApi {
     /**
      * Gets the string corresponding to the middleware
      */
-    override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
 
     /**
      * Gets the dataflow node corresponding to the allowed CORS origins
      */
-    override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
 
     /**
      * Gets the boolean value corresponding to if CORS credentials is enabled
      * (`true`) or disabled (`false`) by this node.
      */
-    override DataFlow::Node allowed_credentials() {
+    override DataFlow::Node getCredentialsAllowed() {
       result = this.getArgByName("allow_credentials")
     }
 

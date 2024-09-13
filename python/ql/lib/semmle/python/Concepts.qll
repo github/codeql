@@ -1422,18 +1422,18 @@ module Http {
       /**
        * Gets the string corresponding to the middleware
        */
-      string middleware_name() { result = super.middleware_name() }
+      string getMiddlewareName() { result = super.getMiddlewareName() }
 
       /**
        * Gets the dataflow node corresponding to the allowed CORS origins
        */
-      DataFlow::Node allowed_origins() { result = super.allowed_origins() }
+      DataFlow::Node getOrigins() { result = super.getOrigins() }
 
       /**
        * Gets the boolean value corresponding to if CORS credentials is enabled
        * (`true`) or disabled (`false`) by this node.
        */
-      DataFlow::Node allowed_credentials() { result = super.allowed_credentials() }
+      DataFlow::Node getCredentialsAllowed() { result = super.getCredentialsAllowed() }
     }
 
     /** Provides a class for modeling new CORS middleware APIs. */
@@ -1447,20 +1447,20 @@ module Http {
        */
       abstract class Range extends DataFlow::Node {
         /**
-         * Gets the string corresponding to the middleware
+         * Gets the name corresponding to the middleware
          */
-        abstract string middleware_name();
+        abstract string getMiddlewareName();
 
         /**
          * Gets the boolean value corresponding to if CORS credentials is enabled
          * (`true`) or disabled (`false`) by this node.
          */
-        abstract DataFlow::Node allowed_credentials();
+        abstract DataFlow::Node getCredentialsAllowed();
 
         /**
          * Gets the strings corresponding to the origins allowed by the cors policy
          */
-        abstract DataFlow::Node allowed_origins();
+        abstract DataFlow::Node getOrigins();
       }
     }
 

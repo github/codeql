@@ -19,8 +19,8 @@
 	meaning that Peer B can send a request to Peer A that will include the cookies as if the request was executed by the user.
 </p>
 <p>
-	That can have dangerous effects if Peer B origin is not restricted correctly. 
-	An example of a dangerous scenario is when <code>Access-Control-Allow-Origin</code> header is set to a value gotten from the Peer B's request 
+	That can have dangerous effects if the origin of Peer B is not restricted correctly. 
+	An example of a dangerous scenario is when <code>Access-Control-Allow-Origin</code> header is set to a value obtained from the request made by Peer B 
 	(and not correctly validated), or is set to special values such as <code>*</code> or <code>null</code>. 
 	The above values can allow any Peer B to send requests to the misconfigured Peer A on behalf of the user.
 </p>

@@ -33,7 +33,7 @@ module Starlette {
     API::Node cls() { result = API::moduleImport("starlette").getMember("app") }
 
     /** Gets a reference to a Starlette application (an instance of `starlette.app`). */
-    API::Node instance() { result = cls().getReturn() }
+    API::Node instance() { result = cls().getAnInstance() }
   }
 
   /**
@@ -47,7 +47,7 @@ module Starlette {
     /**
      * Gets the string corresponding to the middleware
      */
-    string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
   }
 
   /**
@@ -57,11 +57,11 @@ module Starlette {
     /**
      * Gets the string corresponding to the middleware
      */
-    override string middleware_name() { result = this.getArg(0).asExpr().(Name).toString() }
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
 
-    override DataFlow::Node allowed_origins() { result = this.getArgByName("allow_origins") }
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
 
-    override DataFlow::Node allowed_credentials() {
+    override DataFlow::Node getCredentialsAllowed() {
       result = this.getArgByName("allow_credentials")
     }
 
@@ -89,32 +89,8 @@ module Starlette {
       result = ModelOutput::getATypeNode("starlette.middleware.Middleware~Subclass").getASubclass*()
     }
 
-    /**
-     * A source of instances of `starlette.middleware.Middleware`, extend this class to model new instances.
-     *
-     * This can include instantiations of the class, return values from function
-     * calls, or a special parameter that will be set when functions are called by an external
-     * library.
-     *
-     * Use the predicate `Middleware::instance()` to get references to instances of `starlette.middleware.middleware`.
-     */
-    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-    /** A direct instantiation of `starlette.middleware.Middleware`. */
-    class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      ClassInstantiation() { this = classRef().getACall() }
-    }
-
     /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
-    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result instanceof InstanceSource
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-    }
-
-    /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
-    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+    DataFlow::Node instance() { result = classRef().getACall() }
   }
 
   /**
