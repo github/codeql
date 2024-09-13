@@ -1452,15 +1452,15 @@ module Http {
         abstract string getMiddlewareName();
 
         /**
+         * Gets the strings corresponding to the origins allowed by the cors policy
+         */
+        abstract DataFlow::Node getOrigins();
+
+        /**
          * Gets the boolean value corresponding to if CORS credentials is enabled
          * (`true`) or disabled (`false`) by this node.
          */
         abstract DataFlow::Node getCredentialsAllowed();
-
-        /**
-         * Gets the strings corresponding to the origins allowed by the cors policy
-         */
-        abstract DataFlow::Node getOrigins();
       }
     }
 

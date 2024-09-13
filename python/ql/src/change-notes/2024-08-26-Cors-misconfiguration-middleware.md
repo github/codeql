@@ -1,4 +1,4 @@
 ---
 category: newQuery
 ---
-* The `py/insecure-cors-setting` query, which finds insecure CORS middleware configurations.
+* The `py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.

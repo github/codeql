@@ -1,5 +1,5 @@
 /**
- * @name SOP protection weak with credentials
+ * @name Cors misconfiguration with credentials
  * @description Disabling or weakening SOP protection may make the application
  *              vulnerable to a CORS attack.
  * @kind problem
