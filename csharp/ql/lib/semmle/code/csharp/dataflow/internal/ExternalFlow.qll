@@ -427,7 +427,9 @@ Declaration interpretElement(
   |
     ext = "" and result = d
     or
-    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = d
+    ext = "Attribute" and
+    result.(Attributable).getAnAttribute().getType() = d and
+    not result instanceof Property
   )
 }
 
