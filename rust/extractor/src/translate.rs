@@ -75,15 +75,15 @@ impl CrateTranslator<'_> {
     ) where
         T: AstNode,
     {
-        source
+        if let Some(data) = source
             .file_id
             .file_id()
             .map(|f| f.file_id())
             .and_then(|file_id| self.emit_file(file_id))
-            .map(|data| {
-                let range = source.value.text_range();
-                self.emit_location_for_textrange(label, data, range)
-            });
+        {
+            let range = source.value.text_range();
+            self.emit_location_for_textrange(label, data, range)
+        }
     }
 
     fn emit_location_for_expr(
@@ -113,7 +113,7 @@ impl CrateTranslator<'_> {
         pat: &ra_ap_hir_def::hir::LiteralOrConst,
         body: &Body,
         source_map: &BodySourceMap,
-        mut emit_location: impl FnMut(&mut CrateTranslator<'_>, trap::Label) -> (),
+        mut emit_location: impl FnMut(&mut CrateTranslator<'_>, trap::Label),
     ) -> trap::Label {
         match pat {
             ra_ap_hir_def::hir::LiteralOrConst::Literal(_literal) => {
@@ -147,14 +147,14 @@ impl CrateTranslator<'_> {
     where
         T::Ast: AstNode,
     {
-        entity
+        if let Some((data, source)) = entity
             .source(self.db)
             .and_then(|source| source.file_id.file_id().map(|f| (f.file_id(), source)))
             .and_then(|(file_id, source)| self.emit_file(file_id).map(|data| (data, source)))
-            .map(|(data, source)| {
-                let range = source.value.syntax().text_range();
-                self.emit_location_for_textrange(label, data, range);
-            });
+        {
+            let range = source.value.syntax().text_range();
+            self.emit_location_for_textrange(label, data, range);
+        }
     }
     fn emit_location_for_textrange(
         &mut self,
@@ -260,7 +260,9 @@ impl CrateTranslator<'_> {
                 ellipsis,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
-                path.map(|p| self.emit_location_for_pat(p, pat_id, source_map));
+                if let Some(p) = path {
+                    self.emit_location_for_pat(p, pat_id, source_map)
+                }
                 let flds = args
                     .into_iter()
                     .map(|arg| self.emit_record_field_pat(arg, body, source_map))
@@ -340,7 +342,9 @@ impl CrateTranslator<'_> {
                 ellipsis,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
-                path.map(|p| self.emit_location_for_pat(p, pat_id, source_map));
+                if let Some(p) = path {
+                    self.emit_location_for_pat(p, pat_id, source_map)
+                }
 
                 let args = args
                     .into_iter()
@@ -666,7 +670,9 @@ impl CrateTranslator<'_> {
                 is_assignee_expr,
             } => {
                 let path = path.as_ref().map(|path| self.emit_path(path));
-                path.map(|p| self.emit_location_for_expr(p, expr_id, source_map));
+                if let Some(p) = path {
+                    self.emit_location_for_expr(p, expr_id, source_map)
+                }
 
                 let flds = fields
                     .into_iter()
