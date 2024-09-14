@@ -10,33 +10,7 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfFile(File e, int index, string partialPredicateCall) {
-    exists(int b, int bElement, int n |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfLocatable(Locatable e, int index, string partialPredicateCall) {
-    exists(int b, int bElement, int n |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfLocation(Location e, int index, string partialPredicateCall) {
     exists(int b, int bElement, int n |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
@@ -58,62 +32,6 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfDbFile(DbFile e, int index, string partialPredicateCall) {
-    exists(int b, int bFile, int n |
-      b = 0 and
-      bFile = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFile(e, i, _)) | i) and
-      n = bFile and
-      (
-        none()
-        or
-        result = getImmediateChildOfFile(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfDbLocation(DbLocation e, int index, string partialPredicateCall) {
-    exists(int b, int bLocation, int n |
-      b = 0 and
-      bLocation = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocation(e, i, _)) | i) and
-      n = bLocation and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfUnknownFile(
-    UnknownFile e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bFile, int n |
-      b = 0 and
-      bFile = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFile(e, i, _)) | i) and
-      n = bFile and
-      (
-        none()
-        or
-        result = getImmediateChildOfFile(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfUnknownLocation(
-    UnknownLocation e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bLocation, int n |
-      b = 0 and
-      bLocation = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocation(e, i, _)) | i) and
-      n = bLocation and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -1300,14 +1218,6 @@ private module Impl {
     // why does this look more complicated than it should?
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
-    or
-    result = getImmediateChildOfDbFile(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfDbLocation(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
     or
     result = getImmediateChildOfLabel(e, index, partialAccessor)
     or

@@ -12,7 +12,7 @@ private int getOrder(PrintAstNode node) {
     |
       n
       order by
-        loc.getFile().getName(), loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(),
+        loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(),
         loc.getEndColumn()
     )
 }
