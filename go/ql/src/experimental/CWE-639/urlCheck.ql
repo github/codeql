@@ -73,11 +73,21 @@ private module UrlFlow implements DataFlow::ConfigSig {
       // Get a call to `strings.HasSuffix(origin, allowedDomain)`
       mc.getTarget().hasQualifiedName("strings", "HasSuffix") and
       a = mc.getArgument(1) and
-      // should not match ".domain.com"
+      // should not match ".domain.com" or "domain:port"
       not (
+        // Filter ".domain.com"
         a.asExpr().(StringLit).getExactValue().matches(".%")
         or
-        exists(AddExpr w | w.getLeftOperand().getStringValue().matches(".%") |
+        // Filter "domain.com:port"
+        a.asExpr().(StringLit).getExactValue().matches("%:%")
+        or
+        exists(AddExpr w |
+          // match ".domain"
+          w.getLeftOperand().getStringValue().matches(".%")
+          or
+          // match "str"+ "domain:port"
+          w.getRightOperand().getStringValue().matches("%:%")
+        |
           DataFlow::localFlow(DataFlow::exprNode(w), a)
         )
       )
