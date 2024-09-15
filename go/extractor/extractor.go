@@ -199,7 +199,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
 	// otherwise (the default) is to exclude them from extraction
-	includeVendor := os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true"
+	includeVendor := util.IsVendorDirExtractionEnabled()
 	if !includeVendor {
 		excludedDirs = append(excludedDirs, "vendor")
 	}
@@ -1792,7 +1792,8 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
 			parentlbl := getTypeParamParentLabel(tw, tp)
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
+			idx := tp.Index()
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {

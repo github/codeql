@@ -458,6 +458,7 @@ namespace Semmle.Extraction.CSharp
 
             sw.Restart();
             analyser.PerformExtraction(options.Threads);
+            analyser.ExtractAggregatedMessages();
             sw.Stop();
             var cpuTime2 = currentProcess.TotalProcessorTime;
             var userTime2 = currentProcess.UserProcessorTime;

@@ -286,9 +286,6 @@ abstract class BaseAstNode extends PrintAstNode {
    * Gets the AST represented by this node.
    */
   final Locatable getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
 }
 
 /**
@@ -382,6 +379,21 @@ class CastNode extends ConversionNode {
     or
     key = "Conversion" and
     result = "[" + qlConversion(cast) + "] " + cast.getSemanticConversionString()
+  }
+}
+
+/**
+ * A node representing a `C11GenericExpr`.
+ */
+class C11GenericNode extends ConversionNode {
+  C11GenericExpr generic;
+
+  C11GenericNode() { generic = conv }
+
+  override AstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex - count(generic.getAChild()))
+    or
+    result.getAst() = generic.getChild(childIndex)
   }
 }
 
@@ -859,6 +871,15 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(BuiltInVarArgsStart).getVAList() = ele and pred = "getVAList()"
     or
     expr.(BuiltInVarArgsStart).getLastNamedParameter() = ele and pred = "getLastNamedParameter()"
+    or
+    expr.(C11GenericExpr).getControllingExpr() = ele and pred = "getControllingExpr()"
+    or
+    exists(int n |
+      expr.(C11GenericExpr).getAssociationType(n) = ele.(TypeName).getType() and
+      pred = "getAssociationType(" + n + ")"
+      or
+      expr.(C11GenericExpr).getAssociationExpr(n) = ele and pred = "getAssociationExpr(" + n + ")"
+    )
     or
     expr.(Call).getQualifier() = ele and pred = "getQualifier()"
     or

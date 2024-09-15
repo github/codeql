@@ -30,46 +30,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   override string getName() { functions(underlyingElement(this), result, _) }
 
-  /**
-   * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
-   * Gets the full signature of this function, including return type, parameter
-   * types, and template arguments.
-   *
-   * For example, in the following code:
-   * ```
-   * template<typename T> T min(T x, T y);
-   * int z = min(5, 7);
-   * ```
-   * The full signature of the function called on the last line would be
-   * `min<int>(int, int) -> int`, and the full signature of the uninstantiated
-   * template on the first line would be `min<T>(T, T) -> T`.
-   */
-  deprecated string getFullSignature() {
-    exists(string name, string templateArgs, string args |
-      result = name + templateArgs + args + " -> " + this.getType().toString() and
-      name = this.getQualifiedName() and
-      (
-        if exists(this.getATemplateArgument())
-        then
-          templateArgs =
-            "<" +
-              concat(int i |
-                exists(this.getTemplateArgument(i))
-              |
-                this.getTemplateArgument(i).toString(), ", " order by i
-              ) + ">"
-        else templateArgs = ""
-      ) and
-      args =
-        "(" +
-          concat(int i |
-            exists(this.getParameter(i))
-          |
-            this.getParameter(i).getType().toString(), ", " order by i
-          ) + ")"
-    )
-  }
-
   /** Gets a specifier of this function. */
   override Specifier getASpecifier() {
     funspecifiers(underlyingElement(this), unresolveElement(result)) or

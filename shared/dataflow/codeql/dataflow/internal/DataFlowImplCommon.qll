@@ -1570,11 +1570,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TDataFlowCallSome(DataFlowCall call)
 
     cached
-    newtype TParamNodeOption =
-      TParamNodeNone() or
-      TParamNodeSome(ParamNode p)
-
-    cached
     newtype TReturnCtx =
       TReturnCtxNone() or
       TReturnCtxNoFlowThrough() or
@@ -2230,19 +2225,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(DataFlowCall call |
         this = TDataFlowCallSome(call) and
         result = call.toString()
-      )
-    }
-  }
-
-  /** An optional `ParamNode`. */
-  class ParamNodeOption extends TParamNodeOption {
-    string toString() {
-      this = TParamNodeNone() and
-      result = "(none)"
-      or
-      exists(ParamNode p |
-        this = TParamNodeSome(p) and
-        result = p.toString()
       )
     }
   }
