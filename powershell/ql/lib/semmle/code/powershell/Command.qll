@@ -15,6 +15,8 @@ class Cmd extends @command, CmdBase {
 
   CmdElement getElement(int i) { command_command_element(this, i, result) }
 
+  Expr getCommand() { result = this.getElement(0) }
+
   StringConstExpr getCmdName() { result = this.getElement(0) }
 
   Expr getArgument(int i) {
@@ -43,7 +45,7 @@ class Cmd extends @command, CmdBase {
 
 /**
  * An argument to a command.
- * 
+ *
  * The argument may be named or positional.
  */
 class Argument extends Expr {
