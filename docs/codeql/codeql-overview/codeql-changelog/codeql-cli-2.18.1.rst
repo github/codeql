@@ -72,8 +72,8 @@ C/C++
 
 *   The :code:`cpp/unsigned-difference-expression-compared-zero` ("Unsigned difference expression compared to zero") query now produces fewer false positives.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The heuristic to enable certain Android queries has been improved. Now it ignores Android Manifests which don't define an activity, content provider or service. We also only consider files which are under a folder containing such an Android Manifest for these queries. This should remove some false positive alerts.
 
@@ -113,8 +113,8 @@ Language Libraries
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The Java extractor no longer supports the :code:`SEMMLE_DIST` legacy environment variable.
 
@@ -126,8 +126,8 @@ Golang
 
 *   There was a bug which meant that the built-in function :code:`clear` was considered as a sanitizer in some cases when it shouldn't have been. This has now been fixed, which may lead to more alerts.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a path-injection sink for :code:`hudson.FilePath.exists()`.
 *   Added summary models for :code:`org.apache.commons.io.IOUtils.toByteArray`.
@@ -146,8 +146,8 @@ Swift
 Deprecated APIs
 ~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The predicate :code:`isAndroid` from the module :code:`semmle.code.java.security.AndroidCertificatePinningQuery` has been deprecated. Use :code:`semmle.code.java.frameworks.android.Android::inAndroidApplication(File)` instead.
 
@@ -161,8 +161,8 @@ C/C++
 *   Added subclasses of :code:`BuiltInOperations` for :code:`__builtin_has_attribute`, :code:`__builtin_is_corresponding_member`, :code:`__builtin_is_pointer_interconvertible_with_class`, :code:`__is_assignable_no_precondition_check`, :code:`__is_bounded_array`, :code:`__is_convertible`, :code:`__is_corresponding_member`, :code:`__is_nothrow_convertible`, :code:`__is_pointer_interconvertible_with_class`, :code:`__is_referenceable`, :code:`__is_same_as`, :code:`__is_trivially_copy_assignable`, :code:`__is_unbounded_array`, :code:`__is_valid_winrt_type`, :code:`_is_win_class`, :code:`__is_win_interface`, :code:`__reference_binds_to_temporary`, :code:`__reference_constructs_from_temporary`, and :code:`__reference_converts_from_temporary`.
 *   The class :code:`NewArrayExpr` adds a predicate :code:`getArraySize()` to allow a more convenient way to access the static size of the array when the extent is missing.
 
-Java and Kotlin
-"""""""""""""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin support is now out of beta, and generally available
 *   Kotlin versions up to 2.0.2*x* are now supported.

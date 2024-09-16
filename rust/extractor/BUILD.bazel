@@ -7,11 +7,13 @@ codeql_rust_binary(
     aliases = aliases(),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
-    ),
+    ) + [
+        "//rust/extractor/macros",
+    ],
     visibility = ["//rust:__subpackages__"],
     deps = all_crate_deps(
         normal = True,
     ) + [
-        "//shared/tree-sitter-extractor:codeql-extractor",
+        "//shared/tree-sitter-extractor",
     ],
 )
