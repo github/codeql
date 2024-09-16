@@ -5,4 +5,11 @@
 
 private import codeql.rust.generated.ElementListExpr
 
+/**
+ * An element list expression. For example:
+ * ```
+ * [1, 2, 3, 4, 5];
+ * [1, 2, 3, 4, 5][0] = 6;
+ * ```
+ */
 class ElementListExpr extends Generated::ElementListExpr { }

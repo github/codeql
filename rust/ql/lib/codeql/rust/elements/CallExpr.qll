@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.CallExpr
 
+/**
+ * A function call expression. For example:
+ * ```
+ * foo(42);
+ * foo::<u32, u64>(42);
+ * foo[0](42);
+ * foo(1) = 4;
+ * ```
+ */
 class CallExpr extends Generated::CallExpr { }

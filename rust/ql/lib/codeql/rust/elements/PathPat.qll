@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.PathPat
 
+/**
+ * A path pattern. For example:
+ * ```
+ * match x {
+ *     Foo::Bar => "ok",
+ *     _ => "fail",
+ * }
+ * ```
+ */
 class PathPat extends Generated::PathPat { }

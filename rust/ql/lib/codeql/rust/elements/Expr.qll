@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.Expr
 
+/**
+ * The base class for expressions.
+ */
 class Expr extends Generated::Expr { }

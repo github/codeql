@@ -5,4 +5,14 @@
 
 private import codeql.rust.generated.RangePat
 
+/**
+ * A range pattern. For example:
+ * ```
+ * match x {
+ *     ..15 => "too cold",
+ *     16..=25 => "just right",
+ *     26.. => "too hot",
+ * }
+ * ```
+ */
 class RangePat extends Generated::RangePat { }

@@ -14,6 +14,11 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An index expression. For example:
+   * ```
+   * list[42];
+   * list[42] = 1;
+   * ```
    * INTERNAL: Do not reference the `Generated::IndexExpr` class directly.
    * Use the subclass `IndexExpr`, where the following predicates are available.
    */

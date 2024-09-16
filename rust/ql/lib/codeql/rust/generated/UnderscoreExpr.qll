@@ -14,6 +14,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An underscore expression. For example:
+   * ```
+   * _ = 42;
+   * ```
    * INTERNAL: Do not reference the `Generated::UnderscoreExpr` class directly.
    * Use the subclass `UnderscoreExpr`, where the following predicates are available.
    */

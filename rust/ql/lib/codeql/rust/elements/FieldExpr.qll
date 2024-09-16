@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.FieldExpr
 
+/**
+ * A field access expression. For example:
+ * ```
+ * x.foo
+ * ```
+ */
 class FieldExpr extends Generated::FieldExpr { }

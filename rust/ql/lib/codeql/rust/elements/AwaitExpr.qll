@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.AwaitExpr
 
+/**
+ * An `await` expression. For example:
+ * ```
+ * async {
+ *     let x = foo().await;
+ *     x
+ * }
+ * ```
+ */
 class AwaitExpr extends Generated::AwaitExpr { }

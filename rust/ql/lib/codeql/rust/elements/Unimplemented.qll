@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.Unimplemented
 
+/**
+ * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
+ */
 class Unimplemented extends Generated::Unimplemented { }

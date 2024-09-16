@@ -5,4 +5,9 @@
 
 private import codeql.rust.generated.RepeatExpr
 
+/**
+ * A repeat expression. For example:
+ * ```
+ * [1; 10];
+ */
 class RepeatExpr extends Generated::RepeatExpr { }

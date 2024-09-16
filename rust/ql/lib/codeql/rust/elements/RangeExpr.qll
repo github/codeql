@@ -5,4 +5,15 @@
 
 private import codeql.rust.generated.RangeExpr
 
+/**
+ * A range expression. For example:
+ * ```
+ * let x = 1..=10;
+ * let x = 1..10;
+ * let x = 10..;
+ * let x = ..10;
+ * let x = ..=10;
+ * let x = ..;
+ * ```
+ */
 class RangeExpr extends Generated::RangeExpr { }

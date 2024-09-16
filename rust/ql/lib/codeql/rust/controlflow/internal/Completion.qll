@@ -67,7 +67,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override predicate isValidForSpecific(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
-    exists(BinaryOpExpr expr |
+    exists(BinaryExpr expr |
       expr.getOp() = ["&&", "||"] and
       e = [expr.getLhs(), expr.getRhs()]
     )

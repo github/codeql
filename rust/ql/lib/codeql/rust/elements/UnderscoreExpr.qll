@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.UnderscoreExpr
 
+/**
+ * An underscore expression. For example:
+ * ```
+ * _ = 42;
+ * ```
+ */
 class UnderscoreExpr extends Generated::UnderscoreExpr { }

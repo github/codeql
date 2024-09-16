@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.Label
 
+/**
+ * A label. For example:
+ * ```
+ * 'label: loop {
+ *     println!("Hello, world (once)!");
+ *     break 'label;
+ * };
+ * ```
+ */
 class Label extends Generated::Label { }

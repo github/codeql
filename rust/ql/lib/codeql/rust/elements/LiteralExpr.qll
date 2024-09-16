@@ -5,4 +5,16 @@
 
 private import codeql.rust.generated.LiteralExpr
 
+/**
+ * A literal expression. For example:
+ * ```
+ * 42;
+ * 42.0;
+ * "Hello, world!";
+ * b"Hello, world!";
+ * 'x';
+ * b'x';
+ * r"Hello, world!";
+ * true;
+ */
 class LiteralExpr extends Generated::LiteralExpr { }

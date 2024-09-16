@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.OrPat
 
+/**
+ * An or pattern. For example:
+ * ```
+ * match x {
+ *     Option::Some(y) | Option::None => 0,
+ * }
+ * ```
+ */
 class OrPat extends Generated::OrPat { }

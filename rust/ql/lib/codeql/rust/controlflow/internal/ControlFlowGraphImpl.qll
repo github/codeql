@@ -63,7 +63,7 @@ class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
+class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
   BinaryOpExprTree() { super.getOp() != "&&" and super.getOp() != "||" }
 
   override ControlFlowTree getChildNode(int i) {
@@ -73,7 +73,7 @@ class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryOpExpr {
   }
 }
 
-class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
+class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
   LogicalOrBinaryOpExprTree() { super.getOp() = "||" }
 
   final override predicate propagatesAbnormal(AstNode child) {
@@ -103,7 +103,7 @@ class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
   }
 }
 
-class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryOpExpr {
+class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
   LogicalAndBinaryOpExprTree() { super.getOp() = "&&" }
 
   final override predicate propagatesAbnormal(AstNode child) {
@@ -249,8 +249,8 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
-class RecordLitExprTree extends StandardPostOrderTree instanceof RecordLitExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getField(i).getExpr() }
+class RecordLitExprTree extends StandardPostOrderTree instanceof RecordExpr {
+  override ControlFlowTree getChildNode(int i) { result = super.getFld(i).getExpr() }
 }
 
 class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
@@ -273,7 +273,7 @@ class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
 
 class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
 
-class UnaryOpExprTree extends StandardPostOrderTree instanceof UnaryOpExpr {
+class UnaryOpExprTree extends StandardPostOrderTree instanceof PrefixExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 

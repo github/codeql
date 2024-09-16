@@ -242,7 +242,7 @@ class ParamDecl(VarDecl):
         has a property wrapper.
     """)
 
-class Callable(Element):
+class Callable(AstNode):
     name: optional[string] | doc("name of this callable") | desc("The name includes argument "
         "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child

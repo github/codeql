@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.Path
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TupleStructPat` and should not
@@ -15,6 +15,14 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A tuple struct pattern. For example:
+   * ```
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleStructPat` class directly.
    * Use the subclass `TupleStructPat`, where the following predicates are available.
    */
@@ -24,9 +32,9 @@ module Generated {
     /**
      * Gets the path of this tuple struct pat, if it exists.
      */
-    Unimplemented getPath() {
+    Path getPath() {
       result =
-        Synth::convertUnimplementedFromRaw(Synth::convertTupleStructPatToRaw(this)
+        Synth::convertPathFromRaw(Synth::convertTupleStructPatToRaw(this)
               .(Raw::TupleStructPat)
               .getPath())
     }
