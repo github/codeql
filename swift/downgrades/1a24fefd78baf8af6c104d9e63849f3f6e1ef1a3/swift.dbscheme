@@ -12,7 +12,8 @@ sourceLocationPrefix(
 // from schema.py
 
 @element =
-  @file
+  @callable
+| @file
 | @generic_context
 | @locatable
 | @location
@@ -22,6 +23,43 @@ sourceLocationPrefix(
 #keyset[id]
 element_is_unknown(
   int id: @element ref
+);
+
+@callable =
+  @closure_expr
+| @function
+;
+
+#keyset[id]
+callable_names(
+  int id: @callable ref,
+  string name: string ref
+);
+
+#keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl_or_none ref
+);
+
+#keyset[id, index]
+callable_params(
+  int id: @callable ref,
+  int index: int ref,
+  int param: @param_decl_or_none ref
+);
+
+#keyset[id]
+callable_bodies(
+  int id: @callable ref,
+  int body: @brace_stmt_or_none ref
+);
+
+#keyset[id, index]
+callable_captures(
+  int id: @callable ref,
+  int index: int ref,
+  int capture: @captured_decl_or_none ref
 );
 
 @file =
@@ -70,7 +108,6 @@ locations(
 @ast_node =
   @availability_info
 | @availability_spec
-| @callable
 | @case_label_item
 | @condition_element
 | @decl
@@ -137,43 +174,6 @@ availability_info_specs(
   @other_availability_spec
 | @platform_version_availability_spec
 ;
-
-@callable =
-  @closure_expr
-| @function
-;
-
-#keyset[id]
-callable_names(
-  int id: @callable ref,
-  string name: string ref
-);
-
-#keyset[id]
-callable_self_params(
-  int id: @callable ref,
-  int self_param: @param_decl_or_none ref
-);
-
-#keyset[id, index]
-callable_params(
-  int id: @callable ref,
-  int index: int ref,
-  int param: @param_decl_or_none ref
-);
-
-#keyset[id]
-callable_bodies(
-  int id: @callable ref,
-  int body: @brace_stmt_or_none ref
-);
-
-#keyset[id, index]
-callable_captures(
-  int id: @callable ref,
-  int index: int ref,
-  int capture: @captured_decl_or_none ref
-);
 
 key_path_components(
   unique int id: @key_path_component,

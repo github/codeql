@@ -2,7 +2,7 @@ private import codeql.swift.generated.Callable
 private import codeql.swift.elements.AstNode
 private import codeql.swift.elements.decl.Decl
 
-class Callable extends Generated::Callable, AstNode {
+class Callable extends Generated::Callable {
   /**
    * Holds if this Callable is a function named `funcName`.
    */
