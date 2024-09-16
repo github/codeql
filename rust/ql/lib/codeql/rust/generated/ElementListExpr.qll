@@ -15,6 +15,11 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An element list expression. For example:
+   * ```
+   * [1, 2, 3, 4, 5];
+   * [1, 2, 3, 4, 5][0] = 6;
+   * ```
    * INTERNAL: Do not reference the `Generated::ElementListExpr` class directly.
    * Use the subclass `ElementListExpr`, where the following predicates are available.
    */

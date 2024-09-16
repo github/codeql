@@ -15,6 +15,12 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A `let` expression. For example:
+   * ```
+   * if let Some(x) = maybe_some {
+   *     println!("{}", x);
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::LetExpr` class directly.
    * Use the subclass `LetExpr`, where the following predicates are available.
    */

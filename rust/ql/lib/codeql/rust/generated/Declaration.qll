@@ -14,6 +14,7 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * The base class for declarations.
    * INTERNAL: Do not reference the `Generated::Declaration` class directly.
    * Use the subclass `Declaration`, where the following predicates are available.
    */

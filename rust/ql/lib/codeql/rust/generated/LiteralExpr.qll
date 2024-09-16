@@ -14,6 +14,16 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A literal expression. For example:
+   * ```
+   * 42;
+   * 42.0;
+   * "Hello, world!";
+   * b"Hello, world!";
+   * 'x';
+   * b'x';
+   * r"Hello, world!";
+   * true;
    * INTERNAL: Do not reference the `Generated::LiteralExpr` class directly.
    * Use the subclass `LiteralExpr`, where the following predicates are available.
    */

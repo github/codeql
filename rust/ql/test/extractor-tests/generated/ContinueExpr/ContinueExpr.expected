@@ -1,0 +1,2 @@
+| gen_continue_expr.rs:7:13:7:20 | ContinueExpr | hasLabel: | no |
+| gen_continue_expr.rs:12:13:12:27 | ContinueExpr | hasLabel: | yes |

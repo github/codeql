@@ -14,6 +14,13 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
+   * An item statement. For example:
+   * ```
+   * fn print_hello() {
+   *     println!("Hello, world!");
+   * }
+   * print_hello();
+   * ```
    * INTERNAL: Do not reference the `Generated::ItemStmt` class directly.
    * Use the subclass `ItemStmt`, where the following predicates are available.
    */

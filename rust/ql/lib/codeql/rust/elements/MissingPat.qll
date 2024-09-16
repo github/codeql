@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.MissingPat
 
+/**
+ * A missing pattern, used as a place holder for incomplete syntax.
+ * ```
+ * match Some(42) {
+ *     .. => "bad use of .. syntax",
+ * };
+ * ```
+ */
 class MissingPat extends Generated::MissingPat { }

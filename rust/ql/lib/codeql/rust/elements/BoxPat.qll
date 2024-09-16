@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.BoxPat
 
+/**
+ * A box pattern. For example:
+ * ```
+ * match x {
+ *     box Option::Some(y) => y,
+ *     box Option::None => 0,
+ * };
+ * ```
+ */
 class BoxPat extends Generated::BoxPat { }
