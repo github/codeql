@@ -757,6 +757,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     |
       isUseStep = false
       or
+      isUseStep = true and
       not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     )
     or
