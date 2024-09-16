@@ -63,8 +63,8 @@ Golang
 
 *   The query "Incorrect conversion between integer types" (:code:`go/incorrect-integer-conversion`) has been improved. It can now detect parsing an unsigned integer type (like :code:`uint32`) and converting it to the signed integer type of the same size (like :code:`int32`), which may lead to more results. It also treats :code:`int` and :code:`uint` more carefully, which may lead to more results or fewer incorrect results.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed.
 
@@ -121,8 +121,8 @@ Golang
 *   Support has been added for file system access sinks in the following libraries: \ `net/http <https://pkg.go.dev/net/http>`__, `Afero <https://github.com/spf13/afero>`__, `beego <https://pkg.go.dev/github.com/astaxie/beego>`__, `Echo <https://pkg.go.dev/github.com/labstack/echo>`__, `Fiber <https://github.com/kataras/iris>`__, `Gin <https://pkg.go.dev/github.com/gin-gonic/gin>`__, `Iris <https://github.com/kataras/iris>`__.
 *   Added :code:`GoKit.qll` to :code:`go.qll` enabling the GoKit framework by default
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`isBarrier`, :code:`isBarrierIn`, :code:`isBarrierOut`, and :code:`isAdditionalFlowStep` methods of the taint-tracking configurations for local queries in the :code:`ArithmeticTaintedLocalQuery`, :code:`ExternallyControlledFormatStringLocalQuery`, :code:`ImproperValidationOfArrayIndexQuery`, :code:`NumericCastTaintedQuery`, :code:`ResponseSplittingLocalQuery`, :code:`SqlTaintedLocalQuery`, and :code:`XssLocalQuery` libraries have been changed to match their remote counterpart configurations.
 *   Deleted the deprecated :code:`isBarrierGuard` predicate from the dataflow library and its uses, use :code:`isBarrier` and the :code:`BarrierGuard` module instead.
@@ -209,7 +209,7 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added predicate :code:`MemberRefExpr::getReceiverExpr`\ 

@@ -38,8 +38,8 @@ C/C++
 *   The :code:`cpp/overflow-destination`, :code:`cpp/unclear-array-index-validation`, and :code:`cpp/uncontrolled-allocation-size` queries have been modernized and converted to :code:`path-problem` queries and provide more true positive results.
 *   The :code:`cpp/system-data-exposure` query has been increased from :code:`medium` to :code:`high` precision, following a number of improvements to the query logic.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Updated "Local information disclosure in a temporary directory" (:code:`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
@@ -52,8 +52,8 @@ JavaScript/TypeScript
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query "Insertion of sensitive information into log files" (:code:`java/sensitive-logging`) has been promoted from experimental to the main query pack. This query was originally `submitted as an experimental query by @luchua-bc <https://github.com/github/codeql/pull/3090>`__.
 
@@ -79,8 +79,8 @@ C#
 
 *   The flow state variants of :code:`isBarrier` and :code:`isAdditionalFlowStep` are no longer exposed in the taint tracking library. The :code:`isSanitizer` and :code:`isAdditionalTaintStep` predicates should be used instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The flow state variants of :code:`isBarrier` and :code:`isAdditionalFlowStep` are no longer exposed in the taint tracking library. The :code:`isSanitizer` and :code:`isAdditionalTaintStep` predicates should be used instead.
 
@@ -109,8 +109,8 @@ C#
 
 *   All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added new guards :code:`IsWindowsGuard`, :code:`IsSpecificWindowsVariant`, :code:`IsUnixGuard`, and :code:`IsSpecificUnixVariant` to detect OS specific guards.
 *   Added a new predicate :code:`getSystemProperty` that gets all expressions that retrieve system properties from a variety of sources (eg. alternative JDK API's, Google Guava, Apache Commons, Apache IO, etc.).
@@ -150,8 +150,8 @@ C#
 *   Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
     The old name still exists as a deprecated alias.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
     The old name still exists as a deprecated alias.
@@ -193,8 +193,8 @@ C#
 
 *   The data flow and taint tracking libraries have been extended with versions of :code:`isBarrierIn`, :code:`isBarrierOut`, and :code:`isBarrierGuard`, respectively :code:`isSanitizerIn`, :code:`isSanitizerOut`, and :code:`isSanitizerGuard`, that support flow states.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The data flow and taint tracking libraries have been extended with versions of :code:`isBarrierIn`, :code:`isBarrierOut`, and :code:`isBarrierGuard`, respectively :code:`isSanitizerIn`, :code:`isSanitizerOut`, and :code:`isSanitizerGuard`, that support flow states.
 

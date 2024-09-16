@@ -90,8 +90,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   :code:`CharacterLiteral`\ 's :code:`getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
 *   The :code:`RangeAnalysis` module and the :code:`java/constant-comparison` queries no longer raise false alerts regarding comparisons with Unicode surrogate character literals.

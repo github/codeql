@@ -1,0 +1,15 @@
+callTargets
+| test.go:48:2:48:24 | call to ImplementMe | test.go:12:1:12:69 | function declaration | ImplementMe |
+| test.go:48:2:48:24 | call to ImplementMe | test.go:17:1:17:64 | function declaration | ImplementMe |
+| test.go:48:2:48:24 | call to ImplementMe | test.go:24:1:24:53 | function declaration | ImplementMe |
+| test.go:48:2:48:24 | call to ImplementMe | test.go:31:1:31:59 | function declaration | ImplementMe |
+| test.go:48:2:48:24 | call to ImplementMe | test.go:38:1:38:71 | function declaration | ImplementMe |
+| test.go:48:2:48:24 | call to ImplementMe | test.go:45:1:45:69 | function declaration | ImplementMe |
+#select
+| file://:0:0:0:0 | basic interface type | file://:0:0:0:0 | basic interface type |
+| file://:0:0:0:0 | basic interface type | test.go:10:6:10:10 | Impl1 |
+| file://:0:0:0:0 | basic interface type | test.go:15:6:15:10 | Impl2 |
+| file://:0:0:0:0 | basic interface type | test.go:20:6:20:10 | Impl3 |
+| file://:0:0:0:0 | basic interface type | test.go:27:6:27:10 | Impl4 |
+| file://:0:0:0:0 | basic interface type | test.go:34:6:34:10 | Impl5 |
+| file://:0:0:0:0 | basic interface type | test.go:41:6:41:10 | Impl6 |

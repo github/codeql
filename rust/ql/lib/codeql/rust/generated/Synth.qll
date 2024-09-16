@@ -18,6 +18,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TAsmExpr(Raw::AsmExpr id) { constructAsmExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TAsyncBlockExpr(Raw::AsyncBlockExpr id) { constructAsyncBlockExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -30,11 +34,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TBinaryOpExpr(Raw::BinaryOpExpr id) { constructBinaryOpExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TBindPat(Raw::BindPat id) { constructBindPat(id) } or
+    TBinaryExpr(Raw::BinaryExpr id) { constructBinaryExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -94,15 +94,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TGenericArgList(Raw::GenericArgList id) { constructGenericArgList(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TIdentPat(Raw::IdentPat id) { constructIdentPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIfExpr(Raw::IfExpr id) { constructIfExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TIndexExpr(Raw::IndexExpr id) { constructIndexExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TInlineAsmExpr(Raw::InlineAsmExpr id) { constructInlineAsmExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -122,11 +126,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLitPat(Raw::LitPat id) { constructLitPat(id) } or
+    TLiteralExpr(Raw::LiteralExpr id) { constructLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TLiteralExpr(Raw::LiteralExpr id) { constructLiteralExpr(id) } or
+    TLiteralPat(Raw::LiteralPat id) { constructLiteralPat(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -166,11 +170,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TPath(Raw::Path id) { constructPath(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TPathExpr(Raw::PathExpr id) { constructPathExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TPathPat(Raw::PathPat id) { constructPathPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPrefixExpr(Raw::PrefixExpr id) { constructPrefixExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -182,19 +194,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRecordFieldPat(Raw::RecordFieldPat id) { constructRecordFieldPat(id) } or
+    TRecordExpr(Raw::RecordExpr id) { constructRecordExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TRecordLitExpr(Raw::RecordLitExpr id) { constructRecordLitExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TRecordLitField(Raw::RecordLitField id) { constructRecordLitField(id) } or
+    TRecordExprField(Raw::RecordExprField id) { constructRecordExprField(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TRecordPat(Raw::RecordPat id) { constructRecordPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRecordPatField(Raw::RecordPatField id) { constructRecordPatField(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -234,15 +246,13 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TUnaryOpExpr(Raw::UnaryOpExpr id) { constructUnaryOpExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TUnderscoreExpr(Raw::UnderscoreExpr id) { constructUnderscoreExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TUnimplemented(Raw::Unimplemented id) { constructUnimplemented(id) } or
+    TUnimplementedDeclaration(Raw::UnimplementedDeclaration id) {
+      constructUnimplementedDeclaration(id)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -250,7 +260,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TWildPat(Raw::WildPat id) { constructWildPat(id) } or
+    TWildcardPat(Raw::WildcardPat id) { constructWildcardPat(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -269,8 +279,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TDeclaration or TExpr or TLabel or TMatchArm or TPat or TRecordFieldPat or TRecordLitField or
-        TStmt or TTypeRef or TUnimplemented;
+    TDeclaration or TExpr or TGenericArgList or TLabel or TMatchArm or TPat or TPath or
+        TRecordExprField or TRecordPatField or TStmt or TTypeRef;
 
   /**
    * INTERNAL: Do not use.
@@ -280,17 +290,17 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TDeclaration = TFunction or TModule;
+  class TDeclaration = TFunction or TModule or TUnimplementedDeclaration;
 
   /**
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArrayExpr or TAwaitExpr or TBecomeExpr or TBinaryOpExpr or TBlockExprBase or TBoxExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TConstExpr or TContinueExpr or
-        TFieldExpr or TIfExpr or TIndexExpr or TInlineAsmExpr or TLetExpr or TLiteralExpr or
+    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExprBase or
+        TBoxExpr or TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TConstExpr or
+        TContinueExpr or TFieldExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
         TLoopExpr or TMatchExpr or TMethodCallExpr or TMissingExpr or TOffsetOfExpr or TPathExpr or
-        TRangeExpr or TRecordLitExpr or TRefExpr or TReturnExpr or TTupleExpr or TUnaryOpExpr or
+        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTupleExpr or
         TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
@@ -301,14 +311,37 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TMissing = TMissingExpr or TMissingPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TPat =
-    TBindPat or TBoxPat or TConstBlockPat or TLitPat or TMissingPat or TOrPat or TPathPat or
-        TRangePat or TRecordPat or TRefPat or TSlicePat or TTuplePat or TTupleStructPat or TWildPat;
+    TBoxPat or TConstBlockPat or TIdentPat or TLiteralPat or TMissingPat or TOrPat or TPathPat or
+        TRangePat or TRecordPat or TRefPat or TSlicePat or TTuplePat or TTupleStructPat or
+        TWildcardPat;
 
   /**
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TItemStmt or TLetStmt;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TUnextracted = TMissing or TUnimplemented;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TUnimplemented = TGenericArgList or TPath or TTypeRef or TUnimplementedDeclaration;
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TAsmExpr`, if possible.
+   */
+  cached
+  TAsmExpr convertAsmExprFromRaw(Raw::Element e) { result = TAsmExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -333,17 +366,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBinaryOpExpr`, if possible.
+   * Converts a raw element to a synthesized `TBinaryExpr`, if possible.
    */
   cached
-  TBinaryOpExpr convertBinaryOpExprFromRaw(Raw::Element e) { result = TBinaryOpExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TBindPat`, if possible.
-   */
-  cached
-  TBindPat convertBindPatFromRaw(Raw::Element e) { result = TBindPat(e) }
+  TBinaryExpr convertBinaryExprFromRaw(Raw::Element e) { result = TBinaryExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -445,6 +471,20 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TGenericArgList`, if possible.
+   */
+  cached
+  TGenericArgList convertGenericArgListFromRaw(Raw::Element e) { result = TGenericArgList(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TIdentPat`, if possible.
+   */
+  cached
+  TIdentPat convertIdentPatFromRaw(Raw::Element e) { result = TIdentPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIfExpr`, if possible.
    */
   cached
@@ -456,13 +496,6 @@ module Synth {
    */
   cached
   TIndexExpr convertIndexExprFromRaw(Raw::Element e) { result = TIndexExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TInlineAsmExpr`, if possible.
-   */
-  cached
-  TInlineAsmExpr convertInlineAsmExprFromRaw(Raw::Element e) { result = TInlineAsmExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -494,17 +527,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLitPat`, if possible.
-   */
-  cached
-  TLitPat convertLitPatFromRaw(Raw::Element e) { result = TLitPat(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TLiteralExpr`, if possible.
    */
   cached
   TLiteralExpr convertLiteralExprFromRaw(Raw::Element e) { result = TLiteralExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLiteralPat`, if possible.
+   */
+  cached
+  TLiteralPat convertLiteralPatFromRaw(Raw::Element e) { result = TLiteralPat(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -571,6 +604,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPath`, if possible.
+   */
+  cached
+  TPath convertPathFromRaw(Raw::Element e) { result = TPath(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TPathExpr`, if possible.
    */
   cached
@@ -582,6 +622,13 @@ module Synth {
    */
   cached
   TPathPat convertPathPatFromRaw(Raw::Element e) { result = TPathPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPrefixExpr`, if possible.
+   */
+  cached
+  TPrefixExpr convertPrefixExprFromRaw(Raw::Element e) { result = TPrefixExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -599,24 +646,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRecordFieldPat`, if possible.
+   * Converts a raw element to a synthesized `TRecordExpr`, if possible.
    */
   cached
-  TRecordFieldPat convertRecordFieldPatFromRaw(Raw::Element e) { result = TRecordFieldPat(e) }
+  TRecordExpr convertRecordExprFromRaw(Raw::Element e) { result = TRecordExpr(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRecordLitExpr`, if possible.
+   * Converts a raw element to a synthesized `TRecordExprField`, if possible.
    */
   cached
-  TRecordLitExpr convertRecordLitExprFromRaw(Raw::Element e) { result = TRecordLitExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRecordLitField`, if possible.
-   */
-  cached
-  TRecordLitField convertRecordLitFieldFromRaw(Raw::Element e) { result = TRecordLitField(e) }
+  TRecordExprField convertRecordExprFieldFromRaw(Raw::Element e) { result = TRecordExprField(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -624,6 +664,13 @@ module Synth {
    */
   cached
   TRecordPat convertRecordPatFromRaw(Raw::Element e) { result = TRecordPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRecordPatField`, if possible.
+   */
+  cached
+  TRecordPatField convertRecordPatFieldFromRaw(Raw::Element e) { result = TRecordPatField(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -690,13 +737,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnaryOpExpr`, if possible.
-   */
-  cached
-  TUnaryOpExpr convertUnaryOpExprFromRaw(Raw::Element e) { result = TUnaryOpExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TUnderscoreExpr`, if possible.
    */
   cached
@@ -704,10 +744,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TUnimplemented`, if possible.
+   * Converts a raw element to a synthesized `TUnimplementedDeclaration`, if possible.
    */
   cached
-  TUnimplemented convertUnimplementedFromRaw(Raw::Element e) { result = TUnimplemented(e) }
+  TUnimplementedDeclaration convertUnimplementedDeclarationFromRaw(Raw::Element e) {
+    result = TUnimplementedDeclaration(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -718,10 +760,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TWildPat`, if possible.
+   * Converts a raw element to a synthesized `TWildcardPat`, if possible.
    */
   cached
-  TWildPat convertWildPatFromRaw(Raw::Element e) { result = TWildPat(e) }
+  TWildcardPat convertWildcardPatFromRaw(Raw::Element e) { result = TWildcardPat(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -758,21 +800,23 @@ module Synth {
     or
     result = convertExprFromRaw(e)
     or
+    result = convertGenericArgListFromRaw(e)
+    or
     result = convertLabelFromRaw(e)
     or
     result = convertMatchArmFromRaw(e)
     or
     result = convertPatFromRaw(e)
     or
-    result = convertRecordFieldPatFromRaw(e)
+    result = convertPathFromRaw(e)
     or
-    result = convertRecordLitFieldFromRaw(e)
+    result = convertRecordExprFieldFromRaw(e)
+    or
+    result = convertRecordPatFieldFromRaw(e)
     or
     result = convertStmtFromRaw(e)
     or
     result = convertTypeRefFromRaw(e)
-    or
-    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -797,6 +841,8 @@ module Synth {
     result = convertFunctionFromRaw(e)
     or
     result = convertModuleFromRaw(e)
+    or
+    result = convertUnimplementedDeclarationFromRaw(e)
   }
 
   /**
@@ -804,7 +850,11 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   cached
-  TElement convertElementFromRaw(Raw::Element e) { result = convertLocatableFromRaw(e) }
+  TElement convertElementFromRaw(Raw::Element e) {
+    result = convertLocatableFromRaw(e)
+    or
+    result = convertUnextractedFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -814,11 +864,13 @@ module Synth {
   TExpr convertExprFromRaw(Raw::Element e) {
     result = convertArrayExprFromRaw(e)
     or
+    result = convertAsmExprFromRaw(e)
+    or
     result = convertAwaitExprFromRaw(e)
     or
     result = convertBecomeExprFromRaw(e)
     or
-    result = convertBinaryOpExprFromRaw(e)
+    result = convertBinaryExprFromRaw(e)
     or
     result = convertBlockExprBaseFromRaw(e)
     or
@@ -842,8 +894,6 @@ module Synth {
     or
     result = convertIndexExprFromRaw(e)
     or
-    result = convertInlineAsmExprFromRaw(e)
-    or
     result = convertLetExprFromRaw(e)
     or
     result = convertLiteralExprFromRaw(e)
@@ -860,17 +910,17 @@ module Synth {
     or
     result = convertPathExprFromRaw(e)
     or
+    result = convertPrefixExprFromRaw(e)
+    or
     result = convertRangeExprFromRaw(e)
     or
-    result = convertRecordLitExprFromRaw(e)
+    result = convertRecordExprFromRaw(e)
     or
     result = convertRefExprFromRaw(e)
     or
     result = convertReturnExprFromRaw(e)
     or
     result = convertTupleExprFromRaw(e)
-    or
-    result = convertUnaryOpExprFromRaw(e)
     or
     result = convertUnderscoreExprFromRaw(e)
     or
@@ -888,17 +938,28 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TMissing`, if possible.
+   */
+  cached
+  TMissing convertMissingFromRaw(Raw::Element e) {
+    result = convertMissingExprFromRaw(e)
+    or
+    result = convertMissingPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TPat`, if possible.
    */
   cached
   TPat convertPatFromRaw(Raw::Element e) {
-    result = convertBindPatFromRaw(e)
-    or
     result = convertBoxPatFromRaw(e)
     or
     result = convertConstBlockPatFromRaw(e)
     or
-    result = convertLitPatFromRaw(e)
+    result = convertIdentPatFromRaw(e)
+    or
+    result = convertLiteralPatFromRaw(e)
     or
     result = convertMissingPatFromRaw(e)
     or
@@ -918,7 +979,7 @@ module Synth {
     or
     result = convertTupleStructPatFromRaw(e)
     or
-    result = convertWildPatFromRaw(e)
+    result = convertWildcardPatFromRaw(e)
   }
 
   /**
@@ -933,6 +994,39 @@ module Synth {
     or
     result = convertLetStmtFromRaw(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TUnextracted`, if possible.
+   */
+  cached
+  TUnextracted convertUnextractedFromRaw(Raw::Element e) {
+    result = convertMissingFromRaw(e)
+    or
+    result = convertUnimplementedFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TUnimplemented`, if possible.
+   */
+  cached
+  TUnimplemented convertUnimplementedFromRaw(Raw::Element e) {
+    result = convertGenericArgListFromRaw(e)
+    or
+    result = convertPathFromRaw(e)
+    or
+    result = convertTypeRefFromRaw(e)
+    or
+    result = convertUnimplementedDeclarationFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TAsmExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertAsmExprToRaw(TAsmExpr e) { e = TAsmExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -957,17 +1051,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TBinaryOpExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TBinaryExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertBinaryOpExprToRaw(TBinaryOpExpr e) { e = TBinaryOpExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TBindPat` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertBindPatToRaw(TBindPat e) { e = TBindPat(result) }
+  Raw::Element convertBinaryExprToRaw(TBinaryExpr e) { e = TBinaryExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1069,6 +1156,20 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TGenericArgList` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertGenericArgListToRaw(TGenericArgList e) { e = TGenericArgList(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TIdentPat` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertIdentPatToRaw(TIdentPat e) { e = TIdentPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TIfExpr` to a raw DB element, if possible.
    */
   cached
@@ -1080,13 +1181,6 @@ module Synth {
    */
   cached
   Raw::Element convertIndexExprToRaw(TIndexExpr e) { e = TIndexExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TInlineAsmExpr` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertInlineAsmExprToRaw(TInlineAsmExpr e) { e = TInlineAsmExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1118,17 +1212,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLitPat` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertLitPatToRaw(TLitPat e) { e = TLitPat(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TLiteralExpr` to a raw DB element, if possible.
    */
   cached
   Raw::Element convertLiteralExprToRaw(TLiteralExpr e) { e = TLiteralExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLiteralPat` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertLiteralPatToRaw(TLiteralPat e) { e = TLiteralPat(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1195,6 +1289,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TPath` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPathToRaw(TPath e) { e = TPath(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPathExpr` to a raw DB element, if possible.
    */
   cached
@@ -1206,6 +1307,13 @@ module Synth {
    */
   cached
   Raw::Element convertPathPatToRaw(TPathPat e) { e = TPathPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPrefixExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPrefixExprToRaw(TPrefixExpr e) { e = TPrefixExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1223,24 +1331,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRecordFieldPat` to a raw DB element, if possible.
+   * Converts a synthesized `TRecordExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRecordFieldPatToRaw(TRecordFieldPat e) { e = TRecordFieldPat(result) }
+  Raw::Element convertRecordExprToRaw(TRecordExpr e) { e = TRecordExpr(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRecordLitExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TRecordExprField` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRecordLitExprToRaw(TRecordLitExpr e) { e = TRecordLitExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TRecordLitField` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertRecordLitFieldToRaw(TRecordLitField e) { e = TRecordLitField(result) }
+  Raw::Element convertRecordExprFieldToRaw(TRecordExprField e) { e = TRecordExprField(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1248,6 +1349,13 @@ module Synth {
    */
   cached
   Raw::Element convertRecordPatToRaw(TRecordPat e) { e = TRecordPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRecordPatField` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertRecordPatFieldToRaw(TRecordPatField e) { e = TRecordPatField(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1314,13 +1422,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnaryOpExpr` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertUnaryOpExprToRaw(TUnaryOpExpr e) { e = TUnaryOpExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TUnderscoreExpr` to a raw DB element, if possible.
    */
   cached
@@ -1328,10 +1429,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TUnimplemented` to a raw DB element, if possible.
+   * Converts a synthesized `TUnimplementedDeclaration` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertUnimplementedToRaw(TUnimplemented e) { e = TUnimplemented(result) }
+  Raw::Element convertUnimplementedDeclarationToRaw(TUnimplementedDeclaration e) {
+    e = TUnimplementedDeclaration(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1342,10 +1445,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TWildPat` to a raw DB element, if possible.
+   * Converts a synthesized `TWildcardPat` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertWildPatToRaw(TWildPat e) { e = TWildPat(result) }
+  Raw::Element convertWildcardPatToRaw(TWildcardPat e) { e = TWildcardPat(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -1382,21 +1485,23 @@ module Synth {
     or
     result = convertExprToRaw(e)
     or
+    result = convertGenericArgListToRaw(e)
+    or
     result = convertLabelToRaw(e)
     or
     result = convertMatchArmToRaw(e)
     or
     result = convertPatToRaw(e)
     or
-    result = convertRecordFieldPatToRaw(e)
+    result = convertPathToRaw(e)
     or
-    result = convertRecordLitFieldToRaw(e)
+    result = convertRecordExprFieldToRaw(e)
+    or
+    result = convertRecordPatFieldToRaw(e)
     or
     result = convertStmtToRaw(e)
     or
     result = convertTypeRefToRaw(e)
-    or
-    result = convertUnimplementedToRaw(e)
   }
 
   /**
@@ -1421,6 +1526,8 @@ module Synth {
     result = convertFunctionToRaw(e)
     or
     result = convertModuleToRaw(e)
+    or
+    result = convertUnimplementedDeclarationToRaw(e)
   }
 
   /**
@@ -1428,7 +1535,11 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertElementToRaw(TElement e) { result = convertLocatableToRaw(e) }
+  Raw::Element convertElementToRaw(TElement e) {
+    result = convertLocatableToRaw(e)
+    or
+    result = convertUnextractedToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1438,11 +1549,13 @@ module Synth {
   Raw::Element convertExprToRaw(TExpr e) {
     result = convertArrayExprToRaw(e)
     or
+    result = convertAsmExprToRaw(e)
+    or
     result = convertAwaitExprToRaw(e)
     or
     result = convertBecomeExprToRaw(e)
     or
-    result = convertBinaryOpExprToRaw(e)
+    result = convertBinaryExprToRaw(e)
     or
     result = convertBlockExprBaseToRaw(e)
     or
@@ -1466,8 +1579,6 @@ module Synth {
     or
     result = convertIndexExprToRaw(e)
     or
-    result = convertInlineAsmExprToRaw(e)
-    or
     result = convertLetExprToRaw(e)
     or
     result = convertLiteralExprToRaw(e)
@@ -1484,17 +1595,17 @@ module Synth {
     or
     result = convertPathExprToRaw(e)
     or
+    result = convertPrefixExprToRaw(e)
+    or
     result = convertRangeExprToRaw(e)
     or
-    result = convertRecordLitExprToRaw(e)
+    result = convertRecordExprToRaw(e)
     or
     result = convertRefExprToRaw(e)
     or
     result = convertReturnExprToRaw(e)
     or
     result = convertTupleExprToRaw(e)
-    or
-    result = convertUnaryOpExprToRaw(e)
     or
     result = convertUnderscoreExprToRaw(e)
     or
@@ -1512,17 +1623,28 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMissing` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMissingToRaw(TMissing e) {
+    result = convertMissingExprToRaw(e)
+    or
+    result = convertMissingPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPat` to a raw DB element, if possible.
    */
   cached
   Raw::Element convertPatToRaw(TPat e) {
-    result = convertBindPatToRaw(e)
-    or
     result = convertBoxPatToRaw(e)
     or
     result = convertConstBlockPatToRaw(e)
     or
-    result = convertLitPatToRaw(e)
+    result = convertIdentPatToRaw(e)
+    or
+    result = convertLiteralPatToRaw(e)
     or
     result = convertMissingPatToRaw(e)
     or
@@ -1542,7 +1664,7 @@ module Synth {
     or
     result = convertTupleStructPatToRaw(e)
     or
-    result = convertWildPatToRaw(e)
+    result = convertWildcardPatToRaw(e)
   }
 
   /**
@@ -1556,5 +1678,31 @@ module Synth {
     result = convertItemStmtToRaw(e)
     or
     result = convertLetStmtToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnextracted` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertUnextractedToRaw(TUnextracted e) {
+    result = convertMissingToRaw(e)
+    or
+    result = convertUnimplementedToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnimplemented` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertUnimplementedToRaw(TUnimplemented e) {
+    result = convertGenericArgListToRaw(e)
+    or
+    result = convertPathToRaw(e)
+    or
+    result = convertTypeRefToRaw(e)
+    or
+    result = convertUnimplementedDeclarationToRaw(e)
   }
 }
