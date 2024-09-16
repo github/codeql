@@ -5,4 +5,11 @@
 
 private import codeql.rust.generated.ArrayExpr
 
+/**
+ * An array expression. For example:
+ * ```
+ * [1, 2, 3];
+ * [1; 10];
+ * ```
+ */
 class ArrayExpr extends Generated::ArrayExpr { }

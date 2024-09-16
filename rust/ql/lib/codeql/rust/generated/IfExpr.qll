@@ -14,6 +14,19 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An `if` expression. For example:
+   * ```
+   * if x == 42 {
+   *     println!("that's the answer");
+   * }
+   * ```
+   * ```
+   * let y = if x > 0 {
+   *     1
+   * } else {
+   *     0
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
    * Use the subclass `IfExpr`, where the following predicates are available.
    */

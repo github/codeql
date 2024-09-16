@@ -6,6 +6,21 @@ use crate::trap::{TrapId, TrapEntry};
 use codeql_extractor::trap;
 
 #[derive(Debug)]
+pub struct GenericArgList {
+    pub id: TrapId,
+}
+
+impl TrapEntry for GenericArgList {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("generic_arg_lists", vec![trap::Arg::Label(id)]);
+    }
+}
+
+#[derive(Debug)]
 pub struct Label {
     pub id: TrapId,
     pub name: String,
@@ -43,36 +58,51 @@ impl TrapEntry for MatchArm {
 }
 
 #[derive(Debug)]
-pub struct RecordFieldPat {
+pub struct Path {
     pub id: TrapId,
-    pub name: String,
-    pub pat: trap::Label,
 }
 
-impl TrapEntry for RecordFieldPat {
+impl TrapEntry for Path {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_field_pats", vec![trap::Arg::Label(id), self.name.into(), self.pat.into()]);
+        out.add_tuple("paths", vec![trap::Arg::Label(id)]);
     }
 }
 
 #[derive(Debug)]
-pub struct RecordLitField {
+pub struct RecordExprField {
     pub id: TrapId,
     pub name: String,
     pub expr: trap::Label,
 }
 
-impl TrapEntry for RecordLitField {
+impl TrapEntry for RecordExprField {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_lit_fields", vec![trap::Arg::Label(id), self.name.into(), self.expr.into()]);
+        out.add_tuple("record_expr_fields", vec![trap::Arg::Label(id), self.name.into(), self.expr.into()]);
+    }
+}
+
+#[derive(Debug)]
+pub struct RecordPatField {
+    pub id: TrapId,
+    pub name: String,
+    pub pat: trap::Label,
+}
+
+impl TrapEntry for RecordPatField {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("record_pat_fields", vec![trap::Arg::Label(id), self.name.into(), self.pat.into()]);
     }
 }
 
@@ -92,17 +122,18 @@ impl TrapEntry for TypeRef {
 }
 
 #[derive(Debug)]
-pub struct Unimplemented {
+pub struct AsmExpr {
     pub id: TrapId,
+    pub expr: trap::Label,
 }
 
-impl TrapEntry for Unimplemented {
+impl TrapEntry for AsmExpr {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unimplementeds", vec![trap::Arg::Label(id)]);
+        out.add_tuple("asm_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
     }
 }
 
@@ -139,42 +170,22 @@ impl TrapEntry for BecomeExpr {
 }
 
 #[derive(Debug)]
-pub struct BinaryOpExpr {
+pub struct BinaryExpr {
     pub id: TrapId,
     pub lhs: trap::Label,
     pub rhs: trap::Label,
     pub op: Option<String>,
 }
 
-impl TrapEntry for BinaryOpExpr {
+impl TrapEntry for BinaryExpr {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("binary_op_exprs", vec![trap::Arg::Label(id), self.lhs.into(), self.rhs.into()]);
+        out.add_tuple("binary_exprs", vec![trap::Arg::Label(id), self.lhs.into(), self.rhs.into()]);
         if let Some(v) = self.op {
-            out.add_tuple("binary_op_expr_ops", vec![trap::Arg::Label(id), v.into()]);
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct BindPat {
-    pub id: TrapId,
-    pub binding_id: String,
-    pub subpat: Option<trap::Label>,
-}
-
-impl TrapEntry for BindPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("bind_pats", vec![trap::Arg::Label(id), self.binding_id.into()]);
-        if let Some(v) = self.subpat {
-            out.add_tuple("bind_pat_subpats", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("binary_expr_ops", vec![trap::Arg::Label(id), v.into()]);
         }
     }
 }
@@ -262,7 +273,7 @@ impl TrapEntry for CallExpr {
 pub struct CastExpr {
     pub id: TrapId,
     pub expr: trap::Label,
-    pub type_ref: trap::Label,
+    pub type_: trap::Label,
 }
 
 impl TrapEntry for CastExpr {
@@ -271,7 +282,7 @@ impl TrapEntry for CastExpr {
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("cast_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.type_ref.into()]);
+        out.add_tuple("cast_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.type_.into()]);
     }
 }
 
@@ -416,6 +427,26 @@ impl TrapEntry for Function {
 }
 
 #[derive(Debug)]
+pub struct IdentPat {
+    pub id: TrapId,
+    pub binding_id: String,
+    pub subpat: Option<trap::Label>,
+}
+
+impl TrapEntry for IdentPat {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("ident_pats", vec![trap::Arg::Label(id), self.binding_id.into()]);
+        if let Some(v) = self.subpat {
+            out.add_tuple("ident_pat_subpats", vec![trap::Arg::Label(id), v.into()]);
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct IfExpr {
     pub id: TrapId,
     pub condition: trap::Label,
@@ -458,22 +489,6 @@ impl TrapEntry for IndexExpr {
 }
 
 #[derive(Debug)]
-pub struct InlineAsmExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
-}
-
-impl TrapEntry for InlineAsmExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("inline_asm_exprs", vec![trap::Arg::Label(id), self.expr.into()]);
-    }
-}
-
-#[derive(Debug)]
 pub struct ItemStmt {
     pub id: TrapId,
 }
@@ -509,7 +524,7 @@ impl TrapEntry for LetExpr {
 pub struct LetStmt {
     pub id: TrapId,
     pub pat: trap::Label,
-    pub type_ref: Option<trap::Label>,
+    pub type_: Option<trap::Label>,
     pub initializer: Option<trap::Label>,
     pub else_: Option<trap::Label>,
 }
@@ -521,8 +536,8 @@ impl TrapEntry for LetStmt {
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
         out.add_tuple("let_stmts", vec![trap::Arg::Label(id), self.pat.into()]);
-        if let Some(v) = self.type_ref {
-            out.add_tuple("let_stmt_type_refs", vec![trap::Arg::Label(id), v.into()]);
+        if let Some(v) = self.type_ {
+            out.add_tuple("let_stmt_types", vec![trap::Arg::Label(id), v.into()]);
         }
         if let Some(v) = self.initializer {
             out.add_tuple("let_stmt_initializers", vec![trap::Arg::Label(id), v.into()]);
@@ -530,22 +545,6 @@ impl TrapEntry for LetStmt {
         if let Some(v) = self.else_ {
             out.add_tuple("let_stmt_elses", vec![trap::Arg::Label(id), v.into()]);
         }
-    }
-}
-
-#[derive(Debug)]
-pub struct LitPat {
-    pub id: TrapId,
-    pub expr: trap::Label,
-}
-
-impl TrapEntry for LitPat {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("lit_pats", vec![trap::Arg::Label(id), self.expr.into()]);
     }
 }
 
@@ -561,6 +560,22 @@ impl TrapEntry for LiteralExpr {
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
         out.add_tuple("literal_exprs", vec![trap::Arg::Label(id)]);
+    }
+}
+
+#[derive(Debug)]
+pub struct LiteralPat {
+    pub id: TrapId,
+    pub expr: trap::Label,
+}
+
+impl TrapEntry for LiteralPat {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("literal_pats", vec![trap::Arg::Label(id), self.expr.into()]);
     }
 }
 
@@ -750,6 +765,23 @@ impl TrapEntry for PathPat {
 }
 
 #[derive(Debug)]
+pub struct PrefixExpr {
+    pub id: TrapId,
+    pub expr: trap::Label,
+    pub op: String,
+}
+
+impl TrapEntry for PrefixExpr {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("prefix_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.op.into()]);
+    }
+}
+
+#[derive(Debug)]
 pub struct RangeExpr {
     pub id: TrapId,
     pub lhs: Option<trap::Label>,
@@ -800,36 +832,36 @@ impl TrapEntry for RangePat {
 }
 
 #[derive(Debug)]
-pub struct RecordLitExpr {
+pub struct RecordExpr {
     pub id: TrapId,
     pub path: Option<trap::Label>,
-    pub fields: Vec<trap::Label>,
+    pub flds: Vec<trap::Label>,
     pub spread: Option<trap::Label>,
     pub has_ellipsis: bool,
     pub is_assignee_expr: bool,
 }
 
-impl TrapEntry for RecordLitExpr {
+impl TrapEntry for RecordExpr {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("record_lit_exprs", vec![trap::Arg::Label(id)]);
+        out.add_tuple("record_exprs", vec![trap::Arg::Label(id)]);
         if let Some(v) = self.path {
-            out.add_tuple("record_lit_expr_paths", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("record_expr_paths", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_lit_expr_fields", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        for (i, v) in self.flds.into_iter().enumerate() {
+            out.add_tuple("record_expr_flds", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if let Some(v) = self.spread {
-            out.add_tuple("record_lit_expr_spreads", vec![trap::Arg::Label(id), v.into()]);
+            out.add_tuple("record_expr_spreads", vec![trap::Arg::Label(id), v.into()]);
         }
         if self.has_ellipsis {
-            out.add_tuple("record_lit_expr_has_ellipsis", vec![trap::Arg::Label(id)]);
+            out.add_tuple("record_expr_has_ellipsis", vec![trap::Arg::Label(id)]);
         }
         if self.is_assignee_expr {
-            out.add_tuple("record_lit_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
+            out.add_tuple("record_expr_is_assignee_expr", vec![trap::Arg::Label(id)]);
         }
     }
 }
@@ -838,7 +870,7 @@ impl TrapEntry for RecordLitExpr {
 pub struct RecordPat {
     pub id: TrapId,
     pub path: Option<trap::Label>,
-    pub args: Vec<trap::Label>,
+    pub flds: Vec<trap::Label>,
     pub has_ellipsis: bool,
 }
 
@@ -852,8 +884,8 @@ impl TrapEntry for RecordPat {
         if let Some(v) = self.path {
             out.add_tuple("record_pat_paths", vec![trap::Arg::Label(id), v.into()]);
         }
-        for (i, v) in self.args.into_iter().enumerate() {
-            out.add_tuple("record_pat_args", vec![trap::Arg::Label(id), i.into(), v.into()]);
+        for (i, v) in self.flds.into_iter().enumerate() {
+            out.add_tuple("record_pat_flds", vec![trap::Arg::Label(id), i.into(), v.into()]);
         }
         if self.has_ellipsis {
             out.add_tuple("record_pat_has_ellipsis", vec![trap::Arg::Label(id)]);
@@ -1025,23 +1057,6 @@ impl TrapEntry for TupleStructPat {
 }
 
 #[derive(Debug)]
-pub struct UnaryOpExpr {
-    pub id: TrapId,
-    pub expr: trap::Label,
-    pub op: String,
-}
-
-impl TrapEntry for UnaryOpExpr {
-    fn extract_id(&mut self) -> TrapId {
-        std::mem::replace(&mut self.id, TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("unary_op_exprs", vec![trap::Arg::Label(id), self.expr.into(), self.op.into()]);
-    }
-}
-
-#[derive(Debug)]
 pub struct UnderscoreExpr {
     pub id: TrapId,
 }
@@ -1057,17 +1072,32 @@ impl TrapEntry for UnderscoreExpr {
 }
 
 #[derive(Debug)]
-pub struct WildPat {
+pub struct UnimplementedDeclaration {
     pub id: TrapId,
 }
 
-impl TrapEntry for WildPat {
+impl TrapEntry for UnimplementedDeclaration {
     fn extract_id(&mut self) -> TrapId {
         std::mem::replace(&mut self.id, TrapId::Star)
     }
 
     fn emit(self, id: trap::Label, out: &mut trap::Writer) {
-        out.add_tuple("wild_pats", vec![trap::Arg::Label(id)]);
+        out.add_tuple("unimplemented_declarations", vec![trap::Arg::Label(id)]);
+    }
+}
+
+#[derive(Debug)]
+pub struct WildcardPat {
+    pub id: TrapId,
+}
+
+impl TrapEntry for WildcardPat {
+    fn extract_id(&mut self) -> TrapId {
+        std::mem::replace(&mut self.id, TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label, out: &mut trap::Writer) {
+        out.add_tuple("wildcard_pats", vec![trap::Arg::Label(id)]);
     }
 }
 

@@ -1,0 +1,3 @@
+| gen_block_expr.rs:3:28:12:1 | BlockExpr | getNumberOfStatements: | 1 | hasTail: | yes | hasLabel: | no |
+| gen_block_expr.rs:5:5:7:5 | BlockExpr | getNumberOfStatements: | 1 | hasTail: | no | hasLabel: | no |
+| gen_block_expr.rs:8:5:11:5 | BlockExpr | getNumberOfStatements: | 1 | hasTail: | yes | hasLabel: | yes |

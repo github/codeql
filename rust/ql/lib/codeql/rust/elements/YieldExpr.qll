@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.YieldExpr
 
+/**
+ * A `yield` expression. For example:
+ * ```
+ * let one = #[coroutine]
+ *     || {
+ *         yield 1;
+ *     };
+ * ```
+ */
 class YieldExpr extends Generated::YieldExpr { }

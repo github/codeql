@@ -15,6 +15,19 @@ import codeql.rust.elements.MatchArm
  */
 module Generated {
   /**
+   * A match expression. For example:
+   * ```
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * }
+   * ```
+   * ```
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::MatchExpr` class directly.
    * Use the subclass `MatchExpr`, where the following predicates are available.
    */

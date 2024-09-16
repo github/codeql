@@ -17,6 +17,16 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A let statement. For example:
+   * ```
+   * let x = 42;
+   * let x: i32 = 42;
+   * let x: i32;
+   * let x;
+   * let (x, y) = (1, 2);
+   * let Some(x) = std::env::var("FOO") else {
+   *     return;
+   * };
    * INTERNAL: Do not reference the `Generated::LetStmt` class directly.
    * Use the subclass `LetStmt`, where the following predicates are available.
    */
@@ -31,17 +41,17 @@ module Generated {
     }
 
     /**
-     * Gets the type reference of this let statement, if it exists.
+     * Gets the type of this let statement, if it exists.
      */
-    TypeRef getTypeRef() {
+    TypeRef getType() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTypeRef())
+        Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getType())
     }
 
     /**
-     * Holds if `getTypeRef()` exists.
+     * Holds if `getType()` exists.
      */
-    final predicate hasTypeRef() { exists(this.getTypeRef()) }
+    final predicate hasType() { exists(this.getType()) }
 
     /**
      * Gets the initializer of this let statement, if it exists.

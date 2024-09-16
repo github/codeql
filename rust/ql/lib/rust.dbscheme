@@ -121,35 +121,46 @@ locatable_locations(
 
 @element =
   @locatable
+| @unimplemented
 ;
 
 @locatable =
   @ast_node
 ;
 
+@unimplemented =
+  @generic_arg_list
+| @path
+| @type_ref
+| @unimplemented_declaration
+;
+
 @ast_node =
   @declaration
 | @expr
+| @generic_arg_list
 | @label
 | @match_arm
 | @pat
-| @record_field_pat
-| @record_lit_field
+| @path
+| @record_expr_field
+| @record_pat_field
 | @stmt
 | @type_ref
-| @unimplemented
 ;
 
 @declaration =
   @function
 | @module
+| @unimplemented_declaration
 ;
 
 @expr =
   @array_expr
+| @asm_expr
 | @await_expr
 | @become_expr
-| @binary_op_expr
+| @binary_expr
 | @block_expr_base
 | @box_expr
 | @break_expr
@@ -161,7 +172,6 @@ locatable_locations(
 | @field_expr
 | @if_expr
 | @index_expr
-| @inline_asm_expr
 | @let_expr
 | @literal_expr
 | @loop_expr
@@ -170,16 +180,20 @@ locatable_locations(
 | @missing_expr
 | @offset_of_expr
 | @path_expr
+| @prefix_expr
 | @range_expr
-| @record_lit_expr
+| @record_expr
 | @ref_expr
 | @return_expr
 | @tuple_expr
-| @unary_op_expr
 | @underscore_expr
 | @yeet_expr
 | @yield_expr
 ;
+
+generic_arg_lists(
+  unique int id: @generic_arg_list
+);
 
 labels(
   unique int id: @label,
@@ -199,10 +213,10 @@ match_arm_guards(
 );
 
 @pat =
-  @bind_pat
-| @box_pat
+  @box_pat
 | @const_block_pat
-| @lit_pat
+| @ident_pat
+| @literal_pat
 | @missing_pat
 | @or_pat
 | @path_pat
@@ -212,19 +226,23 @@ match_arm_guards(
 | @slice_pat
 | @tuple_pat
 | @tuple_struct_pat
-| @wild_pat
+| @wildcard_pat
 ;
 
-record_field_pats(
-  unique int id: @record_field_pat,
-  string name: string ref,
-  int pat: @pat ref
+paths(
+  unique int id: @path
 );
 
-record_lit_fields(
-  unique int id: @record_lit_field,
+record_expr_fields(
+  unique int id: @record_expr_field,
   string name: string ref,
   int expr: @expr ref
+);
+
+record_pat_fields(
+  unique int id: @record_pat_field,
+  string name: string ref,
+  int pat: @pat ref
 );
 
 @stmt =
@@ -237,14 +255,15 @@ type_refs(
   unique int id: @type_ref
 );
 
-unimplementeds(
-  unique int id: @unimplemented
-);
-
 @array_expr =
   @element_list_expr
 | @repeat_expr
 ;
+
+asm_exprs(
+  unique int id: @asm_expr,
+  int expr: @expr ref
+);
 
 await_exprs(
   unique int id: @await_expr,
@@ -256,27 +275,16 @@ become_exprs(
   int expr: @expr ref
 );
 
-binary_op_exprs(
-  unique int id: @binary_op_expr,
+binary_exprs(
+  unique int id: @binary_expr,
   int lhs: @expr ref,
   int rhs: @expr ref
 );
 
 #keyset[id]
-binary_op_expr_ops(
-  int id: @binary_op_expr ref,
+binary_expr_ops(
+  int id: @binary_expr ref,
   string op: string ref
-);
-
-bind_pats(
-  unique int id: @bind_pat,
-  string binding_id: string ref
-);
-
-#keyset[id]
-bind_pat_subpats(
-  int id: @bind_pat ref,
-  int subpat: @pat ref
 );
 
 @block_expr_base =
@@ -344,7 +352,7 @@ call_expr_is_assignee_expr(
 cast_exprs(
   unique int id: @cast_expr,
   int expr: @expr ref,
-  int type_ref: @type_ref ref
+  int type_: @type_ref ref
 );
 
 closure_exprs(
@@ -420,6 +428,17 @@ functions(
   int body: @expr ref
 );
 
+ident_pats(
+  unique int id: @ident_pat,
+  string binding_id: string ref
+);
+
+#keyset[id]
+ident_pat_subpats(
+  int id: @ident_pat ref,
+  int subpat: @pat ref
+);
+
 if_exprs(
   unique int id: @if_expr,
   int condition: @expr ref,
@@ -443,11 +462,6 @@ index_expr_is_assignee_expr(
   int id: @index_expr ref
 );
 
-inline_asm_exprs(
-  unique int id: @inline_asm_expr,
-  int expr: @expr ref
-);
-
 item_stmts(
   unique int id: @item_stmt
 );
@@ -464,9 +478,9 @@ let_stmts(
 );
 
 #keyset[id]
-let_stmt_type_refs(
+let_stmt_types(
   int id: @let_stmt ref,
-  int type_ref: @type_ref ref
+  int type_: @type_ref ref
 );
 
 #keyset[id]
@@ -481,13 +495,13 @@ let_stmt_elses(
   int else: @expr ref
 );
 
-lit_pats(
-  unique int id: @lit_pat,
-  int expr: @expr ref
-);
-
 literal_exprs(
   unique int id: @literal_expr
+);
+
+literal_pats(
+  unique int id: @literal_pat,
+  int expr: @expr ref
 );
 
 loop_exprs(
@@ -529,7 +543,7 @@ method_call_expr_args(
 #keyset[id]
 method_call_expr_generic_args(
   int id: @method_call_expr ref,
-  int generic_args: @unimplemented ref
+  int generic_args: @generic_arg_list ref
 );
 
 missing_exprs(
@@ -576,12 +590,18 @@ or_pat_args(
 
 path_exprs(
   unique int id: @path_expr,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 path_pats(
   unique int id: @path_pat,
-  int path: @unimplemented ref
+  int path: @path ref
+);
+
+prefix_exprs(
+  unique int id: @prefix_expr,
+  int expr: @expr ref,
+  string op: string ref
 );
 
 range_exprs(
@@ -621,37 +641,37 @@ range_pat_ends(
   int end: @pat ref
 );
 
-record_lit_exprs(
-  unique int id: @record_lit_expr
+record_exprs(
+  unique int id: @record_expr
 );
 
 #keyset[id]
-record_lit_expr_paths(
-  int id: @record_lit_expr ref,
-  int path: @unimplemented ref
+record_expr_paths(
+  int id: @record_expr ref,
+  int path: @path ref
 );
 
 #keyset[id, index]
-record_lit_expr_fields(
-  int id: @record_lit_expr ref,
+record_expr_flds(
+  int id: @record_expr ref,
   int index: int ref,
-  int field: @record_lit_field ref
+  int fld: @record_expr_field ref
 );
 
 #keyset[id]
-record_lit_expr_spreads(
-  int id: @record_lit_expr ref,
+record_expr_spreads(
+  int id: @record_expr ref,
   int spread: @expr ref
 );
 
 #keyset[id]
-record_lit_expr_has_ellipsis(
-  int id: @record_lit_expr ref
+record_expr_has_ellipsis(
+  int id: @record_expr ref
 );
 
 #keyset[id]
-record_lit_expr_is_assignee_expr(
-  int id: @record_lit_expr ref
+record_expr_is_assignee_expr(
+  int id: @record_expr ref
 );
 
 record_pats(
@@ -661,14 +681,14 @@ record_pats(
 #keyset[id]
 record_pat_paths(
   int id: @record_pat ref,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 #keyset[id, index]
-record_pat_args(
+record_pat_flds(
   int id: @record_pat ref,
   int index: int ref,
-  int arg: @record_field_pat ref
+  int fld: @record_pat_field ref
 );
 
 #keyset[id]
@@ -775,7 +795,7 @@ tuple_struct_pats(
 #keyset[id]
 tuple_struct_pat_paths(
   int id: @tuple_struct_pat ref,
-  int path: @unimplemented ref
+  int path: @path ref
 );
 
 #keyset[id, index]
@@ -791,18 +811,16 @@ tuple_struct_pat_ellipsis_indices(
   int ellipsis_index: int ref
 );
 
-unary_op_exprs(
-  unique int id: @unary_op_expr,
-  int expr: @expr ref,
-  string op: string ref
-);
-
 underscore_exprs(
   unique int id: @underscore_expr
 );
 
-wild_pats(
-  unique int id: @wild_pat
+unimplemented_declarations(
+  unique int id: @unimplemented_declaration
+);
+
+wildcard_pats(
+  unique int id: @wildcard_pat
 );
 
 yeet_exprs(

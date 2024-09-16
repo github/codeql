@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.ExprStmt
 
+/**
+ * An expression statement. For example:
+ * ```
+ * start();
+ * finish()
+ * use std::env;
+ * ```
+ */
 class ExprStmt extends Generated::ExprStmt { }

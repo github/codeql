@@ -14,6 +14,15 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A range expression. For example:
+   * ```
+   * let x = 1..=10;
+   * let x = 1..10;
+   * let x = 10..;
+   * let x = ..10;
+   * let x = ..=10;
+   * let x = ..;
+   * ```
    * INTERNAL: Do not reference the `Generated::RangeExpr` class directly.
    * Use the subclass `RangeExpr`, where the following predicates are available.
    */
