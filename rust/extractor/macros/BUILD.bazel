@@ -1,19 +1,20 @@
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
-load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
-codeql_rust_binary(
-    name = "extractor",
+rust_proc_macro(
+    name = "rust_extractor_macros",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
-    ) + [
-        "//rust/extractor/macros",
-    ],
-    visibility = ["//rust:__subpackages__"],
+    ),
     deps = all_crate_deps(
         normal = True,
-    ) + [
-        "//shared/tree-sitter-extractor",
-    ],
+    ),
+)
+
+alias(
+    name = "macros",
+    actual = "rust_extractor_macros",
+    visibility = ["//rust:__subpackages__"],
 )

@@ -60,6 +60,7 @@ r.from_cargo(
         "//:Cargo.toml",
         "//ruby/extractor:Cargo.toml",
         "//rust/extractor:Cargo.toml",
+        "//rust/extractor/macros:Cargo.toml",
         "//shared/tree-sitter-extractor:Cargo.toml",
     ],
 )
