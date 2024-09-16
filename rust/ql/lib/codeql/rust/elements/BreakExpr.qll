@@ -4,24 +4,8 @@
  */
 
 private import internal.BreakExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Label
+import codeql.rust.elements.Lifetime
 
-/**
- * A break expression. For example:
- * ```rust
- * loop {
- *     if not_ready() {
- *         break;
- *      }
- * }
- * ```
- * ```rust
- * let x = 'label: loop {
- *     if done() {
- *         break 'label 42;
- *     }
- * };
- * ```
- */
 final class BreakExpr = Impl::BreakExpr;

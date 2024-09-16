@@ -4,17 +4,10 @@
  */
 
 private import internal.ModuleImpl
-import codeql.rust.elements.Declaration
+import codeql.rust.elements.Attr
+import codeql.rust.elements.Item
+import codeql.rust.elements.ItemList
+import codeql.rust.elements.Name
+import codeql.rust.elements.Visibility
 
-/**
- * A module declaration. For example:
- * ```rust
- * mod foo;
- * ```
- * ```rust
- * mod bar {
- *     pub fn baz() {}
- * }
- * ```
- */
 final class Module = Impl::Module;
