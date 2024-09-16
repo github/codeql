@@ -4,6 +4,7 @@ cached
 newtype TSuccessorType =
   TSuccessorSuccessor() or
   TBooleanSuccessor(Boolean b) or
+  TMatchSuccessor(Boolean b) or
   TBreakSuccessor() or
   TContinueSuccessor() or
   TReturnSuccessor()
@@ -30,13 +31,24 @@ abstract private class ConditionalSuccessor extends SuccessorTypeImpl {
 
   /** Gets the Boolean value of this successor. */
   final boolean getValue() { result = value }
-
-  override string toString() { result = this.getValue().toString() }
 }
 
 /** A boolean control flow successor for a boolean conditon. */
 final class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
   BooleanSuccessor() { this = TBooleanSuccessor(value) }
+
+  override string toString() { result = this.getValue().toString() }
+}
+
+/**
+ * A control flow successor of a pattern match.
+ */
+final class MatchSuccessor extends ConditionalSuccessor, TMatchSuccessor {
+  MatchSuccessor() { this = TMatchSuccessor(value) }
+
+  override string toString() {
+    if this.getValue() = true then result = "match" else result = "no-match"
+  }
 }
 
 /** A `break` control flow successor. */

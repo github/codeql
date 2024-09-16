@@ -6,6 +6,7 @@ private import SuccessorType
 private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
+  TMatchCompletion(Boolean isMatch) or
   TBreakCompletion() or
   TContinueCompletion() or
   TReturnCompletion()
@@ -53,6 +54,10 @@ abstract class ConditionalCompletion extends NormalCompletion {
   /** Gets the Boolean value of this conditional completion. */
   final boolean getValue() { result = value }
 
+  final predicate succeeded() { value = true }
+
+  final predicate failed() { value = false }
+
   /** Gets the dual completion. */
   abstract ConditionalCompletion getDual();
 }
@@ -71,6 +76,8 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
       expr.getOp() = ["&&", "||"] and
       e = [expr.getLhs(), expr.getRhs()]
     )
+    or
+    any(MatchArm arm).getGuard() = e
   }
 
   /** Gets the dual Boolean completion. */
@@ -79,6 +86,22 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { result = "boolean(" + value + ")" }
+}
+
+/**
+ * A completion that represents the result of a pattern match.
+ */
+class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
+  MatchCompletion() { this = TMatchCompletion(value) }
+
+  override predicate isValidForSpecific(AstNode e) { e = any(MatchArm arm).getPat() }
+
+  override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  /** Gets the dual match completion. */
+  override MatchCompletion getDual() { result = TMatchCompletion(value.booleanNot()) }
+
+  override string toString() { result = "match(" + value + ")" }
 }
 
 /**

@@ -94,13 +94,13 @@ class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
     // Edge from the last node in the lhs to the first node in the rhs
     last(super.getLhs(), pred, c) and
     first(super.getRhs(), succ) and
-    c.(BooleanCompletion).getValue() = false
+    c.(BooleanCompletion).failed()
   }
 
   override predicate last(AstNode node, Completion c) {
     // Lhs. as the last node
     last(super.getLhs(), node, c) and
-    c.(BooleanCompletion).getValue() = true
+    c.(BooleanCompletion).succeeded()
     or
     // Rhs. as the last node
     last(super.getRhs(), node, c) // and
@@ -124,13 +124,13 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
     // Edge from the last node in the lhs to the first node in the rhs
     last(super.getLhs(), pred, c) and
     first(super.getRhs(), succ) and
-    c.(BooleanCompletion).getValue() = true
+    c.(BooleanCompletion).succeeded()
   }
 
   override predicate last(AstNode node, Completion c) {
     // Lhs. as the last node
     last(super.getLhs(), node, c) and
-    c.(BooleanCompletion).getValue() = false
+    c.(BooleanCompletion).failed()
     or
     // Rhs. as the last node
     last(super.getRhs(), node, c)
@@ -205,11 +205,11 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
     // Edges from the condition to the branches
     last(super.getCondition(), pred, c) and
     (
-      first(super.getThen(), succ) and c.(BooleanCompletion).getValue() = true
+      first(super.getThen(), succ) and c.(BooleanCompletion).succeeded()
       or
-      first(super.getElse(), succ) and c.(BooleanCompletion).getValue() = false
+      first(super.getElse(), succ) and c.(BooleanCompletion).failed()
       or
-      not super.hasElse() and succ = this and c.(BooleanCompletion).getValue() = false
+      not super.hasElse() and succ = this and c.(BooleanCompletion).failed()
     )
     or
     // An edge from the then branch to the last node
@@ -269,6 +269,52 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
     last(super.getBody(), last, c) and
     not completionIsNormal(c) and
     not isLoopCompletion(c)
+  }
+}
+
+class MatchArmTree extends ControlFlowTree instanceof MatchArm {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+
+  override predicate first(AstNode node) { node = super.getPat() }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge from pattern to guard/arm if match succeeds.
+    pred = super.getPat() and
+    c.(MatchCompletion).succeeded() and
+    (if super.hasGuard() then first(super.getGuard(), succ) else first(super.getExpr(), succ))
+    or
+    // Edge from guard to arm if the guard succeeds.
+    last(super.getGuard(), pred, c) and
+    first(super.getExpr(), succ) and
+    c.(BooleanCompletion).succeeded()
+  }
+
+  override predicate last(AstNode node, Completion c) {
+    node = super.getPat() and c.(MatchCompletion).failed()
+    or
+    last(super.getGuard(), node, c) and c.(BooleanCompletion).failed()
+    or
+    last(super.getExpr(), node, c)
+  }
+}
+
+class MatchExprTree extends PostOrderTree instanceof MatchExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = super.getABranch().getExpr() }
+
+  override predicate first(AstNode node) { first(super.getExpr(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge from the scrutinee to the first arm.
+    last(super.getExpr(), pred, c) and succ = super.getBranch(0).getPat()
+    or
+    // Edge from a failed match/guard in one arm to the beginning of the next arm.
+    exists(int i |
+      last(super.getBranch(i), pred, c) and
+      first(super.getBranch(i + 1), succ) and
+      c.(ConditionalCompletion).failed()
+    )
+    or
+    exists(int i | last(super.getBranch(i), pred, c) and succ = this and completionIsSimple(c))
   }
 }
 
