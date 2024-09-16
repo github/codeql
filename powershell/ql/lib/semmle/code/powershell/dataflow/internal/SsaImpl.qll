@@ -29,6 +29,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     (
       uninitializedWrite(bb, i, v)
       or
+      parameterWrite(bb, i, v)
+      or
       variableWriteActual(bb, i, v, _)
     ) and
     certain = true
@@ -56,6 +58,39 @@ module Consistency = Impl::Consistency;
 predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   v.getDeclaringScope() = bb.getScope() and
   i = -1
+}
+
+/**
+ * Gets index of `p` in a version of the enclosing function where the parameter
+ * list is reversed.
+ *
+ * For example, given
+ * ```ps
+ * function f($a, $b) { ... }
+ * ```
+ * the inverted index of `$a` is 1, and the inverted index of `$b` is 0.
+ */
+private int getInvertedIndex(Parameter p) {
+  exists(int i |
+    p.getIndex() = i or
+    p.hasParameterBlock(_, i)
+  |
+    result = p.getFunction().getNumberOfParameters() - i - 1
+  )
+}
+
+/**
+ * Holds if the the SSA definition of `p` should be placed at index `i` in
+ * block `bb`. Note that the index may be negative.
+ */
+predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
+  exists(Function f |
+    f.getEntryBasicBlock() = bb and
+    p.getFunction() = f and
+    // If the enclosing function has 2 parameters we map the index of parameter
+    // 0 to -2, the index of parameter 1 to -1.
+    i = -getInvertedIndex(p) - 1
+  )
 }
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
@@ -159,6 +194,9 @@ private module Cached {
       n = bb.getNode(i)
     |
       write.isExplicitWrite(n)
+      or
+      write.isImplicitWrite() and
+      n = write
     )
   }
 
@@ -281,19 +319,20 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }
 
-abstract class NormalParameter extends Parameter { }
-
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
 DefinitionExt getParameterDef(Parameter p) {
-  none() // TODO
+  exists(Cfg::EntryBasicBlock bb, int i |
+    parameterWrite(bb, i, p) and
+    result.definesAt(p, bb, i, _)
+  )
 }
 
-private newtype TParameterExt = TNormalParameter(NormalParameter p)
+private newtype TParameterExt = TNormalParameter(Parameter p)
 
 /** A normal parameter or an implicit `self` parameter. */
 class ParameterExt extends TParameterExt {
-  NormalParameter asParameter() { this = TNormalParameter(result) }
+  Parameter asParameter() { this = TNormalParameter(result) }
 
   predicate isInitializedBy(WriteDefinition def) { def = getParameterDef(this.asParameter()) }
 

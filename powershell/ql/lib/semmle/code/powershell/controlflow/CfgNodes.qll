@@ -163,6 +163,8 @@ module ExprNodes {
     predicate isExplicitWrite(StmtNodes::AssignStmtCfgNode assignment) {
       this = assignment.getLeftHandSide()
     }
+
+    predicate isImplicitWrite() { e.isImplicit() }
   }
 }
 

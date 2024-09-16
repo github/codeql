@@ -103,6 +103,21 @@ module Ssa {
     final override Location getLocation() { result = write.getLocation() }
   }
 
+  class ParameterDefinition extends Definition, SsaImpl::WriteDefinition {
+    private Variable v;
+
+    ParameterDefinition() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        SsaImpl::parameterWrite(bb, i, v)
+      )
+    }
+
+    final override string toString() { result = "<parameter> " + v }
+
+    final override Location getLocation() { result = v.getLocation() }
+  }
+
   /**
    * An SSA definition inserted at the beginning of a scope to represent an
    * uninitialized local variable.
