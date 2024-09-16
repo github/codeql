@@ -15,6 +15,21 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
+   * A break expression. For example:
+   * ```
+   * loop {
+   *     if not_ready() {
+   *         break;
+   *      }
+   * }
+   * ```
+   * ```
+   * let x = 'label: loop {
+   *     if done() {
+   *         break 'label 42;
+   *     }
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
    * Use the subclass `BreakExpr`, where the following predicates are available.
    */

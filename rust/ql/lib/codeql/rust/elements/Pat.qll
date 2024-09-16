@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.Pat
 
+/**
+ * The base class for patterns.
+ */
 class Pat extends Generated::Pat { }

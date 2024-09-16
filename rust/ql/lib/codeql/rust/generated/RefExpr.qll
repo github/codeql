@@ -14,6 +14,13 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A reference expression. For example:
+   * ```
+   *     let ref_const = &foo;
+   *     let ref_mut = &mut foo;
+   *     let raw_const: &mut i32 = &raw const foo;
+   *     let raw_mut: &mut i32 = &raw mut foo;
+   * ```
    * INTERNAL: Do not reference the `Generated::RefExpr` class directly.
    * Use the subclass `RefExpr`, where the following predicates are available.
    */

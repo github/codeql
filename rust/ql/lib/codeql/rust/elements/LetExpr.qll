@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.LetExpr
 
+/**
+ * A `let` expression. For example:
+ * ```
+ * if let Some(x) = maybe_some {
+ *     println!("{}", x);
+ * }
+ * ```
+ */
 class LetExpr extends Generated::LetExpr { }

@@ -5,4 +5,7 @@
 
 private import codeql.rust.generated.Declaration
 
+/**
+ * The base class for declarations.
+ */
 class Declaration extends Generated::Declaration { }

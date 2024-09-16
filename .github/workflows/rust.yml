@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 jobs:
-  rust-check:
+  rust-code:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,6 +43,13 @@ jobs:
         run: |
           cargo clippy --fix
           git diff --exit-code
+  rust-codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install CodeQL
+        uses: ./.github/actions/fetch-codeql
       - name: Code generation
         shell: bash
         run: |

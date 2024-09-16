@@ -14,6 +14,12 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A missing pattern, used as a place holder for incomplete syntax.
+   * ```
+   * match Some(42) {
+   *     .. => "bad use of .. syntax",
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::MissingPat` class directly.
    * Use the subclass `MissingPat`, where the following predicates are available.
    */
