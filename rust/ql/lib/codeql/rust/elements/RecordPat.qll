@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.RecordPat
 
+/**
+ * A record pattern. For example:
+ * ```
+ * match x {
+ *     Foo { a: 1, b: 2 } => "ok",
+ *     Foo { .. } => "fail",
+ * }
+ * ```
+ */
 class RecordPat extends Generated::RecordPat { }

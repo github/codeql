@@ -14,6 +14,13 @@ import codeql.rust.elements.BlockExprBase
  */
 module Generated {
   /**
+   * An async block expression. For example:
+   * ```
+   * async {
+   *    let x = 42;
+   *    x
+   * }.await
+   * ```
    * INTERNAL: Do not reference the `Generated::AsyncBlockExpr` class directly.
    * Use the subclass `AsyncBlockExpr`, where the following predicates are available.
    */

@@ -14,6 +14,14 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
+   * A range pattern. For example:
+   * ```
+   * match x {
+   *     ..15 => "too cold",
+   *     16..=25 => "just right",
+   *     26.. => "too hot",
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::RangePat` class directly.
    * Use the subclass `RangePat`, where the following predicates are available.
    */

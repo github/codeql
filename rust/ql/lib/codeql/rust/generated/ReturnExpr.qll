@@ -14,6 +14,17 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A return expression. For example:
+   * ```
+   * fn some_value() -> i32 {
+   *     return 42;
+   * }
+   * ```
+   * ```
+   * fn no_value() -> () {
+   *     return;
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::ReturnExpr` class directly.
    * Use the subclass `ReturnExpr`, where the following predicates are available.
    */

@@ -5,4 +5,21 @@
 
 private import codeql.rust.generated.BreakExpr
 
+/**
+ * A break expression. For example:
+ * ```
+ * loop {
+ *     if not_ready() {
+ *         break;
+ *      }
+ * }
+ * ```
+ * ```
+ * let x = 'label: loop {
+ *     if done() {
+ *         break 'label 42;
+ *     }
+ * };
+ * ```
+ */
 class BreakExpr extends Generated::BreakExpr { }

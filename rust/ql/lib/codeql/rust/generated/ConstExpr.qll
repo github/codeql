@@ -14,6 +14,12 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A `const` block expression. For example:
+   * ```
+   * if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
+   *     return false;
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::ConstExpr` class directly.
    * Use the subclass `ConstExpr`, where the following predicates are available.
    */

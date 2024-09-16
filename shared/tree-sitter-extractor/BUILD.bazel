@@ -18,3 +18,8 @@ alias(
     actual = ":codeql-extractor",
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "dbscheme-prefix",
+    srcs = ["src/generator/prefix.dbscheme"],
+)

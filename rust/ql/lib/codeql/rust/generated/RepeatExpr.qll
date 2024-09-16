@@ -15,6 +15,9 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A repeat expression. For example:
+   * ```
+   * [1; 10];
    * INTERNAL: Do not reference the `Generated::RepeatExpr` class directly.
    * Use the subclass `RepeatExpr`, where the following predicates are available.
    */

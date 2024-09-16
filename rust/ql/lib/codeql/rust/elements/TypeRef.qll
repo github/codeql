@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.TypeRef
 
+/**
+ * The base class for type references.
+ * ```
+ * let x: i32;
+ * let y: Vec<i32>;
+ * let z: Option<i32>;
+ * ```
+ */
 class TypeRef extends Generated::TypeRef { }
