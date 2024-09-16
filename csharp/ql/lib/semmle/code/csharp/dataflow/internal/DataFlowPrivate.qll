@@ -1003,7 +1003,15 @@ private class CallableUsedInSource extends Callable {
   CallableUsedInSource() {
     this.fromSource()
     or
-    this.getACall().fromSource()
+    // Note that getARuntimeTarget cannot be used here, because the
+    // DelegateLikeCall case depends on lambda-flow, which in turn
+    // uses the dataflow library; hence this would introduce recursion
+    // into the definition of data-flow nodes.
+    exists(Call c, DispatchCall dc | c.fromSource() and c = dc.getCall() |
+      this = dc.getADynamicTarget()
+    )
+    or
+    this = any(CallableAccess ca | ca.fromSource()).getTarget()
   }
 }
 
