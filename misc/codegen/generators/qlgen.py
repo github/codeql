@@ -218,7 +218,7 @@ def get_types_used_by(cls: ql.Class, is_impl: bool) -> typing.Iterable[str]:
     for p in cls.properties:
         yield p.type
     if cls.root:
-        yield cls.name # used in `getResolveStep` and `resolve`
+        yield cls.name  # used in `getResolveStep` and `resolve`
 
 
 def get_classes_used_by(cls: ql.Class, is_impl: bool) -> typing.List[str]:
@@ -325,6 +325,7 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
     return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
                    doc=cls.doc, synth_accessors=accessors)
 
+
 def _get_class_public(cls: schema.Class) -> ql.ClassPublic:
     return ql.ClassPublic(name=cls.name, doc=cls.doc, internal="ql_internal" in cls.pragmas)
 
@@ -400,7 +401,8 @@ def generate(opts, renderer):
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
-            c.imports = [imports[t] if t in imports else imports_impl[t]+ "::Impl as " + t for t in get_classes_used_by(c, is_impl=True)]
+            c.imports = [imports[t] if t in imports else imports_impl[t] +
+                         "::Impl as " + t for t in get_classes_used_by(c, is_impl=True)]
             classes_used_by[c.name] = get_classes_used_by(c, is_impl=False)
             c.import_prefix = generated_import_prefix
             renderer.render(c, qll)
@@ -411,7 +413,7 @@ def generate(opts, renderer):
             stub_file = stub_out / path_impl
             base_import = get_import(out / path, opts.root_dir)
             stub = _get_stub(c, base_import, generated_import_prefix)
-            
+
             if not renderer.is_customized_stub(stub_file):
                 renderer.render(stub, stub_file)
             else:
