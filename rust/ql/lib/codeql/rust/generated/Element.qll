@@ -8,6 +8,8 @@ private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Element
 
+private class ElementAlias = Element;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `Element` and should not
  * be referenced directly.
@@ -43,13 +45,13 @@ module Generated {
      * Classes can override this to indicate this node should be in the "hidden" AST, mostly reserved
      * for conversions and syntactic sugar nodes like parentheses.
      */
-    Element getResolveStep() { none() } // overridden by subclasses
+    ElementAlias getResolveStep() { none() } // overridden by subclasses
 
     /**
      * Gets the element that should substitute this element in the explicit AST, applying `getResolveStep`
      * transitively.
      */
-    final Element resolve() {
+    final ElementAlias resolve() {
       not exists(this.getResolveStep()) and result = this
       or
       result = this.getResolveStep().resolve()
