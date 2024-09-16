@@ -1,5 +1,5 @@
 listUnimplemented
-| @0:0:0:0 | Not yet implemented (x20). |
+| @0:0:0:0 | Not yet implemented (x14). |
 | does_not_compile.rs@2:2:2:5 | Not yet implemented. |
 | does_not_compile.rs@2:7:2:8 | Not yet implemented. |
 | does_not_compile.rs@2:10:2:12 | Not yet implemented. |
