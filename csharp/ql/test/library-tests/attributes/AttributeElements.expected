@@ -24,6 +24,7 @@
 | attributes.cs:103:17:103:27 | My2Delegate | attributes.cs:102:8:102:19 | [My3(...)] | My3Attribute |
 | attributes.cs:109:32:109:32 | + | attributes.cs:107:6:107:17 | [My3(...)] | My3Attribute |
 | attributes.cs:109:32:109:32 | + | attributes.cs:108:14:108:25 | [return: My3(...)] | My3Attribute |
+| attributes.cs:112:16:112:19 | Item | attributes.cs:111:6:111:17 | [My3(...)] | My3Attribute |
 | attributes.cs:116:9:116:11 | get_Item | attributes.cs:114:10:114:21 | [My3(...)] | My3Attribute |
 | attributes.cs:116:9:116:11 | get_Item | attributes.cs:115:18:115:29 | [return: My3(...)] | My3Attribute |
 | attributes.cs:120:9:120:11 | set_Item | attributes.cs:118:18:118:29 | [My3(...)] | My3Attribute |

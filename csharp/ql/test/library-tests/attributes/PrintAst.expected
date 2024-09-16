@@ -340,6 +340,10 @@ attributes.cs:
 #  109|     4: [IntLiteral] 0
 #  112|   6: [Indexer] Item
 #  112|     -1: [TypeMention] int
+#-----|     0: (Attributes)
+#  111|       1: [DefaultAttribute] [My3(...)]
+#  111|         -1: [TypeMention] My3Attribute
+#  111|         0: [IntLiteral] 15
 #-----|     1: (Parameters)
 #  112|       0: [Parameter] x
 #  112|         -1: [TypeMention] int
