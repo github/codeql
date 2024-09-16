@@ -17,4 +17,23 @@ Scope scopeOf(Ast n) {
 class Scope extends Ast, @script_block {
   /** Gets the outer scope, if any. */
   Scope getOuterScope() { result = scopeOf(this) }
+
+  /**
+   * Gets the `i`'th paramter in this scope.
+   *
+   * This may be both function paramters and parameter block parameters.
+   */
+  Parameter getParameter(int i) {
+    exists(Function func |
+      func.getBody() = this and
+      result = func.getParameter(i)
+    )
+  }
+
+  /**
+   * Gets a paramter in this scope.
+   *
+   * This may be both function paramters and parameter block parameters.
+   */
+  Parameter getAParameter() { result = this.getParameter(_) }
 }

@@ -40,3 +40,20 @@ class Cmd extends @command, CmdBase {
 
   Redirection getARedirection() { result = this.getRedirection(_) }
 }
+
+/**
+ * An argument to a command.
+ * 
+ * The argument may be named or positional.
+ */
+class Argument extends Expr {
+  Cmd cmd;
+
+  Argument() { cmd.getArgument(_) = this or cmd.getNamedArgument(_) = this }
+
+  Cmd getCmd() { result = cmd }
+
+  int getIndex() { cmd.getArgument(result) = this }
+
+  string getName() { cmd.getNamedArgument(result) = this }
+}

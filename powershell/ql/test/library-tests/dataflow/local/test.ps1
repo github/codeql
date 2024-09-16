@@ -1,8 +1,8 @@
-$a1 = Source()
-Sink($a1)
+$a1 = Source
+Sink $a1
 
-$b = GetBool()
+$b = GetBool
 if($b) {
-    $a2 = Source()
+    $a2 = Source
 }
-Sink($a2)
+Sink $a2

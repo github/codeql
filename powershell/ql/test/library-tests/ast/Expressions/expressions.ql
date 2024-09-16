@@ -10,7 +10,7 @@ query predicate cmdExpr(CmdExpr cmd, Expr e) {
 }
 
 query predicate invokeMemoryExpression(InvokeMemberExpr invoke, Expr e, int i, Expr arg) {
-    e = invoke.getBase() and
+    e = invoke.getQualifier() and
     arg = invoke.getArgument(i)
 }
 
