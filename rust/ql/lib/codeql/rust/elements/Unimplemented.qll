@@ -4,7 +4,7 @@
  */
 
 private import UnimplementedImpl
-import codeql.rust.elements.Element
+import codeql.rust.elements.Unextracted
 
 /**
  * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.

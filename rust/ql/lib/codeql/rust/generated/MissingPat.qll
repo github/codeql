@@ -6,6 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
+import codeql.rust.elements.MissingImpl::Impl as MissingImpl
 import codeql.rust.elements.PatImpl::Impl as PatImpl
 
 /**
@@ -23,7 +24,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MissingPat` class directly.
    * Use the subclass `MissingPat`, where the following predicates are available.
    */
-  class MissingPat extends Synth::TMissingPat, PatImpl::Pat {
+  class MissingPat extends Synth::TMissingPat, PatImpl::Pat, MissingImpl::Missing {
     override string getAPrimaryQlClass() { result = "MissingPat" }
   }
 }

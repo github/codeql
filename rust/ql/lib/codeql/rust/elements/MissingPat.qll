@@ -4,6 +4,7 @@
  */
 
 private import MissingPatImpl
+import codeql.rust.elements.Missing
 import codeql.rust.elements.Pat
 
 /**

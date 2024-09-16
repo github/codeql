@@ -311,6 +311,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TMissing = TMissingExpr or TMissingPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TPat =
     TBoxPat or TConstBlockPat or TIdentPat or TLiteralPat or TMissingPat or TOrPat or TPathPat or
         TRangePat or TRecordPat or TRefPat or TSlicePat or TTuplePat or TTupleStructPat or
@@ -320,6 +325,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TItemStmt or TLetStmt;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TUnextracted = TMissing or TUnimplemented;
 
   /**
    * INTERNAL: Do not use.
@@ -843,7 +853,7 @@ module Synth {
   TElement convertElementFromRaw(Raw::Element e) {
     result = convertLocatableFromRaw(e)
     or
-    result = convertUnimplementedFromRaw(e)
+    result = convertUnextractedFromRaw(e)
   }
 
   /**
@@ -928,6 +938,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TMissing`, if possible.
+   */
+  cached
+  TMissing convertMissingFromRaw(Raw::Element e) {
+    result = convertMissingExprFromRaw(e)
+    or
+    result = convertMissingPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TPat`, if possible.
    */
   cached
@@ -972,6 +993,17 @@ module Synth {
     result = convertItemStmtFromRaw(e)
     or
     result = convertLetStmtFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TUnextracted`, if possible.
+   */
+  cached
+  TUnextracted convertUnextractedFromRaw(Raw::Element e) {
+    result = convertMissingFromRaw(e)
+    or
+    result = convertUnimplementedFromRaw(e)
   }
 
   /**
@@ -1506,7 +1538,7 @@ module Synth {
   Raw::Element convertElementToRaw(TElement e) {
     result = convertLocatableToRaw(e)
     or
-    result = convertUnimplementedToRaw(e)
+    result = convertUnextractedToRaw(e)
   }
 
   /**
@@ -1591,6 +1623,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMissing` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMissingToRaw(TMissing e) {
+    result = convertMissingExprToRaw(e)
+    or
+    result = convertMissingPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPat` to a raw DB element, if possible.
    */
   cached
@@ -1635,6 +1678,17 @@ module Synth {
     result = convertItemStmtToRaw(e)
     or
     result = convertLetStmtToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnextracted` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertUnextractedToRaw(TUnextracted e) {
+    result = convertMissingToRaw(e)
+    or
+    result = convertUnimplementedToRaw(e)
   }
 
   /**

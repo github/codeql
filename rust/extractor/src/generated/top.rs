@@ -32,17 +32,17 @@ impl From<trap::Label<Locatable>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct Unimplemented {
+pub struct Unextracted {
     _unused: ()
 }
 
-impl trap::TrapClass for Unimplemented {
-    fn class_name() -> &'static str { "Unimplemented" }
+impl trap::TrapClass for Unextracted {
+    fn class_name() -> &'static str { "Unextracted" }
 }
 
-impl From<trap::Label<Unimplemented>> for trap::Label<Element> {
-    fn from(value: trap::Label<Unimplemented>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Element
+impl From<trap::Label<Unextracted>> for trap::Label<Element> {
+    fn from(value: trap::Label<Unextracted>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Unextracted is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -70,6 +70,60 @@ impl From<trap::Label<AstNode>> for trap::Label<Element> {
 impl From<trap::Label<AstNode>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AstNode>) -> Self {
         // SAFETY: this is safe because in the dbscheme AstNode is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Missing {
+    _unused: ()
+}
+
+impl trap::TrapClass for Missing {
+    fn class_name() -> &'static str { "Missing" }
+}
+
+impl From<trap::Label<Missing>> for trap::Label<Element> {
+    fn from(value: trap::Label<Missing>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Missing>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<Missing>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Unextracted
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Unimplemented {
+    _unused: ()
+}
+
+impl trap::TrapClass for Unimplemented {
+    fn class_name() -> &'static str { "Unimplemented" }
+}
+
+impl From<trap::Label<Unimplemented>> for trap::Label<Element> {
+    fn from(value: trap::Label<Unimplemented>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Unimplemented>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<Unimplemented>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -188,6 +242,15 @@ impl From<trap::Label<GenericArgList>> for trap::Label<Element> {
 impl From<trap::Label<GenericArgList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<GenericArgList>) -> Self {
         // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<GenericArgList>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<GenericArgList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -384,6 +447,15 @@ impl From<trap::Label<Path>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<Path>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<Path>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Unextracted
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<Path>> for trap::Label<Unimplemented> {
     fn from(value: trap::Label<Path>) -> Self {
         // SAFETY: this is safe because in the dbscheme Path is a subclass of Unimplemented
@@ -565,6 +637,15 @@ impl From<trap::Label<TypeRef>> for trap::Label<Element> {
 impl From<trap::Label<TypeRef>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeRef>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeRef is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeRef>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<TypeRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeRef is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2328,6 +2409,24 @@ impl From<trap::Label<MissingExpr>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<MissingExpr>> for trap::Label<Missing> {
+    fn from(value: trap::Label<MissingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MissingExpr is a subclass of Missing
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MissingExpr>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<MissingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MissingExpr is a subclass of Unextracted
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct MissingPat {
     pub id: trap::TrapId<MissingPat>,
@@ -2374,9 +2473,27 @@ impl From<trap::Label<MissingPat>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<MissingPat>> for trap::Label<Missing> {
+    fn from(value: trap::Label<MissingPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MissingPat is a subclass of Missing
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<MissingPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<MissingPat>) -> Self {
         // SAFETY: this is safe because in the dbscheme MissingPat is a subclass of Pat
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MissingPat>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<MissingPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MissingPat is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3549,6 +3666,15 @@ impl From<trap::Label<UnimplementedDeclaration>> for trap::Label<Element> {
 impl From<trap::Label<UnimplementedDeclaration>> for trap::Label<Locatable> {
     fn from(value: trap::Label<UnimplementedDeclaration>) -> Self {
         // SAFETY: this is safe because in the dbscheme UnimplementedDeclaration is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<UnimplementedDeclaration>> for trap::Label<Unextracted> {
+    fn from(value: trap::Label<UnimplementedDeclaration>) -> Self {
+        // SAFETY: this is safe because in the dbscheme UnimplementedDeclaration is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

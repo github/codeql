@@ -5,6 +5,7 @@
 
 private import MissingExprImpl
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Missing
 
 /**
  * A missing expression, used as a placeholder for incomplete syntax.

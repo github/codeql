@@ -110,9 +110,11 @@
 /lib/codeql/rust/elements/MethodCallExpr.qll linguist-generated
 /lib/codeql/rust/elements/MethodCallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/MethodCallExprImpl.qll linguist-generated
+/lib/codeql/rust/elements/Missing.qll linguist-generated
 /lib/codeql/rust/elements/MissingExpr.qll linguist-generated
 /lib/codeql/rust/elements/MissingExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/MissingExprImpl.qll linguist-generated
+/lib/codeql/rust/elements/MissingImpl.qll linguist-generated
 /lib/codeql/rust/elements/MissingPat.qll linguist-generated
 /lib/codeql/rust/elements/MissingPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/MissingPatImpl.qll linguist-generated
@@ -189,6 +191,8 @@
 /lib/codeql/rust/elements/UnderscoreExpr.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExprImpl.qll linguist-generated
+/lib/codeql/rust/elements/Unextracted.qll linguist-generated
+/lib/codeql/rust/elements/UnextractedImpl.qll linguist-generated
 /lib/codeql/rust/elements/Unimplemented.qll linguist-generated
 /lib/codeql/rust/elements/UnimplementedDeclaration.qll linguist-generated
 /lib/codeql/rust/elements/UnimplementedDeclarationConstructor.qll linguist-generated
@@ -247,6 +251,7 @@
 /lib/codeql/rust/generated/MatchArm.qll linguist-generated
 /lib/codeql/rust/generated/MatchExpr.qll linguist-generated
 /lib/codeql/rust/generated/MethodCallExpr.qll linguist-generated
+/lib/codeql/rust/generated/Missing.qll linguist-generated
 /lib/codeql/rust/generated/MissingExpr.qll linguist-generated
 /lib/codeql/rust/generated/MissingPat.qll linguist-generated
 /lib/codeql/rust/generated/Module.qll linguist-generated
@@ -279,6 +284,7 @@
 /lib/codeql/rust/generated/TupleStructPat.qll linguist-generated
 /lib/codeql/rust/generated/TypeRef.qll linguist-generated
 /lib/codeql/rust/generated/UnderscoreExpr.qll linguist-generated
+/lib/codeql/rust/generated/Unextracted.qll linguist-generated
 /lib/codeql/rust/generated/Unimplemented.qll linguist-generated
 /lib/codeql/rust/generated/UnimplementedDeclaration.qll linguist-generated
 /lib/codeql/rust/generated/UnsafeBlockExpr.qll linguist-generated

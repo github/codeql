@@ -43,6 +43,7 @@ import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.MatchArm
 import codeql.rust.elements.MatchExpr
 import codeql.rust.elements.MethodCallExpr
+import codeql.rust.elements.Missing
 import codeql.rust.elements.MissingExpr
 import codeql.rust.elements.MissingPat
 import codeql.rust.elements.Module
@@ -70,6 +71,7 @@ import codeql.rust.elements.TuplePat
 import codeql.rust.elements.TupleStructPat
 import codeql.rust.elements.TypeRef
 import codeql.rust.elements.UnderscoreExpr
+import codeql.rust.elements.Unextracted
 import codeql.rust.elements.Unimplemented
 import codeql.rust.elements.UnimplementedDeclaration
 import codeql.rust.elements.UnsafeBlockExpr
