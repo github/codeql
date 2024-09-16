@@ -7,6 +7,16 @@
 import rust
 
 /**
+ * Gets a location for an `Unimplemented` node.
+ */
+Location getUnimplementedLocation(Unimplemented node) {
+  result = node.(Locatable).getLocation()
+  or
+  not node instanceof Locatable and
+  result instanceof EmptyLocation
+}
+
+/**
  * Gets `l.toString()`, but with any locations outside of the source location prefix cleaned up.
  */
 bindingset[l]
@@ -29,7 +39,7 @@ string multipleString(int i) {
 query predicate listUnimplemented(string location, string msg) {
   // something that is not extracted yet
   exists(int c |
-    c = strictcount(Unimplemented n | cleanLocationString(n.getLocation()) = location) and
+    c = strictcount(Unimplemented n | cleanLocationString(getUnimplementedLocation(n)) = location) and
     msg = "Not yet implemented" + multipleString(c) + "."
   )
 }
