@@ -1,4 +1,5 @@
 import powershell
+import semmle.code.powershell.controlflow.BasicBlocks
 
 abstract private class AbstractFunction extends Ast {
   abstract string getName();
@@ -20,6 +21,8 @@ abstract private class AbstractFunction extends Ast {
   }
 
   final Parameter getAParameter() { result = this.getParameter(_) }
+
+  EntryBasicBlock getEntryBasicBlock() { result.getScope() = this.getBody() }
 }
 
 class NonMemberFunction extends @function_definition, Stmt, AbstractFunction {
