@@ -5,14 +5,19 @@ use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::ffi::OsString;
 use std::fmt::Debug;
+use std::hash::Hash;
+use std::marker::PhantomData;
 use std::path::{Path, PathBuf};
+
+pub use trap::Label as UntypedLabel;
+pub use trap::Writer;
 
 //TODO: typed labels
 pub trait AsTrapKeyPart {
     fn as_key_part(&self) -> String;
 }
 
-impl AsTrapKeyPart for trap::Label {
+impl AsTrapKeyPart for UntypedLabel {
     fn as_key_part(&self) -> String {
         format!("{{{}}}", self)
     }
@@ -30,28 +35,37 @@ impl AsTrapKeyPart for &str {
     }
 }
 
-#[derive(Debug, Clone)]
-pub enum TrapId {
-    Star,
-    Key(String),
-    Label(trap::Label),
+pub trait TrapClass {
+    fn class_name() -> &'static str;
 }
 
-impl From<String> for TrapId {
+pub trait TrapEntry: Debug + Sized + TrapClass {
+    fn extract_id(&mut self) -> TrapId<Self>;
+    fn emit(self, id: Label<Self>, out: &mut Writer);
+}
+
+#[derive(Debug, Clone)]
+pub enum TrapId<T: TrapEntry> {
+    Star,
+    Key(String),
+    Label(Label<T>),
+}
+
+impl<T: TrapEntry> From<String> for TrapId<T> {
     fn from(value: String) -> Self {
         TrapId::Key(value)
     }
 }
 
-impl From<&str> for TrapId {
+impl<T: TrapEntry> From<&str> for TrapId<T> {
     fn from(value: &str) -> Self {
         TrapId::Key(value.into())
     }
 }
 
-impl From<trap::Label> for TrapId {
-    fn from(value: trap::Label) -> Self {
-        TrapId::Label(value)
+impl<T: TrapEntry> From<Label<T>> for TrapId<T> {
+    fn from(value: Label<T>) -> Self {
+        Self::Label(value)
     }
 }
 
@@ -66,22 +80,61 @@ macro_rules! trap_key {
     }};
 }
 
-pub trait TrapEntry: std::fmt::Debug {
-    fn extract_id(&mut self) -> TrapId;
-    fn emit(self, id: trap::Label, out: &mut trap::Writer);
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
+pub struct Label<T: TrapClass> {
+    untyped: UntypedLabel,
+    phantom: PhantomData<T>, // otherwise Rust wants `T` to be used
+}
+
+// not deriving `Clone` and `Copy` because they require `T: Clone` and `T: Copy` respectively,
+// even if `T` is not actually part of the fields.
+// see https://github.com/rust-lang/rust/issues/108894
+impl<T: TrapClass> Clone for Label<T> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<T: TrapClass> Copy for Label<T> {}
+
+impl<T: TrapClass> Label<T> {
+    pub fn as_untyped(&self) -> UntypedLabel {
+        self.untyped
+    }
+
+    /// # Safety
+    /// The user must make sure the label respects TRAP typing
+    pub unsafe fn from_untyped(untyped: UntypedLabel) -> Self {
+        Self {
+            untyped,
+            phantom: PhantomData,
+        }
+    }
+}
+
+impl<T: TrapClass> AsTrapKeyPart for Label<T> {
+    fn as_key_part(&self) -> String {
+        self.as_untyped().as_key_part()
+    }
+}
+
+impl<T: TrapClass> From<Label<T>> for trap::Arg {
+    fn from(value: Label<T>) -> Self {
+        trap::Arg::Label(value.as_untyped())
+    }
 }
 
 pub struct TrapFile {
     path: PathBuf,
-    writer: trap::Writer,
+    writer: Writer,
     compression: Compression,
 }
 
 impl TrapFile {
-    pub fn emit_location(
+    pub fn emit_location<E: TrapClass>(
         &mut self,
-        file_label: trap::Label,
-        entity_label: trap::Label,
+        file_label: UntypedLabel,
+        entity_label: Label<E>,
         start: LineCol,
         end: LineCol,
     ) {
@@ -101,10 +154,7 @@ impl TrapFile {
         );
         self.writer.add_tuple(
             "locatable_locations",
-            vec![
-                trap::Arg::Label(entity_label),
-                trap::Arg::Label(location_label),
-            ],
+            vec![entity_label.into(), location_label.into()],
         );
     }
 
@@ -112,15 +162,26 @@ impl TrapFile {
         extractor::populate_file(&mut self.writer, absolute_path)
     }
 
-    pub fn label(&mut self, id: TrapId) -> trap::Label {
+    pub fn label<T: TrapEntry>(&mut self, id: TrapId<T>) -> Label<T> {
         match id {
-            TrapId::Star => self.writer.fresh_id(),
-            TrapId::Key(s) => self.writer.global_id(&s).0,
+            TrapId::Star => {
+                let untyped = self.writer.fresh_id();
+                // SAFETY: a `*` trap id is always safe for typing
+                unsafe { Label::from_untyped(untyped) }
+            }
+            TrapId::Key(s) => {
+                let untyped = self
+                    .writer
+                    .global_id(&format!("{},{}", T::class_name(), s))
+                    .0;
+                // SAFETY: using type names as prefixes avoids labels having a conflicting type
+                unsafe { Label::from_untyped(untyped) }
+            }
             TrapId::Label(l) => l,
         }
     }
 
-    pub fn emit<T: TrapEntry>(&mut self, mut e: T) -> trap::Label {
+    pub fn emit<T: TrapEntry>(&mut self, mut e: T) -> Label<T> {
         let label = self.label(e.extract_id());
         e.emit(label, &mut self.writer);
         label

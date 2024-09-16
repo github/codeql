@@ -984,7 +984,7 @@ class IdentPat(Pat):
 class TupleStructPat(Pat):
     """
     A tuple struct pattern. For example:
-    ``` 
+    ```
     match x {
         Tuple("a", 1, 2, 3) => "great",
         Tuple(.., 3) => "fine",
