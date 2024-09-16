@@ -121,18 +121,16 @@ locatable_locations(
 
 @element =
   @locatable
-| @unimplemented
+| @unextracted
 ;
 
 @locatable =
   @ast_node
 ;
 
-@unimplemented =
-  @generic_arg_list
-| @path
-| @type_ref
-| @unimplemented_declaration
+@unextracted =
+  @missing
+| @unimplemented
 ;
 
 @ast_node =
@@ -147,6 +145,18 @@ locatable_locations(
 | @record_pat_field
 | @stmt
 | @type_ref
+;
+
+@missing =
+  @missing_expr
+| @missing_pat
+;
+
+@unimplemented =
+  @generic_arg_list
+| @path
+| @type_ref
+| @unimplemented_declaration
 ;
 
 @declaration =

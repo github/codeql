@@ -17,14 +17,29 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
+   * The base class marking everything that was not properly extracted for some reason, such as:
+   * * syntax errors
+   * * insufficient context information
+   * * yet unimplemented parts of the extractor
    */
-  class Unimplemented extends @unimplemented, Element { }
+  class Unextracted extends @unextracted, Element { }
 
   /**
    * INTERNAL: Do not use.
    */
   class AstNode extends @ast_node, Locatable { }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class marking errors during parsing or resolution.
+   */
+  class Missing extends @missing, Unextracted { }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
+   */
+  class Unimplemented extends @unimplemented, Unextracted { }
 
   /**
    * INTERNAL: Do not use.
@@ -903,7 +918,7 @@ module Raw {
    * let x = non_existing_macro!();
    * ```
    */
-  class MissingExpr extends @missing_expr, Expr {
+  class MissingExpr extends @missing_expr, Expr, Missing {
     override string toString() { result = "MissingExpr" }
   }
 
@@ -916,7 +931,7 @@ module Raw {
    * };
    * ```
    */
-  class MissingPat extends @missing_pat, Pat {
+  class MissingPat extends @missing_pat, Pat, Missing {
     override string toString() { result = "MissingPat" }
   }
 

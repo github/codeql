@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.Element
+import codeql.rust.elements.Unextracted
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Unimplemented` and should not
@@ -18,5 +18,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Unimplemented` class directly.
    * Use the subclass `Unimplemented`, where the following predicates are available.
    */
-  class Unimplemented extends Synth::TUnimplemented, Element { }
+  class Unimplemented extends Synth::TUnimplemented, Unextracted { }
 }
