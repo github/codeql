@@ -30,8 +30,8 @@ Query Packs
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Removed :code:`local` query variants. The results pertaining to local sources can be found using the non-local counterpart query. As an example, the results previously found by :code:`java/unvalidated-url-redirection-local` can be found by :code:`java/unvalidated-url-redirection`, if the :code:`local` threat model is enabled. The removed queries are :code:`java/path-injection-local`, :code:`java/command-line-injection-local`, :code:`java/xss-local`, :code:`java/sql-injection-local`, :code:`java/http-response-splitting-local`, :code:`java/improper-validation-of-array-construction-local`, :code:`java/improper-validation-of-array-index-local`, :code:`java/tainted-format-string-local`, :code:`java/tainted-arithmetic-local`, :code:`java/unvalidated-url-redirection-local`, :code:`java/xxe-local` and :code:`java/tainted-numeric-cast-local`.
 
@@ -49,8 +49,8 @@ Golang
 
 *   The query :code:`go/incorrect-integer-conversion` has now been restricted to only use flow through value-preserving steps. This reduces false positives, especially around type switches.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The alert message for the query "Trust boundary violation" (:code:`java/trust-boundary-violation`) has been updated to include a link to the remote source.
 *   The sanitizer of the query :code:`java/zipslip` has been improved to include nodes that are safe due to having certain safe types. This reduces false positives.
@@ -74,8 +74,8 @@ JavaScript/TypeScript
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
 
@@ -89,8 +89,8 @@ Golang
 *   A bug has been fixed which meant flow was not followed through some ranged for loops. This may lead to more alerts being found.
 *   Added value flow models for the built-in functions :code:`append`, :code:`copy`, :code:`max` and :code:`min` using Models-as-Data. Removed the old-style models for :code:`max` and :code:`min`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   JDK version detection based on Gradle projects has been improved. Java extraction using build-modes :code:`autobuild` or :code:`none` is more likely to pick an appropriate JDK version, particularly when the Android Gradle Plugin or Spring Boot Plugin are in use.
 
