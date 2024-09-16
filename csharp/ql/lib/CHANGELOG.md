@@ -1,3 +1,9 @@
+## 1.2.0
+
+### New Features
+
+* C# support for `build-mode: none` is now out of beta, and generally available.
+
 ## 1.1.0
 
 ### Major Analysis Improvements

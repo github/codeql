@@ -45,8 +45,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The sanitizer in :code:`java/potentially-weak-cryptographic-algorithm` has been improved, so the query may yield additional results.
 
@@ -102,8 +102,8 @@ Golang
 
 *   Logrus' :code:`WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a typo in the :code:`StdlibRandomSource` class in :code:`RandomDataSource.qll`, which caused the class to improperly model calls to the :code:`nextBytes` method. Queries relying on :code:`StdlibRandomSource` may see an increase in results.
 *   Improved the precision of virtual dispatch of :code:`java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of :code:`InputStream` if there is a high-confidence alternative (like a models-as-data summary).
@@ -126,8 +126,8 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A :code:`Diagnostic.getCompilationInfo()` predicate has been added.
 

@@ -46,8 +46,8 @@ Python
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/summary/lines-of-code` query now only counts lines of Java code. The new :code:`java/summary/lines-of-code-kotlin` counts lines of Kotlin code.
 
@@ -135,8 +135,8 @@ C#
     *   :code:`xss` to :code:`js-injection`
     *   :code:`remote` to :code:`file-content-store`
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added flow through the block arguments of :code:`kotlin.io.use` and :code:`kotlin.with`.
     
@@ -239,7 +239,7 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.9.0 are now supported.
