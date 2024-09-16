@@ -1080,6 +1080,30 @@ private class InstanceCallable extends Callable {
   Location getARelevantLocation() { result = l }
 }
 
+/**
+ * A callable which is either itself defined in source or which is the target
+ * of some call in source, and therefore ought to have dataflow nodes created.
+ */
+private class CallableUsedInSource extends Callable {
+  CallableUsedInSource() {
+    this.fromSource()
+    or
+    this.getACall().fromSource()
+  }
+}
+
+/**
+ * A field or property which is either itself defined in source or which is the target
+ * of some access in source, and therefore ought to have dataflow nodes created.
+ */
+private class FieldOrPropertyUsedInSource extends FieldOrProperty {
+  FieldOrPropertyUsedInSource() {
+    this.fromSource()
+    or
+    this.getAnAccess().fromSource()
+  }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -1107,8 +1131,13 @@ private module Cached {
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
       cfn = def.getExpr().getAControlFlowNode()
     } or
-    TExplicitParameterNode(Parameter p, DataFlowCallable c) { p = c.asCallable(_).getAParameter() } or
-    TInstanceParameterNode(InstanceCallable c, Location l) { l = c.getARelevantLocation() } or
+    TExplicitParameterNode(Parameter p, DataFlowCallable c) {
+      p = c.asCallable(_).(CallableUsedInSource).getAParameter()
+    } or
+    TInstanceParameterNode(InstanceCallable c, Location l) {
+      c instanceof CallableUsedInSource and
+      l = c.getARelevantLocation()
+    } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
       cfn.getAstNode() instanceof LocalFunctionStmt
@@ -1144,11 +1173,13 @@ private module Cached {
       or
       lambdaCallExpr(_, cfn)
     } or
-    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
+      sn.getSummarizedCallable() instanceof CallableUsedInSource
+    } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     } or
-    TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() } or
+    TFlowInsensitiveFieldNode(FieldOrPropertyUsedInSource f) { f.isFieldLike() } or
     TFlowInsensitiveCapturedVariableNode(LocalScopeVariable v) { v.isCaptured() } or
     TInstanceParameterAccessNode(ControlFlow::Node cfn, Boolean isPostUpdate) {
       cfn = getAPrimaryConstructorParameterCfn(_)
