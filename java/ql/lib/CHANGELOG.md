@@ -13,7 +13,7 @@
 
 ### Major Analysis Improvements
 
-* A generated (Models as Data) summary model is no longer used, if there exists a source code alternative. This primarily affects the analysis, when the analysis includes generated models for the source code being analysed.
+* When a method exists as source code, we will no longer use a models-as-data (MaD) model of that method. This primarily affects query results when the analysis includes generated models for the source code being analysed.
 
 ## 3.0.2
 
