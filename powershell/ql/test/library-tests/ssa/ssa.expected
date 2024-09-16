@@ -1,0 +1,2 @@
+| explicit.ps1:1:1:8:2 | <uninitialized> glob_a | explicit.ps1:2:11:2:18 | glob_a |
+| explicit.ps1:5:5:5:7 | a | explicit.ps1:5:5:5:7 | a |
