@@ -1,5 +1,5 @@
 use crate::archive::Archiver;
-use crate::trap::{AsTrapKeyPart, Label, TrapEntry, TrapFile, TrapId};
+use crate::trap::{AsTrapKeyPart, Label, TrapClass, TrapFile, TrapId};
 use crate::{generated, trap_key};
 use codeql_extractor::trap;
 use ra_ap_hir::db::{DefDatabase, InternDatabase};
@@ -71,7 +71,7 @@ impl CrateTranslator<'_> {
         })
     }
 
-    fn emit_location_for_ast_ptr<E: TrapEntry, T: AstNode>(
+    fn emit_location_for_ast_ptr<E: TrapClass, T: AstNode>(
         &mut self,
         label: Label<E>,
         source: ra_ap_hir::InFile<ra_ap_syntax::AstPtr<T>>,
@@ -132,7 +132,7 @@ impl CrateTranslator<'_> {
         }
     }
 
-    fn emit_location_for_label<E: TrapEntry>(
+    fn emit_location_for_label<E: TrapClass>(
         &mut self,
         label: Label<E>,
         label_id: ra_ap_hir_def::hir::LabelId,
@@ -144,7 +144,7 @@ impl CrateTranslator<'_> {
             self.emit_location_for_ast_ptr(label, source)
         }
     }
-    fn emit_location<E: TrapEntry, T: HasSource>(&mut self, label: Label<E>, entity: T)
+    fn emit_location<E: TrapClass, T: HasSource>(&mut self, label: Label<E>, entity: T)
     where
         T::Ast: AstNode,
     {
@@ -157,7 +157,7 @@ impl CrateTranslator<'_> {
                 self.emit_location_for_textrange(label, data, range);
             });
     }
-    fn emit_location_for_textrange<E: TrapEntry>(
+    fn emit_location_for_textrange<E: TrapClass>(
         &mut self,
         label: Label<E>,
         data: FileData,

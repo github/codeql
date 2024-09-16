@@ -5,7 +5,7 @@
 use crate::trap;
 {{#classes}}
 
-{{#table_name}}
+{{#is_entry}}
 #[derive(Debug)]
 pub struct {{name}} {
     pub id: trap::TrapId<{{name}}>,
@@ -15,15 +15,13 @@ pub struct {{name}} {
 }
 
 impl trap::TrapEntry for {{name}} {
-    fn class_name() -> &'static str { "{{name}}" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         {{#single_field_entries}}
-        out.add_tuple("{{table_name}}", vec![id.into(){{#fields}}, self.{{field_name}}.into(){{/fields}}]);
+        out.add_tuple("{{entry_table}}", vec![id.into(){{#fields}}, self.{{field_name}}.into(){{/fields}}]);
         {{/single_field_entries}}
         {{#fields}}
         {{#is_predicate}}
@@ -53,13 +51,18 @@ impl trap::TrapEntry for {{name}} {
         {{/fields}}
     }
 }
-{{/table_name}}
-{{^table_name}}
+{{/is_entry}}
+{{^is_entry}}
 {{! virtual class, make it unbuildable }}
+#[derive(Debug)]
 pub struct {{name}} {
-    unused: ()
+    _unused: ()
 }
-{{/table_name}}
+{{/is_entry}}
+
+impl trap::TrapClass for {{name}} {
+    fn class_name() -> &'static str { "{{name}}" }
+}
 {{#ancestors}}
 
 impl From<trap::Label<{{name}}>> for trap::Label<{{.}}> {

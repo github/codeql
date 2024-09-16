@@ -6,36 +6,20 @@ use crate::trap;
 
 #[derive(Debug)]
 pub struct Element {
-    pub id: trap::TrapId<Element>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Element {
+impl trap::TrapClass for Element {
     fn class_name() -> &'static str { "Element" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("elements", vec![id.into()]);
-    }
 }
 
 #[derive(Debug)]
 pub struct Locatable {
-    pub id: trap::TrapId<Locatable>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Locatable {
+impl trap::TrapClass for Locatable {
     fn class_name() -> &'static str { "Locatable" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("locatables", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<Locatable>> for trap::Label<Element> {
@@ -49,19 +33,11 @@ impl From<trap::Label<Locatable>> for trap::Label<Element> {
 
 #[derive(Debug)]
 pub struct AstNode {
-    pub id: trap::TrapId<AstNode>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for AstNode {
+impl trap::TrapClass for AstNode {
     fn class_name() -> &'static str { "AstNode" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("ast_nodes", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<AstNode>> for trap::Label<Element> {
@@ -84,19 +60,11 @@ impl From<trap::Label<AstNode>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct Declaration {
-    pub id: trap::TrapId<Declaration>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Declaration {
+impl trap::TrapClass for Declaration {
     fn class_name() -> &'static str { "Declaration" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("declarations", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<Declaration>> for trap::Label<AstNode> {
@@ -128,19 +96,11 @@ impl From<trap::Label<Declaration>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct Expr {
-    pub id: trap::TrapId<Expr>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Expr {
+impl trap::TrapClass for Expr {
     fn class_name() -> &'static str { "Expr" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("exprs", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<Expr>> for trap::Label<AstNode> {
@@ -177,8 +137,6 @@ pub struct Label {
 }
 
 impl trap::TrapEntry for Label {
-    fn class_name() -> &'static str { "Label" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -186,6 +144,10 @@ impl trap::TrapEntry for Label {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("labels", vec![id.into(), self.name.into()]);
     }
+}
+
+impl trap::TrapClass for Label {
+    fn class_name() -> &'static str { "Label" }
 }
 
 impl From<trap::Label<Label>> for trap::Label<AstNode> {
@@ -224,8 +186,6 @@ pub struct MatchArm {
 }
 
 impl trap::TrapEntry for MatchArm {
-    fn class_name() -> &'static str { "MatchArm" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -236,6 +196,10 @@ impl trap::TrapEntry for MatchArm {
             out.add_tuple("match_arm_guards", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for MatchArm {
+    fn class_name() -> &'static str { "MatchArm" }
 }
 
 impl From<trap::Label<MatchArm>> for trap::Label<AstNode> {
@@ -267,19 +231,11 @@ impl From<trap::Label<MatchArm>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct Pat {
-    pub id: trap::TrapId<Pat>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Pat {
+impl trap::TrapClass for Pat {
     fn class_name() -> &'static str { "Pat" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("pats", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<Pat>> for trap::Label<AstNode> {
@@ -317,8 +273,6 @@ pub struct RecordFieldPat {
 }
 
 impl trap::TrapEntry for RecordFieldPat {
-    fn class_name() -> &'static str { "RecordFieldPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -326,6 +280,10 @@ impl trap::TrapEntry for RecordFieldPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("record_field_pats", vec![id.into(), self.name.into(), self.pat.into()]);
     }
+}
+
+impl trap::TrapClass for RecordFieldPat {
+    fn class_name() -> &'static str { "RecordFieldPat" }
 }
 
 impl From<trap::Label<RecordFieldPat>> for trap::Label<AstNode> {
@@ -363,8 +321,6 @@ pub struct RecordLitField {
 }
 
 impl trap::TrapEntry for RecordLitField {
-    fn class_name() -> &'static str { "RecordLitField" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -372,6 +328,10 @@ impl trap::TrapEntry for RecordLitField {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("record_lit_fields", vec![id.into(), self.name.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for RecordLitField {
+    fn class_name() -> &'static str { "RecordLitField" }
 }
 
 impl From<trap::Label<RecordLitField>> for trap::Label<AstNode> {
@@ -403,19 +363,11 @@ impl From<trap::Label<RecordLitField>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct Stmt {
-    pub id: trap::TrapId<Stmt>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for Stmt {
+impl trap::TrapClass for Stmt {
     fn class_name() -> &'static str { "Stmt" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("stmts", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<Stmt>> for trap::Label<AstNode> {
@@ -447,19 +399,11 @@ impl From<trap::Label<Stmt>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct TypeRef {
-    pub id: trap::TrapId<TypeRef>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for TypeRef {
+impl trap::TrapClass for TypeRef {
     fn class_name() -> &'static str { "TypeRef" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("type_refs", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<TypeRef>> for trap::Label<AstNode> {
@@ -491,19 +435,11 @@ impl From<trap::Label<TypeRef>> for trap::Label<Locatable> {
 
 #[derive(Debug)]
 pub struct ArrayExpr {
-    pub id: trap::TrapId<ArrayExpr>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for ArrayExpr {
+impl trap::TrapClass for ArrayExpr {
     fn class_name() -> &'static str { "ArrayExpr" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("array_exprs", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<ArrayExpr>> for trap::Label<AstNode> {
@@ -549,8 +485,6 @@ pub struct AwaitExpr {
 }
 
 impl trap::TrapEntry for AwaitExpr {
-    fn class_name() -> &'static str { "AwaitExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -558,6 +492,10 @@ impl trap::TrapEntry for AwaitExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("await_exprs", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for AwaitExpr {
+    fn class_name() -> &'static str { "AwaitExpr" }
 }
 
 impl From<trap::Label<AwaitExpr>> for trap::Label<AstNode> {
@@ -603,8 +541,6 @@ pub struct BecomeExpr {
 }
 
 impl trap::TrapEntry for BecomeExpr {
-    fn class_name() -> &'static str { "BecomeExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -612,6 +548,10 @@ impl trap::TrapEntry for BecomeExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("become_exprs", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for BecomeExpr {
+    fn class_name() -> &'static str { "BecomeExpr" }
 }
 
 impl From<trap::Label<BecomeExpr>> for trap::Label<AstNode> {
@@ -659,8 +599,6 @@ pub struct BinaryOpExpr {
 }
 
 impl trap::TrapEntry for BinaryOpExpr {
-    fn class_name() -> &'static str { "BinaryOpExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -671,6 +609,10 @@ impl trap::TrapEntry for BinaryOpExpr {
             out.add_tuple("binary_op_expr_ops", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for BinaryOpExpr {
+    fn class_name() -> &'static str { "BinaryOpExpr" }
 }
 
 impl From<trap::Label<BinaryOpExpr>> for trap::Label<AstNode> {
@@ -717,8 +659,6 @@ pub struct BindPat {
 }
 
 impl trap::TrapEntry for BindPat {
-    fn class_name() -> &'static str { "BindPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -729,6 +669,10 @@ impl trap::TrapEntry for BindPat {
             out.add_tuple("bind_pat_subpats", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for BindPat {
+    fn class_name() -> &'static str { "BindPat" }
 }
 
 impl From<trap::Label<BindPat>> for trap::Label<AstNode> {
@@ -769,19 +713,11 @@ impl From<trap::Label<BindPat>> for trap::Label<Pat> {
 
 #[derive(Debug)]
 pub struct BlockExprBase {
-    pub id: trap::TrapId<BlockExprBase>,
+    _unused: ()
 }
 
-impl trap::TrapEntry for BlockExprBase {
+impl trap::TrapClass for BlockExprBase {
     fn class_name() -> &'static str { "BlockExprBase" }
-
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("block_expr_bases", vec![id.into()]);
-    }
 }
 
 impl From<trap::Label<BlockExprBase>> for trap::Label<AstNode> {
@@ -827,8 +763,6 @@ pub struct BoxExpr {
 }
 
 impl trap::TrapEntry for BoxExpr {
-    fn class_name() -> &'static str { "BoxExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -836,6 +770,10 @@ impl trap::TrapEntry for BoxExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("box_exprs", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for BoxExpr {
+    fn class_name() -> &'static str { "BoxExpr" }
 }
 
 impl From<trap::Label<BoxExpr>> for trap::Label<AstNode> {
@@ -881,8 +819,6 @@ pub struct BoxPat {
 }
 
 impl trap::TrapEntry for BoxPat {
-    fn class_name() -> &'static str { "BoxPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -890,6 +826,10 @@ impl trap::TrapEntry for BoxPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("box_pats", vec![id.into(), self.inner.into()]);
     }
+}
+
+impl trap::TrapClass for BoxPat {
+    fn class_name() -> &'static str { "BoxPat" }
 }
 
 impl From<trap::Label<BoxPat>> for trap::Label<AstNode> {
@@ -936,8 +876,6 @@ pub struct BreakExpr {
 }
 
 impl trap::TrapEntry for BreakExpr {
-    fn class_name() -> &'static str { "BreakExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -951,6 +889,10 @@ impl trap::TrapEntry for BreakExpr {
             out.add_tuple("break_expr_labels", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for BreakExpr {
+    fn class_name() -> &'static str { "BreakExpr" }
 }
 
 impl From<trap::Label<BreakExpr>> for trap::Label<AstNode> {
@@ -998,8 +940,6 @@ pub struct CallExpr {
 }
 
 impl trap::TrapEntry for CallExpr {
-    fn class_name() -> &'static str { "CallExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1013,6 +953,10 @@ impl trap::TrapEntry for CallExpr {
             out.add_tuple("call_expr_is_assignee_expr", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for CallExpr {
+    fn class_name() -> &'static str { "CallExpr" }
 }
 
 impl From<trap::Label<CallExpr>> for trap::Label<AstNode> {
@@ -1059,8 +1003,6 @@ pub struct CastExpr {
 }
 
 impl trap::TrapEntry for CastExpr {
-    fn class_name() -> &'static str { "CastExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1068,6 +1010,10 @@ impl trap::TrapEntry for CastExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("cast_exprs", vec![id.into(), self.expr.into(), self.type_ref.into()]);
     }
+}
+
+impl trap::TrapClass for CastExpr {
+    fn class_name() -> &'static str { "CastExpr" }
 }
 
 impl From<trap::Label<CastExpr>> for trap::Label<AstNode> {
@@ -1118,8 +1064,6 @@ pub struct ClosureExpr {
 }
 
 impl trap::TrapEntry for ClosureExpr {
-    fn class_name() -> &'static str { "ClosureExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1141,6 +1085,10 @@ impl trap::TrapEntry for ClosureExpr {
             out.add_tuple("closure_expr_is_move", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for ClosureExpr {
+    fn class_name() -> &'static str { "ClosureExpr" }
 }
 
 impl From<trap::Label<ClosureExpr>> for trap::Label<AstNode> {
@@ -1186,8 +1134,6 @@ pub struct ConstBlockPat {
 }
 
 impl trap::TrapEntry for ConstBlockPat {
-    fn class_name() -> &'static str { "ConstBlockPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1195,6 +1141,10 @@ impl trap::TrapEntry for ConstBlockPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("const_block_pats", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for ConstBlockPat {
+    fn class_name() -> &'static str { "ConstBlockPat" }
 }
 
 impl From<trap::Label<ConstBlockPat>> for trap::Label<AstNode> {
@@ -1240,8 +1190,6 @@ pub struct ConstExpr {
 }
 
 impl trap::TrapEntry for ConstExpr {
-    fn class_name() -> &'static str { "ConstExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1249,6 +1197,10 @@ impl trap::TrapEntry for ConstExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("const_exprs", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for ConstExpr {
+    fn class_name() -> &'static str { "ConstExpr" }
 }
 
 impl From<trap::Label<ConstExpr>> for trap::Label<AstNode> {
@@ -1294,8 +1246,6 @@ pub struct ContinueExpr {
 }
 
 impl trap::TrapEntry for ContinueExpr {
-    fn class_name() -> &'static str { "ContinueExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1306,6 +1256,10 @@ impl trap::TrapEntry for ContinueExpr {
             out.add_tuple("continue_expr_labels", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for ContinueExpr {
+    fn class_name() -> &'static str { "ContinueExpr" }
 }
 
 impl From<trap::Label<ContinueExpr>> for trap::Label<AstNode> {
@@ -1352,8 +1306,6 @@ pub struct ExprStmt {
 }
 
 impl trap::TrapEntry for ExprStmt {
-    fn class_name() -> &'static str { "ExprStmt" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1364,6 +1316,10 @@ impl trap::TrapEntry for ExprStmt {
             out.add_tuple("expr_stmt_has_semicolon", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for ExprStmt {
+    fn class_name() -> &'static str { "ExprStmt" }
 }
 
 impl From<trap::Label<ExprStmt>> for trap::Label<AstNode> {
@@ -1410,8 +1366,6 @@ pub struct FieldExpr {
 }
 
 impl trap::TrapEntry for FieldExpr {
-    fn class_name() -> &'static str { "FieldExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1419,6 +1373,10 @@ impl trap::TrapEntry for FieldExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("field_exprs", vec![id.into(), self.expr.into(), self.name.into()]);
     }
+}
+
+impl trap::TrapClass for FieldExpr {
+    fn class_name() -> &'static str { "FieldExpr" }
 }
 
 impl From<trap::Label<FieldExpr>> for trap::Label<AstNode> {
@@ -1465,8 +1423,6 @@ pub struct Function {
 }
 
 impl trap::TrapEntry for Function {
-    fn class_name() -> &'static str { "Function" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1474,6 +1430,10 @@ impl trap::TrapEntry for Function {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("functions", vec![id.into(), self.name.into(), self.body.into()]);
     }
+}
+
+impl trap::TrapClass for Function {
+    fn class_name() -> &'static str { "Function" }
 }
 
 impl From<trap::Label<Function>> for trap::Label<AstNode> {
@@ -1521,8 +1481,6 @@ pub struct IfExpr {
 }
 
 impl trap::TrapEntry for IfExpr {
-    fn class_name() -> &'static str { "IfExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1533,6 +1491,10 @@ impl trap::TrapEntry for IfExpr {
             out.add_tuple("if_expr_elses", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for IfExpr {
+    fn class_name() -> &'static str { "IfExpr" }
 }
 
 impl From<trap::Label<IfExpr>> for trap::Label<AstNode> {
@@ -1580,8 +1542,6 @@ pub struct IndexExpr {
 }
 
 impl trap::TrapEntry for IndexExpr {
-    fn class_name() -> &'static str { "IndexExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1592,6 +1552,10 @@ impl trap::TrapEntry for IndexExpr {
             out.add_tuple("index_expr_is_assignee_expr", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for IndexExpr {
+    fn class_name() -> &'static str { "IndexExpr" }
 }
 
 impl From<trap::Label<IndexExpr>> for trap::Label<AstNode> {
@@ -1637,8 +1601,6 @@ pub struct InlineAsmExpr {
 }
 
 impl trap::TrapEntry for InlineAsmExpr {
-    fn class_name() -> &'static str { "InlineAsmExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1646,6 +1608,10 @@ impl trap::TrapEntry for InlineAsmExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("inline_asm_exprs", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for InlineAsmExpr {
+    fn class_name() -> &'static str { "InlineAsmExpr" }
 }
 
 impl From<trap::Label<InlineAsmExpr>> for trap::Label<AstNode> {
@@ -1690,8 +1656,6 @@ pub struct ItemStmt {
 }
 
 impl trap::TrapEntry for ItemStmt {
-    fn class_name() -> &'static str { "ItemStmt" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1699,6 +1663,10 @@ impl trap::TrapEntry for ItemStmt {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("item_stmts", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for ItemStmt {
+    fn class_name() -> &'static str { "ItemStmt" }
 }
 
 impl From<trap::Label<ItemStmt>> for trap::Label<AstNode> {
@@ -1745,8 +1713,6 @@ pub struct LetExpr {
 }
 
 impl trap::TrapEntry for LetExpr {
-    fn class_name() -> &'static str { "LetExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1754,6 +1720,10 @@ impl trap::TrapEntry for LetExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("let_exprs", vec![id.into(), self.pat.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for LetExpr {
+    fn class_name() -> &'static str { "LetExpr" }
 }
 
 impl From<trap::Label<LetExpr>> for trap::Label<AstNode> {
@@ -1802,8 +1772,6 @@ pub struct LetStmt {
 }
 
 impl trap::TrapEntry for LetStmt {
-    fn class_name() -> &'static str { "LetStmt" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1820,6 +1788,10 @@ impl trap::TrapEntry for LetStmt {
             out.add_tuple("let_stmt_elses", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for LetStmt {
+    fn class_name() -> &'static str { "LetStmt" }
 }
 
 impl From<trap::Label<LetStmt>> for trap::Label<AstNode> {
@@ -1865,8 +1837,6 @@ pub struct LitPat {
 }
 
 impl trap::TrapEntry for LitPat {
-    fn class_name() -> &'static str { "LitPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1874,6 +1844,10 @@ impl trap::TrapEntry for LitPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("lit_pats", vec![id.into(), self.expr.into()]);
     }
+}
+
+impl trap::TrapClass for LitPat {
+    fn class_name() -> &'static str { "LitPat" }
 }
 
 impl From<trap::Label<LitPat>> for trap::Label<AstNode> {
@@ -1918,8 +1892,6 @@ pub struct LiteralExpr {
 }
 
 impl trap::TrapEntry for LiteralExpr {
-    fn class_name() -> &'static str { "LiteralExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1927,6 +1899,10 @@ impl trap::TrapEntry for LiteralExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("literal_exprs", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for LiteralExpr {
+    fn class_name() -> &'static str { "LiteralExpr" }
 }
 
 impl From<trap::Label<LiteralExpr>> for trap::Label<AstNode> {
@@ -1973,8 +1949,6 @@ pub struct LoopExpr {
 }
 
 impl trap::TrapEntry for LoopExpr {
-    fn class_name() -> &'static str { "LoopExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -1985,6 +1959,10 @@ impl trap::TrapEntry for LoopExpr {
             out.add_tuple("loop_expr_labels", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for LoopExpr {
+    fn class_name() -> &'static str { "LoopExpr" }
 }
 
 impl From<trap::Label<LoopExpr>> for trap::Label<AstNode> {
@@ -2031,8 +2009,6 @@ pub struct MatchExpr {
 }
 
 impl trap::TrapEntry for MatchExpr {
-    fn class_name() -> &'static str { "MatchExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2043,6 +2019,10 @@ impl trap::TrapEntry for MatchExpr {
             out.add_tuple("match_expr_branches", vec![id.into(), i.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for MatchExpr {
+    fn class_name() -> &'static str { "MatchExpr" }
 }
 
 impl From<trap::Label<MatchExpr>> for trap::Label<AstNode> {
@@ -2091,8 +2071,6 @@ pub struct MethodCallExpr {
 }
 
 impl trap::TrapEntry for MethodCallExpr {
-    fn class_name() -> &'static str { "MethodCallExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2106,6 +2084,10 @@ impl trap::TrapEntry for MethodCallExpr {
             out.add_tuple("method_call_expr_generic_args", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for MethodCallExpr {
+    fn class_name() -> &'static str { "MethodCallExpr" }
 }
 
 impl From<trap::Label<MethodCallExpr>> for trap::Label<AstNode> {
@@ -2150,8 +2132,6 @@ pub struct MissingExpr {
 }
 
 impl trap::TrapEntry for MissingExpr {
-    fn class_name() -> &'static str { "MissingExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2159,6 +2139,10 @@ impl trap::TrapEntry for MissingExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("missing_exprs", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for MissingExpr {
+    fn class_name() -> &'static str { "MissingExpr" }
 }
 
 impl From<trap::Label<MissingExpr>> for trap::Label<AstNode> {
@@ -2203,8 +2187,6 @@ pub struct MissingPat {
 }
 
 impl trap::TrapEntry for MissingPat {
-    fn class_name() -> &'static str { "MissingPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2212,6 +2194,10 @@ impl trap::TrapEntry for MissingPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("missing_pats", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for MissingPat {
+    fn class_name() -> &'static str { "MissingPat" }
 }
 
 impl From<trap::Label<MissingPat>> for trap::Label<AstNode> {
@@ -2257,8 +2243,6 @@ pub struct Module {
 }
 
 impl trap::TrapEntry for Module {
-    fn class_name() -> &'static str { "Module" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2269,6 +2253,10 @@ impl trap::TrapEntry for Module {
             out.add_tuple("module_declarations", vec![id.into(), i.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for Module {
+    fn class_name() -> &'static str { "Module" }
 }
 
 impl From<trap::Label<Module>> for trap::Label<AstNode> {
@@ -2315,8 +2303,6 @@ pub struct OffsetOfExpr {
 }
 
 impl trap::TrapEntry for OffsetOfExpr {
-    fn class_name() -> &'static str { "OffsetOfExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2327,6 +2313,10 @@ impl trap::TrapEntry for OffsetOfExpr {
             out.add_tuple("offset_of_expr_fields", vec![id.into(), i.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for OffsetOfExpr {
+    fn class_name() -> &'static str { "OffsetOfExpr" }
 }
 
 impl From<trap::Label<OffsetOfExpr>> for trap::Label<AstNode> {
@@ -2372,8 +2362,6 @@ pub struct OrPat {
 }
 
 impl trap::TrapEntry for OrPat {
-    fn class_name() -> &'static str { "OrPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2384,6 +2372,10 @@ impl trap::TrapEntry for OrPat {
             out.add_tuple("or_pat_args", vec![id.into(), i.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for OrPat {
+    fn class_name() -> &'static str { "OrPat" }
 }
 
 impl From<trap::Label<OrPat>> for trap::Label<AstNode> {
@@ -2429,8 +2421,6 @@ pub struct PathExpr {
 }
 
 impl trap::TrapEntry for PathExpr {
-    fn class_name() -> &'static str { "PathExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2438,6 +2428,10 @@ impl trap::TrapEntry for PathExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("path_exprs", vec![id.into(), self.path.into()]);
     }
+}
+
+impl trap::TrapClass for PathExpr {
+    fn class_name() -> &'static str { "PathExpr" }
 }
 
 impl From<trap::Label<PathExpr>> for trap::Label<AstNode> {
@@ -2483,8 +2477,6 @@ pub struct PathPat {
 }
 
 impl trap::TrapEntry for PathPat {
-    fn class_name() -> &'static str { "PathPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2492,6 +2484,10 @@ impl trap::TrapEntry for PathPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("path_pats", vec![id.into(), self.path.into()]);
     }
+}
+
+impl trap::TrapClass for PathPat {
+    fn class_name() -> &'static str { "PathPat" }
 }
 
 impl From<trap::Label<PathPat>> for trap::Label<AstNode> {
@@ -2539,8 +2535,6 @@ pub struct RangeExpr {
 }
 
 impl trap::TrapEntry for RangeExpr {
-    fn class_name() -> &'static str { "RangeExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2557,6 +2551,10 @@ impl trap::TrapEntry for RangeExpr {
             out.add_tuple("range_expr_is_inclusive", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RangeExpr {
+    fn class_name() -> &'static str { "RangeExpr" }
 }
 
 impl From<trap::Label<RangeExpr>> for trap::Label<AstNode> {
@@ -2603,8 +2601,6 @@ pub struct RangePat {
 }
 
 impl trap::TrapEntry for RangePat {
-    fn class_name() -> &'static str { "RangePat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2618,6 +2614,10 @@ impl trap::TrapEntry for RangePat {
             out.add_tuple("range_pat_ends", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RangePat {
+    fn class_name() -> &'static str { "RangePat" }
 }
 
 impl From<trap::Label<RangePat>> for trap::Label<AstNode> {
@@ -2667,8 +2667,6 @@ pub struct RecordLitExpr {
 }
 
 impl trap::TrapEntry for RecordLitExpr {
-    fn class_name() -> &'static str { "RecordLitExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2691,6 +2689,10 @@ impl trap::TrapEntry for RecordLitExpr {
             out.add_tuple("record_lit_expr_is_assignee_expr", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RecordLitExpr {
+    fn class_name() -> &'static str { "RecordLitExpr" }
 }
 
 impl From<trap::Label<RecordLitExpr>> for trap::Label<AstNode> {
@@ -2738,8 +2740,6 @@ pub struct RecordPat {
 }
 
 impl trap::TrapEntry for RecordPat {
-    fn class_name() -> &'static str { "RecordPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2756,6 +2756,10 @@ impl trap::TrapEntry for RecordPat {
             out.add_tuple("record_pat_has_ellipsis", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RecordPat {
+    fn class_name() -> &'static str { "RecordPat" }
 }
 
 impl From<trap::Label<RecordPat>> for trap::Label<AstNode> {
@@ -2803,8 +2807,6 @@ pub struct RefExpr {
 }
 
 impl trap::TrapEntry for RefExpr {
-    fn class_name() -> &'static str { "RefExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2818,6 +2820,10 @@ impl trap::TrapEntry for RefExpr {
             out.add_tuple("ref_expr_is_mut", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RefExpr {
+    fn class_name() -> &'static str { "RefExpr" }
 }
 
 impl From<trap::Label<RefExpr>> for trap::Label<AstNode> {
@@ -2864,8 +2870,6 @@ pub struct RefPat {
 }
 
 impl trap::TrapEntry for RefPat {
-    fn class_name() -> &'static str { "RefPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2876,6 +2880,10 @@ impl trap::TrapEntry for RefPat {
             out.add_tuple("ref_pat_is_mut", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for RefPat {
+    fn class_name() -> &'static str { "RefPat" }
 }
 
 impl From<trap::Label<RefPat>> for trap::Label<AstNode> {
@@ -2921,8 +2929,6 @@ pub struct ReturnExpr {
 }
 
 impl trap::TrapEntry for ReturnExpr {
-    fn class_name() -> &'static str { "ReturnExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2933,6 +2939,10 @@ impl trap::TrapEntry for ReturnExpr {
             out.add_tuple("return_expr_exprs", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for ReturnExpr {
+    fn class_name() -> &'static str { "ReturnExpr" }
 }
 
 impl From<trap::Label<ReturnExpr>> for trap::Label<AstNode> {
@@ -2980,8 +2990,6 @@ pub struct SlicePat {
 }
 
 impl trap::TrapEntry for SlicePat {
-    fn class_name() -> &'static str { "SlicePat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -2998,6 +3006,10 @@ impl trap::TrapEntry for SlicePat {
             out.add_tuple("slice_pat_suffixes", vec![id.into(), i.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for SlicePat {
+    fn class_name() -> &'static str { "SlicePat" }
 }
 
 impl From<trap::Label<SlicePat>> for trap::Label<AstNode> {
@@ -3044,8 +3056,6 @@ pub struct TupleExpr {
 }
 
 impl trap::TrapEntry for TupleExpr {
-    fn class_name() -> &'static str { "TupleExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3059,6 +3069,10 @@ impl trap::TrapEntry for TupleExpr {
             out.add_tuple("tuple_expr_is_assignee_expr", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for TupleExpr {
+    fn class_name() -> &'static str { "TupleExpr" }
 }
 
 impl From<trap::Label<TupleExpr>> for trap::Label<AstNode> {
@@ -3105,8 +3119,6 @@ pub struct TuplePat {
 }
 
 impl trap::TrapEntry for TuplePat {
-    fn class_name() -> &'static str { "TuplePat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3120,6 +3132,10 @@ impl trap::TrapEntry for TuplePat {
             out.add_tuple("tuple_pat_ellipsis_indices", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for TuplePat {
+    fn class_name() -> &'static str { "TuplePat" }
 }
 
 impl From<trap::Label<TuplePat>> for trap::Label<AstNode> {
@@ -3167,8 +3183,6 @@ pub struct TupleStructPat {
 }
 
 impl trap::TrapEntry for TupleStructPat {
-    fn class_name() -> &'static str { "TupleStructPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3185,6 +3199,10 @@ impl trap::TrapEntry for TupleStructPat {
             out.add_tuple("tuple_struct_pat_ellipsis_indices", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for TupleStructPat {
+    fn class_name() -> &'static str { "TupleStructPat" }
 }
 
 impl From<trap::Label<TupleStructPat>> for trap::Label<AstNode> {
@@ -3231,8 +3249,6 @@ pub struct UnaryOpExpr {
 }
 
 impl trap::TrapEntry for UnaryOpExpr {
-    fn class_name() -> &'static str { "UnaryOpExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3240,6 +3256,10 @@ impl trap::TrapEntry for UnaryOpExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("unary_op_exprs", vec![id.into(), self.expr.into(), self.op.into()]);
     }
+}
+
+impl trap::TrapClass for UnaryOpExpr {
+    fn class_name() -> &'static str { "UnaryOpExpr" }
 }
 
 impl From<trap::Label<UnaryOpExpr>> for trap::Label<AstNode> {
@@ -3284,8 +3304,6 @@ pub struct UnderscoreExpr {
 }
 
 impl trap::TrapEntry for UnderscoreExpr {
-    fn class_name() -> &'static str { "UnderscoreExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3293,6 +3311,10 @@ impl trap::TrapEntry for UnderscoreExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("underscore_exprs", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for UnderscoreExpr {
+    fn class_name() -> &'static str { "UnderscoreExpr" }
 }
 
 impl From<trap::Label<UnderscoreExpr>> for trap::Label<AstNode> {
@@ -3337,8 +3359,6 @@ pub struct Unimplemented {
 }
 
 impl trap::TrapEntry for Unimplemented {
-    fn class_name() -> &'static str { "Unimplemented" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3346,6 +3366,10 @@ impl trap::TrapEntry for Unimplemented {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("unimplementeds", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for Unimplemented {
+    fn class_name() -> &'static str { "Unimplemented" }
 }
 
 impl From<trap::Label<Unimplemented>> for trap::Label<AstNode> {
@@ -3399,8 +3423,6 @@ pub struct WildPat {
 }
 
 impl trap::TrapEntry for WildPat {
-    fn class_name() -> &'static str { "WildPat" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3408,6 +3430,10 @@ impl trap::TrapEntry for WildPat {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("wild_pats", vec![id.into()]);
     }
+}
+
+impl trap::TrapClass for WildPat {
+    fn class_name() -> &'static str { "WildPat" }
 }
 
 impl From<trap::Label<WildPat>> for trap::Label<AstNode> {
@@ -3453,8 +3479,6 @@ pub struct YeetExpr {
 }
 
 impl trap::TrapEntry for YeetExpr {
-    fn class_name() -> &'static str { "YeetExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3465,6 +3489,10 @@ impl trap::TrapEntry for YeetExpr {
             out.add_tuple("yeet_expr_exprs", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for YeetExpr {
+    fn class_name() -> &'static str { "YeetExpr" }
 }
 
 impl From<trap::Label<YeetExpr>> for trap::Label<AstNode> {
@@ -3510,8 +3538,6 @@ pub struct YieldExpr {
 }
 
 impl trap::TrapEntry for YieldExpr {
-    fn class_name() -> &'static str { "YieldExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3522,6 +3548,10 @@ impl trap::TrapEntry for YieldExpr {
             out.add_tuple("yield_expr_exprs", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for YieldExpr {
+    fn class_name() -> &'static str { "YieldExpr" }
 }
 
 impl From<trap::Label<YieldExpr>> for trap::Label<AstNode> {
@@ -3568,8 +3598,6 @@ pub struct AsyncBlockExpr {
 }
 
 impl trap::TrapEntry for AsyncBlockExpr {
-    fn class_name() -> &'static str { "AsyncBlockExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3583,6 +3611,10 @@ impl trap::TrapEntry for AsyncBlockExpr {
             out.add_tuple("block_expr_base_tails", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for AsyncBlockExpr {
+    fn class_name() -> &'static str { "AsyncBlockExpr" }
 }
 
 impl From<trap::Label<AsyncBlockExpr>> for trap::Label<AstNode> {
@@ -3639,8 +3671,6 @@ pub struct BlockExpr {
 }
 
 impl trap::TrapEntry for BlockExpr {
-    fn class_name() -> &'static str { "BlockExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3657,6 +3687,10 @@ impl trap::TrapEntry for BlockExpr {
             out.add_tuple("block_expr_labels", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for BlockExpr {
+    fn class_name() -> &'static str { "BlockExpr" }
 }
 
 impl From<trap::Label<BlockExpr>> for trap::Label<AstNode> {
@@ -3712,8 +3746,6 @@ pub struct ElementListExpr {
 }
 
 impl trap::TrapEntry for ElementListExpr {
-    fn class_name() -> &'static str { "ElementListExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3727,6 +3759,10 @@ impl trap::TrapEntry for ElementListExpr {
             out.add_tuple("element_list_expr_is_assignee_expr", vec![id.into()]);
         }
     }
+}
+
+impl trap::TrapClass for ElementListExpr {
+    fn class_name() -> &'static str { "ElementListExpr" }
 }
 
 impl From<trap::Label<ElementListExpr>> for trap::Label<ArrayExpr> {
@@ -3782,8 +3818,6 @@ pub struct RepeatExpr {
 }
 
 impl trap::TrapEntry for RepeatExpr {
-    fn class_name() -> &'static str { "RepeatExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3791,6 +3825,10 @@ impl trap::TrapEntry for RepeatExpr {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("repeat_exprs", vec![id.into(), self.initializer.into(), self.repeat.into()]);
     }
+}
+
+impl trap::TrapClass for RepeatExpr {
+    fn class_name() -> &'static str { "RepeatExpr" }
 }
 
 impl From<trap::Label<RepeatExpr>> for trap::Label<ArrayExpr> {
@@ -3846,8 +3884,6 @@ pub struct UnsafeBlockExpr {
 }
 
 impl trap::TrapEntry for UnsafeBlockExpr {
-    fn class_name() -> &'static str { "UnsafeBlockExpr" }
-
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
@@ -3861,6 +3897,10 @@ impl trap::TrapEntry for UnsafeBlockExpr {
             out.add_tuple("block_expr_base_tails", vec![id.into(), v.into()]);
         }
     }
+}
+
+impl trap::TrapClass for UnsafeBlockExpr {
+    fn class_name() -> &'static str { "UnsafeBlockExpr" }
 }
 
 impl From<trap::Label<UnsafeBlockExpr>> for trap::Label<AstNode> {

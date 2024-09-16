@@ -80,7 +80,7 @@ class Processor:
                 if "rust_skip" not in p.pragmas and not p.synth
             ] if not cls.derived else [],
             ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
-            table_name=inflection.tableize(cls.name),
+            entry_table=inflection.tableize(cls.name) if not cls.derived else None,
         )
 
     def get_classes(self):

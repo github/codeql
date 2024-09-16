@@ -35,6 +35,15 @@ impl AsTrapKeyPart for &str {
     }
 }
 
+pub trait TrapClass {
+    fn class_name() -> &'static str;
+}
+
+pub trait TrapEntry: Debug + Sized + TrapClass {
+    fn extract_id(&mut self) -> TrapId<Self>;
+    fn emit(self, id: Label<Self>, out: &mut Writer);
+}
+
 #[derive(Debug, Clone)]
 pub enum TrapId<T: TrapEntry> {
     Star,
@@ -72,7 +81,7 @@ macro_rules! trap_key {
 }
 
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub struct Label<T: TrapEntry> {
+pub struct Label<T: TrapClass> {
     untyped: UntypedLabel,
     phantom: PhantomData<T>, // otherwise Rust wants `T` to be used
 }
@@ -80,15 +89,15 @@ pub struct Label<T: TrapEntry> {
 // not deriving `Clone` and `Copy` because they require `T: Clone` and `T: Copy` respectively,
 // even if `T` is not actually part of the fields.
 // see https://github.com/rust-lang/rust/issues/108894
-impl<T: TrapEntry> Clone for Label<T> {
+impl<T: TrapClass> Clone for Label<T> {
     fn clone(&self) -> Self {
         *self
     }
 }
 
-impl<T: TrapEntry> Copy for Label<T> {}
+impl<T: TrapClass> Copy for Label<T> {}
 
-impl<T: TrapEntry> Label<T> {
+impl<T: TrapClass> Label<T> {
     pub fn as_untyped(&self) -> UntypedLabel {
         self.untyped
     }
@@ -103,22 +112,16 @@ impl<T: TrapEntry> Label<T> {
     }
 }
 
-impl<T: TrapEntry> AsTrapKeyPart for Label<T> {
+impl<T: TrapClass> AsTrapKeyPart for Label<T> {
     fn as_key_part(&self) -> String {
         self.as_untyped().as_key_part()
     }
 }
 
-impl<T: TrapEntry> From<Label<T>> for trap::Arg {
+impl<T: TrapClass> From<Label<T>> for trap::Arg {
     fn from(value: Label<T>) -> Self {
         trap::Arg::Label(value.as_untyped())
     }
-}
-
-pub trait TrapEntry: std::fmt::Debug + Sized {
-    fn class_name() -> &'static str;
-    fn extract_id(&mut self) -> TrapId<Self>;
-    fn emit(self, id: Label<Self>, out: &mut Writer);
 }
 
 pub struct TrapFile {
@@ -128,10 +131,10 @@ pub struct TrapFile {
 }
 
 impl TrapFile {
-    pub fn emit_location<T: TrapEntry>(
+    pub fn emit_location<E: TrapClass>(
         &mut self,
         file_label: UntypedLabel,
-        entity_label: Label<T>,
+        entity_label: Label<E>,
         start: LineCol,
         end: LineCol,
     ) {

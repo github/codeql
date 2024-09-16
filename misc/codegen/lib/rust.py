@@ -110,13 +110,19 @@ class Field:
 @dataclasses.dataclass
 class Class:
     name: str
-    table_name: str | None = None
+    entry_table: str | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
     ancestors: list[str] = dataclasses.field(default_factory=list)
 
     @property
-    def single_field_entries(self):
-        ret = {self.table_name: []}
+    def is_entry(self) -> bool:
+        return bool(self.entry_table)
+
+    @property
+    def single_field_entries(self) -> dict[str, list[dict]]:
+        ret = {}
+        if self.is_entry:
+            ret[self.entry_table] = []
         for f in self.fields:
             if f.is_single:
                 ret.setdefault(f.table_name, []).append(f)
