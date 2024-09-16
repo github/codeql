@@ -1,7 +1,7 @@
 /**
- * @name Missing Elements
+ * @name Unextracted Elements
  * @description List all elements that weren't extracted due to unimplemented features or parse errors.
- * @id rust/diagnostics/missing-elements
+ * @id rust/diagnostics/unextracted-elements
  */
 
 import rust
