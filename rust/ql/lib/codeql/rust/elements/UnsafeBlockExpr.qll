@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.UnsafeBlockExpr
 
+/**
+ * An unsafe block expression. For example:
+ * ```
+ * let layout = unsafe {
+ *     let x = 42;
+ *     Layout::from_size_align_unchecked(size, align)
+ * };
+ * ```
+ */
 class UnsafeBlockExpr extends Generated::UnsafeBlockExpr { }

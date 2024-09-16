@@ -5,4 +5,28 @@
 
 private import codeql.rust.generated.LoopExpr
 
+/**
+ * A loop expression. For example:
+ * ```
+ * loop {
+ *     println!("Hello, world (again)!");
+ * };
+ * ```
+ * ```
+ * 'label: loop {
+ *     println!("Hello, world (once)!");
+ *     break 'label;
+ * };
+ * ```
+ * ```
+ * let mut x = 0;
+ * loop {
+ *     if x < 10 {
+ *         x += 1;
+ *     } else {
+ *         break;
+ *     }
+ * };
+ * ```
+ */
 class LoopExpr extends Generated::LoopExpr { }

@@ -7,7 +7,7 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.rust.elements.File
+private import codeql.files.FileSystem
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
 private import codeql.rust.controlflow.ControlFlowGraph
 

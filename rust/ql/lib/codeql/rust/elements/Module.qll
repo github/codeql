@@ -5,4 +5,15 @@
 
 private import codeql.rust.generated.Module
 
+/**
+ * A module declaration. For example:
+ * ```
+ * mod foo;
+ * ```
+ * ```
+ * mod bar {
+ *     pub fn baz() {}
+ * }
+ * ```
+ */
 class Module extends Generated::Module { }

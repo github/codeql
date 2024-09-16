@@ -7,7 +7,6 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Element
-import codeql.rust.elements.Location
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Locatable` and should not
@@ -18,20 +17,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Locatable` class directly.
    * Use the subclass `Locatable`, where the following predicates are available.
    */
-  class Locatable extends Synth::TLocatable, Element {
-    /**
-     * Gets the location of this locatable, if it exists.
-     */
-    Location getLocation() {
-      result =
-        Synth::convertLocationFromRaw(Synth::convertLocatableToRaw(this)
-              .(Raw::Locatable)
-              .getLocation())
-    }
-
-    /**
-     * Holds if `getLocation()` exists.
-     */
-    final predicate hasLocation() { exists(this.getLocation()) }
-  }
+  class Locatable extends Synth::TLocatable, Element { }
 }

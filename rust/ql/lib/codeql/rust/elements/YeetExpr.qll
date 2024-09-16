@@ -5,4 +5,12 @@
 
 private import codeql.rust.generated.YeetExpr
 
+/**
+ * A `yeet` expression. For example:
+ * ```
+ * if x < size {
+ *    do yeet "index out of bounds";
+ * }
+ * ```
+ */
 class YeetExpr extends Generated::YeetExpr { }

@@ -5,4 +5,11 @@
 
 private import codeql.rust.generated.TupleExpr
 
+/**
+ * A tuple expression. For example:
+ * ```
+ * (1, "one");
+ * (2, "two")[0] = 3;
+ * ```
+ */
 class TupleExpr extends Generated::TupleExpr { }

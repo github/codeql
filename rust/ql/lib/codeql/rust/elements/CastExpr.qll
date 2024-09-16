@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.CastExpr
 
+/**
+ * A cast expression. For example:
+ * ```
+ * value as u64;
+ * ```
+ */
 class CastExpr extends Generated::CastExpr { }

@@ -15,6 +15,21 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
+   * A continue expression. For example:
+   * ```
+   * loop {
+   *     if not_ready() {
+   *         continue;
+   *     }
+   * }
+   * ```
+   * ```
+   * 'label: loop {
+   *     if not_ready() {
+   *         continue 'label;
+   *     }
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::ContinueExpr` class directly.
    * Use the subclass `ContinueExpr`, where the following predicates are available.
    */

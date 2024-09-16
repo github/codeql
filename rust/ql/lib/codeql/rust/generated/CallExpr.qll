@@ -14,6 +14,13 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A function call expression. For example:
+   * ```
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * foo(1) = 4;
+   * ```
    * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
    * Use the subclass `CallExpr`, where the following predicates are available.
    */

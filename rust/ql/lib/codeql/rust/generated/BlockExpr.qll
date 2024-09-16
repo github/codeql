@@ -15,6 +15,18 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
+   * A block expression. For example:
+   * ```
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
    * Use the subclass `BlockExpr`, where the following predicates are available.
    */

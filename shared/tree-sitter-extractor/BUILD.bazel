@@ -14,3 +14,8 @@ rust_library(
     ],
     deps = all_crate_deps(),
 )
+
+filegroup(
+    name = "dbscheme-prefix",
+    srcs = ["src/generator/prefix.dbscheme"],
+)
