@@ -34,18 +34,24 @@ class VarAccess extends @variable_expression, Expr {
   Variable getVariable() { result.getAnAccess() = this }
 }
 
-private predicate isVariableWriteAccess(Expr e) {
-  e = any(AssignStmt assign).getLeftHandSide()
+private predicate isExplicitVariableWriteAccess(Expr e, AssignStmt assign) {
+  e = assign.getLeftHandSide()
   or
-  e = any(ConvertExpr convert | isVariableWriteAccess(convert)).getExpr()
+  e = any(ConvertExpr convert | isExplicitVariableWriteAccess(convert, assign)).getExpr()
   or
-  e = any(ArrayLiteral array | isVariableWriteAccess(array)).getAnElement()
+  e = any(ArrayLiteral array | isExplicitVariableWriteAccess(array, assign)).getAnElement()
 }
+
+private predicate isImplicitVariableWriteAccess(Expr e) { none() }
 
 class VarReadAccess extends VarAccess {
   VarReadAccess() { not this instanceof VarWriteAccess }
 }
 
 class VarWriteAccess extends VarAccess {
-  VarWriteAccess() { isVariableWriteAccess(this) }
+  VarWriteAccess() { isExplicitVariableWriteAccess(this, _) or isImplicitVariableWriteAccess(this) }
+
+  predicate isExplicit(AssignStmt assign) { isExplicitVariableWriteAccess(this, assign) }
+
+  predicate isImplicit() { isImplicitVariableWriteAccess(this) }
 }
