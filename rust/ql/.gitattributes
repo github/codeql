@@ -54,7 +54,6 @@
 /lib/codeql/rust/elements/Declaration.qll linguist-generated
 /lib/codeql/rust/elements/DeclarationImpl.qll linguist-generated
 /lib/codeql/rust/elements/Element.qll linguist-generated
-/lib/codeql/rust/elements/ElementImpl.qll linguist-generated
 /lib/codeql/rust/elements/ElementListExpr.qll linguist-generated
 /lib/codeql/rust/elements/ElementListExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/ElementListExprImpl.qll linguist-generated
@@ -68,7 +67,6 @@
 /lib/codeql/rust/elements/FieldExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/Function.qll linguist-generated
 /lib/codeql/rust/elements/FunctionConstructor.qll linguist-generated
-/lib/codeql/rust/elements/FunctionImpl.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgList.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgListImpl.qll linguist-generated
@@ -100,7 +98,6 @@
 /lib/codeql/rust/elements/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LiteralPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/Locatable.qll linguist-generated
-/lib/codeql/rust/elements/LocatableImpl.qll linguist-generated
 /lib/codeql/rust/elements/LoopExpr.qll linguist-generated
 /lib/codeql/rust/elements/LoopExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/LoopExprImpl.qll linguist-generated
