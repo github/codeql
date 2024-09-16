@@ -164,20 +164,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   module Impl<FullStateConfigSig Config> {
     private class FlowState = Config::FlowState;
 
-    private class NodeEx extends NodeExImpl {
-      NodeEx() {
-        Config::allowImplicitRead(any(Node n | this.isImplicitReadNode(n)), _)
-        or
-        not this.isImplicitReadNode(_)
-      }
-    }
-
-    private class ArgNodeEx extends NodeEx, ArgNodeExImpl { }
-
-    private class ParamNodeEx extends NodeEx, ParamNodeExImpl { }
-
-    private class RetNodeEx extends NodeEx, RetNodeExImpl { }
-
     private module SourceSinkFiltering {
       private import codeql.util.AlertFiltering
 
@@ -1043,10 +1029,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[label1, label2]
     pragma[inline_late]
     private string mergeLabels(string label1, string label2) {
-      // Big-step, hidden nodes, and summaries all may need to merge labels.
-      // These cases are expected to involve at most one non-empty label, so
-      // we'll just discard the 2nd+ label for now.
-      if label1 = "" then result = label2 else result = label1
+      if label2.matches("Sink:%")
+      then if label1 = "" then result = label2 else result = label1 + " " + label2
+      else
+        // Big-step, hidden nodes, and summaries all may need to merge labels.
+        // These cases are expected to involve at most one non-empty label, so
+        // we'll just discard the 2nd+ label for now.
+        if label1 = ""
+        then result = label2
+        else result = label1
     }
 
     pragma[nomagic]
@@ -2819,15 +2810,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             pragma[nomagic]
             PathNodeImpl getAnImplicitReadSuccessorAtSink(string label) {
               exists(PathNodeMid readTarget |
-                result = this.getASuccessorImpl(label) and
+                result = this.getASuccessorImpl(_) and
                 localStep(this, readTarget, _) and
                 readTarget.getNodeEx().isImplicitReadNode(_)
               |
                 // last implicit read, leaving the access path empty
-                result = readTarget.projectToSink(_)
+                result = readTarget.projectToSink(label)
                 or
                 // implicit read, leaving the access path non-empty
-                exists(result.getAnImplicitReadSuccessorAtSink(_)) and
+                exists(result.getAnImplicitReadSuccessorAtSink(label)) and
                 result = readTarget
               )
             }
@@ -2859,7 +2850,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               //  `x [Field]`               -> `x`
               //
               // which the restriction below ensures.
-              not result = this.getAnImplicitReadSuccessorAtSink(label)
+              not result = this.getAnImplicitReadSuccessorAtSink(_)
               or
               exists(string l1, string l2 |
                 result = this.getASuccessorFromNonHidden(l1).getASuccessorIfHidden(l2) and
@@ -2980,18 +2971,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
               or
               // a final step to a sink
-              exists(string l2, string sinkmodel, string l2_ |
-                result = this.getSuccMid(l2).projectToSink(sinkmodel) and
-                if l2 = "" then l2_ = l2 else l2_ = l2 + " "
+              exists(string l2, string sinkLabel |
+                result = this.getSuccMid(l2).projectToSink(sinkLabel)
               |
                 not this.isSourceWithLabel(_) and
-                if sinkmodel != "" then label = l2_ + "Sink:" + sinkmodel else label = l2
+                label = mergeLabels(l2, sinkLabel)
                 or
                 exists(string l1 |
                   this.isSourceWithLabel(l1) and
-                  if sinkmodel != ""
-                  then label = l1 + l2_ + "Sink:" + sinkmodel
-                  else label = l1 + l2
+                  label = l1 + mergeLabels(l2, sinkLabel)
                 )
               )
             }
@@ -3057,11 +3045,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 else any()
             }
 
-            PathNodeSink projectToSink(string model) {
-              this.isAtSink() and
-              sinkModel(node, model) and
-              result.getNodeEx() = this.toNormalSinkNodeEx() and
-              result.getState() = state
+            PathNodeSink projectToSink(string label) {
+              exists(string model |
+                this.isAtSink() and
+                sinkModel(node, model) and
+                result.getNodeEx() = this.toNormalSinkNodeEx() and
+                result.getState() = state and
+                if model != "" then label = "Sink:" + model else label = ""
+              )
             }
           }
 

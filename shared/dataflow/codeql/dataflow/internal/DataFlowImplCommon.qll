@@ -850,7 +850,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   class SndLevelScopeOption = SndLevelScopeOption::Option;
 
-  final class NodeExImpl extends TNodeEx {
+  final class NodeEx extends TNodeEx {
     string toString() {
       result = this.asNode().toString()
       or
@@ -899,14 +899,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     Location getLocation() { result = this.projectToNode().getLocation() }
   }
 
-  final class ArgNodeExImpl extends NodeExImpl {
-    ArgNodeExImpl() { this.asNode() instanceof ArgNode }
+  final class ArgNodeEx extends NodeEx {
+    ArgNodeEx() { this.asNode() instanceof ArgNode }
 
     DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
   }
 
-  final class ParamNodeExImpl extends NodeExImpl {
-    ParamNodeExImpl() { this.asNode() instanceof ParamNode }
+  final class ParamNodeEx extends NodeEx {
+    ParamNodeEx() { this.asNode() instanceof ParamNode }
 
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       this.asNode().(ParamNode).isParameterOf(c, pos)
@@ -919,10 +919,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * A node from which flow can return to the caller. This is either a regular
    * `ReturnNode` or a synthesized node for flow out via a parameter.
    */
-  final class RetNodeExImpl extends NodeExImpl {
+  final class RetNodeEx extends NodeEx {
     private ReturnPosition pos;
 
-    RetNodeExImpl() { pos = getReturnPositionEx(this) }
+    RetNodeEx() { pos = getReturnPositionEx(this) }
 
     ReturnPosition getReturnPosition() { result = pos }
 
@@ -1713,7 +1713,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow in one local step from `node1` to `node2`.
      */
     cached
-    predicate localFlowStepExImpl(NodeExImpl node1, NodeExImpl node2, string model) {
+    predicate localFlowStepExImpl(NodeEx node1, NodeEx node2, string model) {
       exists(Node n1, Node n2 |
         node1.asNode() = n1 and
         node2.asNode() = n2 and
@@ -1730,7 +1730,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    ReturnPosition getReturnPositionEx(NodeExImpl ret) {
+    ReturnPosition getReturnPositionEx(NodeEx ret) {
       result = getValueReturnPosition(ret.asNode())
       or
       exists(ParamNode p |
