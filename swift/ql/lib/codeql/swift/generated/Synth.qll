@@ -1080,8 +1080,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
-        TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or TTypeRepr;
+    TAvailabilityInfo or TAvailabilitySpec or TCallable or TCaseLabelItem or TConditionElement or
+        TDecl or TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or
+        TTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -3369,6 +3370,8 @@ module Synth {
     or
     result = convertAvailabilitySpecFromRaw(e)
     or
+    result = convertCallableFromRaw(e)
+    or
     result = convertCaseLabelItemFromRaw(e)
     or
     result = convertConditionElementFromRaw(e)
@@ -3418,8 +3421,6 @@ module Synth {
    */
   cached
   TElement convertElementFromRaw(Raw::Element e) {
-    result = convertCallableFromRaw(e)
-    or
     result = convertFileFromRaw(e)
     or
     result = convertGenericContextFromRaw(e)
@@ -6341,6 +6342,8 @@ module Synth {
     or
     result = convertAvailabilitySpecToRaw(e)
     or
+    result = convertCallableToRaw(e)
+    or
     result = convertCaseLabelItemToRaw(e)
     or
     result = convertConditionElementToRaw(e)
@@ -6390,8 +6393,6 @@ module Synth {
    */
   cached
   Raw::Element convertElementToRaw(TElement e) {
-    result = convertCallableToRaw(e)
-    or
     result = convertFileToRaw(e)
     or
     result = convertGenericContextToRaw(e)

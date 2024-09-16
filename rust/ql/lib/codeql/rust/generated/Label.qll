@@ -14,6 +14,13 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * A label. For example:
+   * ```
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::Label` class directly.
    * Use the subclass `Label`, where the following predicates are available.
    */

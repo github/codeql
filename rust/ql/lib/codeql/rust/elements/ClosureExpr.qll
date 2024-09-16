@@ -5,4 +5,16 @@
 
 private import codeql.rust.generated.ClosureExpr
 
+/**
+ * A closure expression. For example:
+ * ```
+ * |x| x + 1;
+ * move |x: i32| -> i32 { x + 1 };
+ * async |x: i32, y| x + y;
+ *  #[coroutine]
+ * |x| yield x;
+ *  #[coroutine]
+ *  static |x| yield x;
+ * ```
+ */
 class ClosureExpr extends Generated::ClosureExpr { }

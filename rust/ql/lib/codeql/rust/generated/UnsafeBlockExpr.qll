@@ -14,6 +14,13 @@ import codeql.rust.elements.BlockExprBase
  */
 module Generated {
   /**
+   * An unsafe block expression. For example:
+   * ```
+   * let layout = unsafe {
+   *     let x = 42;
+   *     Layout::from_size_align_unchecked(size, align)
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::UnsafeBlockExpr` class directly.
    * Use the subclass `UnsafeBlockExpr`, where the following predicates are available.
    */

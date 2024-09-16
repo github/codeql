@@ -14,33 +14,6 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfCallable(Callable e, int index, string partialPredicateCall) {
-    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody, int nCapture |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      nSelfParam = n + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
-      nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getSelfParam() and partialPredicateCall = "SelfParam()"
-        or
-        result = e.getParam(index - nSelfParam) and
-        partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
-        or
-        index = nParam and result = e.getBody() and partialPredicateCall = "Body()"
-        or
-        result = e.getCapture(index - nBody) and
-        partialPredicateCall = "Capture(" + (index - nBody).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfFile(File e, int index, string partialPredicateCall) {
     exists(int b, int bElement, int n |
       b = 0 and
@@ -222,6 +195,33 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCallable(Callable e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nSelfParam, int nParam, int nBody, int nCapture |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nSelfParam = n + 1 and
+      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nBody = nParam + 1 and
+      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getSelfParam() and partialPredicateCall = "SelfParam()"
+        or
+        result = e.getParam(index - nSelfParam) and
+        partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
+        or
+        index = nParam and result = e.getBody() and partialPredicateCall = "Body()"
+        or
+        result = e.getCapture(index - nBody) and
+        partialPredicateCall = "Capture(" + (index - nBody).toString() + ")"
       )
     )
   }

@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.RefPat
 
+/**
+ * A reference pattern. For example:
+ * ```
+ * match x {
+ *     &mut Option::Some(y) => y,
+ *     &Option::None => 0,
+ * };
+ * ```
+ */
 class RefPat extends Generated::RefPat { }

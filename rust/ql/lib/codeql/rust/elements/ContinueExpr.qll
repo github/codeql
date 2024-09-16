@@ -5,4 +5,21 @@
 
 private import codeql.rust.generated.ContinueExpr
 
+/**
+ * A continue expression. For example:
+ * ```
+ * loop {
+ *     if not_ready() {
+ *         continue;
+ *     }
+ * }
+ * ```
+ * ```
+ * 'label: loop {
+ *     if not_ready() {
+ *         continue 'label;
+ *     }
+ * }
+ * ```
+ */
 class ContinueExpr extends Generated::ContinueExpr { }

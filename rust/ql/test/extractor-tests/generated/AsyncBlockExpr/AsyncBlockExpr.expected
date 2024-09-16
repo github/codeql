@@ -1,0 +1,1 @@
+| gen_async_block_expr.rs:5:5:8:5 | AsyncBlockExpr | getNumberOfStatements: | 1 | hasTail: | yes |

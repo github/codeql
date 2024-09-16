@@ -65,6 +65,9 @@ fn main() -> anyhow::Result<()> {
         let crates = <dyn DefDatabase>::crate_graph(&db);
         for crate_id in crates.iter() {
             let krate = Crate::from(crate_id);
+            if !cfg.extract_dependencies && !krate.origin(&db).is_local() {
+                continue;
+            }
             let name = krate.display_name(&db);
             let crate_name = name
                 .as_ref()
@@ -78,16 +81,9 @@ fn main() -> anyhow::Result<()> {
                     crate_id.into_raw().into_u32()
                 )),
             );
-            translate::CrateTranslator::new(
-                &db,
-                trap,
-                &krate,
-                &vfs,
-                &archiver,
-                cfg.extract_dependencies,
-            )
-            .emit_crate()
-            .context("writing trap file")?;
+            translate::CrateTranslator::new(&db, trap, &krate, &vfs, &archiver)
+                .emit_crate()
+                .context("writing trap file")?;
         }
     }
     Ok(())

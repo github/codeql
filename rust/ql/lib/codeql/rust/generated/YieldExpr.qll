@@ -14,6 +14,13 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A `yield` expression. For example:
+   * ```
+   * let one = #[coroutine]
+   *     || {
+   *         yield 1;
+   *     };
+   * ```
    * INTERNAL: Do not reference the `Generated::YieldExpr` class directly.
    * Use the subclass `YieldExpr`, where the following predicates are available.
    */

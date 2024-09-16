@@ -6,7 +6,7 @@
 
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.Element
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Unimplemented` and should not
@@ -14,10 +14,9 @@ import codeql.rust.elements.AstNode
  */
 module Generated {
   /**
+   * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
    * INTERNAL: Do not reference the `Generated::Unimplemented` class directly.
    * Use the subclass `Unimplemented`, where the following predicates are available.
    */
-  class Unimplemented extends Synth::TUnimplemented, AstNode {
-    override string getAPrimaryQlClass() { result = "Unimplemented" }
-  }
+  class Unimplemented extends Synth::TUnimplemented, Element { }
 }

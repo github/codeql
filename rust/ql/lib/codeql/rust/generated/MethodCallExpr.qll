@@ -7,7 +7,7 @@
 private import codeql.rust.generated.Synth
 private import codeql.rust.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.GenericArgList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MethodCallExpr` and should not
@@ -15,6 +15,10 @@ import codeql.rust.elements.Unimplemented
  */
 module Generated {
   /**
+   * A method call expression. For example:
+   * ```
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
@@ -61,9 +65,9 @@ module Generated {
     /**
      * Gets the generic arguments of this method call expression, if it exists.
      */
-    Unimplemented getGenericArgs() {
+    GenericArgList getGenericArgs() {
       result =
-        Synth::convertUnimplementedFromRaw(Synth::convertMethodCallExprToRaw(this)
+        Synth::convertGenericArgListFromRaw(Synth::convertMethodCallExprToRaw(this)
               .(Raw::MethodCallExpr)
               .getGenericArgs())
     }

@@ -5,4 +5,10 @@
 
 private import codeql.rust.generated.BoxExpr
 
+/**
+ * A box expression. For example:
+ * ```
+ * let x = #[rustc_box] Box::new(42);
+ * ```
+ */
 class BoxExpr extends Generated::BoxExpr { }

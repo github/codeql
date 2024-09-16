@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.AsyncBlockExpr
 
+/**
+ * An async block expression. For example:
+ * ```
+ * async {
+ *    let x = 42;
+ *    x
+ * }.await
+ * ```
+ */
 class AsyncBlockExpr extends Generated::AsyncBlockExpr { }

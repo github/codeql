@@ -5,4 +5,17 @@
 
 private import codeql.rust.generated.ReturnExpr
 
+/**
+ * A return expression. For example:
+ * ```
+ * fn some_value() -> i32 {
+ *     return 42;
+ * }
+ * ```
+ * ```
+ * fn no_value() -> () {
+ *     return;
+ * }
+ * ```
+ */
 class ReturnExpr extends Generated::ReturnExpr { }

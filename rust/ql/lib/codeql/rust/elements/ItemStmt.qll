@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.ItemStmt
 
+/**
+ * An item statement. For example:
+ * ```
+ * fn print_hello() {
+ *     println!("Hello, world!");
+ * }
+ * print_hello();
+ * ```
+ */
 class ItemStmt extends Generated::ItemStmt { }

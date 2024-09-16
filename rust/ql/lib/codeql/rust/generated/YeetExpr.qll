@@ -14,6 +14,12 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A `yeet` expression. For example:
+   * ```
+   * if x < size {
+   *    do yeet "index out of bounds";
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::YeetExpr` class directly.
    * Use the subclass `YeetExpr`, where the following predicates are available.
    */

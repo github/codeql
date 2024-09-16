@@ -14,6 +14,13 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * An `await` expression. For example:
+   * ```
+   * async {
+   *     let x = foo().await;
+   *     x
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::AwaitExpr` class directly.
    * Use the subclass `AwaitExpr`, where the following predicates are available.
    */

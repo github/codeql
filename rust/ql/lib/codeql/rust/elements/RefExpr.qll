@@ -5,4 +5,13 @@
 
 private import codeql.rust.generated.RefExpr
 
+/**
+ * A reference expression. For example:
+ * ```
+ *     let ref_const = &foo;
+ *     let ref_mut = &mut foo;
+ *     let raw_const: &mut i32 = &raw const foo;
+ *     let raw_mut: &mut i32 = &raw mut foo;
+ * ```
+ */
 class RefExpr extends Generated::RefExpr { }
