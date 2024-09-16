@@ -11,7 +11,7 @@ class MyRelevantNode extends ControlFlowNode {
   private AstNode asAstNode() { result = this.getAstNode().asAstNode() }
 
   string getOrderDisambiguation() {
-    result = this.asAstNode().getPrimaryQlClasses()
+    result = concat([this.asAstNode().getAPrimaryQlClass(), this.asAstNode().toString()], ",")
     or
     not exists(this.asAstNode()) and result = ""
   }
