@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.ExprStmt
+private import codeql.rust.internal.generated.ExprStmt
 
 /**
  * INTERNAL: This module contains the customizable definition of `ExprStmt` and should not

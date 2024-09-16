@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.BoxPat
+private import codeql.rust.internal.generated.BoxPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `BoxPat` and should not

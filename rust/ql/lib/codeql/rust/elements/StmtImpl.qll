@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Stmt
+private import codeql.rust.internal.generated.Stmt
 
 /**
  * INTERNAL: This module contains the customizable definition of `Stmt` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.ConstExpr
+private import codeql.rust.internal.generated.ConstExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ConstExpr` and should not

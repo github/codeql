@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Module
+private import codeql.rust.internal.generated.Module
 
 /**
  * INTERNAL: This module contains the customizable definition of `Module` and should not

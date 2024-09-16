@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.MissingExpr
+private import codeql.rust.internal.generated.MissingExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `MissingExpr` and should not

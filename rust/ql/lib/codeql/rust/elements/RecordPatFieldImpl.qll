@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.RecordPatField
+private import codeql.rust.internal.generated.RecordPatField
 
 /**
  * INTERNAL: This module contains the customizable definition of `RecordPatField` and should not

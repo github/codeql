@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.OrPat
+private import codeql.rust.internal.generated.OrPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `OrPat` and should not

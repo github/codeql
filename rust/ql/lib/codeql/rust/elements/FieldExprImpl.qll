@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.FieldExpr
+private import codeql.rust.internal.generated.FieldExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `FieldExpr` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.AwaitExpr
+private import codeql.rust.internal.generated.AwaitExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `AwaitExpr` and should not
