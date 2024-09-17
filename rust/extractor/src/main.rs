@@ -11,7 +11,6 @@ use std::path::PathBuf;
 mod archive;
 mod config;
 pub mod generated;
-pub mod path;
 mod translate;
 pub mod trap;
 
