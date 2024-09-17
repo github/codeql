@@ -34,6 +34,8 @@ private module Input implements InputSig<Location, PythonDataFlow> {
     // parameter, but dataflow-consistency queries should _not_ complain about there not
     // being a post-update node for the synthetic `**kwargs` parameter.
     n instanceof SynthDictSplatParameterNode
+    or
+    Private::Conversions::readStep(n, _, _)
   }
 
   predicate uniqueParameterNodePositionExclude(DataFlowCallable c, ParameterPosition pos, Node p) {

@@ -16,7 +16,16 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  // We allow implicit reads of precise content
+  // imprecise content has already bubled up.
+  exists(node) and
+  (
+    c instanceof DataFlow::TupleElementContent
+    or
+    c instanceof DataFlow::DictionaryElementContent
+  )
+}
 
 private module Cached {
   /**
@@ -175,10 +184,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   DataFlowPrivate::listStoreStep(nodeFrom, _, nodeTo)
   or
   DataFlowPrivate::setStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::tupleStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::dictStoreStep(nodeFrom, _, nodeTo)
   or
   // comprehension, so there is taint-flow from `x` in `[x for x in xs]` to the
   // resulting list of the list-comprehension.

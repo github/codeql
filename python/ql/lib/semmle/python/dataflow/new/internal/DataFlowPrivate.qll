@@ -934,6 +934,8 @@ predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::readStep(nodeFrom, c, nodeTo)
+  or
+  Conversions::readStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -987,6 +989,40 @@ TupleElementContent small_tuple() { result.getIndex() <= 7 }
  */
 predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) {
   nodeTo.accesses(nodeFrom, c.getAttribute())
+}
+
+module Conversions {
+  private import semmle.python.Concepts
+
+  predicate decoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Decoding decoding |
+      nodeFrom = decoding.getAnInput() and
+      nodeTo = decoding.getOutput()
+    ) and
+    (
+      c instanceof TupleElementContent
+      or
+      c instanceof DictionaryElementContent
+    )
+  }
+
+  predicate encoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Encoding encoding |
+      nodeFrom = encoding.getAnInput() and
+      nodeTo = encoding.getOutput()
+    ) and
+    (
+      c instanceof TupleElementContent
+      or
+      c instanceof DictionaryElementContent
+    )
+  }
+
+  predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    decoderReadStep(nodeFrom, c, nodeTo)
+    or
+    encoderReadStep(nodeFrom, c, nodeTo)
+  }
 }
 
 /**

@@ -20,8 +20,6 @@ edges
 | test.py:67:38:67:48 | ControlFlowNode for bank_number | test.py:70:15:70:25 | ControlFlowNode for bank_number | provenance |  |
 | test.py:67:76:67:78 | ControlFlowNode for ccn | test.py:73:15:73:17 | ControlFlowNode for ccn | provenance |  |
 | test.py:67:81:67:88 | ControlFlowNode for user_ccn | test.py:74:15:74:22 | ControlFlowNode for user_ccn | provenance |  |
-| test.py:101:5:101:10 | ControlFlowNode for config | test.py:105:11:105:31 | ControlFlowNode for Subscript | provenance |  |
-| test.py:103:21:103:37 | ControlFlowNode for Attribute | test.py:101:5:101:10 | ControlFlowNode for config | provenance |  |
 nodes
 | test.py:19:5:19:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
@@ -62,9 +60,6 @@ nodes
 | test.py:70:15:70:25 | ControlFlowNode for bank_number | semmle.label | ControlFlowNode for bank_number |
 | test.py:73:15:73:17 | ControlFlowNode for ccn | semmle.label | ControlFlowNode for ccn |
 | test.py:74:15:74:22 | ControlFlowNode for user_ccn | semmle.label | ControlFlowNode for user_ccn |
-| test.py:101:5:101:10 | ControlFlowNode for config | semmle.label | ControlFlowNode for config |
-| test.py:103:21:103:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:105:11:105:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 #select
 | test.py:20:48:20:55 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
@@ -89,4 +84,3 @@ subpaths
 | test.py:70:15:70:25 | ControlFlowNode for bank_number | test.py:67:38:67:48 | ControlFlowNode for bank_number | test.py:70:15:70:25 | ControlFlowNode for bank_number | This expression logs $@ as clear text. | test.py:67:38:67:48 | ControlFlowNode for bank_number | sensitive data (private) |
 | test.py:73:15:73:17 | ControlFlowNode for ccn | test.py:67:76:67:78 | ControlFlowNode for ccn | test.py:73:15:73:17 | ControlFlowNode for ccn | This expression logs $@ as clear text. | test.py:67:76:67:78 | ControlFlowNode for ccn | sensitive data (private) |
 | test.py:74:15:74:22 | ControlFlowNode for user_ccn | test.py:67:81:67:88 | ControlFlowNode for user_ccn | test.py:74:15:74:22 | ControlFlowNode for user_ccn | This expression logs $@ as clear text. | test.py:67:81:67:88 | ControlFlowNode for user_ccn | sensitive data (private) |
-| test.py:105:11:105:31 | ControlFlowNode for Subscript | test.py:103:21:103:37 | ControlFlowNode for Attribute | test.py:105:11:105:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:103:21:103:37 | ControlFlowNode for Attribute | sensitive data (password) |
