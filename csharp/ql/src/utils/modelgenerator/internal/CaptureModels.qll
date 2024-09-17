@@ -311,8 +311,9 @@ private string printReadAccessPath(PropagateContentFlow::AccessPath ap) {
 private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
   exists(ContentSet head, PropagateContentFlow::AccessPath tail |
     head = ap.getHead() and
-    tail = ap.getTail() and
-    (mentionsField(tail) or isField(head))
+    tail = ap.getTail()
+  |
+    mentionsField(tail) or isField(head)
   )
 }
 
@@ -369,11 +370,10 @@ private predicate apiContentFlow(
 private predicate hasSyntheticContent(PropagateContentFlow::AccessPath path) {
   exists(PropagateContentFlow::AccessPath tail, ContentSet head |
     head = path.getHead() and
-    tail = path.getTail() and
-    (
-      exists(getSyntheticName(head)) or
-      hasSyntheticContent(tail)
-    )
+    tail = path.getTail()
+  |
+    exists(getSyntheticName(head)) or
+    hasSyntheticContent(tail)
   )
 }
 
@@ -426,24 +426,6 @@ private module AccessPathSyntheticValidation {
   }
 
   /**
-   * Takes one or more synthetic steps.
-   * Synth ->+ Synth
-   */
-  private predicate synthPathStepRec(
-    Type t1, PropagateContentFlow::AccessPath read, Type t2, PropagateContentFlow::AccessPath store
-  ) {
-    hasSyntheticContent(read) and
-    hasSyntheticContent(store) and
-    (
-      step(t1, read, t2, store)
-      or
-      exists(PropagateContentFlow::AccessPath mid, Type midType |
-        step(t1, read, midType, mid) and synthPathStepRec(midType, mid.reverse(), t2, store)
-      )
-    )
-  }
-
-  /**
    * Holds if there exists a path of steps from `read` to an exit.
    *
    * read ->* Synth -> A
@@ -451,8 +433,11 @@ private module AccessPathSyntheticValidation {
   private predicate reachesSynthExit(Type t, PropagateContentFlow::AccessPath read) {
     synthPathExit(t, read, _, _)
     or
+    hasSyntheticContent(read) and
     exists(PropagateContentFlow::AccessPath mid, Type midType |
-      synthPathStepRec(t, read, midType, mid) and synthPathExit(midType, mid.reverse(), _, _)
+      hasSyntheticContent(mid) and
+      step(t, read, midType, mid) and
+      reachesSynthExit(midType, mid.reverse())
     )
   }
 
@@ -464,8 +449,11 @@ private module AccessPathSyntheticValidation {
   private predicate synthEntryReaches(Type t, PropagateContentFlow::AccessPath store) {
     synthPathEntry(_, _, t, store)
     or
+    hasSyntheticContent(store) and
     exists(PropagateContentFlow::AccessPath mid, Type midType |
-      synthPathEntry(_, _, midType, mid) and synthPathStepRec(midType, mid.reverse(), t, store)
+      hasSyntheticContent(mid) and
+      step(midType, mid, t, store) and
+      synthEntryReaches(midType, mid.reverse())
     )
   }
 
