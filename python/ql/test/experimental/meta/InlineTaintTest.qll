@@ -86,9 +86,9 @@ module Conf {
     predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
       (
         node = readingSink()
-        or
+        // or
         // TODO: This is what we need to add to the real configurations
-        any(TaintTracking::AdditionalTaintStep a).hasStep(node, _, _)
+        // any(TaintTracking::AdditionalTaintStep a).hasStep(node, _, _)
       ) and
       // For our testing taint tracking, `defaultImplicitTaintRead` is `none`
       RealTaintTracking::defaultImplicitTaintRead(node, c)
