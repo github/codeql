@@ -59,6 +59,9 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
+/** A trivial pattern that is always guaranteed to match. */
+predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
+
 class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
@@ -236,11 +239,43 @@ class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class LetStmtTree extends StandardPreOrderTree instanceof LetStmt {
+// We handle `let` statements with trivial patterns separately as they don't
+// lead to non-standard control flow. For instance, in `let a = ...` it is not
+// interesing to create match edges as it would carry no information.
+class LetStmtTreeTrivialPat extends StandardPreOrderTree instanceof LetStmt {
+  LetStmtTreeTrivialPat() { trivialPat(super.getPat()) }
+
   override ControlFlowTree getChildNode(int i) {
-    // TODO: For now we ignore the else branch (`super.getElse`). This branch
-    // is guaranteed to be diverging so will need special treatment in the CFG.
     i = 0 and result = super.getInitializer()
+    or
+    i = 1 and result = super.getPat()
+  }
+}
+
+// `let` statements with interesting patterns that we want to be reflected in
+// the CFG.
+class LetStmtTree extends PreOrderTree instanceof LetStmt {
+  LetStmtTree() { not trivialPat(super.getPat()) }
+
+  final override predicate propagatesAbnormal(AstNode child) {
+    child = super.getInitializer() or child = super.getElse()
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge to start of initializer.
+    pred = this and first(super.getInitializer(), succ) and completionIsSimple(c)
+    or
+    // Edge from end of initializer to pattern.
+    last(super.getInitializer(), pred, c) and succ = super.getPat()
+    or
+    // Edge from failed pattern to `else` branch.
+    pred = super.getPat() and first(super.getElse(), succ) and c.(MatchCompletion).failed()
+  }
+
+  override predicate last(AstNode node, Completion c) {
+    // Edge out of a successfully matched pattern.
+    node = super.getPat() and c.(MatchCompletion).succeeded()
+    // NOTE: No edge out of the `else` branch as that is guaranteed to diverge.
   }
 }
 
@@ -326,6 +361,8 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
 }
 
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
+
+class PatExprTree extends LeafTree instanceof Pat { }
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
