@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.AbstractStorageDeclImpl::Impl as AbstractStorageDeclImpl
+import codeql.swift.elements.decl.internal.AbstractStorageDeclImpl::Impl as AbstractStorageDeclImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl

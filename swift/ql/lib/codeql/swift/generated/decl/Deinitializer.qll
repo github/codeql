@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.FunctionImpl::Impl as FunctionImpl
+import codeql.swift.elements.decl.internal.FunctionImpl::Impl as FunctionImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Deinitializer` and should not

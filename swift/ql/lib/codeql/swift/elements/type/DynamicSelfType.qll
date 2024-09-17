@@ -3,7 +3,7 @@
  * This module provides the public class `DynamicSelfType`.
  */
 
-private import DynamicSelfTypeImpl
+private import internal.DynamicSelfTypeImpl
 import codeql.swift.elements.type.Type
 
 final class DynamicSelfType = Impl::DynamicSelfType;

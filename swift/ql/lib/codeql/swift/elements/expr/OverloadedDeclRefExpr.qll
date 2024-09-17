@@ -3,7 +3,7 @@
  * This module provides the public class `OverloadedDeclRefExpr`.
  */
 
-private import OverloadedDeclRefExprImpl
+private import internal.OverloadedDeclRefExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ValueDecl

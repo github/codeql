@@ -3,7 +3,7 @@
  * This module provides the public class `ArchetypeToSuperExpr`.
  */
 
-private import ArchetypeToSuperExprImpl
+private import internal.ArchetypeToSuperExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ArchetypeToSuperExpr = Impl::ArchetypeToSuperExpr;

@@ -3,7 +3,7 @@
  * This module provides the public class `LoadExpr`.
  */
 
-private import LoadExprImpl
+private import internal.LoadExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class LoadExpr = Impl::LoadExpr;

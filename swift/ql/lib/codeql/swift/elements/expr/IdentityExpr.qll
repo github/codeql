@@ -3,7 +3,7 @@
  * This module provides the public class `IdentityExpr`.
  */
 
-private import IdentityExprImpl
+private import internal.IdentityExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class IdentityExpr = Impl::IdentityExpr;

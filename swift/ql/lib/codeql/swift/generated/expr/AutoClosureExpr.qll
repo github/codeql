@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.ClosureExprImpl::Impl as ClosureExprImpl
+import codeql.swift.elements.expr.internal.ClosureExprImpl::Impl as ClosureExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AutoClosureExpr` and should not

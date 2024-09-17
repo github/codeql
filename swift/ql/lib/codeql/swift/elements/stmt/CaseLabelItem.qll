@@ -3,7 +3,7 @@
  * This module provides the public class `CaseLabelItem`.
  */
 
-private import CaseLabelItemImpl
+private import internal.CaseLabelItemImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern

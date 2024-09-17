@@ -3,7 +3,7 @@
  * This module provides the public class `PostfixOperatorDecl`.
  */
 
-private import PostfixOperatorDeclImpl
+private import internal.PostfixOperatorDeclImpl
 import codeql.swift.elements.decl.OperatorDecl
 
 final class PostfixOperatorDecl = Impl::PostfixOperatorDecl;

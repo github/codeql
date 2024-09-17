@@ -3,7 +3,7 @@
  * This module provides the public class `YieldStmt`.
  */
 
-private import YieldStmtImpl
+private import internal.YieldStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

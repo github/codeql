@@ -3,7 +3,7 @@
  * This module provides the public class `ModuleDecl`.
  */
 
-private import ModuleDeclImpl
+private import internal.ModuleDeclImpl
 import codeql.swift.elements.decl.TypeDecl
 
 final class ModuleDecl = Impl::ModuleDecl;

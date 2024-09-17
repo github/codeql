@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.BuiltinTypeImpl::Impl as BuiltinTypeImpl
+import codeql.swift.elements.type.internal.BuiltinTypeImpl::Impl as BuiltinTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BuiltinRawPointerType` and should not

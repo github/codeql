@@ -3,7 +3,7 @@
  * This module provides the public class `LinearFunctionExtractOriginalExpr`.
  */
 
-private import LinearFunctionExtractOriginalExprImpl
+private import internal.LinearFunctionExtractOriginalExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class LinearFunctionExtractOriginalExpr = Impl::LinearFunctionExtractOriginalExpr;

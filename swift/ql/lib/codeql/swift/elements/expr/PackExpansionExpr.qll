@@ -3,7 +3,7 @@
  * This module provides the public class `PackExpansionExpr`.
  */
 
-private import PackExpansionExprImpl
+private import internal.PackExpansionExprImpl
 import codeql.swift.elements.expr.Expr
 
 /**

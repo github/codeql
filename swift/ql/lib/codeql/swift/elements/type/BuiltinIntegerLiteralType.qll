@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinIntegerLiteralType`.
  */
 
-private import BuiltinIntegerLiteralTypeImpl
+private import internal.BuiltinIntegerLiteralTypeImpl
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
 final class BuiltinIntegerLiteralType = Impl::BuiltinIntegerLiteralType;

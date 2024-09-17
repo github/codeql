@@ -3,7 +3,7 @@
  * This module provides the public class `ExprPattern`.
  */
 
-private import ExprPatternImpl
+private import internal.ExprPatternImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 

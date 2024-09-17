@@ -3,7 +3,7 @@
  * This module provides the public class `IfExpr`.
  */
 
-private import IfExprImpl
+private import internal.IfExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class IfExpr = Impl::IfExpr;

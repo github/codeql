@@ -8,7 +8,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.Element
-import codeql.swift.elements.ErrorElementImpl::Impl as ErrorElementImpl
+import codeql.swift.elements.internal.ErrorElementImpl::Impl as ErrorElementImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnspecifiedElement` and should not

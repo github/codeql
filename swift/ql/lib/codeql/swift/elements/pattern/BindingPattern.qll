@@ -3,7 +3,7 @@
  * This module provides the public class `BindingPattern`.
  */
 
-private import BindingPatternImpl
+private import internal.BindingPatternImpl
 import codeql.swift.elements.pattern.Pattern
 
 final class BindingPattern = Impl::BindingPattern;

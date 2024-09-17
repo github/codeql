@@ -3,7 +3,7 @@
  * This module provides the public class `BoundGenericStructType`.
  */
 
-private import BoundGenericStructTypeImpl
+private import internal.BoundGenericStructTypeImpl
 import codeql.swift.elements.type.BoundGenericType
 
 final class BoundGenericStructType = Impl::BoundGenericStructType;

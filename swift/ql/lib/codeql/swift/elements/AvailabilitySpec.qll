@@ -3,7 +3,7 @@
  * This module provides the public class `AvailabilitySpec`.
  */
 
-private import AvailabilitySpecImpl
+private import internal.AvailabilitySpecImpl
 import codeql.swift.elements.AstNode
 
 /**

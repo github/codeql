@@ -3,7 +3,7 @@
  * This module provides the public class `SubscriptDecl`.
  */
 
-private import SubscriptDeclImpl
+private import internal.SubscriptDeclImpl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ParamDecl

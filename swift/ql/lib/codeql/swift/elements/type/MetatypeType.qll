@@ -3,7 +3,7 @@
  * This module provides the public class `MetatypeType`.
  */
 
-private import MetatypeTypeImpl
+private import internal.MetatypeTypeImpl
 import codeql.swift.elements.type.AnyMetatypeType
 
 final class MetatypeType = Impl::MetatypeType;

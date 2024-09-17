@@ -3,7 +3,7 @@
  * This module provides the public class `AstNode`.
  */
 
-private import AstNodeImpl
+private import internal.AstNodeImpl
 import codeql.swift.elements.Locatable
 
 final class AstNode = Impl::AstNode;

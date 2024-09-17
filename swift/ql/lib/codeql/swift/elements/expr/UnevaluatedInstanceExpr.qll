@@ -3,7 +3,7 @@
  * This module provides the public class `UnevaluatedInstanceExpr`.
  */
 
-private import UnevaluatedInstanceExprImpl
+private import internal.UnevaluatedInstanceExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class UnevaluatedInstanceExpr = Impl::UnevaluatedInstanceExpr;

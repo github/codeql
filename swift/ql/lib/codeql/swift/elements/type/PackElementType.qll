@@ -3,7 +3,7 @@
  * This module provides the public class `PackElementType`.
  */
 
-private import PackElementTypeImpl
+private import internal.PackElementTypeImpl
 import codeql.swift.elements.type.Type
 
 /**

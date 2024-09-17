@@ -3,7 +3,7 @@
  * This module provides the public class `Type`.
  */
 
-private import TypeImpl
+private import internal.TypeImpl
 import codeql.swift.elements.Element
 
 final class Type = Impl::Type;

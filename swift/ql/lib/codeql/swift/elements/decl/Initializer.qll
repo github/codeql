@@ -3,7 +3,7 @@
  * This module provides the public class `Initializer`.
  */
 
-private import InitializerImpl
+private import internal.InitializerImpl
 import codeql.swift.elements.decl.Function
 
 final class Initializer = Impl::Initializer;

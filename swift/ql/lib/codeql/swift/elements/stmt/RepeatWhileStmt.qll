@@ -3,7 +3,7 @@
  * This module provides the public class `RepeatWhileStmt`.
  */
 
-private import RepeatWhileStmtImpl
+private import internal.RepeatWhileStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt

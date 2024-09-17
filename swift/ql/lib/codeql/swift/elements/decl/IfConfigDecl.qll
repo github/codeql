@@ -3,7 +3,7 @@
  * This module provides the public class `IfConfigDecl`.
  */
 
-private import IfConfigDeclImpl
+private import internal.IfConfigDeclImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.decl.Decl
 

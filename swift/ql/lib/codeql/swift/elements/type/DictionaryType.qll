@@ -3,7 +3,7 @@
  * This module provides the public class `DictionaryType`.
  */
 
-private import DictionaryTypeImpl
+private import internal.DictionaryTypeImpl
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 

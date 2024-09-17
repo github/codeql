@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.TypeImpl::Impl as TypeImpl
+import codeql.swift.elements.type.internal.TypeImpl::Impl as TypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `SugarType` and should not

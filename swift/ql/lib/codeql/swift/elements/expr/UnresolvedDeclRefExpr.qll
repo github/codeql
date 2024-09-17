@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedDeclRefExpr`.
  */
 
-private import UnresolvedDeclRefExprImpl
+private import internal.UnresolvedDeclRefExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 

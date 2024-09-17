@@ -3,4 +3,4 @@
  * This module exports all modules providing `Element` subclasses.
  */
 
-import codeql.swift.elements.expr.MethodLookupExprConstructor
+import codeql.swift.elements.expr.internal.MethodLookupExprConstructor

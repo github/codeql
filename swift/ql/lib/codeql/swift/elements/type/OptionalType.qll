@@ -3,7 +3,7 @@
  * This module provides the public class `OptionalType`.
  */
 
-private import OptionalTypeImpl
+private import internal.OptionalTypeImpl
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
 final class OptionalType = Impl::OptionalType;

@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinNativeObjectType`.
  */
 
-private import BuiltinNativeObjectTypeImpl
+private import internal.BuiltinNativeObjectTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinNativeObjectType = Impl::BuiltinNativeObjectType;

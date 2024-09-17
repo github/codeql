@@ -3,7 +3,7 @@
  * This module provides the public class `ErasureExpr`.
  */
 
-private import ErasureExprImpl
+private import internal.ErasureExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ErasureExpr = Impl::ErasureExpr;

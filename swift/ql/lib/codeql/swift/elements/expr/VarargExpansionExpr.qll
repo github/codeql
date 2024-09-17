@@ -3,7 +3,7 @@
  * This module provides the public class `VarargExpansionExpr`.
  */
 
-private import VarargExpansionExprImpl
+private import internal.VarargExpansionExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class VarargExpansionExpr = Impl::VarargExpansionExpr;

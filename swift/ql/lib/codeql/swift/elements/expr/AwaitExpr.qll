@@ -3,7 +3,7 @@
  * This module provides the public class `AwaitExpr`.
  */
 
-private import AwaitExprImpl
+private import internal.AwaitExprImpl
 import codeql.swift.elements.expr.IdentityExpr
 
 final class AwaitExpr = Impl::AwaitExpr;

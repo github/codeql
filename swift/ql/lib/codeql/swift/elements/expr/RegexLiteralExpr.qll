@@ -3,7 +3,7 @@
  * This module provides the public class `RegexLiteralExpr`.
  */
 
-private import RegexLiteralExprImpl
+private import internal.RegexLiteralExprImpl
 import codeql.swift.elements.expr.LiteralExpr
 
 /**

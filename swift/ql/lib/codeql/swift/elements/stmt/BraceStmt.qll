@@ -3,7 +3,7 @@
  * This module provides the public class `BraceStmt`.
  */
 
-private import BraceStmtImpl
+private import internal.BraceStmtImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.decl.VarDecl

@@ -8,7 +8,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
-import codeql.swift.elements.stmt.LabeledStmtImpl::Impl as LabeledStmtImpl
+import codeql.swift.elements.stmt.internal.LabeledStmtImpl::Impl as LabeledStmtImpl
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl
 

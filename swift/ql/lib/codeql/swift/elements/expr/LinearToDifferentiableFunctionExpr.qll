@@ -3,7 +3,7 @@
  * This module provides the public class `LinearToDifferentiableFunctionExpr`.
  */
 
-private import LinearToDifferentiableFunctionExprImpl
+private import internal.LinearToDifferentiableFunctionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class LinearToDifferentiableFunctionExpr = Impl::LinearToDifferentiableFunctionExpr;

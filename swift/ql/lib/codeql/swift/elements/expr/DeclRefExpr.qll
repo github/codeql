@@ -3,7 +3,7 @@
  * This module provides the public class `DeclRefExpr`.
  */
 
-private import DeclRefExprImpl
+private import internal.DeclRefExprImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.Type

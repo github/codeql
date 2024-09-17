@@ -3,7 +3,7 @@
  * This module provides the public class `IfStmt`.
  */
 
-private import IfStmtImpl
+private import internal.IfStmtImpl
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 

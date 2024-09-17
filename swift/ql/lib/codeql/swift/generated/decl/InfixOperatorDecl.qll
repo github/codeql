@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.OperatorDeclImpl::Impl as OperatorDeclImpl
+import codeql.swift.elements.decl.internal.OperatorDeclImpl::Impl as OperatorDeclImpl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 
 /**

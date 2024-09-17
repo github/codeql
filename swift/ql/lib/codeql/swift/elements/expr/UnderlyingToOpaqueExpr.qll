@@ -3,7 +3,7 @@
  * This module provides the public class `UnderlyingToOpaqueExpr`.
  */
 
-private import UnderlyingToOpaqueExprImpl
+private import internal.UnderlyingToOpaqueExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class UnderlyingToOpaqueExpr = Impl::UnderlyingToOpaqueExpr;

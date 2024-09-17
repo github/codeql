@@ -3,7 +3,7 @@
  * This module provides the public class `OneWayExpr`.
  */
 
-private import OneWayExprImpl
+private import internal.OneWayExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class OneWayExpr = Impl::OneWayExpr;

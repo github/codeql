@@ -3,7 +3,7 @@
  * This module provides the public class `DependentMemberType`.
  */
 
-private import DependentMemberTypeImpl
+private import internal.DependentMemberTypeImpl
 import codeql.swift.elements.decl.AssociatedTypeDecl
 import codeql.swift.elements.type.Type
 

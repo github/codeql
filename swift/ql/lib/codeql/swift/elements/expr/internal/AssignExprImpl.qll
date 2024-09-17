@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.AssignExpr
-private import codeql.swift.elements.expr.BinaryExprImpl::Impl
-private import codeql.swift.elements.expr.ExprImpl::Impl as ExprImpl
+private import codeql.swift.elements.expr.internal.BinaryExprImpl::Impl
+private import codeql.swift.elements.expr.internal.ExprImpl::Impl as ExprImpl
 
 module Impl {
   /**

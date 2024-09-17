@@ -3,7 +3,7 @@
  * This module provides the public class `ClassType`.
  */
 
-private import ClassTypeImpl
+private import internal.ClassTypeImpl
 import codeql.swift.elements.type.NominalType
 
 final class ClassType = Impl::ClassType;

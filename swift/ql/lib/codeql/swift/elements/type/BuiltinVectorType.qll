@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinVectorType`.
  */
 
-private import BuiltinVectorTypeImpl
+private import internal.BuiltinVectorTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinVectorType = Impl::BuiltinVectorType;

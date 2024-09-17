@@ -3,7 +3,7 @@
  * This module provides the public class `ProtocolCompositionType`.
  */
 
-private import ProtocolCompositionTypeImpl
+private import internal.ProtocolCompositionTypeImpl
 import codeql.swift.elements.type.Type
 
 final class ProtocolCompositionType = Impl::ProtocolCompositionType;

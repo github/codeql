@@ -3,7 +3,7 @@
  * This module provides the public class `MacroRole`.
  */
 
-private import MacroRoleImpl
+private import internal.MacroRoleImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.TypeExpr
 

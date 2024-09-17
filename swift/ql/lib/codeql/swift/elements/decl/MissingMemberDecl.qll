@@ -3,7 +3,7 @@
  * This module provides the public class `MissingMemberDecl`.
  */
 
-private import MissingMemberDeclImpl
+private import internal.MissingMemberDeclImpl
 import codeql.swift.elements.decl.Decl
 
 /**

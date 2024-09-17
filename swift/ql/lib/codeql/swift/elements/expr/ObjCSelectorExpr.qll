@@ -3,7 +3,7 @@
  * This module provides the public class `ObjCSelectorExpr`.
  */
 
-private import ObjCSelectorExprImpl
+private import internal.ObjCSelectorExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.Function
 

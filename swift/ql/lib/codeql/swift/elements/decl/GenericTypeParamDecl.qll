@@ -3,7 +3,7 @@
  * This module provides the public class `GenericTypeParamDecl`.
  */
 
-private import GenericTypeParamDeclImpl
+private import internal.GenericTypeParamDeclImpl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
 final class GenericTypeParamDecl = Impl::GenericTypeParamDecl;

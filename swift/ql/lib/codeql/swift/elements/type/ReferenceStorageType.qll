@@ -3,7 +3,7 @@
  * This module provides the public class `ReferenceStorageType`.
  */
 
-private import ReferenceStorageTypeImpl
+private import internal.ReferenceStorageTypeImpl
 import codeql.swift.elements.type.Type
 
 final class ReferenceStorageType = Impl::ReferenceStorageType;

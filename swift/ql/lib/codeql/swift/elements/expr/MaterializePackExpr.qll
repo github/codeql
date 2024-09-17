@@ -3,7 +3,7 @@
  * This module provides the public class `MaterializePackExpr`.
  */
 
-private import MaterializePackExprImpl
+private import internal.MaterializePackExprImpl
 import codeql.swift.elements.expr.Expr
 
 /**

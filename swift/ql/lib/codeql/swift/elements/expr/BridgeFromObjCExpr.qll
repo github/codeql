@@ -3,7 +3,7 @@
  * This module provides the public class `BridgeFromObjCExpr`.
  */
 
-private import BridgeFromObjCExprImpl
+private import internal.BridgeFromObjCExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class BridgeFromObjCExpr = Impl::BridgeFromObjCExpr;

@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.AnyTryExprImpl::Impl as AnyTryExprImpl
+import codeql.swift.elements.expr.internal.AnyTryExprImpl::Impl as AnyTryExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ForceTryExpr` and should not

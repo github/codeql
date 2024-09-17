@@ -3,7 +3,7 @@
  * This module provides the public class `EnumElementPattern`.
  */
 
-private import EnumElementPatternImpl
+private import internal.EnumElementPatternImpl
 import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.pattern.Pattern
 

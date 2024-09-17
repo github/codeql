@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.AnyGenericTypeImpl::Impl as AnyGenericTypeImpl
+import codeql.swift.elements.type.internal.AnyGenericTypeImpl::Impl as AnyGenericTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `NominalOrBoundGenericNominalType` and should not

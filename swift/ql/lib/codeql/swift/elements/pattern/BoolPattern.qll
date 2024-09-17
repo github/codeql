@@ -3,7 +3,7 @@
  * This module provides the public class `BoolPattern`.
  */
 
-private import BoolPatternImpl
+private import internal.BoolPatternImpl
 import codeql.swift.elements.pattern.Pattern
 
 final class BoolPattern = Impl::BoolPattern;

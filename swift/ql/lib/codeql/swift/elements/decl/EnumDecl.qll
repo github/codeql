@@ -3,7 +3,7 @@
  * This module provides the public class `EnumDecl`.
  */
 
-private import EnumDeclImpl
+private import internal.EnumDeclImpl
 import codeql.swift.elements.decl.NominalTypeDecl
 
 final class EnumDecl = Impl::EnumDecl;

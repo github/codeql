@@ -3,7 +3,7 @@
  * This module provides the public class `BindOptionalExpr`.
  */
 
-private import BindOptionalExprImpl
+private import internal.BindOptionalExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class BindOptionalExpr = Impl::BindOptionalExpr;

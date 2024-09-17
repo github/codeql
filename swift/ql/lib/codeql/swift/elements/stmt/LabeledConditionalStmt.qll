@@ -3,7 +3,7 @@
  * This module provides the public class `LabeledConditionalStmt`.
  */
 
-private import LabeledConditionalStmtImpl
+private import internal.LabeledConditionalStmtImpl
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.StmtCondition
 

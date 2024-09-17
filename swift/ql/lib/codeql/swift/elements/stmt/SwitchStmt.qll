@@ -3,7 +3,7 @@
  * This module provides the public class `SwitchStmt`.
  */
 
-private import SwitchStmtImpl
+private import internal.SwitchStmtImpl
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt

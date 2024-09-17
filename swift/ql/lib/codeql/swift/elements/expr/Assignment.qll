@@ -1,4 +1,4 @@
-private import AssignExprImpl
+private import internal.AssignExprImpl
 
 final class Assignment = Impl::Assignment;
 

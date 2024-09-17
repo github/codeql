@@ -3,7 +3,7 @@
  * This module provides the public class `ConsumeExpr`.
  */
 
-private import ConsumeExprImpl
+private import internal.ConsumeExprImpl
 import codeql.swift.elements.expr.Expr
 
 /**

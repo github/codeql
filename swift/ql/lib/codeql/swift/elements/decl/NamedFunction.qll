@@ -3,7 +3,7 @@
  * This module provides the public class `NamedFunction`.
  */
 
-private import NamedFunctionImpl
-import codeql.swift.elements.decl.AccessorOrNamedFunction
+private import internal.NamedFunctionImpl
+import codeql.swift.elements.decl.internal.AccessorOrNamedFunction
 
 final class NamedFunction = Impl::NamedFunction;

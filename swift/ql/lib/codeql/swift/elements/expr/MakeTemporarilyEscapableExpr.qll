@@ -3,7 +3,7 @@
  * This module provides the public class `MakeTemporarilyEscapableExpr`.
  */
 
-private import MakeTemporarilyEscapableExprImpl
+private import internal.MakeTemporarilyEscapableExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 

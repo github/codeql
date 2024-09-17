@@ -3,7 +3,7 @@
  * This module provides the public class `KeyPathDotExpr`.
  */
 
-private import KeyPathDotExprImpl
+private import internal.KeyPathDotExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class KeyPathDotExpr = Impl::KeyPathDotExpr;

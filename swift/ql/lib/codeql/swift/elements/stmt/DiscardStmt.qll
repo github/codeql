@@ -3,7 +3,7 @@
  * This module provides the public class `DiscardStmt`.
  */
 
-private import DiscardStmtImpl
+private import internal.DiscardStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

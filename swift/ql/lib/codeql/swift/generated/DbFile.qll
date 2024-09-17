@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.FileImpl::Impl as FileImpl
+import codeql.swift.elements.internal.FileImpl::Impl as FileImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `DbFile` and should not

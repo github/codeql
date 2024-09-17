@@ -3,7 +3,7 @@
  * This module provides the public class `DiscardAssignmentExpr`.
  */
 
-private import DiscardAssignmentExprImpl
+private import internal.DiscardAssignmentExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class DiscardAssignmentExpr = Impl::DiscardAssignmentExpr;

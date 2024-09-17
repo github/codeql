@@ -3,7 +3,7 @@
  * This module provides the public class `TypeExpr`.
  */
 
-private import TypeExprImpl
+private import internal.TypeExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.TypeRepr
 

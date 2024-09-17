@@ -3,7 +3,7 @@
  * This module provides the public class `File`.
  */
 
-private import FileImpl
+private import internal.FileImpl
 import codeql.swift.elements.Element
 
 final class File = Impl::File;

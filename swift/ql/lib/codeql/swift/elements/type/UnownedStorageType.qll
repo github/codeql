@@ -3,7 +3,7 @@
  * This module provides the public class `UnownedStorageType`.
  */
 
-private import UnownedStorageTypeImpl
+private import internal.UnownedStorageTypeImpl
 import codeql.swift.elements.type.ReferenceStorageType
 
 final class UnownedStorageType = Impl::UnownedStorageType;

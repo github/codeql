@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.ReferenceStorageTypeImpl::Impl as ReferenceStorageTypeImpl
+import codeql.swift.elements.type.internal.ReferenceStorageTypeImpl::Impl as ReferenceStorageTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnmanagedStorageType` and should not
