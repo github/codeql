@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.BoxExpr
+private import codeql.rust.elements.internal.generated.BoxExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `BoxExpr` and should not

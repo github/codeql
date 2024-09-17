@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.PathExpr
+private import codeql.rust.elements.internal.generated.PathExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `PathExpr` and should not

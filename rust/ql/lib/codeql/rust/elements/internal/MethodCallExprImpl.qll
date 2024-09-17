@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.MethodCallExpr
+private import codeql.rust.elements.internal.generated.MethodCallExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `MethodCallExpr` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.WildcardPat
+private import codeql.rust.elements.internal.generated.WildcardPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `WildcardPat` and should not

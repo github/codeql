@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.OffsetOfExpr
+private import codeql.rust.elements.internal.generated.OffsetOfExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `OffsetOfExpr` and should not

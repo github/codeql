@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.TupleExpr
+private import codeql.rust.elements.internal.generated.TupleExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `TupleExpr` and should not

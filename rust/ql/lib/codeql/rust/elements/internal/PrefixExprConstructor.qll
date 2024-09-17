@@ -5,7 +5,7 @@
  *  INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Raw
 
 /**
  *  The characteristic predicate of `PrefixExpr` synthesized instances.

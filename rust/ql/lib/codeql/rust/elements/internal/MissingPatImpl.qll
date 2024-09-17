@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.MissingPat
+private import codeql.rust.elements.internal.generated.MissingPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `MissingPat` and should not

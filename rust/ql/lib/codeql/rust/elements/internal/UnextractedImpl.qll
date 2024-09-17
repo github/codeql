@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Unextracted
+private import codeql.rust.elements.internal.generated.Unextracted
 
 /**
  * INTERNAL: This module contains the customizable definition of `Unextracted` and should not

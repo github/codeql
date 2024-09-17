@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.BlockExprBase
+private import codeql.rust.elements.internal.generated.BlockExprBase
 
 /**
  * INTERNAL: This module contains the customizable definition of `BlockExprBase` and should not

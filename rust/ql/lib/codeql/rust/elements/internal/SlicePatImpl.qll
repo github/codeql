@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.SlicePat
+private import codeql.rust.elements.internal.generated.SlicePat
 
 /**
  * INTERNAL: This module contains the customizable definition of `SlicePat` and should not

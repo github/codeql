@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.ContinueExpr
+private import codeql.rust.elements.internal.generated.ContinueExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ContinueExpr` and should not

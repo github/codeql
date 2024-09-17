@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.PathPat
+private import codeql.rust.elements.internal.generated.PathPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `PathPat` and should not

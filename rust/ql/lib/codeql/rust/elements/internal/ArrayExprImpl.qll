@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.ArrayExpr
+private import codeql.rust.elements.internal.generated.ArrayExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ArrayExpr` and should not

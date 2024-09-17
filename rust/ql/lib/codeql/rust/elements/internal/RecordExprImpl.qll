@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.RecordExpr
+private import codeql.rust.elements.internal.generated.RecordExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `RecordExpr` and should not

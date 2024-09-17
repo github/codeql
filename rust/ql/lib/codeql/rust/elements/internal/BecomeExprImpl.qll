@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.BecomeExpr
+private import codeql.rust.elements.internal.generated.BecomeExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `BecomeExpr` and should not
