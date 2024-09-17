@@ -1,3 +1,4 @@
+private import codeql.util.Option
 private import codeql.util.Boolean
 private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
@@ -7,9 +8,9 @@ private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or
-  TBreakCompletion() or
-  TContinueCompletion() or
-  TReturnCompletion()
+  TLoopCompletion(TLoopJumpType kind, TLabelType label) or
+  TReturnCompletion() or
+  TDivergeCompletion() // A completion that never reaches the successor (e.g. by panicking or spinning)
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
@@ -105,25 +106,44 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 }
 
 /**
- * A completion that represents a break.
+ * A completion that represents a break or a continue.
  */
-class BreakCompletion extends TBreakCompletion, Completion {
-  override BreakSuccessor getAMatchingSuccessorType() { any() }
+class LoopJumpCompletion extends TLoopCompletion, Completion {
+  override LoopJumpSuccessor getAMatchingSuccessorType() {
+    result = TLoopSuccessor(this.getKind(), this.getLabelType())
+  }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof BreakExpr }
+  final TLoopJumpType getKind() { this = TLoopCompletion(result, _) }
 
-  override string toString() { result = "break" }
-}
+  final TLabelType getLabelType() { this = TLoopCompletion(_, result) }
 
-/**
- * A completion that represents a continue.
- */
-class ContinueCompletion extends TContinueCompletion, Completion {
-  override ContinueSuccessor getAMatchingSuccessorType() { any() }
+  final predicate hasLabel() { this.getLabelType() = TLabel(_) }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof ContinueExpr }
+  final string getLabelName() { TLabel(result) = this.getLabelType() }
 
-  override string toString() { result = "continue" }
+  final predicate isContinue() { this.getKind() = TContinueJump() }
+
+  final predicate isBreak() { this.getKind() = TBreakJump() }
+
+  override predicate isValidForSpecific(AstNode e) {
+    this.isBreak() and
+    e instanceof BreakExpr and
+    (
+      not e.(BreakExpr).hasLabel() and not this.hasLabel()
+      or
+      e.(BreakExpr).getLabel().getName() = this.getLabelName()
+    )
+    or
+    this.isContinue() and
+    e instanceof ContinueExpr and
+    (
+      not e.(ContinueExpr).hasLabel() and not this.hasLabel()
+      or
+      e.(ContinueExpr).getLabel().getName() = this.getLabelName()
+    )
+  }
+
+  override string toString() { result = this.getAMatchingSuccessorType().toString() }
 }
 
 /**
@@ -145,9 +165,3 @@ predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
 
 /** Holds if `c` is a valid completion for `n`. */
 predicate completionIsValidFor(Completion c, AstNode n) { c.isValidFor(n) }
-
-/** Holds if `c` is a completion that interacts with a loop such as `loop`, `for`, `while`. */
-predicate isLoopCompletion(Completion c) {
-  c instanceof BreakCompletion or
-  c instanceof ContinueCompletion
-}

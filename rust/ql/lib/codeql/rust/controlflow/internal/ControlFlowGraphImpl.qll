@@ -303,24 +303,37 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
 
   override predicate first(AstNode node) { first(super.getBody(), node) }
 
+  /** Whether this `LoopExpr` captures a completion for a `break`/`continue`. */
+  predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
+    not c.hasLabel()
+    or
+    c.getLabelName() = super.getLabel().getName()
+  }
+
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge back to the start for final expression and continue expressions
     last(super.getBody(), pred, c) and
-    (completionIsNormal(c) or c instanceof ContinueCompletion) and
+    (
+      completionIsNormal(c)
+      or
+      c.(LoopJumpCompletion).isContinue() and this.capturesLoopJumpCompletion(c)
+    ) and
     this.first(succ)
     or
     // Edge for exiting the loop with a break expressions
     last(super.getBody(), pred, c) and
-    c instanceof BreakCompletion and
+    c.(LoopJumpCompletion).isBreak() and
+    this.capturesLoopJumpCompletion(c) and
     succ = this
   }
 
   override predicate last(AstNode last, Completion c) {
     super.last(last, c)
     or
+    // Any abnormal completions that this loop does not capture should propagate
     last(super.getBody(), last, c) and
     not completionIsNormal(c) and
-    not isLoopCompletion(c)
+    not this.capturesLoopJumpCompletion(c)
   }
 }
 

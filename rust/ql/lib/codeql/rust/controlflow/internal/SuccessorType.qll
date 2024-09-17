@@ -1,14 +1,25 @@
+private import rust
+private import codeql.rust.generated.Raw
 private import codeql.util.Boolean
+private import codeql.util.Option
+
+newtype TLoopJumpType =
+  TContinueJump() or
+  TBreakJump()
+
+newtype TLabelType =
+  TLabel(string s) { any(Label l).getName() = s } or
+  TNoLabel()
 
 cached
 newtype TSuccessorType =
   TSuccessorSuccessor() or
   TBooleanSuccessor(Boolean b) or
   TMatchSuccessor(Boolean b) or
-  TBreakSuccessor() or
-  TContinueSuccessor() or
+  TLoopSuccessor(TLoopJumpType kind, TLabelType label) or
   TReturnSuccessor()
 
+// class TBreakSuccessor = TUnlabeledBreakSuccessor or TLabeledBreakSuccessor;
 /** The type of a control flow successor. */
 abstract private class SuccessorTypeImpl extends TSuccessorType {
   /** Gets a textual representation of successor type. */
@@ -51,14 +62,29 @@ final class MatchSuccessor extends ConditionalSuccessor, TMatchSuccessor {
   }
 }
 
-/** A `break` control flow successor. */
-final class BreakSuccessor extends SuccessorTypeImpl, TBreakSuccessor {
-  final override string toString() { result = "break" }
-}
+/**
+ * A control flow successor of a loop control flow expression, `continue` or `break`.
+ */
+final class LoopJumpSuccessor extends SuccessorTypeImpl, TLoopSuccessor {
+  final private TLoopJumpType getKind() { this = TLoopSuccessor(result, _) }
 
-/** A `continue` control flow successor. */
-final class ContinueSuccessor extends SuccessorTypeImpl, TContinueSuccessor {
-  final override string toString() { result = "continue" }
+  final private TLabelType getLabelType() { this = TLoopSuccessor(_, result) }
+
+  final predicate hasLabel() { this.getLabelType() = TLabel(_) }
+
+  final string getLabelName() { this = TLoopSuccessor(_, TLabel(result)) }
+
+  final predicate isContinue() { this.getKind() = TContinueJump() }
+
+  final predicate isBreak() { this.getKind() = TBreakJump() }
+
+  final override string toString() {
+    exists(string kind, string label |
+      (if this.isContinue() then kind = "continue" else kind = "break") and
+      (if this.hasLabel() then label = "(" + this.getLabelName() + ")" else label = "") and
+      result = kind + label
+    )
+  }
 }
 
 /**
