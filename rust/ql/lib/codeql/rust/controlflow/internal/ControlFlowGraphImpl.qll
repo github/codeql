@@ -62,10 +62,13 @@ import CfgImpl
 /** A trivial pattern that is always guaranteed to match. */
 predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
 
+class AsmExprTree extends LeafTree instanceof AsmExpr { }
+
 class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
+// NOTE: `become` is a reserved but unused keyword.
 class BecomeExprTree extends StandardPostOrderTree instanceof BecomeExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
@@ -142,7 +145,7 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
 
 // NOTE: This covers both normal blocks `BlockExpr`, async blocks
 // `AsyncBlockExpr`, and unsafe blocks `UnsafeBlockExpr`.
-class BaseBlockExprTree extends StandardPostOrderTree instanceof BlockExprBase {
+class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExprBase {
   override ControlFlowTree getChildNode(int i) {
     result = super.getStatement(i)
     or
@@ -150,6 +153,10 @@ class BaseBlockExprTree extends StandardPostOrderTree instanceof BlockExprBase {
     (exists(super.getStatement(i - 1)) or i = 0) and
     result = super.getTail()
   }
+}
+
+class BoxExprTree extends StandardPostOrderTree instanceof BoxExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 class BreakExprTree extends PostOrderTree instanceof BreakExpr {
@@ -168,8 +175,9 @@ class BreakExprTree extends PostOrderTree instanceof BreakExpr {
 
 class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
   override ControlFlowTree getChildNode(int i) {
-    result = super.getCallee() and
-    result = super.getArg(i + 1)
+    i = 0 and result = super.getCallee()
+    or
+    result = super.getArg(i - 1)
   }
 }
 
@@ -191,7 +199,7 @@ class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class FieldExprTree extends StandardPostOrderTree instanceof BecomeExpr {
+class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
@@ -371,9 +379,22 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
 
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
+// This covers all patterns as they all extend `Pat`
 class PatExprTree extends LeafTree instanceof Pat { }
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
+
+class PrefixExprTree extends StandardPostOrderTree instanceof PrefixExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
+class RangeExprTree extends StandardPostOrderTree instanceof RangeExpr {
+  override ControlFlowTree getChildNode(int i) {
+    i = 0 and result = super.getLhs()
+    or
+    i = 1 and result = super.getRhs()
+  }
+}
 
 class RecordExprTree extends StandardPostOrderTree instanceof RecordExpr {
   override ControlFlowTree getChildNode(int i) { result = super.getFld(i).getExpr() }
@@ -409,19 +430,19 @@ class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
   override ControlFlowTree getChildNode(int i) { result = super.getExpr(i) }
 }
 
-class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
+class TypeRefTree extends LeafTree instanceof TypeRef { }
 
-class UnaryOpExprTree extends StandardPostOrderTree instanceof PrefixExpr {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
-}
+class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
 
 // A leaf tree for unimplemented nodes in the AST.
 class UnimplementedTree extends LeafTree instanceof Unimplemented { }
 
+// NOTE: `yield` is a reserved but unused keyword.
 class YieldExprTree extends StandardPostOrderTree instanceof YieldExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
+// NOTE: `yeet` is experimental and not a part of Rust.
 class YeetExprTree extends StandardPostOrderTree instanceof YeetExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
