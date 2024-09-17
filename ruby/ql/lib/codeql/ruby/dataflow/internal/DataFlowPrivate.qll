@@ -526,6 +526,7 @@ private module Cached {
       |
         isUseStep = false
         or
+        isUseStep = true and
         not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
       )
       or
