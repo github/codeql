@@ -56,7 +56,7 @@ CodeQL analysis consists of three steps:
 #. Running CodeQL queries against the database
 #. Interpreting the query results
 
-For information on the CodeQL toolchain and on running CodeQL to analyze a codebase, see the `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__, `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code>`__, and `About code scanning with CodeQL <https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql>`__ in GitHub docs.
+For information on the CodeQL toolchain and on running CodeQL to analyze a codebase, see the `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__, `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code>`__, and `About code scanning with CodeQL <https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql>`__ in the GitHub docs.
 
 Database creation
 ~~~~~~~~~~~~~~~~~
