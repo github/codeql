@@ -998,20 +998,34 @@ private class InstanceCallable extends Callable {
 /**
  * A callable which is either itself defined in source or which is the target
  * of some call in source, and therefore ought to have dataflow nodes created.
+ *
+ * Note that for library methods these are always unbound declarations, since
+ * generic instantiations never have dataflow nodes constructed.
  */
 private class CallableUsedInSource extends Callable {
   CallableUsedInSource() {
+    // Should generate nodes even for abstract methods declared in source
     this.fromSource()
     or
-    // Note that getARuntimeTarget cannot be used here, because the
-    // DelegateLikeCall case depends on lambda-flow, which in turn
-    // uses the dataflow library; hence this would introduce recursion
-    // into the definition of data-flow nodes.
-    exists(Call c, DispatchCall dc | c.fromSource() and c = dc.getCall() |
-      this = dc.getADynamicTarget()
-    )
+    // Should generate nodes even for synthetic methods derived from source
+    this.hasBody()
     or
-    this = any(CallableAccess ca | ca.fromSource()).getTarget()
+    exists(Callable target |
+      exists(Call c | c.fromSource() |
+        // Note that getADynamicTarget does not always include getTarget.
+        target = c.getTarget()
+        or
+        // Note that getARuntimeTarget cannot be used here, because the
+        // DelegateLikeCall case depends on lambda-flow, which in turn
+        // uses the dataflow library; hence this would introduce recursion
+        // into the definition of data-flow nodes.
+        exists(DispatchCall dc | c = dc.getCall() | target = dc.getADynamicTarget())
+      )
+      or
+      target = any(CallableAccess ca | ca.fromSource()).getTarget()
+    |
+      this = target.getUnboundDeclaration()
+    )
   }
 }
 
