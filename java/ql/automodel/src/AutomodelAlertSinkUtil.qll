@@ -99,7 +99,7 @@ class PotentialSinkModelExpr extends Expr {
       ) and
       (if argIdx = -1 then input = "Argument[this]" else input = "Argument[" + argIdx + "]") and
       package = callable.getDeclaringType().getPackage().getName() and
-      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
+      type = callable.getDeclaringType().getErasure().(RefType).getNestedName() and
       subtypes = considerSubtypes(callable) and
       name = callable.getName() and
       signature = ExternalFlow::paramsString(callable)
