@@ -250,6 +250,7 @@ public class B {
   }
 
   void testInstanceInitializer() {
+    // Tests capture in the instance initializer ("<obinit>")
     String s = source("init");
     class MyLocal3 {
       String f = s;
@@ -258,5 +259,24 @@ public class B {
       }
     }
     new MyLocal3().run();
+  }
+
+  void testConstructorIndirection() {
+    // Tests capture in nested constructor call
+    String s = source("init");
+    class MyLocal4 {
+      String f;
+      MyLocal4() {
+        this(42);
+      }
+      MyLocal4(int i) {
+        f = s;
+      }
+      String get() {
+        return this.f;
+      }
+    }
+    sink(new MyLocal4().get()); // $ hasValueFlow=init
+    sink(new MyLocal4(1).get()); // $ hasValueFlow=init
   }
 }
