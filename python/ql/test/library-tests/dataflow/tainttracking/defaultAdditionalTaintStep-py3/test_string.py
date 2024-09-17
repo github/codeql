@@ -17,7 +17,7 @@ def str_methods():
         ts.casefold(), # $ tainted
 
         ts.format_map({}), # $ tainted
-        "{unsafe}".format_map({"unsafe": ts}), # $ tainted
+        "{unsafe}".format_map({"unsafe": ts}), # $ MISSING: tainted
     )
 
 

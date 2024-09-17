@@ -80,9 +80,9 @@ ensure_tainted(
 )
 
 ensure_not_tainted(
-    re.subn(pat, repl="safe", string=ts),
     re.subn(pat, repl="safe", string=ts)[1], # // the number of substitutions made
 )
 ensure_tainted(
+    re.subn(pat, repl="safe", string=ts), # $ tainted // implicit read at sink
     re.subn(pat, repl="safe", string=ts)[0], # $ tainted // the string
 )
