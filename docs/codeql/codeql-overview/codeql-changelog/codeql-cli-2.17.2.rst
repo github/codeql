@@ -87,8 +87,8 @@ Golang
 
 *   Deleted the deprecated :code:`CsvRemoteSource` alias. Use :code:`MaDRemoteSource` instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Deleted the deprecated :code:`AssignLShiftExpr`, :code:`AssignRShiftExpr`, :code:`AssignURShiftExpr`, :code:`LShiftExpr`, :code:`RShiftExpr`, and :code:`URShiftExpr` aliases.
 

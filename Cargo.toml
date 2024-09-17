@@ -6,6 +6,7 @@ members = [
     "shared/tree-sitter-extractor",
     "ruby/extractor",
     "rust/extractor",
+    "rust/extractor/macros",
 ]
 
 [patch.crates-io]

@@ -101,7 +101,7 @@ string getShortNameIfPossible(Type t) {
       getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
       exists(RefType replaced, string nestedName |
         replaced = replaceTypeVariable(t).getSourceDeclaration() and
-        nestedName = replaced.nestedName().replaceAll("$", ".")
+        nestedName = replaced.getNestedName().replaceAll("$", ".")
       |
         if isImportable(getRootSourceDeclaration(t))
         then result = nestedName

@@ -1,7 +1,7 @@
 private import rust
 private import Completion
 private import ControlFlowGraphImpl
-private import codeql.rust.generated.ParentChild
+private import codeql.rust.internal.generated.ParentChild
 
 abstract class CfgScope extends AstNode {
   abstract predicate scopeFirst(AstNode first);

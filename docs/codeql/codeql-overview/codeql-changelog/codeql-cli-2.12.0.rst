@@ -89,8 +89,8 @@ Golang
 
 *   The :code:`AlertSuppression.ql` query has been updated to support the new :code:`// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy :code:`// lgtm` and :code:`// lgtm[query-id]` comments can now also be placed on the line before an alert.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`AlertSuppression.ql` query has been updated to support the new :code:`// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy :code:`// lgtm` and :code:`// lgtm[query-id]` comments can now also be placed on the line before an alert.
 *   The extensible predicates for Models as Data have been renamed (the :code:`ext` prefix has been removed). As an example, :code:`extSummaryModel` has been renamed to :code:`summaryModel`.
@@ -125,8 +125,8 @@ C#
 
 *   Added a new query, :code:`csharp/telemetry/supported-external-api`, to detect supported 3rd party APIs used in a codebase.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/summary/generated-vs-manual-coverage`, to expose metrics for the number of API endpoints covered by generated versus manual MaD models.
 *   Added a new query, :code:`java/telemetry/supported-external-api`, to detect supported 3rd party APIs used in a codebase.
@@ -152,8 +152,8 @@ Golang
 
 *   Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   We now correctly handle empty block comments, like :code:`/**/`. Previously these could be mistaken for Javadoc comments and led to attribution of Javadoc tags to the wrong declaration.
 
@@ -230,8 +230,8 @@ Golang
 *   Queries that care about SQL, such as :code:`go/sql-injection`, now recognise SQL-consuming functions belonging to the :code:`gorqlite` and :code:`GoFrame` packages.
 *   :code:`rsync` has been added to the list of commands which may evaluate its parameters as a shell command.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added more dataflow models for frequently-used JDK APIs.
 *   The extraction of Kotlin extension methods has been improved when default parameter values are present. The dispatch and extension receiver parameters are extracted in the correct order. The :code:`ExtensionMethod::getExtensionReceiverParameterIndex` predicate has been introduced to facilitate getting the correct extension parameter index.

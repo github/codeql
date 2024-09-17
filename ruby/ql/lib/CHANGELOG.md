@@ -1,3 +1,17 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getURL` predicate the `Http::Request` class, use `getAUrlPart` instead.
+* Deleted the deprecated `getNode` predicate from the `CfgNode` class, use `getAstNode` instead. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+
+## 1.0.7
+
+No user-facing changes.
+
 ## 1.0.6
 
 No user-facing changes.

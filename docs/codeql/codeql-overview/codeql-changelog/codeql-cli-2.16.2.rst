@@ -50,8 +50,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query :code:`java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked.
 *   Added a new query :code:`java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications.
@@ -82,8 +82,8 @@ C#
 *   C# 12: Added extractor, QL library and data flow support for collection expressions like :code:`[1, y, 4, .. x]`.
 *   The C# extractor now accepts an extractor option :code:`logging.verbosity` that specifies the verbosity of the logs. The option is added via :code:`codeql database create --language=csharp -Ologging.verbosity=debug ...` or by setting the corresponding environment variable :code:`CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added models for the following packages:
 

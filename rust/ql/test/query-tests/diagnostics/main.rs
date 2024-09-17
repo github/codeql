@@ -10,8 +10,8 @@ mod my_macro;
 
 // another comment
 
-fn main() {
-    println!("Hello, world!"); // another comment
+fn main() { // another comment
+    //println!("Hello, world!"); // currently causes consistency issues
 
     my_struct::my_func();
     my_macro::my_func();

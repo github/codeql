@@ -19,7 +19,6 @@ include("prefix.dbscheme")
 class Element:
     pass
 
-
 @qltest.skip
 class Locatable(Element):
     pass
@@ -31,7 +30,25 @@ class AstNode(Locatable):
 
 
 @qltest.skip
-class Unimplemented(Element):
+class Unextracted(Element):
+    """
+    The base class marking everything that was not properly extracted for some reason, such as:
+    * syntax errors
+    * insufficient context information
+    * yet unimplemented parts of the extractor
+    """
+    pass
+
+
+@qltest.skip
+class Missing(Unextracted):
+    """
+    The base class marking errors during parsing or resolution.
+    """
+
+
+@qltest.skip
+class Unimplemented(Unextracted):
     """
     The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
     """
@@ -53,6 +70,7 @@ class UnimplementedDeclaration(Declaration, Unimplemented):
     pass
 
 
+@rust.doc_test_signature(None)
 class Module(Declaration):
     """
     A module declaration. For example:
@@ -82,7 +100,6 @@ class Pat(AstNode):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class Label(AstNode):
     """
     A label. For example:
@@ -103,7 +120,6 @@ class Stmt(AstNode):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class TypeRef(AstNode, Unimplemented):
     """
     The base class for type references.
@@ -116,7 +132,6 @@ class TypeRef(AstNode, Unimplemented):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class Path(AstNode, Unimplemented):
     """
     A path. For example:
@@ -127,7 +142,6 @@ class Path(AstNode, Unimplemented):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class GenericArgList(AstNode, Unimplemented):
     """
     The base class for generic arguments.
@@ -138,6 +152,7 @@ class GenericArgList(AstNode, Unimplemented):
     pass
 
 
+@rust.doc_test_signature(None)
 class Function(Declaration):
     """
     A function declaration. For example
@@ -155,8 +170,7 @@ class Function(Declaration):
     body: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
-class MissingExpr(Expr):
+class MissingExpr(Expr, Missing):
     """
     A missing expression, used as a placeholder for incomplete syntax.
 
@@ -167,7 +181,6 @@ class MissingExpr(Expr):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class PathExpr(Expr):
     """
     A path expression. For example:
@@ -181,7 +194,6 @@ class PathExpr(Expr):
     path: Path | child
 
 
-@rust.doc_test_signature("() -> ()")
 class IfExpr(Expr):
     """
     An `if` expression. For example:
@@ -222,7 +234,6 @@ class BlockExprBase(Expr):
     tail: optional[Expr] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class BlockExpr(BlockExprBase):
     """
     A block expression. For example:
@@ -268,7 +279,6 @@ class ConstExpr(Expr):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class UnsafeBlockExpr(BlockExprBase):
     """
     An unsafe block expression. For example:
@@ -282,7 +292,6 @@ class UnsafeBlockExpr(BlockExprBase):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class LoopExpr(Expr):
     """
     A loop expression. For example:
@@ -312,7 +321,6 @@ class LoopExpr(Expr):
     label: optional[Label] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class CallExpr(Expr):
     """
     A function call expression. For example:
@@ -328,7 +336,6 @@ class CallExpr(Expr):
     is_assignee_expr: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class MethodCallExpr(Expr):
     """
     A method call expression. For example:
@@ -385,7 +392,6 @@ class MatchExpr(Expr):
     branches: list[MatchArm] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class ContinueExpr(Expr):
     """
     A continue expression. For example:
@@ -407,7 +413,6 @@ class ContinueExpr(Expr):
     label: optional[Label] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class BreakExpr(Expr):
     """
     A break expression. For example:
@@ -430,6 +435,7 @@ class BreakExpr(Expr):
     label: optional[Label] | child
 
 
+@rust.doc_test_signature(None)
 class ReturnExpr(Expr):
     """
     A return expression. For example:
@@ -447,6 +453,7 @@ class ReturnExpr(Expr):
     expr: optional[Expr] | child
 
 
+@rust.doc_test_signature(None)
 class BecomeExpr(Expr):
     """
     A `become` expression. For example:
@@ -462,7 +469,6 @@ class BecomeExpr(Expr):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class YieldExpr(Expr):
     """
     A `yield` expression. For example:
@@ -476,7 +482,6 @@ class YieldExpr(Expr):
     expr: optional[Expr] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class YeetExpr(Expr):
     """
     A `yeet` expression. For example:
@@ -489,7 +494,6 @@ class YeetExpr(Expr):
     expr: optional[Expr] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class RecordExprField(AstNode):
     """
     A field in a record expression. For example `a: 1` in:
@@ -501,7 +505,6 @@ class RecordExprField(AstNode):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class RecordExpr(Expr):
     """
     A record expression. For example:
@@ -519,7 +522,6 @@ class RecordExpr(Expr):
     is_assignee_expr: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class FieldExpr(Expr):
     """
     A field access expression. For example:
@@ -531,7 +533,6 @@ class FieldExpr(Expr):
     name: string
 
 
-@rust.doc_test_signature("() -> ()")
 class AwaitExpr(Expr):
     """
     An `await` expression. For example:
@@ -545,7 +546,6 @@ class AwaitExpr(Expr):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class CastExpr(Expr):
     """
     A cast expression. For example:
@@ -557,7 +557,6 @@ class CastExpr(Expr):
     type: TypeRef | child
 
 
-@rust.doc_test_signature("() -> ()")
 class RefExpr(Expr):
     """
     A reference expression. For example:
@@ -573,7 +572,6 @@ class RefExpr(Expr):
     is_mut: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class BoxExpr(Expr):
     """
     A box expression. For example:
@@ -584,7 +582,6 @@ class BoxExpr(Expr):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class PrefixExpr(Expr):
     """
     A unary operation expression. For example:
@@ -598,7 +595,6 @@ class PrefixExpr(Expr):
     op: string
 
 
-@rust.doc_test_signature("() -> ()")
 class BinaryExpr(Expr):
     """
     A binary operation expression. For example:
@@ -615,7 +611,6 @@ class BinaryExpr(Expr):
     op: optional[string]
 
 
-@rust.doc_test_signature("() -> ()")
 class RangeExpr(Expr):
     """
     A range expression. For example:
@@ -633,7 +628,6 @@ class RangeExpr(Expr):
     is_inclusive: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class IndexExpr(Expr):
     """
     An index expression. For example:
@@ -647,7 +641,6 @@ class IndexExpr(Expr):
     is_assignee_expr: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class ClosureExpr(Expr):
     """
     A closure expression. For example:
@@ -669,7 +662,6 @@ class ClosureExpr(Expr):
     is_move: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class TupleExpr(Expr):
     """
     A tuple expression. For example:
@@ -693,7 +685,6 @@ class ArrayExpr(Expr):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class ElementListExpr(ArrayExpr):
     """
     An element list expression. For example:
@@ -706,7 +697,6 @@ class ElementListExpr(ArrayExpr):
     is_assignee_expr: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class RepeatExpr(ArrayExpr):
     """
     A repeat expression. For example:
@@ -717,7 +707,6 @@ class RepeatExpr(ArrayExpr):
     repeat: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class LiteralExpr(Expr):
     """
     A literal expression. For example:
@@ -734,7 +723,6 @@ class LiteralExpr(Expr):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class UnderscoreExpr(Expr):
     """
     An underscore expression. For example:
@@ -745,7 +733,6 @@ class UnderscoreExpr(Expr):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class OffsetOfExpr(Expr):
     """
      An `offset_of` expression. For example:
@@ -757,7 +744,6 @@ class OffsetOfExpr(Expr):
     fields: list[string]
 
 
-@rust.doc_test_signature("() -> ()")
 class AsmExpr(Expr):
     """
     An inline assembly expression. For example:
@@ -770,7 +756,6 @@ class AsmExpr(Expr):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class LetStmt(Stmt):
     """
     A let statement. For example:
@@ -791,7 +776,6 @@ class LetStmt(Stmt):
     else_: optional[Expr] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class ExprStmt(Stmt):
     """
     An expression statement. For example:
@@ -820,8 +804,7 @@ class ItemStmt(Stmt):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
-class MissingPat(Pat):
+class MissingPat(Pat, Missing):
     """
     A missing pattern, used as a place holder for incomplete syntax.
     ```
@@ -833,7 +816,6 @@ class MissingPat(Pat):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class WildcardPat(Pat):
     """
     A wildcard pattern. For example:
@@ -844,7 +826,6 @@ class WildcardPat(Pat):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
 class TuplePat(Pat):
     """
     A tuple pattern. For example:
@@ -857,7 +838,6 @@ class TuplePat(Pat):
     ellipsis_index: optional[int]
 
 
-@rust.doc_test_signature("() -> ()")
 class OrPat(Pat):
     """
     An or pattern. For example:
@@ -870,7 +850,6 @@ class OrPat(Pat):
     args: list[Pat] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class RecordPatField(AstNode):
     """
     A field in a record pattern. For example `a: 1` in:
@@ -882,7 +861,6 @@ class RecordPatField(AstNode):
     pat: Pat | child
 
 
-@rust.doc_test_signature("() -> ()")
 class RecordPat(Pat):
     """
     A record pattern. For example:
@@ -899,7 +877,6 @@ class RecordPat(Pat):
     has_ellipsis: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class RangePat(Pat):
     """
     A range pattern. For example:
@@ -915,7 +892,6 @@ class RangePat(Pat):
     end: optional[Pat] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class SlicePat(Pat):
     """
     A slice pattern. For example:
@@ -931,7 +907,6 @@ class SlicePat(Pat):
     suffix: list[Pat] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class PathPat(Pat):
     """
     A path pattern. For example:
@@ -945,7 +920,6 @@ class PathPat(Pat):
     path: Path | child
 
 
-@rust.doc_test_signature("() -> ()")
 class LiteralPat(Pat):
     """
     A literal pattern. For example:
@@ -959,7 +933,6 @@ class LiteralPat(Pat):
     expr: Expr | child
 
 
-@rust.doc_test_signature("() -> ()")
 class IdentPat(Pat):
     """
     A binding pattern. For example:
@@ -980,11 +953,10 @@ class IdentPat(Pat):
     subpat: optional[Pat] | child
 
 
-@rust.doc_test_signature("() -> ()")
 class TupleStructPat(Pat):
     """
     A tuple struct pattern. For example:
-    ``` 
+    ```
     match x {
         Tuple("a", 1, 2, 3) => "great",
         Tuple(.., 3) => "fine",
@@ -997,7 +969,6 @@ class TupleStructPat(Pat):
     ellipsis_index: optional[int]
 
 
-@rust.doc_test_signature("() -> ()")
 class RefPat(Pat):
     """
     A reference pattern. For example:
@@ -1012,7 +983,6 @@ class RefPat(Pat):
     is_mut: predicate
 
 
-@rust.doc_test_signature("() -> ()")
 class BoxPat(Pat):
     """
     A box pattern. For example:
@@ -1026,7 +996,6 @@ class BoxPat(Pat):
     inner: Pat | child
 
 
-@rust.doc_test_signature("() -> ()")
 class ConstBlockPat(Pat):
     """
     A const block pattern. For example:
