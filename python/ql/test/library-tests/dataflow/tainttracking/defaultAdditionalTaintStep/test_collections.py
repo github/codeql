@@ -29,10 +29,10 @@ def test_construction():
 
     ensure_tainted(
         list(tainted_list), # $ tainted
-        list(tainted_tuple), # $ tainted
+        list(tainted_tuple), # $ MISSING: tainted
         list(tainted_set), # $ tainted
-        list(tainted_dict.values()), # $ tainted
-        list(tainted_dict.items()), # $ tainted
+        list(tainted_dict.values()), # $ MISSING: tainted
+        list(tainted_dict.items()), # $ MISSING: tainted
 
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted

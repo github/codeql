@@ -7,7 +7,9 @@ edges
 | test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() | provenance |  |
 | test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg | provenance |  |
 | test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | provenance |  |
-| test.py:65:25:65:25 | ControlFlowNode for e | test.py:66:24:66:40 | ControlFlowNode for Dict | provenance |  |
+| test.py:65:25:65:25 | ControlFlowNode for e | test.py:66:34:66:39 | ControlFlowNode for str() | provenance |  |
+| test.py:66:24:66:40 | ControlFlowNode for Dict [Dictionary element at key error] | test.py:66:24:66:40 | ControlFlowNode for Dict | provenance |  |
+| test.py:66:34:66:39 | ControlFlowNode for str() | test.py:66:24:66:40 | ControlFlowNode for Dict [Dictionary element at key error] | provenance |  |
 nodes
 | test.py:16:16:16:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:23:25:23:25 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
@@ -23,6 +25,8 @@ nodes
 | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | test.py:65:25:65:25 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
 | test.py:66:24:66:40 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| test.py:66:24:66:40 | ControlFlowNode for Dict [Dictionary element at key error] | semmle.label | ControlFlowNode for Dict [Dictionary element at key error] |
+| test.py:66:34:66:39 | ControlFlowNode for str() | semmle.label | ControlFlowNode for str() |
 subpaths
 | test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | test.py:50:16:50:32 | ControlFlowNode for format_error() |
 #select

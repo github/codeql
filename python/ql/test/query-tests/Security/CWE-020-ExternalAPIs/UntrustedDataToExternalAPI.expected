@@ -15,6 +15,8 @@ edges
 | test.py:23:16:23:27 | ControlFlowNode for Attribute | test.py:23:16:23:39 | ControlFlowNode for Attribute() | provenance | dict.get |
 | test.py:23:16:23:39 | ControlFlowNode for Attribute() | test.py:23:5:23:12 | ControlFlowNode for data_raw | provenance |  |
 | test.py:24:5:24:8 | ControlFlowNode for data | test.py:25:44:25:47 | ControlFlowNode for data | provenance |  |
+| test.py:24:5:24:8 | ControlFlowNode for data | test.py:25:44:25:47 | ControlFlowNode for data | provenance |  |
+| test.py:25:44:25:47 | ControlFlowNode for data | test.py:25:15:25:74 | SynthDictSplatArgumentNode | provenance |  |
 | test.py:34:5:34:8 | ControlFlowNode for data | test.py:35:10:35:13 | ControlFlowNode for data | provenance |  |
 | test.py:34:5:34:8 | ControlFlowNode for data | test.py:36:13:36:16 | ControlFlowNode for data | provenance |  |
 | test.py:34:12:34:18 | ControlFlowNode for request | test.py:34:12:34:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
@@ -45,6 +47,8 @@ nodes
 | test.py:23:16:23:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:23:16:23:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:24:5:24:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| test.py:25:15:25:74 | SynthDictSplatArgumentNode | semmle.label | SynthDictSplatArgumentNode |
+| test.py:25:44:25:47 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 | test.py:25:44:25:47 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 | test.py:34:5:34:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 | test.py:34:12:34:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -68,6 +72,7 @@ nodes
 subpaths
 #select
 | test.py:15:36:15:39 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:15:36:15:39 | ControlFlowNode for data | Call to hmac.new [position 1] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
+| test.py:25:15:25:74 | SynthDictSplatArgumentNode | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:25:15:25:74 | SynthDictSplatArgumentNode | Call to hmac.new [**] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
 | test.py:25:44:25:47 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:25:44:25:47 | ControlFlowNode for data | Call to hmac.new [keyword msg] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
 | test.py:35:10:35:13 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:35:10:35:13 | ControlFlowNode for data | Call to unknown.lib.func [position 0] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
 | test.py:36:13:36:16 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:36:13:36:16 | ControlFlowNode for data | Call to unknown.lib.func [keyword kw] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |
