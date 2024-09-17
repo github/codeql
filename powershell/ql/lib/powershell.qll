@@ -70,7 +70,9 @@ import semmle.code.powershell.Pipeline
 import semmle.code.powershell.StringConstantExpression
 import semmle.code.powershell.MemberExpr
 import semmle.code.powershell.InvokeMemberExpression
+import semmle.code.powershell.Call
 import semmle.code.powershell.SubExpression
+import semmle.code.powershell.ErrorExpr
 import semmle.code.powershell.ConvertExpr
 import semmle.code.powershell.IndexExpr
 import semmle.code.powershell.HashTable

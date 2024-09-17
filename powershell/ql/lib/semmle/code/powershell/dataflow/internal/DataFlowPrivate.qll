@@ -2,8 +2,10 @@ private import codeql.util.Boolean
 private import codeql.util.Unit
 private import powershell
 private import semmle.code.powershell.Cfg
+private import semmle.code.powershell.dataflow.Ssa
 private import DataFlowPublic
 private import DataFlowDispatch
+private import SsaImpl as SsaImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -39,9 +41,40 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = this.getExprNode().toString() }
 }
 
+/** Gets the SSA definition node corresponding to parameter `p`. */
+pragma[nomagic]
+SsaImpl::DefinitionExt getParameterDef(Parameter p) {
+  exists(EntryBasicBlock bb, int i |
+    SsaImpl::parameterWrite(bb, i, p) and
+    result.definesAt(p, bb, i, _)
+  )
+}
+
 /** Provides logic related to SSA. */
 module SsaFlow {
-  // TODO
+  private module Impl = SsaImpl::DataFlowIntegration;
+
+  private ParameterNodeImpl toParameterNode(SsaImpl::ParameterExt p) {
+    result = TNormalParameterNode(p.asParameter())
+  }
+
+  Impl::Node asNode(Node n) {
+    n = TSsaNode(result)
+    or
+    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    n = toParameterNode(result.(Impl::ParameterNode).getParameter())
+  }
+
+  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  }
+
+  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  }
 }
 
 /** Provides predicates related to local data flow. */
@@ -52,19 +85,6 @@ module LocalFlow {
   }
 
   predicate localMustFlowStep(Node node1, Node node2) { none() }
-}
-
-/** An argument of a call (including qualifier arguments and block arguments). */
-private class Argument extends CfgNodes::ExprCfgNode {
-  private CfgNodes::StmtNodes::CmdCfgNode call;
-  private ArgumentPosition arg;
-
-  Argument() { none() }
-
-  /** Holds if this expression is the `i`th argument of `c`. */
-  predicate isArgumentOf(CfgNodes::StmtNodes::CmdCfgNode c, ArgumentPosition pos) {
-    c = call and pos = arg
-  }
 }
 
 /** Provides logic related to captured variables. */
@@ -78,8 +98,11 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
+    TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
+    TNormalParameterNode(Parameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      none() // TODO
+      n instanceof CfgNodes::ExprNodes::ArgumentCfgNode or
+      n instanceof CfgNodes::ExprNodes::QualifierCfgNode
     }
 
   cached
@@ -117,6 +140,60 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
 
+/** An SSA node. */
+abstract class SsaNode extends NodeImpl, TSsaNode {
+  SsaImpl::DataFlowIntegration::SsaNode node;
+  SsaImpl::DefinitionExt def;
+
+  SsaNode() {
+    this = TSsaNode(node) and
+    def = node.getDefinitionExt()
+  }
+
+  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+  /** Holds if this node should be hidden from path explanations. */
+  abstract predicate isHidden();
+
+  override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
+}
+
+/** An (extended) SSA definition, viewed as a node in a data flow graph. */
+class SsaDefinitionExtNode extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaDefinitionExtNode node;
+
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
+
+  override predicate isHidden() {
+    not def instanceof Ssa::WriteDefinition
+    or
+    def = getParameterDef(_)
+  }
+
+  override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
+}
+
+class SsaDefinitionNodeImpl extends SsaDefinitionExtNode {
+  Ssa::Definition ssaDef;
+
+  SsaDefinitionNodeImpl() { ssaDef = def }
+
+  override Location getLocationImpl() { result = ssaDef.getLocation() }
+
+  override string toStringImpl() { result = ssaDef.toString() }
+}
+
+class SsaInputNode extends SsaNode {
+  override SsaImpl::DataFlowIntegration::SsaInputNode node;
+
+  override predicate isHidden() { any() }
+
+  override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
+}
+
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
@@ -130,7 +207,30 @@ private module ParameterNodes {
       )
     }
   }
-  // TODO
+
+  /**
+   * The value of a normal parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
+    Parameter parameter;
+
+    NormalParameterNode() { this = TNormalParameterNode(parameter) }
+
+    override Parameter getParameter() { result = parameter }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      exists(CfgScope callable, int i |
+        callable = c.asCfgScope() and pos.isPositional(i) and callable.getParameter(i) = parameter
+      )
+    }
+
+    override CfgScope getCfgScope() { result.getAParameter() = parameter }
+
+    override Location getLocationImpl() { result = parameter.getLocation() }
+
+    override string toStringImpl() { result = parameter.toString() }
+  }
 }
 
 import ParameterNodes
@@ -252,7 +352,19 @@ abstract class PostUpdateNodeImpl extends Node {
 }
 
 private module PostUpdateNodes {
-  // TODO
+  class ExprPostUpdateNode extends PostUpdateNodeImpl, NodeImpl, TExprPostUpdateNode {
+    private CfgNodes::ExprCfgNode e;
+
+    ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
+
+    override ExprNode getPreUpdateNode() { e = result.getExprNode() }
+
+    override CfgScope getCfgScope() { result = e.getExpr().getEnclosingScope() }
+
+    override Location getLocationImpl() { result = e.getLocation() }
+
+    override string toStringImpl() { result = "[post] " + e.toString() }
+  }
 }
 
 private import PostUpdateNodes
@@ -276,7 +388,7 @@ class NodeRegion instanceof Unit {
   predicate contains(Node n) { none() }
 
   /** Gets a best-effort total ordering. */
-  int totalOrder() { none() }
+  int totalOrder() { result = 1 }
 }
 
 /**

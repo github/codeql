@@ -166,6 +166,37 @@ module ExprNodes {
 
     predicate isImplicitWrite() { e.isImplicit() }
   }
+
+  /** A control-flow node that wraps an argument expression. */
+  class ArgumentCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ArgumentCfgNode" }
+
+    override Argument e;
+
+    final override Argument getExpr() { result = super.getExpr() }
+  }
+
+  private class InvokeMemberChildMapping extends ExprChildMapping, InvokeMemberExpr {
+    override predicate relevantChild(Ast n) { n = this.getQualifier() or n = this.getAnArgument() }
+  }
+
+  /** A control-flow node that wraps an `InvokeMemberExpr` expression. */
+  class InvokeMemberCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "InvokeMemberCfgNode" }
+
+    override InvokeMemberChildMapping e;
+
+    final override InvokeMemberExpr getExpr() { result = super.getExpr() }
+
+    final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
+  }
+
+    /** A control-flow node that wraps a qualifier expression. */
+  class QualifierCfgNode extends ExprCfgNode {
+    QualifierCfgNode() { this = any(InvokeMemberCfgNode invoke).getQualifier() }
+
+    InvokeMemberCfgNode getInvokeMember() { this = result.getQualifier() }
+  }
 }
 
 module StmtNodes {

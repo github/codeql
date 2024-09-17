@@ -3,7 +3,7 @@ import powershell
 class InvokeMemberExpr extends @invoke_member_expression, MemberExprBase {
   override SourceLocation getLocation() { invoke_member_expression_location(this, result) }
 
-  Expr getBase() { invoke_member_expression(this, result, _) }
+  Expr getQualifier() { invoke_member_expression(this, result, _) }
 
   CmdElement getMember() { invoke_member_expression(this, _, result) }
 
