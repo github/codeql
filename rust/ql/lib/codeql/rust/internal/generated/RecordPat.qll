@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.PatImpl::Impl as PatImpl
+import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.RecordPatField
 

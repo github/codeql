@@ -3,7 +3,7 @@
  * This module provides the public class `RangeExpr`.
  */
 
-private import RangeExprImpl
+private import internal.RangeExprImpl
 import codeql.rust.elements.Expr
 
 /**

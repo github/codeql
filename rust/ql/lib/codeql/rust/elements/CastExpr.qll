@@ -3,7 +3,7 @@
  * This module provides the public class `CastExpr`.
  */
 
-private import CastExprImpl
+private import internal.CastExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.TypeRef
 

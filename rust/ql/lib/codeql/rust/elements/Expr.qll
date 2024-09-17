@@ -3,7 +3,7 @@
  * This module provides the public class `Expr`.
  */
 
-private import ExprImpl
+private import internal.ExprImpl
 import codeql.rust.elements.AstNode
 
 /**

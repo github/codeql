@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.LocatableImpl::Impl as LocatableImpl
+import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AstNode` and should not

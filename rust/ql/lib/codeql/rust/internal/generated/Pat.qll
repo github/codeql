@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Pat` and should not

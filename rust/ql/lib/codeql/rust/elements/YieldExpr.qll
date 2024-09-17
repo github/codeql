@@ -3,7 +3,7 @@
  * This module provides the public class `YieldExpr`.
  */
 
-private import YieldExprImpl
+private import internal.YieldExprImpl
 import codeql.rust.elements.Expr
 
 /**

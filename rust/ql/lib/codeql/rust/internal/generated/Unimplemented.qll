@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.UnextractedImpl::Impl as UnextractedImpl
+import codeql.rust.elements.internal.UnextractedImpl::Impl as UnextractedImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Unimplemented` and should not

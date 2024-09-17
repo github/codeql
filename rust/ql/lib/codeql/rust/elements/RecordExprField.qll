@@ -3,7 +3,7 @@
  * This module provides the public class `RecordExprField`.
  */
 
-private import RecordExprFieldImpl
+private import internal.RecordExprFieldImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 

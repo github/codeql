@@ -3,7 +3,7 @@
  * This module provides the public class `PathPat`.
  */
 
-private import PathPatImpl
+private import internal.PathPatImpl
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 

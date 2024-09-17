@@ -7,7 +7,7 @@
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AwaitExpr` and should not

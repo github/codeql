@@ -3,7 +3,7 @@
  * This module provides the public class `TupleStructPat`.
  */
 
-private import TupleStructPatImpl
+private import internal.TupleStructPatImpl
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 

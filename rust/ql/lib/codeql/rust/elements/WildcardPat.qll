@@ -3,7 +3,7 @@
  * This module provides the public class `WildcardPat`.
  */
 
-private import WildcardPatImpl
+private import internal.WildcardPatImpl
 import codeql.rust.elements.Pat
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `BinaryExpr`.
  */
 
-private import BinaryExprImpl
+private import internal.BinaryExprImpl
 import codeql.rust.elements.Expr
 
 /**

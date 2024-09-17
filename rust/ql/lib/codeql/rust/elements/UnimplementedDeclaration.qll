@@ -3,7 +3,7 @@
  * This module provides the public class `UnimplementedDeclaration`.
  */
 
-private import UnimplementedDeclarationImpl
+private import internal.UnimplementedDeclarationImpl
 import codeql.rust.elements.Declaration
 import codeql.rust.elements.Unimplemented
 

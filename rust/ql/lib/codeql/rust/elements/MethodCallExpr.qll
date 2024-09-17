@@ -3,7 +3,7 @@
  * This module provides the public class `MethodCallExpr`.
  */
 
-private import MethodCallExprImpl
+private import internal.MethodCallExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
 

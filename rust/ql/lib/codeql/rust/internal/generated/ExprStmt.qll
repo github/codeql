@@ -7,7 +7,7 @@
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
 import codeql.rust.elements.Expr
-import codeql.rust.elements.StmtImpl::Impl as StmtImpl
+import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ExprStmt` and should not

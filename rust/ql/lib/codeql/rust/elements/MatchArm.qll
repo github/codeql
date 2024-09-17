@@ -3,7 +3,7 @@
  * This module provides the public class `MatchArm`.
  */
 
-private import MatchArmImpl
+private import internal.MatchArmImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat

@@ -3,7 +3,7 @@
  * This module provides the public class `ArrayExpr`.
  */
 
-private import ArrayExprImpl
+private import internal.ArrayExprImpl
 import codeql.rust.elements.Expr
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `LetStmt`.
  */
 
-private import LetStmtImpl
+private import internal.LetStmtImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt

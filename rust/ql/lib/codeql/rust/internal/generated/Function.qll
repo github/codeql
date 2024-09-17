@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.DeclarationImpl::Impl as DeclarationImpl
+import codeql.rust.elements.internal.DeclarationImpl::Impl as DeclarationImpl
 import codeql.rust.elements.Expr
 
 /**

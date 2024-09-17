@@ -3,7 +3,7 @@
  * This module provides the public class `LoopExpr`.
  */
 
-private import LoopExprImpl
+private import internal.LoopExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 

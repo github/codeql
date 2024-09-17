@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.ElementImpl::Impl as ElementImpl
+import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Unextracted` and should not

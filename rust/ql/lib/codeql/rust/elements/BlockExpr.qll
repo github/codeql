@@ -3,7 +3,7 @@
  * This module provides the public class `BlockExpr`.
  */
 
-private import BlockExprImpl
+private import internal.BlockExprImpl
 import codeql.rust.elements.BlockExprBase
 import codeql.rust.elements.Label
 

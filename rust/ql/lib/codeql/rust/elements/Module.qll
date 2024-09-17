@@ -3,7 +3,7 @@
  * This module provides the public class `Module`.
  */
 
-private import ModuleImpl
+private import internal.ModuleImpl
 import codeql.rust.elements.Declaration
 
 /**
