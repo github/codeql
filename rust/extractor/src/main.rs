@@ -1,5 +1,7 @@
 use crate::trap::TrapId;
 use anyhow::Context;
+use itertools::Itertools;
+use log::info;
 use ra_ap_hir::db::DefDatabase;
 use ra_ap_hir::Crate;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
@@ -22,9 +24,12 @@ fn find_project_manifests(
         .iter()
         .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
         .collect();
-    Ok(ra_ap_project_model::ProjectManifest::discover_all(
-        &abs_files,
-    ))
+    let ret = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
+    info!(
+        "found manifests: {}",
+        ret.iter().map(|m| format!("{m}")).join(", ")
+    );
+    Ok(ret)
 }
 
 fn main() -> anyhow::Result<()> {
