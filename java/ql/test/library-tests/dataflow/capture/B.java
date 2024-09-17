@@ -248,4 +248,15 @@ public class B {
     sink(l.get(0)); // $ hasValueFlow=src
     sink(l2.get(0)); // $ hasValueFlow=src
   }
+
+  void testInstanceInitializer() {
+    String s = source("init");
+    class MyLocal3 {
+      String f = s;
+      void run() {
+        sink(this.f); // $ hasValueFlow=init
+      }
+    }
+    new MyLocal3().run();
+  }
 }
