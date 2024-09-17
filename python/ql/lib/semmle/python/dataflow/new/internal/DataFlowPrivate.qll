@@ -1018,10 +1018,21 @@ module Conversions {
     )
   }
 
+  predicate formatReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    // % formatting
+    exists(BinaryExprNode fmt | fmt = nodeTo.asCfgNode() |
+      fmt.getOp() instanceof Mod and
+      fmt.getRight() = nodeFrom.asCfgNode()
+    ) and
+    c instanceof TupleElementContent
+  }
+
   predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
     decoderReadStep(nodeFrom, c, nodeTo)
     or
     encoderReadStep(nodeFrom, c, nodeTo)
+    or
+    formatReadStep(nodeFrom, c, nodeTo)
   }
 }
 
