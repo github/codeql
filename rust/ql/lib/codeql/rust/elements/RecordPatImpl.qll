@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.RecordPat
+private import codeql.rust.internal.generated.RecordPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `RecordPat` and should not

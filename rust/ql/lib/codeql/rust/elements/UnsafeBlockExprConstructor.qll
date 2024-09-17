@@ -5,7 +5,7 @@
  *  INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Raw
+private import codeql.rust.internal.generated.Raw
 
 /**
  *  The characteristic predicate of `UnsafeBlockExpr` synthesized instances.

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.IndexExpr
+private import codeql.rust.internal.generated.IndexExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `IndexExpr` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.GenericArgList
+private import codeql.rust.internal.generated.GenericArgList
 
 /**
  * INTERNAL: This module contains the customizable definition of `GenericArgList` and should not

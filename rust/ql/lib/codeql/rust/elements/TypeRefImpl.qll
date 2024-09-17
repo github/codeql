@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.TypeRef
+private import codeql.rust.internal.generated.TypeRef
 
 /**
  * INTERNAL: This module contains the customizable definition of `TypeRef` and should not

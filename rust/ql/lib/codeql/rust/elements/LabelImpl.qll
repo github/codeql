@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Label
+private import codeql.rust.internal.generated.Label
 
 /**
  * INTERNAL: This module contains the customizable definition of `Label` and should not

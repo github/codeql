@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.AstNode
+private import codeql.rust.internal.generated.AstNode
 
 /**
  * INTERNAL: This module contains the customizable definition of `AstNode` and should not

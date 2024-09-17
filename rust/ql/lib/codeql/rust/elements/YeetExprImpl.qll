@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.YeetExpr
+private import codeql.rust.internal.generated.YeetExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `YeetExpr` and should not

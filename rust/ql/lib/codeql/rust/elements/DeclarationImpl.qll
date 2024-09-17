@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Declaration
+private import codeql.rust.internal.generated.Declaration
 
 /**
  * INTERNAL: This module contains the customizable definition of `Declaration` and should not

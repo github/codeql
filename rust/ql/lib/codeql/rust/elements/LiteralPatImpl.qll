@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.LiteralPat
+private import codeql.rust.internal.generated.LiteralPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `LiteralPat` and should not

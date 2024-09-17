@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Expr
+private import codeql.rust.internal.generated.Expr
 
 /**
  * INTERNAL: This module contains the customizable definition of `Expr` and should not

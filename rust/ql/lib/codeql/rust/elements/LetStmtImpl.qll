@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.LetStmt
+private import codeql.rust.internal.generated.LetStmt
 
 /**
  * INTERNAL: This module contains the customizable definition of `LetStmt` and should not

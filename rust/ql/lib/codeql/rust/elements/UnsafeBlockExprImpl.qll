@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.UnsafeBlockExpr
+private import codeql.rust.internal.generated.UnsafeBlockExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `UnsafeBlockExpr` and should not
