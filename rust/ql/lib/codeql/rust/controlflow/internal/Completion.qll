@@ -94,7 +94,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
 class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
   MatchCompletion() { this = TMatchCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e = any(MatchArm arm).getPat() }
+  override predicate isValidForSpecific(AstNode e) { e instanceof Pat }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 

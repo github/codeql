@@ -204,15 +204,21 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
     child = [super.getCondition(), super.getThen(), super.getElse()]
   }
 
+  ConditionalCompletion conditionCompletion(Completion c) {
+    if super.getCondition() instanceof LetExpr
+    then result = c.(MatchCompletion)
+    else result = c.(BooleanCompletion)
+  }
+
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edges from the condition to the branches
     last(super.getCondition(), pred, c) and
     (
-      first(super.getThen(), succ) and c.(BooleanCompletion).succeeded()
+      first(super.getThen(), succ) and this.conditionCompletion(c).succeeded()
       or
-      first(super.getElse(), succ) and c.(BooleanCompletion).failed()
+      first(super.getElse(), succ) and this.conditionCompletion(c).failed()
       or
-      not super.hasElse() and succ = this and c.(BooleanCompletion).failed()
+      not super.hasElse() and succ = this and this.conditionCompletion(c).failed()
     )
     or
     // An edge from the then branch to the last node
@@ -235,8 +241,11 @@ class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
   }
 }
 
-class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+// `LetExpr` is a pre-order tree such that the pattern itself ends up
+// dominating successors in the graph in the same way that patterns do in
+// `match` expressions.
+class LetExprTree extends StandardPreOrderTree instanceof LetExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getPat() }
 }
 
 // We handle `let` statements with trivial patterns separately as they don't
