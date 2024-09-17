@@ -28,11 +28,14 @@
  *    types can be short names or fully qualified names (mixing these two options
  *    is not allowed within a single signature).
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
- *    there are only two valid values: "" and "Attribute". The empty string has no
- *    effect. "Attribute" applies if `name` and `signature` were left blank and
- *    acts by selecting an element that is attributed with the attribute type
- *    selected by the first 4 columns. This can be another member such as a field,
- *    property, method, or parameter.
+ *    there are only a few valid values: "", "Attribute", "Attribute.Getter" and "Attribute.Setter".
+ *    The empty string has no effect. "Attribute" applies if `name` and `signature` were left blank
+ *    and acts by selecting an element (except for properties and indexers) that is attributed with
+ *    the attribute type selected by the first 4 columns. This can be another member such as
+ *    a field, method, or parameter. "Attribute.Getter" and "Attribute.Setter" work similar to
+ *    "Attribute", except that they can only be applied to properties and indexers.
+ *    "Attribute.Setter" selects the setter element of a property/indexer and "Attribute.Getter"
+ *    selects the getter.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. For sinks, an `input` can be either "",
