@@ -1,5 +1,5 @@
 private import rust
-private import codeql.rust.generated.Raw
+private import codeql.rust.internal.generated.Raw
 private import codeql.util.Boolean
 private import codeql.util.Option
 

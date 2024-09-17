@@ -1,92 +1,724 @@
 nodes
-| test.rs:1:1:7:1 | enter main | semmle.order | 1 |
-| test.rs:1:1:7:1 | exit main | semmle.order | 2 |
-| test.rs:1:1:7:1 | exit main (normal) | semmle.order | 3 |
-| test.rs:1:1:7:1 | main | semmle.order | 4 |
-| test.rs:1:18:7:1 | BlockExpr | semmle.order | 5 |
-| test.rs:2:5:6:5 | IfExpr | semmle.order | 6 |
-| test.rs:2:8:2:12 | LiteralExpr | semmle.order | 7 |
-| test.rs:2:8:2:21 | BinaryExpr | semmle.order | 8 |
-| test.rs:2:17:2:21 | LiteralExpr | semmle.order | 9 |
-| test.rs:2:23:4:5 | BlockExpr | semmle.order | 10 |
-| test.rs:3:9:3:20 | CallExpr | semmle.order | 11 |
-| test.rs:3:19:3:19 | LiteralExpr | semmle.order | 12 |
-| test.rs:4:12:6:5 | BlockExpr | semmle.order | 13 |
-| test.rs:5:9:5:20 | CallExpr | semmle.order | 14 |
-| test.rs:5:19:5:19 | LiteralExpr | semmle.order | 15 |
-| test.rs:9:1:16:1 | decrement | semmle.order | 16 |
-| test.rs:9:1:16:1 | enter decrement | semmle.order | 17 |
-| test.rs:9:1:16:1 | exit decrement | semmle.order | 18 |
-| test.rs:9:1:16:1 | exit decrement (normal) | semmle.order | 19 |
-| test.rs:9:29:16:1 | BlockExpr | semmle.order | 20 |
-| test.rs:11:5:15:5 | IfExpr | semmle.order | 21 |
-| test.rs:11:8:11:8 | PathExpr | semmle.order | 22 |
-| test.rs:11:8:11:13 | BinaryExpr | semmle.order | 23 |
-| test.rs:11:13:11:13 | LiteralExpr | semmle.order | 24 |
-| test.rs:11:15:13:5 | BlockExpr | semmle.order | 25 |
-| test.rs:12:9:12:9 | LiteralExpr | semmle.order | 26 |
-| test.rs:13:12:15:5 | BlockExpr | semmle.order | 27 |
-| test.rs:14:9:14:9 | PathExpr | semmle.order | 28 |
-| test.rs:14:9:14:13 | BinaryExpr | semmle.order | 29 |
-| test.rs:14:13:14:13 | LiteralExpr | semmle.order | 30 |
+| file://:0:0:0:0 | BlockExpr | semmle.order | 1 |
+| file://:0:0:0:0 | CallExpr | semmle.order | 2 |
+| file://:0:0:0:0 | CallExpr | semmle.order | 2 |
+| file://:0:0:0:0 | CallExpr | semmle.order | 2 |
+| file://:0:0:0:0 | ElementListExpr | semmle.order | 5 |
+| file://:0:0:0:0 | ElementListExpr | semmle.order | 5 |
+| file://:0:0:0:0 | ElementListExpr | semmle.order | 5 |
+| file://:0:0:0:0 | ExprStmt | semmle.order | 8 |
+| file://:0:0:0:0 | ExprStmt | semmle.order | 8 |
+| file://:0:0:0:0 | LiteralExpr | semmle.order | 10 |
+| file://:0:0:0:0 | PathExpr | semmle.order | 11 |
+| file://:0:0:0:0 | PathExpr | semmle.order | 11 |
+| file://:0:0:0:0 | PathExpr | semmle.order | 11 |
+| file://:0:0:0:0 | RefExpr | semmle.order | 14 |
+| file://:0:0:0:0 | RefExpr | semmle.order | 14 |
+| file://:0:0:0:0 | RefExpr | semmle.order | 14 |
+| file://:0:0:0:0 | UnsafeBlockExpr | semmle.order | 17 |
+| test.rs:1:1:4:1 | enter test_call | semmle.order | 18 |
+| test.rs:1:1:4:1 | exit test_call | semmle.order | 19 |
+| test.rs:1:1:4:1 | exit test_call (normal) | semmle.order | 20 |
+| test.rs:1:24:4:1 | BlockExpr | semmle.order | 21 |
+| test.rs:2:5:2:21 | PathExpr | semmle.order | 22 |
+| test.rs:2:5:2:40 | CallExpr | semmle.order | 23 |
+| test.rs:2:5:2:40 | ExprStmt | semmle.order | 24 |
+| test.rs:2:23:2:26 | LiteralExpr | semmle.order | 25 |
+| test.rs:2:29:2:33 | LiteralExpr | semmle.order | 26 |
+| test.rs:2:36:2:39 | LiteralExpr | semmle.order | 27 |
+| test.rs:3:5:3:19 | PathExpr | semmle.order | 28 |
+| test.rs:3:5:3:23 | CallExpr | semmle.order | 29 |
+| test.rs:3:5:3:23 | ExprStmt | semmle.order | 30 |
+| test.rs:3:21:3:22 | LiteralExpr | semmle.order | 31 |
+| test.rs:8:5:24:5 | enter test_break_and_continue | semmle.order | 32 |
+| test.rs:8:5:24:5 | exit test_break_and_continue | semmle.order | 33 |
+| test.rs:8:5:24:5 | exit test_break_and_continue (normal) | semmle.order | 34 |
+| test.rs:9:13:9:17 | IdentPat | semmle.order | 35 |
+| test.rs:9:13:9:17 | LetStmt | semmle.order | 36 |
+| test.rs:9:21:9:21 | PathExpr | semmle.order | 37 |
+| test.rs:10:9:22:9 | ExprStmt | semmle.order | 38 |
+| test.rs:10:9:22:9 | LoopExpr | semmle.order | 39 |
+| test.rs:10:14:22:9 | BlockExpr | semmle.order | 40 |
+| test.rs:11:13:11:13 | PathExpr | semmle.order | 41 |
+| test.rs:11:13:11:23 | BinaryExpr | semmle.order | 42 |
+| test.rs:11:13:11:23 | ExprStmt | semmle.order | 43 |
+| test.rs:11:17:11:20 | PathExpr | semmle.order | 44 |
+| test.rs:11:17:11:23 | CallExpr | semmle.order | 45 |
+| test.rs:11:22:11:22 | PathExpr | semmle.order | 46 |
+| test.rs:12:13:14:13 | ExprStmt | semmle.order | 47 |
+| test.rs:12:13:14:13 | IfExpr | semmle.order | 48 |
+| test.rs:12:16:12:16 | PathExpr | semmle.order | 49 |
+| test.rs:12:16:12:24 | BinaryExpr | semmle.order | 50 |
+| test.rs:12:20:12:24 | LiteralExpr | semmle.order | 51 |
+| test.rs:13:17:13:28 | ExprStmt | semmle.order | 52 |
+| test.rs:13:17:13:28 | ReturnExpr | semmle.order | 53 |
+| test.rs:13:24:13:28 | LiteralExpr | semmle.order | 54 |
+| test.rs:15:13:17:13 | ExprStmt | semmle.order | 55 |
+| test.rs:15:13:17:13 | IfExpr | semmle.order | 56 |
+| test.rs:15:16:15:16 | PathExpr | semmle.order | 57 |
+| test.rs:15:16:15:21 | BinaryExpr | semmle.order | 58 |
+| test.rs:15:21:15:21 | LiteralExpr | semmle.order | 59 |
+| test.rs:16:17:16:21 | BreakExpr | semmle.order | 60 |
+| test.rs:16:17:16:21 | ExprStmt | semmle.order | 61 |
+| test.rs:18:13:20:13 | ExprStmt | semmle.order | 62 |
+| test.rs:18:13:20:13 | IfExpr | semmle.order | 63 |
+| test.rs:18:16:18:16 | PathExpr | semmle.order | 64 |
+| test.rs:18:16:18:20 | BinaryExpr | semmle.order | 65 |
+| test.rs:18:16:18:25 | BinaryExpr | semmle.order | 66 |
+| test.rs:18:20:18:20 | LiteralExpr | semmle.order | 67 |
+| test.rs:18:25:18:25 | LiteralExpr | semmle.order | 68 |
+| test.rs:19:17:19:24 | ContinueExpr | semmle.order | 69 |
+| test.rs:19:17:19:24 | ExprStmt | semmle.order | 70 |
+| test.rs:21:13:21:13 | PathExpr | semmle.order | 71 |
+| test.rs:21:13:21:21 | BinaryExpr | semmle.order | 72 |
+| test.rs:21:17:21:17 | PathExpr | semmle.order | 73 |
+| test.rs:21:17:21:21 | BinaryExpr | semmle.order | 74 |
+| test.rs:21:21:21:21 | LiteralExpr | semmle.order | 75 |
+| test.rs:23:9:23:19 | ExprStmt | semmle.order | 76 |
+| test.rs:23:9:23:19 | ReturnExpr | semmle.order | 77 |
+| test.rs:23:16:23:19 | LiteralExpr | semmle.order | 78 |
+| test.rs:26:5:38:5 | enter test_break_with_labels | semmle.order | 79 |
+| test.rs:26:5:38:5 | exit test_break_with_labels | semmle.order | 80 |
+| test.rs:26:5:38:5 | exit test_break_with_labels (normal) | semmle.order | 81 |
+| test.rs:26:41:38:5 | BlockExpr | semmle.order | 82 |
+| test.rs:27:9:36:9 | ExprStmt | semmle.order | 83 |
+| test.rs:27:9:36:9 | LoopExpr | semmle.order | 84 |
+| test.rs:27:22:36:9 | BlockExpr | semmle.order | 85 |
+| test.rs:28:13:35:13 | LoopExpr | semmle.order | 86 |
+| test.rs:29:17:33:17 | ExprStmt | semmle.order | 87 |
+| test.rs:29:17:33:17 | IfExpr | semmle.order | 88 |
+| test.rs:29:20:29:24 | LiteralExpr | semmle.order | 89 |
+| test.rs:30:21:30:25 | BreakExpr | semmle.order | 90 |
+| test.rs:30:21:30:25 | ExprStmt | semmle.order | 91 |
+| test.rs:31:24:33:17 | IfExpr | semmle.order | 92 |
+| test.rs:31:27:31:30 | LiteralExpr | semmle.order | 93 |
+| test.rs:32:21:32:32 | BreakExpr | semmle.order | 94 |
+| test.rs:32:21:32:32 | ExprStmt | semmle.order | 95 |
+| test.rs:34:17:34:28 | BreakExpr | semmle.order | 96 |
+| test.rs:34:17:34:28 | ExprStmt | semmle.order | 97 |
+| test.rs:37:9:37:12 | LiteralExpr | semmle.order | 98 |
+| test.rs:40:5:52:5 | enter test_continue_with_labels | semmle.order | 99 |
+| test.rs:42:13:42:13 | ExprStmt | semmle.order | 100 |
+| test.rs:42:13:42:13 | LiteralExpr | semmle.order | 101 |
+| test.rs:44:17:48:17 | ExprStmt | semmle.order | 102 |
+| test.rs:44:17:48:17 | IfExpr | semmle.order | 103 |
+| test.rs:44:20:44:24 | LiteralExpr | semmle.order | 104 |
+| test.rs:45:21:45:28 | ContinueExpr | semmle.order | 105 |
+| test.rs:45:21:45:28 | ExprStmt | semmle.order | 106 |
+| test.rs:46:24:48:17 | IfExpr | semmle.order | 107 |
+| test.rs:46:27:46:30 | LiteralExpr | semmle.order | 108 |
+| test.rs:47:21:47:35 | ContinueExpr | semmle.order | 109 |
+| test.rs:47:21:47:35 | ExprStmt | semmle.order | 110 |
+| test.rs:49:17:49:31 | ContinueExpr | semmle.order | 111 |
+| test.rs:49:17:49:31 | ExprStmt | semmle.order | 112 |
+| test.rs:55:1:58:1 | enter test_nested_function | semmle.order | 113 |
+| test.rs:55:1:58:1 | exit test_nested_function | semmle.order | 114 |
+| test.rs:55:1:58:1 | exit test_nested_function (normal) | semmle.order | 115 |
+| test.rs:55:40:58:1 | BlockExpr | semmle.order | 116 |
+| test.rs:56:9:56:15 | IdentPat | semmle.order | 117 |
+| test.rs:56:9:56:15 | LetStmt | semmle.order | 118 |
+| test.rs:56:19:56:27 | ClosureExpr | semmle.order | 119 |
+| test.rs:56:19:56:27 | enter ClosureExpr | semmle.order | 120 |
+| test.rs:56:19:56:27 | exit ClosureExpr | semmle.order | 121 |
+| test.rs:56:19:56:27 | exit ClosureExpr (normal) | semmle.order | 122 |
+| test.rs:56:23:56:23 | PathExpr | semmle.order | 123 |
+| test.rs:56:23:56:27 | BinaryExpr | semmle.order | 124 |
+| test.rs:56:27:56:27 | LiteralExpr | semmle.order | 125 |
+| test.rs:57:5:57:11 | PathExpr | semmle.order | 126 |
+| test.rs:57:5:57:23 | CallExpr | semmle.order | 127 |
+| test.rs:57:13:57:19 | PathExpr | semmle.order | 128 |
+| test.rs:57:13:57:22 | CallExpr | semmle.order | 129 |
+| test.rs:57:21:57:21 | PathExpr | semmle.order | 130 |
+| test.rs:62:5:68:5 | enter test_if_else | semmle.order | 131 |
+| test.rs:62:5:68:5 | exit test_if_else | semmle.order | 132 |
+| test.rs:62:5:68:5 | exit test_if_else (normal) | semmle.order | 133 |
+| test.rs:62:36:68:5 | BlockExpr | semmle.order | 134 |
+| test.rs:63:9:67:9 | IfExpr | semmle.order | 135 |
+| test.rs:63:12:63:12 | PathExpr | semmle.order | 136 |
+| test.rs:63:12:63:17 | BinaryExpr | semmle.order | 137 |
+| test.rs:63:17:63:17 | LiteralExpr | semmle.order | 138 |
+| test.rs:63:19:65:9 | BlockExpr | semmle.order | 139 |
+| test.rs:64:13:64:13 | LiteralExpr | semmle.order | 140 |
+| test.rs:65:16:67:9 | BlockExpr | semmle.order | 141 |
+| test.rs:66:13:66:13 | PathExpr | semmle.order | 142 |
+| test.rs:66:13:66:17 | BinaryExpr | semmle.order | 143 |
+| test.rs:66:17:66:17 | LiteralExpr | semmle.order | 144 |
+| test.rs:70:5:76:5 | enter test_if_let_else | semmle.order | 145 |
+| test.rs:70:5:76:5 | exit test_if_let_else | semmle.order | 146 |
+| test.rs:70:5:76:5 | exit test_if_let_else (normal) | semmle.order | 147 |
+| test.rs:70:48:76:5 | BlockExpr | semmle.order | 148 |
+| test.rs:71:9:75:9 | IfExpr | semmle.order | 149 |
+| test.rs:71:12:71:26 | LetExpr | semmle.order | 150 |
+| test.rs:71:16:71:22 | TupleStructPat | semmle.order | 151 |
+| test.rs:71:28:73:9 | BlockExpr | semmle.order | 152 |
+| test.rs:72:13:72:13 | PathExpr | semmle.order | 153 |
+| test.rs:73:16:75:9 | BlockExpr | semmle.order | 154 |
+| test.rs:74:13:74:13 | LiteralExpr | semmle.order | 155 |
+| test.rs:78:5:83:5 | enter test_if_let | semmle.order | 156 |
+| test.rs:78:5:83:5 | exit test_if_let | semmle.order | 157 |
+| test.rs:78:5:83:5 | exit test_if_let (normal) | semmle.order | 158 |
+| test.rs:78:43:83:5 | BlockExpr | semmle.order | 159 |
+| test.rs:79:9:81:9 | ExprStmt | semmle.order | 160 |
+| test.rs:79:9:81:9 | IfExpr | semmle.order | 161 |
+| test.rs:79:12:79:26 | LetExpr | semmle.order | 162 |
+| test.rs:79:16:79:22 | TupleStructPat | semmle.order | 163 |
+| test.rs:79:28:81:9 | BlockExpr | semmle.order | 164 |
+| test.rs:80:13:80:13 | PathExpr | semmle.order | 165 |
+| test.rs:82:9:82:9 | LiteralExpr | semmle.order | 166 |
+| test.rs:89:5:92:5 | enter test_and_operator | semmle.order | 167 |
+| test.rs:89:5:92:5 | exit test_and_operator | semmle.order | 168 |
+| test.rs:89:5:92:5 | exit test_and_operator (normal) | semmle.order | 169 |
+| test.rs:89:61:92:5 | BlockExpr | semmle.order | 170 |
+| test.rs:90:13:90:13 | IdentPat | semmle.order | 171 |
+| test.rs:90:13:90:13 | LetStmt | semmle.order | 172 |
+| test.rs:90:17:90:17 | PathExpr | semmle.order | 173 |
+| test.rs:90:17:90:22 | BinaryExpr | semmle.order | 174 |
+| test.rs:90:17:90:27 | BinaryExpr | semmle.order | 175 |
+| test.rs:90:22:90:22 | PathExpr | semmle.order | 176 |
+| test.rs:90:27:90:27 | PathExpr | semmle.order | 177 |
+| test.rs:91:9:91:9 | PathExpr | semmle.order | 178 |
+| test.rs:94:5:97:5 | enter test_or_operator | semmle.order | 179 |
+| test.rs:94:5:97:5 | exit test_or_operator | semmle.order | 180 |
+| test.rs:94:5:97:5 | exit test_or_operator (normal) | semmle.order | 181 |
+| test.rs:94:60:97:5 | BlockExpr | semmle.order | 182 |
+| test.rs:95:13:95:13 | IdentPat | semmle.order | 183 |
+| test.rs:95:13:95:13 | LetStmt | semmle.order | 184 |
+| test.rs:95:17:95:17 | PathExpr | semmle.order | 185 |
+| test.rs:95:17:95:22 | BinaryExpr | semmle.order | 186 |
+| test.rs:95:17:95:27 | BinaryExpr | semmle.order | 187 |
+| test.rs:95:22:95:22 | PathExpr | semmle.order | 188 |
+| test.rs:95:27:95:27 | PathExpr | semmle.order | 189 |
+| test.rs:96:9:96:9 | PathExpr | semmle.order | 190 |
+| test.rs:99:5:102:5 | enter test_or_operator_2 | semmle.order | 191 |
+| test.rs:99:5:102:5 | exit test_or_operator_2 | semmle.order | 192 |
+| test.rs:99:5:102:5 | exit test_or_operator_2 (normal) | semmle.order | 193 |
+| test.rs:99:61:102:5 | BlockExpr | semmle.order | 194 |
+| test.rs:100:13:100:13 | IdentPat | semmle.order | 195 |
+| test.rs:100:13:100:13 | LetStmt | semmle.order | 196 |
+| test.rs:100:17:100:17 | PathExpr | semmle.order | 197 |
+| test.rs:100:17:100:30 | BinaryExpr | semmle.order | 198 |
+| test.rs:100:17:100:35 | BinaryExpr | semmle.order | 199 |
+| test.rs:100:23:100:23 | PathExpr | semmle.order | 200 |
+| test.rs:100:23:100:29 | BinaryExpr | semmle.order | 201 |
+| test.rs:100:28:100:29 | LiteralExpr | semmle.order | 202 |
+| test.rs:100:35:100:35 | PathExpr | semmle.order | 203 |
+| test.rs:101:9:101:9 | PathExpr | semmle.order | 204 |
+| test.rs:106:1:112:1 | enter test_match | semmle.order | 205 |
+| test.rs:106:1:112:1 | exit test_match | semmle.order | 206 |
+| test.rs:106:1:112:1 | exit test_match (normal) | semmle.order | 207 |
+| test.rs:106:44:112:1 | BlockExpr | semmle.order | 208 |
+| test.rs:107:5:111:5 | MatchExpr | semmle.order | 209 |
+| test.rs:107:11:107:21 | PathExpr | semmle.order | 210 |
+| test.rs:108:9:108:15 | TupleStructPat | semmle.order | 211 |
+| test.rs:108:20:108:20 | PathExpr | semmle.order | 212 |
+| test.rs:108:20:108:25 | BinaryExpr | semmle.order | 213 |
+| test.rs:108:24:108:25 | LiteralExpr | semmle.order | 214 |
+| test.rs:108:30:108:30 | PathExpr | semmle.order | 215 |
+| test.rs:108:30:108:34 | BinaryExpr | semmle.order | 216 |
+| test.rs:108:34:108:34 | LiteralExpr | semmle.order | 217 |
+| test.rs:109:9:109:15 | TupleStructPat | semmle.order | 218 |
+| test.rs:109:20:109:20 | PathExpr | semmle.order | 219 |
+| test.rs:110:9:110:12 | PathPat | semmle.order | 220 |
+| test.rs:110:17:110:17 | LiteralExpr | semmle.order | 221 |
+| test.rs:115:5:120:5 | enter test_infinite_loop | semmle.order | 222 |
+| test.rs:116:9:118:9 | ExprStmt | semmle.order | 223 |
+| test.rs:116:14:118:9 | BlockExpr | semmle.order | 224 |
+| test.rs:117:13:117:13 | LiteralExpr | semmle.order | 225 |
+| test.rs:122:5:127:5 | enter test_let_match | semmle.order | 226 |
+| test.rs:122:5:127:5 | exit test_let_match | semmle.order | 227 |
+| test.rs:122:5:127:5 | exit test_let_match (normal) | semmle.order | 228 |
+| test.rs:122:39:127:5 | BlockExpr | semmle.order | 229 |
+| test.rs:123:13:123:19 | LetStmt | semmle.order | 230 |
+| test.rs:123:13:123:19 | TupleStructPat | semmle.order | 231 |
+| test.rs:123:23:123:23 | PathExpr | semmle.order | 232 |
+| test.rs:123:30:125:9 | BlockExpr | semmle.order | 233 |
+| test.rs:126:9:126:9 | PathExpr | semmle.order | 234 |
 edges
-| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | LiteralExpr | semmle.label |  |
-| test.rs:1:1:7:1 | enter main | test.rs:2:8:2:12 | LiteralExpr | semmle.order | 1 |
-| test.rs:1:1:7:1 | exit main (normal) | test.rs:1:1:7:1 | exit main | semmle.label |  |
-| test.rs:1:1:7:1 | exit main (normal) | test.rs:1:1:7:1 | exit main | semmle.order | 1 |
-| test.rs:1:1:7:1 | main | test.rs:1:1:7:1 | exit main (normal) | semmle.label |  |
-| test.rs:1:1:7:1 | main | test.rs:1:1:7:1 | exit main (normal) | semmle.order | 1 |
-| test.rs:1:18:7:1 | BlockExpr | test.rs:1:1:7:1 | main | semmle.label |  |
-| test.rs:1:18:7:1 | BlockExpr | test.rs:1:1:7:1 | main | semmle.order | 1 |
-| test.rs:2:5:6:5 | IfExpr | test.rs:1:18:7:1 | BlockExpr | semmle.label |  |
-| test.rs:2:5:6:5 | IfExpr | test.rs:1:18:7:1 | BlockExpr | semmle.order | 1 |
-| test.rs:2:8:2:12 | LiteralExpr | test.rs:2:17:2:21 | LiteralExpr | semmle.label |  |
-| test.rs:2:8:2:12 | LiteralExpr | test.rs:2:17:2:21 | LiteralExpr | semmle.order | 1 |
-| test.rs:2:8:2:21 | BinaryExpr | test.rs:3:19:3:19 | LiteralExpr | semmle.label | true |
-| test.rs:2:8:2:21 | BinaryExpr | test.rs:3:19:3:19 | LiteralExpr | semmle.order | 1 |
-| test.rs:2:8:2:21 | BinaryExpr | test.rs:5:19:5:19 | LiteralExpr | semmle.label | false |
-| test.rs:2:8:2:21 | BinaryExpr | test.rs:5:19:5:19 | LiteralExpr | semmle.order | 2 |
-| test.rs:2:17:2:21 | LiteralExpr | test.rs:2:8:2:21 | BinaryExpr | semmle.label |  |
-| test.rs:2:17:2:21 | LiteralExpr | test.rs:2:8:2:21 | BinaryExpr | semmle.order | 1 |
-| test.rs:2:23:4:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.label |  |
-| test.rs:2:23:4:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.order | 1 |
-| test.rs:3:9:3:20 | CallExpr | test.rs:2:23:4:5 | BlockExpr | semmle.label |  |
-| test.rs:3:9:3:20 | CallExpr | test.rs:2:23:4:5 | BlockExpr | semmle.order | 1 |
-| test.rs:3:19:3:19 | LiteralExpr | test.rs:3:9:3:20 | CallExpr | semmle.label |  |
-| test.rs:3:19:3:19 | LiteralExpr | test.rs:3:9:3:20 | CallExpr | semmle.order | 1 |
-| test.rs:4:12:6:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.label |  |
-| test.rs:4:12:6:5 | BlockExpr | test.rs:2:5:6:5 | IfExpr | semmle.order | 1 |
-| test.rs:5:9:5:20 | CallExpr | test.rs:4:12:6:5 | BlockExpr | semmle.label |  |
-| test.rs:5:9:5:20 | CallExpr | test.rs:4:12:6:5 | BlockExpr | semmle.order | 1 |
-| test.rs:5:19:5:19 | LiteralExpr | test.rs:5:9:5:20 | CallExpr | semmle.label |  |
-| test.rs:5:19:5:19 | LiteralExpr | test.rs:5:9:5:20 | CallExpr | semmle.order | 1 |
-| test.rs:9:1:16:1 | decrement | test.rs:9:1:16:1 | exit decrement (normal) | semmle.label |  |
-| test.rs:9:1:16:1 | decrement | test.rs:9:1:16:1 | exit decrement (normal) | semmle.order | 1 |
-| test.rs:9:1:16:1 | enter decrement | test.rs:11:8:11:8 | PathExpr | semmle.label |  |
-| test.rs:9:1:16:1 | enter decrement | test.rs:11:8:11:8 | PathExpr | semmle.order | 1 |
-| test.rs:9:1:16:1 | exit decrement (normal) | test.rs:9:1:16:1 | exit decrement | semmle.label |  |
-| test.rs:9:1:16:1 | exit decrement (normal) | test.rs:9:1:16:1 | exit decrement | semmle.order | 1 |
-| test.rs:9:29:16:1 | BlockExpr | test.rs:9:1:16:1 | decrement | semmle.label |  |
-| test.rs:9:29:16:1 | BlockExpr | test.rs:9:1:16:1 | decrement | semmle.order | 1 |
-| test.rs:11:5:15:5 | IfExpr | test.rs:9:29:16:1 | BlockExpr | semmle.label |  |
-| test.rs:11:5:15:5 | IfExpr | test.rs:9:29:16:1 | BlockExpr | semmle.order | 1 |
-| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | LiteralExpr | semmle.label |  |
-| test.rs:11:8:11:8 | PathExpr | test.rs:11:13:11:13 | LiteralExpr | semmle.order | 1 |
-| test.rs:11:8:11:13 | BinaryExpr | test.rs:12:9:12:9 | LiteralExpr | semmle.label | true |
-| test.rs:11:8:11:13 | BinaryExpr | test.rs:12:9:12:9 | LiteralExpr | semmle.order | 1 |
-| test.rs:11:8:11:13 | BinaryExpr | test.rs:14:9:14:9 | PathExpr | semmle.label | false |
-| test.rs:11:8:11:13 | BinaryExpr | test.rs:14:9:14:9 | PathExpr | semmle.order | 2 |
-| test.rs:11:13:11:13 | LiteralExpr | test.rs:11:8:11:13 | BinaryExpr | semmle.label |  |
-| test.rs:11:13:11:13 | LiteralExpr | test.rs:11:8:11:13 | BinaryExpr | semmle.order | 1 |
-| test.rs:11:15:13:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.label |  |
-| test.rs:11:15:13:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.order | 1 |
-| test.rs:12:9:12:9 | LiteralExpr | test.rs:11:15:13:5 | BlockExpr | semmle.label |  |
-| test.rs:12:9:12:9 | LiteralExpr | test.rs:11:15:13:5 | BlockExpr | semmle.order | 1 |
-| test.rs:13:12:15:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.label |  |
-| test.rs:13:12:15:5 | BlockExpr | test.rs:11:5:15:5 | IfExpr | semmle.order | 1 |
-| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | LiteralExpr | semmle.label |  |
-| test.rs:14:9:14:9 | PathExpr | test.rs:14:13:14:13 | LiteralExpr | semmle.order | 1 |
-| test.rs:14:9:14:13 | BinaryExpr | test.rs:13:12:15:5 | BlockExpr | semmle.label |  |
-| test.rs:14:9:14:13 | BinaryExpr | test.rs:13:12:15:5 | BlockExpr | semmle.order | 1 |
-| test.rs:14:13:14:13 | LiteralExpr | test.rs:14:9:14:13 | BinaryExpr | semmle.label |  |
-| test.rs:14:13:14:13 | LiteralExpr | test.rs:14:9:14:13 | BinaryExpr | semmle.order | 1 |
+| file://:0:0:0:0 | BlockExpr | test.rs:123:30:125:9 | BlockExpr | semmle.label |  |
+| file://:0:0:0:0 | BlockExpr | test.rs:123:30:125:9 | BlockExpr | semmle.order | 1 |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | BlockExpr | semmle.label |  |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | BlockExpr | semmle.order | 1 |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | CallExpr | semmle.label |  |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | CallExpr | semmle.order | 1 |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | UnsafeBlockExpr | semmle.label |  |
+| file://:0:0:0:0 | CallExpr | file://:0:0:0:0 | UnsafeBlockExpr | semmle.order | 1 |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.label |  |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.label |  |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.label |  |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.order | 1 |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.order | 1 |
+| file://:0:0:0:0 | ElementListExpr | file://:0:0:0:0 | RefExpr | semmle.order | 1 |
+| file://:0:0:0:0 | ExprStmt | file://:0:0:0:0 | ExprStmt | semmle.label |  |
+| file://:0:0:0:0 | ExprStmt | file://:0:0:0:0 | ExprStmt | semmle.order | 1 |
+| file://:0:0:0:0 | ExprStmt | file://:0:0:0:0 | PathExpr | semmle.label |  |
+| file://:0:0:0:0 | ExprStmt | file://:0:0:0:0 | PathExpr | semmle.order | 1 |
+| file://:0:0:0:0 | LiteralExpr | file://:0:0:0:0 | ElementListExpr | semmle.label |  |
+| file://:0:0:0:0 | LiteralExpr | file://:0:0:0:0 | ElementListExpr | semmle.order | 1 |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | CallExpr | semmle.label |  |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | CallExpr | semmle.order | 1 |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | LiteralExpr | semmle.label |  |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | LiteralExpr | semmle.order | 1 |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | PathExpr | semmle.label |  |
+| file://:0:0:0:0 | PathExpr | file://:0:0:0:0 | PathExpr | semmle.order | 1 |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | ElementListExpr | semmle.label |  |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | ElementListExpr | semmle.label |  |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | ElementListExpr | semmle.order | 1 |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | ElementListExpr | semmle.order | 1 |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | PathExpr | semmle.label |  |
+| file://:0:0:0:0 | RefExpr | file://:0:0:0:0 | PathExpr | semmle.order | 1 |
+| file://:0:0:0:0 | UnsafeBlockExpr | file://:0:0:0:0 | CallExpr | semmle.label |  |
+| file://:0:0:0:0 | UnsafeBlockExpr | file://:0:0:0:0 | CallExpr | semmle.order | 1 |
+| test.rs:1:1:4:1 | enter test_call | test.rs:2:5:2:40 | ExprStmt | semmle.label |  |
+| test.rs:1:1:4:1 | enter test_call | test.rs:2:5:2:40 | ExprStmt | semmle.order | 1 |
+| test.rs:1:1:4:1 | exit test_call (normal) | test.rs:1:1:4:1 | exit test_call | semmle.label |  |
+| test.rs:1:1:4:1 | exit test_call (normal) | test.rs:1:1:4:1 | exit test_call | semmle.order | 1 |
+| test.rs:1:24:4:1 | BlockExpr | test.rs:1:1:4:1 | exit test_call (normal) | semmle.label |  |
+| test.rs:1:24:4:1 | BlockExpr | test.rs:1:1:4:1 | exit test_call (normal) | semmle.order | 1 |
+| test.rs:2:5:2:21 | PathExpr | test.rs:2:23:2:26 | LiteralExpr | semmle.label |  |
+| test.rs:2:5:2:21 | PathExpr | test.rs:2:23:2:26 | LiteralExpr | semmle.order | 1 |
+| test.rs:2:5:2:40 | CallExpr | test.rs:3:5:3:23 | ExprStmt | semmle.label |  |
+| test.rs:2:5:2:40 | CallExpr | test.rs:3:5:3:23 | ExprStmt | semmle.order | 1 |
+| test.rs:2:5:2:40 | ExprStmt | test.rs:2:5:2:21 | PathExpr | semmle.label |  |
+| test.rs:2:5:2:40 | ExprStmt | test.rs:2:5:2:21 | PathExpr | semmle.order | 1 |
+| test.rs:2:23:2:26 | LiteralExpr | test.rs:2:29:2:33 | LiteralExpr | semmle.label |  |
+| test.rs:2:23:2:26 | LiteralExpr | test.rs:2:29:2:33 | LiteralExpr | semmle.order | 1 |
+| test.rs:2:29:2:33 | LiteralExpr | test.rs:2:36:2:39 | LiteralExpr | semmle.label |  |
+| test.rs:2:29:2:33 | LiteralExpr | test.rs:2:36:2:39 | LiteralExpr | semmle.order | 1 |
+| test.rs:2:36:2:39 | LiteralExpr | test.rs:2:5:2:40 | CallExpr | semmle.label |  |
+| test.rs:2:36:2:39 | LiteralExpr | test.rs:2:5:2:40 | CallExpr | semmle.order | 1 |
+| test.rs:3:5:3:19 | PathExpr | test.rs:3:21:3:22 | LiteralExpr | semmle.label |  |
+| test.rs:3:5:3:19 | PathExpr | test.rs:3:21:3:22 | LiteralExpr | semmle.order | 1 |
+| test.rs:3:5:3:23 | CallExpr | test.rs:1:24:4:1 | BlockExpr | semmle.label |  |
+| test.rs:3:5:3:23 | CallExpr | test.rs:1:24:4:1 | BlockExpr | semmle.order | 1 |
+| test.rs:3:5:3:23 | ExprStmt | test.rs:3:5:3:19 | PathExpr | semmle.label |  |
+| test.rs:3:5:3:23 | ExprStmt | test.rs:3:5:3:19 | PathExpr | semmle.order | 1 |
+| test.rs:3:21:3:22 | LiteralExpr | test.rs:3:5:3:23 | CallExpr | semmle.label |  |
+| test.rs:3:21:3:22 | LiteralExpr | test.rs:3:5:3:23 | CallExpr | semmle.order | 1 |
+| test.rs:8:5:24:5 | enter test_break_and_continue | test.rs:9:13:9:17 | LetStmt | semmle.label |  |
+| test.rs:8:5:24:5 | enter test_break_and_continue | test.rs:9:13:9:17 | LetStmt | semmle.order | 1 |
+| test.rs:8:5:24:5 | exit test_break_and_continue (normal) | test.rs:8:5:24:5 | exit test_break_and_continue | semmle.label |  |
+| test.rs:8:5:24:5 | exit test_break_and_continue (normal) | test.rs:8:5:24:5 | exit test_break_and_continue | semmle.order | 1 |
+| test.rs:9:13:9:17 | IdentPat | test.rs:10:9:22:9 | ExprStmt | semmle.label | match, no-match |
+| test.rs:9:13:9:17 | IdentPat | test.rs:10:9:22:9 | ExprStmt | semmle.order | 1 |
+| test.rs:9:13:9:17 | IdentPat | test.rs:10:9:22:9 | ExprStmt | semmle.order | 2 |
+| test.rs:9:13:9:17 | LetStmt | test.rs:9:21:9:21 | PathExpr | semmle.label |  |
+| test.rs:9:13:9:17 | LetStmt | test.rs:9:21:9:21 | PathExpr | semmle.order | 1 |
+| test.rs:9:21:9:21 | PathExpr | test.rs:9:13:9:17 | IdentPat | semmle.label |  |
+| test.rs:9:21:9:21 | PathExpr | test.rs:9:13:9:17 | IdentPat | semmle.order | 1 |
+| test.rs:10:9:22:9 | ExprStmt | test.rs:11:13:11:23 | ExprStmt | semmle.label |  |
+| test.rs:10:9:22:9 | ExprStmt | test.rs:11:13:11:23 | ExprStmt | semmle.order | 1 |
+| test.rs:10:9:22:9 | LoopExpr | test.rs:23:9:23:19 | ExprStmt | semmle.label |  |
+| test.rs:10:9:22:9 | LoopExpr | test.rs:23:9:23:19 | ExprStmt | semmle.order | 1 |
+| test.rs:10:14:22:9 | BlockExpr | test.rs:11:13:11:23 | ExprStmt | semmle.label |  |
+| test.rs:10:14:22:9 | BlockExpr | test.rs:11:13:11:23 | ExprStmt | semmle.order | 1 |
+| test.rs:11:13:11:13 | PathExpr | test.rs:11:17:11:20 | PathExpr | semmle.label |  |
+| test.rs:11:13:11:13 | PathExpr | test.rs:11:17:11:20 | PathExpr | semmle.order | 1 |
+| test.rs:11:13:11:23 | BinaryExpr | test.rs:12:13:14:13 | ExprStmt | semmle.label |  |
+| test.rs:11:13:11:23 | BinaryExpr | test.rs:12:13:14:13 | ExprStmt | semmle.order | 1 |
+| test.rs:11:13:11:23 | ExprStmt | test.rs:11:13:11:13 | PathExpr | semmle.label |  |
+| test.rs:11:13:11:23 | ExprStmt | test.rs:11:13:11:13 | PathExpr | semmle.order | 1 |
+| test.rs:11:17:11:20 | PathExpr | test.rs:11:22:11:22 | PathExpr | semmle.label |  |
+| test.rs:11:17:11:20 | PathExpr | test.rs:11:22:11:22 | PathExpr | semmle.order | 1 |
+| test.rs:11:17:11:23 | CallExpr | test.rs:11:13:11:23 | BinaryExpr | semmle.label |  |
+| test.rs:11:17:11:23 | CallExpr | test.rs:11:13:11:23 | BinaryExpr | semmle.order | 1 |
+| test.rs:11:22:11:22 | PathExpr | test.rs:11:17:11:23 | CallExpr | semmle.label |  |
+| test.rs:11:22:11:22 | PathExpr | test.rs:11:17:11:23 | CallExpr | semmle.order | 1 |
+| test.rs:12:13:14:13 | ExprStmt | test.rs:12:16:12:16 | PathExpr | semmle.label |  |
+| test.rs:12:13:14:13 | ExprStmt | test.rs:12:16:12:16 | PathExpr | semmle.order | 1 |
+| test.rs:12:13:14:13 | IfExpr | test.rs:15:13:17:13 | ExprStmt | semmle.label |  |
+| test.rs:12:13:14:13 | IfExpr | test.rs:15:13:17:13 | ExprStmt | semmle.order | 1 |
+| test.rs:12:16:12:16 | PathExpr | test.rs:12:20:12:24 | LiteralExpr | semmle.label |  |
+| test.rs:12:16:12:16 | PathExpr | test.rs:12:20:12:24 | LiteralExpr | semmle.order | 1 |
+| test.rs:12:16:12:24 | BinaryExpr | test.rs:12:13:14:13 | IfExpr | semmle.label | false |
+| test.rs:12:16:12:24 | BinaryExpr | test.rs:12:13:14:13 | IfExpr | semmle.order | 1 |
+| test.rs:12:16:12:24 | BinaryExpr | test.rs:13:17:13:28 | ExprStmt | semmle.label | true |
+| test.rs:12:16:12:24 | BinaryExpr | test.rs:13:17:13:28 | ExprStmt | semmle.order | 2 |
+| test.rs:12:20:12:24 | LiteralExpr | test.rs:12:16:12:24 | BinaryExpr | semmle.label |  |
+| test.rs:12:20:12:24 | LiteralExpr | test.rs:12:16:12:24 | BinaryExpr | semmle.order | 1 |
+| test.rs:13:17:13:28 | ExprStmt | test.rs:13:24:13:28 | LiteralExpr | semmle.label |  |
+| test.rs:13:17:13:28 | ExprStmt | test.rs:13:24:13:28 | LiteralExpr | semmle.order | 1 |
+| test.rs:13:17:13:28 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | semmle.label | return |
+| test.rs:13:17:13:28 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | semmle.order | 1 |
+| test.rs:13:24:13:28 | LiteralExpr | test.rs:13:17:13:28 | ReturnExpr | semmle.label |  |
+| test.rs:13:24:13:28 | LiteralExpr | test.rs:13:17:13:28 | ReturnExpr | semmle.order | 1 |
+| test.rs:15:13:17:13 | ExprStmt | test.rs:15:16:15:16 | PathExpr | semmle.label |  |
+| test.rs:15:13:17:13 | ExprStmt | test.rs:15:16:15:16 | PathExpr | semmle.order | 1 |
+| test.rs:15:13:17:13 | IfExpr | test.rs:18:13:20:13 | ExprStmt | semmle.label |  |
+| test.rs:15:13:17:13 | IfExpr | test.rs:18:13:20:13 | ExprStmt | semmle.order | 1 |
+| test.rs:15:16:15:16 | PathExpr | test.rs:15:21:15:21 | LiteralExpr | semmle.label |  |
+| test.rs:15:16:15:16 | PathExpr | test.rs:15:21:15:21 | LiteralExpr | semmle.order | 1 |
+| test.rs:15:16:15:21 | BinaryExpr | test.rs:15:13:17:13 | IfExpr | semmle.label | false |
+| test.rs:15:16:15:21 | BinaryExpr | test.rs:15:13:17:13 | IfExpr | semmle.order | 1 |
+| test.rs:15:16:15:21 | BinaryExpr | test.rs:16:17:16:21 | ExprStmt | semmle.label | true |
+| test.rs:15:16:15:21 | BinaryExpr | test.rs:16:17:16:21 | ExprStmt | semmle.order | 2 |
+| test.rs:15:21:15:21 | LiteralExpr | test.rs:15:16:15:21 | BinaryExpr | semmle.label |  |
+| test.rs:15:21:15:21 | LiteralExpr | test.rs:15:16:15:21 | BinaryExpr | semmle.order | 1 |
+| test.rs:16:17:16:21 | BreakExpr | test.rs:10:9:22:9 | LoopExpr | semmle.label | break |
+| test.rs:16:17:16:21 | BreakExpr | test.rs:10:9:22:9 | LoopExpr | semmle.order | 1 |
+| test.rs:16:17:16:21 | ExprStmt | test.rs:16:17:16:21 | BreakExpr | semmle.label |  |
+| test.rs:16:17:16:21 | ExprStmt | test.rs:16:17:16:21 | BreakExpr | semmle.order | 1 |
+| test.rs:18:13:20:13 | ExprStmt | test.rs:18:16:18:16 | PathExpr | semmle.label |  |
+| test.rs:18:13:20:13 | ExprStmt | test.rs:18:16:18:16 | PathExpr | semmle.order | 1 |
+| test.rs:18:13:20:13 | IfExpr | test.rs:21:13:21:13 | PathExpr | semmle.label |  |
+| test.rs:18:13:20:13 | IfExpr | test.rs:21:13:21:13 | PathExpr | semmle.order | 1 |
+| test.rs:18:16:18:16 | PathExpr | test.rs:18:20:18:20 | LiteralExpr | semmle.label |  |
+| test.rs:18:16:18:16 | PathExpr | test.rs:18:20:18:20 | LiteralExpr | semmle.order | 1 |
+| test.rs:18:16:18:20 | BinaryExpr | test.rs:18:25:18:25 | LiteralExpr | semmle.label |  |
+| test.rs:18:16:18:20 | BinaryExpr | test.rs:18:25:18:25 | LiteralExpr | semmle.order | 1 |
+| test.rs:18:16:18:25 | BinaryExpr | test.rs:18:13:20:13 | IfExpr | semmle.label | false |
+| test.rs:18:16:18:25 | BinaryExpr | test.rs:18:13:20:13 | IfExpr | semmle.order | 1 |
+| test.rs:18:16:18:25 | BinaryExpr | test.rs:19:17:19:24 | ExprStmt | semmle.label | true |
+| test.rs:18:16:18:25 | BinaryExpr | test.rs:19:17:19:24 | ExprStmt | semmle.order | 2 |
+| test.rs:18:20:18:20 | LiteralExpr | test.rs:18:16:18:20 | BinaryExpr | semmle.label |  |
+| test.rs:18:20:18:20 | LiteralExpr | test.rs:18:16:18:20 | BinaryExpr | semmle.order | 1 |
+| test.rs:18:25:18:25 | LiteralExpr | test.rs:18:16:18:25 | BinaryExpr | semmle.label |  |
+| test.rs:18:25:18:25 | LiteralExpr | test.rs:18:16:18:25 | BinaryExpr | semmle.order | 1 |
+| test.rs:19:17:19:24 | ContinueExpr | test.rs:11:13:11:23 | ExprStmt | semmle.label | continue |
+| test.rs:19:17:19:24 | ContinueExpr | test.rs:11:13:11:23 | ExprStmt | semmle.order | 1 |
+| test.rs:19:17:19:24 | ExprStmt | test.rs:19:17:19:24 | ContinueExpr | semmle.label |  |
+| test.rs:19:17:19:24 | ExprStmt | test.rs:19:17:19:24 | ContinueExpr | semmle.order | 1 |
+| test.rs:21:13:21:13 | PathExpr | test.rs:21:17:21:17 | PathExpr | semmle.label |  |
+| test.rs:21:13:21:13 | PathExpr | test.rs:21:17:21:17 | PathExpr | semmle.order | 1 |
+| test.rs:21:13:21:21 | BinaryExpr | test.rs:10:14:22:9 | BlockExpr | semmle.label |  |
+| test.rs:21:13:21:21 | BinaryExpr | test.rs:10:14:22:9 | BlockExpr | semmle.order | 1 |
+| test.rs:21:17:21:17 | PathExpr | test.rs:21:21:21:21 | LiteralExpr | semmle.label |  |
+| test.rs:21:17:21:17 | PathExpr | test.rs:21:21:21:21 | LiteralExpr | semmle.order | 1 |
+| test.rs:21:17:21:21 | BinaryExpr | test.rs:21:13:21:21 | BinaryExpr | semmle.label |  |
+| test.rs:21:17:21:21 | BinaryExpr | test.rs:21:13:21:21 | BinaryExpr | semmle.order | 1 |
+| test.rs:21:21:21:21 | LiteralExpr | test.rs:21:17:21:21 | BinaryExpr | semmle.label |  |
+| test.rs:21:21:21:21 | LiteralExpr | test.rs:21:17:21:21 | BinaryExpr | semmle.order | 1 |
+| test.rs:23:9:23:19 | ExprStmt | test.rs:23:16:23:19 | LiteralExpr | semmle.label |  |
+| test.rs:23:9:23:19 | ExprStmt | test.rs:23:16:23:19 | LiteralExpr | semmle.order | 1 |
+| test.rs:23:9:23:19 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | semmle.label | return |
+| test.rs:23:9:23:19 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | semmle.order | 1 |
+| test.rs:23:16:23:19 | LiteralExpr | test.rs:23:9:23:19 | ReturnExpr | semmle.label |  |
+| test.rs:23:16:23:19 | LiteralExpr | test.rs:23:9:23:19 | ReturnExpr | semmle.order | 1 |
+| test.rs:26:5:38:5 | enter test_break_with_labels | test.rs:27:9:36:9 | ExprStmt | semmle.label |  |
+| test.rs:26:5:38:5 | enter test_break_with_labels | test.rs:27:9:36:9 | ExprStmt | semmle.order | 1 |
+| test.rs:26:5:38:5 | exit test_break_with_labels (normal) | test.rs:26:5:38:5 | exit test_break_with_labels | semmle.label |  |
+| test.rs:26:5:38:5 | exit test_break_with_labels (normal) | test.rs:26:5:38:5 | exit test_break_with_labels | semmle.order | 1 |
+| test.rs:26:41:38:5 | BlockExpr | test.rs:26:5:38:5 | exit test_break_with_labels (normal) | semmle.label |  |
+| test.rs:26:41:38:5 | BlockExpr | test.rs:26:5:38:5 | exit test_break_with_labels (normal) | semmle.order | 1 |
+| test.rs:27:9:36:9 | ExprStmt | test.rs:29:17:33:17 | ExprStmt | semmle.label |  |
+| test.rs:27:9:36:9 | ExprStmt | test.rs:29:17:33:17 | ExprStmt | semmle.order | 1 |
+| test.rs:27:9:36:9 | LoopExpr | test.rs:37:9:37:12 | LiteralExpr | semmle.label |  |
+| test.rs:27:9:36:9 | LoopExpr | test.rs:37:9:37:12 | LiteralExpr | semmle.order | 1 |
+| test.rs:27:22:36:9 | BlockExpr | test.rs:29:17:33:17 | ExprStmt | semmle.label |  |
+| test.rs:27:22:36:9 | BlockExpr | test.rs:29:17:33:17 | ExprStmt | semmle.order | 1 |
+| test.rs:28:13:35:13 | LoopExpr | test.rs:27:22:36:9 | BlockExpr | semmle.label |  |
+| test.rs:28:13:35:13 | LoopExpr | test.rs:27:22:36:9 | BlockExpr | semmle.order | 1 |
+| test.rs:29:17:33:17 | ExprStmt | test.rs:29:20:29:24 | LiteralExpr | semmle.label |  |
+| test.rs:29:17:33:17 | ExprStmt | test.rs:29:20:29:24 | LiteralExpr | semmle.order | 1 |
+| test.rs:29:17:33:17 | IfExpr | test.rs:34:17:34:28 | ExprStmt | semmle.label |  |
+| test.rs:29:17:33:17 | IfExpr | test.rs:34:17:34:28 | ExprStmt | semmle.order | 1 |
+| test.rs:29:20:29:24 | LiteralExpr | test.rs:30:21:30:25 | ExprStmt | semmle.label | true |
+| test.rs:29:20:29:24 | LiteralExpr | test.rs:30:21:30:25 | ExprStmt | semmle.order | 1 |
+| test.rs:29:20:29:24 | LiteralExpr | test.rs:31:27:31:30 | LiteralExpr | semmle.label | false |
+| test.rs:29:20:29:24 | LiteralExpr | test.rs:31:27:31:30 | LiteralExpr | semmle.order | 2 |
+| test.rs:30:21:30:25 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | semmle.label | break |
+| test.rs:30:21:30:25 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | semmle.order | 1 |
+| test.rs:30:21:30:25 | ExprStmt | test.rs:30:21:30:25 | BreakExpr | semmle.label |  |
+| test.rs:30:21:30:25 | ExprStmt | test.rs:30:21:30:25 | BreakExpr | semmle.order | 1 |
+| test.rs:31:24:33:17 | IfExpr | test.rs:29:17:33:17 | IfExpr | semmle.label |  |
+| test.rs:31:24:33:17 | IfExpr | test.rs:29:17:33:17 | IfExpr | semmle.order | 1 |
+| test.rs:31:27:31:30 | LiteralExpr | test.rs:31:24:33:17 | IfExpr | semmle.label | false |
+| test.rs:31:27:31:30 | LiteralExpr | test.rs:31:24:33:17 | IfExpr | semmle.order | 1 |
+| test.rs:31:27:31:30 | LiteralExpr | test.rs:32:21:32:32 | ExprStmt | semmle.label | true |
+| test.rs:31:27:31:30 | LiteralExpr | test.rs:32:21:32:32 | ExprStmt | semmle.order | 2 |
+| test.rs:32:21:32:32 | BreakExpr | test.rs:27:9:36:9 | LoopExpr | semmle.label | break('outer) |
+| test.rs:32:21:32:32 | BreakExpr | test.rs:27:9:36:9 | LoopExpr | semmle.order | 1 |
+| test.rs:32:21:32:32 | ExprStmt | test.rs:32:21:32:32 | BreakExpr | semmle.label |  |
+| test.rs:32:21:32:32 | ExprStmt | test.rs:32:21:32:32 | BreakExpr | semmle.order | 1 |
+| test.rs:34:17:34:28 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | semmle.label | break('inner) |
+| test.rs:34:17:34:28 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | semmle.order | 1 |
+| test.rs:34:17:34:28 | ExprStmt | test.rs:34:17:34:28 | BreakExpr | semmle.label |  |
+| test.rs:34:17:34:28 | ExprStmt | test.rs:34:17:34:28 | BreakExpr | semmle.order | 1 |
+| test.rs:37:9:37:12 | LiteralExpr | test.rs:26:41:38:5 | BlockExpr | semmle.label |  |
+| test.rs:37:9:37:12 | LiteralExpr | test.rs:26:41:38:5 | BlockExpr | semmle.order | 1 |
+| test.rs:40:5:52:5 | enter test_continue_with_labels | test.rs:42:13:42:13 | ExprStmt | semmle.label |  |
+| test.rs:40:5:52:5 | enter test_continue_with_labels | test.rs:42:13:42:13 | ExprStmt | semmle.order | 1 |
+| test.rs:42:13:42:13 | ExprStmt | test.rs:42:13:42:13 | LiteralExpr | semmle.label |  |
+| test.rs:42:13:42:13 | ExprStmt | test.rs:42:13:42:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:42:13:42:13 | LiteralExpr | test.rs:44:17:48:17 | ExprStmt | semmle.label |  |
+| test.rs:42:13:42:13 | LiteralExpr | test.rs:44:17:48:17 | ExprStmt | semmle.order | 1 |
+| test.rs:44:17:48:17 | ExprStmt | test.rs:44:20:44:24 | LiteralExpr | semmle.label |  |
+| test.rs:44:17:48:17 | ExprStmt | test.rs:44:20:44:24 | LiteralExpr | semmle.order | 1 |
+| test.rs:44:17:48:17 | IfExpr | test.rs:49:17:49:31 | ExprStmt | semmle.label |  |
+| test.rs:44:17:48:17 | IfExpr | test.rs:49:17:49:31 | ExprStmt | semmle.order | 1 |
+| test.rs:44:20:44:24 | LiteralExpr | test.rs:45:21:45:28 | ExprStmt | semmle.label | true |
+| test.rs:44:20:44:24 | LiteralExpr | test.rs:45:21:45:28 | ExprStmt | semmle.order | 1 |
+| test.rs:44:20:44:24 | LiteralExpr | test.rs:46:27:46:30 | LiteralExpr | semmle.label | false |
+| test.rs:44:20:44:24 | LiteralExpr | test.rs:46:27:46:30 | LiteralExpr | semmle.order | 2 |
+| test.rs:45:21:45:28 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | semmle.label | continue |
+| test.rs:45:21:45:28 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | semmle.order | 1 |
+| test.rs:45:21:45:28 | ExprStmt | test.rs:45:21:45:28 | ContinueExpr | semmle.label |  |
+| test.rs:45:21:45:28 | ExprStmt | test.rs:45:21:45:28 | ContinueExpr | semmle.order | 1 |
+| test.rs:46:24:48:17 | IfExpr | test.rs:44:17:48:17 | IfExpr | semmle.label |  |
+| test.rs:46:24:48:17 | IfExpr | test.rs:44:17:48:17 | IfExpr | semmle.order | 1 |
+| test.rs:46:27:46:30 | LiteralExpr | test.rs:46:24:48:17 | IfExpr | semmle.label | false |
+| test.rs:46:27:46:30 | LiteralExpr | test.rs:46:24:48:17 | IfExpr | semmle.order | 1 |
+| test.rs:46:27:46:30 | LiteralExpr | test.rs:47:21:47:35 | ExprStmt | semmle.label | true |
+| test.rs:46:27:46:30 | LiteralExpr | test.rs:47:21:47:35 | ExprStmt | semmle.order | 2 |
+| test.rs:47:21:47:35 | ContinueExpr | test.rs:42:13:42:13 | ExprStmt | semmle.label | continue('outer) |
+| test.rs:47:21:47:35 | ContinueExpr | test.rs:42:13:42:13 | ExprStmt | semmle.order | 1 |
+| test.rs:47:21:47:35 | ExprStmt | test.rs:47:21:47:35 | ContinueExpr | semmle.label |  |
+| test.rs:47:21:47:35 | ExprStmt | test.rs:47:21:47:35 | ContinueExpr | semmle.order | 1 |
+| test.rs:49:17:49:31 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | semmle.label | continue('inner) |
+| test.rs:49:17:49:31 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | semmle.order | 1 |
+| test.rs:49:17:49:31 | ExprStmt | test.rs:49:17:49:31 | ContinueExpr | semmle.label |  |
+| test.rs:49:17:49:31 | ExprStmt | test.rs:49:17:49:31 | ContinueExpr | semmle.order | 1 |
+| test.rs:55:1:58:1 | enter test_nested_function | test.rs:56:9:56:15 | LetStmt | semmle.label |  |
+| test.rs:55:1:58:1 | enter test_nested_function | test.rs:56:9:56:15 | LetStmt | semmle.order | 1 |
+| test.rs:55:1:58:1 | exit test_nested_function (normal) | test.rs:55:1:58:1 | exit test_nested_function | semmle.label |  |
+| test.rs:55:1:58:1 | exit test_nested_function (normal) | test.rs:55:1:58:1 | exit test_nested_function | semmle.order | 1 |
+| test.rs:55:40:58:1 | BlockExpr | test.rs:55:1:58:1 | exit test_nested_function (normal) | semmle.label |  |
+| test.rs:55:40:58:1 | BlockExpr | test.rs:55:1:58:1 | exit test_nested_function (normal) | semmle.order | 1 |
+| test.rs:56:9:56:15 | IdentPat | test.rs:57:5:57:11 | PathExpr | semmle.label | match, no-match |
+| test.rs:56:9:56:15 | IdentPat | test.rs:57:5:57:11 | PathExpr | semmle.order | 1 |
+| test.rs:56:9:56:15 | IdentPat | test.rs:57:5:57:11 | PathExpr | semmle.order | 2 |
+| test.rs:56:9:56:15 | LetStmt | test.rs:56:19:56:27 | ClosureExpr | semmle.label |  |
+| test.rs:56:9:56:15 | LetStmt | test.rs:56:19:56:27 | ClosureExpr | semmle.order | 1 |
+| test.rs:56:19:56:27 | ClosureExpr | test.rs:56:9:56:15 | IdentPat | semmle.label |  |
+| test.rs:56:19:56:27 | ClosureExpr | test.rs:56:9:56:15 | IdentPat | semmle.order | 1 |
+| test.rs:56:19:56:27 | enter ClosureExpr | test.rs:56:23:56:23 | PathExpr | semmle.label |  |
+| test.rs:56:19:56:27 | enter ClosureExpr | test.rs:56:23:56:23 | PathExpr | semmle.order | 1 |
+| test.rs:56:19:56:27 | exit ClosureExpr (normal) | test.rs:56:19:56:27 | exit ClosureExpr | semmle.label |  |
+| test.rs:56:19:56:27 | exit ClosureExpr (normal) | test.rs:56:19:56:27 | exit ClosureExpr | semmle.order | 1 |
+| test.rs:56:23:56:23 | PathExpr | test.rs:56:27:56:27 | LiteralExpr | semmle.label |  |
+| test.rs:56:23:56:23 | PathExpr | test.rs:56:27:56:27 | LiteralExpr | semmle.order | 1 |
+| test.rs:56:23:56:27 | BinaryExpr | test.rs:56:19:56:27 | exit ClosureExpr (normal) | semmle.label |  |
+| test.rs:56:23:56:27 | BinaryExpr | test.rs:56:19:56:27 | exit ClosureExpr (normal) | semmle.order | 1 |
+| test.rs:56:27:56:27 | LiteralExpr | test.rs:56:23:56:27 | BinaryExpr | semmle.label |  |
+| test.rs:56:27:56:27 | LiteralExpr | test.rs:56:23:56:27 | BinaryExpr | semmle.order | 1 |
+| test.rs:57:5:57:11 | PathExpr | test.rs:57:13:57:19 | PathExpr | semmle.label |  |
+| test.rs:57:5:57:11 | PathExpr | test.rs:57:13:57:19 | PathExpr | semmle.order | 1 |
+| test.rs:57:5:57:23 | CallExpr | test.rs:55:40:58:1 | BlockExpr | semmle.label |  |
+| test.rs:57:5:57:23 | CallExpr | test.rs:55:40:58:1 | BlockExpr | semmle.order | 1 |
+| test.rs:57:13:57:19 | PathExpr | test.rs:57:21:57:21 | PathExpr | semmle.label |  |
+| test.rs:57:13:57:19 | PathExpr | test.rs:57:21:57:21 | PathExpr | semmle.order | 1 |
+| test.rs:57:13:57:22 | CallExpr | test.rs:57:5:57:23 | CallExpr | semmle.label |  |
+| test.rs:57:13:57:22 | CallExpr | test.rs:57:5:57:23 | CallExpr | semmle.order | 1 |
+| test.rs:57:21:57:21 | PathExpr | test.rs:57:13:57:22 | CallExpr | semmle.label |  |
+| test.rs:57:21:57:21 | PathExpr | test.rs:57:13:57:22 | CallExpr | semmle.order | 1 |
+| test.rs:62:5:68:5 | enter test_if_else | test.rs:63:12:63:12 | PathExpr | semmle.label |  |
+| test.rs:62:5:68:5 | enter test_if_else | test.rs:63:12:63:12 | PathExpr | semmle.order | 1 |
+| test.rs:62:5:68:5 | exit test_if_else (normal) | test.rs:62:5:68:5 | exit test_if_else | semmle.label |  |
+| test.rs:62:5:68:5 | exit test_if_else (normal) | test.rs:62:5:68:5 | exit test_if_else | semmle.order | 1 |
+| test.rs:62:36:68:5 | BlockExpr | test.rs:62:5:68:5 | exit test_if_else (normal) | semmle.label |  |
+| test.rs:62:36:68:5 | BlockExpr | test.rs:62:5:68:5 | exit test_if_else (normal) | semmle.order | 1 |
+| test.rs:63:9:67:9 | IfExpr | test.rs:62:36:68:5 | BlockExpr | semmle.label |  |
+| test.rs:63:9:67:9 | IfExpr | test.rs:62:36:68:5 | BlockExpr | semmle.order | 1 |
+| test.rs:63:12:63:12 | PathExpr | test.rs:63:17:63:17 | LiteralExpr | semmle.label |  |
+| test.rs:63:12:63:12 | PathExpr | test.rs:63:17:63:17 | LiteralExpr | semmle.order | 1 |
+| test.rs:63:12:63:17 | BinaryExpr | test.rs:64:13:64:13 | LiteralExpr | semmle.label | true |
+| test.rs:63:12:63:17 | BinaryExpr | test.rs:64:13:64:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:63:12:63:17 | BinaryExpr | test.rs:66:13:66:13 | PathExpr | semmle.label | false |
+| test.rs:63:12:63:17 | BinaryExpr | test.rs:66:13:66:13 | PathExpr | semmle.order | 2 |
+| test.rs:63:17:63:17 | LiteralExpr | test.rs:63:12:63:17 | BinaryExpr | semmle.label |  |
+| test.rs:63:17:63:17 | LiteralExpr | test.rs:63:12:63:17 | BinaryExpr | semmle.order | 1 |
+| test.rs:63:19:65:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr | semmle.label |  |
+| test.rs:63:19:65:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr | semmle.order | 1 |
+| test.rs:64:13:64:13 | LiteralExpr | test.rs:63:19:65:9 | BlockExpr | semmle.label |  |
+| test.rs:64:13:64:13 | LiteralExpr | test.rs:63:19:65:9 | BlockExpr | semmle.order | 1 |
+| test.rs:65:16:67:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr | semmle.label |  |
+| test.rs:65:16:67:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr | semmle.order | 1 |
+| test.rs:66:13:66:13 | PathExpr | test.rs:66:17:66:17 | LiteralExpr | semmle.label |  |
+| test.rs:66:13:66:13 | PathExpr | test.rs:66:17:66:17 | LiteralExpr | semmle.order | 1 |
+| test.rs:66:13:66:17 | BinaryExpr | test.rs:65:16:67:9 | BlockExpr | semmle.label |  |
+| test.rs:66:13:66:17 | BinaryExpr | test.rs:65:16:67:9 | BlockExpr | semmle.order | 1 |
+| test.rs:66:17:66:17 | LiteralExpr | test.rs:66:13:66:17 | BinaryExpr | semmle.label |  |
+| test.rs:66:17:66:17 | LiteralExpr | test.rs:66:13:66:17 | BinaryExpr | semmle.order | 1 |
+| test.rs:70:5:76:5 | enter test_if_let_else | test.rs:71:12:71:26 | LetExpr | semmle.label |  |
+| test.rs:70:5:76:5 | enter test_if_let_else | test.rs:71:12:71:26 | LetExpr | semmle.order | 1 |
+| test.rs:70:5:76:5 | exit test_if_let_else (normal) | test.rs:70:5:76:5 | exit test_if_let_else | semmle.label |  |
+| test.rs:70:5:76:5 | exit test_if_let_else (normal) | test.rs:70:5:76:5 | exit test_if_let_else | semmle.order | 1 |
+| test.rs:70:48:76:5 | BlockExpr | test.rs:70:5:76:5 | exit test_if_let_else (normal) | semmle.label |  |
+| test.rs:70:48:76:5 | BlockExpr | test.rs:70:5:76:5 | exit test_if_let_else (normal) | semmle.order | 1 |
+| test.rs:71:9:75:9 | IfExpr | test.rs:70:48:76:5 | BlockExpr | semmle.label |  |
+| test.rs:71:9:75:9 | IfExpr | test.rs:70:48:76:5 | BlockExpr | semmle.order | 1 |
+| test.rs:71:12:71:26 | LetExpr | test.rs:71:16:71:22 | TupleStructPat | semmle.label |  |
+| test.rs:71:12:71:26 | LetExpr | test.rs:71:16:71:22 | TupleStructPat | semmle.order | 1 |
+| test.rs:71:16:71:22 | TupleStructPat | test.rs:72:13:72:13 | PathExpr | semmle.label | match |
+| test.rs:71:16:71:22 | TupleStructPat | test.rs:72:13:72:13 | PathExpr | semmle.order | 1 |
+| test.rs:71:16:71:22 | TupleStructPat | test.rs:74:13:74:13 | LiteralExpr | semmle.label | no-match |
+| test.rs:71:16:71:22 | TupleStructPat | test.rs:74:13:74:13 | LiteralExpr | semmle.order | 2 |
+| test.rs:71:28:73:9 | BlockExpr | test.rs:71:9:75:9 | IfExpr | semmle.label |  |
+| test.rs:71:28:73:9 | BlockExpr | test.rs:71:9:75:9 | IfExpr | semmle.order | 1 |
+| test.rs:72:13:72:13 | PathExpr | test.rs:71:28:73:9 | BlockExpr | semmle.label |  |
+| test.rs:72:13:72:13 | PathExpr | test.rs:71:28:73:9 | BlockExpr | semmle.order | 1 |
+| test.rs:73:16:75:9 | BlockExpr | test.rs:71:9:75:9 | IfExpr | semmle.label |  |
+| test.rs:73:16:75:9 | BlockExpr | test.rs:71:9:75:9 | IfExpr | semmle.order | 1 |
+| test.rs:74:13:74:13 | LiteralExpr | test.rs:73:16:75:9 | BlockExpr | semmle.label |  |
+| test.rs:74:13:74:13 | LiteralExpr | test.rs:73:16:75:9 | BlockExpr | semmle.order | 1 |
+| test.rs:78:5:83:5 | enter test_if_let | test.rs:79:9:81:9 | ExprStmt | semmle.label |  |
+| test.rs:78:5:83:5 | enter test_if_let | test.rs:79:9:81:9 | ExprStmt | semmle.order | 1 |
+| test.rs:78:5:83:5 | exit test_if_let (normal) | test.rs:78:5:83:5 | exit test_if_let | semmle.label |  |
+| test.rs:78:5:83:5 | exit test_if_let (normal) | test.rs:78:5:83:5 | exit test_if_let | semmle.order | 1 |
+| test.rs:78:43:83:5 | BlockExpr | test.rs:78:5:83:5 | exit test_if_let (normal) | semmle.label |  |
+| test.rs:78:43:83:5 | BlockExpr | test.rs:78:5:83:5 | exit test_if_let (normal) | semmle.order | 1 |
+| test.rs:79:9:81:9 | ExprStmt | test.rs:79:12:79:26 | LetExpr | semmle.label |  |
+| test.rs:79:9:81:9 | ExprStmt | test.rs:79:12:79:26 | LetExpr | semmle.order | 1 |
+| test.rs:79:9:81:9 | IfExpr | test.rs:82:9:82:9 | LiteralExpr | semmle.label |  |
+| test.rs:79:9:81:9 | IfExpr | test.rs:82:9:82:9 | LiteralExpr | semmle.order | 1 |
+| test.rs:79:12:79:26 | LetExpr | test.rs:79:16:79:22 | TupleStructPat | semmle.label |  |
+| test.rs:79:12:79:26 | LetExpr | test.rs:79:16:79:22 | TupleStructPat | semmle.order | 1 |
+| test.rs:79:16:79:22 | TupleStructPat | test.rs:79:9:81:9 | IfExpr | semmle.label | no-match |
+| test.rs:79:16:79:22 | TupleStructPat | test.rs:79:9:81:9 | IfExpr | semmle.order | 1 |
+| test.rs:79:16:79:22 | TupleStructPat | test.rs:80:13:80:13 | PathExpr | semmle.label | match |
+| test.rs:79:16:79:22 | TupleStructPat | test.rs:80:13:80:13 | PathExpr | semmle.order | 2 |
+| test.rs:79:28:81:9 | BlockExpr | test.rs:79:9:81:9 | IfExpr | semmle.label |  |
+| test.rs:79:28:81:9 | BlockExpr | test.rs:79:9:81:9 | IfExpr | semmle.order | 1 |
+| test.rs:80:13:80:13 | PathExpr | test.rs:79:28:81:9 | BlockExpr | semmle.label |  |
+| test.rs:80:13:80:13 | PathExpr | test.rs:79:28:81:9 | BlockExpr | semmle.order | 1 |
+| test.rs:82:9:82:9 | LiteralExpr | test.rs:78:43:83:5 | BlockExpr | semmle.label |  |
+| test.rs:82:9:82:9 | LiteralExpr | test.rs:78:43:83:5 | BlockExpr | semmle.order | 1 |
+| test.rs:89:5:92:5 | enter test_and_operator | test.rs:90:13:90:13 | LetStmt | semmle.label |  |
+| test.rs:89:5:92:5 | enter test_and_operator | test.rs:90:13:90:13 | LetStmt | semmle.order | 1 |
+| test.rs:89:5:92:5 | exit test_and_operator (normal) | test.rs:89:5:92:5 | exit test_and_operator | semmle.label |  |
+| test.rs:89:5:92:5 | exit test_and_operator (normal) | test.rs:89:5:92:5 | exit test_and_operator | semmle.order | 1 |
+| test.rs:89:61:92:5 | BlockExpr | test.rs:89:5:92:5 | exit test_and_operator (normal) | semmle.label |  |
+| test.rs:89:61:92:5 | BlockExpr | test.rs:89:5:92:5 | exit test_and_operator (normal) | semmle.order | 1 |
+| test.rs:90:13:90:13 | IdentPat | test.rs:91:9:91:9 | PathExpr | semmle.label | match, no-match |
+| test.rs:90:13:90:13 | IdentPat | test.rs:91:9:91:9 | PathExpr | semmle.order | 1 |
+| test.rs:90:13:90:13 | IdentPat | test.rs:91:9:91:9 | PathExpr | semmle.order | 2 |
+| test.rs:90:13:90:13 | LetStmt | test.rs:90:17:90:27 | BinaryExpr | semmle.label |  |
+| test.rs:90:13:90:13 | LetStmt | test.rs:90:17:90:27 | BinaryExpr | semmle.order | 1 |
+| test.rs:90:17:90:17 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.label | false |
+| test.rs:90:17:90:17 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.order | 1 |
+| test.rs:90:17:90:17 | PathExpr | test.rs:90:22:90:22 | PathExpr | semmle.label | true |
+| test.rs:90:17:90:17 | PathExpr | test.rs:90:22:90:22 | PathExpr | semmle.order | 2 |
+| test.rs:90:17:90:22 | BinaryExpr | test.rs:90:17:90:17 | PathExpr | semmle.label |  |
+| test.rs:90:17:90:22 | BinaryExpr | test.rs:90:17:90:17 | PathExpr | semmle.order | 1 |
+| test.rs:90:17:90:27 | BinaryExpr | test.rs:90:17:90:22 | BinaryExpr | semmle.label |  |
+| test.rs:90:17:90:27 | BinaryExpr | test.rs:90:17:90:22 | BinaryExpr | semmle.order | 1 |
+| test.rs:90:22:90:22 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.label | false |
+| test.rs:90:22:90:22 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.order | 1 |
+| test.rs:90:22:90:22 | PathExpr | test.rs:90:27:90:27 | PathExpr | semmle.label | true |
+| test.rs:90:22:90:22 | PathExpr | test.rs:90:27:90:27 | PathExpr | semmle.order | 2 |
+| test.rs:90:27:90:27 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.label | false, true |
+| test.rs:90:27:90:27 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.order | 1 |
+| test.rs:90:27:90:27 | PathExpr | test.rs:90:13:90:13 | IdentPat | semmle.order | 2 |
+| test.rs:91:9:91:9 | PathExpr | test.rs:89:61:92:5 | BlockExpr | semmle.label |  |
+| test.rs:91:9:91:9 | PathExpr | test.rs:89:61:92:5 | BlockExpr | semmle.order | 1 |
+| test.rs:94:5:97:5 | enter test_or_operator | test.rs:95:13:95:13 | LetStmt | semmle.label |  |
+| test.rs:94:5:97:5 | enter test_or_operator | test.rs:95:13:95:13 | LetStmt | semmle.order | 1 |
+| test.rs:94:5:97:5 | exit test_or_operator (normal) | test.rs:94:5:97:5 | exit test_or_operator | semmle.label |  |
+| test.rs:94:5:97:5 | exit test_or_operator (normal) | test.rs:94:5:97:5 | exit test_or_operator | semmle.order | 1 |
+| test.rs:94:60:97:5 | BlockExpr | test.rs:94:5:97:5 | exit test_or_operator (normal) | semmle.label |  |
+| test.rs:94:60:97:5 | BlockExpr | test.rs:94:5:97:5 | exit test_or_operator (normal) | semmle.order | 1 |
+| test.rs:95:13:95:13 | IdentPat | test.rs:96:9:96:9 | PathExpr | semmle.label | match, no-match |
+| test.rs:95:13:95:13 | IdentPat | test.rs:96:9:96:9 | PathExpr | semmle.order | 1 |
+| test.rs:95:13:95:13 | IdentPat | test.rs:96:9:96:9 | PathExpr | semmle.order | 2 |
+| test.rs:95:13:95:13 | LetStmt | test.rs:95:17:95:27 | BinaryExpr | semmle.label |  |
+| test.rs:95:13:95:13 | LetStmt | test.rs:95:17:95:27 | BinaryExpr | semmle.order | 1 |
+| test.rs:95:17:95:17 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.label | true |
+| test.rs:95:17:95:17 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.order | 1 |
+| test.rs:95:17:95:17 | PathExpr | test.rs:95:22:95:22 | PathExpr | semmle.label | false |
+| test.rs:95:17:95:17 | PathExpr | test.rs:95:22:95:22 | PathExpr | semmle.order | 2 |
+| test.rs:95:17:95:22 | BinaryExpr | test.rs:95:17:95:17 | PathExpr | semmle.label |  |
+| test.rs:95:17:95:22 | BinaryExpr | test.rs:95:17:95:17 | PathExpr | semmle.order | 1 |
+| test.rs:95:17:95:27 | BinaryExpr | test.rs:95:17:95:22 | BinaryExpr | semmle.label |  |
+| test.rs:95:17:95:27 | BinaryExpr | test.rs:95:17:95:22 | BinaryExpr | semmle.order | 1 |
+| test.rs:95:22:95:22 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.label | true |
+| test.rs:95:22:95:22 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.order | 1 |
+| test.rs:95:22:95:22 | PathExpr | test.rs:95:27:95:27 | PathExpr | semmle.label | false |
+| test.rs:95:22:95:22 | PathExpr | test.rs:95:27:95:27 | PathExpr | semmle.order | 2 |
+| test.rs:95:27:95:27 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.label | false, true |
+| test.rs:95:27:95:27 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.order | 1 |
+| test.rs:95:27:95:27 | PathExpr | test.rs:95:13:95:13 | IdentPat | semmle.order | 2 |
+| test.rs:96:9:96:9 | PathExpr | test.rs:94:60:97:5 | BlockExpr | semmle.label |  |
+| test.rs:96:9:96:9 | PathExpr | test.rs:94:60:97:5 | BlockExpr | semmle.order | 1 |
+| test.rs:99:5:102:5 | enter test_or_operator_2 | test.rs:100:13:100:13 | LetStmt | semmle.label |  |
+| test.rs:99:5:102:5 | enter test_or_operator_2 | test.rs:100:13:100:13 | LetStmt | semmle.order | 1 |
+| test.rs:99:5:102:5 | exit test_or_operator_2 (normal) | test.rs:99:5:102:5 | exit test_or_operator_2 | semmle.label |  |
+| test.rs:99:5:102:5 | exit test_or_operator_2 (normal) | test.rs:99:5:102:5 | exit test_or_operator_2 | semmle.order | 1 |
+| test.rs:99:61:102:5 | BlockExpr | test.rs:99:5:102:5 | exit test_or_operator_2 (normal) | semmle.label |  |
+| test.rs:99:61:102:5 | BlockExpr | test.rs:99:5:102:5 | exit test_or_operator_2 (normal) | semmle.order | 1 |
+| test.rs:100:13:100:13 | IdentPat | test.rs:101:9:101:9 | PathExpr | semmle.label | match, no-match |
+| test.rs:100:13:100:13 | IdentPat | test.rs:101:9:101:9 | PathExpr | semmle.order | 1 |
+| test.rs:100:13:100:13 | IdentPat | test.rs:101:9:101:9 | PathExpr | semmle.order | 2 |
+| test.rs:100:13:100:13 | LetStmt | test.rs:100:17:100:35 | BinaryExpr | semmle.label |  |
+| test.rs:100:13:100:13 | LetStmt | test.rs:100:17:100:35 | BinaryExpr | semmle.order | 1 |
+| test.rs:100:17:100:17 | PathExpr | test.rs:100:13:100:13 | IdentPat | semmle.label | true |
+| test.rs:100:17:100:17 | PathExpr | test.rs:100:13:100:13 | IdentPat | semmle.order | 1 |
+| test.rs:100:17:100:17 | PathExpr | test.rs:100:23:100:23 | PathExpr | semmle.label | false |
+| test.rs:100:17:100:17 | PathExpr | test.rs:100:23:100:23 | PathExpr | semmle.order | 2 |
+| test.rs:100:17:100:30 | BinaryExpr | test.rs:100:17:100:17 | PathExpr | semmle.label |  |
+| test.rs:100:17:100:30 | BinaryExpr | test.rs:100:17:100:17 | PathExpr | semmle.order | 1 |
+| test.rs:100:17:100:35 | BinaryExpr | test.rs:100:17:100:30 | BinaryExpr | semmle.label |  |
+| test.rs:100:17:100:35 | BinaryExpr | test.rs:100:17:100:30 | BinaryExpr | semmle.order | 1 |
+| test.rs:100:23:100:23 | PathExpr | test.rs:100:28:100:29 | LiteralExpr | semmle.label |  |
+| test.rs:100:23:100:23 | PathExpr | test.rs:100:28:100:29 | LiteralExpr | semmle.order | 1 |
+| test.rs:100:23:100:29 | BinaryExpr | test.rs:100:13:100:13 | IdentPat | semmle.label | true |
+| test.rs:100:23:100:29 | BinaryExpr | test.rs:100:13:100:13 | IdentPat | semmle.order | 1 |
+| test.rs:100:23:100:29 | BinaryExpr | test.rs:100:35:100:35 | PathExpr | semmle.label | false |
+| test.rs:100:23:100:29 | BinaryExpr | test.rs:100:35:100:35 | PathExpr | semmle.order | 2 |
+| test.rs:100:28:100:29 | LiteralExpr | test.rs:100:23:100:29 | BinaryExpr | semmle.label |  |
+| test.rs:100:28:100:29 | LiteralExpr | test.rs:100:23:100:29 | BinaryExpr | semmle.order | 1 |
+| test.rs:100:35:100:35 | PathExpr | test.rs:100:13:100:13 | IdentPat | semmle.label | false, true |
+| test.rs:100:35:100:35 | PathExpr | test.rs:100:13:100:13 | IdentPat | semmle.order | 1 |
+| test.rs:100:35:100:35 | PathExpr | test.rs:100:13:100:13 | IdentPat | semmle.order | 2 |
+| test.rs:101:9:101:9 | PathExpr | test.rs:99:61:102:5 | BlockExpr | semmle.label |  |
+| test.rs:101:9:101:9 | PathExpr | test.rs:99:61:102:5 | BlockExpr | semmle.order | 1 |
+| test.rs:106:1:112:1 | enter test_match | test.rs:107:11:107:21 | PathExpr | semmle.label |  |
+| test.rs:106:1:112:1 | enter test_match | test.rs:107:11:107:21 | PathExpr | semmle.order | 1 |
+| test.rs:106:1:112:1 | exit test_match (normal) | test.rs:106:1:112:1 | exit test_match | semmle.label |  |
+| test.rs:106:1:112:1 | exit test_match (normal) | test.rs:106:1:112:1 | exit test_match | semmle.order | 1 |
+| test.rs:106:44:112:1 | BlockExpr | test.rs:106:1:112:1 | exit test_match (normal) | semmle.label |  |
+| test.rs:106:44:112:1 | BlockExpr | test.rs:106:1:112:1 | exit test_match (normal) | semmle.order | 1 |
+| test.rs:107:5:111:5 | MatchExpr | test.rs:106:44:112:1 | BlockExpr | semmle.label |  |
+| test.rs:107:5:111:5 | MatchExpr | test.rs:106:44:112:1 | BlockExpr | semmle.order | 1 |
+| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:15 | TupleStructPat | semmle.label |  |
+| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:15 | TupleStructPat | semmle.order | 1 |
+| test.rs:108:9:108:15 | TupleStructPat | test.rs:108:20:108:20 | PathExpr | semmle.label | match |
+| test.rs:108:9:108:15 | TupleStructPat | test.rs:108:20:108:20 | PathExpr | semmle.order | 1 |
+| test.rs:108:9:108:15 | TupleStructPat | test.rs:109:9:109:15 | TupleStructPat | semmle.label | no-match |
+| test.rs:108:9:108:15 | TupleStructPat | test.rs:109:9:109:15 | TupleStructPat | semmle.order | 2 |
+| test.rs:108:20:108:20 | PathExpr | test.rs:108:24:108:25 | LiteralExpr | semmle.label |  |
+| test.rs:108:20:108:20 | PathExpr | test.rs:108:24:108:25 | LiteralExpr | semmle.order | 1 |
+| test.rs:108:20:108:25 | BinaryExpr | test.rs:108:30:108:30 | PathExpr | semmle.label | true |
+| test.rs:108:20:108:25 | BinaryExpr | test.rs:108:30:108:30 | PathExpr | semmle.order | 1 |
+| test.rs:108:20:108:25 | BinaryExpr | test.rs:109:9:109:15 | TupleStructPat | semmle.label | false |
+| test.rs:108:20:108:25 | BinaryExpr | test.rs:109:9:109:15 | TupleStructPat | semmle.order | 2 |
+| test.rs:108:24:108:25 | LiteralExpr | test.rs:108:20:108:25 | BinaryExpr | semmle.label |  |
+| test.rs:108:24:108:25 | LiteralExpr | test.rs:108:20:108:25 | BinaryExpr | semmle.order | 1 |
+| test.rs:108:30:108:30 | PathExpr | test.rs:108:34:108:34 | LiteralExpr | semmle.label |  |
+| test.rs:108:30:108:30 | PathExpr | test.rs:108:34:108:34 | LiteralExpr | semmle.order | 1 |
+| test.rs:108:30:108:34 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:108:30:108:34 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:108:34:108:34 | LiteralExpr | test.rs:108:30:108:34 | BinaryExpr | semmle.label |  |
+| test.rs:108:34:108:34 | LiteralExpr | test.rs:108:30:108:34 | BinaryExpr | semmle.order | 1 |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.label | match |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.order | 1 |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | PathPat | semmle.label | no-match |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | PathPat | semmle.order | 2 |
+| test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:110:9:110:12 | PathPat | test.rs:110:17:110:17 | LiteralExpr | semmle.label | match |
+| test.rs:110:9:110:12 | PathPat | test.rs:110:17:110:17 | LiteralExpr | semmle.order | 1 |
+| test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:115:5:120:5 | enter test_infinite_loop | test.rs:116:9:118:9 | ExprStmt | semmle.label |  |
+| test.rs:115:5:120:5 | enter test_infinite_loop | test.rs:116:9:118:9 | ExprStmt | semmle.order | 1 |
+| test.rs:116:9:118:9 | ExprStmt | test.rs:117:13:117:13 | LiteralExpr | semmle.label |  |
+| test.rs:116:9:118:9 | ExprStmt | test.rs:117:13:117:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:116:14:118:9 | BlockExpr | test.rs:117:13:117:13 | LiteralExpr | semmle.label |  |
+| test.rs:116:14:118:9 | BlockExpr | test.rs:117:13:117:13 | LiteralExpr | semmle.order | 1 |
+| test.rs:117:13:117:13 | LiteralExpr | test.rs:116:14:118:9 | BlockExpr | semmle.label |  |
+| test.rs:117:13:117:13 | LiteralExpr | test.rs:116:14:118:9 | BlockExpr | semmle.order | 1 |
+| test.rs:122:5:127:5 | enter test_let_match | test.rs:123:13:123:19 | LetStmt | semmle.label |  |
+| test.rs:122:5:127:5 | enter test_let_match | test.rs:123:13:123:19 | LetStmt | semmle.order | 1 |
+| test.rs:122:5:127:5 | exit test_let_match (normal) | test.rs:122:5:127:5 | exit test_let_match | semmle.label |  |
+| test.rs:122:5:127:5 | exit test_let_match (normal) | test.rs:122:5:127:5 | exit test_let_match | semmle.order | 1 |
+| test.rs:122:39:127:5 | BlockExpr | test.rs:122:5:127:5 | exit test_let_match (normal) | semmle.label |  |
+| test.rs:122:39:127:5 | BlockExpr | test.rs:122:5:127:5 | exit test_let_match (normal) | semmle.order | 1 |
+| test.rs:123:13:123:19 | LetStmt | test.rs:123:23:123:23 | PathExpr | semmle.label |  |
+| test.rs:123:13:123:19 | LetStmt | test.rs:123:23:123:23 | PathExpr | semmle.order | 1 |
+| test.rs:123:13:123:19 | TupleStructPat | file://:0:0:0:0 | ExprStmt | semmle.label | no-match |
+| test.rs:123:13:123:19 | TupleStructPat | file://:0:0:0:0 | ExprStmt | semmle.order | 1 |
+| test.rs:123:13:123:19 | TupleStructPat | test.rs:126:9:126:9 | PathExpr | semmle.label | match |
+| test.rs:123:13:123:19 | TupleStructPat | test.rs:126:9:126:9 | PathExpr | semmle.order | 2 |
+| test.rs:123:23:123:23 | PathExpr | test.rs:123:13:123:19 | TupleStructPat | semmle.label |  |
+| test.rs:123:23:123:23 | PathExpr | test.rs:123:13:123:19 | TupleStructPat | semmle.order | 1 |
+| test.rs:126:9:126:9 | PathExpr | test.rs:122:39:127:5 | BlockExpr | semmle.label |  |
+| test.rs:126:9:126:9 | PathExpr | test.rs:122:39:127:5 | BlockExpr | semmle.order | 1 |
