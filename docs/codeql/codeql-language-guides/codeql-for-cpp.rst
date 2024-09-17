@@ -28,6 +28,10 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`CodeQL library for C and C++ <codeql-library-for-cpp>`: When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
 
+- `CodeQL CTF: U-Boot Challenge <https://securitylab.github.com/ctf/uboot/>`__: Follow the steps that members of GitHub Security Lab went through to find 13 CWE vulnerabilities in U-Boot.
+
+- `CodeQL CTF: SEGV Hunt <https://securitylab.github.com/ctf/segv/>`__: Follow the steps that members of GitHub Security Lab went through to find unsafe uses of ``alloca`` in the GNU C Library (glibc).
+
 -  :doc:`Functions in C and C++ <functions-in-cpp>`: You can use CodeQL to explore functions in C and C++ code.
 
 -  :doc:`Expressions, types, and statements in C and C++ <expressions-types-and-statements-in-cpp>`: You can use CodeQL to explore expressions, types, and statements in C and C++ code to find, for example, incorrect assignments.
