@@ -8,4 +8,4 @@
  * @tags maintainability
  */
 
-select 1
+select 1, "Variable is assigned a value that is never used."
