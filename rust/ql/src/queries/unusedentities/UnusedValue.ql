@@ -3,9 +3,13 @@
  * @description Unused values may be an indication that the code is incomplete or has a typo.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision medium
  * @id rust/unused-value
  * @tags maintainability
  */
 
-select 1, "Variable is assigned a value that is never used."
+import rust
+
+from Locatable e
+where none() // TODO: implement query
+select e, "Variable is assigned a value that is never used."
