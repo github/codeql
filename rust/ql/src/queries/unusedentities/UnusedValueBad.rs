@@ -1,4 +1,4 @@
-fn get_sum(values:&[i32]) -> i32 {
+fn get_average(values:&[i32]) -> i32 {
 	let mut sum = 0;
 	let mut average = 0; // BAD: unused value
 
@@ -6,5 +6,6 @@ fn get_sum(values:&[i32]) -> i32 {
 		sum += v;
 	}
 
-	return sum;
+        average = sum / values.len();
+	return average;
 }
