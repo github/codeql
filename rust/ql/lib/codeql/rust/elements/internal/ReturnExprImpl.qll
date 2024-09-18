@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.ReturnExpr
+private import codeql.rust.elements.internal.generated.ReturnExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ReturnExpr` and should not

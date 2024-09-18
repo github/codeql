@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.AsmExpr
+private import codeql.rust.elements.internal.generated.AsmExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `AsmExpr` and should not

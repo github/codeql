@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Missing
+private import codeql.rust.elements.internal.generated.Missing
 
 /**
  * INTERNAL: This module contains the customizable definition of `Missing` and should not

@@ -4,7 +4,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Element
+private import codeql.rust.elements.internal.generated.Element
 
 /**
  * INTERNAL: This module contains the customizable definition of `Element` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.IfExpr
+private import codeql.rust.elements.internal.generated.IfExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `IfExpr` and should not

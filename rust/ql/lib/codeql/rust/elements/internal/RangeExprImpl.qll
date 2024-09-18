@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.RangeExpr
+private import codeql.rust.elements.internal.generated.RangeExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `RangeExpr` and should not

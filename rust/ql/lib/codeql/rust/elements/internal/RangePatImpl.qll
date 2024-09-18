@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.RangePat
+private import codeql.rust.elements.internal.generated.RangePat
 
 /**
  * INTERNAL: This module contains the customizable definition of `RangePat` and should not

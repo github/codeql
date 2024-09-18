@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.AsyncBlockExpr
+private import codeql.rust.elements.internal.generated.AsyncBlockExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `AsyncBlockExpr` and should not

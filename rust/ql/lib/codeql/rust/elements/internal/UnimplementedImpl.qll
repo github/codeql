@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Unimplemented
+private import codeql.rust.elements.internal.generated.Unimplemented
 
 /**
  * INTERNAL: This module contains the customizable definition of `Unimplemented` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.Pat
+private import codeql.rust.elements.internal.generated.Pat
 
 /**
  * INTERNAL: This module contains the customizable definition of `Pat` and should not

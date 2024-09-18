@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.ItemStmt
+private import codeql.rust.elements.internal.generated.ItemStmt
 
 /**
  * INTERNAL: This module contains the customizable definition of `ItemStmt` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.RefExpr
+private import codeql.rust.elements.internal.generated.RefExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `RefExpr` and should not

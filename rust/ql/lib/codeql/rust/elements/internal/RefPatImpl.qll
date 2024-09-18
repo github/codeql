@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.internal.generated.RefPat
+private import codeql.rust.elements.internal.generated.RefPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `RefPat` and should not
