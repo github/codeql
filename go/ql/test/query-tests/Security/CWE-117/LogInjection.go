@@ -30,6 +30,7 @@ import (
 
 func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 	username := req.URL.Query()["username"][0]
+	slice := []any{"username", username}
 	testFlag := req.URL.Query()["testFlag"][0]
 
 	{
@@ -412,7 +413,33 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		sLogger.Named(username) // $ hasTaintFlow="username"
 		sLogger.With(username)  // $ hasTaintFlow="username"
 	}
+	// heuristic logger interface
+	{
+		logger.Printf(username)                // $ hasTaintFlow="username"
+		logger.Printf("%s", username)          // $ hasTaintFlow="username"
+		simpleLogger.Tracew(username)          // $ hasTaintFlow="username"
+		simpleLogger.Tracew("%s", username)    // $ hasTaintFlow="username"
+		simpleLogger.Debugw("%s %s", slice...) // $ hasTaintFlow="slice"
+	}
+
 }
+
+type Logger interface {
+	Printf(string, ...interface{})
+}
+
+type SimpleLogger interface {
+	Debugw(msg string, keysAndValues ...any)
+	Infow(msg string, keysAndValues ...any)
+	Warnw(msg string, keysAndValues ...any)
+	Errorw(msg string, keysAndValues ...any)
+	Tracew(msg string, keysAndValues ...any)
+}
+
+var (
+	logger       Logger
+	simpleLogger SimpleLogger
+)
 
 // GOOD: The user-provided value is escaped before being written to the log.
 func handlerGood(req *http.Request) {
@@ -649,5 +676,4 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		}
 		sLogger.Warnf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 	}
-
 }
