@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.YieldExpr
+private import codeql.rust.internal.generated.YieldExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `YieldExpr` and should not

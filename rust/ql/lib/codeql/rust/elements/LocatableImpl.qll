@@ -4,10 +4,10 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.Locatable
 import codeql.Locations
-private import codeql.rust.generated.Synth
-private import codeql.rust.generated.Raw
+private import codeql.rust.internal.generated.Locatable
+private import codeql.rust.internal.generated.Synth
+private import codeql.rust.internal.generated.Raw
 
 /**
  * INTERNAL: This module contains the customizable definition of `Locatable` and should not

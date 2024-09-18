@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.CastExpr
+private import codeql.rust.internal.generated.CastExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `CastExpr` and should not

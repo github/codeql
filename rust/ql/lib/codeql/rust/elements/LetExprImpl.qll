@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.LetExpr
+private import codeql.rust.internal.generated.LetExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `LetExpr` and should not

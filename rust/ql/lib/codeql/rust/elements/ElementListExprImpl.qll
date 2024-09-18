@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.ElementListExpr
+private import codeql.rust.internal.generated.ElementListExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `ElementListExpr` and should not

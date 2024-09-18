@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.MatchArm
+private import codeql.rust.internal.generated.MatchArm
 
 /**
  * INTERNAL: This module contains the customizable definition of `MatchArm` and should not

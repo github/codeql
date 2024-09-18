@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.MatchExpr
+private import codeql.rust.internal.generated.MatchExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `MatchExpr` and should not

@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.BreakExpr
+private import codeql.rust.internal.generated.BreakExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `BreakExpr` and should not

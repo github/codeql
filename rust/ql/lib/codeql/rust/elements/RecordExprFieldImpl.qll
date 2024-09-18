@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.RecordExprField
+private import codeql.rust.internal.generated.RecordExprField
 
 /**
  * INTERNAL: This module contains the customizable definition of `RecordExprField` and should not

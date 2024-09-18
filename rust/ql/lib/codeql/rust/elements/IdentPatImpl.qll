@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.IdentPat
+private import codeql.rust.internal.generated.IdentPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `IdentPat` and should not

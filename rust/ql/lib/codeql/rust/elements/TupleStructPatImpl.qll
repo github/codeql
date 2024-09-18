@@ -5,7 +5,7 @@
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.generated.TupleStructPat
+private import codeql.rust.internal.generated.TupleStructPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `TupleStructPat` and should not
