@@ -2,6 +2,8 @@
 
 private import codeql.Locations
 private import codeql.util.FileSystem
+private import codeql.rust.elements.SourceFile
+private import codeql.rust.elements.AstNode
 
 private module Input implements InputSig {
   abstract class ContainerBase extends @container {
@@ -41,8 +43,10 @@ class File extends Container, Impl::File {
   int getNumberOfLinesOfCode() {
     result =
       count(int line |
-        exists(Location loc |
-          loc.getFile() = this and
+        exists(AstNode node, Location loc |
+          not node instanceof SourceFile and loc = node.getLocation()
+        |
+          node.getFile() = this and
           line = [loc.getStartLine(), loc.getEndLine()] and
           not loc instanceof EmptyLocation
         )
