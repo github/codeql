@@ -255,7 +255,7 @@ module TaintTracking {
     exists(StringSplitCall c |
       c.getBaseString().getALocalSource() =
         [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")] and
-      c.getSeparator() = "?" and
+      c.getSeparator() = ["?", "#"] and
       read = c.getAPropertyRead("0")
     )
   }
@@ -356,6 +356,16 @@ module TaintTracking {
     }
   }
 
+  private class LegacySplitTaintStep extends LegacyTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node target) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "split" and
+        pred = call.getReceiver() and
+        target = call
+      )
+    }
+  }
+
   /**
    * A taint propagating data flow edge arising from string manipulation
    * functions defined in the standard library.
@@ -372,9 +382,8 @@ module TaintTracking {
               [
                 "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
                 "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
-                "small", "split", "strike", "sub", "substr", "substring", "sup",
-                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
-                "trimLeft", "trimRight"
+                "small", "strike", "sub", "substr", "substring", "sup", "toLocaleLowerCase",
+                "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim", "trimLeft", "trimRight"
               ]
             or
             // sorted, interesting, properties of Object.prototype

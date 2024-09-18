@@ -55,7 +55,7 @@
     sink(ary); // OK - its the array itself, not an element.
   });
 
-  sink(arr[0]); // OK - tuple like usage.
+  sink(arr[0]); // NOT OK
 
   for (const x of arr) {
     sink(x); // NOT OK

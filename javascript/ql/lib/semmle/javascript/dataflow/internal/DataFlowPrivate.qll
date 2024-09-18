@@ -1035,6 +1035,11 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     FlowSummaryPrivate::Steps::summaryReadStep(input, MkAwaited(), output) and
     node1 = TFlowSummaryNode(input) and
     node2 = TFlowSummaryNode(output)
+    or
+    // Add flow through optional barriers. This step is then blocked by the barrier for queries that choose to use the barrier.
+    FlowSummaryPrivate::Steps::summaryReadStep(input, MkOptionalBarrier(_), output) and
+    node1 = TFlowSummaryNode(input) and
+    node2 = TFlowSummaryNode(output)
   )
   or
   VariableCaptureOutput::localFlowStep(getClosureNode(node1), getClosureNode(node2))
@@ -1103,7 +1108,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1 = read.getBase() and
     node2 = read
   |
-    c.asPropertyName() = read.getPropertyName()
+    exists(PropertyName name | read.getPropertyName() = name |
+      not exists(name.asArrayIndex()) and
+      c = ContentSet::property(name)
+      or
+      c = ContentSet::arrayElementKnown(name.asArrayIndex())
+    )
     or
     not exists(read.getPropertyName()) and
     c = ContentSet::arrayElement()
@@ -1157,7 +1167,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TRestParameterStoreNode(function, content)
   |
     // shift known array indices
-    c.asArrayIndex() = content.asArrayIndex() + restIndex
+    c.asSingleton().asArrayIndex() = content.asArrayIndex() + restIndex
     or
     content.isUnknownArrayElement() and // TODO: don't read unknown array elements from static array
     c = ContentSet::arrayElementUnknown()
@@ -1174,7 +1184,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElement() and // unknown start index when not the first spread operator
       storeContent.isUnknownArrayElement()
     else (
-      storeContent.asArrayIndex() = n + c.asArrayIndex()
+      storeContent.asArrayIndex() = n + c.asSingleton().asArrayIndex()
       or
       storeContent.isUnknownArrayElement() and c.asSingleton() = storeContent
     )
@@ -1185,7 +1195,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1 = TFlowSummaryDynamicParameterArrayNode(parameter.getSummarizedCallable()) and
     node2 = parameter and
     (
-      c.asArrayIndex() = pos.asPositional()
+      c.asSingleton().asArrayIndex() = pos.asPositional()
       or
       c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
     )
@@ -1256,7 +1266,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(InvokeExpr invoke, int n |
     node1 = TValueNode(invoke.getArgument(n)) and
     node2 = TStaticArgumentArrayNode(invoke) and
-    c.asArrayIndex() = n and
+    c.asSingleton().asArrayIndex() = n and
     not n >= firstSpreadArgumentIndex(invoke)
   )
   or
@@ -1384,3 +1394,20 @@ class ArgumentNode extends DataFlow::Node {
 class ParameterNode extends DataFlow::Node {
   ParameterNode() { isParameterNodeImpl(this, _, _) }
 }
+
+cached
+private module OptionalSteps {
+  cached
+  predicate optionalStep(Node node1, string name, Node node2) {
+    FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      MkOptionalStep(name), node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  cached
+  predicate optionalBarrier(Node node, string name) {
+    FlowSummaryPrivate::Steps::summaryReadStep(_, MkOptionalBarrier(name),
+      node.(FlowSummaryNode).getSummaryNode())
+  }
+}
+
+import OptionalSteps

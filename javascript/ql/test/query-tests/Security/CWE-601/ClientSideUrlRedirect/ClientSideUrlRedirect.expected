@@ -42,10 +42,14 @@ nodes
 | tst10.js:14:17:14:56 | 'https: ... .search | semmle.label | 'https: ... .search |
 | tst10.js:14:33:14:56 | documen ... .search | semmle.label | documen ... .search |
 | tst12.js:3:9:3:50 | urlParts | semmle.label | urlParts |
+| tst12.js:3:9:3:50 | urlParts [ArrayElement] | semmle.label | urlParts [ArrayElement] |
 | tst12.js:3:20:3:39 | window.location.hash | semmle.label | window.location.hash |
 | tst12.js:3:20:3:50 | window. ... it('?') | semmle.label | window. ... it('?') |
+| tst12.js:3:20:3:50 | window. ... it('?') [ArrayElement] | semmle.label | window. ... it('?') [ArrayElement] |
 | tst12.js:4:9:4:45 | loc | semmle.label | loc |
 | tst12.js:4:15:4:22 | urlParts | semmle.label | urlParts |
+| tst12.js:4:15:4:22 | urlParts [ArrayElement] | semmle.label | urlParts [ArrayElement] |
+| tst12.js:4:15:4:25 | urlParts[0] | semmle.label | urlParts[0] |
 | tst12.js:5:23:5:25 | loc | semmle.label | loc |
 | tst13.js:2:9:2:52 | payload | semmle.label | payload |
 | tst13.js:2:19:2:42 | documen ... .search | semmle.label | documen ... .search |
@@ -146,10 +150,15 @@ edges
 | tst10.js:11:27:11:50 | documen ... .search | tst10.js:11:17:11:50 | '//foo' ... .search | provenance |  |
 | tst10.js:14:33:14:56 | documen ... .search | tst10.js:14:17:14:56 | 'https: ... .search | provenance |  |
 | tst12.js:3:9:3:50 | urlParts | tst12.js:4:15:4:22 | urlParts | provenance |  |
+| tst12.js:3:9:3:50 | urlParts [ArrayElement] | tst12.js:4:15:4:22 | urlParts [ArrayElement] | provenance |  |
 | tst12.js:3:20:3:39 | window.location.hash | tst12.js:3:20:3:50 | window. ... it('?') | provenance |  |
+| tst12.js:3:20:3:39 | window.location.hash | tst12.js:3:20:3:50 | window. ... it('?') [ArrayElement] | provenance |  |
 | tst12.js:3:20:3:50 | window. ... it('?') | tst12.js:3:9:3:50 | urlParts | provenance |  |
+| tst12.js:3:20:3:50 | window. ... it('?') [ArrayElement] | tst12.js:3:9:3:50 | urlParts [ArrayElement] | provenance |  |
 | tst12.js:4:9:4:45 | loc | tst12.js:5:23:5:25 | loc | provenance |  |
 | tst12.js:4:15:4:22 | urlParts | tst12.js:4:9:4:45 | loc | provenance |  |
+| tst12.js:4:15:4:22 | urlParts [ArrayElement] | tst12.js:4:15:4:25 | urlParts[0] | provenance |  |
+| tst12.js:4:15:4:25 | urlParts[0] | tst12.js:4:9:4:45 | loc | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:4:15:4:21 | payload | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:8:21:8:27 | payload | provenance |  |
 | tst13.js:2:9:2:52 | payload | tst13.js:12:14:12:20 | payload | provenance |  |

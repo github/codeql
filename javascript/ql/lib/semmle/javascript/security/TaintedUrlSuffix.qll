@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
@@ -35,14 +36,15 @@ module TaintedUrlSuffix {
     result.getKind().isUrl()
   }
 
-  /** Holds for `pred -> succ` is a step of form `x -> x.p` */
-  private predicate isSafeLocationProp(DataFlow::PropRead read) {
-    // Ignore properties that refer to the scheme, domain, port, auth, or path.
-    read.getPropertyName() =
-      [
-        "protocol", "scheme", "host", "hostname", "domain", "origin", "port", "path", "pathname",
-        "username", "password", "auth"
-      ]
+  /**
+   * Holds if `node` should be a barrier for the given `label`.
+   *
+   * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
+   * label.
+   */
+  predicate isBarrier(Node node, FlowLabel label) {
+    label = label() and
+    DataFlowPrivate::optionalBarrier(node, "split-url-suffix")
   }
 
   /**
@@ -51,11 +53,17 @@ module TaintedUrlSuffix {
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
   predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
-    // Inherit all ordinary taint steps except `x -> x.p` steps
+    // Transition from tainted-url-suffix to general taint when entering the second array element
+    // of a split('#') or split('?') array.
+    //
+    //   x [tainted-url-suffix] --> x.split('#') [array element 1] [taint]
+    //
+    // Technically we should also preverse tainted-url-suffix when entering the first array element of such
+    // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
+    // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
     srclbl = label() and
-    dstlbl = label() and
-    TaintTracking::AdditionalTaintStep::step(src, dst) and
-    not isSafeLocationProp(dst)
+    dstlbl.isTaint() and
+    DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
     srclbl = label() and
@@ -69,11 +77,6 @@ module TaintedUrlSuffix {
         // Substring that is not a prefix
         name = StringOps::substringMethodName() and
         not call.getArgument(0).getIntValue() = 0
-        or
-        // Split around '#' or '?' and extract the suffix
-        name = "split" and
-        call.getArgument(0).getStringValue() = ["#", "?"] and
-        not exists(call.getAPropertyRead("0")) // Avoid false flow to the prefix
         or
         // Replace '#' and '?' with nothing
         name = "replace" and

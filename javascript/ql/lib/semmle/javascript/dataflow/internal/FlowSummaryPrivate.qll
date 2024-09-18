@@ -95,6 +95,10 @@ private string encodeContentAux(ContentSet cs, string arg) {
   cs = MkAnyPropertyDeep() and result = "AnyMemberDeep" and arg = ""
   or
   cs = MkArrayElementDeep() and result = "ArrayElementDeep" and arg = ""
+  or
+  cs = MkOptionalStep(arg) and result = "OptionalStep"
+  or
+  cs = MkOptionalBarrier(arg) and result = "OptionalBarrier"
 }
 
 /**
@@ -122,10 +126,7 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
-ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() }
-
-/** Gets the return kind corresponding to specification `"ReturnValue"`. */
-MkNormalReturnKind getReturnValueKind() { any() }
+ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stage::ref() }
 
 private module FlowSummaryStepInput implements Private::StepsInputSig {
   DataFlowCall getACall(SummarizedCallable sc) {
@@ -237,3 +238,12 @@ ContentSet decodeUnknownWithoutContent(AccessPathSyntax::AccessPathTokenBase tok
  */
 bindingset[token]
 ContentSet decodeUnknownWithContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
+
+cached
+module Stage {
+  cached
+  predicate ref() { 1 = 1 }
+
+  cached
+  predicate backref() { optionalStep(_, _, _) }
+}

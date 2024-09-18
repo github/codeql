@@ -61,5 +61,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, ContentSet c) {
   exists(node) and
-  c = [ContentSet::promiseValue(), ContentSet::arrayElement()]
+  c = [ContentSet::promiseValue(), ContentSet::arrayElement()] and
+  // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
+  not optionalStep(node, _, _)
 }

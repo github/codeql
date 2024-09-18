@@ -93,14 +93,20 @@ module Private {
     // than an ordinary content component. These special content sets should never appear in a step.
     MkAwaited() or
     MkAnyPropertyDeep() or
-    MkArrayElementDeep()
+    MkArrayElementDeep() or
+    MkOptionalStep(string name) { isAccessPathTokenPresent("OptionalStep", name) } or
+    MkOptionalBarrier(string name) { isAccessPathTokenPresent("OptionalBarrier", name) }
 
   /**
    * Holds if `cs` is used to encode a special operation as a content component, but should not
    * be treated as an ordinary content component.
    */
   predicate isSpecialContentSet(ContentSet cs) {
-    cs = MkAwaited() or cs = MkAnyPropertyDeep() or cs = MkArrayElementDeep()
+    cs = MkAwaited() or
+    cs = MkAnyPropertyDeep() or
+    cs = MkArrayElementDeep() or
+    cs instanceof MkOptionalStep or
+    cs instanceof MkOptionalBarrier
   }
 }
 
@@ -254,14 +260,8 @@ module Public {
     /** Gets the singleton content to be accessed. */
     Content asSingleton() { this = MkSingletonContent(result) }
 
-    /** Gets the property name to be accessed. */
-    PropertyName asPropertyName() {
-      // TODO: array indices should be mapped to a ContentSet that also reads from UnknownArrayElement
-      result = this.asSingleton().asPropertyName()
-    }
-
-    /** Gets the array index to be accessed. */
-    int asArrayIndex() { result = this.asSingleton().asArrayIndex() }
+    /** Gets the property name to be accessed, provided that this is a singleton content set. */
+    PropertyName asPropertyName() { result = this.asSingleton().asPropertyName() }
 
     /**
      * Gets a string representation of this content set.
@@ -294,6 +294,16 @@ module Public {
       or
       this = MkAnyCapturedContent() and
       result = "AnyCapturedContent"
+      or
+      exists(string name |
+        this = MkOptionalStep(name) and
+        result = "OptionalStep[" + name + "]"
+      )
+      or
+      exists(string name |
+        this = MkOptionalBarrier(name) and
+        result = "OptionalBarrier[" + name + "]"
+      )
     }
   }
 
