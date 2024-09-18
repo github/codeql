@@ -24,18 +24,20 @@ public final class Pojo {
 
   private int intValue = 2;
 
-  private byte[] byteArray = new byte[] {1, 2, 3};
+  public byte[] byteArray = new byte[] {1, 2, 3};
   private float[] floatArray = new float[] {1, 2, 3};
   private char[] charArray = new char[] {'a', 'b', 'c'};
   private List<Character> charList = Arrays.asList('a', 'b', 'c');
   private Byte[] byteObjectArray = new Byte[] {1, 2, 3};
 
   // summary=p;Pojo;false;getValue;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Pojo;false;getValue;();;Argument[this].SyntheticField[p.Pojo.value];ReturnValue;value;df-generated
   public String getValue() {
     return value;
   }
 
   // summary=p;Pojo;false;setValue;(String);;Argument[0];Argument[this];taint;df-generated
+  // contentbased-summary=p;Pojo;false;setValue;(String);;Argument[0];Argument[this].SyntheticField[p.Pojo.value];value;df-generated
   public void setValue(String value) {
     this.value = value;
   }
@@ -62,11 +64,13 @@ public final class Pojo {
   }
 
   // summary=p;Pojo;false;getCharArray;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Pojo;false;getCharArray;();;Argument[this].SyntheticField[p.Pojo.charArray];ReturnValue;value;df-generated
   public char[] getCharArray() {
     return charArray;
   }
 
   // summary=p;Pojo;false;getByteArray;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Pojo;false;getByteArray;();;Argument[this].Field[p.Pojo.byteArray];ReturnValue;value;df-generated
   public byte[] getByteArray() {
     return byteArray;
   }
@@ -87,11 +91,13 @@ public final class Pojo {
   }
 
   // summary=p;Pojo;false;getBoxedChars;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Pojo;false;getBoxedChars;();;Argument[this].SyntheticField[p.Pojo.charList];ReturnValue;value;df-generated
   public List<Character> getBoxedChars() {
     return charList;
   }
 
   // summary=p;Pojo;false;getBoxedBytes;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Pojo;false;getBoxedBytes;();;Argument[this].SyntheticField[p.Pojo.byteObjectArray];ReturnValue;value;df-generated
   public Byte[] getBoxedBytes() {
     return byteObjectArray;
   }
@@ -107,6 +113,7 @@ public final class Pojo {
   }
 
   // summary=p;Pojo;false;fillIn;(List);;Argument[this];Argument[0].Element;taint;df-generated
+  // contentbased-summary=p;Pojo;false;fillIn;(List);;Argument[this].SyntheticField[p.Pojo.value];Argument[0].Element;value;df-generated
   public void fillIn(List<String> target) {
     target.add(value);
   }

@@ -409,10 +409,17 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
     or
     orphaned_variables(underlyingElement(this), unresolveElement(result))
+    or
+    coroutine_placeholder_variable(underlyingElement(this), _, unresolveElement(result))
   }
 
   override predicate isStatic() {
     super.isStatic() or orphaned_variables(underlyingElement(this), _)
+  }
+
+  override predicate isCompilerGenerated() {
+    super.isCompilerGenerated() or
+    coroutine_placeholder_variable(underlyingElement(this), _, _)
   }
 }
 

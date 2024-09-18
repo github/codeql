@@ -1,11 +1,11 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.10-RELEASE.322"
+_swift_prebuilt_version = "swift-5.10.1-RELEASE.323"
 _swift_sha_map = {
-    "Linux-X64": "634497779e930a808489e5d472753b604c07085abf411356cae7921bde14130f",
-    "macOS-ARM64": "293df92da9a3cc79c595a28b1b4ec881a5fdb248ea7eac34c89943e94deff700",
-    "macOS-X64": "813c1746777701d30e716c130b0bb087a9c5b7ab025fd99afc695ec52cd432ad",
+    "Linux-X64": "29c7c53ab2f438e85daecdb4567173c78ac32afc45753d7277d744aed515229d",
+    "macOS-ARM64": "e697f423c8abcb8a942246489fd4f8ce71472119510b64b2073eaeaec86b771e",
+    "macOS-X64": "faef29334e8615e8a71263c7453ebc7e566d6f2928d827675f6faae233c544a6",
 }
 
 _swift_arch_map = {

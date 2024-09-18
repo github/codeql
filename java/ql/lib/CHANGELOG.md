@@ -1,3 +1,36 @@
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ProcessBuilderConstructor`, `MethodProcessBuilderCommand`, and `MethodRuntimeExec` from `JDK.qll`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted the deprecated `getURI` predicate from `CamelJavaDslToDecl` and `SpringCamelXmlToElement`, use `getUri` instead.
+* Deleted the deprecated `ExecCallable` class from `ExternalProcess.qll`.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `PathCreation.qll` file.
+* Deleted the deprecated `WebviewDubuggingEnabledQuery.qll` file.
+
+### Major Analysis Improvements
+
+* When a method exists as source code, we will no longer use a models-as-data (MaD) model of that method. This primarily affects query results when the analysis includes generated models for the source code being analysed.
+
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Threat-model for `System.in` changed from `commandargs` to newly created `stdin` (both subgroups of `local`).
+
+### Bug Fixes
+
+* Fixed an issue where analysis in `build-mode: none` may very occasionally throw a `CoderMalfunctionError` while resolving dependencies provided by a build system (Maven or Gradle), which could cause some dependency resolution and consequently alerts to vary unpredictably from one run to another.
+* Fixed an issue where Java analysis in `build-mode: none` would fail to resolve dependencies using the `executable-war` Maven artifact type.
+* Fixed an issue where analysis in `build-mode: none` may fail to resolve dependencies of Gradle projects where the dependency uses a non-empty artifact classifier -- for example, `someproject-1.2.3-tests.jar`, which has the classifier `tests`.
+
 ## 3.0.0
 
 ### Breaking Changes

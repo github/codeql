@@ -182,19 +182,6 @@ class UnknownExternalApiDataNode extends ExternalApiDataNode {
   }
 }
 
-/**
- * DEPRECATED: Use `UntrustedDataToExternalApiFlow` instead.
- *
- * A configuration for tracking flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s.
- */
-deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
-}
-
 private module UntrustedDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
@@ -205,19 +192,6 @@ private module UntrustedDataConfig implements DataFlow::ConfigSig {
  * Tracks data flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s.
  */
 module UntrustedDataToExternalApiFlow = DataFlow::Global<UntrustedDataConfig>;
-
-/**
- * DEPRECATED: Use `UntrustedDataToUnknownExternalApiFlow` instead.
- *
- * A configuration for tracking flow from `ThreatModelFlowSource`s to `UnknownExternalApiDataNode`s.
- */
-deprecated class UntrustedDataToUnknownExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToUnknownExternalApiConfig() { this = "UntrustedDataToUnknownExternalAPIConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalApiDataNode }
-}
 
 private module UntrustedDataToUnknownExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }

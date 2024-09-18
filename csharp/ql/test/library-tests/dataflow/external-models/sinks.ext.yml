@@ -9,3 +9,5 @@ extensions:
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "ReturnValue", "html-injection", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "file-content-store", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql-injection", "manual"]
+      - ["My.Qltest", "SinkPropertyAttribute", false, "", "", "Attribute.Setter", "Argument[0]", "sql-injection", "manual"]
+      - ["My.Qltest", "SinkIndexerAttribute", false, "", "", "Attribute.Setter", "Argument[1]", "sql-injection", "manual"]

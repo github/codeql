@@ -7,4 +7,4 @@ where
   or
   elemDesc = "SizeofExprOperator.getExprOperand()" and
   e = sto.(SizeofExprOperator).getExprOperand()
-select sto, elemDesc, e
+select sto, sto.getValue(), elemDesc, e

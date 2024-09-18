@@ -1,3 +1,21 @@
+## 1.2.3
+
+### Minor Analysis Improvements
+
+* Removed false positives caused by buffer accesses in unreachable code.
+* Removed false positives caused by inconsistent type checking.
+* Add modeling of C functions that don't throw, thereby increasing the precision of the `cpp/incorrect-allocation-error-handling` ("Incorrect allocation-error handling") query. The query now produces additional true positives.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The `cpp/uncontrolled-allocation-size` ("Uncontrolled allocation size") query now considers arithmetic operations that might reduce the size of user input as a barrier. The query therefore produces fewer false positive results.
+
 ## 1.2.0
 
 ### Query Metadata Changes

@@ -33,6 +33,7 @@ class Generator:
         self.generateSources = False
         self.generateSummaries = False
         self.generateNeutrals = False
+        self.generateContentSummaries = False
         self.generateTypeBasedSummaries = False
         self.dryRun = False
         self.dirname = "modelgenerator"
@@ -50,6 +51,7 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-neutrals
+    --with-content-summaries (Experimental). May not be used in conjunction with --with-summaries
     --with-typebased-summaries (Experimental)
 If none of these flags are specified, all models are generated except for the type based models.
 
@@ -81,6 +83,10 @@ Requirements: `codeql` should both appear on your path.
             generator.printHelp()
             sys.exit(0)
 
+        if "--with-summaries" in sys.argv and "--with-content-summaries" in sys.argv:
+            generator.printHelp()
+            sys.exit(0)
+
         if "--with-sinks" in sys.argv:
             sys.argv.remove("--with-sinks")
             generator.generateSinks = True
@@ -97,6 +103,10 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--with-neutrals")
             generator.generateNeutrals = True
 
+        if "--with-content-summaries" in sys.argv:
+            sys.argv.remove("--with-content-summaries")
+            generator.generateContentSummaries = True
+
         if "--with-typebased-summaries" in sys.argv:
             sys.argv.remove("--with-typebased-summaries")
             generator.generateTypeBasedSummaries = True
@@ -105,7 +115,7 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--dry-run")
             generator.dryRun = True
 
-        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNeutrals and not generator.generateTypeBasedSummaries:
+        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNeutrals and not generator.generateTypeBasedSummaries and not generator.generateContentSummaries:
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNeutrals = True
 
         n = len(sys.argv)
@@ -162,8 +172,13 @@ Requirements: `codeql` should both appear on your path.
             neutralAddsTo = self.getAddsTo("CaptureNeutralModels.ql", helpers.neutralModelPredicate)
         else:
             neutralAddsTo = { }
-        
-        return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
+
+        if self.generateContentSummaries:
+            contentSummaryAddsTo = self.getAddsTo("CaptureContentSummaryModels.ql", helpers.summaryModelPredicate)
+        else:
+            contentSummaryAddsTo = { }
+
+        return helpers.merge(summaryAddsTo, contentSummaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:

@@ -104,8 +104,6 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
         additionalStep(node1, state1, node2, state2)
       }
 
-      predicate isAdditionalFlowStep = ContentConfig::isAdditionalFlowStep/2;
-
       predicate isBarrier = ContentConfig::isBarrier/1;
 
       FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
@@ -302,12 +300,16 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           // relation, when flow can reach a sink without going back out
           Flow::PathGraph::subpaths(pred, succ, _, _) and
           not reachesSink(succ)
-          or
+        )
+        or
+        exists(Node predNode, State predState, Node succNode, State succState |
+          succNodeAndState(pred, predNode, predState, succ, succNode, succState)
+        |
           // needed to record store steps
-          storeStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState())
+          storeStep(predNode, predState, _, succNode, succState)
           or
           // needed to record read steps
-          readStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState())
+          readStep(predNode, predState, _, succNode, succState)
         )
       }
 
@@ -456,26 +458,38 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
+    private predicate succNodeAndState(
+      Flow::PathNode pre, Node preNode, State preState, Flow::PathNode succ, Node succNode,
+      State succState
+    ) {
+      pre.getNode() = preNode and
+      pre.getState() = preState and
+      succ.getNode() = succNode and
+      succ.getState() = succState and
+      pre.getASuccessor() = succ
+    }
+
+    pragma[nomagic]
     private predicate nodeReachesStore(
-      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode node,
+      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode target,
       ContentSet c, AccessPath reads, AccessPath stores
     ) {
-      exists(Flow::PathNode mid |
+      exists(Flow::PathNode mid, State midState, Node midNode, State targetState, Node targetNode |
         nodeReaches(source, scReads, scStores, mid, reads, stores) and
-        storeStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-        mid.getASuccessor() = node
+        succNodeAndState(mid, midNode, midState, target, targetNode, targetState) and
+        storeStep(midNode, midState, c, targetNode, targetState)
       )
     }
 
     pragma[nomagic]
     private predicate nodeReachesRead(
-      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode node,
+      Flow::PathNode source, AccessPath scReads, AccessPath scStores, Flow::PathNode target,
       ContentSet c, AccessPath reads, AccessPath stores
     ) {
-      exists(Flow::PathNode mid |
+      exists(Flow::PathNode mid, State midState, Node midNode, State targetState, Node targetNode |
         nodeReaches(source, scReads, scStores, mid, reads, stores) and
-        readStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-        mid.getASuccessor() = node
+        succNodeAndState(mid, midNode, midState, target, targetNode, targetState) and
+        readStep(midNode, midState, c, targetNode, targetState)
       )
     }
 

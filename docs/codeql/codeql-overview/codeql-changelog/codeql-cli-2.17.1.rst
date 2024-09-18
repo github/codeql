@@ -42,8 +42,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/unknown-javadoc-parameter` now accepts :code:`@param` tags that apply to the parameters of a record.
 
@@ -79,8 +79,8 @@ Golang
 *   Data flow through variables declared in statements of the form :code:`x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
 *   Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   About 6,700 summary models and 6,800 neutral summary models for the JDK that were generated using data flow have been added. This may lead to new alerts being reported.
 

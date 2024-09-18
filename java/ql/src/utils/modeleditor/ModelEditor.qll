@@ -27,7 +27,7 @@ class Endpoint extends Callable {
   /**
    * Gets the type name of this endpoint.
    */
-  string getTypeName() { result = this.getDeclaringType().nestedName() }
+  string getTypeName() { result = this.getDeclaringType().getNestedName() }
 
   /**
    * Gets the parameter types of this endpoint.
