@@ -1,9 +1,11 @@
-fn get_sum(values:&[i32]) -> i32 {
+fn get_average(values:&[i32]) -> f64 {
 	let mut sum = 0;
+	let average;
 
 	for v in values {
 		sum += v;
 	}
 
-	return sum;
+	average = sum as f64 / values.len() as f64;
+	return average;
 }

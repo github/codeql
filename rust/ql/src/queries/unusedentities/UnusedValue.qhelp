@@ -14,7 +14,7 @@
 <example>
 <p>In the following example, there is a variable <code>average</code> that is initialized to <code>0</code>, but that value is never used:</p>
 <sample src="UnusedValueBad.rs" />
-<p>The problem can be fixed by removing the value and the variable that contains it:</p>
+<p>The problem can be fixed by removing the unused value:</p>
 <sample src="UnusedValueGood.rs" />
 </example>
 
