@@ -1046,6 +1046,42 @@ void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	sink(*buf); // $ ir MISSING: ast
 }
 
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	int *src = indirect_source();
+	int *dest = (int*)realloc(src, sizeof(int));
+	sink(*dest); // $ ir, MISSING: ast
+}
+
+struct MyInt {
+  int i;
+  MyInt();
+  void swap(MyInt &j);
+};
+
+void test_member_swap() {
+	MyInt s1;
+	MyInt s2;
+	s2.i = source();
+	MyInt s3;
+	MyInt s4;
+	s4.i = source();
+
+	sink(s1.i);
+	sink(s2.i); // $ ast,ir
+	sink(s3.i);
+	sink(s4.i); // $ ast,ir
+
+	s1.swap(s2);
+	s4.swap(s3);
+
+	sink(s1.i); // $ ir
+	sink(s2.i); // $ SPURIOUS: ast
+	sink(s3.i); // $ ir
+	sink(s4.i); // $ SPURIOUS: ast
+}
+
 void flow_out_of_address_with_local_flow() {
   MyStruct a;
   a.content = nullptr;

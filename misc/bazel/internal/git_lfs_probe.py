@@ -16,18 +16,24 @@ import shutil
 import json
 import typing
 import urllib.request
+import urllib.error
 from urllib.parse import urlparse
 import re
 import base64
 from dataclasses import dataclass
 import argparse
 
-
 def options():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--hash-only", action="store_true")
     p.add_argument("sources", type=pathlib.Path, nargs="+")
     return p.parse_args()
+
+
+TIMEOUT = 20
+
+def warn(message: str) -> None:
+    print(f"WARNING: {message}", file=sys.stderr)
 
 
 @dataclass
@@ -39,6 +45,10 @@ class Endpoint:
 
     def update_headers(self, d: typing.Iterable[typing.Tuple[str, str]]):
         self.headers.update((k.capitalize(), v) for k, v in d)
+
+
+class NoEndpointsFound(Exception):
+    pass
 
 
 opts = options()
@@ -105,18 +115,12 @@ def get_endpoints() -> typing.Iterable[Endpoint]:
                 "download",
             ]
             try:
-                res = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=15)
+                res = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=TIMEOUT)
             except subprocess.TimeoutExpired:
-                print(
-                    f"WARNING: ssh timed out when connecting to {server}, ignoring {endpoint.name} endpoint",
-                    file=sys.stderr,
-                )
+                warn(f"ssh timed out when connecting to {server}, ignoring {endpoint.name} endpoint")
                 continue
             if res.returncode != 0:
-                print(
-                    f"WARNING: ssh failed when connecting to {server}, ignoring {endpoint.name} endpoint",
-                    file=sys.stderr,
-                )
+                warn(f"ssh failed when connecting to {server}, ignoring {endpoint.name} endpoint")
                 continue
             ssh_resp = json.loads(res.stdout)
             endpoint.href = ssh_resp.get("href", endpoint)
@@ -139,10 +143,7 @@ def get_endpoints() -> typing.Iterable[Endpoint]:
                 input=f"protocol={url.scheme}\nhost={url.netloc}\npath={url.path[1:]}\n",
             )
             if credentials is None:
-                print(
-                    f"WARNING: no authorization method found, ignoring {data.name} endpoint",
-                    file=sys.stderr,
-                )
+                warn(f"no authorization method found, ignoring {endpoint.name} endpoint")
                 continue
             credentials = dict(get_env(credentials))
             auth = base64.b64encode(
@@ -176,10 +177,10 @@ def get_locations(objects):
             data=json.dumps(data).encode("ascii"),
         )
         try:
-            with urllib.request.urlopen(req) as resp:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
                 data = json.load(resp)
-        except urllib.request.HTTPError as e:
-            print(f"WARNING: encountered HTTPError {e}, ignoring endpoint {e.name}")
+        except urllib.error.URLError as e:
+            warn(f"encountered {type(e).__name__} {e}, ignoring endpoint {endpoint.name}")
             continue
         assert len(data["objects"]) == len(
             indexes
@@ -187,7 +188,7 @@ def get_locations(objects):
         for i, resp in zip(indexes, data["objects"]):
             ret[i] = f'{resp["oid"]} {resp["actions"]["download"]["href"]}'
         return ret
-    raise Exception(f"no valid endpoint found")
+    raise NoEndpointsFound
 
 
 def get_lfs_object(path):
@@ -204,6 +205,10 @@ def get_lfs_object(path):
         return {"oid": sha256, "size": size}
 
 
-objects = [get_lfs_object(src) for src in sources]
-for resp in get_locations(objects):
-    print(resp)
+try:
+    objects = [get_lfs_object(src) for src in sources]
+    for resp in get_locations(objects):
+        print(resp)
+except NoEndpointsFound as e:
+    print(f"ERROR: no valid endpoints found", file=sys.stderr)
+    sys.exit(1)

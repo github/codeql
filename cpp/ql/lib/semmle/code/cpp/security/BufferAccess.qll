@@ -19,6 +19,11 @@ abstract class BufferAccess extends Expr {
     //A buffer access must be reachable (not in dead code)
     reachable(this)
   }
+  BufferAccess() {
+    not this.isUnevaluated() and
+    //A buffer access must be reachable (not in dead code)
+    reachable(this)
+  }
 
   abstract string getName();
 
@@ -30,6 +35,8 @@ abstract class BufferAccess extends Expr {
    * - 1 = buffer range [0, getSize) is accessed entirely.
    * - 2 = buffer range [0, getSize) may be accessed partially or entirely.
    * - 3 = buffer is accessed at offset getSize - 1.
+   * - 4 = buffer is accessed with null terminator read protections
+   *       (does not read past null terminator, regardless of access size)
    */
   abstract Expr getBuffer(string bufferDesc, int accessType);
 

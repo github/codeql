@@ -654,18 +654,35 @@ void test26(bool cond)
 	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1]
 }
 
+#define IND 100
+#define MAX_SIZE 100
 void test27(){
 	char *src = "";
 	char *dest = "abcdefgh";
-	const int size = 100;
 	int ind = 100;
-	char buffer[size];
+	char buffer[MAX_SIZE];
 
-	strncpy(dest, src, strlen(dest)); // GOOD, strncpy will not read past null terminator of source
+	strncpy(dest, src, 8); // GOOD, strncpy will not read past null terminator of source
 		
-	if(ind < size){
-		buffer[ind] = 0; // GOOD: out of bounds, but inaccessible code
+	if(IND < MAX_SIZE){
+		buffer[IND] = 0; // GOOD: out of bounds, but inaccessible code
 	}
+}
+
+typedef struct _MYSTRUCT {
+    unsigned long  a;
+    unsigned short b;
+    unsigned char  z[ 100 ];
+} MYSTRUCT;
+
+
+const MYSTRUCT _myStruct = { 0 };
+typedef const MYSTRUCT& MYSTRUCTREF;
+
+// False positive case due to use of typedefs
+int test28(MYSTRUCTREF g)
+{
+	return memcmp(&g, &_myStruct, sizeof(MYSTRUCT)); // GOOD
 }
 
 

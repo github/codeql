@@ -197,8 +197,11 @@ class PackageEntity extends Entity, @pkgobject { }
 /** A built-in or declared named type. */
 class TypeEntity extends Entity, @typeobject { }
 
+/** The parent of a type parameter type, either a declared type or a declared function. */
+class TypeParamParentEntity extends Entity, @typeparamparentobject { }
+
 /** A declared named type. */
-class DeclaredType extends TypeEntity, DeclaredEntity, @decltypeobject {
+class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
@@ -598,7 +601,7 @@ class PromotedMethod extends Method {
 }
 
 /** A declared function. */
-class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
+class DeclaredFunction extends Function, DeclaredEntity, TypeParamParentEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
   override predicate mayHaveSideEffects() {

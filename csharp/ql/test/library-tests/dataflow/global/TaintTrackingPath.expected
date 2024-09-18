@@ -301,14 +301,22 @@ edges
 | GlobalDataFlow.cs:89:13:89:18 | access to local variable sink17 : String | GlobalDataFlow.cs:90:15:90:20 | access to local variable sink17 | provenance |  |
 | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String | GlobalDataFlow.cs:89:13:89:18 | access to local variable sink17 : String | provenance |  |
 | GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:2 |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:89:89:89 | s : String | provenance | MaD:2 |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:104:89:104 | x : String | provenance | MaD:2 |
 | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:89:59:89:64 | access to local variable sink14 : String | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | provenance |  |
+| GlobalDataFlow.cs:89:89:89:89 | s : String | GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | provenance |  |
+| GlobalDataFlow.cs:89:104:89:104 | x : String | GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:92:15:92:20 | access to local variable sink18 | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:97:23:97:28 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:100:24:100:29 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:84:91:86 | acc : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:104:91:104 | x : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:84:91:86 | acc : String | GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | provenance |  |
+| GlobalDataFlow.cs:91:104:91:104 | x : String | GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | provenance | MaD:22 |
 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | GlobalDataFlow.cs:95:15:95:20 | access to local variable sink21 | provenance |  |
 | GlobalDataFlow.cs:97:23:97:28 | access to local variable sink18 : String | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 : Boolean | provenance | MaD:20 |
@@ -788,10 +796,18 @@ nodes
 | GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | semmle.label | (...) ... : null [element] : String |
 | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | semmle.label | { ..., ... } : null [element] : String |
 | GlobalDataFlow.cs:89:59:89:64 | access to local variable sink14 : String | semmle.label | access to local variable sink14 : String |
+| GlobalDataFlow.cs:89:89:89:89 | s : String | semmle.label | s : String |
+| GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | semmle.label | ... + ... : String |
+| GlobalDataFlow.cs:89:104:89:104 | x : String | semmle.label | x : String |
+| GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:90:15:90:20 | access to local variable sink17 | semmle.label | access to local variable sink17 |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | semmle.label | access to local variable sink18 : String |
 | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | semmle.label | call to method Aggregate<String,String,String> : String |
 | GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | semmle.label | access to local variable sink14 : String |
+| GlobalDataFlow.cs:91:84:91:86 | acc : String | semmle.label | acc : String |
+| GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | semmle.label | ... + ... : String |
+| GlobalDataFlow.cs:91:104:91:104 | x : String | semmle.label | x : String |
+| GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:92:15:92:20 | access to local variable sink18 | semmle.label | access to local variable sink18 |
 | GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | semmle.label | access to local variable sink18 : String |
 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | semmle.label | access to local variable sink21 : Int32 |
@@ -1102,6 +1118,10 @@ subpaths
 | GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:315:31:315:40 | sinkParam8 : String | GlobalDataFlow.cs:318:16:318:25 | access to parameter sinkParam8 : String | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:118:85:118 | x : String | GlobalDataFlow.cs:85:127:85:127 | access to parameter x : String | GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:121:87:121 | y : String | GlobalDataFlow.cs:87:127:87:127 | access to parameter y : String | GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:89:89:89 | s : String | GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:104:89:104 | x : String | GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:84:91:86 | acc : String | GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:104:91:104 | x : String | GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String |
 | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String |
 | GlobalDataFlow.cs:139:29:139:33 | access to local variable sink3 : String | GlobalDataFlow.cs:138:40:138:40 | x : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String | GlobalDataFlow.cs:139:21:139:34 | delegate call : String |
 | GlobalDataFlow.cs:147:39:147:43 | access to local variable sink4 : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> : String |

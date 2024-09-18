@@ -156,7 +156,6 @@ nodes
 | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | semmle.label | container : ValueWrapper [<map.value>] : Object |
 | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | semmle.label | container : ValueWrapper [<map.value>] : Object |
 | Test.java:42:60:42:74 | get(...) : Object | semmle.label | get(...) : Object |
-| Test.java:42:60:42:74 | get(...) : Object | semmle.label | get(...) : Object |
 | Test.java:51:16:51:23 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:52:10:52:58 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | semmle.label | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object |
 | Test.java:52:44:52:45 | in : Object | semmle.label | in : Object |
@@ -228,12 +227,10 @@ nodes
 | Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | semmle.label | out : ValueWrapper [<map.value>] : Object |
 subpaths
 | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | Test.java:42:60:42:74 | get(...) : Object |
-| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | Test.java:42:60:42:74 | get(...) : Object |
 | Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | Test.java:39:19:39:57 | container : ValueRetrievalException [<map.key>] : Object | Test.java:39:69:39:86 | getKey(...) : Object | Test.java:53:9:53:22 | getMapKey(...) |
 | Test.java:65:45:65:52 | source(...) : Object | Test.java:13:16:13:29 | element : Object | Test.java:13:3:13:14 | parameter this [Return] : ValueWrapper [<map.value>] : Object | Test.java:65:28:65:53 | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object |
 | Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | Test.java:66:10:66:17 | get(...) : Object |
 | Test.java:72:36:72:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:72:15:72:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
-| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:74:9:74:24 | getMapValue(...) |
 | Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:74:9:74:24 | getMapValue(...) |
 | Test.java:79:36:79:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:79:15:79:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
 | Test.java:86:36:86:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:86:15:86:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
@@ -246,6 +243,5 @@ subpaths
 | Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | Test.java:40:45:40:104 | next(...) : Object | Test.java:123:9:123:22 | getMapKey(...) |
 | Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | Test.java:41:47:41:78 | get(...) : Object | Test.java:130:9:130:24 | getMapValue(...) |
 | Test.java:135:36:135:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:135:15:135:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
-| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:137:9:137:24 | getMapValue(...) |
 | Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:137:9:137:24 | getMapValue(...) |
 testFailures

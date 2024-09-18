@@ -554,19 +554,15 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:67:30:67:42 | call to pair | map.cpp:80:7:80:7 | l |  |
 | map.cpp:67:30:67:42 | call to pair | map.cpp:81:7:81:7 | l |  |
 | map.cpp:67:37:67:41 | 456 | map.cpp:67:30:67:42 | call to pair | TAINT |
-| map.cpp:68:3:68:3 | i | map.cpp:68:10:68:10 | ref arg j | TAINT |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:70:7:70:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:71:7:71:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:72:7:72:7 | i |  |
-| map.cpp:68:10:68:10 | j | map.cpp:68:3:68:3 | ref arg i | TAINT |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:73:7:73:7 | j |  |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:74:7:74:7 | j |  |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:75:7:75:7 | j |  |
-| map.cpp:69:2:69:2 | k | map.cpp:69:9:69:9 | ref arg l | TAINT |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:76:7:76:7 | k |  |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:77:7:77:7 | k |  |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:78:7:78:7 | k |  |
-| map.cpp:69:9:69:9 | l | map.cpp:69:2:69:2 | ref arg k | TAINT |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:79:7:79:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:80:7:80:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:81:7:81:7 | l |  |
@@ -1065,16 +1061,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:194:7:194:9 | m16 | map.cpp:194:7:194:9 | call to map |  |
 | map.cpp:195:7:195:9 | m17 | map.cpp:195:7:195:9 | call to map |  |
 | map.cpp:196:7:196:9 | m18 | map.cpp:196:7:196:9 | call to map |  |
-| map.cpp:197:2:197:4 | m15 | map.cpp:197:11:197:13 | ref arg m16 | TAINT |
 | map.cpp:197:2:197:4 | ref arg m15 | map.cpp:199:7:199:9 | m15 |  |
 | map.cpp:197:2:197:4 | ref arg m15 | map.cpp:252:1:252:1 | m15 |  |
-| map.cpp:197:11:197:13 | m16 | map.cpp:197:2:197:4 | ref arg m15 | TAINT |
 | map.cpp:197:11:197:13 | ref arg m16 | map.cpp:200:7:200:9 | m16 |  |
 | map.cpp:197:11:197:13 | ref arg m16 | map.cpp:252:1:252:1 | m16 |  |
-| map.cpp:198:2:198:4 | m17 | map.cpp:198:11:198:13 | ref arg m18 | TAINT |
 | map.cpp:198:2:198:4 | ref arg m17 | map.cpp:201:7:201:9 | m17 |  |
 | map.cpp:198:2:198:4 | ref arg m17 | map.cpp:252:1:252:1 | m17 |  |
-| map.cpp:198:11:198:13 | m18 | map.cpp:198:2:198:4 | ref arg m17 | TAINT |
 | map.cpp:198:11:198:13 | ref arg m18 | map.cpp:202:7:202:9 | m18 |  |
 | map.cpp:198:11:198:13 | ref arg m18 | map.cpp:252:1:252:1 | m18 |  |
 | map.cpp:199:7:199:9 | m15 | map.cpp:199:7:199:9 | call to map |  |
@@ -1747,16 +1739,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:343:7:343:9 | m16 | map.cpp:343:7:343:9 | call to unordered_map |  |
 | map.cpp:344:7:344:9 | m17 | map.cpp:344:7:344:9 | call to unordered_map |  |
 | map.cpp:345:7:345:9 | m18 | map.cpp:345:7:345:9 | call to unordered_map |  |
-| map.cpp:346:2:346:4 | m15 | map.cpp:346:11:346:13 | ref arg m16 | TAINT |
 | map.cpp:346:2:346:4 | ref arg m15 | map.cpp:348:7:348:9 | m15 |  |
 | map.cpp:346:2:346:4 | ref arg m15 | map.cpp:438:1:438:1 | m15 |  |
-| map.cpp:346:11:346:13 | m16 | map.cpp:346:2:346:4 | ref arg m15 | TAINT |
 | map.cpp:346:11:346:13 | ref arg m16 | map.cpp:349:7:349:9 | m16 |  |
 | map.cpp:346:11:346:13 | ref arg m16 | map.cpp:438:1:438:1 | m16 |  |
-| map.cpp:347:2:347:4 | m17 | map.cpp:347:11:347:13 | ref arg m18 | TAINT |
 | map.cpp:347:2:347:4 | ref arg m17 | map.cpp:350:7:350:9 | m17 |  |
 | map.cpp:347:2:347:4 | ref arg m17 | map.cpp:438:1:438:1 | m17 |  |
-| map.cpp:347:11:347:13 | m18 | map.cpp:347:2:347:4 | ref arg m17 | TAINT |
 | map.cpp:347:11:347:13 | ref arg m18 | map.cpp:351:7:351:9 | m18 |  |
 | map.cpp:347:11:347:13 | ref arg m18 | map.cpp:438:1:438:1 | m18 |  |
 | map.cpp:348:7:348:9 | m15 | map.cpp:348:7:348:9 | call to unordered_map |  |
@@ -2579,16 +2567,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | set.cpp:81:7:81:9 | s15 | set.cpp:81:7:81:9 | call to set |  |
 | set.cpp:82:2:82:4 | ref arg s12 | set.cpp:84:7:84:9 | s12 |  |
 | set.cpp:82:2:82:4 | ref arg s12 | set.cpp:126:1:126:1 | s12 |  |
-| set.cpp:82:2:82:4 | s12 | set.cpp:82:11:82:13 | ref arg s13 | TAINT |
 | set.cpp:82:11:82:13 | ref arg s13 | set.cpp:85:7:85:9 | s13 |  |
 | set.cpp:82:11:82:13 | ref arg s13 | set.cpp:126:1:126:1 | s13 |  |
-| set.cpp:82:11:82:13 | s13 | set.cpp:82:2:82:4 | ref arg s12 | TAINT |
 | set.cpp:83:2:83:4 | ref arg s14 | set.cpp:86:7:86:9 | s14 |  |
 | set.cpp:83:2:83:4 | ref arg s14 | set.cpp:126:1:126:1 | s14 |  |
-| set.cpp:83:2:83:4 | s14 | set.cpp:83:11:83:13 | ref arg s15 | TAINT |
 | set.cpp:83:11:83:13 | ref arg s15 | set.cpp:87:7:87:9 | s15 |  |
 | set.cpp:83:11:83:13 | ref arg s15 | set.cpp:126:1:126:1 | s15 |  |
-| set.cpp:83:11:83:13 | s15 | set.cpp:83:2:83:4 | ref arg s14 | TAINT |
 | set.cpp:84:7:84:9 | s12 | set.cpp:84:7:84:9 | call to set |  |
 | set.cpp:85:7:85:9 | s13 | set.cpp:85:7:85:9 | call to set |  |
 | set.cpp:86:7:86:9 | s14 | set.cpp:86:7:86:9 | call to set |  |
@@ -3066,16 +3050,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | set.cpp:193:7:193:9 | s15 | set.cpp:193:7:193:9 | call to unordered_set |  |
 | set.cpp:194:2:194:4 | ref arg s12 | set.cpp:196:7:196:9 | s12 |  |
 | set.cpp:194:2:194:4 | ref arg s12 | set.cpp:238:1:238:1 | s12 |  |
-| set.cpp:194:2:194:4 | s12 | set.cpp:194:11:194:13 | ref arg s13 | TAINT |
 | set.cpp:194:11:194:13 | ref arg s13 | set.cpp:197:7:197:9 | s13 |  |
 | set.cpp:194:11:194:13 | ref arg s13 | set.cpp:238:1:238:1 | s13 |  |
-| set.cpp:194:11:194:13 | s13 | set.cpp:194:2:194:4 | ref arg s12 | TAINT |
 | set.cpp:195:2:195:4 | ref arg s14 | set.cpp:198:7:198:9 | s14 |  |
 | set.cpp:195:2:195:4 | ref arg s14 | set.cpp:238:1:238:1 | s14 |  |
-| set.cpp:195:2:195:4 | s14 | set.cpp:195:11:195:13 | ref arg s15 | TAINT |
 | set.cpp:195:11:195:13 | ref arg s15 | set.cpp:199:7:199:9 | s15 |  |
 | set.cpp:195:11:195:13 | ref arg s15 | set.cpp:238:1:238:1 | s15 |  |
-| set.cpp:195:11:195:13 | s15 | set.cpp:195:2:195:4 | ref arg s14 | TAINT |
 | set.cpp:196:7:196:9 | s12 | set.cpp:196:7:196:9 | call to unordered_set |  |
 | set.cpp:197:7:197:9 | s13 | set.cpp:197:7:197:9 | call to unordered_set |  |
 | set.cpp:198:7:198:9 | s14 | set.cpp:198:7:198:9 | call to unordered_set |  |
@@ -4047,13 +4027,9 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:272:17:272:25 | call to basic_string | string.cpp:280:2:280:3 | s4 |  |
 | string.cpp:272:17:272:25 | call to basic_string | string.cpp:285:7:285:8 | s4 |  |
 | string.cpp:279:2:279:3 | ref arg s1 | string.cpp:282:7:282:8 | s1 |  |
-| string.cpp:279:2:279:3 | s1 | string.cpp:279:10:279:11 | ref arg s2 | TAINT |
 | string.cpp:279:10:279:11 | ref arg s2 | string.cpp:283:7:283:8 | s2 |  |
-| string.cpp:279:10:279:11 | s2 | string.cpp:279:2:279:3 | ref arg s1 | TAINT |
 | string.cpp:280:2:280:3 | ref arg s4 | string.cpp:285:7:285:8 | s4 |  |
-| string.cpp:280:2:280:3 | s4 | string.cpp:280:10:280:11 | ref arg s3 | TAINT |
 | string.cpp:280:10:280:11 | ref arg s3 | string.cpp:284:7:284:8 | s3 |  |
-| string.cpp:280:10:280:11 | s3 | string.cpp:280:2:280:3 | ref arg s4 | TAINT |
 | string.cpp:289:17:289:22 | call to source | string.cpp:289:17:289:25 | call to basic_string | TAINT |
 | string.cpp:289:17:289:25 | call to basic_string | string.cpp:293:7:293:8 | s1 |  |
 | string.cpp:289:17:289:25 | call to basic_string | string.cpp:297:2:297:3 | s1 |  |
@@ -4839,13 +4815,9 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:118:2:118:4 | ss4 |  |
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:123:7:123:9 | ss4 |  |
 | stringstream.cpp:117:2:117:4 | ref arg ss1 | stringstream.cpp:120:7:120:9 | ss1 |  |
-| stringstream.cpp:117:2:117:4 | ss1 | stringstream.cpp:117:11:117:13 | ref arg ss2 | TAINT |
 | stringstream.cpp:117:11:117:13 | ref arg ss2 | stringstream.cpp:121:7:121:9 | ss2 |  |
-| stringstream.cpp:117:11:117:13 | ss2 | stringstream.cpp:117:2:117:4 | ref arg ss1 | TAINT |
 | stringstream.cpp:118:2:118:4 | ref arg ss4 | stringstream.cpp:123:7:123:9 | ss4 |  |
-| stringstream.cpp:118:2:118:4 | ss4 | stringstream.cpp:118:11:118:13 | ref arg ss3 | TAINT |
 | stringstream.cpp:118:11:118:13 | ref arg ss3 | stringstream.cpp:122:7:122:9 | ss3 |  |
-| stringstream.cpp:118:11:118:13 | ss3 | stringstream.cpp:118:2:118:4 | ref arg ss4 | TAINT |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:142:7:142:9 | ss1 |  |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:145:7:145:9 | ss1 |  |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:153:7:153:9 | ss1 |  |
@@ -5413,9 +5385,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap1.cpp:24:9:24:13 | this | swap1.cpp:24:31:24:34 | this |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:23:24:26 | that |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:36:24:39 | that |  |
-| swap1.cpp:24:31:24:34 | this | swap1.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap1.cpp:24:36:24:39 | ref arg that | swap1.cpp:24:23:24:26 | that |  |
-| swap1.cpp:24:36:24:39 | that | swap1.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap1.cpp:25:9:25:13 | this | swap1.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap1.cpp:25:28:25:31 | that | swap1.cpp:25:42:25:45 | that |  |
 | swap1.cpp:25:47:25:51 | data1 | swap1.cpp:25:36:25:52 | constructor init of field data1 | TAINT |
@@ -5425,36 +5395,28 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap1.cpp:29:23:29:27 | call to Class | swap1.cpp:30:18:30:20 | tmp |  |
 | swap1.cpp:29:24:29:27 | that | swap1.cpp:29:23:29:27 | call to Class |  |
 | swap1.cpp:30:13:30:16 | ref arg this | swap1.cpp:31:21:31:24 | this |  |
-| swap1.cpp:30:13:30:16 | this | swap1.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap1.cpp:30:13:30:16 | this | swap1.cpp:31:21:31:24 | this |  |
-| swap1.cpp:30:18:30:20 | tmp | swap1.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap1.cpp:31:21:31:24 | this | swap1.cpp:31:20:31:24 | * ... | TAINT |
 | swap1.cpp:34:16:34:24 | this | swap1.cpp:36:13:36:16 | this |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:34:34:34:37 | that |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:36:18:36:21 | that |  |
 | swap1.cpp:36:13:36:16 | ref arg this | swap1.cpp:37:21:37:24 | this |  |
-| swap1.cpp:36:13:36:16 | this | swap1.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap1.cpp:36:13:36:16 | this | swap1.cpp:37:21:37:24 | this |  |
 | swap1.cpp:36:18:36:21 | ref arg that | swap1.cpp:34:34:34:37 | that |  |
-| swap1.cpp:36:18:36:21 | that | swap1.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap1.cpp:37:21:37:24 | this | swap1.cpp:37:20:37:24 | * ... | TAINT |
 | swap1.cpp:40:16:40:26 | this | swap1.cpp:43:13:43:16 | this |  |
 | swap1.cpp:40:41:40:44 | that | swap1.cpp:42:24:42:27 | that |  |
 | swap1.cpp:42:23:42:27 | call to Class | swap1.cpp:43:18:43:20 | tmp |  |
 | swap1.cpp:42:24:42:27 | that | swap1.cpp:42:23:42:27 | call to Class |  |
 | swap1.cpp:43:13:43:16 | ref arg this | swap1.cpp:44:21:44:24 | this |  |
-| swap1.cpp:43:13:43:16 | this | swap1.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap1.cpp:43:13:43:16 | this | swap1.cpp:44:21:44:24 | this |  |
-| swap1.cpp:43:18:43:20 | tmp | swap1.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap1.cpp:44:21:44:24 | this | swap1.cpp:44:20:44:24 | * ... | TAINT |
 | swap1.cpp:47:16:47:26 | this | swap1.cpp:49:13:49:16 | this |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:47:36:47:39 | that |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:49:18:49:21 | that |  |
 | swap1.cpp:49:13:49:16 | ref arg this | swap1.cpp:50:21:50:24 | this |  |
-| swap1.cpp:49:13:49:16 | this | swap1.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap1.cpp:49:13:49:16 | this | swap1.cpp:50:21:50:24 | this |  |
 | swap1.cpp:49:18:49:21 | ref arg that | swap1.cpp:47:36:47:39 | that |  |
-| swap1.cpp:49:18:49:21 | that | swap1.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap1.cpp:50:21:50:24 | this | swap1.cpp:50:20:50:24 | * ... | TAINT |
 | swap1.cpp:53:14:53:17 | this | swap1.cpp:56:18:56:22 | this |  |
 | swap1.cpp:53:26:53:29 | that | swap1.cpp:53:26:53:29 | that |  |
@@ -5468,9 +5430,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
 | swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
-| swap1.cpp:63:9:63:9 | x | swap1.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
-| swap1.cpp:63:16:63:16 | y | swap1.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
@@ -5579,9 +5539,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap2.cpp:24:9:24:13 | this | swap2.cpp:24:31:24:34 | this |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:23:24:26 | that |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:36:24:39 | that |  |
-| swap2.cpp:24:31:24:34 | this | swap2.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap2.cpp:24:36:24:39 | ref arg that | swap2.cpp:24:23:24:26 | that |  |
-| swap2.cpp:24:36:24:39 | that | swap2.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap2.cpp:25:9:25:13 | this | swap2.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:42:25:45 | that |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:61:25:64 | that |  |
@@ -5596,36 +5554,28 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap2.cpp:29:23:29:27 | call to Class | swap2.cpp:30:18:30:20 | tmp |  |
 | swap2.cpp:29:24:29:27 | that | swap2.cpp:29:23:29:27 | call to Class |  |
 | swap2.cpp:30:13:30:16 | ref arg this | swap2.cpp:31:21:31:24 | this |  |
-| swap2.cpp:30:13:30:16 | this | swap2.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap2.cpp:30:13:30:16 | this | swap2.cpp:31:21:31:24 | this |  |
-| swap2.cpp:30:18:30:20 | tmp | swap2.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap2.cpp:31:21:31:24 | this | swap2.cpp:31:20:31:24 | * ... | TAINT |
 | swap2.cpp:34:16:34:24 | this | swap2.cpp:36:13:36:16 | this |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:34:34:34:37 | that |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:36:18:36:21 | that |  |
 | swap2.cpp:36:13:36:16 | ref arg this | swap2.cpp:37:21:37:24 | this |  |
-| swap2.cpp:36:13:36:16 | this | swap2.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap2.cpp:36:13:36:16 | this | swap2.cpp:37:21:37:24 | this |  |
 | swap2.cpp:36:18:36:21 | ref arg that | swap2.cpp:34:34:34:37 | that |  |
-| swap2.cpp:36:18:36:21 | that | swap2.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap2.cpp:37:21:37:24 | this | swap2.cpp:37:20:37:24 | * ... | TAINT |
 | swap2.cpp:40:16:40:26 | this | swap2.cpp:43:13:43:16 | this |  |
 | swap2.cpp:40:41:40:44 | that | swap2.cpp:42:24:42:27 | that |  |
 | swap2.cpp:42:23:42:27 | call to Class | swap2.cpp:43:18:43:20 | tmp |  |
 | swap2.cpp:42:24:42:27 | that | swap2.cpp:42:23:42:27 | call to Class |  |
 | swap2.cpp:43:13:43:16 | ref arg this | swap2.cpp:44:21:44:24 | this |  |
-| swap2.cpp:43:13:43:16 | this | swap2.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap2.cpp:43:13:43:16 | this | swap2.cpp:44:21:44:24 | this |  |
-| swap2.cpp:43:18:43:20 | tmp | swap2.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap2.cpp:44:21:44:24 | this | swap2.cpp:44:20:44:24 | * ... | TAINT |
 | swap2.cpp:47:16:47:26 | this | swap2.cpp:49:13:49:16 | this |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:47:36:47:39 | that |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:49:18:49:21 | that |  |
 | swap2.cpp:49:13:49:16 | ref arg this | swap2.cpp:50:21:50:24 | this |  |
-| swap2.cpp:49:13:49:16 | this | swap2.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap2.cpp:49:13:49:16 | this | swap2.cpp:50:21:50:24 | this |  |
 | swap2.cpp:49:18:49:21 | ref arg that | swap2.cpp:47:36:47:39 | that |  |
-| swap2.cpp:49:18:49:21 | that | swap2.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap2.cpp:50:21:50:24 | this | swap2.cpp:50:20:50:24 | * ... | TAINT |
 | swap2.cpp:53:14:53:17 | this | swap2.cpp:56:18:56:22 | this |  |
 | swap2.cpp:53:26:53:29 | that | swap2.cpp:53:26:53:29 | that |  |
@@ -5647,9 +5597,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
 | swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
-| swap2.cpp:63:9:63:9 | x | swap2.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
-| swap2.cpp:63:16:63:16 | y | swap2.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:76:9:76:9 | x |  |
@@ -6597,38 +6545,45 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:729:27:729:32 | endptr | taint.cpp:729:26:729:32 | & ... |  |
 | taint.cpp:731:7:731:12 | ref arg endptr | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:732:8:732:13 | endptr | taint.cpp:732:7:732:13 | * ... | TAINT |
-| taint.cpp:738:17:738:31 | call to indirect_source | taint.cpp:739:30:739:35 | source |  |
-| taint.cpp:739:22:739:28 | call to realloc | taint.cpp:740:7:740:10 | dest |  |
-| taint.cpp:739:30:739:35 | source | taint.cpp:739:22:739:28 | call to realloc | TAINT |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:744:5:744:10 | buffer |  |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:745:27:745:32 | buffer |  |
-| taint.cpp:744:4:744:10 | * ... | taint.cpp:744:3:744:10 | * ... | TAINT |
-| taint.cpp:744:5:744:10 | buffer | taint.cpp:744:4:744:10 | * ... | TAINT |
-| taint.cpp:744:14:744:19 | call to source | taint.cpp:744:3:744:21 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:743:40:743:45 | buffer |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:745:3:745:37 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:746:10:746:15 | buffer |  |
-| taint.cpp:745:27:745:32 | buffer | taint.cpp:745:19:745:25 | call to realloc | TAINT |
-| taint.cpp:746:9:746:15 | * ... | taint.cpp:746:8:746:15 | * ... | TAINT |
-| taint.cpp:746:10:746:15 | buffer | taint.cpp:746:9:746:15 | * ... | TAINT |
-| taint.cpp:751:31:751:34 | path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:751:31:751:34 | path | taint.cpp:752:10:752:13 | path |  |
-| taint.cpp:751:31:751:34 | path | taint.cpp:753:10:753:13 | path |  |
-| taint.cpp:751:43:751:46 | data | taint.cpp:751:43:751:46 | data |  |
-| taint.cpp:751:43:751:46 | data | taint.cpp:753:22:753:25 | data |  |
-| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:752:10:752:13 | ref arg path | taint.cpp:753:10:753:13 | path |  |
-| taint.cpp:752:16:752:19 | %s | taint.cpp:752:10:752:13 | ref arg path | TAINT |
-| taint.cpp:752:22:752:26 | abc | taint.cpp:752:10:752:13 | ref arg path | TAINT |
-| taint.cpp:753:10:753:13 | ref arg path | taint.cpp:751:31:751:34 | path |  |
-| taint.cpp:753:16:753:19 | %s | taint.cpp:753:10:753:13 | ref arg path | TAINT |
-| taint.cpp:753:22:753:25 | data | taint.cpp:753:10:753:13 | ref arg path | TAINT |
-| taint.cpp:753:22:753:25 | ref arg data | taint.cpp:751:43:751:46 | data |  |
-| taint.cpp:757:7:757:10 | path | taint.cpp:758:21:758:24 | path |  |
-| taint.cpp:757:7:757:10 | path | taint.cpp:759:8:759:11 | path |  |
-| taint.cpp:758:21:758:24 | ref arg path | taint.cpp:759:8:759:11 | path |  |
-| taint.cpp:759:8:759:11 | path | taint.cpp:759:7:759:11 | * ... |  |
-| taint.cpp:769:37:769:42 | call to source | taint.cpp:770:7:770:9 | obj |  |
+| taint.cpp:739:17:739:31 | call to indirect_source | taint.cpp:740:30:740:35 | source |  |
+| taint.cpp:740:22:740:28 | call to realloc | taint.cpp:741:7:741:10 | dest |  |
+| taint.cpp:740:30:740:35 | source | taint.cpp:740:22:740:28 | call to realloc | TAINT |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:745:5:745:10 | buffer |  |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:746:27:746:32 | buffer |  |
+| taint.cpp:745:4:745:10 | * ... | taint.cpp:745:3:745:10 | * ... | TAINT |
+| taint.cpp:745:5:745:10 | buffer | taint.cpp:745:4:745:10 | * ... | TAINT |
+| taint.cpp:745:14:745:19 | call to source | taint.cpp:745:3:745:21 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:744:40:744:45 | buffer |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:746:3:746:37 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:747:10:747:15 | buffer |  |
+| taint.cpp:746:27:746:32 | buffer | taint.cpp:746:19:746:25 | call to realloc | TAINT |
+| taint.cpp:747:9:747:15 | * ... | taint.cpp:747:8:747:15 | * ... | TAINT |
+| taint.cpp:747:10:747:15 | buffer | taint.cpp:747:9:747:15 | * ... | TAINT |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:753:2:753:2 | a |  |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:2 | a [post update] | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:16 | ... = ... | taint.cpp:753:5:753:5 | x [post update] |  |
+| taint.cpp:753:9:753:14 | call to source | taint.cpp:753:2:753:16 | ... = ... |  |
+| taint.cpp:754:14:754:20 | call to realloc | taint.cpp:755:7:755:8 | a2 |  |
+| taint.cpp:754:22:754:22 | a | taint.cpp:754:14:754:20 | call to realloc | TAINT |
+| taint.cpp:760:31:760:34 | path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:761:10:761:13 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:762:22:762:25 | data |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:761:16:761:19 | %s | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:761:22:761:26 | abc | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:762:10:762:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:762:16:762:19 | %s | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | data | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | ref arg data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:767:21:767:24 | path |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:767:21:767:24 | ref arg path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:768:8:768:11 | path | taint.cpp:768:7:768:11 | * ... |  |
+| taint.cpp:778:37:778:42 | call to source | taint.cpp:779:7:779:9 | obj |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
@@ -7005,16 +6960,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | vector.cpp:112:7:112:8 | ref arg v4 | vector.cpp:121:1:121:1 | v4 |  |
 | vector.cpp:114:2:114:3 | ref arg v1 | vector.cpp:117:7:117:8 | v1 |  |
 | vector.cpp:114:2:114:3 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
-| vector.cpp:114:2:114:3 | v1 | vector.cpp:114:10:114:11 | ref arg v2 | TAINT |
 | vector.cpp:114:10:114:11 | ref arg v2 | vector.cpp:118:7:118:8 | v2 |  |
 | vector.cpp:114:10:114:11 | ref arg v2 | vector.cpp:121:1:121:1 | v2 |  |
-| vector.cpp:114:10:114:11 | v2 | vector.cpp:114:2:114:3 | ref arg v1 | TAINT |
 | vector.cpp:115:2:115:3 | ref arg v3 | vector.cpp:119:7:119:8 | v3 |  |
 | vector.cpp:115:2:115:3 | ref arg v3 | vector.cpp:121:1:121:1 | v3 |  |
-| vector.cpp:115:2:115:3 | v3 | vector.cpp:115:10:115:11 | ref arg v4 | TAINT |
 | vector.cpp:115:10:115:11 | ref arg v4 | vector.cpp:120:7:120:8 | v4 |  |
 | vector.cpp:115:10:115:11 | ref arg v4 | vector.cpp:121:1:121:1 | v4 |  |
-| vector.cpp:115:10:115:11 | v4 | vector.cpp:115:2:115:3 | ref arg v3 | TAINT |
 | vector.cpp:117:7:117:8 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
 | vector.cpp:118:7:118:8 | ref arg v2 | vector.cpp:121:1:121:1 | v2 |  |
 | vector.cpp:119:7:119:8 | ref arg v3 | vector.cpp:121:1:121:1 | v3 |  |
