@@ -19,8 +19,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.github.codeql.Logger;
-import static com.github.codeql.ClassNamesKt.getIrElementBinaryName;
-import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
+// TODO
+//import static com.github.codeql.ClassNamesKt.getIrElementBinaryName;
+//import static com.github.codeql.ClassNamesKt.getIrClassVirtualFile;
 
 import org.jetbrains.kotlin.ir.IrElement;
 import org.jetbrains.kotlin.ir.declarations.IrClass;
@@ -214,16 +215,17 @@ public class OdasaOutput {
 	}
 
 	private String trapFilePathForDecl(IrElement sym, String signature) {
-		String binaryName = getIrElementBinaryName(sym);
+		// String binaryName = getIrElementBinaryName(sym);
 		// TODO: Reinstate this?
 		// if (getTrackClassOrigins())
 		// classId += "-" + StringDigestor.digest(sym.getSourceFileId());
-		String result = CLASSES_DIR + "/" +
-				binaryName.replace('.', '/') +
-				signature +
-				".members" +
-				".trap" + compression.getExtension();
-		return result;
+		// String result = CLASSES_DIR + "/" +
+		// binaryName.replace('.', '/') +
+		// signature +
+		// ".members" +
+		// ".trap" + compression.getExtension();
+		// return result;
+		return null;
 	}
 
 	/*
@@ -674,10 +676,12 @@ public class OdasaOutput {
 		}
 
 		private static VirtualFile getVirtualFileIfClass(IrElement e) {
-			if (e instanceof IrClass)
-				return getIrClassVirtualFile((IrClass) e);
-			else
-				return null;
+			// TODO:
+			return null;
+			// if (e instanceof IrClass)
+			// return getIrClassVirtualFile((IrClass) e);
+			// else
+			// return null;
 		}
 
 		private static TrapClassVersion fromSymbol(IrElement sym, Logger log) {
