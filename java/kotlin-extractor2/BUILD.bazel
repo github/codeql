@@ -27,7 +27,7 @@ genrule(
 
 kt_jvm_library(
     name = "ke2-kt",
-    srcs = [":generated-dbscheme"] + glob(["src/main/java/**/*.java"]) + glob(["src/main/kotlin/**/*.kt"]),
+    srcs = [s for s in [":generated-dbscheme"] + glob(["src/main/java/**/*.java"]) + glob(["src/main/kotlin/**/*.kt"]) if s != "src/main/kotlin/KotlinExtractorDbScheme.kt"],
     javac_opts = ":javac-options",
     kotlinc_opts = ":kotlinc-options",
     module_name = "codeql-kotlin-extractor2",
