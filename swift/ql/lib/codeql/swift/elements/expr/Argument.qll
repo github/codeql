@@ -3,7 +3,7 @@
  * This module provides the public class `Argument`.
  */
 
-private import ArgumentImpl
+private import internal.ArgumentImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.Locatable
 

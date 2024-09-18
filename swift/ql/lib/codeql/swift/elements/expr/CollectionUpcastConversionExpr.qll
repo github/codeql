@@ -3,7 +3,7 @@
  * This module provides the public class `CollectionUpcastConversionExpr`.
  */
 
-private import CollectionUpcastConversionExprImpl
+private import internal.CollectionUpcastConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class CollectionUpcastConversionExpr = Impl::CollectionUpcastConversionExpr;

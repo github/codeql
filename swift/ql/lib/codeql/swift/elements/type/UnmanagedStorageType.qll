@@ -3,7 +3,7 @@
  * This module provides the public class `UnmanagedStorageType`.
  */
 
-private import UnmanagedStorageTypeImpl
+private import internal.UnmanagedStorageTypeImpl
 import codeql.swift.elements.type.ReferenceStorageType
 
 final class UnmanagedStorageType = Impl::UnmanagedStorageType;

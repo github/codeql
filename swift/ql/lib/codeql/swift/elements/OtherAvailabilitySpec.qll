@@ -3,7 +3,7 @@
  * This module provides the public class `OtherAvailabilitySpec`.
  */
 
-private import OtherAvailabilitySpecImpl
+private import internal.OtherAvailabilitySpecImpl
 import codeql.swift.elements.AvailabilitySpec
 
 /**

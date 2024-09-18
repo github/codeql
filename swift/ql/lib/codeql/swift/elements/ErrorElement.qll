@@ -3,7 +3,7 @@
  * This module provides the public class `ErrorElement`.
  */
 
-private import ErrorElementImpl
+private import internal.ErrorElementImpl
 import codeql.swift.elements.Locatable
 
 /**

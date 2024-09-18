@@ -3,7 +3,7 @@
  * This module provides the public class `TypeAliasType`.
  */
 
-private import TypeAliasTypeImpl
+private import internal.TypeAliasTypeImpl
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.decl.TypeAliasDecl
 

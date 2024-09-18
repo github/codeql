@@ -3,7 +3,7 @@
  * This module provides the public class `CoerceExpr`.
  */
 
-private import CoerceExprImpl
+private import internal.CoerceExprImpl
 import codeql.swift.elements.expr.ExplicitCastExpr
 
 final class CoerceExpr = Impl::CoerceExpr;

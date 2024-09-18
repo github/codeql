@@ -3,7 +3,7 @@
  * This module provides the public class `TypeRepr`.
  */
 
-private import TypeReprImpl
+private import internal.TypeReprImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 

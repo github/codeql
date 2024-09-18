@@ -3,7 +3,7 @@
  * This module provides the public class `SubscriptExpr`.
  */
 
-private import SubscriptExprImpl
+private import internal.SubscriptExprImpl
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.LookupExpr
 

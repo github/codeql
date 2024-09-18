@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.AstNodeImpl::Impl as AstNodeImpl
+import codeql.swift.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AvailabilitySpec` and should not

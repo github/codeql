@@ -3,7 +3,7 @@
  * This module provides the public class `TryExpr`.
  */
 
-private import TryExprImpl
+private import internal.TryExprImpl
 import codeql.swift.elements.expr.AnyTryExpr
 
 final class TryExpr = Impl::TryExpr;

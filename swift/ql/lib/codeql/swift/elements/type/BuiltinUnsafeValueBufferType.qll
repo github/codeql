@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinUnsafeValueBufferType`.
  */
 
-private import BuiltinUnsafeValueBufferTypeImpl
+private import internal.BuiltinUnsafeValueBufferTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinUnsafeValueBufferType = Impl::BuiltinUnsafeValueBufferType;

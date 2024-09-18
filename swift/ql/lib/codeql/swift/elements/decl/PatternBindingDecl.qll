@@ -3,7 +3,7 @@
  * This module provides the public class `PatternBindingDecl`.
  */
 
-private import PatternBindingDeclImpl
+private import internal.PatternBindingDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern

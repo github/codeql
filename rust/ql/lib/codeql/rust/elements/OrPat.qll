@@ -3,7 +3,7 @@
  * This module provides the public class `OrPat`.
  */
 
-private import OrPatImpl
+private import internal.OrPatImpl
 import codeql.rust.elements.Pat
 
 /**

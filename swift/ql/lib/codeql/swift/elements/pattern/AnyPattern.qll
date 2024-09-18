@@ -3,7 +3,7 @@
  * This module provides the public class `AnyPattern`.
  */
 
-private import AnyPatternImpl
+private import internal.AnyPatternImpl
 import codeql.swift.elements.pattern.Pattern
 
 final class AnyPattern = Impl::AnyPattern;

@@ -3,7 +3,7 @@
  * This module provides the public class `UnarySyntaxSugarType`.
  */
 
-private import UnarySyntaxSugarTypeImpl
+private import internal.UnarySyntaxSugarTypeImpl
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 

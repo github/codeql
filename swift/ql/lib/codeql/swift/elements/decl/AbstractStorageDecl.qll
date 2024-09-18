@@ -3,7 +3,7 @@
  * This module provides the public class `AbstractStorageDecl`.
  */
 
-private import AbstractStorageDeclImpl
+private import internal.AbstractStorageDeclImpl
 import codeql.swift.elements.decl.Accessor
 import codeql.swift.elements.decl.ValueDecl
 

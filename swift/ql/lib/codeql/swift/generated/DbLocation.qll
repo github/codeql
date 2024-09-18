@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.LocationImpl::Impl as LocationImpl
+import codeql.swift.elements.internal.LocationImpl::Impl as LocationImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `DbLocation` and should not

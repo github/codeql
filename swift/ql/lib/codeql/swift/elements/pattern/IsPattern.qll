@@ -3,7 +3,7 @@
  * This module provides the public class `IsPattern`.
  */
 
-private import IsPatternImpl
+private import internal.IsPatternImpl
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 

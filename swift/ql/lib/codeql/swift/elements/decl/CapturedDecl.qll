@@ -3,7 +3,7 @@
  * This module provides the public class `CapturedDecl`.
  */
 
-private import CapturedDeclImpl
+private import internal.CapturedDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.ValueDecl
 

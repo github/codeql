@@ -3,7 +3,7 @@
  * This module provides the public class `SingleValueStmtExpr`.
  */
 
-private import SingleValueStmtExprImpl
+private import internal.SingleValueStmtExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

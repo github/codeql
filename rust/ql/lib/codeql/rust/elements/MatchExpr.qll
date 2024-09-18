@@ -3,7 +3,7 @@
  * This module provides the public class `MatchExpr`.
  */
 
-private import MatchExprImpl
+private import internal.MatchExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.MatchArm
 

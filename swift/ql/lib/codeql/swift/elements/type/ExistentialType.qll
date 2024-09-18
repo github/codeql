@@ -3,7 +3,7 @@
  * This module provides the public class `ExistentialType`.
  */
 
-private import ExistentialTypeImpl
+private import internal.ExistentialTypeImpl
 import codeql.swift.elements.type.Type
 
 final class ExistentialType = Impl::ExistentialType;

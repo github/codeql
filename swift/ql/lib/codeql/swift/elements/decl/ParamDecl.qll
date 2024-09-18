@@ -3,7 +3,7 @@
  * This module provides the public class `ParamDecl`.
  */
 
-private import ParamDeclImpl
+private import internal.ParamDeclImpl
 import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.decl.VarDecl
 

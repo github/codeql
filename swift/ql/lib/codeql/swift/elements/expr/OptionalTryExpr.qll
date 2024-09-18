@@ -3,7 +3,7 @@
  * This module provides the public class `OptionalTryExpr`.
  */
 
-private import OptionalTryExprImpl
+private import internal.OptionalTryExprImpl
 import codeql.swift.elements.expr.AnyTryExpr
 
 final class OptionalTryExpr = Impl::OptionalTryExpr;

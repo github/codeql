@@ -3,7 +3,7 @@
  * This module provides the public class `SyntaxSugarType`.
  */
 
-private import SyntaxSugarTypeImpl
+private import internal.SyntaxSugarTypeImpl
 import codeql.swift.elements.type.SugarType
 
 final class SyntaxSugarType = Impl::SyntaxSugarType;

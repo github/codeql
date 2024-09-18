@@ -3,7 +3,7 @@
  * This module provides the public class `AvailabilityInfo`.
  */
 
-private import AvailabilityInfoImpl
+private import internal.AvailabilityInfoImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.AvailabilitySpec
 

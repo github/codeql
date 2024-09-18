@@ -3,7 +3,7 @@
  * This module provides the public class `GenericFunctionType`.
  */
 
-private import GenericFunctionTypeImpl
+private import internal.GenericFunctionTypeImpl
 import codeql.swift.elements.type.AnyFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 

@@ -3,7 +3,7 @@
  * This module provides the public class `LiteralExpr`.
  */
 
-private import LiteralExprImpl
+private import internal.LiteralExprImpl
 import codeql.rust.elements.Expr
 
 /**

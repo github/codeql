@@ -3,7 +3,7 @@
  * This module provides the public class `BoxExpr`.
  */
 
-private import BoxExprImpl
+private import internal.BoxExprImpl
 import codeql.rust.elements.Expr
 
 /**

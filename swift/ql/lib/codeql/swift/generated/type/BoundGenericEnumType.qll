@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.BoundGenericTypeImpl::Impl as BoundGenericTypeImpl
+import codeql.swift.elements.type.internal.BoundGenericTypeImpl::Impl as BoundGenericTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BoundGenericEnumType` and should not

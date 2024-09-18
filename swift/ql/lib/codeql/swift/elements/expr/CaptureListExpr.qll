@@ -3,7 +3,7 @@
  * This module provides the public class `CaptureListExpr`.
  */
 
-private import CaptureListExprImpl
+private import internal.CaptureListExprImpl
 import codeql.swift.elements.expr.ClosureExpr
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.PatternBindingDecl

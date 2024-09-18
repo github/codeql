@@ -4,10 +4,10 @@
  */
 
 import codeql.swift.elements
-import codeql.swift.elements.decl.AccessorOrNamedFunction
-import codeql.swift.elements.expr.DotSyntaxCallExpr
-import codeql.swift.elements.expr.InitializerRefCallExpr
-import codeql.swift.elements.expr.SelfApplyExpr
+import codeql.swift.elements.decl.internal.AccessorOrNamedFunction
+import codeql.swift.elements.expr.internal.DotSyntaxCallExpr
+import codeql.swift.elements.expr.internal.InitializerRefCallExpr
+import codeql.swift.elements.expr.internal.SelfApplyExpr
 
 private module Impl {
   private Element getImmediateChildOfElement(Element e, int index, string partialPredicateCall) {

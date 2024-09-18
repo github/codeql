@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.SugarTypeImpl::Impl as SugarTypeImpl
+import codeql.swift.elements.type.internal.SugarTypeImpl::Impl as SugarTypeImpl
 import codeql.swift.elements.type.Type
 
 /**

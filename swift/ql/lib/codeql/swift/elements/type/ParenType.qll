@@ -3,7 +3,7 @@
  * This module provides the public class `ParenType`.
  */
 
-private import ParenTypeImpl
+private import internal.ParenTypeImpl
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.type.Type
 

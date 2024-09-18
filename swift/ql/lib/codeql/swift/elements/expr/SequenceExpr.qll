@@ -3,7 +3,7 @@
  * This module provides the public class `SequenceExpr`.
  */
 
-private import SequenceExprImpl
+private import internal.SequenceExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class SequenceExpr = Impl::SequenceExpr;

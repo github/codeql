@@ -3,7 +3,7 @@
  * This module provides the public class `PoundAssertStmt`.
  */
 
-private import PoundAssertStmtImpl
+private import internal.PoundAssertStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

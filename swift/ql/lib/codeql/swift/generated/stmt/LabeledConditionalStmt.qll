@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.stmt.LabeledStmtImpl::Impl as LabeledStmtImpl
+import codeql.swift.elements.stmt.internal.LabeledStmtImpl::Impl as LabeledStmtImpl
 import codeql.swift.elements.stmt.StmtCondition
 
 /**

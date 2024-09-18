@@ -3,7 +3,7 @@
  * This module provides the public class `AssignExpr`.
  */
 
-private import AssignExprImpl
+private import internal.AssignExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class AssignExpr = Impl::AssignExpr;

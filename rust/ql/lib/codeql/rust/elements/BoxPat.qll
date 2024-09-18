@@ -3,7 +3,7 @@
  * This module provides the public class `BoxPat`.
  */
 
-private import BoxPatImpl
+private import internal.BoxPatImpl
 import codeql.rust.elements.Pat
 
 /**

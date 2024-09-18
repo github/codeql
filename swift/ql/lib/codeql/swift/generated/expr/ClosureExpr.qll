@@ -6,8 +6,8 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.CallableImpl::Impl as CallableImpl
-import codeql.swift.elements.expr.ExprImpl::Impl as ExprImpl
+import codeql.swift.elements.internal.CallableImpl::Impl as CallableImpl
+import codeql.swift.elements.expr.internal.ExprImpl::Impl as ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not

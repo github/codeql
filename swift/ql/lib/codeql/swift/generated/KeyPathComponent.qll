@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Argument
-import codeql.swift.elements.AstNodeImpl::Impl as AstNodeImpl
+import codeql.swift.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 

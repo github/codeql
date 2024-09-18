@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.IdentityExprImpl::Impl as IdentityExprImpl
+import codeql.swift.elements.expr.internal.IdentityExprImpl::Impl as IdentityExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ParenExpr` and should not

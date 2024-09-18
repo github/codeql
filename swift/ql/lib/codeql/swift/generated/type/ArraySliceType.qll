@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.UnarySyntaxSugarTypeImpl::Impl as UnarySyntaxSugarTypeImpl
+import codeql.swift.elements.type.internal.UnarySyntaxSugarTypeImpl::Impl as UnarySyntaxSugarTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ArraySliceType` and should not

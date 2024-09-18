@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ModuleDecl
-import codeql.swift.elements.decl.TypeDeclImpl::Impl as TypeDeclImpl
+import codeql.swift.elements.decl.internal.TypeDeclImpl::Impl as TypeDeclImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ModuleDecl` and should not

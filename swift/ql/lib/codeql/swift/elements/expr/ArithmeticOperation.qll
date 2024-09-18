@@ -1,7 +1,7 @@
 private import codeql.swift.elements.expr.Expr
 private import codeql.swift.elements.expr.BinaryExpr
 private import codeql.swift.elements.expr.PrefixUnaryExpr
-private import codeql.swift.elements.expr.DotSyntaxCallExpr
+private import codeql.swift.elements.expr.internal.DotSyntaxCallExpr
 
 /**
  * An arithmetic operation, such as:

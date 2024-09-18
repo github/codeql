@@ -3,7 +3,7 @@
  * This module provides the public class `LetExpr`.
  */
 
-private import LetExprImpl
+private import internal.LetExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 

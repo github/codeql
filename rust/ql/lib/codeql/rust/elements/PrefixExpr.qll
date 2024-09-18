@@ -3,7 +3,7 @@
  * This module provides the public class `PrefixExpr`.
  */
 
-private import PrefixExprImpl
+private import internal.PrefixExprImpl
 import codeql.rust.elements.Expr
 
 /**

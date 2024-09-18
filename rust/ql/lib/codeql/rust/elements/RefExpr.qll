@@ -3,7 +3,7 @@
  * This module provides the public class `RefExpr`.
  */
 
-private import RefExprImpl
+private import internal.RefExprImpl
 import codeql.rust.elements.Expr
 
 /**

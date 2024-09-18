@@ -3,7 +3,7 @@
  * This module provides the public class `RefPat`.
  */
 
-private import RefPatImpl
+private import internal.RefPatImpl
 import codeql.rust.elements.Pat
 
 /**

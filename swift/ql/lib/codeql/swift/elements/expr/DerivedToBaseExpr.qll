@@ -3,7 +3,7 @@
  * This module provides the public class `DerivedToBaseExpr`.
  */
 
-private import DerivedToBaseExprImpl
+private import internal.DerivedToBaseExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class DerivedToBaseExpr = Impl::DerivedToBaseExpr;

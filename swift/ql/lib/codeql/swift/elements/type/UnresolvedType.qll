@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedType`.
  */
 
-private import UnresolvedTypeImpl
+private import internal.UnresolvedTypeImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.type.Type
 

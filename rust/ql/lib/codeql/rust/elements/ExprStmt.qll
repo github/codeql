@@ -3,7 +3,7 @@
  * This module provides the public class `ExprStmt`.
  */
 
-private import ExprStmtImpl
+private import internal.ExprStmtImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 

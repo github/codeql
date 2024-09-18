@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinFloatType`.
  */
 
-private import BuiltinFloatTypeImpl
+private import internal.BuiltinFloatTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinFloatType = Impl::BuiltinFloatType;

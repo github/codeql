@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.AnyFunctionTypeImpl::Impl as AnyFunctionTypeImpl
+import codeql.swift.elements.type.internal.AnyFunctionTypeImpl::Impl as AnyFunctionTypeImpl
 import codeql.swift.elements.type.GenericTypeParamType
 
 /**

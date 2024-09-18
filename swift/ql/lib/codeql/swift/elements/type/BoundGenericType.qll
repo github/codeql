@@ -3,7 +3,7 @@
  * This module provides the public class `BoundGenericType`.
  */
 
-private import BoundGenericTypeImpl
+private import internal.BoundGenericTypeImpl
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.Type
 

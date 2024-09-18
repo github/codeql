@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.DynamicLookupExprImpl::Impl as DynamicLookupExprImpl
+import codeql.swift.elements.expr.internal.DynamicLookupExprImpl::Impl as DynamicLookupExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `DynamicSubscriptExpr` and should not

@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.VarDeclImpl::Impl as VarDeclImpl
+import codeql.swift.elements.decl.internal.VarDeclImpl::Impl as VarDeclImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ConcreteVarDecl` and should not

@@ -3,7 +3,7 @@
  * This module provides the public class `ForceValueExpr`.
  */
 
-private import ForceValueExprImpl
+private import internal.ForceValueExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class ForceValueExpr = Impl::ForceValueExpr;

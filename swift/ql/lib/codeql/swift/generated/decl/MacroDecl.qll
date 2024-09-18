@@ -6,10 +6,10 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.GenericContextImpl::Impl as GenericContextImpl
+import codeql.swift.elements.decl.internal.GenericContextImpl::Impl as GenericContextImpl
 import codeql.swift.elements.MacroRole
 import codeql.swift.elements.decl.ParamDecl
-import codeql.swift.elements.decl.ValueDeclImpl::Impl as ValueDeclImpl
+import codeql.swift.elements.decl.internal.ValueDeclImpl::Impl as ValueDeclImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MacroDecl` and should not

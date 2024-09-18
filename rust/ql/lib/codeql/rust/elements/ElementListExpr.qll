@@ -3,7 +3,7 @@
  * This module provides the public class `ElementListExpr`.
  */
 
-private import ElementListExprImpl
+private import internal.ElementListExprImpl
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.Expr
 

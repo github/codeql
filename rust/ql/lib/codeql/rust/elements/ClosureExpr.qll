@@ -3,7 +3,7 @@
  * This module provides the public class `ClosureExpr`.
  */
 
-private import ClosureExprImpl
+private import internal.ClosureExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.TypeRef

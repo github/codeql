@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinRawUnsafeContinuationType`.
  */
 
-private import BuiltinRawUnsafeContinuationTypeImpl
+private import internal.BuiltinRawUnsafeContinuationTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinRawUnsafeContinuationType = Impl::BuiltinRawUnsafeContinuationType;

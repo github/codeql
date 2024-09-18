@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.AvailabilitySpecImpl::Impl as AvailabilitySpecImpl
+import codeql.swift.elements.internal.AvailabilitySpecImpl::Impl as AvailabilitySpecImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PlatformVersionAvailabilitySpec` and should not

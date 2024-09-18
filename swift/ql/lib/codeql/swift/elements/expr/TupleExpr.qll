@@ -3,7 +3,7 @@
  * This module provides the public class `TupleExpr`.
  */
 
-private import TupleExprImpl
+private import internal.TupleExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class TupleExpr = Impl::TupleExpr;

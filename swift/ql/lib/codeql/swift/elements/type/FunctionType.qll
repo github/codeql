@@ -3,7 +3,7 @@
  * This module provides the public class `FunctionType`.
  */
 
-private import FunctionTypeImpl
+private import internal.FunctionTypeImpl
 import codeql.swift.elements.type.AnyFunctionType
 
 final class FunctionType = Impl::FunctionType;

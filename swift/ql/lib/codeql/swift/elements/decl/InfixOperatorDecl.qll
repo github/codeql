@@ -3,7 +3,7 @@
  * This module provides the public class `InfixOperatorDecl`.
  */
 
-private import InfixOperatorDeclImpl
+private import internal.InfixOperatorDeclImpl
 import codeql.swift.elements.decl.OperatorDecl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 

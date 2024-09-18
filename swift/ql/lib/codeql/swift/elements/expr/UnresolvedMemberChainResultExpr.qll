@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedMemberChainResultExpr`.
  */
 
-private import UnresolvedMemberChainResultExprImpl
+private import internal.UnresolvedMemberChainResultExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.IdentityExpr
 

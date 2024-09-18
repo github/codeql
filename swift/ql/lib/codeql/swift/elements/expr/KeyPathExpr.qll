@@ -3,7 +3,7 @@
  * This module provides the public class `KeyPathExpr`.
  */
 
-private import KeyPathExprImpl
+private import internal.KeyPathExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.type.TypeRepr

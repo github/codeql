@@ -3,7 +3,7 @@
  * This module provides the public class `DotSelfExpr`.
  */
 
-private import DotSelfExprImpl
+private import internal.DotSelfExprImpl
 import codeql.swift.elements.expr.IdentityExpr
 
 final class DotSelfExpr = Impl::DotSelfExpr;

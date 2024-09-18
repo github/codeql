@@ -3,7 +3,7 @@
  * This module provides the public class `Unimplemented`.
  */
 
-private import UnimplementedImpl
+private import internal.UnimplementedImpl
 import codeql.rust.elements.Unextracted
 
 /**

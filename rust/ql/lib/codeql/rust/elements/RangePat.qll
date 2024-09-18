@@ -3,7 +3,7 @@
  * This module provides the public class `RangePat`.
  */
 
-private import RangePatImpl
+private import internal.RangePatImpl
 import codeql.rust.elements.Pat
 
 /**

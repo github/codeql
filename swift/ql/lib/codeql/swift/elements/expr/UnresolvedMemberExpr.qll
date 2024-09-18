@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedMemberExpr`.
  */
 
-private import UnresolvedMemberExprImpl
+private import internal.UnresolvedMemberExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 

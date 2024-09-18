@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.NominalTypeImpl::Impl as NominalTypeImpl
+import codeql.swift.elements.type.internal.NominalTypeImpl::Impl as NominalTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ProtocolType` and should not

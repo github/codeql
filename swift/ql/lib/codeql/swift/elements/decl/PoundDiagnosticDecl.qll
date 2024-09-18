@@ -3,7 +3,7 @@
  * This module provides the public class `PoundDiagnosticDecl`.
  */
 
-private import PoundDiagnosticDeclImpl
+private import internal.PoundDiagnosticDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.StringLiteralExpr
 

@@ -3,7 +3,7 @@
  * This module provides the public class `FallthroughStmt`.
  */
 
-private import FallthroughStmtImpl
+private import internal.FallthroughStmtImpl
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.Stmt
 

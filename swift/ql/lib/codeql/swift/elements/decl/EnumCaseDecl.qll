@@ -3,7 +3,7 @@
  * This module provides the public class `EnumCaseDecl`.
  */
 
-private import EnumCaseDeclImpl
+private import internal.EnumCaseDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.EnumElementDecl
 

@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedSpecializeExpr`.
  */
 
-private import UnresolvedSpecializeExprImpl
+private import internal.UnresolvedSpecializeExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 

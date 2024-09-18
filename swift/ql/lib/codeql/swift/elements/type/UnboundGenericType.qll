@@ -3,7 +3,7 @@
  * This module provides the public class `UnboundGenericType`.
  */
 
-private import UnboundGenericTypeImpl
+private import internal.UnboundGenericTypeImpl
 import codeql.swift.elements.type.AnyGenericType
 
 final class UnboundGenericType = Impl::UnboundGenericType;

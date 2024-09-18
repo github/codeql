@@ -3,7 +3,7 @@
  * This module provides the public class `InOutExpr`.
  */
 
-private import InOutExprImpl
+private import internal.InOutExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class InOutExpr = Impl::InOutExpr;

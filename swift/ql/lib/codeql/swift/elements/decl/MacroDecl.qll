@@ -3,7 +3,7 @@
  * This module provides the public class `MacroDecl`.
  */
 
-private import MacroDeclImpl
+private import internal.MacroDeclImpl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.MacroRole
 import codeql.swift.elements.decl.ParamDecl

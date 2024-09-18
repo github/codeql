@@ -3,7 +3,7 @@
  * This module provides the public class `PlatformVersionAvailabilitySpec`.
  */
 
-private import PlatformVersionAvailabilitySpecImpl
+private import internal.PlatformVersionAvailabilitySpecImpl
 import codeql.swift.elements.AvailabilitySpec
 
 /**

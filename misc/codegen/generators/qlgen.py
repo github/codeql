@@ -244,7 +244,11 @@ def _get_path(cls: schema.Class) -> pathlib.Path:
 
 
 def _get_path_impl(cls: schema.Class) -> pathlib.Path:
-    return pathlib.Path(cls.group or "", cls.name+"Impl").with_suffix(".qll")
+    return pathlib.Path(cls.group or "", "internal", cls.name+"Impl").with_suffix(".qll")
+
+
+def _get_path_public(cls: schema.Class) -> pathlib.Path:
+    return pathlib.Path(cls.group or "", "internal" if "ql_internal" in cls.pragmas else "", cls.name).with_suffix(".qll")
 
 
 def _get_all_properties(cls: schema.Class, lookup: typing.Dict[str, schema.Class],
@@ -395,9 +399,11 @@ def generate(opts, renderer):
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
-            path = get_import(stub_out / c.path, opts.root_dir)
+            path = get_import(stub_out / c.dir / "internal" /
+                              c.name if c.internal else stub_out / c.path, opts.root_dir)
             imports[c.name] = path
-            imports_impl[c.name + "Impl"] = path + "Impl"
+            path_impl = get_import(stub_out / c.dir / "internal" / c.name, opts.root_dir)
+            imports_impl[c.name + "Impl"] = path_impl + "Impl"
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
@@ -420,7 +426,8 @@ def generate(opts, renderer):
                 qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
                 _patch_class_qldoc(c.name, qldoc, stub_file)
             class_public = _get_class_public(c)
-            class_public_file = stub_out / path
+            path_public = _get_path_public(c)
+            class_public_file = stub_out / path_public
             class_public.imports = [imports[t] for t in classes_used_by[c.name]]
             renderer.render(class_public, class_public_file)
 
@@ -472,7 +479,7 @@ def generate(opts, renderer):
             if synth_type.is_final:
                 final_synth_types.append(synth_type)
                 if synth_type.has_params:
-                    stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
+                    stub_file = stub_out / cls.group / "internal" / f"{cls.name}Constructor.qll"
                     if not renderer.is_customized_stub(stub_file):
                         # stub rendering must be postponed as we might not have yet all subtracted synth types in `synth_type`
                         stubs[stub_file] = ql.Synth.ConstructorStub(synth_type, import_prefix=generated_import_prefix)

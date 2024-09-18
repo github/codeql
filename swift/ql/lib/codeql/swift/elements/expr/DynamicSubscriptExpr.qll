@@ -3,7 +3,7 @@
  * This module provides the public class `DynamicSubscriptExpr`.
  */
 
-private import DynamicSubscriptExprImpl
+private import internal.DynamicSubscriptExprImpl
 import codeql.swift.elements.expr.DynamicLookupExpr
 
 final class DynamicSubscriptExpr = Impl::DynamicSubscriptExpr;

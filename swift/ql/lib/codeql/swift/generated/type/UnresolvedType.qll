@@ -6,8 +6,8 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.ErrorElementImpl::Impl as ErrorElementImpl
-import codeql.swift.elements.type.TypeImpl::Impl as TypeImpl
+import codeql.swift.elements.internal.ErrorElementImpl::Impl as ErrorElementImpl
+import codeql.swift.elements.type.internal.TypeImpl::Impl as TypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnresolvedType` and should not

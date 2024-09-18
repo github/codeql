@@ -3,7 +3,7 @@
  * This module provides the public class `BorrowExpr`.
  */
 
-private import BorrowExprImpl
+private import internal.BorrowExprImpl
 import codeql.swift.elements.expr.IdentityExpr
 
 /**

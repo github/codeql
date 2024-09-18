@@ -3,7 +3,7 @@
  * This module provides the public class `ReturnStmt`.
  */
 
-private import ReturnStmtImpl
+private import internal.ReturnStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

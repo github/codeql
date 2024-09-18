@@ -3,7 +3,7 @@
  * This module provides the public class `BreakStmt`.
  */
 
-private import BreakStmtImpl
+private import internal.BreakStmtImpl
 import codeql.swift.elements.stmt.Stmt
 
 final class BreakStmt = Impl::BreakStmt;

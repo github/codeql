@@ -3,7 +3,7 @@
  * This module provides the public class `OffsetOfExpr`.
  */
 
-private import OffsetOfExprImpl
+private import internal.OffsetOfExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.TypeRef
 
