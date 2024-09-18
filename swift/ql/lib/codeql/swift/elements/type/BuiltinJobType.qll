@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinJobType`.
  */
 
-private import BuiltinJobTypeImpl
+private import internal.BuiltinJobTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinJobType = Impl::BuiltinJobType;

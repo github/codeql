@@ -3,7 +3,7 @@
  * This module provides the public class `ParameterizedProtocolType`.
  */
 
-private import ParameterizedProtocolTypeImpl
+private import internal.ParameterizedProtocolTypeImpl
 import codeql.swift.elements.type.ProtocolType
 import codeql.swift.elements.type.Type
 

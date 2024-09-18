@@ -3,7 +3,7 @@
  * This module provides the public class `ThrowStmt`.
  */
 
-private import ThrowStmtImpl
+private import internal.ThrowStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

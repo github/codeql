@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinRawPointerType`.
  */
 
-private import BuiltinRawPointerTypeImpl
+private import internal.BuiltinRawPointerTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinRawPointerType = Impl::BuiltinRawPointerType;

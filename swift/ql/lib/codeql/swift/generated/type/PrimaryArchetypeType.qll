@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.ArchetypeTypeImpl::Impl as ArchetypeTypeImpl
+import codeql.swift.elements.type.internal.ArchetypeTypeImpl::Impl as ArchetypeTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PrimaryArchetypeType` and should not

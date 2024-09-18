@@ -3,7 +3,7 @@
  * This module provides the public class `Deinitializer`.
  */
 
-private import DeinitializerImpl
+private import internal.DeinitializerImpl
 import codeql.swift.elements.decl.Function
 
 final class Deinitializer = Impl::Deinitializer;

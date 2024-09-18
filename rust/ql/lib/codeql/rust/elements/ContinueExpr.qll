@@ -3,7 +3,7 @@
  * This module provides the public class `ContinueExpr`.
  */
 
-private import ContinueExprImpl
+private import internal.ContinueExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 

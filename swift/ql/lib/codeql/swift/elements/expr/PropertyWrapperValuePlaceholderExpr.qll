@@ -3,7 +3,7 @@
  * This module provides the public class `PropertyWrapperValuePlaceholderExpr`.
  */
 
-private import PropertyWrapperValuePlaceholderExprImpl
+private import internal.PropertyWrapperValuePlaceholderExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 

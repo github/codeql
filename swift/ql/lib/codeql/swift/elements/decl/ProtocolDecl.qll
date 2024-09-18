@@ -3,7 +3,7 @@
  * This module provides the public class `ProtocolDecl`.
  */
 
-private import ProtocolDeclImpl
+private import internal.ProtocolDeclImpl
 import codeql.swift.elements.decl.NominalTypeDecl
 
 final class ProtocolDecl = Impl::ProtocolDecl;

@@ -3,7 +3,7 @@
  * This module provides the public class `DictionaryExpr`.
  */
 
-private import DictionaryExprImpl
+private import internal.DictionaryExprImpl
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 

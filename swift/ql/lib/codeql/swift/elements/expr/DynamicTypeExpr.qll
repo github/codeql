@@ -3,7 +3,7 @@
  * This module provides the public class `DynamicTypeExpr`.
  */
 
-private import DynamicTypeExprImpl
+private import internal.DynamicTypeExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class DynamicTypeExpr = Impl::DynamicTypeExpr;

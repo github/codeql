@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.SelfApplyExprImpl::Impl as SelfApplyExprImpl
+import codeql.swift.elements.expr.internal.SelfApplyExprImpl::Impl as SelfApplyExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `DotSyntaxCallExpr` and should not

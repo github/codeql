@@ -3,7 +3,7 @@
  * This module provides the public class `PackExpansionType`.
  */
 
-private import PackExpansionTypeImpl
+private import internal.PackExpansionTypeImpl
 import codeql.swift.elements.type.Type
 
 /**

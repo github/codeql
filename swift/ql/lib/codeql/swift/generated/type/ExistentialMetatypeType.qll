@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.AnyMetatypeTypeImpl::Impl as AnyMetatypeTypeImpl
+import codeql.swift.elements.type.internal.AnyMetatypeTypeImpl::Impl as AnyMetatypeTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ExistentialMetatypeType` and should not

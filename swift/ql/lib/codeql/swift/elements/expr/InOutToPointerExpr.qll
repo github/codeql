@@ -3,7 +3,7 @@
  * This module provides the public class `InOutToPointerExpr`.
  */
 
-private import InOutToPointerExprImpl
+private import internal.InOutToPointerExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class InOutToPointerExpr = Impl::InOutToPointerExpr;

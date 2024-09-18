@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.AnyBuiltinIntegerTypeImpl::Impl as AnyBuiltinIntegerTypeImpl
+import codeql.swift.elements.type.internal.AnyBuiltinIntegerTypeImpl::Impl as AnyBuiltinIntegerTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BuiltinIntegerLiteralType` and should not

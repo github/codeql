@@ -3,7 +3,7 @@
  * This module provides the public class `PostfixUnaryExpr`.
  */
 
-private import PostfixUnaryExprImpl
+private import internal.PostfixUnaryExprImpl
 import codeql.swift.elements.expr.ApplyExpr
 
 final class PostfixUnaryExpr = Impl::PostfixUnaryExpr;

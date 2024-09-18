@@ -3,7 +3,7 @@
  * This module provides the public class `InOutType`.
  */
 
-private import InOutTypeImpl
+private import internal.InOutTypeImpl
 import codeql.swift.elements.type.Type
 
 final class InOutType = Impl::InOutType;

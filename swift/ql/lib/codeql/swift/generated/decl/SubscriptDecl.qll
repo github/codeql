@@ -6,8 +6,8 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.AbstractStorageDeclImpl::Impl as AbstractStorageDeclImpl
-import codeql.swift.elements.decl.GenericContextImpl::Impl as GenericContextImpl
+import codeql.swift.elements.decl.internal.AbstractStorageDeclImpl::Impl as AbstractStorageDeclImpl
+import codeql.swift.elements.decl.internal.GenericContextImpl::Impl as GenericContextImpl
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.type.Type
 

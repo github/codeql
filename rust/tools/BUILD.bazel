@@ -2,6 +2,7 @@ load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
 codeql_pkg_files(
     name = "tools",
+    srcs = glob(["*.cmd"]),
     exes = glob(["*.sh"]),
     visibility = ["//rust:__pkg__"],
 )

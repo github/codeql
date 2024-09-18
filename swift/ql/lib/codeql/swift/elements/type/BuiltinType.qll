@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinType`.
  */
 
-private import BuiltinTypeImpl
+private import internal.BuiltinTypeImpl
 import codeql.swift.elements.type.Type
 
 final class BuiltinType = Impl::BuiltinType;

@@ -3,7 +3,7 @@
  * This module provides the public class `InterpolatedStringLiteralExpr`.
  */
 
-private import InterpolatedStringLiteralExprImpl
+private import internal.InterpolatedStringLiteralExprImpl
 import codeql.swift.elements.expr.LiteralExpr
 import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr

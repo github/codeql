@@ -3,7 +3,7 @@
  * This module provides the public class `Label`.
  */
 
-private import LabelImpl
+private import internal.LabelImpl
 import codeql.rust.elements.AstNode
 
 /**

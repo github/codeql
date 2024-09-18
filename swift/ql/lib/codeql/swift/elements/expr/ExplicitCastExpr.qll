@@ -3,7 +3,7 @@
  * This module provides the public class `ExplicitCastExpr`.
  */
 
-private import ExplicitCastExprImpl
+private import internal.ExplicitCastExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class ExplicitCastExpr = Impl::ExplicitCastExpr;

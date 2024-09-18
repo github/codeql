@@ -3,7 +3,7 @@
  * This module provides the public class `OtherInitializerRefExpr`.
  */
 
-private import OtherInitializerRefExprImpl
+private import internal.OtherInitializerRefExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.Initializer
 

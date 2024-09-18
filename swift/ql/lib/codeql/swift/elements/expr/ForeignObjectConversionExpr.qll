@@ -3,7 +3,7 @@
  * This module provides the public class `ForeignObjectConversionExpr`.
  */
 
-private import ForeignObjectConversionExprImpl
+private import internal.ForeignObjectConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ForeignObjectConversionExpr = Impl::ForeignObjectConversionExpr;

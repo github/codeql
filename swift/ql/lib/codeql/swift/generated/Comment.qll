@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.LocatableImpl::Impl as LocatableImpl
+import codeql.swift.elements.internal.LocatableImpl::Impl as LocatableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Comment` and should not

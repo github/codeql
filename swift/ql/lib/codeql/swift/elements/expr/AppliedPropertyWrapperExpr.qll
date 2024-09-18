@@ -3,7 +3,7 @@
  * This module provides the public class `AppliedPropertyWrapperExpr`.
  */
 
-private import AppliedPropertyWrapperExprImpl
+private import internal.AppliedPropertyWrapperExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 

@@ -3,7 +3,7 @@
  * This module provides the public class `Function`.
  */
 
-private import FunctionImpl
+private import internal.FunctionImpl
 import codeql.rust.elements.Declaration
 import codeql.rust.elements.Expr
 

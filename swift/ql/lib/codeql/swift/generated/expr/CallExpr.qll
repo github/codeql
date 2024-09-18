@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.ApplyExprImpl::Impl as ApplyExprImpl
+import codeql.swift.elements.expr.internal.ApplyExprImpl::Impl as ApplyExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `CallExpr` and should not

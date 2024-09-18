@@ -3,7 +3,7 @@
  * This module provides the public class `Expr`.
  */
 
-private import ExprImpl
+private import internal.ExprImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 

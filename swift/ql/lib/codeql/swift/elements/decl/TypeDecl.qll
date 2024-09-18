@@ -3,7 +3,7 @@
  * This module provides the public class `TypeDecl`.
  */
 
-private import TypeDeclImpl
+private import internal.TypeDeclImpl
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 

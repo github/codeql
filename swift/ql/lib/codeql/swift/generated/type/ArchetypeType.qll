@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ProtocolDecl
-import codeql.swift.elements.type.SubstitutableTypeImpl::Impl as SubstitutableTypeImpl
+import codeql.swift.elements.type.internal.SubstitutableTypeImpl::Impl as SubstitutableTypeImpl
 import codeql.swift.elements.type.Type
 
 /**

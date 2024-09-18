@@ -3,7 +3,7 @@
  * This module provides the public class `YeetExpr`.
  */
 
-private import YeetExprImpl
+private import internal.YeetExprImpl
 import codeql.rust.elements.Expr
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `ClosureExpr`.
  */
 
-private import ClosureExprImpl
+private import internal.ClosureExprImpl
 import codeql.swift.elements.Callable
 import codeql.swift.elements.expr.Expr
 

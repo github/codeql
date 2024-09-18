@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinBridgeObjectType`.
  */
 
-private import BuiltinBridgeObjectTypeImpl
+private import internal.BuiltinBridgeObjectTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinBridgeObjectType = Impl::BuiltinBridgeObjectType;

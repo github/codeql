@@ -3,7 +3,7 @@
  * This module provides the public class `Callable`.
  */
 
-private import CallableImpl
+private import internal.CallableImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.decl.CapturedDecl

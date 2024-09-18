@@ -3,7 +3,7 @@
  * This module provides the public class `StringLiteralExpr`.
  */
 
-private import StringLiteralExprImpl
+private import internal.StringLiteralExprImpl
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 final class StringLiteralExpr = Impl::StringLiteralExpr;

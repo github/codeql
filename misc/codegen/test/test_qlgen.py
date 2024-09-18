@@ -36,8 +36,9 @@ def children_file(): return ql_output_path() / "ParentChild.qll"
 
 
 stub_import = "stub.path"
+stub_import_prefix_internal = stub_import + ".internal."
 stub_import_prefix = stub_import + "."
-root_import = stub_import_prefix + "Element"
+root_import = stub_import_prefix_internal + "Element"
 gen_import = "other.path"
 gen_import_prefix = gen_import + "."
 
@@ -112,10 +113,13 @@ def _filter_generated_classes(ret, output_test_files=False):
         }
     base_files -= {pathlib.Path(f"{name}.qll") for name in
                    ("Raw", "Synth", "SynthConstructors", "PureSynthConstructors")}
+    stub_files = {pathlib.Path(f.parent.parent, f.stem + ".qll") if f.parent.name ==
+                  "internal" and pathlib.Path(f.parent.parent, f.stem + ".qll") in base_files else f for f in stub_files}
     assert base_files <= stub_files
     return {
-        str(f): (ret[stub_path() / f],
-                 ret[stub_path() / pathlib.Path(f.parent, f.stem + "Impl.qll")],
+        str(f): (ret[stub_path() / "internal" / f] if stub_path() / "internal" / f in ret else ret[stub_path() / f],
+                 ret[stub_path() / pathlib.Path(f.parent, "internal" if not f.parent.name ==
+                                                "internal" else "", f.stem + "Impl.qll")],
                  ret[ql_output_path() / f])
         for f in base_files
     }
@@ -166,7 +170,7 @@ def test_one_empty_internal_class(generate_classes):
     ]) == {
         "A.qll": (a_ql_class_public(name="A", internal=True),
                   a_ql_stub(name="A"),
-                  a_ql_class(name="A", final=True, internal=True, imports=[stub_import_prefix + "A"])),
+                  a_ql_class(name="A", final=True, internal=True, imports=[stub_import_prefix_internal + "A"])),
     }
 
 
@@ -178,10 +182,10 @@ def test_hierarchy(generate_classes):
         schema.Class("A", derived={"B", "C"}),
     ]) == {
         "A.qll": (a_ql_class_public(name="A"), a_ql_stub(name="A"), a_ql_class(name="A", imports=[stub_import_prefix + "A"])),
-        "B.qll": (a_ql_class_public(name="B", imports=[stub_import_prefix + "A"]), a_ql_stub(name="B"), a_ql_class(name="B", bases=["A"], bases_impl=["AImpl::A"], imports=[stub_import_prefix + "AImpl::Impl as AImpl"])),
-        "C.qll": (a_ql_class_public(name="C", imports=[stub_import_prefix + "A"]), a_ql_stub(name="C"), a_ql_class(name="C", bases=["A"], bases_impl=["AImpl::A"], imports=[stub_import_prefix + "AImpl::Impl as AImpl"])),
+        "B.qll": (a_ql_class_public(name="B", imports=[stub_import_prefix + "A"]), a_ql_stub(name="B"), a_ql_class(name="B", bases=["A"], bases_impl=["AImpl::A"], imports=[stub_import_prefix_internal + "AImpl::Impl as AImpl"])),
+        "C.qll": (a_ql_class_public(name="C", imports=[stub_import_prefix + "A"]), a_ql_stub(name="C"), a_ql_class(name="C", bases=["A"], bases_impl=["AImpl::A"], imports=[stub_import_prefix_internal + "AImpl::Impl as AImpl"])),
         "D.qll": (a_ql_class_public(name="D", imports=[stub_import_prefix + "B", stub_import_prefix + "C"]), a_ql_stub(name="D"), a_ql_class(name="D", final=True, bases=["B", "C"], bases_impl=["BImpl::B", "CImpl::C"],
-                                                                                                                                             imports=[stub_import_prefix + cls + "Impl::Impl as " + cls + "Impl" for cls in "BC"])),
+                                                                                                                                             imports=[stub_import_prefix_internal + cls + "Impl::Impl as " + cls + "Impl" for cls in "BC"])),
     }
 
 
@@ -210,15 +214,15 @@ def test_hierarchy_children(generate_children_implementations):
         schema.Class("C", bases=["A"], derived={"D"}, pragmas=["ql_internal"]),
         schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
-        classes=[a_ql_class(name="A", internal=True, imports=[stub_import_prefix + "A"]),
+        classes=[a_ql_class(name="A", internal=True, imports=[stub_import_prefix_internal + "A"]),
                  a_ql_class(name="B", bases=["A"], bases_impl=["AImpl::A"], imports=[
-                     stub_import_prefix + "AImpl::Impl as AImpl"]),
+                     stub_import_prefix_internal + "AImpl::Impl as AImpl"]),
                  a_ql_class(name="C", bases=["A"], bases_impl=["AImpl::A"], imports=[
-                     stub_import_prefix + "AImpl::Impl as AImpl"], internal=True),
+                     stub_import_prefix_internal + "AImpl::Impl as AImpl"], internal=True),
                  a_ql_class(name="D", final=True, bases=["B", "C"], bases_impl=["BImpl::B", "CImpl::C"],
-                            imports=[stub_import_prefix + cls + "Impl::Impl as " + cls + "Impl" for cls in "BC"]),
+                            imports=[stub_import_prefix_internal + cls + "Impl::Impl as " + cls + "Impl" for cls in "BC"]),
                  ],
-        imports=[stub_import] + [stub_import_prefix + cls for cls in "AC"],
+        imports=[stub_import] + [stub_import_prefix_internal + cls for cls in "AC"],
     )
 
 
@@ -471,7 +475,7 @@ def test_class_dir(generate_classes):
         "B.qll": (a_ql_class_public(name="B", imports=[stub_import_prefix + "another.rel.path.A"]),
                   a_ql_stub(name="B"),
                   a_ql_class(name="B", final=True, bases=["A"], bases_impl=["AImpl::A"],
-                             imports=[stub_import_prefix + "another.rel.path.AImpl::Impl as AImpl"])),
+                             imports=[stub_import_prefix + "another.rel.path.internal.AImpl::Impl as AImpl"])),
     }
 
 

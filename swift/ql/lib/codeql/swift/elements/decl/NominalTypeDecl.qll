@@ -3,7 +3,7 @@
  * This module provides the public class `NominalTypeDecl`.
  */
 
-private import NominalTypeDeclImpl
+private import internal.NominalTypeDeclImpl
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.Type
 

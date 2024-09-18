@@ -3,7 +3,7 @@
  * This module provides the public class `RecordPatField`.
  */
 
-private import RecordPatFieldImpl
+private import internal.RecordPatFieldImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Pat
 

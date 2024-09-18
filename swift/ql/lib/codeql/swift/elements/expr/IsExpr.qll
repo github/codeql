@@ -3,7 +3,7 @@
  * This module provides the public class `IsExpr`.
  */
 
-private import IsExprImpl
+private import internal.IsExprImpl
 import codeql.swift.elements.expr.CheckedCastExpr
 
 final class IsExpr = Impl::IsExpr;

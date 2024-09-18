@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.ExplicitCastExprImpl::Impl as ExplicitCastExprImpl
+import codeql.swift.elements.expr.internal.ExplicitCastExprImpl::Impl as ExplicitCastExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `CheckedCastExpr` and should not

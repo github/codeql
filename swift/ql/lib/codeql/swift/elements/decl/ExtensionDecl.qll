@@ -3,7 +3,7 @@
  * This module provides the public class `ExtensionDecl`.
  */
 
-private import ExtensionDeclImpl
+private import internal.ExtensionDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.NominalTypeDecl

@@ -3,7 +3,7 @@
  * This module provides the public class `CovariantReturnConversionExpr`.
  */
 
-private import CovariantReturnConversionExprImpl
+private import internal.CovariantReturnConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class CovariantReturnConversionExpr = Impl::CovariantReturnConversionExpr;

@@ -3,7 +3,7 @@
  * This module provides the public class `GenericContext`.
  */
 
-private import GenericContextImpl
+private import internal.GenericContextImpl
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.GenericTypeParamDecl
 

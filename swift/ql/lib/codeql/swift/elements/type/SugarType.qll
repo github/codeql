@@ -3,7 +3,7 @@
  * This module provides the public class `SugarType`.
  */
 
-private import SugarTypeImpl
+private import internal.SugarTypeImpl
 import codeql.swift.elements.type.Type
 
 final class SugarType = Impl::SugarType;

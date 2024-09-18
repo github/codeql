@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.ExprImpl::Impl as ExprImpl
+import codeql.swift.elements.expr.internal.ExprImpl::Impl as ExprImpl
 import codeql.swift.elements.stmt.Stmt
 
 /**

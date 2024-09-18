@@ -3,7 +3,7 @@
  * This module provides the public class `EnumIsCaseExpr`.
  */
 
-private import EnumIsCaseExprImpl
+private import internal.EnumIsCaseExprImpl
 import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.expr.Expr
 

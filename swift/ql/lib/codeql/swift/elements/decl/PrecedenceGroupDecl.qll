@@ -3,7 +3,7 @@
  * This module provides the public class `PrecedenceGroupDecl`.
  */
 
-private import PrecedenceGroupDeclImpl
+private import internal.PrecedenceGroupDeclImpl
 import codeql.swift.elements.decl.Decl
 
 final class PrecedenceGroupDecl = Impl::PrecedenceGroupDecl;

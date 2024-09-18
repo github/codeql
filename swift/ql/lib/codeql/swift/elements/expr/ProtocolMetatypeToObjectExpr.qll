@@ -3,7 +3,7 @@
  * This module provides the public class `ProtocolMetatypeToObjectExpr`.
  */
 
-private import ProtocolMetatypeToObjectExprImpl
+private import internal.ProtocolMetatypeToObjectExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ProtocolMetatypeToObjectExpr = Impl::ProtocolMetatypeToObjectExpr;

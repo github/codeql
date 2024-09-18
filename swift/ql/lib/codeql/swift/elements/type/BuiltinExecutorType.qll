@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinExecutorType`.
  */
 
-private import BuiltinExecutorTypeImpl
+private import internal.BuiltinExecutorTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinExecutorType = Impl::BuiltinExecutorType;

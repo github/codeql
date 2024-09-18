@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.AccessorOrNamedFunctionImpl::Impl as AccessorOrNamedFunctionImpl
+import codeql.swift.elements.decl.internal.AccessorOrNamedFunctionImpl::Impl as AccessorOrNamedFunctionImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `NamedFunction` and should not

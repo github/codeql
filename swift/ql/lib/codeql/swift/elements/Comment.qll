@@ -3,7 +3,7 @@
  * This module provides the public class `Comment`.
  */
 
-private import CommentImpl
+private import internal.CommentImpl
 import codeql.swift.elements.Locatable
 
 final class Comment = Impl::Comment;

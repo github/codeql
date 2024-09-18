@@ -3,7 +3,7 @@
  * This module provides the public class `AsyncBlockExpr`.
  */
 
-private import AsyncBlockExprImpl
+private import internal.AsyncBlockExprImpl
 import codeql.rust.elements.BlockExprBase
 
 /**

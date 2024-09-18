@@ -3,7 +3,7 @@
  * This module provides the public class `CovariantFunctionConversionExpr`.
  */
 
-private import CovariantFunctionConversionExprImpl
+private import internal.CovariantFunctionConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class CovariantFunctionConversionExpr = Impl::CovariantFunctionConversionExpr;

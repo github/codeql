@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedPatternExpr`.
  */
 
-private import UnresolvedPatternExprImpl
+private import internal.UnresolvedPatternExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern

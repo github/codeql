@@ -3,7 +3,7 @@
  * This module provides the public class `BreakExpr`.
  */
 
-private import BreakExprImpl
+private import internal.BreakExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 

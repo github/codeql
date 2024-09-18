@@ -3,7 +3,7 @@
  * This module provides the public class `MissingPat`.
  */
 
-private import MissingPatImpl
+private import internal.MissingPatImpl
 import codeql.rust.elements.Missing
 import codeql.rust.elements.Pat
 

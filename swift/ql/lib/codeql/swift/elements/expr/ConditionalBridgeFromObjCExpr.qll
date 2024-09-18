@@ -3,7 +3,7 @@
  * This module provides the public class `ConditionalBridgeFromObjCExpr`.
  */
 
-private import ConditionalBridgeFromObjCExprImpl
+private import internal.ConditionalBridgeFromObjCExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ConditionalBridgeFromObjCExpr = Impl::ConditionalBridgeFromObjCExpr;

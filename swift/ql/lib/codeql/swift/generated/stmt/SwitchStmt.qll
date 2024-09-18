@@ -8,7 +8,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.expr.Expr
-import codeql.swift.elements.stmt.LabeledStmtImpl::Impl as LabeledStmtImpl
+import codeql.swift.elements.stmt.internal.LabeledStmtImpl::Impl as LabeledStmtImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `SwitchStmt` and should not

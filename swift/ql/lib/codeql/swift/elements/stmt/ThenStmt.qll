@@ -3,7 +3,7 @@
  * This module provides the public class `ThenStmt`.
  */
 
-private import ThenStmtImpl
+private import internal.ThenStmtImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 

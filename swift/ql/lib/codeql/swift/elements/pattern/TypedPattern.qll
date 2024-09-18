@@ -3,7 +3,7 @@
  * This module provides the public class `TypedPattern`.
  */
 
-private import TypedPatternImpl
+private import internal.TypedPatternImpl
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 

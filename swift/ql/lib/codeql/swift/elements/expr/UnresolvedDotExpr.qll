@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedDotExpr`.
  */
 
-private import UnresolvedDotExprImpl
+private import internal.UnresolvedDotExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 

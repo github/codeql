@@ -3,7 +3,7 @@
  * This module provides the public class `ConcreteVarDecl`.
  */
 
-private import ConcreteVarDeclImpl
+private import internal.ConcreteVarDeclImpl
 import codeql.swift.elements.decl.VarDecl
 
 final class ConcreteVarDecl = Impl::ConcreteVarDecl;

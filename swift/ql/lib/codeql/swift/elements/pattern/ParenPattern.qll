@@ -3,7 +3,7 @@
  * This module provides the public class `ParenPattern`.
  */
 
-private import ParenPatternImpl
+private import internal.ParenPatternImpl
 import codeql.swift.elements.pattern.Pattern
 
 final class ParenPattern = Impl::ParenPattern;

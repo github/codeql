@@ -3,7 +3,7 @@
  * This module provides the public class `TapExpr`.
  */
 
-private import TapExprImpl
+private import internal.TapExprImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl

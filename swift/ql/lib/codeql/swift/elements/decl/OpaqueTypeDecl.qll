@@ -3,7 +3,7 @@
  * This module provides the public class `OpaqueTypeDecl`.
  */
 
-private import OpaqueTypeDeclImpl
+private import internal.OpaqueTypeDeclImpl
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.decl.ValueDecl

@@ -3,7 +3,7 @@
  * This module provides the public class `PathExpr`.
  */
 
-private import PathExprImpl
+private import internal.PathExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Path
 

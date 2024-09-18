@@ -3,7 +3,7 @@
  * This module provides the public class `PackArchetypeType`.
  */
 
-private import PackArchetypeTypeImpl
+private import internal.PackArchetypeTypeImpl
 import codeql.swift.elements.type.ArchetypeType
 
 /**

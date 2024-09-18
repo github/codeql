@@ -3,7 +3,7 @@
  * This module provides the public class `ForcedCheckedCastExpr`.
  */
 
-private import ForcedCheckedCastExprImpl
+private import internal.ForcedCheckedCastExprImpl
 import codeql.swift.elements.expr.CheckedCastExpr
 
 final class ForcedCheckedCastExpr = Impl::ForcedCheckedCastExpr;

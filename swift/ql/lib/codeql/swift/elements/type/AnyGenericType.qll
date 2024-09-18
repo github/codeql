@@ -3,7 +3,7 @@
  * This module provides the public class `AnyGenericType`.
  */
 
-private import AnyGenericTypeImpl
+private import internal.AnyGenericTypeImpl
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.Type
 

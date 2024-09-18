@@ -3,7 +3,7 @@
  * This module provides the public class `TopLevelCodeDecl`.
  */
 
-private import TopLevelCodeDeclImpl
+private import internal.TopLevelCodeDeclImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.decl.Decl
 

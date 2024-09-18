@@ -3,7 +3,7 @@
  * This module provides the public class `OptionalEvaluationExpr`.
  */
 
-private import OptionalEvaluationExprImpl
+private import internal.OptionalEvaluationExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class OptionalEvaluationExpr = Impl::OptionalEvaluationExpr;

@@ -3,7 +3,7 @@
  * This module provides the public class `ModuleType`.
  */
 
-private import ModuleTypeImpl
+private import internal.ModuleTypeImpl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.type.Type
 

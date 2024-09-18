@@ -3,7 +3,7 @@
  * This module provides the public class `OpenExistentialExpr`.
  */
 
-private import OpenExistentialExprImpl
+private import internal.OpenExistentialExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 

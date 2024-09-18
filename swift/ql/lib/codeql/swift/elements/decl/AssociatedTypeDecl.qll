@@ -3,7 +3,7 @@
  * This module provides the public class `AssociatedTypeDecl`.
  */
 
-private import AssociatedTypeDeclImpl
+private import internal.AssociatedTypeDeclImpl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
 final class AssociatedTypeDecl = Impl::AssociatedTypeDecl;

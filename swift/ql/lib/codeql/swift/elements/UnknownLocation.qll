@@ -3,7 +3,7 @@
  * This module provides the public class `UnknownLocation`.
  */
 
-private import UnknownLocationImpl
+private import internal.UnknownLocationImpl
 import codeql.swift.elements.Location
 
 final class UnknownLocation = Impl::UnknownLocation;

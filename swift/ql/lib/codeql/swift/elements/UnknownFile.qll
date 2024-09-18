@@ -3,7 +3,7 @@
  * This module provides the public class `UnknownFile`.
  */
 
-private import UnknownFileImpl
+private import internal.UnknownFileImpl
 import codeql.swift.elements.File
 
 final class UnknownFile = Impl::UnknownFile;

@@ -8,7 +8,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.CaseLabelItem
 import codeql.swift.elements.stmt.Stmt
-import codeql.swift.elements.stmt.StmtImpl::Impl as StmtImpl
+import codeql.swift.elements.stmt.internal.StmtImpl::Impl as StmtImpl
 import codeql.swift.elements.decl.VarDecl
 
 /**

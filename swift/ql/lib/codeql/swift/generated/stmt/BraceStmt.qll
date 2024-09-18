@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
-import codeql.swift.elements.stmt.StmtImpl::Impl as StmtImpl
+import codeql.swift.elements.stmt.internal.StmtImpl::Impl as StmtImpl
 import codeql.swift.elements.decl.VarDecl
 
 /**

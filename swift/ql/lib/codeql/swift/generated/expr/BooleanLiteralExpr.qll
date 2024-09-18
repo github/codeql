@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.BuiltinLiteralExprImpl::Impl as BuiltinLiteralExprImpl
+import codeql.swift.elements.expr.internal.BuiltinLiteralExprImpl::Impl as BuiltinLiteralExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BooleanLiteralExpr` and should not

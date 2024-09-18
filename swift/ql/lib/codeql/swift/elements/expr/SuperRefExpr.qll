@@ -3,7 +3,7 @@
  * This module provides the public class `SuperRefExpr`.
  */
 
-private import SuperRefExprImpl
+private import internal.SuperRefExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 

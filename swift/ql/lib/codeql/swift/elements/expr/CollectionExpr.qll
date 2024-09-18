@@ -3,7 +3,7 @@
  * This module provides the public class `CollectionExpr`.
  */
 
-private import CollectionExprImpl
+private import internal.CollectionExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class CollectionExpr = Impl::CollectionExpr;

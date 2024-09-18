@@ -3,7 +3,7 @@
  * This module provides the public class `ForEachStmt`.
  */
 
-private import ForEachStmtImpl
+private import internal.ForEachStmtImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt

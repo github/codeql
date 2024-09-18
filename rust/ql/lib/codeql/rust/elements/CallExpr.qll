@@ -3,7 +3,7 @@
  * This module provides the public class `CallExpr`.
  */
 
-private import CallExprImpl
+private import internal.CallExprImpl
 import codeql.rust.elements.Expr
 
 /**

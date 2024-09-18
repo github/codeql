@@ -3,7 +3,7 @@
  * This module provides the public class `Pat`.
  */
 
-private import PatImpl
+private import internal.PatImpl
 import codeql.rust.elements.AstNode
 
 /**

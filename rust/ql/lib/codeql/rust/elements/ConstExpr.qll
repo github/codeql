@@ -3,7 +3,7 @@
  * This module provides the public class `ConstExpr`.
  */
 
-private import ConstExprImpl
+private import internal.ConstExprImpl
 import codeql.rust.elements.Expr
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `MagicIdentifierLiteralExpr`.
  */
 
-private import MagicIdentifierLiteralExprImpl
+private import internal.MagicIdentifierLiteralExprImpl
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 final class MagicIdentifierLiteralExpr = Impl::MagicIdentifierLiteralExpr;

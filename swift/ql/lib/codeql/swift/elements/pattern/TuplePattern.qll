@@ -3,7 +3,7 @@
  * This module provides the public class `TuplePattern`.
  */
 
-private import TuplePatternImpl
+private import internal.TuplePatternImpl
 import codeql.swift.elements.pattern.Pattern
 
 final class TuplePattern = Impl::TuplePattern;

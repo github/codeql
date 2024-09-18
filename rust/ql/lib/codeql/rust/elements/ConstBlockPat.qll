@@ -3,7 +3,7 @@
  * This module provides the public class `ConstBlockPat`.
  */
 
-private import ConstBlockPatImpl
+private import internal.ConstBlockPatImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 

@@ -3,7 +3,7 @@
  * This module provides the public class `DeferStmt`.
  */
 
-private import DeferStmtImpl
+private import internal.DeferStmtImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.Stmt
 

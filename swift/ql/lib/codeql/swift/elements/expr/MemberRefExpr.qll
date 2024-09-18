@@ -3,7 +3,7 @@
  * This module provides the public class `MemberRefExpr`.
  */
 
-private import MemberRefExprImpl
+private import internal.MemberRefExprImpl
 import codeql.swift.elements.expr.LookupExpr
 
 final class MemberRefExpr = Impl::MemberRefExpr;

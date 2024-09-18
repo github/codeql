@@ -3,7 +3,7 @@
  * This module provides the public class `ParenExpr`.
  */
 
-private import ParenExprImpl
+private import internal.ParenExprImpl
 import codeql.swift.elements.expr.IdentityExpr
 
 final class ParenExpr = Impl::ParenExpr;

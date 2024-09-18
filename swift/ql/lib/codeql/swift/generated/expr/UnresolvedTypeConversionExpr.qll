@@ -6,8 +6,8 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.ErrorElementImpl::Impl as ErrorElementImpl
-import codeql.swift.elements.expr.ImplicitConversionExprImpl::Impl as ImplicitConversionExprImpl
+import codeql.swift.elements.internal.ErrorElementImpl::Impl as ErrorElementImpl
+import codeql.swift.elements.expr.internal.ImplicitConversionExprImpl::Impl as ImplicitConversionExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnresolvedTypeConversionExpr` and should not

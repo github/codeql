@@ -3,7 +3,7 @@
  * This module provides the public class `ApplyExpr`.
  */
 
-private import ApplyExprImpl
+private import internal.ApplyExprImpl
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.Expr
 

@@ -3,7 +3,7 @@
  * This module provides the public class `GuardStmt`.
  */
 
-private import GuardStmtImpl
+private import internal.GuardStmtImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 

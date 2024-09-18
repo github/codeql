@@ -3,7 +3,7 @@
  * This module provides the public class `ExistentialMetatypeToObjectExpr`.
  */
 
-private import ExistentialMetatypeToObjectExprImpl
+private import internal.ExistentialMetatypeToObjectExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ExistentialMetatypeToObjectExpr = Impl::ExistentialMetatypeToObjectExpr;

@@ -3,7 +3,7 @@
  * This module provides the public class `Missing`.
  */
 
-private import MissingImpl
+private import internal.MissingImpl
 import codeql.rust.elements.Unextracted
 
 /**

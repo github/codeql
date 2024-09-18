@@ -3,7 +3,7 @@
  * This module provides the public class `NominalType`.
  */
 
-private import NominalTypeImpl
+private import internal.NominalTypeImpl
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 
 final class NominalType = Impl::NominalType;

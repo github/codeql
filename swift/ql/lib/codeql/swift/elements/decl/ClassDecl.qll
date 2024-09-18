@@ -3,7 +3,7 @@
  * This module provides the public class `ClassDecl`.
  */
 
-private import ClassDeclImpl
+private import internal.ClassDeclImpl
 import codeql.swift.elements.decl.NominalTypeDecl
 
 final class ClassDecl = Impl::ClassDecl;

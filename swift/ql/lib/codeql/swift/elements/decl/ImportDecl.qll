@@ -3,7 +3,7 @@
  * This module provides the public class `ImportDecl`.
  */
 
-private import ImportDeclImpl
+private import internal.ImportDeclImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.ValueDecl
