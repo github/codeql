@@ -89,5 +89,5 @@ string captureFlow(DataFlowSummaryTargetApi api) {
 string captureNoFlow(DataFlowSummaryTargetApi api) {
   not exists(DataFlowSummaryTargetApi api0 | exists(captureFlow(api0)) and api0.lift() = api.lift()) and
   api.isRelevant() and
-  result = Printing::asNeutralSummaryModel(api)
+  result = ModelPrinting::asNeutralSummaryModel(api)
 }
