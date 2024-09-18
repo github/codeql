@@ -29,14 +29,14 @@ fn unreachable_if() {
 
 	if cond() {
 		return;
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	}
 
 	if cond() {
 		do_something();
 	} else {
 		return;
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	}
 	do_something();
 
@@ -45,7 +45,7 @@ fn unreachable_if() {
 	} else {
 		return;
 	}
-	do_something(); // BAD: unreachable code [NOT DETECTED]
+	do_something(); // BAD: unreachable code
 }
 
 fn unreachable_panic() {
@@ -86,44 +86,44 @@ fn unreachable_panic() {
 
 fn unreachable_match() {
 	match get_a_number() {
-		1=>{
+		1=>{ // [unreachable FALSE POSITIVE]
 			return;
 		}
-		_=>{
+		_=>{ // [unreachable FALSE POSITIVE]
 			do_something();
 		}
 	}
-	do_something();
+	do_something(); // [unreachable FALSE POSITIVE]
 
 	match get_a_number() {
-		1=>{
+		1=>{ // [unreachable FALSE POSITIVE]
 			return;
 		}
-		_=>{
+		_=>{ // [unreachable FALSE POSITIVE]
 			return;
 		}
 	}
-	do_something(); // BAD: unreachable code [NOT DETECTED]
+	do_something(); // BAD: unreachable code
 }
 
 fn unreachable_loop() {
 	loop {
 		do_something();
 		break;
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	}
 
 	if cond() {
 		while cond() {
-			do_something();
+			do_something();{ // [unreachable FALSE POSITIVE]
 		}
 
 		while false {
-			do_something(); // BAD: unreachable code [NOT DETECTED]
+			do_something(); // BAD: unreachable code
 		}
 
 		while true {
-			do_something();
+			do_something(); // [unreachable FALSE POSITIVE]
 		}
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
@@ -131,10 +131,10 @@ fn unreachable_loop() {
 	loop {
 		if cond() {
 			return;
-			do_something(); // BAD: unreachable code [NOT DETECTED]
+			do_something(); // BAD: unreachable code
 		}
 	}
-	do_something(); // BAD: unreachable code [NOT DETECTED]
+	do_something(); // BAD: unreachable code
 	do_something();
 	do_something();
 }
