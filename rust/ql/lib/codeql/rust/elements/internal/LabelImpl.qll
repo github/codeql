@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.Label
 module Impl {
   /**
    * A label. For example:
-   * ```
+   * ```rust
    * 'label: loop {
    *     println!("Hello, world (once)!");
    *     break 'label;

@@ -10,7 +10,7 @@ import codeql.rust.elements.RecordPatField
 
 /**
  * A record pattern. For example:
- * ```
+ * ```rust
  * match x {
  *     Foo { a: 1, b: 2 } => "ok",
  *     Foo { .. } => "fail",

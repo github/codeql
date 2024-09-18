@@ -56,7 +56,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * The base class for generic arguments.
-   * ```
+   * ```rust
    * x.foo::<u32, u64>(42);
    * ```
    */
@@ -67,7 +67,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A label. For example:
-   * ```
+   * ```rust
    * 'label: loop {
    *     println!("Hello, world (once)!");
    *     break 'label;
@@ -86,13 +86,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A match arm. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * };
    * ```
-   * ```
+   * ```rust
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,
@@ -127,7 +127,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A path. For example:
-   * ```
+   * ```rust
    * foo::bar;
    * ```
    */
@@ -138,7 +138,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A field in a record expression. For example `a: 1` in:
-   * ```
+   * ```rust
    * Foo { a: 1, b: 2 };
    * ```
    */
@@ -159,7 +159,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A field in a record pattern. For example `a: 1` in:
-   * ```
+   * ```rust
    * let Foo { a: 1, b: 2 } = foo;
    * ```
    */
@@ -186,7 +186,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * The base class for type references.
-   * ```
+   * ```rust
    * let x: i32;
    * let y: Vec<i32>;
    * let z: Option<i32>;
@@ -199,7 +199,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An array expression. For example:
-   * ```
+   * ```rust
    * [1, 2, 3];
    * [1; 10];
    * ```
@@ -209,7 +209,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An inline assembly expression. For example:
-   * ```
+   * ```rust
    * unsafe {
    *     builtin # asm(_);
    * }
@@ -227,7 +227,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An `await` expression. For example:
-   * ```
+   * ```rust
    * async {
    *     let x = foo().await;
    *     x
@@ -246,14 +246,15 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A `become` expression. For example:
-   * ```
+   * ```rust
    * fn fact_a(n: i32, a: i32) -> i32 {
    *      if n == 0 {
    *          a
    *      } else {
    *          become fact_a(n - 1, n * a)
    *      }
-   *  }    ```
+   * }
+   * ```
    */
   class BecomeExpr extends @become_expr, Expr {
     override string toString() { result = "BecomeExpr" }
@@ -267,7 +268,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A binary operation expression. For example:
-   * ```
+   * ```rust
    * x + y;
    * x && y;
    * x <= y;
@@ -312,7 +313,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A box expression. For example:
-   * ```
+   * ```rust
    * let x = #[rustc_box] Box::new(42);
    * ```
    */
@@ -328,7 +329,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A box pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     box Option::Some(y) => y,
    *     box Option::None => 0,
@@ -347,14 +348,14 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A break expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     if not_ready() {
    *         break;
    *      }
    * }
    * ```
-   * ```
+   * ```rust
    * let x = 'label: loop {
    *     if done() {
    *         break 'label 42;
@@ -379,7 +380,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A function call expression. For example:
-   * ```
+   * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);
@@ -408,7 +409,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A cast expression. For example:
-   * ```
+   * ```rust
    * value as u64;
    * ```
    */
@@ -429,7 +430,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A closure expression. For example:
-   * ```
+   * ```rust
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;
@@ -476,7 +477,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A const block pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     const { 1 + 2 + 3 } => "ok",
    *     _ => "fail",
@@ -495,7 +496,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A `const` block expression. For example:
-   * ```
+   * ```rust
    * if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
    *     return false;
    * }
@@ -513,14 +514,14 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A continue expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     if not_ready() {
    *         continue;
    *     }
    * }
    * ```
-   * ```
+   * ```rust
    * 'label: loop {
    *     if not_ready() {
    *         continue 'label;
@@ -540,7 +541,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An expression statement. For example:
-   * ```
+   * ```rust
    * start();
    * finish()
    * use std::env;
@@ -563,7 +564,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A field access expression. For example:
-   * ```
+   * ```rust
    * x.foo
    * ```
    */
@@ -584,11 +585,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A function declaration. For example
-   * ```
+   * ```rust
    * fn foo(x: u32) -> u64 {(x + 1).into()}
    * ```
    * A function declaration within a trait might not have a body:
-   * ```
+   * ```rust
    * trait Trait {
    *     fn bar();
    * }
@@ -611,13 +612,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A binding pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * };
    * ```
-   * ```
+   * ```rust
    * match x {
    *     y@Option::Some(_) => y,
    *     Option::None => 0,
@@ -641,12 +642,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An `if` expression. For example:
-   * ```
+   * ```rust
    * if x == 42 {
    *     println!("that's the answer");
    * }
    * ```
-   * ```
+   * ```rust
    * let y = if x > 0 {
    *     1
    * } else {
@@ -676,7 +677,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An index expression. For example:
-   * ```
+   * ```rust
    * list[42];
    * list[42] = 1;
    * ```
@@ -703,7 +704,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An item statement. For example:
-   * ```
+   * ```rust
    * fn print_hello() {
    *     println!("Hello, world!");
    * }
@@ -717,7 +718,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A `let` expression. For example:
-   * ```
+   * ```rust
    * if let Some(x) = maybe_some {
    *     println!("{}", x);
    * }
@@ -740,7 +741,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A let statement. For example:
-   * ```
+   * ```rust
    * let x = 42;
    * let x: i32 = 42;
    * let x: i32;
@@ -749,6 +750,7 @@ module Raw {
    * let Some(x) = std::env::var("FOO") else {
    *     return;
    * };
+   * ```
    */
   class LetStmt extends @let_stmt, Stmt {
     override string toString() { result = "LetStmt" }
@@ -777,7 +779,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A literal expression. For example:
-   * ```
+   * ```rust
    * 42;
    * 42.0;
    * "Hello, world!";
@@ -786,6 +788,7 @@ module Raw {
    * b'x';
    * r"Hello, world!";
    * true;
+   * ```
    */
   class LiteralExpr extends @literal_expr, Expr {
     override string toString() { result = "LiteralExpr" }
@@ -794,7 +797,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A literal pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     42 => "ok",
    *     _ => "fail",
@@ -813,18 +816,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A loop expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     println!("Hello, world (again)!");
    * };
    * ```
-   * ```
+   * ```rust
    * 'label: loop {
    *     println!("Hello, world (once)!");
    *     break 'label;
    * };
    * ```
-   * ```
+   * ```rust
    * let mut x = 0;
    * loop {
    *     if x < 10 {
@@ -852,13 +855,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A match expression. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * }
    * ```
-   * ```
+   * ```rust
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,
@@ -882,9 +885,10 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A method call expression. For example:
-   * ```
+   * ```rust
    * x.foo(42);
    * x.foo::<u32, u64>(42);
+   * ```
    */
   class MethodCallExpr extends @method_call_expr, Expr {
     override string toString() { result = "MethodCallExpr" }
@@ -914,7 +918,7 @@ module Raw {
    * INTERNAL: Do not use.
    * A missing expression, used as a placeholder for incomplete syntax.
    *
-   * ```
+   * ```rust
    * let x = non_existing_macro!();
    * ```
    */
@@ -925,7 +929,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A missing pattern, used as a place holder for incomplete syntax.
-   * ```
+   * ```rust
    * match Some(42) {
    *     .. => "bad use of .. syntax",
    * };
@@ -938,10 +942,10 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A module declaration. For example:
-   * ```
+   * ```rust
    * mod foo;
    * ```
-   * ```
+   * ```rust
    * mod bar {
    *     pub fn baz() {}
    * }
@@ -959,7 +963,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    *  An `offset_of` expression. For example:
-   * ```
+   * ```rust
    * builtin # offset_of(Struct, field);
    * ```
    */
@@ -980,7 +984,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An or pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) | Option::None => 0,
    * }
@@ -998,7 +1002,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A path expression. For example:
-   * ```
+   * ```rust
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
@@ -1017,7 +1021,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A path pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Foo::Bar => "ok",
    *     _ => "fail",
@@ -1036,7 +1040,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A unary operation expression. For example:
-   * ```
+   * ```rust
    * let x = -42
    * let y = !true
    * let z = *ptr
@@ -1059,7 +1063,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A range expression. For example:
-   * ```
+   * ```rust
    * let x = 1..=10;
    * let x = 1..10;
    * let x = 10..;
@@ -1090,7 +1094,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A range pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     ..15 => "too cold",
    *     16..=25 => "just right",
@@ -1115,7 +1119,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A record expression. For example:
-   * ```
+   * ```rust
    * let first = Foo { a: 1, b: 2 };
    * let second = Foo { a: 2, ..first };
    * Foo { a: 1, b: 2 }[2] = 10;
@@ -1154,7 +1158,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A record pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Foo { a: 1, b: 2 } => "ok",
    *     Foo { .. } => "fail",
@@ -1183,7 +1187,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A reference expression. For example:
-   * ```
+   * ```rust
    *     let ref_const = &foo;
    *     let ref_mut = &mut foo;
    *     let raw_const: &mut i32 = &raw const foo;
@@ -1212,7 +1216,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A reference pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     &mut Option::Some(y) => y,
    *     &Option::None => 0,
@@ -1236,12 +1240,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A return expression. For example:
-   * ```
+   * ```rust
    * fn some_value() -> i32 {
    *     return 42;
    * }
    * ```
-   * ```
+   * ```rust
    * fn no_value() -> () {
    *     return;
    * }
@@ -1259,12 +1263,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A slice pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     [1, 2, 3, 4, 5] => "ok",
    *     [1, 2, ..] => "fail",
    *     [x, y, .., z, 7] => "fail",
    * }
+   * ```
    */
   class SlicePat extends @slice_pat, Pat {
     override string toString() { result = "SlicePat" }
@@ -1288,7 +1293,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A tuple expression. For example:
-   * ```
+   * ```rust
    * (1, "one");
    * (2, "two")[0] = 3;
    * ```
@@ -1310,7 +1315,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A tuple pattern. For example:
-   * ```
+   * ```rust
    * let (x, y) = (1, 2);
    * let (a, b, ..,  z) = (1, 2, 3, 4, 5);
    * ```
@@ -1332,7 +1337,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A tuple struct pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Tuple("a", 1, 2, 3) => "great",
    *     Tuple(.., 3) => "fine",
@@ -1362,7 +1367,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An underscore expression. For example:
-   * ```
+   * ```rust
    * _ = 42;
    * ```
    */
@@ -1381,7 +1386,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A wildcard pattern. For example:
-   * ```
+   * ```rust
    * let _ = 42;
    * ```
    */
@@ -1392,7 +1397,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A `yeet` expression. For example:
-   * ```
+   * ```rust
    * if x < size {
    *    do yeet "index out of bounds";
    * }
@@ -1410,7 +1415,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A `yield` expression. For example:
-   * ```
+   * ```rust
    * let one = #[coroutine]
    *     || {
    *         yield 1;
@@ -1429,7 +1434,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An async block expression. For example:
-   * ```
+   * ```rust
    * async {
    *    let x = 42;
    *    x
@@ -1443,12 +1448,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A block expression. For example:
-   * ```
+   * ```rust
    * {
    *     let x = 42;
    * }
    * ```
-   * ```
+   * ```rust
    * 'label: {
    *     let x = 42;
    *     x
@@ -1467,7 +1472,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An element list expression. For example:
-   * ```
+   * ```rust
    * [1, 2, 3, 4, 5];
    * [1, 2, 3, 4, 5][0] = 6;
    * ```
@@ -1489,8 +1494,9 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A repeat expression. For example:
-   * ```
+   * ```rust
    * [1; 10];
+   * ```
    */
   class RepeatExpr extends @repeat_expr, ArrayExpr {
     override string toString() { result = "RepeatExpr" }
@@ -1509,7 +1515,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * An unsafe block expression. For example:
-   * ```
+   * ```rust
    * let layout = unsafe {
    *     let x = 42;
    *     Layout::from_size_align_unchecked(size, align)

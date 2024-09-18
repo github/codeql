@@ -17,7 +17,7 @@ module Generated {
   /**
    * A missing expression, used as a placeholder for incomplete syntax.
    *
-   * ```
+   * ```rust
    * let x = non_existing_macro!();
    * ```
    * INTERNAL: Do not reference the `Generated::MissingExpr` class directly.

@@ -9,7 +9,7 @@ import codeql.rust.elements.Expr
 
 /**
  * An element list expression. For example:
- * ```
+ * ```rust
  * [1, 2, 3, 4, 5];
  * [1, 2, 3, 4, 5][0] = 6;
  * ```

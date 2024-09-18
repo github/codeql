@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * An `await` expression. For example:
- * ```
+ * ```rust
  * async {
  *     let x = foo().await;
  *     x

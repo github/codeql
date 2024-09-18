@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImp
 module Generated {
   /**
    * The base class for type references.
-   * ```
+   * ```rust
    * let x: i32;
    * let y: Vec<i32>;
    * let z: Option<i32>;

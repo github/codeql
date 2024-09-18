@@ -16,7 +16,7 @@ import codeql.rust.elements.Path
 module Generated {
   /**
    * A path pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Foo::Bar => "ok",
    *     _ => "fail",

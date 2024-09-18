@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.PrefixExpr
 module Impl {
   /**
    * A unary operation expression. For example:
-   * ```
+   * ```rust
    * let x = -42
    * let y = !true
    * let z = *ptr

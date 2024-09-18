@@ -16,7 +16,7 @@ import codeql.rust.elements.Expr
 module Generated {
   /**
    * A field in a record expression. For example `a: 1` in:
-   * ```
+   * ```rust
    * Foo { a: 1, b: 2 };
    * ```
    * INTERNAL: Do not reference the `Generated::RecordExprField` class directly.

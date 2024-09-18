@@ -8,12 +8,12 @@ import codeql.rust.elements.Expr
 
 /**
  * An `if` expression. For example:
- * ```
+ * ```rust
  * if x == 42 {
  *     println!("that's the answer");
  * }
  * ```
- * ```
+ * ```rust
  * let y = if x > 0 {
  *     1
  * } else {

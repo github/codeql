@@ -8,12 +8,12 @@ import codeql.rust.elements.Expr
 
 /**
  * A return expression. For example:
- * ```
+ * ```rust
  * fn some_value() -> i32 {
  *     return 42;
  * }
  * ```
- * ```
+ * ```rust
  * fn no_value() -> () {
  *     return;
  * }

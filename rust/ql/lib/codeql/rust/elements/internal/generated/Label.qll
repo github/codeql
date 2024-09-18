@@ -15,7 +15,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 module Generated {
   /**
    * A label. For example:
-   * ```
+   * ```rust
    * 'label: loop {
    *     println!("Hello, world (once)!");
    *     break 'label;

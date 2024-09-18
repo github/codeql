@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A tuple expression. For example:
- * ```
+ * ```rust
  * (1, "one");
  * (2, "two")[0] = 3;
  * ```

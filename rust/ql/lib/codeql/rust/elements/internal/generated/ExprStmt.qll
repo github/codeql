@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 module Generated {
   /**
    * An expression statement. For example:
-   * ```
+   * ```rust
    * start();
    * finish()
    * use std::env;

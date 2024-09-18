@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.IndexExpr
 module Impl {
   /**
    * An index expression. For example:
-   * ```
+   * ```rust
    * list[42];
    * list[42] = 1;
    * ```

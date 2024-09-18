@@ -11,7 +11,7 @@ import codeql.rust.elements.TypeRef
 
 /**
  * A let statement. For example:
- * ```
+ * ```rust
  * let x = 42;
  * let x: i32 = 42;
  * let x: i32;
@@ -20,5 +20,6 @@ import codeql.rust.elements.TypeRef
  * let Some(x) = std::env::var("FOO") else {
  *     return;
  * };
+ * ```
  */
 final class LetStmt = Impl::LetStmt;

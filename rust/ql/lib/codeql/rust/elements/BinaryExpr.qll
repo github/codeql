@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A binary operation expression. For example:
- * ```
+ * ```rust
  * x + y;
  * x && y;
  * x <= y;

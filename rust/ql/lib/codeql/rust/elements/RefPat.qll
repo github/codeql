@@ -8,7 +8,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A reference pattern. For example:
- * ```
+ * ```rust
  * match x {
  *     &mut Option::Some(y) => y,
  *     &Option::None => 0,

@@ -9,14 +9,14 @@ import codeql.rust.elements.Label
 
 /**
  * A continue expression. For example:
- * ```
+ * ```rust
  * loop {
  *     if not_ready() {
  *         continue;
  *     }
  * }
  * ```
- * ```
+ * ```rust
  * 'label: loop {
  *     if not_ready() {
  *         continue 'label;

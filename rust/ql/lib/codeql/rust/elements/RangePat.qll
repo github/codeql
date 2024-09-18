@@ -8,7 +8,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A range pattern. For example:
- * ```
+ * ```rust
  * match x {
  *     ..15 => "too cold",
  *     16..=25 => "just right",

@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A binary operation expression. For example:
-   * ```
+   * ```rust
    * x + y;
    * x && y;
    * x <= y;

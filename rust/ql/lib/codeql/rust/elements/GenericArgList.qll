@@ -9,7 +9,7 @@ import codeql.rust.elements.Unimplemented
 
 /**
  * The base class for generic arguments.
- * ```
+ * ```rust
  * x.foo::<u32, u64>(42);
  * ```
  */

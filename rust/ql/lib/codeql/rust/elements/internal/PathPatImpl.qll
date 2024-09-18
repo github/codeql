@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.PathPat
 module Impl {
   /**
    * A path pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Foo::Bar => "ok",
    *     _ => "fail",

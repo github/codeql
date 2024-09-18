@@ -9,7 +9,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A field in a record pattern. For example `a: 1` in:
- * ```
+ * ```rust
  * let Foo { a: 1, b: 2 } = foo;
  * ```
  */

@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A unary operation expression. For example:
-   * ```
+   * ```rust
    * let x = -42
    * let y = !true
    * let z = *ptr

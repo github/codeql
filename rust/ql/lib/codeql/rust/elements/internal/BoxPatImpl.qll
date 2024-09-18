@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.BoxPat
 module Impl {
   /**
    * A box pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     box Option::Some(y) => y,
    *     box Option::None => 0,

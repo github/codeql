@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A field access expression. For example:
- * ```
+ * ```rust
  * x.foo
  * ```
  */

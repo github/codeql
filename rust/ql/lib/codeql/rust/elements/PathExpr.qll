@@ -9,7 +9,7 @@ import codeql.rust.elements.Path
 
 /**
  * A path expression. For example:
- * ```
+ * ```rust
  * let x = variable;
  * let x = foo::bar;
  * let y = <T>::foo;

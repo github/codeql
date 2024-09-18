@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A `yeet` expression. For example:
-   * ```
+   * ```rust
    * if x < size {
    *    do yeet "index out of bounds";
    * }

@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A literal expression. For example:
- * ```
+ * ```rust
  * 42;
  * 42.0;
  * "Hello, world!";
@@ -17,5 +17,6 @@ import codeql.rust.elements.Expr
  * b'x';
  * r"Hello, world!";
  * true;
+ * ```
  */
 final class LiteralExpr = Impl::LiteralExpr;

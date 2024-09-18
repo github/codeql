@@ -9,7 +9,7 @@ import codeql.rust.elements.Unimplemented
 
 /**
  * A path. For example:
- * ```
+ * ```rust
  * foo::bar;
  * ```
  */

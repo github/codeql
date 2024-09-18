@@ -10,7 +10,7 @@ import codeql.rust.elements.Missing
 /**
  * A missing expression, used as a placeholder for incomplete syntax.
  *
- * ```
+ * ```rust
  * let x = non_existing_macro!();
  * ```
  */

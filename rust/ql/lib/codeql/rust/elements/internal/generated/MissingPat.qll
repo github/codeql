@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A missing pattern, used as a place holder for incomplete syntax.
-   * ```
+   * ```rust
    * match Some(42) {
    *     .. => "bad use of .. syntax",
    * };

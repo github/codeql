@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.ConstExpr
 module Impl {
   /**
    * A `const` block expression. For example:
-   * ```
+   * ```rust
    * if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
    *     return false;
    * }

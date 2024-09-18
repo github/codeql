@@ -14,18 +14,18 @@ private import codeql.rust.elements.internal.generated.LoopExpr
 module Impl {
   /**
    * A loop expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     println!("Hello, world (again)!");
    * };
    * ```
-   * ```
+   * ```rust
    * 'label: loop {
    *     println!("Hello, world (once)!");
    *     break 'label;
    * };
    * ```
-   * ```
+   * ```rust
    * let mut x = 0;
    * loop {
    *     if x < 10 {

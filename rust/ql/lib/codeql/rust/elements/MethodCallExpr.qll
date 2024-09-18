@@ -9,8 +9,9 @@ import codeql.rust.elements.GenericArgList
 
 /**
  * A method call expression. For example:
- * ```
+ * ```rust
  * x.foo(42);
  * x.foo::<u32, u64>(42);
+ * ```
  */
 final class MethodCallExpr = Impl::MethodCallExpr;
