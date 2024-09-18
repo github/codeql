@@ -19,11 +19,6 @@ abstract class BufferAccess extends Expr {
     //A buffer access must be reachable (not in dead code)
     reachable(this)
   }
-  BufferAccess() {
-    not this.isUnevaluated() and
-    //A buffer access must be reachable (not in dead code)
-    reachable(this)
-  }
 
   abstract string getName();
 
