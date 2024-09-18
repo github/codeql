@@ -121,7 +121,7 @@ mod divergence {
 
     fn test_let_match(a: Option<i64>) {
         let Some(n) = a else {
-            panic!("Expected some");
+            "Expected some"
         };
         n
     }
