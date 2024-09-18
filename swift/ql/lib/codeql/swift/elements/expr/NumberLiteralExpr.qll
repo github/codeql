@@ -3,7 +3,7 @@
  * This module provides the public class `NumberLiteralExpr`.
  */
 
-private import NumberLiteralExprImpl
+private import internal.NumberLiteralExprImpl
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 final class NumberLiteralExpr = Impl::NumberLiteralExpr;

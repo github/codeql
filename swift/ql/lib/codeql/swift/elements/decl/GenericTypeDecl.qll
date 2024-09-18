@@ -3,7 +3,7 @@
  * This module provides the public class `GenericTypeDecl`.
  */
 
-private import GenericTypeDeclImpl
+private import internal.GenericTypeDeclImpl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.TypeDecl
 

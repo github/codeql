@@ -3,7 +3,7 @@
  * This module provides the public class `RebindSelfInInitializerExpr`.
  */
 
-private import RebindSelfInInitializerExprImpl
+private import internal.RebindSelfInInitializerExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 

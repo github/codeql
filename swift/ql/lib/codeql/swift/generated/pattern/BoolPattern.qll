@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.pattern.PatternImpl::Impl as PatternImpl
+import codeql.swift.elements.pattern.internal.PatternImpl::Impl as PatternImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BoolPattern` and should not

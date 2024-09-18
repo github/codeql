@@ -3,7 +3,7 @@
  * This module provides the public class `LiteralPat`.
  */
 
-private import LiteralPatImpl
+private import internal.LiteralPatImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 

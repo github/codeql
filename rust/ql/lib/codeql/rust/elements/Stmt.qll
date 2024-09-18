@@ -3,7 +3,7 @@
  * This module provides the public class `Stmt`.
  */
 
-private import StmtImpl
+private import internal.StmtImpl
 import codeql.rust.elements.AstNode
 
 /**

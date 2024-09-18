@@ -3,7 +3,7 @@
  * This module provides the public class `EnumElementDecl`.
  */
 
-private import EnumElementDeclImpl
+private import internal.EnumElementDeclImpl
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.decl.ValueDecl
 

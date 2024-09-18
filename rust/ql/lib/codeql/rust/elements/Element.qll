@@ -3,6 +3,6 @@
  * This module provides the public class `Element`.
  */
 
-private import ElementImpl
+private import internal.ElementImpl
 
 final class Element = Impl::Element;

@@ -3,7 +3,7 @@
  * This module provides the public class `WeakStorageType`.
  */
 
-private import WeakStorageTypeImpl
+private import internal.WeakStorageTypeImpl
 import codeql.swift.elements.type.ReferenceStorageType
 
 final class WeakStorageType = Impl::WeakStorageType;

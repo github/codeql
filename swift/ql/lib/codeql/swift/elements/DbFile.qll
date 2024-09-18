@@ -3,7 +3,7 @@
  * This module provides the public class `DbFile`.
  */
 
-private import DbFileImpl
+private import internal.DbFileImpl
 import codeql.swift.elements.File
 
 final class DbFile = Impl::DbFile;

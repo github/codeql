@@ -6,7 +6,7 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.BlockExprBaseImpl::Impl as BlockExprBaseImpl
+import codeql.rust.elements.internal.BlockExprBaseImpl::Impl as BlockExprBaseImpl
 import codeql.rust.elements.Label
 
 /**

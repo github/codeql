@@ -3,7 +3,7 @@
  * This module provides the public class `FieldExpr`.
  */
 
-private import FieldExprImpl
+private import internal.FieldExprImpl
 import codeql.rust.elements.Expr
 
 /**

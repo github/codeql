@@ -3,7 +3,7 @@
  * This module provides the public class `OpaqueTypeArchetypeType`.
  */
 
-private import OpaqueTypeArchetypeTypeImpl
+private import internal.OpaqueTypeArchetypeTypeImpl
 import codeql.swift.elements.type.ArchetypeType
 import codeql.swift.elements.decl.OpaqueTypeDecl
 

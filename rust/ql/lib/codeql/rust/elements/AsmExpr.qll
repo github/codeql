@@ -3,7 +3,7 @@
  * This module provides the public class `AsmExpr`.
  */
 
-private import AsmExprImpl
+private import internal.AsmExprImpl
 import codeql.rust.elements.Expr
 
 /**

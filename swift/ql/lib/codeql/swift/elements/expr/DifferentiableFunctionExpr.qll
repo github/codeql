@@ -3,7 +3,7 @@
  * This module provides the public class `DifferentiableFunctionExpr`.
  */
 
-private import DifferentiableFunctionExprImpl
+private import internal.DifferentiableFunctionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class DifferentiableFunctionExpr = Impl::DifferentiableFunctionExpr;

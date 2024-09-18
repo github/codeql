@@ -3,7 +3,7 @@
  * This module provides the public class `UnspecifiedElement`.
  */
 
-private import UnspecifiedElementImpl
+private import internal.UnspecifiedElementImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.Element
 import codeql.swift.elements.ErrorElement

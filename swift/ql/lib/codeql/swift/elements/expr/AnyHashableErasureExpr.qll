@@ -3,7 +3,7 @@
  * This module provides the public class `AnyHashableErasureExpr`.
  */
 
-private import AnyHashableErasureExprImpl
+private import internal.AnyHashableErasureExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class AnyHashableErasureExpr = Impl::AnyHashableErasureExpr;

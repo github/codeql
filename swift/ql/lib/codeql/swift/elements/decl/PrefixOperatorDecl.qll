@@ -3,7 +3,7 @@
  * This module provides the public class `PrefixOperatorDecl`.
  */
 
-private import PrefixOperatorDeclImpl
+private import internal.PrefixOperatorDeclImpl
 import codeql.swift.elements.decl.OperatorDecl
 
 final class PrefixOperatorDecl = Impl::PrefixOperatorDecl;

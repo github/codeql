@@ -3,7 +3,7 @@
  * This module provides the public class `BecomeExpr`.
  */
 
-private import BecomeExprImpl
+private import internal.BecomeExprImpl
 import codeql.rust.elements.Expr
 
 /**

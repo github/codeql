@@ -6,8 +6,8 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.MissingImpl::Impl as MissingImpl
-import codeql.rust.elements.PatImpl::Impl as PatImpl
+import codeql.rust.elements.internal.MissingImpl::Impl as MissingImpl
+import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MissingPat` and should not

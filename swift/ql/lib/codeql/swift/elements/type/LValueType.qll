@@ -3,7 +3,7 @@
  * This module provides the public class `LValueType`.
  */
 
-private import LValueTypeImpl
+private import internal.LValueTypeImpl
 import codeql.swift.elements.type.Type
 
 final class LValueType = Impl::LValueType;

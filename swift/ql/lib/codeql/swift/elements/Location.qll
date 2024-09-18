@@ -3,7 +3,7 @@
  * This module provides the public class `Location`.
  */
 
-private import LocationImpl
+private import internal.LocationImpl
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 

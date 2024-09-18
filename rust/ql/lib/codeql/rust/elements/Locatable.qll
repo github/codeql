@@ -3,7 +3,7 @@
  * This module provides the public class `Locatable`.
  */
 
-private import LocatableImpl
+private import internal.LocatableImpl
 import codeql.rust.elements.Element
 
 final class Locatable = Impl::Locatable;

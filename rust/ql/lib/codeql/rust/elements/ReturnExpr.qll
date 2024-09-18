@@ -3,7 +3,7 @@
  * This module provides the public class `ReturnExpr`.
  */
 
-private import ReturnExprImpl
+private import internal.ReturnExprImpl
 import codeql.rust.elements.Expr
 
 /**

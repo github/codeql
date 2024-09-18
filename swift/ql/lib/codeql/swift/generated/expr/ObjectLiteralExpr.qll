@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Argument
-import codeql.swift.elements.expr.LiteralExprImpl::Impl as LiteralExprImpl
+import codeql.swift.elements.expr.internal.LiteralExprImpl::Impl as LiteralExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ObjectLiteralExpr` and should not

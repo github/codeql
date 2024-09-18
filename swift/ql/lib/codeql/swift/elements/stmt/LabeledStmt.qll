@@ -3,7 +3,7 @@
  * This module provides the public class `LabeledStmt`.
  */
 
-private import LabeledStmtImpl
+private import internal.LabeledStmtImpl
 import codeql.swift.elements.stmt.Stmt
 
 final class LabeledStmt = Impl::LabeledStmt;

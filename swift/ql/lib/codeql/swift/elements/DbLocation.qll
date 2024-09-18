@@ -3,7 +3,7 @@
  * This module provides the public class `DbLocation`.
  */
 
-private import DbLocationImpl
+private import internal.DbLocationImpl
 import codeql.swift.elements.Location
 
 final class DbLocation = Impl::DbLocation;

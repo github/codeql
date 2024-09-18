@@ -3,7 +3,7 @@
  * This module provides the public class `SlicePat`.
  */
 
-private import SlicePatImpl
+private import internal.SlicePatImpl
 import codeql.rust.elements.Pat
 
 /**

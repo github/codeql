@@ -3,7 +3,7 @@
  * This module provides the public class `RepeatExpr`.
  */
 
-private import RepeatExprImpl
+private import internal.RepeatExprImpl
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.Expr
 

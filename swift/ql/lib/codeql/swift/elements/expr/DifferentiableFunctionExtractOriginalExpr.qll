@@ -3,7 +3,7 @@
  * This module provides the public class `DifferentiableFunctionExtractOriginalExpr`.
  */
 
-private import DifferentiableFunctionExtractOriginalExprImpl
+private import internal.DifferentiableFunctionExtractOriginalExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class DifferentiableFunctionExtractOriginalExpr =

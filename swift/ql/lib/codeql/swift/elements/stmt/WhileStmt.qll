@@ -3,7 +3,7 @@
  * This module provides the public class `WhileStmt`.
  */
 
-private import WhileStmtImpl
+private import internal.WhileStmtImpl
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 

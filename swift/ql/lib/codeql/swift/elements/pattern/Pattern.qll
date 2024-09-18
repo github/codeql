@@ -3,7 +3,7 @@
  * This module provides the public class `Pattern`.
  */
 
-private import PatternImpl
+private import internal.PatternImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 

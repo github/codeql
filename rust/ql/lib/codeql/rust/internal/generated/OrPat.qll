@@ -7,7 +7,7 @@
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
 import codeql.rust.elements.Pat
-import codeql.rust.elements.PatImpl::Impl as PatImpl
+import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `OrPat` and should not

@@ -3,7 +3,7 @@
  * This module provides the public class `BuiltinDefaultActorStorageType`.
  */
 
-private import BuiltinDefaultActorStorageTypeImpl
+private import internal.BuiltinDefaultActorStorageTypeImpl
 import codeql.swift.elements.type.BuiltinType
 
 final class BuiltinDefaultActorStorageType = Impl::BuiltinDefaultActorStorageType;

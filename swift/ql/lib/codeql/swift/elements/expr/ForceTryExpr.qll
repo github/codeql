@@ -3,7 +3,7 @@
  * This module provides the public class `ForceTryExpr`.
  */
 
-private import ForceTryExprImpl
+private import internal.ForceTryExprImpl
 import codeql.swift.elements.expr.AnyTryExpr
 
 final class ForceTryExpr = Impl::ForceTryExpr;

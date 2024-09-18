@@ -3,7 +3,7 @@
  * This module provides the public class `Decl`.
  */
 
-private import DeclImpl
+private import internal.DeclImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.decl.ModuleDecl
 

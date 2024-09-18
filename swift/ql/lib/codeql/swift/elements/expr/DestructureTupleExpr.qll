@@ -3,7 +3,7 @@
  * This module provides the public class `DestructureTupleExpr`.
  */
 
-private import DestructureTupleExprImpl
+private import internal.DestructureTupleExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class DestructureTupleExpr = Impl::DestructureTupleExpr;

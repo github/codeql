@@ -3,7 +3,7 @@
  * This module provides the public class `SubstitutableType`.
  */
 
-private import SubstitutableTypeImpl
+private import internal.SubstitutableTypeImpl
 import codeql.swift.elements.type.Type
 
 final class SubstitutableType = Impl::SubstitutableType;

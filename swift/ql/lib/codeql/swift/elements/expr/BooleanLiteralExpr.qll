@@ -3,7 +3,7 @@
  * This module provides the public class `BooleanLiteralExpr`.
  */
 
-private import BooleanLiteralExprImpl
+private import internal.BooleanLiteralExprImpl
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 final class BooleanLiteralExpr = Impl::BooleanLiteralExpr;

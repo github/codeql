@@ -3,7 +3,7 @@
  * This module provides the public class `IndexExpr`.
  */
 
-private import IndexExprImpl
+private import internal.IndexExprImpl
 import codeql.rust.elements.Expr
 
 /**

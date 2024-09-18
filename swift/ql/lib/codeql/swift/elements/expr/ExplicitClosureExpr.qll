@@ -3,7 +3,7 @@
  * This module provides the public class `ExplicitClosureExpr`.
  */
 
-private import ExplicitClosureExprImpl
+private import internal.ExplicitClosureExprImpl
 import codeql.swift.elements.expr.ClosureExpr
 
 final class ExplicitClosureExpr = Impl::ExplicitClosureExpr;

@@ -3,7 +3,7 @@
  * This module provides the public class `IdentPat`.
  */
 
-private import IdentPatImpl
+private import internal.IdentPatImpl
 import codeql.rust.elements.Pat
 
 /**

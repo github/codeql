@@ -3,7 +3,7 @@
  * This module provides the public class `GenericTypeParamType`.
  */
 
-private import GenericTypeParamTypeImpl
+private import internal.GenericTypeParamTypeImpl
 import codeql.swift.elements.type.SubstitutableType
 
 final class GenericTypeParamType = Impl::GenericTypeParamType;

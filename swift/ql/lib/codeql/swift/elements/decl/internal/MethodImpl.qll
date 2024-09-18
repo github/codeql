@@ -1,5 +1,5 @@
 private import swift
-private import codeql.swift.elements.decl.FunctionImpl::Impl as FunctionImpl
+private import codeql.swift.elements.decl.internal.FunctionImpl::Impl as FunctionImpl
 
 module Impl {
   private Decl getAMember(Decl ctx) {

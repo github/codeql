@@ -3,7 +3,7 @@
  * This module provides the public class `FunctionConversionExpr`.
  */
 
-private import FunctionConversionExprImpl
+private import internal.FunctionConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class FunctionConversionExpr = Impl::FunctionConversionExpr;

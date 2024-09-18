@@ -3,7 +3,7 @@
  * This module provides the public class `ElementArchetypeType`.
  */
 
-private import ElementArchetypeTypeImpl
+private import internal.ElementArchetypeTypeImpl
 import codeql.swift.elements.type.LocalArchetypeType
 
 /**

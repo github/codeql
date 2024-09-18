@@ -3,7 +3,7 @@
  * This module provides the public class `KeyPathComponent`.
  */
 
-private import KeyPathComponentImpl
+private import internal.KeyPathComponentImpl
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type

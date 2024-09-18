@@ -3,7 +3,7 @@
  * This module provides the public class `KeyPathApplicationExpr`.
  */
 
-private import KeyPathApplicationExprImpl
+private import internal.KeyPathApplicationExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class KeyPathApplicationExpr = Impl::KeyPathApplicationExpr;

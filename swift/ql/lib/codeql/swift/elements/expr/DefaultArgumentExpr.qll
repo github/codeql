@@ -3,7 +3,7 @@
  * This module provides the public class `DefaultArgumentExpr`.
  */
 
-private import DefaultArgumentExprImpl
+private import internal.DefaultArgumentExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 

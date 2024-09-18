@@ -3,7 +3,7 @@
  * This module provides the public class `UnderscoreExpr`.
  */
 
-private import UnderscoreExprImpl
+private import internal.UnderscoreExprImpl
 import codeql.rust.elements.Expr
 
 /**

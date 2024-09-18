@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.expr.NumberLiteralExprImpl::Impl as NumberLiteralExprImpl
+import codeql.swift.elements.expr.internal.NumberLiteralExprImpl::Impl as NumberLiteralExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `IntegerLiteralExpr` and should not

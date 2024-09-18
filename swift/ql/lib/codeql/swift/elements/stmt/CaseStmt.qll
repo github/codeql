@@ -3,7 +3,7 @@
  * This module provides the public class `CaseStmt`.
  */
 
-private import CaseStmtImpl
+private import internal.CaseStmtImpl
 import codeql.swift.elements.stmt.CaseLabelItem
 import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.decl.VarDecl

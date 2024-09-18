@@ -6,8 +6,8 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.decl.DeclImpl::Impl as DeclImpl
-import codeql.swift.elements.decl.GenericContextImpl::Impl as GenericContextImpl
+import codeql.swift.elements.decl.internal.DeclImpl::Impl as DeclImpl
+import codeql.swift.elements.decl.internal.GenericContextImpl::Impl as GenericContextImpl
 import codeql.swift.elements.decl.NominalTypeDecl
 import codeql.swift.elements.decl.ProtocolDecl
 

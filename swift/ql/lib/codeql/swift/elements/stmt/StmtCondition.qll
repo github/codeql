@@ -3,7 +3,7 @@
  * This module provides the public class `StmtCondition`.
  */
 
-private import StmtConditionImpl
+private import internal.StmtConditionImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.ConditionElement
 

@@ -3,7 +3,7 @@
  * This module provides the public class `DoCatchStmt`.
  */
 
-private import DoCatchStmtImpl
+private import internal.DoCatchStmtImpl
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt

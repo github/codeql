@@ -3,7 +3,7 @@
  * This module provides the public class `TuplePat`.
  */
 
-private import TuplePatImpl
+private import internal.TuplePatImpl
 import codeql.rust.elements.Pat
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `Function`.
  */
 
-private import FunctionImpl
+private import internal.FunctionImpl
 import codeql.swift.elements.Callable
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ValueDecl

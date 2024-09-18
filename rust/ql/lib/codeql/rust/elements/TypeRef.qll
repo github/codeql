@@ -3,7 +3,7 @@
  * This module provides the public class `TypeRef`.
  */
 
-private import TypeRefImpl
+private import internal.TypeRefImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Unimplemented
 

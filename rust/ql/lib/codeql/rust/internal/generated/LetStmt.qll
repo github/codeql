@@ -8,7 +8,7 @@ private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
-import codeql.rust.elements.StmtImpl::Impl as StmtImpl
+import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 import codeql.rust.elements.TypeRef
 
 /**

@@ -8,7 +8,7 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
-import codeql.swift.elements.expr.ExprImpl::Impl as ExprImpl
+import codeql.swift.elements.expr.internal.ExprImpl::Impl as ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `LookupExpr` and should not

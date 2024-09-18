@@ -3,7 +3,7 @@
  * This module provides the public class `ClassMetatypeToObjectExpr`.
  */
 
-private import ClassMetatypeToObjectExprImpl
+private import internal.ClassMetatypeToObjectExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class ClassMetatypeToObjectExpr = Impl::ClassMetatypeToObjectExpr;

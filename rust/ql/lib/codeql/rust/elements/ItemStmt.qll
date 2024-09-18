@@ -3,7 +3,7 @@
  * This module provides the public class `ItemStmt`.
  */
 
-private import ItemStmtImpl
+private import internal.ItemStmtImpl
 import codeql.rust.elements.Stmt
 
 /**

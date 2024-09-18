@@ -3,7 +3,7 @@
  * This module provides the public class `UnsafeBlockExpr`.
  */
 
-private import UnsafeBlockExprImpl
+private import internal.UnsafeBlockExprImpl
 import codeql.rust.elements.BlockExprBase
 
 /**

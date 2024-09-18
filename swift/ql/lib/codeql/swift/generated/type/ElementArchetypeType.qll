@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.LocalArchetypeTypeImpl::Impl as LocalArchetypeTypeImpl
+import codeql.swift.elements.type.internal.LocalArchetypeTypeImpl::Impl as LocalArchetypeTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ElementArchetypeType` and should not

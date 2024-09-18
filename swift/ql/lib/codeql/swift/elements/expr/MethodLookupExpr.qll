@@ -3,7 +3,7 @@
  * This module provides the public class `MethodLookupExpr`.
  */
 
-private import MethodLookupExprImpl
+private import internal.MethodLookupExprImpl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.LookupExpr
 

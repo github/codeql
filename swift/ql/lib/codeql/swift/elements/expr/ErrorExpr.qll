@@ -3,7 +3,7 @@
  * This module provides the public class `ErrorExpr`.
  */
 
-private import ErrorExprImpl
+private import internal.ErrorExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 

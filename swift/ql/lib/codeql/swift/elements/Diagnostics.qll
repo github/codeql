@@ -3,7 +3,7 @@
  * This module provides the public class `Diagnostics`.
  */
 
-private import DiagnosticsImpl
+private import internal.DiagnosticsImpl
 import codeql.swift.elements.Locatable
 
 final class Diagnostics = Impl::Diagnostics;

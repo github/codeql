@@ -3,7 +3,7 @@
  * This module provides the public class `ArchetypeType`.
  */
 
-private import ArchetypeTypeImpl
+private import internal.ArchetypeTypeImpl
 import codeql.swift.elements.decl.ProtocolDecl
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.Type

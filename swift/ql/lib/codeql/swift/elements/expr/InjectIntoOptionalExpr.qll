@@ -3,7 +3,7 @@
  * This module provides the public class `InjectIntoOptionalExpr`.
  */
 
-private import InjectIntoOptionalExprImpl
+private import internal.InjectIntoOptionalExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class InjectIntoOptionalExpr = Impl::InjectIntoOptionalExpr;

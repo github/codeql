@@ -3,7 +3,7 @@
  * This module provides the public class `OperatorDecl`.
  */
 
-private import OperatorDeclImpl
+private import internal.OperatorDeclImpl
 import codeql.swift.elements.decl.Decl
 
 final class OperatorDecl = Impl::OperatorDecl;

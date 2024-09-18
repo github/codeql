@@ -1,5 +1,5 @@
 private import codeql.swift.elements.expr.MethodLookupExpr
-private import codeql.swift.elements.expr.MethodLookupExprImpl::Impl as Impl
+private import codeql.swift.elements.expr.internal.MethodLookupExprImpl::Impl as Impl
 private import codeql.swift.elements.decl.Initializer
 
 final private class InitializerLookupExprImpl extends Impl::MethodLookupExpr {

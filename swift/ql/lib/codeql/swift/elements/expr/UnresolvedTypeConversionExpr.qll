@@ -3,7 +3,7 @@
  * This module provides the public class `UnresolvedTypeConversionExpr`.
  */
 
-private import UnresolvedTypeConversionExprImpl
+private import internal.UnresolvedTypeConversionExprImpl
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.ImplicitConversionExpr
 

@@ -3,7 +3,7 @@
  * This module provides the public class `VarDecl`.
  */
 
-private import VarDeclImpl
+private import internal.VarDeclImpl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern

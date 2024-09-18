@@ -3,7 +3,7 @@
  * This module provides the public class `MetatypeConversionExpr`.
  */
 
-private import MetatypeConversionExprImpl
+private import internal.MetatypeConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class MetatypeConversionExpr = Impl::MetatypeConversionExpr;

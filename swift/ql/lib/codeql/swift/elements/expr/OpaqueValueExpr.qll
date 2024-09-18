@@ -3,7 +3,7 @@
  * This module provides the public class `OpaqueValueExpr`.
  */
 
-private import OpaqueValueExprImpl
+private import internal.OpaqueValueExprImpl
 import codeql.swift.elements.expr.Expr
 
 final class OpaqueValueExpr = Impl::OpaqueValueExpr;

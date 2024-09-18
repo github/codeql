@@ -3,7 +3,7 @@
  * This module provides the public class `TypeAliasDecl`.
  */
 
-private import TypeAliasDeclImpl
+private import internal.TypeAliasDeclImpl
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.Type
 

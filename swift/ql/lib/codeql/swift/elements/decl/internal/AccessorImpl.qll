@@ -1,5 +1,5 @@
 private import codeql.swift.generated.decl.Accessor
-private import SetObserver
+private import codeql.swift.elements.decl.SetObserver
 
 module Impl {
   private predicate isKnownAccessorKind(Accessor decl, string kind) {

@@ -3,7 +3,7 @@
  * This module provides the public class `ConditionalCheckedCastExpr`.
  */
 
-private import ConditionalCheckedCastExprImpl
+private import internal.ConditionalCheckedCastExprImpl
 import codeql.swift.elements.expr.CheckedCastExpr
 
 final class ConditionalCheckedCastExpr = Impl::ConditionalCheckedCastExpr;

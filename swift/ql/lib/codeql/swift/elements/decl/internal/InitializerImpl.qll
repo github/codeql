@@ -1,6 +1,6 @@
 private import codeql.swift.generated.decl.Initializer
 private import codeql.swift.elements.decl.Method
-private import codeql.swift.elements.decl.MethodImpl::Impl as MethodImpl
+private import codeql.swift.elements.decl.internal.MethodImpl::Impl as MethodImpl
 private import codeql.swift.elements.type.FunctionType
 private import codeql.swift.elements.type.OptionalType
 

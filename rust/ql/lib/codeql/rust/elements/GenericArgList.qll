@@ -3,7 +3,7 @@
  * This module provides the public class `GenericArgList`.
  */
 
-private import GenericArgListImpl
+private import internal.GenericArgListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Unimplemented
 

@@ -3,7 +3,7 @@
  * This module provides the public class `CopyExpr`.
  */
 
-private import CopyExprImpl
+private import internal.CopyExprImpl
 import codeql.swift.elements.expr.Expr
 
 /**

@@ -3,7 +3,7 @@
  * This module provides the public class `NamedPattern`.
  */
 
-private import NamedPatternImpl
+private import internal.NamedPatternImpl
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.VarDecl
 

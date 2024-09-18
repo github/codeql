@@ -3,7 +3,7 @@
  * This module provides the public class `ConditionElement`.
  */
 
-private import ConditionElementImpl
+private import internal.ConditionElementImpl
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.AvailabilityInfo
 import codeql.swift.elements.expr.Expr

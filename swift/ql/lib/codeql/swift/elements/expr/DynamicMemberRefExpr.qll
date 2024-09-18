@@ -3,7 +3,7 @@
  * This module provides the public class `DynamicMemberRefExpr`.
  */
 
-private import DynamicMemberRefExprImpl
+private import internal.DynamicMemberRefExprImpl
 import codeql.swift.elements.expr.DynamicLookupExpr
 
 final class DynamicMemberRefExpr = Impl::DynamicMemberRefExpr;

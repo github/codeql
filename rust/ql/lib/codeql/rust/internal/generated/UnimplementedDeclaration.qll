@@ -6,8 +6,8 @@
 
 private import codeql.rust.internal.generated.Synth
 private import codeql.rust.internal.generated.Raw
-import codeql.rust.elements.DeclarationImpl::Impl as DeclarationImpl
-import codeql.rust.elements.UnimplementedImpl::Impl as UnimplementedImpl
+import codeql.rust.elements.internal.DeclarationImpl::Impl as DeclarationImpl
+import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `UnimplementedDeclaration` and should not

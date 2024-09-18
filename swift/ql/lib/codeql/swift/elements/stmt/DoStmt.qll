@@ -3,7 +3,7 @@
  * This module provides the public class `DoStmt`.
  */
 
-private import DoStmtImpl
+private import internal.DoStmtImpl
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledStmt
 

@@ -3,7 +3,7 @@
  * This module provides the public class `AbstractTypeParamDecl`.
  */
 
-private import AbstractTypeParamDeclImpl
+private import internal.AbstractTypeParamDeclImpl
 import codeql.swift.elements.decl.TypeDecl
 
 final class AbstractTypeParamDecl = Impl::AbstractTypeParamDecl;

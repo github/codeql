@@ -1,5 +1,5 @@
 private import codeql.swift.generated.expr.MethodLookupExpr
-private import codeql.swift.elements.expr.MethodLookupExprConstructor
+private import codeql.swift.elements.expr.internal.MethodLookupExprConstructor
 private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.expr.OtherInitializerRefExpr
 private import codeql.swift.elements.decl.Decl

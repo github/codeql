@@ -3,7 +3,7 @@
  * This module provides the public class `Declaration`.
  */
 
-private import DeclarationImpl
+private import internal.DeclarationImpl
 import codeql.rust.elements.AstNode
 
 /**

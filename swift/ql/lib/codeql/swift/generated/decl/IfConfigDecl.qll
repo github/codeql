@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
-import codeql.swift.elements.decl.DeclImpl::Impl as DeclImpl
+import codeql.swift.elements.decl.internal.DeclImpl::Impl as DeclImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `IfConfigDecl` and should not

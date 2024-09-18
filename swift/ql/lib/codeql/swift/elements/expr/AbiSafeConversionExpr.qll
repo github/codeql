@@ -3,7 +3,7 @@
  * This module provides the public class `AbiSafeConversionExpr`.
  */
 
-private import AbiSafeConversionExprImpl
+private import internal.AbiSafeConversionExprImpl
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 final class AbiSafeConversionExpr = Impl::AbiSafeConversionExpr;
