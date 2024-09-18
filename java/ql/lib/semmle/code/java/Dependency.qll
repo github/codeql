@@ -52,7 +52,7 @@ predicate depends(RefType t, RefType dep) {
     or
     // the declaring type of a field accessed in `t`,
     exists(Field f | f.getAnAccess().getEnclosingCallable().getDeclaringType() = t |
-      usesType(f.getSourceDeclaration().getDeclaringType(), dep)
+      usesType(f.getDeclaringType(), dep)
     )
     or
     // the type of a local variable declared in `t`,
