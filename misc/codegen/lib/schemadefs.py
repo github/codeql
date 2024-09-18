@@ -52,6 +52,7 @@ class _SynthModifier(_schema.PropertyModifier, _Namespace):
 qltest = _Namespace()
 ql = _Namespace()
 cpp = _Namespace()
+rust = _Namespace()
 synth = _SynthModifier()
 
 
@@ -155,6 +156,10 @@ ql.hideable = _annotate(hideable=True)
 _Pragma("ql_internal")
 
 _Pragma("cpp_skip")
+
+_Pragma("rust_skip_doc_test")
+
+rust.doc_test_signature = lambda signature: _annotate(rust_doc_test_function=signature)
 
 
 def group(name: str = "") -> _ClassDecorator:

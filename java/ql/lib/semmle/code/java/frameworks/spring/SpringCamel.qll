@@ -97,9 +97,6 @@ class SpringCamelXmlToElement extends SpringCamelXmlRouteElement {
    * Gets the URI attribute for this `<to>` element.
    */
   string getUri() { result = this.getAttribute("uri").getValue() }
-
-  /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = this.getUri() }
 }
 
 /**

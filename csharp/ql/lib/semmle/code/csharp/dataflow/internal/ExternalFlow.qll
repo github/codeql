@@ -431,6 +431,17 @@ Declaration interpretElement(
   )
 }
 
+private predicate parseSynthField(AccessPathToken c, string name) {
+  c.getName() = "SyntheticField" and name = c.getAnArgument()
+}
+
+/**
+ * An adapter class for adding synthetic fields from MaD.
+ */
+private class SyntheticFieldAdapter extends SyntheticField {
+  SyntheticFieldAdapter() { parseSynthField(_, this) }
+}
+
 cached
 private module Cached {
   /**

@@ -30,8 +30,8 @@ def _parse_args() -> argparse.Namespace:
 
     p = argparse.ArgumentParser(description="Code generation suite")
     p.add_argument("--generate", type=lambda x: x.split(","),
-                   help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, trap "
-                        "and cpp")
+                   help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, "
+                        "trap, cpp and rust")
     p.add_argument("--verbose", "-v", action="store_true", help="print more information")
     p.add_argument("--quiet", "-q", action="store_true", help="only print errors")
     p.add_argument("--configuration-file", "-c", type=_abspath, default=conf,
@@ -56,6 +56,9 @@ def _parse_args() -> argparse.Namespace:
                        help="output directory for QL generated extractor test files"),
         p.add_argument("--cpp-output",
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
+                            "--generate"),
+        p.add_argument("--rust-output",
+                       help="output directory for generated Rust files, required if rust is provided to "
                             "--generate"),
         p.add_argument("--generated-registry",
                        help="registry file containing information about checked-in generated code. A .gitattributes"

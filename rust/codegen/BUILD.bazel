@@ -1,0 +1,15 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+
+native_binary(
+    name = "codegen",
+    src = "//misc/codegen",
+    out = "codegen",
+    args = [
+        "--configuration-file=$(location //rust:codegen-conf)",
+    ],
+    data = [
+        "//rust:codegen-conf",
+        "//rust:schema",
+    ],
+    visibility = ["//rust:__subpackages__"],
+)
