@@ -39,20 +39,20 @@ class TrapLabelManager {
     /** A mapping from a key (`@"..."`) to the label defined to be that key, if any. */
     val labelMapping: MutableMap<String, Label<*>> = mutableMapOf<String, Label<*>>()
 
-/*
-OLD: KE1
-    val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
+    /*
+    OLD: KE1
+        val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
 
-    val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> =
-        mutableMapOf()
+        val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> =
+            mutableMapOf()
 
-    /**
-     * The set of labels of generic specialisations that we have extracted in this TRAP file. We
-     * can't easily avoid duplication between TRAP files, as the labels contain references to other
-     * labels, so we just accept this duplication.
-     */
-    val genericSpecialisationsExtracted = HashSet<String>()
-*/
+        /**
+         * The set of labels of generic specialisations that we have extracted in this TRAP file. We
+         * can't easily avoid duplication between TRAP files, as the labels contain references to other
+         * labels, so we just accept this duplication.
+         */
+        val genericSpecialisationsExtracted = HashSet<String>()
+    */
 
     /**
      * Sometimes, when we extract a file class we don't have the KtFile for it, so we are not able
@@ -75,15 +75,15 @@ abstract class TrapWriter(
 ) {
     abstract fun getDiagnosticTrapWriter(): DiagnosticTrapWriter
 
-/*
-OLD: KE1
-    /**
-     * Returns the label that is defined to be the given key, if such a label exists, and `null`
-     * otherwise. Most users will want to use `getLabelFor` instead, which allows non-existent
-     * labels to be initialised.
-     */
-TODO: Inline this if it can remain private
-*/
+    /*
+    OLD: KE1
+        /**
+         * Returns the label that is defined to be the given key, if such a label exists, and `null`
+         * otherwise. Most users will want to use `getLabelFor` instead, which allows non-existent
+         * labels to be initialised.
+         */
+    TODO: Inline this if it can remain private
+    */
     private fun <T : AnyDbType> getExistingLabelFor(key: String): Label<T>? {
         return lm.labelMapping.get(key)?.cast<T>()
     }
@@ -113,31 +113,31 @@ TODO: Inline this if it can remain private
         return label
     }
 
-/*
-OLD: KE1
-    /**
-     * It is not easy to assign keys to local variables, so they get given `*` IDs. However, the
-     * same variable may be referred to from distant places in the IR, so we need a way to find out
-     * which label is used for a given local variable. This information is stored in this mapping.
-     */
-    private val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> =
-        mutableMapOf<IrVariable, Label<out DbLocalvar>>()
-    /** This returns the label used for a local variable, creating one if none currently exists. */
-    fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
-        val maybeLabel = variableLabelMapping.get(v)
-        if (maybeLabel == null) {
-            val label = getFreshIdLabel<DbLocalvar>()
-            variableLabelMapping.put(v, label)
-            return label
-        } else {
-            return maybeLabel
+    /*
+    OLD: KE1
+        /**
+         * It is not easy to assign keys to local variables, so they get given `*` IDs. However, the
+         * same variable may be referred to from distant places in the IR, so we need a way to find out
+         * which label is used for a given local variable. This information is stored in this mapping.
+         */
+        private val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> =
+            mutableMapOf<IrVariable, Label<out DbLocalvar>>()
+        /** This returns the label used for a local variable, creating one if none currently exists. */
+        fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
+            val maybeLabel = variableLabelMapping.get(v)
+            if (maybeLabel == null) {
+                val label = getFreshIdLabel<DbLocalvar>()
+                variableLabelMapping.put(v, label)
+                return label
+            } else {
+                return maybeLabel
+            }
         }
-    }
 
-    fun getExistingVariableLabelFor(v: IrVariable): Label<out DbLocalvar>? {
-        return variableLabelMapping.get(v)
-    }
-*/
+        fun getExistingVariableLabelFor(v: IrVariable): Label<out DbLocalvar>? {
+            return variableLabelMapping.get(v)
+        }
+    */
 
     /**
      * This returns a label for the location described by its arguments. Typically users will not
@@ -246,27 +246,27 @@ OLD: KE1
         }
     }
 
-/*
-OLD: KE1
-    /**
-     * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
-     * given `filePath` for locations.
-     */
-    fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
-        FileTrapWriter(
-            basicLogger,
-            lm,
-            bw,
-            this.getDiagnosticTrapWriter(),
-            filePath,
-            populateFileTables
-        )
+    /*
+    OLD: KE1
+        /**
+         * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
+         * given `filePath` for locations.
+         */
+        fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
+            FileTrapWriter(
+                basicLogger,
+                lm,
+                bw,
+                this.getDiagnosticTrapWriter(),
+                filePath,
+                populateFileTables
+            )
 
-    /**
-     * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
-     * given `IrFile` for locations.
-     */
-*/
+        /**
+         * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
+         * given `IrFile` for locations.
+         */
+    */
     fun makeSourceFileTrapWriter(file: KtFile, populateFileTables: Boolean) =
         SourceFileTrapWriter(
             basicLogger,
@@ -328,44 +328,44 @@ open class FileTrapWriter(
         return dtw
     }
 
-/*
-OLD: KE1
-    private fun offsetMinOf(default: Int, vararg options: Int?): Int {
-        if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
-            return default
+    /*
+    OLD: KE1
+        private fun offsetMinOf(default: Int, vararg options: Int?): Int {
+            if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
+                return default
+            }
+
+            var currentMin = default
+            for (option in options) {
+                if (
+                    option != null &&
+                        option != UNDEFINED_OFFSET &&
+                        option != SYNTHETIC_OFFSET &&
+                        option < currentMin
+                ) {
+                    currentMin = option
+                }
+            }
+
+            return currentMin
         }
 
-        var currentMin = default
-        for (option in options) {
-            if (
-                option != null &&
-                    option != UNDEFINED_OFFSET &&
-                    option != SYNTHETIC_OFFSET &&
-                    option < currentMin
-            ) {
-                currentMin = option
+        private fun getStartOffset(e: IrElement): Int {
+            return when (e) {
+                is IrCall -> {
+                    // Calls have incorrect startOffset, so we adjust them:
+                    val dr = e.dispatchReceiver?.let { getStartOffset(it) }
+                    val er = e.extensionReceiver?.let { getStartOffset(it) }
+                    offsetMinOf(e.startOffset, dr, er)
+                }
+                else -> e.startOffset
             }
         }
 
-        return currentMin
-    }
-
-    private fun getStartOffset(e: IrElement): Int {
-        return when (e) {
-            is IrCall -> {
-                // Calls have incorrect startOffset, so we adjust them:
-                val dr = e.dispatchReceiver?.let { getStartOffset(it) }
-                val er = e.extensionReceiver?.let { getStartOffset(it) }
-                offsetMinOf(e.startOffset, dr, er)
-            }
-            else -> e.startOffset
+        private fun getEndOffset(e: IrElement): Int {
+            return e.endOffset
         }
-    }
-
-    private fun getEndOffset(e: IrElement): Int {
-        return e.endOffset
-    }
-*/
+    */
 
     private data class Location(val startLine: Int, val startColumn: Int, val endLine: Int, val endColumn: Int)
 
@@ -388,22 +388,22 @@ OLD: KE1
         return getLocation(fileId, loc.startLine, loc.startColumn, loc.endLine, loc.endColumn)
     }
 
-/*
-OLD: KE1
-    /** Gets a label for the location of `e`. */
-    fun getLocation(e: IrElement): Label<DbLocation> {
-        return getLocation(getStartOffset(e), getEndOffset(e))
-    }
-    /**
-     * Gets a label for the location corresponding to `startOffset` and `endOffset` within this
-     * file.
-     */
-    open fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
-        // We don't have a FileEntry to look up the offsets in, so all
-        // we can do is return a whole-file location.
-        return getWholeFileLocation()
-    }
-*/
+    /*
+    OLD: KE1
+        /** Gets a label for the location of `e`. */
+        fun getLocation(e: IrElement): Label<DbLocation> {
+            return getLocation(getStartOffset(e), getEndOffset(e))
+        }
+        /**
+         * Gets a label for the location corresponding to `startOffset` and `endOffset` within this
+         * file.
+         */
+        open fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+            // We don't have a FileEntry to look up the offsets in, so all
+            // we can do is return a whole-file location.
+            return getWholeFileLocation()
+        }
+    */
 
     /**
      * Gets the location of `e` as a human-readable string. Only used in log messages and exception
@@ -413,15 +413,15 @@ OLD: KE1
         val loc = getLocationInfo(e)
         return "file://$filePath:${loc.startLine}:${loc.startColumn}:${loc.endLine}:${loc.endColumn}"
 
-/*
-OLD: KE1
-        // We don't have a FileEntry to look up the offsets in, so all
-        // we can do is return a whole-file location. We omit the
-        // `:0:0:0:0` so that it is easy to distinguish from a location
-        // where we have actually determined the start/end lines/columns
-        // to be 0.
-        return "file://$filePath"
-*/
+        /*
+        OLD: KE1
+                // We don't have a FileEntry to look up the offsets in, so all
+                // we can do is return a whole-file location. We omit the
+                // `:0:0:0:0` so that it is easy to distinguish from a location
+                // where we have actually determined the start/end lines/columns
+                // to be 0.
+                return "file://$filePath"
+        */
     }
 
     /** Gets a label for the location representing the whole of this file. */
@@ -449,78 +449,78 @@ class SourceFileTrapWriter(
     val ktFile: KtFile,
     populateFileTables: Boolean
 ) : FileTrapWriter(basicLogger, lm, bw, dtw, ktFile.virtualFilePath, populateFileTables) {
-/*
-OLD: KE1
-    /**
-     * The file entry for the file that we are extracting from. Used to map offsets to line/column
-     * numbers.
-     */
-    private val fileEntry = irFile.fileEntry
+    /*
+    OLD: KE1
+        /**
+         * The file entry for the file that we are extracting from. Used to map offsets to line/column
+         * numbers.
+         */
+        private val fileEntry = irFile.fileEntry
 
-    override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
-        if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
-            if (startOffset != endOffset) {
-                basicLogger.warn(
-                    dtw,
-                    "Location with inconsistent offsets (start $startOffset, end $endOffset)",
-                    null
-                )
+        override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+            if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
+                if (startOffset != endOffset) {
+                    basicLogger.warn(
+                        dtw,
+                        "Location with inconsistent offsets (start $startOffset, end $endOffset)",
+                        null
+                    )
+                }
+                return getWholeFileLocation()
             }
-            return getWholeFileLocation()
+
+            if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
+                if (startOffset != endOffset) {
+                    basicLogger.warn(
+                        dtw,
+                        "Location with inconsistent offsets (start $startOffset, end $endOffset)",
+                        null
+                    )
+                }
+                return getWholeFileLocation()
+            }
+
+            // If this is the location for a compiler-generated element, then it will
+            // be a zero-width location. QL doesn't support these, so we translate it
+            // into a one-width location.
+            val endColumnOffset = if (startOffset == endOffset) 1 else 0
+            return getLocation(
+                fileId,
+                fileEntry.getLineNumber(startOffset) + 1,
+                fileEntry.getColumnNumber(startOffset) + 1,
+                fileEntry.getLineNumber(endOffset) + 1,
+                fileEntry.getColumnNumber(endOffset) + endColumnOffset
+            )
         }
 
-        if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
-            if (startOffset != endOffset) {
-                basicLogger.warn(
-                    dtw,
-                    "Location with inconsistent offsets (start $startOffset, end $endOffset)",
-                    null
-                )
+        override fun getLocationString(e: IrElement): String {
+            if (e.startOffset == UNDEFINED_OFFSET || e.endOffset == UNDEFINED_OFFSET) {
+                if (e.startOffset != e.endOffset) {
+                    basicLogger.warn(
+                        dtw,
+                        "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
+                        null
+                    )
+                }
+                return "<unknown location while processing $filePath>"
             }
-            return getWholeFileLocation()
-        }
 
-        // If this is the location for a compiler-generated element, then it will
-        // be a zero-width location. QL doesn't support these, so we translate it
-        // into a one-width location.
-        val endColumnOffset = if (startOffset == endOffset) 1 else 0
-        return getLocation(
-            fileId,
-            fileEntry.getLineNumber(startOffset) + 1,
-            fileEntry.getColumnNumber(startOffset) + 1,
-            fileEntry.getLineNumber(endOffset) + 1,
-            fileEntry.getColumnNumber(endOffset) + endColumnOffset
-        )
-    }
-
-    override fun getLocationString(e: IrElement): String {
-        if (e.startOffset == UNDEFINED_OFFSET || e.endOffset == UNDEFINED_OFFSET) {
-            if (e.startOffset != e.endOffset) {
-                basicLogger.warn(
-                    dtw,
-                    "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
-                    null
-                )
+            if (e.startOffset == SYNTHETIC_OFFSET || e.endOffset == SYNTHETIC_OFFSET) {
+                if (e.startOffset != e.endOffset) {
+                    basicLogger.warn(
+                        dtw,
+                        "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
+                        null
+                    )
+                }
+                return "<synthetic location while processing $filePath>"
             }
-            return "<unknown location while processing $filePath>"
-        }
 
-        if (e.startOffset == SYNTHETIC_OFFSET || e.endOffset == SYNTHETIC_OFFSET) {
-            if (e.startOffset != e.endOffset) {
-                basicLogger.warn(
-                    dtw,
-                    "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})",
-                    null
-                )
-            }
-            return "<synthetic location while processing $filePath>"
+            val startLine = fileEntry.getLineNumber(e.startOffset) + 1
+            val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
+            val endLine = fileEntry.getLineNumber(e.endOffset) + 1
+            val endColumn = fileEntry.getColumnNumber(e.endOffset)
+            return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
         }
-
-        val startLine = fileEntry.getLineNumber(e.startOffset) + 1
-        val startColumn = fileEntry.getColumnNumber(e.startOffset) + 1
-        val endLine = fileEntry.getLineNumber(e.endOffset) + 1
-        val endColumn = fileEntry.getColumnNumber(e.endOffset)
-        return "file://$filePath:$startLine:$startColumn:$endLine:$endColumn"
-    }
-*/
+    */
 }

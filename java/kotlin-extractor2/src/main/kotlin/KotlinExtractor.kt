@@ -24,13 +24,13 @@ import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
-fun main(args : Array<String>) {
+fun main(args: Array<String>) {
     System.out.println("Kotlin Extractor 2 running")
     try {
         runExtractor(args)
-    // We catch Throwable rather than Exception, as we want to
-    // log about the failure even if we get a stack overflow
-    // or an assertion failure in one file.
+        // We catch Throwable rather than Exception, as we want to
+        // log about the failure even if we get a stack overflow
+        // or an assertion failure in one file.
     } catch (e: Throwable) {
         // If we get an exception at the top level, then something's
         // gone very wrong. Don't try to be too fancy, but try to
@@ -57,7 +57,7 @@ fun main(args : Array<String>) {
 }
 
 @OptIn(KaAnalysisApiInternals::class)
-fun runExtractor(args : Array<String>) {
+fun runExtractor(args: Array<String>) {
     val startTimeMs = System.currentTimeMillis()
 
     val invocationTrapFile = args[0]
@@ -89,46 +89,46 @@ OLD: KE1
         // The diagnostic TRAP file has already defined #compilation = *
         val compilation: Label<DbCompilation> = StringLabel("compilation")
         dtw.writeCompilation_started(compilation)
-/*
-OLD: KE1
-        dtw.writeCompilation_info(
-            compilation,
-            "Kotlin Compiler Version",
-            KotlinCompilerVersion.getVersion() ?: "<unknown>"
-        )
-        val extractor_name =
-            this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
-        dtw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
-        dtw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
-        if (compilationStartTime != null) {
-            dtw.writeCompilation_compiler_times(
-                compilation,
-                -1.0,
-                (System.currentTimeMillis() - compilationStartTime) / 1000.0
-            )
-        }
-*/
+        /*
+        OLD: KE1
+                dtw.writeCompilation_info(
+                    compilation,
+                    "Kotlin Compiler Version",
+                    KotlinCompilerVersion.getVersion() ?: "<unknown>"
+                )
+                val extractor_name =
+                    this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
+                dtw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
+                dtw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
+                if (compilationStartTime != null) {
+                    dtw.writeCompilation_compiler_times(
+                        compilation,
+                        -1.0,
+                        (System.currentTimeMillis() - compilationStartTime) / 1000.0
+                    )
+                }
+        */
         dtw.flush()
         val logger = Logger(loggerBase, dtw)
         logger.info("Extraction started")
         logger.flush()
         logger.info("Extraction for invocation TRAP file $invocationTrapFile")
         logger.flush()
-/*
-OLD: KE1
-        logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
-        logger.flush()
-        logPeakMemoryUsage(logger, "before extractor")
-*/
+        /*
+        OLD: KE1
+                logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")
+                logger.flush()
+                logPeakMemoryUsage(logger, "before extractor")
+        */
         val compression = getCompression(logger)
 
-/*
-OLD: KE1
-        val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
-        // FIXME: FileUtil expects a static global logger
-        // which should be provided by SLF4J's factory facility. For now we set it here.
-        FileUtil.logger = logger
-*/
+        /*
+        OLD: KE1
+                val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
+                // FIXME: FileUtil expects a static global logger
+                // which should be provided by SLF4J's factory facility. For now we set it here.
+                FileUtil.logger = logger
+        */
         val srcDir =
             File(
                 System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless {
@@ -136,16 +136,16 @@ OLD: KE1
                 } ?: "kotlin-extractor/src"
             )
         srcDir.mkdirs()
-/*
-OLD: KE1
-        val globalExtensionState = KotlinExtractorGlobalState()
-*/
+        /*
+        OLD: KE1
+                val globalExtensionState = KotlinExtractorGlobalState()
+        */
         doAnalysis(compression, trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
         loggerBase.printLimitedDiagnosticCounts(dtw)
-/*
-OLD: KE1
-        logPeakMemoryUsage(logger, "after extractor")
-*/
+        /*
+        OLD: KE1
+                logPeakMemoryUsage(logger, "after extractor")
+        */
         logger.info("Extraction completed")
         logger.flush()
         val compilationTimeMs = System.currentTimeMillis() - startTimeMs
@@ -161,17 +161,17 @@ OLD: KE1
 }
 
 fun doAnalysis(
-    compression : Compression,
-    trapDir : File,
-    srcDir : File,
+    compression: Compression,
+    trapDir: File,
+    srcDir: File,
     loggerBase: LoggerBase,
-    dtw : DiagnosticTrapWriter,
+    dtw: DiagnosticTrapWriter,
     compilation: Label<DbCompilation>,
-    invocationExtractionProblems : ExtractionProblems,
-    args : List<String>
+    invocationExtractionProblems: ExtractionProblems,
+    args: List<String>
 ) {
     lateinit var sourceModule: KaSourceModule
-    val k2args : K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
+    val k2args: K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
     val session = buildStandaloneAnalysisAPISession {
         registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
@@ -236,38 +236,38 @@ fun doAnalysis(
                     doFile(
                         fileNumber,
                         compression,
-/*
-OLD: KE1
-                    fileExtractionProblems,
-                    invocationTrapFile,
-*/
+                        /*
+                        OLD: KE1
+                                            fileExtractionProblems,
+                                            invocationTrapFile,
+                        */
                         fileDiagnosticTrapWriter,
                         loggerBase,
                         checkTrapIdentical,
                         trapDir,
                         srcDir,
                         psiFile,
-/*
-OLD: KE1
-                    primitiveTypeMapping,
-                    pluginContext,
-                    globalExtensionState
-*/
+                        /*
+                        OLD: KE1
+                                            primitiveTypeMapping,
+                                            pluginContext,
+                                            globalExtensionState
+                        */
                     )
                     fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
                         compilation,
                         fileNumber,
                         fileExtractionProblems.extractionResult()
                     )
-                // We catch Throwable rather than Exception, as we want to
-                // continue trying to extract everything else even if we get a
-                // stack overflow or an assertion failure in one file.
+                    // We catch Throwable rather than Exception, as we want to
+                    // continue trying to extract everything else even if we get a
+                    // stack overflow or an assertion failure in one file.
                 } catch (e: Throwable) {
-/*
-OLD: KE1
-                    logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
-                    fileExtractionProblems.setNonRecoverableProblem()
-*/
+                    /*
+                    OLD: KE1
+                                        logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
+                                        fileExtractionProblems.setNonRecoverableProblem()
+                    */
                 }
             }
             fileNumber += 1
@@ -460,23 +460,23 @@ context (KaSession)
 private fun doFile(
     fileNumber: Int,
     compression: Compression,
-/*
-OLD: KE1
-    fileExtractionProblems: FileExtractionProblems,
-    invocationTrapFile: String,
-*/
+    /*
+    OLD: KE1
+        fileExtractionProblems: FileExtractionProblems,
+        invocationTrapFile: String,
+    */
     fileDiagnosticTrapWriter: FileTrapWriter,
     loggerBase: LoggerBase,
     checkTrapIdentical: Boolean,
     dbTrapDir: File,
     dbSrcDir: File,
     srcFile: KtFile,
-/*
-OLD: KE1
-    primitiveTypeMapping: PrimitiveTypeMapping,
-    pluginContext: IrPluginContext,
-    globalExtensionState: KotlinExtractorGlobalState
-*/
+    /*
+    OLD: KE1
+        primitiveTypeMapping: PrimitiveTypeMapping,
+        pluginContext: IrPluginContext,
+        globalExtensionState: KotlinExtractorGlobalState
+    */
 ) {
     // TODO: Testing
     val c = srcFile.getDeclarations()[0]
@@ -502,7 +502,7 @@ OLD: KE1
 
     val srcFileRelativePath = PathTransformer.std().fileAsDatabaseString(File(srcFilePath))
 
-    val dbSrcFilePath =  FileUtil.appendAbsolutePath(dbSrcDir, srcFileRelativePath).toPath()
+    val dbSrcFilePath = FileUtil.appendAbsolutePath(dbSrcDir, srcFileRelativePath).toPath()
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
     val srcTmpFile =
@@ -528,49 +528,49 @@ OLD: KE1
                 fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
             )
         tw.writeComment("Generated by the CodeQL Kotlin extractor for kotlin source code")
-/*
-OLD: KE1
-        tw.writeComment("Part of invocation $invocationTrapFile")
-*/
+        /*
+        OLD: KE1
+                tw.writeComment("Part of invocation $invocationTrapFile")
+        */
         // Now elevate to a SourceFileTrapWriter, and populate the
         // file information
         val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-/*
-OLD: KE1
-        val externalDeclExtractor =
-            ExternalDeclExtractor(
-                logger,
-                compression,
-                invocationTrapFile,
-                srcFilePath,
-                primitiveTypeMapping,
-                pluginContext,
-                globalExtensionState,
-                fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
-            )
-        val linesOfCode = LinesOfCode(logger, sftw, srcFile)
-*/
+        /*
+        OLD: KE1
+                val externalDeclExtractor =
+                    ExternalDeclExtractor(
+                        logger,
+                        compression,
+                        invocationTrapFile,
+                        srcFilePath,
+                        primitiveTypeMapping,
+                        pluginContext,
+                        globalExtensionState,
+                        fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
+                    )
+                val linesOfCode = LinesOfCode(logger, sftw, srcFile)
+        */
         val fileExtractor =
             KotlinFileExtractor(
                 logger,
                 sftw,
-/*
-OLD: KE1
-                linesOfCode,
-                srcFilePath,
-                null,
-                externalDeclExtractor,
-                primitiveTypeMapping,
-                pluginContext,
-                KotlinFileExtractor.DeclarationStack(),
-                globalExtensionState
-*/
+                /*
+                OLD: KE1
+                                linesOfCode,
+                                srcFilePath,
+                                null,
+                                externalDeclExtractor,
+                                primitiveTypeMapping,
+                                pluginContext,
+                                KotlinFileExtractor.DeclarationStack(),
+                                globalExtensionState
+                */
             )
 
         fileExtractor.extractFileContents(srcFile, sftw.fileId)
-/*
-OLD: KE1
-        externalDeclExtractor.extractExternalClasses()
-*/
+        /*
+        OLD: KE1
+                externalDeclExtractor.extractExternalClasses()
+        */
     }
 }
