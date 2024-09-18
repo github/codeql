@@ -10,11 +10,11 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["group:squirrel", "", True, "Delete", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "", True, "Expr", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "", True, "Insert", "", "", "Argument[0]", "sql-injection", "manual"]
-      - ["group:squirrel", "", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
-      - ["group:squirrel", "", True, "Update", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "", False, "Delete", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Expr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Insert", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Select", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "", False, "Update", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
 
       - ["group:squirrel", "DeleteBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["group:squirrel", "DeleteBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
