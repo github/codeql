@@ -31,14 +31,19 @@ enum class Severity(val sev: Int) {
     WarnLow(1),
     Warn(2),
     WarnHigh(3),
+
     /** Minor extractor errors, with minimal impact on analysis. */
     ErrorLow(4),
+
     /** Most extractor errors, with local impact on analysis. */
     Error(5),
+
     /** Javac errors. */
     ErrorHigh(6),
+
     /** Severe extractor errors affecting a single source file. */
     ErrorSevere(7),
+
     /** Severe extractor errors likely to affect multiple source files. */
     ErrorGlobal(8)
 }
@@ -88,8 +93,8 @@ class LogMessage(private val kind: String, private val message: String) {
                 Pair("message", message)
             )
         return "{ " +
-            kvs.map { p -> "\"${p.first}\": \"${escapeForJson(p.second)}\"" }.joinToString(", ") +
-            " }\n"
+                kvs.map { p -> "\"${p.first}\": \"${escapeForJson(p.second)}\"" }.joinToString(", ") +
+                " }\n"
     }
 }
 
@@ -115,7 +120,7 @@ interface BasicLogger {
  * It is only usde directly from the DiagnosticTrapWriter. Everything
  * else will use a Logger that wraps it (and the DiagnosticTrapWriter).
  */
-class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
+class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
     private val verbosity: Int
 
     init {
@@ -140,7 +145,9 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
             when (x.className) {
                 "com.github.codeql.LoggerBase",
                 "com.github.codeql.Logger",
-                "com.github.codeql.FileLogger" -> {}
+                "com.github.codeql.FileLogger" -> {
+                }
+
                 else -> {
                     return x.toString()
                 }
@@ -171,6 +178,7 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
                     diagnosticCounter.diagnosticLimit <= 0 -> ""
                     count == diagnosticCounter.diagnosticLimit ->
                         "    Limit reached for diagnostics from $diagnosticLoc.\n"
+
                     count > diagnosticCounter.diagnosticLimit -> return
                     else -> ""
                 }
@@ -304,7 +312,7 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter): BasicLogger {
 /**
  * Logger is the high-level interface for writint log messages.
  */
-open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): BasicLogger {
+open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) : BasicLogger {
     override fun flush() {
         dtw.flush()
         loggerBase.flush()
@@ -371,7 +379,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter): Ba
     }
 }
 
-data class LoggerState (
+data class LoggerState(
     val extractorContextStack: Stack<ExtractorContext>,
     val fileNumber: Int,
     var fileDiagnosticCount: Int
@@ -386,21 +394,21 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: In
         loggerBase.warn(dtw, msg, extraInfo, loggerState)
     }
 
-/*
-OLD: KE1
-    fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
-        val locationString = ftw.getLocationString(element)
-        val mkLocationId = { ftw.getLocation(element) }
-        loggerBase.diagnostic(
-            ftw.getDiagnosticTrapWriter(),
-            Severity.Warn,
-            msg,
-            exn?.stackTraceToString(),
-            locationString,
-            mkLocationId
-        )
-    }
-*/
+    /*
+    OLD: KE1
+        fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
+            val locationString = ftw.getLocationString(element)
+            val mkLocationId = { ftw.getLocation(element) }
+            loggerBase.diagnostic(
+                ftw.getDiagnosticTrapWriter(),
+                Severity.Warn,
+                msg,
+                exn?.stackTraceToString(),
+                locationString,
+                mkLocationId
+            )
+        }
+    */
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo, loggerState)

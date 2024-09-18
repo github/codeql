@@ -46,7 +46,9 @@ fun getCompression(logger: Logger): Compression {
             }
         } catch (e: IllegalArgumentException) {
             logger.warn(
-                "Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}."
+                "Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${
+                    Compression.values().joinToString()
+                }."
             )
             return defaultCompression
         }
@@ -96,15 +98,15 @@ abstract class TrapFileWriter(
                 } else {
                     renameTempToReal(tempFile)
                 }
-            // We catch Throwable rather than Exception, as we want to
-            // continue trying to extract everything else even if we get a
-            // stack overflow or an assertion failure in one file.
+                // We catch Throwable rather than Exception, as we want to
+                // continue trying to extract everything else even if we get a
+                // stack overflow or an assertion failure in one file.
             } catch (e: Throwable) {
                 logger.error("Extraction failed while writing '$tempFile'.", e)
-/*
-OLD: KE1
-                fileExtractionProblems.setNonRecoverableProblem()
-*/
+                /*
+                OLD: KE1
+                                fileExtractionProblems.setNonRecoverableProblem()
+                */
             }
         }
     }
