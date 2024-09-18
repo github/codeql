@@ -44,7 +44,7 @@ def generate(opts, renderer):
             has_code = False
             for line in cls.doc:
                 match line, adding_code:
-                    case "```", _:
+                    case ("```", _) | ("```rust", _):
                         adding_code = not adding_code
                         has_code = True
                     case _, False:
