@@ -59,7 +59,7 @@ module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-/** A trivial pattern that is always guaranteed to match. */
+/** Holds for a trivial pattern that is always guaranteed to match. */
 predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
 
 class AsmExprTree extends LeafTree instanceof AsmExpr { }
@@ -303,7 +303,7 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
 
   override predicate first(AstNode node) { first(super.getBody(), node) }
 
-  /** Whether this `LoopExpr` captures a completion for a `break`/`continue`. */
+  /** Whether this `LoopExpr` captures the `c` completion. */
   predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
@@ -379,7 +379,8 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
       c.(ConditionalCompletion).failed()
     )
     or
-    exists(int i | last(super.getBranch(i), pred, c) and succ = this and completionIsSimple(c))
+    // Edge from the end of each arm to the match expression.
+    last(super.getBranch(_), pred, c) and succ = this and completionIsSimple(c)
   }
 }
 
