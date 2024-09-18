@@ -53,6 +53,7 @@ def generate(opts, renderer):
                         code.append(line)
             if not has_code:
                 continue
+            assert not adding_code, "Unterminated code block in docstring: " + "\n".join(cls.doc)
             test_name = inflection.underscore(cls.name)
             signature = cls.rust_doc_test_function
             fn = signature and Function(f"test_{test_name}", signature)
