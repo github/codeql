@@ -201,7 +201,7 @@ nodes
 | test.rs:108:34:108:34 | LiteralExpr | semmle.order | 200 |
 | test.rs:109:9:109:15 | TupleStructPat | semmle.order | 201 |
 | test.rs:109:20:109:20 | PathExpr | semmle.order | 202 |
-| test.rs:110:9:110:12 | PathPat | semmle.order | 203 |
+| test.rs:110:9:110:12 | IdentPat | semmle.order | 203 |
 | test.rs:110:17:110:17 | LiteralExpr | semmle.order | 204 |
 | test.rs:115:5:120:5 | enter test_infinite_loop | semmle.order | 205 |
 | test.rs:116:9:118:9 | ExprStmt | semmle.order | 206 |
@@ -640,12 +640,12 @@ edges
 | test.rs:108:34:108:34 | LiteralExpr | test.rs:108:30:108:34 | BinaryExpr | semmle.order | 1 |
 | test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.label | match |
 | test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.order | 1 |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | PathPat | semmle.label | no-match |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | PathPat | semmle.order | 2 |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | IdentPat | semmle.label | no-match |
+| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | IdentPat | semmle.order | 2 |
 | test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
 | test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
-| test.rs:110:9:110:12 | PathPat | test.rs:110:17:110:17 | LiteralExpr | semmle.label | match |
-| test.rs:110:9:110:12 | PathPat | test.rs:110:17:110:17 | LiteralExpr | semmle.order | 1 |
+| test.rs:110:9:110:12 | IdentPat | test.rs:110:17:110:17 | LiteralExpr | semmle.label | match |
+| test.rs:110:9:110:12 | IdentPat | test.rs:110:17:110:17 | LiteralExpr | semmle.order | 1 |
 | test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
 | test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
 | test.rs:115:5:120:5 | enter test_infinite_loop | test.rs:116:9:118:9 | ExprStmt | semmle.label |  |
