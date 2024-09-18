@@ -15,7 +15,7 @@ import semmle.code.cpp.dataflow.new.TaintTracking
 private class CurlSetOptCall extends FunctionCall {
   CurlSetOptCall() {
     exists(FunctionCall fc, Function f |
-      f.hasGlobalName("curl_easy_setopt") and
+      f.hasGlobalOrStdName("curl_easy_setopt") and
       fc.getTarget() = f
     |
       this = fc
@@ -34,6 +34,7 @@ private class CurlVerificationConstant extends EnumConstantAccess {
 
 from CurlSetOptCall c
 where
-  c.getArgument(1) = any(CurlVerificationConstant v) and
+  c.getArgument(1) = any(CurlVerificationConstant v) 
+  and
   c.getArgument(2).getValue() = "0"
 select c, "This call disables Secure Socket Layer and could potentially lead to MITM attacks"
