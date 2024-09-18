@@ -11,7 +11,7 @@ edges
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
 | UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:1 |
 | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:2  |
-| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance |  Sink:MaD:3 |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:3 |
 models
 | 1 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
 | 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
