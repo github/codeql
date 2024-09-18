@@ -9,7 +9,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A const block pattern. For example:
- * ```
+ * ```rust
  * match x {
  *     const { 1 + 2 + 3 } => "ok",
  *     _ => "fail",

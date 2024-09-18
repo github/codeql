@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.ExprStmt
 module Impl {
   /**
    * An expression statement. For example:
-   * ```
+   * ```rust
    * start();
    * finish()
    * use std::env;

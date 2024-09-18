@@ -15,7 +15,7 @@ import codeql.rust.elements.internal.BlockExprBaseImpl::Impl as BlockExprBaseImp
 module Generated {
   /**
    * An async block expression. For example:
-   * ```
+   * ```rust
    * async {
    *    let x = 42;
    *    x

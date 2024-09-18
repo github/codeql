@@ -9,7 +9,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A missing pattern, used as a place holder for incomplete syntax.
- * ```
+ * ```rust
  * match Some(42) {
  *     .. => "bad use of .. syntax",
  * };

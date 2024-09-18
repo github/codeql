@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.CallExpr
 module Impl {
   /**
    * A function call expression. For example:
-   * ```
+   * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);

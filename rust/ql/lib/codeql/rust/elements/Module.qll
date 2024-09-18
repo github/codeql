@@ -8,10 +8,10 @@ import codeql.rust.elements.Declaration
 
 /**
  * A module declaration. For example:
- * ```
+ * ```rust
  * mod foo;
  * ```
- * ```
+ * ```rust
  * mod bar {
  *     pub fn baz() {}
  * }

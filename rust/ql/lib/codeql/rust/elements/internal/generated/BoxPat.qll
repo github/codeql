@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A box pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     box Option::Some(y) => y,
    *     box Option::None => 0,

@@ -16,7 +16,7 @@ import codeql.rust.elements.TypeRef
 module Generated {
   /**
    *  An `offset_of` expression. For example:
-   * ```
+   * ```rust
    * builtin # offset_of(Struct, field);
    * ```
    * INTERNAL: Do not reference the `Generated::OffsetOfExpr` class directly.

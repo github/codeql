@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A `yield` expression. For example:
- * ```
+ * ```rust
  * let one = #[coroutine]
  *     || {
  *         yield 1;

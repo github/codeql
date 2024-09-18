@@ -8,7 +8,7 @@ import codeql.rust.elements.AstNode
 
 /**
  * A label. For example:
- * ```
+ * ```rust
  * 'label: loop {
  *     println!("Hello, world (once)!");
  *     break 'label;

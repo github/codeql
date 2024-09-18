@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.ItemStmt
 module Impl {
   /**
    * An item statement. For example:
-   * ```
+   * ```rust
    * fn print_hello() {
    *     println!("Hello, world!");
    * }

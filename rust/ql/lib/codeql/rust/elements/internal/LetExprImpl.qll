@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.LetExpr
 module Impl {
   /**
    * A `let` expression. For example:
-   * ```
+   * ```rust
    * if let Some(x) = maybe_some {
    *     println!("{}", x);
    * }

@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.MissingPat
 module Impl {
   /**
    * A missing pattern, used as a place holder for incomplete syntax.
-   * ```
+   * ```rust
    * match Some(42) {
    *     .. => "bad use of .. syntax",
    * };

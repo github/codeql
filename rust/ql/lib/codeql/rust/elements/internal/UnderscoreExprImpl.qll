@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.UnderscoreExpr
 module Impl {
   /**
    * An underscore expression. For example:
-   * ```
+   * ```rust
    * _ = 42;
    * ```
    */

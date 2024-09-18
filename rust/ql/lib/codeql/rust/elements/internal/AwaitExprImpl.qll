@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.AwaitExpr
 module Impl {
   /**
    * An `await` expression. For example:
-   * ```
+   * ```rust
    * async {
    *     let x = foo().await;
    *     x

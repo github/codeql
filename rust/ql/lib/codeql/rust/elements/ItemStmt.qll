@@ -8,7 +8,7 @@ import codeql.rust.elements.Stmt
 
 /**
  * An item statement. For example:
- * ```
+ * ```rust
  * fn print_hello() {
  *     println!("Hello, world!");
  * }

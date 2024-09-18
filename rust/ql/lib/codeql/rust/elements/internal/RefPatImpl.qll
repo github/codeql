@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.RefPat
 module Impl {
   /**
    * A reference pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     &mut Option::Some(y) => y,
    *     &Option::None => 0,

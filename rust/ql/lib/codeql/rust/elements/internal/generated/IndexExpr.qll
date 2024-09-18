@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * An index expression. For example:
-   * ```
+   * ```rust
    * list[42];
    * list[42] = 1;
    * ```

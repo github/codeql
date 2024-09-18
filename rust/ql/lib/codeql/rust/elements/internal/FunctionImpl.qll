@@ -14,11 +14,11 @@ module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A function declaration. For example
-   * ```
+   * ```rust
    * fn foo(x: u32) -> u64 {(x + 1).into()}
    * ```
    * A function declaration within a trait might not have a body:
-   * ```
+   * ```rust
    * trait Trait {
    *     fn bar();
    * }

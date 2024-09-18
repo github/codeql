@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.ClosureExpr
 module Impl {
   /**
    * A closure expression. For example:
-   * ```
+   * ```rust
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;

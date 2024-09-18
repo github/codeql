@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * An array expression. For example:
- * ```
+ * ```rust
  * [1, 2, 3];
  * [1; 10];
  * ```

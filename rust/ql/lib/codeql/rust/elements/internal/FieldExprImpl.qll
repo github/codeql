@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.FieldExpr
 module Impl {
   /**
    * A field access expression. For example:
-   * ```
+   * ```rust
    * x.foo
    * ```
    */

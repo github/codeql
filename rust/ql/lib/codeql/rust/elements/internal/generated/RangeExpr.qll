@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A range expression. For example:
-   * ```
+   * ```rust
    * let x = 1..=10;
    * let x = 1..10;
    * let x = 10..;

@@ -9,7 +9,7 @@ import codeql.rust.elements.Unimplemented
 
 /**
  * The base class for type references.
- * ```
+ * ```rust
  * let x: i32;
  * let y: Vec<i32>;
  * let z: Option<i32>;

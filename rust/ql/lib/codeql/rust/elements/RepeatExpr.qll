@@ -9,7 +9,8 @@ import codeql.rust.elements.Expr
 
 /**
  * A repeat expression. For example:
- * ```
+ * ```rust
  * [1; 10];
+ * ```
  */
 final class RepeatExpr = Impl::RepeatExpr;

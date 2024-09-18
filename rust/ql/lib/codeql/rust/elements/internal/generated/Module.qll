@@ -16,10 +16,10 @@ import codeql.rust.elements.internal.DeclarationImpl::Impl as DeclarationImpl
 module Generated {
   /**
    * A module declaration. For example:
-   * ```
+   * ```rust
    * mod foo;
    * ```
-   * ```
+   * ```rust
    * mod bar {
    *     pub fn baz() {}
    * }

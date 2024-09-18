@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.RecordPatField
 module Impl {
   /**
    * A field in a record pattern. For example `a: 1` in:
-   * ```
+   * ```rust
    * let Foo { a: 1, b: 2 } = foo;
    * ```
    */

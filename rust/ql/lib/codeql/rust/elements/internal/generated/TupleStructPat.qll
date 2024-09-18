@@ -17,7 +17,7 @@ import codeql.rust.elements.Path
 module Generated {
   /**
    * A tuple struct pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Tuple("a", 1, 2, 3) => "great",
    *     Tuple(.., 3) => "fine",

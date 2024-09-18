@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.RecordExprField
 module Impl {
   /**
    * A field in a record expression. For example `a: 1` in:
-   * ```
+   * ```rust
    * Foo { a: 1, b: 2 };
    * ```
    */

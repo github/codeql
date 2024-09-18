@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A field access expression. For example:
-   * ```
+   * ```rust
    * x.foo
    * ```
    * INTERNAL: Do not reference the `Generated::FieldExpr` class directly.

@@ -14,12 +14,13 @@ private import codeql.rust.elements.internal.generated.SlicePat
 module Impl {
   /**
    * A slice pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     [1, 2, 3, 4, 5] => "ok",
    *     [1, 2, ..] => "fail",
    *     [x, y, .., z, 7] => "fail",
    * }
+   * ```
    */
   class SlicePat extends Generated::SlicePat { }
 }

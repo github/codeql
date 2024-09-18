@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.BinaryExpr
 module Impl {
   /**
    * A binary operation expression. For example:
-   * ```
+   * ```rust
    * x + y;
    * x && y;
    * x <= y;

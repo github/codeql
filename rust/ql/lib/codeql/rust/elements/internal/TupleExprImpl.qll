@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.TupleExpr
 module Impl {
   /**
    * A tuple expression. For example:
-   * ```
+   * ```rust
    * (1, "one");
    * (2, "two")[0] = 3;
    * ```

@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A `yeet` expression. For example:
- * ```
+ * ```rust
  * if x < size {
  *    do yeet "index out of bounds";
  * }

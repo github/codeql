@@ -16,7 +16,7 @@ import codeql.rust.elements.Expr
 module Generated {
   /**
    * An element list expression. For example:
-   * ```
+   * ```rust
    * [1, 2, 3, 4, 5];
    * [1, 2, 3, 4, 5][0] = 6;
    * ```
