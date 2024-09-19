@@ -117,7 +117,7 @@ locatable_locations(
 );
 
 
-// from schema.py
+// from schema
 
 @element =
   @locatable
