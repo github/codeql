@@ -7,6 +7,11 @@ import javascript
 private import internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
 
+module BasicBlockInternal {
+  // TODO: Expose these as public predicate in a private module instead of this hack.
+  predicate getImmediateBasicBlockDominator = immediateDominator/1;
+}
+
 /**
  * Holds if `nd` starts a new basic block.
  */
@@ -280,6 +285,11 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
    * Gets the basic block that immediately dominates this basic block.
    */
   ReachableBasicBlock getImmediateDominator() { result = immediateDominator(this) }
+
+  /**
+   * Holds if this if a basic block whose last node is an exit node.
+   */
+  predicate isExitBlock() { exitBB(this) }
 }
 
 /**

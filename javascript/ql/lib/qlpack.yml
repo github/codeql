@@ -9,6 +9,7 @@ dependencies:
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}
+  codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
