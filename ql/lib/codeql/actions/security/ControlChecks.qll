@@ -66,7 +66,7 @@ abstract class ControlCheck extends AstNode {
 }
 
 abstract class AssociationCheck extends ControlCheck {
-  // Checks if the actor is a COLLABORATOR of the repo
+  // Checks if the actor is a MEMBER/OWNER the repo
   // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
   // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
   override predicate protectsCategoryAndEvent(string category, string event) {
@@ -182,23 +182,26 @@ class RepositoryIfCheck extends RepositoryCheck instanceof If {
 class AssociationIfCheck extends AssociationCheck instanceof If {
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.comment\\.author_association\\b",
-              "\\bgithub\\.event\\.issue\\.author_association\\b",
-              "\\bgithub\\.event\\.pull_request\\.author_association\\b",
-            ], _, _)
-    )
+    normalizeExpr(this.getCondition())
+        .splitAt("\n")
+        .regexpMatch([
+            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
+            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
+            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
+          ]) and
+    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bMEMBER\\b.*") and
+    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bOWNER\\b.*")
   }
 }
 
 class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
   AssociationActionCheck() {
     this.getCallee() = "TheModdingInquisition/actions-team-membership" and
-    not exists(this.getArgument("exit"))
-    or
-    this.getArgument("exit") = "true"
+    (
+      not exists(this.getArgument("exit"))
+      or
+      this.getArgument("exit") = "true"
+    )
   }
 }
 
