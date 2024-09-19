@@ -737,7 +737,7 @@ module MakeModelGenerator<
      * be translated into a synthetic field.
      *
      * This is needed because we don't want to include summaries that reads from or
-     * stores into a "dead" synthetic field.
+     * stores into an "internal" synthetic field.
      *
      * Example:
      * Assume we have a type `t` (in this case `t1` = `t2`) with methods `getX` and
