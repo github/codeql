@@ -756,6 +756,39 @@ def test_test_with():
     }
 
 
+def test_annotate_docstring():
+    @load
+    class data:
+        class Root:
+            """ old docstring """
+
+        @defs.annotate(Root)
+        class _:
+            """
+            new
+            docstring
+            """
+
+    assert data.classes == {
+        "Root": schema.Class("Root", doc=["new", "docstring"]),
+    }
+
+
+def test_annotate_not_underscore():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.annotate(Root)
+            class Something:
+                """
+                new
+                docstring
+                """
+
+
 def test_test_with_unknown_string():
     with pytest.raises(schema.Error):
         @load

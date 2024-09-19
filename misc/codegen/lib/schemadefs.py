@@ -177,3 +177,19 @@ synth.from_class = lambda ref: _annotate(synth=_schema.SynthInfo(
     from_class=_schema.get_type_name(ref)))
 synth.on_arguments = lambda **kwargs: _annotate(
     synth=_schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))
+
+
+def annotate(annotated_cls: type) -> _Callable[[type], None]:
+    """
+    Add or modify schema annotations after a class has been defined
+    For the moment, only docstring annotation is supported. In the future, any kind of
+    modification will be allowed.
+
+    The name of the class used for annotation must be `_`
+    """
+    def decorator(cls: type) -> None:
+        if cls.__name__ != "_":
+            raise _schema.Error("Annotation classes must be named _")
+        annotated_cls.__doc__ = cls.__doc__
+        return None
+    return decorator
