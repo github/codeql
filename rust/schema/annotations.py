@@ -819,3 +819,923 @@ class _:
     };
     ```
     """
+@annotate(Abi)
+class _:
+    """
+    A Abi. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ArgList)
+class _:
+    """
+    A ArgList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ArrayType)
+class _:
+    """
+    A ArrayType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(AssocItem)
+class _:
+    """
+    A AssocItem. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(AssocItemList)
+class _:
+    """
+    A AssocItemList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(AssocTypeArg)
+class _:
+    """
+    A AssocTypeArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Attr)
+class _:
+    """
+    A Attr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ClosureBinder)
+class _:
+    """
+    A ClosureBinder. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Const)
+class _:
+    """
+    A Const. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ConstArg)
+class _:
+    """
+    A ConstArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ConstParam)
+class _:
+    """
+    A ConstParam. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(DynTraitType)
+class _:
+    """
+    A DynTraitType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Enum)
+class _:
+    """
+    A Enum. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ExternBlock)
+class _:
+    """
+    A ExternBlock. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ExternCrate)
+class _:
+    """
+    A ExternCrate. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ExternItem)
+class _:
+    """
+    A ExternItem. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ExternItemList)
+class _:
+    """
+    A ExternItemList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(FieldList)
+class _:
+    """
+    A FieldList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(FnPtrType)
+class _:
+    """
+    A FnPtrType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ForExpr)
+class _:
+    """
+    A ForExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ForType)
+class _:
+    """
+    A ForType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(FormatArgsArg)
+class _:
+    """
+    A FormatArgsArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(FormatArgsExpr)
+class _:
+    """
+    A FormatArgsExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(GenericArg)
+class _:
+    """
+    A GenericArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(GenericParam)
+class _:
+    """
+    A GenericParam. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(GenericParamList)
+class _:
+    """
+    A GenericParamList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Impl)
+class _:
+    """
+    A Impl. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ImplTraitType)
+class _:
+    """
+    A ImplTraitType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(InferType)
+class _:
+    """
+    A InferType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Item)
+class _:
+    """
+    A Item. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ItemList)
+class _:
+    """
+    A ItemList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(LetElse)
+class _:
+    """
+    A LetElse. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Lifetime)
+class _:
+    """
+    A Lifetime. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(LifetimeArg)
+class _:
+    """
+    A LifetimeArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(LifetimeParam)
+class _:
+    """
+    A LifetimeParam. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroCall)
+class _:
+    """
+    A MacroCall. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroDef)
+class _:
+    """
+    A MacroDef. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroExpr)
+class _:
+    """
+    A MacroExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroPat)
+class _:
+    """
+    A MacroPat. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroRules)
+class _:
+    """
+    A MacroRules. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MacroType)
+class _:
+    """
+    A MacroType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MatchArmList)
+class _:
+    """
+    A MatchArmList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(MatchGuard)
+class _:
+    """
+    A MatchGuard. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Meta)
+class _:
+    """
+    A Meta. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Name)
+class _:
+    """
+    A Name. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(NameRef)
+class _:
+    """
+    A NameRef. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(NeverType)
+class _:
+    """
+    A NeverType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Param)
+class _:
+    """
+    A Param. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ParamList)
+class _:
+    """
+    A ParamList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ParenExpr)
+class _:
+    """
+    A ParenExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ParenPat)
+class _:
+    """
+    A ParenPat. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ParenType)
+class _:
+    """
+    A ParenType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(PathSegment)
+class _:
+    """
+    A PathSegment. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(PathType)
+class _:
+    """
+    A PathType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(PtrType)
+class _:
+    """
+    A PtrType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RecordExprFieldList)
+class _:
+    """
+    A RecordExprFieldList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RecordField)
+class _:
+    """
+    A RecordField. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RecordFieldList)
+class _:
+    """
+    A RecordFieldList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RecordPatFieldList)
+class _:
+    """
+    A RecordPatFieldList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RefType)
+class _:
+    """
+    A RefType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Rename)
+class _:
+    """
+    A Rename. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RestPat)
+class _:
+    """
+    A RestPat. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(RetType)
+class _:
+    """
+    A RetType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(ReturnTypeSyntax)
+class _:
+    """
+    A ReturnTypeSyntax. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(SelfParam)
+class _:
+    """
+    A SelfParam. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(SliceType)
+class _:
+    """
+    A SliceType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(SourceFile)
+class _:
+    """
+    A SourceFile. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Static)
+class _:
+    """
+    A Static. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(StmtList)
+class _:
+    """
+    A StmtList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Struct)
+class _:
+    """
+    A Struct. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TokenTree)
+class _:
+    """
+    A TokenTree. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Trait)
+class _:
+    """
+    A Trait. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TraitAlias)
+class _:
+    """
+    A TraitAlias. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TryExpr)
+class _:
+    """
+    A TryExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TupleField)
+class _:
+    """
+    A TupleField. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TupleFieldList)
+class _:
+    """
+    A TupleFieldList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TupleType)
+class _:
+    """
+    A TupleType. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TypeAlias)
+class _:
+    """
+    A TypeAlias. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TypeArg)
+class _:
+    """
+    A TypeArg. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TypeBound)
+class _:
+    """
+    A TypeBound. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TypeBoundList)
+class _:
+    """
+    A TypeBoundList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(TypeParam)
+class _:
+    """
+    A TypeParam. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Union)
+class _:
+    """
+    A Union. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Use)
+class _:
+    """
+    A Use. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(UseTree)
+class _:
+    """
+    A UseTree. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(UseTreeList)
+class _:
+    """
+    A UseTreeList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Variant)
+class _:
+    """
+    A Variant. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(VariantList)
+class _:
+    """
+    A VariantList. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(Visibility)
+class _:
+    """
+    A Visibility. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(WhereClause)
+class _:
+    """
+    A WhereClause. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(WherePred)
+class _:
+    """
+    A WherePred. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
+@annotate(WhileExpr)
+class _:
+    """
+    A WhileExpr. For example:
+    ```rust
+    todo!()
+    ```
+    """
+    pass
+
