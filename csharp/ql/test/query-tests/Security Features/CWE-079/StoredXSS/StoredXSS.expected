@@ -4,7 +4,7 @@ edges
 | StoredXSS.cs:17:31:17:44 | access to local variable customerReader : SqlDataReader | StoredXSS.cs:22:60:22:73 | access to local variable customerReader : SqlDataReader | provenance |  |
 | StoredXSS.cs:17:48:17:78 | call to method ExecuteReader : SqlDataReader | StoredXSS.cs:17:31:17:44 | access to local variable customerReader : SqlDataReader | provenance |  |
 | StoredXSS.cs:22:60:22:73 | access to local variable customerReader : SqlDataReader | StoredXSS.cs:22:60:22:86 | call to method GetString : String | provenance | MaD:1 |
-| StoredXSS.cs:22:60:22:86 | call to method GetString : String | StoredXSS.cs:22:44:22:86 | ... + ... | provenance |  Sink:MaD:2 |
+| StoredXSS.cs:22:60:22:86 | call to method GetString : String | StoredXSS.cs:22:44:22:86 | ... + ... | provenance | Sink:MaD:2 |
 models
 | 1 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
 | 2 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
