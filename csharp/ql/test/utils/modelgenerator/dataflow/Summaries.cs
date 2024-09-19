@@ -844,12 +844,14 @@ public class SyntheticCollections
     private object[] array;
 
     // summary=Models;SyntheticCollections;false;SyntheticCollections;(System.Object[]);;Argument[0].Element;Argument[this];taint;df-generated
+    // contentbased-summary=Models;SyntheticCollections;false;SyntheticCollections;(System.Object[]);;Argument[0];Argument[this].SyntheticField[Models.SyntheticCollections.array];value;df-generated
     public SyntheticCollections(object[] array)
     {
         this.array = array;
     }
 
     // summary=Models;SyntheticCollections;false;GetElement;(System.Int32);;Argument[this];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;SyntheticCollections;false;GetElement;(System.Int32);;Argument[this].SyntheticField[Models.SyntheticCollections.array].Element;ReturnValue;value;df-generated
     public object GetElement(int index)
     {
         return array[index];
