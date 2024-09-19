@@ -433,10 +433,15 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
     default predicate includeHiddenNodes() { none() }
 
     /**
-     * Holds to filter out data flows whose source and sink are both not in the
-     * `AlertFiltering` location range.
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the location
+     * range given by `AlertFiltering`. This only has an effect when running
+     * in diff-informed incremental mode.
+     *
+     * This flag should only be applied to flow configurations whose results
+     * are used directly in a query result.
      */
-    default predicate filterForSourceOrSinkAlerts() { none() }
+    default predicate observeDiffInformedIncrementalMode() { none() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -555,10 +560,15 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
     default predicate includeHiddenNodes() { none() }
 
     /**
-     * Holds to filter out data flows whose source and sink are both not in the
-     * `AlertFiltering` location range.
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the location
+     * range given by `AlertFiltering`. This only has an effect when running
+     * in diff-informed incremental mode.
+     *
+     * This flag should only be applied to flow configurations whose results
+     * are used directly in a query result.
      */
-    default predicate filterForSourceOrSinkAlerts() { none() }
+    default predicate observeDiffInformedIncrementalMode() { none() }
   }
 }
 
@@ -637,7 +647,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   module Global<ConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
-      import FilteredSourceSink<Config>
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
@@ -660,7 +669,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
    */
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
-      import FilteredStateSourceSink<Config>
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;

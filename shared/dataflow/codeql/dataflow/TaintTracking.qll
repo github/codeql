@@ -60,8 +60,8 @@ module TaintFlowMake<
       Config::allowImplicitRead(node, c)
       or
       (
-        Config::isFilteredSink(node) or
-        Config::isFilteredSink(node, _) or
+        Config::isSink(node) or
+        Config::isSink(node, _) or
         Config::isAdditionalFlowStep(node, _, _) or
         Config::isAdditionalFlowStep(node, _, _, _)
       ) and
@@ -75,7 +75,6 @@ module TaintFlowMake<
   module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import DataFlowInternal::DefaultState<Config>
-      import DataFlowInternal::FilteredSourceSink<Config>
       import Config
 
       predicate isAdditionalFlowStep(
@@ -102,7 +101,6 @@ module TaintFlowMake<
    */
   module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
-      import DataFlowInternal::FilteredStateSourceSink<Config>
       import Config
 
       predicate isAdditionalFlowStep(
