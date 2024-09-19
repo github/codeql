@@ -107,18 +107,6 @@ class _:
     """
 
 
-@annotate(MissingExpr)
-class _:
-    """
-    A missing expression, used as a placeholder for incomplete syntax.
-
-    ```rust
-    let x = non_existing_macro!();
-    ```
-    """
-    pass
-
-
 @annotate(PathExpr)
 class _:
     """
@@ -182,46 +170,17 @@ class _:
     """
 
 
-@annotate(AsyncBlockExpr)
-@rust.doc_test_signature("() -> i32")
-class _:
-    """
-    An async block expression. For example:
-    ```rust
-    async {
-       let x = 42;
-       x
-    }.await
-    ```
-    """
-    pass
-
-
-@annotate(ConstExpr)
-@rust.doc_test_signature("() -> bool")
-class _:
-    """
-    A `const` block expression. For example:
-    ```rust
-    if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
-        return false;
-    }
-    ```
-    """
-
-
-@annotate(UnsafeBlockExpr)
-class _:
-    """
-    An unsafe block expression. For example:
-    ```rust
-    let layout = unsafe {
-        let x = 42;
-        Layout::from_size_align_unchecked(size, align)
-    };
-    ```
-    """
-    pass
+# @annotate(ConstExpr)
+# @rust.doc_test_signature("() -> bool")
+# class _:
+#     """
+#     A `const` block expression. For example:
+#     ```rust
+#     if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
+#         return false;
+#     }
+#     ```
+#     """
 
 
 @annotate(LoopExpr)
@@ -487,16 +446,6 @@ class _:
     """
 
 
-@annotate(BoxExpr)
-class _:
-    """
-    A box expression. For example:
-    ```rust
-    let x = #[rustc_box] Box::new(42);
-    ```
-    """
-
-
 @annotate(PrefixExpr)
 class _:
     """
@@ -588,25 +537,25 @@ class _:
     pass
 
 
-@annotate(ElementListExpr)
-class _:
-    """
-    An element list expression. For example:
-    ```rust
-    [1, 2, 3, 4, 5];
-    [1, 2, 3, 4, 5][0] = 6;
-    ```
-    """
+# @annotate(ElementListExpr)
+# class _:
+#     """
+#     An element list expression. For example:
+#     ```rust
+#     [1, 2, 3, 4, 5];
+#     [1, 2, 3, 4, 5][0] = 6;
+#     ```
+#     """
 
 
-@annotate(RepeatExpr)
-class _:
-    """
-    A repeat expression. For example:
-    ```rust
-    [1; 10];
-    ```
-    """
+# @annotate(RepeatExpr)
+# class _:
+#     """
+#     A repeat expression. For example:
+#     ```rust
+#     [1; 10];
+#     ```
+#     """
 
 
 @annotate(LiteralExpr)
@@ -687,35 +636,6 @@ class _:
     use std::env;
     ```
     """
-
-
-# At the HIR-level, we don't have items, only some markers without location indicating where they used to be.
-@annotate(ItemStmt)
-@qltest.skip
-class _:
-    """
-    An item statement. For example:
-    ```rust
-    fn print_hello() {
-        println!("Hello, world!");
-    }
-    print_hello();
-    ```
-    """
-    pass
-
-
-@annotate(MissingPat)
-class _:
-    """
-    A missing pattern, used as a place holder for incomplete syntax.
-    ```rust
-    match Some(42) {
-        .. => "bad use of .. syntax",
-    };
-    ```
-    """
-    pass
 
 
 @annotate(WildcardPat)
