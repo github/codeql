@@ -15,15 +15,27 @@
 import actions
 import codeql.actions.security.EnvPathInjectionQuery
 import EnvPathInjectionFlow::PathGraph
+import codeql.actions.security.ControlChecks
 
 from EnvPathInjectionFlow::PathNode source, EnvPathInjectionFlow::PathNode sink
 where
   EnvPathInjectionFlow::flowPath(source, sink) and
   inPrivilegedContext(sink.getNode().asExpr()) and
   (
-    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact"
+    not source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    not exists(ControlCheck check |
+      check
+          .protects(sink.getNode().asExpr(),
+            source.getNode().asExpr().getEnclosingJob().getATriggerEvent(), "code-injection")
+    )
     or
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
+    not exists(ControlCheck check |
+      check
+          .protects(sink.getNode().asExpr(),
+            source.getNode().asExpr().getEnclosingJob().getATriggerEvent(),
+            ["untrusted-checkout", "artifact-poisoning"])
+    ) and
     sink.getNode() instanceof EnvPathInjectionFromFileReadSink
   )
 select sink.getNode(), source, sink,

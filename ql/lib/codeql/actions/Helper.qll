@@ -248,8 +248,7 @@ predicate inPrivilegedCompositeAction(AstNode node) {
 predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
   exists(Job j |
     j = node.getEnclosingJob() and
-    j.isPrivilegedExternallyTriggerable() and
-    not exists(ControlCheck check, Event e | j.getATriggerEvent() = e | check.protects(node, e))
+    j.isPrivilegedExternallyTriggerable()
   )
 }
 

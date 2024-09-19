@@ -22,11 +22,10 @@ where
   // there are no evidences that the checked-out gets executed
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
-  j.isPrivilegedExternallyTriggerable() and
+  inPrivilegedContext(checkout) and
   // the mutable checkout step is protected by an Insufficient access check
-  check.dominates(checkout) and
-  check.protects(checkout, j.getATriggerEvent()) and
-  check.protectsAgainstRefMutationAttacks() = false
+  check.protects(checkout, j.getATriggerEvent(), "untrusted-checkout") and
+  not check.protects(checkout, j.getATriggerEvent(), "untrusted-checkout-toctou")
 select checkout,
   "Insufficient protection against execution of untrusted code on a privileged workflow on step $@.",
   check, check.toString()
