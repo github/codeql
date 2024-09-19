@@ -677,6 +677,27 @@ module MakeModelGenerator<
       )
     }
 
+    private string getReversedHash(PropagateContentFlow::AccessPath ap) {
+      result = concat(int i | | getSyntheticName(ap.getAtIndex(i)), "" order by i desc)
+    }
+
+    private string getHash(PropagateContentFlow::AccessPath ap) {
+      result = concat(int i | | getSyntheticName(ap.getAtIndex(i)), "" order by i)
+    }
+
+    /**
+     * Gets all access paths that contains the synthetic fields
+     * from `ap` in reverse order (if `ap` contains at least one synthetic field).
+     * These are the possible candidates for synthetic path continuations.
+     */
+    private PropagateContentFlow::AccessPath getSyntheticPathCandidate(
+      PropagateContentFlow::AccessPath ap
+    ) {
+      hasSyntheticContent(ap) and
+      hasSyntheticContent(result) and
+      getHash(ap) = getReversedHash(result)
+    }
+
     /**
      * A module containing predicates for validating access paths containing content sets
      * that translates into synthetic fields, when used for generated summary models.
@@ -740,7 +761,7 @@ module MakeModelGenerator<
         exists(PropagateContentFlow::AccessPath mid, Type midType |
           hasSyntheticContent(mid) and
           step(t, read, midType, mid) and
-          reachesSynthExit(midType, mid.reverse())
+          reachesSynthExit(midType, getSyntheticPathCandidate(mid))
         )
       }
 
@@ -756,7 +777,7 @@ module MakeModelGenerator<
         exists(PropagateContentFlow::AccessPath mid, Type midType |
           hasSyntheticContent(mid) and
           step(midType, mid, t, store) and
-          synthEntryReaches(midType, mid.reverse())
+          synthEntryReaches(midType, getSyntheticPathCandidate(mid))
         )
       }
 
@@ -785,14 +806,15 @@ module MakeModelGenerator<
         Type t1, PropagateContentFlow::AccessPath read, Type t2,
         PropagateContentFlow::AccessPath store
       ) {
-        synthPathEntry(t1, read, t2, store) and reachesSynthExit(t2, store.reverse())
+        synthPathEntry(t1, read, t2, store) and
+        reachesSynthExit(t2, getSyntheticPathCandidate(store))
         or
-        exists(PropagateContentFlow::AccessPath store0 | store0.reverse() = read |
+        exists(PropagateContentFlow::AccessPath store0 | getSyntheticPathCandidate(store0) = read |
           synthEntryReaches(t1, store0) and synthPathExit(t1, read, t2, store)
           or
           synthEntryReaches(t1, store0) and
           step(t1, read, t2, store) and
-          reachesSynthExit(t2, store.reverse())
+          reachesSynthExit(t2, getSyntheticPathCandidate(store))
         )
       }
     }
