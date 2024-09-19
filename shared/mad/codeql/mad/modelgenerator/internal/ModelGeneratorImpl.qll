@@ -571,15 +571,7 @@ module MakeModelGenerator<
     }
 
     private string getContent(PropagateContentFlow::AccessPath ap, int i) {
-      exists(DataFlow::ContentSet head, PropagateContentFlow::AccessPath tail |
-        head = ap.getHead() and
-        tail = ap.getTail()
-      |
-        i = 0 and
-        result = "." + printContent(head)
-        or
-        i > 0 and result = getContent(tail, i - 1)
-      )
+      result = "." + printContent(ap.getAtIndex(i))
     }
 
     /**
@@ -600,12 +592,7 @@ module MakeModelGenerator<
      * Holds if the access path `ap` contains a field or synthetic field access.
      */
     private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
-      exists(DataFlow::ContentSet head, PropagateContentFlow::AccessPath tail |
-        head = ap.getHead() and
-        tail = ap.getTail()
-      |
-        mentionsField(tail) or isField(head)
-      )
+      isField(ap.getAtIndex(_))
     }
 
     private predicate apiFlow(
@@ -668,21 +655,19 @@ module MakeModelGenerator<
      * Holds if any of the content sets in `path` translates into a synthetic field.
      */
     private predicate hasSyntheticContent(PropagateContentFlow::AccessPath path) {
-      exists(PropagateContentFlow::AccessPath tail, DataFlow::ContentSet head |
-        head = path.getHead() and
-        tail = path.getTail()
-      |
-        exists(getSyntheticName(head)) or
-        hasSyntheticContent(tail)
-      )
+      exists(getSyntheticName(path.getAtIndex(_)))
+    }
+
+    private string getHashAtIndex(PropagateContentFlow::AccessPath ap, int i) {
+      result = getSyntheticName(ap.getAtIndex(i))
     }
 
     private string getReversedHash(PropagateContentFlow::AccessPath ap) {
-      result = concat(int i | | getSyntheticName(ap.getAtIndex(i)), "" order by i desc)
+      result = concat(int i | | getHashAtIndex(ap, i), "" order by i desc)
     }
 
     private string getHash(PropagateContentFlow::AccessPath ap) {
-      result = concat(int i | | getSyntheticName(ap.getAtIndex(i)), "" order by i)
+      result = concat(int i | | getHashAtIndex(ap, i), "" order by i)
     }
 
     /**
