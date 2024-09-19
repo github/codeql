@@ -6,13 +6,14 @@ extensions:
       - ["discussion"]
       - ["discussion_comment"]
       - ["fork"]
+      - ["watch"]
       - ["issue_comment"]
       - ["issues"]
-      - ["pull_request"]
+      - ["pull_request"] # non-privileged
       - ["pull_request_comment"]
       - ["pull_request_review"]
       - ["pull_request_review_comment"]
       - ["pull_request_target"]
-      - ["workflow_run"] # depending on trigger workflow
+      - ["workflow_run"] # depending on branch filter
       - ["workflow_call"] # depending on caller
 

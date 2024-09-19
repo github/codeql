@@ -57,7 +57,9 @@ where
     path = source.(UntrustedArtifactDownloadStep).getPath()
   ) and
   // the checkout/download is not controlled by an access check
-  not exists(ControlCheck check | check.protects(source, j.getATriggerEvent())) and
+  not exists(ControlCheck check |
+    check.protects(source, j.getATriggerEvent(), ["untrusted-checkout", "artifact-poisoning"])
+  ) and
   j.getATriggerEvent() = e and
   // job can be triggered by an external user
   e.isExternallyTriggerable() and

@@ -20,10 +20,33 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from PRHeadCheckoutStep checkout, PoisonableStep s
+from PRHeadCheckoutStep checkout, PoisonableStep step
 where
   // the checkout is followed by a known poisonable step
-  checkout.getAFollowingStep() = s and
+  checkout.getAFollowingStep() = step and
   // the checkout occurs in a privileged context
-  inPrivilegedContext(checkout)
-select s, checkout, s, "Execution of untrusted code on a privileged workflow."
+  inPrivilegedContext(checkout) and
+  (
+    // issue_comment: check for date comparison checks and actor/access control checks
+    exists(Event event |
+      event.getName() = "issue_comment" and
+      event = checkout.getEnclosingJob().getATriggerEvent() and
+      not exists(ControlCheck check, CommentVsHeadDateCheck date_check |
+        (
+          check instanceof ActorCheck or
+          check instanceof AssociationCheck or
+          check instanceof PermissionCheck
+        ) and
+        check.dominates(checkout) and
+        date_check.dominates(checkout)
+      )
+    )
+    or
+    // not issue_comment triggered workflows
+    exists(Event event |
+      not event.getName() = "issue_comment" and
+      event = checkout.getEnclosingJob().getATriggerEvent() and
+      not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
+    )
+  )
+select step, checkout, step, "Execution of untrusted code on a privileged workflow."
