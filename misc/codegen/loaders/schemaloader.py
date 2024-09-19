@@ -1,4 +1,5 @@
 """ schema loader """
+import sys
 
 import inflection
 import typing
@@ -140,6 +141,8 @@ def load(m: types.ModuleType) -> schema.Schema:
             continue
         if name.startswith("__") or name == "_":
             continue
+        if isinstance(data, types.ModuleType):
+            continue
         cls = _get_class(data)
         if classes and not cls.bases:
             raise schema.Error(
@@ -160,7 +163,10 @@ def load(m: types.ModuleType) -> schema.Schema:
 
 
 def load_file(path: pathlib.Path) -> schema.Schema:
-    spec = importlib.util.spec_from_file_location("schema", path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    assert path.suffix in ("", ".py")
+    sys.path.insert(0, str(path.parent))
+    try:
+        module = importlib.import_module(path.with_suffix("").name)
+    finally:
+        sys.path.remove(str(path.parent))
     return load(module)

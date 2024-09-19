@@ -9,7 +9,7 @@ package(default_visibility = ["//rust:__subpackages__"])
 
 filegroup(
     name = "schema",
-    srcs = ["schema.py"],
+    srcs = glob(["schema/*.py"]),
 )
 
 filegroup(
