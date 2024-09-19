@@ -102,15 +102,15 @@ private module Internal {
 
 private import Internal
 
-/** Holds if `dom` is an immediate dominator of `bb`. */
+/** Gets the immediate dominator of `bb`. */
 cached
-private predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
-  idominance(entryBB/1, succBB/2)(_, dom, bb)
+private BasicBlock immediateDominator(BasicBlock bb) =
+  idominance(entryBB/1, succBB/2)(_, result, bb)
 
-/** Holds if `dom` is an immediate post-dominator of `bb`. */
+/** Gets the immediate post-dominator of `bb`. */
 cached
-private predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
-  idominance(exitBB/1, predBB/2)(_, dom, bb)
+private BasicBlock immediatePostDominator(BasicBlock bb) =
+  idominance(exitBB/1, predBB/2)(_, result, bb)
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -279,7 +279,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
   /**
    * Gets the basic block that immediately dominates this basic block.
    */
-  ReachableBasicBlock getImmediateDominator() { bbIDominates(result, this) }
+  ReachableBasicBlock getImmediateDominator() { result = immediateDominator(this) }
 }
 
 /**
@@ -308,7 +308,7 @@ class ReachableBasicBlock extends BasicBlock {
    * Holds if this basic block strictly dominates `bb`.
    */
   pragma[inline]
-  predicate strictlyDominates(ReachableBasicBlock bb) { bbIDominates+(this, bb) }
+  predicate strictlyDominates(ReachableBasicBlock bb) { this = immediateDominator+(bb) }
 
   /**
    * Holds if this basic block dominates `bb`.
@@ -316,13 +316,13 @@ class ReachableBasicBlock extends BasicBlock {
    * This predicate is reflexive: each reachable basic block dominates itself.
    */
   pragma[inline]
-  predicate dominates(ReachableBasicBlock bb) { bbIDominates*(this, bb) }
+  predicate dominates(ReachableBasicBlock bb) { this = immediateDominator*(bb) }
 
   /**
    * Holds if this basic block strictly post-dominates `bb`.
    */
   pragma[inline]
-  predicate strictlyPostDominates(ReachableBasicBlock bb) { bbIPostDominates+(this, bb) }
+  predicate strictlyPostDominates(ReachableBasicBlock bb) { this = immediatePostDominator+(bb) }
 
   /**
    * Holds if this basic block post-dominates `bb`.
@@ -330,7 +330,7 @@ class ReachableBasicBlock extends BasicBlock {
    * This predicate is reflexive: each reachable basic block post-dominates itself.
    */
   pragma[inline]
-  predicate postDominates(ReachableBasicBlock bb) { bbIPostDominates*(this, bb) }
+  predicate postDominates(ReachableBasicBlock bb) { this = immediatePostDominator*(bb) }
 }
 
 /**
