@@ -138,7 +138,7 @@ def load(m: types.ModuleType) -> schema.Schema:
         if name == "__includes":
             includes = data
             continue
-        if name.startswith("__"):
+        if name.startswith("__") or name == "_":
             continue
         cls = _get_class(data)
         if classes and not cls.bases:
