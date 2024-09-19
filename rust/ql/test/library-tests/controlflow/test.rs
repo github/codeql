@@ -105,9 +105,9 @@ mod logical_operators {
 
 fn test_match(maybe_digit: Option<i64>) -> {
     match maybe_digit {
-        Some(x) if x < 10 => x + 5,
-        Some(x) => x,
-        None => 5,
+        Option::Some(x) if x < 10 => x + 5,
+        Option::Some(x) => x,
+        Option::None => 5,
     }
 }
 

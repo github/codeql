@@ -1,4 +1,3 @@
-private import codeql.util.Option
 private import codeql.util.Boolean
 private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
@@ -8,9 +7,14 @@ private newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or
-  TLoopCompletion(TLoopJumpType kind, TLabelType label) or
-  TReturnCompletion() or
-  TDivergeCompletion() // A completion that never reaches the successor (e.g. by panicking or spinning)
+  TLoopCompletion(TLoopJumpType kind, TLabelType label) {
+    label = TNoLabel()
+    or
+    kind = TBreakJump() and label = TLabel(any(BreakExpr b).getLabel().getName())
+    or
+    kind = TContinueJump() and label = TLabel(any(ContinueExpr b).getLabel().getName())
+  } or
+  TReturnCompletion()
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {

@@ -17,7 +17,7 @@ final class FunctionScope extends CfgScope, Function {
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
 }
 
-final class LambdaScope extends CfgScope, ClosureExpr {
+final class ClosureScope extends CfgScope, ClosureExpr {
   override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }

@@ -55,11 +55,11 @@ module CfgInput implements InputSig<Location> {
   predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
 }
 
-module CfgImpl = Make<Location, CfgInput>;
+private module CfgImpl = Make<Location, CfgInput>;
 
 import CfgImpl
 
-/** Holds for a trivial pattern that is always guaranteed to match. */
+/** Holds if `p` is a trivial pattern that is always guaranteed to match. */
 predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
 
 class AsmExprTree extends LeafTree instanceof AsmExpr { }
@@ -90,7 +90,6 @@ class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
     child = [super.getRhs(), super.getLhs()]
   }
 
-  // override predicate first(AstNode node) { first(super.getLhs(), node) }
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge to the first node in the lhs
     pred = this and
@@ -109,7 +108,7 @@ class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
     c.(BooleanCompletion).succeeded()
     or
     // Rhs. as the last node
-    last(super.getRhs(), node, c) // and
+    last(super.getRhs(), node, c)
   }
 }
 
@@ -120,7 +119,6 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
     child = [super.getRhs(), super.getLhs()]
   }
 
-  // override predicate first(AstNode node) { first(super.getLhs(), node) }
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge to the first node in the lhs
     pred = this and
@@ -283,15 +281,15 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
     pred = this and first(super.getInitializer(), succ) and completionIsSimple(c)
     or
     // Edge from end of initializer to pattern.
-    last(super.getInitializer(), pred, c) and succ = super.getPat()
+    last(super.getInitializer(), pred, c) and first(super.getPat(), succ)
     or
     // Edge from failed pattern to `else` branch.
-    pred = super.getPat() and first(super.getElse(), succ) and c.(MatchCompletion).failed()
+    last(super.getPat(), pred, c) and first(super.getElse(), succ) and c.(MatchCompletion).failed()
   }
 
   override predicate last(AstNode node, Completion c) {
     // Edge out of a successfully matched pattern.
-    node = super.getPat() and c.(MatchCompletion).succeeded()
+    last(super.getPat(), node, c) and c.(MatchCompletion).succeeded()
     // NOTE: No edge out of the `else` branch as that is guaranteed to diverge.
   }
 }
@@ -304,7 +302,7 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
   override predicate first(AstNode node) { first(super.getBody(), node) }
 
   /** Whether this `LoopExpr` captures the `c` completion. */
-  predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
+  private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
     c.getLabelName() = super.getLabel().getName()
@@ -346,7 +344,11 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
     // Edge from pattern to guard/arm if match succeeds.
     pred = super.getPat() and
     c.(MatchCompletion).succeeded() and
-    (if super.hasGuard() then first(super.getGuard(), succ) else first(super.getExpr(), succ))
+    (
+      first(super.getGuard(), succ)
+      or
+      not super.hasGuard() and first(super.getExpr(), succ)
+    )
     or
     // Edge from guard to arm if the guard succeeds.
     last(super.getGuard(), pred, c) and
@@ -364,7 +366,9 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
 }
 
 class MatchExprTree extends PostOrderTree instanceof MatchExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getABranch().getExpr() }
+  override predicate propagatesAbnormal(AstNode child) {
+    child = [super.getExpr(), super.getABranch().getExpr()]
+  }
 
   override predicate first(AstNode node) { first(super.getExpr(), node) }
 
@@ -380,7 +384,7 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     )
     or
     // Edge from the end of each arm to the match expression.
-    last(super.getBranch(_), pred, c) and succ = this and completionIsSimple(c)
+    last(super.getBranch(_), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 
@@ -436,7 +440,7 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this
+    last(super.getExpr(), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 

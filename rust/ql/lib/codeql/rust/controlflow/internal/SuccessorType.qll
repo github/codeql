@@ -17,7 +17,6 @@ newtype TSuccessorType =
   TLoopSuccessor(TLoopJumpType kind, TLabelType label) or
   TReturnSuccessor()
 
-// class TBreakSuccessor = TUnlabeledBreakSuccessor or TLabeledBreakSuccessor;
 /** The type of a control flow successor. */
 abstract private class SuccessorTypeImpl extends TSuccessorType {
   /** Gets a textual representation of successor type. */

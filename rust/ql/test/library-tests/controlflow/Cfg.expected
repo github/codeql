@@ -192,17 +192,17 @@ nodes
 | test.rs:106:44:112:1 | BlockExpr | semmle.order | 191 |
 | test.rs:107:5:111:5 | MatchExpr | semmle.order | 192 |
 | test.rs:107:11:107:21 | PathExpr | semmle.order | 193 |
-| test.rs:108:9:108:15 | TupleStructPat | semmle.order | 194 |
-| test.rs:108:20:108:20 | PathExpr | semmle.order | 195 |
-| test.rs:108:20:108:25 | BinaryExpr | semmle.order | 196 |
-| test.rs:108:24:108:25 | LiteralExpr | semmle.order | 197 |
-| test.rs:108:30:108:30 | PathExpr | semmle.order | 198 |
-| test.rs:108:30:108:34 | BinaryExpr | semmle.order | 199 |
-| test.rs:108:34:108:34 | LiteralExpr | semmle.order | 200 |
-| test.rs:109:9:109:15 | TupleStructPat | semmle.order | 201 |
-| test.rs:109:20:109:20 | PathExpr | semmle.order | 202 |
-| test.rs:110:9:110:12 | IdentPat | semmle.order | 203 |
-| test.rs:110:17:110:17 | LiteralExpr | semmle.order | 204 |
+| test.rs:108:9:108:23 | TupleStructPat | semmle.order | 194 |
+| test.rs:108:28:108:28 | PathExpr | semmle.order | 195 |
+| test.rs:108:28:108:33 | BinaryExpr | semmle.order | 196 |
+| test.rs:108:32:108:33 | LiteralExpr | semmle.order | 197 |
+| test.rs:108:38:108:38 | PathExpr | semmle.order | 198 |
+| test.rs:108:38:108:42 | BinaryExpr | semmle.order | 199 |
+| test.rs:108:42:108:42 | LiteralExpr | semmle.order | 200 |
+| test.rs:109:9:109:23 | TupleStructPat | semmle.order | 201 |
+| test.rs:109:28:109:28 | PathExpr | semmle.order | 202 |
+| test.rs:110:9:110:20 | PathPat | semmle.order | 203 |
+| test.rs:110:25:110:25 | LiteralExpr | semmle.order | 204 |
 | test.rs:115:5:120:5 | enter test_infinite_loop | semmle.order | 205 |
 | test.rs:116:9:118:9 | ExprStmt | semmle.order | 206 |
 | test.rs:116:14:118:9 | BlockExpr | semmle.order | 207 |
@@ -618,36 +618,44 @@ edges
 | test.rs:106:44:112:1 | BlockExpr | test.rs:106:1:112:1 | exit test_match (normal) | semmle.order | 1 |
 | test.rs:107:5:111:5 | MatchExpr | test.rs:106:44:112:1 | BlockExpr | semmle.label |  |
 | test.rs:107:5:111:5 | MatchExpr | test.rs:106:44:112:1 | BlockExpr | semmle.order | 1 |
-| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:15 | TupleStructPat | semmle.label |  |
-| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:15 | TupleStructPat | semmle.order | 1 |
-| test.rs:108:9:108:15 | TupleStructPat | test.rs:108:20:108:20 | PathExpr | semmle.label | match |
-| test.rs:108:9:108:15 | TupleStructPat | test.rs:108:20:108:20 | PathExpr | semmle.order | 1 |
-| test.rs:108:9:108:15 | TupleStructPat | test.rs:109:9:109:15 | TupleStructPat | semmle.label | no-match |
-| test.rs:108:9:108:15 | TupleStructPat | test.rs:109:9:109:15 | TupleStructPat | semmle.order | 2 |
-| test.rs:108:20:108:20 | PathExpr | test.rs:108:24:108:25 | LiteralExpr | semmle.label |  |
-| test.rs:108:20:108:20 | PathExpr | test.rs:108:24:108:25 | LiteralExpr | semmle.order | 1 |
-| test.rs:108:20:108:25 | BinaryExpr | test.rs:108:30:108:30 | PathExpr | semmle.label | true |
-| test.rs:108:20:108:25 | BinaryExpr | test.rs:108:30:108:30 | PathExpr | semmle.order | 1 |
-| test.rs:108:20:108:25 | BinaryExpr | test.rs:109:9:109:15 | TupleStructPat | semmle.label | false |
-| test.rs:108:20:108:25 | BinaryExpr | test.rs:109:9:109:15 | TupleStructPat | semmle.order | 2 |
-| test.rs:108:24:108:25 | LiteralExpr | test.rs:108:20:108:25 | BinaryExpr | semmle.label |  |
-| test.rs:108:24:108:25 | LiteralExpr | test.rs:108:20:108:25 | BinaryExpr | semmle.order | 1 |
-| test.rs:108:30:108:30 | PathExpr | test.rs:108:34:108:34 | LiteralExpr | semmle.label |  |
-| test.rs:108:30:108:30 | PathExpr | test.rs:108:34:108:34 | LiteralExpr | semmle.order | 1 |
-| test.rs:108:30:108:34 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
-| test.rs:108:30:108:34 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
-| test.rs:108:34:108:34 | LiteralExpr | test.rs:108:30:108:34 | BinaryExpr | semmle.label |  |
-| test.rs:108:34:108:34 | LiteralExpr | test.rs:108:30:108:34 | BinaryExpr | semmle.order | 1 |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.label | match |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:109:20:109:20 | PathExpr | semmle.order | 1 |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | IdentPat | semmle.label | no-match |
-| test.rs:109:9:109:15 | TupleStructPat | test.rs:110:9:110:12 | IdentPat | semmle.order | 2 |
-| test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
-| test.rs:109:20:109:20 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
-| test.rs:110:9:110:12 | IdentPat | test.rs:110:17:110:17 | LiteralExpr | semmle.label | match |
-| test.rs:110:9:110:12 | IdentPat | test.rs:110:17:110:17 | LiteralExpr | semmle.order | 1 |
-| test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
-| test.rs:110:17:110:17 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:23 | TupleStructPat | semmle.label |  |
+| test.rs:107:11:107:21 | PathExpr | test.rs:108:9:108:23 | TupleStructPat | semmle.order | 1 |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:107:5:111:5 | MatchExpr | semmle.label | no-match |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:108:28:108:28 | PathExpr | semmle.label | match |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:108:28:108:28 | PathExpr | semmle.order | 2 |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:109:9:109:23 | TupleStructPat | semmle.label | no-match |
+| test.rs:108:9:108:23 | TupleStructPat | test.rs:109:9:109:23 | TupleStructPat | semmle.order | 3 |
+| test.rs:108:28:108:28 | PathExpr | test.rs:108:32:108:33 | LiteralExpr | semmle.label |  |
+| test.rs:108:28:108:28 | PathExpr | test.rs:108:32:108:33 | LiteralExpr | semmle.order | 1 |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label | false |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:108:38:108:38 | PathExpr | semmle.label | true |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:108:38:108:38 | PathExpr | semmle.order | 2 |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:109:9:109:23 | TupleStructPat | semmle.label | false |
+| test.rs:108:28:108:33 | BinaryExpr | test.rs:109:9:109:23 | TupleStructPat | semmle.order | 3 |
+| test.rs:108:32:108:33 | LiteralExpr | test.rs:108:28:108:33 | BinaryExpr | semmle.label |  |
+| test.rs:108:32:108:33 | LiteralExpr | test.rs:108:28:108:33 | BinaryExpr | semmle.order | 1 |
+| test.rs:108:38:108:38 | PathExpr | test.rs:108:42:108:42 | LiteralExpr | semmle.label |  |
+| test.rs:108:38:108:38 | PathExpr | test.rs:108:42:108:42 | LiteralExpr | semmle.order | 1 |
+| test.rs:108:38:108:42 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:108:38:108:42 | BinaryExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:108:42:108:42 | LiteralExpr | test.rs:108:38:108:42 | BinaryExpr | semmle.label |  |
+| test.rs:108:42:108:42 | LiteralExpr | test.rs:108:38:108:42 | BinaryExpr | semmle.order | 1 |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:107:5:111:5 | MatchExpr | semmle.label | no-match |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:109:28:109:28 | PathExpr | semmle.label | match |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:109:28:109:28 | PathExpr | semmle.order | 2 |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:110:9:110:20 | PathPat | semmle.label | no-match |
+| test.rs:109:9:109:23 | TupleStructPat | test.rs:110:9:110:20 | PathPat | semmle.order | 3 |
+| test.rs:109:28:109:28 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:109:28:109:28 | PathExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:110:9:110:20 | PathPat | test.rs:107:5:111:5 | MatchExpr | semmle.label | no-match |
+| test.rs:110:9:110:20 | PathPat | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
+| test.rs:110:9:110:20 | PathPat | test.rs:110:25:110:25 | LiteralExpr | semmle.label | match |
+| test.rs:110:9:110:20 | PathPat | test.rs:110:25:110:25 | LiteralExpr | semmle.order | 2 |
+| test.rs:110:25:110:25 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.label |  |
+| test.rs:110:25:110:25 | LiteralExpr | test.rs:107:5:111:5 | MatchExpr | semmle.order | 1 |
 | test.rs:115:5:120:5 | enter test_infinite_loop | test.rs:116:9:118:9 | ExprStmt | semmle.label |  |
 | test.rs:115:5:120:5 | enter test_infinite_loop | test.rs:116:9:118:9 | ExprStmt | semmle.order | 1 |
 | test.rs:116:9:118:9 | ExprStmt | test.rs:117:13:117:13 | LiteralExpr | semmle.label |  |
