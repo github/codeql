@@ -838,3 +838,83 @@ public class SyntheticProperties
         Prop2 = v;
     }
 }
+
+public class Fanout
+{
+
+    public abstract class Base1
+    {
+        public abstract string GetValue();
+    }
+
+    public abstract class Base2 : Base1 { }
+
+    public class Impl1 : Base1
+    {
+        public string Prop { get; set; }
+
+        // summary=Models;Fanout+Base1;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // contentbased-summary=Models;Fanout+Impl1;true;GetValue;();;Argument[this].Property[Models.Fanout+Impl1.Prop];ReturnValue;value;df-generated
+        public override string GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    public class Impl2 : Base2
+    {
+        public string Prop { get; set; }
+
+        // summary=Models;Fanout+Base1;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // contentbased-summary=Models;Fanout+Impl2;true;GetValue;();;Argument[this].Property[Models.Fanout+Impl2.Prop];ReturnValue;value;df-generated
+        public override string GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    public class Impl3 : Base2
+    {
+        public string Prop { get; set; }
+
+        // summary=Models;Fanout+Base1;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // contentbased-summary=Models;Fanout+Impl3;true;GetValue;();;Argument[this].Property[Models.Fanout+Impl3.Prop];ReturnValue;value;df-generated
+        public override string GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    public class Impl4 : Base2
+    {
+        public string Prop { get; set; }
+
+        // summary=Models;Fanout+Base1;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // contentbased-summary=Models;Fanout+Impl4;true;GetValue;();;Argument[this].Property[Models.Fanout+Impl4.Prop];ReturnValue;value;df-generated
+        public override string GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    // summary=Models;Fanout;false;ConcatValueOnBase1;(System.String,Models.Fanout+Base1);;Argument[0];ReturnValue;taint;df-generated
+    // summary=Models;Fanout;false;ConcatValueOnBase1;(System.String,Models.Fanout+Base1);;Argument[1];ReturnValue;taint;df-generated
+    // No content based summaries are expected for this method on parameter `b1`
+    // as the fanout (number of content flows) exceeds the limit of 3.
+    // contentbased-summary=Models;Fanout;false;ConcatValueOnBase1;(System.String,Models.Fanout+Base1);;Argument[0];ReturnValue;taint;df-generated
+    public string ConcatValueOnBase1(string other, Base1 b1)
+    {
+        return other + b1.GetValue();
+    }
+
+    // summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[0];ReturnValue;taint;df-generated
+    // summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[1];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[0];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[1].Property[Models.Fanout+Impl2.Prop];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[1].Property[Models.Fanout+Impl3.Prop];ReturnValue;taint;df-generated
+    // contentbased-summary=Models;Fanout;false;ConcatValueOnBase2;(System.String,Models.Fanout+Base2);;Argument[1].Property[Models.Fanout+Impl4.Prop];ReturnValue;taint;df-generated
+    public string ConcatValueOnBase2(string other, Base2 b2)
+    {
+        return other + b2.GetValue();
+    }
+}
