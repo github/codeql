@@ -134,8 +134,8 @@ edges
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:81:18:81:25 | pipeline | provenance | Sink:MaD:16 |
 | mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal | provenance | Config |
 models
-| 1 | Sink: database/sql; DB; false; Query; ; ; Argument[0]; sql-injection; manual |
-| 2 | Sink: database/sql; Tx; false; Query; ; ; Argument[0]; sql-injection; manual |
+| 1 | Sink: database/sql; DB; true; Query; ; ; Argument[0]; sql-injection; manual |
+| 2 | Sink: database/sql; Tx; true; Query; ; ; Argument[0]; sql-injection; manual |
 | 3 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; Aggregate; ; ; Argument[1]; nosql-injection; manual |
 | 4 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; CountDocuments; ; ; Argument[1]; nosql-injection; manual |
 | 5 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; DeleteMany; ; ; Argument[1]; nosql-injection; manual |
