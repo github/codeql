@@ -30,18 +30,16 @@ public class MultipleImpls {
     private String foo;
 
     // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
-    // A field based model should not be lifted if the field pertains to the concrete
-    // implementation.
-    // SPURIOUS-contentbased-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];value;df-generated
+    // The content based summary is not lifted as it pertains to a (synthetic)field.
+    // contentbased-summary=p;MultipleImpls$Strat2;true;doSomething;(String);;Argument[0];Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];value;df-generated
     public String doSomething(String value) {
       this.foo = value;
       return "none";
     }
 
     // summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated
-    // A field based model should not be lifted if the field pertains to the concrete
-    // implementation.
-    // SPURIOUS-contentbased-summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];ReturnValue;value;df-generated
+    // The content based summary is not lifted as it pertains to a (synthetic)field.
+    // contentbased-summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];ReturnValue;value;df-generated
     public String getValue() {
       return this.foo;
     }

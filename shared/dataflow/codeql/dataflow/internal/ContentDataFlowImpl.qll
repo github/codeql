@@ -271,6 +271,38 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           result = head + "." + tail
         )
       }
+
+      private ContentSet getAtIndex(int i) {
+        i = 0 and
+        result = this.getHead()
+        or
+        i > 0 and
+        result = this.getTail().getAtIndex(i - 1)
+      }
+
+      private AccessPath reverse0(int i) {
+        i = -1 and result = TAccessPathNil()
+        or
+        i >= 0 and
+        result = TAccessPathCons(this.getAtIndex(i), this.reverse0(i - 1))
+      }
+
+      /**
+       * Gets the length of this access path.
+       */
+      private int length() {
+        result = 0 and this = TAccessPathNil()
+        or
+        result = 1 + this.getTail().length()
+      }
+
+      /**
+       * Gets the reversed access path, if any.
+       *
+       * Note that not all access paths have a reverse as these are not
+       * included by default in the IPA type.
+       */
+      AccessPath reverse() { result = this.reverse0(this.length() - 1) }
     }
 
     /**
