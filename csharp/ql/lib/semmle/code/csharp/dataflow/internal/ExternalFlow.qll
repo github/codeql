@@ -535,7 +535,9 @@ private module QualifiedNameInput implements QualifiedNameInputSig {
 
 private module QN = QualifiedName<QualifiedNameInput>;
 
-/** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
+/**
+ * Holds if declaration `d` has the qualified name `qualifier`.`name`.
+ */
 predicate hasQualifiedTypeName(Type t, string namespace, string type) {
   QN::hasQualifiedName(t, namespace, type)
 }
