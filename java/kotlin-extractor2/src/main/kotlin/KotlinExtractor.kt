@@ -1,8 +1,9 @@
 package com.github.codeql
 
+import com.github.codeql.entities.Context
+import com.github.codeql.entities.getEntity
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.impl.DebugUtil
-import com.intellij.psi.PsiFile
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
 import java.io.File
@@ -214,12 +215,12 @@ fun doAnalysis(
 
     val checkTrapIdentical = false // TODO
 
-    val psiFiles = session.modulesWithFiles.getValue(sourceModule)
-    var fileNumber = 0
-    val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
-    for (psiFile in psiFiles) {
-        if (psiFile is KtFile) {
-            analyze(psiFile) {
+    analyze(sourceModule) {
+        val psiFiles = session.modulesWithFiles.getValue(sourceModule)
+        var fileNumber = 0
+        val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
+        for (psiFile in psiFiles) {
+            if (psiFile is KtFile) {
                 if (dump_psi) {
                     val showWhitespaces = false
                     val showRanges = true
@@ -268,11 +269,12 @@ fun doAnalysis(
                                         logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
                                         fileExtractionProblems.setNonRecoverableProblem()
                     */
+
                 }
+                fileNumber += 1
+            } else {
+                System.out.println("Warning: Not a KtFile")
             }
-            fileNumber += 1
-        } else {
-            System.out.println("Warning: Not a KtFile")
         }
     }
 }
@@ -550,6 +552,11 @@ private fun doFile(
                     )
                 val linesOfCode = LinesOfCode(logger, sftw, srcFile)
         */
+
+        val context = Context(logger, sftw, srcFile.symbol)
+        com.github.codeql.entities.File.create(context, srcFile.symbol)
+        context.extractAll()
+
         val fileExtractor =
             KotlinFileExtractor(
                 logger,
