@@ -55,7 +55,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     /** Holds if data flow into `node` is prohibited. */
     predicate isBarrierIn(Node node);
 
-    /** Holds if data flow into `node` is prohibited when the target flow state is `state`. */
+    /**
+     * Holds if data flow into `node` is prohibited when the target flow state
+     * is `state`.
+     */
     predicate isBarrierIn(Node node, FlowState state);
 
     /** Holds if data flow out of `node` is prohibited. */
