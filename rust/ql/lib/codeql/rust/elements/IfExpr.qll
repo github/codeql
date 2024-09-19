@@ -4,21 +4,8 @@
  */
 
 private import internal.IfExprImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 
-/**
- * An `if` expression. For example:
- * ```
- * if x == 42 {
- *     println!("that's the answer");
- * }
- * ```
- * ```
- * let y = if x > 0 {
- *     1
- * } else {
- *     0
- * }
- * ```
- */
 final class IfExpr = Impl::IfExpr;

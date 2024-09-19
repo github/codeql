@@ -12,14 +12,5 @@ private import codeql.rust.elements.internal.generated.BoxPat
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A box pattern. For example:
-   * ```
-   * match x {
-   *     box Option::Some(y) => y,
-   *     box Option::None => 0,
-   * };
-   * ```
-   */
   class BoxPat extends Generated::BoxPat { }
 }

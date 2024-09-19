@@ -4,14 +4,7 @@
  */
 
 private import internal.AsmExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
-/**
- * An inline assembly expression. For example:
- * ```
- * unsafe {
- *     builtin # asm(_);
- * }
- * ```
- */
 final class AsmExpr = Impl::AsmExpr;

@@ -4,13 +4,7 @@
  */
 
 private import internal.IndexExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
-/**
- * An index expression. For example:
- * ```
- * list[42];
- * list[42] = 1;
- * ```
- */
 final class IndexExpr = Impl::IndexExpr;

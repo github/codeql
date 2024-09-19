@@ -12,17 +12,5 @@ private import codeql.rust.elements.internal.generated.LetStmt
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A let statement. For example:
-   * ```
-   * let x = 42;
-   * let x: i32 = 42;
-   * let x: i32;
-   * let x;
-   * let (x, y) = (1, 2);
-   * let Some(x) = std::env::var("FOO") else {
-   *     return;
-   * };
-   */
   class LetStmt extends Generated::LetStmt { }
 }

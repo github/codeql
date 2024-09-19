@@ -4,20 +4,10 @@
  */
 
 private import internal.ClosureExprImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Pat
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.ParamList
+import codeql.rust.elements.RetType
 
-/**
- * A closure expression. For example:
- * ```
- * |x| x + 1;
- * move |x: i32| -> i32 { x + 1 };
- * async |x: i32, y| x + y;
- *  #[coroutine]
- * |x| yield x;
- *  #[coroutine]
- *  static |x| yield x;
- * ```
- */
 final class ClosureExpr = Impl::ClosureExpr;

@@ -12,20 +12,5 @@ private import codeql.rust.elements.internal.generated.MatchExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A match expression. For example:
-   * ```
-   * match x {
-   *     Option::Some(y) => y,
-   *     Option::None => 0,
-   * }
-   * ```
-   * ```
-   * match x {
-   *     Some(y) if y != 0 => 1 / y,
-   *     _ => 0,
-   * }
-   * ```
-   */
   class MatchExpr extends Generated::MatchExpr { }
 }

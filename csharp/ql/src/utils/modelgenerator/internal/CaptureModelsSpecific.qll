@@ -390,22 +390,46 @@ private string getFullyQualifiedName(Declaration d) {
 }
 
 /**
- * Gets the MaD string representation of the contentset `c`.
+ * Holds if the content set `c` is a field, property or synthetic field.
+ */
+predicate isField(ContentSet c) { c.isField(_) or c.isSyntheticField(_) or c.isProperty(_) }
+
+/**
+ * Gets the MaD synthetic name string representation for the content set `c`, if any.
+ */
+string getSyntheticName(DataFlow::ContentSet c) {
+  exists(CS::Field f |
+    not f.isEffectivelyPublic() and
+    c.isField(f) and
+    result = getFullyQualifiedName(f)
+  )
+  or
+  exists(CS::Property p |
+    not p.isEffectivelyPublic() and
+    c.isProperty(p) and
+    result = getFullyQualifiedName(p)
+  )
+  or
+  c.isSyntheticField(result)
+}
+
+/**
+ * Gets the MaD string representation of the content set `c`.
  */
 string printContent(DataFlow::ContentSet c) {
   exists(CS::Field f, string name | name = getFullyQualifiedName(f) |
     c.isField(f) and
-    if f.isEffectivelyPublic()
-    then result = "Field[" + name + "]"
-    else result = "SyntheticField[" + name + "]"
+    f.isEffectivelyPublic() and
+    result = "Field[" + name + "]"
   )
   or
   exists(CS::Property p, string name | name = getFullyQualifiedName(p) |
     c.isProperty(p) and
-    if p.isEffectivelyPublic()
-    then result = "Property[" + name + "]"
-    else result = "SyntheticField[" + name + "]"
+    p.isEffectivelyPublic() and
+    result = "Property[" + name + "]"
   )
+  or
+  result = "SyntheticField[" + getSyntheticName(c) + "]"
   or
   c.isElement() and
   result = "Element"

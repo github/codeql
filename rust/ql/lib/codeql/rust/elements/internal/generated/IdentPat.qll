@@ -6,6 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
+import codeql.rust.elements.Name
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 
@@ -15,19 +17,6 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A binding pattern. For example:
-   * ```
-   * match x {
-   *     Option::Some(y) => y,
-   *     Option::None => 0,
-   * };
-   * ```
-   * ```
-   * match x {
-   *     y@Option::Some(_) => y,
-   *     Option::None => 0,
-   * };
-   * ```
    * INTERNAL: Do not reference the `Generated::IdentPat` class directly.
    * Use the subclass `IdentPat`, where the following predicates are available.
    */
@@ -35,23 +24,46 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IdentPat" }
 
     /**
-     * Gets the binding of this ident pat.
+     * Gets the `index`th attr of this ident pat (0-based).
      */
-    string getBindingId() {
-      result = Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getBindingId()
-    }
-
-    /**
-     * Gets the subpat of this ident pat, if it exists.
-     */
-    Pat getSubpat() {
+    Attr getAttr(int index) {
       result =
-        Synth::convertPatFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getSubpat())
+        Synth::convertAttrFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getAttr(index))
     }
 
     /**
-     * Holds if `getSubpat()` exists.
+     * Gets any of the attrs of this ident pat.
      */
-    final predicate hasSubpat() { exists(this.getSubpat()) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this ident pat.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the name of this ident pat, if it exists.
+     */
+    Name getName() {
+      result =
+        Synth::convertNameFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getName())
+    }
+
+    /**
+     * Holds if `getName()` exists.
+     */
+    final predicate hasName() { exists(this.getName()) }
+
+    /**
+     * Gets the pat of this ident pat, if it exists.
+     */
+    Pat getPat() {
+      result = Synth::convertPatFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getPat())
+    }
+
+    /**
+     * Holds if `getPat()` exists.
+     */
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

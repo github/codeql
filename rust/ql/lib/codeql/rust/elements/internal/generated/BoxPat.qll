@@ -15,13 +15,6 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A box pattern. For example:
-   * ```
-   * match x {
-   *     box Option::Some(y) => y,
-   *     box Option::None => 0,
-   * };
-   * ```
    * INTERNAL: Do not reference the `Generated::BoxPat` class directly.
    * Use the subclass `BoxPat`, where the following predicates are available.
    */
@@ -29,10 +22,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BoxPat" }
 
     /**
-     * Gets the inner of this box pat.
+     * Gets the pat of this box pat, if it exists.
      */
-    Pat getInner() {
-      result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getInner())
+    Pat getPat() {
+      result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getPat())
     }
+
+    /**
+     * Holds if `getPat()` exists.
+     */
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

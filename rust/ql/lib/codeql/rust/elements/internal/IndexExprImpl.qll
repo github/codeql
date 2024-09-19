@@ -12,12 +12,5 @@ private import codeql.rust.elements.internal.generated.IndexExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * An index expression. For example:
-   * ```
-   * list[42];
-   * list[42] = 1;
-   * ```
-   */
   class IndexExpr extends Generated::IndexExpr { }
 }

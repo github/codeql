@@ -5,22 +5,9 @@
 
 private import internal.MatchArmImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.MatchGuard
 import codeql.rust.elements.Pat
 
-/**
- * A match arm. For example:
- * ```
- * match x {
- *     Option::Some(y) => y,
- *     Option::None => 0,
- * };
- * ```
- * ```
- * match x {
- *     Some(y) if y != 0 => 1 / y,
- *     _ => 0,
- * };
- * ```
- */
 final class MatchArm = Impl::MatchArm;

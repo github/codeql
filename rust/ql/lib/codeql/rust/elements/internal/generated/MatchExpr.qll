@@ -6,9 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.MatchArm
+import codeql.rust.elements.MatchArmList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MatchExpr` and should not
@@ -16,19 +17,6 @@ import codeql.rust.elements.MatchArm
  */
 module Generated {
   /**
-   * A match expression. For example:
-   * ```
-   * match x {
-   *     Option::Some(y) => y,
-   *     Option::None => 0,
-   * }
-   * ```
-   * ```
-   * match x {
-   *     Some(y) if y != 0 => 1 / y,
-   *     _ => 0,
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::MatchExpr` class directly.
    * Use the subclass `MatchExpr`, where the following predicates are available.
    */
@@ -36,7 +24,25 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MatchExpr" }
 
     /**
-     * Gets the expression of this match expression.
+     * Gets the `index`th attr of this match expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertMatchExprToRaw(this).(Raw::MatchExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this match expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this match expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this match expression, if it exists.
      */
     Expr getExpr() {
       result =
@@ -44,23 +50,23 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th branch of this match expression (0-based).
+     * Holds if `getExpr()` exists.
      */
-    MatchArm getBranch(int index) {
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the match arm list of this match expression, if it exists.
+     */
+    MatchArmList getMatchArmList() {
       result =
-        Synth::convertMatchArmFromRaw(Synth::convertMatchExprToRaw(this)
+        Synth::convertMatchArmListFromRaw(Synth::convertMatchExprToRaw(this)
               .(Raw::MatchExpr)
-              .getBranch(index))
+              .getMatchArmList())
     }
 
     /**
-     * Gets any of the branches of this match expression.
+     * Holds if `getMatchArmList()` exists.
      */
-    final MatchArm getABranch() { result = this.getBranch(_) }
-
-    /**
-     * Gets the number of branches of this match expression.
-     */
-    final int getNumberOfBranches() { result = count(int i | exists(this.getBranch(i))) }
+    final predicate hasMatchArmList() { exists(this.getMatchArmList()) }
   }
 }

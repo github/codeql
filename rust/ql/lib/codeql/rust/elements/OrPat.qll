@@ -6,12 +6,4 @@
 private import internal.OrPatImpl
 import codeql.rust.elements.Pat
 
-/**
- * An or pattern. For example:
- * ```
- * match x {
- *     Option::Some(y) | Option::None => 0,
- * }
- * ```
- */
 final class OrPat = Impl::OrPat;

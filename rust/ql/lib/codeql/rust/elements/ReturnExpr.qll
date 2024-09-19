@@ -4,19 +4,7 @@
  */
 
 private import internal.ReturnExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
-/**
- * A return expression. For example:
- * ```
- * fn some_value() -> i32 {
- *     return 42;
- * }
- * ```
- * ```
- * fn no_value() -> () {
- *     return;
- * }
- * ```
- */
 final class ReturnExpr = Impl::ReturnExpr;

@@ -6,10 +6,12 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
+import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Pat
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.ParamList
+import codeql.rust.elements.RetType
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not
@@ -17,16 +19,6 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A closure expression. For example:
-   * ```
-   * |x| x + 1;
-   * move |x: i32| -> i32 { x + 1 };
-   * async |x: i32, y| x + y;
-   *  #[coroutine]
-   * |x| yield x;
-   *  #[coroutine]
-   *  static |x| yield x;
-   * ```
    * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.
    * Use the subclass `ClosureExpr`, where the following predicates are available.
    */
@@ -34,51 +26,74 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
 
     /**
-     * Gets the `index`th argument of this closure expression (0-based).
+     * Gets the `index`th attr of this closure expression (0-based).
      */
-    Pat getArg(int index) {
+    Attr getAttr(int index) {
       result =
-        Synth::convertPatFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertAttrFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
-              .getArg(index))
+              .getAttr(index))
     }
 
     /**
-     * Gets any of the arguments of this closure expression.
+     * Gets any of the attrs of this closure expression.
      */
-    final Pat getAnArg() { result = this.getArg(_) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of arguments of this closure expression.
+     * Gets the number of attrs of this closure expression.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the `index`th argument type of this closure expression (0-based), if it exists.
+     * Gets the body of this closure expression, if it exists.
      */
-    TypeRef getArgType(int index) {
+    Expr getBody() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertClosureExprToRaw(this)
-              .(Raw::ClosureExpr)
-              .getArgType(index))
+        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getBody())
     }
 
     /**
-     * Holds if `getArgType(index)` exists.
+     * Holds if `getBody()` exists.
      */
-    final predicate hasArgType(int index) { exists(this.getArgType(index)) }
+    final predicate hasBody() { exists(this.getBody()) }
 
     /**
-     * Gets any of the argument types of this closure expression.
+     * Gets the closure binder of this closure expression, if it exists.
      */
-    final TypeRef getAnArgType() { result = this.getArgType(_) }
+    ClosureBinder getClosureBinder() {
+      result =
+        Synth::convertClosureBinderFromRaw(Synth::convertClosureExprToRaw(this)
+              .(Raw::ClosureExpr)
+              .getClosureBinder())
+    }
+
+    /**
+     * Holds if `getClosureBinder()` exists.
+     */
+    final predicate hasClosureBinder() { exists(this.getClosureBinder()) }
+
+    /**
+     * Gets the parameter list of this closure expression, if it exists.
+     */
+    ParamList getParamList() {
+      result =
+        Synth::convertParamListFromRaw(Synth::convertClosureExprToRaw(this)
+              .(Raw::ClosureExpr)
+              .getParamList())
+    }
+
+    /**
+     * Holds if `getParamList()` exists.
+     */
+    final predicate hasParamList() { exists(this.getParamList()) }
 
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    TypeRef getRetType() {
+    RetType getRetType() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertRetTypeFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
               .getRetType())
     }
@@ -87,25 +102,5 @@ module Generated {
      * Holds if `getRetType()` exists.
      */
     final predicate hasRetType() { exists(this.getRetType()) }
-
-    /**
-     * Gets the body of this closure expression.
-     */
-    Expr getBody() {
-      result =
-        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getBody())
-    }
-
-    /**
-     * Gets the closure kind of this closure expression.
-     */
-    string getClosureKind() {
-      result = Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getClosureKind()
-    }
-
-    /**
-     * Holds if this closure expression is move.
-     */
-    predicate isMove() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isMove() }
   }
 }

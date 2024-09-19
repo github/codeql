@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.TypeRef
@@ -16,10 +17,6 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A cast expression. For example:
-   * ```
-   * value as u64;
-   * ```
    * INTERNAL: Do not reference the `Generated::CastExpr` class directly.
    * Use the subclass `CastExpr`, where the following predicates are available.
    */
@@ -27,7 +24,25 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CastExpr" }
 
     /**
-     * Gets the expression of this cast expression.
+     * Gets the `index`th attr of this cast expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this cast expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this cast expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this cast expression, if it exists.
      */
     Expr getExpr() {
       result =
@@ -35,11 +50,21 @@ module Generated {
     }
 
     /**
-     * Gets the type of this cast expression.
+     * Holds if `getExpr()` exists.
      */
-    TypeRef getType() {
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the ty of this cast expression, if it exists.
+     */
+    TypeRef getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getType())
+        Synth::convertTypeRefFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getTy())
     }
+
+    /**
+     * Holds if `getTy()` exists.
+     */
+    final predicate hasTy() { exists(this.getTy()) }
   }
 }

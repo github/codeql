@@ -4,17 +4,7 @@
  */
 
 private import internal.RangeExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
-/**
- * A range expression. For example:
- * ```
- * let x = 1..=10;
- * let x = 1..10;
- * let x = 10..;
- * let x = ..10;
- * let x = ..=10;
- * let x = ..;
- * ```
- */
 final class RangeExpr = Impl::RangeExpr;

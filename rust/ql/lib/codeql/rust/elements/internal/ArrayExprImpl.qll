@@ -12,12 +12,5 @@ private import codeql.rust.elements.internal.generated.ArrayExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * An array expression. For example:
-   * ```
-   * [1, 2, 3];
-   * [1; 10];
-   * ```
-   */
   class ArrayExpr extends Generated::ArrayExpr { }
 }

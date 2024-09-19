@@ -4,24 +4,8 @@
  */
 
 private import internal.ContinueExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Label
+import codeql.rust.elements.Lifetime
 
-/**
- * A continue expression. For example:
- * ```
- * loop {
- *     if not_ready() {
- *         continue;
- *     }
- * }
- * ```
- * ```
- * 'label: loop {
- *     if not_ready() {
- *         continue 'label;
- *     }
- * }
- * ```
- */
 final class ContinueExpr = Impl::ContinueExpr;

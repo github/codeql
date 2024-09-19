@@ -12,19 +12,5 @@ private import codeql.rust.elements.internal.generated.BlockExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A block expression. For example:
-   * ```
-   * {
-   *     let x = 42;
-   * }
-   * ```
-   * ```
-   * 'label: {
-   *     let x = 42;
-   *     x
-   * }
-   * ```
-   */
   class BlockExpr extends Generated::BlockExpr { }
 }

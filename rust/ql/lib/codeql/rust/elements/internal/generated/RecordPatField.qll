@@ -7,6 +7,8 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.NameRef
 import codeql.rust.elements.Pat
 
 /**
@@ -15,10 +17,6 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * A field in a record pattern. For example `a: 1` in:
-   * ```
-   * let Foo { a: 1, b: 2 } = foo;
-   * ```
    * INTERNAL: Do not reference the `Generated::RecordPatField` class directly.
    * Use the subclass `RecordPatField`, where the following predicates are available.
    */
@@ -26,14 +24,42 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RecordPatField" }
 
     /**
-     * Gets the name of this record pat field.
+     * Gets the `index`th attr of this record pat field (0-based).
      */
-    string getName() {
-      result = Synth::convertRecordPatFieldToRaw(this).(Raw::RecordPatField).getName()
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertRecordPatFieldToRaw(this)
+              .(Raw::RecordPatField)
+              .getAttr(index))
     }
 
     /**
-     * Gets the pat of this record pat field.
+     * Gets any of the attrs of this record pat field.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this record pat field.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the name reference of this record pat field, if it exists.
+     */
+    NameRef getNameRef() {
+      result =
+        Synth::convertNameRefFromRaw(Synth::convertRecordPatFieldToRaw(this)
+              .(Raw::RecordPatField)
+              .getNameRef())
+    }
+
+    /**
+     * Holds if `getNameRef()` exists.
+     */
+    final predicate hasNameRef() { exists(this.getNameRef()) }
+
+    /**
+     * Gets the pat of this record pat field, if it exists.
      */
     Pat getPat() {
       result =
@@ -41,5 +67,10 @@ module Generated {
               .(Raw::RecordPatField)
               .getPat())
     }
+
+    /**
+     * Holds if `getPat()` exists.
+     */
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

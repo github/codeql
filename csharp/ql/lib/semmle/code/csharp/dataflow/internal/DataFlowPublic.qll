@@ -299,8 +299,11 @@ class ContentSet extends TContentSet {
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
-  /** Holds if this content set represent the field `f`. */
+  /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
+
+  /** Holds if this content set represents the synthetic field `s`. */
+  predicate isSyntheticField(string s) { this.isSingleton(TSyntheticFieldContent(s)) }
 
   /** Holds if this content set represents an element in a collection. */
   predicate isElement() { this.isSingleton(TElementContent()) }

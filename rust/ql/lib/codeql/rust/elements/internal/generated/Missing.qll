@@ -18,5 +18,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Missing` class directly.
    * Use the subclass `Missing`, where the following predicates are available.
    */
-  class Missing extends Synth::TMissing, UnextractedImpl::Unextracted { }
+  class Missing extends Synth::TMissing, UnextractedImpl::Unextracted {
+    override string getAPrimaryQlClass() { result = "Missing" }
+  }
 }

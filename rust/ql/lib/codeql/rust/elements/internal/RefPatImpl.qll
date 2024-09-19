@@ -12,14 +12,5 @@ private import codeql.rust.elements.internal.generated.RefPat
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A reference pattern. For example:
-   * ```
-   * match x {
-   *     &mut Option::Some(y) => y,
-   *     &Option::None => 0,
-   * };
-   * ```
-   */
   class RefPat extends Generated::RefPat { }
 }

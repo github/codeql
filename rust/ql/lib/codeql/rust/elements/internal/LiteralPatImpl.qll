@@ -12,14 +12,5 @@ private import codeql.rust.elements.internal.generated.LiteralPat
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A literal pattern. For example:
-   * ```
-   * match x {
-   *     42 => "ok",
-   *     _ => "fail",
-   * }
-   * ```
-   */
   class LiteralPat extends Generated::LiteralPat { }
 }

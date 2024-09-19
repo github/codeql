@@ -6,7 +6,7 @@ newtype TLoopJumpType =
   TBreakJump()
 
 newtype TLabelType =
-  TLabel(string s) { any(Label l).getName() = s } or
+  TLabel(string s) { any(Label l).getLifetime().getText() = s } or
   TNoLabel()
 
 cached

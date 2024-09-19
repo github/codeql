@@ -74,7 +74,7 @@ class BecomeExprTree extends StandardPostOrderTree instanceof BecomeExpr {
 }
 
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
-  BinaryOpExprTree() { super.getOp() != "&&" and super.getOp() != "||" }
+  BinaryOpExprTree() { super.getOperatorName() != "&&" and super.getOperatorName() != "||" }
 
   override ControlFlowTree getChildNode(int i) {
     i = 0 and result = super.getLhs()
@@ -84,7 +84,7 @@ class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
 }
 
 class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
-  LogicalOrBinaryOpExprTree() { super.getOp() = "||" }
+  LogicalOrBinaryOpExprTree() { super.getOperatorName() = "||" }
 
   final override predicate propagatesAbnormal(AstNode child) {
     child = [super.getRhs(), super.getLhs()]
@@ -113,7 +113,7 @@ class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
 }
 
 class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
-  LogicalAndBinaryOpExprTree() { super.getOp() = "&&" }
+  LogicalAndBinaryOpExprTree() { super.getOperatorName() = "&&" }
 
   final override predicate propagatesAbnormal(AstNode child) {
     child = [super.getRhs(), super.getLhs()]
@@ -141,20 +141,14 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
   }
 }
 
-// NOTE: This covers both normal blocks `BlockExpr`, async blocks
-// `AsyncBlockExpr`, and unsafe blocks `UnsafeBlockExpr`.
-class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExprBase {
+class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExpr {
   override ControlFlowTree getChildNode(int i) {
-    result = super.getStatement(i)
+    result = super.getStmtList().getStatement(i)
     or
-    not exists(super.getStatement(i)) and
-    (exists(super.getStatement(i - 1)) or i = 0) and
-    result = super.getTail()
+    not exists(super.getStmtList().getStatement(i)) and
+    (exists(super.getStmtList().getStatement(i - 1)) or i = 0) and
+    result = super.getStmtList().getTailExpr()
   }
-}
-
-class BoxExprTree extends StandardPostOrderTree instanceof BoxExpr {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 class BreakExprTree extends PostOrderTree instanceof BreakExpr {
@@ -173,9 +167,9 @@ class BreakExprTree extends PostOrderTree instanceof BreakExpr {
 
 class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
   override ControlFlowTree getChildNode(int i) {
-    i = 0 and result = super.getCallee()
+    i = 0 and result = super.getExpr()
     or
-    result = super.getArg(i - 1)
+    result = super.getArgList().getArg(i - 1)
   }
 }
 
@@ -185,13 +179,7 @@ class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
 
 class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
 
-class ConstExprTree extends LeafTree instanceof ConstExpr { }
-
 class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
-
-class ElementListExprTree extends StandardPostOrderTree instanceof ElementListExpr {
-  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getElement(i) }
-}
 
 class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
@@ -273,7 +261,7 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
   LetStmtTree() { not trivialPat(super.getPat()) }
 
   final override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getInitializer(), super.getElse()]
+    child = [super.getInitializer(), super.getLetElse().getBlockExpr()]
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -284,7 +272,9 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
     last(super.getInitializer(), pred, c) and first(super.getPat(), succ)
     or
     // Edge from failed pattern to `else` branch.
-    last(super.getPat(), pred, c) and first(super.getElse(), succ) and c.(MatchCompletion).failed()
+    last(super.getPat(), pred, c) and
+    first(super.getLetElse().getBlockExpr(), succ) and
+    c.(MatchCompletion).failed()
   }
 
   override predicate last(AstNode node, Completion c) {
@@ -299,18 +289,18 @@ class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 class LoopExprTree extends PostOrderTree instanceof LoopExpr {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
-  override predicate first(AstNode node) { first(super.getBody(), node) }
+  override predicate first(AstNode node) { first(super.getLoopBody(), node) }
 
   /** Whether this `LoopExpr` captures the `c` completion. */
   private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
-    c.getLabelName() = super.getLabel().getName()
+    c.getLabelName() = super.getLabel().getLifetime().getText()
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge back to the start for final expression and continue expressions
-    last(super.getBody(), pred, c) and
+    last(super.getLoopBody(), pred, c) and
     (
       completionIsNormal(c)
       or
@@ -319,7 +309,7 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
     this.first(succ)
     or
     // Edge for exiting the loop with a break expressions
-    last(super.getBody(), pred, c) and
+    last(super.getLoopBody(), pred, c) and
     c.(LoopJumpCompletion).isBreak() and
     this.capturesLoopJumpCompletion(c) and
     succ = this
@@ -329,7 +319,7 @@ class LoopExprTree extends PostOrderTree instanceof LoopExpr {
     super.last(last, c)
     or
     // Any abnormal completions that this loop does not capture should propagate
-    last(super.getBody(), last, c) and
+    last(super.getLoopBody(), last, c) and
     not completionIsNormal(c) and
     not this.capturesLoopJumpCompletion(c)
   }
@@ -345,13 +335,13 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
     pred = super.getPat() and
     c.(MatchCompletion).succeeded() and
     (
-      first(super.getGuard(), succ)
+      first(super.getGuard().getCondition(), succ)
       or
       not super.hasGuard() and first(super.getExpr(), succ)
     )
     or
     // Edge from guard to arm if the guard succeeds.
-    last(super.getGuard(), pred, c) and
+    last(super.getGuard().getCondition(), pred, c) and
     first(super.getExpr(), succ) and
     c.(BooleanCompletion).succeeded()
   }
@@ -359,7 +349,7 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
   override predicate last(AstNode node, Completion c) {
     node = super.getPat() and c.(MatchCompletion).failed()
     or
-    last(super.getGuard(), node, c) and c.(BooleanCompletion).failed()
+    last(super.getGuard().getCondition(), node, c) and c.(BooleanCompletion).failed()
     or
     last(super.getExpr(), node, c)
   }
@@ -367,31 +357,31 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
 
 class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getExpr(), super.getABranch().getExpr()]
+    child = [super.getExpr(), super.getMatchArmList().getAnArm().getExpr()]
   }
 
   override predicate first(AstNode node) { first(super.getExpr(), node) }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge from the scrutinee to the first arm.
-    last(super.getExpr(), pred, c) and succ = super.getBranch(0).getPat()
+    last(super.getExpr(), pred, c) and succ = super.getMatchArmList().getArm(0).getPat()
     or
     // Edge from a failed match/guard in one arm to the beginning of the next arm.
     exists(int i |
-      last(super.getBranch(i), pred, c) and
-      first(super.getBranch(i + 1), succ) and
+      last(super.getMatchArmList().getArm(i), pred, c) and
+      first(super.getMatchArmList().getArm(i + 1), succ) and
       c.(ConditionalCompletion).failed()
     )
     or
     // Edge from the end of each arm to the match expression.
-    last(super.getBranch(_), pred, c) and succ = this and completionIsNormal(c)
+    last(super.getMatchArmList().getArm(_), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 
 class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr {
   override ControlFlowTree getChildNode(int i) {
     result = super.getReceiver() and
-    result = super.getArg(i + 1)
+    result = super.getArgList().getArg(i + 1)
   }
 }
 
@@ -408,26 +398,20 @@ class PrefixExprTree extends StandardPostOrderTree instanceof PrefixExpr {
 
 class RangeExprTree extends StandardPostOrderTree instanceof RangeExpr {
   override ControlFlowTree getChildNode(int i) {
-    i = 0 and result = super.getLhs()
+    i = 0 and result = super.getStart()
     or
-    i = 1 and result = super.getRhs()
+    i = 1 and result = super.getEnd()
   }
 }
 
 class RecordExprTree extends StandardPostOrderTree instanceof RecordExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getFld(i).getExpr() }
+  override ControlFlowTree getChildNode(int i) {
+    result = super.getRecordExprFieldList().getField(i).getExpr()
+  }
 }
 
 class RefExprTree extends StandardPostOrderTree instanceof RefExpr {
   override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
-}
-
-class RepeatExprTree extends StandardPostOrderTree instanceof RepeatExpr {
-  override ControlFlowTree getChildNode(int i) {
-    i = 0 and result = super.getInitializer()
-    or
-    i = 1 and result = super.getRepeat()
-  }
 }
 
 class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
@@ -445,15 +429,12 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
 }
 
 class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getExpr(i) }
+  override ControlFlowTree getChildNode(int i) { result = super.getField(i) }
 }
 
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
 class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
-
-// A leaf tree for unimplemented nodes in the AST.
-class UnimplementedTree extends LeafTree instanceof Unimplemented { }
 
 // NOTE: `yield` is a reserved but unused keyword.
 class YieldExprTree extends StandardPostOrderTree instanceof YieldExpr {

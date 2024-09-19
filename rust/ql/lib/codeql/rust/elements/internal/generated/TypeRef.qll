@@ -7,7 +7,6 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TypeRef` and should not
@@ -15,16 +14,8 @@ import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImp
  */
 module Generated {
   /**
-   * The base class for type references.
-   * ```
-   * let x: i32;
-   * let y: Vec<i32>;
-   * let z: Option<i32>;
-   * ```
    * INTERNAL: Do not reference the `Generated::TypeRef` class directly.
    * Use the subclass `TypeRef`, where the following predicates are available.
    */
-  class TypeRef extends Synth::TTypeRef, AstNodeImpl::AstNode, UnimplementedImpl::Unimplemented {
-    override string getAPrimaryQlClass() { result = "TypeRef" }
-  }
+  class TypeRef extends Synth::TTypeRef, AstNodeImpl::AstNode { }
 }

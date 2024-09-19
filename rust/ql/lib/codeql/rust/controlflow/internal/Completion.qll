@@ -10,9 +10,9 @@ private newtype TCompletion =
   TLoopCompletion(TLoopJumpType kind, TLabelType label) {
     label = TNoLabel()
     or
-    kind = TBreakJump() and label = TLabel(any(BreakExpr b).getLabel().getName())
+    kind = TBreakJump() and label = TLabel(any(BreakExpr b).getLifetime().getText())
     or
-    kind = TContinueJump() and label = TLabel(any(ContinueExpr b).getLabel().getName())
+    kind = TContinueJump() and label = TLabel(any(ContinueExpr b).getLifetime().getText())
   } or
   TReturnCompletion()
 
@@ -80,26 +80,26 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     any(MatchArm arm).getGuard() = e
     or
     exists(BinaryExpr expr |
-      expr.getOp() = ["&&", "||"] and
+      expr.getOperatorName() = ["&&", "||"] and
       e = expr.getLhs()
     )
     or
     exists(Expr parent | this.isValidForSpecific(parent) |
       parent =
         any(PrefixExpr expr |
-          expr.getOp() = "!" and
+          expr.getOperatorName() = "!" and
           e = expr.getExpr()
         )
       or
       parent =
         any(BinaryExpr expr |
-          expr.getOp() = ["&&", "||"] and
+          expr.getOperatorName() = ["&&", "||"] and
           e = expr.getRhs()
         )
       or
       parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
       or
-      parent = any(BlockExpr be | e = be.getTail())
+      parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
     )
   }
 
@@ -151,17 +151,17 @@ class LoopJumpCompletion extends TLoopCompletion, Completion {
     this.isBreak() and
     e instanceof BreakExpr and
     (
-      not e.(BreakExpr).hasLabel() and not this.hasLabel()
+      not e.(BreakExpr).hasLifetime() and not this.hasLabel()
       or
-      e.(BreakExpr).getLabel().getName() = this.getLabelName()
+      e.(BreakExpr).getLifetime().getText() = this.getLabelName()
     )
     or
     this.isContinue() and
     e instanceof ContinueExpr and
     (
-      not e.(ContinueExpr).hasLabel() and not this.hasLabel()
+      not e.(ContinueExpr).hasLifetime() and not this.hasLabel()
       or
-      e.(ContinueExpr).getLabel().getName() = this.getLabelName()
+      e.(ContinueExpr).getLifetime().getText() = this.getLabelName()
     )
   }
 

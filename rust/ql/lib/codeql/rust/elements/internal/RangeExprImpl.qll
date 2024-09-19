@@ -12,16 +12,5 @@ private import codeql.rust.elements.internal.generated.RangeExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A range expression. For example:
-   * ```
-   * let x = 1..=10;
-   * let x = 1..10;
-   * let x = 10..;
-   * let x = ..10;
-   * let x = ..=10;
-   * let x = ..;
-   * ```
-   */
   class RangeExpr extends Generated::RangeExpr { }
 }

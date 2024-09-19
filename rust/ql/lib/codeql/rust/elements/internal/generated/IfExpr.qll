@@ -6,6 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -15,19 +17,6 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
-   * An `if` expression. For example:
-   * ```
-   * if x == 42 {
-   *     println!("that's the answer");
-   * }
-   * ```
-   * ```
-   * let y = if x > 0 {
-   *     1
-   * } else {
-   *     0
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
    * Use the subclass `IfExpr`, where the following predicates are available.
    */
@@ -35,7 +24,25 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IfExpr" }
 
     /**
-     * Gets the condition of this if expression.
+     * Gets the `index`th attr of this if expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this if expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this if expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the condition of this if expression, if it exists.
      */
     Expr getCondition() {
       result =
@@ -43,11 +50,9 @@ module Generated {
     }
 
     /**
-     * Gets the then of this if expression.
+     * Holds if `getCondition()` exists.
      */
-    Expr getThen() {
-      result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getThen())
-    }
+    final predicate hasCondition() { exists(this.getCondition()) }
 
     /**
      * Gets the else of this if expression, if it exists.
@@ -60,5 +65,18 @@ module Generated {
      * Holds if `getElse()` exists.
      */
     final predicate hasElse() { exists(this.getElse()) }
+
+    /**
+     * Gets the then of this if expression, if it exists.
+     */
+    BlockExpr getThen() {
+      result =
+        Synth::convertBlockExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getThen())
+    }
+
+    /**
+     * Holds if `getThen()` exists.
+     */
+    final predicate hasThen() { exists(this.getThen()) }
   }
 }

@@ -12,13 +12,5 @@ private import codeql.rust.elements.internal.generated.OrPat
  * be referenced directly.
  */
 module Impl {
-  /**
-   * An or pattern. For example:
-   * ```
-   * match x {
-   *     Option::Some(y) | Option::None => 0,
-   * }
-   * ```
-   */
   class OrPat extends Generated::OrPat { }
 }

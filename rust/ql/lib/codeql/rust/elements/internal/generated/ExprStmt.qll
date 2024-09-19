@@ -15,12 +15,6 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
  */
 module Generated {
   /**
-   * An expression statement. For example:
-   * ```
-   * start();
-   * finish()
-   * use std::env;
-   * ```
    * INTERNAL: Do not reference the `Generated::ExprStmt` class directly.
    * Use the subclass `ExprStmt`, where the following predicates are available.
    */
@@ -28,7 +22,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ExprStmt" }
 
     /**
-     * Gets the expression of this expression statement.
+     * Gets the expression of this expression statement, if it exists.
      */
     Expr getExpr() {
       result =
@@ -36,8 +30,8 @@ module Generated {
     }
 
     /**
-     * Holds if this expression statement has semicolon.
+     * Holds if `getExpr()` exists.
      */
-    predicate hasSemicolon() { Synth::convertExprStmtToRaw(this).(Raw::ExprStmt).hasSemicolon() }
+    final predicate hasExpr() { exists(this.getExpr()) }
   }
 }

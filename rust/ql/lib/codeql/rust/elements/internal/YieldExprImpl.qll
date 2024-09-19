@@ -12,14 +12,5 @@ private import codeql.rust.elements.internal.generated.YieldExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A `yield` expression. For example:
-   * ```
-   * let one = #[coroutine]
-   *     || {
-   *         yield 1;
-   *     };
-   * ```
-   */
   class YieldExpr extends Generated::YieldExpr { }
 }

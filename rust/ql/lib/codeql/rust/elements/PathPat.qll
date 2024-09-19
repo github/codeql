@@ -7,13 +7,4 @@ private import internal.PathPatImpl
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 
-/**
- * A path pattern. For example:
- * ```
- * match x {
- *     Foo::Bar => "ok",
- *     _ => "fail",
- * }
- * ```
- */
 final class PathPat = Impl::PathPat;

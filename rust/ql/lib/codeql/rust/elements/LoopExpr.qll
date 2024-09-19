@@ -4,31 +4,9 @@
  */
 
 private import internal.LoopExprImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 
-/**
- * A loop expression. For example:
- * ```
- * loop {
- *     println!("Hello, world (again)!");
- * };
- * ```
- * ```
- * 'label: loop {
- *     println!("Hello, world (once)!");
- *     break 'label;
- * };
- * ```
- * ```
- * let mut x = 0;
- * loop {
- *     if x < 10 {
- *         x += 1;
- *     } else {
- *         break;
- *     }
- * };
- * ```
- */
 final class LoopExpr = Impl::LoopExpr;

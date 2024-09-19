@@ -15,19 +15,35 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A range pattern. For example:
-   * ```
-   * match x {
-   *     ..15 => "too cold",
-   *     16..=25 => "just right",
-   *     26.. => "too hot",
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::RangePat` class directly.
    * Use the subclass `RangePat`, where the following predicates are available.
    */
   class RangePat extends Synth::TRangePat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "RangePat" }
+
+    /**
+     * Gets the end of this range pat, if it exists.
+     */
+    Pat getEnd() {
+      result = Synth::convertPatFromRaw(Synth::convertRangePatToRaw(this).(Raw::RangePat).getEnd())
+    }
+
+    /**
+     * Holds if `getEnd()` exists.
+     */
+    final predicate hasEnd() { exists(this.getEnd()) }
+
+    /**
+     * Gets the operator name of this range pat, if it exists.
+     */
+    string getOperatorName() {
+      result = Synth::convertRangePatToRaw(this).(Raw::RangePat).getOperatorName()
+    }
+
+    /**
+     * Holds if `getOperatorName()` exists.
+     */
+    final predicate hasOperatorName() { exists(this.getOperatorName()) }
 
     /**
      * Gets the start of this range pat, if it exists.
@@ -41,17 +57,5 @@ module Generated {
      * Holds if `getStart()` exists.
      */
     final predicate hasStart() { exists(this.getStart()) }
-
-    /**
-     * Gets the end of this range pat, if it exists.
-     */
-    Pat getEnd() {
-      result = Synth::convertPatFromRaw(Synth::convertRangePatToRaw(this).(Raw::RangePat).getEnd())
-    }
-
-    /**
-     * Holds if `getEnd()` exists.
-     */
-    final predicate hasEnd() { exists(this.getEnd()) }
   }
 }

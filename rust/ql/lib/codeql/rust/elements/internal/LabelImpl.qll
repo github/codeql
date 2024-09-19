@@ -12,14 +12,5 @@ private import codeql.rust.elements.internal.generated.Label
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A label. For example:
-   * ```
-   * 'label: loop {
-   *     println!("Hello, world (once)!");
-   *     break 'label;
-   * };
-   * ```
-   */
   class Label extends Generated::Label { }
 }
