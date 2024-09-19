@@ -127,7 +127,7 @@ def _check_test_with(classes: typing.Dict[str, schema.Class]):
 
 
 def load(m: types.ModuleType) -> schema.Schema:
-    includes = []
+    includes = set()
     classes = {}
     known = {"int", "string", "boolean"}
     known.update(n for n in m.__dict__ if not n.startswith("__"))
