@@ -1011,7 +1011,7 @@ private class CallableUsedInSource extends Callable {
     this.hasBody()
     or
     exists(Callable target |
-      exists(Call c | c.fromSource() |
+      exists(Call c |
         // Note that getADynamicTarget does not always include getTarget.
         target = c.getTarget()
         or
@@ -1022,7 +1022,7 @@ private class CallableUsedInSource extends Callable {
         exists(DispatchCall dc | c = dc.getCall() | target = dc.getADynamicTarget())
       )
       or
-      target = any(CallableAccess ca | ca.fromSource()).getTarget()
+      target = any(CallableAccess ca).getTarget()
     |
       this = target.getUnboundDeclaration()
     )
