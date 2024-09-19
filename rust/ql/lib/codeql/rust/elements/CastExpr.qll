@@ -4,13 +4,8 @@
  */
 
 private import internal.CastExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.TypeRef
 
-/**
- * A cast expression. For example:
- * ```rust
- * value as u64;
- * ```
- */
 final class CastExpr = Impl::CastExpr;

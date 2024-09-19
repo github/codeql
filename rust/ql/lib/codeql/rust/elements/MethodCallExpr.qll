@@ -4,14 +4,10 @@
  */
 
 private import internal.MethodCallExprImpl
+import codeql.rust.elements.ArgList
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
+import codeql.rust.elements.NameRef
 
-/**
- * A method call expression. For example:
- * ```rust
- * x.foo(42);
- * x.foo::<u32, u64>(42);
- * ```
- */
 final class MethodCallExpr = Impl::MethodCallExpr;

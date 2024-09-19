@@ -12,13 +12,5 @@ private import codeql.rust.elements.internal.generated.AsmExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * An inline assembly expression. For example:
-   * ```rust
-   * unsafe {
-   *     builtin # asm(_);
-   * }
-   * ```
-   */
   class AsmExpr extends Generated::AsmExpr { }
 }

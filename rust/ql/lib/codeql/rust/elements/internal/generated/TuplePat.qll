@@ -15,11 +15,6 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A tuple pattern. For example:
-   * ```rust
-   * let (x, y) = (1, 2);
-   * let (a, b, ..,  z) = (1, 2, 3, 4, 5);
-   * ```
    * INTERNAL: Do not reference the `Generated::TuplePat` class directly.
    * Use the subclass `TuplePat`, where the following predicates are available.
    */
@@ -27,33 +22,21 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TuplePat" }
 
     /**
-     * Gets the `index`th argument of this tuple pat (0-based).
+     * Gets the `index`th field of this tuple pat (0-based).
      */
-    Pat getArg(int index) {
+    Pat getField(int index) {
       result =
-        Synth::convertPatFromRaw(Synth::convertTuplePatToRaw(this).(Raw::TuplePat).getArg(index))
+        Synth::convertPatFromRaw(Synth::convertTuplePatToRaw(this).(Raw::TuplePat).getField(index))
     }
 
     /**
-     * Gets any of the arguments of this tuple pat.
+     * Gets any of the fields of this tuple pat.
      */
-    final Pat getAnArg() { result = this.getArg(_) }
+    final Pat getAField() { result = this.getField(_) }
 
     /**
-     * Gets the number of arguments of this tuple pat.
+     * Gets the number of fields of this tuple pat.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
-
-    /**
-     * Gets the ellipsis index of this tuple pat, if it exists.
-     */
-    int getEllipsisIndex() {
-      result = Synth::convertTuplePatToRaw(this).(Raw::TuplePat).getEllipsisIndex()
-    }
-
-    /**
-     * Holds if `getEllipsisIndex()` exists.
-     */
-    final predicate hasEllipsisIndex() { exists(this.getEllipsisIndex()) }
+    final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
   }
 }

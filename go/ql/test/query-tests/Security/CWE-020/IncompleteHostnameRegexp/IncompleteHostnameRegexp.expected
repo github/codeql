@@ -6,9 +6,9 @@
 | main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:56:15:56:34 | ...+... | the regular expression is used |
 | main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:58:15:58:42 | ...+... | the regular expression is used |
 edges
-| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance |  Sink:MaD:2 |
+| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance | Sink:MaD:2 |
 | main.go:49:21:49:45 | `https://www.example.com` | main.go:62:15:62:25 | sourceConst | provenance |  |
-| main.go:62:15:62:25 | sourceConst | main.go:65:15:65:23 | localVar3 | provenance |  Sink:MaD:1 |
+| main.go:62:15:62:25 | sourceConst | main.go:65:15:65:23 | localVar3 | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: regexp; ; true; Match; ; ; Argument[0]; regex-use[1]; manual |
 | 2 | Sink: regexp; ; true; MatchString; ; ; Argument[0]; regex-use[1]; manual |

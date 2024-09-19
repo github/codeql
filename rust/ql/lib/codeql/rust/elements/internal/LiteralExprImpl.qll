@@ -12,18 +12,5 @@ private import codeql.rust.elements.internal.generated.LiteralExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A literal expression. For example:
-   * ```rust
-   * 42;
-   * 42.0;
-   * "Hello, world!";
-   * b"Hello, world!";
-   * 'x';
-   * b'x';
-   * r"Hello, world!";
-   * true;
-   * ```
-   */
   class LiteralExpr extends Generated::LiteralExpr { }
 }

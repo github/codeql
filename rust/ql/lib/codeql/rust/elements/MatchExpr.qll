@@ -4,22 +4,8 @@
  */
 
 private import internal.MatchExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.MatchArm
+import codeql.rust.elements.MatchArmList
 
-/**
- * A match expression. For example:
- * ```rust
- * match x {
- *     Option::Some(y) => y,
- *     Option::None => 0,
- * }
- * ```
- * ```rust
- * match x {
- *     Some(y) if y != 0 => 1 / y,
- *     _ => 0,
- * }
- * ```
- */
 final class MatchExpr = Impl::MatchExpr;
