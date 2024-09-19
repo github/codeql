@@ -111,7 +111,7 @@ fn arrays() {
 	println!("lets use {:?}", js);
 
 	for k in ks {
-		println!("lets use {}", k);
+		println!("lets use {}", k); // [unreachable FALSE POSITIVE]
 	}
 }
 
@@ -142,6 +142,8 @@ fn parameters(
 	return x;
 }
 
+// --- main ---
+
 fn main() {
 	locals_1();
 	locals_2();
@@ -149,4 +151,8 @@ fn main() {
 	arrays();
 	statics();
 	println!("lets use result {}", parameters(1, 2, 3));
+	unreachable_if();
+	unreachable_panic();
+	unreachable_match();
+	unreachable_loop();
 }
