@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A box expression. For example:
-   * ```
+   * ```rust
    * let x = #[rustc_box] Box::new(42);
    * ```
    * INTERNAL: Do not reference the `Generated::BoxExpr` class directly.

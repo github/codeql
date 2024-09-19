@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.BoxExpr
 module Impl {
   /**
    * A box expression. For example:
-   * ```
+   * ```rust
    * let x = #[rustc_box] Box::new(42);
    * ```
    */

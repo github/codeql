@@ -9,7 +9,7 @@ import codeql.rust.elements.TypeRef
 
 /**
  *  An `offset_of` expression. For example:
- * ```
+ * ```rust
  * builtin # offset_of(Struct, field);
  * ```
  */

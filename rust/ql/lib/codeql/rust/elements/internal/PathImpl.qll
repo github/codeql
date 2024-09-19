@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.Path
 module Impl {
   /**
    * A path. For example:
-   * ```
+   * ```rust
    * foo::bar;
    * ```
    */

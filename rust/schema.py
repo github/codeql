@@ -74,10 +74,10 @@ class UnimplementedDeclaration(Declaration, Unimplemented):
 class Module(Declaration):
     """
     A module declaration. For example:
-    ```
+    ```rust
     mod foo;
     ```
-    ```
+    ```rust
     mod bar {
         pub fn baz() {}
     }
@@ -103,7 +103,7 @@ class Pat(AstNode):
 class Label(AstNode):
     """
     A label. For example:
-    ```
+    ```rust
     'label: loop {
         println!("Hello, world (once)!");
         break 'label;
@@ -123,7 +123,7 @@ class Stmt(AstNode):
 class TypeRef(AstNode, Unimplemented):
     """
     The base class for type references.
-    ```
+    ```rust
     let x: i32;
     let y: Vec<i32>;
     let z: Option<i32>;
@@ -135,7 +135,7 @@ class TypeRef(AstNode, Unimplemented):
 class Path(AstNode, Unimplemented):
     """
     A path. For example:
-    ```
+    ```rust
     foo::bar;
     ```
     """
@@ -145,7 +145,7 @@ class Path(AstNode, Unimplemented):
 class GenericArgList(AstNode, Unimplemented):
     """
     The base class for generic arguments.
-    ```
+    ```rust
     x.foo::<u32, u64>(42);
     ```
     """
@@ -156,11 +156,11 @@ class GenericArgList(AstNode, Unimplemented):
 class Function(Declaration):
     """
     A function declaration. For example
-    ```
+    ```rust
     fn foo(x: u32) -> u64 {(x + 1).into()}
     ```
     A function declaration within a trait might not have a body:
-    ```
+    ```rust
     trait Trait {
         fn bar();
     }
@@ -174,7 +174,7 @@ class MissingExpr(Expr, Missing):
     """
     A missing expression, used as a placeholder for incomplete syntax.
 
-    ```
+    ```rust
     let x = non_existing_macro!();
     ```
     """
@@ -184,7 +184,7 @@ class MissingExpr(Expr, Missing):
 class PathExpr(Expr):
     """
     A path expression. For example:
-    ```
+    ```rust
     let x = variable;
     let x = foo::bar;
     let y = <T>::foo;
@@ -197,12 +197,12 @@ class PathExpr(Expr):
 class IfExpr(Expr):
     """
     An `if` expression. For example:
-    ```
+    ```rust
     if x == 42 {
         println!("that's the answer");
     }
     ```
-    ```
+    ```rust
     let y = if x > 0 {
         1
     } else {
@@ -219,7 +219,7 @@ class IfExpr(Expr):
 class LetExpr(Expr):
     """
     A `let` expression. For example:
-    ```
+    ```rust
     if let Some(x) = maybe_some {
         println!("{}", x);
     }
@@ -237,12 +237,12 @@ class BlockExprBase(Expr):
 class BlockExpr(BlockExprBase):
     """
     A block expression. For example:
-    ```
+    ```rust
     {
         let x = 42;
     }
     ```
-    ```
+    ```rust
     'label: {
         let x = 42;
         x
@@ -256,7 +256,7 @@ class BlockExpr(BlockExprBase):
 class AsyncBlockExpr(BlockExprBase):
     """
     An async block expression. For example:
-    ```
+    ```rust
     async {
        let x = 42;
        x
@@ -270,7 +270,7 @@ class AsyncBlockExpr(BlockExprBase):
 class ConstExpr(Expr):
     """
     A `const` block expression. For example:
-    ```
+    ```rust
     if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
         return false;
     }
@@ -282,7 +282,7 @@ class ConstExpr(Expr):
 class UnsafeBlockExpr(BlockExprBase):
     """
     An unsafe block expression. For example:
-    ```
+    ```rust
     let layout = unsafe {
         let x = 42;
         Layout::from_size_align_unchecked(size, align)
@@ -295,18 +295,18 @@ class UnsafeBlockExpr(BlockExprBase):
 class LoopExpr(Expr):
     """
     A loop expression. For example:
-    ```
+    ```rust
     loop {
         println!("Hello, world (again)!");
     };
     ```
-    ```
+    ```rust
     'label: loop {
         println!("Hello, world (once)!");
         break 'label;
     };
     ```
-    ```
+    ```rust
     let mut x = 0;
     loop {
         if x < 10 {
@@ -324,7 +324,7 @@ class LoopExpr(Expr):
 class CallExpr(Expr):
     """
     A function call expression. For example:
-    ```
+    ```rust
     foo(42);
     foo::<u32, u64>(42);
     foo[0](42);
@@ -339,9 +339,10 @@ class CallExpr(Expr):
 class MethodCallExpr(Expr):
     """
     A method call expression. For example:
-    ```
+    ```rust
     x.foo(42);
     x.foo::<u32, u64>(42);
+    ```
     """
     receiver: Expr | child
     method_name: string
@@ -353,13 +354,13 @@ class MethodCallExpr(Expr):
 class MatchArm(AstNode):
     """
     A match arm. For example:
-    ```
+    ```rust
     match x {
         Option::Some(y) => y,
         Option::None => 0,
     };
     ```
-    ```
+    ```rust
     match x {
         Some(y) if y != 0 => 1 / y,
         _ => 0,
@@ -375,13 +376,13 @@ class MatchArm(AstNode):
 class MatchExpr(Expr):
     """
     A match expression. For example:
-    ```
+    ```rust
     match x {
         Option::Some(y) => y,
         Option::None => 0,
     }
     ```
-    ```
+    ```rust
     match x {
         Some(y) if y != 0 => 1 / y,
         _ => 0,
@@ -395,14 +396,14 @@ class MatchExpr(Expr):
 class ContinueExpr(Expr):
     """
     A continue expression. For example:
-    ```
+    ```rust
     loop {
         if not_ready() {
             continue;
         }
     }
     ```
-    ```
+    ```rust
     'label: loop {
         if not_ready() {
             continue 'label;
@@ -416,14 +417,14 @@ class ContinueExpr(Expr):
 class BreakExpr(Expr):
     """
     A break expression. For example:
-    ```
+    ```rust
     loop {
         if not_ready() {
             break;
          }
     }
     ```
-    ```
+    ```rust
     let x = 'label: loop {
         if done() {
             break 'label 42;
@@ -439,12 +440,12 @@ class BreakExpr(Expr):
 class ReturnExpr(Expr):
     """
     A return expression. For example:
-    ```
+    ```rust
     fn some_value() -> i32 {
         return 42;
     }
     ```
-    ```
+    ```rust
     fn no_value() -> () {
         return;
     }
@@ -457,22 +458,23 @@ class ReturnExpr(Expr):
 class BecomeExpr(Expr):
     """
     A `become` expression. For example:
-    ```
+    ```rust
     fn fact_a(n: i32, a: i32) -> i32 {
          if n == 0 {
              a
          } else {
              become fact_a(n - 1, n * a)
          }
-     }    ```
-     """
+    }
+    ```
+    """
     expr: Expr | child
 
 
 class YieldExpr(Expr):
     """
     A `yield` expression. For example:
-    ```
+    ```rust
     let one = #[coroutine]
         || {
             yield 1;
@@ -485,7 +487,7 @@ class YieldExpr(Expr):
 class YeetExpr(Expr):
     """
     A `yeet` expression. For example:
-    ```
+    ```rust
     if x < size {
        do yeet "index out of bounds";
     }
@@ -497,7 +499,7 @@ class YeetExpr(Expr):
 class RecordExprField(AstNode):
     """
     A field in a record expression. For example `a: 1` in:
-    ```
+    ```rust
     Foo { a: 1, b: 2 };
     ```
     """
@@ -508,7 +510,7 @@ class RecordExprField(AstNode):
 class RecordExpr(Expr):
     """
     A record expression. For example:
-    ```
+    ```rust
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
     Foo { a: 1, b: 2 }[2] = 10;
@@ -525,7 +527,7 @@ class RecordExpr(Expr):
 class FieldExpr(Expr):
     """
     A field access expression. For example:
-    ```
+    ```rust
     x.foo
     ```
     """
@@ -536,7 +538,7 @@ class FieldExpr(Expr):
 class AwaitExpr(Expr):
     """
     An `await` expression. For example:
-    ```
+    ```rust
     async {
         let x = foo().await;
         x
@@ -549,7 +551,7 @@ class AwaitExpr(Expr):
 class CastExpr(Expr):
     """
     A cast expression. For example:
-    ```
+    ```rust
     value as u64;
     ```
     """
@@ -560,7 +562,7 @@ class CastExpr(Expr):
 class RefExpr(Expr):
     """
     A reference expression. For example:
-    ```
+    ```rust
         let ref_const = &foo;
         let ref_mut = &mut foo;
         let raw_const: &mut i32 = &raw const foo;
@@ -575,7 +577,7 @@ class RefExpr(Expr):
 class BoxExpr(Expr):
     """
     A box expression. For example:
-    ```
+    ```rust
     let x = #[rustc_box] Box::new(42);
     ```
     """
@@ -585,7 +587,7 @@ class BoxExpr(Expr):
 class PrefixExpr(Expr):
     """
     A unary operation expression. For example:
-    ```
+    ```rust
     let x = -42
     let y = !true
     let z = *ptr
@@ -598,7 +600,7 @@ class PrefixExpr(Expr):
 class BinaryExpr(Expr):
     """
     A binary operation expression. For example:
-    ```
+    ```rust
     x + y;
     x && y;
     x <= y;
@@ -614,7 +616,7 @@ class BinaryExpr(Expr):
 class RangeExpr(Expr):
     """
     A range expression. For example:
-    ```
+    ```rust
     let x = 1..=10;
     let x = 1..10;
     let x = 10..;
@@ -631,7 +633,7 @@ class RangeExpr(Expr):
 class IndexExpr(Expr):
     """
     An index expression. For example:
-    ```
+    ```rust
     list[42];
     list[42] = 1;
     ```
@@ -644,7 +646,7 @@ class IndexExpr(Expr):
 class ClosureExpr(Expr):
     """
     A closure expression. For example:
-    ```
+    ```rust
     |x| x + 1;
     move |x: i32| -> i32 { x + 1 };
     async |x: i32, y| x + y;
@@ -665,7 +667,7 @@ class ClosureExpr(Expr):
 class TupleExpr(Expr):
     """
     A tuple expression. For example:
-    ```
+    ```rust
     (1, "one");
     (2, "two")[0] = 3;
     ```
@@ -677,7 +679,7 @@ class TupleExpr(Expr):
 class ArrayExpr(Expr):
     """
     An array expression. For example:
-    ```
+    ```rust
     [1, 2, 3];
     [1; 10];
     ```
@@ -688,7 +690,7 @@ class ArrayExpr(Expr):
 class ElementListExpr(ArrayExpr):
     """
     An element list expression. For example:
-    ```
+    ```rust
     [1, 2, 3, 4, 5];
     [1, 2, 3, 4, 5][0] = 6;
     ```
@@ -700,8 +702,9 @@ class ElementListExpr(ArrayExpr):
 class RepeatExpr(ArrayExpr):
     """
     A repeat expression. For example:
-    ```
+    ```rust
     [1; 10];
+    ```
     """
     initializer: Expr | child
     repeat: Expr | child
@@ -710,7 +713,7 @@ class RepeatExpr(ArrayExpr):
 class LiteralExpr(Expr):
     """
     A literal expression. For example:
-    ```
+    ```rust
     42;
     42.0;
     "Hello, world!";
@@ -719,6 +722,7 @@ class LiteralExpr(Expr):
     b'x';
     r"Hello, world!";
     true;
+    ```
     """
     pass
 
@@ -726,7 +730,7 @@ class LiteralExpr(Expr):
 class UnderscoreExpr(Expr):
     """
     An underscore expression. For example:
-    ```
+    ```rust
     _ = 42;
     ```
     """
@@ -736,7 +740,7 @@ class UnderscoreExpr(Expr):
 class OffsetOfExpr(Expr):
     """
      An `offset_of` expression. For example:
-    ```
+    ```rust
     builtin # offset_of(Struct, field);
     ```
     """
@@ -747,7 +751,7 @@ class OffsetOfExpr(Expr):
 class AsmExpr(Expr):
     """
     An inline assembly expression. For example:
-    ```
+    ```rust
     unsafe {
         builtin # asm(_);
     }
@@ -759,7 +763,7 @@ class AsmExpr(Expr):
 class LetStmt(Stmt):
     """
     A let statement. For example:
-    ```
+    ```rust
     let x = 42;
     let x: i32 = 42;
     let x: i32;
@@ -768,7 +772,7 @@ class LetStmt(Stmt):
     let Some(x) = std::env::var("FOO") else {
         return;
     };
-
+    ```
     """
     pat: Pat | child
     type: optional[TypeRef] | child
@@ -779,7 +783,7 @@ class LetStmt(Stmt):
 class ExprStmt(Stmt):
     """
     An expression statement. For example:
-    ```
+    ```rust
     start();
     finish()
     use std::env;
@@ -794,7 +798,7 @@ class ExprStmt(Stmt):
 class ItemStmt(Stmt):
     """
     An item statement. For example:
-    ```
+    ```rust
     fn print_hello() {
         println!("Hello, world!");
     }
@@ -807,7 +811,7 @@ class ItemStmt(Stmt):
 class MissingPat(Pat, Missing):
     """
     A missing pattern, used as a place holder for incomplete syntax.
-    ```
+    ```rust
     match Some(42) {
         .. => "bad use of .. syntax",
     };
@@ -819,7 +823,7 @@ class MissingPat(Pat, Missing):
 class WildcardPat(Pat):
     """
     A wildcard pattern. For example:
-    ```
+    ```rust
     let _ = 42;
     ```
     """
@@ -829,7 +833,7 @@ class WildcardPat(Pat):
 class TuplePat(Pat):
     """
     A tuple pattern. For example:
-    ```
+    ```rust
     let (x, y) = (1, 2);
     let (a, b, ..,  z) = (1, 2, 3, 4, 5);
     ```
@@ -841,7 +845,7 @@ class TuplePat(Pat):
 class OrPat(Pat):
     """
     An or pattern. For example:
-    ```
+    ```rust
     match x {
         Option::Some(y) | Option::None => 0,
     }
@@ -853,7 +857,7 @@ class OrPat(Pat):
 class RecordPatField(AstNode):
     """
     A field in a record pattern. For example `a: 1` in:
-    ```
+    ```rust
     let Foo { a: 1, b: 2 } = foo;
     ```
     """
@@ -864,7 +868,7 @@ class RecordPatField(AstNode):
 class RecordPat(Pat):
     """
     A record pattern. For example:
-    ```
+    ```rust
     match x {
         Foo { a: 1, b: 2 } => "ok",
         Foo { .. } => "fail",
@@ -880,7 +884,7 @@ class RecordPat(Pat):
 class RangePat(Pat):
     """
     A range pattern. For example:
-    ```
+    ```rust
     match x {
         ..15 => "too cold",
         16..=25 => "just right",
@@ -895,12 +899,13 @@ class RangePat(Pat):
 class SlicePat(Pat):
     """
     A slice pattern. For example:
-    ```
+    ```rust
     match x {
         [1, 2, 3, 4, 5] => "ok",
         [1, 2, ..] => "fail",
         [x, y, .., z, 7] => "fail",
     }
+    ```
     """
     prefix: list[Pat] | child
     slice: optional[Pat] | child
@@ -910,7 +915,7 @@ class SlicePat(Pat):
 class PathPat(Pat):
     """
     A path pattern. For example:
-    ```
+    ```rust
     match x {
         Foo::Bar => "ok",
         _ => "fail",
@@ -923,7 +928,7 @@ class PathPat(Pat):
 class LiteralPat(Pat):
     """
     A literal pattern. For example:
-    ```
+    ```rust
     match x {
         42 => "ok",
         _ => "fail",
@@ -936,13 +941,13 @@ class LiteralPat(Pat):
 class IdentPat(Pat):
     """
     A binding pattern. For example:
-    ```
+    ```rust
     match x {
         Option::Some(y) => y,
         Option::None => 0,
     };
     ```
-    ```
+    ```rust
     match x {
         y@Option::Some(_) => y,
         Option::None => 0,
@@ -956,7 +961,7 @@ class IdentPat(Pat):
 class TupleStructPat(Pat):
     """
     A tuple struct pattern. For example:
-    ```
+    ```rust
     match x {
         Tuple("a", 1, 2, 3) => "great",
         Tuple(.., 3) => "fine",
@@ -972,7 +977,7 @@ class TupleStructPat(Pat):
 class RefPat(Pat):
     """
     A reference pattern. For example:
-    ```
+    ```rust
     match x {
         &mut Option::Some(y) => y,
         &Option::None => 0,
@@ -986,7 +991,7 @@ class RefPat(Pat):
 class BoxPat(Pat):
     """
     A box pattern. For example:
-    ```
+    ```rust
     match x {
         box Option::Some(y) => y,
         box Option::None => 0,
@@ -999,7 +1004,7 @@ class BoxPat(Pat):
 class ConstBlockPat(Pat):
     """
     A const block pattern. For example:
-    ```
+    ```rust
     match x {
         const { 1 + 2 + 3 } => "ok",
         _ => "fail",

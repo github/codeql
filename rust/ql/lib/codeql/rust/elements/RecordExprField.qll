@@ -9,7 +9,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A field in a record expression. For example `a: 1` in:
- * ```
+ * ```rust
  * Foo { a: 1, b: 2 };
  * ```
  */

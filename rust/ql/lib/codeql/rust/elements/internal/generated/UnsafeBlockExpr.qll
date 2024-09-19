@@ -15,7 +15,7 @@ import codeql.rust.elements.internal.BlockExprBaseImpl::Impl as BlockExprBaseImp
 module Generated {
   /**
    * An unsafe block expression. For example:
-   * ```
+   * ```rust
    * let layout = unsafe {
    *     let x = 42;
    *     Layout::from_size_align_unchecked(size, align)

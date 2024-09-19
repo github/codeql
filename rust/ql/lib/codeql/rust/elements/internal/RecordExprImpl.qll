@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.RecordExpr
 module Impl {
   /**
    * A record expression. For example:
-   * ```
+   * ```rust
    * let first = Foo { a: 1, b: 2 };
    * let second = Foo { a: 2, ..first };
    * Foo { a: 1, b: 2 }[2] = 10;

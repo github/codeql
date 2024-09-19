@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.LetStmt
 module Impl {
   /**
    * A let statement. For example:
-   * ```
+   * ```rust
    * let x = 42;
    * let x: i32 = 42;
    * let x: i32;
@@ -23,6 +23,7 @@ module Impl {
    * let Some(x) = std::env::var("FOO") else {
    *     return;
    * };
+   * ```
    */
   class LetStmt extends Generated::LetStmt { }
 }

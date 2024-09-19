@@ -17,13 +17,13 @@ import codeql.rust.elements.MatchArm
 module Generated {
   /**
    * A match expression. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * }
    * ```
-   * ```
+   * ```rust
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,

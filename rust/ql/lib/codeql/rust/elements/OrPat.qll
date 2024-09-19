@@ -8,7 +8,7 @@ import codeql.rust.elements.Pat
 
 /**
  * An or pattern. For example:
- * ```
+ * ```rust
  * match x {
  *     Option::Some(y) | Option::None => 0,
  * }

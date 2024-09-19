@@ -16,13 +16,13 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A binding pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * };
    * ```
-   * ```
+   * ```rust
    * match x {
    *     y@Option::Some(_) => y,
    *     Option::None => 0,

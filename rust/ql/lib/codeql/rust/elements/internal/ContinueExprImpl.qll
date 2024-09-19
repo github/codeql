@@ -14,14 +14,14 @@ private import codeql.rust.elements.internal.generated.ContinueExpr
 module Impl {
   /**
    * A continue expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     if not_ready() {
    *         continue;
    *     }
    * }
    * ```
-   * ```
+   * ```rust
    * 'label: loop {
    *     if not_ready() {
    *         continue 'label;

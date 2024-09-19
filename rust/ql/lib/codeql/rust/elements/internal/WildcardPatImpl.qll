@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.WildcardPat
 module Impl {
   /**
    * A wildcard pattern. For example:
-   * ```
+   * ```rust
    * let _ = 42;
    * ```
    */

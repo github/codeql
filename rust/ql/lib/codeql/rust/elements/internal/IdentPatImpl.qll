@@ -14,13 +14,13 @@ private import codeql.rust.elements.internal.generated.IdentPat
 module Impl {
   /**
    * A binding pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * };
    * ```
-   * ```
+   * ```rust
    * match x {
    *     y@Option::Some(_) => y,
    *     Option::None => 0,

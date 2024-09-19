@@ -14,8 +14,9 @@ private import codeql.rust.elements.internal.generated.RepeatExpr
 module Impl {
   /**
    * A repeat expression. For example:
-   * ```
+   * ```rust
    * [1; 10];
+   * ```
    */
   class RepeatExpr extends Generated::RepeatExpr { }
 }

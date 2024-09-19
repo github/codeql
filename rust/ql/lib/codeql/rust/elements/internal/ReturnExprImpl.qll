@@ -14,12 +14,12 @@ private import codeql.rust.elements.internal.generated.ReturnExpr
 module Impl {
   /**
    * A return expression. For example:
-   * ```
+   * ```rust
    * fn some_value() -> i32 {
    *     return 42;
    * }
    * ```
-   * ```
+   * ```rust
    * fn no_value() -> () {
    *     return;
    * }

@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A range pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     ..15 => "too cold",
    *     16..=25 => "just right",

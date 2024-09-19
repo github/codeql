@@ -14,14 +14,14 @@ private import codeql.rust.elements.internal.generated.BreakExpr
 module Impl {
   /**
    * A break expression. For example:
-   * ```
+   * ```rust
    * loop {
    *     if not_ready() {
    *         break;
    *      }
    * }
    * ```
-   * ```
+   * ```rust
    * let x = 'label: loop {
    *     if done() {
    *         break 'label 42;

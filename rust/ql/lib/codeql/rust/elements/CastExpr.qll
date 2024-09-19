@@ -9,7 +9,7 @@ import codeql.rust.elements.TypeRef
 
 /**
  * A cast expression. For example:
- * ```
+ * ```rust
  * value as u64;
  * ```
  */

@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.RangeExpr
 module Impl {
   /**
    * A range expression. For example:
-   * ```
+   * ```rust
    * let x = 1..=10;
    * let x = 1..10;
    * let x = 10..;

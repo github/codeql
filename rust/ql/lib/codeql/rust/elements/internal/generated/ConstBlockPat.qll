@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A const block pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     const { 1 + 2 + 3 } => "ok",
    *     _ => "fail",

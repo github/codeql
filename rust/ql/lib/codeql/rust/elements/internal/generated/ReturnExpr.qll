@@ -16,12 +16,12 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 module Generated {
   /**
    * A return expression. For example:
-   * ```
+   * ```rust
    * fn some_value() -> i32 {
    *     return 42;
    * }
    * ```
-   * ```
+   * ```rust
    * fn no_value() -> () {
    *     return;
    * }

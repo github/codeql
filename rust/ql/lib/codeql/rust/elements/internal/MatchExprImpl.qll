@@ -14,13 +14,13 @@ private import codeql.rust.elements.internal.generated.MatchExpr
 module Impl {
   /**
    * A match expression. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) => y,
    *     Option::None => 0,
    * }
    * ```
-   * ```
+   * ```rust
    * match x {
    *     Some(y) if y != 0 => 1 / y,
    *     _ => 0,

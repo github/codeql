@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.PathExpr
 module Impl {
   /**
    * A path expression. For example:
-   * ```
+   * ```rust
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;

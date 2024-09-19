@@ -14,12 +14,12 @@ private import codeql.rust.elements.internal.generated.BlockExpr
 module Impl {
   /**
    * A block expression. For example:
-   * ```
+   * ```rust
    * {
    *     let x = 42;
    * }
    * ```
-   * ```
+   * ```rust
    * 'label: {
    *     let x = 42;
    *     x

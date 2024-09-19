@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * A box expression. For example:
- * ```
+ * ```rust
  * let x = #[rustc_box] Box::new(42);
  * ```
  */

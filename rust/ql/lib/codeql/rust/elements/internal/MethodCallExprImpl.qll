@@ -14,9 +14,10 @@ private import codeql.rust.elements.internal.generated.MethodCallExpr
 module Impl {
   /**
    * A method call expression. For example:
-   * ```
+   * ```rust
    * x.foo(42);
    * x.foo::<u32, u64>(42);
+   * ```
    */
   class MethodCallExpr extends Generated::MethodCallExpr { }
 }

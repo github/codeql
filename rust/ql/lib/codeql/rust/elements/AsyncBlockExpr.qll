@@ -8,7 +8,7 @@ import codeql.rust.elements.BlockExprBase
 
 /**
  * An async block expression. For example:
- * ```
+ * ```rust
  * async {
  *    let x = 42;
  *    x

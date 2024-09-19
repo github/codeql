@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * An or pattern. For example:
-   * ```
+   * ```rust
    * match x {
    *     Option::Some(y) | Option::None => 0,
    * }

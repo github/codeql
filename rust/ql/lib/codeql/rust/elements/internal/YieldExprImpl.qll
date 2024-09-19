@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.YieldExpr
 module Impl {
   /**
    * A `yield` expression. For example:
-   * ```
+   * ```rust
    * let one = #[coroutine]
    *     || {
    *         yield 1;

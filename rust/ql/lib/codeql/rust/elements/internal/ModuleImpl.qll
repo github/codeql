@@ -14,10 +14,10 @@ private import codeql.rust.elements.internal.generated.Module
 module Impl {
   /**
    * A module declaration. For example:
-   * ```
+   * ```rust
    * mod foo;
    * ```
-   * ```
+   * ```rust
    * mod bar {
    *     pub fn baz() {}
    * }

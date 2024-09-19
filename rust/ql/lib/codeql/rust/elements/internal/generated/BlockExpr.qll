@@ -16,12 +16,12 @@ import codeql.rust.elements.Label
 module Generated {
   /**
    * A block expression. For example:
-   * ```
+   * ```rust
    * {
    *     let x = 42;
    * }
    * ```
-   * ```
+   * ```rust
    * 'label: {
    *     let x = 42;
    *     x

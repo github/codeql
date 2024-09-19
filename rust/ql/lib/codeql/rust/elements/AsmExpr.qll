@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * An inline assembly expression. For example:
- * ```
+ * ```rust
  * unsafe {
  *     builtin # asm(_);
  * }

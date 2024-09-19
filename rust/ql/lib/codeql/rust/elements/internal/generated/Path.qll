@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImp
 module Generated {
   /**
    * A path. For example:
-   * ```
+   * ```rust
    * foo::bar;
    * ```
    * INTERNAL: Do not reference the `Generated::Path` class directly.

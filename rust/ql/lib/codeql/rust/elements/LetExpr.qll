@@ -9,7 +9,7 @@ import codeql.rust.elements.Pat
 
 /**
  * A `let` expression. For example:
- * ```
+ * ```rust
  * if let Some(x) = maybe_some {
  *     println!("{}", x);
  * }

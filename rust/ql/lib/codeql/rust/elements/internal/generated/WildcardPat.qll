@@ -15,7 +15,7 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 module Generated {
   /**
    * A wildcard pattern. For example:
-   * ```
+   * ```rust
    * let _ = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::WildcardPat` class directly.

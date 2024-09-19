@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImp
 module Generated {
   /**
    * The base class for generic arguments.
-   * ```
+   * ```rust
    * x.foo::<u32, u64>(42);
    * ```
    * INTERNAL: Do not reference the `Generated::GenericArgList` class directly.

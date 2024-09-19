@@ -8,7 +8,7 @@ import codeql.rust.elements.Expr
 
 /**
  * An underscore expression. For example:
- * ```
+ * ```rust
  * _ = 42;
  * ```
  */

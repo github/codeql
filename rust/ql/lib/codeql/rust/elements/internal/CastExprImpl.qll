@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.CastExpr
 module Impl {
   /**
    * A cast expression. For example:
-   * ```
+   * ```rust
    * value as u64;
    * ```
    */

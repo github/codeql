@@ -14,7 +14,7 @@ private import codeql.rust.elements.internal.generated.YeetExpr
 module Impl {
   /**
    * A `yeet` expression. For example:
-   * ```
+   * ```rust
    * if x < size {
    *    do yeet "index out of bounds";
    * }
