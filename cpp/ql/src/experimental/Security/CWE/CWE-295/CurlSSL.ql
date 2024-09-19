@@ -34,7 +34,6 @@ private class CurlVerificationConstant extends EnumConstantAccess {
 
 from CurlSetOptCall c
 where
-  c.getArgument(1) = any(CurlVerificationConstant v) 
-  and
+  c.getArgument(1) = any(CurlVerificationConstant v) and
   c.getArgument(2).getValue() = "0"
 select c, "This call disables Secure Socket Layer and could potentially lead to MITM attacks"

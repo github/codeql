@@ -1,15 +1,16 @@
 <!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
 <qhelp>
   <overview>
-    Disabling verification of the SSL certificate allows man-in-the-middle attacks.
-    A SSL connection is vulnerable to man-in-the-middle attacks if the certification is not checked
-    properly.
-    If the peer or the host's certificate verification is not verified, the underlying SSL
-    communication is insecure.
+    <p>
+      Disabling verification of the SSL certificate allows man-in-the-middle attacks. A SSL
+      connection is vulnerable to man-in-the-middle attacks if the certification is not checked
+      properly. If the peer or the host's certificate verification is not verified, the underlying
+      SSL communication is insecure.</p>
   </overview>
   <recommendation>
-    It is recommended that all communications be done post verification of the host as well as the
-    peer.
+    <p>It is recommended that all communications be done post verification of the host as well as
+      the
+      peer.</p>
   </recommendation>
   <example>
     <p>The following snippet disables certification verification by setting the value of <code>
@@ -27,7 +28,7 @@
     <li> Related CVE: <a href="https://github.com/advisories/GHSA-5r3h-c3r7-9w4h"> CVE-2022-33684</a></li>
     <li> Related security advisory: <a
         href="https://huntr.com/bounties/42325662-6329-4e04-875a-49e2f5d69f78">
-        <code>openframeworks/openframeworks</code>
+      openframeworks/openframeworks
       </a></li>
   </references>
 </qhelp>
