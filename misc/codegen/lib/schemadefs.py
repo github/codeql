@@ -32,9 +32,16 @@ class _DescModifier(_schema.PropertyModifier):
 
 
 def include(source: str):
-    # add to `includes` variable in calling context
-    _inspect.currentframe().f_back.f_locals.setdefault(
-        "__includes", []).append(source)
+    scope = _inspect.currentframe().f_back.f_locals
+    if source.endswith(".dbscheme"):
+        # add to `includes` variable in calling context
+        scope.setdefault("__includes", []).append(source)
+    elif source.endswith(".py"):
+        # just load the contents
+        with open(source) as input:
+            exec(input.read(), scope)
+    else:
+        raise _schema.Error(f"Unsupported file for inclusion: {source}")
 
 
 class _Namespace:
