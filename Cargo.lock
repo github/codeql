@@ -265,7 +265,7 @@ dependencies = [
  "chalk-ir",
  "ena",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "petgraph",
  "rustc-hash",
  "tracing",
@@ -374,6 +374,7 @@ dependencies = [
  "clap",
  "codeql-extractor",
  "figment",
+ "itertools 0.13.0",
  "log",
  "num-traits",
  "ra_ap_base_db",
@@ -858,6 +859,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1333,7 +1343,7 @@ checksum = "c7c38520eb4770af561c34b908431f4e548c3282093cf3daf3c6e566d99a2937"
 dependencies = [
  "arrayvec",
  "either",
- "itertools",
+ "itertools 0.12.1",
  "ra_ap_base_db",
  "ra_ap_cfg",
  "ra_ap_hir_def",
@@ -1365,7 +1375,7 @@ dependencies = [
  "fst",
  "hashbrown 0.14.5",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra-ap-rustc_abi",
  "ra-ap-rustc_parse_format",
@@ -1395,7 +1405,7 @@ dependencies = [
  "cov-mark",
  "either",
  "hashbrown 0.14.5",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra_ap_base_db",
  "ra_ap_cfg",
@@ -1430,7 +1440,7 @@ dependencies = [
  "either",
  "ena",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "nohash-hasher",
  "oorandom",
@@ -1467,7 +1477,7 @@ dependencies = [
  "either",
  "fst",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "line-index",
  "memchr",
  "nohash-hasher",
@@ -1513,7 +1523,7 @@ checksum = "82e6f24b61f1ef1f3a756493d1fb7e711b69b2e4d5f4746fcb959313dfd41471"
 dependencies = [
  "anyhow",
  "crossbeam-channel",
- "itertools",
+ "itertools 0.12.1",
  "ra_ap_hir_expand",
  "ra_ap_ide_db",
  "ra_ap_intern",
@@ -1608,7 +1618,7 @@ checksum = "db83d1844c74b22c110c4b8e8f2519be2b1723964008527281a11c3398749756"
 dependencies = [
  "anyhow",
  "cargo_metadata",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra_ap_base_db",
  "ra_ap_cfg",
@@ -1632,7 +1642,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "370b302873eeafd07ccc6a714fc9395cae11e385955ccb78081093ee3b86f94e"
 dependencies = [
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "lock_api",
  "oorandom",
  "parking_lot",
@@ -1679,7 +1689,7 @@ checksum = "bb63ff9d6b11b4553fc0835f16705975258905e3b1230fcf1ddbf24c46aff69d"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
- "itertools",
+ "itertools 0.12.1",
  "jod-thread",
  "libc",
  "miow",
@@ -1695,7 +1705,7 @@ dependencies = [
  "cov-mark",
  "either",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "ra-ap-rustc_lexer",
  "ra_ap_parser",
  "ra_ap_stdx",
@@ -1729,7 +1739,7 @@ version = "0.0.232"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7cb72ee1901baec556f4f2ef77e287d749ac0e973f063990672d6207b076aeac"
 dependencies = [
- "itertools",
+ "itertools 0.12.1",
  "text-size",
 ]
 

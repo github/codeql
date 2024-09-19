@@ -25,3 +25,4 @@ triomphe = "0.1.13"
 argfile = "0.2.1"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 rust-extractor-macros = { path = "macros" }
+itertools = "0.13.0"
