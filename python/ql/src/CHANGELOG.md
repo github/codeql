@@ -1,3 +1,13 @@
+## 1.2.2
+
+### Minor Analysis Improvements
+
+* The `py/clear-text-logging-sensitive-data` and `py/clear-text-storage-sensitive-data` queries have been updated to exclude the `certificate` classification of sensitive sources, which often do not contain sensitive data.
+
+## 1.2.1
+
+No user-facing changes.
+
 ## 1.2.0
 
 ### New Queries

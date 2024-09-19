@@ -422,10 +422,10 @@ private predicate elementSpec(
 private string getNestedName(Type t) {
   not t instanceof RefType and result = t.toString()
   or
-  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).getNestedName()
   or
   result =
-    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+    t.(Array).getElementType().(NestedType).getEnclosingType().getNestedName() + "$" + t.getName()
 }
 
 private string getQualifiedName(Type t) {

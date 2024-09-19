@@ -108,6 +108,7 @@ public class MyAttributeUsage
     [return: My3Attribute(6)]
     public static int operator +(MyAttributeUsage a, MyAttributeUsage b) => 0;
 
+    [My3Attribute(15)]
     public int this[int x]
     {
         [My3Attribute(7)]
@@ -120,6 +121,7 @@ public class MyAttributeUsage
     }
 
     private int p;
+    [My3Attribute(16)]
     public int Prop1
     {
         [method: My3Attribute(11)]

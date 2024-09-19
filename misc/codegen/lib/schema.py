@@ -94,6 +94,7 @@ class Class:
     default_doc_name: Optional[str] = None
     hideable: bool = False
     test_with: Optional[str] = None
+    rust_doc_test_function: Optional["FunctionInfo"] = "() -> ()"  # TODO: parametrized pragmas
 
     @property
     def final(self):
@@ -117,7 +118,7 @@ class Class:
 @dataclass
 class Schema:
     classes: Dict[str, Class] = field(default_factory=dict)
-    includes: Set[str] = field(default_factory=set)
+    includes: List[str] = field(default_factory=list)
     null: Optional[str] = None
 
     @property

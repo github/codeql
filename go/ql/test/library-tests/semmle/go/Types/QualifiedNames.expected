@@ -1,3 +1,4 @@
+| aliases.go:19:6:19:7 | S3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 |
 | cyclic.go:3:6:3:6 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s |
 | cyclic.go:7:6:7:6 | t | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t |
 | cyclic.go:12:6:12:6 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u |

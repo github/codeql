@@ -154,7 +154,7 @@ private string isExtensible(Callable c) {
 private predicate qualifiedName(Callable c, string package, string type) {
   exists(RefType t | t = c.getDeclaringType() |
     package = t.getCompilationUnit().getPackage().getName() and
-    type = t.getErasure().(J::RefType).nestedName()
+    type = t.getErasure().(J::RefType).getNestedName()
   )
 }
 

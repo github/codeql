@@ -1,3 +1,18 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `semmle.python.RegexTreeView` module, use `semmle.python.regexp.RegexTreeView` instead.
+* Deleted the deprecated `RegexString` class from  `regex.qll`.
+* Deleted the deprecated `Regex` class, use `RegExp` instead.
+* Deleted the deprecated `semmle/python/security/SQL.qll` file.
+* Deleted the deprecated `useSSL` predicates from the LDAP libraries, use `useSsl` instead.
+
+## 1.0.7
+
+No user-facing changes.
+
 ## 1.0.6
 
 No user-facing changes.
