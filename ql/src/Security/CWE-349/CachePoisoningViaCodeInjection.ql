@@ -26,7 +26,9 @@ where
   // job can be triggered by an external user
   e.isExternallyTriggerable() and
   // the checkout is not controlled by an access check
-  not exists(ControlCheck check | check.protects(source.getNode().asExpr(), j.getATriggerEvent())) and
+  not exists(ControlCheck check |
+    check.protects(source.getNode().asExpr(), j.getATriggerEvent(), "code-injection")
+  ) and
   // excluding privileged workflows since they can be exploited in easier circumstances
   not j.isPrivileged() and
   (

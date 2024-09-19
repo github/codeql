@@ -1,17 +1,46 @@
 import actions
 
+string any_relevant_category() {
+  result =
+    [
+      "untrusted-checkout", "output-clobbering", "envpath-injection", "envvar-injection",
+      "command-injection", "argument-injection", "code-injection", "cache-poisoning",
+      "untrusted-checkout-toctou", "artifact-poisoning"
+    ]
+}
+
+string any_non_toctou_category() {
+  result = any_relevant_category() and not result = "untrusted-checkout-toctou"
+}
+
+string any_relevant_event() {
+  result =
+    [
+      "pull_request_target",
+      "issue_comment",
+      "pull_request_comment",
+      "workflow_run",
+      "issues",
+      "fork",
+      "watch",
+      "discussion_comment",
+      "discussion"
+    ]
+}
+
 /** An If node that contains an actor, user or label check */
 abstract class ControlCheck extends AstNode {
   ControlCheck() {
     this instanceof If or
     this instanceof Environment or
-    this instanceof UsesStep
+    this instanceof UsesStep or
+    this instanceof Run
   }
 
-  predicate protects(Step step, Event event) {
+  predicate protects(Step step, Event event, string category) {
     event.getEnclosingWorkflow() = step.getEnclosingWorkflow() and
-    this.getAProtectedEvent() = event.getName() and
-    this.dominates(step)
+    this.dominates(step) and
+    this.protectsCategoryAndEvent(category, event.getName())
   }
 
   predicate dominates(Step step) {
@@ -30,80 +59,71 @@ abstract class ControlCheck extends AstNode {
       step.getEnclosingJob().getANeededJob().getEnvironment() = this
     )
     or
-    this.(UsesStep).getAFollowingStep() = step
+    this.(Step).getAFollowingStep() = step
   }
 
-  abstract string getAProtectedEvent();
-
-  abstract boolean protectsAgainstRefMutationAttacks();
+  abstract predicate protectsCategoryAndEvent(string category, string event);
 }
 
 abstract class AssociationCheck extends ControlCheck {
-  // checks who you are (identity)
-  // association checks are effective against pull requests since they can control who is making the PR
-  // they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
-  // someone entitled to trigger the workflow with a comment, may no detect a malicious comment, or the comment may mutate after approval
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  override boolean protectsAgainstRefMutationAttacks() { result = true }
+  // Checks if the actor is a MEMBER/OWNER the repo
+  // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
+  }
 }
 
 abstract class ActorCheck extends ControlCheck {
-  // checks who you are (identity)
-  // actor checks are effective against pull requests since they can control who is making the PR
-  // they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
-  // someone entitled to trigger the workflow with a comment, may no detect a malicious comment, or the comment may mutate after approval
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  override boolean protectsAgainstRefMutationAttacks() { result = true }
+  // checks for a specific actor
+  // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
+  }
 }
 
 abstract class RepositoryCheck extends ControlCheck {
-  // repository checks are effective against pull requests since they can control where the code is coming from
-  // they are not effective against issue_comment since the repository will always be the same
-  // who you are (identity)
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  override boolean protectsAgainstRefMutationAttacks() { result = true }
+  // checks that the origin of the code is the same as the repository.
+  // for pull_requests, that means that it triggers only on local branches or repos from the same org
+  // - they are effective against pull requests/workflow_run since they can control where the code is coming from
+  // - they are not effective against issue_comment since the repository will always be the same
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
+  }
 }
 
 abstract class PermissionCheck extends ControlCheck {
-  // permission checks are effective against pull requests since they can control who can make changes
-  // they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
-  // someone entitled to trigger the workflow with a comment, may no detect a malicious comment, or the comment may mutate after approval
-  // who you are (identity)
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  override boolean protectsAgainstRefMutationAttacks() { result = true }
+  // checks that the actor has a specific permission level
+  // - they are effective against pull requests/workflow_run since they can control who can make changes
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run", "issue_comment"] and
+    category = any_relevant_category()
+  }
 }
 
 abstract class LabelCheck extends ControlCheck {
-  // does it protect injection attacks but not pwn requests?
-  // pwn requests are susceptible to checkout of mutable code
-  // but injection attacks are not, although a branch name can be changed after approval and perhaps also some other things
-  // they do actually protext against untrusted code execution (sha)
-  // what you have (approval)
-  // TODO: A check should be a combination of:
-  // - event type (pull_request, issue_comment, etc)
-  // - category (untrusted mutable code, untrusted immutable code, code injection, etc)
-  //  - we dont know this unless we pass category to inPrivilegedContext and into ControlCheck.protects
-  //  - we can decide if a control check is effective based only on the ast node
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  // ref can be mutated after approval
-  override boolean protectsAgainstRefMutationAttacks() { result = false }
+  // checks if the issue/pull_request is labeled, which implies that it could have been approved
+  // - they dont protect against mutation attacks
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run"] and category = any_non_toctou_category()
+  }
 }
 
 class EnvironmentCheck extends ControlCheck instanceof Environment {
   // Environment checks are not effective against any mutable attacks
-  // they do actually protext against untrusted code execution (sha)
-  // what you have (approval)
-  EnvironmentCheck() { any() }
+  // they do actually protect against untrusted code execution (sha)
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = ["pull_request_target", "workflow_run"] and category = any_non_toctou_category()
+  }
+}
 
-  override string getAProtectedEvent() { result = ["pull_request", "pull_request_target"] }
-
-  // ref can be mutated after approval
-  override boolean protectsAgainstRefMutationAttacks() { result = false }
+abstract class CommentVsHeadDateCheck extends ControlCheck {
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    // by itself, this check is not effective against any attacks
+    none()
+  }
 }
 
 /* Specific implementations of control checks */
@@ -162,28 +182,37 @@ class RepositoryIfCheck extends RepositoryCheck instanceof If {
 class AssociationIfCheck extends AssociationCheck instanceof If {
   AssociationIfCheck() {
     // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.comment\\.author_association\\b",
-              "\\bgithub\\.event\\.issue\\.author_association\\b",
-              "\\bgithub\\.event\\.pull_request\\.author_association\\b",
-            ], _, _)
-    )
+    normalizeExpr(this.getCondition())
+        .splitAt("\n")
+        .regexpMatch([
+            ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
+            ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
+            ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
+          ]) and
+    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bMEMBER\\b.*") and
+    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bOWNER\\b.*")
   }
 }
 
 class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
   AssociationActionCheck() {
     this.getCallee() = "TheModdingInquisition/actions-team-membership" and
-    not exists(this.getArgument("exit"))
-    or
-    this.getArgument("exit") = "true"
+    (
+      not exists(this.getArgument("exit"))
+      or
+      this.getArgument("exit") = "true"
+    )
   }
 }
 
 class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
   PermissionActionCheck() {
+    this.getCallee() = "sushichop/action-repository-permission" and
+    this.getArgument("required-permission") = ["write", "admin"]
+    or
+    this.getCallee() = "prince-chrismc/check-actor-permissions-action" and
+    this.getArgument("permission") = ["write", "admin"]
+    or
     this.getCallee() = "lannonbr/repo-permission-check-action" and
     this.getArgument("permission") = ["write", "admin"]
     or
@@ -192,6 +221,16 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
       // default permission level is write
       not exists(this.getArgument("permission-level")) or
       this.getArgument("permission-level") = ["write", "admin"]
+    )
+  }
+}
+
+class BashCommentVsHeadDateCheck extends CommentVsHeadDateCheck, Run {
+  BashCommentVsHeadDateCheck() {
+    exists(string line |
+      line = this.getScript().splitAt("\n") and
+      line.toLowerCase()
+          .regexpMatch(".*date\\s+-d.*(commit_at|pushed_at|comment_at|commented_at).*date\\s+-d.*(commit_at|pushed_at|comment_at|commented_at).*")
     )
   }
 }

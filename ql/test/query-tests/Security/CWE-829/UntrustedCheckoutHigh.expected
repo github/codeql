@@ -18,6 +18,7 @@
 | .github/workflows/pr-workflow.yml:103:9:109:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/pr-workflow.yml:139:9:144:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/pr-workflow.yml:444:9:449:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/test13.yml:20:7:25:4 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/untrusted_checkout2.yml:14:9:19:72 | Run Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
