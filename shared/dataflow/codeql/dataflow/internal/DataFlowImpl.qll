@@ -64,7 +64,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     /** Holds if data flow out of `node` is prohibited. */
     predicate isBarrierOut(Node node);
 
-    /** Holds if data flow out of `node` is prohibited when the originating flow state is `state`. */
+    /**
+     * Holds if data flow out of `node` is prohibited when the originating flow
+     * state is `state`.
+     */
     predicate isBarrierOut(Node node, FlowState state);
 
     /**
