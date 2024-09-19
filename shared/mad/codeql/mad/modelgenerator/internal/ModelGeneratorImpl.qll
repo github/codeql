@@ -31,11 +31,6 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
    */
   class Callable {
     /**
-     * Gets the number of parameters of this callable.
-     */
-    int getNumberOfParameters();
-
-    /**
      * Gets a string representation of this callable.
      */
     string toString();
@@ -626,28 +621,35 @@ module MakeModelGenerator<
     /**
      * A class of APIs relevant for modeling using content flow.
      * The following heuristic is applied:
-     * Content flow is only relevant for an API, if
-     *    #content flow <= 2 * #parameters + 3
-     * If an API produces more content flow, it is likely that
-     * 1. Types are not sufficiently constrained leading to a combinatorial
+     * Content flow is only relevant for an API on a parameter, if
+     *    #content flow from parameter <= 3
+     * If an API produces more content flow on a parameter, it is likely that
+     * 1. Types are not sufficiently constrained on the parameter leading to a combinatorial
      * explosion in dispatch and thus in the generated summaries.
      * 2. It is a reasonable approximation to use the non-content based flow
      * detection instead, as reads and stores would use a significant
      * part of an objects internal state.
      */
     private class ContentDataFlowSummaryTargetApi extends DataFlowSummaryTargetApi {
+      private DataFlow::ParameterNode parameter;
+
       ContentDataFlowSummaryTargetApi() {
         count(string input, string output |
           exists(
-            DataFlow::ParameterNode p, PropagateContentFlow::AccessPath reads,
-            ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath stores
+            PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+            PropagateContentFlow::AccessPath stores
           |
-            apiFlow(this, p, reads, returnNodeExt, stores, _) and
-            input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
+            apiFlow(this, parameter, reads, returnNodeExt, stores, _) and
+            input = parameterNodeAsContentInput(parameter) + printReadAccessPath(reads) and
             output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores)
           )
-        ) <= 2 * this.getNumberOfParameters() + 3
+        ) <= 3
       }
+
+      /**
+       * Gets a parameter node of `this` api, where there are less than 3 possible models, if any.
+       */
+      DataFlow::ParameterNode getARelevantParameterNode() { result = parameter }
     }
 
     pragma[nomagic]
@@ -658,7 +660,8 @@ module MakeModelGenerator<
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
       returnNodeExt.getEnclosingCallable() = api and
-      p.(NodeExtended).getEnclosingCallable() = api
+      p.(NodeExtended).getEnclosingCallable() = api and
+      p = api.getARelevantParameterNode()
     }
 
     /**
