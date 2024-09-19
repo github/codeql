@@ -12,8 +12,5 @@ private import codeql.rust.elements.internal.generated.Stmt
  * be referenced directly.
  */
 module Impl {
-  /**
-   * The base class for statements.
-   */
   class Stmt extends Generated::Stmt { }
 }

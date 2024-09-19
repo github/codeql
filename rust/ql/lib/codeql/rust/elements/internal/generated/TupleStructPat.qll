@@ -16,19 +16,31 @@ import codeql.rust.elements.Path
  */
 module Generated {
   /**
-   * A tuple struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Tuple("a", 1, 2, 3) => "great",
-   *     Tuple(.., 3) => "fine",
-   *     Tuple(..) => "fail",
-   * };
-   * ```
    * INTERNAL: Do not reference the `Generated::TupleStructPat` class directly.
    * Use the subclass `TupleStructPat`, where the following predicates are available.
    */
   class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
+
+    /**
+     * Gets the `index`th field of this tuple struct pat (0-based).
+     */
+    Pat getField(int index) {
+      result =
+        Synth::convertPatFromRaw(Synth::convertTupleStructPatToRaw(this)
+              .(Raw::TupleStructPat)
+              .getField(index))
+    }
+
+    /**
+     * Gets any of the fields of this tuple struct pat.
+     */
+    final Pat getAField() { result = this.getField(_) }
+
+    /**
+     * Gets the number of fields of this tuple struct pat.
+     */
+    final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
     /**
      * Gets the path of this tuple struct pat, if it exists.
@@ -44,37 +56,5 @@ module Generated {
      * Holds if `getPath()` exists.
      */
     final predicate hasPath() { exists(this.getPath()) }
-
-    /**
-     * Gets the `index`th argument of this tuple struct pat (0-based).
-     */
-    Pat getArg(int index) {
-      result =
-        Synth::convertPatFromRaw(Synth::convertTupleStructPatToRaw(this)
-              .(Raw::TupleStructPat)
-              .getArg(index))
-    }
-
-    /**
-     * Gets any of the arguments of this tuple struct pat.
-     */
-    final Pat getAnArg() { result = this.getArg(_) }
-
-    /**
-     * Gets the number of arguments of this tuple struct pat.
-     */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
-
-    /**
-     * Gets the ellipsis index of this tuple struct pat, if it exists.
-     */
-    int getEllipsisIndex() {
-      result = Synth::convertTupleStructPatToRaw(this).(Raw::TupleStructPat).getEllipsisIndex()
-    }
-
-    /**
-     * Holds if `getEllipsisIndex()` exists.
-     */
-    final predicate hasEllipsisIndex() { exists(this.getEllipsisIndex()) }
   }
 }

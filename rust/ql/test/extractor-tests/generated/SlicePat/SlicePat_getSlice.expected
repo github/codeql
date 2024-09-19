@@ -1,2 +1,0 @@
-| gen_slice_pat.rs:7:9:7:18 | SlicePat | gen_slice_pat.rs:7:16:7:17 | MissingPat |
-| gen_slice_pat.rs:8:9:8:24 | SlicePat | gen_slice_pat.rs:8:16:8:17 | MissingPat |

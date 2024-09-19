@@ -4,21 +4,8 @@
  */
 
 private import internal.IdentPatImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.Name
 import codeql.rust.elements.Pat
 
-/**
- * A binding pattern. For example:
- * ```rust
- * match x {
- *     Option::Some(y) => y,
- *     Option::None => 0,
- * };
- * ```
- * ```rust
- * match x {
- *     y@Option::Some(_) => y,
- *     Option::None => 0,
- * };
- * ```
- */
 final class IdentPat = Impl::IdentPat;

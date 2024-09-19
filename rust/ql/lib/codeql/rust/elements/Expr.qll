@@ -6,7 +6,4 @@
 private import internal.ExprImpl
 import codeql.rust.elements.AstNode
 
-/**
- * The base class for expressions.
- */
 final class Expr = Impl::Expr;

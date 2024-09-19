@@ -12,18 +12,5 @@ private import codeql.rust.elements.internal.generated.ReturnExpr
  * be referenced directly.
  */
 module Impl {
-  /**
-   * A return expression. For example:
-   * ```rust
-   * fn some_value() -> i32 {
-   *     return 42;
-   * }
-   * ```
-   * ```rust
-   * fn no_value() -> () {
-   *     return;
-   * }
-   * ```
-   */
   class ReturnExpr extends Generated::ReturnExpr { }
 }

@@ -15,12 +15,6 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * An or pattern. For example:
-   * ```rust
-   * match x {
-   *     Option::Some(y) | Option::None => 0,
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::OrPat` class directly.
    * Use the subclass `OrPat`, where the following predicates are available.
    */
@@ -28,20 +22,20 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OrPat" }
 
     /**
-     * Gets the `index`th argument of this or pat (0-based).
+     * Gets the `index`th pat of this or pat (0-based).
      */
-    Pat getArg(int index) {
-      result = Synth::convertPatFromRaw(Synth::convertOrPatToRaw(this).(Raw::OrPat).getArg(index))
+    Pat getPat(int index) {
+      result = Synth::convertPatFromRaw(Synth::convertOrPatToRaw(this).(Raw::OrPat).getPat(index))
     }
 
     /**
-     * Gets any of the arguments of this or pat.
+     * Gets any of the pats of this or pat.
      */
-    final Pat getAnArg() { result = this.getArg(_) }
+    final Pat getAPat() { result = this.getPat(_) }
 
     /**
-     * Gets the number of arguments of this or pat.
+     * Gets the number of pats of this or pat.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+    final int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
   }
 }

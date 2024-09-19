@@ -15,13 +15,6 @@ import codeql.rust.elements.Path
  */
 module Generated {
   /**
-   * A path pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo::Bar => "ok",
-   *     _ => "fail",
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::PathPat` class directly.
    * Use the subclass `PathPat`, where the following predicates are available.
    */
@@ -29,10 +22,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PathPat" }
 
     /**
-     * Gets the path of this path pat.
+     * Gets the path of this path pat, if it exists.
      */
     Path getPath() {
       result = Synth::convertPathFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
     }
+
+    /**
+     * Holds if `getPath()` exists.
+     */
+    final predicate hasPath() { exists(this.getPath()) }
   }
 }
