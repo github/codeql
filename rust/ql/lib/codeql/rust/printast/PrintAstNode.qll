@@ -4,7 +4,7 @@
  */
 
 import rust
-import codeql.rust.generated.ParentChild
+import codeql.rust.elements.internal.generated.ParentChild
 
 private newtype TPrintAstConfiguration = TMakePrintAstConfiguration()
 

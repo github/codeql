@@ -1,6 +1,6 @@
 private import rust
 private import Completion
-private import codeql.rust.generated.ParentChild
+private import codeql.rust.elements.internal.generated.ParentChild
 
 abstract class CfgScope extends AstNode { }
 

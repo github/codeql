@@ -56,7 +56,8 @@ def _get_class(cls: type) -> schema.Class:
                         ],
                         doc=schema.split_doc(cls.__doc__),
                         default_doc_name=cls.__dict__.get("_doc_name"),
-                        rust_doc_test_function=cls.__dict__.get("_rust_doc_test_function")
+                        rust_doc_test_function=cls.__dict__.get("_rust_doc_test_function",
+                                                                schema.Class.rust_doc_test_function)
                         )
 
 
@@ -125,7 +126,7 @@ def _check_test_with(classes: typing.Dict[str, schema.Class]):
 
 
 def load(m: types.ModuleType) -> schema.Schema:
-    includes = set()
+    includes = []
     classes = {}
     known = {"int", "string", "boolean"}
     known.update(n for n in m.__dict__ if not n.startswith("__"))
@@ -137,7 +138,7 @@ def load(m: types.ModuleType) -> schema.Schema:
         if name == "__includes":
             includes = data
             continue
-        if name.startswith("__"):
+        if name.startswith("__") or name == "_":
             continue
         cls = _get_class(data)
         if classes and not cls.bases:

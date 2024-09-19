@@ -13,7 +13,7 @@ def test_empty_schema():
         pass
 
     assert data.classes == {}
-    assert data.includes == set()
+    assert data.includes == []
     assert data.null is None
     assert data.null_class is None
 
@@ -756,6 +756,39 @@ def test_test_with():
     }
 
 
+def test_annotate_docstring():
+    @load
+    class data:
+        class Root:
+            """ old docstring """
+
+        @defs.annotate(Root)
+        class _:
+            """
+            new
+            docstring
+            """
+
+    assert data.classes == {
+        "Root": schema.Class("Root", doc=["new", "docstring"]),
+    }
+
+
+def test_annotate_not_underscore():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.annotate(Root)
+            class Something:
+                """
+                new
+                docstring
+                """
+
+
 def test_test_with_unknown_string():
     with pytest.raises(schema.Error):
         @load
@@ -803,6 +836,52 @@ def test_test_with_double():
             @defs.qltest.test_with(A)
             class C(Root):
                 pass
+
+
+def test_include_dbscheme():
+    @load
+    class data:
+        defs.include("foo.dbscheme")
+        defs.include("bar.dbscheme")
+
+    assert data.includes == ["foo.dbscheme", "bar.dbscheme"]
+
+
+def test_include_source(tmp_path):
+    (tmp_path / "foo.py").write_text("""
+class A(Root):
+    pass
+""")
+    (tmp_path / "bar.py").write_text("""
+class C(Root):
+    pass
+""")
+
+    @load
+    class data:
+        class Root:
+            pass
+
+        defs.include(str(tmp_path / "foo.py"))
+
+        class B(Root):
+            pass
+
+        defs.include(str(tmp_path / "bar.py"))
+
+    assert data.classes == {
+        "Root": schema.Class("Root", derived=set("ABC")),
+        "A": schema.Class("A", bases=["Root"]),
+        "B": schema.Class("B", bases=["Root"]),
+        "C": schema.Class("C", bases=["Root"]),
+    }
+
+
+def test_include_not_supported(tmp_path):
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            defs.include("foo.bar")
 
 
 if __name__ == '__main__':

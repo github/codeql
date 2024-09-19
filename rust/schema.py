@@ -31,1010 +31,837 @@ class AstNode(Locatable):
 
 
 @qltest.skip
-class Unimplemented(Element):
+class Unextracted(Element):
+    """
+    The base class marking everything that was not properly extracted for some reason, such as:
+    * syntax errors
+    * insufficient context information
+    * yet unimplemented parts of the extractor
+    """
+    pass
+
+
+@qltest.skip
+class Missing(Unextracted):
+    """
+    The base class marking errors during parsing or resolution.
+    """
+
+
+@qltest.skip
+class Unimplemented(Unextracted):
     """
     The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
     """
     pass
 
 
-class Declaration(AstNode):
-    """
-    The base class for declarations.
-    """
+class AssocItem(AstNode):
     pass
-
-
-@qltest.skip
-class UnimplementedDeclaration(Declaration, Unimplemented):
-    """
-    A declaration that is not yet extracted.
-    """
-    pass
-
-
-class Module(Declaration):
-    """
-    A module declaration. For example:
-    ```
-    mod foo;
-    ```
-    ```
-    mod bar {
-        pub fn baz() {}
-    }
-    ```
-    """
-    declarations: list[Declaration] | child
 
 
 class Expr(AstNode):
-    """
-    The base class for expressions.
-    """
+    pass
+
+
+class ExternItem(AstNode):
+    pass
+
+
+class FieldList(AstNode):
+    pass
+
+
+class GenericArg(AstNode):
+    pass
+
+
+class GenericParam(AstNode):
     pass
 
 
 class Pat(AstNode):
-    """
-    The base class for patterns.
-    """
     pass
-
-
-@rust.doc_test_signature("() -> ()")
-class Label(AstNode):
-    """
-    A label. For example:
-    ```
-    'label: loop {
-        println!("Hello, world (once)!");
-        break 'label;
-    };
-    ```
-    """
-    name: string
 
 
 class Stmt(AstNode):
-    """
-    The base class for statements.
-    """
     pass
 
 
-@rust.doc_test_signature("() -> ()")
-class TypeRef(AstNode, Unimplemented):
-    """
-    The base class for type references.
-    ```
-    let x: i32;
-    let y: Vec<i32>;
-    let z: Option<i32>;
-    ```
-    """
+class TypeRef(AstNode):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
-class Path(AstNode, Unimplemented):
-    """
-    A path. For example:
-    ```
-    foo::bar;
-    ```
-    """
+class Item(Stmt):
     pass
 
 
-@rust.doc_test_signature("() -> ()")
-class GenericArgList(AstNode, Unimplemented):
-    """
-    The base class for generic arguments.
-    ```
-    x.foo::<u32, u64>(42);
-    ```
-    """
-    pass
+class Abi(AstNode):
+    abi_string: optional[string]
 
 
-class Function(Declaration):
-    """
-    A function declaration. For example
-    ```
-    fn foo(x: u32) -> u64 {(x + 1).into()}
-    ```
-    A function declaration within a trait might not have a body:
-    ```
-    trait Trait {
-        fn bar();
-    }
-    ```
-    """
-    name: string
-    body: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class MissingExpr(Expr):
-    """
-    A missing expression, used as a placeholder for incomplete syntax.
-
-    ```
-    let x = non_existing_macro!();
-    ```
-    """
-    pass
-
-
-@rust.doc_test_signature("() -> ()")
-class PathExpr(Expr):
-    """
-    A path expression. For example:
-    ```
-    let x = variable;
-    let x = foo::bar;
-    let y = <T>::foo;
-    let z = <TypeRef as Trait>::foo;
-    ```
-    """
-    path: Path | child
-
-
-@rust.doc_test_signature("() -> ()")
-class IfExpr(Expr):
-    """
-    An `if` expression. For example:
-    ```
-    if x == 42 {
-        println!("that's the answer");
-    }
-    ```
-    ```
-    let y = if x > 0 {
-        1
-    } else {
-        0
-    }
-    ```
-    """
-    condition: Expr | child
-    then: Expr | child
-    else_: optional[Expr] | child
-
-
-@rust.doc_test_signature("(maybe_some: Option<String>) -> ()")
-class LetExpr(Expr):
-    """
-    A `let` expression. For example:
-    ```
-    if let Some(x) = maybe_some {
-        println!("{}", x);
-    }
-    ```
-    """
-    pat: Pat | child
-    expr: Expr | child
-
-
-class BlockExprBase(Expr):
-    statements: list[Stmt] | child
-    tail: optional[Expr] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class BlockExpr(BlockExprBase):
-    """
-    A block expression. For example:
-    ```
-    {
-        let x = 42;
-    }
-    ```
-    ```
-    'label: {
-        let x = 42;
-        x
-    }
-    ```
-    """
-    label: optional[Label] | child
-
-
-@rust.doc_test_signature("() -> i32")
-class AsyncBlockExpr(BlockExprBase):
-    """
-    An async block expression. For example:
-    ```
-    async {
-       let x = 42;
-       x
-    }.await
-    ```
-    """
-    pass
-
-
-@rust.doc_test_signature("() -> bool")
-class ConstExpr(Expr):
-    """
-    A `const` block expression. For example:
-    ```
-    if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
-        return false;
-    }
-    ```
-    """
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class UnsafeBlockExpr(BlockExprBase):
-    """
-    An unsafe block expression. For example:
-    ```
-    let layout = unsafe {
-        let x = 42;
-        Layout::from_size_align_unchecked(size, align)
-    };
-    ```
-    """
-    pass
-
-
-@rust.doc_test_signature("() -> ()")
-class LoopExpr(Expr):
-    """
-    A loop expression. For example:
-    ```
-    loop {
-        println!("Hello, world (again)!");
-    };
-    ```
-    ```
-    'label: loop {
-        println!("Hello, world (once)!");
-        break 'label;
-    };
-    ```
-    ```
-    let mut x = 0;
-    loop {
-        if x < 10 {
-            x += 1;
-        } else {
-            break;
-        }
-    };
-    ```
-    """
-    body: Expr | child
-    label: optional[Label] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class CallExpr(Expr):
-    """
-    A function call expression. For example:
-    ```
-    foo(42);
-    foo::<u32, u64>(42);
-    foo[0](42);
-    foo(1) = 4;
-    ```
-    """
-    callee: Expr | child
-    args: list[Expr] | child
-    is_assignee_expr: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class MethodCallExpr(Expr):
-    """
-    A method call expression. For example:
-    ```
-    x.foo(42);
-    x.foo::<u32, u64>(42);
-    """
-    receiver: Expr | child
-    method_name: string
-    args: list[Expr] | child
-    generic_args: optional[GenericArgList] | child
-
-
-@rust.doc_test_signature("(x: i32) -> i32")
-class MatchArm(AstNode):
-    """
-    A match arm. For example:
-    ```
-    match x {
-        Option::Some(y) => y,
-        Option::None => 0,
-    };
-    ```
-    ```
-    match x {
-        Some(y) if y != 0 => 1 / y,
-        _ => 0,
-    };
-    ```
-    """
-    pat: Pat | child
-    guard: optional[Expr] | child
-    expr: Expr | child
-
-
-@rust.doc_test_signature("(x: i32) -> i32")
-class MatchExpr(Expr):
-    """
-    A match expression. For example:
-    ```
-    match x {
-        Option::Some(y) => y,
-        Option::None => 0,
-    }
-    ```
-    ```
-    match x {
-        Some(y) if y != 0 => 1 / y,
-        _ => 0,
-    }
-    ```
-    """
-    expr: Expr | child
-    branches: list[MatchArm] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class ContinueExpr(Expr):
-    """
-    A continue expression. For example:
-    ```
-    loop {
-        if not_ready() {
-            continue;
-        }
-    }
-    ```
-    ```
-    'label: loop {
-        if not_ready() {
-            continue 'label;
-        }
-    }
-    ```
-    """
-    label: optional[Label] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class BreakExpr(Expr):
-    """
-    A break expression. For example:
-    ```
-    loop {
-        if not_ready() {
-            break;
-         }
-    }
-    ```
-    ```
-    let x = 'label: loop {
-        if done() {
-            break 'label 42;
-        }
-    };
-    ```
-  """
-    expr: optional[Expr] | child
-    label: optional[Label] | child
-
-
-class ReturnExpr(Expr):
-    """
-    A return expression. For example:
-    ```
-    fn some_value() -> i32 {
-        return 42;
-    }
-    ```
-    ```
-    fn no_value() -> () {
-        return;
-    }
-    ```
-    """
-    expr: optional[Expr] | child
-
-
-class BecomeExpr(Expr):
-    """
-    A `become` expression. For example:
-    ```
-    fn fact_a(n: i32, a: i32) -> i32 {
-         if n == 0 {
-             a
-         } else {
-             become fact_a(n - 1, n * a)
-         }
-     }    ```
-     """
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class YieldExpr(Expr):
-    """
-    A `yield` expression. For example:
-    ```
-    let one = #[coroutine]
-        || {
-            yield 1;
-        };
-    ```
-    """
-    expr: optional[Expr] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class YeetExpr(Expr):
-    """
-    A `yeet` expression. For example:
-    ```
-    if x < size {
-       do yeet "index out of bounds";
-    }
-    ```
-    """
-    expr: optional[Expr] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class RecordExprField(AstNode):
-    """
-    A field in a record expression. For example `a: 1` in:
-    ```
-    Foo { a: 1, b: 2 };
-    ```
-    """
-    name: string
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class RecordExpr(Expr):
-    """
-    A record expression. For example:
-    ```
-    let first = Foo { a: 1, b: 2 };
-    let second = Foo { a: 2, ..first };
-    Foo { a: 1, b: 2 }[2] = 10;
-    Foo { .. } = second;
-    ```
-    """
-    path: optional[Path] | child
-    flds: list[RecordExprField] | child
-    spread: optional[Expr] | child
-    has_ellipsis: predicate
-    is_assignee_expr: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class FieldExpr(Expr):
-    """
-    A field access expression. For example:
-    ```
-    x.foo
-    ```
-    """
-    expr: Expr | child
-    name: string
-
-
-@rust.doc_test_signature("() -> ()")
-class AwaitExpr(Expr):
-    """
-    An `await` expression. For example:
-    ```
-    async {
-        let x = foo().await;
-        x
-    }
-    ```
-    """
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class CastExpr(Expr):
-    """
-    A cast expression. For example:
-    ```
-    value as u64;
-    ```
-    """
-    expr: Expr | child
-    type: TypeRef | child
-
-
-@rust.doc_test_signature("() -> ()")
-class RefExpr(Expr):
-    """
-    A reference expression. For example:
-    ```
-        let ref_const = &foo;
-        let ref_mut = &mut foo;
-        let raw_const: &mut i32 = &raw const foo;
-        let raw_mut: &mut i32 = &raw mut foo;
-    ```
-    """
-    expr: Expr | child
-    is_raw: predicate
-    is_mut: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class BoxExpr(Expr):
-    """
-    A box expression. For example:
-    ```
-    let x = #[rustc_box] Box::new(42);
-    ```
-    """
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class PrefixExpr(Expr):
-    """
-    A unary operation expression. For example:
-    ```
-    let x = -42
-    let y = !true
-    let z = *ptr
-    ```
-    """
-    expr: Expr | child
-    op: string
-
-
-@rust.doc_test_signature("() -> ()")
-class BinaryExpr(Expr):
-    """
-    A binary operation expression. For example:
-    ```
-    x + y;
-    x && y;
-    x <= y;
-    x = y;
-    x += y;
-    ```
-    """
-    lhs: Expr | child
-    rhs: Expr | child
-    op: optional[string]
-
-
-@rust.doc_test_signature("() -> ()")
-class RangeExpr(Expr):
-    """
-    A range expression. For example:
-    ```
-    let x = 1..=10;
-    let x = 1..10;
-    let x = 10..;
-    let x = ..10;
-    let x = ..=10;
-    let x = ..;
-    ```
-    """
-    lhs: optional[Expr] | child
-    rhs: optional[Expr] | child
-    is_inclusive: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class IndexExpr(Expr):
-    """
-    An index expression. For example:
-    ```
-    list[42];
-    list[42] = 1;
-    ```
-    """
-    base: Expr | child
-    index: Expr | child
-    is_assignee_expr: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class ClosureExpr(Expr):
-    """
-    A closure expression. For example:
-    ```
-    |x| x + 1;
-    move |x: i32| -> i32 { x + 1 };
-    async |x: i32, y| x + y;
-     #[coroutine]
-    |x| yield x;
-     #[coroutine]
-     static |x| yield x;
-    ```
-    """
-    args: list[Pat] | child
-    arg_types: list[optional[TypeRef]] | child
-    ret_type: optional[TypeRef] | child
-    body: Expr | child
-    closure_kind: string
-    is_move: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class TupleExpr(Expr):
-    """
-    A tuple expression. For example:
-    ```
-    (1, "one");
-    (2, "two")[0] = 3;
-    ```
-    """
-    exprs: list[Expr] | child
-    is_assignee_expr: predicate
+class ArgList(AstNode):
+    args: list["Expr"] | child
 
 
 class ArrayExpr(Expr):
-    """
-    An array expression. For example:
-    ```
-    [1, 2, 3];
-    [1; 10];
-    ```
-    """
-    pass
+    attrs: list["Attr"] | child
+    exprs: list["Expr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class ElementListExpr(ArrayExpr):
-    """
-    An element list expression. For example:
-    ```
-    [1, 2, 3, 4, 5];
-    [1, 2, 3, 4, 5][0] = 6;
-    ```
-    """
-    elements: list[Expr] | child
-    is_assignee_expr: predicate
+class ArrayType(TypeRef):
+    const_arg: optional["ConstArg"] | child
+    ty: optional["TypeRef"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class RepeatExpr(ArrayExpr):
-    """
-    A repeat expression. For example:
-    ```
-    [1; 10];
-    """
-    initializer: Expr | child
-    repeat: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class LiteralExpr(Expr):
-    """
-    A literal expression. For example:
-    ```
-    42;
-    42.0;
-    "Hello, world!";
-    b"Hello, world!";
-    'x';
-    b'x';
-    r"Hello, world!";
-    true;
-    """
-    pass
-
-
-@rust.doc_test_signature("() -> ()")
-class UnderscoreExpr(Expr):
-    """
-    An underscore expression. For example:
-    ```
-    _ = 42;
-    ```
-    """
-    pass
-
-
-@rust.doc_test_signature("() -> ()")
-class OffsetOfExpr(Expr):
-    """
-     An `offset_of` expression. For example:
-    ```
-    builtin # offset_of(Struct, field);
-    ```
-    """
-    container: TypeRef | child
-    fields: list[string]
-
-
-@rust.doc_test_signature("() -> ()")
 class AsmExpr(Expr):
-    """
-    An inline assembly expression. For example:
-    ```
-    unsafe {
-        builtin # asm(_);
-    }
-    ```
-    """
-    expr: Expr | child
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class LetStmt(Stmt):
-    """
-    A let statement. For example:
-    ```
-    let x = 42;
-    let x: i32 = 42;
-    let x: i32;
-    let x;
-    let (x, y) = (1, 2);
-    let Some(x) = std::env::var("FOO") else {
-        return;
-    };
-
-    """
-    pat: Pat | child
-    type: optional[TypeRef] | child
-    initializer: optional[Expr] | child
-    else_: optional[Expr] | child
+class AssocItemList(AstNode):
+    assoc_items: list["AssocItem"] | child
+    attrs: list["Attr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class ExprStmt(Stmt):
-    """
-    An expression statement. For example:
-    ```
-    start();
-    finish()
-    use std::env;
-    ```
-    """
-    expr: Expr | child
-    has_semicolon: predicate
+class AssocTypeArg(GenericArg):
+    const_arg: optional["ConstArg"] | child
+    generic_arg_list: optional["GenericArgList"] | child
+    name_ref: optional["NameRef"] | child
+    param_list: optional["ParamList"] | child
+    ret_type: optional["RetType"] | child
+    return_type_syntax: optional["ReturnTypeSyntax"] | child
+    ty: optional["TypeRef"] | child
+    type_bound_list: optional["TypeBoundList"] | child
 
 
-# At the HIR-level, we don't have items, only some markers without location indicating where they used to be.
-@qltest.skip
-class ItemStmt(Stmt):
-    """
-    An item statement. For example:
-    ```
-    fn print_hello() {
-        println!("Hello, world!");
-    }
-    print_hello();
-    ```
-    """
-    pass
+class Attr(AstNode):
+    meta: optional["Meta"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class MissingPat(Pat):
-    """
-    A missing pattern, used as a place holder for incomplete syntax.
-    ```
-    match Some(42) {
-        .. => "bad use of .. syntax",
-    };
-    ```
-    """
-    pass
+class AwaitExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class WildcardPat(Pat):
-    """
-    A wildcard pattern. For example:
-    ```
-    let _ = 42;
-    ```
-    """
-    pass
+class BecomeExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class TuplePat(Pat):
-    """
-    A tuple pattern. For example:
-    ```
-    let (x, y) = (1, 2);
-    let (a, b, ..,  z) = (1, 2, 3, 4, 5);
-    ```
-    """
-    args: list[Pat] | child
-    ellipsis_index: optional[int]
+class BinaryExpr(Expr):
+    attrs: list["Attr"] | child
+    lhs: optional["Expr"] | child
+    operator_name: optional[string]
+    rhs: optional["Expr"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class OrPat(Pat):
-    """
-    An or pattern. For example:
-    ```
-    match x {
-        Option::Some(y) | Option::None => 0,
-    }
-    ```
-    """
-    args: list[Pat] | child
+class BlockExpr(Expr):
+    attrs: list["Attr"] | child
+    label: optional["Label"] | child
+    stmt_list: optional["StmtList"] | child
 
 
-@rust.doc_test_signature("() -> ()")
-class RecordPatField(AstNode):
-    """
-    A field in a record pattern. For example `a: 1` in:
-    ```
-    let Foo { a: 1, b: 2 } = foo;
-    ```
-    """
-    name: string
-    pat: Pat | child
-
-
-@rust.doc_test_signature("() -> ()")
-class RecordPat(Pat):
-    """
-    A record pattern. For example:
-    ```
-    match x {
-        Foo { a: 1, b: 2 } => "ok",
-        Foo { .. } => "fail",
-    }
-    ```
-    """
-
-    path: optional[Path] | child
-    flds: list[RecordPatField] | child
-    has_ellipsis: predicate
-
-
-@rust.doc_test_signature("() -> ()")
-class RangePat(Pat):
-    """
-    A range pattern. For example:
-    ```
-    match x {
-        ..15 => "too cold",
-        16..=25 => "just right",
-        26.. => "too hot",
-    }
-    ```
-    """
-    start: optional[Pat] | child
-    end: optional[Pat] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class SlicePat(Pat):
-    """
-    A slice pattern. For example:
-    ```
-    match x {
-        [1, 2, 3, 4, 5] => "ok",
-        [1, 2, ..] => "fail",
-        [x, y, .., z, 7] => "fail",
-    }
-    """
-    prefix: list[Pat] | child
-    slice: optional[Pat] | child
-    suffix: list[Pat] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class PathPat(Pat):
-    """
-    A path pattern. For example:
-    ```
-    match x {
-        Foo::Bar => "ok",
-        _ => "fail",
-    }
-    ```
-    """
-    path: Path | child
-
-
-@rust.doc_test_signature("() -> ()")
-class LiteralPat(Pat):
-    """
-    A literal pattern. For example:
-    ```
-    match x {
-        42 => "ok",
-        _ => "fail",
-    }
-    ```
-    """
-    expr: Expr | child
-
-
-@rust.doc_test_signature("() -> ()")
-class IdentPat(Pat):
-    """
-    A binding pattern. For example:
-    ```
-    match x {
-        Option::Some(y) => y,
-        Option::None => 0,
-    };
-    ```
-    ```
-    match x {
-        y@Option::Some(_) => y,
-        Option::None => 0,
-    };
-    ```
-    """
-    binding_id: string
-    subpat: optional[Pat] | child
-
-
-@rust.doc_test_signature("() -> ()")
-class TupleStructPat(Pat):
-    """
-    A tuple struct pattern. For example:
-    ``` 
-    match x {
-        Tuple("a", 1, 2, 3) => "great",
-        Tuple(.., 3) => "fine",
-        Tuple(..) => "fail",
-    };
-    ```
-    """
-    path: optional[Path] | child
-    args: list[Pat] | child
-    ellipsis_index: optional[int]
-
-
-@rust.doc_test_signature("() -> ()")
-class RefPat(Pat):
-    """
-    A reference pattern. For example:
-    ```
-    match x {
-        &mut Option::Some(y) => y,
-        &Option::None => 0,
-    };
-    ```
-    """
-    pat: Pat | child
-    is_mut: predicate
-
-
-@rust.doc_test_signature("() -> ()")
 class BoxPat(Pat):
-    """
-    A box pattern. For example:
-    ```
-    match x {
-        box Option::Some(y) => y,
-        box Option::None => 0,
-    };
-    ```
-    """
-    inner: Pat | child
+    pat: optional["Pat"] | child
 
 
-@rust.doc_test_signature("() -> ()")
+class BreakExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    lifetime: optional["Lifetime"] | child
+
+
+class CallExpr(Expr):
+    arg_list: optional["ArgList"] | child
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class CastExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    ty: optional["TypeRef"] | child
+
+
+class ClosureBinder(AstNode):
+    generic_param_list: optional["GenericParamList"] | child
+
+
+class ClosureExpr(Expr):
+    attrs: list["Attr"] | child
+    body: optional["Expr"] | child
+    closure_binder: optional["ClosureBinder"] | child
+    param_list: optional["ParamList"] | child
+    ret_type: optional["RetType"] | child
+
+
+class Const(AssocItem, Item):
+    attrs: list["Attr"] | child
+    body: optional["Expr"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+    visibility: optional["Visibility"] | child
+
+
+class ConstArg(GenericArg):
+    expr: optional["Expr"] | child
+
+
 class ConstBlockPat(Pat):
-    """
-    A const block pattern. For example:
-    ```
-    match x {
-        const { 1 + 2 + 3 } => "ok",
-        _ => "fail",
-    };
-    ```
-    """
-    expr: Expr | child
+    block_expr: optional["BlockExpr"] | child
+
+
+class ConstParam(GenericParam):
+    attrs: list["Attr"] | child
+    default_val: optional["ConstArg"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+
+
+class ContinueExpr(Expr):
+    attrs: list["Attr"] | child
+    lifetime: optional["Lifetime"] | child
+
+
+class DynTraitType(TypeRef):
+    type_bound_list: optional["TypeBoundList"] | child
+
+
+class Enum(Item):
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    variant_list: optional["VariantList"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class ExprStmt(Stmt):
+    expr: optional["Expr"] | child
+
+
+class ExternBlock(Item):
+    abi: optional["Abi"] | child
+    attrs: list["Attr"] | child
+    extern_item_list: optional["ExternItemList"] | child
+
+
+class ExternCrate(Item):
+    attrs: list["Attr"] | child
+    name_ref: optional["NameRef"] | child
+    rename: optional["Rename"] | child
+    visibility: optional["Visibility"] | child
+
+
+class ExternItemList(AstNode):
+    attrs: list["Attr"] | child
+    extern_items: list["ExternItem"] | child
+
+
+class FieldExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    name_ref: optional["NameRef"] | child
+
+
+class Function(AssocItem, ExternItem, Item):
+    abi: optional["Abi"] | child
+    attrs: list["Attr"] | child
+    body: optional["BlockExpr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    param_list: optional["ParamList"] | child
+    ret_type: optional["RetType"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class FnPtrType(TypeRef):
+    abi: optional["Abi"] | child
+    param_list: optional["ParamList"] | child
+    ret_type: optional["RetType"] | child
+
+
+class ForExpr(Expr):
+    attrs: list["Attr"] | child
+    iterable: optional["Expr"] | child
+    label: optional["Label"] | child
+    loop_body: optional["BlockExpr"] | child
+    pat: optional["Pat"] | child
+
+
+class ForType(TypeRef):
+    generic_param_list: optional["GenericParamList"] | child
+    ty: optional["TypeRef"] | child
+
+
+class FormatArgsArg(AstNode):
+    expr: optional["Expr"] | child
+    name: optional["Name"] | child
+
+
+class FormatArgsExpr(Expr):
+    args: list["FormatArgsArg"] | child
+    attrs: list["Attr"] | child
+    template: optional["Expr"] | child
+
+
+class GenericArgList(AstNode):
+    generic_args: list["GenericArg"] | child
+
+
+class GenericParamList(AstNode):
+    generic_params: list["GenericParam"] | child
+
+
+class IdentPat(Pat):
+    attrs: list["Attr"] | child
+    name: optional["Name"] | child
+    pat: optional["Pat"] | child
+
+
+class IfExpr(Expr):
+    attrs: list["Attr"] | child
+    condition: optional["Expr"] | child
+    else_: optional["Expr"] | child
+    then: optional["BlockExpr"] | child
+
+
+class Impl(Item):
+    assoc_item_list: optional["AssocItemList"] | child
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    self_ty: optional["TypeRef"] | child
+    trait_: optional["TypeRef"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class ImplTraitType(TypeRef):
+    type_bound_list: optional["TypeBoundList"] | child
+
+
+class IndexExpr(Expr):
+    attrs: list["Attr"] | child
+    base: optional["Expr"] | child
+    index: optional["Expr"] | child
+
+
+class InferType(TypeRef):
+    pass
+
+
+class ItemList(AstNode):
+    attrs: list["Attr"] | child
+    items: list["Item"] | child
+
+
+class Label(AstNode):
+    lifetime: optional["Lifetime"] | child
+
+
+class LetElse(AstNode):
+    block_expr: optional["BlockExpr"] | child
+
+
+class LetExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    pat: optional["Pat"] | child
+
+
+class LetStmt(Stmt):
+    attrs: list["Attr"] | child
+    initializer: optional["Expr"] | child
+    let_else: optional["LetElse"] | child
+    pat: optional["Pat"] | child
+    ty: optional["TypeRef"] | child
+
+
+class Lifetime(AstNode):
+    text: optional[string]
+
+
+class LifetimeArg(GenericArg):
+    lifetime: optional["Lifetime"] | child
+
+
+class LifetimeParam(GenericParam):
+    attrs: list["Attr"] | child
+    lifetime: optional["Lifetime"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+
+
+class LiteralExpr(Expr):
+    attrs: list["Attr"] | child
+    text_value: optional[string]
+
+
+class LiteralPat(Pat):
+    literal: optional["LiteralExpr"] | child
+
+
+class LoopExpr(Expr):
+    attrs: list["Attr"] | child
+    label: optional["Label"] | child
+    loop_body: optional["BlockExpr"] | child
+
+
+class MacroCall(AssocItem, ExternItem, Item):
+    attrs: list["Attr"] | child
+    path: optional["Path"] | child
+    token_tree: optional["TokenTree"] | child
+
+
+class MacroDef(Item):
+    args: optional["TokenTree"] | child
+    attrs: list["Attr"] | child
+    body: optional["TokenTree"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+
+
+class MacroExpr(Expr):
+    macro_call: optional["MacroCall"] | child
+
+
+class MacroPat(Pat):
+    macro_call: optional["MacroCall"] | child
+
+
+class MacroRules(Item):
+    attrs: list["Attr"] | child
+    name: optional["Name"] | child
+    token_tree: optional["TokenTree"] | child
+    visibility: optional["Visibility"] | child
+
+
+class MacroType(TypeRef):
+    macro_call: optional["MacroCall"] | child
+
+
+class MatchArm(AstNode):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    guard: optional["MatchGuard"] | child
+    pat: optional["Pat"] | child
+
+
+class MatchArmList(AstNode):
+    arms: list["MatchArm"] | child
+    attrs: list["Attr"] | child
+
+
+class MatchExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    match_arm_list: optional["MatchArmList"] | child
+
+
+class MatchGuard(AstNode):
+    condition: optional["Expr"] | child
+
+
+class Meta(AstNode):
+    expr: optional["Expr"] | child
+    path: optional["Path"] | child
+    token_tree: optional["TokenTree"] | child
+
+
+class MethodCallExpr(Expr):
+    arg_list: optional["ArgList"] | child
+    attrs: list["Attr"] | child
+    generic_arg_list: optional["GenericArgList"] | child
+    name_ref: optional["NameRef"] | child
+    receiver: optional["Expr"] | child
+
+
+class Module(Item):
+    attrs: list["Attr"] | child
+    item_list: optional["ItemList"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+
+
+class Name(AstNode):
+    text: optional[string]
+
+
+class NameRef(AstNode):
+    text: optional[string]
+
+
+class NeverType(TypeRef):
+    pass
+
+
+class OffsetOfExpr(Expr):
+    attrs: list["Attr"] | child
+    fields: list["NameRef"] | child
+    ty: optional["TypeRef"] | child
+
+
+class OrPat(Pat):
+    pats: list["Pat"] | child
+
+
+class Param(AstNode):
+    attrs: list["Attr"] | child
+    pat: optional["Pat"] | child
+    ty: optional["TypeRef"] | child
+
+
+class ParamList(AstNode):
+    params: list["Param"] | child
+    self_param: optional["SelfParam"] | child
+
+
+class ParenExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class ParenPat(Pat):
+    pat: optional["Pat"] | child
+
+
+class ParenType(TypeRef):
+    ty: optional["TypeRef"] | child
+
+
+class Path(AstNode):
+    qualifier: optional["Path"] | child
+    part: optional["PathSegment"] | child
+
+
+class PathExpr(Expr):
+    attrs: list["Attr"] | child
+    path: optional["Path"] | child
+
+
+class PathPat(Pat):
+    path: optional["Path"] | child
+
+
+class PathSegment(AstNode):
+    generic_arg_list: optional["GenericArgList"] | child
+    name_ref: optional["NameRef"] | child
+    param_list: optional["ParamList"] | child
+    path_type: optional["PathType"] | child
+    ret_type: optional["RetType"] | child
+    return_type_syntax: optional["ReturnTypeSyntax"] | child
+    ty: optional["TypeRef"] | child
+
+
+class PathType(TypeRef):
+    path: optional["Path"] | child
+
+
+class PrefixExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    operator_name: optional[string]
+
+
+class PtrType(TypeRef):
+    ty: optional["TypeRef"] | child
+
+
+class RangeExpr(Expr):
+    attrs: list["Attr"] | child
+    end: optional["Expr"] | child
+    operator_name: optional[string]
+    start: optional["Expr"] | child
+
+
+class RangePat(Pat):
+    end: optional["Pat"] | child
+    operator_name: optional[string]
+    start: optional["Pat"] | child
+
+
+class RecordExpr(Expr):
+    path: optional["Path"] | child
+    record_expr_field_list: optional["RecordExprFieldList"] | child
+
+
+class RecordExprField(AstNode):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    name_ref: optional["NameRef"] | child
+
+
+class RecordExprFieldList(AstNode):
+    attrs: list["Attr"] | child
+    fields: list["RecordExprField"] | child
+    spread: optional["Expr"] | child
+
+
+class RecordField(AstNode):
+    attrs: list["Attr"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+    visibility: optional["Visibility"] | child
+
+
+class RecordFieldList(FieldList):
+    fields: list["RecordField"] | child
+
+
+class RecordPat(Pat):
+    path: optional["Path"] | child
+    record_pat_field_list: optional["RecordPatFieldList"] | child
+
+
+class RecordPatField(AstNode):
+    attrs: list["Attr"] | child
+    name_ref: optional["NameRef"] | child
+    pat: optional["Pat"] | child
+
+
+class RecordPatFieldList(AstNode):
+    fields: list["RecordPatField"] | child
+    rest_pat: optional["RestPat"] | child
+
+
+class RefExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class RefPat(Pat):
+    pat: optional["Pat"] | child
+
+
+class RefType(TypeRef):
+    lifetime: optional["Lifetime"] | child
+    ty: optional["TypeRef"] | child
+
+
+class Rename(AstNode):
+    name: optional["Name"] | child
+
+
+class RestPat(Pat):
+    attrs: list["Attr"] | child
+
+
+class RetType(AstNode):
+    ty: optional["TypeRef"] | child
+
+
+class ReturnExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class ReturnTypeSyntax(AstNode):
+    pass
+
+
+class SelfParam(AstNode):
+    attrs: list["Attr"] | child
+    lifetime: optional["Lifetime"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+
+
+class SlicePat(Pat):
+    pats: list["Pat"] | child
+
+
+class SliceType(TypeRef):
+    ty: optional["TypeRef"] | child
+
+
+class SourceFile(AstNode):
+    attrs: list["Attr"] | child
+    items: list["Item"] | child
+
+
+class Static(ExternItem, Item):
+    attrs: list["Attr"] | child
+    body: optional["Expr"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+    visibility: optional["Visibility"] | child
+
+
+class StmtList(AstNode):
+    attrs: list["Attr"] | child
+    statements: list["Stmt"] | child
+    tail_expr: optional["Expr"] | child
+
+
+class Struct(Item):
+    attrs: list["Attr"] | child
+    field_list: optional["FieldList"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class TokenTree(AstNode):
+    pass
+
+
+class Trait(Item):
+    assoc_item_list: optional["AssocItemList"] | child
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class TraitAlias(Item):
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class TryExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class TupleExpr(Expr):
+    attrs: list["Attr"] | child
+    fields: list["Expr"] | child
+
+
+class TupleField(AstNode):
+    attrs: list["Attr"] | child
+    ty: optional["TypeRef"] | child
+    visibility: optional["Visibility"] | child
+
+
+class TupleFieldList(FieldList):
+    fields: list["TupleField"] | child
+
+
+class TuplePat(Pat):
+    fields: list["Pat"] | child
+
+
+class TupleStructPat(Pat):
+    fields: list["Pat"] | child
+    path: optional["Path"] | child
+
+
+class TupleType(TypeRef):
+    fields: list["TypeRef"] | child
+
+
+class TypeAlias(AssocItem, ExternItem, Item):
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    ty: optional["TypeRef"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class TypeArg(GenericArg):
+    ty: optional["TypeRef"] | child
+
+
+class TypeBound(AstNode):
+    generic_param_list: optional["GenericParamList"] | child
+    lifetime: optional["Lifetime"] | child
+    ty: optional["TypeRef"] | child
+
+
+class TypeBoundList(AstNode):
+    bounds: list["TypeBound"] | child
+
+
+class TypeParam(GenericParam):
+    attrs: list["Attr"] | child
+    default_type: optional["TypeRef"] | child
+    name: optional["Name"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+
+
+class UnderscoreExpr(Expr):
+    attrs: list["Attr"] | child
+
+
+class Union(Item):
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    record_field_list: optional["RecordFieldList"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
+
+
+class Use(Item):
+    attrs: list["Attr"] | child
+    use_tree: optional["UseTree"] | child
+    visibility: optional["Visibility"] | child
+
+
+class UseTree(AstNode):
+    path: optional["Path"] | child
+    rename: optional["Rename"] | child
+    use_tree_list: optional["UseTreeList"] | child
+
+
+class UseTreeList(AstNode):
+    use_trees: list["UseTree"] | child
+
+
+class Variant(AstNode):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+    field_list: optional["FieldList"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+
+
+class VariantList(AstNode):
+    variants: list["Variant"] | child
+
+
+class Visibility(AstNode):
+    path: optional["Path"] | child
+
+
+class WhereClause(AstNode):
+    predicates: list["WherePred"] | child
+
+
+class WherePred(AstNode):
+    generic_param_list: optional["GenericParamList"] | child
+    lifetime: optional["Lifetime"] | child
+    ty: optional["TypeRef"] | child
+    type_bound_list: optional["TypeBoundList"] | child
+
+
+class WhileExpr(Expr):
+    attrs: list["Attr"] | child
+    condition: optional["Expr"] | child
+    label: optional["Label"] | child
+    loop_body: optional["BlockExpr"] | child
+
+
+class WildcardPat(Pat):
+    pass
+
+
+class YeetExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child
+
+
+class YieldExpr(Expr):
+    attrs: list["Attr"] | child
+    expr: optional["Expr"] | child

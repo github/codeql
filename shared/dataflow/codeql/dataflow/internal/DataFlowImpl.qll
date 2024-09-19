@@ -2963,16 +2963,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
               or
               // a final step to a sink
-              exists(string l2, string sinkmodel |
-                result = this.getSuccMid(l2).projectToSink(sinkmodel)
+              exists(string l2, string sinkmodel, string l2_ |
+                result = this.getSuccMid(l2).projectToSink(sinkmodel) and
+                if l2 = "" then l2_ = l2 else l2_ = l2 + " "
               |
                 not this.isSourceWithLabel(_) and
-                if sinkmodel != "" then label = l2 + " Sink:" + sinkmodel else label = l2
+                if sinkmodel != "" then label = l2_ + "Sink:" + sinkmodel else label = l2
                 or
                 exists(string l1 |
                   this.isSourceWithLabel(l1) and
                   if sinkmodel != ""
-                  then label = l1 + l2 + " Sink:" + sinkmodel
+                  then label = l1 + l2_ + "Sink:" + sinkmodel
                   else label = l1 + l2
                 )
               )

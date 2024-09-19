@@ -12,10 +12,10 @@
 | SqlEncode.cs:15:46:15:50 | access to local variable query | SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:15:46:15:50 | access to local variable query | This SQL expression may include data from a $@. | SqlEncode.cs:14:62:14:87 | call to method Replace | possibly inappropriately encoded value |
 | UrlEncode.cs:10:31:10:69 | ... + ... | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | This URL expression may include data from a $@. | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode | possibly inappropriately encoded value |
 edges
-| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | provenance |  Sink:MaD:2 |
+| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | provenance | Sink:MaD:2 |
 | InappropriateEncoding.cs:13:13:13:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | provenance |  |
 | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:13:13:13:24 | access to local variable encodedValue : String | provenance |  |
-| InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | provenance |  Sink:MaD:1 |
+| InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | provenance | Sink:MaD:1 |
 | InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue | provenance |  |
 | InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:36:22:36:59 | ... + ... | provenance |  |
 | InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | provenance |  |
@@ -24,7 +24,7 @@ edges
 | InappropriateEncoding.cs:55:13:55:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | provenance |  |
 | InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:55:13:55:24 | access to local variable encodedValue : String | provenance |  |
 | InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | provenance |  |
-| SqlEncode.cs:14:17:14:21 | access to local variable query : String | SqlEncode.cs:15:46:15:50 | access to local variable query | provenance |  Sink:MaD:1 |
+| SqlEncode.cs:14:17:14:21 | access to local variable query : String | SqlEncode.cs:15:46:15:50 | access to local variable query | provenance | Sink:MaD:1 |
 | SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:14:17:14:21 | access to local variable query : String | provenance |  |
 | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | provenance |  |
 models

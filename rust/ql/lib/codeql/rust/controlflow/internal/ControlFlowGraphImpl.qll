@@ -69,16 +69,16 @@ class FunctionTree extends StandardPostOrderTree instanceof Function {
 
 class BlockExprTree extends StandardPostOrderTree instanceof BlockExpr {
   override ControlFlowTree getChildNode(int i) {
-    result = super.getStatement(i)
+    result = super.getStmtList().getStatement(i)
     or
-    not exists(super.getStatement(i)) and
-    (exists(super.getStatement(i - 1)) or i = 0) and
-    result = super.getTail()
+    not exists(super.getStmtList().getStatement(i)) and
+    (exists(super.getStmtList().getStatement(i - 1)) or i = 0) and
+    result = super.getStmtList().getTailExpr()
   }
 }
 
 class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getArg(i) }
+  override ControlFlowTree getChildNode(int i) { result = super.getArgList().getArg(i) }
 }
 
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
@@ -124,6 +124,3 @@ class LetExprTree extends StandardPostOrderTree instanceof LetExpr {
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
-
-// A leaf tree for unimplemented nodes in the AST.
-class UnimplementedTree extends LeafTree instanceof Unimplemented { }

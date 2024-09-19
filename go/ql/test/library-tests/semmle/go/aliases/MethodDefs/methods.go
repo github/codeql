@@ -1,5 +1,7 @@
 package aliases
 
+// Tests how interfaces defining identical types are represented in the database.
+
 type IntAlias = int
 
 type S1 = struct{ x int }

@@ -2,8 +2,8 @@ private import rust
 private import ControlFlowGraph
 private import internal.SuccessorType
 private import internal.ControlFlowGraphImpl as Impl
-private import codeql.rust.generated.Raw
-private import codeql.rust.generated.Synth
+private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Synth
 
 final class BasicBlock = BasicBlockImpl;
 

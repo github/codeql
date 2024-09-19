@@ -171,8 +171,14 @@ signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private import SsaImpl as SsaImpl
+
   /** Gets a node that is safely guarded by the given guard check. */
-  ExprNode getABarrierNode() {
+  pragma[nomagic]
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+    or
     exists(Guard g, Expr e, AbstractValue v |
       guardChecks(g, e, v) and
       g.controlsNode(result.getControlFlowNode(), e, v)
@@ -293,8 +299,11 @@ class ContentSet extends TContentSet {
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
-  /** Holds if this content set represent the field `f`. */
+  /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
+
+  /** Holds if this content set represents the synthetic field `s`. */
+  predicate isSyntheticField(string s) { this.isSingleton(TSyntheticFieldContent(s)) }
 
   /** Holds if this content set represents an element in a collection. */
   predicate isElement() { this.isSingleton(TElementContent()) }
