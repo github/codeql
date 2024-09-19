@@ -41,7 +41,7 @@ abstract private class ConditionalSuccessor extends SuccessorTypeImpl {
   final boolean getValue() { result = value }
 }
 
-/** A boolean control flow successor for a boolean conditon. */
+/** A Boolean control flow successor for a boolean conditon. */
 final class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
   BooleanSuccessor() { this = TBooleanSuccessor(value) }
 

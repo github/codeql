@@ -273,7 +273,7 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
   LetStmtTree() { not trivialPat(super.getPat()) }
 
   final override predicate propagatesAbnormal(AstNode child) {
-    child = super.getInitializer() or child = super.getElse()
+    child = [super.getInitializer(), super.getElse()]
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {

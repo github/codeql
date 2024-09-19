@@ -82,6 +82,22 @@ mod if_expression {
         0
     }
 
+    fn test_nested_if(a: i64) -> i64 {
+        if (if a < 0 { a < -10 } else { a > 10}) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_nested_if_match(a: i64) -> i64 {
+        if (match a { 0 => true, _ => false }) {
+            1
+        } else {
+            0
+        }
+    }
+
 }
 
 mod logical_operators {

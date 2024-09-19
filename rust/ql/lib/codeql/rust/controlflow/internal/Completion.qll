@@ -77,12 +77,30 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override predicate isValidForSpecific(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
+    any(MatchArm arm).getGuard() = e
+    or
     exists(BinaryExpr expr |
       expr.getOp() = ["&&", "||"] and
-      e = [expr.getLhs(), expr.getRhs()]
+      e = expr.getLhs()
     )
     or
-    any(MatchArm arm).getGuard() = e
+    exists(Expr parent | this.isValidForSpecific(parent) |
+      parent =
+        any(PrefixExpr expr |
+          expr.getOp() = "!" and
+          e = expr.getExpr()
+        )
+      or
+      parent =
+        any(BinaryExpr expr |
+          expr.getOp() = ["&&", "||"] and
+          e = expr.getRhs()
+        )
+      or
+      parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
+      or
+      parent = any(BlockExpr be | e = be.getTail())
+    )
   }
 
   /** Gets the dual Boolean completion. */
