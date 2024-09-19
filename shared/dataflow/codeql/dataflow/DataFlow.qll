@@ -676,6 +676,12 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate isAdditionalFlowStep(
+        Node node1, FlowState state1, Node node2, FlowState state2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
     }
 
     import Impl<C>

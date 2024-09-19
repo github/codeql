@@ -63,7 +63,7 @@ module TaintFlowMake<
         Config::isSink(node) or
         Config::isSink(node, _) or
         Config::isAdditionalFlowStep(node, _, _) or
-        Config::isAdditionalFlowStep(node, _, _, _)
+        Config::isAdditionalFlowStep(node, _, _, _, _)
       ) and
       defaultImplicitTaintRead(node, c)
     }
@@ -107,6 +107,13 @@ module TaintFlowMake<
         DataFlowLang::Node node1, DataFlowLang::Node node2, string model
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
+        string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
     }
 
