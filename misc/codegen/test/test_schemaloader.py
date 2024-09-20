@@ -798,8 +798,7 @@ def test_annotate_decorations():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", hideable=True,
-                             pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
+        "Root": schema.Class("Root", hideable=True, pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
     }
 
 

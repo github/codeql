@@ -32,10 +32,14 @@ class Property:
     name: Optional[str] = None
     type: Optional[str] = None
     is_child: bool = False
-    pragmas: List[str] = field(default_factory=list)
+    pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: Optional[str] = None
     description: List[str] = field(default_factory=list)
     synth: bool = False
+
+    def __post_init__(self):
+        if not isinstance(self.pragmas, dict):
+            self.pragmas = dict.fromkeys(self.pragmas, None)
 
     @property
     def is_single(self) -> bool:
@@ -88,7 +92,7 @@ class Class:
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     group: str = ""
-    pragmas: List[str] = field(default_factory=list)
+    pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     synth: Optional[Union[SynthInfo, bool]] = None
     """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
@@ -96,6 +100,10 @@ class Class:
     hideable: bool = False
     test_with: Optional[str] = None
     rust_doc_test_function: Optional["FunctionInfo"] = "() -> ()"  # TODO: parametrized pragmas
+
+    def __post_init__(self):
+        if not isinstance(self.pragmas, dict):
+            self.pragmas = dict.fromkeys(self.pragmas, None)
 
     @property
     def final(self):

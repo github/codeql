@@ -1,4 +1,4 @@
-from typing import Callable as _Callable, List as _List
+from typing import Callable as _Callable, Dict as _Dict
 from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
@@ -94,6 +94,7 @@ class _Pragma(_schema.PropertyModifier):
     For schema classes it acts as a python decorator with `@`.
     """
     pragma: str
+    value: object = None
     remove: bool = False
 
     def __post_init__(self):
@@ -108,20 +109,32 @@ class _Pragma(_schema.PropertyModifier):
 
     def __call__(self, cls: type) -> type:
         """ use this pragma as a decorator on classes """
-        if "_pragmas" in cls.__dict__:  # not using hasattr as we don't want to land on inherited pragmas
-            self._apply(cls._pragmas)
-        elif not self.remove:
-            cls._pragmas = [self.pragma]
+        # not using hasattr as we don't want to land on inherited pragmas
+        if "_pragmas" not in cls.__dict__:
+            cls._pragmas = {}
+        self._apply(cls._pragmas)
         return cls
 
-    def _apply(self, pragmas: _List[str]) -> None:
+    def _apply(self, pragmas: _Dict[str, object]) -> None:
         if self.remove:
-            try:
-                pragmas.remove(self.pragma)
-            except ValueError:
-                pass
+            pragmas.pop(self.pragma, None)
         else:
-            pragmas.append(self.pragma)
+            pragmas[self.pragma] = self.value
+
+
+@_dataclass
+class _ParametrizedPragma:
+    """ A class or property parametrized pragma.
+    Needs to be applied to a parameter to give a pragma.
+    """
+    pragma: str
+    function: _Callable[[...], object] = None
+
+    def __call__(self, *args, **kwargs) -> _Pragma:
+        return _Pragma(self.pragma, value=self.function(*args, **kwargs))
+
+    def __invert__(self) -> _Pragma:
+        return _Pragma(self.pragma, remove=True)
 
 
 class _Optionalizer(_schema.PropertyModifier):
@@ -251,9 +264,9 @@ def annotate(annotated_cls: type) -> _Callable[[type], _PropertyAnnotation]:
         if cls.__doc__ is not None:
             annotated_cls.__doc__ = cls.__doc__
         old_pragmas = getattr(annotated_cls, "_pragmas", None)
-        new_pragmas = getattr(cls, "_pragmas", [])
+        new_pragmas = getattr(cls, "_pragmas", {})
         if old_pragmas:
-            old_pragmas.extend(new_pragmas)
+            old_pragmas.update(new_pragmas)
         else:
             annotated_cls._pragmas = new_pragmas
         for a, v in cls.__dict__.items():

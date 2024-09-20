@@ -49,7 +49,7 @@ def _get_class(cls: type) -> schema.Class:
                         hideable=getattr(cls, "_hideable", False),
                         test_with=_get_name(getattr(cls, "_test_with", None)),
                         # in the following we don't use `getattr` to avoid inheriting
-                        pragmas=cls.__dict__.get("_pragmas", []),
+                        pragmas=cls.__dict__.get("_pragmas", {}),
                         synth=cls.__dict__.get("_synth", None),
                         properties=[
                             a | _PropertyNamer(n)
