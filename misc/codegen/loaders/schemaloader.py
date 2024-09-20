@@ -52,7 +52,6 @@ def _get_class(cls: type) -> schema.Class:
                         derived={d.__name__ for d in cls.__subclasses__()},
                         # getattr to inherit from bases
                         group=getattr(cls, "_group", ""),
-                        hideable=getattr(cls, "_hideable", False),
                         pragmas=pragmas,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[
@@ -110,13 +109,13 @@ def _fill_synth_information(classes: typing.Dict[str, schema.Class]):
 
 def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
     """ Update the class map propagating the `hideable` attribute upwards in the hierarchy """
-    todo = [cls for cls in classes.values() if cls.hideable]
+    todo = [cls for cls in classes.values() if "ql_hideable" in cls.pragmas]
     while todo:
         cls = todo.pop()
         for base in cls.bases:
             supercls = classes[base]
-            if not supercls.hideable:
-                supercls.hideable = True
+            if "ql_hideable" not in supercls.pragmas:
+                supercls.pragmas["ql_hideable"] = None
                 todo.append(supercls)
 
 

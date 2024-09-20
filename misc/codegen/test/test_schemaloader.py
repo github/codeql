@@ -726,11 +726,11 @@ def test_hideable():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, hideable=True),
-        "A": schema.Class("A", bases=["Root"], derived={"B"}, hideable=True),
-        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, hideable=True),
-        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], hideable=True),
-        "NonHideable": schema.Class("NonHideable", bases=["Root"], hideable=False),
+        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, pragmas=["ql_hideable"]),
+        "A": schema.Class("A", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], pragmas=["ql_hideable"]),
+        "NonHideable": schema.Class("NonHideable", bases=["Root"]),
     }
 
 
@@ -808,7 +808,7 @@ def test_annotate_decorations():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", hideable=True, pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
+        "Root": schema.Class("Root", pragmas=["qltest_skip", "cpp_skip", "ql_hideable", "qltest_collapse_hierarchy"]),
     }
 
 

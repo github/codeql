@@ -241,7 +241,7 @@ qltest.add(_ClassPragma("uncollapse_hierarchy"))
 qltest.add(_ParametrizedClassPragma("test_with", inherited=True, factory=_schema.get_type_name))
 
 ql.add(_ParametrizedClassPragma("default_doc_name", factory=lambda doc: doc))
-ql.hideable = _annotate(hideable=True)  # inheritable
+ql.add(_ClassPragma("hideable", inherited=True))
 ql.add(_Pragma("internal"))
 
 cpp.add(_Pragma("skip"))

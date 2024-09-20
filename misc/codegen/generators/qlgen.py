@@ -115,7 +115,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         is_unordered=prop.is_unordered,
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
-        type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
+        type_is_hideable="ql_hideable" in lookup[prop.type].pragmas if prop.type in lookup else False,
         internal="ql_internal" in prop.pragmas,
     )
     if prop.is_single:
@@ -169,7 +169,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
         doc=cls.doc,
-        hideable=cls.hideable,
+        hideable="ql_hideable" in cls.pragmas,
         internal="ql_internal" in cls.pragmas,
     )
 

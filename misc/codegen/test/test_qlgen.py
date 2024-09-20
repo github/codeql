@@ -986,7 +986,7 @@ def test_synth_property(generate_classes):
 
 def test_hideable_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", hideable=True),
+        schema.Class("MyObject", pragmas=["ql_hideable"]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject"), a_ql_class(name="MyObject", final=True, hideable=True, imports=[stub_import_prefix + "MyObject"])),
     }
@@ -994,7 +994,7 @@ def test_hideable_class(generate_classes):
 
 def test_hideable_property(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", hideable=True),
+        schema.Class("MyObject", pragmas=["ql_hideable"]),
         schema.Class("Other", properties=[
             schema.SingleProperty("x", "MyObject"),
         ]),
