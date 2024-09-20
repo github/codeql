@@ -33,6 +33,6 @@ where
   uses.getVersion() = version and
   not isTrustedOrg(repo) and
   not isPinnedCommit(version)
-select uses,
+select uses.getCalleeNode(),
   "Unpinned 3rd party Action '" + name + "' step $@ uses '" + repo + "' with ref '" + version +
     "', not a pinned commit hash", uses, uses.toString()

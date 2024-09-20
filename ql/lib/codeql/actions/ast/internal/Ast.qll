@@ -1147,6 +1147,8 @@ class EnvImpl extends AstNodeImpl, TEnvNode {
 abstract class UsesImpl extends AstNodeImpl {
   abstract string getCallee();
 
+  abstract ScalarValueImpl getCalleeNode();
+
   abstract string getVersion();
 
   int getMajorVersion() {
@@ -1197,6 +1199,8 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     else result = u.getValue()
   }
 
+  override ScalarValueImpl getCalleeNode() { result.getNode() = u }
+
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
   override string getVersion() { result = u.getValue().regexpCapture(usesParser(), 3) }
 
@@ -1229,6 +1233,8 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
           u.getValue().regexpCapture(repoUsesParser(), 2) + "/" +
           u.getValue().regexpCapture(repoUsesParser(), 3)
   }
+
+  override ScalarValueImpl getCalleeNode() { result.getNode() = u }
 
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
   override string getVersion() {
