@@ -754,12 +754,16 @@ def test_test_with():
         class D(Root):
             pass
 
+        class E(B):
+            pass
+
     assert data.classes == {
         "Root": schema.Class("Root", derived=set("ABCD")),
         "A": schema.Class("A", bases=["Root"]),
-        "B": schema.Class("B", bases=["Root"], test_with="A"),
-        "C": schema.Class("C", bases=["Root"], test_with="D"),
+        "B": schema.Class("B", bases=["Root"], pragmas={"qltest_test_with": "A"}, derived={'E'}),
+        "C": schema.Class("C", bases=["Root"], pragmas={"qltest_test_with": "D"}),
         "D": schema.Class("D", bases=["Root"]),
+        "E": schema.Class("E", bases=["B"], pragmas={"qltest_test_with": "A"}),
     }
 
 

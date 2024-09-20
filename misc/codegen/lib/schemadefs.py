@@ -238,7 +238,7 @@ use_for_null = _annotate(null=True)
 qltest.add(_Pragma("skip"))
 qltest.add(_ClassPragma("collapse_hierarchy"))
 qltest.add(_ClassPragma("uncollapse_hierarchy"))
-qltest.test_with = lambda cls: _annotate(test_with=cls)  # inheritable
+qltest.add(_ParametrizedClassPragma("test_with", inherited=True, factory=_schema.get_type_name))
 
 ql.add(_ParametrizedClassPragma("default_doc_name", factory=lambda doc: doc))
 ql.hideable = _annotate(hideable=True)  # inheritable

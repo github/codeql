@@ -53,7 +53,6 @@ def _get_class(cls: type) -> schema.Class:
                         # getattr to inherit from bases
                         group=getattr(cls, "_group", ""),
                         hideable=getattr(cls, "_hideable", False),
-                        test_with=_get_name(getattr(cls, "_test_with", None)),
                         pragmas=pragmas,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[
@@ -123,9 +122,11 @@ def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
 
 def _check_test_with(classes: typing.Dict[str, schema.Class]):
     for cls in classes.values():
-        if cls.test_with is not None and classes[cls.test_with].test_with is not None:
-            raise schema.Error(f"{cls.name} has test_with {cls.test_with} which in turn "
-                               f"has test_with {classes[cls.test_with].test_with}, use that directly")
+        test_with = typing.cast(str, cls.pragmas.get("qltest_test_with"))
+        transitive_test_with = test_with and classes[test_with].pragmas.get("qltest_test_with")
+        if test_with and transitive_test_with:
+            raise schema.Error(f"{cls.name} has test_with {test_with} which in turn "
+                               f"has test_with {transitive_test_with}, use that directly")
 
 
 def load(m: types.ModuleType) -> schema.Schema:

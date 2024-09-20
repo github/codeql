@@ -60,6 +60,7 @@ def generate(opts, renderer):
             if fn:
                 indent = 4 * " "
                 code = [indent + l for l in code]
-            test_with = schema.classes[cls.test_with] if cls.test_with else cls
+            test_with_name = typing.cast(str, cls.pragmas.get("qltest_test_with"))
+            test_with = schema.classes[test_with_name] if test_with_name else cls
             test = opts.ql_test_output / test_with.group / test_with.name / f"gen_{test_name}.rs"
             renderer.render(TestCode(code="\n".join(code), function=fn), test)

@@ -95,7 +95,6 @@ class Class:
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
-    test_with: Optional[str] = None
 
     def __post_init__(self):
         if not isinstance(self.pragmas, dict):
@@ -118,7 +117,7 @@ class Class:
             if synth.on_arguments is not None:
                 for t in synth.on_arguments.values():
                     _check_type(t, known)
-        _check_type(self.test_with, known)
+        _check_type(self.pragmas.get("qltest_test_with"), known)
 
     @property
     def synth(self) -> SynthInfo | bool | None:

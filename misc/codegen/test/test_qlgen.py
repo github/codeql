@@ -749,7 +749,7 @@ def test_test_with(opts, generate_tests):
     write(opts.ql_test_output / "B" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"A", "B"}),
-        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("A", bases=["Base"], pragmas={"qltest_test_with": "B"}),
         schema.Class("B", bases=["Base"]),
     ]) == {
         "B/A.ql": a_ql_class_tester(class_name="A"),

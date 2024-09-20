@@ -107,9 +107,6 @@ class Class:
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
     import_prefix: Optional[str] = None
-    qltest_skip: bool = False
-    qltest_collapse_hierarchy: bool = False
-    qltest_uncollapse_hierarchy: bool = False
     internal: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
