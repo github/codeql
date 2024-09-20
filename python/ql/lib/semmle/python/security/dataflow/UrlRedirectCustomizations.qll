@@ -142,7 +142,7 @@ module UrlRedirect {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier {
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier {
     override predicate sanitizes(FlowState state) {
       // sanitize all flow states
       any()
