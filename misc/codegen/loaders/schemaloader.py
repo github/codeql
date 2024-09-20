@@ -56,7 +56,6 @@ def _get_class(cls: type) -> schema.Class:
                             for n, a in cls.__dict__.get("__annotations__", {}).items()
                         ],
                         doc=schema.split_doc(cls.__doc__),
-                        default_doc_name=cls.__dict__.get("_doc_name"),
                         rust_doc_test_function=cls.__dict__.get("_rust_doc_test_function",
                                                                 schema.Class.rust_doc_test_function)
                         )

@@ -922,7 +922,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar")],
-            default_doc_name="baz"),
+            pragmas={"ql_default_doc_name": "baz"}),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"),
                          a_ql_stub(name="MyObject"),

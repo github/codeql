@@ -1,4 +1,4 @@
-from typing import Callable as _Callable, Dict as _Dict
+from typing import Callable as _Callable, Dict as _Dict, ClassVar as _ClassVar
 from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
@@ -62,11 +62,14 @@ def include(source: str):
     _inspect.currentframe().f_back.f_locals.setdefault("includes", []).append(source)
 
 
+@_dataclass
 class _Namespace:
     """ simple namespacing mechanism """
+    name: str
 
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    def add(self, pragma: "_PragmaBase"):
+        self.__dict__[pragma.pragma] = pragma
+        pragma.pragma = f"{self.name}_{pragma.pragma}"
 
 
 @_dataclass
@@ -77,35 +80,27 @@ class _SynthModifier(_schema.PropertyModifier, _Namespace):
         prop.synth = self.synth
 
     def negate(self) -> "PropertyModifier":
-        return _SynthModifier(False)
+        return _SynthModifier(self.name, False)
 
 
-qltest = _Namespace()
-ql = _Namespace()
-cpp = _Namespace()
-rust = _Namespace()
-synth = _SynthModifier()
+qltest = _Namespace("qltest")
+ql = _Namespace("ql")
+cpp = _Namespace("cpp")
+rust = _Namespace("rust")
+synth = _SynthModifier("synth")
 
 
 @_dataclass
-class _Pragma(_schema.PropertyModifier):
-    """ A class or property pragma.
-    For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
+class _PragmaBase:
+    pragma: str
+
+
+@_dataclass
+class _ClassPragma(_PragmaBase):
+    """ A class pragma.
     For schema classes it acts as a python decorator with `@`.
     """
-    pragma: str
     value: object = None
-    remove: bool = False
-
-    def __post_init__(self):
-        namespace, _, name = self.pragma.partition('_')
-        setattr(globals()[namespace], name, self)
-
-    def modify(self, prop: _schema.Property):
-        self._apply(prop.pragmas)
-
-    def negate(self) -> "PropertyModifier":
-        return _Pragma(self.pragma, remove=True)
 
     def __call__(self, cls: type) -> type:
         """ use this pragma as a decorator on classes """
@@ -116,22 +111,52 @@ class _Pragma(_schema.PropertyModifier):
         return cls
 
     def _apply(self, pragmas: _Dict[str, object]) -> None:
-        if self.remove:
-            pragmas.pop(self.pragma, None)
-        else:
-            pragmas[self.pragma] = self.value
+        pragmas[self.pragma] = self.value
 
 
 @_dataclass
-class _ParametrizedPragma:
+class _Pragma(_ClassPragma, _schema.PropertyModifier):
+    """ A class or property pragma.
+    For properties, it functions similarly to a `_PropertyModifier` with `|`, adding the pragma.
+    For schema classes it acts as a python decorator with `@`.
+    """
+    remove: bool = False
+
+    def modify(self, prop: _schema.Property):
+        self._apply(prop.pragmas)
+
+    def negate(self) -> "PropertyModifier":
+        return _Pragma(self.pragma, remove=True)
+
+    def _apply(self, pragmas: _Dict[str, object]) -> None:
+        if self.remove:
+            pragmas.pop(self.pragma, None)
+        else:
+            super()._apply(pragmas)
+
+
+@_dataclass
+class _ParametrizedClassPragma(_PragmaBase):
+    """ A class parametrized pragma.
+    Needs to be applied to a parameter to give a class pragma.
+    """
+    _pragma_class: _ClassVar[type] = _ClassPragma
+
+    function: _Callable[[...], object] = None
+
+    def __post_init__(self):
+        self.__signature__ = _inspect.signature(self.function).replace(return_annotation=self._pragma_class)
+
+    def __call__(self, *args, **kwargs) -> _pragma_class:
+        return self._pragma_class(self.pragma, value=self.function(*args, **kwargs))
+
+
+@_dataclass
+class _ParametrizedPragma(_ParametrizedClassPragma):
     """ A class or property parametrized pragma.
     Needs to be applied to a parameter to give a pragma.
     """
-    pragma: str
-    function: _Callable[[...], object] = None
-
-    def __call__(self, *args, **kwargs) -> _Pragma:
-        return _Pragma(self.pragma, value=self.function(*args, **kwargs))
+    _pragma_class: _ClassVar[type] = _Pragma
 
     def __invert__(self) -> _Pragma:
         return _Pragma(self.pragma, remove=True)
@@ -203,18 +228,18 @@ desc = _DescModifier
 
 use_for_null = _annotate(null=True)
 
-_Pragma("qltest_skip")
-_Pragma("qltest_collapse_hierarchy")
-_Pragma("qltest_uncollapse_hierarchy")
-qltest.test_with = lambda cls: _annotate(test_with=cls)
+qltest.add(_Pragma("skip"))
+qltest.add(_ClassPragma("collapse_hierarchy"))
+qltest.add(_ClassPragma("uncollapse_hierarchy"))
+qltest.test_with = lambda cls: _annotate(test_with=cls)  # inheritable
 
-ql.default_doc_name = lambda doc: _annotate(doc_name=doc)
-ql.hideable = _annotate(hideable=True)
-_Pragma("ql_internal")
+ql.add(_ParametrizedClassPragma("default_doc_name", lambda doc: doc))
+ql.hideable = _annotate(hideable=True)  # inheritable
+ql.add(_Pragma("internal"))
 
-_Pragma("cpp_skip")
+cpp.add(_Pragma("skip"))
 
-_Pragma("rust_skip_doc_test")
+rust.add(_Pragma("skip_doc_test"))
 
 rust.doc_test_signature = lambda signature: _annotate(rust_doc_test_function=signature)
 

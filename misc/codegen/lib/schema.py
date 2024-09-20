@@ -96,7 +96,6 @@ class Class:
     synth: Optional[Union[SynthInfo, bool]] = None
     """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
-    default_doc_name: Optional[str] = None
     hideable: bool = False
     test_with: Optional[str] = None
     rust_doc_test_function: Optional["FunctionInfo"] = "() -> ()"  # TODO: parametrized pragmas

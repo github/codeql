@@ -269,15 +269,21 @@ def test_builtin_predicate_and_set_children_not_allowed(spec):
                 x: spec | defs.child
 
 
-_pragmas = [(defs.qltest.skip, "qltest_skip"),
-            (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
-            (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
-            (defs.cpp.skip, "cpp_skip"),
-            (defs.ql.internal, "ql_internal"),
-            ]
+_class_pragmas = [
+    (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
+    (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
+]
+
+_property_pragmas = [
+    (defs.qltest.skip, "qltest_skip"),
+    (defs.cpp.skip, "cpp_skip"),
+    (defs.ql.internal, "ql_internal"),
+]
+
+_pragmas = _class_pragmas + _property_pragmas
 
 
-@pytest.mark.parametrize("pragma,expected", _pragmas)
+@pytest.mark.parametrize("pragma,expected", _property_pragmas)
 def test_property_with_pragma(pragma, expected):
     @load
     class data:
@@ -293,7 +299,7 @@ def test_property_with_pragma(pragma, expected):
 
 def test_property_with_pragmas():
     spec = defs.string
-    for pragma, _ in _pragmas:
+    for pragma, _ in _property_pragmas:
         spec |= pragma
 
     @load
@@ -303,7 +309,7 @@ def test_property_with_pragmas():
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
-            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _pragmas]),
+            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _property_pragmas]),
         ]),
     }
 
@@ -636,7 +642,7 @@ def test_class_default_doc_name():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', default_doc_name="b"),
+        'A': schema.Class('A', pragmas={"ql_default_doc_name": "b"}),
     }
 
 
