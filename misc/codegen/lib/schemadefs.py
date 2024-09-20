@@ -241,7 +241,7 @@ cpp.add(_Pragma("skip"))
 
 rust.add(_Pragma("skip_doc_test"))
 
-rust.doc_test_signature = lambda signature: _annotate(rust_doc_test_function=signature)
+rust.add(_ParametrizedClassPragma("doc_test_signature", lambda signature: signature))
 
 
 def group(name: str = "") -> _ClassDecorator:

@@ -98,7 +98,6 @@ class Class:
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
     test_with: Optional[str] = None
-    rust_doc_test_function: Optional["FunctionInfo"] = "() -> ()"  # TODO: parametrized pragmas
 
     def __post_init__(self):
         if not isinstance(self.pragmas, dict):
