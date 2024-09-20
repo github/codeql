@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ExternCrate
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ExternCrate. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ExternCrate extends Generated::ExternCrate { }
 }

@@ -20,6 +20,10 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A Impl. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Impl` class directly.
    * Use the subclass `Impl`, where the following predicates are available.
    */

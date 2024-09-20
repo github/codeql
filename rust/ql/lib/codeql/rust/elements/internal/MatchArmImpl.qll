@@ -12,5 +12,20 @@ private import codeql.rust.elements.internal.generated.MatchArm
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A match arm. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * };
+   * ```
+   * ```rust
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * };
+   * ```
+   */
   class MatchArm extends Generated::MatchArm { }
 }

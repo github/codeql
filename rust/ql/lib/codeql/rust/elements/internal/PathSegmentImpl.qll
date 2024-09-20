@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.PathSegment
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A PathSegment. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class PathSegment extends Generated::PathSegment { }
 }

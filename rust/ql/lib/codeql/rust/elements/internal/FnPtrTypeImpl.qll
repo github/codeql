@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.FnPtrType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A FnPtrType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class FnPtrType extends Generated::FnPtrType { }
 }

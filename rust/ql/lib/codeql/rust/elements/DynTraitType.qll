@@ -7,4 +7,10 @@ private import internal.DynTraitTypeImpl
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A DynTraitType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class DynTraitType = Impl::DynTraitType;

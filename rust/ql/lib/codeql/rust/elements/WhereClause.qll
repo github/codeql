@@ -7,4 +7,10 @@ private import internal.WhereClauseImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.WherePred
 
+/**
+ * A WhereClause. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class WhereClause = Impl::WhereClause;

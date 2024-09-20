@@ -7,4 +7,10 @@ private import internal.ClosureBinderImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericParamList
 
+/**
+ * A ClosureBinder. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ClosureBinder = Impl::ClosureBinder;

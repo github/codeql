@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.WildcardPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A wildcard pattern. For example:
+   * ```rust
+   * let _ = 42;
+   * ```
+   */
   class WildcardPat extends Generated::WildcardPat { }
 }

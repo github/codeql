@@ -15,6 +15,12 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * An or pattern. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) | Option::None => 0,
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::OrPat` class directly.
    * Use the subclass `OrPat`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Rename
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Rename. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Rename extends Generated::Rename { }
 }

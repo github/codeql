@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.PathPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A path pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
+   */
   class PathPat extends Generated::PathPat { }
 }

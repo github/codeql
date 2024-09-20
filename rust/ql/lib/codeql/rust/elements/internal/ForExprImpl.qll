@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ForExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ForExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ForExpr extends Generated::ForExpr { }
 }

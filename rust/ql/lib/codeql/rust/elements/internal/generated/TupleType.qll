@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A TupleType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleType` class directly.
    * Use the subclass `TupleType`, where the following predicates are available.
    */

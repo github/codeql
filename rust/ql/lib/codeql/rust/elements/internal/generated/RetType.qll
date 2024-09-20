@@ -15,6 +15,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A RetType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RetType` class directly.
    * Use the subclass `RetType`, where the following predicates are available.
    */

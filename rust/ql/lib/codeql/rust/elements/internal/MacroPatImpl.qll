@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroPat. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroPat extends Generated::MacroPat { }
 }

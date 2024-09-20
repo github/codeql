@@ -6,4 +6,10 @@
 private import internal.ParenPatImpl
 import codeql.rust.elements.Pat
 
+/**
+ * A ParenPat. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ParenPat = Impl::ParenPat;

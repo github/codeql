@@ -12,5 +12,8 @@ private import codeql.rust.elements.internal.generated.Expr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * The base class for expressions.
+   */
   class Expr extends Generated::Expr { }
 }

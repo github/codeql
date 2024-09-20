@@ -7,4 +7,10 @@ private import internal.TryExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A TryExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TryExpr = Impl::TryExpr;

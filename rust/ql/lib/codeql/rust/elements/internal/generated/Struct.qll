@@ -20,6 +20,10 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A Struct. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Struct` class directly.
    * Use the subclass `Struct`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Path
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A path. For example:
+   * ```rust
+   * foo::bar;
+   * ```
+   */
   class Path extends Generated::Path { }
 }

@@ -17,6 +17,10 @@ import codeql.rust.elements.NameRef
  */
 module Generated {
   /**
+   * A field access expression. For example:
+   * ```rust
+   * x.foo
+   * ```
    * INTERNAL: Do not reference the `Generated::FieldExpr` class directly.
    * Use the subclass `FieldExpr`, where the following predicates are available.
    */

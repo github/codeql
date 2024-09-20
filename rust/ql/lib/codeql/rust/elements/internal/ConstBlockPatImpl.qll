@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.ConstBlockPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A const block pattern. For example:
+   * ```rust
+   * match x {
+   *     const { 1 + 2 + 3 } => "ok",
+   *     _ => "fail",
+   * };
+   * ```
+   */
   class ConstBlockPat extends Generated::ConstBlockPat { }
 }

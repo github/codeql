@@ -11,4 +11,10 @@ import codeql.rust.elements.Item
 import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
 
+/**
+ * A MacroCall. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroCall = Impl::MacroCall;

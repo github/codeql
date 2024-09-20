@@ -17,6 +17,21 @@ import codeql.rust.elements.Lifetime
  */
 module Generated {
   /**
+   * A break expression. For example:
+   * ```rust
+   * loop {
+   *     if not_ready() {
+   *         break;
+   *      }
+   * }
+   * ```
+   * ```rust
+   * let x = 'label: loop {
+   *     if done() {
+   *         break 'label 42;
+   *     }
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
    * Use the subclass `BreakExpr`, where the following predicates are available.
    */

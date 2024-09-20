@@ -10,4 +10,10 @@ import codeql.rust.elements.Lifetime
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRef
 
+/**
+ * A SelfParam. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class SelfParam = Impl::SelfParam;

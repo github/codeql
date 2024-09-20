@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.CastExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A cast expression. For example:
+   * ```rust
+   * value as u64;
+   * ```
+   */
   class CastExpr extends Generated::CastExpr { }
 }

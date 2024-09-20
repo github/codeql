@@ -7,4 +7,10 @@ private import internal.PathImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.PathSegment
 
+/**
+ * A path. For example:
+ * ```rust
+ * foo::bar;
+ * ```
+ */
 final class Path = Impl::Path;

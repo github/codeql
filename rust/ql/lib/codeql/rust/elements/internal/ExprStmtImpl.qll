@@ -12,5 +12,13 @@ private import codeql.rust.elements.internal.generated.ExprStmt
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An expression statement. For example:
+   * ```rust
+   * start();
+   * finish()
+   * use std::env;
+   * ```
+   */
   class ExprStmt extends Generated::ExprStmt { }
 }

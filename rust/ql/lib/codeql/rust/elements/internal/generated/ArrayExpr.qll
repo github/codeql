@@ -16,6 +16,11 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * An array expression. For example:
+   * ```rust
+   * [1, 2, 3];
+   * [1; 10];
+   * ```
    * INTERNAL: Do not reference the `Generated::ArrayExpr` class directly.
    * Use the subclass `ArrayExpr`, where the following predicates are available.
    */

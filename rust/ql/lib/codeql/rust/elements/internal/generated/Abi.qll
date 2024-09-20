@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * A Abi. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Abi` class directly.
    * Use the subclass `Abi`, where the following predicates are available.
    */

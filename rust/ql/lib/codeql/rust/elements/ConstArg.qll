@@ -7,4 +7,10 @@ private import internal.ConstArgImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArg
 
+/**
+ * A ConstArg. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ConstArg = Impl::ConstArg;

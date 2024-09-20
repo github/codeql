@@ -9,4 +9,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.TypeRef
 import codeql.rust.elements.Visibility
 
+/**
+ * A TupleField. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TupleField = Impl::TupleField;

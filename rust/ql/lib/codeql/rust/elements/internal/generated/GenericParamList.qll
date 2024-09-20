@@ -15,6 +15,10 @@ import codeql.rust.elements.GenericParam
  */
 module Generated {
   /**
+   * A GenericParamList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::GenericParamList` class directly.
    * Use the subclass `GenericParamList`, where the following predicates are available.
    */

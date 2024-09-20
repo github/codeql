@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Visibility
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Visibility. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Visibility extends Generated::Visibility { }
 }

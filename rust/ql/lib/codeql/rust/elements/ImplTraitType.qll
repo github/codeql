@@ -7,4 +7,10 @@ private import internal.ImplTraitTypeImpl
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A ImplTraitType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ImplTraitType = Impl::ImplTraitType;

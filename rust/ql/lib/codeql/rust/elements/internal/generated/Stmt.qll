@@ -14,6 +14,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * The base class for statements.
    * INTERNAL: Do not reference the `Generated::Stmt` class directly.
    * Use the subclass `Stmt`, where the following predicates are available.
    */

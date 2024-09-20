@@ -7,4 +7,10 @@ private import internal.ArgListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 
+/**
+ * A ArgList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ArgList = Impl::ArgList;

@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.GenericArgImpl::Impl as GenericArgImpl
  */
 module Generated {
   /**
+   * A ConstArg. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ConstArg` class directly.
    * Use the subclass `ConstArg`, where the following predicates are available.
    */

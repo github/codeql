@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ExternBlock
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ExternBlock. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ExternBlock extends Generated::ExternBlock { }
 }

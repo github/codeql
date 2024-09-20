@@ -10,4 +10,19 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.MatchGuard
 import codeql.rust.elements.Pat
 
+/**
+ * A match arm. For example:
+ * ```rust
+ * match x {
+ *     Option::Some(y) => y,
+ *     Option::None => 0,
+ * };
+ * ```
+ * ```rust
+ * match x {
+ *     Some(y) if y != 0 => 1 / y,
+ *     _ => 0,
+ * };
+ * ```
+ */
 final class MatchArm = Impl::MatchArm;

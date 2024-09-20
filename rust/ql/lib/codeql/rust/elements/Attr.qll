@@ -7,4 +7,10 @@ private import internal.AttrImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Meta
 
+/**
+ * A Attr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Attr = Impl::Attr;

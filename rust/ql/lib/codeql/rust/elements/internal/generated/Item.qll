@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
  */
 module Generated {
   /**
+   * A Item. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.
    */

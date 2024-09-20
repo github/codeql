@@ -17,6 +17,18 @@ import codeql.rust.elements.StmtList
  */
 module Generated {
   /**
+   * A block expression. For example:
+   * ```rust
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```rust
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
    * Use the subclass `BlockExpr`, where the following predicates are available.
    */

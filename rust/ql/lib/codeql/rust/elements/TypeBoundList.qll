@@ -7,4 +7,10 @@ private import internal.TypeBoundListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.TypeBound
 
+/**
+ * A TypeBoundList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TypeBoundList = Impl::TypeBoundList;

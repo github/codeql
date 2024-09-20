@@ -6,4 +6,10 @@
 private import internal.ItemImpl
 import codeql.rust.elements.Stmt
 
+/**
+ * A Item. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Item = Impl::Item;

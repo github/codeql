@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.LetElse
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A LetElse. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class LetElse extends Generated::LetElse { }
 }

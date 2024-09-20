@@ -8,4 +8,13 @@ import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 import codeql.rust.elements.RecordPatFieldList
 
+/**
+ * A record pattern. For example:
+ * ```rust
+ * match x {
+ *     Foo { a: 1, b: 2 } => "ok",
+ *     Foo { .. } => "fail",
+ * }
+ * ```
+ */
 final class RecordPat = Impl::RecordPat;

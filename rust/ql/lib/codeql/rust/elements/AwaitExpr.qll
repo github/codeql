@@ -7,4 +7,13 @@ private import internal.AwaitExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * An `await` expression. For example:
+ * ```rust
+ * async {
+ *     let x = foo().await;
+ *     x
+ * }
+ * ```
+ */
 final class AwaitExpr = Impl::AwaitExpr;

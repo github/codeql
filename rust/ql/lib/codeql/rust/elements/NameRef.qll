@@ -6,4 +6,10 @@
 private import internal.NameRefImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A NameRef. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class NameRef = Impl::NameRef;

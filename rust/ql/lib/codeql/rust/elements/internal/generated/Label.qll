@@ -15,6 +15,13 @@ import codeql.rust.elements.Lifetime
  */
 module Generated {
   /**
+   * A label. For example:
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::Label` class directly.
    * Use the subclass `Label`, where the following predicates are available.
    */

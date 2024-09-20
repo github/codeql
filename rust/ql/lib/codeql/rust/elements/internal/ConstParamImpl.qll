@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ConstParam
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ConstParam. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ConstParam extends Generated::ConstParam { }
 }

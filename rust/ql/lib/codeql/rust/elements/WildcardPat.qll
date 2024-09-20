@@ -6,4 +6,10 @@
 private import internal.WildcardPatImpl
 import codeql.rust.elements.Pat
 
+/**
+ * A wildcard pattern. For example:
+ * ```rust
+ * let _ = 42;
+ * ```
+ */
 final class WildcardPat = Impl::WildcardPat;

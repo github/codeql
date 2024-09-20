@@ -18,6 +18,10 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A MacroRules. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MacroRules` class directly.
    * Use the subclass `MacroRules`, where the following predicates are available.
    */

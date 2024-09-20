@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A MacroPat. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MacroPat` class directly.
    * Use the subclass `MacroPat`, where the following predicates are available.
    */

@@ -17,6 +17,19 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A binding pattern. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * };
+   * ```
+   * ```rust
+   * match x {
+   *     y@Option::Some(_) => y,
+   *     Option::None => 0,
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::IdentPat` class directly.
    * Use the subclass `IdentPat`, where the following predicates are available.
    */

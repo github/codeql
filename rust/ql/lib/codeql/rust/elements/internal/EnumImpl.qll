@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Enum
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Enum. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Enum extends Generated::Enum { }
 }

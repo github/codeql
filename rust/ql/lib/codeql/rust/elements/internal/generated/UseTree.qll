@@ -17,6 +17,10 @@ import codeql.rust.elements.UseTreeList
  */
 module Generated {
   /**
+   * A UseTree. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::UseTree` class directly.
    * Use the subclass `UseTree`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.LifetimeArg
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A LifetimeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class LifetimeArg extends Generated::LifetimeArg { }
 }

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Impl
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Impl. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Impl extends Generated::Impl { }
 }

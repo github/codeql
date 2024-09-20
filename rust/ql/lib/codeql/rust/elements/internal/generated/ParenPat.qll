@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A ParenPat. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ParenPat` class directly.
    * Use the subclass `ParenPat`, where the following predicates are available.
    */

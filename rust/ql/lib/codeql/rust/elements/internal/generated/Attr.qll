@@ -15,6 +15,10 @@ import codeql.rust.elements.Meta
  */
 module Generated {
   /**
+   * A Attr. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Attr` class directly.
    * Use the subclass `Attr`, where the following predicates are available.
    */

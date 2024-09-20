@@ -14,6 +14,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * The base class for patterns.
    * INTERNAL: Do not reference the `Generated::Pat` class directly.
    * Use the subclass `Pat`, where the following predicates are available.
    */

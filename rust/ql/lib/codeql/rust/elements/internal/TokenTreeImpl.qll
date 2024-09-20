@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TokenTree
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TokenTree. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TokenTree extends Generated::TokenTree { }
 }
