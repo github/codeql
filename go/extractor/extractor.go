@@ -159,13 +159,18 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
-		log.Printf("Processing package %s.", pkg.PkgPath)
+		// Note that if test extraction is enabled, we will encounter a package twice here:
+		// once as the main package, and once as the test package (with a package ID like
+		// "abc.com/pkgname [abc.com/pkgname.test]").
+		//
+		// We will extract it both times however, because we need to visit the packages
+		// in the right order in order to visit used types before their users, and the
+		// ordering determined by packages.Visit for the main and the test package may differ.
+		//
+		// This should only cause some wasted time and not inconsistency because the names for
+		// objects seen in this process should be the same each time.
 
-		// If this is a variant of a package that also occurs with a shorter ID, skip it.
-		if pkg.ID != longestPackageIds[pkg.PkgPath] {
-			log.Printf("Skipping variant of package %s with ID %s.", pkg.PkgPath, pkg.ID)
-			return
-		}
+		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
 			pkgInfos[pkg.PkgPath] = toolchain.GetPkgInfo(pkg.PkgPath, modFlags...)
@@ -242,9 +247,15 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 
-		// If this is a variant of a package that also occurs with a longer ID, skip it.
+		// If this is a variant of a package that also occurs with a longer ID, skip it;
+		// otherwise we would extract the same file more than once including extracting the
+		// body of methods twice, causing database inconsistencies.
+		//
+		// We prefer the version with the longest ID because that is (so far as I know) always
+		// the version that defines more entities -- the only case I'm aware of being a test
+		// variant of a package, which includes test-only functions in addition to the complete
+		// contents of the main variant.
 		if pkg.ID != longestPackageIds[pkg.PkgPath] {
-			// Don't log here; we already mentioned this above.
 			return
 		}
 
