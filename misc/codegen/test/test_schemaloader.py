@@ -1,6 +1,7 @@
 import sys
 
 import pytest
+from misc.codegen.lib.schemadefs import optional
 
 from misc.codegen.test.utils import *
 from misc.codegen.lib import schemadefs as defs
@@ -762,6 +763,9 @@ def test_annotate_docstring():
         class Root:
             """ old docstring """
 
+        class A(Root):
+            """ A docstring """
+
         @defs.annotate(Root)
         class _:
             """
@@ -769,9 +773,91 @@ def test_annotate_docstring():
             docstring
             """
 
+        @defs.annotate(A)
+        class _:
+            pass
+
     assert data.classes == {
-        "Root": schema.Class("Root", doc=["new", "docstring"]),
+        "Root": schema.Class("Root", doc=["new", "docstring"], derived={"A"}),
+        "A": schema.Class("A", bases=["Root"], doc=["A docstring"]),
     }
+
+
+def test_annotate_decorations():
+    @load
+    class data:
+        @defs.qltest.skip
+        class Root:
+            pass
+
+        @defs.annotate(Root)
+        @defs.qltest.collapse_hierarchy
+        @defs.ql.hideable
+        @defs.cpp.skip
+        class _:
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", hideable=True,
+                             pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
+    }
+
+
+def test_annotate_fields():
+    @load
+    class data:
+        class Root:
+            x: defs.int
+            y: defs.optional["Root"] | defs.child
+
+        @defs.annotate(Root)
+        class _:
+            x: defs._ | defs.doc("foo")
+            y: defs._ | defs.ql.internal
+            z: defs.string
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int", doc="foo"),
+            schema.OptionalProperty("y", "Root", pragmas=["ql_internal"], is_child=True),
+            schema.SingleProperty("z", "string"),
+        ]),
+    }
+
+
+def test_annotate_fields_negations():
+    @load
+    class data:
+        class Root:
+            x: defs.int | defs.ql.internal | defs.qltest.skip
+            y: defs.optional["Root"] | defs.child | defs.desc("foo\nbar\n")
+            z: defs.string | defs.synth | defs.doc("foo")
+
+        @defs.annotate(Root)
+        class _:
+            x: defs._ | ~defs.ql.internal
+            y: defs._ | ~defs.child | ~defs.ql.internal | ~defs.desc
+            z: defs._ | ~defs.synth | ~defs.doc
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int", pragmas=["qltest_skip"]),
+            schema.OptionalProperty("y", "Root"),
+            schema.SingleProperty("z", "string"),
+        ]),
+    }
+
+
+def test_annotate_non_existing_field():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.annotate(Root)
+            class _:
+                x: defs._ | defs.doc("foo")
 
 
 def test_annotate_not_underscore():
