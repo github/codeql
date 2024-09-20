@@ -185,15 +185,15 @@ def test_synth_classes_ignored(generate):
     assert generate([
         schema.Class(
             name="W",
-            synth=schema.SynthInfo(),
+            pragmas={"synth": schema.SynthInfo()},
         ),
         schema.Class(
             name="X",
-            synth=schema.SynthInfo(from_class="A"),
+            pragmas={"synth": schema.SynthInfo(from_class="A")},
         ),
         schema.Class(
             name="Y",
-            synth=schema.SynthInfo(on_arguments={"a": "A", "b": "int"}),
+            pragmas={"synth": schema.SynthInfo(on_arguments={"a": "A", "b": "int"})},
         ),
         schema.Class(
             name="Z",
