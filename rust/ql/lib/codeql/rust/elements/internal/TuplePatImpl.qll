@@ -12,5 +12,12 @@ private import codeql.rust.elements.internal.generated.TuplePat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A tuple pattern. For example:
+   * ```rust
+   * let (x, y) = (1, 2);
+   * let (a, b, ..,  z) = (1, 2, 3, 4, 5);
+   * ```
+   */
   class TuplePat extends Generated::TuplePat { }
 }

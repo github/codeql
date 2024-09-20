@@ -15,6 +15,13 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A literal pattern. For example:
+   * ```rust
+   * match x {
+   *     42 => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::LiteralPat` class directly.
    * Use the subclass `LiteralPat`, where the following predicates are available.
    */

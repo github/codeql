@@ -14,6 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * The base class for type references.
+   * ```rust
+   * let x: i32;
+   * let y: Vec<i32>;
+   * let z: Option<i32>;
+   * ```
    * INTERNAL: Do not reference the `Generated::TypeRef` class directly.
    * Use the subclass `TypeRef`, where the following predicates are available.
    */

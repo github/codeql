@@ -16,6 +16,10 @@ import codeql.rust.elements.PathSegment
  */
 module Generated {
   /**
+   * A path. For example:
+   * ```rust
+   * foo::bar;
+   * ```
    * INTERNAL: Do not reference the `Generated::Path` class directly.
    * Use the subclass `Path`, where the following predicates are available.
    */

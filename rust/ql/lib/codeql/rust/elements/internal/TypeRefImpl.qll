@@ -12,5 +12,13 @@ private import codeql.rust.elements.internal.generated.TypeRef
  * be referenced directly.
  */
 module Impl {
+  /**
+   * The base class for type references.
+   * ```rust
+   * let x: i32;
+   * let y: Vec<i32>;
+   * let z: Option<i32>;
+   * ```
+   */
   class TypeRef extends Generated::TypeRef { }
 }

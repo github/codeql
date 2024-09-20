@@ -16,6 +16,13 @@ import codeql.rust.elements.RecordExprFieldList
  */
 module Generated {
   /**
+   * A record expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * Foo { a: 1, b: 2 }[2] = 10;
+   * Foo { .. } = second;
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordExpr` class directly.
    * Use the subclass `RecordExpr`, where the following predicates are available.
    */

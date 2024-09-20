@@ -12,5 +12,13 @@ private import codeql.rust.elements.internal.generated.LetExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A `let` expression. For example:
+   * ```rust
+   * if let Some(x) = maybe_some {
+   *     println!("{}", x);
+   * }
+   * ```
+   */
   class LetExpr extends Generated::LetExpr { }
 }

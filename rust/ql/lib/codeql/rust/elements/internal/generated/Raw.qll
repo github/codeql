@@ -117,6 +117,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
 
@@ -171,6 +172,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for generic arguments.
+   * ```rust
+   * x.foo::<u32, u64>(42);
+   * ```
    */
   class GenericArgList extends @generic_arg_list, AstNode {
     override string toString() { result = "GenericArgList" }
@@ -219,6 +224,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A label. For example:
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
    */
   class Label extends @label, AstNode {
     override string toString() { result = "Label" }
@@ -255,6 +267,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A match arm. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * };
+   * ```
+   * ```rust
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * };
+   * ```
    */
   class MatchArm extends @match_arm, AstNode {
     override string toString() { result = "MatchArm" }
@@ -396,11 +421,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for patterns.
    */
   class Pat extends @pat, AstNode { }
 
   /**
    * INTERNAL: Do not use.
+   * A path. For example:
+   * ```rust
+   * foo::bar;
+   * ```
    */
   class Path extends @path, AstNode {
     override string toString() { result = "Path" }
@@ -460,6 +490,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field in a record expression. For example `a: 1` in:
+   * ```rust
+   * Foo { a: 1, b: 2 };
+   * ```
    */
   class RecordExprField extends @record_expr_field, AstNode {
     override string toString() { result = "RecordExprField" }
@@ -531,6 +565,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field in a record pattern. For example `a: 1` in:
+   * ```rust
+   * let Foo { a: 1, b: 2 } = foo;
+   * ```
    */
   class RecordPatField extends @record_pat_field, AstNode {
     override string toString() { result = "RecordPatField" }
@@ -645,6 +683,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for statements.
    */
   class Stmt extends @stmt, AstNode { }
 
@@ -735,6 +774,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for type references.
+   * ```rust
+   * let x: i32;
+   * let y: Vec<i32>;
+   * let z: Option<i32>;
+   * ```
    */
   class TypeRef extends @type_ref, AstNode { }
 
@@ -869,6 +914,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An array expression. For example:
+   * ```rust
+   * [1, 2, 3];
+   * [1; 10];
+   * ```
    */
   class ArrayExpr extends @array_expr, Expr {
     override string toString() { result = "ArrayExpr" }
@@ -903,6 +953,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```rust
+   * unsafe {
+   *     builtin # asm(_);
+   * }
+   * ```
    */
   class AsmExpr extends @asm_expr, Expr {
     override string toString() { result = "AsmExpr" }
@@ -967,6 +1023,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An `await` expression. For example:
+   * ```rust
+   * async {
+   *     let x = foo().await;
+   *     x
+   * }
+   * ```
    */
   class AwaitExpr extends @await_expr, Expr {
     override string toString() { result = "AwaitExpr" }
@@ -984,6 +1047,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `become` expression. For example:
+   * ```rust
+   * fn fact_a(n: i32, a: i32) -> i32 {
+   *      if n == 0 {
+   *          a
+   *      } else {
+   *          become fact_a(n - 1, n * a)
+   *      }
+   * }
+   * ```
    */
   class BecomeExpr extends @become_expr, Expr {
     override string toString() { result = "BecomeExpr" }
@@ -1001,6 +1074,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A binary operation expression. For example:
+   * ```rust
+   * x + y;
+   * x && y;
+   * x <= y;
+   * x = y;
+   * x += y;
+   * ```
    */
   class BinaryExpr extends @binary_expr, Expr {
     override string toString() { result = "BinaryExpr" }
@@ -1028,6 +1109,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A block expression. For example:
+   * ```rust
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```rust
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
    */
   class BlockExpr extends @block_expr, Expr {
     override string toString() { result = "BlockExpr" }
@@ -1050,6 +1143,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A box pattern. For example:
+   * ```rust
+   * match x {
+   *     box Option::Some(y) => y,
+   *     box Option::None => 0,
+   * };
+   * ```
    */
   class BoxPat extends @box_pat, Pat {
     override string toString() { result = "BoxPat" }
@@ -1062,6 +1162,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A break expression. For example:
+   * ```rust
+   * loop {
+   *     if not_ready() {
+   *         break;
+   *      }
+   * }
+   * ```
+   * ```rust
+   * let x = 'label: loop {
+   *     if done() {
+   *         break 'label 42;
+   *     }
+   * };
+   * ```
    */
   class BreakExpr extends @break_expr, Expr {
     override string toString() { result = "BreakExpr" }
@@ -1084,6 +1199,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function call expression. For example:
+   * ```rust
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * foo(1) = 4;
+   * ```
    */
   class CallExpr extends @call_expr, Expr {
     override string toString() { result = "CallExpr" }
@@ -1106,6 +1228,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A cast expression. For example:
+   * ```rust
+   * value as u64;
+   * ```
    */
   class CastExpr extends @cast_expr, Expr {
     override string toString() { result = "CastExpr" }
@@ -1128,6 +1254,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A closure expression. For example:
+   * ```rust
+   * |x| x + 1;
+   * move |x: i32| -> i32 { x + 1 };
+   * async |x: i32, y| x + y;
+   *  #[coroutine]
+   * |x| yield x;
+   *  #[coroutine]
+   *  static |x| yield x;
+   * ```
    */
   class ClosureExpr extends @closure_expr, Expr {
     override string toString() { result = "ClosureExpr" }
@@ -1172,6 +1308,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A const block pattern. For example:
+   * ```rust
+   * match x {
+   *     const { 1 + 2 + 3 } => "ok",
+   *     _ => "fail",
+   * };
+   * ```
    */
   class ConstBlockPat extends @const_block_pat, Pat {
     override string toString() { result = "ConstBlockPat" }
@@ -1211,6 +1354,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A continue expression. For example:
+   * ```rust
+   * loop {
+   *     if not_ready() {
+   *         continue;
+   *     }
+   * }
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     if not_ready() {
+   *         continue 'label;
+   *     }
+   * }
+   * ```
    */
   class ContinueExpr extends @continue_expr, Expr {
     override string toString() { result = "ContinueExpr" }
@@ -1240,6 +1398,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression statement. For example:
+   * ```rust
+   * start();
+   * finish()
+   * use std::env;
+   * ```
    */
   class ExprStmt extends @expr_stmt, Stmt {
     override string toString() { result = "ExprStmt" }
@@ -1252,6 +1416,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A field access expression. For example:
+   * ```rust
+   * x.foo
+   * ```
    */
   class FieldExpr extends @field_expr, Expr {
     override string toString() { result = "FieldExpr" }
@@ -1367,6 +1535,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A binding pattern. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * };
+   * ```
+   * ```rust
+   * match x {
+   *     y@Option::Some(_) => y,
+   *     Option::None => 0,
+   * };
+   * ```
    */
   class IdentPat extends @ident_pat, Pat {
     override string toString() { result = "IdentPat" }
@@ -1389,6 +1570,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An `if` expression. For example:
+   * ```rust
+   * if x == 42 {
+   *     println!("that's the answer");
+   * }
+   * ```
+   * ```rust
+   * let y = if x > 0 {
+   *     1
+   * } else {
+   *     0
+   * }
+   * ```
    */
   class IfExpr extends @if_expr, Expr {
     override string toString() { result = "IfExpr" }
@@ -1428,6 +1622,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An index expression. For example:
+   * ```rust
+   * list[42];
+   * list[42] = 1;
+   * ```
    */
   class IndexExpr extends @index_expr, Expr {
     override string toString() { result = "IndexExpr" }
@@ -1462,6 +1661,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `let` expression. For example:
+   * ```rust
+   * if let Some(x) = maybe_some {
+   *     println!("{}", x);
+   * }
+   * ```
    */
   class LetExpr extends @let_expr, Expr {
     override string toString() { result = "LetExpr" }
@@ -1484,6 +1689,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A let statement. For example:
+   * ```rust
+   * let x = 42;
+   * let x: i32 = 42;
+   * let x: i32;
+   * let x;
+   * let (x, y) = (1, 2);
+   * let Some(x) = std::env::var("FOO") else {
+   *     return;
+   * };
+   * ```
    */
   class LetStmt extends @let_stmt, Stmt {
     override string toString() { result = "LetStmt" }
@@ -1550,6 +1766,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A literal expression. For example:
+   * ```rust
+   * 42;
+   * 42.0;
+   * "Hello, world!";
+   * b"Hello, world!";
+   * 'x';
+   * b'x';
+   * r"Hello, world!";
+   * true;
+   * ```
    */
   class LiteralExpr extends @literal_expr, Expr {
     override string toString() { result = "LiteralExpr" }
@@ -1567,6 +1794,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A literal pattern. For example:
+   * ```rust
+   * match x {
+   *     42 => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    */
   class LiteralPat extends @literal_pat, Pat {
     override string toString() { result = "LiteralPat" }
@@ -1579,6 +1813,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
    */
   class LoopExpr extends @loop_expr, Expr {
     override string toString() { result = "LoopExpr" }
@@ -1637,6 +1893,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A match expression. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) => y,
+   *     Option::None => 0,
+   * }
+   * ```
+   * ```rust
+   * match x {
+   *     Some(y) if y != 0 => 1 / y,
+   *     _ => 0,
+   * }
+   * ```
    */
   class MatchExpr extends @match_expr, Expr {
     override string toString() { result = "MatchExpr" }
@@ -1659,6 +1928,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A method call expression. For example:
+   * ```rust
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
+   * ```
    */
   class MethodCallExpr extends @method_call_expr, Expr {
     override string toString() { result = "MethodCallExpr" }
@@ -1698,6 +1972,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   *  An `offset_of` expression. For example:
+   * ```rust
+   * builtin # offset_of(Struct, field);
+   * ```
    */
   class OffsetOfExpr extends @offset_of_expr, Expr {
     override string toString() { result = "OffsetOfExpr" }
@@ -1720,6 +1998,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An or pattern. For example:
+   * ```rust
+   * match x {
+   *     Option::Some(y) | Option::None => 0,
+   * }
+   * ```
    */
   class OrPat extends @or_pat, Pat {
     override string toString() { result = "OrPat" }
@@ -1773,6 +2057,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path expression. For example:
+   * ```rust
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <TypeRef as Trait>::foo;
+   * ```
    */
   class PathExpr extends @path_expr, Expr {
     override string toString() { result = "PathExpr" }
@@ -1790,6 +2081,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
    */
   class PathPat extends @path_pat, Pat {
     override string toString() { result = "PathPat" }
@@ -1814,6 +2112,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A unary operation expression. For example:
+   * ```rust
+   * let x = -42
+   * let y = !true
+   * let z = *ptr
+   * ```
    */
   class PrefixExpr extends @prefix_expr, Expr {
     override string toString() { result = "PrefixExpr" }
@@ -1848,6 +2152,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A range expression. For example:
+   * ```rust
+   * let x = 1..=10;
+   * let x = 1..10;
+   * let x = 10..;
+   * let x = ..10;
+   * let x = ..=10;
+   * let x = ..;
+   * ```
    */
   class RangeExpr extends @range_expr, Expr {
     override string toString() { result = "RangeExpr" }
@@ -1875,6 +2188,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A range pattern. For example:
+   * ```rust
+   * match x {
+   *     ..15 => "too cold",
+   *     16..=25 => "just right",
+   *     26.. => "too hot",
+   * }
+   * ```
    */
   class RangePat extends @range_pat, Pat {
     override string toString() { result = "RangePat" }
@@ -1897,6 +2218,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A record expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * Foo { a: 1, b: 2 }[2] = 10;
+   * Foo { .. } = second;
+   * ```
    */
   class RecordExpr extends @record_expr, Expr {
     override string toString() { result = "RecordExpr" }
@@ -1928,6 +2256,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A record pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
    */
   class RecordPat extends @record_pat, Pat {
     override string toString() { result = "RecordPat" }
@@ -1945,6 +2280,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A reference expression. For example:
+   * ```rust
+   *     let ref_const = &foo;
+   *     let ref_mut = &mut foo;
+   *     let raw_const: &mut i32 = &raw const foo;
+   *     let raw_mut: &mut i32 = &raw mut foo;
+   * ```
    */
   class RefExpr extends @ref_expr, Expr {
     override string toString() { result = "RefExpr" }
@@ -1962,6 +2304,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A reference pattern. For example:
+   * ```rust
+   * match x {
+   *     &mut Option::Some(y) => y,
+   *     &Option::None => 0,
+   * };
+   * ```
    */
   class RefPat extends @ref_pat, Pat {
     override string toString() { result = "RefPat" }
@@ -2003,6 +2352,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A return expression. For example:
+   * ```rust
+   * fn some_value() -> i32 {
+   *     return 42;
+   * }
+   * ```
+   * ```rust
+   * fn no_value() -> () {
+   *     return;
+   * }
+   * ```
    */
   class ReturnExpr extends @return_expr, Expr {
     override string toString() { result = "ReturnExpr" }
@@ -2020,6 +2380,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A slice pattern. For example:
+   * ```rust
+   * match x {
+   *     [1, 2, 3, 4, 5] => "ok",
+   *     [1, 2, ..] => "fail",
+   *     [x, y, .., z, 7] => "fail",
+   * }
+   * ```
    */
   class SlicePat extends @slice_pat, Pat {
     override string toString() { result = "SlicePat" }
@@ -2061,6 +2429,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple expression. For example:
+   * ```rust
+   * (1, "one");
+   * (2, "two")[0] = 3;
+   * ```
    */
   class TupleExpr extends @tuple_expr, Expr {
     override string toString() { result = "TupleExpr" }
@@ -2090,6 +2463,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple pattern. For example:
+   * ```rust
+   * let (x, y) = (1, 2);
+   * let (a, b, ..,  z) = (1, 2, 3, 4, 5);
+   * ```
    */
   class TuplePat extends @tuple_pat, Pat {
     override string toString() { result = "TuplePat" }
@@ -2102,6 +2480,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A tuple struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
    */
   class TupleStructPat extends @tuple_struct_pat, Pat {
     override string toString() { result = "TupleStructPat" }
@@ -2170,6 +2556,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An underscore expression. For example:
+   * ```rust
+   * _ = 42;
+   * ```
    */
   class UnderscoreExpr extends @underscore_expr, Expr {
     override string toString() { result = "UnderscoreExpr" }
@@ -2209,6 +2599,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A wildcard pattern. For example:
+   * ```rust
+   * let _ = 42;
+   * ```
    */
   class WildcardPat extends @wildcard_pat, Pat {
     override string toString() { result = "WildcardPat" }
@@ -2216,6 +2610,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `yeet` expression. For example:
+   * ```rust
+   * if x < size {
+   *    do yeet "index out of bounds";
+   * }
+   * ```
    */
   class YeetExpr extends @yeet_expr, Expr {
     override string toString() { result = "YeetExpr" }
@@ -2233,6 +2633,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `yield` expression. For example:
+   * ```rust
+   * let one = #[coroutine]
+   *     || {
+   *         yield 1;
+   *     };
+   * ```
    */
   class YieldExpr extends @yield_expr, Expr {
     override string toString() { result = "YieldExpr" }
@@ -2368,6 +2775,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function declaration. For example
+   * ```rust
+   * fn foo(x: u32) -> u64 {(x + 1).into()}
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```rust
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
    */
   class Function extends @function, AssocItem, ExternItem, Item {
     override string toString() { result = "Function" }
@@ -2543,6 +2960,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A module declaration. For example:
+   * ```rust
+   * mod foo;
+   * ```
+   * ```rust
+   * mod bar {
+   *     pub fn baz() {}
+   * }
+   * ```
    */
   class Module extends @module, Item {
     override string toString() { result = "Module" }

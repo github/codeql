@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.RecordPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A record pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
+   */
   class RecordPat extends Generated::RecordPat { }
 }

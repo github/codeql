@@ -12,5 +12,29 @@ private import codeql.rust.elements.internal.generated.LoopExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
+   */
   class LoopExpr extends Generated::LoopExpr { }
 }

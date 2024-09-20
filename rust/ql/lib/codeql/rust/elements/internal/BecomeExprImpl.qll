@@ -12,5 +12,17 @@ private import codeql.rust.elements.internal.generated.BecomeExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A `become` expression. For example:
+   * ```rust
+   * fn fact_a(n: i32, a: i32) -> i32 {
+   *      if n == 0 {
+   *          a
+   *      } else {
+   *          become fact_a(n - 1, n * a)
+   *      }
+   * }
+   * ```
+   */
   class BecomeExpr extends Generated::BecomeExpr { }
 }

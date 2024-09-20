@@ -8,4 +8,13 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Path
 
+/**
+ * A path expression. For example:
+ * ```rust
+ * let x = variable;
+ * let x = foo::bar;
+ * let y = <T>::foo;
+ * let z = <TypeRef as Trait>::foo;
+ * ```
+ */
 final class PathExpr = Impl::PathExpr;

@@ -7,4 +7,13 @@ private import internal.YieldExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A `yield` expression. For example:
+ * ```rust
+ * let one = #[coroutine]
+ *     || {
+ *         yield 1;
+ *     };
+ * ```
+ */
 final class YieldExpr = Impl::YieldExpr;

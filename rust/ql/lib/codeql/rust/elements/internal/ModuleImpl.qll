@@ -12,5 +12,16 @@ private import codeql.rust.elements.internal.generated.Module
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A module declaration. For example:
+   * ```rust
+   * mod foo;
+   * ```
+   * ```rust
+   * mod bar {
+   *     pub fn baz() {}
+   * }
+   * ```
+   */
   class Module extends Generated::Module { }
 }

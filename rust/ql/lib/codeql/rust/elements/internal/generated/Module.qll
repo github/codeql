@@ -18,6 +18,15 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A module declaration. For example:
+   * ```rust
+   * mod foo;
+   * ```
+   * ```rust
+   * mod bar {
+   *     pub fn baz() {}
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::Module` class directly.
    * Use the subclass `Module`, where the following predicates are available.
    */
