@@ -41,6 +41,12 @@ def _get_class(cls: type) -> schema.Class:
         raise schema.Error(f"Bases with mixed groups for {cls.__name__}")
     if any(getattr(b, "_null", False) for b in cls.__bases__):
         raise schema.Error(f"Null class cannot be derived")
+    pragmas = {
+        # dir and getattr inherit from bases
+        a[len(schema.inheritable_pragma_prefix):]: getattr(cls, a)
+        for a in dir(cls) if a.startswith(schema.inheritable_pragma_prefix)
+    }
+    pragmas |= cls.__dict__.get("_pragmas", {})
     return schema.Class(name=cls.__name__,
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
                         derived={d.__name__ for d in cls.__subclasses__()},
@@ -48,8 +54,8 @@ def _get_class(cls: type) -> schema.Class:
                         group=getattr(cls, "_group", ""),
                         hideable=getattr(cls, "_hideable", False),
                         test_with=_get_name(getattr(cls, "_test_with", None)),
+                        pragmas=pragmas,
                         # in the following we don't use `getattr` to avoid inheriting
-                        pragmas=cls.__dict__.get("_pragmas", {}),
                         properties=[
                             a | _PropertyNamer(n)
                             for n, a in cls.__dict__.get("__annotations__", {}).items()

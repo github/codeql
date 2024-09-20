@@ -211,3 +211,6 @@ def split_doc(doc):
     while trimmed and not trimmed[0]:
         trimmed.pop(0)
     return trimmed
+
+
+inheritable_pragma_prefix = "_inheritable_pragma_"
