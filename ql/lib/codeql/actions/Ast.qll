@@ -264,6 +264,8 @@ class Environment extends AstNode instanceof EnvironmentImpl {
 abstract class Uses extends AstNode instanceof UsesImpl {
   string getCallee() { result = super.getCallee() }
 
+  ScalarValue getCalleeNode() { result = super.getCalleeNode() }
+
   string getVersion() { result = super.getVersion() }
 
   int getMajorVersion() { result = super.getMajorVersion() }
