@@ -1,30 +1,3 @@
-edges
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:10:23:10:53 | access to indexer : String |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:12:50:12:53 | access to local variable path |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:17:51:17:54 | access to local variable path |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:25:30:25:33 | access to local variable path |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:31:30:31:33 | access to local variable path |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:36:25:36:31 | access to local variable badPath |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:38:49:38:55 | access to local variable badPath |
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:51:26:51:29 | access to local variable path |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:12:50:12:53 | access to local variable path |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:17:51:17:54 | access to local variable path |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:25:30:25:33 | access to local variable path |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:31:30:31:33 | access to local variable path |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:36:25:36:31 | access to local variable badPath |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:38:49:38:55 | access to local variable badPath |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:51:26:51:29 | access to local variable path |
-nodes
-| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| TaintedPath.cs:10:23:10:53 | access to indexer : String | semmle.label | access to indexer : String |
-| TaintedPath.cs:12:50:12:53 | access to local variable path | semmle.label | access to local variable path |
-| TaintedPath.cs:17:51:17:54 | access to local variable path | semmle.label | access to local variable path |
-| TaintedPath.cs:25:30:25:33 | access to local variable path | semmle.label | access to local variable path |
-| TaintedPath.cs:31:30:31:33 | access to local variable path | semmle.label | access to local variable path |
-| TaintedPath.cs:36:25:36:31 | access to local variable badPath | semmle.label | access to local variable badPath |
-| TaintedPath.cs:38:49:38:55 | access to local variable badPath | semmle.label | access to local variable badPath |
-| TaintedPath.cs:51:26:51:29 | access to local variable path | semmle.label | access to local variable path |
-subpaths
 #select
 | TaintedPath.cs:12:50:12:53 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:12:50:12:53 | access to local variable path | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 | TaintedPath.cs:17:51:17:54 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:17:51:17:54 | access to local variable path | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
@@ -33,3 +6,30 @@ subpaths
 | TaintedPath.cs:36:25:36:31 | access to local variable badPath | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:36:25:36:31 | access to local variable badPath | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 | TaintedPath.cs:38:49:38:55 | access to local variable badPath | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:38:49:38:55 | access to local variable badPath | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 | TaintedPath.cs:51:26:51:29 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:51:26:51:29 | access to local variable path | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
+edges
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:12:50:12:53 | access to local variable path | provenance |  |
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:17:51:17:54 | access to local variable path | provenance |  |
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:25:30:25:33 | access to local variable path | provenance |  |
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:31:30:31:33 | access to local variable path | provenance |  |
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | provenance |  |
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:51:26:51:29 | access to local variable path | provenance |  |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:10:16:10:19 | access to local variable path : String | provenance |  |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:10:23:10:53 | access to indexer : String | provenance | MaD:1 |
+| TaintedPath.cs:10:23:10:53 | access to indexer : String | TaintedPath.cs:10:16:10:19 | access to local variable path : String | provenance |  |
+| TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:36:25:36:31 | access to local variable badPath | provenance |  |
+| TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:38:49:38:55 | access to local variable badPath | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+nodes
+| TaintedPath.cs:10:16:10:19 | access to local variable path : String | semmle.label | access to local variable path : String |
+| TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| TaintedPath.cs:10:23:10:53 | access to indexer : String | semmle.label | access to indexer : String |
+| TaintedPath.cs:12:50:12:53 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:17:51:17:54 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:25:30:25:33 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:31:30:31:33 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | semmle.label | access to local variable badPath : String |
+| TaintedPath.cs:36:25:36:31 | access to local variable badPath | semmle.label | access to local variable badPath |
+| TaintedPath.cs:38:49:38:55 | access to local variable badPath | semmle.label | access to local variable badPath |
+| TaintedPath.cs:51:26:51:29 | access to local variable path | semmle.label | access to local variable path |
+subpaths

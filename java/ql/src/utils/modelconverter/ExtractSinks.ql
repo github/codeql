@@ -11,7 +11,7 @@ from
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance
 where
-  sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
+  sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, _) and
   not provenance.matches("%generated")
 select package, type, subtypes, name, signature, ext, input, kind, provenance order by
     package, type, name, signature, input, kind

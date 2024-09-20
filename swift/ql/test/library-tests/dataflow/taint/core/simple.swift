@@ -151,3 +151,10 @@ class MyClass2_NeverInstantiated {
 }
 
 // ---
+
+func taintThroughAs() {
+	sink(arg: source() as Int) // $ tainted=156
+	sink(arg: source() as Any) // $ tainted=157
+	sink(arg: source() as AnyObject) // $ MISSING: tainted=158
+	sink(arg: source() as Sendable) // $ MISSING: tainted=159
+}

@@ -3,9 +3,7 @@
 Analyzing data flow in Java and Kotlin
 ======================================
 
-You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
-
-.. include:: ../reusables/kotlin-beta-note.rst
+You can use CodeQL to track the flow of data through a Java/Kotlin program to its use.
 
 .. include:: ../reusables/kotlin-java-differences.rst
 
@@ -27,7 +25,13 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+To use the data flow library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.DataFlow
+
+The ``DataFlow`` module defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
 
 .. code-block:: ql
 
@@ -75,7 +79,14 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
-The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
+
+To use the taint tracking library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.TaintTracking
+
+Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
 
 For example, you can find taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps:
 
@@ -158,7 +169,7 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 .. pull-quote:: Note
 
    .. include:: ../reusables/path-problem.rst
-   
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -349,7 +360,7 @@ Exercise 4
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/java-further-reading.rst

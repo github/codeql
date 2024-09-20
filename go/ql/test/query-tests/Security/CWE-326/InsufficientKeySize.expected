@@ -1,10 +1,10 @@
 edges
-| InsufficientKeySize.go:13:10:13:13 | 1024 | InsufficientKeySize.go:14:31:14:34 | size |
-| InsufficientKeySize.go:18:7:18:10 | 1024 | InsufficientKeySize.go:25:11:25:14 | definition of size |
-| InsufficientKeySize.go:25:11:25:14 | definition of size | InsufficientKeySize.go:26:31:26:34 | size |
-| InsufficientKeySize.go:30:13:30:16 | 1024 | InsufficientKeySize.go:32:32:32:38 | keyBits |
-| InsufficientKeySize.go:44:13:44:16 | 1024 | InsufficientKeySize.go:47:32:47:38 | keyBits |
-| InsufficientKeySize.go:61:21:61:24 | 1024 | InsufficientKeySize.go:67:31:67:37 | keyBits |
+| InsufficientKeySize.go:13:10:13:13 | 1024 | InsufficientKeySize.go:14:31:14:34 | size | provenance |  |
+| InsufficientKeySize.go:18:7:18:10 | 1024 | InsufficientKeySize.go:25:11:25:14 | definition of size | provenance |  |
+| InsufficientKeySize.go:25:11:25:14 | definition of size | InsufficientKeySize.go:26:31:26:34 | size | provenance |  |
+| InsufficientKeySize.go:30:13:30:16 | 1024 | InsufficientKeySize.go:32:32:32:38 | keyBits | provenance |  |
+| InsufficientKeySize.go:44:13:44:16 | 1024 | InsufficientKeySize.go:47:32:47:38 | keyBits | provenance |  |
+| InsufficientKeySize.go:61:21:61:24 | 1024 | InsufficientKeySize.go:67:31:67:37 | keyBits | provenance |  |
 nodes
 | InsufficientKeySize.go:9:31:9:34 | 1024 | semmle.label | 1024 |
 | InsufficientKeySize.go:13:10:13:13 | 1024 | semmle.label | 1024 |

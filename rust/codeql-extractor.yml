@@ -1,0 +1,36 @@
+name: "rust"
+display_name: "Rust"
+version: 0.1.0
+column_kind: "utf8"
+legacy_qltest_extraction: true
+build_modes:
+  - none
+github_api_languages:
+  - Rust
+scc_languages:
+  - Rust
+file_types:
+  - name: rust
+    display_name: Rust files
+    extensions:
+      - .rs
+options:
+  trap:
+    title: Options pertaining to TRAP.
+    type: object
+    properties:
+      compression:
+        title: Controls compression for the TRAP files written by the extractor.
+        description: >
+          This option is only intended for use in debugging the extractor. Accepted
+          values are 'gzip' (the default, to write gzip-compressed TRAP) and 'none'
+          (to write uncompressed TRAP).
+        type: string
+        pattern: "^(none|gzip)$"
+  extract_dependencies:
+    title: Whether to extract dependencies.
+    description: >
+      Extract the source code of dependencies and the standard libraries in addition to 
+      normal source code.
+    type: string
+    pattern: "^(false|true)$"

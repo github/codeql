@@ -1,0 +1,26 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "project",
+    srcs = ["project.go"],
+    importpath = "github.com/github/codeql-go/extractor/project",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/extractor/diagnostics",
+        "//go/extractor/toolchain",
+        "//go/extractor/util",
+        "@org_golang_x_mod//modfile",
+    ],
+)
+
+go_test(
+    name = "project_test",
+    srcs = ["project_test.go"],
+    embed = [":project"],
+    deps = [
+        "//go/extractor/util",
+        "@org_golang_x_mod//modfile",
+    ],
+)

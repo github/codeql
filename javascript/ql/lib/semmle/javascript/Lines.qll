@@ -14,8 +14,6 @@ import javascript
  * extracted with the `--extract-program-text` flag.
  */
 class Line extends @line, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the toplevel element this line belongs to. */
   TopLevel getTopLevel() { lines(this, result, _, _) }
 

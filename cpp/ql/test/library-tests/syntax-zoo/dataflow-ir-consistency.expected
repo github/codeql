@@ -4,12 +4,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-| builtin.c:5:5:5:11 | (no string representation) | Node should have one toString but has 0. |
-| misc.c:227:7:227:28 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -35,10 +29,11 @@ postWithInFlow
 | try_catch.cpp:7:8:7:8 | call to exception | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
-| ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:737:22:737:22 | *s | Parameters with overlapping positions. |
-| ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:740:24:740:24 | *e | Parameters with overlapping positions. |
+| ir.cpp:726:6:726:13 | TryCatch | *0 | ir.cpp:737:22:737:22 | *s | Parameters with overlapping positions. |
+| ir.cpp:726:6:726:13 | TryCatch | *0 | ir.cpp:740:24:740:24 | *e | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
 missingArgumentCall
 multipleArgumentCall
+lambdaCallEnclosingCallableMismatch

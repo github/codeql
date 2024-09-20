@@ -4,8 +4,9 @@
 
 private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
+private import codeql.swift.elements.Location
 
-module SwiftTaintTracking implements InputSig<SwiftDataFlow> {
+module SwiftTaintTracking implements InputSig<Location, SwiftDataFlow> {
   import TaintTrackingPrivate
   import TaintTrackingPublic
 }

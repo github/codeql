@@ -7,18 +7,33 @@ import go
 // Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
-  /** The `Sprint` or `Append` functions or one of their variants. */
-  class AppenderOrSprinter extends TaintTracking::FunctionModel {
-    AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
+  /**
+   * DEPRECATED: Use AppenderOrSprinterFunc instead.
+   *
+   * The `Sprint` or `Append` functions or one of their variants.
+   */
+  deprecated class AppenderOrSprinter extends TaintTracking::FunctionModel {
+    AppenderOrSprinter() {
+      this.hasQualifiedName("fmt",
+        ["Append", "Appendf", "Appendln", "Sprint", "Sprintf", "Sprintln"])
+    }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
 
+  /** The `Sprint` or `Append` functions or one of their variants. */
+  class AppenderOrSprinterFunc extends Function {
+    AppenderOrSprinterFunc() {
+      this.hasQualifiedName("fmt",
+        ["Append", "Appendf", "Appendln", "Sprint", "Sprintf", "Sprintln"])
+    }
+  }
+
   /** The `Sprint` function or one of its variants. */
-  class Sprinter extends AppenderOrSprinter {
-    Sprinter() { this.getName().matches("Sprint%") }
+  class Sprinter extends AppenderOrSprinterFunc {
+    Sprinter() { this.getName() = ["Sprint", "Sprintf", "Sprintln"] }
   }
 
   /** The `Print` function or one of its variants. */

@@ -13,12 +13,9 @@ extensions:
       - ["System.Runtime.Versioning", "FrameworkName", False, "get_Profile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "FrameworkName", False, "get_Version", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "TargetFrameworkAttribute", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "get_FrameworkDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "get_FrameworkName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "set_FrameworkDisplayName", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope,System.Type)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -36,12 +33,8 @@ extensions:
       - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "ObsoletedOSPlatformAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "ObsoletedOSPlatformAttribute", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "get_Message", "()", "summary", "df-generated"]
-      - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "get_Url", "()", "summary", "df-generated"]
-      - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "set_Url", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "RequiresPreviewFeaturesAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "get_Message", "()", "summary", "df-generated"]
-      - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "get_Url", "()", "summary", "df-generated"]
-      - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "set_Url", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "ResourceConsumptionAttribute", "(System.Runtime.Versioning.ResourceScope)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "ResourceConsumptionAttribute", "(System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope)", "summary", "df-generated"]
       - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "get_ConsumptionScope", "()", "summary", "df-generated"]

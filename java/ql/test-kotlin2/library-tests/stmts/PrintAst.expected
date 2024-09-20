@@ -153,7 +153,7 @@ stmts.kt:
 #   37|                           1: [BreakStmt] break
 #   41|         4: [EnhancedForStmt] for (... : ...)
 #-----|           0: (Single Local Variable Declaration)
-#   41|             1: [LocalVariableDeclExpr] tmp3_loop_parameter
+#   41|             1: [LocalVariableDeclExpr] <destruct>
 #   41|           1: [MethodCall] withIndex(...)
 #   41|             -2: [TypeAccess] Integer
 #   41|             -1: [TypeAccess] CollectionsKt
@@ -163,12 +163,12 @@ stmts.kt:
 #   41|           2: [BlockStmt] { ... }
 #   41|             0: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] v
-#    0|                 0: [MethodCall] component1(...)
-#   41|                   -1: [VarAccess] tmp3_loop_parameter
+#   41|                 0: [MethodCall] component1(...)
+#   41|                   -1: [VarAccess] <destruct>
 #   41|             1: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] i
-#    0|                 0: [MethodCall] component2(...)
-#    0|                   -1: [VarAccess] tmp3_loop_parameter
+#   41|                 0: [MethodCall] component2(...)
+#   41|                   -1: [VarAccess] <destruct>
 #   41|             2: [BlockStmt] { ... }
 #   42|               0: [ExprStmt] <Expr>;
 #   42|                 0: [WhenExpr] when ...

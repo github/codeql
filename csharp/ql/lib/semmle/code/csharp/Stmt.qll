@@ -43,6 +43,9 @@ class Stmt extends ControlFlowElement, @stmt {
    * For example converts `{ { return x; } }` to `return x;`.
    */
   Stmt stripSingletonBlocks() { result = this }
+
+  /** Holds if this statement is compiler generated. */
+  predicate isCompilerGenerated() { compiler_generated(this) }
 }
 
 /**

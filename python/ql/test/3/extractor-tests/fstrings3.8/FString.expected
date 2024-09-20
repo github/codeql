@@ -1,0 +1,17 @@
+| 4 | Fstring | 0 | StringLiteral |
+| 4 | Fstring | 1 | foo |
+| 4 | Fstring | 2 | StringLiteral |
+| 5 | Fstring | 0 | StringLiteral |
+| 5 | Fstring | 1 | foo |
+| 5 | Fstring | 2 | StringLiteral |
+| 6 | Fstring | 0 | StringLiteral |
+| 6 | Fstring | 1 | Attribute() |
+| 6 | Fstring | 2 | StringLiteral |
+| 7 | Fstring | 0 | StringLiteral |
+| 7 | Fstring | 1 | foo |
+| 7 | Fstring | 2 | StringLiteral |
+| 8 | Fstring | 0 | StringLiteral |
+| 8 | Fstring | 1 | foo |
+| 8 | Fstring | 2 | StringLiteral |
+| 8 | Fstring | 3 | Attribute() |
+| 8 | Fstring | 4 | StringLiteral |

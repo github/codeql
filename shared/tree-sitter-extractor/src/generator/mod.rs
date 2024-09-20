@@ -52,8 +52,8 @@ pub fn generate(
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
         let ast_node_name = format!("{}_ast_node", &prefix);
-        let node_info_table_name = format!("{}_ast_node_info", &prefix);
-        let ast_node_parent_name = format!("{}_ast_node_parent", &prefix);
+        let node_location_table_name = format!("{}_ast_node_location", &prefix);
+        let node_parent_table_name = format!("{}_ast_node_parent", &prefix);
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
@@ -72,13 +72,12 @@ pub fn generate(
                     name: &ast_node_name,
                     members: ast_node_members,
                 }),
-                dbscheme::Entry::Union(dbscheme::Union {
-                    name: &ast_node_parent_name,
-                    members: [&ast_node_name, "file"].iter().cloned().collect(),
-                }),
-                dbscheme::Entry::Table(create_ast_node_info_table(
-                    &node_info_table_name,
-                    &ast_node_parent_name,
+                dbscheme::Entry::Table(create_ast_node_location_table(
+                    &node_location_table_name,
+                    &ast_node_name,
+                )),
+                dbscheme::Entry::Table(create_ast_node_parent_table(
+                    &node_parent_table_name,
                     &ast_node_name,
                 )),
             ],
@@ -87,7 +86,8 @@ pub fn generate(
         let mut body = vec![
             ql::TopLevel::Class(ql_gen::create_ast_node_class(
                 &ast_node_name,
-                &node_info_table_name,
+                &node_location_table_name,
+                &node_parent_table_name,
             )),
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
@@ -335,18 +335,43 @@ fn convert_nodes(
     (entries, ast_node_members, token_kinds)
 }
 
-/// Creates a dbscheme table specifying the parent node and location for each
-/// AST node.
+/// Creates a dbscheme table specifying the location for each AST node.
 ///
 /// # Arguments
 /// - `name` - the name of the table to create.
-/// - `parent_name` - the name of the parent type.
 /// - `ast_node_name` - the name of the node child type.
-fn create_ast_node_info_table<'a>(
+fn create_ast_node_location_table<'a>(
     name: &'a str,
-    parent_name: &'a str,
     ast_node_name: &'a str,
 ) -> dbscheme::Table<'a> {
+    dbscheme::Table {
+        name,
+        columns: vec![
+            dbscheme::Column {
+                db_type: dbscheme::DbColumnType::Int,
+                name: "node",
+                unique: true,
+                ql_type: ql::Type::At(ast_node_name),
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "loc",
+                ql_type: ql::Type::At("location_default"),
+                ql_type_is_ref: true,
+            },
+        ],
+        keysets: None,
+    }
+}
+
+/// Creates a dbscheme table specifying the parent node for each AST node.
+///
+/// # Arguments
+/// - `name` - the name of the table to create.
+/// - `ast_node_name` - the name of the node child type.
+fn create_ast_node_parent_table<'a>(name: &'a str, ast_node_name: &'a str) -> dbscheme::Table<'a> {
     dbscheme::Table {
         name,
         columns: vec![
@@ -361,7 +386,7 @@ fn create_ast_node_info_table<'a>(
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent",
                 unique: false,
-                ql_type: ql::Type::At(parent_name),
+                ql_type: ql::Type::At(ast_node_name),
                 ql_type_is_ref: true,
             },
             dbscheme::Column {
@@ -369,13 +394,6 @@ fn create_ast_node_info_table<'a>(
                 db_type: dbscheme::DbColumnType::Int,
                 name: "parent_index",
                 ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "loc",
-                ql_type: ql::Type::At("location_default"),
                 ql_type_is_ref: true,
             },
         ],

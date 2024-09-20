@@ -200,10 +200,11 @@ module Decoding {
 }
 
 private class DecodingAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     exists(Decoding decoding |
       nodeFrom = decoding.getAnInput() and
-      nodeTo = decoding.getOutput()
+      nodeTo = decoding.getOutput() and
+      model = "Decoding-" + decoding.getFormat()
     )
   }
 }
@@ -685,9 +686,6 @@ module Ldap {
   }
 }
 
-/** DEPRECATED: Alias for Ldap */
-deprecated module LDAP = Ldap;
-
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -858,7 +856,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
@@ -986,7 +984,7 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )
@@ -1029,6 +1027,162 @@ module Http {
     }
 
     /**
+     * A data-flow node that sets a header in an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderWrite::Range` instead.
+     */
+    class ResponseHeaderWrite extends DataFlow::Node instanceof ResponseHeaderWrite::Range {
+      /**
+       * Gets the argument containing the header name.
+       */
+      DataFlow::Node getNameArg() { result = super.getNameArg() }
+
+      /**
+       * Gets the argument containing the header value.
+       */
+      DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling header writes on HTTP responses. */
+    module ResponseHeaderWrite {
+      /**
+       *A data-flow node that sets a header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the header name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument containing the header value.
+         */
+        abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /**
+     * A data-flow node that sets multiple headers in an HTTP response using a dict or a list of tuples.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderBulkWrite::Range` instead.
+     */
+    class ResponseHeaderBulkWrite extends DataFlow::Node instanceof ResponseHeaderBulkWrite::Range {
+      /**
+       * Gets the argument containing the headers dictionary.
+       */
+      DataFlow::Node getBulkArg() { result = super.getBulkArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling bulk header writes on HTTP responses. */
+    module ResponseHeaderBulkWrite {
+      /**
+       * A data-flow node that sets multiple headers in an HTTP response using a dict.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderBulkWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the headers dictionary.
+         */
+        abstract DataFlow::Node getBulkArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      KeyValuePair item;
+
+      HeaderBulkWriteDictLiteral() {
+        exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
+          item = dict.getAnItem()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /** A tuple in a list for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      Tuple item;
+
+      HeaderBulkWriteListLiteral() {
+        exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
+          item = list.getAnElt()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
@@ -1049,6 +1203,77 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasSecureFlag(boolean b) { super.hasSecureFlag(b) }
+
+      /**
+       * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasHttpOnlyFlag(boolean b) { super.hasHttpOnlyFlag(b) }
+
+      /**
+       * Holds if the `SameSite` attribute of the cookie is known to have a value of `v`.
+       */
+      predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) { super.hasSameSiteAttribute(v) }
+    }
+
+    /**
+     * A dataflow call node to a method that sets a cookie in an http response,
+     * and has common keyword arguments `secure`, `httponly`, and `samesite` to set the attributes of the cookie.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+     */
+    abstract class SetCookieCall extends CookieWrite::Range, DataFlow::CallCfgNode {
+      override predicate hasSecureFlag(boolean b) {
+        super.hasSecureFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("secure")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasHttpOnlyFlag(boolean b) {
+        super.hasHttpOnlyFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("httponly")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) {
+        super.hasSameSiteAttribute(v)
+        or
+        exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
+          DataFlow::localFlow(DataFlow::exprNode(str), arg) and
+          (
+            str.getText().toLowerCase() = "strict" and
+            v instanceof CookieWrite::SameSiteStrict
+            or
+            str.getText().toLowerCase() = "lax" and
+            v instanceof CookieWrite::SameSiteLax
+            or
+            str.getText().toLowerCase() = "none" and
+            v instanceof CookieWrite::SameSiteNone
+          )
+        )
+        or
+        not exists(this.getArgByName("samesite")) and
+        not exists(this.getKwargs()) and
+        v instanceof CookieWrite::SameSiteLax // Lax is the default
+      }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1077,7 +1302,113 @@ module Http {
          * Gets the argument, if any, specifying the cookie value.
          */
         abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasSecureFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasHttpOnlyFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `SameSite` flag of the cookie is known to have a value of `v`.
+         */
+        predicate hasSameSiteAttribute(SameSiteValue v) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            (
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict(;.*|\\s*)") and
+              v instanceof SameSiteStrict
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax(;.*|\\s*)") and
+              v instanceof SameSiteLax
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=none(;.*|\\s*)") and
+              v instanceof SameSiteNone
+            )
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none)(;.*|\\s*)") and
+            v instanceof SameSiteLax // Lax is the default
+          )
+        }
       }
+
+      private newtype TSameSiteValue =
+        TSameSiteStrict() or
+        TSameSiteLax() or
+        TSameSiteNone()
+
+      /** A possible value for the SameSite attribute of a cookie. */
+      class SameSiteValue extends TSameSiteValue {
+        /** Gets a string representation of this value. */
+        string toString() { none() }
+      }
+
+      /** A `Strict` value of the `SameSite` attribute. */
+      class SameSiteStrict extends SameSiteValue, TSameSiteStrict {
+        override string toString() { result = "Strict" }
+      }
+
+      /** A `Lax` value of the `SameSite` attribute. */
+      class SameSiteLax extends SameSiteValue, TSameSiteLax {
+        override string toString() { result = "Lax" }
+      }
+
+      /** A `None` value of the `SameSite` attribute. */
+      class SameSiteNone extends SameSiteValue, TSameSiteNone {
+        override string toString() { result = "None" }
+      }
+    }
+
+    /** A write to a `Set-Cookie` header that sets a cookie directly. */
+    private class CookieHeaderWrite extends CookieWrite::Range instanceof Http::Server::ResponseHeaderWrite
+    {
+      CookieHeaderWrite() {
+        exists(StringLiteral str |
+          str.getText().toLowerCase() = "set-cookie" and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
+        )
+      }
+
+      override DataFlow::Node getNameArg() { none() }
+
+      override DataFlow::Node getHeaderArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getValueArg() { none() }
     }
 
     /**
@@ -1156,9 +1487,6 @@ module Http {
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.

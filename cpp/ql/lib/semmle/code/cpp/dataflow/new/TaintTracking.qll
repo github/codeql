@@ -27,6 +27,7 @@ module TaintTracking {
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
   private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<CppDataFlow, CppTaintTracking>
+  private import semmle.code.cpp.Location
+  import TaintFlowMake<Location, CppDataFlow, CppTaintTracking>
   import semmle.code.cpp.ir.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

@@ -1,0 +1,6 @@
+| Module module | module | module.py |
+| Module package.__init__ | package.__init__ | package/__init__.py |
+| Module package.x | package.x | package/x.py |
+| Module package.y | package.y | package/y.py |
+| Module test | test | test.py |
+| Package package | package | package |

@@ -83,7 +83,7 @@ private module CryptodomeModel {
 
     /** Gets the name of the curve to use, as well as the origin that explains how we obtained this name. */
     string getCurveWithOrigin(DataFlow::Node origin) {
-      exists(StrConst str | origin = DataFlow::exprNode(str) |
+      exists(StringLiteral str | origin = DataFlow::exprNode(str) |
         origin = this.getCurveArg().getALocalSource() and
         result = str.getText()
       )

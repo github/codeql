@@ -26,6 +26,12 @@ public class Exhaustive {
       case Y y -> { }
     }
 
+    // Test the case where a pattern case falls directly out of a block:
+    switch (i) {
+      case X _:
+      case Y _:
+    }
+
   }
 
 }

@@ -90,9 +90,7 @@ private predicate mayRaise(Call c) { c = getARescuableBodyChild() }
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
-  private predicate isValidForSpecific(AstNode n) {
-    exists(AstNode other | n = other.getDesugared() and this.isValidForSpecific(other))
-    or
+  private predicate isValidForSpecific0(AstNode n) {
     this = n.(NonReturningCall).getACompletion()
     or
     completionIsValidForStmt(n, this)
@@ -110,12 +108,19 @@ abstract class Completion extends TCompletion {
     or
     n = any(RescueModifierExpr parent).getBody() and
     this = [TSimpleCompletion().(TCompletion), TRaiseCompletion()]
+  }
+
+  private predicate isValidForSpecific(AstNode n) {
+    this.isValidForSpecific0(n)
+    or
+    exists(AstNode other | n = other.getDesugared() and this.isValidForSpecific(other))
     or
     mayRaise(n) and
     (
       this = TRaiseCompletion()
       or
-      this = TSimpleCompletion() and not n instanceof NonReturningCall
+      not any(Completion c).isValidForSpecific0(n) and
+      this = TSimpleCompletion()
     )
   }
 

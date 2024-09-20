@@ -7,9 +7,10 @@ import csharp
 private import codeql.dataflow.test.InlineFlowTest
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
+private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 private import internal.InlineExpectationsTestImpl
 
-private module FlowTestImpl implements InputSig<CsharpDataFlow> {
+private module FlowTestImpl implements InputSig<Location, CsharpDataFlow> {
   predicate defaultSource(DataFlow::Node source) {
     source.asExpr().(MethodCall).getTarget().getUndecoratedName() = ["Source", "Taint"]
   }
@@ -33,6 +34,8 @@ private module FlowTestImpl implements InputSig<CsharpDataFlow> {
     ) and
     exists(sink)
   }
+
+  predicate interpretModelForTest = ExternalFlow::interpretModelForTest/2;
 }
 
-import InlineFlowTestMake<CsharpDataFlow, CsharpTaintTracking, Impl, FlowTestImpl>
+import InlineFlowTestMake<Location, CsharpDataFlow, CsharpTaintTracking, Impl, FlowTestImpl>

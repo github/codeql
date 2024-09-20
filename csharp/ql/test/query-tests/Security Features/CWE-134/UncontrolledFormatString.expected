@@ -1,28 +1,36 @@
+#select
+| ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | This format string depends on $@. | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine | thisread from stdin |
+| UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | This format string depends on $@. | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString | thisASP.NET query string |
+| UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | This format string depends on $@. | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString | thisASP.NET query string |
+| UncontrolledFormatString.cs:32:23:32:31 | access to property Text | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | This format string depends on $@. | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | thisTextBox text |
+| UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | This format string depends on $@. | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString | thisASP.NET query string |
 edges
-| ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format |
-| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String |
-| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path |
-| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path |
-| UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path |
-| UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path |
-| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String |
-| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format |
-| UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format |
+| ConsoleUncontrolledFormatString.cs:8:13:8:18 | access to local variable format : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | provenance |  |
+| ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:8:13:8:18 | access to local variable format : String | provenance | Src:MaD:1  |
+| UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | provenance |  |
+| UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | provenance |  |
+| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | provenance |  |
+| UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | provenance | MaD:2 |
+| UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | provenance |  |
+| UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | provenance |  |
+| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | provenance |  |
+| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | provenance | MaD:2 |
+| UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | provenance |  |
+models
+| 1 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
+| 2 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| ConsoleUncontrolledFormatString.cs:8:13:8:18 | access to local variable format : String | semmle.label | access to local variable format : String |
 | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
 | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | semmle.label | access to local variable format |
+| UncontrolledFormatString.cs:9:16:9:19 | access to local variable path : String | semmle.label | access to local variable path : String |
 | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UncontrolledFormatString.cs:9:23:9:53 | access to indexer : String | semmle.label | access to indexer : String |
 | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | semmle.label | access to local variable path |
 | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | semmle.label | access to local variable path |
 | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | semmle.label | access to property Text |
+| UncontrolledFormatStringBad.cs:9:16:9:21 | access to local variable format : String | semmle.label | access to local variable format : String |
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | semmle.label | access to indexer : String |
 | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | semmle.label | access to local variable format |
 subpaths
-#select
-| ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | This format string depends on $@. | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine | thisexternal |
-| UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:12:23:12:26 | access to local variable path | This format string depends on $@. | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString | thisASP.NET query string |
-| UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString : NameValueCollection | UncontrolledFormatString.cs:15:46:15:49 | access to local variable path | This format string depends on $@. | UncontrolledFormatString.cs:9:23:9:45 | access to property QueryString | thisASP.NET query string |
-| UncontrolledFormatString.cs:32:23:32:31 | access to property Text | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | This format string depends on $@. | UncontrolledFormatString.cs:32:23:32:31 | access to property Text | thisTextBox text |
-| UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | This format string depends on $@. | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString | thisASP.NET query string |

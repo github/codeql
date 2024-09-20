@@ -17,11 +17,11 @@ dc.kt:
 #    0|     3: [Method] copy
 #    0|       3: [TypeAccess] ProtoMapValue
 #-----|       4: (Parameters)
-#    1|         0: [Parameter] bytes
-#    1|           0: [TypeAccess] byte[]
-#    1|         1: [Parameter] strs
-#    1|           0: [TypeAccess] String[]
-#    1|             0: [TypeAccess] String
+#    0|         0: [Parameter] bytes
+#    0|           0: [TypeAccess] byte[]
+#    0|         1: [Parameter] strs
+#    0|           0: [TypeAccess] String[]
+#    0|             0: [TypeAccess] String
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
 #    0|           0: [ClassInstanceExpr] new ProtoMapValue(...)

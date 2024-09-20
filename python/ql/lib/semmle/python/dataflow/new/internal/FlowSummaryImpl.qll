@@ -9,19 +9,27 @@ private import DataFlowImplSpecific as DataFlowImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
-module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow> {
   class SummarizedCallableBase = string;
 
-  ArgumentPosition callbackSelfParameterPosition() { none() }
+  ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
   ReturnKind getStandardReturnValueKind() { any() }
 
   string encodeParameterPosition(ParameterPosition pos) {
     pos.isSelf() and result = "self"
     or
+    pos.isLambdaSelf() and
+    result = "lambda-self"
+    or
     exists(int i |
       pos.isPositional(i) and
       result = i.toString()
+    )
+    or
+    exists(int i |
+      pos.isPositionalLowerBound(i) and
+      result = i + ".."
     )
     or
     exists(string name |
@@ -32,6 +40,9 @@ module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
 
   string encodeArgumentPosition(ArgumentPosition pos) {
     pos.isSelf() and result = "self"
+    or
+    pos.isLambdaSelf() and
+    result = "lambda-self"
     or
     exists(int i |
       pos.isPositional(i) and
@@ -77,7 +88,7 @@ module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::PythonDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
@@ -187,6 +198,11 @@ module ParsePositions {
   predicate isParsedPositionalArgumentPosition(string c, int i) {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
+  }
+
+  predicate isParsedArgumentLowerBoundPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseLowerBound(c)
   }
 
   predicate isParsedKeywordArgumentPosition(string c, string argName) {

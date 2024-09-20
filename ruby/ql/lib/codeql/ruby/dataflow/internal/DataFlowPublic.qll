@@ -6,6 +6,7 @@ private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.ApiGraphs
+private import SsaImpl as SsaImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -35,7 +36,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -77,7 +78,7 @@ class Node extends TNode {
     or
     exists(DataFlowCallable c |
       lambdaCreation(this, _, c) and
-      result.asCallableAstNode() = c.asCallable()
+      result.asCallableAstNode() = c.asCfgScope()
     )
   }
 
@@ -360,16 +361,12 @@ class PostUpdateNode extends Node {
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionNode extends Node instanceof SsaDefinitionExtNode {
-  Ssa::Definition def;
-
-  SsaDefinitionNode() { this = TSsaDefinitionExtNode(def) }
-
+class SsaDefinitionNode extends Node instanceof SsaDefinitionNodeImpl {
   /** Gets the underlying SSA definition. */
-  Ssa::Definition getDefinition() { result = def }
+  Ssa::Definition getDefinition() { result = super.getDefinitionExt() }
 
   /** Gets the underlying variable. */
-  Variable getVariable() { result = def.getSourceVariable() }
+  Variable getVariable() { result = this.getDefinition().getSourceVariable() }
 }
 
 cached
@@ -589,7 +586,7 @@ module Content {
    *
    * we have an implicit splat argument containing `[1, 2, 3]`.
    */
-  class SplatContent extends ElementContent, TSplatContent {
+  deprecated class SplatContent extends Content, TSplatContent {
     private int i;
     private boolean shifted;
 
@@ -632,7 +629,7 @@ module Content {
    *
    * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
    */
-  class HashSplatContent extends ElementContent, THashSplatContent {
+  deprecated class HashSplatContent extends Content, THashSplatContent {
     private ConstantValue::ConstantSymbolValue cv;
 
     HashSplatContent() { this = THashSplatContent(cv) }
@@ -689,6 +686,9 @@ class ContentSet extends TContentSet {
   /** Holds if this content set represents all `ElementContent`s. */
   predicate isAnyElement() { this = TAnyElementContent() }
 
+  /** Holds if this content set represents all contents. */
+  predicate isAny() { this = TAnyContent() }
+
   /**
    * Holds if this content set represents a specific known element index, or an
    * unknown element index.
@@ -736,6 +736,9 @@ class ContentSet extends TContentSet {
     or
     this.isAnyElement() and
     result = "any element"
+    or
+    this.isAny() and
+    result = "any"
     or
     exists(Content::KnownElementContent c |
       this.isKnownOrUnknownElement(c) and
@@ -790,29 +793,17 @@ class ContentSet extends TContentSet {
     result = TUnknownElementContent()
   }
 
-  /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() {
-    this.isSingleton(result)
-    or
-    this.isAnyElement() and
-    result instanceof Content::ElementContent
-    or
+  pragma[nomagic]
+  private Content getAnElementReadContent() {
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
-      result = TSplatContent(c.getIndex().getInt(), _) or
-      result = THashSplatContent(c.getIndex()) or
       result = TUnknownElementContent()
     )
     or
     exists(int lower, boolean includeUnknown |
       this = TElementLowerBoundContent(lower, includeUnknown)
     |
-      exists(int i |
-        result.(Content::KnownElementContent).getIndex().isInt(i) or
-        result = TSplatContent(i, _)
-      |
-        i >= lower
-      )
+      exists(int i | result.(Content::KnownElementContent).getIndex().isInt(i) | i >= lower)
       or
       includeUnknown = true and
       result = TUnknownElementContent()
@@ -823,14 +814,22 @@ class ContentSet extends TContentSet {
     |
       type = result.(Content::KnownElementContent).getIndex().getValueType()
       or
-      type = "int" and
-      result instanceof Content::SplatContent
-      or
-      type = result.(Content::HashSplatContent).getKey().getValueType()
-      or
       includeUnknown = true and
       result = TUnknownElementContent()
     )
+  }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyElement() and
+    result instanceof Content::ElementContent
+    or
+    this.isAny() and
+    exists(result)
+    or
+    result = this.getAnElementReadContent()
   }
 }
 
@@ -856,28 +855,7 @@ private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2)
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  pragma[nomagic]
-  private predicate guardChecksSsaDef(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def) {
-    guardChecks(g, def.getARead(), branch)
-  }
-
-  pragma[nomagic]
-  private predicate guardControlsSsaDef(
-    CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def, Node n
-  ) {
-    def.getARead() = n.asExpr() and
-    guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
-  }
-
-  /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
-    exists(CfgNodes::AstCfgNode g, boolean branch, Ssa::Definition def |
-      guardChecksSsaDef(g, branch, def) and
-      guardControlsSsaDef(g, branch, def, result)
-    )
-    or
-    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
-  }
+  private import codeql.ruby.controlflow.internal.Guards
 
   /**
    * Gets an implicit entry definition for a captured variable that
@@ -886,6 +864,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * This is restricted to calls where the variable is captured inside a
    * block.
    */
+  pragma[nomagic]
   private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef() {
     exists(
       CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
@@ -898,15 +877,14 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       sameSourceVariable(def, result)
     )
   }
-}
 
-/** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-private predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean branch) {
-  exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
-    guard = conditionBlock.getLastNode() and
-    s.getValue() = branch and
-    conditionBlock.controls(bb, s)
-  )
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+    or
+    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
+  }
 }
 
 /**
@@ -1067,7 +1045,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   ParameterNode getAnOwnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
+    result = TSelfMethodParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
   }
 
   /**
@@ -1172,6 +1150,11 @@ class ModuleNode instanceof Module {
   bindingset[this]
   pragma[inline]
   API::Node trackInstance() { result = API::Internal::getModuleInstance(this) }
+
+  /**
+   * Holds if this is a built-in module, e.g. `Object`.
+   */
+  predicate isBuiltin() { super.isBuiltin() }
 }
 
 /**
@@ -1340,11 +1323,6 @@ class CallableNode extends StmtSequenceNode {
    * Gets a data flow node whose value is about to be returned by this callable.
    */
   Node getAReturnNode() { result = getAReturnNode(callable) }
-
-  /**
-   * DEPRECATED. Use `getAReturnNode` instead.
-   */
-  deprecated Node getAReturningNode() { result = this.getAReturnNode() }
 }
 
 /**

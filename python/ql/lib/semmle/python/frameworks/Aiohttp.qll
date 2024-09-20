@@ -14,6 +14,7 @@ private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Yarl
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -31,6 +32,8 @@ module AiohttpWebModel {
     /** Gets a reference to the `aiohttp.web.View` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("aiohttp").getMember("web").getMember("View").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("aiohttp.web.View~Subclass").getASubclass*()
     }
   }
 
@@ -650,8 +653,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
-  {
+  class AiohttpResponseSetCookieCall extends Http::Server::SetCookieCall {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -703,13 +705,42 @@ module AiohttpWebModel {
 
     override DataFlow::Node getValueArg() { result = value }
   }
+
+  /**
+   * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+   * `response.headers[name] = value`.
+   */
+  class AiohttpResponseHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+    DataFlow::Node index;
+    DataFlow::Node value;
+
+    AiohttpResponseHeaderSubscriptWrite() {
+      exists(API::Node i |
+        value = aiohttpResponseInstance().getMember("headers").getSubscriptAt(i).asSink() and
+        index = i.asSink() and
+        // To give `this` a value, we need to choose between either LHS or RHS,
+        // and just go with the RHS as it is readily available
+        this = value
+      )
+    }
+
+    override DataFlow::Node getNameArg() { result = index }
+
+    override DataFlow::Node getValueArg() { result = value }
+
+    override predicate nameAllowsNewline() { none() }
+
+    override predicate valueAllowsNewline() { none() }
+  }
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the web server part (`aiohttp.client`) of the `aiohttp` PyPI package.
  * See https://docs.aiohttp.org/en/stable/client.html
  */
-private module AiohttpClientModel {
+module AiohttpClientModel {
   /**
    * Provides models for the `aiohttp.ClientSession` class
    *
@@ -717,8 +748,10 @@ private module AiohttpClientModel {
    */
   module ClientSession {
     /** Gets a reference to the `aiohttp.ClientSession` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("aiohttp").getMember("ClientSession")
+      or
+      result = ModelOutput::getATypeNode("aiohttp.ClientSession~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `aiohttp.ClientSession`. */

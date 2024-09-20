@@ -4,6 +4,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       debug
  * @id cpp/summary/lines-of-user-code
  */
 

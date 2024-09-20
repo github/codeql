@@ -346,11 +346,11 @@ class SystemStringClass extends StringType {
     result.hasName("==")
   }
 
-  /** Gets the `Replace(string/char, string/char)` method. */
+  /** Gets the `Replace(...)` method. */
   Method getReplaceMethod() {
     result.getDeclaringType() = this and
     result.hasName("Replace") and
-    result.getNumberOfParameters() = 2 and
+    result.getNumberOfParameters() in [2 .. 4] and
     result.getReturnType() instanceof StringType
   }
 

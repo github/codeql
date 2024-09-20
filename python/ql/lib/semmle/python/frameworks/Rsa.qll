@@ -80,7 +80,7 @@ private module Rsa {
       result.getName() = "RSA"
       or
       // hashing part
-      exists(StrConst str, DataFlow::Node hashNameArg |
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
@@ -132,7 +132,7 @@ private module Rsa {
     override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
-      exists(StrConst str, DataFlow::Node hashNameArg |
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())

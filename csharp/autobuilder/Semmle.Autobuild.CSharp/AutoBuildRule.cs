@@ -1,5 +1,6 @@
 using Semmle.Autobuild.Shared;
 using Semmle.Extraction.CSharp;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.CSharp
 {

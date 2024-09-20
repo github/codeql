@@ -24,7 +24,7 @@ using test;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
-#line 6 "Views/Other/Test13.cshtml"
+#line 6 "../Views/Other/Test13.cshtml"
  if (Model != null)
 {
 
@@ -33,7 +33,7 @@ using test;
 #nullable disable
             WriteLiteral("    <h3>Hello \"");
 #nullable restore
-#line 8 "Views/Other/Test13.cshtml"
+#line 8 "../Views/Other/Test13.cshtml"
 Write(Html.Raw(Model.Name));
 
 #line default
@@ -41,7 +41,7 @@ Write(Html.Raw(Model.Name));
 #nullable disable
             WriteLiteral("\"</h3>\n");
 #nullable restore
-#line 9 "Views/Other/Test13.cshtml"
+#line 9 "../Views/Other/Test13.cshtml"
 }
 
 #line default

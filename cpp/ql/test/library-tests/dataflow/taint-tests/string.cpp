@@ -203,7 +203,7 @@ void test_string_assign() {
 	sink(s5); // $ ast,ir
 
 	sink(s6.assign(s1));
-	sink(s6); // $ SPURIOUS: ast,ir
+	sink(s6); // $ SPURIOUS: ast
 }
 
 void test_string_insert() {
@@ -279,10 +279,10 @@ void test_string_swap() {
 	s1.swap(s2);
 	s4.swap(s3);
 
-	sink(s1); // $ ast,ir
-	sink(s2); // $ SPURIOUS: ast,ir
-	sink(s3); // $ ast,ir
-	sink(s4); // $ SPURIOUS: ast,ir
+	sink(s1); // $ ir
+	sink(s2); // $ SPURIOUS: ast
+	sink(s3); // $ ir
+	sink(s4); // $ SPURIOUS: ast
 }
 
 void test_string_clear() {
@@ -495,7 +495,7 @@ void test_string_iterator_methods()
 		sink(h); // $ ast,ir
 
 		sink(s6.assign(s5.cbegin(), s5.cend()));
-		sink(s6); // $ SPURIOUS: ast,ir
+		sink(s6); // $ SPURIOUS: ast
 	}
 }
 

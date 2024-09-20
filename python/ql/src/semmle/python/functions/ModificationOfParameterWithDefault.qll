@@ -8,6 +8,7 @@
 
 private import python
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TTP
 
 /**
  * Provides a data-flow configuration for detecting modifications of a parameters default value.
@@ -69,6 +70,10 @@ module ModificationOfParameterWithDefault {
       // if we are tracking a empty default, then it is ok to modify non-empty values,
       // so our tracking ends at those.
       state = false and node instanceof MustBeNonEmpty
+      or
+      // the target of a copy step is (presumably) a different object, and hence modifications of
+      // this object no longer matter for the purposes of this query.
+      TTP::copyStep(_, node) and state in [true, false]
     }
   }
 

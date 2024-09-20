@@ -338,7 +338,10 @@ class SwiftDispatcher {
   virtual void visit(const swift::MacroRoleAttr* attr) = 0;
 
   template <typename T>
-  requires(!std::derived_from<T, swift::TypeRepr>) void visit(const T* e, swift::Type) { visit(e); }
+    requires(!std::derived_from<T, swift::TypeRepr>)
+  void visit(const T* e, swift::Type) {
+    visit(e);
+  }
 
   const swift::SourceManager& sourceManager;
   SwiftExtractorState& state;

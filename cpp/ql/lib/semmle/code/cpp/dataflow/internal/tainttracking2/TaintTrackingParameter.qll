@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
+ */
+
 import semmle.code.cpp.dataflow.internal.TaintTrackingUtil as Public
 
 module Private {

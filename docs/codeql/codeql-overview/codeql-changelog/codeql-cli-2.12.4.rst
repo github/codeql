@@ -11,6 +11,11 @@ CodeQL 2.12.4 (2023-03-09)
 
 This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
+Security Coverage
+-----------------
+
+CodeQL 2.12.4 runs a total of 385 security queries when configured with the Default suite (covering 154 CWE). The Extended suite enables an additional 122 queries (covering 31 more CWE).
+
 CodeQL CLI
 ----------
 
@@ -94,8 +99,8 @@ C#
 *   C# 11: Added extractor support for :code:`required` fields and properties.
 *   C# 11: Added library support for :code:`checked` operators.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added new sinks for :code:`java/hardcoded-credential-api-call` to identify the use of hardcoded secrets in the creation and verification of JWT tokens using :code:`com.auth0.jwt`. These sinks are from `an experimental query submitted by @luchua <https://github.com/github/codeql/pull/9036>`__.
 *   The Java extractor now supports builds against JDK 20.

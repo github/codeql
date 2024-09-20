@@ -6,12 +6,22 @@ private import ruby
 private import codeql.ruby.ApiGraphs
 
 /**
+ * A file that probably contains tests.
+ */
+class TestFile extends File {
+  TestFile() {
+    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
+    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  }
+}
+
+/**
  * A file that is relevant in the context of library modeling.
  *
  * In practice, this means a file that is not part of test code.
  */
 class RelevantFile extends File {
-  RelevantFile() { not this.getRelativePath().regexpMatch(".*/?test(case)?s?/.*") }
+  RelevantFile() { not this instanceof TestFile }
 }
 
 /**
@@ -43,6 +53,7 @@ string getArgumentPath(DataFlow::ParameterNode paramNode) {
  */
 predicate pathToMethod(DataFlow::MethodNode method, string type, string path) {
   method.getLocation().getFile() instanceof RelevantFile and
+  method.isPublic() and // only public methods are modeled
   exists(DataFlow::ModuleNode mod, string methodName |
     method = mod.getOwnInstanceMethod(methodName) and
     if methodName = "initialize"

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+
+Unpacking files from a malicious zip without properly validating that the destination file path 
+is within the destination directory, or allowing symlinks to point to files outside the extraction directory, 
+allows an attacker to extract files to arbitrary locations outside the extraction directory. This helps 
+overwrite sensitive user data and, in some cases, can lead to code execution if an 
+attacker overwrites an application's shared object file.
+</p>
+</overview>
+
+<recommendation>
+<p>Consider using a safer module, such as: <code>ZIPArchive</code></p>
+</recommendation>
+
+<example>
+<p>
+The following examples unpacks a remote zip using `Zip.unzipFile()` which is vulnerable to path traversal.
+</p>
+<sample src="ZipBad.swift" />
+
+<p>
+The following examples unpacks a remote zip using `fileManager.unzipItem()` which is vulnerable to symlink path traversal.
+</p>
+<sample src="ZipFoundationBad.swift" />
+
+
+<p>Consider using a safer module, such as: <code>ZIPArchive</code></p>
+<sample src="ZipArchiveGood.swift" />
+</example>
+
+<references>
+<li>
+Ostorlab:
+<a href="https://blog.ostorlab.co/zip-packages-exploitation.html">Zip Packages Exploitation</a>.
+</li>
+</references>
+</qhelp>

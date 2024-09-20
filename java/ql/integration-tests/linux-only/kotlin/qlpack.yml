@@ -1,3 +1,0 @@
-dependencies:
-  codeql/java-all: '*'
-warnOnImplicitThis: true

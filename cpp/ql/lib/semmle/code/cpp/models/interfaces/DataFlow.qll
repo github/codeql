@@ -10,6 +10,7 @@
 import semmle.code.cpp.Function
 import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
+import PartialFlow
 
 /**
  * A library function for which a value is or may be copied from a parameter
@@ -18,7 +19,7 @@ import semmle.code.cpp.models.Models
  * Note that this does not include partial copying of values or partial writes
  * to destinations; that is covered by `TaintModel.qll`.
  */
-abstract class DataFlowFunction extends Function {
+abstract class DataFlowFunction extends PartialFlowFunction {
   /**
    * Holds if data can be copied from the argument, qualifier, or buffer
    * represented by `input` to the return value or buffer represented by

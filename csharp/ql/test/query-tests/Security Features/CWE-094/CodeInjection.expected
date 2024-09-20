@@ -1,17 +1,20 @@
+#select
+| CodeInjection.cs:29:64:29:67 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:29:64:29:67 | access to local variable code | This code compilation depends on a $@. | CodeInjection.cs:23:23:23:45 | access to property QueryString | user-provided value |
+| CodeInjection.cs:40:36:40:39 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:40:36:40:39 | access to local variable code | This code compilation depends on a $@. | CodeInjection.cs:23:23:23:45 | access to property QueryString | user-provided value |
+| CodeInjection.cs:56:36:56:44 | access to property Text | CodeInjection.cs:56:36:56:44 | access to property Text | CodeInjection.cs:56:36:56:44 | access to property Text | This code compilation depends on a $@. | CodeInjection.cs:56:36:56:44 | access to property Text | user-provided value |
 edges
-| CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:23:23:23:53 | access to indexer : String |
-| CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:29:64:29:67 | access to local variable code |
-| CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:40:36:40:39 | access to local variable code |
-| CodeInjection.cs:23:23:23:53 | access to indexer : String | CodeInjection.cs:29:64:29:67 | access to local variable code |
-| CodeInjection.cs:23:23:23:53 | access to indexer : String | CodeInjection.cs:40:36:40:39 | access to local variable code |
+| CodeInjection.cs:23:16:23:19 | access to local variable code : String | CodeInjection.cs:29:64:29:67 | access to local variable code | provenance |  |
+| CodeInjection.cs:23:16:23:19 | access to local variable code : String | CodeInjection.cs:40:36:40:39 | access to local variable code | provenance |  |
+| CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:23:16:23:19 | access to local variable code : String | provenance |  |
+| CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:23:23:23:53 | access to indexer : String | provenance | MaD:1 |
+| CodeInjection.cs:23:23:23:53 | access to indexer : String | CodeInjection.cs:23:16:23:19 | access to local variable code : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| CodeInjection.cs:23:16:23:19 | access to local variable code : String | semmle.label | access to local variable code : String |
 | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | CodeInjection.cs:23:23:23:53 | access to indexer : String | semmle.label | access to indexer : String |
 | CodeInjection.cs:29:64:29:67 | access to local variable code | semmle.label | access to local variable code |
 | CodeInjection.cs:40:36:40:39 | access to local variable code | semmle.label | access to local variable code |
 | CodeInjection.cs:56:36:56:44 | access to property Text | semmle.label | access to property Text |
 subpaths
-#select
-| CodeInjection.cs:29:64:29:67 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:29:64:29:67 | access to local variable code | This code compilation depends on a $@. | CodeInjection.cs:23:23:23:45 | access to property QueryString | user-provided value |
-| CodeInjection.cs:40:36:40:39 | access to local variable code | CodeInjection.cs:23:23:23:45 | access to property QueryString : NameValueCollection | CodeInjection.cs:40:36:40:39 | access to local variable code | This code compilation depends on a $@. | CodeInjection.cs:23:23:23:45 | access to property QueryString | user-provided value |
-| CodeInjection.cs:56:36:56:44 | access to property Text | CodeInjection.cs:56:36:56:44 | access to property Text | CodeInjection.cs:56:36:56:44 | access to property Text | This code compilation depends on a $@. | CodeInjection.cs:56:36:56:44 | access to property Text | user-provided value |

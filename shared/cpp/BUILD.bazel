@@ -1,0 +1,11 @@
+cc_library(
+    name = "extractor_shared",
+    srcs = glob(["*.cpp"]),
+    hdrs = glob(["*.h"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "@absl//absl/strings",
+        "@fmt",
+        "@json",
+    ],
+)

@@ -13,7 +13,7 @@ Exercise: Apache Struts
 Setup
 =====
 
-For this example you need to set up `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
 
 Unsafe deserialization in Struts
 ================================

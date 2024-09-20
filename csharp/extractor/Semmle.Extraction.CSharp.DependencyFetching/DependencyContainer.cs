@@ -12,12 +12,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Paths to dependencies required for compilation.
         /// </summary>
-        public List<string> Paths { get; } = new();
+        public HashSet<string> Paths { get; } = [];
 
         /// <summary>
         /// Packages that are used as a part of the required dependencies.
         /// </summary>
-        public HashSet<string> Packages { get; } = new();
+        public HashSet<string> Packages { get; } = [];
 
         /// <summary>
         /// If the path specifically adds a .dll we use that, otherwise we as a fallback
@@ -33,9 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         private static string GetPackageName(string package) =>
-            package
-                .Split(Path.DirectorySeparatorChar)
-                .First();
+            package.Split(Path.DirectorySeparatorChar)[0];
 
         /// <summary>
         /// Add a dependency inside a package.
@@ -45,7 +43,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var p = package.Replace('/', Path.DirectorySeparatorChar);
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
 
-            // In most cases paths in asset files point to dll's or the empty _._ file.
+            // In most cases paths in assets files point to dll's or the empty _._ file.
             // That is, for _._ we don't need to add anything.
             if (Path.GetFileName(d) == "_._")
             {
@@ -67,5 +65,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Paths.Add(p);
             Packages.Add(GetPackageName(p));
         }
+    }
+
+    internal static class DependencyContainerExtensions
+    {
+        /// <summary>
+        /// Flatten a list of containers into a single container.
+        /// </summary>
+        public static DependencyContainer Flatten(this IEnumerable<DependencyContainer> containers, DependencyContainer init) =>
+            containers.Aggregate(init, (acc, container) =>
+            {
+                acc.Paths.UnionWith(container.Paths);
+                acc.Packages.UnionWith(container.Packages);
+                return acc;
+            });
     }
 }

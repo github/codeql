@@ -109,7 +109,7 @@ private module AzureBlobClientConfig implements DataFlow::StateConfigSig {
     exists(DataFlow::AttrWrite attr |
       node = anyClient(_).getAValueReachableFromSource() and
       attr.accesses(node, "encryption_version") and
-      attr.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"]
+      attr.getValue().asExpr().(StringLiteral).getText() in ["'2.0'", "2.0"]
     )
     or
     // small optimization to block flow with no encryption out of the post-update node

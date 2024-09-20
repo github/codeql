@@ -1,2 +1,2 @@
-| test.py:17:12:17:22 | Str | Backspace escape in regular expression at offset 1. |
-| test.py:19:12:19:28 | Str | Backspace escape in regular expression at offset 8. |
+| test.py:17:12:17:22 | StringLiteral | Backspace escape in regular expression at offset 1. |
+| test.py:19:12:19:28 | StringLiteral | Backspace escape in regular expression at offset 8. |

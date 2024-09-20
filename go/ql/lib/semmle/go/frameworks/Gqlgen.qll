@@ -39,7 +39,7 @@ module Gqlgen {
   }
 
   /** A parameter of a resolver method which receives untrusted input. */
-  class ResolverParameter extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
+  class ResolverParameter extends RemoteFlowSource::Range instanceof DataFlow::ParameterNode {
     ResolverParameter() {
       this.asParameter() = any(ResolverImplementationMethod h).getAnUntrustedParameter()
     }

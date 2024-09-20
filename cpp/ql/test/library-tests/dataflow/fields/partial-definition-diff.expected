@@ -1,4 +1,4 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (partial-definition-diff.ql:7,8-51)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (partial-definition-diff.ql:7,8-51)
 | A.cpp:25:13:25:13 | c | AST only |
 | A.cpp:27:28:27:28 | c | AST only |
 | A.cpp:28:23:28:26 | this | IR only |
@@ -289,3 +289,5 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (parti
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:92:7:92:7 | i | AST only |
 | simple.cpp:94:10:94:11 | a2 | IR only |
+| simple.cpp:118:7:118:7 | i | AST only |
+| simple.cpp:120:8:120:8 | a | IR only |

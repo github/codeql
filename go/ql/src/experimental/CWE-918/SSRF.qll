@@ -10,7 +10,6 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  private import semmle.go.frameworks.Gin
   private import validator
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
@@ -88,9 +87,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
+  /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.

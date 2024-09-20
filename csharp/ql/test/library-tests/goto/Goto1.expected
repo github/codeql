@@ -1,3 +1,7 @@
+| goto.cs:2:7:2:10 | call to constructor Object | goto.cs:2:7:2:10 | {...} | semmle.label | successor |
+| goto.cs:2:7:2:10 | enter Goto | goto.cs:2:7:2:10 | call to constructor Object | semmle.label | successor |
+| goto.cs:2:7:2:10 | exit Goto (normal) | goto.cs:2:7:2:10 | exit Goto | semmle.label | successor |
+| goto.cs:2:7:2:10 | {...} | goto.cs:2:7:2:10 | exit Goto (normal) | semmle.label | successor |
 | goto.cs:4:17:4:20 | enter Main | goto.cs:5:5:20:5 | {...} | semmle.label | successor |
 | goto.cs:4:17:4:20 | exit Main (normal) | goto.cs:4:17:4:20 | exit Main | semmle.label | successor |
 | goto.cs:5:5:20:5 | {...} | goto.cs:6:9:8:9 | {...} | semmle.label | successor |

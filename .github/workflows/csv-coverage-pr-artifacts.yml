@@ -19,6 +19,10 @@ on:
       - main
       - "rc/*"
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   generate:
     name: Generate framework coverage artifacts

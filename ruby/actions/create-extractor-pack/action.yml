@@ -7,23 +7,22 @@ runs:
       id: os_version
     - name: Cache entire extractor
       id: cache-extractor
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ruby/extractor-pack
         key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/scripts/create-extractor-pack.sh', 'ruby/extractor/**/Cargo.lock', 'ruby/actions/create-extractor-pack/action.yml') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
     - name: Cache cargo
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       if: steps.cache-extractor.outputs.cache-hit != 'true'
       with:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
-          ruby/target
+          target
         key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-qltest-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/scripts/create-extractor-pack.sh', 'ruby/extractor/**/Cargo.lock') }}
     - name: Build Extractor
       if: steps.cache-extractor.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        cargo install cross --version 0.2.5
         scripts/create-extractor-pack.sh
       working-directory: ruby

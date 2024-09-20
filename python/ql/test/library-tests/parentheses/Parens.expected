@@ -1,8 +1,8 @@
 | 26 | a |
 | 27 | Attribute |
 | 28 | BinaryExpr |
-| 29 | Str |
-| 30 | Str |
+| 29 | StringLiteral |
+| 30 | StringLiteral |
 | 31 | List |
 | 32 | Dict |
 | 33 | Tuple |
@@ -17,7 +17,7 @@
 | 42 | ListComp |
 | 43 | SetComp |
 | 44 | DictComp |
-| 45 | Str |
+| 45 | StringLiteral |
 | 46 | BinaryExpr |
 | 47 | BinaryExpr |
 | 48 | BinaryExpr |

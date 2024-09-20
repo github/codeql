@@ -67,16 +67,18 @@ private import CaptureModels
  * Captured Model:
  * ```p;Foo;true;addToList;;Argument[0];Argument[1];taint;df-generated```
  */
-string captureFlow(DataFlowTargetApi api) {
+string captureFlow(DataFlowSummaryTargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
 
 /**
- * Gets the neutral summary for `api`, if any.
- * A neutral model is generated, if there does not exist any summary model.
+ * Gets the neutral summary model for `api`, if any.
+ * A neutral summary model is generated, if we are not generating
+ * a summary model that applies to `api`.
  */
-string captureNoFlow(DataFlowTargetApi api) {
-  not exists(captureFlow(api)) and
-  result = ModelPrinting::asNeutralSummaryModel(api)
+string captureNoFlow(DataFlowSummaryTargetApi api) {
+  not exists(DataFlowSummaryTargetApi api0 | exists(captureFlow(api0)) and api0.lift() = api.lift()) and
+  api.isRelevant() and
+  result = Printing::asNeutralSummaryModel(api)
 }

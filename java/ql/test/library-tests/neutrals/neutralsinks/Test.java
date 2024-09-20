@@ -14,11 +14,9 @@ public class Test {
 
         // java.io
         File file = null;
-        file.exists(); // $ isNeutralSink
         file.compareTo(null); // $ isNeutralSink
 
         // java.nio.file
-        Files.exists(null, (LinkOption[])null); // $ isNeutralSink
         Files.getLastModifiedTime(null, (LinkOption[])null); // $ isNeutralSink
         Files.getOwner(null, (LinkOption[])null); // $ isNeutralSink
         Files.getPosixFilePermissions(null, (LinkOption[])null); // $ isNeutralSink
@@ -30,7 +28,6 @@ public class Test {
         Files.isSameFile(null, null); // $ isNeutralSink
         Files.isSymbolicLink(null); // $ isNeutralSink
         Files.isWritable(null); // $ isNeutralSink
-        Files.notExists(null, (LinkOption[])null); // $ isNeutralSink
         Files.setLastModifiedTime(null, null); // $ isNeutralSink
         Files.size(null); // $ isNeutralSink
 

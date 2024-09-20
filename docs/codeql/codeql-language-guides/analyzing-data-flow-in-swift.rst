@@ -5,8 +5,6 @@ Analyzing data flow in Swift
 
 You can use CodeQL to track the flow of data through a Swift program to places where the data is used.
 
-.. include:: ../reusables/swift-beta-note.rst
-
 About this article
 ------------------
 
@@ -34,7 +32,7 @@ The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for e
        Expr asExpr() { ... }
 
        /**
-        * Gets the control flow node that corresponds to this data flow node. 
+        * Gets the control flow node that corresponds to this data flow node.
         */
        ControlFlowNode getCfgNode() { ... }
 
@@ -284,7 +282,7 @@ The following global taint-tracking query finds places where a value from a remo
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/swift-further-reading.rst

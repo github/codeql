@@ -90,7 +90,6 @@ definition
 | scopes.rb:2:9:6:3 | <captured entry> self | scopes.rb:1:1:49:4 | self |
 | scopes.rb:4:4:4:4 | a | scopes.rb:4:4:4:4 | a |
 | scopes.rb:7:1:7:1 | a | scopes.rb:7:1:7:1 | a |
-| scopes.rb:9:1:18:3 | <captured exit> a | scopes.rb:7:1:7:1 | a |
 | scopes.rb:9:9:18:3 | <captured entry> a | scopes.rb:7:1:7:1 | a |
 | scopes.rb:9:9:18:3 | <captured entry> self | scopes.rb:1:1:49:4 | self |
 | scopes.rb:11:4:11:4 | a | scopes.rb:7:1:7:1 | a |

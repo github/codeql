@@ -6,5 +6,5 @@ extensions:
       - ["container/heap", "", False, "Pop", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["container/heap", "", False, "Push", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["container/heap", "", False, "Remove", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["container/heap", "Interface", True, "Pop", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["container/heap", "Interface", True, "Push", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["container/heap", "Interface", True, "Pop", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["container/heap", "Interface", True, "Push", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

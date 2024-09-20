@@ -18,40 +18,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Callable extends @callable, Element {
-    /**
-     * Gets the name of this callable, if it exists.
-     *
-     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
-     */
-    string getName() { callable_names(this, result) }
-
-    /**
-     * Gets the self parameter of this callable, if it exists.
-     */
-    ParamDecl getSelfParam() { callable_self_params(this, result) }
-
-    /**
-     * Gets the `index`th parameter of this callable (0-based).
-     */
-    ParamDecl getParam(int index) { callable_params(this, index, result) }
-
-    /**
-     * Gets the body of this callable, if it exists.
-     *
-     * The body is absent within protocol declarations.
-     */
-    BraceStmt getBody() { callable_bodies(this, result) }
-
-    /**
-     * Gets the `index`th capture of this callable (0-based).
-     */
-    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class File extends @file, Element {
     /**
      * Gets the name of this file.
@@ -196,6 +162,40 @@ module Raw {
    * ```
    */
   class AvailabilitySpec extends @availability_spec, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Callable extends @callable, AstNode {
+    /**
+     * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
+     */
+    string getName() { callable_names(this, result) }
+
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     */
+    ParamDecl getSelfParam() { callable_self_params(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     */
+    ParamDecl getParam(int index) { callable_params(this, index, result) }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     *
+     * The body is absent within protocol declarations.
+     */
+    BraceStmt getBody() { callable_bodies(this, result) }
+
+    /**
+     * Gets the `index`th capture of this callable (0-based).
+     */
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2921,6 +2921,27 @@ module Raw {
      * Gets the result of this return statement, if it exists.
      */
     Expr getResult() { return_stmt_results(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A statement implicitly wrapping values to be used in branches of if/switch expressions. For example in:
+   * ```
+   * let rank = switch value {
+   *     case 0..<0x80: 1
+   *     case 0x80..<0x0800: 2
+   *     default: 3
+   * }
+   * ```
+   * the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
+   */
+  class ThenStmt extends @then_stmt, Stmt {
+    override string toString() { result = "ThenStmt" }
+
+    /**
+     * Gets the result of this then statement.
+     */
+    Expr getResult() { then_stmts(this, result) }
   }
 
   /**

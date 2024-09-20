@@ -9,6 +9,7 @@ import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.ResolveFunction
 
 /**
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
@@ -25,47 +26,9 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
-  override string getName() { functions(underlyingElement(this), result, _) }
+  Function() { isFunction(underlyingElement(this)) }
 
-  /**
-   * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
-   * Gets the full signature of this function, including return type, parameter
-   * types, and template arguments.
-   *
-   * For example, in the following code:
-   * ```
-   * template<typename T> T min(T x, T y);
-   * int z = min(5, 7);
-   * ```
-   * The full signature of the function called on the last line would be
-   * `min<int>(int, int) -> int`, and the full signature of the uninstantiated
-   * template on the first line would be `min<T>(T, T) -> T`.
-   */
-  deprecated string getFullSignature() {
-    exists(string name, string templateArgs, string args |
-      result = name + templateArgs + args + " -> " + this.getType().toString() and
-      name = this.getQualifiedName() and
-      (
-        if exists(this.getATemplateArgument())
-        then
-          templateArgs =
-            "<" +
-              concat(int i |
-                exists(this.getTemplateArgument(i))
-              |
-                this.getTemplateArgument(i).toString(), ", " order by i
-              ) + ">"
-        else templateArgs = ""
-      ) and
-      args =
-        "(" +
-          concat(int i |
-            exists(this.getParameter(i))
-          |
-            this.getParameter(i).getType().toString(), ", " order by i
-          ) + ")"
-    )
-  }
+  override string getName() { functions(underlyingElement(this), result, _) }
 
   /** Gets a specifier of this function. */
   override Specifier getASpecifier() {
@@ -154,6 +117,26 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Holds if this function is declared to be `consteval`.
    */
   predicate isConsteval() { this.hasSpecifier("is_consteval") }
+
+  /**
+   * Holds if this function is declared to be `explicit`.
+   */
+  predicate isExplicit() { this.hasSpecifier("explicit") }
+
+  /**
+   * Gets the constant expression that determines whether the function is explicit.
+   *
+   * For example, for the following code the result is the expression `sizeof(T) == 1`:
+   * ```
+   * template<typename T> struct C {
+   *   explicit(sizeof(T) == 1)
+   *   C(const T);
+   * };
+   * ```
+   */
+  Expr getExplicitExpr() {
+    explicit_specifier_exprs(underlyingElement(this), unresolveElement(result))
+  }
 
   /**
    * Holds if this function is declared with `__attribute__((naked))` or
@@ -882,3 +865,24 @@ class BuiltInFunction extends Function {
 }
 
 private predicate suppressUnusedThis(Function f) { any() }
+
+/**
+ * A C++ user-defined literal [N4140 13.5.8].
+ */
+class UserDefinedLiteral extends Function {
+  UserDefinedLiteral() { functions(underlyingElement(this), _, 7) }
+}
+
+/**
+ * A C++ deduction guide [N4659 17.9].
+ */
+class DeductionGuide extends Function {
+  DeductionGuide() { functions(underlyingElement(this), _, 8) }
+
+  /**
+   * Gets the class template for which this is a deduction guide.
+   */
+  TemplateClass getTemplateClass() {
+    deduction_guide_for_class(underlyingElement(this), unresolveElement(result))
+  }
+}

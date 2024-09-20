@@ -157,8 +157,8 @@
 })();
 
 (function(){
-	require("cookie-session")({ secret: "change_me" }); // NOT OK
-	require('crypto').createHmac('sha256', 'change_me'); // NOT OK
+	require("cookie-session")({ secret: "oiuneawrgiyubaegr" }); // NOT OK
+	require('crypto').createHmac('sha256', 'oiuneawrgiyubaegr'); // NOT OK
 
 	var basicAuth = require('express-basic-auth');
 	basicAuth({users: { [adminName]: 'change_me' }});  // OK
@@ -294,3 +294,124 @@
     headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // NOT OK
     headers.append("Authorization", `Basic sdsdag:000000000000001`); // OK
 });
+
+(function () {
+    require('crypto').createHmac('sha256', 'mytoken'); // OK
+    require('crypto').createHmac('sha256', 'SampleToken'); // OK
+    require('crypto').createHmac('sha256', 'MyPassword'); // OK
+    require('crypto').createHmac('sha256', 'iubfewiaaweiybgaeuybgera'); // NOT OK
+})();
+
+(function () {
+    const jwt_simple = require("jwt-simple");
+
+    var privateKey = "myHardCodedPrivateKey";
+    jwt_simple.decode(UserToken, privateKey); // NOT OK
+})();
+
+
+(async function () {
+    const jose = require("jose");
+
+    var privateKey = "myHardCodedPrivateKey";
+    jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // NOT OK
+
+    const spki = `-----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9...
+    -----END PUBLIC KEY-----`
+    let publicKey = await jose.importSPKI(spki, 'RS256')
+    jose.jwtVerify(token, publicKey) // NOT OK
+
+    const alg = 'RS256'
+    const jwk = {
+        kty: 'RSA',
+        n: 'whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6f...',
+        e: 'AQAB',
+    }
+    publicKey = await jose.importJWK(jwk, alg)
+    const jwt =
+        'eyJhbGciOiJSUzI1NiJ9.eyJ1cm46ZXhhbXBsZTpjbGFpbSI6dHJ1ZSwiaWF0IjoxNjY5MDU2NDg4LCJpc3MiOiJ1cm46ZXhhbXBsZTppc3N1ZXIiLCJhdWQiOiJ1cm46ZXhhbXBsZTphdWRpZW5jZSJ9.gXrPZ3yM_60dMXGE69dusbpzYASNA-XIOwsb5D5xYnSxyj6_D6OR_uR_1vqhUm4AxZxcrH1_-XJAve9HCw8az_QzHcN-nETt-v6stCsYrn6Bv1YOc-mSJRZ8ll57KVqLbCIbjKwerNX5r2_Qg2TwmJzQdRs-AQDhy-s_DlJd8ql6wR4n-kDZpar-pwIvz4fFIN0Fj57SXpAbLrV6Eo4Byzl0xFD8qEYEpBwjrMMfxCZXTlAVhAq6KCoGlDTwWuExps342-0UErEtyIqDnDGcrfNWiUsoo8j-29IpKd-w9-C388u-ChCxoHz--H8WmMSZzx3zTXsZ5lXLZ9IKfanDKg'
+
+    await jose.jwtVerify(jwt, publicKey, { // NOT OK
+        issuer: 'urn:example:issuer',
+        audience: 'urn:example:audience',
+    })
+})();
+
+(function () {
+    const expressjwt = require("express-jwt");
+
+    var secretKey = "myHardCodedPrivateKey";
+
+    app.get(
+        "/protected",
+        expressjwt.expressjwt({
+            secret: secretKey, algorithms: ["HS256"] // NOT OK
+        }),
+        function (req, res) {
+            if (!req.auth.admin) return res.sendStatus(401);
+            res.sendStatus(200);
+        }
+    );
+
+    app.get(
+        "/protected",
+        expressjwt.expressjwt({
+            secret: Buffer.from(secretKey, "base64"), // NOT OK
+            algorithms: ["RS256"],
+        }),
+        function (req, res) {
+            if (!req.auth.admin) return res.sendStatus(401);
+            res.sendStatus(200);
+        }
+    );
+
+})();
+
+(function () {
+    const JwtStrategy = require('passport-jwt').Strategy;
+    const passport = require('passport')
+
+    var secretKey = "myHardCodedPrivateKey";
+
+    const opts = {}
+    opts.secretOrKey = secretKey; // NOT OK
+    passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
+        return done(null, false);
+    }));
+
+    passport.use(new JwtStrategy({
+        secretOrKeyProvider: function (request, rawJwtToken, done) {
+            return done(null, secretKey) // NOT OK
+        }
+    }, function (jwt_payload, done) {
+        return done(null, false);
+    }));
+})();
+
+(function () {
+    import NextAuth from "next-auth"
+    import AppleProvider from "next-auth/providers/apple"
+
+    var secretKey = "myHardCodedPrivateKey";
+
+    NextAuth({
+        secret: secretKey, // NOT OK
+        providers: [
+            AppleProvider({
+                clientId: process.env.APPLE_ID,
+                clientSecret: process.env.APPLE_SECRET,
+            }),
+        ],
+    })
+})();
+
+(function () {
+    const Koa = require('koa');
+    const jwt = require('koa-jwt');
+    const app = new Koa();
+
+    var secretKey = "myHardCodedPrivateKey";
+
+    app.use(jwt({ secret: secretKey })); // NOT OK
+})();

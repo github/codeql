@@ -15,26 +15,11 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             switch (key)
             {
-                case "silent":
-                    Verbosity = value ? Verbosity.Off : Verbosity.Info;
-                    return true;
                 case "help":
                     Help = true;
                     return true;
                 default:
                     return base.HandleFlag(key, value);
-            }
-        }
-
-        public override bool HandleOption(string key, string value)
-        {
-            switch (key)
-            {
-                case "dotnet":
-                    dependencies.DotNetPath = value;
-                    return true;
-                default:
-                    return base.HandleOption(key, value);
             }
         }
 
@@ -53,12 +38,6 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// The directory containing the source code;
         /// </summary>
         public string SrcDir { get; } = Directory.GetCurrentDirectory();
-
-        private readonly DependencyOptions dependencies = new DependencyOptions();
-        /// <summary>
-        /// Dependency fetching related options.
-        /// </summary>
-        public IDependencyOptions Dependencies => dependencies;
 
         /// <summary>
         /// Whether errors were encountered parsing the arguments.
@@ -79,7 +58,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             output.WriteLine("Additional options:\n");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
-            output.WriteLine("    --pdb            Cross-reference information from PDBs where available");
         }
 
         private Options()

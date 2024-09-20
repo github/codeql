@@ -704,6 +704,10 @@ module SharedFlowStep {
  * For use with load/store steps in `DataFlow::SharedFlowStep` and TypeTracking.
  */
 module PseudoProperties {
+  /** Holds if `s` is a pseudo-property. */
+  bindingset[s]
+  predicate isPseudoProperty(string s) { s.matches("$%$") }
+
   bindingset[s]
   private string pseudoProperty(string s) { result = "$" + s + "$" }
 

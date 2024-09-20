@@ -115,9 +115,6 @@ class SpringCli extends CallableEntryPoint {
   }
 }
 
-/** DEPRECATED: Alias for SpringCli */
-deprecated class SpringCLI = SpringCli;
-
 /**
  * An entry point which acts as a remote API for a Flex application to access a Spring application.
  */

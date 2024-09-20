@@ -58,6 +58,31 @@ public class Test {
       case null: default: i.take(source()); // Can't call C1.take (but we don't currently notice)
     }
 
+    switch(i) {
+      case C1 _, C2 _:
+        i.take(source()); // Must be either C1.take or C2.take (but we don't currently notice, because neither dominates)
+        break;
+      default: 
+        i.take(source()); // Can't call C1.take or C2.take (but we don't currently notice, because a multi-pattern case isn't understood as a type test)
+    }
+
+    switch(i) {
+      case C1 _, C2 _ when i.toString().equals("abc"):
+        i.take(source()); // Must be either C1.take or C2.take (but we don't currently notice, because neither dominates)
+        break;
+      default: 
+        i.take(source()); // Can't call C1.take or C2.take (but we don't currently notice, because a multi-pattern case isn't understood as a type test)
+    }
+
+    switch(i) {
+      case C1 _:
+      case C2 _:
+        i.take(source()); // Must be either C1.take or C2.take (but we don't currently notice, because neither dominates)
+        break;
+      default:
+        i.take(source()); // Can't call C1.take or C2.take
+    }
+
   }
 
 }

@@ -224,7 +224,7 @@ predicate matchMappingReadStep(Node nodeFrom, Content c, Node nodeTo) {
   |
     nodeFrom.(CfgNode).getNode().getNode() = subject and
     nodeTo.(CfgNode).getNode().getNode() = value and
-    c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    c.(DictionaryElementContent).getKey() = key.getLiteral().(StringLiteral).getText()
   )
 }
 
@@ -256,7 +256,7 @@ predicate matchMappingClearStep(Node n, Content c) {
     dstar = subject.getAMapping()
   |
     n.(CfgNode).getNode().getNode() = dstar.getTarget() and
-    c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    c.(DictionaryElementContent).getKey() = key.getLiteral().(StringLiteral).getText()
   )
 }
 

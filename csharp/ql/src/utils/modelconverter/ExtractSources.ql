@@ -12,7 +12,7 @@ from
   string name, string signature0, string signature, string ext, string output, string kind,
   string provenance
 where
-  sourceModel(namespace0, type0, subtypes, name0, signature0, ext, output, kind, provenance) and
+  sourceModel(namespace0, type0, subtypes, name0, signature0, ext, output, kind, provenance, _) and
   interpretCallable(namespace0, namespace, type0, type, name0, name, signature0, signature)
 select namespace, type, subtypes, name, signature, ext, output, kind, provenance order by
     namespace, type, name, signature, output, kind

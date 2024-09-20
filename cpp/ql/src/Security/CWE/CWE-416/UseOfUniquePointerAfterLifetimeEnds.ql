@@ -30,6 +30,8 @@ where
   outlivesFullExpr(c) and
   not c.isFromUninstantiatedTemplate(_) and
   isUniquePointerDerefFunction(c.getTarget()) and
+  // Exclude cases where the pointer is implicitly converted to a non-pointer type
+  not c.getActualType() instanceof IntegralType and
   isTemporary(c.getQualifier().getFullyConverted())
 select c,
   "The underlying unique pointer object is destroyed after the call to '" + c.getTarget() +

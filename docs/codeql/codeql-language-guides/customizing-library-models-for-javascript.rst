@@ -1,8 +1,5 @@
 .. _customizing-library-models-for-javascript:
 
-:orphan:
-:nosearch:
-
 Customizing Library Models for JavaScript
 =========================================
 
@@ -29,8 +26,6 @@ The CodeQL library for JavaScript exposes the following extensible predicates:
 - **sinkModel**\(type, path, kind)
 - **typeModel**\(type1, type2, path)
 - **summaryModel**\(type, path, input, output, kind)
-
-See the `CLI documentation for how to load and use data extensions in a CodeQL evaluation run <https://docs.google.com/document/d/14IYCHX8wWuU-HTvJ2gPSdXQKHKYbWCHQKOgn8oLaa80/edit#heading=h.m0v53lpi6w2n>`__ (internal access required).
 
 We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
@@ -483,7 +478,7 @@ The following components are supported:
 - **Element** selects an element of an array, iterator, or set object.
 - **MapValue** selects a value of a map object.
 - **Awaited** selects the value of a promise.
-- **Instance** selects instances of a class.
+- **Instance** selects instances of a class, including instances of its subclasses.
 - **Fuzzy** selects all values that are derived from the current value through a combination of the other operations described in this list.
   For example, this can be used to find all values that appear to originate from a particular package. This can be useful for finding method calls
   from a known package, but where the receiver type is not known or is difficult to model.

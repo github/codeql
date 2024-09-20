@@ -5,8 +5,6 @@ Types in Java and Kotlin
 
 You can use CodeQL to find out information about data types used in Java/Kotlin code. This allows you to write queries to identify specific type-related issues.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 About working with Java types
 -----------------------------
 

@@ -24,6 +24,6 @@ private import python
 module DataFlow {
   private import internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<PythonDataFlow>
+  import DataFlowMake<Location, PythonDataFlow>
   import internal.DataFlowImpl1
 }

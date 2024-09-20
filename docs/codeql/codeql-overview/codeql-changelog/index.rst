@@ -6,9 +6,33 @@ CodeQL change logs
 
 This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
+A list of queries for each suite and language `is available here <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/codeql-query-suites#queries-included-in-the-default-and-security-extended-query-suites>`__.
+
 .. toctree::
    :maxdepth: 1
 
+   codeql-cli-2.19.0
+   codeql-cli-2.18.4
+   codeql-cli-2.18.3
+   codeql-cli-2.18.2
+   codeql-cli-2.18.1
+   codeql-cli-2.18.0
+   codeql-cli-2.17.6
+   codeql-cli-2.17.5
+   codeql-cli-2.17.4
+   codeql-cli-2.17.3
+   codeql-cli-2.17.2
+   codeql-cli-2.17.1
+   codeql-cli-2.17.0
+   codeql-cli-2.16.6
+   codeql-cli-2.16.5
+   codeql-cli-2.16.4
+   codeql-cli-2.16.3
+   codeql-cli-2.16.2
+   codeql-cli-2.16.1
+   codeql-cli-2.16.0
+   codeql-cli-2.15.5
+   codeql-cli-2.15.4
    codeql-cli-2.15.3
    codeql-cli-2.15.2
    codeql-cli-2.15.1

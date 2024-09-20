@@ -81,18 +81,28 @@ module SQL {
                   "github.com/lann/squirrel"
                 ], "")
           |
-            // first argument to `squirrel.Expr`
-            fn.hasQualifiedName(sq, "Expr")
+            fn.hasQualifiedName(sq, ["Delete", "Expr", "Insert", "Select", "Update"])
             or
-            // first argument to the `Prefix`, `Suffix` or `Where` method of one of the `*Builder` classes
-            exists(string builder | builder.matches("%Builder") |
-              fn.(Method).hasQualifiedName(sq, builder, "Prefix") or
-              fn.(Method).hasQualifiedName(sq, builder, "Suffix") or
-              fn.(Method).hasQualifiedName(sq, builder, "Where")
+            exists(Method m, string builder | m = fn |
+              builder = ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"] and
+              m.hasQualifiedName(sq, builder,
+                ["Columns", "From", "Options", "OrderBy", "Prefix", "Suffix", "Where"])
+              or
+              builder = "InsertBuilder" and
+              m.hasQualifiedName(sq, builder, ["Replace", "Into"])
+              or
+              builder = "SelectBuilder" and
+              m.hasQualifiedName(sq, builder,
+                ["CrossJoin", "GroupBy", "InnerJoin", "LeftJoin", "RightJoin"])
+              or
+              builder = "UpdateBuilder" and
+              m.hasQualifiedName(sq, builder, ["Set", "Table"])
             )
           ) and
-          this = fn.getACall().getArgument(0) and
-          this.getType().getUnderlyingType() instanceof StringType
+          this = fn.getACall().getArgument(0)
+        |
+          this.getType().getUnderlyingType() instanceof StringType or
+          this.getType().getUnderlyingType().(SliceType).getElementType() instanceof StringType
         )
       }
     }

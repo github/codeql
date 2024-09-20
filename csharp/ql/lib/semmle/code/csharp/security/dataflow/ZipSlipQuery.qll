@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 
 /**
  * A data flow source for unsafe zip extraction.
@@ -13,27 +14,12 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unsafe zip extraction.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for unsafe zip extraction.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `ZipSlip` instead.
- *
- * A taint tracking configuration for Zip Slip.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint tracking configuration for Zip Slip.

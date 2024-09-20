@@ -1,1 +1,1 @@
-semmle-extractor-options: --cil /r:System.Private.Xml.dll /r:System.IO.Compression.dll
+semmle-extractor-options: /r:System.Private.Xml.dll /r:System.IO.Compression.dll

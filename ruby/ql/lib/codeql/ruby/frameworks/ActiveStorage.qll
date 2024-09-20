@@ -26,39 +26,6 @@ module ActiveStorage {
     }
   }
 
-  /** Taint related to `ActiveStorage::Filename`. */
-  private class FilenameSummaries extends ModelInput::SummaryModelCsv {
-    override predicate row(string row) {
-      row =
-        [
-          "ActiveStorage::Filename!;Method[new];Argument[0];ReturnValue;taint",
-          "ActiveStorage::Filename;Method[sanitized];Argument[self];ReturnValue;taint",
-        ]
-    }
-  }
-
-  /**
-   * `Blob` is an instance of `ActiveStorage::Blob`.
-   */
-  private class BlobTypeSummary extends ModelInput::TypeModelCsv {
-    override predicate row(string row) {
-      // package1;type1;package2;type2;path
-      row =
-        [
-          // ActiveStorage::Blob.create_and_upload! : Blob
-          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[create_and_upload!].ReturnValue",
-          // ActiveStorage::Blob.create_before_direct_upload! : Blob
-          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[create_before_direct_upload!].ReturnValue",
-          // ActiveStorage::Blob.compose(blobs : [Blob]) : Blob
-          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[compose].ReturnValue",
-          // gives error: Invalid name 'Element' in access path
-          // "ActiveStorage::Blob;ActiveStorage::Blob!;Method[compose].Argument[0].Element[any]",
-          // ActiveStorage::Blob.find_signed(!) : Blob
-          "ActiveStorage::Blob;ActiveStorage::Blob!;Method[find_signed,find_signed!].ReturnValue",
-        ]
-    }
-  }
-
   private class BlobInstance extends DataFlow::Node {
     BlobInstance() {
       this = ModelOutput::getATypeNode("ActiveStorage::Blob").getAValueReachableFromSource()

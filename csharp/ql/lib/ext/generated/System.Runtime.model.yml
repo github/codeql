@@ -4,8 +4,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime", "DependentHandle", False, "get_Dependent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime", "DependentHandle", False, "get_Target", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime", "DependentHandle", False, "get_TargetAndDependent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -18,13 +16,7 @@ extensions:
       - ["System.Runtime", "DependentHandle", "DependentHandle", "(System.Object,System.Object)", "summary", "df-generated"]
       - ["System.Runtime", "DependentHandle", "Dispose", "()", "summary", "df-generated"]
       - ["System.Runtime", "DependentHandle", "get_IsAllocated", "()", "summary", "df-generated"]
-      - ["System.Runtime", "DependentHandle", "set_Dependent", "(System.Object)", "summary", "df-generated"]
-      - ["System.Runtime", "DependentHandle", "set_Target", "(System.Object)", "summary", "df-generated"]
       - ["System.Runtime", "GCSettings", "get_IsServerGC", "()", "summary", "df-generated"]
-      - ["System.Runtime", "GCSettings", "get_LargeObjectHeapCompactionMode", "()", "summary", "df-generated"]
-      - ["System.Runtime", "GCSettings", "get_LatencyMode", "()", "summary", "df-generated"]
-      - ["System.Runtime", "GCSettings", "set_LargeObjectHeapCompactionMode", "(System.Runtime.GCLargeObjectHeapCompactionMode)", "summary", "df-generated"]
-      - ["System.Runtime", "GCSettings", "set_LatencyMode", "(System.Runtime.GCLatencyMode)", "summary", "df-generated"]
       - ["System.Runtime", "JitInfo", "GetCompilationTime", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime", "JitInfo", "GetCompiledILBytes", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime", "JitInfo", "GetCompiledMethodCount", "(System.Boolean)", "summary", "df-generated"]

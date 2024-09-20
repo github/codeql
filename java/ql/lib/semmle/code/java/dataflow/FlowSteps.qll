@@ -14,6 +14,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.frameworks.android.Widget
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.guava.Guava
@@ -21,6 +22,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.IoJsonWebToken
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.InputStream
+  private import semmle.code.java.frameworks.Networking
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.ThreadLocal

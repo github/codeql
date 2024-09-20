@@ -42,13 +42,7 @@ class CamelJavaDslToDecl extends ProcessorDefinitionElement {
    * Gets the URI specified by this `to` declaration.
    */
   string getUri() { result = this.getArgument(0).(CompileTimeConstantExpr).getStringValue() }
-
-  /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = this.getUri() }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslToDecl */
-deprecated class CamelJavaDSLToDecl = CamelJavaDslToDecl;
 
 /**
  * A declaration of a "bean" target in the Apache Camel Java DSL.
@@ -73,9 +67,6 @@ class CamelJavaDslBeanDecl extends ProcessorDefinitionElement {
       result = this.getArgument(0).getType()
   }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslBeanDecl */
-deprecated class CamelJavaDSLBeanDecl = CamelJavaDslBeanDecl;
 
 /**
  * A declaration of a "beanRef" target in the Apache Camel Java DSL.
@@ -105,9 +96,6 @@ class CamelJavaDslBeanRefDecl extends ProcessorDefinitionElement {
     result.getQualifiedName() = this.getBeanRefString()
   }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslBeanRefDecl */
-deprecated class CamelJavaDSLBeanRefDecl = CamelJavaDslBeanRefDecl;
 
 /**
  * A "method" Camel expression in the Apache Camel Java DSL.
@@ -140,6 +128,3 @@ class CamelJavaDslMethodDecl extends MethodCall {
       else result = this.getArgument(0).getType()
   }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslMethodDecl */
-deprecated class CamelJavaDSLMethodDecl = CamelJavaDslMethodDecl;

@@ -1,0 +1,36 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+config_setting(
+    name = "debug_build",
+    values = {
+        "compilation_mode": "dbg",
+    },
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction",
+    srcs = glob([
+        "Entities/**/*.cs",
+        "Extractor/**/*.cs",
+        "*.cs",
+    ]),
+    # enable via -c dbg on the bazel command line/in .bazelrc.local
+    defines = select({
+        ":debug_build": [
+            "TRACE",
+            "DEBUG",
+            "DEBUG_LABELS",
+        ],
+        "//conditions:default": [],
+    }),
+    internals_visible_to = ["Semmle.Extraction.CSharp"],
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.build",
+        "@paket.main//microsoft.codeanalysis",
+    ],
+)

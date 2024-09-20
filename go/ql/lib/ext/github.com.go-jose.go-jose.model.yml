@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["go-jose", "gopkg.in/square/go-jose"]
+      - ["go-jose", "gopkg.in/go-jose/go-jose"]
+      - ["go-jose", "github.com/square/go-jose"]
+      - ["go-jose", "github.com/go-jose/go-jose"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:go-jose", "Recipient", True, "Key", "", "", "", "credentials-key", "manual"]
+      - ["group:go-jose", "SigningKey", True, "Key", "", "", "", "credentials-key", "manual"]

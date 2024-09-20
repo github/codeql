@@ -196,29 +196,5 @@ successor(#20045,#20048)
 successor(#20057,#20041)
 successor(#20038,#20037)
 successor(#20054,#20038)
-#20059=*
-js_parse_errors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
-")
-#20060=@"loc,{#10000},3,3,3,3"
-locations_default(#20060,#10000,3,3,3,3)
-hasLocation(#20059,#20060)
-#20061=*
-lines(#20061,#20001,"function f() {","
-")
-hasLocation(#20061,#20003)
-#20062=*
-lines(#20062,#20001,"  'use strict';","
-")
-hasLocation(#20062,#20005)
-indentation(#10000,2," ",2)
-#20063=*
-lines(#20063,#20001,"  arguments = 42;","
-")
-hasLocation(#20063,#20007)
-indentation(#10000,3," ",2)
-#20064=*
-lines(#20064,#20001,"}","")
-hasLocation(#20064,#20009)
-numlines(#20001,4,0,0)
 numlines(#10000,4,4,0)
 filetype(#10000,"javascript")

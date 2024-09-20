@@ -12,6 +12,8 @@ caseValues
 | cases.rb:154:1:158:3 | case ... | cases.rb:154:6:154:9 | call to expr |
 | cases.rb:160:1:160:14 | case ... | cases.rb:160:1:160:4 | call to expr |
 | cases.rb:162:1:162:20 | case ... | cases.rb:162:1:162:4 | call to expr |
+| cases.rb:164:1:167:3 | case ... | cases.rb:165:3:165:5 | foo |
+| cases.rb:169:1:172:3 | case ... | cases.rb:170:3:170:5 | foo |
 caseNoValues
 | cases.rb:18:1:22:3 | case ... |
 caseElseBranches
@@ -30,6 +32,8 @@ caseNoElseBranches
 | cases.rb:147:1:152:3 | case ... |
 | cases.rb:154:1:158:3 | case ... |
 | cases.rb:162:1:162:20 | case ... |
+| cases.rb:164:1:167:3 | case ... |
+| cases.rb:169:1:172:3 | case ... |
 caseWhenBranches
 | cases.rb:8:1:15:3 | case ... | cases.rb:9:1:10:7 | when ... | 0 | cases.rb:9:6:9:6 | b | cases.rb:9:7:10:7 | then ... |
 | cases.rb:8:1:15:3 | case ... | cases.rb:11:1:12:7 | when ... | 0 | cases.rb:11:6:11:6 | c | cases.rb:11:10:12:7 | then ... |
@@ -37,6 +41,7 @@ caseWhenBranches
 | cases.rb:18:1:22:3 | case ... | cases.rb:19:1:19:19 | when ... | 0 | cases.rb:19:6:19:10 | ... > ... | cases.rb:19:13:19:19 | then ... |
 | cases.rb:18:1:22:3 | case ... | cases.rb:20:1:20:19 | when ... | 0 | cases.rb:20:6:20:11 | ... == ... | cases.rb:20:13:20:19 | then ... |
 | cases.rb:18:1:22:3 | case ... | cases.rb:21:1:21:19 | when ... | 0 | cases.rb:21:6:21:10 | ... < ... | cases.rb:21:13:21:19 | then ... |
+| cases.rb:164:1:167:3 | case ... | cases.rb:166:1:166:13 | when ... | 0 | cases.rb:166:6:166:6 | 1 | cases.rb:166:8:166:13 | then ... |
 caseAllBranches
 | cases.rb:8:1:15:3 | case ... | 0 | cases.rb:9:1:10:7 | when ... |
 | cases.rb:8:1:15:3 | case ... | 1 | cases.rb:11:1:12:7 | when ... |
@@ -139,3 +144,5 @@ caseAllBranches
 | cases.rb:160:1:160:14 | case ... | 0 | cases.rb:160:1:160:14 | in ... then ... |
 | cases.rb:160:1:160:14 | case ... | 1 | cases.rb:160:1:160:14 | else ... |
 | cases.rb:162:1:162:20 | case ... | 0 | cases.rb:162:1:162:20 | in ... then ... |
+| cases.rb:164:1:167:3 | case ... | 0 | cases.rb:166:1:166:13 | when ... |
+| cases.rb:169:1:172:3 | case ... | 0 | cases.rb:171:1:171:17 | in ... then ... |

@@ -1,0 +1,5 @@
+| folder://pack | pack | pack |
+| folder://pack/inner | pack/inner | pack.inner |
+| pack/__init__.py:0:0:0:0 | pack/__init__.py | pack.__init__ |
+| pack/inner/__init__.py:0:0:0:0 | pack/inner/__init__.py | pack.inner.__init__ |
+| pack/inner/mod.py:0:0:0:0 | pack/inner/mod.py | pack.inner.mod |

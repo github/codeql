@@ -1,0 +1,31 @@
+{
+  "location": {
+    "file": "go.mod"
+  },
+  "markdownMessage": "As of Go 1.21, toolchain versions [must use the 1.N.P syntax](https://go.dev/doc/toolchain#version).\n\n`1.22` in `go.mod` does not match this syntax and there is no additional `toolchain` directive, which may cause some `go` commands to fail.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/invalid-go-toolchain-version",
+    "name": "Invalid Go toolchain version"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "A single `go.mod` file was found.\n\n`go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/single-root-go-mod-found",
+    "name": "A single `go.mod` file was found in the root"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

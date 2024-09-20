@@ -146,7 +146,7 @@ module ImportResolution {
       def.getValue() = n and
       def.(NameNode).getId() = "__all__" and
       def.getScope() = m and
-      any(StrConst s | s.getText() = name) = n.getAnElement().getNode()
+      any(StringLiteral s | s.getText() = name) = n.getAnElement().getNode()
     )
   }
 
@@ -210,7 +210,7 @@ module ImportResolution {
       exists(SubscriptNode sub |
         sub.getObject() = sys_modules_reference().asCfgNode() and
         sub.getIndex() = n and
-        n.getNode().(StrConst).getText() = name and
+        n.getNode().(StringLiteral).getText() = name and
         sub.(DefinitionNode).getValue() = mod.asCfgNode() and
         mod = getModuleReference(result)
       )
@@ -278,6 +278,12 @@ module ImportResolution {
       )
   }
 
+  /** Join-order helper for `getImmediateModuleReference`. */
+  pragma[nomagic]
+  private predicate module_reference_accesses(DataFlow::AttrRead ar, Module p, string attr_name) {
+    ar.accesses(getModuleReference(p), attr_name)
+  }
+
   /**
    * Gets a dataflow node that is an immediate reference to the module `m`.
    *
@@ -294,16 +300,13 @@ module ImportResolution {
     )
     or
     // Reading an attribute on a module may return a submodule (or subpackage).
-    exists(DataFlow::AttrRead ar, Module p, string attr_name |
-      ar.accesses(getModuleReference(p), attr_name) and
-      result = ar
-    |
+    exists(Module p, string attr_name | module_reference_accesses(result, p, attr_name) |
       m = getModuleFromName(p.getPackageName() + "." + attr_name)
     )
     or
     // This is also true for attributes that come from reexports.
     exists(Module reexporter, string attr_name |
-      result.(DataFlow::AttrRead).accesses(getModuleReference(reexporter), attr_name) and
+      module_reference_accesses(result, reexporter, attr_name) and
       module_reexport(reexporter, attr_name, m)
     )
     or

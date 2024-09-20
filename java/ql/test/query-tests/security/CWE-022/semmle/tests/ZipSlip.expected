@@ -1,9 +1,18 @@
+#select
+| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:9:48:9:51 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:9:48:9:51 | file | file system operation |
+| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:10:49:10:52 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:10:49:10:52 | file | file system operation |
+| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:11:36:11:39 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:11:36:11:39 | file | file system operation |
 edges
-| ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:8:31:8:34 | name : String |
-| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:9:48:9:51 | file |
-| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:10:49:10:52 | file |
-| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:11:36:11:39 | file |
-| ZipTest.java:8:31:8:34 | name : String | ZipTest.java:8:17:8:35 | new File(...) : File |
+| ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:8:31:8:34 | name : String | provenance |  |
+| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:9:48:9:51 | file | provenance | Sink:MaD:1 |
+| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:10:49:10:52 | file | provenance | Sink:MaD:3 |
+| ZipTest.java:8:17:8:35 | new File(...) : File | ZipTest.java:11:36:11:39 | file | provenance | Sink:MaD:2 |
+| ZipTest.java:8:31:8:34 | name : String | ZipTest.java:8:17:8:35 | new File(...) : File | provenance | MaD:4 |
+models
+| 1 | Sink: java.io; FileOutputStream; false; FileOutputStream; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: java.io; FileWriter; false; FileWriter; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: java.io; RandomAccessFile; false; RandomAccessFile; ; ; Argument[0]; path-injection; manual |
+| 4 | Summary: java.io; File; false; File; ; ; Argument[1]; Argument[this]; taint; manual |
 nodes
 | ZipTest.java:7:19:7:33 | getName(...) : String | semmle.label | getName(...) : String |
 | ZipTest.java:8:17:8:35 | new File(...) : File | semmle.label | new File(...) : File |
@@ -12,7 +21,3 @@ nodes
 | ZipTest.java:10:49:10:52 | file | semmle.label | file |
 | ZipTest.java:11:36:11:39 | file | semmle.label | file |
 subpaths
-#select
-| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:9:48:9:51 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:9:48:9:51 | file | file system operation |
-| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:10:49:10:52 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:10:49:10:52 | file | file system operation |
-| ZipTest.java:7:19:7:33 | getName(...) | ZipTest.java:7:19:7:33 | getName(...) : String | ZipTest.java:11:36:11:39 | file | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipTest.java:11:36:11:39 | file | file system operation |

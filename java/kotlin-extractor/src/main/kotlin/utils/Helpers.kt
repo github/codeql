@@ -9,4 +9,5 @@ fun IrFunction.isLocalFunction(): Boolean {
     return this.visibility == DescriptorVisibilities.LOCAL
 }
 
-val IrClass.isInterfaceLike get() = kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS
+val IrClass.isInterfaceLike
+    get() = kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS

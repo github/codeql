@@ -5,6 +5,8 @@
 About telemetry in CodeQL for Visual Studio Code
 =================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 If you specifically opt in to permit GitHub to do so, GitHub will collect usage data and metrics for the purposes of helping the core developers to improve the CodeQL extension for VS Code.
 
 This data will not be shared with any parties outside of GitHub. IP addresses and installation IDs will be retained for a maximum of 30 days. Anonymous data will be retained for a maximum of 180 days.
@@ -30,6 +32,7 @@ If you opt in, GitHub collects the following information related to the usage of
 - Randomly generated GUID that uniquely identifies a CodeQL extension installation. (Discarded before aggregation.)
 - IP address of the client sending the telemetry data. (Discarded before aggregation.)
 - Whether or not the ``codeQL.canary`` setting is enabled and set to ``true``.
+- Whether any :doc:`CodeQL extension settings <customizing-settings>` are configured.
 
 How long data is retained
 --------------------------

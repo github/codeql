@@ -447,3 +447,109 @@ void bad_check() {
 		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
 	}
 }
+
+#define EOF (-1)
+
+void disjunct_boolean_condition(const char* modifier_data) {
+	long value;
+	auto rc = sscanf(modifier_data, "%lx", &value);
+
+	if((rc == EOF) || (rc == 0)) {
+		return;
+	}
+	use(value); // GOOD
+}
+
+void check_for_negative_test() {
+	int res;
+	int value;
+
+	res = scanf("%d", &value); // GOOD
+	if(res == 0) {
+		return;
+	}
+	if (res < 0) {
+		return;
+	}
+	use(value);
+}
+
+void multiple_checks() {
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 0) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value [FALSE POSITIVE]
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res < 0) return;
+		if (res != 0) {
+			use(i); // GOOD: checks return value [FALSE POSITIVE]
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res == 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+}
+
+void switch_cases(const char *data) {
+	float a, b, c;
+
+	switch (sscanf(data, "%f %f %f", &a, &b, &c)) {
+		case 2:
+			use(a); // GOOD
+			use(b); // GOOD
+			break;
+		case 3:
+			use(a); // GOOD
+			use(b); // GOOD
+			use(c); // GOOD
+			break;
+		default:
+			break;
+	}
+
+	float d, e, f;
+
+	switch (sscanf(data, "%f %f %f", &d, &e, &f)) {
+		case 2:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // BAD
+			break;
+		case 3:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // GOOD
+			break;
+		default:
+			break;
+	}
+}

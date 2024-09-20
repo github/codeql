@@ -14,7 +14,7 @@ class Test {
     }
     int len = s.length();
     switch (s) {
-      case String s2 when len == 4 -> { }
+      case String _ when len == 4 -> { }
       case "e" -> { }
       default -> { }
     }
@@ -23,6 +23,15 @@ class Test {
       case String s2 when len == 4 -> { }
       case "g" -> { }
       default -> { }
+    }
+    switch (s) {
+      case "h":
+      case String _ when len == 4:
+      case "i":
+        String target = "Shouldn't be controlled by any of those tests";
+        break;
+      default:
+        break;
     }
   }
 }

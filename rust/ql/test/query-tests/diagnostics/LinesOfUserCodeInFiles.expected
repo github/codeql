@@ -1,0 +1,6 @@
+| my_struct.rs:0:0:0:0 | my_struct.rs | 21 |
+| my_macro.rs:0:0:0:0 | my_macro.rs | 8 |
+| main.rs:0:0:0:0 | main.rs | 7 |
+| lib.rs:0:0:0:0 | lib.rs | 6 |
+| does_not_compile.rs:0:0:0:0 | does_not_compile.rs | 3 |
+| error.rs:0:0:0:0 | error.rs | 3 |

@@ -9,7 +9,7 @@ private class SourceString extends DataFlow::Node {
   string contents;
 
   SourceString() {
-    this.asExpr().(StrConst).getText() = contents and
+    this.asExpr().(StringLiteral).getText() = contents and
     this.asExpr().getParent() instanceof Assign
     or
     this.asExpr().(ClassExpr).getInnerScope().getName() = "SOURCE" and

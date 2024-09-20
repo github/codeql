@@ -14,13 +14,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         private ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
         private ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     kind,
                     parent,
                     childIndex,
-                    true,
+                    isCompilerGenerated: true,
                     v);
 
             var method = GetImplicitConversionMethod(type, value);
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     ExprKind.CAST,
                     parent,
                     childIndex,
-                    true,
+                    isCompilerGenerated: true,
                     ValueAsString(value));
 
             return new Expression(info);

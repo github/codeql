@@ -8,6 +8,30 @@
 
 import csharp
 import semmle.code.csharp.commons.Diagnostics
+import DatabaseQuality
+
+predicate compilationInfo(string key, float value) {
+  not key.matches("Compiler diagnostic count for%") and
+  not key.matches("Extractor message count for group%") and
+  exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
+    key = infoKey and
+    value = infoValue.toFloat()
+    or
+    not exists(infoValue.toFloat()) and
+    key = infoKey + ": " + infoValue and
+    value = 1
+  )
+}
+
+predicate compilerDiagnostics(string key, int value) {
+  key.matches("Compiler diagnostic count for%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
+}
+
+predicate extractorMessages(string key, int value) {
+  key.matches("Extractor message count for group%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
+}
 
 predicate fileCount(string key, int value) {
   key = "Number of files" and
@@ -75,54 +99,7 @@ predicate extractionIsStandalone(string key, int value) {
     value = 0 and
     not extractionIsStandalone()
   ) and
-  key = "Is buildless extraction"
-}
-
-signature module StatsSig {
-  int getNumberOfOk();
-
-  int getNumberOfNotOk();
-
-  string getOkText();
-
-  string getNotOkText();
-}
-
-module ReportStats<StatsSig Stats> {
-  predicate numberOfOk(string key, int value) {
-    value = Stats::getNumberOfOk() and
-    key = "Number of " + Stats::getOkText()
-  }
-
-  predicate numberOfNotOk(string key, int value) {
-    value = Stats::getNumberOfNotOk() and
-    key = "Number of " + Stats::getNotOkText()
-  }
-
-  predicate percentageOfOk(string key, float value) {
-    value = Stats::getNumberOfOk() * 100.0 / (Stats::getNumberOfOk() + Stats::getNumberOfNotOk()) and
-    key = "Percentage of " + Stats::getOkText()
-  }
-}
-
-module CallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
-
-  int getNumberOfNotOk() { result = count(Call c | not exists(c.getTarget())) }
-
-  string getOkText() { result = "calls with call target" }
-
-  string getNotOkText() { result = "calls with missing call target" }
-}
-
-module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(Expr e | not e.getType() instanceof UnknownType) }
-
-  int getNumberOfNotOk() { result = count(Expr e | e.getType() instanceof UnknownType) }
-
-  string getOkText() { result = "expressions with known type" }
-
-  string getNotOkText() { result = "expressions with unknown type" }
+  key = "Is extracted with build-mode set to 'none'"
 }
 
 module TypeMentionTypeStats implements StatsSig {
@@ -155,41 +132,58 @@ module ExprStats implements StatsSig {
   string getNotOkText() { result = "expressions with unknown kind" }
 }
 
-module CallTargetStatsReport = ReportStats<CallTargetStats>;
-
-module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
-
 module TypeMentionTypeStatsReport = ReportStats<TypeMentionTypeStats>;
 
 module AccessTargetStatsReport = ReportStats<AccessTargetStats>;
 
 module ExprStatsReport = ReportStats<ExprStats>;
 
+predicate analyzerAssemblies(string key, float value) {
+  exists(Compilation c, string arg |
+    c.getExpandedArgument(_) = arg and
+    arg.indexOf("/analyzer:") = 0 and
+    key = "CSC analyzer: " + arg.substring(10, arg.length())
+  ) and
+  value = 1.0
+}
+
 from string key, float value
 where
-  fileCount(key, value) or
-  fileCountByExtension(key, value) or
-  totalNumberOfLines(key, value) or
-  numberOfLinesOfCode(key, value) or
-  totalNumberOfLinesByExtension(key, value) or
-  numberOfLinesOfCodeByExtension(key, value) or
-  extractorDiagnostics(key, value) or
-  numberOfAmbiguityCompilerErrors(key, value) or
-  numberOfDistinctAmbiguityCompilerErrorMessages(key, value) or
-  extractionIsStandalone(key, value) or
-  CallTargetStatsReport::numberOfOk(key, value) or
-  CallTargetStatsReport::numberOfNotOk(key, value) or
-  CallTargetStatsReport::percentageOfOk(key, value) or
-  ExprTypeStatsReport::numberOfOk(key, value) or
-  ExprTypeStatsReport::numberOfNotOk(key, value) or
-  ExprTypeStatsReport::percentageOfOk(key, value) or
-  TypeMentionTypeStatsReport::numberOfOk(key, value) or
-  TypeMentionTypeStatsReport::numberOfNotOk(key, value) or
-  TypeMentionTypeStatsReport::percentageOfOk(key, value) or
-  AccessTargetStatsReport::numberOfOk(key, value) or
-  AccessTargetStatsReport::numberOfNotOk(key, value) or
-  AccessTargetStatsReport::percentageOfOk(key, value) or
-  ExprStatsReport::numberOfOk(key, value) or
-  ExprStatsReport::numberOfNotOk(key, value) or
-  ExprStatsReport::percentageOfOk(key, value)
+  (
+    compilationInfo(key, value) or
+    compilerDiagnostics(key, value) or
+    extractorMessages(key, value) or
+    fileCount(key, value) or
+    fileCountByExtension(key, value) or
+    totalNumberOfLines(key, value) or
+    numberOfLinesOfCode(key, value) or
+    totalNumberOfLinesByExtension(key, value) or
+    numberOfLinesOfCodeByExtension(key, value) or
+    extractorDiagnostics(key, value) or
+    numberOfAmbiguityCompilerErrors(key, value) or
+    numberOfDistinctAmbiguityCompilerErrorMessages(key, value) or
+    extractionIsStandalone(key, value) or
+    CallTargetStatsReport::numberOfOk(key, value) or
+    CallTargetStatsReport::numberOfNotOk(key, value) or
+    CallTargetStatsReport::percentageOfOk(key, value) or
+    ExprTypeStatsReport::numberOfOk(key, value) or
+    ExprTypeStatsReport::numberOfNotOk(key, value) or
+    ExprTypeStatsReport::percentageOfOk(key, value) or
+    TypeMentionTypeStatsReport::numberOfOk(key, value) or
+    TypeMentionTypeStatsReport::numberOfNotOk(key, value) or
+    TypeMentionTypeStatsReport::percentageOfOk(key, value) or
+    AccessTargetStatsReport::numberOfOk(key, value) or
+    AccessTargetStatsReport::numberOfNotOk(key, value) or
+    AccessTargetStatsReport::percentageOfOk(key, value) or
+    ExprStatsReport::numberOfOk(key, value) or
+    ExprStatsReport::numberOfNotOk(key, value) or
+    ExprStatsReport::percentageOfOk(key, value) or
+    analyzerAssemblies(key, value)
+  ) and
+  /* Infinity */
+  value != 1.0 / 0.0 and
+  /* -Infinity */
+  value != -1.0 / 0.0 and
+  /* NaN */
+  value != 0.0 / 0.0
 select key, value

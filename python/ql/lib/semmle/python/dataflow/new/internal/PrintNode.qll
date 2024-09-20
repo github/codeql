@@ -18,7 +18,7 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
  */
 string prettyExpr(Expr e) {
   not e instanceof Num and
-  not e instanceof StrConst and
+  not e instanceof StringLiteral and
   not e instanceof Subscript and
   not e instanceof Call and
   not e instanceof Attribute and
@@ -27,8 +27,8 @@ string prettyExpr(Expr e) {
   result = e.(Num).getN()
   or
   result =
-    e.(StrConst).getPrefix() + e.(StrConst).getText() +
-      e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
+    e.(StringLiteral).getPrefix() + e.(StringLiteral).getText() +
+      e.(StringLiteral).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
   or
   result = prettyExpr(e.(Subscript).getObject()) + "[" + prettyExpr(e.(Subscript).getIndex()) + "]"
   or

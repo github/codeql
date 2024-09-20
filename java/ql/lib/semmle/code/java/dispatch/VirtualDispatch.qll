@@ -302,8 +302,3 @@ private module Dispatch {
 }
 
 import Dispatch
-
-/**
- * DEPRECATED: Use `TypeFlow` instead.
- */
-deprecated Expr variableTrack(Expr use) { result = use }

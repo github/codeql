@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -25,7 +27,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var mapped = Symbol.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
-                var mappedLoc = Create(Context, Location.Create(mapped.Path, default, mapped.Span));
+                var path = Context.TryAdjustRelativeMappedFilePath(mapped.Path, Position.Path);
+                var mappedLoc = Create(Context, Location.Create(path, default, mapped.Span));
 
                 trapFile.locations_mapped(this, mappedLoc);
             }

@@ -1,7 +1,8 @@
 /** Definitions for the Insecure Direct Object Reference query */
 
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
+deprecated import semmle.code.csharp.dataflow.flowsources.Remote
 import ActionMethods
 
 /**
@@ -17,7 +18,7 @@ private predicate needsChecks(ActionMethod m) { m.isEdit() and not m.isAdmin() }
  * that may indicate that it's used as the ID for some resource
  */
 private predicate hasIdParameter(ActionMethod m) {
-  exists(RemoteFlowSource src | src.getEnclosingCallable() = m |
+  exists(ThreatModelFlowSource src | src.getEnclosingCallable() = m |
     src.asParameter().getName().toLowerCase().matches(["%id", "%idx"])
     or
     // handle cases like `Request.QueryString["Id"]`
