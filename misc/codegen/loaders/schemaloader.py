@@ -37,7 +37,8 @@ def _get_class(cls: type) -> schema.Class:
     if cls.__name__ != to_underscore_and_back:
         raise schema.Error(f"Class name must be upper camel-case, without capitalized acronyms, found {cls.__name__} "
                            f"instead of {to_underscore_and_back}")
-    if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
+    if len({g for g in (getattr(b, f"{schema.inheritable_pragma_prefix}group", None)
+                        for b in cls.__bases__) if g}) > 1:
         raise schema.Error(f"Bases with mixed groups for {cls.__name__}")
     if any(getattr(b, "_null", False) for b in cls.__bases__):
         raise schema.Error(f"Null class cannot be derived")
@@ -50,8 +51,6 @@ def _get_class(cls: type) -> schema.Class:
     return schema.Class(name=cls.__name__,
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
                         derived={d.__name__ for d in cls.__subclasses__()},
-                        # getattr to inherit from bases
-                        group=getattr(cls, "_group", ""),
                         pragmas=pragmas,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[

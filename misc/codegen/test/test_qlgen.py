@@ -467,7 +467,7 @@ def test_class_with_doc(generate_classes):
 def test_class_dir(generate_classes):
     dir = "another/rel/path"
     assert generate_classes([
-        schema.Class("A", derived={"B"}, group=dir),
+        schema.Class("A", derived={"B"}, pragmas={"group": dir}),
         schema.Class("B", bases=["A"]),
     ]) == {
         f"{dir}/A.qll": (
@@ -489,7 +489,7 @@ def test_root_element_cannot_have_children(generate_classes):
 def test_class_dir_imports(generate_import_list):
     dir = "another/rel/path"
     assert generate_import_list([
-        schema.Class("A", derived={"B"}, group=dir),
+        schema.Class("A", derived={"B"}, pragmas={"group": dir}),
         schema.Class("B", bases=["A"]),
     ]) == ql.ImportList([
         stub_import_prefix + "B",
@@ -583,7 +583,7 @@ def test_test_source_present(opts, generate_tests):
 def test_test_source_present_with_dir(opts, generate_tests):
     write(opts.ql_test_output / "foo" / "A" / "test.swift")
     assert generate_tests([
-        schema.Class("A", group="foo"),
+        schema.Class("A", pragmas={"group": "foo"}),
     ]) == {
         "foo/A/A.ql": a_ql_class_tester(class_name="A"),
     }

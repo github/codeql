@@ -101,7 +101,7 @@ def test_group():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', group="xxx"),
+        'A': schema.Class('A', pragmas={"group": "xxx"}),
     }
 
 
@@ -124,8 +124,8 @@ def test_group_is_inherited():
     assert data.classes == {
         'A': schema.Class('A', derived={'B', 'C'}),
         'B': schema.Class('B', bases=['A'], derived={'D'}),
-        'C': schema.Class('C', bases=['A'], derived={'D'}, group='xxx'),
-        'D': schema.Class('D', bases=['B', 'C'], group='xxx'),
+        'C': schema.Class('C', bases=['A'], derived={'D'}, pragmas={"group": "xxx"}),
+        'D': schema.Class('D', bases=['B', 'C'], pragmas={"group": "xxx"}),
     }
 
 

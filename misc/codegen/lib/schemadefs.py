@@ -250,9 +250,7 @@ rust.add(_Pragma("skip_doc_test"))
 
 rust.add(_ParametrizedClassPragma("doc_test_signature", factory=lambda signature: signature))
 
-
-def group(name: str = "") -> _ClassDecorator:
-    return _annotate(group=name)
+group = _ParametrizedClassPragma("group", inherited=True, factory=lambda group: group)
 
 
 synth.add(_ParametrizedClassPragma("from_class", factory=lambda ref: _schema.SynthInfo(

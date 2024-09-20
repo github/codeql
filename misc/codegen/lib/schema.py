@@ -91,7 +91,6 @@ class Class:
     bases: List[str] = field(default_factory=list)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
-    group: str = ""
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
 
@@ -124,6 +123,10 @@ class Class:
 
     def mark_synth(self):
         self.pragmas.setdefault("synth", True)
+
+    @property
+    def group(self) -> str:
+        return typing.cast(str, self.pragmas.get("group", ""))
 
 
 @dataclass
