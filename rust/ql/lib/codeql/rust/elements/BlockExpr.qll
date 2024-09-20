@@ -9,4 +9,18 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 import codeql.rust.elements.StmtList
 
+/**
+ * A block expression. For example:
+ * ```rust
+ * {
+ *     let x = 42;
+ * }
+ * ```
+ * ```rust
+ * 'label: {
+ *     let x = 42;
+ *     x
+ * }
+ * ```
+ */
 final class BlockExpr = Impl::BlockExpr;

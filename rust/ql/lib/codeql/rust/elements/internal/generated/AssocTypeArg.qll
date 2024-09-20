@@ -22,6 +22,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A AssocTypeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::AssocTypeArg` class directly.
    * Use the subclass `AssocTypeArg`, where the following predicates are available.
    */

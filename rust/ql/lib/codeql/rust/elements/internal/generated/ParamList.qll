@@ -16,6 +16,10 @@ import codeql.rust.elements.SelfParam
  */
 module Generated {
   /**
+   * A ParamList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ParamList` class directly.
    * Use the subclass `ParamList`, where the following predicates are available.
    */

@@ -17,6 +17,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A TypeBound. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TypeBound` class directly.
    * Use the subclass `TypeBound`, where the following predicates are available.
    */

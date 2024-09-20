@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A ImplTraitType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ImplTraitType` class directly.
    * Use the subclass `ImplTraitType`, where the following predicates are available.
    */

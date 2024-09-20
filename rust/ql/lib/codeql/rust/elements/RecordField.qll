@@ -10,4 +10,10 @@ import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRef
 import codeql.rust.elements.Visibility
 
+/**
+ * A RecordField. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class RecordField = Impl::RecordField;

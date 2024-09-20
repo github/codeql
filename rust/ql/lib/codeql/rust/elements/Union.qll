@@ -12,4 +12,10 @@ import codeql.rust.elements.RecordFieldList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A Union. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Union = Impl::Union;

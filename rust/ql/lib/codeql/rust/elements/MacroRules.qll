@@ -10,4 +10,10 @@ import codeql.rust.elements.Name
 import codeql.rust.elements.TokenTree
 import codeql.rust.elements.Visibility
 
+/**
+ * A MacroRules. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroRules = Impl::MacroRules;

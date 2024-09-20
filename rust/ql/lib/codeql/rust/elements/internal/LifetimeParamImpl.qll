@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.LifetimeParam
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A LifetimeParam. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class LifetimeParam extends Generated::LifetimeParam { }
 }

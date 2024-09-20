@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.WhileExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A WhileExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class WhileExpr extends Generated::WhileExpr { }
 }

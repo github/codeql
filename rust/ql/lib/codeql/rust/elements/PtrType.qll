@@ -6,4 +6,10 @@
 private import internal.PtrTypeImpl
 import codeql.rust.elements.TypeRef
 
+/**
+ * A PtrType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class PtrType = Impl::PtrType;

@@ -17,4 +17,16 @@ import codeql.rust.elements.RetType
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A function declaration. For example
+ * ```rust
+ * fn foo(x: u32) -> u64 {(x + 1).into()}
+ * ```
+ * A function declaration within a trait might not have a body:
+ * ```rust
+ * trait Trait {
+ *     fn bar();
+ * }
+ * ```
+ */
 final class Function = Impl::Function;

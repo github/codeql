@@ -1,0 +1,2 @@
+| gen_function.rs:3:1:4:38 | foo | hasAbi: | no | getNumberOfAttrs: | 0 | hasBody: | yes | hasGenericParamList: | no | hasName: | yes | hasParamList: | yes | hasRetType: | yes | hasVisibility: | no | hasWhereClause: | no |
+| gen_function.rs:7:5:7:13 | bar | hasAbi: | no | getNumberOfAttrs: | 0 | hasBody: | no | hasGenericParamList: | no | hasName: | yes | hasParamList: | yes | hasRetType: | no | hasVisibility: | no | hasWhereClause: | no |

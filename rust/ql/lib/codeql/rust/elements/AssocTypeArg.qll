@@ -14,4 +14,10 @@ import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A AssocTypeArg. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class AssocTypeArg = Impl::AssocTypeArg;

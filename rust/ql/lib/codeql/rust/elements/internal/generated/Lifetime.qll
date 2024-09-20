@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * A Lifetime. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Lifetime` class directly.
    * Use the subclass `Lifetime`, where the following predicates are available.
    */

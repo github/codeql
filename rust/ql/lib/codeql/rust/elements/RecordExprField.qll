@@ -9,4 +9,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.NameRef
 
+/**
+ * A field in a record expression. For example `a: 1` in:
+ * ```rust
+ * Foo { a: 1, b: 2 };
+ * ```
+ */
 final class RecordExprField = Impl::RecordExprField;

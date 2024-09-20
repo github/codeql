@@ -18,6 +18,10 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A MacroDef. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MacroDef` class directly.
    * Use the subclass `MacroDef`, where the following predicates are available.
    */

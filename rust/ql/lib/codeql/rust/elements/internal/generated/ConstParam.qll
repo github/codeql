@@ -18,6 +18,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A ConstParam. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ConstParam` class directly.
    * Use the subclass `ConstParam`, where the following predicates are available.
    */

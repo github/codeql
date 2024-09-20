@@ -17,6 +17,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A cast expression. For example:
+   * ```rust
+   * value as u64;
+   * ```
    * INTERNAL: Do not reference the `Generated::CastExpr` class directly.
    * Use the subclass `CastExpr`, where the following predicates are available.
    */

@@ -14,6 +14,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * The base class for expressions.
    * INTERNAL: Do not reference the `Generated::Expr` class directly.
    * Use the subclass `Expr`, where the following predicates are available.
    */

@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A DynTraitType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::DynTraitType` class directly.
    * Use the subclass `DynTraitType`, where the following predicates are available.
    */

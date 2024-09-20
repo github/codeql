@@ -16,6 +16,10 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * A TryExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TryExpr` class directly.
    * Use the subclass `TryExpr`, where the following predicates are available.
    */

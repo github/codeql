@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.GenericParam
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A GenericParam. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class GenericParam extends Generated::GenericParam { }
 }

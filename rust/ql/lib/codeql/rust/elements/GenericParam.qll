@@ -6,4 +6,10 @@
 private import internal.GenericParamImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A GenericParam. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class GenericParam = Impl::GenericParam;

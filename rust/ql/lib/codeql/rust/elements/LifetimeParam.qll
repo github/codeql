@@ -9,4 +9,10 @@ import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
 
+/**
+ * A LifetimeParam. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class LifetimeParam = Impl::LifetimeParam;

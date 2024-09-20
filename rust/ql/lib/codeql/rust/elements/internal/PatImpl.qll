@@ -12,5 +12,8 @@ private import codeql.rust.elements.internal.generated.Pat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * The base class for patterns.
+   */
   class Pat extends Generated::Pat { }
 }

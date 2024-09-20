@@ -1,0 +1,4 @@
+| gen_module.rs:3:1:4:8 | Module | gen_module.rs:4:5:4:7 | Name |
+| gen_module.rs:5:1:7:1 | Module | gen_module.rs:5:5:5:7 | Name |
+| lib.rs:2:1:2:15 | Module | lib.rs:2:5:2:14 | Name |
+| lib.rs:3:1:3:8 | Module | lib.rs:3:5:3:7 | Name |

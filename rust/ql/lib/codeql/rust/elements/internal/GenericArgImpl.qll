@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.GenericArg
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A GenericArg. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class GenericArg extends Generated::GenericArg { }
 }

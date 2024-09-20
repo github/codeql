@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * A FieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::FieldList` class directly.
    * Use the subclass `FieldList`, where the following predicates are available.
    */

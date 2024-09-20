@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.BinaryExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A binary operation expression. For example:
+   * ```rust
+   * x + y;
+   * x && y;
+   * x <= y;
+   * x = y;
+   * x += y;
+   * ```
+   */
   class BinaryExpr extends Generated::BinaryExpr { }
 }

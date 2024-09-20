@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::{fs, path::PathBuf};
 
 pub mod codegen;
@@ -47,7 +48,13 @@ fn to_lower_snake_case(s: &str) -> String {
     buf
 }
 
-fn print_schema(grammar: &AstSrc, super_types: BTreeMap<String, BTreeSet<String>>) {
+fn write_schema(
+    grammar: &AstSrc,
+    super_types: BTreeMap<String, BTreeSet<String>>,
+) -> std::io::Result<String> {
+    let mut buf: Vec<u8> = Vec::new();
+    writeln!(buf, "from .prelude import *\n")?;
+
     for node in &grammar.enums {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
             let super_classes: Vec<String> = cls.iter().map(|x| class_name(x)).collect();
@@ -55,9 +62,9 @@ fn print_schema(grammar: &AstSrc, super_types: BTreeMap<String, BTreeSet<String>
         } else {
             "AstNode".to_owned()
         };
-        println!("class {}({}):", class_name(&node.name), super_classses);
-        println!("   pass");
-        println!("");
+        writeln!(buf, "class {}({}):", class_name(&node.name), super_classses)?;
+        writeln!(buf, "   pass")?;
+        writeln!(buf, "")?;
     }
     for node in &grammar.nodes {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
@@ -66,7 +73,7 @@ fn print_schema(grammar: &AstSrc, super_types: BTreeMap<String, BTreeSet<String>
         } else {
             "AstNode".to_owned()
         };
-        println!("class {}({}):", class_name(&node.name), super_classses);
+        writeln!(buf, "class {}({}):", class_name(&node.name), super_classses)?;
         let mut empty = true;
         for field in get_fields(node) {
             if field.tp == "SyntaxToken" {
@@ -75,10 +82,11 @@ fn print_schema(grammar: &AstSrc, super_types: BTreeMap<String, BTreeSet<String>
 
             empty = false;
             if field.tp == "string" {
-                println!(
+                writeln!(
+                    buf,
                     "   {}: optional[string]",
                     property_name(&node.name, &field.name),
-                );
+                )?;
             } else {
                 let list = field.is_many;
                 let (o, c) = if list {
@@ -86,20 +94,22 @@ fn print_schema(grammar: &AstSrc, super_types: BTreeMap<String, BTreeSet<String>
                 } else {
                     ("optional[", "]")
                 };
-                println!(
+                writeln!(
+                    buf,
                     "   {}: {}\"{}\"{} | child",
                     property_name(&node.name, &field.name),
                     o,
                     class_name(&field.tp),
                     c
-                );
+                )?;
             };
         }
         if empty {
-            println!("   pass");
+            writeln!(buf, "   pass")?;
         }
-        println!("");
+        writeln!(buf, "")?;
     }
+    Ok(String::from_utf8_lossy(&buf).to_string())
 }
 
 struct FieldInfo {
@@ -390,40 +400,45 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     result
 }
 
-fn print_extractor(grammar: &AstSrc) {
+fn write_extractor(grammar: &AstSrc) -> std::io::Result<String> {
+    let mut buf: Vec<u8> = Vec::new();
+
     for node in &grammar.enums {
         let type_name = &node.name;
         let class_name = class_name(&node.name);
 
-        println!(
+        writeln!(
+            buf,
             "    fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
-        );
-        println!("        match node {{");
+        )?;
+        writeln!(buf, "        match node {{")?;
         for variant in &node.variants {
-            println!(
+            writeln!(
+                buf,
                 "            ast::{}::{}(inner) => self.emit_{}(inner).into(),",
                 type_name,
                 variant,
                 to_lower_snake_case(variant)
-            );
+            )?;
         }
-        println!("        }}");
-        println!("    }}\n");
+        writeln!(buf, "        }}")?;
+        writeln!(buf, "    }}\n")?;
     }
 
     for node in &grammar.nodes {
         let type_name = &node.name;
         let class_name = class_name(&node.name);
 
-        println!(
+        writeln!(
+            buf,
             "    fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
-        );
+        )?;
         for field in get_fields(&node) {
             if &field.tp == "SyntaxToken" {
                 continue;
@@ -433,45 +448,53 @@ fn print_extractor(grammar: &AstSrc) {
             let struct_field_name = &field.name;
             let class_field_name = property_name(&node.name, &field.name);
             if field.tp == "string" {
-                println!("        let {} = node.try_get_text();", class_field_name,);
+                writeln!(
+                    buf,
+                    "        let {} = node.try_get_text();",
+                    class_field_name,
+                )?;
             } else if field.is_many {
-                println!(
+                writeln!(
+                    buf,
                     "        let {} = node.{}().map(|x| self.emit_{}(x)).collect();",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
-                );
+                )?;
             } else {
-                println!(
+                writeln!(
+                    buf,
                     "        let {} = node.{}().map(|x| self.emit_{}(x));",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
-                );
+                )?;
             }
         }
-        println!(
+        writeln!(
+            buf,
             "        let label = self.trap.emit(generated::{} {{",
             class_name
-        );
-        println!("            id: TrapId::Star,");
+        )?;
+        writeln!(buf, "            id: TrapId::Star,")?;
         for field in get_fields(&node) {
             if field.tp == "SyntaxToken" {
                 continue;
             }
 
             let class_field_name: String = property_name(&node.name, &field.name);
-            println!("            {},", class_field_name);
+            writeln!(buf, "            {},", class_field_name)?;
         }
-        println!("        }});");
-        println!("        self.emit_location(label, node);");
-        println!("        label");
+        writeln!(buf, "        }});")?;
+        writeln!(buf, "        self.emit_location(label, node);")?;
+        writeln!(buf, "        label")?;
 
-        println!("    }}\n");
+        writeln!(buf, "    }}\n")?;
     }
+    Ok(String::from_utf8_lossy(&buf).into_owned())
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let grammar: Grammar = fs::read_to_string(project_root().join("generate-schema/rust.ungram"))
         .unwrap()
         .parse()
@@ -498,6 +521,15 @@ fn main() {
         let super_class_y = super_types.get(&y.name).into_iter().flatten().max();
         super_class_x.cmp(&super_class_y).then(x.name.cmp(&y.name))
     });
-    //print_schema(&grammar, super_types);
-    print_extractor(&grammar);
+    let schema = write_schema(&grammar, super_types)?;
+    let schema_path = PathBuf::from("../schema/ast.py");
+    let extractor = write_extractor(&grammar)?;
+    print!("{}", extractor);
+    codegen::ensure_file_contents(
+        crate::flags::CodegenType::Grammar,
+        &schema_path,
+        &schema,
+        false,
+    );
+    Ok(())
 }

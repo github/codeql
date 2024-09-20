@@ -6,4 +6,10 @@
 private import internal.ReturnTypeSyntaxImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A ReturnTypeSyntax. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ReturnTypeSyntax = Impl::ReturnTypeSyntax;

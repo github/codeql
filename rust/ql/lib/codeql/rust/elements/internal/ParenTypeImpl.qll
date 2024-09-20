@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ParenType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ParenType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ParenType extends Generated::ParenType { }
 }

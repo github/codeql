@@ -12,4 +12,10 @@ import codeql.rust.elements.TypeRef
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A Impl. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Impl = Impl::Impl;

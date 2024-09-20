@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroCall
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroCall. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroCall extends Generated::MacroCall { }
 }

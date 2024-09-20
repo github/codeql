@@ -7,4 +7,14 @@ private import internal.BinaryExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A binary operation expression. For example:
+ * ```rust
+ * x + y;
+ * x && y;
+ * x <= y;
+ * x = y;
+ * x += y;
+ * ```
+ */
 final class BinaryExpr = Impl::BinaryExpr;

@@ -9,4 +9,10 @@ import codeql.rust.elements.Path
 import codeql.rust.elements.Rename
 import codeql.rust.elements.UseTreeList
 
+/**
+ * A UseTree. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class UseTree = Impl::UseTree;

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.DynTraitType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A DynTraitType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class DynTraitType extends Generated::DynTraitType { }
 }

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.SliceType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A SliceType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class SliceType extends Generated::SliceType { }
 }

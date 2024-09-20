@@ -16,6 +16,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A ArrayType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ArrayType` class directly.
    * Use the subclass `ArrayType`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Struct
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Struct. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Struct extends Generated::Struct { }
 }

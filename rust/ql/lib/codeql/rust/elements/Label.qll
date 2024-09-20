@@ -7,4 +7,13 @@ private import internal.LabelImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Lifetime
 
+/**
+ * A label. For example:
+ * ```rust
+ * 'label: loop {
+ *     println!("Hello, world (once)!");
+ *     break 'label;
+ * };
+ * ```
+ */
 final class Label = Impl::Label;

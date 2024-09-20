@@ -15,6 +15,12 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
  */
 module Generated {
   /**
+   * An expression statement. For example:
+   * ```rust
+   * start();
+   * finish()
+   * use std::env;
+   * ```
    * INTERNAL: Do not reference the `Generated::ExprStmt` class directly.
    * Use the subclass `ExprStmt`, where the following predicates are available.
    */

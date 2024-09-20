@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.AssocItem
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A AssocItem. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class AssocItem extends Generated::AssocItem { }
 }

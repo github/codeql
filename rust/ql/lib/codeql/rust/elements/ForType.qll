@@ -7,4 +7,10 @@ private import internal.ForTypeImpl
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A ForType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ForType = Impl::ForType;

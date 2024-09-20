@@ -6,4 +6,14 @@
 private import internal.SlicePatImpl
 import codeql.rust.elements.Pat
 
+/**
+ * A slice pattern. For example:
+ * ```rust
+ * match x {
+ *     [1, 2, 3, 4, 5] => "ok",
+ *     [1, 2, ..] => "fail",
+ *     [x, y, .., z, 7] => "fail",
+ * }
+ * ```
+ */
 final class SlicePat = Impl::SlicePat;

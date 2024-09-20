@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * A ReturnTypeSyntax. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ReturnTypeSyntax` class directly.
    * Use the subclass `ReturnTypeSyntax`, where the following predicates are available.
    */

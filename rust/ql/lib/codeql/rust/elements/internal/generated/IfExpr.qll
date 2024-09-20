@@ -17,6 +17,19 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * An `if` expression. For example:
+   * ```rust
+   * if x == 42 {
+   *     println!("that's the answer");
+   * }
+   * ```
+   * ```rust
+   * let y = if x > 0 {
+   *     1
+   * } else {
+   *     0
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
    * Use the subclass `IfExpr`, where the following predicates are available.
    */

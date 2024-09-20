@@ -16,6 +16,12 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * A unary operation expression. For example:
+   * ```rust
+   * let x = -42
+   * let y = !true
+   * let z = *ptr
+   * ```
    * INTERNAL: Do not reference the `Generated::PrefixExpr` class directly.
    * Use the subclass `PrefixExpr`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TypeArg
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TypeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TypeArg extends Generated::TypeArg { }
 }

@@ -19,6 +19,11 @@ import codeql.rust.elements.NameRef
  */
 module Generated {
   /**
+   * A method call expression. For example:
+   * ```rust
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
+   * ```
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */

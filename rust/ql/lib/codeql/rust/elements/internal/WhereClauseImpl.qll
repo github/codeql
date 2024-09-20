@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.WhereClause
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A WhereClause. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class WhereClause extends Generated::WhereClause { }
 }

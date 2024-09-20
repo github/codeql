@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TypeBoundList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TypeBoundList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TypeBoundList extends Generated::TypeBoundList { }
 }

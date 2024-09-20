@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * A NameRef. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::NameRef` class directly.
    * Use the subclass `NameRef`, where the following predicates are available.
    */

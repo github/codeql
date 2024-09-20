@@ -9,4 +9,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.RecordExprField
 
+/**
+ * A RecordExprFieldList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class RecordExprFieldList = Impl::RecordExprFieldList;

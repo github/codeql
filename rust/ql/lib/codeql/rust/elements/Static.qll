@@ -12,4 +12,10 @@ import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRef
 import codeql.rust.elements.Visibility
 
+/**
+ * A Static. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Static = Impl::Static;

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ForType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ForType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ForType extends Generated::ForType { }
 }

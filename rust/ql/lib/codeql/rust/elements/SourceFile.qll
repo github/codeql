@@ -8,4 +8,10 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Item
 
+/**
+ * A SourceFile. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class SourceFile = Impl::SourceFile;

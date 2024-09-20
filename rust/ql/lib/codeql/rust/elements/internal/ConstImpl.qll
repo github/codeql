@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Const
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Const. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Const extends Generated::Const { }
 }

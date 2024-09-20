@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.UnderscoreExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An underscore expression. For example:
+   * ```rust
+   * _ = 42;
+   * ```
+   */
   class UnderscoreExpr extends Generated::UnderscoreExpr { }
 }

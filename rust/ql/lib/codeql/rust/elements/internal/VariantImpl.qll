@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Variant
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Variant. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Variant extends Generated::Variant { }
 }

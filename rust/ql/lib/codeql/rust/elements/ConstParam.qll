@@ -10,4 +10,10 @@ import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRef
 
+/**
+ * A ConstParam. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ConstParam = Impl::ConstParam;

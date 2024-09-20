@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RestPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RestPat. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RestPat extends Generated::RestPat { }
 }

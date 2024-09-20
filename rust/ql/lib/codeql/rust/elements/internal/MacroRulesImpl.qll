@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroRules
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroRules. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroRules extends Generated::MacroRules { }
 }

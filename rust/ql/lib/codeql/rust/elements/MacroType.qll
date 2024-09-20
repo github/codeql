@@ -7,4 +7,10 @@ private import internal.MacroTypeImpl
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.TypeRef
 
+/**
+ * A MacroType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroType = Impl::MacroType;

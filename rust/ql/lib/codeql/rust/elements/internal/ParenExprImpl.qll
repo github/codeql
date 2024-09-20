@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ParenExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ParenExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ParenExpr extends Generated::ParenExpr { }
 }

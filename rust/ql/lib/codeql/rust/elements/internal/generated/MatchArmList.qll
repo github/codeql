@@ -16,6 +16,10 @@ import codeql.rust.elements.MatchArm
  */
 module Generated {
   /**
+   * A MatchArmList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MatchArmList` class directly.
    * Use the subclass `MatchArmList`, where the following predicates are available.
    */
