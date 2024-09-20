@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ArrayType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ArrayType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ArrayType extends Generated::ArrayType { }
 }

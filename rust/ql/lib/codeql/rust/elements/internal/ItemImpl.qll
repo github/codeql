@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Item
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Item. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Item extends Generated::Item { }
 }

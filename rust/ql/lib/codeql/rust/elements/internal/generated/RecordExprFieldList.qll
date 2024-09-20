@@ -17,6 +17,10 @@ import codeql.rust.elements.RecordExprField
  */
 module Generated {
   /**
+   * A RecordExprFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordExprFieldList` class directly.
    * Use the subclass `RecordExprFieldList`, where the following predicates are available.
    */

@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TupleType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TupleType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TupleType extends Generated::TupleType { }
 }

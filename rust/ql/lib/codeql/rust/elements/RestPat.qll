@@ -7,4 +7,10 @@ private import internal.RestPatImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Pat
 
+/**
+ * A RestPat. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class RestPat = Impl::RestPat;

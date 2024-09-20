@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroDef
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroDef. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroDef extends Generated::MacroDef { }
 }

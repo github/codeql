@@ -9,4 +9,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 
+/**
+ * A StmtList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class StmtList = Impl::StmtList;

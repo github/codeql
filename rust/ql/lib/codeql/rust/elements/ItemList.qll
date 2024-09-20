@@ -8,4 +8,10 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Item
 
+/**
+ * A ItemList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ItemList = Impl::ItemList;

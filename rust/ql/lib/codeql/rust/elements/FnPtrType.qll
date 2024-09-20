@@ -9,4 +9,10 @@ import codeql.rust.elements.ParamList
 import codeql.rust.elements.RetType
 import codeql.rust.elements.TypeRef
 
+/**
+ * A FnPtrType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class FnPtrType = Impl::FnPtrType;

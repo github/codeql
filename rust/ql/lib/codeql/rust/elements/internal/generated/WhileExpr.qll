@@ -18,6 +18,10 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
+   * A WhileExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::WhileExpr` class directly.
    * Use the subclass `WhileExpr`, where the following predicates are available.
    */

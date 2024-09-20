@@ -15,6 +15,10 @@ import codeql.rust.elements.TupleField
  */
 module Generated {
   /**
+   * A TupleFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleFieldList` class directly.
    * Use the subclass `TupleFieldList`, where the following predicates are available.
    */

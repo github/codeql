@@ -15,6 +15,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A TypeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TypeArg` class directly.
    * Use the subclass `TypeArg`, where the following predicates are available.
    */

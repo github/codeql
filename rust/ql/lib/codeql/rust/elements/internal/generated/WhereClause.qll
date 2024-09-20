@@ -15,6 +15,10 @@ import codeql.rust.elements.WherePred
  */
 module Generated {
   /**
+   * A WhereClause. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::WhereClause` class directly.
    * Use the subclass `WhereClause`, where the following predicates are available.
    */

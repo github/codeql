@@ -8,4 +8,10 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.MatchArm
 
+/**
+ * A MatchArmList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MatchArmList = Impl::MatchArmList;

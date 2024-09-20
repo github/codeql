@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.PathType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A PathType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class PathType extends Generated::PathType { }
 }

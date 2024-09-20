@@ -18,6 +18,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A WherePred. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::WherePred` class directly.
    * Use the subclass `WherePred`, where the following predicates are available.
    */

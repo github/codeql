@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.UseTreeList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A UseTreeList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class UseTreeList extends Generated::UseTreeList { }
 }

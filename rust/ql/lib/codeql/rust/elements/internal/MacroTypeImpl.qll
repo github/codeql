@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroType extends Generated::MacroType { }
 }

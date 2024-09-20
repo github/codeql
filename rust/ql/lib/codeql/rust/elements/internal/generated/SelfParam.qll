@@ -18,6 +18,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A SelfParam. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::SelfParam` class directly.
    * Use the subclass `SelfParam`, where the following predicates are available.
    */

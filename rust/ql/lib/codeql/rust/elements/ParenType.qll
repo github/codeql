@@ -6,4 +6,10 @@
 private import internal.ParenTypeImpl
 import codeql.rust.elements.TypeRef
 
+/**
+ * A ParenType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ParenType = Impl::ParenType;

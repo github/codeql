@@ -7,4 +7,10 @@ private import internal.TypeArgImpl
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.TypeRef
 
+/**
+ * A TypeArg. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TypeArg = Impl::TypeArg;

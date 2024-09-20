@@ -15,6 +15,10 @@ import codeql.rust.elements.Lifetime
  */
 module Generated {
   /**
+   * A LifetimeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::LifetimeArg` class directly.
    * Use the subclass `LifetimeArg`, where the following predicates are available.
    */

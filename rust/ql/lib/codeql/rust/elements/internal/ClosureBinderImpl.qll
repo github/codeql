@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ClosureBinder
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ClosureBinder. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ClosureBinder extends Generated::ClosureBinder { }
 }

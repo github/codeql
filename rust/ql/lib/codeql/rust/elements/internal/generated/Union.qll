@@ -20,6 +20,10 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A Union. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Union` class directly.
    * Use the subclass `Union`, where the following predicates are available.
    */

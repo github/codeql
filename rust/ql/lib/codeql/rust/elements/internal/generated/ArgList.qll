@@ -15,6 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A ArgList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ArgList` class directly.
    * Use the subclass `ArgList`, where the following predicates are available.
    */

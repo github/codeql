@@ -10,4 +10,10 @@ import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A TypeParam. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TypeParam = Impl::TypeParam;

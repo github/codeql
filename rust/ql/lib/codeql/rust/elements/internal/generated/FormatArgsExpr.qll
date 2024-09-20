@@ -17,6 +17,10 @@ import codeql.rust.elements.FormatArgsArg
  */
 module Generated {
   /**
+   * A FormatArgsExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::FormatArgsExpr` class directly.
    * Use the subclass `FormatArgsExpr`, where the following predicates are available.
    */

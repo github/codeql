@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RecordFieldList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RecordFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RecordFieldList extends Generated::RecordFieldList { }
 }

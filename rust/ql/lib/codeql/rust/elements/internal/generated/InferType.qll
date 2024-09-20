@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A InferType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::InferType` class directly.
    * Use the subclass `InferType`, where the following predicates are available.
    */

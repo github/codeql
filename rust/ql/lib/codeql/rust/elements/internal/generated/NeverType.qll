@@ -14,6 +14,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A NeverType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::NeverType` class directly.
    * Use the subclass `NeverType`, where the following predicates are available.
    */

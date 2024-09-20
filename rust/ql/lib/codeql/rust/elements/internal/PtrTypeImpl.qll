@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.PtrType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A PtrType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class PtrType extends Generated::PtrType { }
 }

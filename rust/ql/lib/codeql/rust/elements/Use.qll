@@ -9,4 +9,10 @@ import codeql.rust.elements.Item
 import codeql.rust.elements.UseTree
 import codeql.rust.elements.Visibility
 
+/**
+ * A Use. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Use = Impl::Use;

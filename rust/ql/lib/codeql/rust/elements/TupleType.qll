@@ -6,4 +6,10 @@
 private import internal.TupleTypeImpl
 import codeql.rust.elements.TypeRef
 
+/**
+ * A TupleType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TupleType = Impl::TupleType;

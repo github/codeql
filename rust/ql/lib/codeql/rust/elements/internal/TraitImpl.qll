@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Trait
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Trait. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Trait extends Generated::Trait { }
 }

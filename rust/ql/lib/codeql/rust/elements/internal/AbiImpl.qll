@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Abi
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Abi. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Abi extends Generated::Abi { }
 }

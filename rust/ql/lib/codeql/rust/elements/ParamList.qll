@@ -8,4 +8,10 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Param
 import codeql.rust.elements.SelfParam
 
+/**
+ * A ParamList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ParamList = Impl::ParamList;

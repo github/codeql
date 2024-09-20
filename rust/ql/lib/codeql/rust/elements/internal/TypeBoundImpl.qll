@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TypeBound
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TypeBound. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TypeBound extends Generated::TypeBound { }
 }

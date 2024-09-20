@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.InferType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A InferType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class InferType extends Generated::InferType { }
 }

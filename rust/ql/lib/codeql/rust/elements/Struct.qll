@@ -12,4 +12,10 @@ import codeql.rust.elements.Name
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A Struct. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Struct = Impl::Struct;

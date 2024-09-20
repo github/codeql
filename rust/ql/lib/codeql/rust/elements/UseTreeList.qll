@@ -7,4 +7,10 @@ private import internal.UseTreeListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.UseTree
 
+/**
+ * A UseTreeList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class UseTreeList = Impl::UseTreeList;

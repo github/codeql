@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TypeAlias
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TypeAlias. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TypeAlias extends Generated::TypeAlias { }
 }

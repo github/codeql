@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ExternItem
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ExternItem. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ExternItem extends Generated::ExternItem { }
 }

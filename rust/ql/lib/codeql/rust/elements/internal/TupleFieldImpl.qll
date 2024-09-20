@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TupleField
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TupleField. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TupleField extends Generated::TupleField { }
 }
