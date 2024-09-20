@@ -1,9 +1,8 @@
+use crate::config;
 use crate::config::Compression;
-use crate::{config, path};
-use codeql_extractor::{extractor, trap};
+use codeql_extractor::{extractor, file_paths, trap};
 use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
-use std::ffi::OsString;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
@@ -12,7 +11,6 @@ use std::path::{Path, PathBuf};
 pub use trap::Label as UntypedLabel;
 pub use trap::Writer;
 
-//TODO: typed labels
 pub trait AsTrapKeyPart {
     fn as_key_part(&self) -> String;
 }
@@ -210,19 +208,8 @@ impl TrapFileProvider {
     }
 
     pub fn create(&self, category: &str, key: &Path) -> TrapFile {
-        let mut path = PathBuf::from(category);
-        path.push(path::key(key));
-        path.set_extension(
-            path.extension()
-                .map(|e| {
-                    let mut o: OsString = e.to_owned();
-                    o.push(".trap");
-                    o
-                })
-                .unwrap_or("trap".into()),
-        );
+        let path = file_paths::path_for(&self.trap_dir.join(category), key, ".trap");
         debug!("creating trap file {}", path.display());
-        path = self.trap_dir.join(path);
         let mut writer = trap::Writer::new();
         extractor::populate_empty_location(&mut writer);
         TrapFile {

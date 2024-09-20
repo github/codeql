@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -15,11 +16,6 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
-   * An index expression. For example:
-   * ```rust
-   * list[42];
-   * list[42] = 1;
-   * ```
    * INTERNAL: Do not reference the `Generated::IndexExpr` class directly.
    * Use the subclass `IndexExpr`, where the following predicates are available.
    */
@@ -27,7 +23,25 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IndexExpr" }
 
     /**
-     * Gets the base of this index expression.
+     * Gets the `index`th attr of this index expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertIndexExprToRaw(this).(Raw::IndexExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this index expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this index expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the base of this index expression, if it exists.
      */
     Expr getBase() {
       result =
@@ -35,7 +49,12 @@ module Generated {
     }
 
     /**
-     * Gets the index of this index expression.
+     * Holds if `getBase()` exists.
+     */
+    final predicate hasBase() { exists(this.getBase()) }
+
+    /**
+     * Gets the index of this index expression, if it exists.
      */
     Expr getIndex() {
       result =
@@ -43,10 +62,8 @@ module Generated {
     }
 
     /**
-     * Holds if this index expression is assignee expression.
+     * Holds if `getIndex()` exists.
      */
-    predicate isAssigneeExpr() {
-      Synth::convertIndexExprToRaw(this).(Raw::IndexExpr).isAssigneeExpr()
-    }
+    final predicate hasIndex() { exists(this.getIndex()) }
   }
 }

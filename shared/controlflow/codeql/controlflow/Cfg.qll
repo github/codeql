@@ -1134,66 +1134,38 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   final class AstCfgNode = AstCfgNodeImpl;
 
   /** A node to be included in the output of `TestOutput`. */
-  signature class RelevantNodeSig extends Node {
-    /**
-     * Gets a string used to resolve ties in node and edge ordering.
-     */
-    string getOrderDisambiguation();
-  }
+  signature class RelevantNodeSig extends Node;
 
   /**
-   * Import this module into a `.ql` file of `@kind graph` to render a CFG. The
+   * Import this module into a `.ql` file to output a CFG. The
    * graph is restricted to nodes from `RelevantNode`.
    */
   module TestOutput<RelevantNodeSig RelevantNode> {
-    /** Holds if `n` is a relevant node in the CFG. */
-    query predicate nodes(RelevantNode n, string attr, string val) {
-      attr = "semmle.order" and
-      val =
-        any(int i |
-          n =
-            rank[i](RelevantNode p, string filePath, int startLine, int startColumn, int endLine,
-              int endColumn |
-              p.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-            |
-              p
-              order by
-                filePath, startLine, startColumn, endLine, endColumn, p.toString(),
-                p.getOrderDisambiguation()
-            )
-        ).toString()
-    }
-
     /** Holds if `pred -> succ` is an edge in the CFG. */
-    query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
-      attr = "semmle.label" and
-      val =
+    query predicate edges(RelevantNode pred, RelevantNode succ, string label) {
+      label =
         strictconcat(SuccessorType t, string s |
           succ = getASuccessor(pred, t) and
           if successorTypeIsSimple(t) then s = "" else s = t.toString()
         |
           s, ", " order by s
         )
-      or
-      attr = "semmle.order" and
-      val =
-        any(int i |
-          succ =
-            rank[i](RelevantNode s, SuccessorType t, string filePath, int startLine,
-              int startColumn, int endLine, int endColumn |
-              s = getASuccessor(pred, t) and
-              s.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-            |
-              s
-              order by
-                filePath, startLine, startColumn, endLine, endColumn, t.toString(), s.toString(),
-                s.getOrderDisambiguation()
-            )
-        ).toString()
     }
 
     module Mermaid {
-      private string nodeId(RelevantNode n) { nodes(n, "semmle.order", result) }
+      private string nodeId(RelevantNode n) {
+        result =
+          any(int i |
+            n =
+              rank[i](RelevantNode p, string filePath, int startLine, int startColumn, int endLine,
+                int endColumn |
+                p.getLocation()
+                    .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+              |
+                p order by filePath, startLine, startColumn, endLine, endColumn, p.toString()
+              )
+          ).toString()
+      }
 
       private string nodes() {
         result =
@@ -1205,10 +1177,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
       }
 
-      private string edge(RelevantNode pred, RelevantNode succ, string ord) {
-        edges(pred, succ, "semmle.order", ord) and
+      private string edge(RelevantNode pred, RelevantNode succ) {
+        edges(pred, succ, _) and
         exists(string label |
-          edges(pred, succ, "semmle.label", label) and
+          edges(pred, succ, label) and
           if label = ""
           then result = nodeId(pred) + " --> " + nodeId(succ)
           else result = nodeId(pred) + " -- " + label + " --> " + nodeId(succ)
@@ -1217,10 +1189,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       private string edges() {
         result =
-          concat(RelevantNode pred, RelevantNode succ, string edge, string ord |
-            edge = edge(pred, succ, ord)
+          concat(RelevantNode pred, RelevantNode succ, string edge, string filePath, int startLine,
+            int startColumn, int endLine, int endColumn |
+            edge = edge(pred, succ) and
+            pred.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
           |
-            edge, "\n" order by ord
+            edge, "\n"
+            order by
+              filePath, startLine, startColumn, endLine, endColumn, pred.toString()
           )
       }
 

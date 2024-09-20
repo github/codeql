@@ -64,14 +64,23 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
 
     /**
      * Gets the summary model for `api` with `input`, `output` and `kind`.
+     * The model is lifted in case `lift` is true.
      */
     bindingset[input, output, kind]
-    private string asSummaryModel(Printing::SummaryApi api, string input, string output, string kind) {
-      result =
-        asPartialModel(api.lift()) + input + ";" //
-          + output + ";" //
-          + kind + ";" //
-          + Printing::getProvenance()
+    private string asSummaryModel(
+      Printing::SummaryApi api, string input, string output, string kind, boolean lift
+    ) {
+      exists(Lang::Callable c |
+        lift = true and c = api.lift()
+        or
+        lift = false and c = api
+      |
+        result =
+          asPartialModel(c) + input + ";" //
+            + output + ";" //
+            + kind + ";" //
+            + Printing::getProvenance()
+      )
     }
 
     string asNeutralSummaryModel(Printing::SummaryApi api) {
@@ -82,31 +91,35 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     }
 
     /**
-     * Gets the value summary model for `api` with `input` and `output`.
+     * Gets the lifted value summary model for `api` with `input` and `output`.
      */
     bindingset[input, output]
-    string asValueModel(Printing::SummaryApi api, string input, string output) {
-      result = asSummaryModel(api, input, output, "value")
+    string asLiftedValueModel(Printing::SummaryApi api, string input, string output) {
+      result = asModel(api, input, output, true, true)
     }
 
     /**
-     * Gets the taint summary model for `api` with `input` and `output`.
+     * Gets the lifted taint summary model for `api` with `input` and `output`.
      */
     bindingset[input, output]
-    string asTaintModel(Printing::SummaryApi api, string input, string output) {
-      result = asSummaryModel(api, input, output, "taint")
+    string asLiftedTaintModel(Printing::SummaryApi api, string input, string output) {
+      result = asModel(api, input, output, false, true)
     }
 
     /**
      * Gets the summary model for `api` with `input` and `output`.
+     * (1) If `preservesValue` is true a "value" model is created.
+     * (2) If `lift` is true the model is lifted to the best possible type.
      */
     bindingset[input, output, preservesValue]
-    string asModel(Printing::SummaryApi api, string input, string output, boolean preservesValue) {
+    string asModel(
+      Printing::SummaryApi api, string input, string output, boolean preservesValue, boolean lift
+    ) {
       preservesValue = true and
-      result = asValueModel(api, input, output)
+      result = asSummaryModel(api, input, output, "value", lift)
       or
       preservesValue = false and
-      result = asTaintModel(api, input, output)
+      result = asSummaryModel(api, input, output, "taint", lift)
     }
 
     /**

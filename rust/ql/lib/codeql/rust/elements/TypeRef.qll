@@ -5,14 +5,5 @@
 
 private import internal.TypeRefImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Unimplemented
 
-/**
- * The base class for type references.
- * ```rust
- * let x: i32;
- * let y: Vec<i32>;
- * let z: Option<i32>;
- * ```
- */
 final class TypeRef = Impl::TypeRef;

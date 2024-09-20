@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 import codeql.rust.elements.Path
-import codeql.rust.elements.RecordPatField
+import codeql.rust.elements.RecordPatFieldList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordPat` and should not
@@ -16,13 +16,6 @@ import codeql.rust.elements.RecordPatField
  */
 module Generated {
   /**
-   * A record pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
    * INTERNAL: Do not reference the `Generated::RecordPat` class directly.
    * Use the subclass `RecordPat`, where the following predicates are available.
    */
@@ -43,28 +36,18 @@ module Generated {
     final predicate hasPath() { exists(this.getPath()) }
 
     /**
-     * Gets the `index`th fld of this record pat (0-based).
+     * Gets the record pat field list of this record pat, if it exists.
      */
-    RecordPatField getFld(int index) {
+    RecordPatFieldList getRecordPatFieldList() {
       result =
-        Synth::convertRecordPatFieldFromRaw(Synth::convertRecordPatToRaw(this)
+        Synth::convertRecordPatFieldListFromRaw(Synth::convertRecordPatToRaw(this)
               .(Raw::RecordPat)
-              .getFld(index))
+              .getRecordPatFieldList())
     }
 
     /**
-     * Gets any of the flds of this record pat.
+     * Holds if `getRecordPatFieldList()` exists.
      */
-    final RecordPatField getAFld() { result = this.getFld(_) }
-
-    /**
-     * Gets the number of flds of this record pat.
-     */
-    final int getNumberOfFlds() { result = count(int i | exists(this.getFld(i))) }
-
-    /**
-     * Holds if this record pat has ellipsis.
-     */
-    predicate hasEllipsis() { Synth::convertRecordPatToRaw(this).(Raw::RecordPat).hasEllipsis() }
+    final predicate hasRecordPatFieldList() { exists(this.getRecordPatFieldList()) }
   }
 }

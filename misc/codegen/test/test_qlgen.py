@@ -922,7 +922,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar")],
-            default_doc_name="baz"),
+            pragmas={"ql_default_doc_name": "baz"}),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"),
                          a_ql_stub(name="MyObject"),
@@ -937,7 +937,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
 
 def test_stub_on_class_with_synth_from_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", synth=schema.SynthInfo(from_class="A"),
+        schema.Class("MyObject", pragmas={"synth": schema.SynthInfo(from_class="A")},
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject", synth_accessors=[
@@ -952,7 +952,7 @@ def test_stub_on_class_with_synth_from_class(generate_classes):
 
 def test_stub_on_class_with_synth_on_arguments(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", synth=schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"}),
+        schema.Class("MyObject", pragmas={"synth": schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"})},
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject", synth_accessors=[

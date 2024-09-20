@@ -12,11 +12,5 @@ private import codeql.rust.elements.internal.generated.GenericArgList
  * be referenced directly.
  */
 module Impl {
-  /**
-   * The base class for generic arguments.
-   * ```rust
-   * x.foo::<u32, u64>(42);
-   * ```
-   */
   class GenericArgList extends Generated::GenericArgList { }
 }

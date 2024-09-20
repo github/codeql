@@ -15,13 +15,6 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A reference pattern. For example:
-   * ```rust
-   * match x {
-   *     &mut Option::Some(y) => y,
-   *     &Option::None => 0,
-   * };
-   * ```
    * INTERNAL: Do not reference the `Generated::RefPat` class directly.
    * Use the subclass `RefPat`, where the following predicates are available.
    */
@@ -29,15 +22,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RefPat" }
 
     /**
-     * Gets the pat of this reference pat.
+     * Gets the pat of this reference pat, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertRefPatToRaw(this).(Raw::RefPat).getPat())
     }
 
     /**
-     * Holds if this reference pat is mut.
+     * Holds if `getPat()` exists.
      */
-    predicate isMut() { Synth::convertRefPatToRaw(this).(Raw::RefPat).isMut() }
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

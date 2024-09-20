@@ -536,9 +536,9 @@ def test_null_class(generate):
 
 def test_synth_classes_ignored(generate):
     assert generate([
-        schema.Class(name="A", synth=schema.SynthInfo()),
-        schema.Class(name="B", synth=schema.SynthInfo(from_class="A")),
-        schema.Class(name="C", synth=schema.SynthInfo(on_arguments={"x": "A"})),
+        schema.Class(name="A", pragmas={"synth": schema.SynthInfo()}),
+        schema.Class(name="B", pragmas={"synth": schema.SynthInfo(from_class="A")}),
+        schema.Class(name="C", pragmas={"synth": schema.SynthInfo(on_arguments={"x": "A"})}),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
         includes=[],
@@ -549,7 +549,7 @@ def test_synth_classes_ignored(generate):
 def test_synth_derived_classes_ignored(generate):
     assert generate([
         schema.Class(name="A", derived={"B", "C"}),
-        schema.Class(name="B", bases=["A"], synth=schema.SynthInfo()),
+        schema.Class(name="B", bases=["A"], pragmas={"synth": schema.SynthInfo()}),
         schema.Class(name="C", bases=["A"]),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
