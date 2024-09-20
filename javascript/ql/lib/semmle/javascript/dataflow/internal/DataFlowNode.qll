@@ -8,6 +8,7 @@ private import javascript
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
+private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
@@ -27,7 +28,14 @@ private module Cached {
   cached
   newtype TNode =
     TValueNode(AST::ValueNode nd) or
+    /** An SSA node from the legacy SSA library */
     TSsaDefNode(SsaDefinition d) or
+    /** Use of a variable with flow from a post-update node (from an earlier use) */
+    TSsaUseNode(VarUse use) { use.getVariable() instanceof PurelyLocalVariable } or
+    /** Phi-read node (new SSA library). Ordinary phi nodes are represented by TSsaDefNode. */
+    TSsaPhiReadNode(Ssa2::PhiReadNode phi) or
+    /** Input to a phi node (new SSA library) */
+    TSsaInputNode(Ssa2::SsaInputNode input) or
     TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
     TPropNode(@property p) or
     TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or
