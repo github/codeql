@@ -994,12 +994,6 @@ predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-bindingset[node1, node2]
-pragma[inline_late]
-private predicate sameContainer(Node node1, Node node2) {
-  node1.getContainer() = node2.getContainer()
-}
-
 bindingset[node, fun]
 pragma[inline_late]
 private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
