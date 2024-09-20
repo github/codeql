@@ -8,10 +8,10 @@ import com.github.codeql.writeConstrs
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaConstructorSymbol
 
+context(KaSession)
 class Constructor private constructor(symbol: KaConstructorSymbol, context: Context) :
     Callable<KaConstructorSymbol, DbConstructor>(symbol, context) {
 
-    context(KaSession)
     override fun writeCallable() {
         context.trapWriter.writeConstrs(
             this.label,
@@ -23,7 +23,6 @@ class Constructor private constructor(symbol: KaConstructorSymbol, context: Cont
         )
     }
 
-    context(KaSession)
     override val key: String
         get() = "callable;{${getDeclaringClass().label}}.<ctor>()"
 
@@ -33,6 +32,7 @@ class Constructor private constructor(symbol: KaConstructorSymbol, context: Cont
     }
 
     private object Factory : CachedEntityFactory<KaConstructorSymbol, Constructor>() {
+        context(KaSession)
         override fun createEntity(context: Context, symbol: KaConstructorSymbol) = Constructor(symbol, context)
     }
 }

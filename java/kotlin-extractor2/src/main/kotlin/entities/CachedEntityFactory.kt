@@ -10,5 +10,6 @@ abstract class CachedEntityFactory<TSymbol : KaSymbol, TEntity : Entity<TSymbol,
         return context.createEntity(this, symbol)
     }
 
+    context(KaSession)
     abstract fun createEntity(context: Context, symbol: TSymbol): TEntity
 }

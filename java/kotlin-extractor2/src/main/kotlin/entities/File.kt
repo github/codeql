@@ -6,17 +6,17 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaFileSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.psi
 import org.jetbrains.kotlin.psi.KtFile
 
+context(KaSession)
 class File private constructor(symbol: KaFileSymbol, context: Context) : Entity<KaFileSymbol, DbFile>(symbol, context) {
 
-    context(KaSession)
     override fun extract() {
         println("file: " + symbol.psi<KtFile>().name)
         val declarations = symbol.fileScope.declarations.map { getEntity(context, it) }.toList()
     }
 
-    context(KaSession)
     override val key: String
         get() = "${symbol.psi<KtFile>().virtualFilePath};sourcefile"
+
 
     companion object {
         context(KaSession)
@@ -24,6 +24,7 @@ class File private constructor(symbol: KaFileSymbol, context: Context) : Entity<
     }
 
     private object Factory : CachedEntityFactory<KaFileSymbol, File>() {
+        context(KaSession)
         override fun createEntity(context: Context, symbol: KaFileSymbol) = File(symbol, context)
     }
 }

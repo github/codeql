@@ -4,17 +4,16 @@ import com.github.codeql.DbReftype
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaNamedClassSymbol
 
+context(KaSession)
 class Class private constructor(symbol: KaNamedClassSymbol, context: Context) :
     Entity<KaNamedClassSymbol, DbReftype>(symbol, context) {
 
-    context(KaSession)
     override fun extract() {
         println("class: " + symbol.name.asString())
         val declarations = symbol.declaredMemberScope.declarations.map { getEntity(context, it) }.toList()
         // todo extract class-declaration pairs
     }
 
-    context(KaSession)
     override val key: String
         get() = "class;${symbol.name.asString()}"
 
@@ -24,6 +23,7 @@ class Class private constructor(symbol: KaNamedClassSymbol, context: Context) :
     }
 
     private object Factory : CachedEntityFactory<KaNamedClassSymbol, Class>() {
+        context(KaSession)
         override fun createEntity(context: Context, symbol: KaNamedClassSymbol) = Class(symbol, context)
     }
 }

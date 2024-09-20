@@ -5,6 +5,7 @@ import com.github.codeql.Label
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 
+context(KaSession)
 abstract class Entity<out TSymbol : KaSymbol, out TDbType : AnyDbType> protected constructor(
     val symbol: TSymbol,
     val context: Context
@@ -12,9 +13,7 @@ abstract class Entity<out TSymbol : KaSymbol, out TDbType : AnyDbType> protected
 
     val label: Label<out TDbType> = context.trapWriter.lm.getFreshLabel()
 
-    context(KaSession)
     abstract fun extract()
 
-    context(KaSession)
     abstract val key: String
 }

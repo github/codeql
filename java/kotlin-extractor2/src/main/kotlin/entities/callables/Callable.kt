@@ -12,13 +12,13 @@ import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDeclarationWithBody
 
+context(KaSession)
 abstract class Callable<out TSymbol : KaCallableSymbol, out TDbType : DbCallable> protected constructor(
     symbol: TSymbol,
     context: Context
 ) :
     Entity<TSymbol, TDbType>(symbol, context) {
 
-    context(KaSession)
     override fun extract() {
         println("callable: " + symbol.name?.asString())
         writeCallable()
@@ -34,10 +34,8 @@ abstract class Callable<out TSymbol : KaCallableSymbol, out TDbType : DbCallable
         }
     }
 
-    context(KaSession)
     protected abstract fun writeCallable()
 
-    context(KaSession)
     protected fun getDeclaringClass() = Class.create(context, symbol.containingSymbol as KaNamedClassSymbol)
 
     companion object {
