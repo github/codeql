@@ -233,7 +233,7 @@ child = _ChildModifier()
 doc = _DocModifier
 desc = _DescModifier
 
-use_for_null = _annotate(null=True)
+use_for_null = _ClassPragma("null")
 
 qltest.add(_Pragma("skip"))
 qltest.add(_ClassPragma("collapse_hierarchy"))

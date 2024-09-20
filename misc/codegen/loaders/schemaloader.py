@@ -40,17 +40,18 @@ def _get_class(cls: type) -> schema.Class:
     if len({g for g in (getattr(b, f"{schema.inheritable_pragma_prefix}group", None)
                         for b in cls.__bases__) if g}) > 1:
         raise schema.Error(f"Bases with mixed groups for {cls.__name__}")
-    if any(getattr(b, "_null", False) for b in cls.__bases__):
-        raise schema.Error(f"Null class cannot be derived")
     pragmas = {
         # dir and getattr inherit from bases
         a[len(schema.inheritable_pragma_prefix):]: getattr(cls, a)
         for a in dir(cls) if a.startswith(schema.inheritable_pragma_prefix)
     }
     pragmas |= cls.__dict__.get("_pragmas", {})
+    derived = {d.__name__ for d in cls.__subclasses__()}
+    if "null" in pragmas and derived:
+        raise schema.Error(f"Null class cannot be derived")
     return schema.Class(name=cls.__name__,
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
-                        derived={d.__name__ for d in cls.__subclasses__()},
+                        derived=derived,
                         pragmas=pragmas,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[
@@ -150,11 +151,11 @@ def load(m: types.ModuleType) -> schema.Schema:
                 f"Only one root class allowed, found second root {name}")
         cls.check_types(known)
         classes[name] = cls
-        if getattr(data, "_null", False):
+        if "null" in cls.pragmas:
+            del cls.pragmas["null"]
             if null is not None:
                 raise schema.Error(f"Null class {null} already defined, second null class {name} not allowed")
             null = name
-            cls.is_null_class = True
 
     _fill_synth_information(classes)
     _fill_hideable_information(classes)
