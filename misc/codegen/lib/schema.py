@@ -93,8 +93,6 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     group: str = ""
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
-    synth: Optional[Union[SynthInfo, bool]] = None
-    """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
     test_with: Optional[str] = None
@@ -114,12 +112,20 @@ class Class:
             _check_type(d, known)
         for p in self.properties:
             _check_type(p.type, known)
-        if self.synth is not None:
-            _check_type(self.synth.from_class, known)
-            if self.synth.on_arguments is not None:
-                for t in self.synth.on_arguments.values():
+        if "synth" in self.pragmas:
+            synth = self.pragmas["synth"]
+            _check_type(synth.from_class, known)
+            if synth.on_arguments is not None:
+                for t in synth.on_arguments.values():
                     _check_type(t, known)
         _check_type(self.test_with, known)
+
+    @property
+    def synth(self) -> SynthInfo | bool | None:
+        return self.pragmas.get("synth")
+
+    def mark_synth(self):
+        self.pragmas.setdefault("synth", True)
 
 
 @dataclass

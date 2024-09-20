@@ -355,8 +355,8 @@ def test_synth_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(from_class="A")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(from_class="A")}),
     }
 
 
@@ -371,7 +371,7 @@ def test_synth_from_class_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(from_class="B")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(from_class="B")}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -396,8 +396,8 @@ def test_synth_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})}),
     }
 
 
@@ -415,7 +415,7 @@ def test_synth_class_on_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -454,10 +454,10 @@ def test_synth_class_hierarchy():
 
     assert data.classes == {
         'Root': schema.Class('Root', derived={'Base', 'C'}),
-        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, synth=True),
-        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, synth=True),
-        'A': schema.Class('A', bases=['Intermediate'], synth=schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})),
-        'B': schema.Class('B', bases=['Base'], synth=schema.SynthInfo(from_class='Base')),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, pragmas={"synth": True}),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, pragmas={"synth": True}),
+        'A': schema.Class('A', bases=['Intermediate'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})}),
+        'B': schema.Class('B', bases=['Base'], pragmas={"synth": schema.SynthInfo(from_class='Base')}),
         'C': schema.Class('C', bases=['Root']),
     }
 

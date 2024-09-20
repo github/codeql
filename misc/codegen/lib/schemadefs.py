@@ -67,9 +67,9 @@ class _Namespace:
     """ simple namespacing mechanism """
     name: str
 
-    def add(self, pragma: "_PragmaBase"):
+    def add(self, pragma: "_PragmaBase", key: str | None = None):
         self.__dict__[pragma.pragma] = pragma
-        pragma.pragma = f"{self.name}_{pragma.pragma}"
+        pragma.pragma = key or f"{self.name}_{pragma.pragma}"
 
 
 @_dataclass
@@ -142,7 +142,7 @@ class _ParametrizedClassPragma(_PragmaBase):
     """
     _pragma_class: _ClassVar[type] = _ClassPragma
 
-    function: _Callable[[...], object] = None
+    function: _Callable[..., object] = None
 
     def __post_init__(self):
         self.__signature__ = _inspect.signature(self.function).replace(return_annotation=self._pragma_class)
@@ -248,10 +248,10 @@ def group(name: str = "") -> _ClassDecorator:
     return _annotate(group=name)
 
 
-synth.from_class = lambda ref: _annotate(synth=_schema.SynthInfo(
-    from_class=_schema.get_type_name(ref)))
-synth.on_arguments = lambda **kwargs: _annotate(
-    synth=_schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))
+synth.add(_ParametrizedClassPragma("from_class", lambda ref: _schema.SynthInfo(
+    from_class=_schema.get_type_name(ref))), key="synth")
+synth.add(_ParametrizedClassPragma("on_arguments", lambda **kwargs:
+                                   _schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()})), key="synth")
 
 
 class _PropertyModifierList(_schema.PropertyModifier):
