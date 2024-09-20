@@ -1,5 +1,8 @@
 from misc.codegen.lib.schemadefs import *
 
+include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
+include("prefix.dbscheme")
+
 @qltest.skip
 class Element:
     pass

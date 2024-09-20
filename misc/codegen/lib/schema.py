@@ -1,4 +1,5 @@
 """ schema format representation """
+import abc
 import typing
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, Optional
@@ -136,40 +137,29 @@ predicate_marker = object()
 TypeRef = Union[type, str]
 
 
-@functools.singledispatch
 def get_type_name(arg: TypeRef) -> str:
-    raise Error(f"Not a schema type or string ({arg})")
+    match arg:
+        case type():
+            return arg.__name__
+        case str():
+            return arg
+        case _:
+            raise Error(f"Not a schema type or string ({arg})")
 
 
-@get_type_name.register
-def _(arg: type):
-    return arg.__name__
-
-
-@get_type_name.register
-def _(arg: str):
-    return arg
-
-
-@functools.singledispatch
 def _make_property(arg: object) -> Property:
-    if arg is predicate_marker:
-        return PredicateProperty()
-    raise Error(f"Illegal property specifier {arg}")
+    match arg:
+        case _ if arg is predicate_marker:
+            return PredicateProperty()
+        case str() | type():
+            return SingleProperty(type=get_type_name(arg))
+        case Property():
+            return arg
+        case _:
+            raise Error(f"Illegal property specifier {arg}")
 
 
-@_make_property.register(str)
-@_make_property.register(type)
-def _(arg: TypeRef):
-    return SingleProperty(type=get_type_name(arg))
-
-
-@_make_property.register
-def _(arg: Property):
-    return arg
-
-
-class PropertyModifier:
+class PropertyModifier(abc.ABC):
     """ Modifier of `Property` objects.
         Being on the right of `|` it will trigger construction of a `Property` from
         the left operand.
@@ -180,8 +170,14 @@ class PropertyModifier:
         self.modify(ret)
         return ret
 
+    def __invert__(self) -> "PropertyModifier":
+        return self.negate()
+
     def modify(self, prop: Property):
-        raise NotImplementedError
+        ...
+
+    def negate(self) -> "PropertyModifier":
+        ...
 
 
 def split_doc(doc):
