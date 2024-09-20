@@ -20,10 +20,9 @@ class _ChildModifier(_schema.PropertyModifier):
     def negate(self) -> _schema.PropertyModifier:
         return _ChildModifier(False)
 
-# make ~doc same as doc(None)
-
 
 class _DocModifierMetaclass(type(_schema.PropertyModifier)):
+    # make ~doc same as doc(None)
     def __invert__(self) -> _schema.PropertyModifier:
         return _DocModifier(None)
 
@@ -41,8 +40,8 @@ class _DocModifier(_schema.PropertyModifier, metaclass=_DocModifierMetaclass):
         return _DocModifier(None)
 
 
-# make ~desc same as desc(None)
 class _DescModifierMetaclass(type(_schema.PropertyModifier)):
+    # make ~desc same as desc(None)
     def __invert__(self) -> _schema.PropertyModifier:
         return _DescModifier(None)
 
@@ -249,7 +248,18 @@ def annotate(annotated_cls: type) -> _Callable[[type], _PropertyAnnotation]:
     def decorator(cls: type) -> _PropertyAnnotation:
         if cls.__name__ != "_":
             raise _schema.Error("Annotation classes must be named _")
-        annotated_cls.__doc__ = cls.__doc__
+        if cls.__doc__ is not None:
+            annotated_cls.__doc__ = cls.__doc__
+        old_pragmas = getattr(annotated_cls, "_pragmas", None)
+        new_pragmas = getattr(cls, "_pragmas", [])
+        if old_pragmas:
+            old_pragmas.extend(new_pragmas)
+        else:
+            annotated_cls._pragmas = new_pragmas
+        for a, v in cls.__dict__.items():
+            # transfer annotations
+            if a.startswith("_") and not a.startswith("__") and a != "_pragmas":
+                setattr(annotated_cls, a, v)
         for p, a in cls.__annotations__.items():
             if p in annotated_cls.__annotations__:
                 annotated_cls.__annotations__[p] |= a

@@ -763,6 +763,9 @@ def test_annotate_docstring():
         class Root:
             """ old docstring """
 
+        class A(Root):
+            """ A docstring """
+
         @defs.annotate(Root)
         class _:
             """
@@ -770,8 +773,33 @@ def test_annotate_docstring():
             docstring
             """
 
+        @defs.annotate(A)
+        class _:
+            pass
+
     assert data.classes == {
-        "Root": schema.Class("Root", doc=["new", "docstring"]),
+        "Root": schema.Class("Root", doc=["new", "docstring"], derived={"A"}),
+        "A": schema.Class("A", bases=["Root"], doc=["A docstring"]),
+    }
+
+
+def test_annotate_decorations():
+    @load
+    class data:
+        @defs.qltest.skip
+        class Root:
+            pass
+
+        @defs.annotate(Root)
+        @defs.qltest.collapse_hierarchy
+        @defs.ql.hideable
+        @defs.cpp.skip
+        class _:
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", hideable=True,
+                             pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
     }
 
 
