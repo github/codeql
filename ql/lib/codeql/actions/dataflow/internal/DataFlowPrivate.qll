@@ -98,6 +98,7 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   string getName() {
     if this instanceof ReusableWorkflow
     then
+      //result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
       result =
         this.(ReusableWorkflow)
             .getLocation()
@@ -107,7 +108,17 @@ class DataFlowCallable instanceof Cfg::CfgScope {
                     .getLocation()
                     .getFile()
                     .getRelativePath()
-                    .indexOf("/.github/workflows") + 1)
+                    .indexOf("/.github/workflows") + 1) or
+      result =
+        this.(ReusableWorkflow)
+            .getLocation()
+            .getFile()
+            .getRelativePath()
+            .suffix(this.(ReusableWorkflow)
+                  .getLocation()
+                  .getFile()
+                  .getRelativePath()
+                  .indexOf(".github/workflows"))
     else
       if this instanceof CompositeAction
       then
