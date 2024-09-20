@@ -556,6 +556,16 @@ module MakeModelGenerator<
 
     private module PropagateContentFlow = ContentDataFlow::Global<PropagateContentFlowConfig>;
 
+    private module ContentModelPrintingInput implements Printing::ModelPrintingSig {
+      class SummaryApi = DataFlowSummaryTargetApi;
+
+      class SourceOrSinkApi = SourceOrSinkTargetApi;
+
+      string getProvenance() { result = "dfc-generated" }
+    }
+
+    private module ContentModelPrinting = Printing::ModelPrinting<ContentModelPrintingInput>;
+
     private string getContentOutput(ReturnNodeExt node) {
       result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
     }
@@ -853,7 +863,7 @@ module MakeModelGenerator<
       exists(string input, string output, boolean lift, boolean preservesValue |
         captureFlow0(api, input, output, _, lift) and
         preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
-        result = ModelPrinting::asModel(api, input, output, preservesValue, lift)
+        result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
       )
     }
   }
