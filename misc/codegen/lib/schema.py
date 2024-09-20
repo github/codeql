@@ -32,10 +32,14 @@ class Property:
     name: Optional[str] = None
     type: Optional[str] = None
     is_child: bool = False
-    pragmas: List[str] = field(default_factory=list)
+    pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: Optional[str] = None
     description: List[str] = field(default_factory=list)
     synth: bool = False
+
+    def __post_init__(self):
+        if not isinstance(self.pragmas, dict):
+            self.pragmas = dict.fromkeys(self.pragmas, None)
 
     @property
     def is_single(self) -> bool:
@@ -88,14 +92,14 @@ class Class:
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     group: str = ""
-    pragmas: List[str] = field(default_factory=list)
-    synth: Optional[Union[SynthInfo, bool]] = None
-    """^^^ filled with `True` for non-final classes with only synthesized final descendants """
+    pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
-    default_doc_name: Optional[str] = None
     hideable: bool = False
     test_with: Optional[str] = None
-    rust_doc_test_function: Optional["FunctionInfo"] = "() -> ()"  # TODO: parametrized pragmas
+
+    def __post_init__(self):
+        if not isinstance(self.pragmas, dict):
+            self.pragmas = dict.fromkeys(self.pragmas, None)
 
     @property
     def final(self):
@@ -108,12 +112,20 @@ class Class:
             _check_type(d, known)
         for p in self.properties:
             _check_type(p.type, known)
-        if self.synth is not None:
-            _check_type(self.synth.from_class, known)
-            if self.synth.on_arguments is not None:
-                for t in self.synth.on_arguments.values():
+        if "synth" in self.pragmas:
+            synth = self.pragmas["synth"]
+            _check_type(synth.from_class, known)
+            if synth.on_arguments is not None:
+                for t in synth.on_arguments.values():
                     _check_type(t, known)
         _check_type(self.test_with, known)
+
+    @property
+    def synth(self) -> SynthInfo | bool | None:
+        return self.pragmas.get("synth")
+
+    def mark_synth(self):
+        self.pragmas.setdefault("synth", True)
 
 
 @dataclass

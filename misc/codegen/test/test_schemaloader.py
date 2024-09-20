@@ -269,15 +269,21 @@ def test_builtin_predicate_and_set_children_not_allowed(spec):
                 x: spec | defs.child
 
 
-_pragmas = [(defs.qltest.skip, "qltest_skip"),
-            (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
-            (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
-            (defs.cpp.skip, "cpp_skip"),
-            (defs.ql.internal, "ql_internal"),
-            ]
+_class_pragmas = [
+    (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
+    (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
+]
+
+_property_pragmas = [
+    (defs.qltest.skip, "qltest_skip"),
+    (defs.cpp.skip, "cpp_skip"),
+    (defs.ql.internal, "ql_internal"),
+]
+
+_pragmas = _class_pragmas + _property_pragmas
 
 
-@pytest.mark.parametrize("pragma,expected", _pragmas)
+@pytest.mark.parametrize("pragma,expected", _property_pragmas)
 def test_property_with_pragma(pragma, expected):
     @load
     class data:
@@ -293,7 +299,7 @@ def test_property_with_pragma(pragma, expected):
 
 def test_property_with_pragmas():
     spec = defs.string
-    for pragma, _ in _pragmas:
+    for pragma, _ in _property_pragmas:
         spec |= pragma
 
     @load
@@ -303,7 +309,7 @@ def test_property_with_pragmas():
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
-            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _pragmas]),
+            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _property_pragmas]),
         ]),
     }
 
@@ -349,8 +355,8 @@ def test_synth_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(from_class="A")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(from_class="A")}),
     }
 
 
@@ -365,7 +371,7 @@ def test_synth_from_class_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(from_class="B")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(from_class="B")}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -390,8 +396,8 @@ def test_synth_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})}),
     }
 
 
@@ -409,7 +415,7 @@ def test_synth_class_on_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -448,10 +454,10 @@ def test_synth_class_hierarchy():
 
     assert data.classes == {
         'Root': schema.Class('Root', derived={'Base', 'C'}),
-        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, synth=True),
-        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, synth=True),
-        'A': schema.Class('A', bases=['Intermediate'], synth=schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})),
-        'B': schema.Class('B', bases=['Base'], synth=schema.SynthInfo(from_class='Base')),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, pragmas={"synth": True}),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, pragmas={"synth": True}),
+        'A': schema.Class('A', bases=['Intermediate'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})}),
+        'B': schema.Class('B', bases=['Base'], pragmas={"synth": schema.SynthInfo(from_class='Base')}),
         'C': schema.Class('C', bases=['Root']),
     }
 
@@ -636,7 +642,7 @@ def test_class_default_doc_name():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', default_doc_name="b"),
+        'A': schema.Class('A', pragmas={"ql_default_doc_name": "b"}),
     }
 
 
@@ -798,8 +804,7 @@ def test_annotate_decorations():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", hideable=True,
-                             pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
+        "Root": schema.Class("Root", hideable=True, pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
     }
 
 

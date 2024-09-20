@@ -55,7 +55,7 @@ def generate(opts, renderer):
                 continue
             assert not adding_code, "Unterminated code block in docstring: " + "\n".join(cls.doc)
             test_name = inflection.underscore(cls.name)
-            signature = cls.rust_doc_test_function
+            signature = cls.pragmas.get("rust_doc_test_signature", "() -> ()")
             fn = signature and Function(f"test_{test_name}", signature)
             if fn:
                 indent = 4 * " "
