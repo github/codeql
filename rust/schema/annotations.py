@@ -23,16 +23,12 @@ class _:
     """
     The base class for expressions.
     """
-    pass
-
 
 @annotate(Pat)
 class _:
     """
     The base class for patterns.
     """
-    pass
-
 
 @annotate(Label)
 class _:
@@ -52,8 +48,6 @@ class _:
     """
     The base class for statements.
     """
-    pass
-
 
 @annotate(TypeRef)
 class _:
@@ -65,8 +59,6 @@ class _:
     let z: Option<i32>;
     ```
     """
-    pass
-
 
 @annotate(Path)
 class _:
@@ -76,8 +68,6 @@ class _:
     foo::bar;
     ```
     """
-    pass
-
 
 @annotate(GenericArgList)
 class _:
@@ -87,8 +77,6 @@ class _:
     x.foo::<u32, u64>(42);
     ```
     """
-    pass
-
 
 @annotate(Function)
 @rust.doc_test_signature(None)
@@ -168,19 +156,6 @@ class _:
     }
     ```
     """
-
-
-# @annotate(ConstExpr)
-# @rust.doc_test_signature("() -> bool")
-# class _:
-#     """
-#     A `const` block expression. For example:
-#     ```rust
-#     if const { SRC::IS_ZST || DEST::IS_ZST || mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
-#         return false;
-#     }
-#     ```
-#     """
 
 
 @annotate(LoopExpr)
@@ -534,28 +509,6 @@ class _:
     [1; 10];
     ```
     """
-    pass
-
-
-# @annotate(ElementListExpr)
-# class _:
-#     """
-#     An element list expression. For example:
-#     ```rust
-#     [1, 2, 3, 4, 5];
-#     [1, 2, 3, 4, 5][0] = 6;
-#     ```
-#     """
-
-
-# @annotate(RepeatExpr)
-# class _:
-#     """
-#     A repeat expression. For example:
-#     ```rust
-#     [1; 10];
-#     ```
-#     """
 
 
 @annotate(LiteralExpr)
@@ -573,8 +526,6 @@ class _:
     true;
     ```
     """
-    pass
-
 
 @annotate(UnderscoreExpr)
 class _:
@@ -584,8 +535,6 @@ class _:
     _ = 42;
     ```
     """
-    pass
-
 
 @annotate(OffsetOfExpr)
 class _:
@@ -646,8 +595,6 @@ class _:
     let _ = 42;
     ```
     """
-    pass
-
 
 @annotate(TuplePat)
 class _:
@@ -827,8 +774,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ArgList)
 class _:
     """
@@ -837,8 +782,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ArrayType)
 class _:
     """
@@ -847,8 +790,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(AssocItem)
 class _:
     """
@@ -857,8 +798,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(AssocItemList)
 class _:
     """
@@ -867,8 +806,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(AssocTypeArg)
 class _:
     """
@@ -877,8 +814,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Attr)
 class _:
     """
@@ -887,8 +822,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ClosureBinder)
 class _:
     """
@@ -897,8 +830,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Const)
 class _:
     """
@@ -907,8 +838,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ConstArg)
 class _:
     """
@@ -917,8 +846,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ConstParam)
 class _:
     """
@@ -927,8 +854,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(DynTraitType)
 class _:
     """
@@ -937,8 +862,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Enum)
 class _:
     """
@@ -947,8 +870,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ExternBlock)
 class _:
     """
@@ -957,8 +878,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ExternCrate)
 class _:
     """
@@ -967,8 +886,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ExternItem)
 class _:
     """
@@ -977,8 +894,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ExternItemList)
 class _:
     """
@@ -987,8 +902,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(FieldList)
 class _:
     """
@@ -997,8 +910,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(FnPtrType)
 class _:
     """
@@ -1007,8 +918,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ForExpr)
 class _:
     """
@@ -1017,8 +926,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ForType)
 class _:
     """
@@ -1027,8 +934,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(FormatArgsArg)
 class _:
     """
@@ -1037,8 +942,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(FormatArgsExpr)
 class _:
     """
@@ -1047,8 +950,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(GenericArg)
 class _:
     """
@@ -1057,8 +958,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(GenericParam)
 class _:
     """
@@ -1067,8 +966,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(GenericParamList)
 class _:
     """
@@ -1077,8 +974,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Impl)
 class _:
     """
@@ -1087,8 +982,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ImplTraitType)
 class _:
     """
@@ -1097,8 +990,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(InferType)
 class _:
     """
@@ -1107,8 +998,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Item)
 class _:
     """
@@ -1117,8 +1006,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ItemList)
 class _:
     """
@@ -1127,8 +1014,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(LetElse)
 class _:
     """
@@ -1137,8 +1022,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Lifetime)
 class _:
     """
@@ -1147,8 +1030,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(LifetimeArg)
 class _:
     """
@@ -1157,8 +1038,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(LifetimeParam)
 class _:
     """
@@ -1167,8 +1046,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroCall)
 class _:
     """
@@ -1177,8 +1054,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroDef)
 class _:
     """
@@ -1187,8 +1062,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroExpr)
 class _:
     """
@@ -1197,8 +1070,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroPat)
 class _:
     """
@@ -1207,8 +1078,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroRules)
 class _:
     """
@@ -1217,8 +1086,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MacroType)
 class _:
     """
@@ -1227,8 +1094,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MatchArmList)
 class _:
     """
@@ -1237,8 +1102,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(MatchGuard)
 class _:
     """
@@ -1247,8 +1110,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Meta)
 class _:
     """
@@ -1257,8 +1118,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Name)
 class _:
     """
@@ -1267,8 +1126,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(NameRef)
 class _:
     """
@@ -1277,8 +1134,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(NeverType)
 class _:
     """
@@ -1287,8 +1142,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Param)
 class _:
     """
@@ -1297,8 +1150,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ParamList)
 class _:
     """
@@ -1307,8 +1158,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ParenExpr)
 class _:
     """
@@ -1317,8 +1166,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ParenPat)
 class _:
     """
@@ -1327,8 +1174,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ParenType)
 class _:
     """
@@ -1337,8 +1182,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(PathSegment)
 class _:
     """
@@ -1347,8 +1190,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(PathType)
 class _:
     """
@@ -1357,8 +1198,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(PtrType)
 class _:
     """
@@ -1367,8 +1206,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RecordExprFieldList)
 class _:
     """
@@ -1377,8 +1214,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RecordField)
 class _:
     """
@@ -1387,8 +1222,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RecordFieldList)
 class _:
     """
@@ -1397,8 +1230,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RecordPatFieldList)
 class _:
     """
@@ -1407,8 +1238,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RefType)
 class _:
     """
@@ -1417,8 +1246,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Rename)
 class _:
     """
@@ -1427,8 +1254,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RestPat)
 class _:
     """
@@ -1437,8 +1262,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(RetType)
 class _:
     """
@@ -1447,8 +1270,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(ReturnTypeSyntax)
 class _:
     """
@@ -1457,8 +1278,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(SelfParam)
 class _:
     """
@@ -1467,8 +1286,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(SliceType)
 class _:
     """
@@ -1477,8 +1294,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(SourceFile)
 class _:
     """
@@ -1487,8 +1302,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Static)
 class _:
     """
@@ -1497,8 +1310,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(StmtList)
 class _:
     """
@@ -1507,8 +1318,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Struct)
 class _:
     """
@@ -1517,8 +1326,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TokenTree)
 class _:
     """
@@ -1527,8 +1334,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Trait)
 class _:
     """
@@ -1537,8 +1342,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TraitAlias)
 class _:
     """
@@ -1547,8 +1350,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TryExpr)
 class _:
     """
@@ -1557,8 +1358,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TupleField)
 class _:
     """
@@ -1567,8 +1366,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TupleFieldList)
 class _:
     """
@@ -1577,8 +1374,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TupleType)
 class _:
     """
@@ -1587,8 +1382,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TypeAlias)
 class _:
     """
@@ -1597,8 +1390,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TypeArg)
 class _:
     """
@@ -1607,8 +1398,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TypeBound)
 class _:
     """
@@ -1617,8 +1406,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TypeBoundList)
 class _:
     """
@@ -1627,8 +1414,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(TypeParam)
 class _:
     """
@@ -1637,8 +1422,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Union)
 class _:
     """
@@ -1647,8 +1430,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Use)
 class _:
     """
@@ -1657,8 +1438,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(UseTree)
 class _:
     """
@@ -1667,8 +1446,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(UseTreeList)
 class _:
     """
@@ -1677,8 +1454,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Variant)
 class _:
     """
@@ -1687,8 +1462,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(VariantList)
 class _:
     """
@@ -1697,8 +1470,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(Visibility)
 class _:
     """
@@ -1707,8 +1478,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(WhereClause)
 class _:
     """
@@ -1717,8 +1486,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(WherePred)
 class _:
     """
@@ -1727,8 +1494,6 @@ class _:
     todo!()
     ```
     """
-    pass
-
 @annotate(WhileExpr)
 class _:
     """
@@ -1737,5 +1502,3 @@ class _:
     todo!()
     ```
     """
-    pass
-
