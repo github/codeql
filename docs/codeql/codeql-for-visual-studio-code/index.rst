@@ -3,6 +3,8 @@
 CodeQL for Visual Studio Code
 =============================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 The CodeQL extension for Visual Studio Code adds rich language support for CodeQL and allows you to easily find problems in codebases.
 
 - :doc:`About CodeQL for Visual Studio Code

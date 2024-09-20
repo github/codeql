@@ -13,3 +13,5 @@
 | test.cpp:266:10:266:24 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:276:11:276:19 | ... > ... | Unsigned subtraction can never be negative. |
 | test.cpp:288:10:288:18 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:312:9:312:25 | ... > ... | Unsigned subtraction can never be negative. |
+| test.cpp:362:8:362:16 | ... > ... | Unsigned subtraction can never be negative. |

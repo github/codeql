@@ -157,6 +157,14 @@ module Public {
       endcolumn = 0
     }
 
+    /** Gets the location of this node. */
+    Location getLocation() {
+      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
+
     /** Gets the file in which this node appears. */
     File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
@@ -447,8 +455,8 @@ module Public {
     CallNode getCallNode() { result = call }
 
     override Type getType() {
-      exists(Function f | f = call.getTarget() |
-        result = f.getParameterType(f.getNumParameter() - 1)
+      exists(SignatureType t | t = call.getCall().getCalleeType() |
+        result = t.getParameterType(t.getNumParameter() - 1)
       )
     }
 
@@ -833,11 +841,7 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        (
-          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
-          or
-          preupd = any(CallNode c).getAnImplicitVarargsArgument()
-        ) and
+        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())
       ) and
       (
@@ -881,6 +885,21 @@ module Public {
      * Gets this argument's position.
      */
     int getPosition() { result = i }
+
+    /**
+     * Gets a data-flow node for a syntactic argument corresponding this this
+     * argument. If this argument is not an implicit varargs slice then this
+     * will just be the argument itself. If this argument is an implicit
+     * varargs slice then this will be a data-flow node that for an argument
+     * that is stored in the implicit varargs slice.
+     */
+    Node getACorrespondingSyntacticArgument() {
+      not this instanceof DataFlow::ImplicitVarargsSlice and
+      result = this
+      or
+      this instanceof DataFlow::ImplicitVarargsSlice and
+      result = c.getAnImplicitVarargsArgument()
+    }
   }
 
   /**

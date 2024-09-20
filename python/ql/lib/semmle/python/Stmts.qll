@@ -284,7 +284,7 @@ class If extends If_ {
 
   /** Whether this if statement takes the form `if __name__ == "__main__":` */
   predicate isNameEqMain() {
-    exists(StrConst m, Name n, Compare c |
+    exists(StringLiteral m, Name n, Compare c |
       this.getTest() = c and
       c.getOp(0) instanceof Eq and
       (

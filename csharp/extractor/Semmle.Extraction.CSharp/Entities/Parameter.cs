@@ -24,7 +24,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public enum Kind
         {
-            None, Ref, Out, Params, This, In
+            None = 0,
+            Ref = 1,
+            Out = 2,
+            Params = 3,
+            This = 4,
+            In = 5,
+            RefReadOnly = 6
         }
 
         protected virtual int Ordinal => Symbol.Ordinal;
@@ -41,6 +47,8 @@ namespace Semmle.Extraction.CSharp.Entities
                         return Kind.Ref;
                     case RefKind.In:
                         return Kind.In;
+                    case RefKind.RefReadOnlyParameter:
+                        return Kind.RefReadOnly;
                     default:
                         if (Symbol.IsParams)
                             return Kind.Params;
@@ -91,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // This breaks our database constraints.
                 // Generate an impossible name to ensure that it doesn't conflict.
                 var conflictingCount = Symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < Symbol.Ordinal && p.Name == Symbol.Name);
-                return conflictingCount > 0 ? Symbol.Name + "`" + conflictingCount : Symbol.Name;
+                return conflictingCount > 0 ? $"{Symbol.Name}`{conflictingCount}" : Symbol.Name;
             }
         }
 

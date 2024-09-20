@@ -19,9 +19,11 @@ class StringSubstitutionCall extends DataFlow::CallNode {
   StringSubstitutionCall() {
     this.getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
     exists(this.getReceiver()) and
-    this.getNumberOfArguments() = 2
-    or
-    this.getNumberOfArguments() = 1 and exists(this.getBlock())
+    (
+      this.getNumberOfArguments() = 2
+      or
+      this.getNumberOfArguments() = 1 and exists(this.getBlock())
+    )
   }
 
   /**

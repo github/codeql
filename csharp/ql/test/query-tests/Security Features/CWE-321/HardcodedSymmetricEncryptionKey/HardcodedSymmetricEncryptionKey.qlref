@@ -1,1 +1,2 @@
-Security Features/CWE-321/HardcodedEncryptionKey.ql
+query: Security Features/CWE-321/HardcodedEncryptionKey.ql
+postprocess: TestUtilities/PrettyPrintModels.ql

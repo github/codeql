@@ -5,6 +5,7 @@
 
 import go
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
+import DataFlow
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -43,8 +44,13 @@ module TaintedPath {
     }
   }
 
+  /**
+   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
   /** A source of untrusted data, considered as a taint source for path traversal. */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
 
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {
@@ -74,17 +80,54 @@ module TaintedPath {
   }
 
   /**
-   * A call to `[file]path.Clean("/" + e)`, considered to sanitize `e` against path traversal.
+   * A call to `filepath.Clean("/" + e)`, considered to sanitize `e` against path traversal.
    */
   class FilepathCleanSanitizer extends Sanitizer {
     FilepathCleanSanitizer() {
       exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
-        cleanCall =
-          any(Function f | f.hasQualifiedName(["path", "path/filepath"], "Clean")).getACall() and
+        cleanCall = any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
         concatNode = cleanCall.getArgument(0) and
         concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
         this = cleanCall.getResult()
       )
+    }
+  }
+
+  /**
+   * A read from the field `Filename` of the type `mime/multipart.FileHeader`,
+   * considered as a sanitizer for path traversal.
+   *
+   * The only way to create a `mime/multipart.FileHeader` is to create a
+   * `mime/multipart.Form`, which creates the `Filename` field of each
+   * `mime/multipart.FileHeader` by calling `Part.FileName`, which calls
+   * `path/filepath.Base` on its return value. In general `path/filepath.Base`
+   * is not a sanitizer for path traversal, but in this specific case where the
+   * output is going to be used as a filename rather than a directory name, it
+   * is adequate.
+   */
+  class MimeMultipartFileHeaderFilenameSanitizer extends Sanitizer {
+    MimeMultipartFileHeaderFilenameSanitizer() {
+      this.(DataFlow::FieldReadNode)
+          .getField()
+          .hasQualifiedName("mime/multipart", "FileHeader", "Filename")
+    }
+  }
+
+  /**
+   * A call to `mime/multipart.Part.FileName`, considered as a sanitizer
+   * against path traversal.
+   *
+   * `Part.FileName` calls `path/filepath.Base` on its return value. In
+   * general `path/filepath.Base` is not a sanitizer for path traversal, but in
+   * this specific case where the output is going to be used as a filename
+   * rather than a directory name, it is adequate.
+   */
+  class MimeMultipartPartFileNameSanitizer extends Sanitizer {
+    MimeMultipartPartFileNameSanitizer() {
+      this =
+        any(Method m | m.hasQualifiedName("mime/multipart", "Part", "FileName"))
+            .getACall()
+            .getResult()
     }
   }
 
@@ -104,6 +147,14 @@ module TaintedPath {
       e = this.getArgument(0).asExpr() and
       branch = false
     }
+  }
+
+  /**
+   * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer for
+   * path traversal.
+   */
+  class DotDotReplaceAll extends StringOps::ReplaceAll, Sanitizer {
+    DotDotReplaceAll() { this.getReplacedString() = ["..", "."] }
   }
 
   /**

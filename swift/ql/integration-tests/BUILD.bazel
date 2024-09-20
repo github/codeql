@@ -1,0 +1,7 @@
+py_library(
+    name = "utils",
+    srcs = [
+        "diagnostics_test_utils.py",
+    ],
+    visibility = ["//swift:__subpackages__"],
+)

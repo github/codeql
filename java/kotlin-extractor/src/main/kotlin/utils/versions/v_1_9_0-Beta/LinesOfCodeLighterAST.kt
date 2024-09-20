@@ -1,24 +1,21 @@
 package com.github.codeql
 
+import com.github.codeql.utils.versions.*
 import com.intellij.lang.LighterASTNode
 import com.intellij.util.diff.FlyweightCapableTreeStructure
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import org.jetbrains.kotlin.fir.backend.FirMetadataSource
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.fir.backend.FirMetadataSource
+import org.jetbrains.kotlin.ir.IrElement
+import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.util.getChildren
 
-class LinesOfCodeLighterAST(
-    val logger: FileLogger,
-    val tw: FileTrapWriter,
-    val file: IrFile
-) {
+class LinesOfCodeLighterAST(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
     val fileEntry = file.fileEntry
 
     fun linesOfCodeInFile(id: Label<DbFile>): Boolean {
-        val sourceElement = (file.metadata as? FirMetadataSource.File)?.files?.elementAtOrNull(0)?.source
+        val sourceElement =
+            (file.metadata as? FirMetadataSource.File)?.firFile?.source
         if (sourceElement == null) {
             return false
         }
@@ -42,7 +39,11 @@ class LinesOfCodeLighterAST(
         return true
     }
 
-    private fun linesOfCodeInLighterAST(id: Label<out DbSourceline>, e: IrElement, s: KtSourceElement) {
+    private fun linesOfCodeInLighterAST(
+        id: Label<out DbSourceline>,
+        e: IrElement,
+        s: KtSourceElement
+    ) {
         val rootStartOffset = s.startOffset
         val rootEndOffset = s.endOffset
         if (rootStartOffset < 0 || rootEndOffset < 0) {
@@ -63,14 +64,28 @@ class LinesOfCodeLighterAST(
 
         val treeStructure = s.treeStructure
 
-        processSubtree(e, treeStructure, rootFirstLine, rootLastLine, lineContents, s.lighterASTNode)
+        processSubtree(
+            e,
+            treeStructure,
+            rootFirstLine,
+            rootLastLine,
+            lineContents,
+            s.lighterASTNode
+        )
 
         val code = lineContents.count { it.containsCode }
         val comment = lineContents.count { it.containsComment }
         tw.writeNumlines(id, numLines, code, comment)
     }
 
-    private fun processSubtree(e: IrElement, treeStructure: FlyweightCapableTreeStructure<LighterASTNode>, rootFirstLine: Int, rootLastLine: Int, lineContents: Array<LineContent>, node: LighterASTNode) {
+    private fun processSubtree(
+        e: IrElement,
+        treeStructure: FlyweightCapableTreeStructure<LighterASTNode>,
+        rootFirstLine: Int,
+        rootLastLine: Int,
+        lineContents: Array<LineContent>,
+        node: LighterASTNode
+    ) {
         if (KtTokens.WHITESPACES.contains(node.tokenType)) {
             return
         }
@@ -120,7 +135,7 @@ class LinesOfCodeLighterAST(
                 }
             }
         } else {
-            for(child in children) {
+            for (child in children) {
                 processSubtree(e, treeStructure, rootFirstLine, rootLastLine, lineContents, child)
             }
         }

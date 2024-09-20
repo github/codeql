@@ -1,15 +1,96 @@
-| consts.cpp:81:9:81:10 | c8 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:86:9:86:10 | v1 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:91:9:91:10 | v2 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:95:9:95:10 | v3 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:100:9:100:10 | v4 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:103:9:103:15 | call to varFunc | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:107:9:107:10 | v5 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:112:9:112:10 | v6 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:116:9:116:13 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:121:9:121:10 | v8 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:126:9:126:27 | call to nonConstFuncToArray | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:130:9:130:10 | v9 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:135:9:135:11 | v10 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:140:9:140:11 | v11 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| consts.cpp:145:9:145:11 | v12 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+edges
+| consts.cpp:24:7:24:9 | **gv1 | consts.cpp:24:7:24:9 | **gv1 | provenance |  |
+| consts.cpp:24:7:24:9 | **gv1 | consts.cpp:30:9:30:14 | *access to array | provenance |  |
+| consts.cpp:29:7:29:25 | **nonConstFuncToArray | consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | provenance |  |
+| consts.cpp:30:9:30:14 | *access to array | consts.cpp:29:7:29:25 | **nonConstFuncToArray | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:86:9:86:10 | *v1 | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:94:13:94:14 | *v1 | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:99:2:99:8 | *... = ... | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:115:17:115:18 | *v1 | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:123:2:123:12 | *... = ... | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:129:19:129:20 | *v1 | provenance |  |
+| consts.cpp:85:7:85:8 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance | TaintFunction |
+| consts.cpp:90:2:90:14 | *... = ... | consts.cpp:91:9:91:10 | *v2 | provenance |  |
+| consts.cpp:90:2:90:14 | *... = ... | consts.cpp:115:21:115:22 | *v2 | provenance |  |
+| consts.cpp:90:7:90:10 | *call to gets | consts.cpp:90:2:90:14 | *... = ... | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:94:13:94:14 | *v1 | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:99:2:99:8 | *... = ... | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:115:17:115:18 | *v1 | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:123:2:123:12 | *... = ... | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:129:19:129:20 | *v1 | provenance |  |
+| consts.cpp:90:12:90:13 | gets output argument | consts.cpp:135:9:135:11 | *v10 | provenance | TaintFunction |
+| consts.cpp:94:13:94:14 | *v1 | consts.cpp:95:9:95:10 | *v3 | provenance |  |
+| consts.cpp:99:2:99:8 | *... = ... | consts.cpp:100:9:100:10 | *v4 | provenance |  |
+| consts.cpp:106:13:106:19 | *call to varFunc | consts.cpp:106:13:106:19 | *call to varFunc | provenance |  |
+| consts.cpp:106:13:106:19 | *call to varFunc | consts.cpp:107:9:107:10 | *v5 | provenance |  |
+| consts.cpp:111:2:111:15 | *... = ... | consts.cpp:112:9:112:10 | *v6 | provenance |  |
+| consts.cpp:111:7:111:13 | *call to varFunc | consts.cpp:111:2:111:15 | *... = ... | provenance |  |
+| consts.cpp:115:17:115:18 | *v1 | consts.cpp:116:9:116:13 | *access to array | provenance |  |
+| consts.cpp:115:17:115:18 | *v1 | consts.cpp:120:2:120:11 | *... = ... | provenance |  |
+| consts.cpp:115:21:115:22 | *v2 | consts.cpp:116:9:116:13 | *access to array | provenance |  |
+| consts.cpp:115:21:115:22 | *v2 | consts.cpp:120:2:120:11 | *... = ... | provenance |  |
+| consts.cpp:120:2:120:11 | *... = ... | consts.cpp:121:9:121:10 | *v8 | provenance |  |
+| consts.cpp:123:2:123:12 | *... = ... | consts.cpp:24:7:24:9 | **gv1 | provenance |  |
+| consts.cpp:129:19:129:20 | *v1 | consts.cpp:130:9:130:10 | *v9 | provenance |  |
+| consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | *v11 | provenance |  |
+| consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | *v12 | provenance |  |
+nodes
+| consts.cpp:24:7:24:9 | **gv1 | semmle.label | **gv1 |
+| consts.cpp:29:7:29:25 | **nonConstFuncToArray | semmle.label | **nonConstFuncToArray |
+| consts.cpp:30:9:30:14 | *access to array | semmle.label | *access to array |
+| consts.cpp:85:7:85:8 | gets output argument | semmle.label | gets output argument |
+| consts.cpp:86:9:86:10 | *v1 | semmle.label | *v1 |
+| consts.cpp:90:2:90:14 | *... = ... | semmle.label | *... = ... |
+| consts.cpp:90:7:90:10 | *call to gets | semmle.label | *call to gets |
+| consts.cpp:90:12:90:13 | gets output argument | semmle.label | gets output argument |
+| consts.cpp:91:9:91:10 | *v2 | semmle.label | *v2 |
+| consts.cpp:94:13:94:14 | *v1 | semmle.label | *v1 |
+| consts.cpp:95:9:95:10 | *v3 | semmle.label | *v3 |
+| consts.cpp:99:2:99:8 | *... = ... | semmle.label | *... = ... |
+| consts.cpp:100:9:100:10 | *v4 | semmle.label | *v4 |
+| consts.cpp:103:9:103:17 | *call to varFunc | semmle.label | *call to varFunc |
+| consts.cpp:106:13:106:19 | *call to varFunc | semmle.label | *call to varFunc |
+| consts.cpp:106:13:106:19 | *call to varFunc | semmle.label | *call to varFunc |
+| consts.cpp:107:9:107:10 | *v5 | semmle.label | *v5 |
+| consts.cpp:111:2:111:15 | *... = ... | semmle.label | *... = ... |
+| consts.cpp:111:7:111:13 | *call to varFunc | semmle.label | *call to varFunc |
+| consts.cpp:112:9:112:10 | *v6 | semmle.label | *v6 |
+| consts.cpp:115:17:115:18 | *v1 | semmle.label | *v1 |
+| consts.cpp:115:21:115:22 | *v2 | semmle.label | *v2 |
+| consts.cpp:116:9:116:13 | *access to array | semmle.label | *access to array |
+| consts.cpp:120:2:120:11 | *... = ... | semmle.label | *... = ... |
+| consts.cpp:121:9:121:10 | *v8 | semmle.label | *v8 |
+| consts.cpp:123:2:123:12 | *... = ... | semmle.label | *... = ... |
+| consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | semmle.label | *call to nonConstFuncToArray |
+| consts.cpp:129:19:129:20 | *v1 | semmle.label | *v1 |
+| consts.cpp:130:9:130:10 | *v9 | semmle.label | *v9 |
+| consts.cpp:135:9:135:11 | *v10 | semmle.label | *v10 |
+| consts.cpp:139:13:139:16 | readString output argument | semmle.label | readString output argument |
+| consts.cpp:140:9:140:11 | *v11 | semmle.label | *v11 |
+| consts.cpp:144:16:144:18 | readStringRef output argument | semmle.label | readStringRef output argument |
+| consts.cpp:145:9:145:11 | *v12 | semmle.label | *v12 |
+subpaths
+#select
+| consts.cpp:86:9:86:10 | *v1 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:86:9:86:10 | *v1 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:86:2:86:7 | call to printf | printf |
+| consts.cpp:91:9:91:10 | *v2 | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:91:9:91:10 | *v2 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:91:2:91:7 | call to printf | printf |
+| consts.cpp:95:9:95:10 | *v3 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:95:9:95:10 | *v3 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:95:2:95:7 | call to printf | printf |
+| consts.cpp:95:9:95:10 | *v3 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:95:9:95:10 | *v3 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:95:2:95:7 | call to printf | printf |
+| consts.cpp:100:9:100:10 | *v4 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:100:9:100:10 | *v4 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:100:2:100:7 | call to printf | printf |
+| consts.cpp:100:9:100:10 | *v4 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:100:9:100:10 | *v4 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:100:2:100:7 | call to printf | printf |
+| consts.cpp:103:9:103:17 | *call to varFunc | consts.cpp:103:9:103:17 | *call to varFunc | consts.cpp:103:9:103:17 | *call to varFunc | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:103:2:103:7 | call to printf | printf |
+| consts.cpp:107:9:107:10 | *v5 | consts.cpp:106:13:106:19 | *call to varFunc | consts.cpp:107:9:107:10 | *v5 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:107:2:107:7 | call to printf | printf |
+| consts.cpp:112:9:112:10 | *v6 | consts.cpp:111:7:111:13 | *call to varFunc | consts.cpp:112:9:112:10 | *v6 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:112:2:112:7 | call to printf | printf |
+| consts.cpp:116:9:116:13 | *access to array | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:116:9:116:13 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:116:2:116:7 | call to printf | printf |
+| consts.cpp:116:9:116:13 | *access to array | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:116:9:116:13 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:116:2:116:7 | call to printf | printf |
+| consts.cpp:116:9:116:13 | *access to array | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:116:9:116:13 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:116:2:116:7 | call to printf | printf |
+| consts.cpp:121:9:121:10 | *v8 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:121:9:121:10 | *v8 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:121:2:121:7 | call to printf | printf |
+| consts.cpp:121:9:121:10 | *v8 | consts.cpp:90:7:90:10 | *call to gets | consts.cpp:121:9:121:10 | *v8 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:121:2:121:7 | call to printf | printf |
+| consts.cpp:121:9:121:10 | *v8 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:121:9:121:10 | *v8 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:121:2:121:7 | call to printf | printf |
+| consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:126:2:126:7 | call to printf | printf |
+| consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:126:2:126:7 | call to printf | printf |
+| consts.cpp:130:9:130:10 | *v9 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:130:9:130:10 | *v9 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:130:2:130:7 | call to printf | printf |
+| consts.cpp:130:9:130:10 | *v9 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:130:9:130:10 | *v9 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:130:2:130:7 | call to printf | printf |
+| consts.cpp:135:9:135:11 | *v10 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:135:9:135:11 | *v10 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:135:2:135:7 | call to printf | printf |
+| consts.cpp:135:9:135:11 | *v10 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:135:9:135:11 | *v10 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:135:2:135:7 | call to printf | printf |
+| consts.cpp:140:9:140:11 | *v11 | consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | *v11 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:140:2:140:7 | call to printf | printf |
+| consts.cpp:145:9:145:11 | *v12 | consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | *v12 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:145:2:145:7 | call to printf | printf |

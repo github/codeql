@@ -15,12 +15,12 @@ Java:
   - change-notes/**/*java.*
 
 JS:
-  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
+  - any: [ 'javascript/**/*' ]
   - change-notes/**/*javascript*
 
 Kotlin:
   - java/kotlin-extractor/**/*
-  - java/ql/test/kotlin/**/*
+  - java/ql/test-kotlin*/**/*
 
 Python:
   - python/**/*
@@ -29,6 +29,10 @@ Python:
 Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*
+
+Rust:
+  - rust/**/*
+  - change-notes/**/*rust*
 
 Swift:
   - swift/**/*
@@ -46,6 +50,3 @@ documentation:
 # Since these are all shared files that need to be synced, just pick _one_ copy of each.
 "DataFlow Library":
   - "shared/dataflow/**/*"
-
-"ATM":
-  - javascript/ql/experimental/adaptivethreatmodeling/**/*

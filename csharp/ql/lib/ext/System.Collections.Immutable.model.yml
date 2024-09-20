@@ -12,6 +12,8 @@ extensions:
       - ["System.Collections.Immutable", "IImmutableSet<T>", True, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Immutable", "IImmutableSet<T>", True, "Clear", "()", "", "Argument[this].WithoutElement", "ReturnValue", "value", "manual"]
       - ["System.Collections.Immutable", "IImmutableStack<T>", True, "Clear", "()", "", "Argument[this].WithoutElement", "ReturnValue", "value", "manual"]
+      - ["System.Collections.Immutable", "ImmutableArray", False, "ToImmutableArray<T>", "(System.Span<T>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      - ["System.Collections.Immutable", "ImmutableArray", False, "ToImmutableArray<T>", "(System.ReadOnlySpan<T>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Immutable", "ImmutableArray<T>+Builder", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Immutable", "ImmutableArray<T>+Builder", False, "AddRange", "(System.Collections.Immutable.ImmutableArray<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Immutable", "ImmutableArray<T>+Builder", False, "AddRange", "(System.Collections.Immutable.ImmutableArray<T>+Builder)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]

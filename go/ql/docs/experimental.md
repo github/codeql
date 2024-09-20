@@ -21,7 +21,7 @@ Experimental queries and libraries may not be actively maintained as the standar
 
 3. **Formatting**
 
-    - The queries and libraries must be [autoformatted](https://codeql.github.com/docs/codeql-for-visual-studio-code/about-codeql-for-visual-studio-code/).
+    - The queries and libraries must be [autoformatted](https://docs.github.com/en/code-security/codeql-for-vs-code/).
 
 4. **Compilation**
 

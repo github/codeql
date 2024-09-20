@@ -17,34 +17,25 @@ class TrapDomain;
 
 namespace detail {
 template <typename T>
-concept HasSourceRange = requires(T e) {
-  e.getSourceRange();
-};
+concept HasSourceRange = requires(T e) { e.getSourceRange(); };
 
 template <typename T>
 concept HasStartAndEndLoc = requires(T e) {
   e.getStartLoc();
   e.getEndLoc();
-}
-&&!(HasSourceRange<T>);
+} && !(HasSourceRange<T>);
 
 template <typename T>
 concept HasLAndRParenLoc = requires(T e) {
   e.getLParenLoc();
   e.getRParenLoc();
-}
-&&!(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
+} && !(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
 
 template <typename T>
-concept HasOneLoc = requires(T e) {
-  e.getLoc();
-}
-&&!(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
+concept HasOneLoc = requires(T e) { e.getLoc(); } && !(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
 
 template <typename T>
-concept HasOneLocField = requires(T e) {
-  e.Loc;
-};
+concept HasOneLocField = requires(T e) { e.Loc; };
 
 swift::SourceRange getSourceRange(const HasSourceRange auto& locatable) {
   return locatable.getSourceRange();
@@ -89,9 +80,7 @@ swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locata
 }  // namespace detail
 
 template <typename E>
-concept IsLocatable = requires(E e) {
-  detail::getSourceRange(e);
-};
+concept IsLocatable = requires(E e) { detail::getSourceRange(e); };
 
 class SwiftLocationExtractor {
  public:

@@ -9,10 +9,18 @@ fun getClassByFqName(pluginContext: IrPluginContext, fqName: String): IrClassSym
     return getClassByFqName(pluginContext, FqName(fqName))
 }
 
-fun getFunctionsByFqName(pluginContext: IrPluginContext, pkgName: String, name: String): Collection<IrSimpleFunctionSymbol> {
+fun getFunctionsByFqName(
+    pluginContext: IrPluginContext,
+    pkgName: String,
+    name: String
+): Collection<IrSimpleFunctionSymbol> {
     return getFunctionsByFqName(pluginContext, FqName(pkgName), Name.identifier(name))
 }
 
-fun getPropertiesByFqName(pluginContext: IrPluginContext, pkgName: String, name: String): Collection<IrPropertySymbol> {
+fun getPropertiesByFqName(
+    pluginContext: IrPluginContext,
+    pkgName: String,
+    name: String
+): Collection<IrPropertySymbol> {
     return getPropertiesByFqName(pluginContext, FqName(pkgName), Name.identifier(name))
 }

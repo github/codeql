@@ -5,6 +5,8 @@
 Analyzing your projects
 =================================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 You can run queries on CodeQL databases and view the results in Visual Studio Code. This article explains how to get a CodeQL database and analyze it on your local machine. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
 
 Choosing a database

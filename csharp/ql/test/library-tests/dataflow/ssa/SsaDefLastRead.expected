@@ -1,25 +1,10 @@
-| Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:33:13:33:13 | access to parameter i |
-| Capture.cs:6:16:6:16 | i | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:12:17:12:17 | access to parameter i |
-| Capture.cs:6:16:6:16 | i | Capture.cs:13:13:13:17 | SSA def(i) | Capture.cs:14:17:14:17 | access to parameter i |
-| Capture.cs:6:16:6:16 | i | Capture.cs:38:9:38:11 | SSA call def(i) | Capture.cs:39:13:39:13 | access to parameter i |
-| Capture.cs:8:13:8:13 | x | Capture.cs:8:13:8:17 | SSA def(x) | Capture.cs:34:13:34:13 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:17:21:17:21 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:21:21:21:21 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:40:13:40:13 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:44:11:44:11 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:47:13:47:13 | access to local variable x |
 | Capture.cs:10:16:10:16 | a | Capture.cs:10:16:27:9 | SSA def(a) | Capture.cs:46:12:46:12 | access to local variable a |
 | Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | SSA def(y) | Capture.cs:26:17:26:17 | access to local variable y |
 | Capture.cs:17:17:17:17 | y | Capture.cs:19:24:23:13 | SSA capture def(y) | Capture.cs:22:21:22:21 | access to local variable y |
 | Capture.cs:19:20:19:20 | b | Capture.cs:19:20:23:13 | SSA def(b) | Capture.cs:25:13:25:13 | access to local variable b |
-| Capture.cs:29:13:29:13 | z | Capture.cs:32:9:32:11 | SSA call def(z) | Capture.cs:35:13:35:13 | access to local variable z |
-| Capture.cs:29:13:29:13 | z | Capture.cs:37:9:37:13 | SSA def(z) | Capture.cs:41:13:41:13 | access to local variable z |
 | Capture.cs:30:16:30:16 | c | Capture.cs:30:16:30:35 | SSA def(c) | Capture.cs:32:9:32:9 | access to local variable c |
-| Capture.cs:50:20:50:20 | a | Capture.cs:53:9:53:11 | SSA call def(a) | Capture.cs:54:9:54:9 | access to parameter a |
 | Capture.cs:52:16:52:16 | b | Capture.cs:52:16:52:43 | SSA def(b) | Capture.cs:53:9:53:9 | access to local variable b |
 | Capture.cs:57:57:57:63 | strings | Capture.cs:57:57:57:63 | SSA param(strings) | Capture.cs:61:9:61:15 | access to parameter strings |
-| Capture.cs:59:13:59:13 | i | Capture.cs:60:31:60:38 | SSA capture def(i) | Capture.cs:60:36:60:36 | access to local variable i |
-| Capture.cs:59:13:59:13 | i | Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:62:13:62:13 | access to local variable i |
 | Capture.cs:60:27:60:27 | e | Capture.cs:60:27:60:38 | SSA def(e) | Capture.cs:61:24:61:24 | access to local variable e |
 | Capture.cs:65:45:65:51 | strings | Capture.cs:65:45:65:51 | SSA param(strings) | Capture.cs:70:9:70:15 | access to parameter strings |
 | Capture.cs:67:13:67:13 | c | Capture.cs:68:32:68:49 | SSA capture def(c) | Capture.cs:68:48:68:48 | access to local variable c |
@@ -27,8 +12,6 @@
 | Capture.cs:68:32:68:32 | s | Capture.cs:68:32:68:32 | SSA param(s) | Capture.cs:68:37:68:37 | access to parameter s |
 | Capture.cs:69:25:69:25 | s | Capture.cs:69:25:69:25 | SSA param(s) | Capture.cs:69:59:69:59 | access to parameter s |
 | Capture.cs:73:67:73:73 | strings | Capture.cs:73:67:73:73 | SSA param(strings) | Capture.cs:77:9:77:15 | access to parameter strings |
-| Capture.cs:75:13:75:13 | i | Capture.cs:76:67:76:81 | SSA capture def(i) | Capture.cs:76:80:76:80 | access to local variable i |
-| Capture.cs:75:13:75:13 | i | Capture.cs:77:9:77:25 | SSA call def(i) | Capture.cs:78:13:78:13 | access to local variable i |
 | Capture.cs:76:63:76:63 | e | Capture.cs:76:63:76:81 | SSA def(e) | Capture.cs:77:24:77:24 | access to local variable e |
 | Capture.cs:81:28:81:28 | i | Capture.cs:81:28:81:28 | SSA param(i) | Capture.cs:81:34:81:34 | access to parameter i |
 | Capture.cs:83:65:83:71 | strings | Capture.cs:83:65:83:71 | SSA param(strings) | Capture.cs:87:9:87:15 | access to parameter strings |
@@ -37,17 +20,9 @@
 | Capture.cs:92:18:92:18 | d | Capture.cs:92:18:92:18 | SSA param(d) | Capture.cs:92:24:92:24 | access to parameter d |
 | Capture.cs:94:13:94:13 | y | Capture.cs:96:12:100:9 | SSA capture def(y) | Capture.cs:98:21:98:21 | access to local variable y |
 | Capture.cs:98:17:98:17 | x | Capture.cs:98:17:98:21 | SSA def(x) | Capture.cs:99:20:99:20 | access to local variable x |
-| Capture.cs:102:13:102:13 | z | Capture.cs:105:13:105:17 | SSA def(z) | Capture.cs:106:20:106:20 | access to local variable z |
 | Capture.cs:114:13:114:13 | a | Capture.cs:115:9:119:9 | SSA capture def(a) | Capture.cs:117:21:117:21 | access to local variable a |
 | Capture.cs:117:17:117:17 | x | Capture.cs:117:17:117:21 | SSA def(x) | Capture.cs:118:17:118:17 | access to local variable x |
-| Capture.cs:122:13:122:13 | b | Capture.cs:125:13:125:17 | SSA def(b) | Capture.cs:126:17:126:17 | access to local variable b |
-| Capture.cs:130:13:130:13 | c | Capture.cs:133:13:133:17 | SSA def(c) | Capture.cs:134:17:134:17 | access to local variable c |
-| Capture.cs:130:13:130:13 | c | Capture.cs:136:9:136:12 | SSA call def(c) | Capture.cs:137:13:137:13 | access to local variable c |
-| Capture.cs:139:13:139:13 | d | Capture.cs:144:9:144:12 | SSA call def(d) | Capture.cs:145:13:145:13 | access to local variable d |
-| Capture.cs:147:13:147:13 | e | Capture.cs:148:9:152:9 | SSA capture def(e) | Capture.cs:150:17:150:17 | access to local variable e |
-| Capture.cs:154:13:154:13 | f | Capture.cs:154:13:154:18 | SSA def(f) | Capture.cs:155:13:155:13 | access to local variable f |
 | Capture.cs:162:13:162:13 | g | Capture.cs:163:9:166:9 | SSA capture def(g) | Capture.cs:165:17:165:17 | access to local variable g |
-| Capture.cs:168:13:168:13 | h | Capture.cs:176:13:176:16 | SSA call def(h) | Capture.cs:177:17:177:17 | access to local variable h |
 | Capture.cs:182:17:182:17 | i | Capture.cs:183:13:186:13 | SSA capture def(i) | Capture.cs:185:21:185:21 | access to local variable i |
 | Capture.cs:197:17:197:17 | i | Capture.cs:198:33:198:44 | SSA capture def(i) | Capture.cs:198:43:198:43 | access to local variable i |
 | Capture.cs:197:17:197:17 | i | Capture.cs:203:34:203:45 | SSA capture def(i) | Capture.cs:203:44:203:44 | access to local variable i |
@@ -56,17 +31,12 @@
 | Capture.cs:209:17:209:17 | i | Capture.cs:212:39:212:71 | SSA capture def(i) | Capture.cs:212:70:212:70 | access to local variable i |
 | Capture.cs:210:24:210:24 | p | Capture.cs:210:24:210:59 | SSA def(p) | Capture.cs:213:17:213:17 | access to local variable p |
 | Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | SSA def(exited) | Capture.cs:213:29:213:34 | access to local variable exited |
-| Capture.cs:229:13:229:13 | i | Capture.cs:231:9:231:49 | SSA capture def(i) | Capture.cs:231:47:231:47 | access to local variable i |
-| Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:237:34:237:34 | access to local variable i |
-| Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | SSA def(i) | Capture.cs:254:27:254:27 | access to local variable i |
-| Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | SSA def(i) | Capture.cs:255:34:255:34 | access to local variable i |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:11:17:11:17 | access to parameter b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:27:13:27:13 | access to local variable c |
 | Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) | Consistency.cs:27:13:27:19 | access to field Field |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:33:9:33:9 | access to parameter c |
-| Consistency.cs:38:13:38:13 | i | Consistency.cs:39:28:39:32 | SSA def(i) | Consistency.cs:39:39:39:39 | access to local variable i |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) | Consistency.cs:46:13:46:13 | access to local variable s |
 | Consistency.cs:49:30:49:30 | a | Consistency.cs:49:30:49:30 | SSA param(a) | Consistency.cs:49:47:49:47 | access to parameter a |
 | Consistency.cs:49:37:49:37 | i | Consistency.cs:49:37:49:37 | SSA param(i) | Consistency.cs:49:49:49:49 | access to parameter i |
@@ -87,11 +57,6 @@
 | DefUse.cs:44:13:44:13 | z | DefUse.cs:50:23:50:23 | SSA def(z) | DefUse.cs:51:13:51:13 | access to local variable z |
 | DefUse.cs:53:9:53:13 | this.Field | DefUse.cs:53:9:53:17 | SSA def(this.Field) | DefUse.cs:54:13:54:17 | access to field Field |
 | DefUse.cs:56:9:56:12 | this.Prop | DefUse.cs:56:9:56:16 | SSA def(this.Prop) | DefUse.cs:57:13:57:16 | access to property Prop |
-| DefUse.cs:59:13:59:13 | i | DefUse.cs:59:13:59:17 | SSA def(i) | DefUse.cs:61:13:61:13 | access to local variable i |
-| DefUse.cs:59:13:59:13 | i | DefUse.cs:71:9:71:13 | SSA def(i) | DefUse.cs:72:9:72:9 | access to local variable i |
-| DefUse.cs:59:13:59:13 | i | DefUse.cs:72:9:72:11 | SSA def(i) | DefUse.cs:73:13:73:13 | access to local variable i |
-| DefUse.cs:59:13:59:13 | i | DefUse.cs:75:9:75:13 | SSA def(i) | DefUse.cs:76:9:76:9 | access to local variable i |
-| DefUse.cs:59:13:59:13 | i | DefUse.cs:76:9:76:11 | SSA def(i) | DefUse.cs:77:13:77:13 | access to local variable i |
 | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:63:9:63:18 | SSA def(this.Field2) | DefUse.cs:64:13:64:18 | access to field Field2 |
 | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:63:9:63:18 | SSA def(this.Field2) | DefUse.cs:80:37:80:42 | access to field Field2 |
 | DefUse.cs:66:9:66:14 | this.Field3 | DefUse.cs:66:9:66:18 | SSA def(this.Field3) | DefUse.cs:69:13:69:18 | access to field Field3 |
@@ -113,10 +78,6 @@
 | DefUse.cs:144:22:144:22 | x | DefUse.cs:144:22:144:22 | SSA def(x) | DefUse.cs:147:17:147:17 | access to local variable x |
 | DefUse.cs:155:9:155:14 | this.Field4 | DefUse.cs:155:9:155:18 | SSA def(this.Field4) | DefUse.cs:157:13:157:18 | access to field Field4 |
 | DefUse.cs:162:13:162:18 | this.Field4 | DefUse.cs:160:10:160:16 | SSA entry def(this.Field4) | DefUse.cs:163:13:163:18 | access to field Field4 |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:167:23:167:23 | SSA param(i) | DefUse.cs:169:13:169:13 | access to parameter i |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:173:13:173:17 | SSA def(i) | DefUse.cs:174:17:174:17 | access to parameter i |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:175:32:179:13 | SSA capture def(i) | DefUse.cs:178:21:178:21 | access to parameter i |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:181:9:181:11 | SSA call def(i) | DefUse.cs:182:13:182:13 | access to parameter i |
 | DefUse.cs:171:23:171:23 | a | DefUse.cs:171:23:180:9 | SSA def(a) | DefUse.cs:181:9:181:9 | access to local variable a |
 | DefUse.cs:171:23:171:23 | a | DefUse.cs:186:9:190:9 | SSA def(a) | DefUse.cs:191:9:191:9 | access to local variable a |
 | DefUse.cs:184:9:184:14 | this.Field5 | DefUse.cs:184:9:184:18 | SSA def(this.Field5) | DefUse.cs:185:13:185:18 | access to field Field5 |
@@ -175,6 +136,8 @@
 | Fields.cs:115:20:115:29 | this.Field | Fields.cs:114:9:114:22 | SSA call def(this.Field) | Fields.cs:117:17:117:26 | access to field Field |
 | Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:114:9:114:22 | SSA call def(this.Field.Field) | Fields.cs:117:17:117:32 | access to field Field |
 | Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:114:9:114:22 | SSA qualifier def(this.Field.Field.xs) | Fields.cs:117:17:117:35 | access to field xs |
+| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | SSA param(x) | MultiImplementationA.cs:5:28:5:28 | access to parameter x |
+| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationB.cs:3:22:3:22 | SSA param(x) | MultiImplementationB.cs:3:28:3:28 | access to parameter x |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:9:13:9:17 | SSA def(j) | OutRef.cs:10:32:10:32 | access to local variable j |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:10:32:10:32 | SSA def(j) | OutRef.cs:22:29:22:29 | access to local variable j |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:22:22:22:22 | SSA def(j) | OutRef.cs:24:29:24:29 | access to local variable j |

@@ -6,6 +6,8 @@ import semmle.code.java.frameworks.android.ContentProviders
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class LocalDatabaseCleartextStorageSink extends CleartextStorageSink {
   LocalDatabaseCleartextStorageSink() { localDatabaseInput(_, this.asExpr()) }
@@ -96,15 +98,24 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodCall store) 
   )
 }
 
-private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof LocalDatabaseOpenMethodCall
-  }
+/**
+ * A local database open method call source node.
+ */
+private class LocalDatabaseOpenMethodCallSource extends ApiSourceNode {
+  LocalDatabaseOpenMethodCallSource() { this.asExpr() instanceof LocalDatabaseOpenMethodCall }
+}
 
-  predicate isSink(DataFlow::Node sink) {
-    localDatabaseInput(sink, _) or
-    localDatabaseStore(sink, _)
-  }
+/**
+ * A local database sink node.
+ */
+private class LocalDatabaseSink extends ApiSinkNode {
+  LocalDatabaseSink() { localDatabaseInput(this, _) or localDatabaseStore(this, _) }
+}
+
+private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalDatabaseOpenMethodCallSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof LocalDatabaseSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Adds a step for tracking databases through field flow, that is, a database is opened and

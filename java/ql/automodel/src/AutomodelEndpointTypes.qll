@@ -30,11 +30,6 @@ abstract class SinkType extends EndpointType {
   SinkType() { any() }
 }
 
-/** The `Negative` class for non-sinks. */
-class NegativeSinkType extends SinkType {
-  NegativeSinkType() { this = "non-sink" }
-}
-
 /** A sink relevant to the SQL injection query */
 class SqlInjectionSinkType extends SinkType {
   SqlInjectionSinkType() { this = "sql-injection" }
@@ -53,6 +48,26 @@ class RequestForgerySinkType extends SinkType {
 /** A sink relevant to the command injection query. */
 class CommandInjectionSinkType extends SinkType {
   CommandInjectionSinkType() { this = "command-injection" }
+}
+
+/** A sink relevant to file storage. */
+class FileContentStoreSinkType extends SinkType {
+  FileContentStoreSinkType() { this = "file-content-store" }
+}
+
+/** A sink relevant to HTML injection. */
+class HtmlInjectionSinkType extends SinkType {
+  HtmlInjectionSinkType() { this = "html-injection" }
+}
+
+/** A sink relevant to LDAP injection. */
+class LdapInjectionSinkType extends SinkType {
+  LdapInjectionSinkType() { this = "ldap-injection" }
+}
+
+/** A sink relevant to URL redirection. */
+class UrlRedirectionSinkType extends SinkType {
+  UrlRedirectionSinkType() { this = "url-redirection" }
 }
 
 /** A class for source types that can be predicted by a classifier. */

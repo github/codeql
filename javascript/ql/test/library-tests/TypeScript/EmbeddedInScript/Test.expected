@@ -3,7 +3,6 @@ classDeclaration
 | test_tsx.vue:3:18:5:3 | class M ... er;\\n  } |
 exprType
 | htmlfile.html:4:22:4:24 | foo | () => void |
-| htmlfile.html:4:22:4:24 | foo | () => void |
 | htmlfile.html:4:33:4:41 | "./other" | any |
 | htmlfile.html:5:17:5:22 | result | number[] |
 | htmlfile.html:5:26:5:28 | foo | () => void |

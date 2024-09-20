@@ -10,11 +10,15 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.dataflow.new.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<PythonDataFlow> {
+private module Input implements InputSig<Location, PythonDataFlow> {
   private import Private
   private import Public
 
   predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
+
+  predicate uniqueNodeLocationExclude(Node n) { n instanceof FlowSummaryNode }
+
+  predicate missingLocationExclude(Node n) { n instanceof FlowSummaryNode }
 
   predicate argHasPostUpdateExclude(ArgumentNode n) {
     // TODO: Implement post-updates for *args, see tests added in https://github.com/github/codeql/pull/14936
@@ -132,4 +136,4 @@ private module Input implements InputSig<PythonDataFlow> {
   }
 }
 
-import MakeConsistency<PythonDataFlow, PythonTaintTracking, Input>
+import MakeConsistency<Location, PythonDataFlow, PythonTaintTracking, Input>

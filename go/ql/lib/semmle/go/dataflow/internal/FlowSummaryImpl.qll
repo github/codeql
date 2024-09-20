@@ -15,16 +15,32 @@ private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
 }
 
-module Input implements InputSig<DataFlowImplSpecific::GoDataFlow> {
+bindingset[pos]
+private string positionToString(int pos) {
+  if pos = -1 then result = "receiver" else result = pos.toString()
+}
+
+module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   class SummarizedCallableBase = Callable;
+
+  predicate neutralElement(
+    Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
+  ) {
+    exists(string namespace, string type, string name, string signature |
+      neutralModel(namespace, type, name, signature, kind, provenance) and
+      c.asFunction() = interpretElement(namespace, type, false, name, signature, "").asEntity()
+    ) and
+    // isExact is not needed for Go.
+    isExact = false
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
   ReturnKind getStandardReturnValueKind() { result = getReturnKind(0) }
 
-  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
+  string encodeParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
-  string encodeArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
+  string encodeArgumentPosition(ArgumentPosition pos) { result = positionToString(pos) }
 
   string encodeReturn(ReturnKind rk, string arg) {
     exists(int pos |
@@ -83,7 +99,7 @@ module Input implements InputSig<DataFlowImplSpecific::GoDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::GoDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::GoDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
@@ -95,7 +111,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   class Element = SourceOrSinkElement;
 
@@ -103,11 +119,15 @@ module SourceSinkInterpretationInput implements
    * Holds if an external source specification exists for `e` with output specification
    * `output`, kind `kind`, and provenance `provenance`.
    */
-  predicate sourceElement(SourceOrSinkElement e, string output, string kind) {
+  predicate sourceElement(
+    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sourceModel(package, type, subtypes, name, signature, ext, output, kind, _) and
+      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -116,11 +136,15 @@ module SourceSinkInterpretationInput implements
    * Holds if an external sink specification exists for `e` with input specification
    * `input`, kind `kind` and provenance `provenance`.
    */
-  predicate sinkElement(SourceOrSinkElement e, string input, string kind) {
+  predicate sinkElement(
+    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance, string model
+  ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      QlBuiltins::ExtensionId madId
     |
-      sinkModel(package, type, subtypes, name, signature, ext, input, kind, _) and
+      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -228,10 +252,10 @@ module SourceSinkInterpretationInput implements
   /** Provides additional source specification logic. */
   bindingset[c]
   predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(int pos, ReturnNodeExt ret |
+    exists(int pos, ReturnNode ret |
       parseReturn(c, pos) and
       ret = node.asNode() and
-      ret.getKind().(ValueReturnKind).getKind() = getReturnKind(pos) and
+      ret.getKind() = getReturnKind(pos) and
       mid.asCallable() = getNodeEnclosingCallable(ret)
     )
     or
@@ -264,7 +288,35 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
+
+    /**
+     * Holds if an external flow summary exists for `c` with input specification
+     * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
+     */
+    predicate summaryElement(
+      Input::SummarizedCallableBase c, string input, string output, string kind, string provenance,
+      string model
+    ) {
+      exists(
+        string namespace, string type, boolean subtypes, string name, string signature, string ext,
+        QlBuiltins::ExtensionId madId
+      |
+        summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+          provenance, madId) and
+        model = "MaD:" + madId.toString() and
+        c.asFunction() =
+          interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
+      )
+    }
+
+    /**
+     * Holds if a neutral model exists for `c` of kind `kind`
+     * and with provenance `provenance`.
+     */
+    predicate neutralElement(Input::SummarizedCallableBase c, string kind, string provenance) {
+      Input::neutralElement(c, kind, provenance, _)
+    }
   }
 
   /**

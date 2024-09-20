@@ -28,20 +28,7 @@ class DollarAtString extends string {
  * descriptions.
  */
 predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
-  kind = "path-injection" and
-  type instanceof AutomodelEndpointTypes::PathInjectionSinkType
-  or
-  kind = "sql-injection" and
-  type instanceof AutomodelEndpointTypes::SqlInjectionSinkType
-  or
-  kind = "request-forgery" and
-  type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-  or
-  kind = "command-injection" and
-  type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
-  or
-  kind = "remote" and
-  type instanceof AutomodelEndpointTypes::RemoteSourceType
+  kind = type.getKind()
 }
 
 /**
@@ -81,4 +68,44 @@ bindingset[package, type, name, signature]
 predicate includeAutomodelCandidate(string package, string type, string name, string signature) {
   not automodelCandidateFilter(_, _, _, _) or
   automodelCandidateFilter(package, type, name, signature)
+}
+
+/**
+ * Holds if the given program element corresponds to a piece of source code,
+ * that is, it is not compiler-generated.
+ *
+ * Note: This is a stricter check than `Element::fromSource`, which simply
+ * checks whether the element is in a source file as opposed to a JAR file.
+ * There can be compiler-generated elements in source files (especially for
+ * Kotlin), which we also want to exclude.
+ */
+predicate isFromSource(Element e) {
+  // from a source file (not a JAR)
+  e.fromSource() and
+  // not explicitly marked as compiler-generated
+  not e.isCompilerGenerated() and
+  // does not have a dummy location
+  not e.hasLocationInfo(_, 0, 0, 0, 0)
+}
+
+/**
+ * Holds if taint cannot flow through the given type (because it is a numeric
+ * type or some other type with a fixed set of values).
+ */
+predicate isUnexploitableType(Type tp) {
+  tp instanceof PrimitiveType or
+  tp instanceof BoxedType or
+  tp instanceof NumberType or
+  tp instanceof VoidType
+}
+
+/**
+ * Holds if the given method can be overridden, that is, it is not final,
+ * static, or private.
+ */
+predicate isOverridable(Method m) {
+  not m.getDeclaringType().isFinal() and
+  not m.isFinal() and
+  not m.isStatic() and
+  not m.isPrivate()
 }

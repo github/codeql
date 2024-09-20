@@ -11,6 +11,11 @@ CodeQL 2.13.3 (2023-05-31)
 
 This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
+Security Coverage
+-----------------
+
+CodeQL 2.13.3 runs a total of 389 security queries when configured with the Default suite (covering 155 CWE). The Extended suite enables an additional 125 queries (covering 32 more CWE).
+
 CodeQL CLI
 ----------
 
@@ -21,8 +26,7 @@ Bug Fixes
     
 *   Fixed a bug that could have caused the compiler to incorrectly infer that a class matched a type signature. The bug only affected classes with overriding member predicates that had stronger binding sets than their root definitions.
     
-*   Fixed a bug where a query could not be run from VS Code when there were packs nested within sibling directories
-    of the query.
+*   Fixed a bug where a query could not be run from VS Code when there were packs nested within sibling directories of the query.
 
 New Features
 ~~~~~~~~~~~~
@@ -57,8 +61,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/groovy-injection` now recognizes :code:`groovy.text.TemplateEngine.createTemplate` as a sink.
 *   The queries :code:`java/xxe` and :code:`java/xxe-local` now recognize the second argument of calls to :code:`XPath.evaluate` as a sink.
@@ -103,8 +107,8 @@ Golang
 
 *   Fixed data flow through variadic function parameters. The arguments corresponding to a variadic parameter are no longer returned by :code:`CallNode.getArgument(int i)` and :code:`CallNode.getAnArgument()`, and hence aren't :code:`ArgumentNode`\ s. They now have one result, which is an :code:`ImplicitVarargsSlice` node. For example, a call :code:`f(a, b, c)` to a function :code:`f(T...)` is treated like :code:`f([]T{a, b, c})`. The old behaviour is preserved by :code:`CallNode.getSyntacticArgument(int i)` and :code:`CallNode.getASyntacticArgument()`. :code:`CallExpr.getArgument(int i)` and :code:`CallExpr.getAnArgument()` are unchanged, and will still have three results in the example given.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added SQL injection sinks for Spring JDBC's :code:`NamedParameterJdbcOperations`.
     

@@ -9,6 +9,14 @@ of the origin page using <code>window.opener</code> unless link type <code>noope
 or <code>noreferrer</code> is specified. This is a potential security risk.
 </p>
 
+<p>
+Note that only older browsers, where <code>target="_blank"</code> does not imply <code>rel="noopener"</code>, 
+are affected by this vulnerability. Modern browsers implicitly add <code>rel="noopener"</code> to
+<code>target="_blank"</code> links.
+Refer to the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#browser_compatibility">browser compatibility section 
+on the anchor element</a> for details on which browsers implicitly add <code>rel="noopener"</code> to <code>target="_blank"</code> links.
+</p>
+
 </overview>
 <recommendation>
 

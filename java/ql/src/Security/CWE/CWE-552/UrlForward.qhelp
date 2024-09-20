@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly incorporating user input into a URL forward request without validating the input
+can cause file information disclosure by allowing an attacker to access unauthorized URLs.</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against untrusted URL forwarding, you should avoid putting user input
+directly into a forwarded URL. Instead, you should maintain a list of authorized
+URLs on the server, then choose from that list based on the user input provided.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows an HTTP request parameter being used directly in a URL forward
+without validating the input, which may cause file information disclosure.
+It also shows how to remedy the problem by validating the user input against a known fixed string.
+</p>
+
+<sample src="UrlForward.java" />
+
+</example>
+<references>
+
+<li>OWASP:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">Unvalidated Redirects and Forwards Cheat Sheet</a>.
+</li>
+
+</references>
+</qhelp>

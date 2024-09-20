@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.Locations
 
 /**
  * A JSON-encoded value, which may be a primitive value, an array or an object.
@@ -20,8 +21,6 @@ import javascript
  * ```
  */
 class JsonValue extends @json_value, Locatable {
-  override Location getLocation() { json_locations(this, result) }
-
   /** Gets the parent value to which this value belongs, if any. */
   JsonValue getParent() { json(this, _, result, _, _) }
 
@@ -34,12 +33,7 @@ class JsonValue extends @json_value, Locatable {
   override string toString() { json(this, _, _, _, result) }
 
   /** Gets the JSON file containing this value. */
-  File getJsonFile() {
-    exists(Location loc |
-      json_locations(this, loc) and
-      result = loc.getFile()
-    )
-  }
+  File getJsonFile() { result = getLocatableLocation(this).getFile() }
 
   /** If this is an object, gets the value of property `name`. */
   JsonValue getPropValue(string name) { json_properties(this, name, result) }
@@ -172,7 +166,5 @@ class JsonObject extends @json_object, JsonValue {
  * An error reported by the JSON parser.
  */
 class JsonParseError extends @json_parse_error, Error {
-  override Location getLocation() { json_locations(this, result) }
-
   override string getMessage() { json_errors(this, result) }
 }

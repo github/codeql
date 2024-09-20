@@ -5,6 +5,15 @@ use std::path::Path;
 
 use flate2::write::GzEncoder;
 
+#[derive(Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
+pub struct Location {
+    pub file_label: Label,
+    pub start_line: usize,
+    pub start_column: usize,
+    pub end_line: usize,
+    pub end_column: usize,
+}
+
 pub struct Writer {
     /// The accumulated trap entries
     trap_output: Vec<Entry>,
@@ -12,6 +21,8 @@ pub struct Writer {
     counter: u32,
     /// cache of global keys
     global_keys: std::collections::HashMap<String, Label>,
+    /// Labels for locations, which don't use global keys
+    location_labels: std::collections::HashMap<Location, Label>,
 }
 
 impl Writer {
@@ -20,6 +31,7 @@ impl Writer {
             counter: 0,
             trap_output: Vec::new(),
             global_keys: std::collections::HashMap::new(),
+            location_labels: std::collections::HashMap::new(),
         }
     }
 
@@ -47,6 +59,17 @@ impl Writer {
         self.global_keys.insert(key.to_owned(), label);
         self.trap_output
             .push(Entry::MapLabelToKey(label, key.to_owned()));
+        (label, true)
+    }
+
+    /// Gets the label for the given location. The first call for a given location will define it as
+    /// a fresh (star) ID.
+    pub fn location_label(&mut self, loc: Location) -> (Label, bool) {
+        if let Some(label) = self.location_labels.get(&loc) {
+            return (*label, false);
+        }
+        let label = self.fresh_id();
+        self.location_labels.insert(loc, label);
         (label, true)
     }
 
@@ -114,9 +137,15 @@ impl fmt::Display for Entry {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd)]
 // Identifiers of the form #0, #1...
 pub struct Label(u32);
+
+impl fmt::Debug for Label {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Label({:#x})", self.0)
+    }
+}
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -145,6 +174,30 @@ impl fmt::Display for Arg {
                 limit_string(x, MAX_STRLEN).replace('"', "\"\"")
             ),
         }
+    }
+}
+
+impl From<String> for Arg {
+    fn from(value: String) -> Self {
+        Arg::String(value)
+    }
+}
+
+impl From<&str> for Arg {
+    fn from(value: &str) -> Self {
+        Arg::String(value.into())
+    }
+}
+
+impl From<Label> for Arg {
+    fn from(value: Label) -> Self {
+        Arg::Label(value)
+    }
+}
+
+impl From<usize> for Arg {
+    fn from(value: usize) -> Self {
+        Arg::Int(value)
     }
 }
 

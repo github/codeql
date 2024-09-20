@@ -3,6 +3,7 @@
  */
 
 import java
+private import semmle.code.java.dataflow.TypeFlow
 
 /**
  * A method access that returns random data or writes random data to an argument.
@@ -43,6 +44,9 @@ abstract class RandomDataSource extends MethodCall {
    * in the case where it writes random data to that argument.
    */
   abstract Expr getOutput();
+
+  /** Gets the type of the source of randomness used by this call. */
+  RefType getSourceOfRandomness() { boundOrStaticType(this.getQualifier(), result) }
 }
 
 /**
@@ -167,4 +171,18 @@ class ApacheCommonsRandomStringSource extends RandomDataSource {
   }
 
   override Expr getOutput() { result = this }
+
+  override RefType getSourceOfRandomness() {
+    if
+      this.getMethod().hasStringSignature("random(int, int, int, boolean, boolean, char[], Random)")
+    then boundOrStaticType(this.getArgument(6), result)
+    else result.hasQualifiedName("java.util", "Random")
+  }
+}
+
+/** Holds if `t` is the static type of `e`, or an upper bound of the runtime type of `e`. */
+private predicate boundOrStaticType(Expr e, RefType t) {
+  exprTypeFlow(e, t, false)
+  or
+  t = e.getType()
 }

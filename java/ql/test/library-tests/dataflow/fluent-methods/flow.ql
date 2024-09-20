@@ -3,6 +3,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import TestUtilities.InlineFlowTest
 import DefaultFlowTest
+import TaintFlow::PathGraph
 
 class Model extends FluentMethod {
   Model() { this.getName() = "modelledFluentMethod" }

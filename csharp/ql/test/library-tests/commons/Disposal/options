@@ -1,1 +1,1 @@
-semmle-extractor-options: --cil /r:System.Net.Http.dll /r:System.Runtime.Extensions.dll /r:System.Private.Xml.dll
+semmle-extractor-options: /r:System.Net.Http.dll /r:System.Runtime.Extensions.dll /r:System.Private.Xml.dll

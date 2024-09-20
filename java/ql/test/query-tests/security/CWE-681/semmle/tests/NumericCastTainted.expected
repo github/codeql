@@ -1,0 +1,25 @@
+#select
+| Test.java:21:17:21:25 | (...)... | Test.java:11:28:11:36 | System.in : InputStream | Test.java:21:22:21:25 | data | This cast to a narrower type depends on a $@, potentially causing truncation. | Test.java:11:28:11:36 | System.in | user-provided value |
+edges
+| Test.java:10:36:11:47 | new BufferedReader(...) : BufferedReader | Test.java:12:26:12:39 | readerBuffered : BufferedReader | provenance |  |
+| Test.java:11:6:11:46 | new InputStreamReader(...) : InputStreamReader | Test.java:10:36:11:47 | new BufferedReader(...) : BufferedReader | provenance | MaD:1 |
+| Test.java:11:28:11:36 | System.in : InputStream | Test.java:11:6:11:46 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:3 |
+| Test.java:12:26:12:39 | readerBuffered : BufferedReader | Test.java:12:26:12:50 | readLine(...) : String | provenance | MaD:2 |
+| Test.java:12:26:12:50 | readLine(...) : String | Test.java:14:27:14:38 | stringNumber : String | provenance |  |
+| Test.java:14:27:14:38 | stringNumber : String | Test.java:14:27:14:45 | trim(...) : String | provenance | MaD:4 |
+| Test.java:14:27:14:45 | trim(...) : String | Test.java:21:22:21:25 | data | provenance | TaintPreservingCallable |
+models
+| 1 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: java.io; BufferedReader; true; readLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: java.lang; String; false; trim; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| Test.java:10:36:11:47 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| Test.java:11:6:11:46 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| Test.java:11:28:11:36 | System.in : InputStream | semmle.label | System.in : InputStream |
+| Test.java:12:26:12:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
+| Test.java:12:26:12:50 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:14:27:14:38 | stringNumber : String | semmle.label | stringNumber : String |
+| Test.java:14:27:14:45 | trim(...) : String | semmle.label | trim(...) : String |
+| Test.java:21:22:21:25 | data | semmle.label | data |
+subpaths

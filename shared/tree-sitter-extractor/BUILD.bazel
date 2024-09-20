@@ -1,0 +1,25 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
+
+rust_library(
+    name = "codeql-extractor",
+    srcs = glob([
+        "src/**/*.rs",
+    ]),
+    aliases = aliases(),
+    compile_data = [
+        "src/generator/prefix.dbscheme",
+    ],
+    deps = all_crate_deps(),
+)
+
+alias(
+    name = "tree-sitter-extractor",
+    actual = ":codeql-extractor",
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "dbscheme-prefix",
+    srcs = ["src/generator/prefix.dbscheme"],
+)

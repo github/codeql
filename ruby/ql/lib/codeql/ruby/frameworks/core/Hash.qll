@@ -523,3 +523,15 @@ private class ValuesSummary extends SimpleSummarizedCallable {
     preservesValue = true
   }
 }
+
+// We don't (yet) track data flow through hash keys, but this is still useful in cases where a
+// whole hash(like) object is tainted, such as `ActionController#params`.
+private class KeysSummary extends SimpleSummarizedCallable {
+  KeysSummary() { this = "keys" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[self]" and
+    output = "ReturnValue.Element[?]" and
+    preservesValue = false
+  }
+}

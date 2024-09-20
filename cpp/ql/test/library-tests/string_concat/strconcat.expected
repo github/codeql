@@ -1,0 +1,16 @@
+| concat.cpp:23:27:23:27 | call to operator+ | concat.cpp:23:22:23:25 | str1 | concat.cpp:23:22:23:31 | call to operator+ |
+| concat.cpp:23:27:23:27 | call to operator+ | concat.cpp:23:29:23:31 |   | concat.cpp:23:22:23:31 | call to operator+ |
+| concat.cpp:23:33:23:33 | call to operator+ | concat.cpp:23:35:23:38 | str2 | concat.cpp:23:22:23:38 | call to operator+ |
+| concat.cpp:23:40:23:40 | call to operator+ | concat.cpp:23:42:23:45 | str3 | concat.cpp:23:40:23:40 | call to operator+ |
+| concat.cpp:47:8:47:8 | call to operator<< | concat.cpp:47:11:47:14 | str1 | concat.cpp:47:8:47:17 | call to operator<< |
+| concat.cpp:47:16:47:16 | call to operator<< | concat.cpp:47:19:47:21 |   | concat.cpp:47:16:47:24 | call to operator<< |
+| concat.cpp:47:23:47:23 | call to operator<< | concat.cpp:47:26:47:29 | str2 | concat.cpp:47:23:47:32 | call to operator<< |
+| concat.cpp:47:31:47:31 | call to operator<< | concat.cpp:47:34:47:37 | str3 | concat.cpp:47:31:47:38 | call to operator<< |
+| concat.cpp:58:5:58:11 | call to sprintf | concat.cpp:58:21:58:30 | %s %s %s | concat.cpp:58:13:58:18 | sprintf output argument |
+| concat.cpp:58:5:58:11 | call to sprintf | concat.cpp:58:33:58:36 | str1 | concat.cpp:58:13:58:18 | sprintf output argument |
+| concat.cpp:58:5:58:11 | call to sprintf | concat.cpp:58:39:58:42 | str2 | concat.cpp:58:13:58:18 | sprintf output argument |
+| concat.cpp:58:5:58:11 | call to sprintf | concat.cpp:58:45:58:49 | ucstr | concat.cpp:58:13:58:18 | sprintf output argument |
+| concat.cpp:61:5:61:10 | call to strcat | concat.cpp:61:12:61:15 | str1 | concat.cpp:61:5:61:10 | call to strcat |
+| concat.cpp:61:5:61:10 | call to strcat | concat.cpp:61:12:61:15 | str1 | concat.cpp:61:12:61:15 | strcat output argument |
+| concat.cpp:61:5:61:10 | call to strcat | concat.cpp:61:18:61:22 | ucstr | concat.cpp:61:5:61:10 | call to strcat |
+| concat.cpp:61:5:61:10 | call to strcat | concat.cpp:61:18:61:22 | ucstr | concat.cpp:61:12:61:15 | strcat output argument |

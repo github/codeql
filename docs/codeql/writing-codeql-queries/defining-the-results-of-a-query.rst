@@ -9,7 +9,7 @@ About query results
 -------------------
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
-When you write your own queries in the CodeQL :ref:`extension for VS Code <codeql-for-visual-studio-code>` there are no constraints on what can be selected.
+When you write your own queries in the CodeQL `extension for VS Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__ there are no constraints on what can be selected.
 However, if you want to use a query to create alerts for code scanning or generate valid analysis results using the `CodeQL CLI <https://docs.github.com/en/code-security/codeql-cli>`__, you'll need to make the ``select`` statement report results in the required format. 
 You must also ensure that the query has the appropriate metadata properties defined. 
 This topic explains how to write your select statement to generate helpful analysis results. 

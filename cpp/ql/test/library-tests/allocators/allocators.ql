@@ -50,10 +50,11 @@ query predicate newExprDeallocators(
     type = allocatedType.toString() and
     size = allocatedType.getSize() and
     alignment = allocatedType.getAlignment() and
-    exists(string sized, string aligned |
+    exists(string sized, string aligned, string destroying |
       (if expr.hasAlignedDeallocation() then aligned = "aligned" else aligned = "") and
       (if expr.hasSizedDeallocation() then sized = "sized" else sized = "") and
-      form = sized + " " + aligned
+      (if expr.isDestroyingDeleteDeallocation() then destroying = "destroying" else destroying = "") and
+      form = sized + " " + aligned + " " + destroying
     )
   )
 }
@@ -68,10 +69,11 @@ query predicate newArrayExprDeallocators(
     type = elementType.toString() and
     size = elementType.getSize() and
     alignment = elementType.getAlignment() and
-    exists(string sized, string aligned |
+    exists(string sized, string aligned, string destroying |
       (if expr.hasAlignedDeallocation() then aligned = "aligned" else aligned = "") and
       (if expr.hasSizedDeallocation() then sized = "sized" else sized = "") and
-      form = sized + " " + aligned
+      (if expr.isDestroyingDeleteDeallocation() then destroying = "destroying" else destroying = "") and
+      form = sized + " " + aligned + " " + destroying
     )
   )
 }
@@ -87,10 +89,11 @@ query predicate deleteExprs(
     type = deletedType.toString() and
     size = deletedType.getSize() and
     alignment = deletedType.getAlignment() and
-    exists(string sized, string aligned |
+    exists(string sized, string aligned, string destroying |
       (if expr.hasAlignedDeallocation() then aligned = "aligned" else aligned = "") and
       (if expr.hasSizedDeallocation() then sized = "sized" else sized = "") and
-      form = sized + " " + aligned
+      (if expr.isDestroyingDeleteDeallocation() then destroying = "destroying" else destroying = "") and
+      form = sized + " " + aligned + " " + destroying
     ) and
     if exists(expr.getDeallocatorCall())
     then hasDeallocatorCall = true
@@ -108,10 +111,11 @@ query predicate deleteArrayExprs(
     type = elementType.toString() and
     size = elementType.getSize() and
     alignment = elementType.getAlignment() and
-    exists(string sized, string aligned |
+    exists(string sized, string aligned, string destroying |
       (if expr.hasAlignedDeallocation() then aligned = "aligned" else aligned = "") and
       (if expr.hasSizedDeallocation() then sized = "sized" else sized = "") and
-      form = sized + " " + aligned
+      (if expr.isDestroyingDeleteDeallocation() then destroying = "destroying" else destroying = "") and
+      form = sized + " " + aligned + " " + destroying
     )
   )
 }

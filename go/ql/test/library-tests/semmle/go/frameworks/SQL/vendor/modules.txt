@@ -1,4 +1,4 @@
-# github.com/Masterminds/squirrel v1.1.0
+# github.com/Masterminds/squirrel v1.5.4
 github.com/Masterminds/squirrel
 # github.com/go-pg/pg v8.0.6+incompatible
 github.com/go-pg/pg

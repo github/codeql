@@ -2,11 +2,7 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.ir.declarations.*
 
-class LinesOfCode(
-    val logger: FileLogger,
-    val tw: FileTrapWriter,
-    val file: IrFile
-) {
+class LinesOfCode(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
     val linesOfCodePSI = LinesOfCodePSI(logger, tw, file)
     val linesOfCodeLighterAST = LinesOfCodeLighterAST(logger, tw, file)
 
@@ -14,7 +10,10 @@ class LinesOfCode(
         val psiExtracted = linesOfCodePSI.linesOfCodeInFile(id)
         val lighterASTExtracted = linesOfCodeLighterAST.linesOfCodeInFile(id)
         if (psiExtracted && lighterASTExtracted) {
-            logger.warnElement("Both PSI and LighterAST number-of-lines-in-file information for ${file.path}.", file)
+            logger.warnElement(
+                "Both PSI and LighterAST number-of-lines-in-file information for ${file.path}.",
+                file
+            )
         }
     }
 
@@ -22,7 +21,10 @@ class LinesOfCode(
         val psiExtracted = linesOfCodePSI.linesOfCodeInDeclaration(d, id)
         val lighterASTExtracted = linesOfCodeLighterAST.linesOfCodeInDeclaration(d, id)
         if (psiExtracted && lighterASTExtracted) {
-            logger.warnElement("Both PSI and LighterAST number-of-lines-in-file information for declaration.", d)
+            logger.warnElement(
+                "Both PSI and LighterAST number-of-lines-in-file information for declaration.",
+                d
+            )
         }
     }
 }

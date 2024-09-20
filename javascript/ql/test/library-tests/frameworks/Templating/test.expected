@@ -12,6 +12,7 @@ getLikelyTemplateSyntax
 | projectB/views/subfolder/other.ejs:0:0:0:0 | projectB/views/subfolder/other.ejs | ejs |
 | views/angularjs_include.ejs:0:0:0:0 | views/angularjs_include.ejs | ejs |
 | views/angularjs_sinks.ejs:0:0:0:0 | views/angularjs_sinks.ejs | ejs |
+| views/dot_sinks.html.dot:0:0:0:0 | views/dot_sinks.html.dot | dot |
 | views/ejs_include1.ejs:0:0:0:0 | views/ejs_include1.ejs | ejs |
 | views/ejs_include2.ejs:0:0:0:0 | views/ejs_include2.ejs | ejs |
 | views/ejs_sinks.ejs:0:0:0:0 | views/ejs_sinks.ejs | ejs |
@@ -24,6 +25,7 @@ getTargetFile
 | app.js:25:5:40:6 | res.ren ... \\n    }) | views/hbs_sinks.hbs:0:0:0:0 | views/hbs_sinks.hbs |
 | app.js:44:5:60:6 | res.ren ... \\n    }) | views/njk_sinks.njk:0:0:0:0 | views/njk_sinks.njk |
 | app.js:64:5:67:6 | res.ren ... \\n    }) | views/angularjs_sinks.ejs:0:0:0:0 | views/angularjs_sinks.ejs |
+| app.js:72:5:74:6 | res.ren ... \\n    }) | views/dot_sinks.html.dot:0:0:0:0 | views/dot_sinks.html.dot |
 | consolidate.js:3:1:3:83 | consoli ...  => {}) | views/instantiated_as_ejs.html:0:0:0:0 | views/instantiated_as_ejs.html |
 | consolidate.js:4:1:4:90 | consoli ...  => {}) | views/instantiated_as_hbs.html:0:0:0:0 | views/instantiated_as_hbs.html |
 | projectA/src/index.js:11:5:14:6 | res.ren ... \\n    }) | projectA/views/main.ejs:0:0:0:0 | projectA/views/main.ejs |
@@ -50,6 +52,7 @@ xssSink
 | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
 | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
 | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
 | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
 | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |

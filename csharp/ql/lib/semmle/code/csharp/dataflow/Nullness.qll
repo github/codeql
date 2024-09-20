@@ -157,36 +157,64 @@ private ControlFlowElement getANullCheck(
   exists(Expr e, G::AbstractValue v | v.branch(result, s, e) | exprImpliesSsaDef(e, v, def, nv))
 }
 
-private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr arg) {
+private predicate isMaybeNullArgument(Ssa::ImplicitParameterDefinition def, MaybeNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-    pdef = def.getADefinition()
+    p = def.getParameter()
   |
     p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getAnAssignedArgument() and
-    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
-  )
-}
-
-private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullExpr arg) {
-  exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-    pdef = def.getADefinition()
-  |
-    p = pdef.getParameter().getUnboundDeclaration() and
-    arg = p.getDefaultValue() and
-    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
+    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod and
+    (
+      p.isParams()
+      implies
+      (
+        isValidExplicitParamsType(p, arg.getType()) and
+        not exists(Call c | c.getAnArgument() = arg and hasMultipleParamsArguments(c))
+      )
+    )
   )
 }
 
 /**
- * Holds if `edef` is an implicit entry definition for a captured variable that
- * may be guarded, because a call to the capturing callable is guarded.
+ * Holds if the type `t` is a valid argument type for passing an explicit array
+ * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
+ * of the arguments on lines 4 and 5, respectively, are valid for the parameter
+ * `args` on line 1 in
+ *
+ * ```csharp
+ * void M(params object[] args) { ... }
+ *
+ * void CallM(object[] os, string[] ss, string s) {
+ *   M(os);
+ *   M(ss);
+ *   M(s);
+ * }
+ * ```
  */
-private predicate isMaybeGuardedCapturedDef(Ssa::ImplicitEntryDefinition edef) {
-  exists(Ssa::ExplicitDefinition def, ControlFlow::Nodes::ElementNode c, G::Guard g, NullValue nv |
-    def.isCapturedVariableDefinitionFlowIn(edef, c, _) and
-    g = def.getARead() and
-    g.controlsNode(c, nv) and
-    nv.isNonNull()
+pragma[nomagic]
+private predicate isValidExplicitParamsType(Parameter p, Type t) {
+  p.isParams() and
+  t.isImplicitlyConvertibleTo(p.getType())
+}
+
+/**
+ * Holds if call `c` has multiple arguments for a `params` parameter
+ * of the targeted callable.
+ */
+private predicate hasMultipleParamsArguments(Call c) {
+  exists(Parameter p | p = c.getTarget().getAParameter() |
+    p.isParams() and
+    exists(c.getArgument(any(int i | i > p.getPosition())))
+  )
+}
+
+private predicate isNullDefaultArgument(Ssa::ImplicitParameterDefinition def, AlwaysNullExpr arg) {
+  exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
+    p = def.getParameter()
+  |
+    p = pdef.getParameter().getUnboundDeclaration() and
+    arg = p.getDefaultValue() and
+    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
 }
 
@@ -227,7 +255,6 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     exists(Dereference d | dereferenceAt(_, _, def, d) |
       d.hasNullableType() and
       not def instanceof Ssa::PhiNode and
-      not isMaybeGuardedCapturedDef(def) and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )
@@ -516,9 +543,10 @@ class Dereference extends G::DereferenceableExpr {
         p.fromSource() // assume all non-source extension methods perform a dereference
         implies
         exists(
-          Ssa::ExplicitDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef
+          Ssa::ImplicitParameterDefinition def,
+          AssignableDefinitions::ImplicitParameterDefinition pdef
         |
-          pdef = def.getADefinition()
+          p = def.getParameter()
         |
           p.getUnboundDeclaration() = pdef.getParameter() and
           def.getARead() instanceof Dereference
@@ -542,14 +570,8 @@ class Dereference extends G::DereferenceableExpr {
    */
   predicate isAlwaysNull(Ssa::SourceVariable v) {
     this = v.getAnAccess() and
-    // Exclude fields, properties, and captured variables, as they may not have an
-    // accurate SSA representation
-    v.getAssignable() =
-      any(LocalScopeVariable lsv |
-        strictcount(Callable c |
-          c = any(AssignableDefinition ad | ad.getTarget() = lsv).getEnclosingCallable()
-        ) = 1
-      ) and
+    // Exclude fields and properties, as they may not have an accurate SSA representation
+    v.getAssignable() instanceof LocalScopeVariable and
     (
       forex(Ssa::Definition def0 | this = def0.getARead() | this.isAlwaysNull0(def0))
       or

@@ -13,6 +13,9 @@ on:
       - '.github/actions/fetch-codeql/action.yml'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
+permissions:
+  contents: read
+
 jobs:
   build:
 

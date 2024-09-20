@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang --edg --clang_version --edg 30801
+// semmle-extractor-options: --clang --edg --clang_version --edg 30801
 // Compilable with: clang --std=c++0x -msse4.1 vector_types.cpp
 // (some bits also compilable with gcc)
 int printf(...);

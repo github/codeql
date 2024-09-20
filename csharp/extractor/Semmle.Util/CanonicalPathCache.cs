@@ -107,7 +107,7 @@ namespace Semmle.Util
             var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
 
             return result.StartsWith("UNC")
-                ? @"\" + result.Substring(3)
+                ? @$"\{result[3..]}"
                 : result;
         }
     }
@@ -268,7 +268,7 @@ namespace Semmle.Util
                     catch  // lgtm[cs/catch-of-all-exceptions]
                     {
                         // Failed to late-bind a suitable library.
-                        logger.Log(Severity.Warning, "Preserving symlinks in canonical paths");
+                        logger.LogWarning("Preserving symlinks in canonical paths");
                         pathStrategy = new QueryDirectoryStrategy();
                     }
                     break;

@@ -33,6 +33,7 @@ class Generator:
         self.generateSources = False
         self.generateSummaries = False
         self.generateNeutrals = False
+        self.generateContentSummaries = False
         self.generateTypeBasedSummaries = False
         self.dryRun = False
         self.dirname = "modelgenerator"
@@ -40,35 +41,37 @@ class Generator:
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> [DIR] [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
 
-This generates summary, source and sink models for the code in the database.
-The files will be placed in `{self.language}/ql/lib/ext/generated/`.
+This generates summary, source, sink and neutral models for the code in the database.
+The files will be placed in `{self.language}/ql/lib/ext/generated/DIR`
 
 Which models are generated is controlled by the flags:
     --with-sinks
     --with-sources
     --with-summaries
     --with-neutrals
+    --with-content-summaries (Experimental). May not be used in conjunction with --with-summaries
     --with-typebased-summaries (Experimental)
 If none of these flags are specified, all models are generated except for the type based models.
 
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks my_directory
+
 
 Requirements: `codeql` should both appear on your path.
     """)
 
 
-    def setenvironment(self, database):
+    def setenvironment(self, database, folder):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
         self.database = database
         self.generatedFrameworks = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/")
+            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{folder}")
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
 
@@ -77,6 +80,10 @@ Requirements: `codeql` should both appear on your path.
     def make(language):
         generator = Generator(language)
         if any(s == "--help" for s in sys.argv):
+            generator.printHelp()
+            sys.exit(0)
+
+        if "--with-summaries" in sys.argv and "--with-content-summaries" in sys.argv:
             generator.printHelp()
             sys.exit(0)
 
@@ -96,6 +103,10 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--with-neutrals")
             generator.generateNeutrals = True
 
+        if "--with-content-summaries" in sys.argv:
+            sys.argv.remove("--with-content-summaries")
+            generator.generateContentSummaries = True
+
         if "--with-typebased-summaries" in sys.argv:
             sys.argv.remove("--with-typebased-summaries")
             generator.generateTypeBasedSummaries = True
@@ -104,14 +115,18 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--dry-run")
             generator.dryRun = True
 
-        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNeutrals and not generator.generateTypeBasedSummaries:
+        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNeutrals and not generator.generateTypeBasedSummaries and not generator.generateContentSummaries:
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNeutrals = True
 
-        if len(sys.argv) < 2:
+        n = len(sys.argv)
+        if n < 2:
             generator.printHelp()
             sys.exit(1)
+        elif n == 2:
+            generator.setenvironment(sys.argv[1], "")
+        else:
+            generator.setenvironment(sys.argv[1], sys.argv[2])
 
-        generator.setenvironment(sys.argv[1])
         return generator
     
 
@@ -121,7 +136,7 @@ Requirements: `codeql` should both appear on your path.
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
 
         helpers.run_cmd(['codeql', 'query', 'run', queryFile, '--database',
-               self.database, '--output', resultBqrs, '--threads', '8'], "Failed to generate " + query)
+               self.database, '--output', resultBqrs, '--threads', '8', '--ram', '32768'], "Failed to generate " + query)
 
         return helpers.readData(self.workDir, resultBqrs)
 
@@ -157,8 +172,13 @@ Requirements: `codeql` should both appear on your path.
             neutralAddsTo = self.getAddsTo("CaptureNeutralModels.ql", helpers.neutralModelPredicate)
         else:
             neutralAddsTo = { }
-        
-        return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
+
+        if self.generateContentSummaries:
+            contentSummaryAddsTo = self.getAddsTo("CaptureContentSummaryModels.ql", helpers.summaryModelPredicate)
+        else:
+            contentSummaryAddsTo = { }
+
+        return helpers.merge(summaryAddsTo, contentSummaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -188,7 +208,7 @@ extensions:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
         
-        if self.generateSinks or self.generateSinks or self.generateSummaries:
+        if self.generateSinks or self.generateSources or self.generateSummaries or self.generateNeutrals:
             self.save(content, ".model.yml")
 
         if self.generateTypeBasedSummaries:

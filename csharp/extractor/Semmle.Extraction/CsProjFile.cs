@@ -112,7 +112,7 @@ namespace Semmle.Extraction
                     .Where(s => s is not null)
                     ?? Enumerable.Empty<string>();
 
-                var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", SearchOption.AllDirectories);
+                var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive });
 
                 var projectReferences = root
                     .SelectNodes("/Project/ItemGroup/ProjectReference/@Include", mgr)

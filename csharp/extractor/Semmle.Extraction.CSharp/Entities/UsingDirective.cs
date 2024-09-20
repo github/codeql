@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    Context.Extractor.MissingNamespace(name.ToFullString(), Context.FromSource);
+                    Context.ExtractionContext.MissingNamespace(name.ToFullString(), Context.FromSource);
                     Context.ModelError(node, "Namespace not found");
                     return;
                 }

@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.regex
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -62,6 +63,50 @@ module Tornado {
 
       override string getAsyncMethodName() { none() }
     }
+
+    /**
+     * A dict-like write to an item of an `HTTPHeaders` object.
+     */
+    private class TornadoHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+      DataFlow::Node index;
+      DataFlow::Node value;
+
+      TornadoHeaderSubscriptWrite() {
+        exists(SubscriptNode subscript |
+          subscript.getObject() = instance().asCfgNode() and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          index.asCfgNode() = subscript.getIndex() and
+          this.asCfgNode() = subscript
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = index }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /**
+     * A call to `HTTPHeaders.add`.
+     */
+    private class TornadoHeadersAppendCall extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      TornadoHeadersAppendCall() { this.calls(instance(), "add") }
+
+      override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("name")] }
+
+      override DataFlow::Node getValueArg() {
+        result in [this.getArg(1), this.getArgByName("value")]
+      }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -87,7 +132,11 @@ module Tornado {
        */
       module RequestHandler {
         /** Gets a reference to the `tornado.web.RequestHandler` class or any subclass. */
-        API::Node subclassRef() { result = web().getMember("RequestHandler").getASubclass*() }
+        API::Node subclassRef() {
+          result = web().getMember("RequestHandler").getASubclass*()
+          or
+          result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
+        }
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
@@ -204,6 +253,25 @@ module Tornado {
             this.(DataFlow::AttrRead).getAttributeName() = "request"
           }
         }
+
+        /** A call to `RequestHandler.set_header` or `RequestHandler.add_header` */
+        private class TornadoSetHeaderCall extends Http::Server::ResponseHeaderWrite::Range,
+          DataFlow::MethodCallNode
+        {
+          TornadoSetHeaderCall() { this.calls(instance(), ["set_header", "add_header"]) }
+
+          override DataFlow::Node getNameArg() {
+            result = [this.getArg(0), this.getArgByName("name")]
+          }
+
+          override DataFlow::Node getValueArg() {
+            result in [this.getArg(1), this.getArgByName("value")]
+          }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
+        }
       }
 
       /**
@@ -213,7 +281,11 @@ module Tornado {
        */
       module Application {
         /** Gets a reference to the `tornado.web.Application` class. */
-        API::Node classRef() { result = web().getMember("Application") }
+        API::Node classRef() {
+          result = web().getMember("Application")
+          or
+          result = ModelOutput::getATypeNode("tornado.web.Application~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.web.Application`, extend this class to model new instances.
@@ -270,7 +342,12 @@ module Tornado {
        */
       module HttpServerRequest {
         /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
-        API::Node classRef() { result = httputil().getMember("HttpServerRequest") }
+        API::Node classRef() {
+          result = httputil().getMember("HttpServerRequest")
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.httputil.HttpServerRequest~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.
@@ -515,7 +592,7 @@ module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
-  class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
+  class TornadoRequestHandlerSetCookieCall extends Http::Server::SetCookieCall,
     DataFlow::MethodCallNode
   {
     TornadoRequestHandlerSetCookieCall() {

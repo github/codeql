@@ -1,4 +1,5 @@
 private import AliasConfigurationImports
+private import codeql.util.Unit
 
 /**
  * A memory allocation that can be tracked by the SimpleSSA alias analysis.
@@ -16,3 +17,5 @@ class Allocation extends IRAutomaticVariable {
 }
 
 predicate phaseNeedsSoundEscapeAnalysis() { any() }
+
+Unit getOldAllocation(Allocation allocation) { any() }

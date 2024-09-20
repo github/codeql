@@ -653,10 +653,11 @@ module TaintedPath {
   }
 
   /**
-   * A `templateUrl` member of an AngularJS directive.
+   * DEPRECATED. This is no longer seen as a path-injection sink. It is tentatively handled
+   * by the client-side URL redirection query for now.
    */
-  class AngularJSTemplateUrlSink extends Sink, DataFlow::ValueNode {
-    AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
+  deprecated class AngularJSTemplateUrlSink extends DataFlow::ValueNode instanceof Sink {
+    AngularJSTemplateUrlSink() { none() }
   }
 
   /**

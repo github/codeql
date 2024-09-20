@@ -381,6 +381,12 @@ class TypeParamType extends @typeparamtype, CompositeType {
 
   override InterfaceType getUnderlyingType() { result = this.getConstraint().getUnderlyingType() }
 
+  /** Gets the parent object of this type parameter type. */
+  TypeParamParentEntity getParent() { typeparam(this, _, _, result, _) }
+
+  /** Gets the index of this type parameter type. */
+  int getIndex() { typeparam(this, _, _, _, result) }
+
   override string pp() { result = this.getParamName() }
 
   /**

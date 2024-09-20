@@ -1,0 +1,41 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sinkModel
+    data:
+      - ["Terrapin::CommandLine!","Method[new].Argument[0]","command-injection"]
+      - ["Terrapin::CommandLine!","Method[new].Argument[1]","command-injection"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ["Terrapin::CommandLine::Output!","Method[new]","Argument[1]","ReturnValue","value"]
+      - ["Terrapin::CommandLine!","Method[path=]","Argument[0]","ReturnValue","taint"]
+      - ["Terrapin::CommandLine!","Method[new]","Argument[2]","ReturnValue","taint"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: neutralModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::MultiPipe","Method[output].ReturnValue"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::FakeRunner","Method[call].ReturnValue"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::ProcessRunner","Method[call].ReturnValue"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[runner].ReturnValue.ReturnValue"]
+      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[runner].ReturnValue"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[fake!].ReturnValue.ReturnValue"]
+      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[fake!].ReturnValue"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine","Method[output].ReturnValue"]
+      - ["Terrapin::CommandLineError","Terrapin::CommandNotFoundError",""]
+      - ["Terrapin::CommandLineError","Terrapin::ExitStatusError",""]
+      - ["Terrapin::CommandLineError","Terrapin::InterpolationError",""]

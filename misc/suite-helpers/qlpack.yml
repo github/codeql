@@ -1,4 +1,4 @@
 name: codeql/suite-helpers
-version: 0.7.6-dev
+version: 1.0.9-dev
 groups: shared
 warnOnImplicitThis: true

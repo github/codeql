@@ -19,9 +19,6 @@ class HtmlSink extends DataFlow::Node instanceof Sink {
   }
 }
 
-/** DEPRECATED: Alias for HtmlSink */
-deprecated class HTMLSink = HtmlSink;
-
 /**
  * A taint-tracking configuration for reasoning about XSS.
  * Both ordinary HTML sinks, URL sinks, and JQuery selector based sinks.

@@ -11,17 +11,7 @@
  */
 
 import go
+import WebCacheDeceptionLib
 
-from
-  DataFlow::CallNode httpHandleFuncCall, DataFlow::ReadNode rn, Http::HeaderWrite::Range hw,
-  DeclaredFunction f
-where
-  httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
-  httpHandleFuncCall.getArgument(0).getStringValue().matches("%/") and
-  httpHandleFuncCall.getArgument(1) = rn and
-  rn.reads(f) and
-  f.getParameter(0) = hw.getResponseWriter() and
-  hw.getHeaderName() = "cache-control"
-select httpHandleFuncCall.getArgument(0),
-  "Wildcard Endpoint used with " + httpHandleFuncCall.getArgument(0) + " and '" + hw.getHeaderName()
-    + "' Header is used"
+from WebCacheDeception::Sink httpHandleFuncCall
+select httpHandleFuncCall, httpHandleFuncCall + " is used as wildcard endpoint."

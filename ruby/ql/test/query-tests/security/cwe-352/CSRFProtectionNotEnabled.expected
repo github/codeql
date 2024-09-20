@@ -1,0 +1,1 @@
+| railsapp/app/controllers/alternative_root_controller.rb:1:1:3:3 | AlternativeRootController | Potential CSRF vulnerability due to forgery protection not being enabled. |

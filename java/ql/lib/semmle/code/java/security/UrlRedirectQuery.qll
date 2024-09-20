@@ -11,6 +11,8 @@ module UrlRedirectConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof UrlRedirectSanitizer }
 }
 
 /**

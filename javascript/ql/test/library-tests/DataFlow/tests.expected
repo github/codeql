@@ -1022,7 +1022,6 @@ flowStep
 | tst.js:4:9:4:12 | "hi" | tst.js:4:5:4:12 | y |
 | tst.js:9:2:9:2 | x | tst.js:9:1:9:3 | (x) |
 | tst.js:10:4:10:4 | y | tst.js:10:1:10:4 | x, y |
-| tst.js:11:1:11:1 | x | tst.js:11:1:11:6 | x && y |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:1 | x |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:1 | x |
 | tst.js:11:6:11:6 | y | tst.js:11:1:11:6 | x && y |

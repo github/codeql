@@ -268,6 +268,5 @@ csharp_style_var_elsewhere = true:suggestion
 #
 
 [extractor/Semmle.Extraction/Tuples.cs,
- extractor/Semmle.Extraction.CSharp/Tuples.cs,
- extractor/Semmle.Extraction.CIL/Tuples.cs]
+ extractor/Semmle.Extraction.CSharp/Tuples.cs]
 dotnet_naming_rule.members_should_be_pascal_case.severity = none

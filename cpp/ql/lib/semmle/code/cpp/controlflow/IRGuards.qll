@@ -20,9 +20,46 @@ private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
 
+private newtype TAbstractValue =
+  TBooleanValue(boolean b) { b = true or b = false } or
+  TMatchValue(CaseEdge c)
+
 /**
- * A Boolean condition in the AST that guards one or more basic blocks. This includes
- * operands of logical operators but not switch statements.
+ * An abstract value. This is either a boolean value, or a `switch` case.
+ */
+abstract class AbstractValue extends TAbstractValue {
+  /** Gets an abstract value that represents the dual of this value, if any. */
+  abstract AbstractValue getDualValue();
+
+  /** Gets a textual representation of this abstract value. */
+  abstract string toString();
+}
+
+/** A Boolean value. */
+class BooleanValue extends AbstractValue, TBooleanValue {
+  /** Gets the underlying Boolean value. */
+  boolean getValue() { this = TBooleanValue(result) }
+
+  override BooleanValue getDualValue() { result.getValue() = this.getValue().booleanNot() }
+
+  override string toString() { result = this.getValue().toString() }
+}
+
+/** A value that represents a match against a specific `switch` case. */
+class MatchValue extends AbstractValue, TMatchValue {
+  /** Gets the case. */
+  CaseEdge getCase() { this = TMatchValue(result) }
+
+  override MatchValue getDualValue() {
+    // A `MatchValue` has no dual.
+    none()
+  }
+
+  override string toString() { result = this.getCase().toString() }
+}
+
+/**
+ * A Boolean condition in the AST that guards one or more basic blocks.
  */
 cached
 class GuardCondition extends Expr {
@@ -33,6 +70,15 @@ class GuardCondition extends Expr {
     // no binary operators in the IR
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(BasicBlock controlled, AbstractValue v) { none() }
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -61,7 +107,9 @@ class GuardCondition extends Expr {
    * true (for `&&`) or false (for `||`) branch.
    */
   cached
-  predicate controls(BasicBlock controlled, boolean testIsTrue) { none() }
+  final predicate controls(BasicBlock controlled, boolean testIsTrue) {
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   cached
@@ -76,6 +124,20 @@ class GuardCondition extends Expr {
   cached
   predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) { none() }
 
+  /**
+   * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
+   * this expression evaluates to `value`.
+   */
+  cached
+  predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) { none() }
+
+  /**
+   * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
+   * If `isLessThan = false` then this implies `e >= k`.
+   */
+  cached
+  predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) { none() }
+
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   cached
   predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
@@ -88,6 +150,17 @@ class GuardCondition extends Expr {
    */
   cached
   predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) { none() }
+
+  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
+  cached
+  predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) { none() }
+
+  /**
+   * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
+   * If `areEqual = false` then this implies `e != k`.
+   */
+  cached
+  predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) { none() }
 }
 
 /**
@@ -98,13 +171,13 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
-      lhs.controls(controlled, testIsTrue) and
-      rhs.controls(controlled, testIsTrue)
+      lhs.valueControls(controlled, v) and
+      rhs.valueControls(controlled, v)
     )
   }
 
@@ -116,9 +189,24 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     )
   }
 
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(BooleanValue partValue, GuardCondition part |
+      this.(BinaryLogicalOperation)
+          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
+    |
+      part.comparesLt(e, k, isLessThan, partValue)
+    )
+  }
+
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
       this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+    )
+  }
+
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(AbstractValue value |
+      this.comparesLt(e, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -135,6 +223,21 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
       this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
+
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+    exists(BooleanValue partValue, GuardCondition part |
+      this.(BinaryLogicalOperation)
+          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
+    |
+      part.comparesEq(e, k, areEqual, partValue)
+    )
+  }
+
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(AbstractValue value |
+      this.comparesEq(e, k, areEqual, value) and this.valueControls(block, value)
+    )
+  }
 }
 
 /**
@@ -146,13 +249,12 @@ private class GuardConditionFromIR extends GuardCondition {
 
   GuardConditionFromIR() { this = ir.getUnconvertedResultExpression() }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.controlsBlock(controlled, v)
   }
 
-  /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -161,10 +263,13 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `left >= right + k`.
-   */
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value)
+    )
+  }
+
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
@@ -174,7 +279,14 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value) and
+      this.valueControls(block, value)
+    )
+  }
+
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -183,10 +295,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `left != right + k`.
-   */
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
@@ -196,51 +304,123 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value)
+    )
+  }
+
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value) and
+      this.valueControls(block, value)
+    )
+  }
+
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
-    exists(IRBlock irb, Instruction instr |
-      ir.controls(irb, testIsTrue) and
-      instr = irb.getAnInstruction() and
-      instr.getAst().(ControlFlowNode).getBasicBlock() = controlled and
-      not isUnreachedBlock(irb) and
-      not this.excludeAsControlledInstruction(instr)
+  private predicate controlsBlock(BasicBlock controlled, AbstractValue v) {
+    exists(IRBlock irb |
+      ir.valueControls(irb, v) and
+      nonExcludedIRAndBasicBlock(irb, controlled) and
+      not isUnreachedBlock(irb)
     )
-  }
-
-  private predicate excludeAsControlledInstruction(Instruction instr) {
-    // Exclude the temporaries generated by a ternary expression.
-    exists(TranslatedConditionalExpr tce |
-      instr = tce.getInstruction(ConditionValueFalseStoreTag())
-      or
-      instr = tce.getInstruction(ConditionValueTrueStoreTag())
-      or
-      instr = tce.getInstruction(ConditionValueTrueTempAddressTag())
-      or
-      instr = tce.getInstruction(ConditionValueFalseTempAddressTag())
-    )
-    or
-    // Exclude unreached instructions, as their AST is the whole function and not a block.
-    instr instanceof UnreachedInstruction
   }
 }
 
+private predicate excludeAsControlledInstruction(Instruction instr) {
+  // Exclude the temporaries generated by a ternary expression.
+  exists(TranslatedConditionalExpr tce |
+    instr = tce.getInstruction(ConditionValueFalseStoreTag())
+    or
+    instr = tce.getInstruction(ConditionValueTrueStoreTag())
+    or
+    instr = tce.getInstruction(ConditionValueTrueTempAddressTag())
+    or
+    instr = tce.getInstruction(ConditionValueFalseTempAddressTag())
+  )
+  or
+  // Exclude unreached instructions, as their AST is the whole function and not a block.
+  instr instanceof UnreachedInstruction
+}
+
 /**
- * A Boolean condition in the IR that guards one or more basic blocks. This includes
- * operands of logical operators but not switch statements. Note that `&&` and `||`
- * don't have an explicit representation in the IR, and therefore will not appear as
- * IRGuardConditions.
+ * Holds if `irb` is the `IRBlock` corresponding to the AST basic block
+ * `controlled`, and `irb` does not contain any instruction(s) that should make
+ * the `irb` be ignored.
+ */
+pragma[nomagic]
+private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled) {
+  exists(Instruction instr |
+    instr = irb.getAnInstruction() and
+    instr.getAst().(ControlFlowNode).getBasicBlock() = controlled and
+    not excludeAsControlledInstruction(instr)
+  )
+}
+
+/**
+ * A Boolean condition in the IR that guards one or more basic blocks.
+ *
+ * Note that `&&` and `||` don't have an explicit representation in the IR,
+ * and therefore will not appear as IRGuardConditions.
  */
 cached
 class IRGuardCondition extends Instruction {
-  ConditionalBranchInstruction branch;
+  Instruction branch;
+
+  /*
+   * An `IRGuardCondition` supports reasoning about four different kinds of
+   * relations:
+   * 1. A unary equality relation of the form `e == k`
+   * 2. A binary equality relation of the form `e1 == e2 + k`
+   * 3. A unary inequality relation of the form `e < k`
+   * 4. A binary inequality relation of the form `e1 < e2 + k`
+   *
+   * where `k` is a constant.
+   *
+   * Furthermore, the unary relations (i.e., case 1 and case 3) are also
+   * inferred from `switch` statement guards: equality relations are inferred
+   * from the unique `case` statement, if any, and inequality relations are
+   * inferred from the [case range](https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html)
+   * gcc extension.
+   *
+   * The implementation of all four follows the same structure: Each relation
+   * has a cached user-facing predicate that. For example,
+   * `GuardCondition::comparesEq` calls `compares_eq`. This predicate has
+   * several cases that recursively decompose the relation to bring it to a
+   * canonical form (i.e., a relation of the form `e1 == e2 + k`). The base
+   * case for this relation (i.e., `simple_comparison_eq`) handles
+   * `CompareEQInstruction`s and `CompareNEInstruction`, and recursive
+   * predicates (e.g., `complex_eq`) rewrites larger expressions such as
+   * `e1 + k1 == e2 + k2` into canonical the form `e1 == e2 + (k2 - k1)`.
+   */
 
   cached
-  IRGuardCondition() { branch = get_branch_for_condition(this) }
+  IRGuardCondition() { branch = getBranchForCondition(this) }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(IRBlock controlled, AbstractValue v) {
+    // This condition must determine the flow of control; that is, this
+    // node must be a top-level condition.
+    this.controlsBlock(controlled, v)
+    or
+    exists(IRGuardCondition ne |
+      this = ne.(LogicalNotInstruction).getUnary() and
+      ne.valueControls(controlled, v.getDualValue())
+    )
+  }
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -270,13 +450,25 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate controls(IRBlock controlled, boolean testIsTrue) {
-    // This condition must determine the flow of control; that is, this
-    // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
+
+  /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `v`.
+   */
+  cached
+  predicate valueControlsEdge(IRBlock pred, IRBlock succ, AbstractValue v) {
+    pred.getASuccessor() = succ and
+    this.valueControls(pred, v)
     or
-    exists(IRGuardCondition ne |
-      this = ne.(LogicalNotInstruction).getUnary() and
-      ne.controls(controlled, testIsTrue.booleanNot())
+    succ = this.getBranchSuccessor(v) and
+    (
+      branch.(ConditionalBranchInstruction).getCondition() = this and
+      branch.getBlock() = pred
+      or
+      branch.(SwitchInstruction).getExpression() = this and
+      branch.getBlock() = pred
     )
   }
 
@@ -285,17 +477,12 @@ class IRGuardCondition extends Instruction {
    * the value of this condition is `testIsTrue`.
    */
   cached
-  predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
-    pred.getASuccessor() = succ and
-    this.controls(pred, testIsTrue)
-    or
-    succ = this.getBranchSuccessor(testIsTrue) and
-    branch.getCondition() = this and
-    branch.getBlock() = pred
+  final predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
+    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
   /**
-   * Gets the block to which `branch` jumps directly when this condition is `testIsTrue`.
+   * Gets the block to which `branch` jumps directly when the value of this condition is `v`.
    *
    * This predicate is intended to help with situations in which an inference can only be made
    * based on an edge between a block with multiple successors and a block with multiple
@@ -309,21 +496,39 @@ class IRGuardCondition extends Instruction {
    * return x;
    * ```
    */
-  private IRBlock getBranchSuccessor(boolean testIsTrue) {
-    branch.getCondition() = this and
-    (
-      testIsTrue = true and
-      result.getFirstInstruction() = branch.getTrueSuccessor()
+  private IRBlock getBranchSuccessor(AbstractValue v) {
+    branch.(ConditionalBranchInstruction).getCondition() = this and
+    exists(BooleanValue bv | bv = v |
+      bv.getValue() = true and
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getTrueSuccessor()
       or
-      testIsTrue = false and
-      result.getFirstInstruction() = branch.getFalseSuccessor()
+      bv.getValue() = false and
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getFalseSuccessor()
+    )
+    or
+    exists(SwitchInstruction switch, CaseEdge kind | switch = branch |
+      switch.getExpression() = this and
+      result.getFirstInstruction() = switch.getSuccessor(kind) and
+      kind = v.(MatchValue).getCase()
     )
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   cached
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
-    compares_lt(this, left, right, k, isLessThan, testIsTrue)
+    exists(BooleanValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and
+      value.getValue() = testIsTrue
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op < k` evaluates to `isLessThan` if
+   * this expression evaluates to `value`.
+   */
+  cached
+  predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
+    compares_lt(this, op, k, isLessThan, value)
   }
 
   /**
@@ -332,8 +537,19 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
-    exists(boolean testIsTrue |
-      compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+    exists(AbstractValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and this.valueControls(block, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op < k` must be `isLessThan` in `block`.
+   * If `isLessThan = false` then this implies `op >= k`.
+   */
+  cached
+  predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
+    exists(AbstractValue value |
+      compares_lt(this, op, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -345,16 +561,37 @@ class IRGuardCondition extends Instruction {
   predicate ensuresLtEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
-    exists(boolean testIsTrue |
-      compares_lt(this, left, right, k, isLessThan, testIsTrue) and
-      this.controlsEdge(pred, succ, testIsTrue)
+    exists(AbstractValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and
+      this.valueControlsEdge(pred, succ, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op < k` must be `isLessThan` on the edge from
+   * `pred` to `succ`. If `isLessThan = false` then this implies `op >= k`.
+   */
+  cached
+  predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
+    exists(AbstractValue value |
+      compares_lt(this, left, k, isLessThan, value) and
+      this.valueControlsEdge(pred, succ, value)
     )
   }
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   cached
   predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
-    compares_eq(this, left, right, k, areEqual, testIsTrue)
+    exists(BooleanValue value |
+      compares_eq(this, left, right, k, areEqual, value) and
+      value.getValue() = testIsTrue
+    )
+  }
+
+  /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
+  cached
+  predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
+    unary_compares_eq(this, op, k, areEqual, false, value)
   }
 
   /**
@@ -363,8 +600,19 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
-    exists(boolean testIsTrue |
-      compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
+    exists(AbstractValue value |
+      compares_eq(this, left, right, k, areEqual, value) and this.valueControls(block, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op == k` must be `areEqual` in `block`.
+   * If `areEqual = false` then this implies `op != k`.
+   */
+  cached
+  predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
+    exists(AbstractValue value |
+      unary_compares_eq(this, op, k, areEqual, false, value) and this.valueControls(block, value)
     )
   }
 
@@ -376,19 +624,31 @@ class IRGuardCondition extends Instruction {
   predicate ensuresEqEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual
   ) {
-    exists(boolean testIsTrue |
-      compares_eq(this, left, right, k, areEqual, testIsTrue) and
-      this.controlsEdge(pred, succ, testIsTrue)
+    exists(AbstractValue value |
+      compares_eq(this, left, right, k, areEqual, value) and
+      this.valueControlsEdge(pred, succ, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op == k` must be `areEqual` on the edge from
+   * `pred` to `succ`. If `areEqual = false` then this implies `op != k`.
+   */
+  cached
+  predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
+    exists(AbstractValue value |
+      unary_compares_eq(this, op, k, areEqual, false, value) and
+      this.valueControlsEdge(pred, succ, value)
     )
   }
 
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
+  private predicate controlsBlock(IRBlock controlled, AbstractValue v) {
     not isUnreachedBlock(controlled) and
     //
     // For this block to control the block `controlled` with `testIsTrue` the
@@ -429,7 +689,7 @@ class IRGuardCondition extends Instruction {
     // that `this` strictly dominates `controlled` so that isn't necessary to check
     // directly.
     exists(IRBlock succ |
-      succ = this.getBranchSuccessor(testIsTrue) and
+      succ = this.getBranchSuccessor(v) and
       this.hasDominatingEdgeTo(succ) and
       succ.dominates(controlled)
     )
@@ -464,12 +724,14 @@ class IRGuardCondition extends Instruction {
   private IRBlock getBranchBlock() { result = branch.getBlock() }
 }
 
-private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
-  result.getCondition() = guard
+private Instruction getBranchForCondition(Instruction guard) {
+  result.(ConditionalBranchInstruction).getCondition() = guard
   or
   exists(LogicalNotInstruction cond |
-    result = get_branch_for_condition(cond) and cond.getUnary() = guard
+    result = getBranchForCondition(cond) and cond.getUnary() = guard
   )
+  or
+  result.(SwitchInstruction).getExpression() = guard
 }
 
 /**
@@ -478,52 +740,252 @@ private ConditionalBranchInstruction get_branch_for_condition(Instruction guard)
  * Beware making mistaken logical implications here relating `areEqual` and `testIsTrue`.
  */
 private predicate compares_eq(
-  Instruction test, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue
+  Instruction test, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-  exists(boolean eq | simple_comparison_eq(test, left, right, k, eq) |
-    areEqual = true and testIsTrue = eq
+  exists(AbstractValue v | simple_comparison_eq(test, left, right, k, v) |
+    areEqual = true and value = v
     or
-    areEqual = false and testIsTrue = eq.booleanNot()
+    areEqual = false and value = v.getDualValue()
   )
   or
   // I think this is handled by forwarding in controlsBlock.
   //or
   //logical_comparison_eq(test, left, right, k, areEqual, testIsTrue)
   /* a == b + k => b == a - k */
-  exists(int mk | k = -mk | compares_eq(test, right, left, mk, areEqual, testIsTrue))
+  exists(int mk | k = -mk | compares_eq(test, right, left, mk, areEqual, value))
   or
-  complex_eq(test, left, right, k, areEqual, testIsTrue)
+  complex_eq(test, left, right, k, areEqual, value)
   or
   /* (x is true => (left == right + k)) => (!x is false => (left == right + k)) */
-  exists(boolean isFalse | testIsTrue = isFalse.booleanNot() |
-    compares_eq(test.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, isFalse)
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_eq(test.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, dual)
   )
+  or
+  compares_eq(test.(BuiltinExpectCallInstruction).getCondition(), left, right, k, areEqual, value)
+}
+
+/**
+ * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
+ *
+ * Many internal predicates in this file have a `inNonZeroCase` column.
+ * Ideally, the `k` column would be a type such as `Option<int>::Option`, to
+ * represent whether we have a concrete value `k` such that `op == k`, or whether
+ * we only know that `op != 0`.
+ * However, cannot instantiate `Option` with an infinite type. Thus the boolean
+ * `inNonZeroCase` is used to distinquish the `Some` (where we have a concrete
+ * value `k`) and `None` cases (where we only know that `op != 0`).
+ *
+ * Thus, if `inNonZeroCase = true` then `op != 0` and the value of `k` is
+ * meaningless.
+ *
+ * To see why `inNonZeroCase` is needed consider the following C program:
+ * ```c
+ * char* p = ...;
+ * if(p) {
+ *   use(p);
+ * }
+ * ```
+ * in C++ there would be an int-to-bool conversion on `p`. However, since C
+ * does not have booleans there is no conversion. We want to be able to
+ * conclude that `p` is non-zero in the true branch, so we need to give `k`
+ * some value. However, simply setting `k = 1` would make the rest of the
+ * analysis think that `k == 1` holds inside the branch. So we distinquish
+ * between the above case and
+ * ```c
+ * if(p == 1) {
+ *   use(p)
+ * }
+ * ```
+ * by setting `inNonZeroCase` to `true` in the former case, but not in the
+ * latter.
+ */
+private predicate unary_compares_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
+) {
+  /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
+  exists(AbstractValue v |
+    unary_simple_comparison_eq(test, k, inNonZeroCase, v) and op.getDef() = test
+  |
+    areEqual = true and value = v
+    or
+    areEqual = false and value = v.getDualValue()
+  )
+  or
+  unary_complex_eq(test, op, k, areEqual, inNonZeroCase, value)
+  or
+  /* (x is true => (op == k)) => (!x is false => (op == k)) */
+  exists(AbstractValue dual, boolean inNonZeroCase0 |
+    value = dual.getDualValue() and
+    unary_compares_eq(test.(LogicalNotInstruction).getUnary(), op, k, inNonZeroCase0, areEqual, dual)
+  |
+    k = 0 and inNonZeroCase = inNonZeroCase0
+    or
+    k != 0 and inNonZeroCase = true
+  )
+  or
+  // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
+  // test is `areEqual` => op == k1 + k2
+  inNonZeroCase = false and
+  exists(int k1, int k2, ConstantInstruction const |
+    compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
+    int_value(const) = k1 and
+    k = k1 + k2
+  )
+  or
+  unary_compares_eq(test.(BuiltinExpectCallInstruction).getCondition(), op, k, areEqual,
+    inNonZeroCase, value)
 }
 
 /** Rearrange various simple comparisons into `left == right + k` form. */
 private predicate simple_comparison_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual
+  CompareInstruction cmp, Operand left, Operand right, int k, AbstractValue value
 ) {
   left = cmp.getLeftOperand() and
   cmp instanceof CompareEQInstruction and
   right = cmp.getRightOperand() and
   k = 0 and
-  areEqual = true
+  value.(BooleanValue).getValue() = true
   or
   left = cmp.getLeftOperand() and
   cmp instanceof CompareNEInstruction and
   right = cmp.getRightOperand() and
   k = 0 and
-  areEqual = false
+  value.(BooleanValue).getValue() = false
+}
+
+/**
+ * Rearrange various simple comparisons into `op == k` form.
+ */
+private predicate unary_simple_comparison_eq(
+  Instruction test, int k, boolean inNonZeroCase, AbstractValue value
+) {
+  exists(SwitchInstruction switch, CaseEdge case |
+    test = switch.getExpression() and
+    case = value.(MatchValue).getCase() and
+    exists(switch.getSuccessor(case)) and
+    case.getValue().toInt() = k and
+    inNonZeroCase = false
+  )
+  or
+  // Any instruction with an integral type could potentially be part of a
+  // check for nullness when used in a guard. So we include all integral
+  // typed instructions here. However, since some of these instructions are
+  // already included as guards in other cases, we exclude those here.
+  // These are instructions that compute a binary equality or inequality
+  // relation. For example, the following:
+  // ```cpp
+  // if(a == b + 42) { ... }
+  // ```
+  // generates the following IR:
+  // ```
+  // r1(glval<int>) = VariableAddress[a]     :
+  // r2(int)        = Load[a]                : &:r1, m1
+  // r3(glval<int>) = VariableAddress[b]     :
+  // r4(int)        = Load[b]                : &:r3, m2
+  // r5(int)        = Constant[42]           :
+  // r6(int)        = Add                    : r4, r5
+  // r7(bool)       = CompareEQ              : r2, r6
+  // v1(void)       = ConditionalBranch      : r7
+  // ```
+  // and since `r7` is an integral typed instruction this predicate could
+  // include a case for when `r7` evaluates to true (in which case we would
+  // infer that `r6` was non-zero, and a case for when `r7` evaluates to false
+  // (in which case we would infer that `r6` was zero).
+  // However, since `a == b + 42` is already supported when reasoning about
+  // binary equalities we exclude those cases here.
+  not test.isGLValue() and
+  not simple_comparison_eq(test, _, _, _, _) and
+  not simple_comparison_lt(test, _, _, _) and
+  not test = any(SwitchInstruction switch).getExpression() and
+  (
+    test.getResultIRType() instanceof IRAddressType or
+    test.getResultIRType() instanceof IRIntegerType or
+    test.getResultIRType() instanceof IRBooleanType
+  ) and
+  (
+    k = 1 and
+    value.(BooleanValue).getValue() = true and
+    inNonZeroCase = true
+    or
+    k = 0 and
+    value.(BooleanValue).getValue() = false and
+    inNonZeroCase = false
+  )
+}
+
+/** A call to the builtin operation `__builtin_expect`. */
+private class BuiltinExpectCallInstruction extends CallInstruction {
+  BuiltinExpectCallInstruction() { this.getStaticCallTarget().hasName("__builtin_expect") }
+
+  /** Gets the condition of this call. */
+  Instruction getCondition() {
+    // The first parameter of `__builtin_expect` has type `long`. So we skip
+    // the conversion when inferring guards.
+    result = this.getArgument(0).(ConvertInstruction).getUnary()
+  }
+}
+
+/**
+ * Holds if `left == right + k` is `areEqual` if `cmp` evaluates to `value`,
+ * and `cmp` is an instruction that compares the value of
+ * `__builtin_expect(left == right + k, _)` to `0`.
+ */
+private predicate builtin_expect_eq(
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+) {
+  exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    compares_eq(call.getCondition(), left, right, k, areEqual, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
 }
 
 private predicate complex_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
-  sub_eq(cmp, left, right, k, areEqual, testIsTrue)
+  sub_eq(cmp, left, right, k, areEqual, value)
   or
-  add_eq(cmp, left, right, k, areEqual, testIsTrue)
+  add_eq(cmp, left, right, k, areEqual, value)
+  or
+  builtin_expect_eq(cmp, left, right, k, areEqual, value)
+}
+
+/**
+ * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and `cmp` is
+ * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
+ */
+private predicate unary_builtin_expect_eq(
+  CompareInstruction cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
+  AbstractValue value
+) {
+  exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
+    int_value(const) = 0 and
+    cmp.hasOperands(call.getAUse(), const.getAUse()) and
+    unary_compares_eq(call.getCondition(), op, k, areEqual, inNonZeroCase, innerValue)
+  |
+    cmp instanceof CompareNEInstruction and
+    value = innerValue
+    or
+    cmp instanceof CompareEQInstruction and
+    value.getDualValue() = innerValue
+  )
+}
+
+private predicate unary_complex_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
+) {
+  unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
+  or
+  unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
+  or
+  unary_builtin_expect_eq(test, op, k, areEqual, inNonZeroCase, value)
 }
 
 /*
@@ -533,31 +995,47 @@ private predicate complex_eq(
 
 /** Holds if `left < right + k` evaluates to `isLt` given that test is `testIsTrue`. */
 private predicate compares_lt(
-  Instruction test, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  Instruction test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   /* In the simple case, the test is the comparison, so isLt = testIsTrue */
-  simple_comparison_lt(test, left, right, k) and isLt = true and testIsTrue = true
+  simple_comparison_lt(test, left, right, k) and
+  value.(BooleanValue).getValue() = isLt
   or
-  simple_comparison_lt(test, left, right, k) and isLt = false and testIsTrue = false
-  or
-  complex_lt(test, left, right, k, isLt, testIsTrue)
+  complex_lt(test, left, right, k, isLt, value)
   or
   /* (not (left < right + k)) => (left >= right + k) */
-  exists(boolean isGe | isLt = isGe.booleanNot() |
-    compares_ge(test, left, right, k, isGe, testIsTrue)
-  )
+  exists(boolean isGe | isLt = isGe.booleanNot() | compares_ge(test, left, right, k, isGe, value))
   or
   /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
-  exists(boolean isFalse | testIsTrue = isFalse.booleanNot() |
-    compares_lt(test.(LogicalNotInstruction).getUnary(), left, right, k, isLt, isFalse)
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_lt(test.(LogicalNotInstruction).getUnary(), left, right, k, isLt, dual)
+  )
+}
+
+/** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
+private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt, AbstractValue value) {
+  unary_simple_comparison_lt(test, k, isLt, value) and
+  op.getDef() = test
+  or
+  complex_lt(test, op, k, isLt, value)
+  or
+  /* (x is true => (op < k)) => (!x is false => (op < k)) */
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_lt(test.(LogicalNotInstruction).getUnary(), op, k, isLt, dual)
+  )
+  or
+  exists(int k1, int k2, ConstantInstruction const |
+    compares_lt(test, op, const.getAUse(), k2, isLt, value) and
+    int_value(const) = k1 and
+    k = k1 + k2
   )
 }
 
 /** `(a < b + k) => (b > a - k) => (b >= a + (1-k))` */
 private predicate compares_ge(
-  Instruction test, Operand left, Operand right, int k, boolean isGe, boolean testIsTrue
+  Instruction test, Operand left, Operand right, int k, boolean isGe, AbstractValue value
 ) {
-  exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, testIsTrue))
+  exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, value))
 }
 
 /** Rearrange various simple comparisons into `left < right + k` form. */
@@ -583,55 +1061,98 @@ private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Ope
   k = 1
 }
 
-private predicate complex_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+/** Rearrange various simple comparisons into `op < k` form. */
+private predicate unary_simple_comparison_lt(
+  Instruction test, int k, boolean isLt, AbstractValue value
 ) {
-  sub_lt(cmp, left, right, k, isLt, testIsTrue)
+  exists(SwitchInstruction switch, CaseEdge case |
+    test = switch.getExpression() and
+    case = value.(MatchValue).getCase() and
+    exists(switch.getSuccessor(case)) and
+    case.getMaxValue() > case.getMinValue()
+  |
+    // op <= k => op < k - 1
+    isLt = true and
+    case.getMaxValue().toInt() = k - 1
+    or
+    isLt = false and
+    case.getMinValue().toInt() = k
+  )
+}
+
+private predicate complex_lt(
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
+) {
+  sub_lt(cmp, left, right, k, isLt, value)
   or
-  add_lt(cmp, left, right, k, isLt, testIsTrue)
+  add_lt(cmp, left, right, k, isLt, value)
+}
+
+private predicate complex_lt(
+  Instruction test, Operand left, int k, boolean isLt, AbstractValue value
+) {
+  sub_lt(test, left, k, isLt, value)
+  or
+  add_lt(test, left, k, isLt, value)
 }
 
 // left - x < right + c => left < right + (c+x)
 // left < (right - x) + c => left < right + (c-x)
 private predicate sub_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(SubInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(SubInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
   )
   or
   exists(PointerSubInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(PointerSubInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
+  )
+}
+
+private predicate sub_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+  exists(SubInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
   )
 }
 
 // left + x < right + c => left < right + (c-x)
 // left < (right + x) + c => left < right + (c+x)
 private predicate add_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -641,7 +1162,7 @@ private predicate add_lt(
   )
   or
   exists(AddInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
@@ -651,7 +1172,7 @@ private predicate add_lt(
   )
   or
   exists(PointerAddInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -661,57 +1182,100 @@ private predicate add_lt(
   )
   or
   exists(PointerAddInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
       right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
     ) and
     k = c + x
+  )
+}
+
+private predicate add_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+  exists(AddInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
   )
 }
 
 // left - x == right + c => left == right + (c+x)
 // left == (right - x) + c => left == right + (c-x)
 private predicate sub_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   exists(SubInstruction lhs, int c, int x |
-    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(SubInstruction rhs, int c, int x |
-    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
   )
   or
   exists(PointerSubInstruction lhs, int c, int x |
-    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(PointerSubInstruction rhs, int c, int x |
-    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
   )
 }
 
+// op - x == c => op == (c+x)
+private predicate unary_sub_eq(
+  Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
+) {
+  inNonZeroCase = false and
+  exists(SubInstruction sub, int c, int x |
+    unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+    op = sub.getLeftOperand() and
+    x = int_value(sub.getRight()) and
+    k = c + x
+  )
+  or
+  inNonZeroCase = false and
+  exists(PointerSubInstruction sub, int c, int x |
+    unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+    op = sub.getLeftOperand() and
+    x = int_value(sub.getRight()) and
+    k = c + x
+  )
+}
+
 // left + x == right + c => left == right + (c-x)
 // left == (right + x) + c => left == right + (c+x)
 private predicate add_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
-    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -721,7 +1285,7 @@ private predicate add_eq(
   )
   or
   exists(AddInstruction rhs, int c, int x |
-    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
@@ -731,7 +1295,7 @@ private predicate add_eq(
   )
   or
   exists(PointerAddInstruction lhs, int c, int x |
-    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -741,7 +1305,7 @@ private predicate add_eq(
   )
   or
   exists(PointerAddInstruction rhs, int c, int x |
-    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
@@ -751,5 +1315,42 @@ private predicate add_eq(
   )
 }
 
+// left + x == right + c => left == right + (c-x)
+private predicate unary_add_eq(
+  Instruction test, Operand left, int k, boolean areEqual, boolean inNonZeroCase,
+  AbstractValue value
+) {
+  inNonZeroCase = false and
+  exists(AddInstruction lhs, int c, int x |
+    unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  inNonZeroCase = false and
+  exists(PointerAddInstruction lhs, int c, int x |
+    unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+}
+
+private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
+  IntegerOrPointerConstantInstruction() {
+    this instanceof IntegerConstantInstruction or
+    this instanceof PointerConstantInstruction
+  }
+}
+
 /** The int value of integer constant expression. */
-private int int_value(Instruction i) { result = i.(IntegerConstantInstruction).getValue().toInt() }
+private int int_value(Instruction i) {
+  result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
+}

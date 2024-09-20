@@ -7,32 +7,44 @@ import go
 /** Provides models of commonly used functions in the `log` package. */
 module Log {
   private class LogFunction extends Function {
+    int firstPrintedArg;
+
     LogFunction() {
-      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
+      exists(string fn |
+        fn =
+          ["Fatal", "Fatalf", "Fatalln", "Panic", "Panicf", "Panicln", "Print", "Printf", "Println"] and
+        firstPrintedArg = 0
+        or
+        fn = "Output" and firstPrintedArg = 1
+      |
         this.hasQualifiedName("log", fn)
         or
         this.(Method).hasQualifiedName("log", "Logger", fn)
       )
     }
+
+    int getFirstPrintedArg() { result = firstPrintedArg }
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
-    LogFormatter() { this.getName().matches("%f") }
+    LogFormatter() { this.getName() = ["Fatalf", "Panicf", "Printf"] }
 
     override int getFormatStringIndex() { result = 0 }
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
+    LogFunction target;
 
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+    LogCall() { this = target.getACall() }
+
+    override DataFlow::Node getAMessageComponent() {
+      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
+    }
   }
 
   /** A fatal log function, which calls `os.Exit`. */
   private class FatalLogFunction extends Function {
-    FatalLogFunction() {
-      exists(string fn | fn.matches("Fatal%") | this.hasQualifiedName("log", fn))
-    }
+    FatalLogFunction() { this.hasQualifiedName("log", ["Fatal", "Fatalf", "Fatalln"]) }
 
     override predicate mayReturnNormally() { none() }
   }

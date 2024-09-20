@@ -482,3 +482,30 @@ module TS52 {
 
     console.log(["hello", "world"] satisfies Pair3<string>);
 }
+
+module TS54 {
+  function createStreetLight<C extends string>(colors: C[], defaultColor?: NoInfer<C>) {
+    return colors[0];
+  }
+
+  createStreetLight(["red", "yellow", "green"], "yellow");
+
+  const myObj = Object.groupBy([0, 1, 2, 3, 4, 5], (num, index) => {
+    return num % 2 === 0 ? "even": "odd";
+  });
+}
+
+module TS55 {
+  const strings = (["foo", 123])
+    .filter(s => typeof s === "string");
+
+  for (const str of strings) {
+    str.toLowerCase(); // <- string in 5.5, string | number in 5.4
+  }
+
+  function f1(obj: Record<string, unknown>, key: string) {
+    if (typeof obj[key] === "string") {
+      var str = obj[key].toUpperCase(); // Now okay, previously was error
+    }
+  }
+}

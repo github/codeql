@@ -5,8 +5,6 @@
 import Member
 import Stmt
 import Type
-private import cil
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import TypeRef
 
@@ -113,7 +111,7 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
  * }
  * ```
  */
-class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @property {
+class Property extends DeclarationWithGetSetAccessors, @property {
   override string getName() { properties(this, result, _, _, _) }
 
   override string getUndecoratedName() { properties(this, result, _, _, _) }
@@ -125,6 +123,13 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     or
     not properties(this, _, _, any(Type t), _) and
     properties(this, _, _, getTypeRef(result), _)
+  }
+
+  private predicate isAutoPartial() {
+    this.fromSource() and
+    not this.isExtern() and
+    not this.isAbstract() and
+    not this.getAnAccessor().hasBody()
   }
 
   /**
@@ -147,11 +152,22 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * code.
    */
   predicate isAutoImplemented() {
-    this.fromSource() and
-    this.isReadWrite() and
-    not this.isExtern() and
-    not this.isAbstract() and
-    not this.getAnAccessor().hasBody()
+    this.isAutoPartial() and
+    this.isReadWrite()
+  }
+
+  /**
+   * Holds if this property is automatically implemented and read-only. For
+   * example, `P1` on line 2 is automatically implemented and read-only
+   * ```csharp
+   * class C {
+   *   public int P1 { get; }
+   * }
+   * ```
+   */
+  predicate isAutoImplementedReadOnly() {
+    this.isAutoPartial() and
+    this.isReadOnly()
   }
 
   override Property getUnboundDeclaration() { properties(this, _, _, _, result) }
@@ -540,8 +556,6 @@ class TrivialProperty extends Property {
     this.isAutoImplemented()
     or
     this.getGetter().trivialGetterField() = this.getSetter().trivialSetterField()
-    or
-    exists(CIL::TrivialProperty prop | this.matchesHandle(prop))
   }
 }
 

@@ -160,17 +160,62 @@ signature module Semantic {
   /** Gets a tiebreaker id in case `getBlockId1` is not unique. */
   default string getBlockId2(BasicBlock bb) { result = "" }
 
+  /**
+   * A guard in the range analysis.
+   */
   class Guard {
+    /**
+     * Gets a string representation of the guard.
+     */
     string toString();
 
+    /**
+     * Gets the basic block associated with the guard.
+     */
     BasicBlock getBasicBlock();
 
+    /**
+     * Gets the guard as an expression, if any.
+     */
     Expr asExpr();
 
+    /**
+     * Holds if the guard directly controls a given basic block. For example in
+     * the following code, the guard `(x > y)` directly controls the block
+     * beneath it:
+     * ```
+     * if (x > y)
+     * {
+     *   Console.WriteLine("x is greater than y");
+     * }
+     * ```
+     * `branch` indicates whether the basic block is entered when the guard
+     * evaluates to `true` or when it evaluates to `false`.
+     */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
+    /**
+     * Holds if this guard is an equality test between `e1` and `e2`. If the
+     * test is negated, that is `!=`, then `polarity` is false, otherwise
+     * `polarity` is true.
+     */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
+    /**
+     * Holds if there is a branch edge between two basic blocks. For example
+     * in the following C code, there are two branch edges from the basic block
+     * containing the condition `(x > y)` to the beginnings of the true and
+     * false blocks that follow:
+     * ```
+     * if (x > y) {
+     *   printf("x is greater than y\n");
+     * } else {
+     *   printf("x is not greater than y\n");
+     * }
+     * ```
+     * `branch` indicates whether the second basic block is the one entered
+     * when the guard evaluates to `true` or when it evaluates to `false`.
+     */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
@@ -194,18 +239,50 @@ signature module Semantic {
   /** Gets the type of an expression. */
   Type getExprType(Expr e);
 
+  /**
+   * A static single-assignment (SSA) variable.
+   */
   class SsaVariable {
+    /**
+     * Gets an expression reading the value of this SSA variable.
+     */
     Expr getAUse();
 
+    /**
+     * Gets the basic block where this SSA variable is defined.
+     */
     BasicBlock getBasicBlock();
   }
 
+  /**
+   * A phi node in the SSA form. A phi node is a kind of node in the SSA form
+   * that represents a merge point where multiple control flow paths converge
+   * and the value of a variable needs to be selected according to which
+   * control flow path was taken. For example, in the following Ruby code:
+   * ```rb
+   * if b
+   *   x = 0
+   * else
+   *   x = 1
+   * end
+   * puts x
+   * ```
+   * A phi node for `x` is inserted just before the call `puts x`, since the
+   * value of `x` may come from either `x = 0` or `x = 1`.
+   */
   class SsaPhiNode extends SsaVariable {
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
   }
 
+  /**
+   * An SSA variable representing the value of an explicit update of the source variable.
+   */
   class SsaExplicitUpdate extends SsaVariable {
+    /**
+     * Gets the expression that defines the value of the variable in this
+     * update.
+     */
     Expr getDefiningExpr();
   }
 
@@ -296,11 +373,32 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+  /**
+   * A bound that the range analysis can infer for a variable. This includes
+   * constant bounds represented by the abstract value zero, SSA bounds for when
+   * a variable is bounded by the value of a different variable, and possibly
+   * other abstract values that may be useful variable bounds. Since all bounds
+   * are combined with an integer delta there's no need to represent constant
+   * bounds other than zero.
+   */
   class SemBound {
+    /**
+     * Gets a string representation of this bound.
+     */
     string toString();
 
+    /**
+     * Gets the location of this bound.
+     */
     Location getLocation();
 
+    /**
+     * Gets an expression that equals this bound plus `delta`.
+     *
+     * For the zero-bound this gets integer constants equal to `delta`, for any
+     * value `delta`. For other bounds this gets expressions equal to the bound
+     * and `delta = 0`.
+     */
     Sem::Expr getExpr(D::Delta delta);
   }
 

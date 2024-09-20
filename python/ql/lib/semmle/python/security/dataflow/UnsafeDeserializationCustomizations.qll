@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -46,6 +47,10 @@ module UnsafeDeserialization {
         this = d.getAnInput()
       )
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("unsafe-deserialization").asSink() }
   }
 
   /**

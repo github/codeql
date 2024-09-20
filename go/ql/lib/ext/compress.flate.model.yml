@@ -5,5 +5,5 @@ extensions:
     data:
       - ["compress/flate", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["compress/flate", "", False, "NewReaderDict", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["compress/flate", "Resetter", True, "Reset", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["compress/flate", "Writer", True, "Reset", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["compress/flate", "Resetter", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["compress/flate", "Writer", True, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

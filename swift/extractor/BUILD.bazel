@@ -1,6 +1,5 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_runfiles")
 load("//swift:rules.bzl", "swift_cc_binary")
-load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
-load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
 swift_cc_binary(
     name = "extractor.real",
@@ -8,6 +7,10 @@ swift_cc_binary(
         "*.h",
         "*.cpp",
     ]),
+    linkopts = select({
+        "@platforms//os:macos": ["-headerpad_max_install_names"],
+        "//conditions:default": [],
+    }),
     visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/config",
@@ -26,9 +29,9 @@ sh_binary(
     data = [":extractor.real"],
 )
 
-pkg_runfiles(
+codeql_pkg_runfiles(
     name = "pkg",
-    srcs = [":extractor"],
     excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
+    exes = [":extractor"],
     visibility = ["//swift:__pkg__"],
 )

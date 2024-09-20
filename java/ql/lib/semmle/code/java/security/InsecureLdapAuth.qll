@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.frameworks.Jndi
 
@@ -32,7 +33,7 @@ class InsecureLdapUrl extends Expr {
 /**
  * A sink representing the construction of a `DirContextEnvironment`.
  */
-class InsecureLdapUrlSink extends DataFlow::Node {
+class InsecureLdapUrlSink extends ApiSinkNode {
   InsecureLdapUrlSink() {
     exists(ConstructorCall cc |
       cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and

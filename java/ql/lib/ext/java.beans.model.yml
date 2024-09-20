@@ -4,3 +4,12 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.beans", "XMLDecoder", False, "XMLDecoder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # summary neutrals
+      - ["java.beans", "PropertyEditor", "getAsText", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "getValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "setAsText", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "setValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs

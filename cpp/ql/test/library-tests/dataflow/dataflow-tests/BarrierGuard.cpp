@@ -56,7 +56,7 @@ void bg_stackstruct(XY s1, XY s2) {
   }
 }
 
-void bg_structptr(XY *p1, XY *p2) { // $ ast-def=p1 ast-def=p2
+void bg_structptr(XY *p1, XY *p2) { // $ ast-def=p1 ast-def=p2 ir-def=*p1 ir-def=*p2
   p1->x = source();
   if (guarded(p1->x)) {
     sink(p1->x); // $ SPURIOUS: ast
@@ -75,4 +75,54 @@ void bg_indirect_expr() {
   if (guarded(buf)) {
     sink(buf);
   }
+}
+
+void test_guard_and_reassign() {
+  int x = source();
+
+  if(!guarded(x)) {
+    x = 0;
+  }
+  sink(x); // $ SPURIOUS: ast
+}
+
+void test_phi_read_guard(bool b) {
+  int x = source();
+
+  if(b) {
+    if(!guarded(x))
+      return;
+  }
+  else {
+    if(!guarded(x))
+      return;
+  }
+  
+  sink(x); // $ SPURIOUS: ast
+}
+
+bool unsafe(int);
+
+void test_guard_and_reassign_2() {
+  int x = source();
+
+  if(unsafe(x)) {
+    x = 0;
+  }
+  sink(x); // $ SPURIOUS: ast
+}
+
+void test_phi_read_guard_2(bool b) {
+  int x = source();
+
+  if(b) {
+    if(unsafe(x))
+      return;
+  }
+  else {
+    if(unsafe(x))
+      return;
+  }
+  
+  sink(x); // $ SPURIOUS: ast
 }

@@ -14,3 +14,4 @@
 | IncorrectNotOperatorUsage.cpp:48:9:48:18 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
 | IncorrectNotOperatorUsage.cpp:49:9:49:20 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
 | IncorrectNotOperatorUsage.cpp:70:10:70:34 | ... \| ... | Usage of a logical not (!) expression as a bitwise operator. |
+| IncorrectNotOperatorUsage.cpp:77:9:77:14 | ... & ... | Usage of a logical not (!) expression as a bitwise operator. |

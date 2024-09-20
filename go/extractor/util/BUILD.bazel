@@ -1,0 +1,25 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "util",
+    srcs = [
+        "extractvendordirs.go",
+        "semver.go",
+        "util.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/util",
+    visibility = ["//visibility:public"],
+    deps = ["@org_golang_x_mod//semver"],
+)
+
+go_test(
+    name = "util_test",
+    srcs = [
+        "semver_test.go",
+        "util_test.go",
+    ],
+    embed = [":util"],
+    deps = ["@org_golang_x_mod//semver"],
+)

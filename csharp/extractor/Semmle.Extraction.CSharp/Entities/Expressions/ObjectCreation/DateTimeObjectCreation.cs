@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.OBJECT_CREATION,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null));
 
             var longTypeSymbol = constructorSymbol.Parameters[0].Type;
