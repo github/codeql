@@ -211,15 +211,6 @@ class _TypeModifier:
 _ClassDecorator = _Callable[[type], type]
 
 
-def _annotate(**kwargs) -> _ClassDecorator:
-    def f(cls: type) -> type:
-        for k, v in kwargs.items():
-            setattr(cls, f"_{k}", v)
-        return cls
-
-    return f
-
-
 boolean = "boolean"
 int = "int"
 string = "string"
@@ -298,10 +289,6 @@ def annotate(annotated_cls: type) -> _Callable[[type], _PropertyAnnotation]:
         for a in dir(cls):
             if a.startswith(_schema.inheritable_pragma_prefix):
                 setattr(annotated_cls, a, getattr(cls, a))
-        for a, v in cls.__dict__.items():
-            # transfer annotations
-            if a.startswith("_") and not a.startswith("__") and a != "_pragmas":
-                setattr(annotated_cls, a, v)
         for p, a in cls.__annotations__.items():
             if p in annotated_cls.__annotations__:
                 annotated_cls.__annotations__[p] |= a
