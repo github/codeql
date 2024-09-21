@@ -12,5 +12,5 @@ func test() {
 }
 
 func PublicFunction() int {
-       return 1
+	return 1
 }
