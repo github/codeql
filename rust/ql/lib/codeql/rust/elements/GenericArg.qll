@@ -6,4 +6,10 @@
 private import internal.GenericArgImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A GenericArg. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class GenericArg = Impl::GenericArg;

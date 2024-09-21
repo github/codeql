@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A ParenType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ParenType` class directly.
    * Use the subclass `ParenType`, where the following predicates are available.
    */

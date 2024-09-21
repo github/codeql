@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Name
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Name. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Name extends Generated::Name { }
 }

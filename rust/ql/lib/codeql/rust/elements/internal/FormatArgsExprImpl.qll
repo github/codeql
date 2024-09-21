@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.FormatArgsExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A FormatArgsExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class FormatArgsExpr extends Generated::FormatArgsExpr { }
 }

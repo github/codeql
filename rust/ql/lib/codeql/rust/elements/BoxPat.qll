@@ -6,4 +6,13 @@
 private import internal.BoxPatImpl
 import codeql.rust.elements.Pat
 
+/**
+ * A box pattern. For example:
+ * ```rust
+ * match x {
+ *     box Option::Some(y) => y,
+ *     box Option::None => 0,
+ * };
+ * ```
+ */
 final class BoxPat = Impl::BoxPat;

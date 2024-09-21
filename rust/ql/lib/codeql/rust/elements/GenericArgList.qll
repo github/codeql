@@ -7,4 +7,10 @@ private import internal.GenericArgListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericArg
 
+/**
+ * The base class for generic arguments.
+ * ```rust
+ * x.foo::<u32, u64>(42);
+ * ```
+ */
 final class GenericArgList = Impl::GenericArgList;

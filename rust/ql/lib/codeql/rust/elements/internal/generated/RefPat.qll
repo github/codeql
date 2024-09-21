@@ -15,6 +15,13 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A reference pattern. For example:
+   * ```rust
+   * match x {
+   *     &mut Option::Some(y) => y,
+   *     &Option::None => 0,
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::RefPat` class directly.
    * Use the subclass `RefPat`, where the following predicates are available.
    */

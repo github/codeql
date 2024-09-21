@@ -16,6 +16,10 @@ import codeql.rust.elements.Item
  */
 module Generated {
   /**
+   * A ItemList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ItemList` class directly.
    * Use the subclass `ItemList`, where the following predicates are available.
    */

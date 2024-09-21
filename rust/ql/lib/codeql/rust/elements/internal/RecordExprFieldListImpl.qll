@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RecordExprFieldList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RecordExprFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RecordExprFieldList extends Generated::RecordExprFieldList { }
 }

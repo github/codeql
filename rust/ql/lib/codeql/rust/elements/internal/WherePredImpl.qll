@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.WherePred
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A WherePred. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class WherePred extends Generated::WherePred { }
 }

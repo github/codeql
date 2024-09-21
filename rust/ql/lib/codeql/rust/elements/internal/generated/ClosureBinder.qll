@@ -15,6 +15,10 @@ import codeql.rust.elements.GenericParamList
  */
 module Generated {
   /**
+   * A ClosureBinder. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ClosureBinder` class directly.
    * Use the subclass `ClosureBinder`, where the following predicates are available.
    */

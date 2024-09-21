@@ -21,6 +21,10 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A Trait. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Trait` class directly.
    * Use the subclass `Trait`, where the following predicates are available.
    */

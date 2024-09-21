@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.TryExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A TryExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class TryExpr extends Generated::TryExpr { }
 }

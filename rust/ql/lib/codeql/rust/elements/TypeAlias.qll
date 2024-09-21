@@ -15,4 +15,10 @@ import codeql.rust.elements.TypeRef
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A TypeAlias. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TypeAlias = Impl::TypeAlias;

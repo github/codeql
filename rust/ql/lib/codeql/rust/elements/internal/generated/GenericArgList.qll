@@ -15,6 +15,10 @@ import codeql.rust.elements.GenericArg
  */
 module Generated {
   /**
+   * The base class for generic arguments.
+   * ```rust
+   * x.foo::<u32, u64>(42);
+   * ```
    * INTERNAL: Do not reference the `Generated::GenericArgList` class directly.
    * Use the subclass `GenericArgList`, where the following predicates are available.
    */

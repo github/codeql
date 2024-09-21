@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ParenPat
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ParenPat. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ParenPat extends Generated::ParenPat { }
 }

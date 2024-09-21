@@ -11,4 +11,10 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
 import codeql.rust.elements.Visibility
 
+/**
+ * A Variant. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Variant = Impl::Variant;

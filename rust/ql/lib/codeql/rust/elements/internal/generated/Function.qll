@@ -25,6 +25,16 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A function declaration. For example
+   * ```rust
+   * fn foo(x: u32) -> u64 {(x + 1).into()}
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```rust
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::Function` class directly.
    * Use the subclass `Function`, where the following predicates are available.
    */

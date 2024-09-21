@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Union
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Union. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Union extends Generated::Union { }
 }

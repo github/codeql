@@ -7,4 +7,10 @@ private import internal.VisibilityImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Path
 
+/**
+ * A Visibility. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Visibility = Impl::Visibility;

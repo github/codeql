@@ -7,4 +7,10 @@ private import internal.RenameImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Name
 
+/**
+ * A Rename. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Rename = Impl::Rename;

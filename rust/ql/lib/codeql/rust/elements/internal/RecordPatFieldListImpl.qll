@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RecordPatFieldList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RecordPatFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RecordPatFieldList extends Generated::RecordPatFieldList { }
 }

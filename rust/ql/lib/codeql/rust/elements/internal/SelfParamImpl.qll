@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.SelfParam
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A SelfParam. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class SelfParam extends Generated::SelfParam { }
 }

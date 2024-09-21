@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Meta
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Meta. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Meta extends Generated::Meta { }
 }

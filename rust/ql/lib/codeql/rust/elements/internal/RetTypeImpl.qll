@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RetType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RetType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RetType extends Generated::RetType { }
 }

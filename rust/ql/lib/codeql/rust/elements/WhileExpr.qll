@@ -9,4 +9,10 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 
+/**
+ * A WhileExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class WhileExpr = Impl::WhileExpr;

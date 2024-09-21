@@ -15,6 +15,10 @@ import codeql.rust.elements.Name
  */
 module Generated {
   /**
+   * A Rename. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Rename` class directly.
    * Use the subclass `Rename`, where the following predicates are available.
    */

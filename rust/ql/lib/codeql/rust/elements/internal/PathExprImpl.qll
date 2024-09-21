@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.PathExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A path expression. For example:
+   * ```rust
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <TypeRef as Trait>::foo;
+   * ```
+   */
   class PathExpr extends Generated::PathExpr { }
 }

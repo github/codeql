@@ -16,6 +16,10 @@ import codeql.rust.elements.RestPat
  */
 module Generated {
   /**
+   * A RecordPatFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordPatFieldList` class directly.
    * Use the subclass `RecordPatFieldList`, where the following predicates are available.
    */

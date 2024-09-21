@@ -6,4 +6,10 @@
 private import internal.SliceTypeImpl
 import codeql.rust.elements.TypeRef
 
+/**
+ * A SliceType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class SliceType = Impl::SliceType;

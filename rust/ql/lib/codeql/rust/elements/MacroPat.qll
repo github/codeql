@@ -7,4 +7,10 @@ private import internal.MacroPatImpl
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.Pat
 
+/**
+ * A MacroPat. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroPat = Impl::MacroPat;

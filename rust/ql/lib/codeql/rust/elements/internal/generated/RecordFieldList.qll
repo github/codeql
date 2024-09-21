@@ -15,6 +15,10 @@ import codeql.rust.elements.RecordField
  */
 module Generated {
   /**
+   * A RecordFieldList. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordFieldList` class directly.
    * Use the subclass `RecordFieldList`, where the following predicates are available.
    */

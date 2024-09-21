@@ -7,4 +7,10 @@ private import internal.UnderscoreExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * An underscore expression. For example:
+ * ```rust
+ * _ = 42;
+ * ```
+ */
 final class UnderscoreExpr = Impl::UnderscoreExpr;

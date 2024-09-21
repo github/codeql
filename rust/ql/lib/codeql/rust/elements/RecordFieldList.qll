@@ -7,4 +7,10 @@ private import internal.RecordFieldListImpl
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.RecordField
 
+/**
+ * A RecordFieldList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class RecordFieldList = Impl::RecordFieldList;

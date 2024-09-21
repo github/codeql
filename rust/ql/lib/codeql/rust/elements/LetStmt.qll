@@ -11,4 +11,17 @@ import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
 import codeql.rust.elements.TypeRef
 
+/**
+ * A let statement. For example:
+ * ```rust
+ * let x = 42;
+ * let x: i32 = 42;
+ * let x: i32;
+ * let x;
+ * let (x, y) = (1, 2);
+ * let Some(x) = std::env::var("FOO") else {
+ *     return;
+ * };
+ * ```
+ */
 final class LetStmt = Impl::LetStmt;

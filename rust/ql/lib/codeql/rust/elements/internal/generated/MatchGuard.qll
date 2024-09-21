@@ -15,6 +15,10 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A MatchGuard. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MatchGuard` class directly.
    * Use the subclass `MatchGuard`, where the following predicates are available.
    */

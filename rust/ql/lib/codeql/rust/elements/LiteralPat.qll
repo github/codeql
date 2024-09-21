@@ -7,4 +7,13 @@ private import internal.LiteralPatImpl
 import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.Pat
 
+/**
+ * A literal pattern. For example:
+ * ```rust
+ * match x {
+ *     42 => "ok",
+ *     _ => "fail",
+ * }
+ * ```
+ */
 final class LiteralPat = Impl::LiteralPat;

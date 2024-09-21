@@ -18,6 +18,10 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A RecordField. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordField` class directly.
    * Use the subclass `RecordField`, where the following predicates are available.
    */

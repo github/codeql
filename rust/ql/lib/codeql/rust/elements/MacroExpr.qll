@@ -7,4 +7,10 @@ private import internal.MacroExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.MacroCall
 
+/**
+ * A MacroExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroExpr = Impl::MacroExpr;

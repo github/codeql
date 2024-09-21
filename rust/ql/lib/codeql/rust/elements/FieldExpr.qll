@@ -8,4 +8,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.NameRef
 
+/**
+ * A field access expression. For example:
+ * ```rust
+ * x.foo
+ * ```
+ */
 final class FieldExpr = Impl::FieldExpr;

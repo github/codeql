@@ -18,6 +18,10 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
+   * A TypeParam. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TypeParam` class directly.
    * Use the subclass `TypeParam`, where the following predicates are available.
    */

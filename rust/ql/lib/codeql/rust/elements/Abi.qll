@@ -6,4 +6,10 @@
 private import internal.AbiImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A Abi. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Abi = Impl::Abi;

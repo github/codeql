@@ -7,4 +7,10 @@ private import internal.ParenExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A ParenExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ParenExpr = Impl::ParenExpr;

@@ -7,4 +7,11 @@ private import internal.TupleExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A tuple expression. For example:
+ * ```rust
+ * (1, "one");
+ * (2, "two")[0] = 3;
+ * ```
+ */
 final class TupleExpr = Impl::TupleExpr;

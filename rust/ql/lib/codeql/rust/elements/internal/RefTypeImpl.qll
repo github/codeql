@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RefType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A RefType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class RefType extends Generated::RefType { }
 }

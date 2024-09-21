@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ArgList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ArgList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ArgList extends Generated::ArgList { }
 }
