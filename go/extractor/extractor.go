@@ -131,7 +131,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "false" {
 		log.Printf("Running go list to resolve package and module directories.")
 		// get all packages information
-		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, modFlags...)
+		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, extractTests, modFlags...)
 		if err != nil {
 			log.Fatalf("Error getting dependency package or module directories: %v.", err)
 		}
