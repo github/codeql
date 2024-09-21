@@ -44,7 +44,7 @@ def generate(opts, renderer):
             has_code = False
             for line in cls.doc:
                 match line, adding_code:
-                    case "```", _:
+                    case ("```", _) | ("```rust", _):
                         adding_code = not adding_code
                         has_code = True
                     case _, False:
@@ -53,12 +53,14 @@ def generate(opts, renderer):
                         code.append(line)
             if not has_code:
                 continue
+            assert not adding_code, "Unterminated code block in docstring: " + "\n".join(cls.doc)
             test_name = inflection.underscore(cls.name)
-            signature = cls.rust_doc_test_function
+            signature = cls.pragmas.get("rust_doc_test_signature", "() -> ()")
             fn = signature and Function(f"test_{test_name}", signature)
             if fn:
                 indent = 4 * " "
                 code = [indent + l for l in code]
-            test_with = schema.classes[cls.test_with] if cls.test_with else cls
+            test_with_name = typing.cast(str, cls.pragmas.get("qltest_test_with"))
+            test_with = schema.classes[test_with_name] if test_with_name else cls
             test = opts.ql_test_output / test_with.group / test_with.name / f"gen_{test_name}.rs"
             renderer.render(TestCode(code="\n".join(code), function=fn), test)

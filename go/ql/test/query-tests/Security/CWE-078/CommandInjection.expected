@@ -39,7 +39,7 @@ edges
 | CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | []type{args} [array] | provenance |  |
 | CommandInjection2.go:44:67:44:75 | imageName | CommandInjection2.go:44:34:44:88 | call to Sprintf | provenance | FunctionModel |
 | CommandInjection.go:9:13:9:19 | selection of URL | CommandInjection.go:9:13:9:27 | call to Query | provenance | Src:MaD:5 MaD:6 |
-| CommandInjection.go:9:13:9:27 | call to Query | CommandInjection.go:10:22:10:28 | cmdName | provenance |  Sink:MaD:7 |
+| CommandInjection.go:9:13:9:27 | call to Query | CommandInjection.go:10:22:10:28 | cmdName | provenance | Sink:MaD:7 |
 | GitSubcommands.go:11:13:11:19 | selection of URL | GitSubcommands.go:11:13:11:27 | call to Query | provenance | Src:MaD:5 MaD:6 |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:13:31:13:37 | tainted | provenance |  |
 | GitSubcommands.go:11:13:11:27 | call to Query | GitSubcommands.go:14:31:14:37 | tainted | provenance |  |

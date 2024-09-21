@@ -39,7 +39,7 @@ import Type
  * For example, `X` in `class X<T> { }`.
  */
 class GenericType extends ClassOrInterface {
-  GenericType() { typeVars(_, _, _, _, this) }
+  GenericType() { typeVars(_, _, _, this) }
 
   /**
    * Gets a parameterization of this generic type, where each use of
@@ -64,7 +64,7 @@ class GenericType extends ClassOrInterface {
   /**
    * Gets the `i`-th type parameter of this generic type.
    */
-  TypeVariable getTypeParameter(int i) { typeVars(result, _, i, _, this) }
+  TypeVariable getTypeParameter(int i) { typeVars(result, _, i, this) }
 
   /**
    * Gets a type parameter of this generic type.
@@ -139,10 +139,10 @@ abstract class BoundedType extends RefType, @boundedtype {
  */
 class TypeVariable extends BoundedType, Modifiable, @typevariable {
   /** Gets the generic type that is parameterized by this type parameter, if any. */
-  GenericType getGenericType() { typeVars(this, _, _, _, result) }
+  GenericType getGenericType() { typeVars(this, _, _, result) }
 
   /** Gets the generic callable that is parameterized by this type parameter, if any. */
-  GenericCallable getGenericCallable() { typeVars(this, _, _, _, result) }
+  GenericCallable getGenericCallable() { typeVars(this, _, _, result) }
 
   /**
    * Gets an upper bound of this type parameter, or `Object`
@@ -196,7 +196,7 @@ class TypeVariable extends BoundedType, Modifiable, @typevariable {
   }
 
   /** Gets the index of `this` type variable. */
-  int getIndex() { typeVars(this, _, result, _, _) }
+  int getIndex() { typeVars(this, _, result, _) }
 
   override string getAPrimaryQlClass() { result = "TypeVariable" }
 }
@@ -327,7 +327,7 @@ class TypeBound extends @typebound {
 class ParameterizedType extends ClassOrInterface {
   ParameterizedType() {
     typeArgs(_, _, this) or
-    typeVars(_, _, _, _, this)
+    typeVars(_, _, _, this)
   }
 
   /**
@@ -351,13 +351,13 @@ class ParameterizedType extends ClassOrInterface {
    */
   RefType getATypeArgument() {
     typeArgs(result, _, this) or
-    typeVars(result, _, _, _, this)
+    typeVars(result, _, _, this)
   }
 
   /** Gets the type argument of this parameterized type at the specified position. */
   RefType getTypeArgument(int pos) {
     typeArgs(result, pos, this) or
-    typeVars(result, _, pos, _, this)
+    typeVars(result, _, pos, this)
   }
 
   /** Gets the number of type arguments of this parameterized type. */
@@ -365,13 +365,13 @@ class ParameterizedType extends ClassOrInterface {
     result =
       count(int pos |
         typeArgs(_, pos, this) or
-        typeVars(_, _, pos, _, this)
+        typeVars(_, _, pos, this)
       )
   }
 
   /** Holds if this type originates from source code. */
   override predicate fromSource() {
-    typeVars(_, _, _, _, this) and ClassOrInterface.super.fromSource()
+    typeVars(_, _, _, this) and ClassOrInterface.super.fromSource()
   }
 
   override string getAPrimaryQlClass() { result = "ParameterizedType" }
@@ -444,14 +444,14 @@ class GenericCallable extends Callable {
     exists(Callable srcDecl |
       methods(this, _, _, _, _, srcDecl) or constrs(this, _, _, _, _, srcDecl)
     |
-      typeVars(_, _, _, _, srcDecl)
+      typeVars(_, _, _, srcDecl)
     )
   }
 
   /**
    * Gets the `i`-th type parameter of this generic callable.
    */
-  TypeVariable getTypeParameter(int i) { typeVars(result, _, i, _, this.getSourceDeclaration()) }
+  TypeVariable getTypeParameter(int i) { typeVars(result, _, i, this.getSourceDeclaration()) }
 
   /**
    * Gets a type parameter of this generic callable.

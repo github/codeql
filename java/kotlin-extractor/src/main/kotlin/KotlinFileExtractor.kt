@@ -325,7 +325,7 @@ open class KotlinFileExtractor(
             // parameter S of
             // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1,
             // not 0).
-            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
+            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, parentId)
             val locId = tw.getLocation(tp)
             tw.writeHasLocation(id, locId)
 

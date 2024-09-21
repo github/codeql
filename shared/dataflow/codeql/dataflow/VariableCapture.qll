@@ -585,11 +585,13 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     2 <= strictcount(CapturedVariable v | captureAccess(v, c))
     or
     // Constructors that capture a variable may assign it to a field, which also
-    // entails a this-to-this summary.
-    captureAccess(_, c) and c.isConstructor()
+    // entails a this-to-this summary. If there are multiple constructors, then
+    // they might call each other, so if one constructor captures a variable we
+    // allow this-to-this summaries for all of them.
+    exists(ClosureExpr ce | ce.hasBody(c) and c.isConstructor() and hasConstructorCapture(ce, _))
   }
 
-  /** Holds if the constructor, if any, for the closure defined by `ce` captures `v`. */
+  /** Holds if a constructor, if any, for the closure defined by `ce` captures `v`. */
   private predicate hasConstructorCapture(ClosureExpr ce, CapturedVariable v) {
     exists(Callable c | ce.hasBody(c) and c.isConstructor() and captureAccess(v, c))
   }
