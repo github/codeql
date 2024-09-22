@@ -89,6 +89,23 @@ class DataFlowCall instanceof Cfg::Node {
   Location getLocation() { result = this.(Cfg::Node).getLocation() }
 }
 
+string getRepoRoot() {
+  exists(Workflow w |
+    w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    result =
+      w.getLocation()
+          .getFile()
+          .getRelativePath()
+          .prefix(w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") + 1) and
+    // exclude workflow_enum reusable workflows directory root
+    not result.indexOf(".github/reusable_workflows/") > -1
+    or
+    not w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    not w.getLocation().getFile().getRelativePath().indexOf(".github/reusable_workflows") > -1 and
+    result = ""
+  )
+}
+
 /**
  * A Cfg scope that can be called
  */
@@ -97,28 +114,7 @@ class DataFlowCallable instanceof Cfg::CfgScope {
 
   string getName() {
     if this instanceof ReusableWorkflow
-    then
-      //result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
-      result =
-        this.(ReusableWorkflow)
-            .getLocation()
-            .getFile()
-            .getRelativePath()
-            .suffix(this.(ReusableWorkflow)
-                    .getLocation()
-                    .getFile()
-                    .getRelativePath()
-                    .indexOf("/.github/workflows") + 1) or
-      result =
-        this.(ReusableWorkflow)
-            .getLocation()
-            .getFile()
-            .getRelativePath()
-            .suffix(this.(ReusableWorkflow)
-                  .getLocation()
-                  .getFile()
-                  .getRelativePath()
-                  .indexOf(".github/workflows"))
+    then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath() // or
     else
       if this instanceof CompositeAction
       then
@@ -154,7 +150,13 @@ class NormalReturn extends ReturnKind, TNormalReturn {
 }
 
 /** Gets a viable implementation of the target of the given `Call`. */
-DataFlowCallable viableCallable(DataFlowCall c) { c.getName() = result.getName() }
+DataFlowCallable viableCallable(DataFlowCall c) {
+  c.getName() = result.getName() or
+  c.getName() = result.getName().replaceAll(getRepoRoot(), "") or
+  // special case for reusable workflows downloaded by the workflow_enum action
+  c.getName() =
+    result.getName().replaceAll(getRepoRoot(), "").replaceAll(".github/reusable_workflows/", "")
+}
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
