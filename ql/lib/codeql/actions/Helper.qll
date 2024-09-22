@@ -252,10 +252,26 @@ predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
   )
 }
 
+predicate calledByPrivilegedExternallyTriggerableJob(AstNode node) {
+  exists(ReusableWorkflow rw, ExternalJob caller, Job callee |
+    callee = node.getEnclosingJob() and
+    rw.getACaller() = caller and
+    rw.getAJob() = callee and
+    caller.isPrivilegedExternallyTriggerable()
+  )
+  or
+  exists(LocalJob caller |
+    caller = node.getEnclosingCompositeAction().getACallerJob() and
+    caller.isPrivilegedExternallyTriggerable()
+  )
+}
+
 predicate inPrivilegedContext(AstNode node) {
   inPrivilegedCompositeAction(node)
   or
   inPrivilegedExternallyTriggerableJob(node)
+  or
+  calledByPrivilegedExternallyTriggerableJob(node)
 }
 
 predicate inNonPrivilegedCompositeAction(AstNode node) {
