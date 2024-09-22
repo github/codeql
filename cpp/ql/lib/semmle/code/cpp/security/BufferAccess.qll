@@ -131,11 +131,10 @@ class StrncpyBA extends BufferAccess {
     result = this.(FunctionCall).getArgument(0) and
     bufferDesc = "destination buffer" and
     accessType = 2
-    // Ignore this case as reading past the source null terminator is not the behavior of strncpy
-    // or
-    // result = this.(FunctionCall).getArgument(1) and
-    // bufferDesc = "source buffer" and
-    // accessType = 2
+    or
+    result = this.(FunctionCall).getArgument(1) and
+    bufferDesc = "source buffer" and
+    accessType = 4
   }
 
   override Expr getSizeExpr() { result = this.(FunctionCall).getArgument(2) }
