@@ -1283,15 +1283,28 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
-private Node getPostUpdate(Node node) { result.(PostUpdateNode).getPreUpdateNode() = node }
+private Node getPostUpdateForStore(Node base) {
+  // Some nodes have post-update nodes but should not be targeted by a PropWrite store.
+  // Notably, an object literal can have a post-update node it if is an argument to a call,
+  // but in this case, we should not target the post-update node, as this would prevent data from
+  // flowing into the call.
+  exists(Expr expr |
+    base = TValueNode(expr) and
+    result = TExprPostUpdateNode(expr)
+  |
+    expr instanceof PropAccess or
+    expr instanceof VarAccess or
+    expr instanceof ThisExpr
+  )
+}
 
-/** Gets the post-update node for which node is the pre-update node, if one exists, otherwise gets `node` itself. */
+/** Gets node to target with a store to the given `base` object.. */
 pragma[inline]
-private Node tryGetPostUpdate(Node node) {
-  result = getPostUpdate(node)
+private Node getStoreTarget(Node base) {
+  result = getPostUpdateForStore(base)
   or
-  not exists(getPostUpdate(node)) and
-  result = node
+  not exists(getPostUpdateForStore(base)) and
+  result = base
 }
 
 pragma[nomagic]
@@ -1309,7 +1322,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1 = write.getRhs() and
     c.asPropertyName() = write.getPropertyName() and
     // Target the post-update node if one exists (for object literals we do not generate post-update nodes)
-    node2 = tryGetPostUpdate(write.getBase())
+    node2 = getStoreTarget(write.getBase())
   )
   or
   FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
