@@ -58,11 +58,11 @@ module ThreatModelSource {
 /**
  * A data flow source that is enabled in the current threat model configuration.
  */
-class ActiveThreatModelSource extends DataFlow::Node {
+class ActiveThreatModelSource extends ThreatModelSource {
   ActiveThreatModelSource() {
     exists(string kind |
       currentThreatModel(kind) and
-      this.(ThreatModelSource).getThreatModel() = kind
+      this.getThreatModel() = kind
     )
   }
 }
