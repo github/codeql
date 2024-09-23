@@ -1,3 +1,5 @@
+/** Provides classes relating to extraction diagnostics. */
+
 private import codeql.Locations
 
 /** A diagnostic emitted during extraction, such as a parse error */
