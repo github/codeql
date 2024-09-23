@@ -72,7 +72,7 @@ class CallNode extends ExprNode {
 
   CallNode() { this.getCfgNode() instanceof DataFlowCall }
 
-  string getCallee() { result = this.getCfgNode().(DataFlowCall).getName() }
+  DataFlowCallable getCalleeNode() { result = viableCallable(this.getCfgNode()) }
 }
 
 /**
