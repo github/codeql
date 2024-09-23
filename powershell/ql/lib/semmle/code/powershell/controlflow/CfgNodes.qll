@@ -197,6 +197,29 @@ module ExprNodes {
 
     InvokeMemberCfgNode getInvokeMember() { this = result.getQualifier() }
   }
+
+  class ConditionalChildMapping extends ExprChildMapping, ConditionalExpr {
+    override predicate relevantChild(Ast n) { n = this.getCondition() or n = this.getABranch() }
+  }
+
+  /** A control-flow node that wraps a `ConditionalExpr` expression. */
+  class ConditionalCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConditionalCfgNode" }
+
+    override ConditionalChildMapping e;
+
+    final override ConditionalExpr getExpr() { result = super.getExpr() }
+
+    final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
+
+    final ExprCfgNode getBranch(boolean value) { e.hasCfgChild(e.getBranch(value), this, result) }
+
+    final ExprCfgNode getABranch() { result = this.getBranch(_) }
+
+    final ExprCfgNode getIfTrue() { e.hasCfgChild(e.getIfTrue(), this, result) }
+
+    final ExprCfgNode getIfFalse() { e.hasCfgChild(e.getIfFalse(), this, result) }
+  }
 }
 
 module StmtNodes {
