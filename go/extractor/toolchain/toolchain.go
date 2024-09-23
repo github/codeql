@@ -232,6 +232,7 @@ func GetPkgsInfo(patterns []string, includingDeps bool, extractTests bool, flags
 	}
 
 	if extractTests {
+		// Without the `-test` flag, test packages would be omitted from the `go list` output.
 		flags = append(flags, "-test")
 	}
 

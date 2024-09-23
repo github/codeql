@@ -21,6 +21,8 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "--help                Print this help.\n")
 }
 
+// extractTests is set (a) if we were manually commanded to extract tests via the relevant
+// environment variable / extractor option, or (b) we're mimicking a `go test` command.
 func parseFlags(args []string, mimic bool, extractTests bool) ([]string, []string, bool) {
 	i := 0
 	buildFlags := []string{}
