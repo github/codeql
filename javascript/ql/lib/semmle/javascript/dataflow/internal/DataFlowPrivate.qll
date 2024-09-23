@@ -5,6 +5,7 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.VariableCapture
+private import semmle.javascript.dataflow.internal.VariableOrThis
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
@@ -20,18 +21,18 @@ private class Node = DataFlow::Node;
 class PostUpdateNode = DataFlow::PostUpdateNode;
 
 class SsaUseNode extends DataFlow::Node, TSsaUseNode {
-  private VarAccess access;
+  private Expr expr;
 
-  SsaUseNode() { this = TSsaUseNode(access) }
-
-  cached
-  override string toString() { result = "[ssa-use] " + access.toString() }
+  SsaUseNode() { this = TSsaUseNode(expr) }
 
   cached
-  override StmtContainer getContainer() { result = access.getContainer() }
+  override string toString() { result = "[ssa-use] " + expr.toString() }
 
   cached
-  override Location getLocation() { result = access.getLocation() }
+  override StmtContainer getContainer() { result = expr.getContainer() }
+
+  cached
+  override Location getLocation() { result = expr.getLocation() }
 }
 
 class SsaPhiReadNode extends DataFlow::Node, TSsaPhiReadNode {
@@ -1056,9 +1057,9 @@ predicate knownSourceModel(Node sink, string model) { none() }
 predicate knownSinkModel(Node sink, string model) { none() }
 
 private predicate samePhi(SsaPhiNode legacyPhi, Ssa2::PhiNode newPhi) {
-  exists(BasicBlock bb, PurelyLocalVariable v |
+  exists(BasicBlock bb, LocalVariableOrThis v |
     newPhi.definesAt(v, bb, _) and
-    legacyPhi.definesAt(bb, _, v)
+    legacyPhi.definesAt(bb, _, v.asLocalVariable())
   )
 }
 
@@ -1082,10 +1083,11 @@ private predicate useUseFlow(Node node1, Node node2) {
   exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2, boolean isUseStep |
     Ssa2::localFlowStep(def, ssa1, ssa2, isUseStep) and
     node1 = getNodeFromSsa2(ssa1) and
-    node2 = getNodeFromSsa2(ssa2)
+    node2 = getNodeFromSsa2(ssa2) and
+    not node1.getTopLevel().isExterns()
   )
   or
-  exists(VarUse use |
+  exists(Expr use |
     node1 = TSsaUseNode(use) and
     node2 = TValueNode(use)
   )
