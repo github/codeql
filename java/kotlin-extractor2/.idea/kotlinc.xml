@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="Kotlin2JsCompilerArguments">
+    <option name="moduleKind" value="plain" />
+  </component>
   <component name="Kotlin2JvmCompilerArguments">
     <option name="jvmTarget" value="1.8" />
   </component>
   <component name="KotlinCommonCompilerArguments">
-    <option name="apiVersion" value="1.9" />
-    <option name="languageVersion" value="1.9" />
+    <option name="apiVersion" value="2.0" />
+    <option name="languageVersion" value="2.0" />
   </component>
   <component name="KotlinCompilerSettings">
     <option name="additionalArguments" value="-Xcontext-receivers" />
+  </component>
+  <component name="KotlinJpsPluginSettings">
+    <option name="version" value="2.0.20" />
   </component>
 </project>
