@@ -1,6 +1,7 @@
 private import javascript
 private import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
+private import semmle.javascript.dataflow.internal.VariableOrThis
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 module Private {
@@ -75,7 +76,7 @@ module Private {
     MkIteratorError() or
     MkPromiseValue() or
     MkPromiseError() or
-    MkCapturedContent(LocalVariable v) { v.isCaptured() }
+    MkCapturedContent(LocalVariableOrThis v) { v.isCaptured() }
 
   cached
   newtype TContentSet =
@@ -163,7 +164,7 @@ module Public {
     int asArrayIndex() { result = this.asPropertyName().(PropertyName).asArrayIndex() }
 
     /** Gets the captured variable represented by this content, if any. */
-    LocalVariable asCapturedVariable() { this = MkCapturedContent(result) }
+    LocalVariableOrThis asCapturedVariable() { this = MkCapturedContent(result) }
 
     /** Holds if this represents values stored at an unknown array index. */
     predicate isUnknownArrayElement() { this = MkArrayElementUnknown() }

@@ -75,21 +75,22 @@ function t6() {
                 this.y = y;
             });
 
-            sink(this.x); // $ MISSING: hasValueFlow=t6.1
-            sink(this.y); // $ MISSING: hasValueFlow=t6.1
+            sink(this.x); // $ hasValueFlow=t6.1
+            sink(this.y); // $ hasValueFlow=t6.2
 
             invoke(() => {
-                sink(this.x); // $ MISSING: hasValueFlow=t6.1
-                sink(this.y); // $ MISSING: hasValueFlow=t6.2
+                sink(this.x); // $ hasValueFlow=t6.1
+                sink(this.y); // $ hasValueFlow=t6.2
             });
 
             this.methodLike = function() {
-                sink(this.x); // $ MISSING: hasValueFlow=t6.1
-                sink(this.y); // $ MISSING: hasValueFlow=t6.2
+                sink(this.x); // $ hasValueFlow=t6.1
+                sink(this.y); // $ hasValueFlow=t6.2
             }
         }
     }
     const c = new C(source('t6.1'), source('t6.2'));
     sink(c.x); // $ hasValueFlow=t6.1
-    sink(c.y); // $ MISSING: hasValueFlow=t6.2
+    sink(c.y); // $ hasValueFlow=t6.2
+    c.methodLike();
 }
