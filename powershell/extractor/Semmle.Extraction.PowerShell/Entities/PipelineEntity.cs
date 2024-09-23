@@ -15,6 +15,11 @@ namespace Semmle.Extraction.PowerShell.Entities
         public PipelineAst Fragment => Symbol.Item1;
         public override void Populate(TextWriter trapFile)
         {
+            // If there is just one element we don't want to include it in the database.
+            if (Fragment.PipelineElements.Count == 1)
+            {
+                return;
+            }
             trapFile.pipeline(this, Fragment.PipelineElements.Count);
             trapFile.pipeline_location(this, TrapSuitableLocation);
             for (var index = 0; index < Fragment.PipelineElements.Count; index++)
@@ -22,13 +27,17 @@ namespace Semmle.Extraction.PowerShell.Entities
                 var subEntity = EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.PipelineElements[index]);
                 trapFile.pipeline_component(this, index, subEntity);
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);   
         }
 
         public override bool NeedsPopulation => true;
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if(Fragment.PipelineElements.Count == 1)
+            {
+                return;
+            }
             trapFile.WriteSubId(TrapSuitableLocation);
             trapFile.Write(";pipeline");
         }

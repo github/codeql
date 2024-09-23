@@ -17,7 +17,7 @@ namespace Semmle.Extraction.PowerShell.Entities
         {
             trapFile.pipeline_chain(this, Fragment.Background, Fragment.Operator, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.LhsPipelineChain), EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.RhsPipeline));
             trapFile.pipeline_chain_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

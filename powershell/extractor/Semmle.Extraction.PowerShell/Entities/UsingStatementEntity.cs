@@ -28,7 +28,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.using_statement_module_specification(this, HashtableEntity.Create(PowerShellContext, Fragment.ModuleSpecification));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

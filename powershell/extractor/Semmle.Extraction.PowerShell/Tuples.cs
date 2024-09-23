@@ -411,9 +411,17 @@ namespace Semmle.Extraction.PowerShell
             trapFile.WriteTuple("command_parameter_location", commandParameterEntity, location);
         }
         
-        internal static void parent(this TextWriter trapFile, Entity parent, Entity child)
+        internal static void parent(this TextWriter trapFile, PowerShellContext PowerShellContext, Entity child, Ast parent)
         {
-            trapFile.WriteTuple("parent", parent, child);
+            switch(parent)
+            {
+                case PipelineAst pipelineAst when pipelineAst.PipelineElements.Count == 1:
+                    trapFile.parent(PowerShellContext, child, parent.Parent);
+                    break;
+                default:
+                    trapFile.WriteTuple("parent", child, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, parent));
+                    break;
+            }
         }
         internal static void binary_expression(this TextWriter trapFile, BinaryExpressionEntity binaryExpressionEntity, TokenKind operation, Entity left, Entity right)
         {

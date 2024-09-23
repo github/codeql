@@ -19,7 +19,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             var right = EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Right);
             trapFile.assignment_statement(this, Fragment.Operator, left, right);
             trapFile.assignment_statement_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

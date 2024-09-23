@@ -21,7 +21,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             var type = EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Type);
             trapFile.convert_expression(this, attribute, child, type, Fragment.StaticType.Name);
             trapFile.convert_expression_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

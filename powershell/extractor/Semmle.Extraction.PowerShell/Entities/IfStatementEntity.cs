@@ -27,7 +27,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.if_statement_else(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.ElseClause));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

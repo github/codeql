@@ -29,7 +29,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.property_member_initial_value(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.InitialValue));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

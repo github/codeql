@@ -21,7 +21,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.hash_table_key_value_pairs(this, index++, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, pair.Item1), EntityConstructor.ConstructAppropriateEntity(PowerShellContext, pair.Item2));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

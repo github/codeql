@@ -21,7 +21,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                 Fragment.VariablePath.IsUnscopedVariable, Fragment.VariablePath.IsVariable,
                 Fragment.VariablePath.IsDriveQualified);
             trapFile.variable_expression_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

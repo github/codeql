@@ -80,7 +80,7 @@ case "${lang}" in
   java)
     scheme_file="${lang}/ql/lib/config/semmlecode.dbscheme"
     ;;
-  csharp | cpp | javascript | python)
+  csharp | cpp | javascript | python | powershell)
     scheme_file="${lang}/ql/lib/semmlecode.${lang}.dbscheme"
     ;;
   go | ruby | swift)

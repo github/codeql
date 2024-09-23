@@ -24,7 +24,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                     trapFile.error_expression_nested_ast(this, index, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.NestedAst[index]));
                 }
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

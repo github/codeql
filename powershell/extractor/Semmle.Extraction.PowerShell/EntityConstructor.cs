@@ -6,6 +6,18 @@ namespace Semmle.Extraction.PowerShell;
 
 public static class EntityConstructor
 {
+    private static Entity CreatePipelineEntity(PowerShellContext powerShellContext, PipelineAst pipelineAst)
+    {
+        if (pipelineAst.PipelineElements.Count == 1)
+        {
+            return ConstructAppropriateEntity(powerShellContext, pipelineAst.PipelineElements[0]);
+        }
+        else
+        {
+            return PipelineEntity.Create(powerShellContext, pipelineAst);
+        }
+    }
+    
     public static Entity ConstructAppropriateEntity(PowerShellContext powerShellContext, Ast ast)
     {
         return ast switch
@@ -24,7 +36,7 @@ public static class EntityConstructor
             MemberExpressionAst memberExpressionAst => MemberExpressionEntity.Create(powerShellContext, memberExpressionAst),
             NamedBlockAst namedBlockAst => NamedBlockEntity.Create(powerShellContext, namedBlockAst),
             ParenExpressionAst parenExpressionAst => ParenExpressionEntity.Create(powerShellContext, parenExpressionAst),
-            PipelineAst pipelineAst => PipelineEntity.Create(powerShellContext, pipelineAst),
+            PipelineAst pipelineAst => CreatePipelineEntity(powerShellContext, pipelineAst),
             ScriptBlockAst scriptBlockAst => ScriptBlockEntity.Create(powerShellContext, scriptBlockAst),
             StatementBlockAst statementBlockAst => StatementBlockEntity.Create(powerShellContext, statementBlockAst),
             StringConstantExpressionAst stringConstantExpressionAst => StringConstantExpressionEntity.Create(powerShellContext, stringConstantExpressionAst),

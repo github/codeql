@@ -22,7 +22,7 @@ namespace Semmle.Extraction.PowerShell.Entities
 
             trapFile.ternary_expression(this, condition, ifFalse, ifTrue);
             trapFile.ternary_expression_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;
