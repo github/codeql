@@ -89,10 +89,14 @@ module SsaFlow {
 module LocalFlow {
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    none() // TODO
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalCfgNode).getABranch()
+    or
+    nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
   }
 
-  predicate localMustFlowStep(Node node1, Node node2) { none() }
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
+  }
 }
 
 /** Provides logic related to captured variables. */
@@ -125,11 +129,22 @@ private module Cached {
    * data flow.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+      or
+      SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+    ) and
+    model = ""
+  }
 
   /** This is the local flow predicate that is exposed. */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { none() }
+  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
 
   cached
   newtype TContentSet = TSingletonContent(Content c)
