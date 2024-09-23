@@ -223,7 +223,7 @@ class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
       output(this, tp, output) and
       input != output
     |
-      result = Printing::asValueModel(this, input, output)
+      result = Printing::asLiftedValueModel(this, input, output)
     )
   }
 }

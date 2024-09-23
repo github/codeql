@@ -9,8 +9,8 @@
 | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | This data transmitted to the user depends on $@. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | sensitive information |
 | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | This data transmitted to the user depends on $@. | ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField | sensitive information |
 edges
-| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance |  Sink:MaD:2 |
 | ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance | MaD:1 Sink:MaD:2 |
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance | Sink:MaD:2 |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | provenance |  |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | provenance |  |
 | ExposureInTransmittedData.cs:30:13:30:13 | access to local variable p : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | provenance |  |

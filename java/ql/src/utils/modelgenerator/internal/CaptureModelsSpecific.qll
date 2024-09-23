@@ -154,7 +154,7 @@ private string isExtensible(Callable c) {
 private predicate qualifiedName(Callable c, string package, string type) {
   exists(RefType t | t = c.getDeclaringType() |
     package = t.getCompilationUnit().getPackage().getName() and
-    type = t.getErasure().(J::RefType).nestedName()
+    type = t.getErasure().(J::RefType).getNestedName()
   )
 }
 
@@ -340,16 +340,35 @@ predicate isAdditionalContentFlowStep(DataFlow::Node node1, DataFlow::Node node2
 }
 
 /**
- * Gets the MaD string representation of the contentset `c`.
+ * Holds if the content set `c` is a field or a synthetic field.
  */
-string printContent(ContentSet c) {
-  exists(Field f, string name |
-    f = c.(DataFlowUtil::FieldContent).getField() and name = f.getQualifiedName()
-  |
-    if f.isPublic() then result = "Field[" + name + "]" else result = "SyntheticField[" + name + "]"
+predicate isField(ContentSet c) {
+  c instanceof DataFlowUtil::FieldContent or
+  c instanceof DataFlowUtil::SyntheticFieldContent
+}
+
+/**
+ * Gets the MaD synthetic name string representation for the content set `c`, if any.
+ */
+string getSyntheticName(DataFlow::ContentSet c) {
+  exists(Field f |
+    not f.isPublic() and
+    f = c.(DataFlowUtil::FieldContent).getField() and
+    result = f.getQualifiedName()
   )
   or
-  result = "SyntheticField[" + c.(DataFlowUtil::SyntheticFieldContent).getField() + "]"
+  result = c.(DataFlowUtil::SyntheticFieldContent).getField()
+}
+
+/**
+ * Gets the MaD string representation of the content set `c`.
+ */
+string printContent(ContentSet c) {
+  exists(Field f | f = c.(DataFlowUtil::FieldContent).getField() and f.isPublic() |
+    result = "Field[" + f.getQualifiedName() + "]"
+  )
+  or
+  result = "SyntheticField[" + getSyntheticName(c) + "]"
   or
   c instanceof DataFlowUtil::CollectionContent and result = "Element"
   or
