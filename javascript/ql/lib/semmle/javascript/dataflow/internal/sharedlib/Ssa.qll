@@ -42,8 +42,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
     bb.useAt(i, v.asLocalVariable(), _) and certain = true
     or
     certain = true and
-    bb.getNode(i) = v.getAThisAccess()
-    // TODO: also account for: super() and field initialisers
+    bb.getNode(i).(ThisUse).getBindingContainer() = v.asThisContainer()
   }
 
   predicate getImmediateBasicBlockDominator = BasicBlockInternal::immediateDominator/1;
@@ -55,8 +54,8 @@ module SsaConfig implements InputSig<js::DbLocation> {
 import Make<js::DbLocation, SsaConfig>
 
 private module SsaDataflowInput implements DataFlowIntegrationInputSig {
-  class Expr extends js::Expr {
-    Expr() { this = any(SsaConfig::SourceVariable v).getAnAccess() }
+  class Expr extends js::ControlFlowNode {
+    Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
 
     predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
   }

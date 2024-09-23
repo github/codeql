@@ -1,4 +1,5 @@
 private import javascript
+private import DataFlowNode
 
 cached
 private newtype TLocalVariableOrThis =
@@ -44,14 +45,17 @@ class LocalVariableOrThis extends TLocalVariableOrThis {
     result = this.asThisContainer()
   }
 
-  /** Gets an access to `this` represented by this value. */
-  ThisExpr getAThisAccess() { result.getBindingContainer() = this.asThisContainer() }
+  /** Gets an explicit access to `this` represented by this value. */
+  ThisExpr getAThisExpr() { result.getBindingContainer() = this.asThisContainer() }
 
-  /** Gets an access to variable or `this`. */
-  Expr getAnAccess() {
+  /** Gets an implicit or explicit use of the `this` represented by this value. */
+  ThisUse getAThisUse() { result.getBindingContainer() = this.asThisContainer() }
+
+  /** Gets an expression that accesses this variable or `this`. */
+  ControlFlowNode getAUse() {
     result = this.asLocalVariable().getAnAccess()
     or
-    result = this.getAThisAccess()
+    result = this.getAThisUse()
   }
 }
 
@@ -73,4 +77,51 @@ module LocalVariableOrThis {
 
   /** Gets the representation of `this` in the given container. */
   LocalVariableOrThis thisInContainer(StmtContainer c) { result = TThis(c) }
+}
+
+/**
+ * An explicit or implicit use of `this`.
+ *
+ * Implicit uses include `super()` calls and instance field initializers (which includes TypeScript parameter fields).
+ */
+abstract class ThisUse instanceof ControlFlowNode {
+  /** Gets the container binding the `this` being accessed */
+  abstract StmtContainer getBindingContainer();
+
+  abstract StmtContainer getUseContainer();
+
+  string toString() { result = super.toString() }
+
+  DbLocation getLocation() { result = super.getLocation() }
+}
+
+private predicate implicitThisUse(ControlFlowNode node, StmtContainer thisBinder) {
+  thisBinder = node.(SuperExpr).getBinder()
+  or
+  exists(FieldDefinition field |
+    not field.isStatic() and
+    node = field and
+    thisBinder = field.getDeclaringClass().getConstructor().getBody()
+  )
+}
+
+class ImplicitThisUse extends ThisUse {
+  ImplicitThisUse() { implicitThisUse(this, _) }
+
+  override StmtContainer getBindingContainer() { implicitThisUse(this, result) }
+
+  override StmtContainer getUseContainer() {
+    // The following differs from FieldDefinition.getContainer() which returns the container enclosing
+    // the class, not the class constructor.
+    // TODO: consider changing this in FieldDefinition.getContainer()
+    result = this.(FieldDefinition).getDeclaringClass().getConstructor().getBody()
+    or
+    result = this.(SuperExpr).getContainer()
+  }
+}
+
+private class ExplicitThisUse extends ThisUse instanceof ThisExpr {
+  override StmtContainer getBindingContainer() { result = ThisExpr.super.getBindingContainer() }
+
+  override StmtContainer getUseContainer() { result = ThisExpr.super.getContainer() }
 }

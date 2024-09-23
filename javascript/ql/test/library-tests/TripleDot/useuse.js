@@ -60,5 +60,5 @@ function t5() {
         }
     }
     const c = new C();
-    sink(c.field); // $ MISSING: hasValueFlow=t5.1
+    sink(c.field); // $ hasValueFlow=t5.1
 }
