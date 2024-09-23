@@ -106,6 +106,11 @@ def test_in_list_with_constants():
     else:
         ensure_tainted(ts) # $ tainted
 
+    if ts in ["safe", not_constant(), None]:
+        ensure_tainted(ts)  # $ tainted
+
+def not_constant():
+    return "x"
 
 SAFE = ["safe", "also_safe"]
 
