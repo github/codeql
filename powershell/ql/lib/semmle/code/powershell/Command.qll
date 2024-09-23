@@ -1,11 +1,11 @@
 import powershell
 
 class Cmd extends @command, CmdBase {
-  override string toString() { result = this.getName() }
+  override string toString() { result = this.getCommandName() }
 
   override SourceLocation getLocation() { command_location(this, result) }
 
-  string getName() { command(this, result, _, _, _) }
+  string getCommandName() { command(this, result, _, _, _) }
 
   int getKind() { command(this, _, result, _, _) }
 
@@ -18,6 +18,8 @@ class Cmd extends @command, CmdBase {
   Expr getCommand() { result = this.getElement(0) }
 
   StringConstExpr getCmdName() { result = this.getElement(0) }
+
+  Expr getAnArgument() { result = this.getArgument(_) or result = this.getNamedArgument(_) }
 
   Expr getArgument(int i) {
     result =
