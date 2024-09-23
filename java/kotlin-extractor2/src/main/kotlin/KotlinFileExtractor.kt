@@ -1,13 +1,17 @@
 package com.github.codeql
 
+import com.github.codeql.utils.isInterfaceLike
 import com.intellij.openapi.util.TextRange
 import org.jetbrains.kotlin.analysis.api.components.KaDiagnosticCheckerFilter
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.KtNodeTypes
+import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
+import java.io.Closeable
+import java.util.*
 
 /*
 OLD: KE1
@@ -83,6 +87,7 @@ context (KaSession)
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
+    val declarationStack: DeclarationStack,
     /*
     OLD: KE1
         val linesOfCode: LinesOfCode?,
@@ -313,17 +318,24 @@ OLD: KE1
                                         if (isExternalDeclaration(declaration)) {
                                             extractExternalClassLater(declaration)
                                         } else {
-                                            extractClassSource(
-                                                declaration,
-                                                extractDeclarations = true,
-                                                extractStaticInitializer = true,
-                                                extractPrivateMembers = extractPrivateMembers,
-                                                extractFunctionBodies = extractFunctionBodies
-                                            )
-                                        }
+                                        */
+                    extractClassSource(
+                        declaration,
+                        extractDeclarations = true,
+                        /*
+                        OLD: KE1
+                           extractStaticInitializer = true,
+                           extractPrivateMembers = extractPrivateMembers,
+                           extractFunctionBodies = extractFunctionBodies
+                       */
+                    )
+                    /*
+                    OLD: KE1
+                                       }
                     */
                 }
 
+                // TODO: the below should be KaFunctionSymbol
                 is KaNamedFunctionSymbol -> {
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
@@ -339,7 +351,8 @@ OLD: KE1
                                                         listOf()
                             */
                         )
-                    }
+                    } else
+                        Unit
                     /*
                     OLD: KE1
                                         Unit
@@ -396,7 +409,8 @@ OLD: KE1
                                 is IrTypeAlias -> extractTypeAlias(declaration)
                 */
                 else ->
-                    TODO()
+                    // TODO
+                    Unit
                 /*
                 OLD: KE1
                                     logger.errorElement(
@@ -1014,158 +1028,184 @@ OLD: KE1
             }
         }
 
-        fun extractClassSource(
-            c: IrClass,
-            extractDeclarations: Boolean,
-            extractStaticInitializer: Boolean,
-            extractPrivateMembers: Boolean,
-            extractFunctionBodies: Boolean
-        ): Label<out DbClassorinterface> {
-            with("class source", c) {
-                DeclarationStackAdjuster(c).use {
-                    val id = useClassSource(c)
-                    val pkg = c.packageFqName?.asString() ?: ""
-                    val cls = if (c.isAnonymousObject) "" else c.name.asString()
-                    val pkgId = extractPackage(pkg)
-                    tw.writeClasses_or_interfaces(id, cls, pkgId, id)
-                    if (c.isInterfaceLike) {
-                        tw.writeIsInterface(id)
-                        if (c.kind == ClassKind.ANNOTATION_CLASS) {
-                            tw.writeIsAnnotType(id)
+     */
+
+    @OptIn(KaExperimentalApi::class)
+    fun extractClassSource(
+        c: KaClassSymbol,
+        extractDeclarations: Boolean,
+        /*
+        OLD: KE1
+        extractStaticInitializer: Boolean,
+        extractPrivateMembers: Boolean,
+        extractFunctionBodies: Boolean
+         */
+    ): Label<out DbClassorinterface> {
+        with("class source", c.psiSafe() ?: TODO()) {
+            DeclarationStackAdjuster(c).use {
+                val id = useClassSource(c)
+                val pkg = c.classId?.packageFqName?.asString() ?: ""
+                val cls =
+                    if (c.classKind == KaClassKind.ANONYMOUS_OBJECT) "" else c.name!!.asString() // TODO: Remove !!
+                val pkgId = extractPackage(pkg)
+                tw.writeClasses_or_interfaces(id, cls, pkgId, id)
+                if (c.isInterfaceLike) {
+                    tw.writeIsInterface(id)
+                    if (c.classKind == KaClassKind.ANNOTATION_CLASS) {
+                        tw.writeIsAnnotType(id)
+                    }
+                } else {
+                    val kind = c.classKind
+                    if (kind == KaClassKind.ENUM_CLASS) {
+                        tw.writeIsEnumType(id)
+                    } else if (
+                        kind != KaClassKind.CLASS &&
+                        kind != KaClassKind.OBJECT //&&
+                    //OLD KE1: kind != ClassKind.ENUM_ENTRY
+                    ) {
+                        logger.warnElement("Unrecognised class kind $kind", c.psiSafe() ?: TODO())
+                    }
+
+                    /*
+                    OLD: KE1
+                    if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
+                        tw.writeFile_class(id)
+                    }
+                     */
+
+                    if ((c as? KaNamedClassSymbol)?.isData == true) {
+                        tw.writeKtDataClasses(id)
+                    }
+                }
+
+                val locId = tw.getLocation(c.psiSafe() ?: TODO())
+                tw.writeHasLocation(id, locId)
+
+                // OLD: KE1
+                //extractEnclosingClass(c.parent, id, c, locId, listOf())
+                //val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
+
+                c.typeParameters.mapIndexed { idx, param ->
+                    //extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx))
+                }
+                if (extractDeclarations) {
+                    if (c.classKind == KaClassKind.ANNOTATION_CLASS) {
+                        c.declaredMemberScope.declarations.filterIsInstance<KaPropertySymbol>().forEach {
+                            val getter = it.getter
+                            if (getter == null) {
+                                logger.warnElement(
+                                    "Expected an annotation property to have a getter",
+                                    it.psiSafe() ?: TODO()
+                                )
+                            } else {
+                                extractFunction(
+                                    getter,
+                                    id,
+                                    /* OLD: KE1
+                                    extractBody = false,
+                                    extractMethodAndParameterTypeAccesses =
+                                    extractFunctionBodies,
+                                    extractAnnotations = true,
+                                    null,
+                                    listOf()
+                                     */
+                                )
+                                    ?.also { functionLabel ->
+                                        tw.writeIsAnnotElem(functionLabel.cast())
+                                    }
+                            }
                         }
                     } else {
-                        val kind = c.kind
-                        if (kind == ClassKind.ENUM_CLASS) {
-                            tw.writeIsEnumType(id)
-                        } else if (
-                            kind != ClassKind.CLASS &&
-                                kind != ClassKind.OBJECT &&
-                                kind != ClassKind.ENUM_ENTRY
-                        ) {
-                            logger.warnElement("Unrecognised class kind $kind", c)
-                        }
-
-                        if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
-                            tw.writeFile_class(id)
-                        }
-
-                        if (c.isData) {
-                            tw.writeKtDataClasses(id)
-                        }
-                    }
-
-                    val locId = tw.getLocation(c)
-                    tw.writeHasLocation(id, locId)
-
-                    extractEnclosingClass(c.parent, id, c, locId, listOf())
-
-                    val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
-
-                    c.typeParameters.mapIndexed { idx, param ->
-                        extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx))
-                    }
-                    if (extractDeclarations) {
-                        if (c.kind == ClassKind.ANNOTATION_CLASS) {
-                            c.declarations.filterIsInstance<IrProperty>().forEach {
-                                val getter = it.getter
-                                if (getter == null) {
-                                    logger.warnElement(
-                                        "Expected an annotation property to have a getter",
-                                        it
-                                    )
-                                } else {
-                                    extractFunction(
-                                            getter,
-                                            id,
-                                            extractBody = false,
-                                            extractMethodAndParameterTypeAccesses =
-                                                extractFunctionBodies,
-                                            extractAnnotations = true,
-                                            null,
-                                            listOf()
-                                        )
-                                        ?.also { functionLabel ->
-                                            tw.writeIsAnnotElem(functionLabel.cast())
-                                        }
-                                }
-                            }
-                        } else {
-                            try {
-                                c.declarations.forEach {
-                                    extractDeclaration(
-                                        it,
-                                        extractPrivateMembers = extractPrivateMembers,
-                                        extractFunctionBodies = extractFunctionBodies,
-                                        extractAnnotations = true
-                                    )
-                                }
-                                if (extractStaticInitializer) extractStaticInitializer(c, { id })
-                                extractJvmStaticProxyMethods(
-                                    c,
-                                    id,
-                                    extractPrivateMembers,
-                                    extractFunctionBodies
+                        try {
+                            val decl = c.declaredMemberScope.declarations.toList()
+                            c.declaredMemberScope.declarations.forEach {
+                                extractDeclaration(
+                                    it,
+                                    /*
+                                    OLD: KE1
+                                    extractPrivateMembers = extractPrivateMembers,
+                                    extractFunctionBodies = extractFunctionBodies,
+                                    extractAnnotations = true
+                                     */
                                 )
-                            } catch (e: IllegalArgumentException) {
-                                // A Kotlin bug causes this to throw: https://youtrack.jetbrains.com/issue/KT-63847/K2-IllegalStateException-IrFieldPublicSymbolImpl-for-java.time-Clock.OffsetClock.offset0-is-already-bound
-                                // TODO: This should either be removed or log something, once the bug is fixed
                             }
+                            /*
+                            OLD: KE1
+                            if (extractStaticInitializer) extractStaticInitializer(c, { id })
+                            extractJvmStaticProxyMethods(
+                                c,
+                                id,
+                                extractPrivateMembers,
+                                extractFunctionBodies
+                            )
+                             */
+                        } catch (e: IllegalArgumentException) {
+                            // A Kotlin bug causes this to throw: https://youtrack.jetbrains.com/issue/KT-63847/K2-IllegalStateException-IrFieldPublicSymbolImpl-for-java.time-Clock.OffsetClock.offset0-is-already-bound
+                            // TODO: This should either be removed or log something, once the bug is fixed
                         }
                     }
-                    if (c.isNonCompanionObject) {
-                        // For `object MyObject { ... }`, the .class has an
-                        // automatically-generated `public static final MyObject INSTANCE`
-                        // field that may be referenced from Java code, and is used in our
-                        // IrGetObjectValue support. We therefore need to fabricate it
-                        // here.
-                        val instance = useObjectClassInstance(c)
-                        val type = useSimpleTypeClass(c, emptyList(), false)
-                        tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
-                        tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
-                        tw.writeHasLocation(instance.id, locId)
-                        addModifiers(instance.id, "public", "static", "final")
-                        tw.writeClass_object(id, instance.id)
-                    }
-                    if (c.isObject) {
-                        addModifiers(id, "static")
-                    }
-                    if (extractFunctionBodies && needsObinitFunction(c)) {
-                        extractObinitFunction(c, id)
-                    }
-
-                    extractClassModifiers(c, id)
-                    extractClassSupertypes(
-                        c,
-                        id,
-                        inReceiverContext = true
-                    ) // inReceiverContext = true is specified to force extraction of member prototypes
-                      // of base types
-
-                    linesOfCode?.linesOfCodeInDeclaration(c, id)
-
-                    val additionalAnnotations =
-                        if (
-                            c.kind == ClassKind.ANNOTATION_CLASS &&
-                                c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
-                        )
-                            metaAnnotationSupport.generateJavaMetaAnnotations(c, extractFunctionBodies)
-                        else listOf()
-
-                    extractAnnotations(
-                        c,
-                        c.annotations + additionalAnnotations,
-                        id,
-                        extractFunctionBodies
-                    )
-
-                    if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
-                        externalClassExtractor.writeStubTrapFile(c)
-
-                    return id
                 }
+                /*
+                OLD: KE1
+                if (c.isNonCompanionObject) {
+                    // For `object MyObject { ... }`, the .class has an
+                    // automatically-generated `public static final MyObject INSTANCE`
+                    // field that may be referenced from Java code, and is used in our
+                    // IrGetObjectValue support. We therefore need to fabricate it
+                    // here.
+                    val instance = useObjectClassInstance(c)
+                    val type = useSimpleTypeClass(c, emptyList(), false)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
+                    tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
+                    tw.writeHasLocation(instance.id, locId)
+                    addModifiers(instance.id, "public", "static", "final")
+                    tw.writeClass_object(id, instance.id)
+                }
+                */
+                if (c.classKind == KaClassKind.OBJECT) {
+                    addModifiers(id, "static")
+                }
+                /*
+                OLD: KE1
+                if (extractFunctionBodies && needsObinitFunction(c)) {
+                    extractObinitFunction(c, id)
+                }
+
+                extractClassModifiers(c, id)
+                extractClassSupertypes(
+                    c,
+                    id,
+                    inReceiverContext = true
+                ) // inReceiverContext = true is specified to force extraction of member prototypes
+                // of base types
+
+                linesOfCode?.linesOfCodeInDeclaration(c, id)
+
+                val additionalAnnotations =
+                    if (
+                        c.kind == ClassKind.ANNOTATION_CLASS &&
+                        c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+                    )
+                        metaAnnotationSupport.generateJavaMetaAnnotations(c, extractFunctionBodies)
+                    else listOf()
+
+                extractAnnotations(
+                    c,
+                    c.annotations + additionalAnnotations,
+                    id,
+                    extractFunctionBodies
+                )
+
+                if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
+                    externalClassExtractor.writeStubTrapFile(c)
+                */
+
+                return id
             }
         }
-
+    }
+    /*
+        OLD: KE1
         val jvmStaticFqName = FqName("kotlin.jvm.JvmStatic")
 
         private fun extractJvmStaticProxyMethods(
@@ -1832,7 +1872,7 @@ OLD: KE1
     */
 
     private fun extractFunction(
-        f: KaNamedFunctionSymbol,
+        f: KaFunctionSymbol,
         parentId: Label<out DbReftype>,
         /*
         OLD: KE1
@@ -2474,7 +2514,7 @@ OLD: KE1
 
     // TODO: Can this be inlined?
     private fun forceExtractFunction(
-        f: KaNamedFunctionSymbol,
+        f: KaFunctionSymbol,
         parentId: Label<out DbReftype>,
         /*
         OLD: KE1
@@ -2620,7 +2660,7 @@ OLD: KE1
                 OLD: KE1
                                         locId,
                 */
-                f.name.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
+                f.name!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
                 f.returnType, // OLD: KE1: substReturnType,
                 paramsSignature,
                 parentId,
@@ -9417,47 +9457,49 @@ OLD: KE1
             }
         }
 
-        private inner class DeclarationStackAdjuster(
-            val declaration: IrDeclaration,
-            val overriddenAttributes: OverriddenFunctionAttributes? = null
-        ) : Closeable {
-            init {
-                declarationStack.push(declaration, overriddenAttributes)
-            }
-
-            override fun close() {
-                declarationStack.pop()
-            }
+     */
+    private inner class DeclarationStackAdjuster(
+        val declaration: KaDeclarationSymbol,
+        val overriddenAttributes: OverriddenFunctionAttributes? = null
+    ) : Closeable {
+        init {
+            declarationStack.push(declaration, overriddenAttributes)
         }
 
-        class DeclarationStack {
-            private val stack: Stack<Pair<IrDeclaration, OverriddenFunctionAttributes?>> = Stack()
-
-            fun push(item: IrDeclaration, overriddenAttributes: OverriddenFunctionAttributes?) =
-                stack.push(Pair(item, overriddenAttributes))
-
-            fun pop() = stack.pop()
-
-            fun isEmpty() = stack.isEmpty()
-
-            fun peek() = stack.peek()
-
-            fun tryPeek() = if (stack.isEmpty()) null else stack.peek()
-
-            fun findOverriddenAttributes(f: IrFunction) = stack.lastOrNull { it.first == f }?.second
+        override fun close() {
+            declarationStack.pop()
         }
+    }
 
-        data class OverriddenFunctionAttributes(
-            val id: Label<out DbCallable>? = null,
-            val sourceDeclarationId: Label<out DbCallable>? = null,
-            val sourceLoc: Label<DbLocation>? = null,
-            val valueParameters: List<IrValueParameter>? = null,
-            val typeParameters: List<IrTypeParameter>? = null,
-            val isStatic: Boolean? = null,
-            val visibility: DescriptorVisibility? = null,
-            val modality: Modality? = null,
-        )
+    class DeclarationStack {
+        private val stack: Stack<Pair<KaDeclarationSymbol, OverriddenFunctionAttributes?>> = Stack()
 
+        fun push(item: KaDeclarationSymbol, overriddenAttributes: OverriddenFunctionAttributes?) =
+            stack.push(Pair(item, overriddenAttributes))
+
+        fun pop() = stack.pop()
+
+        fun isEmpty() = stack.isEmpty()
+
+        fun peek() = stack.peek()
+
+        fun tryPeek() = if (stack.isEmpty()) null else stack.peek()
+
+        fun findOverriddenAttributes(f: KaFunctionSymbol) = stack.lastOrNull { it.first == f }?.second
+    }
+
+    data class OverriddenFunctionAttributes(
+        val id: Label<out DbCallable>? = null,
+        val sourceDeclarationId: Label<out DbCallable>? = null,
+        val sourceLoc: Label<DbLocation>? = null,
+        val valueParameters: List<KaValueParameterSymbol>? = null,
+        val typeParameters: List<KaTypeParameterSymbol>? = null,
+        val isStatic: Boolean? = null,
+        val visibility: KaSymbolVisibility? = null,
+        val modality: KaSymbolModality? = null,
+    )
+    /*
+    OLD: KE1
         private fun peekDeclStackAsDeclarationParent(
             elementToReportOn: IrElement
         ): IrDeclarationParent? {
