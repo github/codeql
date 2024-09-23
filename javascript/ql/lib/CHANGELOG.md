@@ -1,3 +1,27 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isHTMLElement` and `getDOMName` predicates from the JSX library, use `isHtmlElement` and `getDomName` respectively instead.
+* Deleted the deprecated `getPackageJSON` predicate from the `SourceMappingComment` class, use `SourceMappingComment` instead.
+* Deleted many deprecated directives from the `Stmt.qll` file, use the `Directive::` module instead.
+* Deleted the deprecated `YAMLNode`, `YAMLValue`, and `YAMLScalar` classes from the YAML libraries, use `YamlNode`, `YamlValue`, and `YamlScalar` respectively instead.
+* Deleted the deprecated `getARouteHandlerExpr` predicate from `Connect.qll`, use `getARouteHandlerNode` instead.
+* Deleted the deprecated `getGWTVersion` predicate from `GWT.qll`, use `getGwtVersion` instead.
+* Deleted the deprecated `getOwnOptionsObject` predicate from  `Vue.qll`, use `getOwnOptions().getASink()` instead.
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.6.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
 ## 1.1.2
 
 No user-facing changes.

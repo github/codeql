@@ -20,7 +20,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["org.springframework.web.multipart", "MultipartFile", True, "getBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.multipart", "MultipartFile", True, "getInputStream", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.multipart", "MultipartFile", True, "getName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.multipart", "MultipartFile", True, "getOriginalFilename", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.multipart", "MultipartFile", True, "getResource", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

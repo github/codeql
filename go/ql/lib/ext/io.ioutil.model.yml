@@ -14,3 +14,8 @@ extensions:
     data:
       - ["io/ioutil", "", False, "NopCloser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io/ioutil", "", False, "ReadAll", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["io/ioutil", "", False, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]

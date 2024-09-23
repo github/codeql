@@ -59,24 +59,6 @@ class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink 
 }
 
 /**
- * DEPRECATED: Use `SymmetricKey` instead.
- *
- * Symmetric Key Data Flow configuration.
- */
-deprecated class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
-  SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
-
-  /** Holds if the node is a key source. */
-  override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
-
-  /** Holds if the node is a symmetric encryption key sink. */
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
-
-  /** Holds if the node is a key sanitizer. */
-  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
-}
-
-/**
  * Symmetric Key Data Flow configuration.
  */
 private module SymmetricKeyConfig implements DataFlow::ConfigSig {

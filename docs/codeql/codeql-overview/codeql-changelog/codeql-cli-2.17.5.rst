@@ -77,8 +77,8 @@ C#
 
 *   .NET 8 Runtime models have been updated based on the newest version of the model generator. Furthermore, the database sources have been changed slightly to reduce result multiplicity.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/spring-disabled-csrf-protection` detects disabling CSRF via :code:`ServerHttpSecurity$CsrfSpec::disable`.
 *   Added more :code:`java.io.File`\ -related sinks to the path injection query.
@@ -94,8 +94,8 @@ Language Libraries
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The precision of virtual dispatch has been improved. This increases precision in general for all data flow queries.
 
@@ -107,8 +107,8 @@ C/C++
 
 *   A partial model for the :code:`Boost.Asio` network library has been added. This includes sources, sinks and summaries for certain functions in :code:`Boost.Asio`, such as :code:`read_until` and :code:`write`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Support for Eclipse Compiler for Java (ecj) has been fixed to work with (a) runs that don't pass :code:`-noExit` and (b) runs that use post-Java-9 command-line arguments.
 

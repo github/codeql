@@ -16,11 +16,7 @@ private class DefaultSystemCommandExecution extends SystemCommandExecution::Rang
   }
 
   override DataFlow::Node getCommandName() {
-    not commandName instanceof DataFlow::ImplicitVarargsSlice and
-    result = commandName
-    or
-    commandName instanceof DataFlow::ImplicitVarargsSlice and
-    result = this.getAnImplicitVarargsArgument()
+    result = commandName.getACorrespondingSyntacticArgument()
   }
 }
 

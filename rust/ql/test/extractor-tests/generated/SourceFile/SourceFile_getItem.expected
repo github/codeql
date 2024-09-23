@@ -1,0 +1,3 @@
+| gen_source_file.rs:1:1:6:2 | SourceFile | 0 | gen_source_file.rs:3:1:6:1 | test_source_file |
+| lib.rs:1:1:3:9 | SourceFile | 0 | lib.rs:2:1:2:20 | Module |
+| lib.rs:1:1:3:9 | SourceFile | 1 | lib.rs:3:1:3:8 | Module |

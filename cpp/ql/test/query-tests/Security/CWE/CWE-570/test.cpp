@@ -282,7 +282,7 @@ namespace qhelp {
   }
 
   // BAD: the allocation won't throw an exception, but
-  // instead return a null pointer. [NOT DETECTED]
+  // instead return a null pointer.
   void bad2(std::size_t length) noexcept {
     try {
       int* dest = new(std::nothrow) int[length];

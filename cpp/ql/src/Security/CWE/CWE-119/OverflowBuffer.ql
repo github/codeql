@@ -26,6 +26,7 @@ from
   BufferAccess ba, string bufferDesc, int accessSize, int accessType, Element bufferAlloc,
   int bufferSize, string message
 where
+  accessType != 4 and
   accessSize = ba.getSize() and
   bufferSize = getBufferSize(ba.getBuffer(bufferDesc, accessType), bufferAlloc) and
   (

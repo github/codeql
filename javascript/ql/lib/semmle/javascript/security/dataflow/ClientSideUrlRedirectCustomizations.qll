@@ -237,6 +237,15 @@ module ClientSideUrlRedirect {
     override predicate isXssSink() { any() }
   }
 
+  /**
+   * A `templateUrl` member of an AngularJS directive.
+   */
+  private class AngularJSTemplateUrlSink extends Sink {
+    AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
+
+    override predicate isXssSink() { any() }
+  }
+
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }

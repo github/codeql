@@ -1,3 +1,18 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `getDerivedTypeDecl` predicate from the `TypeDecl` class, use `getADerivedTypeDecl` or `getABaseTypeDecl` instead.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
 ## 1.1.1
 
 ### Minor Analysis Improvements

@@ -16,10 +16,10 @@ query predicate summaryThroughStep(
   preservesValue = false
 }
 
-query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {
+query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryGetterStep(arg, c, out, _)
 }
 
-query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {
+query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summarySetterStep(arg, c, out, _)
 }

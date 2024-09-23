@@ -250,6 +250,8 @@ namespace Semmle.Extraction.CSharp
 
         public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
 
+        public void ExtractAggregatedMessages() => compilationEntity.PopulateAggregatedMessages();
+
 #nullable restore warnings
 
         /// <summary>

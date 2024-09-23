@@ -79,11 +79,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareOneBranch() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
-    or
-    // unwind stack
-    tag = UnwindTag() and
-    opcode instanceof Opcode::Unwind and
-    resultType = getVoidType()
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -156,7 +151,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
       // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
       // we should continue execution at the point where the exception occurred. But we don't have
       // any instruction to model this behavior.
-      result = this.getInstruction(UnwindTag())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateZero())
@@ -176,7 +171,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareZeroBranch() and
     (
       kind instanceof TrueEdge and
-      result = this.getInstruction(UnwindTag())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateOne())
@@ -196,10 +191,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareOneBranch() and
     kind instanceof TrueEdge and
     result = this.getTranslatedHandler().getFirstInstruction(any(GotoEdge edge))
-    or
-    // Unwind -> Parent
-    tag = UnwindTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -215,8 +206,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   override Instruction getALastInstructionInternal() {
     result = this.getTranslatedHandler().getALastInstruction()
-    or
-    result = this.getInstruction(UnwindTag())
   }
 
   private TranslatedExpr getTranslatedCondition() {
@@ -236,6 +225,68 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
   }
 
   final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
+
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    // A throw from within a `__except` block flows to the handler for the parent of
+    // the `__try`.
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
+  }
+}
+
+TranslatedMicrosoftTryFinallyHandler getTranslatedMicrosoftTryFinallyHandler(
+  MicrosoftTryFinallyStmt tryFinally
+) {
+  result.getAst() = tryFinally.getFinally()
+}
+
+class TranslatedMicrosoftTryFinallyHandler extends TranslatedElement,
+  TTranslatedMicrosoftTryFinallyHandler
+{
+  MicrosoftTryFinallyStmt tryFinally;
+
+  TranslatedMicrosoftTryFinallyHandler() {
+    this = TTranslatedMicrosoftTryFinallyHandler(tryFinally)
+  }
+
+  final override string toString() { result = tryFinally.toString() }
+
+  final override Locatable getAst() { result = tryFinally.getFinally() }
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getTranslatedFinally().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getTranslatedFinally().getALastInstruction()
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getTranslatedFinally() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and
+    result = this.getTranslatedFinally()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  final override Function getFunction() { result = tryFinally.getEnclosingFunction() }
+
+  private TranslatedStmt getTranslatedFinally() {
+    result = getTranslatedStmt(tryFinally.getFinally())
+  }
+
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    // A throw from within a `__finally` block flows to the handler for the parent of
+    // the `__try`.
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
+  }
 }
 
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
@@ -267,9 +318,6 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   final override string toString() { result = stmt.toString() }
 
   final override Locatable getAst() { result = stmt }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override Function getFunction() { result = stmt.getEnclosingFunction() }
 }
@@ -586,7 +634,7 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
 /**
  * A C/C++ `try` statement, or a `__try __except` or `__try __finally` statement.
  */
-private class TryOrMicrosoftTryStmt extends Stmt {
+class TryOrMicrosoftTryStmt extends Stmt {
   TryOrMicrosoftTryStmt() {
     this instanceof TryStmt or
     this instanceof MicrosoftTryStmt
@@ -619,7 +667,9 @@ private class TryOrMicrosoftTryStmt extends Stmt {
   }
 
   /** Gets the `finally` statement (usually a BlockStmt), if any. */
-  Stmt getFinally() { result = this.(MicrosoftTryFinallyStmt).getFinally() }
+  TranslatedElement getTranslatedFinally() {
+    result = getTranslatedMicrosoftTryFinallyHandler(this)
+  }
 }
 
 /**
@@ -689,11 +739,14 @@ class TranslatedTryStmt extends TranslatedStmt {
 
   final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     result = this.getHandler(0).getFirstInstruction(kind)
+    or
+    not exists(this.getHandler(_)) and
+    result = this.getFinally().getFirstInstruction(kind)
   }
 
   private TranslatedElement getHandler(int index) { result = stmt.getTranslatedHandler(index) }
 
-  private TranslatedStmt getFinally() { result = getTranslatedStmt(stmt.getFinally()) }
+  private TranslatedElement getFinally() { result = stmt.getTranslatedFinally() }
 
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getStmt()) }
 }

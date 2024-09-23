@@ -298,7 +298,7 @@ signature module InputSig<LocationSig Location> {
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
 
-  predicate knownSourceModel(Node sink, string model);
+  predicate knownSourceModel(Node source, string model);
 
   predicate knownSinkModel(Node sink, string model);
 
@@ -424,12 +424,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      */
     default FlowFeature getAFeature() { none() }
 
-    /** Holds if sources should be grouped in the result of `flowPath`. */
-    default predicate sourceGrouping(Node source, string sourceGroup) { none() }
-
-    /** Holds if sinks should be grouped in the result of `flowPath`. */
-    default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
-
     /**
      * Holds if hidden nodes should be included in the data flow graph.
      *
@@ -545,12 +539,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * somehow be pluggable in another path context.
      */
     default FlowFeature getAFeature() { none() }
-
-    /** Holds if sources should be grouped in the result of `flowPath`. */
-    default predicate sourceGrouping(Node source, string sourceGroup) { none() }
-
-    /** Holds if sinks should be grouped in the result of `flowPath`. */
-    default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
 
     /**
      * Holds if hidden nodes should be included in the data flow graph.

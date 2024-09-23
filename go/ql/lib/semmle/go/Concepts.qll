@@ -121,11 +121,7 @@ private class DefaultFileSystemAccess extends FileSystemAccess::Range, DataFlow:
   }
 
   override DataFlow::Node getAPathArgument() {
-    not pathArgument instanceof DataFlow::ImplicitVarargsSlice and
-    result = pathArgument
-    or
-    pathArgument instanceof DataFlow::ImplicitVarargsSlice and
-    result = this.getAnImplicitVarargsArgument()
+    result = pathArgument.getACorrespondingSyntacticArgument()
   }
 }
 
@@ -374,23 +370,6 @@ module LoggerCall {
   abstract class Range extends DataFlow::Node {
     /** Gets a node that is a part of the logged message. */
     abstract DataFlow::Node getAMessageComponent();
-  }
-}
-
-private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
-  DataFlow::ArgumentNode messageComponent;
-
-  DefaultLoggerCall() {
-    sinkNode(messageComponent, "log-injection") and
-    this = messageComponent.getCall()
-  }
-
-  override DataFlow::Node getAMessageComponent() {
-    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
-    result = messageComponent
-    or
-    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
-    result = this.getAnImplicitVarargsArgument()
   }
 }
 

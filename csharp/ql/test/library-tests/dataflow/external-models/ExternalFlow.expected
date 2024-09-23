@@ -24,6 +24,12 @@ models
 | 23 | Summary: My.Qltest; I; false; GetFirst; (My.Qltest.MyInlineArray); ; Argument[0].Element; ReturnValue; value; manual |
 | 24 | Summary: My.Qltest; J; false; get_Prop1; (); ; Argument[this]; ReturnValue; value; manual |
 | 25 | Summary: My.Qltest; J; false; SetProp1; (System.Object); ; Argument[0]; Argument[this]; value; manual |
+| 26 | Summary: My.Qltest; K; false; SetMySyntheticField; (System.Object); ; Argument[0]; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField]; value; manual |
+| 27 | Summary: My.Qltest; K; false; GetMySyntheticField; (); ; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField]; ReturnValue; value; manual |
+| 28 | Summary: My.Qltest; K; false; SetMyNestedSyntheticField; (System.Object); ; Argument[0]; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField1].SyntheticField[MySyntheticField1.MyNestedSyntheticField]; value; manual |
+| 29 | Summary: My.Qltest; K; false; GetMyNestedSyntheticField; (); ; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField1].SyntheticField[MySyntheticField1.MyNestedSyntheticField]; ReturnValue; value; manual |
+| 30 | Summary: My.Qltest; K; false; SetMyFieldOnSyntheticField; (System.Object); ; Argument[0]; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField2].Field[My.Qltest.K.MyField]; value; manual |
+| 31 | Summary: My.Qltest; K; false; GetMyFieldOnSyntheticField; (); ; Argument[this].SyntheticField[My.Qltest.K.MySyntheticField2].Field[My.Qltest.K.MyField]; ReturnValue; value; manual |
 edges
 | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | ExternalFlow.cs:10:29:10:32 | access to local variable arg1 : Object | provenance |  |
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | provenance |  |
@@ -121,6 +127,21 @@ edges
 | ExternalFlow.cs:279:13:279:23 | [post] this access : J | ExternalFlow.cs:281:18:281:21 | this access : J | provenance |  |
 | ExternalFlow.cs:279:22:279:22 | access to local variable j : Object | ExternalFlow.cs:279:13:279:23 | [post] this access : J | provenance | MaD:25 |
 | ExternalFlow.cs:281:18:281:21 | this access : J | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | provenance | MaD:24 |
+| ExternalFlow.cs:313:17:313:17 | access to local variable o : Object | ExternalFlow.cs:314:33:314:33 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:313:21:313:32 | object creation of type Object : Object | ExternalFlow.cs:313:17:313:17 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:314:13:314:34 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | ExternalFlow.cs:315:18:315:38 | this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | provenance |  |
+| ExternalFlow.cs:314:33:314:33 | access to local variable o : Object | ExternalFlow.cs:314:13:314:34 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | provenance | MaD:26 |
+| ExternalFlow.cs:315:18:315:38 | this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | ExternalFlow.cs:315:18:315:38 | call to method GetMySyntheticField | provenance | MaD:27 |
+| ExternalFlow.cs:319:17:319:17 | access to local variable o : Object | ExternalFlow.cs:320:39:320:39 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:319:21:319:32 | object creation of type Object : Object | ExternalFlow.cs:319:17:319:17 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:320:13:320:40 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | ExternalFlow.cs:321:18:321:44 | this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | provenance |  |
+| ExternalFlow.cs:320:39:320:39 | access to local variable o : Object | ExternalFlow.cs:320:13:320:40 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | provenance | MaD:28 |
+| ExternalFlow.cs:321:18:321:44 | this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | ExternalFlow.cs:321:18:321:44 | call to method GetMyNestedSyntheticField | provenance | MaD:29 |
+| ExternalFlow.cs:325:17:325:17 | access to local variable o : Object | ExternalFlow.cs:326:40:326:40 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:325:21:325:32 | object creation of type Object : Object | ExternalFlow.cs:325:17:325:17 | access to local variable o : Object | provenance |  |
+| ExternalFlow.cs:326:13:326:41 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | ExternalFlow.cs:327:18:327:45 | this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | provenance |  |
+| ExternalFlow.cs:326:40:326:40 | access to local variable o : Object | ExternalFlow.cs:326:13:326:41 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | provenance | MaD:30 |
+| ExternalFlow.cs:327:18:327:45 | this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | ExternalFlow.cs:327:18:327:45 | call to method GetMyFieldOnSyntheticField | provenance | MaD:31 |
 nodes
 | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | semmle.label | access to local variable arg1 : Object |
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
@@ -240,6 +261,24 @@ nodes
 | ExternalFlow.cs:279:22:279:22 | access to local variable j : Object | semmle.label | access to local variable j : Object |
 | ExternalFlow.cs:281:18:281:21 | this access : J | semmle.label | this access : J |
 | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | semmle.label | access to property Prop1 |
+| ExternalFlow.cs:313:17:313:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:313:21:313:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:314:13:314:34 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | semmle.label | [post] this access : K [synthetic My.Qltest.K.MySyntheticField] : Object |
+| ExternalFlow.cs:314:33:314:33 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:315:18:315:38 | call to method GetMySyntheticField | semmle.label | call to method GetMySyntheticField |
+| ExternalFlow.cs:315:18:315:38 | this access : K [synthetic My.Qltest.K.MySyntheticField] : Object | semmle.label | this access : K [synthetic My.Qltest.K.MySyntheticField] : Object |
+| ExternalFlow.cs:319:17:319:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:319:21:319:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:320:13:320:40 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | semmle.label | [post] this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object |
+| ExternalFlow.cs:320:39:320:39 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:321:18:321:44 | call to method GetMyNestedSyntheticField | semmle.label | call to method GetMyNestedSyntheticField |
+| ExternalFlow.cs:321:18:321:44 | this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object | semmle.label | this access : K [synthetic My.Qltest.K.MySyntheticField1, synthetic MySyntheticField1.MyNestedSyntheticField] : Object |
+| ExternalFlow.cs:325:17:325:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:325:21:325:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:326:13:326:41 | [post] this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | semmle.label | [post] this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object |
+| ExternalFlow.cs:326:40:326:40 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| ExternalFlow.cs:327:18:327:45 | call to method GetMyFieldOnSyntheticField | semmle.label | call to method GetMyFieldOnSyntheticField |
+| ExternalFlow.cs:327:18:327:45 | this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object | semmle.label | this access : K [synthetic My.Qltest.K.MySyntheticField2, field MyField] : Object |
 subpaths
 | ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object |
 invalidModelRow
@@ -269,3 +308,6 @@ invalidModelRow
 | ExternalFlow.cs:240:18:240:18 | access to local variable o | ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | ExternalFlow.cs:240:18:240:18 | access to local variable o | $@ | ExternalFlow.cs:238:21:238:28 | object creation of type HC : HC | object creation of type HC : HC |
 | ExternalFlow.cs:258:18:258:18 | access to local variable b | ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | ExternalFlow.cs:258:18:258:18 | access to local variable b | $@ | ExternalFlow.cs:256:20:256:31 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | ExternalFlow.cs:281:18:281:27 | access to property Prop1 | $@ | ExternalFlow.cs:278:21:278:32 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:315:18:315:38 | call to method GetMySyntheticField | ExternalFlow.cs:313:21:313:32 | object creation of type Object : Object | ExternalFlow.cs:315:18:315:38 | call to method GetMySyntheticField | $@ | ExternalFlow.cs:313:21:313:32 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:321:18:321:44 | call to method GetMyNestedSyntheticField | ExternalFlow.cs:319:21:319:32 | object creation of type Object : Object | ExternalFlow.cs:321:18:321:44 | call to method GetMyNestedSyntheticField | $@ | ExternalFlow.cs:319:21:319:32 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:327:18:327:45 | call to method GetMyFieldOnSyntheticField | ExternalFlow.cs:325:21:325:32 | object creation of type Object : Object | ExternalFlow.cs:327:18:327:45 | call to method GetMyFieldOnSyntheticField | $@ | ExternalFlow.cs:325:21:325:32 | object creation of type Object : Object | object creation of type Object : Object |

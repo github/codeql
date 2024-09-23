@@ -100,4 +100,10 @@ module ElazarlGoproxy {
 
     override int getFormatStringIndex() { result = 0 }
   }
+
+  private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {
+    ProxyLog() { this.getTarget() instanceof ProxyLogFunction }
+
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+  }
 }

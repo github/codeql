@@ -195,7 +195,9 @@ private class Argument extends CfgNodes::ExprCfgNode {
       not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       not this.getExpr() instanceof HashSplatExpr and
       not this.getExpr() instanceof SplatExpr and
-      arg.isPositional(i)
+      arg.isPositional(i) and
+      // There are no splat arguments before the positional argument
+      not splatArgumentAt(call, any(int j | j < i))
     )
     or
     exists(CfgNodes::ExprNodes::PairCfgNode p |
@@ -217,7 +219,9 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int pos |
       this = call.getArgument(pos) and
       this.getExpr() instanceof SplatExpr and
-      arg.isSplat(pos)
+      arg.isSplat(pos) and
+      // There are no earlier splat arguments
+      not splatArgumentAt(call, any(int j | j < pos))
     )
     or
     this = call.getAnArgument() and
@@ -432,7 +436,7 @@ private predicate splatParameterAt(Callable c, int pos) {
 }
 
 private predicate splatArgumentAt(CfgNodes::ExprNodes::CallCfgNode c, int pos) {
-  exists(Argument arg, ArgumentPosition apos | arg.isArgumentOf(c, apos) and apos.isSplat(pos))
+  c.getArgument(pos).getExpr() instanceof SplatExpr
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -522,6 +526,7 @@ private module Cached {
       |
         isUseStep = false
         or
+        isUseStep = true and
         not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
       )
       or
@@ -661,8 +666,8 @@ private module Cached {
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
     } or
-    TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
-    THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
+    deprecated TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
+    deprecated THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
@@ -686,29 +691,16 @@ private module Cached {
     TUnknownElementContentApprox() or
     TKnownIntegerElementContentApprox() or
     TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
-    TSplatContentApprox(Boolean shifted) or
-    THashSplatContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
     TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
 
   cached
   newtype TDataFlowType =
     TLambdaDataFlowType(Callable c) { c = any(LambdaSelfReferenceNode n).getCallable() } or
-    // In order to reduce the set of cons-candidates, we annotate all implicit (hash) splat
-    // creations with the name of the method that they are passed into. This includes
-    // array/hash literals as well (where the name is simply `[]`), because of how they
-    // are modeled (see `Array.qll` and `Hash.qll`).
-    TSynthHashSplatArgumentType(string methodName) {
-      methodName = any(SynthHashSplatArgumentNode n).getMethodName()
-    } or
-    TSynthSplatArgumentType(string methodName) {
-      methodName = any(SynthSplatArgumentNode n).getMethodName()
-    } or
     TUnknownDataFlowType()
 }
 
-class TElementContent =
-  TKnownElementContent or TUnknownElementContent or TSplatContent or THashSplatContent;
+class TElementContent = TKnownElementContent or TUnknownElementContent;
 
 import Cached
 
@@ -933,7 +925,12 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       exists(Callable callable | callable = c.asCfgScope() |
-        exists(int i | pos.isPositional(i) and callable.getParameter(i) = parameter |
+        exists(int i |
+          pos.isPositional(i) and
+          callable.getParameter(i) = parameter and
+          // There are no splat parameters before the positional parameter
+          not splatParameterAt(callable, any(int m | m < i))
+        |
           parameter instanceof SimpleParameter
           or
           parameter instanceof OptionalParameter
@@ -952,7 +949,9 @@ private module ParameterNodes {
           parameter = callable.getParameter(n).(SplatParameter) and
           pos.isSplat(n) and
           // There are no positional parameters after the splat
-          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
+          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m)) and
+          // There are no earlier splat parameters
+          not splatParameterAt(callable, any(int m | m < n))
         )
         or
         parameter = callable.getAParameter().(BlockParameter) and
@@ -1123,18 +1122,6 @@ private module ParameterNodes {
    *
    * by adding read steps out of the synthesized parameter node to the relevant
    * keyword parameters.
-   *
-   * In order to avoid redundancy (and improve performance) in cases like
-   *
-   * ```rb
-   * foo(p1: taint(1), p2: taint(2))
-   * ```
-   *
-   * where direct keyword matching is possible, we use a special `HashSplatContent`
-   * (instead of reusing `KnownElementContent`) when we construct a synthesized hash
-   * splat argument (`SynthHashSplatArgumentNode`) at the call site, and then only
-   * add read steps out of this node for actual hash-splat arguments (which will use
-   * a normal `KnownElementContent`).
    */
   class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
     private DataFlowCallable callable;
@@ -1188,18 +1175,6 @@ private module ParameterNodes {
    * by adding read steps out of the synthesized parameter node to the relevant
    * positional parameters.
    *
-   * In order to avoid redundancy (and improve performance) in cases like
-   *
-   * ```rb
-   * foo(a, b, c)
-   * ```
-   *
-   * where direct positional matching is possible, we use a special `SplatContent`
-   * (instead of reusing `KnownElementContent`) when we construct a synthesized
-   * splat argument (`SynthSplatArgumentNode`) at the call site, and then only
-   * add read steps out of this node for actual splat arguments (which will use
-   * `KnownElementContent` or `TSplatContent(_, true)`).
-   *
    * We don't yet correctly handle cases where a positional argument follows the
    * splat argument, e.g. in
    *
@@ -1217,12 +1192,8 @@ private module ParameterNodes {
     /** Holds if a read-step should be added into parameter `p`. */
     predicate readInto(ParameterNode p, ContentSet c) {
       exists(int n |
-        isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n))) and
-        not exists(int i | splatParameterAt(callable.asCfgScope(), i) and i < n)
+        isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n)))
       |
-        // Important: do not include `TSplatContent(_, false)` here, as normal parameter matching is possible
-        c = getSplatContent(n, true)
-        or
         c = getArrayContent(n)
         or
         c.isSingleton(TUnknownElementContent())
@@ -1232,7 +1203,13 @@ private module ParameterNodes {
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isSynthSplat()
+      c = callable and
+      exists(int actualSplat | pos.isSynthSplat(actualSplat) |
+        exists(TSynthSplatParameterShiftNode(c, actualSplat, _))
+        or
+        not exists(TSynthSplatParameterShiftNode(c, _, _)) and
+        actualSplat = -1
+      )
     }
 
     final override CfgScope getCfgScope() { result = callable.asCfgScope() }
@@ -1271,11 +1248,7 @@ private module ParameterNodes {
      */
     predicate readFrom(SynthSplatParameterNode synthSplat, ContentSet cs) {
       synthSplat.isParameterOf(callable, _) and
-      (
-        cs = getSplatContent(pos + splatPos, _)
-        or
-        cs = getArrayContent(pos + splatPos)
-      )
+      cs = getArrayContent(pos + splatPos)
     }
 
     /**
@@ -1454,24 +1427,7 @@ module ArgumentNodes {
         not cv.isSymbol(_)
       )
     |
-      if call instanceof CfgNodes::ExprNodes::HashLiteralCfgNode
-      then
-        /*
-         * Needed for cases like
-         *
-         * ```rb
-         * hash = { a: taint, b: safe }
-         *
-         * def foo(a:, b:)
-         *   sink(a)
-         * end
-         *
-         * foo(**hash)
-         * ```
-         */
-
-        c.isSingleton(Content::getElementContent(cv))
-      else c.isSingleton(THashSplatContent(cv))
+      c.isSingleton(Content::getElementContent(cv))
     )
   }
 
@@ -1506,31 +1462,10 @@ module ArgumentNodes {
    * `call`, into a synthetic splat argument.
    */
   predicate synthSplatStore(CfgNodes::ExprNodes::CallCfgNode call, Argument arg, ContentSet c) {
-    exists(int n |
-      exists(ArgumentPosition pos |
-        arg.isArgumentOf(call, pos) and
-        pos.isPositional(n) and
-        not exists(int i | splatArgumentAt(call, i) and i < n)
-      )
-    |
-      if call instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode
-      then
-        /*
-         * Needed for cases like
-         *
-         * ```rb
-         * arr = [taint, safe]
-         *
-         * def foo(a, b)
-         *   sink(a)
-         * end
-         *
-         * foo(*arr)
-         * ```
-         */
-
-        c = getArrayContent(n)
-      else c = getSplatContent(n, false)
+    exists(int n, ArgumentPosition pos |
+      arg.isArgumentOf(call, pos) and
+      pos.isPositional(n) and
+      c = getArrayContent(n)
     )
   }
 
@@ -1552,7 +1487,14 @@ module ArgumentNodes {
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       call = call_ and
-      pos.isSynthSplat()
+      exists(int actualSplat | pos.isSynthSplat(actualSplat) |
+        any(SynthSplatArgumentShiftNode shift |
+          shift = TSynthSplatArgumentShiftNode(_, actualSplat, _)
+        ).storeInto(this, _)
+        or
+        not any(SynthSplatArgumentShiftNode shift).storeInto(this, _) and
+        actualSplat = -1
+      )
     }
 
     override string toStringImpl() { result = "synthetic splat argument" }
@@ -1583,8 +1525,6 @@ module ArgumentNodes {
     predicate readFrom(Node splatArg, ContentSet cs) {
       splatArg.asExpr().(Argument).isArgumentOf(c, any(ArgumentPosition p | p.isSplat(splatPos))) and
       (
-        cs = getSplatContent(n - splatPos, _)
-        or
         cs = getArrayContent(n - splatPos)
         or
         n = -1 and
@@ -1599,7 +1539,7 @@ module ArgumentNodes {
     predicate storeInto(SynthSplatArgumentNode synthSplat, ContentSet cs) {
       synthSplat = TSynthSplatArgumentNode(c) and
       (
-        cs = getSplatContent(n, true)
+        cs = getArrayContent(n)
         or
         n = -1 and
         cs.isSingleton(TUnknownElementContent())
@@ -1813,10 +1753,6 @@ private ContentSet getArrayContent(int n) {
   )
 }
 
-private ContentSet getSplatContent(int n, boolean adjusted) {
-  result.isSingleton(TSplatContent(n, adjusted))
-}
-
 /**
  * Subset of `storeStep` that should be shared with type-tracking.
  */
@@ -1977,13 +1913,8 @@ DataFlowType getNodeType(Node n) {
     result = TLambdaDataFlowType(c)
   )
   or
-  result = TSynthHashSplatArgumentType(n.(SynthHashSplatArgumentNode).getMethodName())
-  or
-  result = TSynthSplatArgumentType(n.(SynthSplatArgumentNode).getMethodName())
-  or
   not n instanceof LambdaSelfReferenceNode and
   not mustHaveLambdaType(n, _) and
-  not n instanceof SynthHashSplatOrSplatArgumentNode and
   result = TUnknownDataFlowType()
 }
 
@@ -2209,17 +2140,6 @@ class ContentApprox extends TContentApprox {
       result = "approximated element " + approx
     )
     or
-    exists(boolean shifted, string s |
-      this = TSplatContentApprox(shifted) and
-      (if shifted = true then s = " (shifted)" else s = "") and
-      result = "approximated splat position" + s
-    )
-    or
-    exists(string s |
-      this = THashSplatContentApprox(s) and
-      result = "approximated hash-splat position " + s
-    )
-    or
     exists(Content c |
       this = TNonElementContentApprox(c) and
       result = c.toString()
@@ -2258,13 +2178,6 @@ ContentApprox getContentApprox(Content c) {
   or
   result =
     TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
-  or
-  exists(boolean shifted |
-    c = TSplatContent(_, shifted) and
-    result = TSplatContentApprox(shifted)
-  )
-  or
-  result = THashSplatContentApprox(approxKnownElementIndex(c.(Content::HashSplatContent).getKey()))
   or
   result = TNonElementContentApprox(c)
 }

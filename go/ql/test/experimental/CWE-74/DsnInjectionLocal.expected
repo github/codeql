@@ -11,7 +11,6 @@ edges
 | Dsn.go:62:2:62:4 | definition of cfg [pointer] | Dsn.go:67:102:67:104 | cfg [pointer] | provenance |  |
 | Dsn.go:63:9:63:11 | cfg [pointer] | Dsn.go:63:9:63:11 | implicit dereference | provenance |  |
 | Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:62:2:62:4 | definition of cfg [pointer] | provenance |  |
-| Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:63:9:63:11 | implicit dereference | provenance |  |
 | Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:67:102:67:108 | selection of dsn | provenance |  |
 | Dsn.go:63:19:63:25 | selection of Args | Dsn.go:63:19:63:29 | slice expression | provenance |  |
 | Dsn.go:63:19:63:29 | slice expression | Dsn.go:63:9:63:11 | implicit dereference | provenance | FunctionModel |

@@ -22,11 +22,9 @@ CodeQL CLI
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-*   A number of breaking changes have been made to the C and C++ CodeQL environment:
+*   A number of breaking changes have been made to the C and C++ CodeQL test environment as used by :code:`codeql test run`\ :
 
-    *   The environment no longer defines any GNU-specific builtin macros.
-        If these macros are still needed, please define them via
-        :code:`semmle-extractor-options`.
+    *   The test environment no longer defines any GNU-specific builtin macros. If these macros are still needed by a test, please define them via :code:`semmle-extractor-options`.
         
     *   The :code:`--force-recompute` option is no longer directly supported by
         :code:`semmle-extractor-options`. Instead, :code:`--edg --force-recompute` should be specified.
@@ -71,16 +69,16 @@ Query Packs
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/weak-cryptographic-algorithm` no longer alerts about :code:`RSA/ECB` algorithm strings.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/tainted-permissions-check` now uses threat models. This means that :code:`local` sources are no longer included by default for this query, but can be added by enabling the :code:`local` threat model.
 *   Added more :code:`org.apache.commons.io.FileUtils`\ -related sinks to the path injection query.
@@ -107,8 +105,8 @@ Golang
 
 *   Fixed dataflow via global variables other than via a direct write: for example, via a side-effect on a global, such as :code:`io.copy(SomeGlobal, ...)` or via assignment to a field or array or slice cell of a global. This means that any data-flow query may return more results where global variables are involved.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Support for :code:`codeql test run` for Kotlin sources has been fixed.
 
@@ -135,8 +133,8 @@ Golang
 *   DataFlow queries which previously used :code:`RemoteFlowSource` to define their sources have been modified to instead use :code:`ThreatModelFlowSource`. This means these queries will now respect threat model configurations. The default threat model configuration is equivalent to :code:`RemoteFlowSource`, so there should be no change in results for users using the default.
 *   Added the :code:`ThreatModelFlowSource` class to :code:`FlowSources.qll`. The :code:`ThreatModelFlowSource` class can be used to include sources which match the current *threat model* configuration. This is the first step in supporting threat modeling for Go.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added models for the following packages:
 

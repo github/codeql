@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Concurrent;
+using System.IO;
 using System.Threading;
 using Semmle.Util;
 
@@ -7,6 +8,8 @@ namespace Semmle.Extraction.Entities
     internal class ExtractionMessage : FreshEntity
     {
         private static readonly int limit = EnvironmentVariables.TryGetExtractorNumberOption<int>("MESSAGE_LIMIT") ?? 10000;
+
+        internal static readonly ConcurrentDictionary<string, int> groupedMessageCounts = [];
         private static int messageCount = 0;
 
         private readonly Message msg;
@@ -25,6 +28,10 @@ namespace Semmle.Extraction.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            // For the time being we're counting the number of messages per severity, we could introduce other groupings in the future
+            var key = msg.Severity.ToString();
+            groupedMessageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);
+
             if (!bypassLimit)
             {
                 var val = Interlocked.Increment(ref messageCount);

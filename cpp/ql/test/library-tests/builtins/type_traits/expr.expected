@@ -153,7 +153,21 @@
 | clang.cpp:109:28:109:50 | int |  | <none> |
 | clang.cpp:110:28:110:51 | __is_referenceable | void | 0 |
 | clang.cpp:110:28:110:51 | void |  | <none> |
+| clang.cpp:112:44:112:82 | __is_trivially_equality_comparable | int | 1 |
+| clang.cpp:112:44:112:82 | int |  | <none> |
+| clang.cpp:113:44:113:83 | __is_trivially_equality_comparable | void | 0 |
+| clang.cpp:113:44:113:83 | void |  | <none> |
+| clang.cpp:119:26:119:44 | E |  | <none> |
+| clang.cpp:119:26:119:44 | __is_scoped_enum | E | 1 |
+| clang.cpp:120:26:120:46 | __is_scoped_enum | int | 0 |
+| clang.cpp:120:26:120:46 | int |  | <none> |
+| clang.cpp:122:36:122:66 | __is_trivially_relocatable | int | 1 |
+| clang.cpp:122:36:122:66 | int |  | <none> |
+| clang.cpp:123:36:123:67 | __is_trivially_relocatable | void | 0 |
+| clang.cpp:123:36:123:67 | void |  | <none> |
 | file://:0:0:0:0 | 0 |  | 0 |
+| file://:0:0:0:0 | 0 |  | 0 |
+| file://:0:0:0:0 | 1 |  | 1 |
 | file://:0:0:0:0 | 1 |  | 1 |
 | file://:0:0:0:0 | 2 |  | 2 |
 | gcc.cpp:3:25:3:25 | 8 |  | 8 |
