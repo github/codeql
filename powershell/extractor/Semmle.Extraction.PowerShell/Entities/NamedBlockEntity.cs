@@ -25,7 +25,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.named_block_trap(this, index, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Traps[index]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

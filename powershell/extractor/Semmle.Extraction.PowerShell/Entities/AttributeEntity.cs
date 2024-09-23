@@ -28,7 +28,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                 trapFile.attribute_positional_argument(this, i,
                     EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.PositionalArguments[i]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

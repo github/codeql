@@ -39,7 +39,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.error_statement_bodies(this, index, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Bodies[index]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
             trapFile.error_statement_location(this, TrapSuitableLocation);
         }
 

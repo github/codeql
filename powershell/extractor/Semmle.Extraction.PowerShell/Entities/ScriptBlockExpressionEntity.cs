@@ -17,7 +17,7 @@ namespace Semmle.Extraction.PowerShell.Entities
         {
             trapFile.script_block_expression(this, ScriptBlockEntity.Create(PowerShellContext, Fragment.ScriptBlock));
             trapFile.script_block_expression_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

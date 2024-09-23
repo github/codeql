@@ -91,7 +91,7 @@ namespace Semmle.Extraction.PowerShell.Entities
 
             if (Fragment.Parent is not null)
             {
-                trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+                trapFile.parent(PowerShellContext, this, Fragment.Parent);
             }
         }
 

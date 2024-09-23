@@ -18,7 +18,7 @@ namespace Semmle.Extraction.PowerShell.Entities
         {
             trapFile.not_implemented(this, type.FullName ?? type.Name);
             trapFile.not_implemented_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

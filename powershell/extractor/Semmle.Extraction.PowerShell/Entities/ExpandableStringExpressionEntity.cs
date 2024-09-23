@@ -25,7 +25,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                 trapFile.expandable_string_expression_nested_expression(this, index,
                     EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.NestedExpressions[index]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

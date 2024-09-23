@@ -23,7 +23,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.command_expression_redirection(this, index, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Redirections[index]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

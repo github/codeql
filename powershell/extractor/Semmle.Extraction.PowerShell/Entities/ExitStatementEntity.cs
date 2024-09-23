@@ -20,7 +20,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                 trapFile.exit_statement_pipeline(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Pipeline));
             }    
             trapFile.exit_statement(this);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
             trapFile.exit_statement_location(this, TrapSuitableLocation);
         }
 

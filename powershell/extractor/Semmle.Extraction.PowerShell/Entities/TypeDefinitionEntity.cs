@@ -30,7 +30,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             {
                 trapFile.type_definition_base_type(this, index, TypeConstraintEntity.Create(PowerShellContext, Fragment.BaseTypes[index]));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

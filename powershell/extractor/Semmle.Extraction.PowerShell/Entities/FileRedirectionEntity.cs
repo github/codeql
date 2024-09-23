@@ -17,7 +17,7 @@ namespace Semmle.Extraction.PowerShell.Entities
             trapFile.file_redirection(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Location),
                 Fragment.Append, Fragment.FromStream);
             trapFile.file_redirection_location(this, TrapSuitableLocation);
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
         }
 
         public override bool NeedsPopulation => true;

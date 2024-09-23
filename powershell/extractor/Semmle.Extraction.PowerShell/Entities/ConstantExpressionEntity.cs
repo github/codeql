@@ -22,7 +22,7 @@ namespace Semmle.Extraction.PowerShell.Entities
                 trapFile.constant_expression_value(this,
                     StringLiteralEntity.Create(PowerShellContext, ReportingLocation, strVal));
             }
-            trapFile.parent(this, EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Parent));
+            trapFile.parent(PowerShellContext, this, Fragment.Parent);
             trapFile.constant_expression_location(this, TrapSuitableLocation);
         }
 
