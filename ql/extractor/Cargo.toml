@@ -12,7 +12,7 @@ tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", re
 tree-sitter-ql-dbscheme = { git = "https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git", rev = "1980b4b6998a1138d326f863e6168f0f2c0c544d"}
 tree-sitter-blame = {path = "../buramu/tree-sitter-blame"}
 tree-sitter-json = {git = "https://github.com/tree-sitter/tree-sitter-json.git", rev = "8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571"}
-clap = { version = "4.2", features = ["derive"] }
+clap = { version = "4.5", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 rayon = "1.9.0"
