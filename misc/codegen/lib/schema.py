@@ -1,6 +1,7 @@
 """ schema format representation """
 import abc
 import typing
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, Optional
 from enum import Enum, auto
@@ -143,6 +144,12 @@ class Schema:
     @property
     def null_class(self):
         return self.classes[self.null] if self.null else None
+
+    def iter_properties(self, cls: str) -> Iterable[Property]:
+        cls = self.classes[cls]
+        for b in cls.bases:
+            yield from self.iter_properties(b)
+        yield from cls.properties
 
 
 predicate_marker = object()
