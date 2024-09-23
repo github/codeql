@@ -7,11 +7,6 @@ import javascript
 private import semmle.javascript.internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
 
-module BasicBlockInternal {
-  // TODO: Expose these as public predicate in a private module instead of this hack.
-  predicate getImmediateBasicBlockDominator = immediateDominator/1;
-}
-
 /**
  * Holds if `nd` starts a new basic block.
  */
@@ -109,13 +104,11 @@ private import Internal
 
 /** Gets the immediate dominator of `bb`. */
 cached
-private BasicBlock immediateDominator(BasicBlock bb) =
-  idominance(entryBB/1, succBB/2)(_, result, bb)
+BasicBlock immediateDominator(BasicBlock bb) = idominance(entryBB/1, succBB/2)(_, result, bb)
 
 /** Gets the immediate post-dominator of `bb`. */
 cached
-private BasicBlock immediatePostDominator(BasicBlock bb) =
-  idominance(exitBB/1, predBB/2)(_, result, bb)
+BasicBlock immediatePostDominator(BasicBlock bb) = idominance(exitBB/1, predBB/2)(_, result, bb)
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
