@@ -31,7 +31,7 @@ function t2() {
 
 function t3() {
     function inner(obj) {
-        sink(obj.foo); // $ hasValueFlow=t3.2 MISSING: hasValueFlow=t3.1
+        sink(obj.foo); // $ hasValueFlow=t3.2 hasValueFlow=t3.1
     }
 
     inner({foo: source('t3.1')});
