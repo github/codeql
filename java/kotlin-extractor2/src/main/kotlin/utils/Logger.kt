@@ -394,21 +394,19 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: In
         loggerBase.warn(dtw, msg, extraInfo, loggerState)
     }
 
-    /*
-    OLD: KE1
-        fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
-            val locationString = ftw.getLocationString(element)
-            val mkLocationId = { ftw.getLocation(element) }
-            loggerBase.diagnostic(
-                ftw.getDiagnosticTrapWriter(),
-                Severity.Warn,
-                msg,
-                exn?.stackTraceToString(),
-                locationString,
-                mkLocationId
-            )
-        }
-    */
+    fun warnElement(msg: String, element: PsiElement/* TODO , exn: Throwable? = null */) {
+        val locationString = ftw.getLocationString(element)
+        val mkLocationId = { ftw.getLocation(element) }
+        loggerBase.diagnostic(
+            ftw.getDiagnosticTrapWriter(),
+            Severity.Warn,
+            msg,
+            null, // OLD: KE1: exn?.stackTraceToString(),
+            loggerState,
+            locationString,
+            mkLocationId
+        )
+    }
 
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo, loggerState)

@@ -1088,6 +1088,9 @@ OLD: KE1
                         extractFileClass(it)
                     }
                 }
+
+            is KaClassSymbol ->
+                useClassSource(dp)
             /*
             OLD: KE1
                         is IrClass ->
@@ -1438,7 +1441,7 @@ OLD: KE1
         @OptIn(ObsoleteDescriptorBasedAPI::class)
     */
     fun getFunctionLabel(
-        f: KaNamedFunctionSymbol,
+        f: KaFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
@@ -1452,7 +1455,7 @@ OLD: KE1
                         f.parent,
             */
             parentId,
-            f.name.asString(), // TODO: Remove the !! // OLD KE1: getFunctionShortName(f).nameInDB,
+            f.name!!.asString(), // TODO: Remove the !! // OLD KE1: getFunctionShortName(f).nameInDB,
             /*
             OLD: KE1
                         (maybeParameterList ?: f.valueParameters).map { it.type },
@@ -1851,7 +1854,7 @@ OLD: KE1
     */
 
     fun <T : DbCallable> useFunction(
-        f: KaNamedFunctionSymbol,
+        f: KaFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
@@ -1871,8 +1874,8 @@ OLD: KE1
     }
 
     private fun <T : DbCallable> useFunction(
-        f: KaNamedFunctionSymbol,
-        javaFun: KaNamedFunctionSymbol,
+        f: KaFunctionSymbol,
+        javaFun: KaFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
@@ -2076,14 +2079,14 @@ OLD: KE1
         return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"" /* TODO , unquotedLabel.shortName */)
     }
 
-    /*
-    OLD: KE1
-        fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
-            // For source classes, the label doesn't include any type arguments
-            val classTypeResult = addClassLabel(c, listOf())
-            return classTypeResult.id
-        }
+    fun useClassSource(c: KaClassSymbol): Label<out DbClassorinterface> {
+        // For source classes, the label doesn't include any type arguments
+        val classTypeResult = addClassLabel(buildClassType(c) as KaClassType)
+        return classTypeResult.id
+    }
 
+    /*
+       OLD: KE1
         fun getTypeParameterParentLabel(param: IrTypeParameter) =
             param.parent.let {
                 when (it) {
@@ -2132,15 +2135,17 @@ OLD: KE1
                 param.name.asString()
             )
 
-        private fun extractModifier(m: String): Label<DbModifier> {
-            val modifierLabel = "@\"modifier;$m\""
-            val id: Label<DbModifier> = tw.getLabelFor(modifierLabel, { tw.writeModifiers(it, m) })
-            return id
-        }
+        */
+    private fun extractModifier(m: String): Label<DbModifier> {
+        val modifierLabel = "@\"modifier;$m\""
+        val id: Label<DbModifier> = tw.getLabelFor(modifierLabel, { tw.writeModifiers(it, m) })
+        return id
+    }
 
-        fun addModifiers(modifiable: Label<out DbModifiable>, vararg modifiers: String) =
-            modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
+    fun addModifiers(modifiable: Label<out DbModifiable>, vararg modifiers: String) =
+        modifiers.forEach { tw.writeHasModifier(modifiable, extractModifier(it)) }
 
+    /*
         sealed class ExtractSupertypesMode {
             object Unbound : ExtractSupertypesMode()
 

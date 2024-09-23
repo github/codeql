@@ -1,16 +1,7 @@
 package com.github.codeql.utils
 
-/*
-OLD: KE1
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
-import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.analysis.api.symbols.*
 
-fun IrFunction.isLocalFunction(): Boolean {
-    return this.visibility == DescriptorVisibilities.LOCAL
-}
+val KaClassSymbol.isInterfaceLike
+    get() = classKind == KaClassKind.INTERFACE || classKind == KaClassKind.ANNOTATION_CLASS
 
-val IrClass.isInterfaceLike
-    get() = kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS
-*/

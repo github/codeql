@@ -554,6 +554,7 @@ private fun doFile(
             KotlinFileExtractor(
                 logger,
                 sftw,
+                KotlinFileExtractor.DeclarationStack()
                 /*
                 OLD: KE1
                                 linesOfCode,
