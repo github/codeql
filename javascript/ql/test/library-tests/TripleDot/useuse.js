@@ -51,3 +51,14 @@ function t4() {
     const c = new C(source('t4.1'));
     sink(c.foo); // $ hasValueFlow=t4.1
 }
+
+function t5() {
+    class C {
+        field = source('t5.1')
+        constructor() {
+            sink(this.field); // $ hasValueFlow=t5.1
+        }
+    }
+    const c = new C();
+    sink(c.field); // $ MISSING: hasValueFlow=t5.1
+}
