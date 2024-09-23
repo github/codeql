@@ -1,3 +1,4 @@
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/formal.yml:14:9:19:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/artifactpoisoning81.yml:11:9:14:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/artifactpoisoning82.yml:11:9:14:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/dependabot1.yml:15:9:19:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |

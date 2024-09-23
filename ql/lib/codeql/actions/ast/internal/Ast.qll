@@ -2,6 +2,7 @@ private import codeql.actions.ast.internal.Yaml
 private import codeql.Locations
 private import codeql.actions.Helper
 private import codeql.actions.config.Config
+private import codeql.actions.DataFlow
 
 /**
  * Gets the length of each line in the StringValue .
@@ -433,7 +434,10 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   }
 
   ExternalJobImpl getACaller() {
-    result.getCallee() = this.getLocation().getFile().getRelativePath()
+    exists(DataFlow::CallNode call |
+      call.getCalleeNode() = this and
+      result = call.getCfgNode().getAstNode()
+    )
   }
 }
 
