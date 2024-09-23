@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.analysis.api.components.KaDiagnosticCheckerFilter
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.KtNodeTypes
-import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 
@@ -158,7 +158,7 @@ open class KotlinFileExtractor(
 
             file.getDeclarations().forEach {
                 extractDeclaration(
-                    it,
+                    it.symbol,
                     /*
                     OLD: KE1
                                         extractPrivateMembers = true,
@@ -293,7 +293,7 @@ open class KotlinFileExtractor(
     */
 
     fun extractDeclaration(
-        declaration: KtDeclaration,
+        declaration: KaDeclarationSymbol,
         /*
         OLD: KE1
                 extractPrivateMembers: Boolean,
@@ -301,13 +301,13 @@ open class KotlinFileExtractor(
                 extractAnnotations: Boolean
         */
     ) {
-        with("declaration", declaration) {
+        with("declaration", declaration.psiSafe() ?: TODO()) {
 /*
 OLD: KE1
             if (!shouldExtractDecl(declaration, extractPrivateMembers)) return
 */
             when (declaration) {
-                is KtClass -> {
+                is KaClassSymbol -> {
                     /*
                     OLD: KE1
                                         if (isExternalDeclaration(declaration)) {
@@ -324,7 +324,7 @@ OLD: KE1
                     */
                 }
 
-                is KtFunction -> {
+                is KaNamedFunctionSymbol -> {
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractFunction(
@@ -1832,7 +1832,7 @@ OLD: KE1
     */
 
     private fun extractFunction(
-        f: KtFunction,
+        f: KaNamedFunctionSymbol,
         parentId: Label<out DbReftype>,
         /*
         OLD: KE1
@@ -2474,7 +2474,7 @@ OLD: KE1
 
     // TODO: Can this be inlined?
     private fun forceExtractFunction(
-        f: KtFunction,
+        f: KaNamedFunctionSymbol,
         parentId: Label<out DbReftype>,
         /*
         OLD: KE1
@@ -2487,7 +2487,7 @@ OLD: KE1
                 overriddenAttributes: OverriddenFunctionAttributes? = null
         */
     ): Label<out DbCallable> {
-        with("function", f) {
+        with("function", f.psiSafe() ?: TODO()) {
 /*
 OLD: KE1
             DeclarationStackAdjuster(f, overriddenAttributes).use {
@@ -2585,9 +2585,9 @@ OLD: KE1
                                     it(adjustedReturnType, TypeContext.RETURN, pluginContext)
                                 } ?: adjustedReturnType
             */
-
+            val functionSyntax = f.psi as? KtDeclarationWithBody
             val locId =
-                tw.getLocation(f)
+                tw.getLocation(functionSyntax ?: TODO())
             /*
             OLD: KE1
                                 overriddenAttributes?.sourceLoc
@@ -2620,7 +2620,7 @@ OLD: KE1
                 OLD: KE1
                                         locId,
                 */
-                f.getNameAsName()!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
+                f.name.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
                 f.returnType, // OLD: KE1: substReturnType,
                 paramsSignature,
                 parentId,
@@ -2649,7 +2649,7 @@ OLD: KE1
             */
 
             tw.writeHasLocation(id, locId)
-            val body = f.getBodyExpression()
+            val body = functionSyntax?.bodyExpression ?: functionSyntax?.bodyBlockExpression
             if (body != null /* TODO && extractBody */) {
                 /*
                 OLD: KE1

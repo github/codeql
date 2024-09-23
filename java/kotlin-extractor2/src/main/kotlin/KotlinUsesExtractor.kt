@@ -2,8 +2,10 @@ package com.github.codeql
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.asJava.elements.psiType
 import org.jetbrains.kotlin.psi.*
 
 /*
@@ -1012,19 +1014,21 @@ OLD: KE1
         }
     */
 
-    private fun parentOf(d: KtDeclaration): PsiElement {
+    context(KaSession)
+    private fun parentOf(d: KaDeclarationSymbol): KaSymbol? {
         /*
         OLD: KE1
                 if (d is IrField) {
                     return getFieldParent(d)
                 }
         */
-        return d.parent
+        return d.containingSymbol ?: d.containingFile
     }
 
+    context(KaSession)
     fun useDeclarationParentOf(
         // The declaration
-        d: KtDeclaration,
+        d: KaDeclarationSymbol,
         // Whether the type of entity whose parent this is can be a
         // top-level entity in the JVM's eyes. If so, then its parent may
         // be a file; otherwise, if the parent appears to be a file foo.kt,
@@ -1037,7 +1041,7 @@ OLD: KE1
         */
     ): Label<out DbElement>? {
 
-        val parent = parentOf(d)
+        val parent = parentOf(d) ?: TODO()
         /*
         OLD: KE1
                 if (parent is IrExternalPackageFragment) {
@@ -1061,9 +1065,9 @@ OLD: KE1
         // calling this directly, as this cannot handle
         // IrExternalPackageFragment
     */
-    fun useDeclarationParent(
+    private fun useDeclarationParent(
         // The declaration parent according to Kotlin
-        dp: PsiElement,
+        dp: KaSymbol,
         // Whether the type of entity whose parent this is can be a
         // top-level entity in the JVM's eyes. If so, then its parent may
         // be a file; otherwise, if dp is a file foo.kt, then the parent
@@ -1076,11 +1080,13 @@ OLD: KE1
         */
     ): Label<out DbElement>? =
         when (dp) {
-            is KtFile ->
-                if (canBeTopLevel) {
-                    usePackage(dp.packageFqName.asString())
-                } else {
-                    extractFileClass(dp)
+            is KaFileSymbol ->
+                dp.psi<KtFile>().let {
+                    if (canBeTopLevel) {
+                        usePackage(it.packageFqName.asString())
+                    } else {
+                        extractFileClass(it)
+                    }
                 }
             /*
             OLD: KE1
@@ -1432,7 +1438,7 @@ OLD: KE1
         @OptIn(ObsoleteDescriptorBasedAPI::class)
     */
     fun getFunctionLabel(
-        f: KtFunction,
+        f: KaNamedFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
@@ -1446,7 +1452,7 @@ OLD: KE1
                         f.parent,
             */
             parentId,
-            f.getNameAsName()!!.asString(), // TODO: Remove the !! // OLD KE1: getFunctionShortName(f).nameInDB,
+            f.name.asString(), // TODO: Remove the !! // OLD KE1: getFunctionShortName(f).nameInDB,
             /*
             OLD: KE1
                         (maybeParameterList ?: f.valueParameters).map { it.type },
@@ -1845,7 +1851,7 @@ OLD: KE1
     */
 
     fun <T : DbCallable> useFunction(
-        f: KtFunction,
+        f: KaNamedFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
@@ -1865,8 +1871,8 @@ OLD: KE1
     }
 
     private fun <T : DbCallable> useFunction(
-        f: KtFunction,
-        javaFun: KtFunction,
+        f: KaNamedFunctionSymbol,
+        javaFun: KaNamedFunctionSymbol,
         parentId: Label<out DbElement>,
         /*
         OLD: KE1
