@@ -121,16 +121,31 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * the first format specifier in the format string.
    */
   int getFirstFormatArgumentIndex() {
-    result = this.getNumberOfParameters() and
-    // the formatting function either has a definition in the snapshot, or all
+    // The formatting function either has a definition in the snapshot, or all
     // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
     // really know the correct number)
-    (
-      this.hasDefinition()
-      or
-      forall(FunctionDeclarationEntry fde | fde = this.getADeclarationEntry() |
-        result = fde.getNumberOfParameters()
-      )
+    if this.hasDefinition()
+    then result = this.getDefinition().getNumberOfParameters()
+    else result = this.getNumberOfExplicitParameters()
+  }
+
+  /**
+   * Gets a non-implicit function declaration entry.
+   */
+  FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
+    result = this.getADeclarationEntry() and
+    not result.isImplicit()
+  }
+
+  /**
+   * Gets the number of parameters, excluding any parameters that have been defined
+   * from implicit function declarations. If there is some inconsistency in the number
+   * of parameters, then don't return anything.
+   */
+  int getNumberOfExplicitParameters() {
+    result = this.getAnExplicitDeclarationEntry().getNumberOfParameters() and
+    forall(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+      result = fde.getNumberOfParameters()
     )
   }
 

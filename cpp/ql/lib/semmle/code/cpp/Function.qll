@@ -652,6 +652,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /**
    * Holds if this declaration is an implicit function declaration, that is,
    * where a function is used before it is declared (under older C standards).
+   * This can also happen in standalone extraction when a function has not been
+   * properly declared.
    */
   predicate isImplicit() { fun_implicit(underlyingElement(this)) }
 
