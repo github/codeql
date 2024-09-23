@@ -848,7 +848,11 @@ module MakeModelGenerator<
         input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
         output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
         input != output and
-        (if mentionsField(reads) or mentionsField(stores) then lift = false else lift = true)
+        (
+          if mentionsField(reads) or mentionsField(stores)
+          then lift = false and api.isRelevant()
+          else lift = true
+        )
       )
     }
 

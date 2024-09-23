@@ -110,7 +110,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
 
     Callable lift() { result = lift }
 
-    predicate isRelevant() { relevant(this) }
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
   }
 
   private string isExtensible(Callable c) {
