@@ -62,3 +62,34 @@ function t5() {
     const c = new C();
     sink(c.field); // $ hasValueFlow=t5.1
 }
+
+
+function t6() {
+    function invoke(fn) {
+        fn();
+    }
+    class C {
+        constructor(x, y) {
+            this.x = x;
+            invoke(() => {
+                this.y = y;
+            });
+
+            sink(this.x); // $ MISSING: hasValueFlow=t6.1
+            sink(this.y); // $ MISSING: hasValueFlow=t6.1
+
+            invoke(() => {
+                sink(this.x); // $ MISSING: hasValueFlow=t6.1
+                sink(this.y); // $ MISSING: hasValueFlow=t6.2
+            });
+
+            this.methodLike = function() {
+                sink(this.x); // $ MISSING: hasValueFlow=t6.1
+                sink(this.y); // $ MISSING: hasValueFlow=t6.2
+            }
+        }
+    }
+    const c = new C(source('t6.1'), source('t6.2'));
+    sink(c.x); // $ hasValueFlow=t6.1
+    sink(c.y); // $ MISSING: hasValueFlow=t6.2
+}
