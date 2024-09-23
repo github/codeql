@@ -638,6 +638,32 @@ public class Inheritance
         // contentbased-summary=Models;Inheritance+DImpl;true;get_Prop;();;Argument[this].SyntheticField[Models.Inheritance+DImpl.tainted];ReturnValue;value;dfc-generated
         public override string Prop { get { return tainted; } }
     }
+
+    public abstract class BaseContent 
+    {
+        public abstract object GetValue();
+
+        public abstract void SetValue(object o);
+    }
+
+    private class Content1 : BaseContent
+    {
+        private object field;
+
+        // summary=Models;Inheritance+BaseContent;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        // SPURIOUS-contentbased-summary=Models;Inheritance+Content1;true;GetValue;();;Argument[this].SyntheticField[Models.Inheritance+Content1.field];ReturnValue;value;dfc-generated
+        public override object GetValue()
+        {
+            return field;
+        }
+
+        // summary=Models;Inheritance+BaseContent;true;SetValue;(System.Object);;Argument[0];Argument[this];taint;df-generated
+        // SPURIOUS-contentbased-summary=Models;Inheritance+Content1;true;SetValue;(System.Object);;Argument[0];Argument[this].SyntheticField[Models.Inheritance+Content1.field];value;dfc-generated
+        public override void SetValue(object o)
+        {
+            field = o;
+        }
+    }
 }
 
 public class MemberFlow
