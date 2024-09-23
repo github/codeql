@@ -30,7 +30,7 @@ jobs:
         run: |
           python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
       - name: Upload timeseries CSV
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework-coverage-timeseries
           path: framework-coverage-timeseries-*.csv
