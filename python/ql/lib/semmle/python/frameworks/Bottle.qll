@@ -24,12 +24,17 @@ module Bottle {
 
   /** Provides models for the `bottle` module. */
   module BottleModule {
+    /**
+     * Provides models for Bottle applications.
+     */
     module App {
+      /** Gets class `bottle.Bottle`) */
       API::Node cls() { result = API::moduleImport("bottle").getMember("Bottle") }
 
-      /** Gets a reference to a FastAPI application (an instance of `fastapi.FastAPI`). */
+      /** Gets a reference to a Bottle application (an instance of `bottle.Bottle`) */
       API::Node instance() { result = cls().getReturn() }
 
+      /** Gets a reference to a Bottle application (an instance of `bottle.app`) */
       API::Node app() { result = bottle().getMember("app").getReturn() }
     }
 
@@ -71,6 +76,7 @@ module Bottle {
       /** Gets a reference to the `bottle.response` module. */
       API::Node response() { result = bottle().getMember("response") }
 
+      /** A response returned by a view callable. */
       class BottleReturnResponse extends Http::Server::HttpResponse::Range {
         BottleReturnResponse() {
           this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode()
