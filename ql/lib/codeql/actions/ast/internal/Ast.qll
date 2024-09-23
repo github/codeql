@@ -416,6 +416,12 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
+  override EventImpl getATriggerEvent() {
+    this.getACaller().getEnclosingWorkflow().getOn().getAnEvent() = result
+    or
+    this.getOn().getAnEvent() = result and not result.getName() = "workflow_call"
+  }
+
   OutputsImpl getOutputs() { result.getNode() = workflow_call.(YamlMapping).lookup("outputs") }
 
   ExpressionImpl getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
@@ -796,12 +802,11 @@ class JobImpl extends AstNodeImpl, TJobNode {
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
 
   /** Gets the trigger event that starts this workflow. */
-  EventImpl getATriggerEvent() { result = this.getEnclosingWorkflow().getATriggerEvent() }
+  EventImpl getATriggerEvent() {
+    result = this.getEnclosingWorkflow().getATriggerEvent() or
+    result = this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().getATriggerEvent()
+  }
 
-  // private predicate hasSingleTrigger(string trigger) {
-  //   this.getATriggerEvent().getName() = trigger and
-  //   count(this.getATriggerEvent()) = 1
-  // }
   /** Gets the runs-on field of the job. */
   string getARunsOnLabel() {
     exists(ScalarValueImpl lbl, YamlMappingLikeNode runson |
