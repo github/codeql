@@ -6,6 +6,7 @@
 
 private import javascript as js
 private import codeql.ssa.Ssa
+private import semmle.javascript.internal.BasicBlockInternal as BasicBlockInternal
 
 private module SsaConfig implements InputSig<js::DbLocation> {
   class ControlFlowNode = js::ControlFlowNode;
@@ -38,8 +39,7 @@ private module SsaConfig implements InputSig<js::DbLocation> {
     bb.useAt(i, v, _) and certain = true
   }
 
-  predicate getImmediateBasicBlockDominator =
-    js::BasicBlockInternal::getImmediateBasicBlockDominator/1;
+  predicate getImmediateBasicBlockDominator = BasicBlockInternal::immediateDominator/1;
 
   pragma[inline]
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
