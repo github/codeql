@@ -29,9 +29,6 @@ public class PrivateFlowViaPublicInterface {
     }
 
     // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
-    // This summary shouldn't be created because the method is private.
-    // This is most likely because the lifting logic hasn't been properly adapted.
-    // SPURIOUS-contentbased-summary=p;PrivateFlowViaPublicInterface$PrivateImplWithSink;false;openStream;();;Argument[this].SyntheticField[p.PrivateFlowViaPublicInterface$PrivateImplWithSink.file];ReturnValue;taint;dfc-generated
     @Override
     public OutputStream openStream() throws IOException {
       return new FileOutputStream(file);

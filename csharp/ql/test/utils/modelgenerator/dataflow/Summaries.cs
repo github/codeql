@@ -651,14 +651,12 @@ public class Inheritance
         private object field;
 
         // summary=Models;Inheritance+BaseContent;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
-        // SPURIOUS-contentbased-summary=Models;Inheritance+Content1;true;GetValue;();;Argument[this].SyntheticField[Models.Inheritance+Content1.field];ReturnValue;value;dfc-generated
         public override object GetValue()
         {
             return field;
         }
 
         // summary=Models;Inheritance+BaseContent;true;SetValue;(System.Object);;Argument[0];Argument[this];taint;df-generated
-        // SPURIOUS-contentbased-summary=Models;Inheritance+Content1;true;SetValue;(System.Object);;Argument[0];Argument[this].SyntheticField[Models.Inheritance+Content1.field];value;dfc-generated
         public override void SetValue(object o)
         {
             field = o;
