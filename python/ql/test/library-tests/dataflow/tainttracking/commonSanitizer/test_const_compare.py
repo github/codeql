@@ -85,6 +85,32 @@ def test_in_local_variable():
     else:
         ensure_tainted(ts) # $ tainted
 
+def test_is_none():
+    ts = TAINTED_STRING
+    if ts is None:
+        ensure_not_tainted(ts)
+    else:
+        ensure_tainted(ts) # $ tainted
+
+def test_is_not_none():
+    ts = TAINTED_STRING
+    if ts is not None:
+        ensure_tainted(ts)  # $ tainted
+    else:
+        ensure_not_tainted(ts)
+
+def test_in_list_with_constants():
+    ts = TAINTED_STRING
+    if ts in ["safe", None, 3, False]:
+        ensure_not_tainted(ts) 
+    else:
+        ensure_tainted(ts) # $ tainted
+
+    if ts in ["safe", not_constant(), None]:
+        ensure_tainted(ts)  # $ tainted
+
+def not_constant():
+    return "x"
 
 SAFE = ["safe", "also_safe"]
 
@@ -184,6 +210,9 @@ test_in_tuple()
 test_in_set()
 test_in_local_variable()
 test_in_global_variable()
+test_is_none()
+test_is_not_none()
+test_in_list_with_constants()
 make_modification("unsafe")
 test_in_modified_global_variable()
 test_in_unsafe1(["unsafe", "foo"])
