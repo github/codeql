@@ -12,53 +12,53 @@ public class AndroidIntentRedirectionTest extends Activity {
         Intent intent = (Intent) getIntent().getParcelableExtra("forward_intent");
 
         // @formatter:off
-        startActivities(new Intent[] {intent}); // $ hasAndroidIntentRedirection
-        startActivities(new Intent[] {intent}, null); // $ hasAndroidIntentRedirection
-        startActivity(intent); // $ hasAndroidIntentRedirection
-        startActivity(intent, null); // $ hasAndroidIntentRedirection
-        startActivityAsUser(intent, null); // $ hasAndroidIntentRedirection
-        startActivityAsCaller(intent, null, false, 0); // $ hasAndroidIntentRedirection
-        startActivityForResult(intent, 0); // $ hasAndroidIntentRedirection
-        startActivityForResult(intent, 0, null); // $ hasAndroidIntentRedirection
-        startActivityForResult(null, intent, 0, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, null, 0, null, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, 0, null, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, 0, null); // $ hasAndroidIntentRedirection
+        startActivities(new Intent[] {intent}); // $ BAD
+        startActivities(new Intent[] {intent}, null); // $ BAD
+        startActivity(intent); // $ BAD
+        startActivity(intent, null); // $ BAD
+        startActivityAsUser(intent, null); // $ BAD
+        startActivityAsCaller(intent, null, false, 0); // $ BAD
+        startActivityForResult(intent, 0); // $ BAD
+        startActivityForResult(intent, 0, null); // $ BAD
+        startActivityForResult(null, intent, 0, null); // $ BAD
+        startActivityForResultAsUser(intent, null, 0, null, null); // $ BAD
+        startActivityForResultAsUser(intent, 0, null, null); // $ BAD
+        startActivityForResultAsUser(intent, 0, null); // $ BAD
         bindService(intent, null, 0);
         bindServiceAsUser(intent, null, 0, null);
-        startService(intent); // $ hasAndroidIntentRedirection
-        startServiceAsUser(intent, null); // $ hasAndroidIntentRedirection
-        startForegroundService(intent); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
-        sendBroadcastWithMultiplePermissions(intent, null); // $ hasAndroidIntentRedirection
-        sendStickyBroadcast(intent); // $ hasAndroidIntentRedirection
-        sendStickyBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
-        sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ hasAndroidIntentRedirection
-        sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
+        startService(intent); // $ BAD
+        startServiceAsUser(intent, null); // $ BAD
+        startForegroundService(intent); // $ BAD
+        sendBroadcast(intent); // $ BAD
+        sendBroadcast(intent, null); // $ BAD
+        sendBroadcastAsUser(intent, null); // $ BAD
+        sendBroadcastAsUser(intent, null, null); // $ BAD
+        sendBroadcastWithMultiplePermissions(intent, null); // $ BAD
+        sendStickyBroadcast(intent); // $ BAD
+        sendStickyBroadcastAsUser(intent, null); // $ BAD
+        sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ BAD
+        sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ BAD
         // @formatter:on
 
         // Sanitizing only the package or the class still allows redirecting
         // to non-exported activities in the same package
         // or activities with the same name in other packages, respectively.
         if (intent.getComponent().getPackageName().equals("something")) {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ BAD
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ BAD
         }
         if (intent.getComponent().getClassName().equals("something")) {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ BAD
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ BAD
         }
 
         if (intent.getComponent().getPackageName().equals("something")
                 && intent.getComponent().getClassName().equals("something")) {
             startActivity(intent); // Safe
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ BAD
         }
 
         try {
@@ -66,23 +66,23 @@ public class AndroidIntentRedirectionTest extends Activity {
                 // Delayed cast
                 Object obj = getIntent().getParcelableExtra("forward_intent");
                 Intent fwdIntent = (Intent) obj;
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName((Context) null, intent.getStringExtra("className"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName(intent.getStringExtra("packageName"), null);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName(intent.getStringExtra("packageName"),
                         intent.getStringExtra("className"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
@@ -93,27 +93,27 @@ public class AndroidIntentRedirectionTest extends Activity {
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setPackage(intent.getStringExtra("packageName"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         new ComponentName(intent.getStringExtra("packageName"), null);
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = new ComponentName("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         new ComponentName((Context) null, intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
@@ -128,21 +128,21 @@ public class AndroidIntentRedirectionTest extends Activity {
                 ComponentName component =
                         ComponentName.createRelative("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         ComponentName.createRelative(intent.getStringExtra("packageName"), "");
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = ComponentName.createRelative((Context) null,
                         intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent originalIntent = getIntent();
@@ -161,7 +161,7 @@ public class AndroidIntentRedirectionTest extends Activity {
                 Intent originalIntent = getIntent();
                 Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
                 if (originalIntent.getBooleanExtra("use_fwd_intent", false)) {
-                    startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                    startActivity(fwdIntent); // $ BAD
                 } else {
                     startActivity(originalIntent); // Safe - not an Intent obtained from the Extras
                 }
@@ -170,7 +170,7 @@ public class AndroidIntentRedirectionTest extends Activity {
                 Intent originalIntent = getIntent();
                 originalIntent.setClassName(originalIntent.getStringExtra("package_name"),
                         originalIntent.getStringExtra("class_name"));
-                startActivity(originalIntent); // $ hasAndroidIntentRedirection
+                startActivity(originalIntent); // $ BAD
             }
             {
                 Intent originalIntent = getIntent();
@@ -190,15 +190,15 @@ public class AndroidIntentRedirectionTest extends Activity {
             }
             {
                 Intent fwdIntent = Intent.parseUri(getIntent().getStringExtra("uri"), 0);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = Intent.getIntent(getIntent().getStringExtra("uri"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
             {
                 Intent fwdIntent = Intent.getIntentOld(getIntent().getStringExtra("uri"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ BAD
             }
         } catch (Exception e) {
         }
