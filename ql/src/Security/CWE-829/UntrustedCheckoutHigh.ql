@@ -26,23 +26,31 @@ where
   inPrivilegedContext(checkout) and
   (
     // issue_comment: check for date comparison checks and actor/access control checks
-    exists(Event e |
-      e.getName() = "issue_comment" and
-      checkout.getEnclosingJob().getATriggerEvent() = e and
-      not exists(ControlCheck write_check, CommentVsHeadDateCheck data_check |
-        (write_check instanceof ActorCheck or write_check instanceof AssociationCheck) and
-        write_check.dominates(checkout) and
-        data_check.dominates(checkout)
+    exists(Event event |
+      event = checkout.getEnclosingJob().getATriggerEvent() and
+      (
+        event.getName() = "issue_comment"
+        or
+        event.getName() = "workflow_call" and
+        checkout.getEnclosingWorkflow().(ReusableWorkflow).getACaller().getATriggerEvent().getName() =
+          "issue_comment"
+      ) and
+      not exists(ControlCheck check, CommentVsHeadDateCheck date_check |
+        (
+          check instanceof ActorCheck or
+          check instanceof AssociationCheck or
+          check instanceof PermissionCheck
+        ) and
+        check.dominates(checkout) and
+        date_check.dominates(checkout)
       )
     )
     or
     // not issue_comment triggered workflows
     exists(Event event |
       not event.getName() = "issue_comment" and
-      not exists(ControlCheck check |
-        check
-            .protects(checkout, checkout.getEnclosingJob().getATriggerEvent(), "untrusted-checkout")
-      )
+      event = checkout.getEnclosingJob().getATriggerEvent() and
+      not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
     )
   )
 select checkout, "Potential execution of untrusted code on a privileged workflow."

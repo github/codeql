@@ -29,8 +29,14 @@ where
   (
     // issue_comment: check for date comparison checks and actor/access control checks
     exists(Event event |
-      event.getName() = "issue_comment" and
       event = checkout.getEnclosingJob().getATriggerEvent() and
+      (
+        event.getName() = "issue_comment"
+        or
+        event.getName() = "workflow_call" and
+        checkout.getEnclosingWorkflow().(ReusableWorkflow).getACaller().getATriggerEvent().getName() =
+          "issue_comment"
+      ) and
       not exists(ControlCheck check, CommentVsHeadDateCheck date_check |
         (
           check instanceof ActorCheck or

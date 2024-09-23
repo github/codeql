@@ -59,7 +59,15 @@ abstract class ControlCheck extends AstNode {
       step.getEnclosingJob().getANeededJob().getEnvironment() = this
     )
     or
-    this.(Step).getAFollowingStep() = step
+    (
+      this instanceof Run or
+      this instanceof UsesStep
+    ) and
+    (
+      this.(Step).getAFollowingStep() = step
+      or
+      step.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
+    )
   }
 
   abstract predicate protectsCategoryAndEvent(string category, string event);
@@ -188,9 +196,7 @@ class AssociationIfCheck extends AssociationCheck instanceof If {
             ".*\\bgithub\\.event\\.comment\\.author_association\\b.*",
             ".*\\bgithub\\.event\\.issue\\.author_association\\b.*",
             ".*\\bgithub\\.event\\.pull_request\\.author_association\\b.*",
-          ]) and
-    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bMEMBER\\b.*") and
-    normalizeExpr(this.getCondition()).splitAt("\n").regexpMatch(".*\\bOWNER\\b.*")
+          ])
   }
 }
 

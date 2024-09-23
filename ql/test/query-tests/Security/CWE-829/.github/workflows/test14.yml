@@ -1,0 +1,227 @@
+name: Autodeploy Model to AML
+
+on:
+
+  issue_comment:
+    types: [created]
+
+jobs:
+
+  security-checks:
+
+    name: Carry out security checks
+    if:  >-
+         ${{
+            github.event.issue.pull_request &&
+            (contains(github.event.comment.body, '/deploy') || contains(github.event.comment.body, '/rollback')) &&
+            contains(github.event.issue.labels.*.name, 'Deployment Update') &&
+            github.event.comment.user.type != 'Bot' &&
+            github.event.pull_request.author_association != 'FIRST_TIMER' &&
+            github.event.pull_request.author_association != 'FIRST_TIME_CONTRIBUTOR' &&
+            github.event.pull_request.author_association != 'MANNEQUIN' &&
+            github.event.pull_request.author_association != 'NONE'
+          }}
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+
+    - name: Install GH CLI
+      uses: dev-hanz-ops/install-gh-cli-action@8fff9050dae2d81b38f94500d8b74ad1d1d47410  #v0.2.0
+
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+
+    - name: Check comment keywords
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        PR_COMMENT_ALLOW_LIST: ${{ secrets.PR_COMMENT_ALLOW_LIST }}
+      run: |
+        function list_subset { local list1="$1"; local list2="$2"; result=0; for item in $list2; do if ! [[ $list1 =~ (^|[[:space:]])"$item"($|[[:space:]]) ]]; then result=1; fi; done; return $result; }
+
+        if `list_subset "echo $PR_COMMENT_ALLOW_LIST" "echo $COMMENT_BODY"` ; then
+          echo "Command keywords allowed. Proceeding!"
+        else
+          echo "Command keywords not allowed. Skipping!"
+          exit 1
+        fi
+
+    - name: Check for conflicting pushes
+      id: environment
+      shell: bash
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        COMMENT_AT: ${{ github.event.comment.created_at }}
+        GH_REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ github.event.issue.number }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pr="$(gh api /repos/${GH_REPO}/pulls/${PR_NUMBER})"
+        pushed_at="$(echo "$pr" | jq -r .pushed_at)"
+
+        if [[ $(date -d "$pushed_at" +%s) -gt $(date -d "$COMMENT_AT" +%s) ]]; then
+          echo "Deployment not allowed because the PR was pushed to (at $pushed_at) after the triggering comment was issued (at $COMMENT_AT)"
+          exit 1
+        fi
+
+  deploy:
+
+    name: Update deployment
+    needs: security-checks
+    runs-on: [self-hosted, production]
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      statuses: write
+
+    steps:
+
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@d97294d304604fa98a2600a6e2f916a84b596dc7  # v2.0.0
+      id: comment-branch
+
+    - name: Set latest commit status as pending
+      uses: myrotvorets/set-commit-status-action@3730c0a348a2ace3c110851bed53331bc6406e9f  # v2.0.1
+      with:
+        sha: ${{ steps.comment-branch.outputs.head_sha }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        status: pending
+
+    - name: Checkout main
+      if: contains(github.event.comment.body, '/rollback')
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4
+
+    - name: Checkout PR branch
+      if: contains(github.event.comment.body, '/deploy')
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4
+      with:
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
+
+    - name: Get environment from comment
+      id: environment
+      shell: bash
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+      run: |
+        target=$(echo "$COMMENT_BODY" | sed 's/.* //') && \
+        deploy_type=$(echo "$COMMENT_BODY" | sed 's/ .*//')
+
+        if [[ $target == "scorer" ]]; then
+          echo "env=async scorer" >> $GITHUB_OUTPUT
+        else
+          env=$(echo "$target")
+          echo "env=$env" >> $GITHUB_OUTPUT
+        fi
+
+        if [[ $deploy_type == "/deploy" ]]; then
+          echo "depl=deployment" >> $GITHUB_OUTPUT
+        elif [[ $deploy_type == "/rollback" ]]; then
+          echo "depl=rollback" >> $GITHUB_OUTPUT
+        else
+          echo "depl=unknown deployment type" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Get email of actor
+      id: email
+      run: |
+        email="${{ github.actor }}@github.com"
+        echo "email=$email" >> $GITHUB_OUTPUT
+
+    - name: Lookup Slack ID
+      id: slack-id
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      run: |
+        slack_id=$(curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" "https://slack.com/api/users.lookupByEmail?email=${{ steps.email.outputs.email }}" | jq -r '.user.id')
+        echo "slack-id=$slack_id" >> $GITHUB_OUTPUT
+
+    - name: Notify deployment start in slack
+      id: slack-initiate
+      uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0  # v1.27.0
+      with:
+        channel-id: 'C05N5U3HH2M' # platform-health-ml-ops
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@${{ steps.slack-id.outputs.slack-id }}>'s ${{ steps.environment.outputs.depl }} of <${{ github.event.issue.html_url }}|${{ github.event.issue.title }} #${{ github.event.issue.number }}> to ${{ steps.environment.outputs.env }} is in progress..."
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+    - name: Environment setup
+      uses: ./.github/actions/setup-env
+      with:
+        azure_creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy server
+      if: >-
+           ${{
+              (contains(github.event.comment.body, '/deploy to') ||
+              contains(github.event.comment.body, '/rollback')) &&
+              !contains(github.event.comment.body, 'scorer')
+            }}
+      env:
+        BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.issue.number }}
+        COMMENT_BODY: ${{ github.event.comment.body }}
+      run: poetry run python server.py --endpoint_location=remote --autodeploy=True
+
+    - name: Deploy scorer
+      if: >-
+           ${{
+              contains(github.event.comment.body, '/deploy as async scorer') ||
+              contains(github.event.comment.body, '/rollback async scorer')
+            }}
+      env:
+        BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.issue.number }}
+      run: poetry run python scorer.py --as_pipeline=True --schedule=True --autodeploy=True
+
+    - name: Set latest commit status as ${{ job.status }}
+      uses: myrotvorets/set-commit-status-action@3730c0a348a2ace3c110851bed53331bc6406e9f  # v2.0.1
+      if: always()
+      with:
+        sha: ${{ steps.comment-branch.outputs.head_sha }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        status: ${{ job.status }}
+
+    - name: Report deployment outcome in slack
+      uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0  # v1.27.0
+      if: always()
+      with:
+        channel-id: 'C05N5U3HH2M' # platform-health-ml-ops
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@${{ steps.slack-id.outputs.slack-id }}>'s ${{ steps.environment.outputs.depl }} of <${{ github.event.issue.html_url }}|${{ github.event.issue.title }} #${{ github.event.issue.number }}> to ${{ steps.environment.outputs.env }} is complete!\n*Status: ${{ job.status }}*"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+    - name: prune docker images
+      run: docker system prune --all --force
