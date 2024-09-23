@@ -37,7 +37,7 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof ControlF
 private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlowExitNode }
 
 cached
-private module Internal {
+private module Cached {
   /**
    * Holds if `succ` is a control flow successor of `nd` within the same basic block.
    */
@@ -100,7 +100,7 @@ private module Internal {
   }
 }
 
-private import Internal
+private import Cached
 
 /** Gets the immediate dominator of `bb`. */
 cached
