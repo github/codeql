@@ -83,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: bazelbuild/setup-bazelisk@v2
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version-file: 'swift/.python-version'
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
@@ -98,7 +98,7 @@ jobs:
       - name: Generate C++ files
         run: |
           bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
