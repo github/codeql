@@ -1,1 +1,1 @@
-import internal.BasicBlockInternal
+import internal.BasicBlockInternal::Public

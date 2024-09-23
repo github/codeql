@@ -110,6 +110,9 @@ BasicBlock immediateDominator(BasicBlock bb) = idominance(entryBB/1, succBB/2)(_
 cached
 BasicBlock immediatePostDominator(BasicBlock bb) = idominance(exitBB/1, predBB/2)(_, result, bb)
 
+import Public
+
+module Public {
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
@@ -358,4 +361,6 @@ class ReachableJoinBlock extends ReachableBasicBlock {
       not b = this.getImmediateDominator()
     )
   }
+}
+
 }
