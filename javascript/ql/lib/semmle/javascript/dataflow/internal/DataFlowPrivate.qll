@@ -1022,7 +1022,7 @@ private predicate isBlockedLegacyNode(Node node) {
   // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
   exists(LocalVariable variable |
     node = TCapturedVariableNode(variable) and
-    variable instanceof VariableCaptureConfig::CapturedVariable
+    variable = any(VariableCaptureConfig::CapturedVariable v).asLocalVariable()
   )
   or
   legacyBarrier(node)
@@ -1230,7 +1230,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElement()
   )
   or
-  exists(LocalVariable variable |
+  exists(LocalVariableOrThis variable |
     VariableCaptureOutput::readStep(getClosureNode(node1), variable, getClosureNode(node2)) and
     c.asSingleton() = MkCapturedContent(variable)
   )
@@ -1349,7 +1349,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::promiseValue()
   )
   or
-  exists(LocalVariable variable |
+  exists(LocalVariableOrThis variable |
     VariableCaptureOutput::storeStep(getClosureNode(node1), variable, getClosureNode(node2)) and
     c.asSingleton() = MkCapturedContent(variable)
   )
