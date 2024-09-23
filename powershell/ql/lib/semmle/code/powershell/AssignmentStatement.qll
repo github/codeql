@@ -1,6 +1,6 @@
 import powershell
 
-class AssignStmt extends @assignment_statement, Stmt {
+class AssignStmt extends @assignment_statement, PipelineBase {
   override SourceLocation getLocation() { assignment_statement_location(this, result) }
 
   int getKind() { assignment_statement(this, result, _, _) }
