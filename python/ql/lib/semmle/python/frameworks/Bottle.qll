@@ -4,14 +4,11 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
-private import semmle.python.dataflow.new.RemoteFlowSources
-
 /**
  * INTERNAL: Do not use.
  *
