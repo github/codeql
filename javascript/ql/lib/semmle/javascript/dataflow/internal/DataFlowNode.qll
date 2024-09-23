@@ -30,8 +30,8 @@ private module Cached {
     TValueNode(AST::ValueNode nd) or
     /** An SSA node from the legacy SSA library */
     TSsaDefNode(SsaDefinition d) or
-    /** Use of a variable with flow from a post-update node (from an earlier use) */
-    TSsaUseNode(VarUse use) { use.getVariable() instanceof PurelyLocalVariable } or
+    /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
+    TSsaUseNode(Expr use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAnAccess() } or
     /** Phi-read node (new SSA library). Ordinary phi nodes are represented by TSsaDefNode. */
     TSsaPhiReadNode(Ssa2::PhiReadNode phi) or
     /** Input to a phi node (new SSA library) */

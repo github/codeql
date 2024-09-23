@@ -7,8 +7,9 @@
 private import javascript as js
 private import codeql.ssa.Ssa
 private import semmle.javascript.internal.BasicBlockInternal as BasicBlockInternal
+private import semmle.javascript.dataflow.internal.VariableOrThis
 
-private module SsaConfig implements InputSig<js::DbLocation> {
+module SsaConfig implements InputSig<js::DbLocation> {
   class ControlFlowNode = js::ControlFlowNode;
 
   class BasicBlock = js::BasicBlock;
@@ -17,7 +18,9 @@ private module SsaConfig implements InputSig<js::DbLocation> {
     ExitBasicBlock() { this.isExitBlock() }
   }
 
-  class SourceVariable = js::PurelyLocalVariable; // TODO: include 'this' as it is relevant for use-use flow
+  class SourceVariable extends LocalVariableOrThis {
+    SourceVariable() { not this.isCaptured() }
+  }
 
   pragma[nomagic]
   private js::EntryBasicBlock getEntryBlock(js::StmtContainer container) {
@@ -27,7 +30,7 @@ private module SsaConfig implements InputSig<js::DbLocation> {
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     certain = true and
     (
-      bb.defAt(i, v, _)
+      bb.defAt(i, v.asLocalVariable(), _)
       or
       // Implicit initialization and function parameters
       bb = getEntryBlock(v.getDeclaringContainer()) and
@@ -36,7 +39,11 @@ private module SsaConfig implements InputSig<js::DbLocation> {
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    bb.useAt(i, v, _) and certain = true
+    bb.useAt(i, v.asLocalVariable(), _) and certain = true
+    or
+    certain = true and
+    bb.getNode(i) = v.getAThisAccess()
+    // TODO: also account for: super() and field initialisers
   }
 
   predicate getImmediateBasicBlockDominator = BasicBlockInternal::immediateDominator/1;
@@ -48,7 +55,9 @@ private module SsaConfig implements InputSig<js::DbLocation> {
 import Make<js::DbLocation, SsaConfig>
 
 private module SsaDataflowInput implements DataFlowIntegrationInputSig {
-  class Expr extends js::VarUse {
+  class Expr extends js::Expr {
+    Expr() { this = any(SsaConfig::SourceVariable v).getAnAccess() }
+
     predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 

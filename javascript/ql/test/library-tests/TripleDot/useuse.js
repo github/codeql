@@ -45,7 +45,7 @@ function t4() {
     class C {
         constructor(x) {
             this.foo = x;
-            sink(this.foo); // $ MISSING: hasValueFlow=t4.1
+            sink(this.foo); // $ hasValueFlow=t4.1
         }
     }
     const c = new C(source('t4.1'));
