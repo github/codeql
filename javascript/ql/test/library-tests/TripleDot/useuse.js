@@ -28,3 +28,26 @@ function t2() {
     }
     sink(obj.field); // $ hasValueFlow=t2.1
 }
+
+function t3() {
+    function inner(obj) {
+        sink(obj.foo); // $ hasValueFlow=t3.2 MISSING: hasValueFlow=t3.1
+    }
+
+    inner({foo: source('t3.1')});
+
+    let obj = {};
+    obj.foo = source('t3.2');
+    inner(obj);
+}
+
+function t4() {
+    class C {
+        constructor(x) {
+            this.foo = x;
+            sink(this.foo); // $ MISSING: hasValueFlow=t4.1
+        }
+    }
+    const c = new C(source('t4.1'));
+    sink(c.foo); // $ hasValueFlow=t4.1
+}
