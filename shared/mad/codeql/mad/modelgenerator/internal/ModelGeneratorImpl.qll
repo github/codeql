@@ -854,18 +854,52 @@ module MakeModelGenerator<
 
     /**
      * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
-     * the return value or a parameter).
+     * the return value or a parameter). `lift` is true, if the model should be lifted, otherwise false.
      *
      * Models are lifted to the best type in case the read and store access paths do not
      * contain a field or synthetic field access.
      */
-    string captureFlow(ContentDataFlowSummaryTargetApi api) {
-      exists(string input, string output, boolean lift, boolean preservesValue |
+    string captureFlow(ContentDataFlowSummaryTargetApi api, boolean lift) {
+      exists(string input, string output, boolean preservesValue |
         captureFlow0(api, input, output, _, lift) and
         preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
         result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
       )
     }
+  }
+
+  /**
+   * Gets the summary model(s) for `api`, if any. `lift` is true if the model is lifted
+   * otherwise false.
+   * The following heuristic is applied:
+   * 1. If content based flow yields at lease one summary for an API, then we use that.
+   * 2. If content based flow does not yield any summary for an API, then we try and
+   * generate flow summaries using the non-content based summary generator.
+   */
+  string captureMixedFlow(DataFlowSummaryTargetApi api, boolean lift) {
+    result = ContentSensitive::captureFlow(api, lift)
+    or
+    not exists(ContentSensitive::captureFlow(api, lift)) and
+    result = captureFlow(api) and
+    lift = true
+  }
+
+  /**
+   * Gets the neutral summary model for `api`, if any.
+   * A neutral summary model is generated, if we are not generating
+   * a mixed summary model that applies to `api`.
+   */
+  string captureMixedNeutral(DataFlowSummaryTargetApi api) {
+    not exists(DataFlowSummaryTargetApi api0, boolean lift |
+      exists(captureMixedFlow(api0, lift)) and
+      (
+        lift = false and api0 = api
+        or
+        lift = true and api0.lift() = api.lift()
+      )
+    ) and
+    api.isRelevant() and
+    result = ModelPrinting::asNeutralSummaryModel(api)
   }
 
   /**
