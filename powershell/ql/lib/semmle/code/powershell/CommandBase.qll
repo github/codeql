@@ -1,3 +1,3 @@
 import powershell
 
-class CmdBase extends @command_base, Stmt { }
+class CmdBase extends @command_base, Chainable { }

@@ -184,7 +184,7 @@ module Trees {
       )
     }
 
-  int getNumberOfDefaultValues() { result = count(int i | exists(this.getDefaultValue(i))) }
+    int getNumberOfDefaultValues() { result = count(int i | exists(this.getDefaultValue(i))) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Step to the first parameter

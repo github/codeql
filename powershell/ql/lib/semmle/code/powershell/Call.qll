@@ -7,6 +7,8 @@ abstract private class AbstractCall extends Ast {
 
   Expr getNamedArgument(string name) { none() }
 
+  Expr getAnArgument() { result = this.getArgument(_) or result = this.getNamedArgument(_) }
+
   Expr getQualifier() { none() }
 }
 

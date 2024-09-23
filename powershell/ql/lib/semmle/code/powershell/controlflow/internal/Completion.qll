@@ -23,7 +23,7 @@ private newtype TCompletion =
 
 private predicate commandThrows(Cmd c, boolean unconditional) {
   c.getNamedArgument("ErrorAction").(StringConstExpr).getValue().getValue() = "Stop" and
-  if c.getName() = "Write-Error" then unconditional = true else unconditional = false
+  if c.getCommandName() = "Write-Error" then unconditional = true else unconditional = false
 }
 
 pragma[noinline]

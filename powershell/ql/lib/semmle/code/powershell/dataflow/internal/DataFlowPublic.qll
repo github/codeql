@@ -11,6 +11,8 @@ class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
+  CfgNodes::StmtCfgNode asStmt() { result = this.(StmtNode).getStmtNode() }
+
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
@@ -45,6 +47,22 @@ class ExprNode extends Node, TExprNode {
 
   /** Gets the expression corresponding to this node. */
   CfgNodes::ExprCfgNode getExprNode() { result = n }
+}
+
+/**
+ * A statement, viewed as a node in a data flow graph.
+ *
+ * Note that because of control-flow splitting, one `Stmt` may correspond
+ * to multiple `StmtNode`s, just like it may correspond to multiple
+ * `ControlFlow::Node`s.
+ */
+class StmtNode extends Node, TStmtNode {
+  private CfgNodes::StmtCfgNode n;
+
+  StmtNode() { this = TStmtNode(n) }
+
+  /** Gets the expression corresponding to this node. */
+  CfgNodes::StmtCfgNode getStmtNode() { result = n }
 }
 
 /**
@@ -102,6 +120,9 @@ private import Cached
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
+
+/** Gets a node corresponding to statement `s`. */
+StmtNode stmtNode(CfgNodes::StmtCfgNode e) { result.getStmtNode() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.

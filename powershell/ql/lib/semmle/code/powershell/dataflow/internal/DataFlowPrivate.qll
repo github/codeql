@@ -41,6 +41,14 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = this.getExprNode().toString() }
 }
 
+private class StmtNodeImpl extends StmtNode, NodeImpl {
+  override CfgScope getCfgScope() { none() /* TODO */ }
+
+  override Location getLocationImpl() { result = this.getStmtNode().getLocation() }
+
+  override string toStringImpl() { result = this.getStmtNode().toString() }
+}
+
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
 SsaImpl::DefinitionExt getParameterDef(Parameter p) {
@@ -61,7 +69,7 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    result.(Impl::ExprNode).getExpr() = n.asExpr() // TODO: Statement nodes?
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -98,6 +106,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
+    TStmtNode(CfgNodes::StmtCfgNode n) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TNormalParameterNode(Parameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
