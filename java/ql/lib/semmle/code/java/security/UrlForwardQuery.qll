@@ -195,6 +195,8 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof UrlForwardBarrier }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

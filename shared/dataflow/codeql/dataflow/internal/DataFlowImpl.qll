@@ -124,6 +124,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     predicate includeHiddenNodes();
+
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the location
+     * range given by `AlertFiltering`. This only has an effect when running
+     * in diff-informed incremental mode.
+     *
+     * This flag should only be applied to flow configurations whose results
+     * are used directly in a query result.
+     */
+    predicate observeDiffInformedIncrementalMode();
   }
 
   /**
@@ -246,11 +257,75 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ReturnKindExt getKind() { result = pos.getKind() }
     }
 
+    private module SourceSinkFiltering {
+      private import codeql.util.AlertFiltering
+
+      private module AlertFiltering = AlertFilteringImpl<Location>;
+
+      pragma[nomagic]
+      private predicate isFilteredSource(Node source) {
+        Config::isSource(source, _) and
+        if Config::observeDiffInformedIncrementalMode()
+        then AlertFiltering::filterByLocation(source.getLocation())
+        else any()
+      }
+
+      pragma[nomagic]
+      private predicate isFilteredSink(Node sink) {
+        (
+          Config::isSink(sink, _) or
+          Config::isSink(sink)
+        ) and
+        if Config::observeDiffInformedIncrementalMode()
+        then AlertFiltering::filterByLocation(sink.getLocation())
+        else any()
+      }
+
+      private predicate hasFilteredSource() { isFilteredSource(_) }
+
+      private predicate hasFilteredSink() { isFilteredSink(_) }
+
+      predicate isRelevantSource(Node source, FlowState state) {
+        // If there are filtered sinks, we need to pass through all sources to preserve all alerts
+        // with filtered sinks. Otherwise the only alerts of interest are those with filtered
+        // sources, so we can perform the source filtering right here.
+        Config::isSource(source, state) and
+        (
+          isFilteredSource(source) or
+          hasFilteredSink()
+        )
+      }
+
+      predicate isRelevantSink(Node sink, FlowState state) {
+        // If there are filtered sources, we need to pass through all sinks to preserve all alerts
+        // with filtered sources. Otherwise the only alerts of interest are those with filtered
+        // sinks, so we can perform the sink filtering right here.
+        Config::isSink(sink, state) and
+        (
+          isFilteredSink(sink) or
+          hasFilteredSource()
+        )
+      }
+
+      predicate isRelevantSink(Node sink) {
+        // If there are filtered sources, we need to pass through all sinks to preserve all alerts
+        // with filtered sources. Otherwise the only alerts of interest are those with filtered
+        // sinks, so we can perform the sink filtering right here.
+        Config::isSink(sink) and
+        (
+          isFilteredSink(sink) or
+          hasFilteredSource()
+        )
+      }
+    }
+
+    private import SourceSinkFiltering
+
     private predicate inBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
         Config::isBarrierIn(n) and
-        Config::isSource(n, _)
+        isRelevantSource(n, _)
       )
     }
 
@@ -259,7 +334,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(Node n |
         node.asNode() = n and
         Config::isBarrierIn(n, state) and
-        Config::isSource(n, state)
+        isRelevantSource(n, state)
       )
     }
 
@@ -268,9 +343,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         node.asNodeOrImplicitRead() = n and
         Config::isBarrierOut(n)
       |
-        Config::isSink(n, _)
+        isRelevantSink(n, _)
         or
-        Config::isSink(n)
+        isRelevantSink(n)
       )
     }
 
@@ -280,9 +355,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         node.asNodeOrImplicitRead() = n and
         Config::isBarrierOut(n, state)
       |
-        Config::isSink(n, state)
+        isRelevantSink(n, state)
         or
-        Config::isSink(n)
+        isRelevantSink(n)
       )
     }
 
@@ -292,11 +367,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Config::isBarrier(n)
         or
         Config::isBarrierIn(n) and
-        not Config::isSource(n, _)
+        not isRelevantSource(n, _)
         or
         Config::isBarrierOut(n) and
-        not Config::isSink(n, _) and
-        not Config::isSink(n)
+        not isRelevantSink(n, _) and
+        not isRelevantSink(n)
       )
     }
 
@@ -306,24 +381,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Config::isBarrier(n, state)
         or
         Config::isBarrierIn(n, state) and
-        not Config::isSource(n, state)
+        not isRelevantSource(n, state)
         or
         Config::isBarrierOut(n, state) and
-        not Config::isSink(n, state) and
-        not Config::isSink(n)
+        not isRelevantSink(n, state) and
+        not isRelevantSink(n)
       )
     }
 
     pragma[nomagic]
     private predicate sourceNode(NodeEx node, FlowState state) {
-      Config::isSource(node.asNode(), state) and
+      isRelevantSource(node.asNode(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
     }
 
     pragma[nomagic]
     private predicate sinkNodeWithState(NodeEx node, FlowState state) {
-      Config::isSink(node.asNodeOrImplicitRead(), state) and
+      isRelevantSink(node.asNodeOrImplicitRead(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
     }
@@ -729,7 +804,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       additional predicate sinkNode(NodeEx node, FlowState state) {
         fwdFlow(node) and
         fwdFlowState(state) and
-        Config::isSink(node.asNodeOrImplicitRead())
+        isRelevantSink(node.asNodeOrImplicitRead())
         or
         fwdFlow(node) and
         fwdFlowState(state) and
@@ -2946,7 +3021,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             NodeEx toNormalSinkNodeEx() {
               exists(Node n |
                 pragma[only_bind_out](node.asNodeOrImplicitRead()) = n and
-                (Config::isSink(n) or Config::isSink(n, _)) and
+                (isRelevantSink(n) or isRelevantSink(n, _)) and
                 result.asNode() = n
               )
             }
@@ -4793,15 +4868,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       private predicate interestingCallableSrc(DataFlowCallable c) {
-        exists(Node n | Config::isSource(n, _) and c = getNodeEnclosingCallable(n))
+        exists(Node n | isRelevantSource(n, _) and c = getNodeEnclosingCallable(n))
         or
         exists(DataFlowCallable mid | interestingCallableSrc(mid) and callableStep(mid, c))
       }
 
       private predicate interestingCallableSink(DataFlowCallable c) {
         exists(Node n | c = getNodeEnclosingCallable(n) |
-          Config::isSink(n, _) or
-          Config::isSink(n)
+          isRelevantSink(n, _) or
+          isRelevantSink(n)
         )
         or
         exists(DataFlowCallable mid | interestingCallableSink(mid) and callableStep(c, mid))
@@ -4828,7 +4903,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         exists(Node n |
           ce1 = TCallableSrc() and
-          Config::isSource(n, _) and
+          isRelevantSource(n, _) and
           ce2 = TCallable(getNodeEnclosingCallable(n))
         )
         or
@@ -4836,8 +4911,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ce2 = TCallableSink() and
           ce1 = TCallable(getNodeEnclosingCallable(n))
         |
-          Config::isSink(n, _) or
-          Config::isSink(n)
+          isRelevantSink(n, _) or
+          isRelevantSink(n)
         )
       }
 
@@ -4901,7 +4976,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate revSinkNode(NodeEx node, FlowState state) {
         sinkNodeWithState(node, state)
         or
-        Config::isSink(node.asNodeOrImplicitRead()) and
+        isRelevantSink(node.asNodeOrImplicitRead()) and
         relevantState(state) and
         not fullBarrier(node) and
         not stateBarrier(node, state)

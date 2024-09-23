@@ -20,6 +20,8 @@ module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(CryptoAlgoSpec cr | sink.asExpr() = cr.getAlgoSpec())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Flow for finding RSA ciphers initialized without using OAEP padding. */

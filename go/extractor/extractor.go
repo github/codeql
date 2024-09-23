@@ -59,11 +59,11 @@ func init() {
 
 // Extract extracts the packages specified by the given patterns
 func Extract(patterns []string) error {
-	return ExtractWithFlags(nil, patterns)
+	return ExtractWithFlags(nil, patterns, false)
 }
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
-func ExtractWithFlags(buildFlags []string, patterns []string) error {
+func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool) error {
 	startTime := time.Now()
 
 	extraction := NewExtraction(buildFlags, patterns)
@@ -81,7 +81,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 	}
 
-	log.Println("Running packages.Load.")
+	testMessage := ""
+	if extractTests {
+		testMessage = " (test extraction enabled)"
+	}
+	log.Printf("Running packages.Load%s.", testMessage)
+
+	// This includes test packages if either we're tracing a `go test` command,
+	// or if CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS is set to "true".
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
 			packages.NeedCompiledGoFiles |
@@ -89,6 +96,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			packages.NeedTypes | packages.NeedTypesSizes |
 			packages.NeedTypesInfo | packages.NeedSyntax,
 		BuildFlags: buildFlags,
+		Tests:      extractTests,
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 	if err != nil {
@@ -123,7 +131,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "false" {
 		log.Printf("Running go list to resolve package and module directories.")
 		// get all packages information
-		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, modFlags...)
+		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, extractTests, modFlags...)
 		if err != nil {
 			log.Fatalf("Error getting dependency package or module directories: %v.", err)
 		}
@@ -132,8 +140,36 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
+	// Build a map from package paths to their longest IDs--
+	// in the context of a `go test -c` compilation, we will see the same package more than
+	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
+	// that contains and is used by test code.
+	// For our purposes it is simplest to just ignore the non-test version, since the test
+	// version seems to be a superset of it.
+	longestPackageIds := make(map[string]string)
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		if longestIDSoFar, present := longestPackageIds[pkg.PkgPath]; present {
+			if len(pkg.ID) > len(longestIDSoFar) {
+				longestPackageIds[pkg.PkgPath] = pkg.ID
+			}
+		} else {
+			longestPackageIds[pkg.PkgPath] = pkg.ID
+		}
+	})
+
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		// Note that if test extraction is enabled, we will encounter a package twice here:
+		// once as the main package, and once as the test package (with a package ID like
+		// "abc.com/pkgname [abc.com/pkgname.test]").
+		//
+		// We will extract it both times however, because we need to visit the packages
+		// in the right order in order to visit used types before their users, and the
+		// ordering determined by packages.Visit for the main and the test package may differ.
+		//
+		// This should only cause some wasted time and not inconsistency because the names for
+		// objects seen in this process should be the same each time.
+
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
@@ -210,6 +246,19 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+
+		// If this is a variant of a package that also occurs with a longer ID, skip it;
+		// otherwise we would extract the same file more than once including extracting the
+		// body of methods twice, causing database inconsistencies.
+		//
+		// We prefer the version with the longest ID because that is (so far as I know) always
+		// the version that defines more entities -- the only case I'm aware of being a test
+		// variant of a package, which includes test-only functions in addition to the complete
+		// contents of the main variant.
+		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+			return
+		}
+
 		for root := range wantedRoots {
 			pkgInfo := pkgInfos[pkg.PkgPath]
 			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)

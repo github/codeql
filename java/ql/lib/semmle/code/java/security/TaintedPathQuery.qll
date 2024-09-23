@@ -72,6 +72,8 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from remote sources to the creation of a path. */
