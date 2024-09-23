@@ -1,10 +1,9 @@
-use crate::trap::TrapFile;
+use crate::trap::{DiagnosticSeverity, TrapFile};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_syntax::ast::RangeItem;
-use ra_ap_syntax::TextSize;
-use ra_ap_syntax::{ast, TextRange};
+use ra_ap_syntax::{ast, SyntaxError, TextRange, TextSize};
 pub trait TextValue {
     fn try_get_text(&self) -> Option<String>;
 }
@@ -82,5 +81,18 @@ impl Translator {
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: impl ast::AstNode) {
         let (start, end) = self.location(node.syntax().text_range());
         self.trap.emit_location(self.label, label, start, end)
+    }
+    pub fn emit_parse_error(&mut self, path: &str, err: SyntaxError) {
+        let (start, end) = self.location(err.range());
+        log::warn!("{}:{}:{}: {}", path, start.line, start.col, err);
+        let message = err.to_string();
+        let location = self.trap.emit_location_label(self.label, start, end);
+        self.trap.emit_diagnostic(
+            DiagnosticSeverity::Warning,
+            "parse_error".to_owned(),
+            message.clone(),
+            message,
+            location,
+        );
     }
 }

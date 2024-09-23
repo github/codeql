@@ -27,15 +27,14 @@ fn extract(
 
     let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
     for err in parse.errors() {
-        let (start, _) = translator.location(err.range());
-        log::warn!("{}:{}:{}: {}", display_path, start.line, start.col, err);
+        translator.emit_parse_error(display_path.as_ref(), err);
     }
     if let Some(ast) = SourceFile::cast(parse.syntax_node()) {
         translator.emit_source_file(ast);
-        translator.trap.commit()?
     } else {
         log::warn!("Skipped {}", display_path);
     }
+    translator.trap.commit()?;
     Ok(())
 }
 fn main() -> anyhow::Result<()> {

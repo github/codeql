@@ -128,19 +128,25 @@ pub struct TrapFile {
     compression: Compression,
 }
 
+#[derive(Copy, Clone)]
+pub enum DiagnosticSeverity {
+    Debug = 10,
+    Info = 20,
+    Warning = 30,
+    Error = 40,
+}
 impl TrapFile {
-    pub fn emit_location<E: TrapClass>(
+    pub fn emit_location_label(
         &mut self,
         file_label: UntypedLabel,
-        entity_label: Label<E>,
         start: LineCol,
         end: LineCol,
-    ) {
+    ) -> UntypedLabel {
         let start_line = 1 + start.line as usize;
         let start_column = 1 + start.col as usize;
         let end_line = 1 + end.line as usize;
         let end_column = 1 + end.col as usize;
-        let location_label = extractor::location_label(
+        extractor::location_label(
             &mut self.writer,
             trap::Location {
                 file_label,
@@ -149,13 +155,43 @@ impl TrapFile {
                 end_line,
                 end_column,
             },
-        );
+        )
+    }
+    pub fn emit_location<E: TrapClass>(
+        &mut self,
+        file_label: UntypedLabel,
+        entity_label: Label<E>,
+        start: LineCol,
+        end: LineCol,
+    ) {
+        let location_label = self.emit_location_label(file_label, start, end);
         self.writer.add_tuple(
             "locatable_locations",
             vec![entity_label.into(), location_label.into()],
         );
     }
 
+    pub fn emit_diagnostic(
+        &mut self,
+        severity: DiagnosticSeverity,
+        error_tag: String,
+        error_message: String,
+        full_error_message: String,
+        location: UntypedLabel,
+    ) {
+        let label = self.writer.fresh_id();
+        self.writer.add_tuple(
+            "diagnostics",
+            vec![
+                trap::Arg::Label(label),
+                trap::Arg::Int(severity as usize),
+                trap::Arg::String(error_tag),
+                trap::Arg::String(error_message),
+                trap::Arg::String(full_error_message),
+                trap::Arg::Label(location),
+            ],
+        );
+    }
     pub fn emit_file(&mut self, absolute_path: &Path) -> trap::Label {
         extractor::populate_file(&mut self.writer, absolute_path)
     }
