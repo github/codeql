@@ -7,7 +7,7 @@ class ThrowStmt extends @throw_statement, Stmt {
     if this.hasPipeline() then result = "throw ..." else result = "throw"
   }
 
-  Pipeline getPipeline() { throw_statement_pipeline(this, result) }
+  PipelineBase getPipeline() { throw_statement_pipeline(this, result) }
 
   predicate hasPipeline() { exists(this.getPipeline()) }
 }
