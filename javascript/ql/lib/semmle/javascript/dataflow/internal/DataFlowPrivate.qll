@@ -21,7 +21,7 @@ private class Node = DataFlow::Node;
 class PostUpdateNode = DataFlow::PostUpdateNode;
 
 class SsaUseNode extends DataFlow::Node, TSsaUseNode {
-  private Expr expr;
+  private ControlFlowNode expr;
 
   SsaUseNode() { this = TSsaUseNode(expr) }
 
@@ -333,18 +333,13 @@ predicate postUpdatePair(Node pre, Node post) {
   )
   or
   exists(NewExpr expr |
-    pre = TConstructorThisArgumentNode(expr) and
+    pre = TNewCallThisArgument(expr) and
     post = TValueNode(expr)
   )
   or
-  exists(SuperCall expr |
-    pre = TConstructorThisArgumentNode(expr) and
-    post = TConstructorThisPostUpdate(expr.getBinder())
-  )
-  or
-  exists(Function constructor |
-    pre = TThisNode(constructor) and
-    post = TConstructorThisPostUpdate(constructor)
+  exists(ImplicitThisUse use |
+    pre = TImplicitThisUse(use, false) and
+    post = TImplicitThisUse(use, true)
   )
   or
   FlowSummaryImpl::Private::summaryPostUpdateNode(post.(FlowSummaryNode).getSummaryNode(),
@@ -473,7 +468,7 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
     pos.isThis()
   )
   or
-  pos.isThis() and n = TConstructorThisArgumentNode(call.asOrdinaryCall().asExpr())
+  pos.isThis() and n = TNewCallThisArgument(call.asOrdinaryCall().asExpr())
   or
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
@@ -1068,6 +1063,11 @@ private Node getNodeFromSsa2(Ssa2::Node node) {
   or
   result = TExprPostUpdateNode(node.(Ssa2::ExprPostUpdateNode).getExpr())
   or
+  exists(ImplicitThisUse use |
+    node.(Ssa2::ExprPostUpdateNode).getExpr() = use and
+    result = TImplicitThisUse(use, true)
+  )
+  or
   result = TSsaPhiReadNode(node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt())
   or
   result = TSsaInputNode(node.(Ssa2::SsaInputNode))
@@ -1090,6 +1090,11 @@ private predicate useUseFlow(Node node1, Node node2) {
   exists(Expr use |
     node1 = TSsaUseNode(use) and
     node2 = TValueNode(use)
+  )
+  or
+  exists(ImplicitThisUse use |
+    node1 = TSsaUseNode(use) and
+    node2 = TImplicitThisUse(use, false)
   )
 }
 
@@ -1298,11 +1303,16 @@ private Node getPostUpdateForStore(Node base) {
     expr instanceof VarAccess or
     expr instanceof ThisExpr
   )
+  or
+  exists(ImplicitThisUse use |
+    base = TImplicitThisUse(use, false) and
+    result = TImplicitThisUse(use, true)
+  )
 }
 
 /** Gets node to target with a store to the given `base` object.. */
 pragma[inline]
-private Node getStoreTarget(Node base) {
+private Node getStoreTarget(DataFlow::Node base) {
   result = getPostUpdateForStore(base)
   or
   not exists(getPostUpdateForStore(base)) and
