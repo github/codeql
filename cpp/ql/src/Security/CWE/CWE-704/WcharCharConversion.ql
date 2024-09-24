@@ -19,15 +19,28 @@ class WideCharPointerType extends PointerType {
 }
 
 /**
+ * Recurse through types to find any intermediate type or final type
+ * that suggests the type is unlikely to be a string.
+ * Specifically looking for any unsigned character, or datatype with name containing "byte"
+ * or datatype uint8_t.
+ */
+predicate recursiveIsUnlikelyString(Type t) {
+  t.(CharType).isUnsigned()
+  or
+  t.getName().toLowerCase().matches("%byte%")
+  or
+  t.getName().toLowerCase().matches("uint8_t")
+  or
+  recursiveIsUnlikelyString(t.(DerivedType).getBaseType())
+  or
+  recursiveIsUnlikelyString(t.(TypedefType).getBaseType())
+}
+
+/**
  * A type that may also be `CharPointerType`, but that are likely used as arbitrary buffers.
  */
 class UnlikelyToBeAStringType extends Type {
-  UnlikelyToBeAStringType() {
-    this.(PointerType).getBaseType().(CharType).isUnsigned() or
-    this.(PointerType).getBaseType().getName().toLowerCase().matches("%byte") or
-    this.getName().toLowerCase().matches("%byte") or
-    this.(PointerType).getBaseType().hasName("uint8_t")
-  }
+  UnlikelyToBeAStringType() { recursiveIsUnlikelyString(this) }
 }
 
 from Expr e1, Cast e2

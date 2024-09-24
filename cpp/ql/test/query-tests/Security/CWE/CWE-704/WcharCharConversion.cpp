@@ -54,3 +54,12 @@ void NonStringFalsePositiveTest2(unsigned char* buffer)
 	wchar_t *lpWchar = NULL;
 	lpWchar = (LPWSTR)buffer; // Possible False Positive
 }
+
+typedef unsigned char BYTE;
+using FOO = BYTE*;
+
+void NonStringFalsePositiveTest3(FOO buffer)
+{
+	wchar_t *lpWchar = NULL;
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
+}
