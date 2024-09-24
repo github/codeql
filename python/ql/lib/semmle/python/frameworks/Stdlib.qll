@@ -4219,7 +4219,7 @@ module StdlibPrivate {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-        input = "Argument[0].DictionaryElement[" + key + "]" and
+        input = "Argument[0..].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
@@ -4230,7 +4230,7 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      input = "Argument[0]" and
+      input = "Argument[0..]" and
       output = "ReturnValue" and
       preservesValue = false
     }
