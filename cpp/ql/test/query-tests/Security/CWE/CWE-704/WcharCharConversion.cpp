@@ -63,3 +63,42 @@ void NonStringFalsePositiveTest3(FOO buffer)
 	wchar_t *lpWchar = NULL;
 	lpWchar = (LPWSTR)buffer; // Possible False Positive
 }
+
+#define UNICODE 0x8
+
+// assume EMPTY_MACRO is tied to if UNICODE is enabled
+#ifdef EMPTY_MACRO
+typedef WCHAR* LPTSTR;
+#else
+typedef char* LPTSTR;
+#endif
+
+void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
+{
+	wchar_t *lpWchar = NULL;
+	if(flags & UNICODE)
+		lpWchar = (LPWSTR)buffer; // False Positive
+	else
+		lpWchar = (LPWSTR)buffer; // BUG
+
+	if((flags & UNICODE) == 0x8)
+		lpWchar = (LPWSTR)buffer; // False Positive
+	else
+		lpWchar = (LPWSTR)buffer; // BUG
+
+	if((flags & UNICODE) != 0x8)
+		lpWchar = (LPWSTR)buffer; // BUG
+	else
+		lpWchar = (LPWSTR)buffer; // False Positive
+
+	// Bad operator precedence
+	if(flags & UNICODE == 0x8)
+		lpWchar = (LPWSTR)buffer; // BUG
+	else
+		lpWchar = (LPWSTR)buffer; // BUG
+
+	if((flags & UNICODE) != 0)
+		lpWchar = (LPWSTR)buffer; // BUG
+	else
+		lpWchar = (LPWSTR)buffer; // False Positive
+}
