@@ -9,7 +9,7 @@ pub mod trap;
 use ra_ap_syntax::ast::SourceFile;
 use ra_ap_syntax::AstNode;
 
-pub fn extract(
+fn extract(
     archiver: &archive::Archiver,
     traps: &trap::TrapFileProvider,
     file: std::path::PathBuf,
