@@ -2,6 +2,8 @@ package com.github.codeql
 
 import com.github.codeql.utils.isInterfaceLike
 import com.intellij.openapi.util.TextRange
+import extractClassSource
+import extractFunction
 import org.jetbrains.kotlin.analysis.api.components.KaDiagnosticCheckerFilter
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
@@ -10,6 +12,7 @@ import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
+import useType
 import java.io.Closeable
 import java.util.*
 
@@ -119,7 +122,7 @@ open class KotlinFileExtractor(
         val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
     */
 
-    private inline fun <T> with(kind: String, element: KtElement, f: () -> T): T {
+    inline fun <T> with(kind: String, element: KtElement, f: () -> T): T {
         val name =
             when (element) {
                 is KtFile -> element.virtualFilePath
@@ -1030,180 +1033,7 @@ OLD: KE1
 
      */
 
-    @OptIn(KaExperimentalApi::class)
-    fun extractClassSource(
-        c: KaClassSymbol,
-        extractDeclarations: Boolean,
-        /*
-        OLD: KE1
-        extractStaticInitializer: Boolean,
-        extractPrivateMembers: Boolean,
-        extractFunctionBodies: Boolean
-         */
-    ): Label<out DbClassorinterface> {
-        with("class source", c.psiSafe() ?: TODO()) {
-            DeclarationStackAdjuster(c).use {
-                val id = useClassSource(c)
-                val pkg = c.classId?.packageFqName?.asString() ?: ""
-                val cls =
-                    if (c.classKind == KaClassKind.ANONYMOUS_OBJECT) "" else c.name!!.asString() // TODO: Remove !!
-                val pkgId = extractPackage(pkg)
-                tw.writeClasses_or_interfaces(id, cls, pkgId, id)
-                if (c.isInterfaceLike) {
-                    tw.writeIsInterface(id)
-                    if (c.classKind == KaClassKind.ANNOTATION_CLASS) {
-                        tw.writeIsAnnotType(id)
-                    }
-                } else {
-                    val kind = c.classKind
-                    if (kind == KaClassKind.ENUM_CLASS) {
-                        tw.writeIsEnumType(id)
-                    } else if (
-                        kind != KaClassKind.CLASS &&
-                        kind != KaClassKind.OBJECT //&&
-                    //OLD KE1: kind != ClassKind.ENUM_ENTRY
-                    ) {
-                        logger.warnElement("Unrecognised class kind $kind", c.psiSafe() ?: TODO())
-                    }
 
-                    /*
-                    OLD: KE1
-                    if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
-                        tw.writeFile_class(id)
-                    }
-                     */
-
-                    if ((c as? KaNamedClassSymbol)?.isData == true) {
-                        tw.writeKtDataClasses(id)
-                    }
-                }
-
-                val locId = tw.getLocation(c.psiSafe() ?: TODO())
-                tw.writeHasLocation(id, locId)
-
-                // OLD: KE1
-                //extractEnclosingClass(c.parent, id, c, locId, listOf())
-                //val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
-
-                c.typeParameters.mapIndexed { idx, param ->
-                    //extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx))
-                }
-                if (extractDeclarations) {
-                    if (c.classKind == KaClassKind.ANNOTATION_CLASS) {
-                        c.declaredMemberScope.declarations.filterIsInstance<KaPropertySymbol>().forEach {
-                            val getter = it.getter
-                            if (getter == null) {
-                                logger.warnElement(
-                                    "Expected an annotation property to have a getter",
-                                    it.psiSafe() ?: TODO()
-                                )
-                            } else {
-                                extractFunction(
-                                    getter,
-                                    id,
-                                    /* OLD: KE1
-                                    extractBody = false,
-                                    extractMethodAndParameterTypeAccesses =
-                                    extractFunctionBodies,
-                                    extractAnnotations = true,
-                                    null,
-                                    listOf()
-                                     */
-                                )
-                                    ?.also { functionLabel ->
-                                        tw.writeIsAnnotElem(functionLabel.cast())
-                                    }
-                            }
-                        }
-                    } else {
-                        try {
-                            val decl = c.declaredMemberScope.declarations.toList()
-                            c.declaredMemberScope.declarations.forEach {
-                                extractDeclaration(
-                                    it,
-                                    /*
-                                    OLD: KE1
-                                    extractPrivateMembers = extractPrivateMembers,
-                                    extractFunctionBodies = extractFunctionBodies,
-                                    extractAnnotations = true
-                                     */
-                                )
-                            }
-                            /*
-                            OLD: KE1
-                            if (extractStaticInitializer) extractStaticInitializer(c, { id })
-                            extractJvmStaticProxyMethods(
-                                c,
-                                id,
-                                extractPrivateMembers,
-                                extractFunctionBodies
-                            )
-                             */
-                        } catch (e: IllegalArgumentException) {
-                            // A Kotlin bug causes this to throw: https://youtrack.jetbrains.com/issue/KT-63847/K2-IllegalStateException-IrFieldPublicSymbolImpl-for-java.time-Clock.OffsetClock.offset0-is-already-bound
-                            // TODO: This should either be removed or log something, once the bug is fixed
-                        }
-                    }
-                }
-                /*
-                OLD: KE1
-                if (c.isNonCompanionObject) {
-                    // For `object MyObject { ... }`, the .class has an
-                    // automatically-generated `public static final MyObject INSTANCE`
-                    // field that may be referenced from Java code, and is used in our
-                    // IrGetObjectValue support. We therefore need to fabricate it
-                    // here.
-                    val instance = useObjectClassInstance(c)
-                    val type = useSimpleTypeClass(c, emptyList(), false)
-                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
-                    tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
-                    tw.writeHasLocation(instance.id, locId)
-                    addModifiers(instance.id, "public", "static", "final")
-                    tw.writeClass_object(id, instance.id)
-                }
-                */
-                if (c.classKind == KaClassKind.OBJECT) {
-                    addModifiers(id, "static")
-                }
-                /*
-                OLD: KE1
-                if (extractFunctionBodies && needsObinitFunction(c)) {
-                    extractObinitFunction(c, id)
-                }
-
-                extractClassModifiers(c, id)
-                extractClassSupertypes(
-                    c,
-                    id,
-                    inReceiverContext = true
-                ) // inReceiverContext = true is specified to force extraction of member prototypes
-                // of base types
-
-                linesOfCode?.linesOfCodeInDeclaration(c, id)
-
-                val additionalAnnotations =
-                    if (
-                        c.kind == ClassKind.ANNOTATION_CLASS &&
-                        c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
-                    )
-                        metaAnnotationSupport.generateJavaMetaAnnotations(c, extractFunctionBodies)
-                    else listOf()
-
-                extractAnnotations(
-                    c,
-                    c.annotations + additionalAnnotations,
-                    id,
-                    extractFunctionBodies
-                )
-
-                if (extractFunctionBodies && !c.isAnonymousObject && !c.isLocal)
-                    externalClassExtractor.writeStubTrapFile(c)
-                */
-
-                return id
-            }
-        }
-    }
     /*
         OLD: KE1
         val jvmStaticFqName = FqName("kotlin.jvm.JvmStatic")
@@ -1871,79 +1701,6 @@ OLD: KE1
                 }
     */
 
-    private fun extractFunction(
-        f: KaFunctionSymbol,
-        parentId: Label<out DbReftype>,
-        /*
-        OLD: KE1
-                extractBody: Boolean,
-                extractMethodAndParameterTypeAccesses: Boolean,
-                extractAnnotations: Boolean,
-                typeSubstitution: TypeSubstitution?,
-                classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-        */
-    ): Label<out DbCallable> {
-        /*
-        OLD: KE1
-                if (isFake(f)) {
-                    if (needsInterfaceForwarder(f)) {
-                        return makeInterfaceForwarder(
-                            f,
-                            parentId,
-                            extractBody,
-                            extractMethodAndParameterTypeAccesses,
-                            typeSubstitution,
-                            classTypeArgsIncludingOuterClasses
-                        )
-                    } else {
-                        return null
-                    }
-                } else {
-                    // Work around an apparent bug causing redeclarations of `fun toString(): String`
-                    // specifically in interfaces loaded from Java classes show up like fake overrides.
-                    val overriddenVisibility =
-                        if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f))
-                            OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)
-                        else null
-        */
-        return forceExtractFunction(
-            f,
-            parentId,
-            /*
-            OLD: KE1
-                                extractBody,
-                                extractMethodAndParameterTypeAccesses,
-                                extractAnnotations,
-                                typeSubstitution,
-                                classTypeArgsIncludingOuterClasses,
-                                overriddenAttributes = overriddenVisibility
-            */
-        )
-        /*
-        OLD: KE1
-                        .also {
-                            // The defaults-forwarder function is a static utility, not a member, so we only
-                            // need to extract this for the unspecialised instance of this class.
-                            if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
-                                extractDefaultsFunction(
-                                    f,
-                                    parentId,
-                                    extractBody,
-                                    extractMethodAndParameterTypeAccesses
-                                )
-                            extractGeneratedOverloads(
-                                f,
-                                parentId,
-                                null,
-                                extractBody,
-                                extractMethodAndParameterTypeAccesses,
-                                typeSubstitution,
-                                classTypeArgsIncludingOuterClasses
-                            )
-                        }
-        */
-    }
-
     /*
     OLD: KE1
         private fun extractDefaultsFunction(
@@ -2388,58 +2145,6 @@ OLD: KE1
         }
     */
 
-    // TODO: Can this be inlined?
-    private fun extractMethod(
-        id: Label<out DbMethod>,
-        /*
-        OLD: KE1
-                locId: Label<out DbLocation>,
-        */
-        shortName: String,
-        returnType: KaType,
-        paramsSignature: String,
-        parentId: Label<out DbReftype>,
-        /*
-        OLD: KE1
-                sourceDeclaration: Label<out DbMethod>,
-                origin: IrDeclarationOrigin?,
-                extractTypeAccess: Boolean
-        */
-    ) {
-        val returnTypeResults = useType(returnType, TypeContext.RETURN)
-        tw.writeMethods(
-            id,
-            shortName,
-            "$shortName$paramsSignature",
-            returnTypeResults.javaResult.id,
-            parentId,
-            id, // OLD: KE1: sourceDeclaration
-        )
-        /*
-        OLD: KE1
-                tw.writeMethodsKotlinType(id, returnTypeResults.kotlinResult.id)
-                when (origin) {
-                    IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
-                        tw.writeCompiler_generated(
-                            id,
-                            CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind
-                        )
-                    IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
-                        tw.writeCompiler_generated(
-                            id,
-                            CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind
-                        )
-                    IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
-                        tw.writeCompiler_generated(
-                            id,
-                            CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind
-                        )
-                }
-                if (extractTypeAccess) {
-                    extractTypeAccessRecursive(returnType, locId, id, -1)
-                }
-        */
-    }
 
     /*
     OLD: KE1
@@ -2511,251 +2216,6 @@ OLD: KE1
                 }
             }
     */
-
-    // TODO: Can this be inlined?
-    private fun forceExtractFunction(
-        f: KaFunctionSymbol,
-        parentId: Label<out DbReftype>,
-        /*
-        OLD: KE1
-                extractBody: Boolean,
-                extractMethodAndParameterTypeAccesses: Boolean,
-                extractAnnotations: Boolean,
-                typeSubstitution: TypeSubstitution?,
-                classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
-                extractOrigin: Boolean = true,
-                overriddenAttributes: OverriddenFunctionAttributes? = null
-        */
-    ): Label<out DbCallable> {
-        with("function", f.psiSafe() ?: TODO()) {
-/*
-OLD: KE1
-            DeclarationStackAdjuster(f, overriddenAttributes).use {
-                val javaCallable = getJavaCallable(f)
-                getFunctionTypeParameters(f).mapIndexed { idx, tp ->
-                    extractTypeParameter(
-                        tp,
-                        idx,
-                        (javaCallable as? JavaTypeParameterListOwner)
-                            ?.typeParameters
-                            ?.getOrNull(idx)
-                    )
-                }
-*/
-
-            val id =
-                /*
-                OLD: KE1
-                                    overriddenAttributes?.id
-                                        ?: // If this is a class that would ordinarily be replaced by a Java
-                                           // equivalent (e.g. kotlin.Map -> java.util.Map),
-                                        // don't replace here, really extract the Kotlin version:
-                */
-                useFunction<DbCallable>(
-                    f,
-                    parentId,
-                    /*
-                    OLD: KE1
-                                                classTypeArgsIncludingOuterClasses,
-                                                noReplace = true
-                    */
-                )
-
-            /*
-            OLD: KE1
-                            val sourceDeclaration =
-                                overriddenAttributes?.sourceDeclarationId
-                                    ?: if (typeSubstitution != null && overriddenAttributes?.id == null) {
-                                        val sourceFunId = useFunction<DbCallable>(f)
-                                        if (sourceFunId == null) {
-                                            logger.errorElement("Cannot get source ID for function", f)
-                                            id // TODO: This is wrong; we ought to just fail in this case
-                                        } else {
-                                            sourceFunId
-                                        }
-                                    } else {
-                                        id
-                                    }
-
-                            val extReceiver = f.extensionReceiverParameter
-                            // The following parameter order is correct, because member $default methods (where
-                            // the order would be [dispatchParam], [extensionParam], normalParams) are not
-                            // extracted here
-                            val fParameters =
-                                listOfNotNull(extReceiver) +
-                                    (overriddenAttributes?.valueParameters ?: f.valueParameters)
-                            val paramTypes =
-                                fParameters.mapIndexed { i, vp ->
-                                    extractValueParameter(
-                                        vp,
-                                        id,
-                                        i,
-                                        typeSubstitution,
-                                        sourceDeclaration,
-                                        classTypeArgsIncludingOuterClasses,
-                                        extractTypeAccess = extractMethodAndParameterTypeAccesses,
-                                        overriddenAttributes?.sourceLoc
-                                    )
-                                }
-                            if (extReceiver != null) {
-                                val extendedType = paramTypes[0]
-                                tw.writeKtExtensionFunctions(
-                                    id.cast<DbMethod>(),
-                                    extendedType.javaResult.id,
-                                    extendedType.kotlinResult.id
-                                )
-                            }
-            */
-
-            val paramsSignature = "()" // TODO:
-            /*
-            OLD: KE1
-                                paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") {
-                                    signatureOrWarn(it.javaResult, f)
-                                }
-
-                            val adjustedReturnType =
-                                addJavaLoweringWildcards(
-                                    getAdjustedReturnType(f),
-                                    false,
-                                    (javaCallable as? JavaMethod)?.returnType
-                                )
-                            val substReturnType =
-                                typeSubstitution?.let {
-                                    it(adjustedReturnType, TypeContext.RETURN, pluginContext)
-                                } ?: adjustedReturnType
-            */
-            val functionSyntax = f.psi as? KtDeclarationWithBody
-            val locId =
-                tw.getLocation(functionSyntax ?: TODO())
-            /*
-            OLD: KE1
-                                overriddenAttributes?.sourceLoc
-                                    ?: getLocation(f, classTypeArgsIncludingOuterClasses)
-
-                            if (f.symbol is IrConstructorSymbol) {
-                                val shortName =
-                                    when {
-                                        adjustedReturnType.isAnonymous -> ""
-                                        typeSubstitution != null ->
-                                            useType(substReturnType).javaResult.shortName
-                                        else ->
-                                            adjustedReturnType.classFqName?.shortName()?.asString()
-                                                ?: f.name.asString()
-                                    }
-                                extractConstructor(
-                                    id.cast(),
-                                    shortName,
-                                    paramsSignature,
-                                    parentId,
-                                    sourceDeclaration.cast()
-                                )
-                            } else {
-                                val shortNames = getFunctionShortName(f)
-            */
-            val methodId = id.cast<DbMethod>()
-            extractMethod(
-                methodId,
-                /*
-                OLD: KE1
-                                        locId,
-                */
-                f.name!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
-                f.returnType, // OLD: KE1: substReturnType,
-                paramsSignature,
-                parentId,
-                /*
-                OLD: KE1
-                                        sourceDeclaration.cast(),
-                                        if (extractOrigin) f.origin else null,
-                                        extractMethodAndParameterTypeAccesses
-                */
-            )
-
-            /*
-            OLD: KE1
-                                if (shortNames.nameInDB != shortNames.kotlinName) {
-                                    tw.writeKtFunctionOriginalNames(methodId, shortNames.kotlinName)
-                                }
-
-                                if (f.hasInterfaceParent() && f.body != null) {
-                                    addModifiers(
-                                        methodId,
-                                        "default"
-                                    ) // The actual output class file may or may not have this modifier,
-                                      // depending on the -Xjvm-default setting.
-                                }
-                            }
-            */
-
-            tw.writeHasLocation(id, locId)
-            val body = functionSyntax?.bodyExpression ?: functionSyntax?.bodyBlockExpression
-            if (body != null /* TODO && extractBody */) {
-                /*
-                OLD: KE1
-                                    if (typeSubstitution != null)
-                                        logger.errorElement(
-                                            "Type substitution should only be used to extract a function prototype, not the body",
-                                            f
-                                        )
-                */
-                extractBody(body, id)
-            }
-
-            /*
-            OLD: KE1
-                            extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
-
-                            if (f.isInline) {
-                                addModifiers(id, "inline")
-                            }
-                            if (f.shouldExtractAsStatic) {
-                                addModifiers(id, "static")
-                            }
-                            if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
-                                addModifiers(id, "override")
-                            }
-                            if (f.isSuspend) {
-                                addModifiers(id, "suspend")
-                            }
-                            if (f.symbol !is IrConstructorSymbol) {
-                                when (overriddenAttributes?.modality ?: (f as? IrSimpleFunction)?.modality) {
-                                    Modality.ABSTRACT -> addModifiers(id, "abstract")
-                                    Modality.FINAL -> addModifiers(id, "final")
-                                    else -> Unit
-                                }
-                            }
-
-                            linesOfCode?.linesOfCodeInDeclaration(f, id)
-
-                            if (extractAnnotations) {
-                                val extraAnnotations =
-                                    if (f.symbol is IrConstructorSymbol) listOf()
-                                    else
-                                        listOfNotNull(
-                                            getNullabilityAnnotation(
-                                                f.returnType,
-                                                f.origin,
-                                                f.annotations,
-                                                getJavaCallable(f)?.annotations
-                                            )
-                                        )
-                                extractAnnotations(
-                                    f,
-                                    f.annotations + extraAnnotations,
-                                    id,
-                                    extractMethodAndParameterTypeAccesses
-                                )
-                            }
-            */
-
-            return id
-            /*
-            OLD: KE1
-                        }
-            */
-        }
-    }
 
     /*
     OLD: KE1
@@ -3018,7 +2478,7 @@ OLD: KE1
         }
     */
 
-    private fun extractBody(b: KtExpression, callable: Label<out DbCallable>) {
+    fun extractBody(b: KtExpression, callable: Label<out DbCallable>) {
         with("body", b) {
             when (b) {
                 is KtBlockExpression -> extractBlockBody(b, callable)
@@ -9458,7 +8918,7 @@ OLD: KE1
         }
 
      */
-    private inner class DeclarationStackAdjuster(
+    inner class DeclarationStackAdjuster(
         val declaration: KaDeclarationSymbol,
         val overriddenAttributes: OverriddenFunctionAttributes? = null
     ) : Closeable {
