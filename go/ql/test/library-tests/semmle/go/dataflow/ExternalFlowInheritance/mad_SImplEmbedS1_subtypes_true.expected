@@ -1,7 +1,7 @@
 invalidModelRow
 paths
-| test.go:68:7:68:16 | call to Source | test.go:70:9:70:9 | y |
+| test.go:80:7:80:16 | call to Source | test.go:82:9:82:9 | y |
 sources
-| test.go:68:7:68:16 | call to Source |
+| test.go:80:7:80:16 | call to Source |
 sinks
-| test.go:70:9:70:9 | y |
+| test.go:82:9:82:9 | y |
