@@ -105,7 +105,10 @@ abstract class AstNodeImpl extends TAstNode {
   /**
    * Gets the enclosing Job.
    */
-  JobImpl getEnclosingJob() { result.getAChildNode*() = this.getParentNode() }
+  JobImpl getEnclosingJob() {
+    result.getAChildNode*() = this.getParentNode() or
+    result = this.getEnclosingCompositeAction().getACallerJob()
+  }
 
   /**
    * Gets the enclosing workflow if any.
