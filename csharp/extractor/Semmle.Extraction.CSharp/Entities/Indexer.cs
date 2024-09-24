@@ -51,6 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
+            PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
 
@@ -93,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<IndexerDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 

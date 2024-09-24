@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 assembly = init!.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
-                var idString = identity.Name + " " + identity.Version;
+                var idString = $"{identity.Name} {identity.Version}";
                 assemblyPath = cx.ExtractionContext.GetAssemblyFile(idString);
             }
         }

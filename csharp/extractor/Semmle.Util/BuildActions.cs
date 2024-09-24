@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
-using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
@@ -165,7 +165,7 @@ namespace Semmle.Util
         /// <summary>
         /// Downloads the resource with the specified URI to a local file.
         /// </summary>
-        void DownloadFile(string address, string fileName);
+        void DownloadFile(string address, string fileName, ILogger logger);
 
         /// <summary>
         /// Creates an <see cref="IDiagnosticsWriter" /> for the given <paramref name="filename" />.
@@ -280,8 +280,8 @@ namespace Semmle.Util
 
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
-        public void DownloadFile(string address, string fileName) =>
-            FileUtils.DownloadFile(address, fileName);
+        public void DownloadFile(string address, string fileName, ILogger logger) =>
+            FileUtils.DownloadFile(address, fileName, logger);
 
         public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new DiagnosticsStream(filename);
 

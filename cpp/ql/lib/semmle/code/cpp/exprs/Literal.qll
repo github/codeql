@@ -196,17 +196,6 @@ class ClassAggregateLiteral extends AggregateLiteral {
   Expr getAFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
 
   /**
-   * DEPRECATED: Use `getAFieldExpr` instead.
-   *
-   * Gets the expression within the aggregate literal that is used to initialize
-   * field `field`, if present.
-   *
-   * This predicate may have multiple results since a field can be initialized
-   * multiple times in the same initializer.
-   */
-  deprecated Expr getFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
-
-  /**
    * Gets the expression within the aggregate literal that is used to initialize
    * field `field`, if present. The expression is the `position`'th entry in the
    * aggregate literal.
@@ -299,17 +288,6 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * multiple times in the same initializer.
    */
   Expr getAnElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
-
-  /**
-   * DEPRECATED: Use `getAnElementExpr` instead.
-   *
-   * Gets the expression within the aggregate literal that is used to initialize
-   * element `elementIndex`, if present.
-   *
-   * This predicate may have multiple results since an element can be initialized
-   * multiple times in the same initializer.
-   */
-  deprecated Expr getElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize

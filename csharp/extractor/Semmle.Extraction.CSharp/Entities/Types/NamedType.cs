@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 );
         }
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).BestOrDefault();
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 

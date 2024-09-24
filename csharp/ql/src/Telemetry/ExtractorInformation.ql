@@ -8,9 +8,11 @@
 
 import csharp
 import semmle.code.csharp.commons.Diagnostics
+import DatabaseQuality
 
 predicate compilationInfo(string key, float value) {
   not key.matches("Compiler diagnostic count for%") and
+  not key.matches("Extractor message count for group%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
@@ -19,6 +21,16 @@ predicate compilationInfo(string key, float value) {
     key = infoKey + ": " + infoValue and
     value = 1
   )
+}
+
+predicate compilerDiagnostics(string key, int value) {
+  key.matches("Compiler diagnostic count for%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
+}
+
+predicate extractorMessages(string key, int value) {
+  key.matches("Extractor message count for group%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
 }
 
 predicate fileCount(string key, int value) {
@@ -90,68 +102,6 @@ predicate extractionIsStandalone(string key, int value) {
   key = "Is extracted with build-mode set to 'none'"
 }
 
-signature module StatsSig {
-  int getNumberOfOk();
-
-  int getNumberOfNotOk();
-
-  string getOkText();
-
-  string getNotOkText();
-}
-
-module ReportStats<StatsSig Stats> {
-  predicate numberOfOk(string key, int value) {
-    value = Stats::getNumberOfOk() and
-    key = "Number of " + Stats::getOkText()
-  }
-
-  predicate numberOfNotOk(string key, int value) {
-    value = Stats::getNumberOfNotOk() and
-    key = "Number of " + Stats::getNotOkText()
-  }
-
-  predicate percentageOfOk(string key, float value) {
-    value = Stats::getNumberOfOk() * 100.0 / (Stats::getNumberOfOk() + Stats::getNumberOfNotOk()) and
-    key = "Percentage of " + Stats::getOkText()
-  }
-}
-
-module CallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
-
-  int getNumberOfNotOk() {
-    result =
-      count(Call c |
-        not exists(c.getTarget()) and
-        not c instanceof DelegateCall and
-        not c instanceof DynamicExpr
-      )
-  }
-
-  string getOkText() { result = "calls with call target" }
-
-  string getNotOkText() { result = "calls with missing call target" }
-}
-
-private class SourceExpr extends Expr {
-  SourceExpr() { this.getFile().fromSource() }
-}
-
-private predicate hasGoodType(Expr e) {
-  exists(e.getType()) and not e.getType() instanceof UnknownType
-}
-
-module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(SourceExpr e | hasGoodType(e)) }
-
-  int getNumberOfNotOk() { result = count(SourceExpr e | not hasGoodType(e)) }
-
-  string getOkText() { result = "expressions with known type" }
-
-  string getNotOkText() { result = "expressions with unknown type" }
-}
-
 module TypeMentionTypeStats implements StatsSig {
   int getNumberOfOk() { result = count(TypeMention t | not t.getType() instanceof UnknownType) }
 
@@ -182,10 +132,6 @@ module ExprStats implements StatsSig {
   string getNotOkText() { result = "expressions with unknown kind" }
 }
 
-module CallTargetStatsReport = ReportStats<CallTargetStats>;
-
-module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
-
 module TypeMentionTypeStatsReport = ReportStats<TypeMentionTypeStats>;
 
 module AccessTargetStatsReport = ReportStats<AccessTargetStats>;
@@ -201,18 +147,12 @@ predicate analyzerAssemblies(string key, float value) {
   value = 1.0
 }
 
-predicate timingValues(string key, float value) {
-  exists(Compilation c |
-    key = "Total elapsed seconds" and value = c.getElapsedSeconds()
-    or
-    key = "Extractor elapsed seconds" and value = c.getExtractorElapsedSeconds()
-  )
-}
-
 from string key, float value
 where
   (
     compilationInfo(key, value) or
+    compilerDiagnostics(key, value) or
+    extractorMessages(key, value) or
     fileCount(key, value) or
     fileCountByExtension(key, value) or
     totalNumberOfLines(key, value) or
@@ -238,8 +178,7 @@ where
     ExprStatsReport::numberOfOk(key, value) or
     ExprStatsReport::numberOfNotOk(key, value) or
     ExprStatsReport::percentageOfOk(key, value) or
-    analyzerAssemblies(key, value) or
-    timingValues(key, value)
+    analyzerAssemblies(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

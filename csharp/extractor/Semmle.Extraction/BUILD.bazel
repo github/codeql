@@ -26,6 +26,7 @@ codeql_csharp_library(
         ],
         "//conditions:default": [],
     }),
+    internals_visible_to = ["Semmle.Extraction.CSharp"],
     visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Util",

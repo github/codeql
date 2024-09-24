@@ -14,6 +14,12 @@ public class Sources {
     return "";
   }
 
+  // Defined as a source in the model file next to the test.
+  // neutral=p;Sources;source2;();summary;df-generated
+  public String source2() {
+    return "";
+  }
+
   // source=p;Sources;true;readUrl;(URL);;ReturnValue;remote;df-generated
   // sink=p;Sources;true;readUrl;(URL);;Argument[0];request-forgery;df-generated
   // neutral=p;Sources;readUrl;(URL);summary;df-generated
@@ -64,6 +70,42 @@ public class Sources {
     // neutral=p;Sources$MyContainer;read;();summary;df-generated
     public String read() {
       return value.toString();
+    }
+  }
+
+  // Not a new source as this callable has been manually modelled
+  // as source neutral.
+  // neutral=p;Sources;manualNeutralSource;();summary;df-generated
+  public String manualNeutralSource() {
+    return source();
+  }
+
+  // Not a new source as this callable already has a manual source.
+  // neutral=p;Sources;manualSourceAlreadyDefined;();summary;df-generated
+  public String manualSourceAlreadyDefined() {
+    return source();
+  }
+
+  public abstract class DataReader {
+    // neutral=p;Sources$DataReader;read;();summary;df-generated
+    public abstract String read();
+  }
+
+  public class DataReaderKind1 extends DataReader {
+    // source=p;Sources$DataReaderKind1;true;read;();;ReturnValue;test-source;df-generated
+    // neutral=p;Sources$DataReaderKind1;read;();summary;df-generated
+    @Override
+    public String read() {
+      return source();
+    }
+  }
+
+  public class DataReaderKind2 extends DataReader {
+    // source=p;Sources$DataReaderKind2;true;read;();;ReturnValue;test-source2;df-generated
+    // neutral=p;Sources$DataReaderKind2;read;();summary;df-generated
+    @Override
+    public String read() {
+      return source2();
     }
   }
 }

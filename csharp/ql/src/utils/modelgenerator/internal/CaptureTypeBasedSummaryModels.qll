@@ -178,7 +178,9 @@ private predicate output(Callable callable, TypeParameter tp, string output) {
 }
 
 private module ModelPrintingInput implements ModelPrintingSig {
-  class Api = TypeBasedFlowTargetApi;
+  class SummaryApi = TypeBasedFlowTargetApi;
+
+  class SourceOrSinkApi = TypeBasedFlowTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
@@ -189,7 +191,7 @@ private module Printing = ModelPrinting<ModelPrintingInput>;
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
+class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
   TypeBasedFlowTargetApi() { not Specific::isUninterestingForTypeBasedFlowModels(this) }
 
   /**
@@ -221,7 +223,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
       output(this, tp, output) and
       input != output
     |
-      result = Printing::asValueModel(this, input, output)
+      result = Printing::asLiftedValueModel(this, input, output)
     )
   }
 }

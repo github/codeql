@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | provenance |  |
@@ -265,6 +265,7 @@ subpaths
 | Constructors.cs:132:29:132:30 | access to local variable o2 : Object | Constructors.cs:121:38:121:40 | oc2 : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj2] : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object |
 | Constructors.cs:143:25:143:26 | access to local variable o1 : Object | Constructors.cs:137:29:137:32 | Obj1 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj1] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object |
 | Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:137:42:137:45 | Obj2 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj2] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object |
+testFailures
 #select
 | Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:33:18:33:19 | access to field s1 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:33:18:33:19 | access to field s1 | $@ | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |

@@ -44,34 +44,6 @@ class JsonIoUseMapsSetter extends MethodCall {
 }
 
 /**
- * DEPRECATED: Use `SafeJsonIoFlow` instead.
- *
- * A data flow configuration tracing flow from JsonIo safe settings.
- */
-deprecated class SafeJsonIoConfig extends DataFlow2::Configuration {
-  SafeJsonIoConfig() { this = "UnsafeDeserialization::SafeJsonIoConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(MethodCall ma |
-      ma instanceof JsonIoUseMapsSetter and
-      src.asExpr() = ma.getQualifier()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall ma |
-      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-      sink.asExpr() = ma.getArgument(1)
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
-      sink.asExpr() = cie.getArgument(1)
-    )
-  }
-}
-
-/**
  * A data flow configuration tracing flow from JsonIo safe settings.
  */
 module SafeJsonIoConfig implements DataFlow::ConfigSig {

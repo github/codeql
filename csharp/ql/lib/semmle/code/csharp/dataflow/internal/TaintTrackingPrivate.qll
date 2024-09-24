@@ -122,22 +122,22 @@ private module Cached {
       FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
       or
       // Taint collection by adding a tainted element
-      exists(DataFlow::ElementContent c |
+      exists(DataFlow::ContentSet c | c.isElement() |
         storeStep(nodeFrom, c, nodeTo)
         or
         FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo, _)
       )
       or
-      exists(DataFlow::Content c |
+      exists(DataFlow::ContentSet c |
         readStep(nodeFrom, c, nodeTo)
         or
         FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo, _)
       |
         // Taint members
-        c = any(TaintedMember m).(FieldOrProperty).getContent()
+        c = any(TaintedMember m).(FieldOrProperty).getContentSet()
         or
         // Read from a tainted collection
-        c = TElementContent()
+        c.isElement()
       )
     )
   }
@@ -152,12 +152,12 @@ private module Cached {
       localTaintStepCommon(nodeFrom, nodeTo)
       or
       // Taint members
-      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
+      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContentSet(), nodeTo)
       or
       // Although flow through collections is modeled precisely using stores/reads, we still
       // allow flow out of a _tainted_ collection. This is needed in order to support taint-
       // tracking configurations where the source is a collection
-      readStep(nodeFrom, TElementContent(), nodeTo)
+      readStep(nodeFrom, any(DataFlow::ContentSet c | c.isElement()), nodeTo)
       or
       nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
     ) and

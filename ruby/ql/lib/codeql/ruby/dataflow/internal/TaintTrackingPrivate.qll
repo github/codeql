@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.SSA
+private import SsaImpl as SsaImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -89,7 +90,7 @@ private module Cached {
         clause = case.getBranch(_) and
         def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
         def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
-        not LocalFlow::ssaDefAssigns(def, value)
+        not def.(Ssa::WriteDefinition).assigns(value)
       )
       or
       // operation involving `nodeFrom`

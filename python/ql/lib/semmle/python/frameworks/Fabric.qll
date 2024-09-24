@@ -29,8 +29,8 @@ private module FabricV1 {
     // -------------------------------------------------------------------------
     // fabric.api
     // -------------------------------------------------------------------------
-    /** Gets a reference to the `fabric.api` module. */
-    API::Node api() { result = fabric().getMember("api") }
+    /** Gets a reference to the `fabric.api` module. Also known as `fabric.operations` */
+    API::Node api() { result = fabric().getMember(["api", "operations"]) }
 
     /** Provides models for the `fabric.api` module */
     module Api {

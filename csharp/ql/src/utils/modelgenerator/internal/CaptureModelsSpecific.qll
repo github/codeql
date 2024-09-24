@@ -5,11 +5,14 @@
 private import csharp as CS
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
+private import semmle.code.csharp.commons.QualifiedName as QualifiedName
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate as TaintTrackingPrivate
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+import semmle.code.csharp.dataflow.internal.ContentDataFlow as ContentDataFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -21,6 +24,8 @@ module TaintTracking = CS::TaintTracking;
 class Type = CS::Type;
 
 class Callable = CS::Callable;
+
+class ContentSet = DataFlow::ContentSet;
 
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
@@ -82,9 +87,19 @@ private Callable liftedImpl(Callable api) {
   not exists(getARelevantOverrideeOrImplementee(result))
 }
 
-private predicate hasManualModel(Callable api) {
+private predicate hasManualSummaryModel(Callable api) {
   api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
   api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+}
+
+private predicate hasManualSourceModel(Callable api) {
+  api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
+}
+
+private predicate hasManualSinkModel(Callable api) {
+  api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+  api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
 }
 
 /**
@@ -102,18 +117,46 @@ predicate isUninterestingForDataFlowModels(CS::Callable api) { isHigherOrder(api
 predicate isUninterestingForTypeBasedFlowModels(CS::Callable api) { none() }
 
 /**
- * A class of callables that are potentially relevant for generating summary, source, sink
- * and neutral models.
+ * A class of callables that are potentially relevant for generating source or
+ * sink models.
+ */
+class SourceOrSinkTargetApi extends Callable {
+  SourceOrSinkTargetApi() { relevant(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating sink models.
+ */
+class SinkTargetApi extends SourceOrSinkTargetApi {
+  SinkTargetApi() { not hasManualSinkModel(this) }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating source models.
+ */
+class SourceTargetApi extends SourceOrSinkTargetApi {
+  SourceTargetApi() {
+    not hasManualSourceModel(this) and
+    // Do not generate source models for overridable callables
+    // as virtual dispatch implies that too many methods
+    // will be considered sources.
+    not this.(Overridable).overridesOrImplements(_)
+  }
+}
+
+/**
+ * A class of callables that are potentially relevant for generating summary or
+ * neutral models.
  *
  * In the Standard library and 3rd party libraries it is the callables (or callables that have a
  * super implementation) that can be called from outside the library itself.
  */
-class TargetApiSpecific extends Callable {
+class SummaryTargetApi extends Callable {
   private Callable lift;
 
-  TargetApiSpecific() {
+  SummaryTargetApi() {
     lift = liftedImpl(this) and
-    not hasManualModel(lift)
+    not hasManualSummaryModel(lift)
   }
 
   /**
@@ -172,10 +215,24 @@ predicate isRelevantType(CS::Type t) {
 /**
  * Gets the underlying type of the content `c`.
  */
-CS::Type getUnderlyingContentType(DataFlow::Content c) {
+private CS::Type getUnderlyingContType(DataFlow::Content c) {
   result = c.(DataFlow::FieldContent).getField().getType() or
-  result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
-  result = c.(DataFlow::PropertyContent).getProperty().getType()
+  result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+}
+
+/**
+ * Gets the underlying type of the content `c`.
+ */
+CS::Type getUnderlyingContentType(DataFlow::ContentSet c) {
+  exists(DataFlow::Content cont |
+    c.isSingleton(cont) and
+    result = getUnderlyingContType(cont)
+  )
+  or
+  exists(CS::Property p |
+    c.isProperty(p) and
+    result = p.getType()
+  )
 }
 
 /**
@@ -189,9 +246,27 @@ string parameterAccess(CS::Parameter p) {
   else result = "Argument[" + p.getPosition() + "]"
 }
 
+/**
+ * Gets the MaD string representation of the parameter `p`
+ * when used in content flow.
+ */
+string parameterContentAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+
 class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
 class ParameterPosition = DataFlowDispatch::ParameterPosition;
+
+private signature string parameterAccessSig(Parameter p);
+
+module ParamReturnNodeAsOutput<parameterAccessSig/1 getParamAccess> {
+  bindingset[c]
+  string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
+    result = getParamAccess(c.getParameter(pos.getPosition()))
+    or
+    pos.isThisParameter() and
+    result = qualifierString()
+  }
+}
 
 /**
  * Gets the MaD string representation of return through parameter at position
@@ -199,17 +274,19 @@ class ParameterPosition = DataFlowDispatch::ParameterPosition;
  */
 bindingset[c]
 string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
-  result = parameterAccess(c.getParameter(pos.getPosition()))
-  or
-  pos.isThisParameter() and
-  result = qualifierString()
+  result = ParamReturnNodeAsOutput<parameterAccess/1>::paramReturnNodeAsOutput(c, pos)
+}
+
+bindingset[c]
+string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
+  result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
 }
 
 /**
  * Gets the enclosing callable of `ret`.
  */
 Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable(_)
 }
 
 /**
@@ -233,24 +310,11 @@ private predicate isRelevantMemberAccess(DataFlow::Node node) {
 
 predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
-private class ManualNeutralSinkCallable extends Callable {
-  ManualNeutralSinkCallable() {
-    this =
-      any(FlowSummaryImpl::Public::NeutralCallable nc |
-        nc.hasManualModel() and nc.getKind() = "sink"
-      )
-  }
-}
-
 /**
  * Holds if `source` is an api entrypoint relevant for creating sink models.
  */
 predicate apiSource(DataFlow::Node source) {
-  (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-  exists(Callable enclosing | enclosing = source.getEnclosingCallable() |
-    relevant(enclosing) and
-    not enclosing instanceof ManualNeutralSinkCallable
-  )
+  isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode
 }
 
 private predicate uniquelyCalls(DataFlowCallable dc1, DataFlowCallable dc2) {
@@ -269,7 +333,7 @@ private predicate uniquelyCallsPlus(DataFlowCallable dc1, DataFlowCallable dc2) 
  * if flow is detected from a node within `source` to a sink within `api`.
  */
 bindingset[sourceEnclosing, api]
-predicate irrelevantSourceSinkApi(Callable sourceEnclosing, TargetApiSpecific api) {
+predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) {
   not exists(DataFlowCallable dc1, DataFlowCallable dc2 | uniquelyCallsPlus(dc1, dc2) or dc1 = dc2 |
     dc1.getUnderlyingCallable() = api and
     dc2.getUnderlyingCallable() = sourceEnclosing
@@ -299,4 +363,74 @@ predicate isRelevantSinkKind(string kind) { any() }
  * Holds if `kind` is a relevant source kind for creating source models.
  */
 bindingset[kind]
-predicate isRelevantSourceKind(string kind) { not kind = "file" }
+predicate isRelevantSourceKind(string kind) { any() }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(DataFlow::ContentSet c) { c.isElement() }
+
+/**
+ * Holds if there is a taint step from `node1` to `node2` in content flow.
+ */
+predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  TaintTrackingPrivate::defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
+  not nodeTo.asExpr() instanceof CS::ElementAccess and
+  not exists(DataFlow::ContentSet c |
+    DataFlowPrivate::readStep(nodeFrom, c, nodeTo) and containerContent(c)
+  )
+}
+
+bindingset[d]
+private string getFullyQualifiedName(Declaration d) {
+  exists(string qualifier, string name |
+    d.hasFullyQualifiedName(qualifier, name) and
+    result = QualifiedName::getQualifiedName(qualifier, name)
+  )
+}
+
+/**
+ * Holds if the content set `c` is a field, property or synthetic field.
+ */
+predicate isField(ContentSet c) { c.isField(_) or c.isSyntheticField(_) or c.isProperty(_) }
+
+/**
+ * Gets the MaD synthetic name string representation for the content set `c`, if any.
+ */
+string getSyntheticName(DataFlow::ContentSet c) {
+  exists(CS::Field f |
+    not f.isEffectivelyPublic() and
+    c.isField(f) and
+    result = getFullyQualifiedName(f)
+  )
+  or
+  exists(CS::Property p |
+    not p.isEffectivelyPublic() and
+    c.isProperty(p) and
+    result = getFullyQualifiedName(p)
+  )
+  or
+  c.isSyntheticField(result)
+}
+
+/**
+ * Gets the MaD string representation of the content set `c`.
+ */
+string printContent(DataFlow::ContentSet c) {
+  exists(CS::Field f, string name | name = getFullyQualifiedName(f) |
+    c.isField(f) and
+    f.isEffectivelyPublic() and
+    result = "Field[" + name + "]"
+  )
+  or
+  exists(CS::Property p, string name | name = getFullyQualifiedName(p) |
+    c.isProperty(p) and
+    p.isEffectivelyPublic() and
+    result = "Property[" + name + "]"
+  )
+  or
+  result = "SyntheticField[" + getSyntheticName(c) + "]"
+  or
+  c.isElement() and
+  result = "Element"
+}

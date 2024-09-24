@@ -188,9 +188,6 @@ module LdapBind {
      * Holds if the binding process use SSL.
      */
     abstract predicate useSsl();
-
-    /** DEPRECATED: Alias for useSsl */
-    deprecated predicate useSSL() { this.useSsl() }
   }
 }
 
@@ -215,9 +212,6 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
    * Holds if the binding process use SSL.
    */
   predicate useSsl() { super.useSsl() }
-
-  /** DEPRECATED: Alias for useSsl */
-  deprecated predicate useSSL() { this.useSsl() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */
@@ -276,55 +270,6 @@ class CsvWriter extends DataFlow::Node instanceof CsvWriter::Range {
    * Get the parameter value of the csv writer function.
    */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
-}
-
-/**
- * A data-flow node that sets a cookie in an HTTP response.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `Cookie::Range` instead.
- */
-class Cookie extends Http::Server::CookieWrite instanceof Cookie::Range {
-  /**
-   * Holds if this cookie is secure.
-   */
-  predicate isSecure() { super.isSecure() }
-
-  /**
-   * Holds if this cookie is HttpOnly.
-   */
-  predicate isHttpOnly() { super.isHttpOnly() }
-
-  /**
-   * Holds if the cookie is SameSite
-   */
-  predicate isSameSite() { super.isSameSite() }
-}
-
-/** Provides a class for modeling new cookie writes on HTTP responses. */
-module Cookie {
-  /**
-   * A data-flow node that sets a cookie in an HTTP response.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `Cookie` instead.
-   */
-  abstract class Range extends Http::Server::CookieWrite::Range {
-    /**
-     * Holds if this cookie is secure.
-     */
-    abstract predicate isSecure();
-
-    /**
-     * Holds if this cookie is HttpOnly.
-     */
-    abstract predicate isHttpOnly();
-
-    /**
-     * Holds if the cookie is SameSite.
-     */
-    abstract predicate isSameSite();
-  }
 }
 
 /** Provides classes for modeling JWT encoding-related APIs. */

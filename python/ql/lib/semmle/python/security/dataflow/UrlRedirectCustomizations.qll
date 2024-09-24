@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -89,6 +90,10 @@ module UrlRedirect {
     }
   }
 
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+  }
+
   /**
    * The right side of a string-concat, considered as a sanitizer.
    */
@@ -135,12 +140,15 @@ module UrlRedirect {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier {
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier {
     override predicate sanitizes(FlowState state) {
       // sanitize all flow states
       any()
     }
   }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 }

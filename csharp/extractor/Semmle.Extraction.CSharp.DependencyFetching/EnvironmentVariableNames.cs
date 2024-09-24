@@ -1,6 +1,6 @@
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class EnvironmentVariableNames
+    internal static class EnvironmentVariableNames
     {
         /// <summary>
         /// Controls whether to generate source files from resources (`.resx`).

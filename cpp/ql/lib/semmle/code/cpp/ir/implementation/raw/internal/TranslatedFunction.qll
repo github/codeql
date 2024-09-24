@@ -67,9 +67,6 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
 
   final override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   /**
    * Gets the function being translated.
    */
@@ -212,8 +209,13 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
-        exists(TryStmt try | try.getEnclosingFunction() = func) or
+        exists(TryOrMicrosoftTryStmt try | try.getEnclosingFunction() = func)
+        or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
+        or
+        exists(FunctionCall call | call.getEnclosingFunction() = func |
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException()
+        )
       )
       or
       tag = AliasedUseTag() and
@@ -483,9 +485,6 @@ class TranslatedThisParameter extends TranslatedParameter, TTranslatedThisParame
 
   final override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Function getFunction() { result = func }
 
   final override predicate hasIndirection() { any() }
@@ -517,9 +516,6 @@ class TranslatedPositionalParameter extends TranslatedParameter, TTranslatedPara
   final override string toString() { result = param.toString() }
 
   final override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override Function getFunction() {
     result = param.getFunction() or
@@ -558,9 +554,6 @@ class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllips
 
   final override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Function getFunction() { result = func }
 
   final override predicate hasIndirection() { any() }
@@ -596,9 +589,6 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
   override string toString() { result = "ctor init: " + func.toString() }
 
   override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override TranslatedElement getChild(int id) {
     exists(ConstructorFieldInit fieldInit |
@@ -677,9 +667,6 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
 
   override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   override TranslatedElement getChild(int id) {
     exists(DestructorFieldDestruction fieldDestruction |
       fieldDestruction = func.(Destructor).getDestruction(id) and
@@ -732,9 +719,6 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   TranslatedReadEffects() { this = TTranslatedReadEffects(func) }
 
   override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override Function getFunction() { result = func }
 
@@ -839,9 +823,6 @@ class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisRead
 
   override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   override Function getFunction() { result = func }
 
   override string toString() { result = "read effect: this" }
@@ -864,9 +845,6 @@ class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedPar
   TranslatedParameterReadEffect() { this = TTranslatedParameterReadEffect(param) }
 
   override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override string toString() { result = "read effect: " + param.toString() }
 

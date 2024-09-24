@@ -28,12 +28,6 @@ class Element extends @element {
   predicate fromLibrary() { this.getFile().fromLibrary() }
 
   /**
-   * Gets the "language" of this program element, as defined by the extension of the filename.
-   * For example, C# has language "cs", and Visual Basic has language "vb".
-   */
-  deprecated final string getLanguage() { result = this.getLocation().getFile().getExtension() }
-
-  /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    *
    * If no primary class can be determined, the result is `"???"`.
@@ -157,30 +151,6 @@ class NamedElement extends Element, @named_element {
   cached
   predicate hasFullyQualifiedName(string qualifier, string name) {
     qualifier = "" and name = this.getName()
-  }
-
-  /** Gets a unique string label for this element. */
-  cached
-  deprecated string getLabel() { none() }
-
-  /** Holds if `other` has the same metadata handle in the same assembly. */
-  deprecated predicate matchesHandle(NamedElement other) {
-    exists(Assembly asm, int handle |
-      metadata_handle(this, asm, handle) and
-      metadata_handle(other, asm, handle)
-    )
-  }
-
-  /**
-   * Holds if this element was compiled from source code that is also present in the
-   * database. That is, this element corresponds to another element from source.
-   */
-  deprecated predicate compiledFromSource() {
-    not this.fromSource() and
-    exists(NamedElement other | other != this |
-      this.matchesHandle(other) and
-      other.fromSource()
-    )
   }
 
   override string toString() { result = this.getName() }

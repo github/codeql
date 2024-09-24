@@ -40,7 +40,7 @@ public class Testrunner
         {
             Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("[FAIL] {0}: {1}", info.TestDisplayName, info.ExceptionMessage);
+            Console.WriteLine($"[FAIL] {info.TestDisplayName}: {info.ExceptionMessage}");
             if (info.ExceptionStackTrace != null)
                 Console.WriteLine(info.ExceptionStackTrace);
 
@@ -55,7 +55,7 @@ public class Testrunner
         lock (ConsoleLock)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[SKIP] {0}: {1}", info.TestDisplayName, info.SkipReason);
+            Console.WriteLine($"[SKIP] {info.TestDisplayName}: {info.SkipReason}");
             Console.ResetColor();
         }
     }

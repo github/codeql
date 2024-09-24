@@ -325,7 +325,7 @@ open class KotlinFileExtractor(
             // parameter S of
             // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1,
             // not 0).
-            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
+            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, parentId)
             val locId = tw.getLocation(tp)
             tw.writeHasLocation(id, locId)
 
@@ -1020,7 +1020,7 @@ open class KotlinFileExtractor(
                     // here.
                     val instance = useObjectClassInstance(c)
                     val type = useSimpleTypeClass(c, emptyList(), false)
-                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id)
                     tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                     tw.writeHasLocation(instance.id, locId)
                     addModifiers(instance.id, "public", "static", "final")
@@ -1237,8 +1237,7 @@ open class KotlinFileExtractor(
                                 instance.id,
                                 instance.name,
                                 type.javaResult.id,
-                                parentId,
-                                instance.id
+                                parentId
                             )
                             tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
@@ -2600,7 +2599,7 @@ open class KotlinFileExtractor(
         isStatic: Boolean
     ): Label<out DbField> {
         val t = useType(type)
-        tw.writeFields(id, name, t.javaResult.id, parentId, id)
+        tw.writeFields(id, name, t.javaResult.id, parentId)
         tw.writeFieldsKotlinType(id, t.kotlinResult.id)
         tw.writeHasLocation(id, locId)
 
@@ -2757,7 +2756,7 @@ open class KotlinFileExtractor(
             DeclarationStackAdjuster(ee).use {
                 val id = useEnumEntry(ee)
                 val type = getEnumEntryType(ee) ?: return
-                tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
+                tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId)
                 tw.writeFieldsKotlinType(id, type.kotlinResult.id)
                 val locId = tw.getLocation(ee)
                 tw.writeHasLocation(id, locId)

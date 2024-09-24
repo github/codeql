@@ -46,8 +46,13 @@ extensions:
       - ["java.util.logging", "Logger", False, "getLogger", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.logging.Logger.name]", "value", "manual"]
       - ["java.util.logging", "Logger", False, "getName", "()", "", "Argument[this].SyntheticField[java.util.logging.Logger.name]", "ReturnValue", "value", "manual"]
       - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["java.util.logging", "LogRecord", True, "getMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["java.util.logging", "LogRecord", True, "getParameters", "()", "", "Argument[this].SyntheticField[java.util.logging.LogRecord.parameters].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["java.util.logging", "LogRecord", True, "setParameters", "(Object[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[java.util.logging.LogRecord.parameters].ArrayElement", "value", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.logging", "Handler", "getEncoding", "()", "summary", "manual"]
       - ["java.util.logging", "Logger", "isLoggable", "(Level)", "summary", "manual"]
+      - ["java.util.logging", "LogRecord", "getResourceBundle", "()", "summary", "df-manual"]

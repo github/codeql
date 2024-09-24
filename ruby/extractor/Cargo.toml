@@ -1,4 +1,3 @@
-[workspace]
 [package]
 name = "codeql-extractor-ruby"
 description = "CodeQL Ruby extractor"
@@ -7,9 +6,9 @@ authors = ["GitHub"]
 edition = "2021"
 
 [dependencies]
-tree-sitter = ">= 0.22.6"
-tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "38d5004a797298dc42c85e7706c5ceac46a3f29f" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "dc2d7d6b50f9975bc3c35bbec0ba11b2617b736b" }
+tree-sitter = ">= 0.23.0"
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "62b0a6e45900a7dff7c37da95fec20a09968ba52" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "a66579f70d6f50ffd81a16fc3d3358e2ac173c88" }
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
@@ -17,10 +16,5 @@ rayon = "1.5.0"
 regex = "1.7.1"
 encoding = "0.2"
 lazy_static = "1.4.0"
-# Ideally, we'd like to pull this in via a relative path.
-# However, our bazel/rust tooling chokes on this, c.f. https://github.com/bazelbuild/rules_rust/issues/1525
-# Therefore, we have a pretty bad hack in place instead, see README.md in the codeql-extractor-fake-crate directory.
-codeql-extractor = { path = "codeql-extractor-fake-crate" }
 
-[patch.crates-io]
-tree-sitter = { git = "https://github.com/redsun82/tree-sitter.git", rev = "1f5c1112ceaa8fc6aff61d1852690407670d2a96" }
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

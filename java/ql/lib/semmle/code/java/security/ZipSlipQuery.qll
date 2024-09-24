@@ -5,7 +5,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.security.PathCreation
 private import semmle.code.java.security.Sanitizers
 
 /**
@@ -44,6 +43,8 @@ module ZipSlipConfig implements DataFlow::ConfigSig {
     node instanceof SimpleTypeSanitizer or
     node instanceof PathInjectionSanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from archive entries to file creation. */

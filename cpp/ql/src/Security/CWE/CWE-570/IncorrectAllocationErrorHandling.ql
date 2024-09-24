@@ -16,6 +16,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.models.implementations.NoexceptFunction
 
 /** Gets the `Constructor` invoked when `newExpr` allocates memory. */
 Constructor getConstructorForAllocation(NewOrNewArrayExpr newExpr) {
@@ -44,9 +45,8 @@ predicate deleteMayThrow(DeleteOrDeleteArrayExpr deleteExpr) {
  * like it might throw an exception, and the function does not have a `noexcept` or `throw()` specifier.
  */
 predicate functionMayThrow(Function f) {
-  (not exists(f.getBlock()) or stmtMayThrow(f.getBlock())) and
-  not f.isNoExcept() and
-  not f.isNoThrow()
+  not f instanceof NonThrowingFunction and
+  (not exists(f.getBlock()) or stmtMayThrow(f.getBlock()))
 }
 
 /** Holds if the evaluation of `stmt` may throw an exception. */
@@ -172,8 +172,7 @@ class ThrowingAllocator extends Function {
       not exists(Parameter p | p = this.getAParameter() |
         p.getUnspecifiedType().stripType() instanceof NoThrowType
       ) and
-      not this.isNoExcept() and
-      not this.isNoThrow()
+      not this instanceof NoexceptFunction
     )
   }
 }
@@ -232,6 +231,7 @@ predicate nullCheckInThrowingNew(NewOrNewArrayExpr newExpr, GuardCondition guard
 from NewOrNewArrayExpr newExpr, Element element, string msg, string elementString
 where
   not newExpr.isFromUninstantiatedTemplate(_) and
+  not newExpr.isFromTemplateInstantiation(_) and
   (
     noThrowInTryBlock(newExpr, element) and
     msg = "This allocation cannot throw. $@ is unnecessary." and

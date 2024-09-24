@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp
             this.addAssemblyTrapPrefix = addAssemblyTrapPrefix;
             this.progressMonitor = pm;
 
-            Logger.Log(Severity.Info, "EXTRACTION STARTING at {0}", DateTime.Now);
+            Logger.LogInfo($"EXTRACTION STARTING at {DateTime.Now}");
             stopWatch.Start();
         }
 
@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
                         var def = reader.GetAssemblyDefinition();
-                        assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
+                        assemblyIdentity = $"{reader.GetString(def.Name)} {def.Version}";
                     }
                     ExtractionContext.SetAssemblyFile(assemblyIdentity, refPath);
 
@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", r.FilePath, ex);
+                Logger.LogError($"  Unhandled exception analyzing {r.FilePath}: {ex}");
             }
         }
 
@@ -185,41 +185,34 @@ namespace Semmle.Extraction.CSharp
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var sourcePath = tree.FilePath;
+                var sourcePath = BinaryLogExtractionContext.GetAdjustedPath(ExtractionContext, tree.FilePath) ?? tree.FilePath;
+
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var trapPath = transformedSourcePath.GetTrapPath(Logger, options.TrapCompression);
-                var upToDate = false;
-
-                // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
-
-                upToDate = FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
                 var currentTaskId = IncrementTaskCount();
                 ReportProgressTaskStarted(currentTaskId, sourcePath);
 
-                if (!upToDate)
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                // Ensure that the file itself is populated in case the source file is totally empty
+                var root = tree.GetRoot();
+                Entities.File.Create(cx, root.SyntaxTree.FilePath);
+
+                var csNode = (CSharpSyntaxNode)root;
+                var directiveVisitor = new DirectiveVisitor(cx);
+                csNode.Accept(directiveVisitor);
+                foreach (var branch in directiveVisitor.BranchesTaken)
                 {
-                    var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
-                    // Ensure that the file itself is populated in case the source file is totally empty
-                    var root = tree.GetRoot();
-                    Entities.File.Create(cx, root.SyntaxTree.FilePath);
-
-                    var csNode = (CSharpSyntaxNode)root;
-                    var directiveVisitor = new DirectiveVisitor(cx);
-                    csNode.Accept(directiveVisitor);
-                    foreach (var branch in directiveVisitor.BranchesTaken)
-                    {
-                        cx.TrapStackSuffix.Add(branch);
-                    }
-                    csNode.Accept(new CompilationUnitVisitor(cx));
-                    cx.PopulateAll();
-                    CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
-                    cx.PopulateAll();
+                    cx.TrapStackSuffix.Add(branch);
                 }
+                csNode.Accept(new CompilationUnitVisitor(cx));
+                cx.PopulateAll();
+                CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
+                cx.PopulateAll();
 
-                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -251,11 +244,13 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
+                Logger.LogError($"  Unhandled exception analyzing compilation: {ex}");
             }
         }
 
         public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
+
+        public void ExtractAggregatedMessages() => compilationEntity.PopulateAggregatedMessages();
 
 #nullable restore warnings
 
@@ -265,12 +260,6 @@ namespace Semmle.Extraction.CSharp
         public void AnalyseCompilation()
         {
             extractionTasks.Add(() => DoAnalyseCompilation());
-        }
-
-        private static bool FileIsUpToDate(string src, string dest)
-        {
-            return File.Exists(dest) &&
-                File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
         private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
@@ -315,12 +304,12 @@ namespace Semmle.Extraction.CSharp
         public virtual void Dispose()
         {
             stopWatch.Stop();
-            Logger.Log(Severity.Info, "  Peak working set = {0} MB", Process.GetCurrentProcess().PeakWorkingSet64 / (1024 * 1024));
+            Logger.LogInfo($"  Peak working set = {Process.GetCurrentProcess().PeakWorkingSet64 / (1024 * 1024)} MB");
 
             if (TotalErrors > 0)
-                Logger.Log(Severity.Info, "EXTRACTION FAILED with {0} error{1} in {2}", TotalErrors, TotalErrors == 1 ? "" : "s", stopWatch.Elapsed);
+                Logger.LogInfo($"EXTRACTION FAILED with {TotalErrors} error{(TotalErrors == 1 ? "" : "s")} in {stopWatch.Elapsed}");
             else
-                Logger.Log(Severity.Info, "EXTRACTION SUCCEEDED in {0}", stopWatch.Elapsed);
+                Logger.LogInfo($"EXTRACTION SUCCEEDED in {stopWatch.Elapsed}");
 
             compilationTrapFile?.Dispose();
         }
@@ -345,9 +334,9 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public void LogExtractorInfo()
         {
-            Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
-            Logger.Log(Severity.Info, "  Extractor version: {0}", Version);
-            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
+            Logger.LogInfo($"  Extractor: {Environment.GetCommandLineArgs()[0]}");
+            Logger.LogInfo($"  Extractor version: {Version}");
+            Logger.LogInfo($"  Current working directory: {Directory.GetCurrentDirectory()}");
         }
 
         private static string Version

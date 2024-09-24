@@ -1,3 +1,44 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `semmle.python.RegexTreeView` module, use `semmle.python.regexp.RegexTreeView` instead.
+* Deleted the deprecated `RegexString` class from  `regex.qll`.
+* Deleted the deprecated `Regex` class, use `RegExp` instead.
+* Deleted the deprecated `semmle/python/security/SQL.qll` file.
+* Deleted the deprecated `useSSL` predicates from the LDAP libraries, use `useSsl` instead.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* Added support for `DictionaryElement[<key>]` and `DictionaryElementAny` when Customizing Library Models for `sourceModel` (see https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/)
+
+## 1.0.4
+
+### Minor Analysis Improvements
+
+* Additional modelling to detect direct writes to the `Set-Cookie` header has been added for several web frameworks.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* A number of Python queries now support sinks defined using data extensions. The format of data extensions for Python has been documented.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.
