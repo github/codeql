@@ -1,9 +1,8 @@
 private import rust
 import codeql.controlflow.Cfg
 import Completion
-import codeql.controlflow.Cfg
-private import SuccessorType as ST
 private import Scope as Scope
+private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 
 private module CfgInput implements InputSig<Location> {
   private import rust as Rust
@@ -29,7 +28,7 @@ private module CfgInput implements InputSig<Location> {
 
   class Split = S::Split;
 
-  class SuccessorType = ST::SuccessorType;
+  class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -37,13 +36,13 @@ private module CfgInput implements InputSig<Location> {
   /**
    * Hold if `c` represents simple (normal) evaluation of a statement or an expression.
    */
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof ST::NormalSuccessor }
+  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::NormalSuccessor }
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t) { none() }
 
   /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof ST::BooleanSuccessor }
+  predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
   /** Gets the maximum number of splits allowed for a given node. */
   int maxSplits() { result = 0 }
