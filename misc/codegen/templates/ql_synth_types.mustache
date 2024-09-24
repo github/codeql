@@ -7,7 +7,7 @@
 private import {{import_prefix}}.SynthConstructors
 private import {{import_prefix}}.Raw
 
-cached module Synth {
+module Synth {
   /**
    * INTERNAL: Do not use.
    * The synthesized type of all elements.
@@ -37,7 +37,7 @@ cached module Synth {
    * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `T{{name}}`, if possible.
    */
-  cached T{{name}} convert{{name}}FromRaw(Raw::Element e) {
+  T{{name}} convert{{name}}FromRaw(Raw::Element e) {
     {{^is_fresh_synth}}
     result = T{{name}}(e)
     {{/is_fresh_synth}}
@@ -52,7 +52,7 @@ cached module Synth {
    * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `T{{name}}`, if possible.
    */
-  cached T{{name}} convert{{name}}FromRaw(Raw::Element e) {
+  T{{name}} convert{{name}}FromRaw(Raw::Element e) {
     {{#derived}}
     {{^first}}
     or
@@ -67,7 +67,7 @@ cached module Synth {
    * INTERNAL: Do not use.
    * Converts a synthesized `T{{name}}` to a raw DB element, if possible.
    */
-  cached Raw::Element convert{{name}}ToRaw(T{{name}} e) {
+  Raw::Element convert{{name}}ToRaw(T{{name}} e) {
     {{^is_fresh_synth}}
     e = T{{name}}(result)
     {{/is_fresh_synth}}
@@ -82,7 +82,7 @@ cached module Synth {
    * INTERNAL: Do not use.
    * Converts a synthesized `T{{name}}` to a raw DB element, if possible.
    */
-  cached Raw::Element convert{{name}}ToRaw(T{{name}} e) {
+  Raw::Element convert{{name}}ToRaw(T{{name}} e) {
     {{#derived}}
     {{^first}}
     or
