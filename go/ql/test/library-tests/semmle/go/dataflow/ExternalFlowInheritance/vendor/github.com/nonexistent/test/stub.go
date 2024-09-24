@@ -12,7 +12,7 @@ type I2 interface {
 	Source() interface{}
 	Step(interface{}) interface{}
 	Sink(interface{})
-	ExtraMethod()
+	ExtraMethodI2()
 }
 
 // A struct type implementing I1
@@ -41,72 +41,74 @@ func (t *S2) Step(val interface{}) interface{} {
 	return val
 }
 
-func (t *S2) ExtraMethod() {}
+func (t *S2) ExtraMethodI2() {}
 
 // A struct type embedding I1
-type StructEmbeddingI1 struct{ I1 }
+type SEmbedI1 struct{ I1 }
 
 // A struct type embedding I2
-type StructEmbeddingI2 struct{ I2 }
+type SEmbedI2 struct{ I2 }
 
-// A struct type embedding I1 and "overriding" its methods
-type StructEmbeddingAndOverridingI1 struct{ I1 }
+// A struct type embedding I1 and separately implementing its methods, so the
+// methods of the embedded field are not promoted.
+type SImplEmbedI1 struct{ I1 }
 
-func (t *StructEmbeddingAndOverridingI1) Source() interface{} {
+func (t *SImplEmbedI1) Source() interface{} {
 	return nil
 }
 
-func (t *StructEmbeddingAndOverridingI1) Sink(interface{}) {}
+func (t *SImplEmbedI1) Sink(interface{}) {}
 
-func (t *StructEmbeddingAndOverridingI1) Step(val interface{}) interface{} {
+func (t *SImplEmbedI1) Step(val interface{}) interface{} {
 	return val
 }
 
-// A struct type embedding I2 and "overriding" its methods
-type StructEmbeddingAndOverridingI2 struct{ I2 }
+// A struct type embedding I2 and separately implementing its methods, so the
+// methods of the embedded field are not promoted.
+type SImplEmbedI2 struct{ I2 }
 
-func (t *StructEmbeddingAndOverridingI2) Source() interface{} {
+func (t *SImplEmbedI2) Source() interface{} {
 	return nil
 }
 
-func (t *StructEmbeddingAndOverridingI2) Sink(interface{}) {}
+func (t *SImplEmbedI2) Sink(interface{}) {}
 
-func (t *StructEmbeddingAndOverridingI2) Step(val interface{}) interface{} {
+func (t *SImplEmbedI2) Step(val interface{}) interface{} {
 	return val
 }
 
-func (t *StructEmbeddingAndOverridingI2) ExtraMethod() {}
+func (t *SImplEmbedI2) ExtraMethodI2() {}
 
 // A struct type embedding S1
-type StructEmbeddingS1 struct{ S1 }
+type SEmbedS1 struct{ S1 }
 
 // A struct type embedding S2
-type StructEmbeddingS2 struct{ S2 }
+type SEmbedS2 struct{ S2 }
 
 // A struct type embedding S1 and "overriding" its methods
-type StructEmbeddingAndOverridingS1 struct{ S1 }
+type SImplEmbedS1 struct{ S1 }
 
-func (t *StructEmbeddingAndOverridingS1) Source() interface{} {
+func (t *SImplEmbedS1) Source() interface{} {
 	return nil
 }
 
-func (t *StructEmbeddingAndOverridingS1) Sink(interface{}) {}
+func (t *SImplEmbedS1) Sink(interface{}) {}
 
-func (t *StructEmbeddingAndOverridingS1) Step(val interface{}) interface{} {
+func (t *SImplEmbedS1) Step(val interface{}) interface{} {
 	return val
 }
 
 // A struct type embedding S2 and "overriding" its methods
-type StructEmbeddingAndOverridingS2 struct{ S2 }
+type SImplEmbedS2 struct{ S2 }
 
-func (t *StructEmbeddingAndOverridingS2) Source() interface{} {
+func (t *SImplEmbedS2) Source() interface{} {
 	return nil
 }
 
-func (t *StructEmbeddingAndOverridingS2) Sink(interface{}) {}
+func (t *SImplEmbedS2) Sink(interface{}) {}
 
-func (t *StructEmbeddingAndOverridingS2) Step(val interface{}) interface{} {
+func (t *SImplEmbedS2) Step(val interface{}) interface{} {
 	return val
 }
 
-func (t *StructEmbeddingAndOverridingS2) ExtraMethod() {}
+func (t *SImplEmbedS2) ExtraMethodI2() {}

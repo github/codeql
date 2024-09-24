@@ -28,49 +28,49 @@ func TestS2(t test.S2) {
 	t.Sink(y)
 }
 
-func TestStructEmbeddingI1(t test.StructEmbeddingI1) {
+func TestSEmbedI1(t test.SEmbedI1) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingI2(t test.StructEmbeddingI2) {
+func TestSEmbedI2(t test.SEmbedI2) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingAndOverridingI1(t test.StructEmbeddingAndOverridingI1) {
+func TestSImplEmbedI1(t test.SImplEmbedI1) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingAndOverridingI2(t test.StructEmbeddingAndOverridingI2) {
+func TestSImplEmbedI2(t test.SImplEmbedI2) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingS1(t test.StructEmbeddingS1) {
+func TestSEmbedS1(t test.SEmbedS1) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingS2(t test.StructEmbeddingS2) {
+func TestSEmbedS2(t test.SEmbedS2) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingAndOverridingS1(t test.StructEmbeddingAndOverridingS1) {
+func TestSImplEmbedS1(t test.SImplEmbedS1) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
 }
 
-func TestStructEmbeddingAndOverridingS2(t test.StructEmbeddingAndOverridingS2) {
+func TestSImplEmbedS2(t test.SImplEmbedS2) {
 	x := t.Source()
 	y := t.Step(x)
 	t.Sink(y)
