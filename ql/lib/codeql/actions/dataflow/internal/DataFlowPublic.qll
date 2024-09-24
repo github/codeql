@@ -96,7 +96,10 @@ class ReturnNode extends ExprNode {
 
   ReturnNode() {
     this.asExpr() = outputs and
-    outputs = any(ReusableWorkflow s).getOutputs()
+    (
+      exists(ReusableWorkflow w | w.getOutputs() = outputs) or
+      exists(CompositeAction a | a.getOutputs() = outputs)
+    )
   }
 
   ReturnKind getKind() { result = TNormalReturn() }
