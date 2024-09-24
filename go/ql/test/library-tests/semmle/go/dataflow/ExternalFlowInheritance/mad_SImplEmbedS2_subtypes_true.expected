@@ -1,0 +1,7 @@
+invalidModelRow
+paths
+| test.go:74:7:74:16 | call to Source | test.go:76:9:76:9 | y |
+sources
+| test.go:74:7:74:16 | call to Source |
+sinks
+| test.go:76:9:76:9 | y |

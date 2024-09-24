@@ -16,5 +16,3 @@ query predicate paths(DataFlow::Node source, DataFlow::Node sink) { Flow::flow(s
 query predicate sources(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
 query predicate sinks(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
-// predicate foo() {
-// }
