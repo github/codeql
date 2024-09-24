@@ -9,6 +9,9 @@ outputs:
   result:
     description: "result"
     value: ${{ steps.step.outputs.result }}
+  result2:
+    description: "result"
+    value: ${{ steps.step2.outputs.result2 }}
 runs:
   using: 'composite'
   steps:
@@ -20,6 +23,11 @@ runs:
         FOO: ${{ inputs.taint }}
       shell: bash
       run: echo "result=$(echo $FOO)" >> $GITHUB_OUTPUT
+    - id: step2
+      env:
+        FOO2: ${{ github.event.pull_request.body }}
+      shell: bash
+      run: echo "result2=$(echo $FOO2)" >> $GITHUB_OUTPUT
     - name: Sink
       id: sink
       shell: bash
