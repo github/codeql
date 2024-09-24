@@ -2,8 +2,6 @@ package com.github.codeql
 
 import com.github.codeql.utils.isInterfaceLike
 import com.intellij.openapi.util.TextRange
-import extractClassSource
-import extractFunction
 import org.jetbrains.kotlin.analysis.api.components.KaDiagnosticCheckerFilter
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
@@ -12,7 +10,6 @@ import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
-import useType
 import java.io.Closeable
 import java.util.*
 
