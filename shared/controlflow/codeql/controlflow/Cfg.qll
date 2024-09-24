@@ -1273,8 +1273,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       string getOrderDisambiguation() { result = "" }
     }
 
-    import TestOutput<RelevantNode>
-    import Mermaid
+    private module Output = TestOutput<RelevantNode>;
+
+    import Output::Mermaid
+
+    query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
+      attr = "semmle.label" and
+      Output::edges(pred, succ, val)
+    }
   }
 
   /** Provides a set of consistency queries. */

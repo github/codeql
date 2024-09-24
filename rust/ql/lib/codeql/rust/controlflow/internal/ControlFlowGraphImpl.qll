@@ -5,7 +5,7 @@ import codeql.controlflow.Cfg
 private import SuccessorType as ST
 private import Scope as Scope
 
-module CfgInput implements InputSig<Location> {
+private module CfgInput implements InputSig<Location> {
   private import rust as Rust
   private import Completion as C
   private import Splitting as S
@@ -386,6 +386,10 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
 }
 
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
+
+class ParenExprTree extends StandardPostOrderTree, ParenExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
 
 // This covers all patterns as they all extend `Pat`
 class PatExprTree extends LeafTree instanceof Pat { }
