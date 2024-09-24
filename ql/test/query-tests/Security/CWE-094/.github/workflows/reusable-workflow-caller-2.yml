@@ -1,10 +1,10 @@
 name: Caller
 
 on:
-  issue_comment:
+  pull_request_target:
 
 jobs:
   test:
     uses: ./.github/workflows/reusable-workflow-2.yml
     with:
-      taint: ${{ github.event.comment.body }}
+      taint: ${{ github.event.pull_request.title }}

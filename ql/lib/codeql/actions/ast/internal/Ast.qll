@@ -417,8 +417,10 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
   override EventImpl getATriggerEvent() {
+    // The trigger event for a reusable workflow is the trigger event of the caller workflow
     this.getACaller().getEnclosingWorkflow().getOn().getAnEvent() = result
     or
+    // or the trigger event of the workflow if it has any other than workflow_call
     this.getOn().getAnEvent() = result and not result.getName() = "workflow_call"
   }
 
@@ -803,8 +805,13 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Gets the trigger event that starts this workflow. */
   EventImpl getATriggerEvent() {
-    result = this.getEnclosingWorkflow().getATriggerEvent() or
-    result = this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().getATriggerEvent()
+    if this.getEnclosingWorkflow() instanceof ReusableWorkflowImpl
+    then
+      result = this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().getATriggerEvent()
+      or
+      result = this.getEnclosingWorkflow().getATriggerEvent() and
+      not result.getName() = "workflow_call"
+    else result = this.getEnclosingWorkflow().getATriggerEvent()
   }
 
   /** Gets the runs-on field of the job. */
@@ -844,9 +851,8 @@ class JobImpl extends AstNodeImpl, TJobNode {
     )
   }
 
-  private predicate hasExplicitWritePermission() {
-    // the job has an explicit write permission
-    this.getPermissions().getAPermission().matches("%write")
+  private predicate hasExplicitNonePermission() {
+    exists(this.getPermissions()) and not exists(this.getPermissions().getAPermission())
   }
 
   private predicate hasExplicitReadPermission() {
@@ -855,15 +861,57 @@ class JobImpl extends AstNodeImpl, TJobNode {
     not this.getPermissions().getAPermission().matches("%write")
   }
 
-  private predicate hasImplicitWritePermission() {
+  private predicate hasExplicitWritePermission() {
     // the job has an explicit write permission
-    this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+    this.getPermissions().getAPermission().matches("%write")
+  }
+
+  private predicate hasImplicitNonePermission() {
+    not exists(this.getPermissions()) and
+    exists(this.getEnclosingWorkflow().getPermissions()) and
+    not exists(this.getEnclosingWorkflow().getPermissions().getAPermission())
+    or
+    not exists(this.getPermissions()) and
+    not exists(this.getEnclosingWorkflow().getPermissions()) and
+    exists(this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().getPermissions()) and
+    not exists(
+      this.getEnclosingWorkflow()
+          .(ReusableWorkflowImpl)
+          .getACaller()
+          .getPermissions()
+          .getAPermission()
+    )
   }
 
   private predicate hasImplicitReadPermission() {
     // the job has not an explicit write permission
+    not exists(this.getPermissions()) and
     exists(this.getEnclosingWorkflow().getPermissions().getAPermission()) and
     not this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+    or
+    not exists(this.getPermissions()) and
+    not exists(this.getEnclosingWorkflow().getPermissions()) and
+    this.getEnclosingWorkflow()
+        .(ReusableWorkflowImpl)
+        .getACaller()
+        .getPermissions()
+        .getAPermission()
+        .matches("%read")
+  }
+
+  private predicate hasImplicitWritePermission() {
+    // the job has an explicit write permission
+    not exists(this.getPermissions()) and
+    this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+    or
+    not exists(this.getPermissions()) and
+    not exists(this.getEnclosingWorkflow().getPermissions()) and
+    this.getEnclosingWorkflow()
+        .(ReusableWorkflowImpl)
+        .getACaller()
+        .getPermissions()
+        .getAPermission()
+        .matches("%write")
   }
 
   private predicate hasRuntimeData() {
@@ -922,6 +970,8 @@ class JobImpl extends AstNodeImpl, TJobNode {
         // and the job is not explicitly non-privileged
         not (
           (
+            this.hasExplicitNonePermission() or
+            this.hasImplicitNonePermission() or
             this.hasExplicitReadPermission() or
             this.hasImplicitReadPermission()
           ) and

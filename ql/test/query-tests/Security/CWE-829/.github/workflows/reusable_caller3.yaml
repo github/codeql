@@ -1,7 +1,7 @@
 name: assets-test
 
 on:
-  pull_request:
+  pull_request_target:
 
 jobs:
   check-execution-context:
