@@ -237,6 +237,7 @@ ql.add(_Pragma("internal"))
 
 cpp.add(_Pragma("skip"))
 
+rust.add(_Pragma("detach"))
 rust.add(_Pragma("skip_doc_test"))
 
 rust.add(_ParametrizedClassPragma("doc_test_signature", factory=lambda signature: signature))
