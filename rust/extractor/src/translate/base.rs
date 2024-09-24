@@ -84,7 +84,7 @@ impl Translator {
     }
     pub fn emit_parse_error(&mut self, path: &str, err: SyntaxError) {
         let (start, end) = self.location(err.range());
-        log::warn!("{}:{}:{}: {}", path, start.line, start.col, err);
+        log::warn!("{}:{}:{}: {}", path, start.line + 1, start.col + 1, err);
         let message = err.to_string();
         let location = self.trap.emit_location_label(self.label, start, end);
         self.trap.emit_diagnostic(
