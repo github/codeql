@@ -424,3 +424,30 @@ The above query therefore evalutes to:
 +----+----+
 | 4  | 4  |
 +----+----+
+
+.. index:: BigInt
+.. _bigint:
+
+BigInt
+======
+
+The built-in ``QlBuiltins`` module provides an **experimental** type ``BigInt`` of arbitrary-precision integers.
+
+This type is not available in the CodeQL CLI by default, but you can enable it by passing the ``--allow-experimental=bigint``
+option to the CodeQL CLI. Consequently, BigInts are currently disallowed in query results and dbscheme columns.
+
+Unlike ``int`` and ``float``, there is no automatic conversion between ``BigInt`` and other numeric types.
+Instead, big integers can be constructed using the ``.toBigInt()`` methods of ``int`` and ``string``.
+
+The other built-in operations are:
+
+*   comparisons between ``BigInt``\s: ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``,
+*   conversions from ``BigInt``\s to strings or integers (if within range): ``.toString()``, ``.toInt()``,
+*   ``BigInt`` arithmetic: binary ``+``, ``-``, ``*``, ``/``, ``%``, unary ``-``,
+*   bitwise operations: ``.bitAnd(BigInt)``, ``.bitOr(BigInt)``,
+    ``.bitXor(BigInt)``, ``.bitShiftLeft(int)``, ``.bitShiftRightSigned(int)``,
+    ``.bitNot()``,
+*   aggregates: ``min``, ``max``, (``strict``)\ ``sum``, (``strict``)\ ``count``, ``avg``,
+    ``rank``, ``unique``, ``any``.
+*   other: ``.pow(int)``, ``.abs()``, ``.gcd(BigInt)``, ``.minimum(BigInt)``,
+    ``.maximum(BigInt)``.
