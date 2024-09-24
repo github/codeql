@@ -860,6 +860,7 @@ predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
+pragma[nomagic]
 predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1, c, node2, _) }
 
 /**

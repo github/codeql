@@ -160,6 +160,55 @@ private module InvalidPointerToDerefBarrier {
   }
 }
 
+private module InvalidPointerReaches {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
+
+  private predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    CppDataFlow::simpleLocalFlowStep(n1, n2, _)
+    or
+    CppDataFlow::jumpStep(n1, n2)
+    or
+    CppDataFlow::readStep(n1, _, n2)
+    or
+    CppDataFlow::storeStep(n1, _, n2)
+    or
+    exists(
+      CppDataFlow::DataFlowCall call, CppDataFlow::DataFlowCallable c,
+      CppDataFlow::ParameterPosition ppos, CppDataFlow::ArgumentPosition apos
+    |
+      CppDataFlow::viableCallable(call) = c and
+      CppDataFlow::isArgumentNode(n1, call, pragma[only_bind_into](apos)) and
+      CppDataFlow::isParameterNode(n2, c, pragma[only_bind_into](ppos)) and
+      CppDataFlow::parameterMatch(ppos, apos)
+    )
+    or
+    exists(
+      CppDataFlow::DataFlowCall call, CppDataFlow::DataFlowCallable c, CppDataFlow::ReturnKind kind
+    |
+      CppDataFlow::viableCallable(call) = c and
+      c = CppDataFlow::nodeGetEnclosingCallable(n1) and
+      n1.(CppDataFlow::ReturnNode).getKind() = kind and
+      n2 = CppDataFlow::getAnOutNode(call, kind)
+    )
+  }
+
+  /**
+   * Holds if `n` is reachable from a source via an approximation of the
+   * stage 1 forward scan in global data flow.
+   */
+  predicate reach(DataFlow::Node n) {
+    not InvalidPointerToDerefConfig::isBarrier(n) and
+    (
+      invalidPointerToDerefSource(_, _, n)
+      or
+      exists(DataFlow::Node mid |
+        reach(mid) and
+        step(mid, n)
+      )
+    )
+  }
+}
+
 /**
  * A configuration to track flow from a pointer-arithmetic operation found
  * by `AllocToInvalidPointerConfig` to a dereference of the pointer.
@@ -173,8 +222,10 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
     invalidPointerToDerefSource(_, pai, source)
   }
 
-  pragma[inline]
-  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _, _) }
+  predicate isSink(DataFlow::Node sink) {
+    InvalidPointerReaches::reach(sink) and
+    isInvalidPointerDerefSink(sink, _, _, _, _)
+  }
 
   predicate isSink(DataFlow::Node sink, FlowState pai) { none() }
 
