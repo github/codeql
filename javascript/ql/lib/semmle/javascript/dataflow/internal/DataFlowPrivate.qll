@@ -470,6 +470,9 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   pos.isThis() and n = TNewCallThisArgument(call.asOrdinaryCall().asExpr())
   or
+  pos.isThis() and
+  n = TImplicitThisUse(call.asOrdinaryCall().asExpr().(SuperCall).getCallee(), false)
+  or
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
   or
