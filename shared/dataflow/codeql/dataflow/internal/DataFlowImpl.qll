@@ -2773,8 +2773,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         /**
-         * INTERNAL: Only for debugging.
-         *
          * Provides a graph representation of the data flow in this stage suitable for use in a `path-problem` query.
          */
         additional module Graph {
@@ -4634,6 +4632,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     predicate stageStats = Debug::stageStats/10;
 
+    private module Stage1alias = Stage1;
+
     private module Stage2alias = Stage2;
 
     private module Stage3alias = Stage3;
@@ -4643,11 +4643,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage5alias = Stage5;
 
     /**
-     * INTERNAL: Only for debugging.
+     * INTERNAL: Subject to change without notice.
      *
      * Contains references to individual pruning stages.
      */
-    module Debug {
+    module Stages {
+      module Stage1 = Stage1alias;
+
       module Stage2 = Stage2alias;
 
       module Stage3 = Stage3alias;
@@ -4655,6 +4657,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       module Stage4 = Stage4alias;
 
       module Stage5 = Stage5alias;
+    }
+
+    /**
+     * INTERNAL: Only for debugging.
+     *
+     * Contains references to individual pruning stages and stage statistics.
+     */
+    module Debug {
+      import Stages
 
       predicate stageStats1(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
