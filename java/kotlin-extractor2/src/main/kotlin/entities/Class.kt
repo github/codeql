@@ -1,3 +1,5 @@
+package com.github.codeql
+
 import com.github.codeql.*
 import com.github.codeql.KotlinUsesExtractor.ClassLabelResults
 import com.github.codeql.KotlinUsesExtractor.TypeContext

@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.asJava.elements.psiType
 import org.jetbrains.kotlin.psi.*
-import useClassSource
 
 /*
 OLD: KE1
