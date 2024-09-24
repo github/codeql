@@ -1,6 +1,6 @@
+testFailures
 invalidModelRow
-paths
-| test.go:86:7:86:16 | call to Source | test.go:88:9:88:9 | y |
+failures
 sources
 | test.go:86:7:86:16 | call to Source |
 sinks
