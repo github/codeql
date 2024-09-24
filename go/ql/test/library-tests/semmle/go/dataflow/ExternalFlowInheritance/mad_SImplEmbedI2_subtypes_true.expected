@@ -6,6 +6,7 @@ paths
 | test.go:50:7:50:16 | call to Source | test.go:52:9:52:9 | y |
 | test.go:62:7:62:16 | call to Source | test.go:64:9:64:9 | y |
 | test.go:74:7:74:16 | call to Source | test.go:76:9:76:9 | y |
+| test.go:86:7:86:16 | call to Source | test.go:88:9:88:9 | y |
 sources
 | test.go:14:7:14:16 | call to Source |
 | test.go:26:7:26:16 | call to Source |
@@ -13,6 +14,7 @@ sources
 | test.go:50:7:50:16 | call to Source |
 | test.go:62:7:62:16 | call to Source |
 | test.go:74:7:74:16 | call to Source |
+| test.go:86:7:86:16 | call to Source |
 sinks
 | test.go:16:9:16:9 | y |
 | test.go:28:9:28:9 | y |
@@ -20,3 +22,4 @@ sinks
 | test.go:52:9:52:9 | y |
 | test.go:64:9:64:9 | y |
 | test.go:76:9:76:9 | y |
+| test.go:88:9:88:9 | y |

@@ -40,6 +40,18 @@ func TestSEmbedI2(t test.SEmbedI2) {
 	t.Sink(y)
 }
 
+func TestIEmbedI1(t test.IEmbedI1) {
+	x := t.Source()
+	y := t.Step(x)
+	t.Sink(y)
+}
+
+func TestIEmbedI2(t test.IEmbedI2) {
+	x := t.Source()
+	y := t.Step(x)
+	t.Sink(y)
+}
+
 func TestSImplEmbedI1(t test.SImplEmbedI1) {
 	x := t.Source()
 	y := t.Step(x)

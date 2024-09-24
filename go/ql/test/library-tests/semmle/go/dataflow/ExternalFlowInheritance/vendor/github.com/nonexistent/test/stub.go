@@ -49,6 +49,18 @@ type SEmbedI1 struct{ I1 }
 // A struct type embedding I2
 type SEmbedI2 struct{ I2 }
 
+// An interface type embedding I1
+type IEmbedI1 interface {
+	I1
+	ExtraMethodIEmbedI1()
+}
+
+// An interface type embedding I2
+type IEmbedI2 interface {
+	I2
+	ExtraMethodIEmbedI2()
+}
+
 // A struct type embedding I1 and separately implementing its methods, so the
 // methods of the embedded field are not promoted.
 type SImplEmbedI1 struct{ I1 }
