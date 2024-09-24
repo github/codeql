@@ -376,7 +376,7 @@ module MakeModelGenerator<
   /**
    * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
    */
-  string captureQualifierFlow(DataFlowSummaryTargetApi api) {
+  private string captureQualifierFlow(DataFlowSummaryTargetApi api) {
     exists(ReturnNodeExt ret |
       api = returnNodeEnclosingCallable(ret) and
       isOwnInstanceAccessNode(ret)
@@ -498,11 +498,33 @@ module MakeModelGenerator<
   /**
    * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
    */
-  string captureThroughFlow(DataFlowSummaryTargetApi api) {
+  private string captureThroughFlow(DataFlowSummaryTargetApi api) {
     exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
       PropagateFlow::flow(p, returnNodeExt) and
       result = captureThroughFlow0(api, p, returnNodeExt)
     )
+  }
+
+  /**
+   * Gets the summary model(s) of `api`, if there is flow from parameters to the
+   * return value or parameter or if `api` is a fluent API.
+   */
+  string captureFlow(DataFlowSummaryTargetApi api) {
+    result = captureQualifierFlow(api) or
+    result = captureThroughFlow(api)
+  }
+
+  /**
+   * Gets the neutral summary model for `api`, if any.
+   * A neutral summary model is generated, if we are not generating
+   * a summary model that applies to `api`.
+   */
+  string captureNoFlow(DataFlowSummaryTargetApi api) {
+    not exists(DataFlowSummaryTargetApi api0 |
+      exists(captureFlow(api0)) and api0.lift() = api.lift()
+    ) and
+    api.isRelevant() and
+    result = ModelPrinting::asNeutralSummaryModel(api)
   }
 
   /**
