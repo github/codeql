@@ -54,6 +54,7 @@ edges
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... [pointer] | provenance |  |
 | test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
@@ -65,6 +66,7 @@ edges
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... [pointer] | provenance |  |
 models
 | 1 | Summary: golang.org/x/net/html; ; false; NewTokenizer; ; ; Argument[0]; ReturnValue; taint; manual |
