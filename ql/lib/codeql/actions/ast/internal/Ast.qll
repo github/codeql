@@ -308,19 +308,22 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   LocalJobImpl getACallerJob() { result = this.getACallerStep().getEnclosingJob() }
 
   UsesStepImpl getACallerStep() {
-    exists(UsesStepImpl caller, string gwf_path, string path |
-      // the workflow files may not be rooted in the parent directory of .github/workflows
-      // extract the offset so we can remove it from the action path
-      gwf_path =
-        caller
-            .getLocation()
+    exists(DataFlow::CallNode call |
+      call.getCalleeNode() = this and
+      result = call.getCfgNode().getAstNode()
+    )
+  }
+
+  string getResolvedPath() {
+    result =
+      ["", "./"] +
+        this.getLocation()
             .getFile()
             .getRelativePath()
-            .prefix(caller.getLocation().getFile().getRelativePath().indexOf(".github/workflows/")) and
-      path = this.getLocation().getFile().getRelativePath().replaceAll(gwf_path, "") and
-      caller.getCallee() = ["", "./"] + path.prefix(path.indexOf(["/action.yml", "/action.yaml"])) and
-      result = caller
-    )
+            .replaceAll(getRepoRoot(), "")
+            .replaceAll("/action.yml", "")
+            .replaceAll("/action.yaml", "")
+            .replaceAll(".github/reusable_workflows/", "")
   }
 
   private predicate hasExplicitSecretAccess() {
@@ -351,6 +354,8 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
       this.getACallerJob().getATriggerEvent().isPrivileged()
     )
   }
+
+  EventImpl getATriggerEvent() { result = this.getACallerJob().getATriggerEvent() }
 
   /** Holds if the action is privileged and externally triggerable. */
   predicate isPrivilegedExternallyTriggerable() {
@@ -446,6 +451,16 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
       call.getCalleeNode() = this and
       result = call.getCfgNode().getAstNode()
     )
+  }
+
+  string getResolvedPath() {
+    result =
+      ["", "./"] +
+        this.getLocation()
+            .getFile()
+            .getRelativePath()
+            .replaceAll(getRepoRoot(), "")
+            .replaceAll(".github/reusable_workflows/", "")
   }
 }
 
@@ -1229,15 +1244,6 @@ abstract class UsesImpl extends AstNodeImpl {
   }
 }
 
-/**
- * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
- * The capture groups are:
- * 1: The owner of the repository where the Action comes from, e.g. `actions` in `actions/checkout@v2`
- * 2: The name of the repository where the Action comes from, e.g. `checkout` in `actions/checkout@v2`.
- * 3: The version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`.
- */
-private string usesParser() { result = "([^/]+)/([^/@]+)@(.+)" }
-
 /** A Uses step represents a call to an action that is defined in a GitHub repository. */
 class UsesStepImpl extends StepImpl, UsesImpl {
   YamlScalar u;
@@ -1249,19 +1255,14 @@ class UsesStepImpl extends StepImpl, UsesImpl {
   /** Gets the owner and name of the repository where the Action comes from, e.g. `actions/checkout` in `actions/checkout@v2`. */
   override string getCallee() {
     if u.getValue().indexOf("@") > 0
-    then
-      result =
-        (
-          u.getValue().regexpCapture(usesParser(), 1) + "/" +
-            u.getValue().regexpCapture(usesParser(), 2)
-        ).toLowerCase()
+    then result = u.getValue().prefix(u.getValue().indexOf("@"))
     else result = u.getValue()
   }
 
   override ScalarValueImpl getCalleeNode() { result.getNode() = u }
 
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
-  override string getVersion() { result = u.getValue().regexpCapture(usesParser(), 3) }
+  override string getVersion() { result = u.getValue().suffix(u.getValue().indexOf("@") + 1) }
 
   override string toString() {
     if exists(this.getId()) then result = "Uses Step: " + this.getId() else result = "Uses Step"
