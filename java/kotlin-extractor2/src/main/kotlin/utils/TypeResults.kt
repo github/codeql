@@ -17,18 +17,18 @@ OLD: KE1
 */
 data class TypeResultGeneric<SignatureType, out LabelType : AnyDbType>(
     val id: Label<out LabelType>,
-/*
-OLD: KE1
-    val signature: SignatureType?,
-    val shortName: String
-*/
+    /*
+    OLD: KE1
+        val signature: SignatureType?,
+        val shortName: String
+    */
 ) {
-/*
-OLD: KE1
-    fun <U : AnyDbType> cast(): TypeResultGeneric<SignatureType, U> {
-        @Suppress("UNCHECKED_CAST") return this as TypeResultGeneric<SignatureType, U>
-    }
-*/
+    /*
+    OLD: KE1
+        fun <U : AnyDbType> cast(): TypeResultGeneric<SignatureType, U> {
+            @Suppress("UNCHECKED_CAST") return this as TypeResultGeneric<SignatureType, U>
+        }
+    */
 }
 
 data class TypeResultsGeneric<SignatureType>(
