@@ -392,7 +392,8 @@ fields(
   unique int id: @field,
   string nodeName: string ref,
   int typeid: @type ref,
-  int parentid: @reftype ref
+  int parentid: @reftype ref,
+  int sourceid: @field ref
 );
 
 fieldsKotlinType(
