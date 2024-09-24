@@ -11,7 +11,7 @@ use ra_ap_syntax::ast::{
 };
 use ra_ap_syntax::{ast, AstNode};
 
-impl Translator {
+impl Translator<'_> {
     fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {
         match node {
             ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),

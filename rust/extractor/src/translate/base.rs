@@ -2,7 +2,9 @@ use crate::generated::{self, AstNode};
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
+use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_ide_db::RootDatabase;
 use ra_ap_parser::SyntaxKind;
 use ra_ap_syntax::ast::RangeItem;
 use ra_ap_syntax::{ast, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxToken, TextRange};
@@ -56,18 +58,25 @@ impl TextValue for ast::RangePat {
         self.op_token().map(|x| x.text().to_string())
     }
 }
-pub struct Translator {
+pub struct Translator<'a> {
     pub trap: TrapFile,
     label: trap::Label,
     line_index: LineIndex,
+    semi: Option<Semantics<'a, RootDatabase>>,
 }
 
-impl Translator {
-    pub fn new(trap: TrapFile, label: trap::Label, line_index: LineIndex) -> Translator {
+impl Translator<'_> {
+    pub fn new(
+        trap: TrapFile,
+        label: trap::Label,
+        line_index: LineIndex,
+        semi: Option<Semantics<'_, RootDatabase>>,
+    ) -> Translator {
         Translator {
             trap,
             label,
             line_index,
+            semi,
         }
     }
     pub fn location(&self, range: TextRange) -> (LineCol, LineCol) {
