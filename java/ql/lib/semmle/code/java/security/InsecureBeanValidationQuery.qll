@@ -49,8 +49,6 @@ module BeanValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from user input to the argument of a method that builds constraint error messages. */

@@ -51,8 +51,6 @@ module JexlInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

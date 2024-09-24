@@ -20,8 +20,6 @@ module XssConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(XssAdditionalTaintStep s).step(node1, node2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from remote sources to cross site scripting vulnerabilities. */

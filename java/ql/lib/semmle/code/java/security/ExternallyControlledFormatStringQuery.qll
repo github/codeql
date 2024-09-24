@@ -23,8 +23,6 @@ module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof NumericType or node.getType() instanceof BooleanType
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

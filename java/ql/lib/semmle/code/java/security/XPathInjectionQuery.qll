@@ -12,8 +12,6 @@ module XPathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -16,8 +16,6 @@ module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(TemplateInjectionAdditionalTaintStep a).isAdditionalTaintStep(node1, node2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks server-side template injection (SST) vulnerabilities */

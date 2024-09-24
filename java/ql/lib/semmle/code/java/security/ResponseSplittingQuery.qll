@@ -31,8 +31,6 @@ module ResponseSplittingConfig implements DataFlow::ConfigSig {
       )
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

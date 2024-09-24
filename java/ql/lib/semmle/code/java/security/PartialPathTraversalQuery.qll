@@ -17,8 +17,6 @@ module PartialPathTraversalFromRemoteConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) {
     any(PartialPathTraversalMethodCall ma).getQualifier() = node.asExpr()
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unsafe user input that is used to validate against path traversal, but is insufficient and remains vulnerable to Partial Path Traversal. */

@@ -44,8 +44,6 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
     or
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -18,8 +18,6 @@ module IntentRedirectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(IntentRedirectionAdditionalTaintStep c).step(node1, node2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks the flow of tainted Intents being used to start Android components. */

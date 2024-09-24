@@ -17,8 +17,6 @@ module FragmentInjectionTaintConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(FragmentInjectionAdditionalTaintStep c).step(n1, n2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

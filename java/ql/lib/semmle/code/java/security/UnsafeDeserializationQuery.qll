@@ -325,8 +325,6 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;

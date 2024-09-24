@@ -48,8 +48,6 @@ module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
     node.getType().(Array).getElementType() instanceof TypeIntent and
     c instanceof DataFlow::ArrayContent
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ImplicitPendingIntentStartFlow =

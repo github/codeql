@@ -22,8 +22,6 @@ module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
       succ.asExpr() = ma.getQualifier()
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module InsecureLdapUrlFlow = TaintTracking::Global<InsecureLdapUrlConfig>;

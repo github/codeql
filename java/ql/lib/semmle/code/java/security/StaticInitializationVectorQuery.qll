@@ -126,8 +126,6 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks the flow from a static initialization vector to the initialization of a cipher */

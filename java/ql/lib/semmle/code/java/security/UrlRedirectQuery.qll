@@ -13,8 +13,6 @@ module UrlRedirectConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof UrlRedirectSanitizer }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
