@@ -7,7 +7,7 @@ import (
 func TestI1(t test.I1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t] ql_I1 ql_S1
 }
 
 func TestI2(t test.I2) {
@@ -19,7 +19,7 @@ func TestI2(t test.I2) {
 func TestS1(t test.S1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] IEmbedI1[t] S1[f] S1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[t] IEmbedI1[t] S1[f] S1[t] SEmbedI1[t] ql_S1
 }
 
 func TestS2(t test.S2) {
@@ -31,7 +31,7 @@ func TestS2(t test.S2) {
 func TestSEmbedI1(t test.SEmbedI1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t] ql_I1 ql_S1
 }
 
 func TestSEmbedI2(t test.SEmbedI2) {
@@ -43,7 +43,7 @@ func TestSEmbedI2(t test.SEmbedI2) {
 func TestIEmbedI1(t test.IEmbedI1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[f] I1[t] IEmbedI1[t] SEmbedI1[t] ql_I1 ql_S1
 }
 
 func TestIEmbedI2(t test.IEmbedI2) {
@@ -67,7 +67,7 @@ func TestSImplEmbedI2(t test.SImplEmbedI2) {
 func TestSEmbedS1(t test.SEmbedS1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] IEmbedI1[t] S1[f] S1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[t] IEmbedI1[t] S1[f] S1[t] SEmbedI1[t] ql_S1
 }
 
 func TestSEmbedS2(t test.SEmbedS2) {
