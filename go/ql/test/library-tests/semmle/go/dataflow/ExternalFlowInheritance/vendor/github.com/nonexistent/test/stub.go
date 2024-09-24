@@ -97,7 +97,8 @@ type SEmbedS1 struct{ S1 }
 // A struct type embedding S2
 type SEmbedS2 struct{ S2 }
 
-// A struct type embedding S1 and "overriding" its methods
+// A struct type embedding S1 and separately implementing I1's methods, so the
+// methods of the embedded field are not promoted.
 type SImplEmbedS1 struct{ S1 }
 
 func (t *SImplEmbedS1) Source() interface{} {
@@ -110,7 +111,8 @@ func (t *SImplEmbedS1) Step(val interface{}) interface{} {
 	return val
 }
 
-// A struct type embedding S2 and "overriding" its methods
+// A struct type embedding S2 and separately implementing I2's methods, so the
+// methods of the embedded field are not promoted.
 type SImplEmbedS2 struct{ S2 }
 
 func (t *SImplEmbedS2) Source() interface{} {
