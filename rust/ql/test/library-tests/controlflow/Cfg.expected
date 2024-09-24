@@ -181,11 +181,9 @@
 | test.rs:94:12:94:46 | ParenExpr | test.rs:97:13:97:13 | LiteralExpr | false |
 | test.rs:94:13:94:45 | MatchExpr | test.rs:94:12:94:46 | ParenExpr |  |
 | test.rs:94:19:94:19 | PathExpr | test.rs:94:23:94:23 | LiteralPat |  |
-| test.rs:94:23:94:23 | LiteralPat | test.rs:94:13:94:45 | MatchExpr | no-match |
 | test.rs:94:23:94:23 | LiteralPat | test.rs:94:28:94:31 | LiteralExpr | match |
 | test.rs:94:23:94:23 | LiteralPat | test.rs:94:34:94:34 | WildcardPat | no-match |
 | test.rs:94:28:94:31 | LiteralExpr | test.rs:94:13:94:45 | MatchExpr |  |
-| test.rs:94:34:94:34 | WildcardPat | test.rs:94:13:94:45 | MatchExpr | no-match |
 | test.rs:94:34:94:34 | WildcardPat | test.rs:94:39:94:43 | LiteralExpr | match |
 | test.rs:94:39:94:43 | LiteralExpr | test.rs:94:13:94:45 | MatchExpr |  |
 | test.rs:94:48:96:9 | BlockExpr | test.rs:94:9:98:9 | IfExpr |  |
@@ -239,16 +237,13 @@
 | test.rs:122:44:128:1 | BlockExpr | test.rs:122:1:128:1 | exit test_match (normal) |  |
 | test.rs:123:5:127:5 | MatchExpr | test.rs:122:44:128:1 | BlockExpr |  |
 | test.rs:123:11:123:21 | PathExpr | test.rs:124:9:124:23 | TupleStructPat |  |
-| test.rs:124:9:124:23 | TupleStructPat | test.rs:123:5:127:5 | MatchExpr | no-match |
 | test.rs:124:9:124:23 | TupleStructPat | test.rs:124:28:124:28 | PathExpr | match |
 | test.rs:124:9:124:23 | TupleStructPat | test.rs:125:9:125:23 | TupleStructPat | no-match |
 | test.rs:124:28:124:28 | PathExpr | test.rs:124:32:124:33 | LiteralExpr |  |
 | test.rs:124:32:124:33 | LiteralExpr | test.rs:124:28:124:33 | BinaryExpr |  |
-| test.rs:125:9:125:23 | TupleStructPat | test.rs:123:5:127:5 | MatchExpr | no-match |
 | test.rs:125:9:125:23 | TupleStructPat | test.rs:125:28:125:28 | PathExpr | match |
 | test.rs:125:9:125:23 | TupleStructPat | test.rs:126:9:126:20 | PathPat | no-match |
 | test.rs:125:28:125:28 | PathExpr | test.rs:123:5:127:5 | MatchExpr |  |
-| test.rs:126:9:126:20 | PathPat | test.rs:123:5:127:5 | MatchExpr | no-match |
 | test.rs:126:9:126:20 | PathPat | test.rs:126:25:126:25 | LiteralExpr | match |
 | test.rs:126:25:126:25 | LiteralExpr | test.rs:123:5:127:5 | MatchExpr |  |
 | test.rs:131:5:136:5 | enter test_infinite_loop | test.rs:132:9:134:9 | ExprStmt |  |

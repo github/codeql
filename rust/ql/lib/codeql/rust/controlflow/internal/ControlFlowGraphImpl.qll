@@ -356,24 +356,27 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
 
 class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getExpr(), super.getMatchArmList().getAnArm().getExpr()]
+    child = [super.getExpr(), super.getAnArm().getExpr()]
   }
 
   override predicate first(AstNode node) { first(super.getExpr(), node) }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge from the scrutinee to the first arm.
-    last(super.getExpr(), pred, c) and succ = super.getMatchArmList().getArm(0).getPat()
+    last(super.getExpr(), pred, c) and succ = super.getArm(0).getPat()
     or
     // Edge from a failed match/guard in one arm to the beginning of the next arm.
     exists(int i |
-      last(super.getMatchArmList().getArm(i), pred, c) and
-      first(super.getMatchArmList().getArm(i + 1), succ) and
+      last(super.getArm(i), pred, c) and
+      first(super.getArm(i + 1), succ) and
       c.(ConditionalCompletion).failed()
     )
     or
     // Edge from the end of each arm to the match expression.
-    last(super.getMatchArmList().getArm(_), pred, c) and succ = this and completionIsNormal(c)
+    last(super.getArm(_).getExpr(), pred, c) and succ = this and completionIsNormal(c)
+    or
+    // Edge from the end of last arm to the match expression.
+    last(super.getLastArm().getExpr(), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 
