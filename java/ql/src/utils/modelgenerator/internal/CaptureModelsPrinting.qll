@@ -1,5 +1,5 @@
 private import java as J
-private import codeql.mad.modelgenerator.ModelPrinting
+private import codeql.mad.modelgenerator.internal.ModelPrinting
 private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
 
 private module ModelPrintingLang implements ModelPrintingLangSig {

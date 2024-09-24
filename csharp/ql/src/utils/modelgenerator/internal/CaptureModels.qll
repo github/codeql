@@ -13,7 +13,7 @@ private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.Location
-private import codeql.mad.modelgenerator.ModelGeneratorImpl
+private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 
 module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDataFlow> {
   class Type = CS::Type;

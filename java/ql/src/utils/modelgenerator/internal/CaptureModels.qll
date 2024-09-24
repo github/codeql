@@ -16,7 +16,7 @@ private import semmle.code.java.dataflow.internal.ModelExclusions
 private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.TaintTracking
-private import codeql.mad.modelgenerator.ModelGeneratorImpl
+private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 
 /**
  * Holds if the type `t` is a primitive type used for bulk data.
