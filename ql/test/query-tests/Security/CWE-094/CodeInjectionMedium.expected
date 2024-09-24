@@ -1,5 +1,20 @@
 edges
-| .github/actions/action5/action.yml:4:3:4:7 | input taint | .github/actions/action5/action.yml:26:19:26:37 | inputs.taint | provenance |  |
+| .github/actions/action5/action.yml:4:3:4:7 | input taint | .github/actions/action5/action.yml:23:15:23:33 | inputs.taint | provenance |  |
+| .github/actions/action5/action.yml:4:3:4:7 | input taint | .github/actions/action5/action.yml:34:19:34:37 | inputs.taint | provenance |  |
+| .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result2] | .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result2] | provenance |  |
+| .github/actions/action5/action.yml:11:13:11:44 | steps.step.outputs.result | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result] | provenance |  |
+| .github/actions/action5/action.yml:14:13:14:46 | steps.step2.outputs.result2 | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result2] | provenance |  |
+| .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | .github/actions/action5/action.yml:11:13:11:44 | steps.step.outputs.result | provenance |  |
+| .github/actions/action5/action.yml:23:15:23:33 | inputs.taint | .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | provenance |  |
+| .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | .github/actions/action5/action.yml:14:13:14:46 | steps.step2.outputs.result2 | provenance |  |
+| .github/actions/action5/action.yml:28:16:28:52 | github.event.pull_request.body | .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:22:19:22:37 | inputs.title | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:27:19:27:37 | inputs.title | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:16:13:16:45 | steps.out.outputs.replaced | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:23:7:30:4 | Uses Step: out [replaced] | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:16:13:16:45 | steps.out.outputs.replaced | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:27:19:27:37 | inputs.title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:23:7:30:4 | Uses Step: out [replaced] | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:6:7:6:11 | input taint | .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:36:21:36:39 | inputs.taint | provenance |  |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:44:19:44:56 | github.event.pull_request.title | .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:53:26:53:39 | env.log | provenance |  |
 | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | provenance |  |
 | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | provenance |  |
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | provenance |  |
@@ -30,7 +45,13 @@ edges
 | .github/workflows/changed-files.yml:15:9:18:6 | Uses Step: changed-files1 | .github/workflows/changed-files.yml:20:24:20:76 | steps.changed-files1.outputs.all_changed_files | provenance |  |
 | .github/workflows/changed-files.yml:33:9:38:6 | Uses Step: changed-files3 | .github/workflows/changed-files.yml:40:24:40:76 | steps.changed-files3.outputs.all_changed_files | provenance |  |
 | .github/workflows/changed-files.yml:53:9:56:6 | Uses Step: changed-files5 | .github/workflows/changed-files.yml:58:24:58:76 | steps.changed-files5.outputs.all_changed_files | provenance |  |
+| .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result2] | .github/workflows/composite-action-caller-3.yml:14:21:14:52 | steps.foo.outputs.result2 | provenance |  |
+| .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result] | .github/workflows/composite-action-caller-3.yml:13:21:13:51 | steps.foo.outputs.result | provenance |  |
 | .github/workflows/composite-action-caller-3.yml:12:19:12:50 | github.event.comment.body | .github/actions/action5/action.yml:4:3:4:7 | input taint | provenance |  |
+| .github/workflows/composite-action-caller-3.yml:12:19:12:50 | github.event.comment.body | .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result] | provenance |  |
+| .github/workflows/composite-action-caller-4.yml:10:9:17:6 | Uses Step: clone [result] | .github/workflows/composite-action-caller-4.yml:17:21:17:53 | steps.clone.outputs.result | provenance |  |
+| .github/workflows/composite-action-caller-4.yml:14:19:14:56 | github.event.pull_request.title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | provenance |  |
+| .github/workflows/composite-action-caller-4.yml:14:19:14:56 | github.event.pull_request.title | .github/workflows/composite-action-caller-4.yml:10:9:17:6 | Uses Step: clone [result] | provenance |  |
 | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | .github/workflows/cross3.yml:39:31:39:75 | steps.remove_quotations.outputs.replaced | provenance |  |
 | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | .github/workflows/cross3.yml:57:29:57:73 | steps.remove_quotations.outputs.replaced | provenance |  |
 | .github/workflows/cross3.yml:32:18:32:53 | github.event.commits[0].message | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | provenance |  |
@@ -70,8 +91,9 @@ edges
 | .github/workflows/reusable-workflow-1.yml:44:19:44:56 | github.event.pull_request.title | .github/workflows/reusable-workflow-1.yml:53:26:53:39 | env.log | provenance |  |
 | .github/workflows/reusable-workflow-2.yml:6:7:6:11 | input taint | .github/workflows/reusable-workflow-2.yml:36:21:36:39 | inputs.taint | provenance |  |
 | .github/workflows/reusable-workflow-2.yml:44:19:44:56 | github.event.pull_request.title | .github/workflows/reusable-workflow-2.yml:53:26:53:39 | env.log | provenance |  |
-| .github/workflows/reusable-workflow-caller-1.yml:11:15:11:46 | github.event.comment.body | .github/workflows/reusable-workflow-1.yml:6:7:6:11 | input taint | provenance |  |
-| .github/workflows/reusable-workflow-caller-2.yml:10:15:10:46 | github.event.comment.body | .github/workflows/reusable-workflow-2.yml:6:7:6:11 | input taint | provenance |  |
+| .github/workflows/reusable-workflow-caller-1.yml:11:15:11:52 | github.event.pull_request.title | .github/workflows/reusable-workflow-1.yml:6:7:6:11 | input taint | provenance |  |
+| .github/workflows/reusable-workflow-caller-2.yml:10:15:10:52 | github.event.pull_request.title | .github/workflows/reusable-workflow-2.yml:6:7:6:11 | input taint | provenance |  |
+| .github/workflows/reusable-workflow-caller-3.yml:10:15:10:52 | github.event.pull_request.title | .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:6:7:6:11 | input taint | provenance |  |
 | .github/workflows/self_needs.yml:11:7:12:4 | Job outputs node [job_output] | .github/workflows/self_needs.yml:20:15:20:51 | needs.test1.outputs.job_output | provenance |  |
 | .github/workflows/self_needs.yml:11:20:11:52 | steps.source.outputs.value | .github/workflows/self_needs.yml:11:7:12:4 | Job outputs node [job_output] | provenance |  |
 | .github/workflows/self_needs.yml:13:9:19:6 | Uses Step: source [value] | .github/workflows/self_needs.yml:11:20:11:52 | steps.source.outputs.value | provenance |  |
@@ -129,8 +151,26 @@ nodes
 | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/actions/action5/action.yml:4:3:4:7 | input taint | semmle.label | input taint |
-| .github/actions/action5/action.yml:16:19:16:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
-| .github/actions/action5/action.yml:26:19:26:37 | inputs.taint | semmle.label | inputs.taint |
+| .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result2] | semmle.label | output Job outputs node [result2] |
+| .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result] | semmle.label | output Job outputs node [result] |
+| .github/actions/action5/action.yml:11:13:11:44 | steps.step.outputs.result | semmle.label | steps.step.outputs.result |
+| .github/actions/action5/action.yml:14:13:14:46 | steps.step2.outputs.result2 | semmle.label | steps.step2.outputs.result2 |
+| .github/actions/action5/action.yml:19:19:19:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
+| .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | semmle.label | Run Step: step [result] |
+| .github/actions/action5/action.yml:23:15:23:33 | inputs.taint | semmle.label | inputs.taint |
+| .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | semmle.label | Run Step: step2 [result2] |
+| .github/actions/action5/action.yml:28:16:28:52 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
+| .github/actions/action5/action.yml:34:19:34:37 | inputs.taint | semmle.label | inputs.taint |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | semmle.label | input title |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | semmle.label | output Job outputs node [result] |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:16:13:16:45 | steps.out.outputs.replaced | semmle.label | steps.out.outputs.replaced |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:22:19:22:37 | inputs.title | semmle.label | inputs.title |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:23:7:30:4 | Uses Step: out [replaced] | semmle.label | Uses Step: out [replaced] |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:27:19:27:37 | inputs.title | semmle.label | inputs.title |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:6:7:6:11 | input taint | semmle.label | input taint |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:36:21:36:39 | inputs.taint | semmle.label | inputs.taint |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:44:19:44:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/reusable_workflows/TestOrg/TestRepo/.github/workflows/reusable-workflow.yml:53:26:53:39 | env.log | semmle.label | env.log |
 | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | semmle.label | Uses Step: remove_quotations [replaced] |
 | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | semmle.label | github.event.issue.title |
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | semmle.label | env.ISSUE_TITLE |
@@ -183,7 +223,14 @@ nodes
 | .github/workflows/comment_issue_newline.yml:10:25:10:56 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/comment_issue_newline.yml:11:24:11:51 | github.event.issue.body | semmle.label | github.event.issue.body |
 | .github/workflows/comment_issue_newline.yml:12:24:12:55 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result2] | semmle.label | Uses Step: foo [result2] |
+| .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result] | semmle.label | Uses Step: foo [result] |
 | .github/workflows/composite-action-caller-3.yml:12:19:12:50 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/composite-action-caller-3.yml:13:21:13:51 | steps.foo.outputs.result | semmle.label | steps.foo.outputs.result |
+| .github/workflows/composite-action-caller-3.yml:14:21:14:52 | steps.foo.outputs.result2 | semmle.label | steps.foo.outputs.result2 |
+| .github/workflows/composite-action-caller-4.yml:10:9:17:6 | Uses Step: clone [result] | semmle.label | Uses Step: clone [result] |
+| .github/workflows/composite-action-caller-4.yml:14:19:14:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/composite-action-caller-4.yml:17:21:17:53 | steps.clone.outputs.result | semmle.label | steps.clone.outputs.result |
 | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | semmle.label | Uses Step: remove_quotations [replaced] |
 | .github/workflows/cross3.yml:32:18:32:53 | github.event.commits[0].message | semmle.label | github.event.commits[0].message |
 | .github/workflows/cross3.yml:39:31:39:75 | steps.remove_quotations.outputs.replaced | semmle.label | steps.remove_quotations.outputs.replaced |
@@ -287,8 +334,9 @@ nodes
 | .github/workflows/reusable-workflow-2.yml:36:21:36:39 | inputs.taint | semmle.label | inputs.taint |
 | .github/workflows/reusable-workflow-2.yml:44:19:44:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/reusable-workflow-2.yml:53:26:53:39 | env.log | semmle.label | env.log |
-| .github/workflows/reusable-workflow-caller-1.yml:11:15:11:46 | github.event.comment.body | semmle.label | github.event.comment.body |
-| .github/workflows/reusable-workflow-caller-2.yml:10:15:10:46 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/reusable-workflow-caller-1.yml:11:15:11:52 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/reusable-workflow-caller-2.yml:10:15:10:52 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/reusable-workflow-caller-3.yml:10:15:10:52 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/self_needs.yml:11:7:12:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/self_needs.yml:11:20:11:52 | steps.source.outputs.value | semmle.label | steps.source.outputs.value |
 | .github/workflows/self_needs.yml:13:9:19:6 | Uses Step: source [value] | semmle.label | Uses Step: source [value] |
@@ -387,6 +435,8 @@ nodes
 | .github/workflows/workflow_run_branches3.yml:12:20:12:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 subpaths
+| .github/workflows/composite-action-caller-3.yml:12:19:12:50 | github.event.comment.body | .github/actions/action5/action.yml:4:3:4:7 | input taint | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result] | .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result] |
+| .github/workflows/composite-action-caller-4.yml:14:19:14:56 | github.event.pull_request.title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | .github/workflows/composite-action-caller-4.yml:10:9:17:6 | Uses Step: clone [result] |
 #select
 | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
 | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
@@ -414,10 +464,8 @@ subpaths
 | .github/workflows/push.yml:14:19:14:64 | github.event.head_commit.committer.name | .github/workflows/push.yml:14:19:14:64 | github.event.head_commit.committer.name | .github/workflows/push.yml:14:19:14:64 | github.event.head_commit.committer.name | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:14:19:14:64 | github.event.head_commit.committer.name | ${{ github.event.head_commit.committer.name }} |
 | .github/workflows/push.yml:15:19:15:65 | github.event.commits[11].committer.email | .github/workflows/push.yml:15:19:15:65 | github.event.commits[11].committer.email | .github/workflows/push.yml:15:19:15:65 | github.event.commits[11].committer.email | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:15:19:15:65 | github.event.commits[11].committer.email | ${{ github.event.commits[11].committer.email }} |
 | .github/workflows/push.yml:16:19:16:64 | github.event.commits[11].committer.name | .github/workflows/push.yml:16:19:16:64 | github.event.commits[11].committer.name | .github/workflows/push.yml:16:19:16:64 | github.event.commits[11].committer.name | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:16:19:16:64 | github.event.commits[11].committer.name | ${{ github.event.commits[11].committer.name }} |
-| .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | .github/workflows/reusable-workflow-caller-1.yml:11:15:11:46 | github.event.comment.body | .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | ${{ inputs.taint }} |
+| .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | .github/workflows/reusable-workflow-caller-1.yml:11:15:11:52 | github.event.pull_request.title | .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | ${{ inputs.taint }} |
 | .github/workflows/reusable-workflow-1.yml:53:26:53:39 | env.log | .github/workflows/reusable-workflow-1.yml:44:19:44:56 | github.event.pull_request.title | .github/workflows/reusable-workflow-1.yml:53:26:53:39 | env.log | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/reusable-workflow-1.yml:53:26:53:39 | env.log | ${{ env.log }} |
-| .github/workflows/reusable-workflow-2.yml:36:21:36:39 | inputs.taint | .github/workflows/reusable-workflow-caller-2.yml:10:15:10:46 | github.event.comment.body | .github/workflows/reusable-workflow-2.yml:36:21:36:39 | inputs.taint | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/reusable-workflow-2.yml:36:21:36:39 | inputs.taint | ${{ inputs.taint }} |
-| .github/workflows/reusable-workflow-2.yml:53:26:53:39 | env.log | .github/workflows/reusable-workflow-2.yml:44:19:44:56 | github.event.pull_request.title | .github/workflows/reusable-workflow-2.yml:53:26:53:39 | env.log | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/reusable-workflow-2.yml:53:26:53:39 | env.log | ${{ env.log }} |
 | .github/workflows/simple1.yml:16:18:16:49 | steps.summary.outputs.value | .github/workflows/simple1.yml:11:20:11:58 | github.event.head_commit.message | .github/workflows/simple1.yml:16:18:16:49 | steps.summary.outputs.value | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/simple1.yml:16:18:16:49 | steps.summary.outputs.value | ${{steps.summary.outputs.value}} |
 | .github/workflows/test10.yml:57:34:57:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:57:34:57:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:57:34:57:77 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test10.yml:57:34:57:77 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
 | .github/workflows/test10.yml:147:34:147:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:147:34:147:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:147:34:147:77 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test10.yml:147:34:147:77 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |

@@ -2,7 +2,7 @@ name: Documentation
 
 on:
   workflow_dispatch:
-  workflow_call:
+  pull_request:
 
 jobs:
   parse_commit_info:

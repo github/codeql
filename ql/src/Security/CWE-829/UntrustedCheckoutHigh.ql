@@ -18,39 +18,28 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-from PRHeadCheckoutStep checkout
+from PRHeadCheckoutStep checkout, Event event
 where
   // the checkout is NOT followed by a known poisonable step
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
   inPrivilegedContext(checkout) and
+  event = checkout.getEnclosingJob().getATriggerEvent() and
   (
     // issue_comment: check for date comparison checks and actor/access control checks
-    exists(Event event |
-      event = checkout.getEnclosingJob().getATriggerEvent() and
+    event.getName() = "issue_comment" and
+    not exists(ControlCheck check, CommentVsHeadDateCheck date_check |
       (
-        event.getName() = "issue_comment"
-        or
-        event.getName() = "workflow_call" and
-        checkout.getEnclosingWorkflow().(ReusableWorkflow).getACaller().getATriggerEvent().getName() =
-          "issue_comment"
+        check instanceof ActorCheck or
+        check instanceof AssociationCheck or
+        check instanceof PermissionCheck
       ) and
-      not exists(ControlCheck check, CommentVsHeadDateCheck date_check |
-        (
-          check instanceof ActorCheck or
-          check instanceof AssociationCheck or
-          check instanceof PermissionCheck
-        ) and
-        check.dominates(checkout) and
-        date_check.dominates(checkout)
-      )
+      check.dominates(checkout) and
+      date_check.dominates(checkout)
     )
     or
     // not issue_comment triggered workflows
-    exists(Event event |
-      not event.getName() = "issue_comment" and
-      event = checkout.getEnclosingJob().getATriggerEvent() and
-      not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
-    )
+    not event.getName() = "issue_comment" and
+    not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
   )
 select checkout, "Potential execution of untrusted code on a privileged workflow."

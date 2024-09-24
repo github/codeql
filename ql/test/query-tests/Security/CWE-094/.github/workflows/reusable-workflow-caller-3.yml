@@ -5,6 +5,6 @@ on:
 
 jobs:
   test:
-    uses: ./.github/workflows/reusable-workflow-2.yml
+    uses: TestOrg/TestRepo/.github/workflows/reusable-workflow.yml@main
     with:
       taint: ${{ github.event.pull_request.title }}

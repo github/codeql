@@ -11,4 +11,5 @@ jobs:
         with:
           taint: ${{ github.event.comment.body }}
       - run: echo "${{ steps.foo.outputs.result }}"
+      - run: echo "${{ steps.foo.outputs.result2 }}"
 

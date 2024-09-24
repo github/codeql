@@ -252,26 +252,10 @@ predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
   )
 }
 
-predicate calledByPrivilegedExternallyTriggerableJob(AstNode node) {
-  exists(ReusableWorkflow rw, ExternalJob caller, Job callee |
-    callee = node.getEnclosingJob() and
-    rw.getACaller() = caller and
-    rw.getAJob() = callee and
-    caller.isPrivilegedExternallyTriggerable()
-  )
-  or
-  exists(LocalJob caller |
-    caller = node.getEnclosingCompositeAction().getACallerJob() and
-    caller.isPrivilegedExternallyTriggerable()
-  )
-}
-
 predicate inPrivilegedContext(AstNode node) {
   inPrivilegedCompositeAction(node)
   or
   inPrivilegedExternallyTriggerableJob(node)
-  or
-  calledByPrivilegedExternallyTriggerableJob(node)
 }
 
 predicate inNonPrivilegedCompositeAction(AstNode node) {
@@ -313,4 +297,21 @@ string defaultBranchNames() {
   or
   not exists(string default_branch_name | repositoryDataModel(_, default_branch_name)) and
   result = ["main", "master"]
+}
+
+string getRepoRoot() {
+  exists(Workflow w |
+    w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    result =
+      w.getLocation()
+          .getFile()
+          .getRelativePath()
+          .prefix(w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") + 1) and
+    // exclude workflow_enum reusable workflows directory root
+    not result.indexOf(".github/reusable_workflows/") > -1
+    or
+    not w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    not w.getLocation().getFile().getRelativePath().indexOf(".github/reusable_workflows") > -1 and
+    result = ""
+  )
 }
