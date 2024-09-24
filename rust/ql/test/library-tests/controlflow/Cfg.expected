@@ -20,43 +20,43 @@
 | test.rs:10:9:22:9 | LoopExpr | test.rs:23:9:23:20 | ExprStmt |  |
 | test.rs:10:14:22:9 | BlockExpr | test.rs:11:13:11:24 | ExprStmt |  |
 | test.rs:11:13:11:13 | PathExpr | test.rs:11:17:11:20 | PathExpr |  |
-| test.rs:11:13:11:23 | BinaryExpr | test.rs:12:13:14:13 | ExprStmt |  |
+| test.rs:11:13:11:23 | ... = ... | test.rs:12:13:14:13 | ExprStmt |  |
 | test.rs:11:13:11:24 | ExprStmt | test.rs:11:13:11:13 | PathExpr |  |
 | test.rs:11:17:11:20 | PathExpr | test.rs:11:22:11:22 | PathExpr |  |
-| test.rs:11:17:11:23 | CallExpr | test.rs:11:13:11:23 | BinaryExpr |  |
+| test.rs:11:17:11:23 | CallExpr | test.rs:11:13:11:23 | ... = ... |  |
 | test.rs:11:22:11:22 | PathExpr | test.rs:11:17:11:23 | CallExpr |  |
 | test.rs:12:13:14:13 | ExprStmt | test.rs:12:16:12:16 | PathExpr |  |
 | test.rs:12:13:14:13 | IfExpr | test.rs:15:13:17:13 | ExprStmt |  |
 | test.rs:12:16:12:16 | PathExpr | test.rs:12:20:12:24 | LiteralExpr |  |
-| test.rs:12:16:12:24 | BinaryExpr | test.rs:12:13:14:13 | IfExpr | false |
-| test.rs:12:16:12:24 | BinaryExpr | test.rs:13:17:13:29 | ExprStmt | true |
-| test.rs:12:20:12:24 | LiteralExpr | test.rs:12:16:12:24 | BinaryExpr |  |
+| test.rs:12:16:12:24 | ... > ... | test.rs:12:13:14:13 | IfExpr | false |
+| test.rs:12:16:12:24 | ... > ... | test.rs:13:17:13:29 | ExprStmt | true |
+| test.rs:12:20:12:24 | LiteralExpr | test.rs:12:16:12:24 | ... > ... |  |
 | test.rs:13:17:13:28 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | return |
 | test.rs:13:17:13:29 | ExprStmt | test.rs:13:24:13:28 | LiteralExpr |  |
 | test.rs:13:24:13:28 | LiteralExpr | test.rs:13:17:13:28 | ReturnExpr |  |
 | test.rs:15:13:17:13 | ExprStmt | test.rs:15:16:15:16 | PathExpr |  |
 | test.rs:15:13:17:13 | IfExpr | test.rs:18:13:20:13 | ExprStmt |  |
 | test.rs:15:16:15:16 | PathExpr | test.rs:15:21:15:21 | LiteralExpr |  |
-| test.rs:15:16:15:21 | BinaryExpr | test.rs:15:13:17:13 | IfExpr | false |
-| test.rs:15:16:15:21 | BinaryExpr | test.rs:16:17:16:22 | ExprStmt | true |
-| test.rs:15:21:15:21 | LiteralExpr | test.rs:15:16:15:21 | BinaryExpr |  |
+| test.rs:15:16:15:21 | ... == ... | test.rs:15:13:17:13 | IfExpr | false |
+| test.rs:15:16:15:21 | ... == ... | test.rs:16:17:16:22 | ExprStmt | true |
+| test.rs:15:21:15:21 | LiteralExpr | test.rs:15:16:15:21 | ... == ... |  |
 | test.rs:16:17:16:21 | BreakExpr | test.rs:10:9:22:9 | LoopExpr | break |
 | test.rs:16:17:16:22 | ExprStmt | test.rs:16:17:16:21 | BreakExpr |  |
 | test.rs:18:13:20:13 | ExprStmt | test.rs:18:16:18:16 | PathExpr |  |
 | test.rs:18:13:20:13 | IfExpr | test.rs:21:13:21:13 | PathExpr |  |
 | test.rs:18:16:18:16 | PathExpr | test.rs:18:20:18:20 | LiteralExpr |  |
-| test.rs:18:16:18:20 | BinaryExpr | test.rs:18:25:18:25 | LiteralExpr |  |
-| test.rs:18:16:18:25 | BinaryExpr | test.rs:18:13:20:13 | IfExpr | false |
-| test.rs:18:16:18:25 | BinaryExpr | test.rs:19:17:19:25 | ExprStmt | true |
-| test.rs:18:20:18:20 | LiteralExpr | test.rs:18:16:18:20 | BinaryExpr |  |
-| test.rs:18:25:18:25 | LiteralExpr | test.rs:18:16:18:25 | BinaryExpr |  |
+| test.rs:18:16:18:20 | ... % ... | test.rs:18:25:18:25 | LiteralExpr |  |
+| test.rs:18:16:18:25 | ... != ... | test.rs:18:13:20:13 | IfExpr | false |
+| test.rs:18:16:18:25 | ... != ... | test.rs:19:17:19:25 | ExprStmt | true |
+| test.rs:18:20:18:20 | LiteralExpr | test.rs:18:16:18:20 | ... % ... |  |
+| test.rs:18:25:18:25 | LiteralExpr | test.rs:18:16:18:25 | ... != ... |  |
 | test.rs:19:17:19:24 | ContinueExpr | test.rs:11:13:11:24 | ExprStmt | continue |
 | test.rs:19:17:19:25 | ExprStmt | test.rs:19:17:19:24 | ContinueExpr |  |
 | test.rs:21:13:21:13 | PathExpr | test.rs:21:17:21:17 | PathExpr |  |
-| test.rs:21:13:21:21 | BinaryExpr | test.rs:10:14:22:9 | BlockExpr |  |
+| test.rs:21:13:21:21 | ... = ... | test.rs:10:14:22:9 | BlockExpr |  |
 | test.rs:21:17:21:17 | PathExpr | test.rs:21:21:21:21 | LiteralExpr |  |
-| test.rs:21:17:21:21 | BinaryExpr | test.rs:21:13:21:21 | BinaryExpr |  |
-| test.rs:21:21:21:21 | LiteralExpr | test.rs:21:17:21:21 | BinaryExpr |  |
+| test.rs:21:17:21:21 | ... / ... | test.rs:21:13:21:21 | ... = ... |  |
+| test.rs:21:21:21:21 | LiteralExpr | test.rs:21:17:21:21 | ... / ... |  |
 | test.rs:23:9:23:19 | ReturnExpr | test.rs:8:5:24:5 | exit test_break_and_continue (normal) | return |
 | test.rs:23:9:23:20 | ExprStmt | test.rs:23:16:23:19 | LiteralExpr |  |
 | test.rs:23:16:23:19 | LiteralExpr | test.rs:23:9:23:19 | ReturnExpr |  |
@@ -106,8 +106,8 @@
 | test.rs:56:19:56:27 | enter ClosureExpr | test.rs:56:23:56:23 | PathExpr |  |
 | test.rs:56:19:56:27 | exit ClosureExpr (normal) | test.rs:56:19:56:27 | exit ClosureExpr |  |
 | test.rs:56:23:56:23 | PathExpr | test.rs:56:27:56:27 | LiteralExpr |  |
-| test.rs:56:23:56:27 | BinaryExpr | test.rs:56:19:56:27 | exit ClosureExpr (normal) |  |
-| test.rs:56:27:56:27 | LiteralExpr | test.rs:56:23:56:27 | BinaryExpr |  |
+| test.rs:56:23:56:27 | ... + ... | test.rs:56:19:56:27 | exit ClosureExpr (normal) |  |
+| test.rs:56:27:56:27 | LiteralExpr | test.rs:56:23:56:27 | ... + ... |  |
 | test.rs:57:5:57:11 | PathExpr | test.rs:57:13:57:19 | PathExpr |  |
 | test.rs:57:5:57:23 | CallExpr | test.rs:55:40:58:1 | BlockExpr |  |
 | test.rs:57:13:57:19 | PathExpr | test.rs:57:21:57:21 | PathExpr |  |
@@ -118,15 +118,15 @@
 | test.rs:62:36:68:5 | BlockExpr | test.rs:62:5:68:5 | exit test_if_else (normal) |  |
 | test.rs:63:9:67:9 | IfExpr | test.rs:62:36:68:5 | BlockExpr |  |
 | test.rs:63:12:63:12 | PathExpr | test.rs:63:17:63:17 | LiteralExpr |  |
-| test.rs:63:12:63:17 | BinaryExpr | test.rs:64:13:64:13 | LiteralExpr | true |
-| test.rs:63:12:63:17 | BinaryExpr | test.rs:66:13:66:13 | PathExpr | false |
-| test.rs:63:17:63:17 | LiteralExpr | test.rs:63:12:63:17 | BinaryExpr |  |
+| test.rs:63:12:63:17 | ... <= ... | test.rs:64:13:64:13 | LiteralExpr | true |
+| test.rs:63:12:63:17 | ... <= ... | test.rs:66:13:66:13 | PathExpr | false |
+| test.rs:63:17:63:17 | LiteralExpr | test.rs:63:12:63:17 | ... <= ... |  |
 | test.rs:63:19:65:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr |  |
 | test.rs:64:13:64:13 | LiteralExpr | test.rs:63:19:65:9 | BlockExpr |  |
 | test.rs:65:16:67:9 | BlockExpr | test.rs:63:9:67:9 | IfExpr |  |
 | test.rs:66:13:66:13 | PathExpr | test.rs:66:17:66:17 | LiteralExpr |  |
-| test.rs:66:13:66:17 | BinaryExpr | test.rs:65:16:67:9 | BlockExpr |  |
-| test.rs:66:17:66:17 | LiteralExpr | test.rs:66:13:66:17 | BinaryExpr |  |
+| test.rs:66:13:66:17 | ... - ... | test.rs:65:16:67:9 | BlockExpr |  |
+| test.rs:66:17:66:17 | LiteralExpr | test.rs:66:13:66:17 | ... - ... |  |
 | test.rs:70:5:76:5 | enter test_if_let_else | test.rs:71:12:71:26 | LetExpr |  |
 | test.rs:70:5:76:5 | exit test_if_let_else (normal) | test.rs:70:5:76:5 | exit test_if_let_else |  |
 | test.rs:70:48:76:5 | BlockExpr | test.rs:70:5:76:5 | exit test_if_let_else (normal) |  |
@@ -157,18 +157,18 @@
 | test.rs:86:12:86:48 | ParenExpr | test.rs:89:13:89:13 | LiteralExpr | false |
 | test.rs:86:13:86:47 | IfExpr | test.rs:86:12:86:48 | ParenExpr |  |
 | test.rs:86:16:86:16 | PathExpr | test.rs:86:20:86:20 | LiteralExpr |  |
-| test.rs:86:16:86:20 | BinaryExpr | test.rs:86:24:86:24 | PathExpr | true |
-| test.rs:86:16:86:20 | BinaryExpr | test.rs:86:41:86:41 | PathExpr | false |
-| test.rs:86:20:86:20 | LiteralExpr | test.rs:86:16:86:20 | BinaryExpr |  |
+| test.rs:86:16:86:20 | ... < ... | test.rs:86:24:86:24 | PathExpr | true |
+| test.rs:86:16:86:20 | ... < ... | test.rs:86:41:86:41 | PathExpr | false |
+| test.rs:86:20:86:20 | LiteralExpr | test.rs:86:16:86:20 | ... < ... |  |
 | test.rs:86:22:86:32 | BlockExpr | test.rs:86:13:86:47 | IfExpr |  |
 | test.rs:86:24:86:24 | PathExpr | test.rs:86:29:86:30 | LiteralExpr |  |
-| test.rs:86:24:86:30 | BinaryExpr | test.rs:86:22:86:32 | BlockExpr |  |
-| test.rs:86:28:86:30 | PrefixExpr | test.rs:86:24:86:30 | BinaryExpr |  |
-| test.rs:86:29:86:30 | LiteralExpr | test.rs:86:28:86:30 | PrefixExpr |  |
+| test.rs:86:24:86:30 | ... < ... | test.rs:86:22:86:32 | BlockExpr |  |
+| test.rs:86:28:86:30 | - ... | test.rs:86:24:86:30 | ... < ... |  |
+| test.rs:86:29:86:30 | LiteralExpr | test.rs:86:28:86:30 | - ... |  |
 | test.rs:86:39:86:47 | BlockExpr | test.rs:86:13:86:47 | IfExpr |  |
 | test.rs:86:41:86:41 | PathExpr | test.rs:86:45:86:46 | LiteralExpr |  |
-| test.rs:86:41:86:46 | BinaryExpr | test.rs:86:39:86:47 | BlockExpr |  |
-| test.rs:86:45:86:46 | LiteralExpr | test.rs:86:41:86:46 | BinaryExpr |  |
+| test.rs:86:41:86:46 | ... > ... | test.rs:86:39:86:47 | BlockExpr |  |
+| test.rs:86:45:86:46 | LiteralExpr | test.rs:86:41:86:46 | ... > ... |  |
 | test.rs:86:50:88:9 | BlockExpr | test.rs:86:9:90:9 | IfExpr |  |
 | test.rs:87:13:87:13 | LiteralExpr | test.rs:86:50:88:9 | BlockExpr |  |
 | test.rs:88:16:90:9 | BlockExpr | test.rs:86:9:90:9 | IfExpr |  |
@@ -193,12 +193,12 @@
 | test.rs:105:5:108:5 | enter test_and_operator | test.rs:106:9:106:28 | LetStmt |  |
 | test.rs:105:5:108:5 | exit test_and_operator (normal) | test.rs:105:5:108:5 | exit test_and_operator |  |
 | test.rs:105:61:108:5 | BlockExpr | test.rs:105:5:108:5 | exit test_and_operator (normal) |  |
-| test.rs:106:9:106:28 | LetStmt | test.rs:106:17:106:27 | BinaryExpr |  |
+| test.rs:106:9:106:28 | LetStmt | test.rs:106:17:106:27 | ... && ... |  |
 | test.rs:106:13:106:13 | IdentPat | test.rs:107:9:107:9 | PathExpr | match, no-match |
 | test.rs:106:17:106:17 | PathExpr | test.rs:106:13:106:13 | IdentPat | false |
 | test.rs:106:17:106:17 | PathExpr | test.rs:106:22:106:22 | PathExpr | true |
-| test.rs:106:17:106:22 | BinaryExpr | test.rs:106:17:106:17 | PathExpr |  |
-| test.rs:106:17:106:27 | BinaryExpr | test.rs:106:17:106:22 | BinaryExpr |  |
+| test.rs:106:17:106:22 | ... && ... | test.rs:106:17:106:17 | PathExpr |  |
+| test.rs:106:17:106:27 | ... && ... | test.rs:106:17:106:22 | ... && ... |  |
 | test.rs:106:22:106:22 | PathExpr | test.rs:106:13:106:13 | IdentPat | false |
 | test.rs:106:22:106:22 | PathExpr | test.rs:106:27:106:27 | PathExpr | true |
 | test.rs:106:27:106:27 | PathExpr | test.rs:106:13:106:13 | IdentPat |  |
@@ -206,12 +206,12 @@
 | test.rs:110:5:113:5 | enter test_or_operator | test.rs:111:9:111:28 | LetStmt |  |
 | test.rs:110:5:113:5 | exit test_or_operator (normal) | test.rs:110:5:113:5 | exit test_or_operator |  |
 | test.rs:110:60:113:5 | BlockExpr | test.rs:110:5:113:5 | exit test_or_operator (normal) |  |
-| test.rs:111:9:111:28 | LetStmt | test.rs:111:17:111:27 | BinaryExpr |  |
+| test.rs:111:9:111:28 | LetStmt | test.rs:111:17:111:27 | ... \|\| ... |  |
 | test.rs:111:13:111:13 | IdentPat | test.rs:112:9:112:9 | PathExpr | match, no-match |
 | test.rs:111:17:111:17 | PathExpr | test.rs:111:13:111:13 | IdentPat | true |
 | test.rs:111:17:111:17 | PathExpr | test.rs:111:22:111:22 | PathExpr | false |
-| test.rs:111:17:111:22 | BinaryExpr | test.rs:111:17:111:17 | PathExpr |  |
-| test.rs:111:17:111:27 | BinaryExpr | test.rs:111:17:111:22 | BinaryExpr |  |
+| test.rs:111:17:111:22 | ... \|\| ... | test.rs:111:17:111:17 | PathExpr |  |
+| test.rs:111:17:111:27 | ... \|\| ... | test.rs:111:17:111:22 | ... \|\| ... |  |
 | test.rs:111:22:111:22 | PathExpr | test.rs:111:13:111:13 | IdentPat | true |
 | test.rs:111:22:111:22 | PathExpr | test.rs:111:27:111:27 | PathExpr | false |
 | test.rs:111:27:111:27 | PathExpr | test.rs:111:13:111:13 | IdentPat |  |
@@ -219,17 +219,17 @@
 | test.rs:115:5:118:5 | enter test_or_operator_2 | test.rs:116:9:116:36 | LetStmt |  |
 | test.rs:115:5:118:5 | exit test_or_operator_2 (normal) | test.rs:115:5:118:5 | exit test_or_operator_2 |  |
 | test.rs:115:61:118:5 | BlockExpr | test.rs:115:5:118:5 | exit test_or_operator_2 (normal) |  |
-| test.rs:116:9:116:36 | LetStmt | test.rs:116:17:116:35 | BinaryExpr |  |
+| test.rs:116:9:116:36 | LetStmt | test.rs:116:17:116:35 | ... \|\| ... |  |
 | test.rs:116:13:116:13 | IdentPat | test.rs:117:9:117:9 | PathExpr | match, no-match |
 | test.rs:116:17:116:17 | PathExpr | test.rs:116:13:116:13 | IdentPat | true |
 | test.rs:116:17:116:17 | PathExpr | test.rs:116:23:116:23 | PathExpr | false |
-| test.rs:116:17:116:30 | BinaryExpr | test.rs:116:17:116:17 | PathExpr |  |
-| test.rs:116:17:116:35 | BinaryExpr | test.rs:116:17:116:30 | BinaryExpr |  |
+| test.rs:116:17:116:30 | ... \|\| ... | test.rs:116:17:116:17 | PathExpr |  |
+| test.rs:116:17:116:35 | ... \|\| ... | test.rs:116:17:116:30 | ... \|\| ... |  |
 | test.rs:116:22:116:30 | ParenExpr | test.rs:116:13:116:13 | IdentPat | true |
 | test.rs:116:22:116:30 | ParenExpr | test.rs:116:35:116:35 | PathExpr | false |
 | test.rs:116:23:116:23 | PathExpr | test.rs:116:28:116:29 | LiteralExpr |  |
-| test.rs:116:23:116:29 | BinaryExpr | test.rs:116:22:116:30 | ParenExpr |  |
-| test.rs:116:28:116:29 | LiteralExpr | test.rs:116:23:116:29 | BinaryExpr |  |
+| test.rs:116:23:116:29 | ... == ... | test.rs:116:22:116:30 | ParenExpr |  |
+| test.rs:116:28:116:29 | LiteralExpr | test.rs:116:23:116:29 | ... == ... |  |
 | test.rs:116:35:116:35 | PathExpr | test.rs:116:13:116:13 | IdentPat |  |
 | test.rs:117:9:117:9 | PathExpr | test.rs:115:61:118:5 | BlockExpr |  |
 | test.rs:122:1:128:1 | enter test_match | test.rs:123:11:123:21 | PathExpr |  |
@@ -240,7 +240,7 @@
 | test.rs:124:9:124:23 | TupleStructPat | test.rs:124:28:124:28 | PathExpr | match |
 | test.rs:124:9:124:23 | TupleStructPat | test.rs:125:9:125:23 | TupleStructPat | no-match |
 | test.rs:124:28:124:28 | PathExpr | test.rs:124:32:124:33 | LiteralExpr |  |
-| test.rs:124:32:124:33 | LiteralExpr | test.rs:124:28:124:33 | BinaryExpr |  |
+| test.rs:124:32:124:33 | LiteralExpr | test.rs:124:28:124:33 | ... < ... |  |
 | test.rs:125:9:125:23 | TupleStructPat | test.rs:125:28:125:28 | PathExpr | match |
 | test.rs:125:9:125:23 | TupleStructPat | test.rs:126:9:126:20 | PathPat | no-match |
 | test.rs:125:28:125:28 | PathExpr | test.rs:123:5:127:5 | MatchExpr |  |
