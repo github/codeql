@@ -148,7 +148,7 @@ private class CompositeActionTree extends StandardPreOrderTree instanceof Compos
       rank[i](AstNode child, Location l |
         (
           child = this.(CompositeAction).getAnInput() or
-          child = this.(CompositeAction).getAnOutputExpr() or
+          child = this.(CompositeAction).getOutputs() or
           child = this.(CompositeAction).getRuns()
         ) and
         l = child.getLocation()
@@ -172,7 +172,7 @@ private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
         rank[i](AstNode child, Location l |
           (
             child = this.(ReusableWorkflow).getAnInput() or
-            child = this.(ReusableWorkflow).getAnOutputExpr() or
+            child = this.(ReusableWorkflow).getOutputs() or
             child = this.(ReusableWorkflow).getStrategy() or
             child = this.(ReusableWorkflow).getAJob()
           ) and
@@ -202,7 +202,7 @@ private class OutputsTree extends StandardPreOrderTree instanceof Outputs {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getOutputExpr(_) and l = child.getLocation()
+        child = super.getAnOutputExpr() and l = child.getLocation()
       |
         child
         order by
