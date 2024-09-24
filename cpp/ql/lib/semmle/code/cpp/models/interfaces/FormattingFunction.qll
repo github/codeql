@@ -143,8 +143,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * of parameters, then don't return anything.
    */
   int getNumberOfExplicitParameters() {
-    result = this.getAnExplicitDeclarationEntry().getNumberOfParameters() and
-    forall(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+    forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
       result = fde.getNumberOfParameters()
     )
   }
