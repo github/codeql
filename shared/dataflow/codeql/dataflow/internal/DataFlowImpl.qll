@@ -153,99 +153,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   module Impl<FullStateConfigSig Config> {
     private class FlowState = Config::FlowState;
 
-    private newtype TNodeEx =
-      TNodeNormal(Node n) or
-      TNodeImplicitRead(Node n, boolean hasRead) {
-        Config::allowImplicitRead(n, _) and hasRead = [false, true]
-      } or
-      TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
-        paramReturnNode(_, p, scope, _)
-      }
-
-    private class NodeEx extends TNodeEx {
-      string toString() {
-        result = this.asNode().toString()
-        or
-        exists(Node n | this.isImplicitReadNode(n, _) | result = n.toString() + " [Ext]")
-        or
-        result = this.asParamReturnNode().toString() + " [Return]"
-      }
-
-      Node asNode() { this = TNodeNormal(result) }
-
-      /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
-      Node asNodeOrImplicitRead() {
-        this = TNodeNormal(result) or this = TNodeImplicitRead(result, true)
-      }
-
-      predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
-
-      ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
-
-      Node projectToNode() {
-        this = TNodeNormal(result) or
-        this = TNodeImplicitRead(result, _) or
-        this = TParamReturnNode(result, _)
-      }
-
-      pragma[nomagic]
-      private DataFlowCallable getEnclosingCallable0() {
-        nodeEnclosingCallable(this.projectToNode(), result)
-      }
-
-      pragma[inline]
-      DataFlowCallable getEnclosingCallable() {
-        pragma[only_bind_out](this).getEnclosingCallable0() = pragma[only_bind_into](result)
-      }
-
-      pragma[nomagic]
-      private DataFlowType getDataFlowType0() {
-        nodeDataFlowType(this.asNode(), result)
-        or
-        nodeDataFlowType(this.asParamReturnNode(), result)
-      }
-
-      pragma[inline]
-      DataFlowType getDataFlowType() {
-        pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
-      }
-
-      Location getLocation() { result = this.projectToNode().getLocation() }
-    }
-
-    private class ArgNodeEx extends NodeEx {
-      ArgNodeEx() { this.asNode() instanceof ArgNode }
-
-      DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
-    }
-
-    private class ParamNodeEx extends NodeEx {
-      ParamNodeEx() { this.asNode() instanceof ParamNode }
-
-      predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-        this.asNode().(ParamNode).isParameterOf(c, pos)
-      }
-
-      ParameterPosition getPosition() { this.isParameterOf(_, result) }
-    }
-
-    /**
-     * A node from which flow can return to the caller. This is either a regular
-     * `ReturnNode` or a synthesized node for flow out via a parameter.
-     */
-    private class RetNodeEx extends NodeEx {
-      private ReturnPosition pos;
-
-      RetNodeEx() {
-        pos = getValueReturnPosition(this.asNode()) or
-        pos = getParamReturnPosition(_, this.asParamReturnNode())
-      }
-
-      ReturnPosition getReturnPosition() { result = pos }
-
-      ReturnKindExt getKind() { result = pos.getKind() }
-    }
-
     private predicate inBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
@@ -357,27 +264,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow in one local step from `node1` to `node2`.
      */
     private predicate localFlowStepEx(NodeEx node1, NodeEx node2, string model) {
-      exists(Node n1, Node n2 |
-        node1.asNode() = n1 and
-        node2.asNode() = n2 and
-        simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model) and
-        stepFilter(node1, node2)
-      )
-      or
-      exists(Node n |
-        node1.asNode() = n and
-        node2.isImplicitReadNode(n, false) and
-        not fullBarrier(node1) and
-        model = ""
-      )
-      or
-      exists(Node n1, Node n2, SndLevelScopeOption scope |
-        node1.asNode() = n1 and
-        node2 = TParamReturnNode(n2, scope) and
-        paramReturnNode(pragma[only_bind_into](n1), pragma[only_bind_into](n2),
-          pragma[only_bind_into](scope), _) and
-        model = ""
-      )
+      localFlowStepExImpl(node1, node2, model) and
+      stepFilter(node1, node2)
     }
 
     /**
@@ -449,9 +337,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       stepFilter(node1, node2)
       or
       exists(Node n |
-        node2.isImplicitReadNode(n, true) and
-        node1.isImplicitReadNode(n, _) and
+        node2.isImplicitReadNode(n) and
         Config::allowImplicitRead(n, c)
+      |
+        node1.asNode() = n and
+        not fullBarrier(node1)
+        or
+        node1.isImplicitReadNode(n)
       )
     }
 
@@ -727,7 +619,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       additional predicate sinkNode(NodeEx node, FlowState state) {
-        fwdFlow(node) and
+        fwdFlow(pragma[only_bind_into](node)) and
         fwdFlowState(state) and
         Config::isSink(node.asNodeOrImplicitRead())
         or
@@ -1062,10 +954,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[label1, label2]
     pragma[inline_late]
     private string mergeLabels(string label1, string label2) {
-      // Big-step, hidden nodes, and summaries all may need to merge labels.
-      // These cases are expected to involve at most one non-empty label, so
-      // we'll just discard the 2nd+ label for now.
-      if label1 = "" then result = label2 else result = label1
+      if label2.matches("Sink:%")
+      then if label1 = "" then result = label2 else result = label1 + " " + label2
+      else
+        // Big-step, hidden nodes, and summaries all may need to merge labels.
+        // These cases are expected to involve at most one non-empty label, so
+        // we'll just discard the 2nd+ label for now.
+        if label1 = ""
+        then result = label2
+        else result = label1
     }
 
     pragma[nomagic]
@@ -2835,14 +2732,50 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             abstract PathNodeImpl getASuccessorImpl(string label);
 
+            pragma[nomagic]
+            PathNodeImpl getAnImplicitReadSuccessorAtSink(string label) {
+              exists(PathNodeMid readTarget |
+                result = this.getASuccessorImpl(_) and
+                localStep(this, readTarget, _) and
+                readTarget.getNodeEx().isImplicitReadNode(_)
+              |
+                // last implicit read, leaving the access path empty
+                result = readTarget.projectToSink(label)
+                or
+                // implicit read, leaving the access path non-empty
+                exists(result.getAnImplicitReadSuccessorAtSink(label)) and
+                result = readTarget
+              )
+            }
+
             private PathNodeImpl getASuccessorIfHidden(string label) {
               this.isHidden() and
               result = this.getASuccessorImpl(label)
+              or
+              result = this.getAnImplicitReadSuccessorAtSink(label)
             }
 
             private PathNodeImpl getASuccessorFromNonHidden(string label) {
               result = this.getASuccessorImpl(label) and
-              not this.isHidden()
+              not this.isHidden() and
+              // In cases like
+              //
+              // ```
+              // x.Field = taint;
+              // Sink(x);
+              // ```
+              //
+              // we only want the direct edge
+              //
+              //  `[post update] x [Field]` -> `x`
+              //
+              // and not the two edges
+              //
+              //  `[post update] x [Field]` -> `x [Field]`
+              //  `x [Field]`               -> `x`
+              //
+              // which the restriction below ensures.
+              not result = this.getAnImplicitReadSuccessorAtSink(_)
               or
               exists(string l1, string l2 |
                 result = this.getASuccessorFromNonHidden(l1).getASuccessorIfHidden(l2) and
@@ -2963,18 +2896,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
               or
               // a final step to a sink
-              exists(string l2, string sinkmodel, string l2_ |
-                result = this.getSuccMid(l2).projectToSink(sinkmodel) and
-                if l2 = "" then l2_ = l2 else l2_ = l2 + " "
+              exists(string l2, string sinkLabel |
+                result = this.getSuccMid(l2).projectToSink(sinkLabel)
               |
                 not this.isSourceWithLabel(_) and
-                if sinkmodel != "" then label = l2_ + "Sink:" + sinkmodel else label = l2
+                label = mergeLabels(l2, sinkLabel)
                 or
                 exists(string l1 |
                   this.isSourceWithLabel(l1) and
-                  if sinkmodel != ""
-                  then label = l1 + l2_ + "Sink:" + sinkmodel
-                  else label = l1 + l2
+                  label = l1 + mergeLabels(l2, sinkLabel)
                 )
               )
             }
@@ -3040,11 +2970,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 else any()
             }
 
-            PathNodeSink projectToSink(string model) {
-              this.isAtSink() and
-              sinkModel(node, model) and
-              result.getNodeEx() = this.toNormalSinkNodeEx() and
-              result.getState() = state
+            PathNodeSink projectToSink(string label) {
+              exists(string model |
+                this.isAtSink() and
+                sinkModel(node, model) and
+                result.getNodeEx() = this.toNormalSinkNodeEx() and
+                result.getState() = state and
+                if model != "" then label = "Sink:" + model else label = ""
+              )
             }
           }
 
@@ -3316,6 +3249,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             private predicate localStepFromHidden(PathNodeImpl n1, PathNodeImpl n2) {
               n2 = localStep(n1) and
               n1.isHidden()
+              or
+              n2 = n1.getAnImplicitReadSuccessorAtSink(_)
             }
 
             bindingset[par, ret]

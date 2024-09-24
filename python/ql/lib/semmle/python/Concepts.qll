@@ -1412,6 +1412,59 @@ module Http {
     }
 
     /**
+     * A data-flow node that enables or disables CORS
+     * in a global manner.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CorsMiddleware::Range` instead.
+     */
+    class CorsMiddleware extends DataFlow::Node instanceof CorsMiddleware::Range {
+      /**
+       * Gets the string corresponding to the middleware
+       */
+      string getMiddlewareName() { result = super.getMiddlewareName() }
+
+      /**
+       * Gets the dataflow node corresponding to the allowed CORS origins
+       */
+      DataFlow::Node getOrigins() { result = super.getOrigins() }
+
+      /**
+       * Gets the boolean value corresponding to if CORS credentials is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
+      DataFlow::Node getCredentialsAllowed() { result = super.getCredentialsAllowed() }
+    }
+
+    /** Provides a class for modeling new CORS middleware APIs. */
+    module CorsMiddleware {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * in a global manner.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CorsMiddleware` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the name corresponding to the middleware
+         */
+        abstract string getMiddlewareName();
+
+        /**
+         * Gets the strings corresponding to the origins allowed by the cors policy
+         */
+        abstract DataFlow::Node getOrigins();
+
+        /**
+         * Gets the boolean value corresponding to if CORS credentials is enabled
+         * (`true`) or disabled (`false`) by this node.
+         */
+        abstract DataFlow::Node getCredentialsAllowed();
+      }
+    }
+
+    /**
      * A data-flow node that enables or disables Cross-site request forgery protection
      * in a global manner.
      *
