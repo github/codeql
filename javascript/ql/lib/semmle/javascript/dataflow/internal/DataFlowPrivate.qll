@@ -20,6 +20,7 @@ private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
 
+// TODO: this bypasses refinement nodes, and therefore some sanitisers
 class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   private ControlFlowNode expr;
 
