@@ -73,7 +73,7 @@ class BecomeExprTree extends StandardPostOrderTree instanceof BecomeExpr {
 }
 
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
-  BinaryOpExprTree() { super.getOperatorName() != "&&" and super.getOperatorName() != "||" }
+  BinaryOpExprTree() { not this instanceof LogicalOrExpr and not this instanceof LogicalAndExpr }
 
   override ControlFlowTree getChildNode(int i) {
     i = 0 and result = super.getLhs()
@@ -82,61 +82,53 @@ class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
   }
 }
 
-class LogicalOrBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
-  LogicalOrBinaryOpExprTree() { super.getOperatorName() = "||" }
-
-  final override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getRhs(), super.getLhs()]
-  }
+class LogicalOrBinaryOpExprTree extends PreOrderTree, LogicalOrExpr {
+  final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge to the first node in the lhs
     pred = this and
-    first(super.getLhs(), succ) and
+    first(this.getLhs(), succ) and
     completionIsSimple(c)
     or
     // Edge from the last node in the lhs to the first node in the rhs
-    last(super.getLhs(), pred, c) and
-    first(super.getRhs(), succ) and
+    last(this.getLhs(), pred, c) and
+    first(this.getRhs(), succ) and
     c.(BooleanCompletion).failed()
   }
 
   override predicate last(AstNode node, Completion c) {
     // Lhs. as the last node
-    last(super.getLhs(), node, c) and
+    last(this.getLhs(), node, c) and
     c.(BooleanCompletion).succeeded()
     or
     // Rhs. as the last node
-    last(super.getRhs(), node, c)
+    last(this.getRhs(), node, c)
   }
 }
 
-class LogicalAndBinaryOpExprTree extends PreOrderTree instanceof BinaryExpr {
-  LogicalAndBinaryOpExprTree() { super.getOperatorName() = "&&" }
-
-  final override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getRhs(), super.getLhs()]
-  }
+class LogicalAndBinaryOpExprTree extends PreOrderTree, LogicalAndExpr {
+  final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge to the first node in the lhs
     pred = this and
-    first(super.getLhs(), succ) and
+    first(this.getLhs(), succ) and
     completionIsSimple(c)
     or
     // Edge from the last node in the lhs to the first node in the rhs
-    last(super.getLhs(), pred, c) and
-    first(super.getRhs(), succ) and
+    last(this.getLhs(), pred, c) and
+    first(this.getRhs(), succ) and
     c.(BooleanCompletion).succeeded()
   }
 
   override predicate last(AstNode node, Completion c) {
     // Lhs. as the last node
-    last(super.getLhs(), node, c) and
+    last(this.getLhs(), node, c) and
     c.(BooleanCompletion).failed()
     or
     // Rhs. as the last node
-    last(super.getRhs(), node, c)
+    last(this.getRhs(), node, c)
   }
 }
 
