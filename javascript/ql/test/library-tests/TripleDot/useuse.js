@@ -94,3 +94,20 @@ function t6() {
     sink(c.y); // $ hasValueFlow=t6.2
     c.methodLike();
 }
+
+function t7() {
+    class Base {
+        constructor(x) {
+            this.field = x;
+            sink(this.field); // $ hasTaintFlow=t7.1
+        }
+    }
+    class Sub extends Base {
+        constructor(x) {
+            super(x + '!');
+            sink(this.field); // $ hasTaintFlow=t7.1
+        }
+    }
+    const c = new Sub(source('t7.1'));
+    sink(c.field); // $ hasTaintFlow=t7.1
+}
