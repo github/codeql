@@ -70,7 +70,7 @@ class DataFlowExpr extends Cfg::Node {
 }
 
 /**
- * A call corresponds to a Uses steps where a local action, 3rd party action or a reusable workflow get called
+ * A call corresponds to a Uses steps where a composite action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
   DataFlowCall() { super.getAstNode() instanceof Uses }
@@ -89,23 +89,6 @@ class DataFlowCall instanceof Cfg::Node {
   Location getLocation() { result = this.(Cfg::Node).getLocation() }
 }
 
-string getRepoRoot() {
-  exists(Workflow w |
-    w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
-    result =
-      w.getLocation()
-          .getFile()
-          .getRelativePath()
-          .prefix(w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") + 1) and
-    // exclude workflow_enum reusable workflows directory root
-    not result.indexOf(".github/reusable_workflows/") > -1
-    or
-    not w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
-    not w.getLocation().getFile().getRelativePath().indexOf(".github/reusable_workflows") > -1 and
-    result = ""
-  )
-}
-
 /**
  * A Cfg scope that can be called
  */
@@ -113,22 +96,8 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   string toString() { result = super.toString() }
 
   string getName() {
-    if this instanceof ReusableWorkflow
-    then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath() // or
-    else
-      if this instanceof CompositeAction
-      then
-        result =
-          this.(CompositeAction)
-              .getLocation()
-              .getFile()
-              .getRelativePath()
-              .prefix(this.(CompositeAction)
-                    .getLocation()
-                    .getFile()
-                    .getRelativePath()
-                    .indexOf(["/action.yml", "/action.yaml"]))
-      else none()
+    result = this.(ReusableWorkflowImpl).getResolvedPath() or
+    result = this.(CompositeActionImpl).getResolvedPath()
   }
 
   /** Gets a best-effort total ordering. */
@@ -150,13 +119,7 @@ class NormalReturn extends ReturnKind, TNormalReturn {
 }
 
 /** Gets a viable implementation of the target of the given `Call`. */
-DataFlowCallable viableCallable(DataFlowCall c) {
-  c.getName() = result.getName() or
-  c.getName() = result.getName().replaceAll(getRepoRoot(), "") or
-  // special case for reusable workflows downloaded by the workflow_enum action
-  c.getName() =
-    result.getName().replaceAll(getRepoRoot(), "").replaceAll(".github/reusable_workflows/", "")
-}
+DataFlowCallable viableCallable(DataFlowCall c) { c.getName() = result.getName() }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
