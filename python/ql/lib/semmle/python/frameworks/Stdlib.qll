@@ -338,7 +338,7 @@ module StdlibPrivate {
    * Modeling of path related functions in the `os` module.
    * Wrapped in QL module to make it easy to fold/unfold.
    */
-  private module OsFileSystemAccessModeling {
+  module OsFileSystemAccessModeling {
     /**
      * A call to the `os.fsencode` function.
      *
@@ -395,7 +395,7 @@ module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.open
      */
-    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
       OsOpenCall() { this = os().getMember("open").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -1499,13 +1499,22 @@ module StdlibPrivate {
    * See https://docs.python.org/3/library/functions.html#open
    */
   private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
-    DataFlow::CallCfgNode
+    ThreatModelSource::Range, DataFlow::CallCfgNode
   {
-    OpenCall() { this = getOpenFunctionRef().getACall() }
+    OpenCall() {
+      this = getOpenFunctionRef().getACall() and
+      // when analyzing stdlib code for os.py we wrongly assume that `os.open` is an
+      // alias of the builtins `open` function
+      not this instanceof OsFileSystemAccessModeling::OsOpenCall
+    }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("file")]
     }
+
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "open()" }
   }
 
   /**
@@ -4988,6 +4997,39 @@ module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getHtmlKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // argparse
+  // ---------------------------------------------------------------------------
+  /**
+   * if result of `parse_args` is tainted (because it uses command-line arguments),
+   *    then the parsed values accesssed on any attribute lookup is also tainted.
+   */
+  private class ArgumentParserAnyAttributeStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getReturn()
+            .getMember("parse_args")
+            .getReturn()
+            .getAValueReachableFromSource() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sys
+  // ---------------------------------------------------------------------------
+  /**
+   * An access of `sys.stdin`/`sys.stdout`/`sys.stderr`, to get additional FileLike
+   * modeling.
+   */
+  private class SysStandardStreams extends Stdlib::FileLikeObject::InstanceSource, DataFlow::Node {
+    SysStandardStreams() {
+      this = API::moduleImport("sys").getMember(["stdin", "stdout", "stderr"]).asSource()
+    }
   }
 }
 

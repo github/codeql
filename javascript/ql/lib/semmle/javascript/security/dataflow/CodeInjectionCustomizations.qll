@@ -27,8 +27,8 @@ module CodeInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for code injection. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /** An active threat-model source, considered as a flow source. */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * An expression which may be interpreted as an AngularJS expression.

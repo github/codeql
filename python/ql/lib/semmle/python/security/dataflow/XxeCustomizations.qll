@@ -29,8 +29,10 @@ module Xxe {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for XXE vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A call to an XML parser that is vulnerable to XXE.
