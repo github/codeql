@@ -12,14 +12,12 @@ edges
 | RegExpInjection.rb:22:5:22:8 | name | RegExpInjection.rb:23:30:23:33 | name | provenance |  |
 | RegExpInjection.rb:22:12:22:17 | call to params | RegExpInjection.rb:22:12:22:24 | ...[...] | provenance |  |
 | RegExpInjection.rb:22:12:22:24 | ...[...] | RegExpInjection.rb:22:5:22:8 | name | provenance |  |
-| RegExpInjection.rb:23:24:23:33 | ... + ... [element] | RegExpInjection.rb:23:24:23:33 | ... + ... | provenance |  |
-| RegExpInjection.rb:23:30:23:33 | name | RegExpInjection.rb:23:24:23:33 | ... + ... [element] | provenance |  |
+| RegExpInjection.rb:23:30:23:33 | name | RegExpInjection.rb:23:24:23:33 | ... + ... | provenance |  |
 | RegExpInjection.rb:54:5:54:8 | name | RegExpInjection.rb:55:28:55:37 | ... + ... | provenance |  |
 | RegExpInjection.rb:54:5:54:8 | name | RegExpInjection.rb:55:34:55:37 | name | provenance |  |
 | RegExpInjection.rb:54:12:54:17 | call to params | RegExpInjection.rb:54:12:54:24 | ...[...] | provenance |  |
 | RegExpInjection.rb:54:12:54:24 | ...[...] | RegExpInjection.rb:54:5:54:8 | name | provenance |  |
-| RegExpInjection.rb:55:28:55:37 | ... + ... [element] | RegExpInjection.rb:55:28:55:37 | ... + ... | provenance |  |
-| RegExpInjection.rb:55:34:55:37 | name | RegExpInjection.rb:55:28:55:37 | ... + ... [element] | provenance |  |
+| RegExpInjection.rb:55:34:55:37 | name | RegExpInjection.rb:55:28:55:37 | ... + ... | provenance |  |
 nodes
 | RegExpInjection.rb:4:5:4:8 | name | semmle.label | name |
 | RegExpInjection.rb:4:12:4:17 | call to params | semmle.label | call to params |
@@ -37,13 +35,11 @@ nodes
 | RegExpInjection.rb:22:12:22:17 | call to params | semmle.label | call to params |
 | RegExpInjection.rb:22:12:22:24 | ...[...] | semmle.label | ...[...] |
 | RegExpInjection.rb:23:24:23:33 | ... + ... | semmle.label | ... + ... |
-| RegExpInjection.rb:23:24:23:33 | ... + ... [element] | semmle.label | ... + ... [element] |
 | RegExpInjection.rb:23:30:23:33 | name | semmle.label | name |
 | RegExpInjection.rb:54:5:54:8 | name | semmle.label | name |
 | RegExpInjection.rb:54:12:54:17 | call to params | semmle.label | call to params |
 | RegExpInjection.rb:54:12:54:24 | ...[...] | semmle.label | ...[...] |
 | RegExpInjection.rb:55:28:55:37 | ... + ... | semmle.label | ... + ... |
-| RegExpInjection.rb:55:28:55:37 | ... + ... [element] | semmle.label | ... + ... [element] |
 | RegExpInjection.rb:55:34:55:37 | name | semmle.label | name |
 subpaths
 #select
