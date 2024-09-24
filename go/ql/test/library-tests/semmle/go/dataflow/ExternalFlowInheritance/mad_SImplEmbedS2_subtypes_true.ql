@@ -2,6 +2,8 @@ import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+import TestUtilities.InlineExpectationsTest
+import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { sources(source) }
@@ -9,9 +11,21 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sinks(sink) }
 }
 
-module Flow = DataFlow::Global<Config>;
+module Flow = TaintTracking::Global<Config>;
 
-query predicate paths(DataFlow::Node source, DataFlow::Node sink) { Flow::flow(source, sink) }
+module FlowTest implements TestSig {
+  string getARelevantTag() { result = "SImplEmbedS2[t]" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "SImplEmbedS2[t]" and
+    exists(DataFlow::Node sink | Flow::flowTo(sink) |
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      element = sink.toString() and
+      value = ""
+    )
+  }
+}
 
 query predicate sources(DataFlow::Node source) { source instanceof RemoteFlowSource }
 

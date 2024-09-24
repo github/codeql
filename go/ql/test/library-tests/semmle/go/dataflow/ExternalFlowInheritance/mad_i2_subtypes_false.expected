@@ -1,8 +1,6 @@
+testFailures
 invalidModelRow
-paths
-| test.go:14:7:14:16 | call to Source | test.go:16:9:16:9 | y |
-| test.go:38:7:38:16 | call to Source | test.go:40:9:40:9 | y |
-| test.go:50:7:50:16 | call to Source | test.go:52:9:52:9 | y |
+failures
 sources
 | test.go:14:7:14:16 | call to Source |
 | test.go:38:7:38:16 | call to Source |
