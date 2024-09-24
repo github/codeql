@@ -27,8 +27,8 @@ This example of an extensible predicate for a source is taken from the core Java
 .. code-block:: ql
 
     extensible predicate sourceModel(
-      string package, string type, boolean subtypes, string name, 
-      string signature, string ext, string output, string kind, 
+      string package, string type, boolean subtypes, string name,
+      string signature, string ext, string output, string kind,
       string provenance
     );
 
