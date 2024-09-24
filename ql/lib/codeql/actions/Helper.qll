@@ -298,3 +298,20 @@ string defaultBranchNames() {
   not exists(string default_branch_name | repositoryDataModel(_, default_branch_name)) and
   result = ["main", "master"]
 }
+
+string getRepoRoot() {
+  exists(Workflow w |
+    w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    result =
+      w.getLocation()
+          .getFile()
+          .getRelativePath()
+          .prefix(w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") + 1) and
+    // exclude workflow_enum reusable workflows directory root
+    not result.indexOf(".github/reusable_workflows/") > -1
+    or
+    not w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
+    not w.getLocation().getFile().getRelativePath().indexOf(".github/reusable_workflows") > -1 and
+    result = ""
+  )
+}
