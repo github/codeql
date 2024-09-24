@@ -6,5 +6,5 @@ def test():
     params = urllib.parse.parse_qs(ts)
 
     ensure_tainted(
-        params, # $ MISSING: tainted
+        params, # $ tainted
     )
