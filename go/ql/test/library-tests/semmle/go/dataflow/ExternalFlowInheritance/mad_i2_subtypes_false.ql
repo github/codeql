@@ -6,9 +6,9 @@ import TestUtilities.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { sources(source) }
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  predicate isSink(DataFlow::Node sink) { sinks(sink) }
+  predicate isSink(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
 }
 
 module Flow = TaintTracking::Global<Config>;
@@ -26,7 +26,3 @@ module FlowTest implements TestSig {
     )
   }
 }
-
-query predicate sources(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-query predicate sinks(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
