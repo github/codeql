@@ -1,11 +1,10 @@
 private import rust
 import codeql.controlflow.Cfg
 import Completion
-import codeql.controlflow.Cfg
-private import SuccessorType as ST
 private import Scope as Scope
+private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 
-module CfgInput implements InputSig<Location> {
+private module CfgInput implements InputSig<Location> {
   private import rust as Rust
   private import Completion as C
   private import Splitting as S
@@ -29,7 +28,7 @@ module CfgInput implements InputSig<Location> {
 
   class Split = S::Split;
 
-  class SuccessorType = ST::SuccessorType;
+  class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -37,13 +36,13 @@ module CfgInput implements InputSig<Location> {
   /**
    * Hold if `c` represents simple (normal) evaluation of a statement or an expression.
    */
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof ST::NormalSuccessor }
+  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::NormalSuccessor }
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t) { none() }
 
   /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof ST::BooleanSuccessor }
+  predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
   /** Gets the maximum number of splits allowed for a given node. */
   int maxSplits() { result = 0 }
@@ -357,24 +356,24 @@ class MatchArmTree extends ControlFlowTree instanceof MatchArm {
 
 class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate propagatesAbnormal(AstNode child) {
-    child = [super.getExpr(), super.getMatchArmList().getAnArm().getExpr()]
+    child = [super.getExpr(), super.getAnArm().getExpr()]
   }
 
   override predicate first(AstNode node) { first(super.getExpr(), node) }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge from the scrutinee to the first arm.
-    last(super.getExpr(), pred, c) and succ = super.getMatchArmList().getArm(0).getPat()
+    last(super.getExpr(), pred, c) and succ = super.getArm(0).getPat()
     or
     // Edge from a failed match/guard in one arm to the beginning of the next arm.
     exists(int i |
-      last(super.getMatchArmList().getArm(i), pred, c) and
-      first(super.getMatchArmList().getArm(i + 1), succ) and
+      last(super.getArm(i), pred, c) and
+      first(super.getArm(i + 1), succ) and
       c.(ConditionalCompletion).failed()
     )
     or
     // Edge from the end of each arm to the match expression.
-    last(super.getMatchArmList().getArm(_), pred, c) and succ = this and completionIsNormal(c)
+    last(super.getArm(_).getExpr(), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 
@@ -386,6 +385,10 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
 }
 
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
+
+class ParenExprTree extends StandardPostOrderTree, ParenExpr {
+  override ControlFlowTree getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
 
 // This covers all patterns as they all extend `Pat`
 class PatExprTree extends LeafTree instanceof Pat { }
