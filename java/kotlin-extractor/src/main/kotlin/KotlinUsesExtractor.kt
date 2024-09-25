@@ -779,7 +779,7 @@ open class KotlinUsesExtractor(
                 // array.length
                 val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
                 val intTypeIds = useType(pluginContext.irBuiltIns.intType)
-                tw.writeFields(length, "length", intTypeIds.javaResult.id, it, length)
+                tw.writeFields(length, "length", intTypeIds.javaResult.id, it)
                 tw.writeFieldsKotlinType(length, intTypeIds.kotlinResult.id)
                 addModifiers(length, "public", "final")
 
