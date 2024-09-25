@@ -1679,7 +1679,7 @@ module DataFlow {
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
-      pred = AccessPath::getAnAssignmentTo(cls.getADirectSuperClass*().getAReceiverNode(), prop) or
+      pred = AccessPath::getAnAssignmentTo(pragma[only_bind_out](cls.getADirectSuperClass*().getAReceiverNode()), prop) or
       pred = cls.getInstanceMethod(prop)
     |
       succ = AccessPath::getAReferenceTo(cls.getAReceiverNode(), prop)
