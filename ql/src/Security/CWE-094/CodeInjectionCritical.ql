@@ -19,15 +19,11 @@ import codeql.actions.security.CodeInjectionQuery
 import CodeInjectionFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event event
 where
   CodeInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr()) and
-  not exists(ControlCheck check |
-    check
-        .protects(sink.getNode().asExpr(),
-          source.getNode().asExpr().getEnclosingJob().getATriggerEvent(), "code-injection")
-  ) and
+  inPrivilegedContext(sink.getNode().asExpr(), event) and
+  not exists(ControlCheck check | check.protects(sink.getNode().asExpr(), event, "code-injection")) and
   // exclude cases where the sink is a JS script and the expression uses toJson
   not exists(UsesStep script |
     script.getCallee() = "actions/github-script" and

@@ -38,9 +38,12 @@ abstract class ControlCheck extends AstNode {
   }
 
   predicate protects(Step step, Event event, string category) {
-    event = step.getEnclosingWorkflow().getATriggerEvent() and
+    // The check dominates the step it should protect
     this.dominates(step) and
-    this.protectsCategoryAndEvent(category, event.getName())
+    // The check is effective against the event and category
+    this.protectsCategoryAndEvent(category, event.getName()) and
+    // The check can be triggered by the event
+    this.getEnclosingJob().getATriggerEvent() = event
   }
 
   predicate dominates(Step step) {

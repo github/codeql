@@ -18,25 +18,20 @@ import codeql.actions.dataflow.ExternalFlow
 import OutputClobberingFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
-from OutputClobberingFlow::PathNode source, OutputClobberingFlow::PathNode sink
+from OutputClobberingFlow::PathNode source, OutputClobberingFlow::PathNode sink, Event event
 where
   OutputClobberingFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr()) and
+  inPrivilegedContext(sink.getNode().asExpr(), event) and
   // exclude paths to file read sinks from non-artifact sources
   (
     not source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
     not exists(ControlCheck check |
-      check
-          .protects(sink.getNode().asExpr(),
-            source.getNode().asExpr().getEnclosingJob().getATriggerEvent(), "code-injection")
+      check.protects(sink.getNode().asExpr(), event, "code-injection")
     )
     or
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
     not exists(ControlCheck check |
-      check
-          .protects(sink.getNode().asExpr(),
-            source.getNode().asExpr().getEnclosingJob().getATriggerEvent(),
-            ["untrusted-checkout", "artifact-poisoning"])
+      check.protects(sink.getNode().asExpr(), event, ["untrusted-checkout", "artifact-poisoning"])
     ) and
     (
       sink.getNode() instanceof OutputClobberingFromFileReadSink or

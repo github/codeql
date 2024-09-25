@@ -359,18 +359,6 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   }
 
   EventImpl getATriggerEvent() { result = this.getACallerJob().getATriggerEvent() }
-
-  /** Holds if the action is privileged and externally triggerable. */
-  predicate isPrivilegedExternallyTriggerable() {
-    // the action is externally triggerable
-    exists(JobImpl caller, EventImpl event |
-      caller = this.getACallerJob() and
-      event = caller.getATriggerEvent() and
-      event.isExternallyTriggerable() and
-      // the action is privileged
-      (this.isPrivileged() or caller.isPrivileged())
-    )
-  }
 }
 
 class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
@@ -970,31 +958,30 @@ class JobImpl extends AstNodeImpl, TJobNode {
   }
 
   /** Holds if the action is privileged and externally triggerable. */
-  predicate isPrivilegedExternallyTriggerable() {
-    exists(EventImpl e | this.getATriggerEvent() = e |
-      // job is triggereable by an external user
-      e.isExternallyTriggerable() and
-      // no matter if `pull_request` is granted write permissions or access to secrets
-      // when the job is triggered by a `pull_request` event from a fork, they will get revoked
-      not e.getName() = "pull_request" and
-      (
-        // job is privileged (write access or access to secrets)
-        this.isPrivileged()
-        or
-        // the trigger event is __normally__ privileged
-        e.isPrivileged() and
-        // and we have no runtime data to prove otherwise
-        not this.hasRuntimeData() and
-        // and the job is not explicitly non-privileged
-        not (
-          (
-            this.hasExplicitNonePermission() or
-            this.hasImplicitNonePermission() or
-            this.hasExplicitReadPermission() or
-            this.hasImplicitReadPermission()
-          ) and
-          not this.hasExplicitSecretAccess()
-        )
+  predicate isPrivilegedExternallyTriggerable(EventImpl event) {
+    this.getATriggerEvent() = event and
+    // job is triggereable by an external user
+    event.isExternallyTriggerable() and
+    // no matter if `pull_request` is granted write permissions or access to secrets
+    // when the job is triggered by a `pull_request` event from a fork, they will get revoked
+    not event.getName() = "pull_request" and
+    (
+      // job is privileged (write access or access to secrets)
+      this.isPrivileged()
+      or
+      // the trigger event is __normally__ privileged
+      event.isPrivileged() and
+      // and we have no runtime data to prove otherwise
+      not this.hasRuntimeData() and
+      // and the job is not explicitly non-privileged
+      not (
+        (
+          this.hasExplicitNonePermission() or
+          this.hasImplicitNonePermission() or
+          this.hasExplicitReadPermission() or
+          this.hasImplicitReadPermission()
+        ) and
+        not this.hasExplicitSecretAccess()
       )
     )
   }
@@ -1072,6 +1059,12 @@ class StepImpl extends AstNodeImpl, TStepNode {
   override Location getLocation() { result = n.getLocation() }
 
   override YamlMapping getNode() { result = n }
+
+  override JobImpl getEnclosingJob() {
+    // if a step is within a composite action, we should follow the caller job
+    result = this.getEnclosingCompositeAction().getACallerJob() or
+    result = super.getEnclosingJob()
+  }
 
   EnvImpl getEnv() { result.getNode() = n.lookup("env") }
 

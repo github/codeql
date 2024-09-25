@@ -43,10 +43,10 @@ predicate controlledCachePath(string cache_path, string untrusted_path) {
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from LocalJob j, Event e, Step source, Step s, string message, string path
+from LocalJob job, Event event, Step source, Step step, string message, string path
 where
   // the job checkouts untrusted code from a pull request or downloads an untrusted artifact
-  j.getAStep() = source and
+  job.getAStep() = source and
   (
     source instanceof PRHeadCheckoutStep and
     message = "due to privilege checkout of untrusted code." and
@@ -58,35 +58,36 @@ where
   ) and
   // the checkout/download is not controlled by an access check
   not exists(ControlCheck check |
-    check.protects(source, j.getATriggerEvent(), ["untrusted-checkout", "artifact-poisoning"])
+    check.protects(source, event, ["untrusted-checkout", "artifact-poisoning"])
   ) and
-  j.getATriggerEvent() = e and
+  job.getATriggerEvent() = event and
   // job can be triggered by an external user
-  e.isExternallyTriggerable() and
+  event.isExternallyTriggerable() and
   (
     // the workflow runs in the context of the default branch
-    runsOnDefaultBranch(e)
+    runsOnDefaultBranch(event)
     or
     // the workflow's caller runs in the context of the default branch
-    e.getName() = "workflow_call" and
+    event.getName() = "workflow_call" and
     exists(ExternalJob caller |
-      caller.getCallee() = j.getLocation().getFile().getRelativePath() and
+      caller.getCallee() = job.getLocation().getFile().getRelativePath() and
       runsOnDefaultBranch(caller.getATriggerEvent())
     )
   ) and
   // the job writes to the cache
   // (No need to follow the checkout/download step since the cache is normally write after the job completes)
-  j.getAStep() = s and
-  s instanceof CacheWritingStep and
+  job.getAStep() = step and
+  step instanceof CacheWritingStep and
   (
     // we dont know what code can be controlled by the attacker
     path = "?"
     or
     // we dont know what files are being cached
-    s.(CacheWritingStep).getPath() = "?"
+    step.(CacheWritingStep).getPath() = "?"
     or
     // the cache writing step reads from a path the attacker can control
-    not path = "?" and controlledCachePath(s.(CacheWritingStep).getPath(), path)
+    not path = "?" and controlledCachePath(step.(CacheWritingStep).getPath(), path)
   ) and
-  not s instanceof PoisonableStep
-select s, source, s, "Potential cache poisoning in the context of the default branch " + message
+  not step instanceof PoisonableStep
+select step, source, step,
+  "Potential cache poisoning in the context of the default branch " + message

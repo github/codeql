@@ -16,8 +16,9 @@ import actions
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.UseOfKnownVulnerableActionQuery
 
-from UsesStep download, KnownVulnerableAction vulnerable_action
+from UsesStep download, KnownVulnerableAction vulnerable_action, Event event
 where
+  event = download.getEnclosingJob().getATriggerEvent() and
   vulnerable_action.getVulnerableAction() = download.getCallee() and
   download.getCallee() = "actions/download-artifact" and
   (
@@ -28,7 +29,7 @@ where
     // exists a poisonable upload artifact in the same workflow
     exists(UsesStep checkout, PoisonableStep poison, UsesStep upload |
       download.getEnclosingWorkflow().getAJob().(LocalJob).getAStep() = checkout and
-      download.getEnclosingJob().isPrivilegedExternallyTriggerable() and
+      download.getEnclosingJob().isPrivilegedExternallyTriggerable(event) and
       checkout.getCallee() = "actions/checkout" and
       checkout.getAFollowingStep() = poison and
       poison.getAFollowingStep() = upload and

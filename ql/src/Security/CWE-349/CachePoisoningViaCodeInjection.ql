@@ -18,27 +18,27 @@ import codeql.actions.security.CachePoisoningQuery
 import CodeInjectionFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, LocalJob j, Event e
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, LocalJob job, Event event
 where
   CodeInjectionFlow::flowPath(source, sink) and
-  j = sink.getNode().asExpr().getEnclosingJob() and
-  j.getATriggerEvent() = e and
+  job = sink.getNode().asExpr().getEnclosingJob() and
+  job.getATriggerEvent() = event and
   // job can be triggered by an external user
-  e.isExternallyTriggerable() and
+  event.isExternallyTriggerable() and
   // the checkout is not controlled by an access check
   not exists(ControlCheck check |
-    check.protects(source.getNode().asExpr(), j.getATriggerEvent(), "code-injection")
+    check.protects(source.getNode().asExpr(), event, "code-injection")
   ) and
   // excluding privileged workflows since they can be exploited in easier circumstances
-  not j.isPrivileged() and
+  not job.isPrivileged() and
   (
     // the workflow runs in the context of the default branch
-    runsOnDefaultBranch(e)
+    runsOnDefaultBranch(event)
     or
     // the workflow caller runs in the context of the default branch
-    e.getName() = "workflow_call" and
+    event.getName() = "workflow_call" and
     exists(ExternalJob caller |
-      caller.getCallee() = j.getLocation().getFile().getRelativePath() and
+      caller.getCallee() = job.getLocation().getFile().getRelativePath() and
       runsOnDefaultBranch(caller.getATriggerEvent())
     )
   )

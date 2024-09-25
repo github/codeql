@@ -79,8 +79,6 @@ class CompositeAction extends AstNode instanceof CompositeActionImpl {
   UsesStep getACallerStep() { result = super.getACallerStep() }
 
   predicate isPrivileged() { super.isPrivileged() }
-
-  predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
 }
 
 /**
@@ -200,7 +198,9 @@ abstract class Job extends AstNode instanceof JobImpl {
 
   predicate isPrivileged() { super.isPrivileged() }
 
-  predicate isPrivilegedExternallyTriggerable() { super.isPrivilegedExternallyTriggerable() }
+  predicate isPrivilegedExternallyTriggerable(Event event) {
+    super.isPrivilegedExternallyTriggerable(event)
+  }
 }
 
 abstract class StepsContainer extends AstNode instanceof StepsContainerImpl {

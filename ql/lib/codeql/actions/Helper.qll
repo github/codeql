@@ -238,44 +238,12 @@ predicate fileToGitHubPath(Run run, string path) {
   fileToFileWrite(run.getScript(), "GITHUB_PATH", path)
 }
 
-predicate inPrivilegedCompositeAction(AstNode node) {
-  exists(CompositeAction a |
-    a = node.getEnclosingCompositeAction() and
-    a.isPrivilegedExternallyTriggerable()
-  )
-}
-
-predicate inPrivilegedExternallyTriggerableJob(AstNode node) {
-  exists(Job j |
-    j = node.getEnclosingJob() and
-    j.isPrivilegedExternallyTriggerable()
-  )
-}
-
-predicate inPrivilegedContext(AstNode node) {
-  inPrivilegedCompositeAction(node)
-  or
-  inPrivilegedExternallyTriggerableJob(node)
-}
-
-predicate inNonPrivilegedCompositeAction(AstNode node) {
-  exists(CompositeAction a |
-    a = node.getEnclosingCompositeAction() and
-    not a.isPrivilegedExternallyTriggerable()
-  )
-}
-
-predicate inNonPrivilegedJob(AstNode node) {
-  exists(Job j |
-    j = node.getEnclosingJob() and
-    not j.isPrivilegedExternallyTriggerable()
-  )
+predicate inPrivilegedContext(AstNode node, Event event) {
+  node.getEnclosingJob().isPrivilegedExternallyTriggerable(event)
 }
 
 predicate inNonPrivilegedContext(AstNode node) {
-  inNonPrivilegedCompositeAction(node)
-  or
-  inNonPrivilegedJob(node)
+  not node.getEnclosingJob().isPrivilegedExternallyTriggerable(_)
 }
 
 string partialFileContentRegexp() {

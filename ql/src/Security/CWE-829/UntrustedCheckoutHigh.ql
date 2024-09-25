@@ -23,8 +23,7 @@ where
   // the checkout is NOT followed by a known poisonable step
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
-  inPrivilegedContext(checkout) and
-  event = checkout.getEnclosingJob().getATriggerEvent() and
+  inPrivilegedContext(checkout, event) and
   (
     // issue_comment: check for date comparison checks and actor/access control checks
     event.getName() = "issue_comment" and

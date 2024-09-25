@@ -17,10 +17,10 @@ import actions
 import codeql.actions.security.CommandInjectionQuery
 import CommandInjectionFlow::PathGraph
 
-from CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink
+from CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink, Event event
 where
   CommandInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr())
+  inPrivilegedContext(sink.getNode().asExpr(), event)
 select sink.getNode(), source, sink,
   "Potential command injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()

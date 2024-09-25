@@ -16,14 +16,12 @@ import codeql.actions.security.ArgumentInjectionQuery
 import ArgumentInjectionFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
-from ArgumentInjectionFlow::PathNode source, ArgumentInjectionFlow::PathNode sink
+from ArgumentInjectionFlow::PathNode source, ArgumentInjectionFlow::PathNode sink, Event event
 where
   ArgumentInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr()) and
+  inPrivilegedContext(sink.getNode().asExpr(), event) and
   not exists(ControlCheck check |
-    check
-        .protects(sink.getNode().asExpr(),
-          source.getNode().asExpr().getEnclosingJob().getATriggerEvent(), "argument-injection")
+    check.protects(sink.getNode().asExpr(), event, "argument-injection")
   )
 select sink.getNode(), source, sink,
   "Potential argument injection in $@ command, which may be controlled by an external user.", sink,

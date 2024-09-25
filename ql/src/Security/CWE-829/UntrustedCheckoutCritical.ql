@@ -25,8 +25,7 @@ where
   // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() = step and
   // the checkout occurs in a privileged context
-  inPrivilegedContext(checkout) and
-  event = checkout.getEnclosingJob().getATriggerEvent() and
+  inPrivilegedContext(step, event) and
   (
     // issue_comment: check for date comparison checks and actor/access control checks
     event.getName() = "issue_comment" and
@@ -36,12 +35,13 @@ where
         check instanceof AssociationCheck or
         check instanceof PermissionCheck
       ) and
-      check.dominates(checkout) and
-      date_check.dominates(checkout)
+      check.dominates(step) and
+      date_check.dominates(step)
     )
     or
     // not issue_comment triggered workflows
     not event.getName() = "issue_comment" and
-    not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
+    not exists(ControlCheck check | check.protects(step, event, "untrusted-checkout"))
   )
-select step, checkout, step, "Execution of untrusted code on a privileged workflow."
+select step, checkout, step, "Execution of untrusted code on a privileged workflow. $@", event,
+  event.getLocation().getFile().toString()

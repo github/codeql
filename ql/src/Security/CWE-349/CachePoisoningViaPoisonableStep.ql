@@ -20,10 +20,10 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from LocalJob j, Event e, Step source, Step s, string message, string path
+from LocalJob job, Event event, Step source, Step step, string message, string path
 where
   // the job checkouts untrusted code from a pull request or downloads an untrusted artifact
-  j.getAStep() = source and
+  job.getAStep() = source and
   (
     source instanceof PRHeadCheckoutStep and
     message = "due to privilege checkout of untrusted code." and
@@ -35,26 +35,27 @@ where
   ) and
   // the checkout/download is not controlled by an access check
   not exists(ControlCheck check |
-    check.protects(source, j.getATriggerEvent(), ["untrusted-checkout", "artifact-poisoning"])
+    check.protects(source, event, ["untrusted-checkout", "artifact-poisoning"])
   ) and
-  j.getATriggerEvent() = e and
+  job.getATriggerEvent() = event and
   // job can be triggered by an external user
-  e.isExternallyTriggerable() and
+  event.isExternallyTriggerable() and
   (
     // the workflow runs in the context of the default branch
-    runsOnDefaultBranch(e)
+    runsOnDefaultBranch(event)
     or
     // the workflow's caller runs in the context of the default branch
-    e.getName() = "workflow_call" and
+    event.getName() = "workflow_call" and
     exists(ExternalJob caller |
-      caller.getCallee() = j.getLocation().getFile().getRelativePath() and
+      caller.getCallee() = job.getLocation().getFile().getRelativePath() and
       runsOnDefaultBranch(caller.getATriggerEvent())
     )
   ) and
   // the job executes checked-out code
   // (The cache specific token can be leaked even for non-privileged workflows)
-  source.getAFollowingStep() = s and
-  s instanceof PoisonableStep and
+  source.getAFollowingStep() = step and
+  step instanceof PoisonableStep and
   // excluding privileged workflows since they can be exploited in easier circumstances
-  not j.isPrivileged()
-select s, source, s, "Potential cache poisoning in the context of the default branch " + message
+  not job.isPrivileged()
+select step, source, step,
+  "Potential cache poisoning in the context of the default branch " + message
