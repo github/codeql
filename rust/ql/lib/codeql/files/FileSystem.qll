@@ -2,6 +2,7 @@
 
 private import codeql.Locations
 private import codeql.util.FileSystem
+private import codeql.rust.elements.Module
 private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 
@@ -44,7 +45,9 @@ class File extends Container, Impl::File {
     result =
       count(int line |
         exists(AstNode node, Location loc |
-          not node instanceof SourceFile and loc = node.getLocation()
+          not node instanceof Module and
+          not node instanceof SourceFile and
+          loc = node.getLocation()
         |
           node.getFile() = this and
           line = [loc.getStartLine(), loc.getEndLine()] and
