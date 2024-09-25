@@ -98,7 +98,14 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // False Positive
+	else
+		lpWchar = (LPWSTR)buffer; // Bug
+
+	if((flags & UNICODE) == 0)
+		lpWchar = (LPWSTR)buffer; // Bug
 	else
 		lpWchar = (LPWSTR)buffer; // False Positive
+
+	lpWchar = (LPWSTR)buffer; // Bug
 }

@@ -49,8 +49,8 @@ class UnlikelyToBeAStringType extends Type {
 
 // Types that can be wide depending on the UNICODE macro
 // see https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types
-class UnicdoeMacroDependentWidthType extends Type {
-  UnicdoeMacroDependentWidthType() {
+class UnicodeMacroDependentWidthType extends Type {
+  UnicodeMacroDependentWidthType() {
     exists(Type targ |
       targ.getName() in [
           "LPCTSTR",
@@ -83,7 +83,7 @@ class UnicodeMacroInvocation extends MacroInvocation {
  * or disallow a widening cast.
  */
 predicate isLikelyDynamicChecked(Expr e, GuardCondition gc) {
-  e.getType() instanceof UnicdoeMacroDependentWidthType and
+  e.getType() instanceof UnicodeMacroDependentWidthType and
   exists(BitwiseAndExpr bai, UnicodeMacroInvocation umi | bai.getAnOperand() = umi.getExpr() |
     // bai == 0 is false when reaching `e.getBasicBlock()`.
     // That is, bai != 0 when reaching `e.getBasicBlock()`.
