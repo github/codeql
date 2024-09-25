@@ -73,7 +73,7 @@ class BecomeExprTree extends StandardPostOrderTree instanceof BecomeExpr {
 }
 
 class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
-  BinaryOpExprTree() { not this instanceof LogicalOrExpr and not this instanceof LogicalAndExpr }
+  BinaryOpExprTree() { not this instanceof BinaryLogicalOperation }
 
   override ControlFlowTree getChildNode(int i) {
     i = 0 and result = super.getLhs()
