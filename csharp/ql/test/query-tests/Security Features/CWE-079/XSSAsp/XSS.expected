@@ -9,7 +9,6 @@
 | XSS.cs:87:28:87:31 | access to local variable name | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:87:28:87:31 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | User-provided value |
 | XSS.cs:88:31:88:34 | access to local variable name | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:88:31:88:34 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | User-provided value |
 | XSS.cs:96:31:96:34 | access to local variable name | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:96:31:96:34 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | User-provided value |
-| XSS.cs:107:48:107:51 | access to local variable html | XSS.cs:106:27:106:53 | access to property QueryString : NameValueCollection | XSS.cs:107:48:107:51 | access to local variable html | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:106:27:106:53 | access to property QueryString : NameValueCollection | User-provided value |
 | XSS.cs:140:20:140:33 | access to property RawUrl | XSS.cs:140:20:140:33 | access to property RawUrl | XSS.cs:140:20:140:33 | access to property RawUrl | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:140:20:140:33 | access to property RawUrl | User-provided value |
 | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | $@ flows to here and is a remote source accessed inline in an ASPX page. | script.aspx:12:1:12:14 | <%= ... %> | User-provided value |
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | $@ flows to here and is a remote source accessed inline in an ASPX page. | script.aspx:16:1:16:34 | <%= ... %> | User-provided value |
@@ -46,10 +45,6 @@ edges
 | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:95:20:95:23 | access to local variable name : String | provenance |  |
 | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:95:27:95:61 | access to indexer : String | provenance | MaD:6 |
 | XSS.cs:95:27:95:61 | access to indexer : String | XSS.cs:95:20:95:23 | access to local variable name : String | provenance |  |
-| XSS.cs:106:20:106:23 | access to local variable html : String | XSS.cs:107:48:107:51 | access to local variable html | provenance |  |
-| XSS.cs:106:27:106:53 | access to property QueryString : NameValueCollection | XSS.cs:106:20:106:23 | access to local variable html : String | provenance |  |
-| XSS.cs:106:27:106:53 | access to property QueryString : NameValueCollection | XSS.cs:106:27:106:61 | access to indexer : String | provenance | MaD:6 |
-| XSS.cs:106:27:106:61 | access to indexer : String | XSS.cs:106:20:106:23 | access to local variable html : String | provenance |  |
 | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | provenance |  |
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | provenance |  |
 | script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> | provenance |  |
@@ -94,10 +89,6 @@ nodes
 | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | XSS.cs:95:27:95:61 | access to indexer : String | semmle.label | access to indexer : String |
 | XSS.cs:96:31:96:34 | access to local variable name | semmle.label | access to local variable name |
-| XSS.cs:106:20:106:23 | access to local variable html : String | semmle.label | access to local variable html : String |
-| XSS.cs:106:27:106:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| XSS.cs:106:27:106:61 | access to indexer : String | semmle.label | access to indexer : String |
-| XSS.cs:107:48:107:51 | access to local variable html | semmle.label | access to local variable html |
 | XSS.cs:140:20:140:33 | access to property RawUrl | semmle.label | access to property RawUrl |
 | script.aspx:12:1:12:14 | <%= ... %> | semmle.label | <%= ... %> |
 | script.aspx:16:1:16:34 | <%= ... %> | semmle.label | <%= ... %> |
