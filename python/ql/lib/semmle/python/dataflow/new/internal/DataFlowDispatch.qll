@@ -320,6 +320,9 @@ newtype TDataFlowCallable =
     // same to keep things easy to reason about (and therefore exclude things that do
     // not have a definition)
     exists(func.getDefinition())
+    or
+    // ...scratch that, variable capture requires a callable
+    exists(Comp c | c.getFunction() = func)
   } or
   /** see QLDoc for `DataFlowModuleScope` for why we need this. */
   TModule(Module m) or
@@ -1382,6 +1385,7 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // =============================================================================
 newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  TComprehensionCall(Comp c) or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(
@@ -1466,6 +1470,30 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   /** Gets the `CallType` of this call. */
   CallType getCallType() { result = type }
+}
+
+class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
+  Comp c;
+  Function target;
+
+  ComprehensionCall() {
+    this = TComprehensionCall(c) and
+    target = c.getFunction()
+  }
+
+  Comp getComprehension() { result = c }
+
+  override string toString() { result = "comprehension call" }
+
+  override ControlFlowNode getNode() { result.getNode() = c }
+
+  override Scope getScope() { result = c.getScope() }
+
+  override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
+
+  override ArgumentNode getArgument(ArgumentPosition apos) { none() }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 /**
@@ -1694,6 +1722,24 @@ class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     callNode = call.getNode() and
+    pos.isLambdaSelf()
+  }
+}
+
+class ComprehensionCapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
+  Comp comp;
+
+  ComprehensionCapturedVariablesArgumentNode() {
+    node.getNode() = comp and
+    exists(Function target | target = comp.getFunction() |
+      target = any(VariableCapture::CapturedVariable v).getACapturingScope()
+    )
+  }
+
+  override string toString() { result = "Capturing closure argument (comp)" }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call.(ComprehensionCall).getComprehension() = comp and
     pos.isLambdaSelf()
   }
 }

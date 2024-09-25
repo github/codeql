@@ -137,7 +137,7 @@ def test_list_comprehension_with_tuple_result():
     s = SOURCE
     ns = NONSOURCE
     l3 = [(s, ns) for _ in [1]]
-    SINK(l3[0][0]) # $ MISSING: flow="SOURCE, l:-3 -> l3[0][0]"
+    SINK(l3[0][0]) # $ flow="SOURCE, l:-3 -> l3[0][0]"
     SINK_F(l3[0][1])
 
 
