@@ -25,7 +25,7 @@ extensions:
       - ["javax.servlet.http", "Part", False, "getHeader", "(String)", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet.http", "Part", False, "getSubmittedFileName", "()", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet.http", "Part", False, "getHeaders", "(String)", "", "ReturnValue", "remote", "manual"]
-      - ["javax.servlet.http", "Part", False, "getHeadersNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["javax.servlet.http", "Part", False, "getHeaderNames", "()", "", "ReturnValue", "remote", "manual"]
 
 
   - addsTo:
