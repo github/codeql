@@ -61,6 +61,7 @@ class HtmlTextWriterSink extends HtmlSink {
 deprecated class AttributeCollectionSink extends DataFlow::ExprNode {
   AttributeCollectionSink() {
     exists(SystemWebUIAttributeCollectionClass ac, Parameter p |
+      p = ac.getAddMethod().getParameter(1) or
       p = ac.getItemProperty().getSetter().getParameter(0)
     |
       this.getExpr() = p.getAnAssignedArgument()
