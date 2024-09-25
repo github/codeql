@@ -91,13 +91,13 @@ class Expr extends StmtParent, @expr {
    */
   private Location getExprLocationOverride() {
     // Base case: the parent has a better location than `this`.
-    this.getDbLocation() instanceof UnknownExprLocation and
+    this.getDbLocation() instanceof UnknownLocation and
     result = this.getParent().(Expr).getDbLocation() and
     not result instanceof UnknownLocation
     or
     // Recursive case: the parent has a location override that's better than
     // what `this` has.
-    this.getDbLocation() instanceof UnknownExprLocation and
+    this.getDbLocation() instanceof UnknownLocation and
     result = this.getParent().(Expr).getExprLocationOverride() and
     not result instanceof UnknownLocation
   }
