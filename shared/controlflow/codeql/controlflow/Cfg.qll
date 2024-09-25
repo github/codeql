@@ -1386,5 +1386,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ord = sk.getListOrder() and
       strictcount(sk.getListOrder()) > 1
     }
+
+    query predicate multipleToString(Node n, string s) {
+      s = strictconcat(n.toString(), ",") and
+      strictcount(n.toString()) > 1
+    }
   }
 }
