@@ -11,7 +11,7 @@ mod my_macro;
 // another comment
 
 fn main() { // another comment
-    //println!("Hello, world!"); // currently causes consistency issues
+    println!("Hello, world!");
 
     my_struct::my_func();
     my_macro::my_func();
