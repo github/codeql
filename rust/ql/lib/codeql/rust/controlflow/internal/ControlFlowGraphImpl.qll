@@ -374,9 +374,6 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     or
     // Edge from the end of each arm to the match expression.
     last(super.getArm(_).getExpr(), pred, c) and succ = this and completionIsNormal(c)
-    or
-    // Edge from the end of last arm to the match expression.
-    last(super.getLastArm().getExpr(), pred, c) and succ = this and completionIsNormal(c)
   }
 }
 

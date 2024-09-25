@@ -34,7 +34,7 @@ abstract class ConditionalSuccessorImpl extends SuccessorTypeImpl {
   boolean value;
 
   bindingset[value]
-  ConditionalSuccessorImpl() { any() }
+  ConditionalSuccessorImpl() { exists(value) }
 
   /** Gets the Boolean value of this successor. */
   boolean getValue() { result = value }
