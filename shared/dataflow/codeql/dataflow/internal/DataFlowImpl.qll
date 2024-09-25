@@ -2781,11 +2781,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdFlow(node, state, cc, summaryCtx, t, ap, _) and
               revFlow(node, state, _, _, ap)
             } or
-            TPathNodeSink(NodeEx node, FlowState state) {
+            TPathNodeSink(NodeEx node) {
               exists(PathNodeMid sink |
                 sink.isAtSink() and
-                node = sink.toNormalSinkNodeEx() and
-                state = sink.getState()
+                node = sink.toNormalSinkNodeEx()
               )
             } or
             TPathNodeSrcGrp() or
@@ -2793,9 +2792,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           class PathNodeImpl extends TPathNode {
             abstract NodeEx getNodeEx();
-
-            /** Gets the `FlowState` of this node. */
-            abstract FlowState getState();
 
             /** Holds if this node is a source. */
             abstract predicate isSource();
@@ -2891,8 +2887,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             override NodeEx getNodeEx() { none() }
 
-            override FlowState getState() { none() }
-
             override PathNodeImpl getASuccessorImpl(string label) {
               result.isSource() and label = ""
             }
@@ -2906,8 +2900,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
 
             override NodeEx getNodeEx() { none() }
-
-            override FlowState getState() { none() }
 
             override PathNodeImpl getASuccessorImpl(string label) { none() }
 
@@ -2930,7 +2922,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             override NodeEx getNodeEx() { result = node }
 
-            override FlowState getState() { result = state }
+            FlowState getState() { result = state }
 
             private PathNodeMid getSuccMid(string label) {
               localStep(this, result, label)
@@ -3048,7 +3040,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 this.isAtSink() and
                 sinkModel(node, model) and
                 result.getNodeEx() = this.toNormalSinkNodeEx() and
-                result.getState() = state and
                 if model != "" then label = "Sink:" + model else label = ""
               )
             }
@@ -3061,13 +3052,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
            */
           private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
             NodeEx node;
-            FlowState state;
 
-            PathNodeSink() { this = TPathNodeSink(node, state) }
+            PathNodeSink() { this = TPathNodeSink(node) }
 
             override NodeEx getNodeEx() { result = node }
 
-            override FlowState getState() { result = state }
+            FlowState getAState() {
+              exists(PathNodeMid sink |
+                sink.isAtSink() and
+                node = sink.toNormalSinkNodeEx() and
+                result = sink.getState()
+              )
+            }
 
             override string toString() { result = node.toString() }
 
@@ -3075,7 +3071,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               result.isArbitrarySink() and label = ""
             }
 
-            override predicate isSource() { sourceNode(node, state) }
+            override predicate isSource() { sourceNode(node, this.getAState()) }
           }
 
           pragma[nomagic]
@@ -3450,8 +3446,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 result = super.getNodeEx().asParamReturnNode()
               }
 
-              /** Gets the `FlowState` of this node. */
-              final FlowState getState() { result = super.getState() }
+              /**
+               * Gets a `FlowState` of this node.
+               *
+               * Intermediate `PathNode`s represent the state uniquely, whereas
+               * sinks project it away to deduplicate results. Thus, this
+               * predicate can have multiple results for sink nodes.
+               */
+              final FlowState getAState() {
+                result = this.(PathNodeMid).getState() or
+                result = this.(PathNodeSink).getAState()
+              }
+
+              /** DEPRECATED: Use `getAState` instead. */
+              deprecated final FlowState getState() { result = this.getAState() }
 
               /** Gets a successor of this node, if any. */
               final PathNode getASuccessor() { result = super.getANonHiddenSuccessor(_) }
