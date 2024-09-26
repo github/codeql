@@ -174,6 +174,14 @@ module ExprNodes {
     override Argument e;
 
     final override Argument getExpr() { result = super.getExpr() }
+
+    /** Gets the position of this argument, if any. */
+    int getPosition() { result = e.getPosition() }
+
+    /** Gets the name of this argument, if any. */
+    string getName() { result = e.getName() }
+
+    StmtNodes::CmdCfgNode getCmd() { result.getAnArgument() = this }
   }
 
   private class InvokeMemberChildMapping extends ExprChildMapping, InvokeMemberExpr {
@@ -253,7 +261,7 @@ module ExprNodes {
 
 module StmtNodes {
   private class CmdChildMapping extends NonExprChildMapping, Cmd {
-    override predicate relevantChild(Ast n) { n = this.getElement(_) }
+    override predicate relevantChild(Ast n) { n = this.getAnArgument() or n = this.getCommand() }
   }
 
   /** A control-flow node that wraps a `Cmd` AST expression. */
@@ -263,6 +271,20 @@ module StmtNodes {
     override CmdChildMapping s;
 
     override Cmd getStmt() { result = super.getStmt() }
+
+    ExprCfgNode getArgument(int i) { s.hasCfgChild(s.getArgument(i), this, result) }
+
+    ExprCfgNode getPositionalArgument(int i) {
+      s.hasCfgChild(s.getPositionalArgument(i), this, result)
+    }
+
+    ExprCfgNode getNamedArgument(string name) {
+      s.hasCfgChild(s.getNamedArgument(name), this, result)
+    }
+
+    ExprCfgNode getAnArgument() { s.hasCfgChild(s.getAnArgument(), this, result) }
+
+    ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
   }
 
   private class AssignStmtChildMapping extends NonExprChildMapping, AssignStmt {

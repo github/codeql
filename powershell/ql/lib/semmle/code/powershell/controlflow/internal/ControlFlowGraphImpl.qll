@@ -176,7 +176,7 @@ module Trees {
       exists(Parameter p |
         p =
           rank[i + 1](Parameter cand, int j |
-            cand.hasDefaultValue() and j = cand.getIndex()
+            cand.hasDefaultValue() and j = cand.getFunctionIndex()
           |
             cand order by j
           ) and
