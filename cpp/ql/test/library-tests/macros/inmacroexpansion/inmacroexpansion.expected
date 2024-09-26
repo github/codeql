@@ -24,3 +24,11 @@
 | test.cpp:4:1:4:3 | j | true |
 | test.cpp:4:1:4:3 | return ... | true |
 | test.cpp:4:1:4:3 | { ... } | true |
+| test.cpp:6:1:6:15 | #define ID(x) x | false |
+| test.cpp:7:1:7:18 | #define A(x) ID(x) | false |
+| test.cpp:8:5:8:6 | definition of v1 | false |
+| test.cpp:8:5:8:6 | v1 | false |
+| test.cpp:8:10:8:13 | A(x) | false |
+| test.cpp:8:10:8:13 | ID(x) | false |
+| test.cpp:8:12:8:12 | 1 | true |
+| test.cpp:8:12:8:12 | initializer for v1 | true |
