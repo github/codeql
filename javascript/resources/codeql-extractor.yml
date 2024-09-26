@@ -10,7 +10,7 @@ build_modes:
   - none
 file_coverage_languages:
   - name: javascript
-    display_name: JavaScript
+    display_name: Alzeb
     scc_languages:
       - JavaScript
   - name: typescript
