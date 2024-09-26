@@ -770,8 +770,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_4(bool)                    = Constant[1]                               : 
-#-----|     r0_5(glval<bool>)             = VariableAddress                           : 
-#-----|     mu0_6(bool)                   = Store[?]                                  : &:r0_5, r0_4
+#-----|     r0_5(glval<bool>)             = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_6(bool)                   = Store[(unnamed local variable)]           : &:r0_5, r0_4
 #   87|     r87_31(suspend_always *)      = CopyValue                                 : r87_20
 #   87|     r87_32(glval<suspend_always>) = CopyValue                                 : r87_31
 #-----|     r0_7(glval<suspend_always>)   = Convert                                   : r87_32
@@ -816,11 +816,11 @@ coroutines.cpp:
 #-----|   Goto (back edge) -> Block 9
 
 #-----|   Block 6
-#-----|     v0_19(void)        = CatchAny          : 
-#-----|     r0_20(glval<bool>) = VariableAddress   : 
-#-----|     r0_21(bool)        = Load[?]           : &:r0_20, ~m?
-#-----|     r0_22(bool)        = LogicalNot        : r0_21
-#-----|     v0_23(void)        = ConditionalBranch : r0_22
+#-----|     v0_19(void)        = CatchAny                                  : 
+#-----|     r0_20(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_21(bool)        = Load[(unnamed local variable)]            : &:r0_20, ~m?
+#-----|     r0_22(bool)        = LogicalNot                                : r0_21
+#-----|     v0_23(void)        = ConditionalBranch                         : r0_22
 #-----|   False -> Block 8
 #-----|   True -> Block 7
 
@@ -951,8 +951,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_8(bool)                    = Constant[1]                               : 
-#-----|     r0_9(glval<bool>)             = VariableAddress                           : 
-#-----|     mu0_10(bool)                  = Store[?]                                  : &:r0_9, r0_8
+#-----|     r0_9(glval<bool>)             = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_10(bool)                  = Store[(unnamed local variable)]           : &:r0_9, r0_8
 #   91|     r91_33(suspend_always *)      = CopyValue                                 : r91_22
 #   91|     r91_34(glval<suspend_always>) = CopyValue                                 : r91_33
 #-----|     r0_11(glval<suspend_always>)  = Convert                                   : r91_34
@@ -999,11 +999,11 @@ coroutines.cpp:
 #-----|   Goto (back edge) -> Block 9
 
 #-----|   Block 6
-#-----|     v0_23(void)        = CatchAny          : 
-#-----|     r0_24(glval<bool>) = VariableAddress   : 
-#-----|     r0_25(bool)        = Load[?]           : &:r0_24, ~m?
-#-----|     r0_26(bool)        = LogicalNot        : r0_25
-#-----|     v0_27(void)        = ConditionalBranch : r0_26
+#-----|     v0_23(void)        = CatchAny                                  : 
+#-----|     r0_24(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_25(bool)        = Load[(unnamed local variable)]            : &:r0_24, ~m?
+#-----|     r0_26(bool)        = LogicalNot                                : r0_25
+#-----|     v0_27(void)        = ConditionalBranch                         : r0_26
 #-----|   False -> Block 8
 #-----|   True -> Block 7
 
@@ -1134,8 +1134,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_8(bool)                     = Constant[1]                               : 
-#-----|     r0_9(glval<bool>)              = VariableAddress                           : 
-#-----|     mu0_10(bool)                   = Store[?]                                  : &:r0_9, r0_8
+#-----|     r0_9(glval<bool>)              = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_10(bool)                   = Store[(unnamed local variable)]           : &:r0_9, r0_8
 #   95|     r95_33(suspend_always *)       = CopyValue                                 : r95_22
 #   95|     r95_34(glval<suspend_always>)  = CopyValue                                 : r95_33
 #-----|     r0_11(glval<suspend_always>)   = Convert                                   : r95_34
@@ -1241,11 +1241,11 @@ coroutines.cpp:
 #-----|   Goto (back edge) -> Block 11
 
 #-----|   Block 8
-#-----|     v0_29(void)        = CatchAny          : 
-#-----|     r0_30(glval<bool>) = VariableAddress   : 
-#-----|     r0_31(bool)        = Load[?]           : &:r0_30, ~m?
-#-----|     r0_32(bool)        = LogicalNot        : r0_31
-#-----|     v0_33(void)        = ConditionalBranch : r0_32
+#-----|     v0_29(void)        = CatchAny                                  : 
+#-----|     r0_30(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_31(bool)        = Load[(unnamed local variable)]            : &:r0_30, ~m?
+#-----|     r0_32(bool)        = LogicalNot                                : r0_31
+#-----|     v0_33(void)        = ConditionalBranch                         : r0_32
 #-----|   False -> Block 10
 #-----|   True -> Block 9
 
@@ -1376,8 +1376,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_8(bool)                     = Constant[1]                               : 
-#-----|     r0_9(glval<bool>)              = VariableAddress                           : 
-#-----|     mu0_10(bool)                   = Store[?]                                  : &:r0_9, r0_8
+#-----|     r0_9(glval<bool>)              = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_10(bool)                   = Store[(unnamed local variable)]           : &:r0_9, r0_8
 #   99|     r99_33(suspend_always *)       = CopyValue                                 : r99_22
 #   99|     r99_34(glval<suspend_always>)  = CopyValue                                 : r99_33
 #-----|     r0_11(glval<suspend_always>)   = Convert                                   : r99_34
@@ -1471,11 +1471,11 @@ coroutines.cpp:
 #-----|   Goto -> Block 5
 
 #-----|   Block 7
-#-----|     v0_22(void)        = CatchAny          : 
-#-----|     r0_23(glval<bool>) = VariableAddress   : 
-#-----|     r0_24(bool)        = Load[?]           : &:r0_23, ~m?
-#-----|     r0_25(bool)        = LogicalNot        : r0_24
-#-----|     v0_26(void)        = ConditionalBranch : r0_25
+#-----|     v0_22(void)        = CatchAny                                  : 
+#-----|     r0_23(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_24(bool)        = Load[(unnamed local variable)]            : &:r0_23, ~m?
+#-----|     r0_25(bool)        = LogicalNot                                : r0_24
+#-----|     v0_26(void)        = ConditionalBranch                         : r0_25
 #-----|   False -> Block 9
 #-----|   True -> Block 8
 
@@ -1606,8 +1606,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_8(bool)                     = Constant[1]                               : 
-#-----|     r0_9(glval<bool>)              = VariableAddress                           : 
-#-----|     mu0_10(bool)                   = Store[?]                                  : &:r0_9, r0_8
+#-----|     r0_9(glval<bool>)              = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_10(bool)                   = Store[(unnamed local variable)]           : &:r0_9, r0_8
 #  103|     r103_33(suspend_always *)      = CopyValue                                 : r103_22
 #  103|     r103_34(glval<suspend_always>) = CopyValue                                 : r103_33
 #-----|     r0_11(glval<suspend_always>)   = Convert                                   : r103_34
@@ -1713,11 +1713,11 @@ coroutines.cpp:
 #-----|   Goto (back edge) -> Block 11
 
 #-----|   Block 8
-#-----|     v0_29(void)        = CatchAny          : 
-#-----|     r0_30(glval<bool>) = VariableAddress   : 
-#-----|     r0_31(bool)        = Load[?]           : &:r0_30, ~m?
-#-----|     r0_32(bool)        = LogicalNot        : r0_31
-#-----|     v0_33(void)        = ConditionalBranch : r0_32
+#-----|     v0_29(void)        = CatchAny                                  : 
+#-----|     r0_30(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_31(bool)        = Load[(unnamed local variable)]            : &:r0_30, ~m?
+#-----|     r0_32(bool)        = LogicalNot                                : r0_31
+#-----|     v0_33(void)        = ConditionalBranch                         : r0_32
 #-----|   False -> Block 10
 #-----|   True -> Block 9
 
@@ -1848,8 +1848,8 @@ coroutines.cpp:
 
 #-----|   Block 3
 #-----|     r0_8(bool)                     = Constant[1]                               : 
-#-----|     r0_9(glval<bool>)              = VariableAddress                           : 
-#-----|     mu0_10(bool)                   = Store[?]                                  : &:r0_9, r0_8
+#-----|     r0_9(glval<bool>)              = VariableAddress[(unnamed local variable)] : 
+#-----|     mu0_10(bool)                   = Store[(unnamed local variable)]           : &:r0_9, r0_8
 #  108|     r108_33(suspend_always *)      = CopyValue                                 : r108_22
 #  108|     r108_34(glval<suspend_always>) = CopyValue                                 : r108_33
 #-----|     r0_11(glval<suspend_always>)   = Convert                                   : r108_34
@@ -1959,11 +1959,11 @@ coroutines.cpp:
 #-----|   Goto (back edge) -> Block 11
 
 #-----|   Block 8
-#-----|     v0_29(void)        = CatchAny          : 
-#-----|     r0_30(glval<bool>) = VariableAddress   : 
-#-----|     r0_31(bool)        = Load[?]           : &:r0_30, ~m?
-#-----|     r0_32(bool)        = LogicalNot        : r0_31
-#-----|     v0_33(void)        = ConditionalBranch : r0_32
+#-----|     v0_29(void)        = CatchAny                                  : 
+#-----|     r0_30(glval<bool>) = VariableAddress[(unnamed local variable)] : 
+#-----|     r0_31(bool)        = Load[(unnamed local variable)]            : &:r0_30, ~m?
+#-----|     r0_32(bool)        = LogicalNot                                : r0_31
+#-----|     v0_33(void)        = ConditionalBranch                         : r0_32
 #-----|   False -> Block 10
 #-----|   True -> Block 9
 
@@ -2783,7 +2783,7 @@ generic.c:
 #   14|     r14_1(glval<int>)     = VariableAddress[i]       : 
 #   14|     mu14_2(int)           = Uninitialized[i]         : &:r14_1
 #   16|     r16_1(glval<char *>)  = VariableAddress[#return] : 
-#   16|     r16_2(glval<char[4]>) = StringConstant[int]      : 
+#   16|     r16_2(glval<char[4]>) = Constant[int]            : 
 #   16|     r16_3(char *)         = Convert                  : r16_2
 #   16|     r16_4(char *)         = Convert                  : r16_3
 #   16|     mu16_5(char *)        = Store[#return]           : &:r16_1, r16_4
@@ -2800,7 +2800,7 @@ generic.c:
 #   21|     r21_1(glval<int>)     = VariableAddress[i]       : 
 #   21|     mu21_2(int)           = Uninitialized[i]         : &:r21_1
 #   23|     r23_1(glval<char *>)  = VariableAddress[#return] : 
-#   23|     r23_2(glval<char[4]>) = StringConstant["int"]    : 
+#   23|     r23_2(glval<char[4]>) = Constant[int]            : 
 #   23|     r23_3(char *)         = Convert                  : r23_2
 #   23|     r23_4(char *)         = Convert                  : r23_3
 #   23|     mu23_5(char *)        = Store[#return]           : &:r23_1, r23_4
@@ -36396,10 +36396,18 @@ try_except.c:
 #    9|     r9_2(int)            = Constant[0]                    : 
 #    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
 #    9|     mu9_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Exception -> Block 5
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 3
+
+#    6|   Block 1
+#    6|     v6_4(void) = AliasedUse   : ~m?
+#    6|     v6_5(void) = ExitFunction : 
+
+#    6|   Block 2
+#    6|     v6_6(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   10|   Block 1
+#   10|   Block 3
 #   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
 #   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
 #   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
@@ -36408,47 +36416,42 @@ try_except.c:
 #   11|     r11_2(int)            = Constant[0]                    : 
 #   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
 #   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Exception -> Block 5
-#-----|   Goto -> Block 7
-
-#   13|   Block 2
-#   13|     r13_1(int)  = Constant[0]       : 
-#   13|     r13_2(bool) = CompareEQ         : r13_8, r13_1
-#   13|     v13_3(void) = ConditionalBranch : r13_2
-#-----|   False -> Block 3
-#-----|   True -> Block 4
-
-#   13|   Block 3
-#   13|     r13_4(int)  = Constant[1]       : 
-#   13|     r13_5(bool) = CompareEQ         : r13_8, r13_4
-#   13|     v13_6(void) = ConditionalBranch : r13_5
-#-----|   True -> Block 6
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 8
 
 #   13|   Block 4
-#   13|     v13_7(void) = Unwind : 
-#-----|   Goto -> Block 7
+#   13|     r13_1(int)  = Constant[0]       : 
+#   13|     r13_2(bool) = CompareEQ         : r13_7, r13_1
+#   13|     v13_3(void) = ConditionalBranch : r13_2
+#-----|   False -> Block 5
+#-----|   True -> Block 2
 
 #   13|   Block 5
-#   13|     r13_8(int)   = Constant[0]       : 
-#   13|     r13_9(int)   = Constant[-1]      : 
-#   13|     r13_10(bool) = CompareEQ         : r13_8, r13_9
-#   13|     v13_11(void) = ConditionalBranch : r13_10
-#-----|   False -> Block 2
-#-----|   True -> Block 4
+#   13|     r13_4(int)  = Constant[1]       : 
+#   13|     r13_5(bool) = CompareEQ         : r13_7, r13_4
+#   13|     v13_6(void) = ConditionalBranch : r13_5
+#-----|   True -> Block 7
 
-#   14|   Block 6
+#   13|   Block 6
+#   13|     r13_7(int)   = Constant[0]       : 
+#   13|     r13_8(int)   = Constant[-1]      : 
+#   13|     r13_9(bool)  = CompareEQ         : r13_7, r13_8
+#   13|     v13_10(void) = ConditionalBranch : r13_9
+#-----|   False -> Block 4
+#-----|   True -> Block 2
+
+#   14|   Block 7
 #   14|     r14_1(glval<unknown>) = FunctionAddress[sink] : 
 #   14|     r14_2(glval<int>)     = VariableAddress[x]    : 
 #   14|     r14_3(int)            = Load[x]               : &:r14_2, ~m?
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   16|   Block 7
-#   16|     v16_1(void) = NoOp         : 
-#    6|     v6_4(void)  = ReturnVoid   : 
-#    6|     v6_5(void)  = AliasedUse   : ~m?
-#    6|     v6_6(void)  = ExitFunction : 
+#   16|   Block 8
+#   16|     v16_1(void) = NoOp       : 
+#    6|     v6_7(void)  = ReturnVoid : 
+#-----|   Goto -> Block 1
 
 #   18| void g()
 #   18|   Block 0
@@ -36464,6 +36467,18 @@ try_except.c:
 #   21|     r21_2(int)            = Constant[0]                    : 
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     mu21_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Exception -> Block 4
+#-----|   Goto -> Block 3
+
+#   18|   Block 1
+#   18|     v18_4(void) = AliasedUse   : ~m?
+#   18|     v18_5(void) = ExitFunction : 
+
+#   18|   Block 2
+#   18|     v18_6(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   22|   Block 3
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, ~m?
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -36472,21 +36487,16 @@ try_except.c:
 #   23|     r23_2(int)            = Constant[0]                    : 
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     mu23_4(unknown)       = ^CallSideEffect                : ~m?
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, ~m?
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     mu26_5(unknown)       = ^CallSideEffect                : ~m?
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_4(void)           = ReturnVoid                     : 
-#-----|   Goto -> Block 1
+#-----|   Exception -> Block 4
 
-#   18|   Block 1
-#   18|     v18_5(void) = AliasedUse   : ~m?
-#   18|     v18_6(void) = ExitFunction : 
-
-#   18|   Block 2
-#   18|     v18_7(void) = Unwind : 
+#   26|   Block 4
+#   26|     r26_1(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_2(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
+#   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
+#   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h(int)
@@ -36517,21 +36527,8 @@ try_except.c:
 #   36|     r36_1(glval<unknown>) = FunctionAddress[AfxThrowMemoryException] : 
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     mu36_3(unknown)       = ^CallSideEffect                          : ~m?
-#-----|   Exception -> Block 5
-#-----|   Goto -> Block 7
-
-#   39|   Block 2
-#   39|     r39_1(int)  = Constant[0]       : 
-#   39|     r39_2(bool) = CompareEQ         : r39_8, r39_1
-#   39|     v39_3(void) = ConditionalBranch : r39_2
-#-----|   False -> Block 3
-#-----|   True -> Block 4
-
-#   39|   Block 3
-#   39|     r39_4(int)  = Constant[1]       : 
-#   39|     r39_5(bool) = CompareEQ         : r39_8, r39_4
-#   39|     v39_6(void) = ConditionalBranch : r39_5
-#-----|   True -> Block 6
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 8
 
 #   39|   Block 4
 #   39|     r39_1(int)  = Constant[0]       : 
@@ -36582,10 +36579,18 @@ try_except.cpp:
 #    9|     r9_2(int)            = Constant[0]                    : 
 #    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
 #    9|     mu9_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Exception -> Block 5
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 3
+
+#    6|   Block 1
+#    6|     v6_4(void) = AliasedUse   : ~m?
+#    6|     v6_5(void) = ExitFunction : 
+
+#    6|   Block 2
+#    6|     v6_6(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   10|   Block 1
+#   10|   Block 3
 #   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
 #   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
 #   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
@@ -36594,47 +36599,42 @@ try_except.cpp:
 #   11|     r11_2(int)            = Constant[0]                    : 
 #   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
 #   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Exception -> Block 5
-#-----|   Goto -> Block 7
-
-#   13|   Block 2
-#   13|     r13_1(int)  = Constant[0]       : 
-#   13|     r13_2(bool) = CompareEQ         : r13_8, r13_1
-#   13|     v13_3(void) = ConditionalBranch : r13_2
-#-----|   False -> Block 3
-#-----|   True -> Block 4
-
-#   13|   Block 3
-#   13|     r13_4(int)  = Constant[1]       : 
-#   13|     r13_5(bool) = CompareEQ         : r13_8, r13_4
-#   13|     v13_6(void) = ConditionalBranch : r13_5
-#-----|   True -> Block 6
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 8
 
 #   13|   Block 4
-#   13|     v13_7(void) = Unwind : 
-#-----|   Goto -> Block 7
+#   13|     r13_1(int)  = Constant[0]       : 
+#   13|     r13_2(bool) = CompareEQ         : r13_7, r13_1
+#   13|     v13_3(void) = ConditionalBranch : r13_2
+#-----|   False -> Block 5
+#-----|   True -> Block 2
 
 #   13|   Block 5
-#   13|     r13_8(int)   = Constant[0]       : 
-#   13|     r13_9(int)   = Constant[-1]      : 
-#   13|     r13_10(bool) = CompareEQ         : r13_8, r13_9
-#   13|     v13_11(void) = ConditionalBranch : r13_10
-#-----|   False -> Block 2
-#-----|   True -> Block 4
+#   13|     r13_4(int)  = Constant[1]       : 
+#   13|     r13_5(bool) = CompareEQ         : r13_7, r13_4
+#   13|     v13_6(void) = ConditionalBranch : r13_5
+#-----|   True -> Block 7
 
-#   14|   Block 6
+#   13|   Block 6
+#   13|     r13_7(int)   = Constant[0]       : 
+#   13|     r13_8(int)   = Constant[-1]      : 
+#   13|     r13_9(bool)  = CompareEQ         : r13_7, r13_8
+#   13|     v13_10(void) = ConditionalBranch : r13_9
+#-----|   False -> Block 4
+#-----|   True -> Block 2
+
+#   14|   Block 7
 #   14|     r14_1(glval<unknown>) = FunctionAddress[sink] : 
 #   14|     r14_2(glval<int>)     = VariableAddress[x]    : 
 #   14|     r14_3(int)            = Load[x]               : &:r14_2, ~m?
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   16|   Block 7
-#   16|     v16_1(void) = NoOp         : 
-#    6|     v6_4(void)  = ReturnVoid   : 
-#    6|     v6_5(void)  = AliasedUse   : ~m?
-#    6|     v6_6(void)  = ExitFunction : 
+#   16|   Block 8
+#   16|     v16_1(void) = NoOp       : 
+#    6|     v6_7(void)  = ReturnVoid : 
+#-----|   Goto -> Block 1
 
 #   18| void g_cpp()
 #   18|   Block 0
@@ -36650,6 +36650,18 @@ try_except.cpp:
 #   21|     r21_2(int)            = Constant[0]                    : 
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     mu21_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Exception -> Block 4
+#-----|   Goto -> Block 3
+
+#   18|   Block 1
+#   18|     v18_4(void) = AliasedUse   : ~m?
+#   18|     v18_5(void) = ExitFunction : 
+
+#   18|   Block 2
+#   18|     v18_6(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   22|   Block 3
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, ~m?
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -36658,21 +36670,16 @@ try_except.cpp:
 #   23|     r23_2(int)            = Constant[0]                    : 
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     mu23_4(unknown)       = ^CallSideEffect                : ~m?
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, ~m?
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     mu26_5(unknown)       = ^CallSideEffect                : ~m?
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_4(void)           = ReturnVoid                     : 
-#-----|   Goto -> Block 1
+#-----|   Exception -> Block 4
 
-#   18|   Block 1
-#   18|     v18_5(void) = AliasedUse   : ~m?
-#   18|     v18_6(void) = ExitFunction : 
-
-#   18|   Block 2
-#   18|     v18_7(void) = Unwind : 
+#   26|   Block 4
+#   26|     r26_1(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_2(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
+#   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
+#   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h_cpp(int)
@@ -36705,21 +36712,8 @@ try_except.cpp:
 #   36|     r36_1(glval<unknown>) = FunctionAddress[AfxThrowMemoryException] : 
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     mu36_3(unknown)       = ^CallSideEffect                          : ~m?
-#-----|   Exception -> Block 5
-#-----|   Goto -> Block 7
-
-#   39|   Block 2
-#   39|     r39_1(int)  = Constant[0]       : 
-#   39|     r39_2(bool) = CompareEQ         : r39_8, r39_1
-#   39|     v39_3(void) = ConditionalBranch : r39_2
-#-----|   False -> Block 3
-#-----|   True -> Block 4
-
-#   39|   Block 3
-#   39|     r39_4(int)  = Constant[1]       : 
-#   39|     r39_5(bool) = CompareEQ         : r39_8, r39_4
-#   39|     v39_6(void) = ConditionalBranch : r39_5
-#-----|   True -> Block 6
+#-----|   Exception -> Block 6
+#-----|   Goto -> Block 8
 
 #   39|   Block 4
 #   39|     r39_1(int)  = Constant[0]       : 
