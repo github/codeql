@@ -118,7 +118,8 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   /**
    * Gets the position of the first format argument, corresponding with
-   * the first format specifier in the format string.
+   * the first format specifier in the format string. We'll ignore all
+   * implicit function definitions.
    */
   int getFirstFormatArgumentIndex() {
     // The formatting function either has a definition in the snapshot, or all
@@ -132,7 +133,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   /**
    * Gets a non-implicit function declaration entry.
    */
-  FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
+  private FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
     result = this.getADeclarationEntry() and
     not result.isImplicit()
   }
@@ -142,7 +143,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * from implicit function declarations. If there is some inconsistency in the number
    * of parameters, then don't return anything.
    */
-  int getNumberOfExplicitParameters() {
+  private int getNumberOfExplicitParameters() {
     forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
       result = fde.getNumberOfParameters()
     )
