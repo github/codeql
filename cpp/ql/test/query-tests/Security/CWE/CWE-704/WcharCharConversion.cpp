@@ -77,19 +77,19 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 {
 	wchar_t *lpWchar = NULL;
 	if(flags & UNICODE)
-		lpWchar = (LPWSTR)buffer; // False Positive
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) == 0x8)
-		lpWchar = (LPWSTR)buffer; // False Positive
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0x8)
 		lpWchar = (LPWSTR)buffer; // BUG
 	else
-		lpWchar = (LPWSTR)buffer; // False Positive
+		lpWchar = (LPWSTR)buffer; // Safe
 
 	// Bad operator precedence
 	if(flags & UNICODE == 0x8)
@@ -98,14 +98,14 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0)
-		lpWchar = (LPWSTR)buffer; // False Positive
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
 		lpWchar = (LPWSTR)buffer; // Bug
 
 	if((flags & UNICODE) == 0)
 		lpWchar = (LPWSTR)buffer; // Bug
 	else
-		lpWchar = (LPWSTR)buffer; // False Positive
+		lpWchar = (LPWSTR)buffer; // Safe
 
 	lpWchar = (LPWSTR)buffer; // Bug
 }
