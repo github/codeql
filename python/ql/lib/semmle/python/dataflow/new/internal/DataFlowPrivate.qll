@@ -248,6 +248,16 @@ predicate synthDictSplatParameterNodeReadStep(
   )
 }
 
+private import semmle.python.Concepts
+
+predicate decoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  exists(Decoding decoding |
+    nodeFrom = decoding.getAnInput() and
+    nodeTo = decoding.getOutput() and
+    c instanceof DictionaryElementContent
+  )
+}
+
 // =============================================================================
 // PostUpdateNode
 // =============================================================================
@@ -928,6 +938,8 @@ predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::readStep(nodeFrom, c, nodeTo)
+  or
+  decoderReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */

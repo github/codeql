@@ -16,7 +16,16 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  // We allow implicit reads of precise content
+  // imprecise content has already bubled up.
+  exists(node) and
+  (
+    c instanceof DataFlow::TupleElementContent
+    or
+    c instanceof DataFlow::DictionaryElementContent
+  )
+}
 
 private module Cached {
   /**
@@ -146,7 +155,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     (
       fmt.getLeft() = nodeFrom.getNode()
       or
-      fmt.getRight() = nodeFrom.getNode()
+      fmt.getRight().getAChild*() = nodeFrom.getNode()
     )
   )
   or
@@ -164,9 +173,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to containers
- * (lists/sets/dictionaries): literals, constructor invocation, methods. Note that this
- * is currently very imprecise, as an example, since we model `dict.get`, we treat any
- * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
+ * where we do not track content precisely anyway (lists/sets/sequences): literals, constructor invocation, methods
  */
 predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
@@ -177,10 +184,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   DataFlowPrivate::listStoreStep(nodeFrom, _, nodeTo)
   or
   DataFlowPrivate::setStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::tupleStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::dictStoreStep(nodeFrom, _, nodeTo)
   or
   // comprehension, so there is taint-flow from `x` in `[x for x in xs]` to the
   // resulting list of the list-comprehension.

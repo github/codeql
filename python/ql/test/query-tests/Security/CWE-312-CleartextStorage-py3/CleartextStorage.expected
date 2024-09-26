@@ -1,12 +1,15 @@
 edges
 | test.py:9:5:9:12 | ControlFlowNode for password | test.py:12:21:12:28 | ControlFlowNode for password | provenance |  |
+| test.py:9:5:9:12 | ControlFlowNode for password | test.py:13:22:13:29 | ControlFlowNode for password | provenance |  |
 | test.py:9:5:9:12 | ControlFlowNode for password | test.py:13:22:13:45 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:9:5:9:12 | ControlFlowNode for password | test.py:15:26:15:33 | ControlFlowNode for password | provenance |  |
 | test.py:9:16:9:29 | ControlFlowNode for get_password() | test.py:9:5:9:12 | ControlFlowNode for password | provenance |  |
+| test.py:13:22:13:29 | ControlFlowNode for password | test.py:13:22:13:45 | ControlFlowNode for Attribute() | provenance | string.encode |
 nodes
 | test.py:9:5:9:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:9:16:9:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:12:21:12:28 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| test.py:13:22:13:29 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:13:22:13:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:15:26:15:33 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 subpaths

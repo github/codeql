@@ -5,7 +5,9 @@ def impossible_flow(cond: bool):
     if isinstance(x, str):
         # tainted-flow to here is impossible, replicated from path-flow seen in a real
         # repo.
-        ensure_not_tainted(x) # $ SPURIOUS: tainted
+        ensure_not_tainted(x)
+        ensure_not_tainted_with_reads(x) # $ SPURIOUS:tainted
     else:
-        ensure_tainted(x) # $ tainted
+        ensure_not_tainted(x)
         ensure_tainted(x[0]) # $ tainted
+        ensure_tainted_with_reads(x) # $ tainted
