@@ -311,7 +311,6 @@ astGuardsControl
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | true | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | true | 31 | 32 |
-| test.cpp:42:13:42:20 | call to getABool | false | 53 | 53 |
 | test.cpp:42:13:42:20 | call to getABool | true | 43 | 45 |
 astGuardsEnsure
 | test.c:7:9:7:13 | ... > ... | test.c:7:9:7:9 | x | < | test.c:7:13:7:13 | 0 | 1 | 10 | 11 |
@@ -540,7 +539,6 @@ astGuardsEnsure_const
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | -1 | 31 | 32 |
 | test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | != | 0 | 43 | 45 |
-| test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | == | 0 | 53 | 53 |
 irGuards
 | test.c:7:9:7:13 | CompareGT: ... > ... |
 | test.c:17:8:17:12 | CompareLT: ... < ... |
@@ -837,7 +835,6 @@ irGuardsControl
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 32 | 32 |
-| test.cpp:42:13:42:20 | Call: call to getABool | false | 53 | 53 |
 | test.cpp:42:13:42:20 | Call: call to getABool | true | 44 | 44 |
 irGuardsEnsure
 | test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:9:7:9 | Load: x | < | test.c:7:13:7:13 | Constant: 0 | 1 | 11 | 11 |
@@ -1088,4 +1085,3 @@ irGuardsEnsure_const
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 32 | 32 |
 | test.cpp:42:13:42:20 | Call: call to getABool | test.cpp:42:13:42:20 | Call: call to getABool | != | 0 | 44 | 44 |
-| test.cpp:42:13:42:20 | Call: call to getABool | test.cpp:42:13:42:20 | Call: call to getABool | == | 0 | 53 | 53 |
