@@ -87,7 +87,6 @@ context (KaSession)
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
-    val declarationStack: DeclarationStack,
     /*
     OLD: KE1
         val linesOfCode: LinesOfCode?,
@@ -8914,7 +8913,6 @@ OLD: KE1
             }
         }
 
-     */
     inner class DeclarationStackAdjuster(
         val declaration: KaDeclarationSymbol,
         val overriddenAttributes: OverriddenFunctionAttributes? = null
@@ -8944,6 +8942,7 @@ OLD: KE1
 
         fun findOverriddenAttributes(f: KaFunctionSymbol) = stack.lastOrNull { it.first == f }?.second
     }
+     */
 
     data class OverriddenFunctionAttributes(
         val id: Label<out DbCallable>? = null,
