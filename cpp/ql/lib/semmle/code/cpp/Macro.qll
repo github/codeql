@@ -261,8 +261,8 @@ class MacroInvocation extends MacroAccess {
   /** Gets an element in this macro invocation. */
   Locatable getElementinMacroInvocation() {
     not result instanceof MacroInvocation and
-    exists(Locatable overlapping | overlapping.getLocation() = result.getLocation() |
-      overlapping = this.getElementinMacroInvocationChain()
+    exists(Locatable element | element.getLocation() = result.getLocation() |
+      element = this.getElementinMacroInvocationChain()
     )
   }
 }
