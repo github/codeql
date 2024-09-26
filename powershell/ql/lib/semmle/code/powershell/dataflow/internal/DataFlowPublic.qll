@@ -161,7 +161,19 @@ class Content extends TContent {
 }
 
 /** Provides different sub classes of `Content`. */
-module Content { }
+module Content {
+  /** A field of an object. */
+  class FieldContent extends Content, TFieldContent {
+    private string name;
+
+    FieldContent() { this = TFieldContent(name) }
+
+    /** Gets the name of the field. */
+    string getName() { result = name }
+
+    override string toString() { result = name }
+  }
+}
 
 /**
  * An entity that represents a set of `Content`s.

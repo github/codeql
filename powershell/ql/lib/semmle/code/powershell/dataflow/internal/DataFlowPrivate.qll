@@ -114,8 +114,14 @@ private module Cached {
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TNormalParameterNode(Parameter p) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof CfgNodes::ExprNodes::ArgumentCfgNode or
+      n instanceof CfgNodes::ExprNodes::ArgumentCfgNode
+      or
       n instanceof CfgNodes::ExprNodes::QualifierCfgNode
+      or
+      exists(CfgNodes::ExprNodes::MemberCfgNode member |
+        n = member.getBase() and
+        not member.isStatic()
+      )
     }
 
   cached
@@ -150,10 +156,15 @@ private module Cached {
   newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TFieldContent(string name) { none() }
+  newtype TContent =
+    TFieldContent(string name) {
+      name = any(PropertyMember member).getName()
+      or
+      name = any(MemberExpr me).getMemberName()
+    }
 
   cached
-  newtype TContentApprox = TNonElementContentApprox(Content c) // TODO
+  newtype TContentApprox = TNonElementContentApprox(Content c)
 
   cached
   newtype TDataFlowType = TUnknownDataFlowType()
@@ -309,14 +320,26 @@ predicate jumpStep(Node pred, Node succ) {
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
-  none() // TODO
+  node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
+    any(CfgNodes::ExprNodes::MemberCfgNode var |
+      exists(CfgNodes::StmtNodes::AssignStmtCfgNode assign |
+        var = assign.getLeftHandSide() and
+        node1.asStmt() = assign.getRightHandSide()
+      |
+        c.isSingleton(any(Content::FieldContent ct | ct.getName() = var.getMemberName()))
+      )
+    ).getBase()
 }
 
 /**
  * Holds if there is a read step of content `c` from `node1` to `node2`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
-  none() // TODO
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::MemberCfgReadAccessNode var |
+      node1.asExpr() = var.getBase() and
+      c.isSingleton(any(Content::FieldContent ct | ct.getName() = var.getMemberName()))
+    )
 }
 
 /**
@@ -325,7 +348,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  none() // TODO
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
 }
 
 /**

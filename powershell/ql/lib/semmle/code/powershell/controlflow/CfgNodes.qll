@@ -191,7 +191,7 @@ module ExprNodes {
     final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
   }
 
-    /** A control-flow node that wraps a qualifier expression. */
+  /** A control-flow node that wraps a qualifier expression. */
   class QualifierCfgNode extends ExprCfgNode {
     QualifierCfgNode() { this = any(InvokeMemberCfgNode invoke).getQualifier() }
 
@@ -219,6 +219,35 @@ module ExprNodes {
     final ExprCfgNode getIfTrue() { e.hasCfgChild(e.getIfTrue(), this, result) }
 
     final ExprCfgNode getIfFalse() { e.hasCfgChild(e.getIfFalse(), this, result) }
+  }
+
+  class MemberChildMapping extends ExprChildMapping, MemberExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getMember() }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression. */
+  class MemberCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "MemberCfgNode" }
+
+    override MemberChildMapping e;
+
+    final override MemberExpr getExpr() { result = super.getExpr() }
+
+    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+
+    final string getMemberName() { result = e.getMemberName() }
+
+    predicate isStatic() { e.isStatic() }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression that is being written to. */
+  class MemberCfgWriteAccessNode extends MemberCfgNode {
+    MemberCfgWriteAccessNode() { this.getExpr() instanceof MemberExprWriteAccess }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
+  class MemberCfgReadAccessNode extends MemberCfgNode {
+    MemberCfgReadAccessNode() { this.getExpr() instanceof MemberExprReadAccess }
   }
 }
 
