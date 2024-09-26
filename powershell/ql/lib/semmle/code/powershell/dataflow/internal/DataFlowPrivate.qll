@@ -294,13 +294,6 @@ private module ParameterNodes {
     abstract Parameter getParameter();
 
     abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
-
-    final predicate isSourceParameterOf(CfgScope c, ParameterPosition pos) {
-      exists(DataFlowCallable callable |
-        this.isParameterOf(callable, pos) and
-        c = callable.asCfgScope()
-      )
-    }
   }
 
   /**
@@ -315,8 +308,29 @@ private module ParameterNodes {
     override Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(CfgScope callable, int i |
-        callable = c.asCfgScope() and pos.isPositional(i) and callable.getParameter(i) = parameter
+      exists(CfgScope callable | callable = c.asCfgScope() |
+        pos.isKeyword(parameter.getName())
+        or
+        // Given a function f with parameters x, y we map
+        // x to the positions:
+        // 1. keyword(x)
+        // 2. position(0, {y})
+        // 3. position(0, {})
+        // Likewise, y is mapped to the positions:
+        // 1. keyword(y)
+        // 2. position(0, {x})
+        // 3. position(1, {})
+        // The interpretation of `position(i, S)` is the position of the i'th unnamed parameter when the
+        // keywords in S are specified.
+        exists(int i, int j, string name, NamedSet ns, Function f |
+          pos.isPositional(j, ns) and
+          parameter.getIndex() = i and
+          f = parameter.getFunction() and
+          f = ns.getAFunction() and
+          name = parameter.getName() and
+          not name = ns.getAName() and
+          j = i - count(int k | k < i and f.getParameter(k).getName() = ns.getAName())
+        )
       )
     }
 
@@ -335,14 +349,29 @@ abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  abstract predicate sourceArgumentOf(CfgNodes::StmtNodes::CmdCfgNode call, ArgumentPosition pos);
-
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 module ArgumentNodes {
-  // TODO
+  class ExplicitArgumentNode extends ArgumentNode {
+    CfgNodes::ExprNodes::ArgumentCfgNode arg;
+
+    ExplicitArgumentNode() { this.asExpr() = arg }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      arg.getCmd() = call.asCall() and
+      (
+        pos.isKeyword(arg.getName())
+        or
+        exists(NamedSet ns, int i |
+          i = arg.getPosition() and
+          ns.getAnExactBindingCall() = call.asCall().getStmt() and
+          pos.isPositional(i, ns)
+        )
+      )
+    }
+  }
 }
 
 import ArgumentNodes
