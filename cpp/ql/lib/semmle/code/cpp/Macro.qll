@@ -250,19 +250,19 @@ class MacroInvocation extends MacroAccess {
    */
   string getExpandedArgument(int i) { macro_argument_expanded(underlyingElement(this), i, result) }
 
-  private Locatable getElementinMacroInvocationChain() {
+  private Locatable getAnElementInInvocationChain() {
     result = this.getAnExpandedElement()
     or
     exists(MacroInvocation child | this = child.getParentInvocation() |
-      result = child.getElementinMacroInvocationChain()
+      result = child.getAnElementInInvocationChain()
     )
   }
 
   /** Gets an element in this macro invocation. */
-  Locatable getElementinMacroInvocation() {
+  Locatable getAnElement() {
     not result instanceof MacroInvocation and
     exists(Locatable element | element.getLocation() = result.getLocation() |
-      element = this.getElementinMacroInvocationChain()
+      element = this.getAnElementInInvocationChain()
     )
   }
 }
@@ -272,7 +272,7 @@ predicate macroLocation(Location l) { macrolocationbind(_, l) }
 
 /** Holds if `element` is in the expansion of a macro. */
 predicate inMacroExpansion(Locatable element) {
-  exists(MacroInvocation invocation | element = invocation.getElementinMacroInvocation())
+  exists(MacroInvocation m | element = m.getAnElement())
 }
 
 /**
