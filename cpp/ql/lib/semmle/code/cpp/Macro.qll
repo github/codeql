@@ -249,6 +249,22 @@ class MacroInvocation extends MacroAccess {
    * differences between expanded and unexpanded arguments.
    */
   string getExpandedArgument(int i) { macro_argument_expanded(underlyingElement(this), i, result) }
+
+  private Locatable getElementinMacroInvocationChain() {
+    result = this.getAnExpandedElement()
+    or
+    exists(MacroInvocation child | this = child.getParentInvocation() |
+      result = child.getElementinMacroInvocationChain()
+    )
+  }
+
+  /** Gets an element in this macro invocation. */
+  Locatable getElementinMacroInvocation() {
+    not result instanceof MacroInvocation and
+    exists(Locatable overlapping | overlapping.getLocation() = result.getLocation() |
+      overlapping = this.getElementinMacroInvocationChain()
+    )
+  }
 }
 
 /** Holds if `l` is the location of a macro. */
@@ -256,17 +272,8 @@ predicate macroLocation(Location l) { macrolocationbind(_, l) }
 
 /** Holds if `element` is in the expansion of a macro. */
 predicate inMacroExpansion(Locatable element) {
-  inmacroexpansion(unresolveElement(element), _)
-  or
-  macroLocation(element.getLocation()) and
-  not topLevelMacroAccess(element)
+  exists(MacroInvocation invocation | element = invocation.getElementinMacroInvocation())
 }
-
-/**
- * Holds if `ma` is a `MacroAccess` that is not nested inside another
- * macro invocation.
- */
-private predicate topLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 /**
  * Holds if `element` is in the expansion of a macro from

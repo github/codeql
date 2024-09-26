@@ -13,14 +13,14 @@
 | test.cpp:4:1:4:1 | operator= | false |
 | test.cpp:4:1:4:1 | operator= | false |
 | test.cpp:4:1:4:3 | FOO | false |
-| test.cpp:4:1:4:3 | S | false |
+| test.cpp:4:1:4:3 | S | true |
 | test.cpp:4:1:4:3 | declaration | true |
 | test.cpp:4:1:4:3 | definition of S | true |
 | test.cpp:4:1:4:3 | definition of f | true |
 | test.cpp:4:1:4:3 | definition of i | true |
 | test.cpp:4:1:4:3 | definition of j | true |
-| test.cpp:4:1:4:3 | f | false |
-| test.cpp:4:1:4:3 | i | false |
+| test.cpp:4:1:4:3 | f | true |
+| test.cpp:4:1:4:3 | i | true |
 | test.cpp:4:1:4:3 | j | true |
 | test.cpp:4:1:4:3 | return ... | true |
 | test.cpp:4:1:4:3 | { ... } | true |
