@@ -229,6 +229,66 @@ class SsaInputNode extends SsaNode {
   override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
 }
 
+private string getANamedArgument(Cmd c) { exists(c.getNamedArgument(result)) }
+
+private module NamedSetModule = QlBuiltins::InternSets<Cmd, string, getANamedArgument/1>;
+
+private newtype NamedSet0 =
+  TEmptyNamedSet() or
+  TNonEmptyNamedSet(NamedSetModule::Set ns)
+
+/** A (possiby empty) set of argument names. */
+class NamedSet extends NamedSet0 {
+  /** Gets the non-empty set of names, if any. */
+  NamedSetModule::Set asNonEmpty() { this = TNonEmptyNamedSet(result) }
+
+  /** Holds if this is the empty set. */
+  predicate isEmpty() { this = TEmptyNamedSet() }
+
+  /** Gets a name in this set. */
+  string getAName() { this.asNonEmpty().contains(result) }
+
+  /** Gets the textual representation of this set. */
+  string toString() {
+    result = "{" + strictconcat(this.getAName(), ", ") + "}"
+    or
+    this.isEmpty() and
+    result = "{}"
+  }
+
+  /**
+   * Gets a `Cmd` that provides a named parameter for every name in `this`.
+   *
+   * NOTE: The `Cmd` may also provide more names.
+   */
+  Cmd getABindingCall() {
+    forex(string name | name = this.getAName() | exists(result.getNamedArgument(name)))
+    or
+    this.isEmpty() and
+    exists(result)
+  }
+
+  /**
+   * Gets a `Cmd` that provides exactly the named parameters represented by
+   * this set.
+   */
+  Cmd getAnExactBindingCall() {
+    forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
+    forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
+    or
+    this.isEmpty() and
+    not exists(result.getNamedArgument(_))
+  }
+
+  /** Gets a function that has a parameter for each name in this set. */
+  Function getAFunction() {
+    forex(string name | name = this.getAName() | result.getAParameter().hasName(name))
+    or
+    this.isEmpty() and
+    exists(result)
+  }
+}
+
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
