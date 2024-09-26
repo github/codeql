@@ -75,7 +75,7 @@ class UnicodeMacroInvocation extends MacroInvocation {
 }
 
 /**
- * An expression whose type is UnicdoeMacroDependentWidthType and
+ * Holds when a expression whose type is UnicodeMacroDependentWidthType and
  * is observed to be guarded by a check involving a bitwise-and operation
  * with a UnicodeMacroInvocation.
  * Such expressions are assumed to be checked dynamically, i.e.,
