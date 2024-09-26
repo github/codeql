@@ -11,7 +11,7 @@ private import semmle.code.java.security.SpelInjection
  * that is used to construct and evaluate a SpEL expression.
  */
 module SpelInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
 
