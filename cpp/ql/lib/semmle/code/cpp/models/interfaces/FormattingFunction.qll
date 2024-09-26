@@ -118,7 +118,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   /**
    * Gets the position of the first format argument, corresponding with
-   * the first format specifier in the format string. We'll ignore all
+   * the first format specifier in the format string. We ignore all
    * implicit function definitions.
    */
   int getFirstFormatArgumentIndex() {
