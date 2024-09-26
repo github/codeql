@@ -110,8 +110,15 @@ const RESERVED: &[&str] = &[
 ];
 // keywords that are keywords only in specific parse contexts
 #[doc(alias = "WEAK_KEYWORDS")]
-const CONTEXTUAL_KEYWORDS: &[&str] =
-    &["macro_rules", "union", "default", "raw", "dyn", "auto", "yeet"];
+const CONTEXTUAL_KEYWORDS: &[&str] = &[
+    "macro_rules",
+    "union",
+    "default",
+    "raw",
+    "dyn",
+    "auto",
+    "yeet",
+];
 // keywords we use for special macro expansions
 const CONTEXTUAL_BUILTIN_KEYWORDS: &[&str] = &["builtin", "offset_of", "format_args", "asm"];
 // keywords that are keywords depending on the edition
@@ -128,8 +135,11 @@ pub(crate) fn generate_kind_src(
     enums: &[AstEnumSrc],
     grammar: &ungrammar::Grammar,
 ) -> KindsSrc {
-    let mut contextual_keywords: Vec<&_> =
-        CONTEXTUAL_KEYWORDS.iter().chain(CONTEXTUAL_BUILTIN_KEYWORDS).copied().collect();
+    let mut contextual_keywords: Vec<&_> = CONTEXTUAL_KEYWORDS
+        .iter()
+        .chain(CONTEXTUAL_BUILTIN_KEYWORDS)
+        .copied()
+        .collect();
 
     let mut keywords: Vec<&_> = Vec::new();
     let mut tokens: Vec<&_> = TOKENS.to_vec();
@@ -162,9 +172,13 @@ pub(crate) fn generate_kind_src(
             }
         }
     });
-    PUNCT.iter().zip(used_puncts).filter(|(_, used)| !used).for_each(|((punct, _), _)| {
-        panic!("Punctuation {punct:?} is not used in grammar");
-    });
+    PUNCT
+        .iter()
+        .zip(used_puncts)
+        .filter(|(_, used)| !used)
+        .for_each(|((punct, _), _)| {
+            panic!("Punctuation {punct:?} is not used in grammar");
+        });
     keywords.extend(RESERVED.iter().copied());
     keywords.sort();
     keywords.dedup();
@@ -226,7 +240,11 @@ pub(crate) struct AstNodeSrc {
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) enum Field {
     Token(String),
-    Node { name: String, ty: String, cardinality: Cardinality },
+    Node {
+        name: String,
+        ty: String,
+        cardinality: Cardinality,
+    },
 }
 
 #[derive(Debug, Eq, PartialEq)]
