@@ -19,8 +19,3 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
     c instanceof NormalCompletion
   )
 }
-
-query predicate multipleToString(CfgNode n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}

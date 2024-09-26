@@ -283,6 +283,8 @@ deprecated private module Config implements FullStateConfigSig {
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
 
   predicate includeHiddenNodes() { any(Configuration config).includeHiddenNodes() }
+
+  predicate observeDiffInformedIncrementalMode() { none() }
 }
 
 deprecated private import Impl<Config> as I

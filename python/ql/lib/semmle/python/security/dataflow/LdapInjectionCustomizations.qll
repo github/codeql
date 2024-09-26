@@ -66,15 +66,20 @@ module LdapInjection {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsDnSanitizerGuard extends DnSanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsDnSanitizerGuard extends DnSanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsDnSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsDnSanitizerGuard;
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsFilterSanitizerGuard extends FilterSanitizer, StringConstCompareBarrier {
-  }
+  class ConstCompareAsFilterSanitizerGuard extends FilterSanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsFilterSanitizerGuard instead. */
+  deprecated class StringConstCompareAsFilterSanitizerGuard = ConstCompareAsFilterSanitizerGuard;
 
   /**
    * A call to replace line breaks functions as a sanitizer.

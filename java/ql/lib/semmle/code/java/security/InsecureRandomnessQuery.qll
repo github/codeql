@@ -96,6 +96,8 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
       n2.asExpr() = c
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -682,62 +682,38 @@ edges
 | ArrayUtilsTest.java:20:33:20:56 | {...} : String[] [[]] : String | ArrayUtilsTest.java:59:32:59:45 | alreadyTainted : String[] [[]] : String | provenance |  |
 | ArrayUtilsTest.java:20:33:20:56 | {...} : String[] [[]] : String | ArrayUtilsTest.java:63:29:63:42 | alreadyTainted : String[] [[]] : String | provenance |  |
 | ArrayUtilsTest.java:20:48:20:54 | taint(...) : String | ArrayUtilsTest.java:20:33:20:56 | {...} : String[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:23:12:23:44 | add(...) : String[] [[]] : String | ArrayUtilsTest.java:23:12:23:44 | add(...) | provenance |  |
-| ArrayUtilsTest.java:23:37:23:43 | taint(...) : String | ArrayUtilsTest.java:23:12:23:44 | add(...) : String[] [[]] : String | provenance | MaD:32 |
-| ArrayUtilsTest.java:24:12:24:53 | add(...) : String[] [[]] : String | ArrayUtilsTest.java:24:12:24:53 | add(...) | provenance |  |
-| ArrayUtilsTest.java:24:27:24:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:24:12:24:53 | add(...) : String[] [[]] : String | provenance | MaD:31 |
-| ArrayUtilsTest.java:26:12:26:41 | add(...) : String[] [[]] : String | ArrayUtilsTest.java:26:12:26:41 | add(...) | provenance |  |
-| ArrayUtilsTest.java:26:34:26:40 | taint(...) : String | ArrayUtilsTest.java:26:12:26:41 | add(...) : String[] [[]] : String | provenance | MaD:33 |
-| ArrayUtilsTest.java:27:12:27:50 | add(...) : String[] [[]] : String | ArrayUtilsTest.java:27:12:27:50 | add(...) | provenance |  |
-| ArrayUtilsTest.java:27:27:27:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:27:12:27:50 | add(...) : String[] [[]] : String | provenance | MaD:31 |
-| ArrayUtilsTest.java:28:12:28:53 | addAll(...) : String[] [[]] : String | ArrayUtilsTest.java:28:12:28:53 | addAll(...) | provenance |  |
-| ArrayUtilsTest.java:28:12:28:53 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:28:12:28:53 | addAll(...) : String[] [[]] : String | provenance | MaD:34 |
+| ArrayUtilsTest.java:23:37:23:43 | taint(...) : String | ArrayUtilsTest.java:23:12:23:44 | add(...) | provenance | MaD:32 |
+| ArrayUtilsTest.java:24:27:24:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:24:12:24:53 | add(...) | provenance | MaD:31 |
+| ArrayUtilsTest.java:26:34:26:40 | taint(...) : String | ArrayUtilsTest.java:26:12:26:41 | add(...) | provenance | MaD:33 |
+| ArrayUtilsTest.java:27:27:27:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:27:12:27:50 | add(...) | provenance | MaD:31 |
+| ArrayUtilsTest.java:28:12:28:53 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:28:12:28:53 | addAll(...) | provenance | MaD:34 |
 | ArrayUtilsTest.java:28:46:28:52 | taint(...) : String | ArrayUtilsTest.java:28:12:28:53 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:29:12:29:53 | addAll(...) : String[] [[]] : String | ArrayUtilsTest.java:29:12:29:53 | addAll(...) | provenance |  |
-| ArrayUtilsTest.java:29:12:29:53 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:29:12:29:53 | addAll(...) : String[] [[]] : String | provenance | MaD:34 |
+| ArrayUtilsTest.java:29:12:29:53 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:29:12:29:53 | addAll(...) | provenance | MaD:34 |
 | ArrayUtilsTest.java:29:37:29:43 | taint(...) : String | ArrayUtilsTest.java:29:12:29:53 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:30:12:30:67 | addAll(...) : String[] [[]] : String | ArrayUtilsTest.java:30:12:30:67 | addAll(...) | provenance |  |
-| ArrayUtilsTest.java:30:30:30:43 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:30:12:30:67 | addAll(...) : String[] [[]] : String | provenance | MaD:34 |
-| ArrayUtilsTest.java:31:12:31:46 | addFirst(...) : String[] [[]] : String | ArrayUtilsTest.java:31:12:31:46 | addFirst(...) | provenance |  |
-| ArrayUtilsTest.java:31:39:31:45 | taint(...) : String | ArrayUtilsTest.java:31:12:31:46 | addFirst(...) : String[] [[]] : String | provenance | MaD:36 |
-| ArrayUtilsTest.java:32:12:32:55 | addFirst(...) : String[] [[]] : String | ArrayUtilsTest.java:32:12:32:55 | addFirst(...) | provenance |  |
-| ArrayUtilsTest.java:32:32:32:45 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:32:12:32:55 | addFirst(...) : String[] [[]] : String | provenance | MaD:35 |
-| ArrayUtilsTest.java:33:12:33:43 | clone(...) : String[] [[]] : String | ArrayUtilsTest.java:33:12:33:43 | clone(...) | provenance |  |
-| ArrayUtilsTest.java:33:29:33:42 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:33:12:33:43 | clone(...) : String[] [[]] : String | provenance | MaD:37 |
+| ArrayUtilsTest.java:30:30:30:43 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:30:12:30:67 | addAll(...) | provenance | MaD:34 |
+| ArrayUtilsTest.java:31:39:31:45 | taint(...) : String | ArrayUtilsTest.java:31:12:31:46 | addFirst(...) | provenance | MaD:36 |
+| ArrayUtilsTest.java:32:32:32:45 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:32:12:32:55 | addFirst(...) | provenance | MaD:35 |
+| ArrayUtilsTest.java:33:29:33:42 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:33:12:33:43 | clone(...) | provenance | MaD:37 |
 | ArrayUtilsTest.java:34:27:34:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:34:12:34:44 | get(...) | provenance | MaD:38 |
 | ArrayUtilsTest.java:36:27:36:40 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:36:12:36:61 | get(...) | provenance | MaD:38 |
 | ArrayUtilsTest.java:38:37:38:43 | taint(...) : String | ArrayUtilsTest.java:38:12:38:44 | get(...) | provenance | MaD:39 |
-| ArrayUtilsTest.java:40:12:40:67 | insert(...) : String[] [[]] : String | ArrayUtilsTest.java:40:12:40:67 | insert(...) | provenance |  |
-| ArrayUtilsTest.java:40:33:40:46 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:40:12:40:67 | insert(...) : String[] [[]] : String | provenance | MaD:40 |
-| ArrayUtilsTest.java:41:12:41:57 | insert(...) : String[] [[]] : String | ArrayUtilsTest.java:41:12:41:57 | insert(...) | provenance |  |
-| ArrayUtilsTest.java:41:12:41:57 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:41:12:41:57 | insert(...) : String[] [[]] : String | provenance | MaD:40 |
+| ArrayUtilsTest.java:40:33:40:46 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:40:12:40:67 | insert(...) | provenance | MaD:40 |
+| ArrayUtilsTest.java:41:12:41:57 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:41:12:41:57 | insert(...) | provenance | MaD:40 |
 | ArrayUtilsTest.java:41:40:41:46 | taint(...) : String | ArrayUtilsTest.java:41:12:41:57 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:42:12:42:57 | insert(...) : String[] [[]] : String | ArrayUtilsTest.java:42:12:42:57 | insert(...) | provenance |  |
-| ArrayUtilsTest.java:42:12:42:57 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:42:12:42:57 | insert(...) : String[] [[]] : String | provenance | MaD:40 |
+| ArrayUtilsTest.java:42:12:42:57 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:42:12:42:57 | insert(...) | provenance | MaD:40 |
 | ArrayUtilsTest.java:42:50:42:56 | taint(...) : String | ArrayUtilsTest.java:42:12:42:57 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) : String[] [[]] : String | ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) | provenance |  |
-| ArrayUtilsTest.java:43:35:43:48 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) : String[] [[]] : String | provenance | MaD:42 |
-| ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) : String[] [[]] : String | ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) | provenance |  |
-| ArrayUtilsTest.java:44:35:44:48 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) : String[] [[]] : String | provenance | MaD:41 |
-| ArrayUtilsTest.java:45:12:45:47 | remove(...) : String[] [[]] : String | ArrayUtilsTest.java:45:12:45:47 | remove(...) | provenance |  |
-| ArrayUtilsTest.java:45:30:45:43 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:45:12:45:47 | remove(...) : String[] [[]] : String | provenance | MaD:43 |
-| ArrayUtilsTest.java:47:12:47:53 | removeAll(...) : String[] [[]] : String | ArrayUtilsTest.java:47:12:47:53 | removeAll(...) | provenance |  |
-| ArrayUtilsTest.java:47:33:47:46 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:47:12:47:53 | removeAll(...) : String[] [[]] : String | provenance | MaD:44 |
-| ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) : String[] [[]] : String | ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) | provenance |  |
-| ArrayUtilsTest.java:51:43:51:56 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) : String[] [[]] : String | provenance | MaD:45 |
-| ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) : String[] [[]] : String | ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) | provenance |  |
-| ArrayUtilsTest.java:53:44:53:57 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) : String[] [[]] : String | provenance | MaD:46 |
-| ArrayUtilsTest.java:55:12:55:70 | removeElement(...) : String[] [[]] : String | ArrayUtilsTest.java:55:12:55:70 | removeElement(...) | provenance |  |
-| ArrayUtilsTest.java:55:37:55:50 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:55:12:55:70 | removeElement(...) : String[] [[]] : String | provenance | MaD:47 |
-| ArrayUtilsTest.java:56:12:56:58 | removeElements(...) : Object[] [[]] : String | ArrayUtilsTest.java:56:12:56:58 | removeElements(...) | provenance |  |
-| ArrayUtilsTest.java:56:38:56:51 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:56:12:56:58 | removeElements(...) : Object[] [[]] : String | provenance | MaD:48 |
-| ArrayUtilsTest.java:59:12:59:52 | subarray(...) : String[] [[]] : String | ArrayUtilsTest.java:59:12:59:52 | subarray(...) | provenance |  |
-| ArrayUtilsTest.java:59:32:59:45 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:59:12:59:52 | subarray(...) : String[] [[]] : String | provenance | MaD:49 |
-| ArrayUtilsTest.java:61:12:61:47 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:61:12:61:47 | toArray(...) : String[] [[]] : String | provenance | MaD:50 |
-| ArrayUtilsTest.java:61:12:61:47 | toArray(...) : String[] [[]] : String | ArrayUtilsTest.java:61:12:61:47 | toArray(...) | provenance |  |
+| ArrayUtilsTest.java:43:35:43:48 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) | provenance | MaD:42 |
+| ArrayUtilsTest.java:44:35:44:48 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) | provenance | MaD:41 |
+| ArrayUtilsTest.java:45:30:45:43 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:45:12:45:47 | remove(...) | provenance | MaD:43 |
+| ArrayUtilsTest.java:47:33:47:46 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:47:12:47:53 | removeAll(...) | provenance | MaD:44 |
+| ArrayUtilsTest.java:51:43:51:56 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) | provenance | MaD:45 |
+| ArrayUtilsTest.java:53:44:53:57 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) | provenance | MaD:46 |
+| ArrayUtilsTest.java:55:37:55:50 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:55:12:55:70 | removeElement(...) | provenance | MaD:47 |
+| ArrayUtilsTest.java:56:38:56:51 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:56:12:56:58 | removeElements(...) | provenance | MaD:48 |
+| ArrayUtilsTest.java:59:32:59:45 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:59:12:59:52 | subarray(...) | provenance | MaD:49 |
+| ArrayUtilsTest.java:61:12:61:47 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:61:12:61:47 | toArray(...) | provenance | MaD:50 |
 | ArrayUtilsTest.java:61:40:61:46 | taint(...) : String | ArrayUtilsTest.java:61:12:61:47 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
-| ArrayUtilsTest.java:62:12:62:47 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:62:12:62:47 | toArray(...) : String[] [[]] : String | provenance | MaD:50 |
-| ArrayUtilsTest.java:62:12:62:47 | toArray(...) : String[] [[]] : String | ArrayUtilsTest.java:62:12:62:47 | toArray(...) | provenance |  |
+| ArrayUtilsTest.java:62:12:62:47 | new ..[] { .. } : Object[] [[]] : String | ArrayUtilsTest.java:62:12:62:47 | toArray(...) | provenance | MaD:50 |
 | ArrayUtilsTest.java:62:31:62:37 | taint(...) : String | ArrayUtilsTest.java:62:12:62:47 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
 | ArrayUtilsTest.java:63:12:63:43 | toMap(...) : Map [<map.value>] : Object | ArrayUtilsTest.java:63:12:63:54 | get(...) | provenance | MaD:15 |
 | ArrayUtilsTest.java:63:29:63:42 | alreadyTainted : String[] [[]] : String | ArrayUtilsTest.java:63:12:63:43 | toMap(...) : Map [<map.value>] : Object | provenance | MaD:51 |
@@ -747,10 +723,8 @@ edges
 | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | ArrayUtilsTest.java:70:12:70:27 | taintedBoxedInts | provenance |  |
 | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | provenance |  |
 | ArrayUtilsTest.java:69:56:69:66 | taintedInts : int[] [[]] : Number | ArrayUtilsTest.java:69:36:69:67 | toObject(...) : Integer[] [[]] : Number | provenance | MaD:53 |
-| ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | provenance |  |
-| ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | provenance | MaD:54 |
-| ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) | provenance |  |
-| ArrayUtilsTest.java:72:53:72:69 | taint(...) : Number | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | provenance | MaD:55 |
+| ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | provenance | MaD:54 |
+| ArrayUtilsTest.java:72:53:72:69 | taint(...) : Number | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) | provenance | MaD:55 |
 | MutableTest.java:11:39:11:66 | new MutableObject<String>(...) : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | MutableTest.java:20:12:20:18 | tainted : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | provenance |  |
 | MutableTest.java:11:39:11:66 | new MutableObject<String>(...) : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | MutableTest.java:21:12:21:23 | taintedAlias : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | provenance |  |
 | MutableTest.java:11:59:11:65 | taint(...) : String | MutableTest.java:11:39:11:66 | new MutableObject<String>(...) : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | provenance | MaD:225 |
@@ -3338,36 +3312,26 @@ nodes
 | ArrayUtilsTest.java:20:33:20:56 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
 | ArrayUtilsTest.java:20:48:20:54 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:23:12:23:44 | add(...) | semmle.label | add(...) |
-| ArrayUtilsTest.java:23:12:23:44 | add(...) : String[] [[]] : String | semmle.label | add(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:23:37:23:43 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:24:12:24:53 | add(...) | semmle.label | add(...) |
-| ArrayUtilsTest.java:24:12:24:53 | add(...) : String[] [[]] : String | semmle.label | add(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:24:27:24:40 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:26:12:26:41 | add(...) | semmle.label | add(...) |
-| ArrayUtilsTest.java:26:12:26:41 | add(...) : String[] [[]] : String | semmle.label | add(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:26:34:26:40 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:27:12:27:50 | add(...) | semmle.label | add(...) |
-| ArrayUtilsTest.java:27:12:27:50 | add(...) : String[] [[]] : String | semmle.label | add(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:27:27:27:40 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:28:12:28:53 | addAll(...) | semmle.label | addAll(...) |
-| ArrayUtilsTest.java:28:12:28:53 | addAll(...) : String[] [[]] : String | semmle.label | addAll(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:28:12:28:53 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:28:46:28:52 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:29:12:29:53 | addAll(...) | semmle.label | addAll(...) |
-| ArrayUtilsTest.java:29:12:29:53 | addAll(...) : String[] [[]] : String | semmle.label | addAll(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:29:12:29:53 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:29:37:29:43 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:30:12:30:67 | addAll(...) | semmle.label | addAll(...) |
-| ArrayUtilsTest.java:30:12:30:67 | addAll(...) : String[] [[]] : String | semmle.label | addAll(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:30:30:30:43 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:31:12:31:46 | addFirst(...) | semmle.label | addFirst(...) |
-| ArrayUtilsTest.java:31:12:31:46 | addFirst(...) : String[] [[]] : String | semmle.label | addFirst(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:31:39:31:45 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:32:12:32:55 | addFirst(...) | semmle.label | addFirst(...) |
-| ArrayUtilsTest.java:32:12:32:55 | addFirst(...) : String[] [[]] : String | semmle.label | addFirst(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:32:32:32:45 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:33:12:33:43 | clone(...) | semmle.label | clone(...) |
-| ArrayUtilsTest.java:33:12:33:43 | clone(...) : String[] [[]] : String | semmle.label | clone(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:33:29:33:42 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:34:12:34:44 | get(...) | semmle.label | get(...) |
 | ArrayUtilsTest.java:34:27:34:40 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
@@ -3376,50 +3340,36 @@ nodes
 | ArrayUtilsTest.java:38:12:38:44 | get(...) | semmle.label | get(...) |
 | ArrayUtilsTest.java:38:37:38:43 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:40:12:40:67 | insert(...) | semmle.label | insert(...) |
-| ArrayUtilsTest.java:40:12:40:67 | insert(...) : String[] [[]] : String | semmle.label | insert(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:40:33:40:46 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:41:12:41:57 | insert(...) | semmle.label | insert(...) |
-| ArrayUtilsTest.java:41:12:41:57 | insert(...) : String[] [[]] : String | semmle.label | insert(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:41:12:41:57 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:41:40:41:46 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:42:12:42:57 | insert(...) | semmle.label | insert(...) |
-| ArrayUtilsTest.java:42:12:42:57 | insert(...) : String[] [[]] : String | semmle.label | insert(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:42:12:42:57 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:42:50:42:56 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) | semmle.label | nullToEmpty(...) |
-| ArrayUtilsTest.java:43:12:43:49 | nullToEmpty(...) : String[] [[]] : String | semmle.label | nullToEmpty(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:43:35:43:48 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) | semmle.label | nullToEmpty(...) |
-| ArrayUtilsTest.java:44:12:44:65 | nullToEmpty(...) : String[] [[]] : String | semmle.label | nullToEmpty(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:44:35:44:48 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:45:12:45:47 | remove(...) | semmle.label | remove(...) |
-| ArrayUtilsTest.java:45:12:45:47 | remove(...) : String[] [[]] : String | semmle.label | remove(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:45:30:45:43 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:47:12:47:53 | removeAll(...) | semmle.label | removeAll(...) |
-| ArrayUtilsTest.java:47:12:47:53 | removeAll(...) : String[] [[]] : String | semmle.label | removeAll(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:47:33:47:46 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) | semmle.label | removeAllOccurences(...) |
-| ArrayUtilsTest.java:51:12:51:76 | removeAllOccurences(...) : String[] [[]] : String | semmle.label | removeAllOccurences(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:51:43:51:56 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) | semmle.label | removeAllOccurrences(...) |
-| ArrayUtilsTest.java:53:12:53:77 | removeAllOccurrences(...) : String[] [[]] : String | semmle.label | removeAllOccurrences(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:53:44:53:57 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:55:12:55:70 | removeElement(...) | semmle.label | removeElement(...) |
-| ArrayUtilsTest.java:55:12:55:70 | removeElement(...) : String[] [[]] : String | semmle.label | removeElement(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:55:37:55:50 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:56:12:56:58 | removeElements(...) | semmle.label | removeElements(...) |
-| ArrayUtilsTest.java:56:12:56:58 | removeElements(...) : Object[] [[]] : String | semmle.label | removeElements(...) : Object[] [[]] : String |
 | ArrayUtilsTest.java:56:38:56:51 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:59:12:59:52 | subarray(...) | semmle.label | subarray(...) |
-| ArrayUtilsTest.java:59:12:59:52 | subarray(...) : String[] [[]] : String | semmle.label | subarray(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:59:32:59:45 | alreadyTainted : String[] [[]] : String | semmle.label | alreadyTainted : String[] [[]] : String |
 | ArrayUtilsTest.java:61:12:61:47 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:61:12:61:47 | toArray(...) | semmle.label | toArray(...) |
-| ArrayUtilsTest.java:61:12:61:47 | toArray(...) : String[] [[]] : String | semmle.label | toArray(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:61:40:61:46 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:62:12:62:47 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | ArrayUtilsTest.java:62:12:62:47 | toArray(...) | semmle.label | toArray(...) |
-| ArrayUtilsTest.java:62:12:62:47 | toArray(...) : String[] [[]] : String | semmle.label | toArray(...) : String[] [[]] : String |
 | ArrayUtilsTest.java:62:31:62:37 | taint(...) : String | semmle.label | taint(...) : String |
 | ArrayUtilsTest.java:63:12:63:43 | toMap(...) : Map [<map.value>] : Object | semmle.label | toMap(...) : Map [<map.value>] : Object |
 | ArrayUtilsTest.java:63:12:63:54 | get(...) | semmle.label | get(...) |
@@ -3430,10 +3380,8 @@ nodes
 | ArrayUtilsTest.java:69:56:69:66 | taintedInts : int[] [[]] : Number | semmle.label | taintedInts : int[] [[]] : Number |
 | ArrayUtilsTest.java:70:12:70:27 | taintedBoxedInts | semmle.label | taintedBoxedInts |
 | ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) | semmle.label | toPrimitive(...) |
-| ArrayUtilsTest.java:71:12:71:51 | toPrimitive(...) : int[] [[]] : Number | semmle.label | toPrimitive(...) : int[] [[]] : Number |
 | ArrayUtilsTest.java:71:35:71:50 | taintedBoxedInts : Integer[] [[]] : Number | semmle.label | taintedBoxedInts : Integer[] [[]] : Number |
 | ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) | semmle.label | toPrimitive(...) |
-| ArrayUtilsTest.java:72:12:72:70 | toPrimitive(...) : int[] [[]] : Number | semmle.label | toPrimitive(...) : int[] [[]] : Number |
 | ArrayUtilsTest.java:72:53:72:69 | taint(...) : Number | semmle.label | taint(...) : Number |
 | MutableTest.java:11:39:11:66 | new MutableObject<String>(...) : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String | semmle.label | new MutableObject<String>(...) : MutableObject [org.apache.commons.lang3.mutable.MutableObject.value] : String |
 | MutableTest.java:11:59:11:65 | taint(...) : String | semmle.label | taint(...) : String |

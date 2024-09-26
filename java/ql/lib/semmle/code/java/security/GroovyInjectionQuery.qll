@@ -17,6 +17,8 @@ module GroovyInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(GroovyInjectionAdditionalTaintStep c).step(fromNode, toNode)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -324,7 +324,7 @@ predicate declaresMember(Type t, @member m) {
   or
   constrs(m, _, _, _, t, _)
   or
-  fields(m, _, _, t, _)
+  fields(m, _, _, t)
   or
   enclInReftype(m, t) and
   // Since the type `@member` in the dbscheme includes all `@reftype`s,
@@ -1195,12 +1195,10 @@ class EnumType extends Class {
   EnumType() { isEnumType(this) }
 
   /** Gets the enum constant with the specified name. */
-  EnumConstant getEnumConstant(string name) {
-    fields(result, _, _, this, _) and result.hasName(name)
-  }
+  EnumConstant getEnumConstant(string name) { fields(result, _, _, this) and result.hasName(name) }
 
   /** Gets an enum constant declared in this enum type. */
-  EnumConstant getAnEnumConstant() { fields(result, _, _, this, _) }
+  EnumConstant getAnEnumConstant() { fields(result, _, _, this) }
 
   override predicate isFinal() {
     // JLS 8.9: An enum declaration is implicitly `final` unless it contains
