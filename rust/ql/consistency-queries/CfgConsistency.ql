@@ -1,5 +1,7 @@
 import rust
-import codeql.rust.controlflow.internal.ControlFlowGraphImpl::Consistency
+import codeql.rust.controlflow.internal.ControlFlowGraphImpl::Consistency as Consistency
+import Consistency
+import codeql.rust.controlflow.ControlFlowGraph
 import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 import codeql.rust.controlflow.internal.Completion
 
@@ -16,4 +18,10 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
     last != e and
     c instanceof NormalCompletion
   )
+}
+
+query predicate scopeNoFirst(CfgScope scope) {
+  Consistency::scopeNoFirst(scope) and
+  not scope = any(Function f | not exists(f.getBody())) and
+  not scope = any(ClosureExpr c | not exists(c.getBody()))
 }

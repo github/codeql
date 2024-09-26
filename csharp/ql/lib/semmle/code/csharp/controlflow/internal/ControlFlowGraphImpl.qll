@@ -15,11 +15,19 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
   CfgScope() {
     this.getFile().fromSource() and
     (
-      this instanceof Callable
+      this =
+        any(Callable c |
+          c.(Constructor).hasInitializer()
+          or
+          InitializerSplitting::constructorInitializes(c, _)
+          or
+          c.hasBody()
+        )
       or
       // For now, static initializer values have their own scope. Eventually, they
       // should be treated like instance initializers.
-      this.(Assignable).(Modifiable).isStatic()
+      this.(Assignable).(Modifiable).isStatic() and
+      expr_parent_top_level_adjusted2(_, _, this)
     )
   }
 }
