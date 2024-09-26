@@ -48,8 +48,8 @@ void test(int i, const char *str)
 	printf("%*.*Y", 1, 2); // GOOD (unknown format character, this might be correct)
 
 	// Implicit logger function declaration
-	my_logger(0, "%i %i %i %i %i %i\n", 1, 2, 3, 4, 5, 6); // GOOD (FP)
-	my_logger(0, "%i %i %i\n", 1, 2, 3); // GOOD (FP)
+	my_logger(0, "%i %i %i %i %i %i\n", 1, 2, 3, 4, 5, 6); // GOOD
+	my_logger(0, "%i %i %i\n", 1, 2, 3); // GOOD
 	my_logger(0, "%i %i %i\n", 1, 2); // BAD (too few format arguments)
 }
 
