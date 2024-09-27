@@ -1,4 +1,3 @@
-// semmle-extractor-options: /r:System.Net.Sockets.dll /r:System.Net.Security.dll /r:System.Security.Cryptography.Algorithms.dll /r:System.Net.Http.dll /r:System.Net.ServicePoint.dll /r:System.Security.Cryptography.dll /r:System.Net.Primitives.dll /r:System.Net.Requests.dll /r:System.Private.Uri.dll
 using System;
 using System.Net;
 using System.Net.Security;
@@ -10,7 +9,7 @@ using System.Net.Http;
 class Program
 {
 
-    static void First()
+    void M1()
     {
         TcpClient client = new TcpClient("www.example.com", 443);
         SslStream sslStream = new SslStream(
@@ -54,7 +53,7 @@ class Program
         return sslPolicyErrors == SslPolicyErrors.None;
     }
 
-    static void Second()
+    void M2()
     {
         HttpClientHandler handler = new HttpClientHandler();
         handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true; // BAD: unsafe callback used
@@ -62,14 +61,15 @@ class Program
         HttpClient client = new HttpClient(handler);
     }
 
-    static void Third()
+    void M3()
     {
         ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(ValidateServerCertificate); // BAD: unsafe callback used
         ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true; // BAD: unsafe callback used
         ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate; // BAD: unsafe callback used
         ServicePointManager.ServerCertificateValidationCallback = SafeValidateServerCertificate; // GOOD: safe callback used
     }
-    static void Fourth()
+
+    void M4()
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.example.com");
         request.ServerCertificateValidationCallback = ValidateServerCertificate; // BAD: unsafe callback used
@@ -77,4 +77,46 @@ class Program
 
     }
 
+    void SetCallback(RemoteCertificateValidationCallback callback)
+    {
+        ServicePointManager.ServerCertificateValidationCallback = callback; // BAD: unsafe callback used
+    }
+
+    void M5(bool b)
+    {
+        RemoteCertificateValidationCallback callback = ValidateServerCertificate;
+        if (b) {
+            SetCallback(callback); // BAD: unsafe callback used
+        }
+    }
+
+    void M6(Settings settings)
+    {
+        RemoteCertificateValidationCallback callback = ValidateServerCertificate;
+        if (settings.IgnoreCertificateValidation)
+        {
+            SetCallback(callback); // GOOD: We don't do validation.
+        }
+    }
+
+    void M7(Settings settings)
+    {
+        if (settings.IgnoreCertificateValidation)
+        {
+            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate; // GOOD: We don't do validation.
+        }
+    }
+
+    void M8(Settings settings)
+    {
+        if (!settings.IgnoreCertificateValidation)
+        {
+            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate; // BAD: unsafe callback used
+        }
+    }
+}
+
+public class Settings {
+
+    public bool IgnoreCertificateValidation { get; set; }
 }
