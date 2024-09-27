@@ -263,12 +263,11 @@ predicate artifactDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 //
 /**
- * A download artifact step followed by a envvar-injection uses step .
+ * A download artifact step followed by a uses step .
  */
 predicate artifactDownloadToUsesStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Step artifact, Uses uses |
     controlledCWD(artifact) and
-    madSink(succ, "envvar-injection") and
     pred.asExpr() = artifact and
     succ.asExpr() = uses and
     artifact.getAFollowingStep() = uses

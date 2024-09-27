@@ -7,10 +7,7 @@ import codeql.actions.security.PoisonableSteps
 
 string unzipRegexp() { result = ".*(unzip|tar)\\s+.*" }
 
-string unzipDirArgRegexp() {
-  result = "-d\\s+\"([^ ]+)\".*" or
-  result = "-d\\s+'([^ ]+)'.*"
-}
+string unzipDirArgRegexp() { result = "-d\\s+([^ ]+).*" }
 
 abstract class UntrustedArtifactDownloadStep extends Step {
   abstract string getPath();
@@ -164,11 +161,11 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
           .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        this.getAFollowingStep()
-            .(Run)
-            .getScript()
-            .splitAt("\n")
-            .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)
+        trimQuotes(this.getAFollowingStep()
+              .(Run)
+              .getScript()
+              .splitAt("\n")
+              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
     else
       if this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp())
       then result = ""
@@ -199,13 +196,14 @@ class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
           .regexpMatch(unzipRegexp() + unzipDirArgRegexp()) or
       script.splitAt("\n").regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
-      result = script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2) or
       result =
-        this.getAFollowingStep()
-            .(Run)
-            .getScript()
-            .splitAt("\n")
-            .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)
+        trimQuotes(script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)) or
+      result =
+        trimQuotes(this.getAFollowingStep()
+              .(Run)
+              .getScript()
+              .splitAt("\n")
+              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
     else
       if
         this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp()) or
@@ -245,37 +243,47 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
           .splitAt("\n")
           .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
-      result = script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2) or
       result =
-        this.getAFollowingStep()
-            .(Run)
-            .getScript()
-            .splitAt("\n")
-            .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)
+        trimQuotes(script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)) or
+      result =
+        trimQuotes(this.getAFollowingStep()
+              .(Run)
+              .getScript()
+              .splitAt("\n")
+              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
     else result = ""
   }
 }
 
 class ArtifactPoisoningSink extends DataFlow::Node {
+  UntrustedArtifactDownloadStep download;
+  PoisonableStep poisonable;
+
   ArtifactPoisoningSink() {
-    exists(UntrustedArtifactDownloadStep download, PoisonableStep poisonable |
-      download.getAFollowingStep() = poisonable and
-      (
-        poisonable.(Run).getScriptScalar() = this.asExpr()
-        or
-        poisonable.(UsesStep) = this.asExpr()
-      ) and
+    download.getAFollowingStep() = poisonable and
+    // excluding artifacts downloaded to /tmp
+    not download.getPath().regexpMatch("^/tmp.*") and
+    (
+      poisonable.(Run).getScriptScalar() = this.asExpr() and
       (
         // Check if the poisonable step is a local script execution step
         // and the path of the command or script matches the path of the downloaded artifact
-        not poisonable instanceof LocalScriptExecutionRunStep or
+        // Checking the path for non local script execution steps is very difficult
+        not poisonable instanceof LocalScriptExecutionRunStep
+        or
+        // TODO: account for Run's working directory
         poisonable
             .(LocalScriptExecutionRunStep)
             .getCommand()
             .matches(["./", ""] + download.getPath() + "%")
       )
+      or
+      poisonable.(UsesStep) = this.asExpr() and
+      download.getPath() = ""
     )
   }
+
+  string getPath() { result = download.getPath() }
 }
 
 /**
@@ -283,7 +291,7 @@ class ArtifactPoisoningSink extends DataFlow::Node {
  * that is used may lead to artifact poisoning
  */
 private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ArtifactSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ArtifactPoisoningSink }
 }
