@@ -85,11 +85,21 @@ impl RustAnalyzer {
                 }
             }
         }
-        let input = std::fs::read(&path).unwrap();
+        let mut errors = Vec::new();
+        let input = match std::fs::read(path) {
+            Ok(data) => data,
+            Err(e) => {
+                errors.push(SyntaxError::new(
+                    format!("Could not read {}: {}", path.to_string_lossy(), e),
+                    TextRange::empty(TextSize::default()),
+                ));
+                vec![]
+            }
+        };
         let (input, err) = from_utf8_lossy(&input);
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
-        let mut errors = parse.errors();
-        errors.extend(err.into_iter());
+        errors.extend(parse.errors());
+        errors.extend(err);
         (parse.tree(), input.as_ref().into(), errors, None)
     }
 }

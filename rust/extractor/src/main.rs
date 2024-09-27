@@ -1,5 +1,5 @@
 use anyhow::Context;
-use ra_ap_ide_db::line_index::LineIndex;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 mod archive;
 mod config;
 pub mod generated;
@@ -17,10 +17,21 @@ fn extract(
     let display_path = file.to_string_lossy();
     let mut trap = traps.create("source", &file);
     let label = trap.emit_file(&file);
-    let mut translator = translate::Translator::new(trap, label, line_index, semi);
+    let mut translator =
+        translate::Translator::new(trap, display_path.as_ref(), label, line_index, semi);
 
     for err in parse_errors {
-        translator.emit_parse_error(display_path.as_ref(), err);
+        translator.emit_parse_error(&err);
+    }
+    let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
+    if translator.semi.is_none() {
+        translator.emit_diagnostic(
+            trap::DiagnosticSeverity::Warning,
+            "semantics".to_owned(),
+            "semantic analyzer unavailable".to_owned(),
+            "semantic analyzer unavailable: macro expansion, call graph, and type inference will be skipped.".to_owned(),
+            no_location,
+        );
     }
     translator.emit_source_file(ast);
     translator.trap.commit()?;

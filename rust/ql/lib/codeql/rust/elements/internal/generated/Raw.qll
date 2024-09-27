@@ -3294,6 +3294,11 @@ module Raw {
      * Gets the token tree of this macro call, if it exists.
      */
     TokenTree getTokenTree() { macro_call_token_trees(this, result) }
+
+    /**
+     * Gets the expanded of this macro call, if it exists.
+     */
+    AstNode getExpanded() { macro_call_expandeds(this, result) }
   }
 
   /**

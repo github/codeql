@@ -124,7 +124,7 @@ impl<T: TrapClass> From<Label<T>> for trap::Arg {
 
 pub struct TrapFile {
     path: PathBuf,
-    writer: Writer,
+    pub writer: Writer,
     compression: Compression,
 }
 

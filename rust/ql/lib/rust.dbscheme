@@ -2753,6 +2753,12 @@ macro_call_token_trees(
   int token_tree: @token_tree ref
 );
 
+#keyset[id]
+macro_call_expandeds(
+  int id: @macro_call ref,
+  int expanded: @ast_node ref
+);
+
 macro_defs(
   unique int id: @macro_def
 );
