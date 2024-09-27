@@ -62,37 +62,37 @@
 | test.rs:23:16:23:19 | true | test.rs:23:9:23:19 | ReturnExpr |  |
 | test.rs:26:5:38:5 | enter test_break_with_labels | test.rs:27:9:36:9 | ExprStmt |  |
 | test.rs:26:5:38:5 | exit test_break_with_labels (normal) | test.rs:26:5:38:5 | exit test_break_with_labels |  |
-| test.rs:26:41:38:5 | BlockExpr | test.rs:26:5:38:5 | exit test_break_with_labels (normal) |  |
+| test.rs:26:47:38:5 | BlockExpr | test.rs:26:5:38:5 | exit test_break_with_labels (normal) |  |
 | test.rs:27:9:36:9 | ExprStmt | test.rs:29:17:33:17 | ExprStmt |  |
 | test.rs:27:9:36:9 | LoopExpr | test.rs:37:9:37:12 | true |  |
 | test.rs:27:22:36:9 | BlockExpr | test.rs:29:17:33:17 | ExprStmt |  |
 | test.rs:28:13:35:13 | LoopExpr | test.rs:27:22:36:9 | BlockExpr |  |
-| test.rs:29:17:33:17 | ExprStmt | test.rs:29:20:29:24 | false |  |
+| test.rs:29:17:33:17 | ExprStmt | test.rs:29:20:29:20 | PathExpr |  |
 | test.rs:29:17:33:17 | IfExpr | test.rs:34:17:34:29 | ExprStmt |  |
-| test.rs:29:20:29:24 | false | test.rs:30:21:30:26 | ExprStmt | true |
-| test.rs:29:20:29:24 | false | test.rs:31:27:31:30 | true | false |
+| test.rs:29:20:29:20 | PathExpr | test.rs:30:21:30:26 | ExprStmt | true |
+| test.rs:29:20:29:20 | PathExpr | test.rs:31:27:31:27 | PathExpr | false |
 | test.rs:30:21:30:25 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | break |
 | test.rs:30:21:30:26 | ExprStmt | test.rs:30:21:30:25 | BreakExpr |  |
 | test.rs:31:24:33:17 | IfExpr | test.rs:29:17:33:17 | IfExpr |  |
-| test.rs:31:27:31:30 | true | test.rs:31:24:33:17 | IfExpr | false |
-| test.rs:31:27:31:30 | true | test.rs:32:21:32:33 | ExprStmt | true |
+| test.rs:31:27:31:27 | PathExpr | test.rs:31:24:33:17 | IfExpr | false |
+| test.rs:31:27:31:27 | PathExpr | test.rs:32:21:32:33 | ExprStmt | true |
 | test.rs:32:21:32:32 | BreakExpr | test.rs:27:9:36:9 | LoopExpr | break('outer) |
 | test.rs:32:21:32:33 | ExprStmt | test.rs:32:21:32:32 | BreakExpr |  |
 | test.rs:34:17:34:28 | BreakExpr | test.rs:28:13:35:13 | LoopExpr | break('inner) |
 | test.rs:34:17:34:29 | ExprStmt | test.rs:34:17:34:28 | BreakExpr |  |
-| test.rs:37:9:37:12 | true | test.rs:26:41:38:5 | BlockExpr |  |
+| test.rs:37:9:37:12 | true | test.rs:26:47:38:5 | BlockExpr |  |
 | test.rs:40:5:52:5 | enter test_continue_with_labels | test.rs:42:13:42:14 | ExprStmt |  |
 | test.rs:42:13:42:13 | 1 | test.rs:44:17:48:17 | ExprStmt |  |
 | test.rs:42:13:42:14 | ExprStmt | test.rs:42:13:42:13 | 1 |  |
-| test.rs:44:17:48:17 | ExprStmt | test.rs:44:20:44:24 | false |  |
+| test.rs:44:17:48:17 | ExprStmt | test.rs:44:20:44:20 | PathExpr |  |
 | test.rs:44:17:48:17 | IfExpr | test.rs:49:17:49:32 | ExprStmt |  |
-| test.rs:44:20:44:24 | false | test.rs:45:21:45:29 | ExprStmt | true |
-| test.rs:44:20:44:24 | false | test.rs:46:27:46:30 | true | false |
+| test.rs:44:20:44:20 | PathExpr | test.rs:45:21:45:29 | ExprStmt | true |
+| test.rs:44:20:44:20 | PathExpr | test.rs:46:27:46:27 | PathExpr | false |
 | test.rs:45:21:45:28 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | continue |
 | test.rs:45:21:45:29 | ExprStmt | test.rs:45:21:45:28 | ContinueExpr |  |
 | test.rs:46:24:48:17 | IfExpr | test.rs:44:17:48:17 | IfExpr |  |
-| test.rs:46:27:46:30 | true | test.rs:46:24:48:17 | IfExpr | false |
-| test.rs:46:27:46:30 | true | test.rs:47:21:47:36 | ExprStmt | true |
+| test.rs:46:27:46:27 | PathExpr | test.rs:46:24:48:17 | IfExpr | false |
+| test.rs:46:27:46:27 | PathExpr | test.rs:47:21:47:36 | ExprStmt | true |
 | test.rs:47:21:47:35 | ContinueExpr | test.rs:42:13:42:14 | ExprStmt | continue('outer) |
 | test.rs:47:21:47:36 | ExprStmt | test.rs:47:21:47:35 | ContinueExpr |  |
 | test.rs:49:17:49:31 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | continue('inner) |
@@ -259,3 +259,16 @@
 | test.rs:139:23:139:23 | PathExpr | test.rs:139:13:139:19 | TupleStructPat |  |
 | test.rs:140:13:140:27 | "Expected some" | test.rs:139:30:141:9 | BlockExpr |  |
 | test.rs:142:9:142:9 | PathExpr | test.rs:138:39:143:5 | BlockExpr |  |
+| test.rs:146:1:151:1 | enter dead_code | test.rs:147:5:149:5 | ExprStmt |  |
+| test.rs:146:1:151:1 | exit dead_code (normal) | test.rs:146:1:151:1 | exit dead_code |  |
+| test.rs:147:5:149:5 | ExprStmt | test.rs:147:9:147:12 | true |  |
+| test.rs:147:5:149:5 | IfExpr | test.rs:150:5:150:13 | ExprStmt |  |
+| test.rs:147:8:147:13 | ParenExpr | test.rs:147:5:149:5 | IfExpr | false |
+| test.rs:147:8:147:13 | ParenExpr | test.rs:148:9:148:17 | ExprStmt | true |
+| test.rs:147:9:147:12 | true | test.rs:147:8:147:13 | ParenExpr |  |
+| test.rs:148:9:148:16 | ReturnExpr | test.rs:146:1:151:1 | exit dead_code (normal) | return |
+| test.rs:148:9:148:17 | ExprStmt | test.rs:148:16:148:16 | 0 |  |
+| test.rs:148:16:148:16 | 0 | test.rs:148:9:148:16 | ReturnExpr |  |
+| test.rs:150:5:150:12 | ReturnExpr | test.rs:146:1:151:1 | exit dead_code (normal) | return |
+| test.rs:150:5:150:13 | ExprStmt | test.rs:150:12:150:12 | 1 |  |
+| test.rs:150:12:150:12 | 1 | test.rs:150:5:150:12 | ReturnExpr |  |
