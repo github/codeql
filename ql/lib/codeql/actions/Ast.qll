@@ -289,6 +289,8 @@ class Run extends Step instanceof RunImpl {
   ScalarValue getScriptScalar() { result = super.getScriptScalar() }
 
   Expression getAnScriptExpr() { result = super.getAnScriptExpr() }
+
+  string getWorkingDirectory() { result = super.getWorkingDirectory() }
 }
 
 abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {

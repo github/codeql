@@ -151,12 +151,6 @@ predicate containsHeadRef(string s) {
   )
 }
 
-private string getStepCWD() {
-  // TODO: This should be the path of the git command.
-  // Read if from the step's CWD, workspace or look for a cd command.
-  result = "?"
-}
-
 /** Checkout of a Pull Request HEAD */
 abstract class PRHeadCheckoutStep extends Step {
   abstract string getPath();
@@ -208,7 +202,7 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
   override string getPath() {
     if exists(this.(UsesStep).getArgument("path"))
     then result = this.(UsesStep).getArgument("path")
-    else result = "?"
+    else result = "GITHUB_WORKSPACE/"
   }
 }
 
@@ -252,7 +246,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   override string getPath() {
     if exists(this.(UsesStep).getArgument("path"))
     then result = this.(UsesStep).getArgument("path")
-    else result = "?"
+    else result = "GITHUB_WORKSPACE/"
   }
 }
 
@@ -277,7 +271,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
     )
   }
 
-  override string getPath() { result = getStepCWD() }
+  override string getPath() { result = this.(Run).getWorkingDirectory() }
 }
 
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
@@ -298,7 +292,7 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
     )
   }
 
-  override string getPath() { result = getStepCWD() }
+  override string getPath() { result = this.(Run).getWorkingDirectory() }
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
@@ -321,7 +315,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
     )
   }
 
-  override string getPath() { result = getStepCWD() }
+  override string getPath() { result = this.(Run).getWorkingDirectory() }
 }
 
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
@@ -341,5 +335,5 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
     )
   }
 
-  override string getPath() { result = getStepCWD() }
+  override string getPath() { result = this.(Run).getWorkingDirectory() }
 }
