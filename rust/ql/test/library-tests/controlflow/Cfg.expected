@@ -262,13 +262,8 @@
 | test.rs:146:1:151:1 | enter dead_code | test.rs:147:5:149:5 | ExprStmt |  |
 | test.rs:146:1:151:1 | exit dead_code (normal) | test.rs:146:1:151:1 | exit dead_code |  |
 | test.rs:147:5:149:5 | ExprStmt | test.rs:147:9:147:12 | true |  |
-| test.rs:147:5:149:5 | IfExpr | test.rs:150:5:150:13 | ExprStmt |  |
-| test.rs:147:8:147:13 | ParenExpr | test.rs:147:5:149:5 | IfExpr | false |
 | test.rs:147:8:147:13 | ParenExpr | test.rs:148:9:148:17 | ExprStmt | true |
 | test.rs:147:9:147:12 | true | test.rs:147:8:147:13 | ParenExpr |  |
 | test.rs:148:9:148:16 | ReturnExpr | test.rs:146:1:151:1 | exit dead_code (normal) | return |
 | test.rs:148:9:148:17 | ExprStmt | test.rs:148:16:148:16 | 0 |  |
 | test.rs:148:16:148:16 | 0 | test.rs:148:9:148:16 | ReturnExpr |  |
-| test.rs:150:5:150:12 | ReturnExpr | test.rs:146:1:151:1 | exit dead_code (normal) | return |
-| test.rs:150:5:150:13 | ExprStmt | test.rs:150:12:150:12 | 1 |  |
-| test.rs:150:12:150:12 | 1 | test.rs:150:5:150:12 | ReturnExpr |  |
