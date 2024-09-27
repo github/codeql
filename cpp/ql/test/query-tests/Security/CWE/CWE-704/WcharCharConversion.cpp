@@ -37,7 +37,7 @@ void NewBufferFalsePositiveTest()
 {
 	wchar_t *lpWchar = NULL;
 
-	lpWchar = (LPWSTR)new char[56]; // GOOD [False Positive]
+	lpWchar = (LPWSTR)new char[56]; // Possible False Positive
 }
 
 typedef unsigned char BYTE;
@@ -46,13 +46,13 @@ typedef BYTE* PBYTE;
 void NonStringFalsePositiveTest1(PBYTE buffer)
 {
 	wchar_t *lpWchar = NULL;
-	lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
 }
 
 void NonStringFalsePositiveTest2(unsigned char* buffer)
 {
 	wchar_t *lpWchar = NULL;
-	lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
 }
 
 typedef unsigned char BYTE;
@@ -61,7 +61,7 @@ using FOO = BYTE*;
 void NonStringFalsePositiveTest3(FOO buffer)
 {
 	wchar_t *lpWchar = NULL;
-	lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
 }
 
 #define UNICODE 0x8
@@ -77,19 +77,19 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 {
 	wchar_t *lpWchar = NULL;
 	if(flags & UNICODE)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) == 0x8)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0x8)
 		lpWchar = (LPWSTR)buffer; // BUG
 	else
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // Safe
 
 	// Bad operator precedence
 	if(flags & UNICODE == 0x8)
@@ -98,14 +98,14 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // Safe
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // Bug
 
 	if((flags & UNICODE) == 0)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // Bug
 	else
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // Safe
 
-	lpWchar = (LPWSTR)buffer; // BUG
+	lpWchar = (LPWSTR)buffer; // Bug
 }
