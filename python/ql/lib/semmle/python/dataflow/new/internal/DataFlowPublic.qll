@@ -350,6 +350,9 @@ class ExtractedArgumentNode extends ArgumentNode {
     or
     // and self arguments
     this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+    or
+    // for comprehensions, we allow the synthetic `iterable` argument
+    this.asExpr() = any(Comp c).getIterable()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {

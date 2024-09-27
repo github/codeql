@@ -1491,7 +1491,10 @@ class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
 
   override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
 
-  override ArgumentNode getArgument(ArgumentPosition apos) { none() }
+  override ArgumentNode getArgument(ArgumentPosition apos) {
+    result.asExpr() = c.getIterable() and
+    apos.isPositional(0)
+  }
 
   override Location getLocation() { result = c.getLocation() }
 }
