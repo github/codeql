@@ -1729,22 +1729,32 @@ class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
   }
 }
 
-class ComprehensionCapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
+class ComprehensionCapturedVariablesArgumentNode extends Node, ArgumentNode {
   Comp comp;
 
   ComprehensionCapturedVariablesArgumentNode() {
-    node.getNode() = comp and
+    this = TSynthCompCapturedVariablesArgumentNode(comp) and
     exists(Function target | target = comp.getFunction() |
       target = any(VariableCapture::CapturedVariable v).getACapturingScope()
     )
   }
 
-  override string toString() { result = "Capturing closure argument (comp)" }
-
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     call.(ComprehensionCall).getComprehension() = comp and
     pos.isLambdaSelf()
   }
+}
+
+class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode {
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentNode() { this = TSynthCompCapturedVariablesArgumentNode(comp) }
+
+  override string toString() { result = "Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getFunction() }
+
+  override Location getLocation() { result = comp.getLocation() }
 }
 
 /** Gets a viable run-time target for the call `call`. */

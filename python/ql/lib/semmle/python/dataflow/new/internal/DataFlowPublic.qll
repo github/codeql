@@ -124,8 +124,10 @@ newtype TNode =
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TSynthCapturedVariablesParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
-    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  TSynthCompCapturedVariablesArgumentNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
   } or
   /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
   TForbiddenRecursionGuard() {
