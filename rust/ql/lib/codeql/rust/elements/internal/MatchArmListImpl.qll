@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MatchArmList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MatchArmList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MatchArmList extends Generated::MatchArmList { }
 }

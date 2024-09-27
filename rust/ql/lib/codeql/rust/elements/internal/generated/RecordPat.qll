@@ -16,6 +16,13 @@ import codeql.rust.elements.RecordPatFieldList
  */
 module Generated {
   /**
+   * A record pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::RecordPat` class directly.
    * Use the subclass `RecordPat`, where the following predicates are available.
    */

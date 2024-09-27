@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MatchGuard
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MatchGuard. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MatchGuard extends Generated::MatchGuard { }
 }

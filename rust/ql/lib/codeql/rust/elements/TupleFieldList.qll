@@ -7,4 +7,10 @@ private import internal.TupleFieldListImpl
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.TupleField
 
+/**
+ * A TupleFieldList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TupleFieldList = Impl::TupleFieldList;

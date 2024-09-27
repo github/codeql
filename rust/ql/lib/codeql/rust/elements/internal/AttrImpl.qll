@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.Attr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A Attr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Attr extends Generated::Attr { }
 }

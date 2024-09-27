@@ -17,6 +17,10 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A TupleField. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleField` class directly.
    * Use the subclass `TupleField`, where the following predicates are available.
    */

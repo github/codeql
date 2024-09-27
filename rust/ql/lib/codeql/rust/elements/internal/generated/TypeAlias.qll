@@ -23,6 +23,10 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
+   * A TypeAlias. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::TypeAlias` class directly.
    * Use the subclass `TypeAlias`, where the following predicates are available.
    */

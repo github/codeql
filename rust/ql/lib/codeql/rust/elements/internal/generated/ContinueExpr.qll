@@ -16,6 +16,21 @@ import codeql.rust.elements.Lifetime
  */
 module Generated {
   /**
+   * A continue expression. For example:
+   * ```rust
+   * loop {
+   *     if not_ready() {
+   *         continue;
+   *     }
+   * }
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     if not_ready() {
+   *         continue 'label;
+   *     }
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::ContinueExpr` class directly.
    * Use the subclass `ContinueExpr`, where the following predicates are available.
    */

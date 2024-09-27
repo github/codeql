@@ -7,4 +7,10 @@ private import internal.PathTypeImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.TypeRef
 
+/**
+ * A PathType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class PathType = Impl::PathType;

@@ -6,4 +6,10 @@
 private import internal.TokenTreeImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A TokenTree. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TokenTree = Impl::TokenTree;

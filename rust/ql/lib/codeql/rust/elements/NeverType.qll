@@ -6,4 +6,10 @@
 private import internal.NeverTypeImpl
 import codeql.rust.elements.TypeRef
 
+/**
+ * A NeverType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class NeverType = Impl::NeverType;

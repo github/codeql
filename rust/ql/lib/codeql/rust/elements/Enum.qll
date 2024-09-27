@@ -12,4 +12,10 @@ import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A Enum. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Enum = Impl::Enum;

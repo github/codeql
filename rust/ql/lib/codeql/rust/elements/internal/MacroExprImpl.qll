@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.MacroExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A MacroExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class MacroExpr extends Generated::MacroExpr { }
 }

@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
+   * A RestPat. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::RestPat` class directly.
    * Use the subclass `RestPat`, where the following predicates are available.
    */

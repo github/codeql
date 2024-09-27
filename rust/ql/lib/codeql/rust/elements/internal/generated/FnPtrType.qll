@@ -17,6 +17,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A FnPtrType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::FnPtrType` class directly.
    * Use the subclass `FnPtrType`, where the following predicates are available.
    */

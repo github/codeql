@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.StmtList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A StmtList. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class StmtList extends Generated::StmtList { }
 }

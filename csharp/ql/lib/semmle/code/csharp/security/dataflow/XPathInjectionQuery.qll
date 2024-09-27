@@ -58,7 +58,7 @@ module XpathInjection = TaintTracking::Global<XpathInjectionConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The `xpath` argument to an `XPathExpression.Compile(..)` call. */
 class XPathExpressionCompileSink extends Sink {

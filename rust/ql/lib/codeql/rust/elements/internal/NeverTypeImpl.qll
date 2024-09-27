@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.NeverType
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A NeverType. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class NeverType extends Generated::NeverType { }
 }

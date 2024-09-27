@@ -10,4 +10,10 @@ import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
 
+/**
+ * A WherePred. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class WherePred = Impl::WherePred;

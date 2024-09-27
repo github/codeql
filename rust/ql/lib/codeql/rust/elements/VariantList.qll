@@ -7,4 +7,10 @@ private import internal.VariantListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Variant
 
+/**
+ * A VariantList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class VariantList = Impl::VariantList;

@@ -16,6 +16,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A ForType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ForType` class directly.
    * Use the subclass `ForType`, where the following predicates are available.
    */

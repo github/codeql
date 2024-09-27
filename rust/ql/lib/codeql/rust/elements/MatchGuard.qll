@@ -7,4 +7,10 @@ private import internal.MatchGuardImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 
+/**
+ * A MatchGuard. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MatchGuard = Impl::MatchGuard;

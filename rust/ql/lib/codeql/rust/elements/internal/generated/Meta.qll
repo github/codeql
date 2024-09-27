@@ -17,6 +17,10 @@ import codeql.rust.elements.TokenTree
  */
 module Generated {
   /**
+   * A Meta. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Meta` class directly.
    * Use the subclass `Meta`, where the following predicates are available.
    */

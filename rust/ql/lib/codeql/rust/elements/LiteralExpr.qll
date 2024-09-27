@@ -7,4 +7,17 @@ private import internal.LiteralExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
+/**
+ * A literal expression. For example:
+ * ```rust
+ * 42;
+ * 42.0;
+ * "Hello, world!";
+ * b"Hello, world!";
+ * 'x';
+ * b'x';
+ * r"Hello, world!";
+ * true;
+ * ```
+ */
 final class LiteralExpr = Impl::LiteralExpr;

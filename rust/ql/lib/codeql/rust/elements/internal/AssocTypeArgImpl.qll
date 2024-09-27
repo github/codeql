@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.AssocTypeArg
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A AssocTypeArg. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class AssocTypeArg extends Generated::AssocTypeArg { }
 }

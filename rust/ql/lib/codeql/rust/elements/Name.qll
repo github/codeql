@@ -6,4 +6,10 @@
 private import internal.NameImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A Name. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Name = Impl::Name;

@@ -10,4 +10,16 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.ParamList
 import codeql.rust.elements.RetType
 
+/**
+ * A closure expression. For example:
+ * ```rust
+ * |x| x + 1;
+ * move |x: i32| -> i32 { x + 1 };
+ * async |x: i32, y| x + y;
+ *  #[coroutine]
+ * |x| yield x;
+ *  #[coroutine]
+ *  static |x| yield x;
+ * ```
+ */
 final class ClosureExpr = Impl::ClosureExpr;

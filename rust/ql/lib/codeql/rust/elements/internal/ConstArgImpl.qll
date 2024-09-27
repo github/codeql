@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.ConstArg
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A ConstArg. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class ConstArg extends Generated::ConstArg { }
 }

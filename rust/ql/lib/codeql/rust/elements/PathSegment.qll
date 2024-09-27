@@ -13,4 +13,10 @@ import codeql.rust.elements.RetType
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeRef
 
+/**
+ * A PathSegment. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class PathSegment = Impl::PathSegment;

@@ -11,3 +11,4 @@ For how documentation of generated QL code works, please read `misc/codegen/sche
 
 from .prelude import *
 from .ast import *
+from .annotations import *

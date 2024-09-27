@@ -15,6 +15,10 @@ import codeql.rust.elements.MacroCall
  */
 module Generated {
   /**
+   * A MacroExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::MacroExpr` class directly.
    * Use the subclass `MacroExpr`, where the following predicates are available.
    */

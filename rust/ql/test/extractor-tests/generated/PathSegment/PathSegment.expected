@@ -1,0 +1,1 @@
+| gen_path_segment.rs:5:5:5:8 | PathSegment | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |

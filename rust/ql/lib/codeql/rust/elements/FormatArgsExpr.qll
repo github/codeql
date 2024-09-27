@@ -8,4 +8,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FormatArgsArg
 
+/**
+ * A FormatArgsExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class FormatArgsExpr = Impl::FormatArgsExpr;

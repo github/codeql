@@ -6,4 +6,10 @@
 private import internal.LifetimeImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A Lifetime. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Lifetime = Impl::Lifetime;

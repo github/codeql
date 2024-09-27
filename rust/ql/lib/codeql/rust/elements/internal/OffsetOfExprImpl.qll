@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.OffsetOfExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   *  An `offset_of` expression. For example:
+   * ```rust
+   * builtin # offset_of(Struct, field);
+   * ```
+   */
   class OffsetOfExpr extends Generated::OffsetOfExpr { }
 }

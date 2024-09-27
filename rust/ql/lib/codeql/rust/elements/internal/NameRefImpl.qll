@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.NameRef
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A NameRef. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class NameRef extends Generated::NameRef { }
 }

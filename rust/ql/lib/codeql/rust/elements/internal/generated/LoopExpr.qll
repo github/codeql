@@ -17,6 +17,28 @@ import codeql.rust.elements.Label
  */
 module Generated {
   /**
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::LoopExpr` class directly.
    * Use the subclass `LoopExpr`, where the following predicates are available.
    */

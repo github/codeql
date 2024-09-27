@@ -156,10 +156,10 @@ def test_classes_with_dirs(generate_grouped):
     cbase = cpp.Class(name="CBase")
     assert generate_grouped([
         schema.Class(name="A"),
-        schema.Class(name="B", group="foo"),
-        schema.Class(name="CBase", derived={"C"}, group="bar"),
-        schema.Class(name="C", bases=["CBase"], group="bar"),
-        schema.Class(name="D", group="foo/bar/baz"),
+        schema.Class(name="B", pragmas={"group": "foo"}),
+        schema.Class(name="CBase", derived={"C"}, pragmas={"group": "bar"}),
+        schema.Class(name="C", bases=["CBase"], pragmas={"group": "bar"}),
+        schema.Class(name="D", pragmas={"group": "foo/bar/baz"}),
     ]) == {
         ".": [cpp.Class(name="A", trap_name="As", final=True)],
         "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],

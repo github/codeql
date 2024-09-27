@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.SourceFile
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A SourceFile. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class SourceFile extends Generated::SourceFile { }
 }

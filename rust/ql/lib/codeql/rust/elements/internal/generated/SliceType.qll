@@ -15,6 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
+   * A SliceType. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::SliceType` class directly.
    * Use the subclass `SliceType`, where the following predicates are available.
    */

@@ -17,6 +17,10 @@ import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
  */
 module Generated {
   /**
+   * A ExternBlock. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::ExternBlock` class directly.
    * Use the subclass `ExternBlock`, where the following predicates are available.
    */

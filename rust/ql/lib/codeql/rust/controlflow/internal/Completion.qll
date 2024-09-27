@@ -3,7 +3,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
 private import SuccessorType
 
-private newtype TCompletion =
+newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or

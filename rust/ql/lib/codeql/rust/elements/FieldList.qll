@@ -6,4 +6,10 @@
 private import internal.FieldListImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * A FieldList. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class FieldList = Impl::FieldList;

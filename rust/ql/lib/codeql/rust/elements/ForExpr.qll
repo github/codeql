@@ -10,4 +10,10 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 import codeql.rust.elements.Pat
 
+/**
+ * A ForExpr. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class ForExpr = Impl::ForExpr;

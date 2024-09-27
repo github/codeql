@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.RecordPatField
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A field in a record pattern. For example `a: 1` in:
+   * ```rust
+   * let Foo { a: 1, b: 2 } = foo;
+   * ```
+   */
   class RecordPatField extends Generated::RecordPatField { }
 }

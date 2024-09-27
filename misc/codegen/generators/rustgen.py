@@ -72,13 +72,28 @@ class Processor:
 
     def _get_class(self, name: str) -> rust.Class:
         cls = self._classmap[name]
+        properties = [
+            (c, p)
+            for c, p in _get_properties(cls, self._classmap)
+            if "rust_skip" not in p.pragmas and not p.synth
+        ]
+        fields = []
+        detached_fields = []
+        for c, p in properties:
+            if "rust_detach" in p.pragmas:
+                # only generate detached fields in the actual class defining them, not the derived ones
+                if c is cls:
+                    # TODO lift this restriction if required (requires change in dbschemegen as well)
+                    assert c.derived or not p.is_single, \
+                        f"property {p.name} in concrete class marked as detached but not optional"
+                    detached_fields.append(_get_field(c, p))
+            elif not cls.derived:
+                # for non-detached ones, only generate fields in the concrete classes
+                fields.append(_get_field(c, p))
         return rust.Class(
             name=name,
-            fields=[
-                _get_field(c, p)
-                for c, p in _get_properties(cls, self._classmap)
-                if "rust_skip" not in p.pragmas and not p.synth
-            ] if not cls.derived else [],
+            fields=fields,
+            detached_fields=detached_fields,
             ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
             entry_table=inflection.tableize(cls.name) if not cls.derived else None,
         )

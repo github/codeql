@@ -1,6 +1,7 @@
 """ schema format representation """
 import abc
 import typing
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, Optional
 from enum import Enum, auto
@@ -91,11 +92,8 @@ class Class:
     bases: List[str] = field(default_factory=list)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
-    group: str = ""
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
-    hideable: bool = False
-    test_with: Optional[str] = None
 
     def __post_init__(self):
         if not isinstance(self.pragmas, dict):
@@ -118,7 +116,7 @@ class Class:
             if synth.on_arguments is not None:
                 for t in synth.on_arguments.values():
                     _check_type(t, known)
-        _check_type(self.test_with, known)
+        _check_type(self.pragmas.get("qltest_test_with"), known)
 
     @property
     def synth(self) -> SynthInfo | bool | None:
@@ -126,6 +124,10 @@ class Class:
 
     def mark_synth(self):
         self.pragmas.setdefault("synth", True)
+
+    @property
+    def group(self) -> str:
+        return typing.cast(str, self.pragmas.get("group", ""))
 
 
 @dataclass
@@ -142,6 +144,12 @@ class Schema:
     @property
     def null_class(self):
         return self.classes[self.null] if self.null else None
+
+    def iter_properties(self, cls: str) -> Iterable[Property]:
+        cls = self.classes[cls]
+        for b in cls.bases:
+            yield from self.iter_properties(b)
+        yield from cls.properties
 
 
 predicate_marker = object()
@@ -211,3 +219,6 @@ def split_doc(doc):
     while trimmed and not trimmed[0]:
         trimmed.pop(0)
     return trimmed
+
+
+inheritable_pragma_prefix = "_inheritable_pragma_"

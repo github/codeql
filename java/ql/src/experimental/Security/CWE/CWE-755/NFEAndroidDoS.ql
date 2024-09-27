@@ -24,7 +24,7 @@ import NfeLocalDoSFlow::PathGraph
  */
 module NfeLocalDoSConfig implements DataFlow::ConfigSig {
   /** Holds if source is a remote flow source */
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   /** Holds if NFE is thrown but not caught */
   predicate isSink(DataFlow::Node sink) {

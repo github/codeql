@@ -12,5 +12,11 @@ private import codeql.rust.elements.internal.generated.FieldExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A field access expression. For example:
+   * ```rust
+   * x.foo
+   * ```
+   */
   class FieldExpr extends Generated::FieldExpr { }
 }

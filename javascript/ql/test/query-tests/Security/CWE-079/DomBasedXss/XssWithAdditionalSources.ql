@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id js/xss
+ * @id js/xss-additional-sources-dom-test
  * @tags security
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116

@@ -20,6 +20,10 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
+   * A Const. For example:
+   * ```rust
+   * todo!()
+   * ```
    * INTERNAL: Do not reference the `Generated::Const` class directly.
    * Use the subclass `Const`, where the following predicates are available.
    */

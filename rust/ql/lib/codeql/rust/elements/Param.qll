@@ -9,4 +9,10 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Pat
 import codeql.rust.elements.TypeRef
 
+/**
+ * A Param. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Param = Impl::Param;

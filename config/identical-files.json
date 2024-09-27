@@ -57,10 +57,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
   ],
-  "Model as Data Generation Java/C# - CaptureModels": [
-    "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
-    "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
-  ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
@@ -355,5 +351,9 @@
   "Python model summaries test extension": [
     "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
     "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+  ],
+  "Diagnostics.qll": [
+    "ruby/ql/lib/codeql/ruby/Diagnostics.qll",
+    "rust/ql/lib/codeql/rust/Diagnostics.qll"
   ]
 }

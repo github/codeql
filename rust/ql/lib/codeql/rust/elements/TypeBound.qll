@@ -9,4 +9,10 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRef
 
+/**
+ * A TypeBound. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class TypeBound = Impl::TypeBound;

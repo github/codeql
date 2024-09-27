@@ -101,7 +101,7 @@ def test_group():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', group="xxx"),
+        'A': schema.Class('A', pragmas={"group": "xxx"}),
     }
 
 
@@ -124,8 +124,8 @@ def test_group_is_inherited():
     assert data.classes == {
         'A': schema.Class('A', derived={'B', 'C'}),
         'B': schema.Class('B', bases=['A'], derived={'D'}),
-        'C': schema.Class('C', bases=['A'], derived={'D'}, group='xxx'),
-        'D': schema.Class('D', bases=['B', 'C'], group='xxx'),
+        'C': schema.Class('C', bases=['A'], derived={'D'}, pragmas={"group": "xxx"}),
+        'D': schema.Class('D', bases=['B', 'C'], pragmas={"group": "xxx"}),
     }
 
 
@@ -726,11 +726,11 @@ def test_hideable():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, hideable=True),
-        "A": schema.Class("A", bases=["Root"], derived={"B"}, hideable=True),
-        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, hideable=True),
-        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], hideable=True),
-        "NonHideable": schema.Class("NonHideable", bases=["Root"], hideable=False),
+        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, pragmas=["ql_hideable"]),
+        "A": schema.Class("A", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], pragmas=["ql_hideable"]),
+        "NonHideable": schema.Class("NonHideable", bases=["Root"]),
     }
 
 
@@ -754,12 +754,16 @@ def test_test_with():
         class D(Root):
             pass
 
+        class E(B):
+            pass
+
     assert data.classes == {
         "Root": schema.Class("Root", derived=set("ABCD")),
         "A": schema.Class("A", bases=["Root"]),
-        "B": schema.Class("B", bases=["Root"], test_with="A"),
-        "C": schema.Class("C", bases=["Root"], test_with="D"),
+        "B": schema.Class("B", bases=["Root"], pragmas={"qltest_test_with": "A"}, derived={'E'}),
+        "C": schema.Class("C", bases=["Root"], pragmas={"qltest_test_with": "D"}),
         "D": schema.Class("D", bases=["Root"]),
+        "E": schema.Class("E", bases=["B"], pragmas={"qltest_test_with": "A"}),
     }
 
 
@@ -804,7 +808,7 @@ def test_annotate_decorations():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", hideable=True, pragmas=["qltest_skip", "cpp_skip", "qltest_collapse_hierarchy"]),
+        "Root": schema.Class("Root", pragmas=["qltest_skip", "cpp_skip", "ql_hideable", "qltest_collapse_hierarchy"]),
     }
 
 

@@ -13,4 +13,10 @@ import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
+/**
+ * A Trait. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class Trait = Impl::Trait;

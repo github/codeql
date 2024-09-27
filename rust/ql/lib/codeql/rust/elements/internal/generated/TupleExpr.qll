@@ -16,6 +16,11 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * A tuple expression. For example:
+   * ```rust
+   * (1, "one");
+   * (2, "two")[0] = 3;
+   * ```
    * INTERNAL: Do not reference the `Generated::TupleExpr` class directly.
    * Use the subclass `TupleExpr`, where the following predicates are available.
    */

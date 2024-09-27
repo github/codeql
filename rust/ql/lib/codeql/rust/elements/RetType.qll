@@ -7,4 +7,10 @@ private import internal.RetTypeImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.TypeRef
 
+/**
+ * A RetType. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class RetType = Impl::RetType;
