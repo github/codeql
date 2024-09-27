@@ -979,6 +979,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /** Gets the basic block to which this SSA definition belongs. */
+    cached // needed by BarrierGuards
     final BasicBlock getBasicBlock() { this.definesAt(_, result, _, _) }
 
     /** Gets a textual representation of this SSA definition. */
