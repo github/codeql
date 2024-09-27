@@ -150,20 +150,50 @@ module SourceSinkInterpretationInput implements
   }
 
   private newtype TSourceOrSinkElement =
-    TEntityElement(Entity e) or
+    TMethodEntityElement(Method m, string pkg, string type, boolean subtypes) {
+      m.hasQualifiedName(pkg, type, _) and subtypes = [true, false]
+    } or
+    TFieldEntityElement(Field f, string pkg, string type, boolean subtypes) {
+      f.hasQualifiedName(pkg, type, _) and subtypes = [true, false]
+    } or
+    TOtherEntityElement(Entity e) {
+      not e instanceof Method and
+      not e instanceof Field
+    } or
     TAstElement(AstNode n)
 
   /** An element representable by CSV modeling. */
   class SourceOrSinkElement extends TSourceOrSinkElement {
     /** Gets this source or sink element as an entity, if it is one. */
-    Entity asEntity() { this = TEntityElement(result) }
+    Entity asEntity() {
+      this = TMethodEntityElement(result, _, _, _) or
+      this = TFieldEntityElement(result, _, _, _) or
+      this = TOtherEntityElement(result)
+    }
 
     /** Gets this source or sink element as an AST node, if it is one. */
     AstNode asAstNode() { this = TAstElement(result) }
 
+    /**
+     * Holds if this source or sink element is a method that was specified
+     * with the given values for `pkg`, `type` and `subtypes`.
+     */
+    predicate hasTypeInfo(string pkg, string type, boolean subtypes) {
+      this = TMethodEntityElement(_, pkg, type, subtypes) or
+      this = TFieldEntityElement(_, pkg, type, subtypes)
+    }
+
     /** Gets a textual representation of this source or sink element. */
     string toString() {
+      not this.hasTypeInfo(_, _, _) and
       result = "element representing " + [this.asEntity().toString(), this.asAstNode().toString()]
+      or
+      exists(string pkg, string name, boolean subtypes |
+        this.hasTypeInfo(pkg, name, subtypes) and
+        result =
+          "element representing " + this.asEntity().toString() + " with receiver type " + pkg + "." +
+            name + " and subtypes=" + subtypes
+      )
     }
 
     /** Gets the location of this element. */
@@ -203,7 +233,17 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the target of this call, if any. */
     SourceOrSinkElement getCallTarget() {
-      result.asEntity() = this.asCall().getNode().(DataFlow::CallNode).getTarget()
+      exists(DataFlow::CallNode cn, Function callTarget |
+        cn = this.asCall().getNode() and
+        callTarget = cn.getTarget()
+      |
+        result.asEntity() = callTarget and
+        (
+          not callTarget instanceof Method
+          or
+          ensureCorrectTypeInfo(result, cn.getReceiver())
+        )
+      )
     }
 
     /** Gets a textual representation of this node. */
@@ -228,6 +268,106 @@ module SourceSinkInterpretationInput implements
     }
   }
 
+  private predicate ensureCorrectTypeInfo(SourceOrSinkElement sse, DataFlow::Node recv) {
+    exists(
+      string pkg, string typename, boolean subtypes, Type syntacticRecvType,
+      Type syntacticRecvBaseType
+    |
+      sse.hasTypeInfo(pkg, typename, subtypes) and
+      syntacticRecvType = skipImplicitFieldReads(recv).getType() and
+      if syntacticRecvType instanceof PointerType
+      then syntacticRecvBaseType = syntacticRecvType.(PointerType).getBaseType()
+      else syntacticRecvBaseType = syntacticRecvType
+    |
+      subtypes = [true, false] and
+      syntacticRecvBaseType.hasQualifiedName(pkg, typename)
+      or
+      subtypes = true and
+      (
+        // `syntacticRecvBaseType`'s underlying type might be an interface type and `sse`
+        // might be a method defined on an embedded interface.
+        exists(Type t |
+          t = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
+          t.hasQualifiedName(pkg, typename) and
+          sse.asEntity().(Method).hasQualifiedName(pkg, typename, _)
+        )
+        or
+        // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
+        // might be a promoted method.
+        exists(StructType st, Field embeddedParent, int depth |
+          st = syntacticRecvBaseType.getUnderlyingType() and
+          sse.asEntity() = st.getMethodOfEmbedded(embeddedParent, _, depth) and
+          methodTypeInfoHelper(sse.asEntity(), embeddedParent, st, depth, pkg, typename)
+        )
+        or
+        // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
+        // might be a promoted field.
+        exists(StructType st, Field embeddedParent, int depth |
+          st = syntacticRecvBaseType.getUnderlyingType() and
+          sse.asEntity() = st.getFieldOfEmbedded(embeddedParent, _, depth, false) and
+          fieldTypeInfoHelper(sse.asEntity(), embeddedParent, st, depth, pkg, typename)
+        )
+      )
+    )
+  }
+
+  private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
+    not exists(getImplicitFieldReadInstruction(n)) and result = n
+    or
+    result =
+      skipImplicitFieldReads(DataFlow::instructionNode(getImplicitFieldReadInstruction(n)
+              .getBaseInstruction()))
+  }
+
+  pragma[inline]
+  private IR::ImplicitFieldReadInstruction getImplicitFieldReadInstruction(DataFlow::Node n) {
+    result = n.(DataFlow::InstructionNode).asInstruction()
+  }
+
+  /**
+   * Holds if `st` has an embedded field `embeddedParent` at depth `depth` - 1,
+   * which has a method `m` defined directly on it, and the type of
+   * `embeddedParent` is `pkg.name`.
+   */
+  private predicate methodTypeInfoHelper(
+    Method m, Field embeddedParent, StructType st, int depth, string pkg, string name
+  ) {
+    depth = 1 and
+    embeddedParent = st.getOwnField(_, true) and
+    embeddedParent.getType().hasQualifiedName(pkg, name) and
+    m.getReceiverBaseType() = embeddedParent.getType()
+    or
+    depth > 1 and
+    exists(Field f, StructType st2 |
+      f = st.getOwnField(_, true) and
+      st2 = f.getType().getUnderlyingType() and
+      m = st2.getMethodOfEmbedded(embeddedParent, _, depth - 1) and
+      methodTypeInfoHelper(m, f, st2, depth - 1, pkg, name)
+    )
+  }
+
+  /**
+   * Holds if `st` has an embedded field `embeddedParent` at depth `depth` - 1,
+   * which has a method `m` defined directly on it, and the type of
+   * `embeddedParent` is `pkg.name`.
+   */
+  private predicate fieldTypeInfoHelper(
+    Field targetField, Field embeddedParent, StructType st, int depth, string pkg, string name
+  ) {
+    depth = 1 and
+    embeddedParent = st.getOwnField(_, true) and
+    embeddedParent.getType().hasQualifiedName(pkg, name) and
+    targetField.getDeclaringType() = embeddedParent.getType().getUnderlyingType()
+    or
+    depth > 1 and
+    exists(Field f, StructType st2 |
+      f = st.getOwnField(_, true) and
+      st2 = f.getType().getUnderlyingType() and
+      targetField = st2.getFieldOfEmbedded(embeddedParent, _, depth - 1, false) and
+      fieldTypeInfoHelper(targetField, f, st2, depth - 1, pkg, name)
+    )
+  }
+
   /** Provides additional sink specification logic. */
   bindingset[c]
   predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) {
@@ -244,8 +384,11 @@ module SourceSinkInterpretationInput implements
       (c = "Parameter" or c = "") and
       node.asNode().asParameter() = e.asEntity()
       or
-      c = "" and
-      n.(DataFlow::FieldReadNode).getField() = e.asEntity()
+      exists(DataFlow::FieldReadNode frn | frn = n |
+        c = "" and
+        frn.getField() = e.asEntity() and
+        ensureCorrectTypeInfo(e, frn.getBase())
+      )
     )
   }
 
@@ -259,10 +402,13 @@ module SourceSinkInterpretationInput implements
       mid.asCallable() = getNodeEnclosingCallable(ret)
     )
     or
-    exists(DataFlow::Write fw, Field f |
+    exists(SourceOrSinkElement e, DataFlow::Write fw, DataFlow::Node base, Field f |
+      e = mid.asElement() and
+      f = e.asEntity()
+    |
       c = "" and
-      f = mid.asElement().asEntity() and
-      fw.writesField(_, f, node.asNode())
+      fw.writesField(base, f, node.asNode()) and
+      ensureCorrectTypeInfo(e, base)
     )
   }
 }
