@@ -142,3 +142,34 @@ function t8() {
     const taint = source('t8.1') + ' taint';
     foo(taint);
 }
+
+function t9() { // same as t8 but with a SanitizerGuard that isn't just a variable access
+    function foo(x) {
+        const obj = {};
+        obj.field = x;
+
+        sink(obj.field); // $ hasTaintFlow=t9.1
+
+        if (typeof obj !== "undefined") {
+            sink(obj.field); // $ hasTaintFlow=t9.1
+        } else {
+            sink(obj.field);
+        }
+
+        if (typeof obj === "undefined") {
+            sink(obj.field);
+        } else {
+            sink(obj.field); // $ hasTaintFlow=t9.1
+        }
+
+        if (typeof obj === "undefined" || typeof obj === "undefined") {
+            sink(obj.field); // $ SPURIOUS: hasTaintFlow=t9.1
+        } else {
+            sink(obj.field); // $ hasTaintFlow=t9.1
+        }
+    }
+
+    // The guards used above are specific to taint-tracking, to ensure only taint flows in
+    const taint = source('t9.1') + ' taint';
+    foo(taint);
+}
