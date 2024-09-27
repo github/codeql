@@ -82,6 +82,7 @@ extensions:
       - ["java.io", "ByteArrayOutputStream", False, "writeTo", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "CharArrayReader", False, "CharArrayReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "CharArrayWriter", True, "toCharArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "CharArrayWriter", True, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readFully", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "DataInput", True, "readLine", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readUTF", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
