@@ -150,20 +150,46 @@ module SourceSinkInterpretationInput implements
   }
 
   private newtype TSourceOrSinkElement =
-    TEntityElement(Entity e) or
+    TEntityElement(Entity e, string pkg, string type, boolean subtypes) {
+      e.(Method).hasQualifiedName(pkg, type, _) and subtypes = [true, false]
+      or
+      // or
+      // exists(Method m, string ppe, string ppm |
+      //   // m.getName() = "Source" and
+      //   ppe = e.(Method).getQualifiedName() and
+      //   ppm = m.getQualifiedName() and
+      //   e.(Method).getReceiverBaseType().getUnderlyingType() instanceof InterfaceType and
+      //   m.implementsIncludingInterfaceMethods(e) and
+      //   m.getReceiverBaseType().hasQualifiedName(pkg, type) and
+      //   subtypes = true
+      // )
+      not e instanceof Method and pkg = "" and type = "" and subtypes = false
+    } or
     TAstElement(AstNode n)
 
   /** An element representable by CSV modeling. */
   class SourceOrSinkElement extends TSourceOrSinkElement {
     /** Gets this source or sink element as an entity, if it is one. */
-    Entity asEntity() { this = TEntityElement(result) }
+    Entity asEntity() { this = TEntityElement(result, _, _, _) }
 
     /** Gets this source or sink element as an AST node, if it is one. */
     AstNode asAstNode() { this = TAstElement(result) }
 
+    predicate hasReceiverInfo(string pkg, string type, boolean subtypes) {
+      this = TEntityElement(any(Method m), pkg, type, subtypes)
+    }
+
     /** Gets a textual representation of this source or sink element. */
     string toString() {
+      not this.asEntity() instanceof Method and
       result = "element representing " + [this.asEntity().toString(), this.asAstNode().toString()]
+      or
+      exists(string pkg, string name, boolean subtypes |
+        this.hasReceiverInfo(pkg, name, subtypes) and
+        result =
+          "element representing " + this.asEntity().toString() + " with receiver type " + pkg + "." +
+            name + " and subtypes=" + subtypes
+      )
     }
 
     /** Gets the location of this element. */
@@ -203,7 +229,54 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the target of this call, if any. */
     SourceOrSinkElement getCallTarget() {
-      result.asEntity() = this.asCall().getNode().(DataFlow::CallNode).getTarget()
+      exists(
+        DataFlow::CallNode cn, Method m, string pkg, string name, boolean subtypes,
+        DataFlow::Node syntacticRecv, Type syntacticRecvType, Type syntacticRecvBaseType
+      |
+        cn = this.asCall().getNode() and
+        result.asEntity() = cn.getTarget() and
+        // result.asEntity().getName() = "Source" and
+        cn = this.asCall().getNode() and
+        result.asEntity() = cn.getTarget() and
+        m = cn.getTarget() and
+        result.hasReceiverInfo(pkg, name, subtypes) and
+        syntacticRecv = skipImplicitFieldReads(cn.getReceiver()) and
+        syntacticRecvType = syntacticRecv.getType() and
+        (
+          if syntacticRecvType instanceof PointerType
+          then syntacticRecvBaseType = syntacticRecvType.(PointerType).getBaseType()
+          else syntacticRecvBaseType = syntacticRecvType
+        ) and
+        (
+          syntacticRecvBaseType.hasQualifiedName(pkg, name)
+          or
+          subtypes = true and
+          (
+            // `syntacticRecvBaseType`'s underlying type might be a struct type and `result`
+            // might relate to a promoted method.
+            exists(string ppm, StructType st, string ppst, Field embeddedParent, int depth |
+              ppm = m.getQualifiedName() and
+              st = syntacticRecvBaseType.getUnderlyingType() and
+              ppst = st.pp() and
+              m = st.getMethodOfEmbedded(embeddedParent, _, depth) and
+              receiverInfoHelper(m, embeddedParent, st, depth, pkg, name)
+              //  and
+              // //redundant
+              // syntacticRecvBaseType = cn.getReceiver().getType() and
+              // m = cn.getTarget()
+            )
+            or
+            // `syntacticRecvBaseType`'s underlying type might be an interface type and `result`
+            // might relate to an embedded interface.
+            exists(Type t, string pprecv |
+              pprecv = syntacticRecvBaseType.pp() and
+              t = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
+              t.hasQualifiedName(pkg, name) and
+              m.hasQualifiedName(pkg, name, _)
+            )
+          )
+        )
+      )
     }
 
     /** Gets a textual representation of this node. */
@@ -226,6 +299,40 @@ module SourceSinkInterpretationInput implements
         result.hasLocationInfo(fp, sl, sc, el, ec)
       )
     }
+  }
+
+  private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
+    not exists(getImplicitFieldReadInstruction(n)) and result = n
+    or
+    result =
+      skipImplicitFieldReads(DataFlow::instructionNode(getImplicitFieldReadInstruction(n)
+              .getBaseInstruction()))
+  }
+
+  pragma[inline]
+  private IR::ImplicitFieldReadInstruction getImplicitFieldReadInstruction(DataFlow::Node n) {
+    result = n.(DataFlow::InstructionNode).asInstruction()
+  }
+
+  /**
+   * Holds if `st` has a method `m` at depth `methodDepth` and an embedded
+   * field at depth `fieldDepth` which is on the chain of embedded fields which
+   * leads to `m` being promoted, and the type of the field is `pkg.name`.
+   */
+  private predicate receiverInfoHelper(
+    Method m, Field embeddedParent, StructType st, int depth, string pkg, string name
+  ) {
+    depth = 1 and
+    embeddedParent = st.getOwnField(_, true) and
+    embeddedParent.getType().hasQualifiedName(pkg, name)
+    or
+    depth > 1 and
+    exists(Type embeddedType, StructType st2 |
+      st.hasOwnField(_, _, embeddedType, true) and
+      st2 = embeddedType.getUnderlyingType() and
+      m = st2.getMethodOfEmbedded(embeddedParent, _, depth - 1) and
+      receiverInfoHelper(m, embeddedParent, st2, depth - 1, pkg, name)
+    )
   }
 
   /** Provides additional sink specification logic. */

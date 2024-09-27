@@ -475,17 +475,33 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   elementSpec(pkg, type, subtypes, name, signature, ext) and
   // Go does not need to distinguish functions with signature
   signature = "" and
-  (
-    exists(Field f | f.hasQualifiedName(interpretPackage(pkg), type, name) | result.asEntity() = f)
+  exists(string p | p = interpretPackage(pkg) |
+    exists(Field f | f.hasQualifiedName(p, type, name) | result.asEntity() = f)
     or
-    exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
-      result.asEntity() = m
+    exists(Method m | m.hasQualifiedName(p, type, name) |
+      m.hasQualifiedName(p, type, name) and
+      elementSpec(pkg, type, subtypes, name, signature, ext) and
+      p = interpretPackage(pkg) and
+      result.asEntity() = m and
+      result.hasReceiverInfo(p, type, subtypes)
       or
-      subtypes = true and result.asEntity().(Method).implementsIncludingInterfaceMethods(m)
+      subtypes = true and
+      // p.type is an interface and we include types which implement it
+      exists(Method m2, string pkg2, string type2 |
+        subtypes = true and
+        m.hasQualifiedName(p, type, name) and
+        elementSpec(pkg, type, subtypes, name, signature, ext) and
+        p = interpretPackage(pkg) and
+        m2.getReceiverType().implements(p, type) and
+        m2.getName() = name and
+        m2.getReceiverBaseType().hasQualifiedName(pkg2, type2) and
+        result.asEntity() = m2 and
+        result.hasReceiverInfo(pkg2, type2, subtypes)
+      )
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(interpretPackage(pkg), name) | result.asEntity() = e)
+    exists(Entity e | e.hasQualifiedName(p, name) | result.asEntity() = e)
   )
 }
 
