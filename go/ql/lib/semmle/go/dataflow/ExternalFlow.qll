@@ -25,8 +25,12 @@
  *    packages in the group `<groupname>` according to the `packageGrouping`
  *    predicate.
  * 2. The `type` column selects a type within that package.
- * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ * 3. The `subtypes` column is a boolean that controls what restrictions we
+ *    place on the type `t` of the selector base when accessing a field or
+ *    calling a method. When it is false, `t` must be the exact type specified
+ *    by this row. When it is true, `t` may be a type which embeds the specified
+ *    type, and for interface methods `t` may be a type which implements the
+ *    interface.
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column is always empty.
  * 6. The `ext` column is always empty.
