@@ -737,10 +737,6 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   override string toString() { result = "type set literal type" }
 }
 
-predicate foo(NamedType t, string name, Type mt) {
-  t.getUnderlyingType().(InterfaceType).getMethodType(name) = mt
-}
-
 /** An interface type. */
 class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
