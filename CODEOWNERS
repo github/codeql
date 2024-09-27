@@ -10,6 +10,7 @@
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
+/java/kotlin-extractor2/ @github/codeql-kotlin
 /java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
