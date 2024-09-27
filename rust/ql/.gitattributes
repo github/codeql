@@ -241,7 +241,6 @@
 /lib/codeql/rust/elements/internal/GenericParamListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IdentPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/IdentPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplConstructor.qll linguist-generated
