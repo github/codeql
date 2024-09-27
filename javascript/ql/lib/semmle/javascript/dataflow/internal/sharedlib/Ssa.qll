@@ -66,6 +66,16 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
 
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() } // Not handled here
 
+  cached
+  Expr getARead(Definition def) {
+    // Copied from implementation so we can cache it here
+    exists(SsaConfig::SourceVariable v, js::BasicBlock bb, int i |
+      ssaDefReachesRead(v, def, bb, i) and
+      SsaConfig::variableRead(bb, i, v, true) and
+      result.hasCfgNode(bb, i)
+    )
+  }
+
   class Guard extends js::ControlFlowNode {
     Guard() { this = any(js::ConditionGuardNode g).getTest() }
 
