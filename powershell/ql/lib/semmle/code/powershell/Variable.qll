@@ -14,10 +14,10 @@ private predicate hasParameterBlockImpl(Internal::Parameter p, ParamBlock block,
 
 /**
  * Gets the enclosing scope of `p`.
- * 
+ *
  * For a function parameter, this is the function body. For a parameter from a
  * parameter block, this is the enclosing scope of the parameter block.
- * 
+ *
  * In both of the above cases, the enclosing scope is the function body.
  */
 private Scope getEnclosingScopeImpl(Internal::Parameter p) {
@@ -176,6 +176,8 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   override string getName() { result = p.getName() }
 
+  final predicate hasName(string name) { name = p.getName() }
+
   final override Scope getDeclaringScope() { result = p.getEnclosingScope() }
 
   predicate hasParameterBlock(ParamBlock block, int i) { p.hasParameterBlock(block, i) }
@@ -186,7 +188,18 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
-  int getIndex() { this.isFunctionParameter(_, result) }
+  /**
+   * Gets the index of this parameter.
+   *
+   * The parameter may be in a parameter block or a function parameter.
+   */
+  int getIndex() { result = this.getFunctionIndex() or result = this.getBlockIndex() }
+
+  /** Gets the index of this parameter in the parameter block, if any. */
+  int getBlockIndex() { this.hasParameterBlock(_, result) }
+
+  /** Gets the index of this parameter in the function, if any. */
+  int getFunctionIndex() { this.isFunctionParameter(_, result) }
 
   Function getFunction() { result.getBody() = this.getDeclaringScope() }
 }

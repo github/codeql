@@ -170,34 +170,75 @@ private module Cached {
 
   cached
   newtype TArgumentPosition =
-    TPositionalArgumentPosition(int pos) { exists(Cmd c | exists(c.getArgument(pos))) }
+    TKeywordArgumentPosition(string name) { name = any(CmdParameter p).getName() } or
+    TPositionalArgumentPosition(int pos, NamedSet ns) {
+      exists(Cmd cmd |
+        cmd = ns.getABindingCall() and
+        exists(cmd.getArgument(pos))
+      )
+    }
 
   cached
-  newtype TParameterPosition = TPositionalParameterPosition(int pos) { none() /* TODO */ }
+  newtype TParameterPosition =
+    TKeywordParameter(string name) { name = any(CmdParameter p).getName() } or
+    TPositionalParameter(int pos, NamedSet ns) {
+      exists(Cmd cmd |
+        cmd = ns.getABindingCall() and
+        exists(cmd.getArgument(pos))
+      )
+    }
 }
 
 import Cached
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {
-  /** Holds if this position represents a positional parameter at position `pos`. */
-  predicate isPositional(int pos) { this = TPositionalParameterPosition(pos) }
+  /**
+   * Holds if this position represents a positional parameter at position `pos`
+   * with function is called with exactly the named parameters from the set `ns`
+   */
+  predicate isPositional(int pos, NamedSet ns) { this = TPositionalParameter(pos, ns) }
+
+  /** Holds if this parameter is a keyword parameter with `name`. */
+  predicate isKeyword(string name) { this = TKeywordParameter(name) }
 
   /** Gets a textual representation of this position. */
-  string toString() { exists(int pos | this.isPositional(pos) and result = "position " + pos) }
+  string toString() {
+    exists(int pos, NamedSet ns |
+      this.isPositional(pos, ns) and result = "pos(" + pos + ", " + ns.toString() + ")"
+    )
+    or
+    exists(string name | this.isKeyword(name) and result = "kw(" + name + ")")
+  }
 }
 
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a positional argument at position `pos`. */
-  predicate isPositional(int pos) { this = TPositionalArgumentPosition(pos) }
+  predicate isPositional(int pos, NamedSet ns) { this = TPositionalArgumentPosition(pos, ns) }
+
+  predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
   /** Gets a textual representation of this position. */
-  string toString() { exists(int pos | this.isPositional(pos) and result = "position " + pos) }
+  string toString() {
+    exists(int pos, NamedSet ns |
+      this.isPositional(pos, ns) and result = "pos(" + pos + ", " + ns.toString() + ")"
+    )
+    or
+    exists(string name | this.isKeyword(name) and result = "kw(" + name + ")")
+  }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
-  exists(int pos | ppos.isPositional(pos) and apos.isPositional(pos))
+  exists(string name |
+    ppos.isKeyword(name) and
+    apos.isKeyword(name)
+  )
+  or
+  exists(int pos, NamedSet ns |
+    ppos.isPositional(pos, ns) and
+    apos.isPositional(pos, ns)
+  )
 }
