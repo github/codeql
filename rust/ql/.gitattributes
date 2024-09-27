@@ -178,7 +178,6 @@
 /lib/codeql/rust/elements/internal/BecomeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BecomeExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BinaryExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BinaryExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
@@ -289,7 +288,6 @@
 /lib/codeql/rust/elements/internal/MatchArmListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchArmListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/MatchExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MetaConstructor.qll linguist-generated
@@ -332,7 +330,6 @@
 /lib/codeql/rust/elements/internal/PathTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PrefixExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/PrefixExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PtrTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PtrTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RangeExprConstructor.qll linguist-generated

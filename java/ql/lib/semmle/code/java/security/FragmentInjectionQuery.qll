@@ -10,7 +10,7 @@ import semmle.code.java.security.FragmentInjection
  * that is used to create Android fragments dynamically.
  */
 module FragmentInjectionTaintConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FragmentInjectionSink }
 

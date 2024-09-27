@@ -29,7 +29,7 @@ module DecompressionBomb {
     class FlowState = DecompressionBombs::FlowState;
 
     predicate isSource(DataFlow::Node source, FlowState state) {
-      source instanceof ThreatModelFlowSource and
+      source instanceof ActiveThreatModelSource and
       state = ""
     }
 

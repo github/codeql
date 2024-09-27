@@ -60,7 +60,7 @@ module RequestForgery {
   /**
    * A dataflow source for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call
