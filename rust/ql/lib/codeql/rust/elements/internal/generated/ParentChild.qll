@@ -3048,7 +3048,8 @@ private module Impl {
 
   private Element getImmediateChildOfMacroCall(MacroCall e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAssocItem, int bExternItem, int bItem, int n, int nAttr, int nPath, int nTokenTree
+      int b, int bAssocItem, int bExternItem, int bItem, int n, int nAttr, int nPath,
+      int nTokenTree, int nExpanded
     |
       b = 0 and
       bAssocItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAssocItem(e, i, _)) | i) and
@@ -3059,6 +3060,7 @@ private module Impl {
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nPath = nAttr + 1 and
       nTokenTree = nPath + 1 and
+      nExpanded = nTokenTree + 1 and
       (
         none()
         or
@@ -3074,6 +3076,8 @@ private module Impl {
         index = nAttr and result = e.getPath() and partialPredicateCall = "Path()"
         or
         index = nPath and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
+        or
+        index = nTokenTree and result = e.getExpanded() and partialPredicateCall = "Expanded()"
       )
     )
   }

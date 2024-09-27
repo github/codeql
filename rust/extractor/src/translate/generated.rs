@@ -970,6 +970,7 @@ impl Translator<'_> {
             token_tree,
         });
         self.emit_location(label, &node);
+        self.extract_macro_call_expanded(&node, label);
         self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }

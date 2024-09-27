@@ -820,6 +820,7 @@
 /test/extractor-tests/generated/LoopExpr/LoopExpr_getLoopBody.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getAttr.ql linguist-generated
+/test/extractor-tests/generated/MacroCall/MacroCall_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getPath.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getTokenTree.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef.ql linguist-generated
