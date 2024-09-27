@@ -125,6 +125,22 @@ abstract private class NonExprChildMapping extends ChildMapping {
   }
 }
 
+abstract private class AbstractCallCfgNode extends AstCfgNode {
+  override string getAPrimaryQlClass() { result = "CfgCall" }
+
+  ExprCfgNode getQualifier() { none() }
+
+  abstract ExprCfgNode getArgument(int i);
+
+  abstract ExprCfgNode getPositionalArgument(int i);
+
+  abstract ExprCfgNode getNamedArgument(string name);
+
+  abstract ExprCfgNode getAnArgument();
+}
+
+final class CallCfgNode = AbstractCallCfgNode;
+
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   private class VarAccessChildMapping extends ExprChildMapping, VarAccess {
@@ -189,14 +205,22 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps an `InvokeMemberExpr` expression. */
-  class InvokeMemberCfgNode extends ExprCfgNode {
+  class InvokeMemberCfgNode extends ExprCfgNode, AbstractCallCfgNode {
     override string getAPrimaryQlClass() { result = "InvokeMemberCfgNode" }
 
     override InvokeMemberChildMapping e;
 
     final override InvokeMemberExpr getExpr() { result = super.getExpr() }
 
-    final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
+    final override ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
+
+    final override ExprCfgNode getArgument(int i) { e.hasCfgChild(e.getArgument(i), this, result) }
+
+    final override ExprCfgNode getPositionalArgument(int i) { result = this.getArgument(i) }
+
+    final override ExprCfgNode getNamedArgument(string name) { none() }
+
+    final override ExprCfgNode getAnArgument() { e.hasCfgChild(e.getAnArgument(), this, result) }
   }
 
   /** A control-flow node that wraps a qualifier expression. */
@@ -265,24 +289,24 @@ module StmtNodes {
   }
 
   /** A control-flow node that wraps a `Cmd` AST expression. */
-  class CmdCfgNode extends StmtCfgNode {
+  class CmdCfgNode extends StmtCfgNode, AbstractCallCfgNode {
     override string getAPrimaryQlClass() { result = "CmdCfgNode" }
 
     override CmdChildMapping s;
 
     override Cmd getStmt() { result = super.getStmt() }
 
-    ExprCfgNode getArgument(int i) { s.hasCfgChild(s.getArgument(i), this, result) }
+    override ExprCfgNode getArgument(int i) { s.hasCfgChild(s.getArgument(i), this, result) }
 
-    ExprCfgNode getPositionalArgument(int i) {
+    override ExprCfgNode getPositionalArgument(int i) {
       s.hasCfgChild(s.getPositionalArgument(i), this, result)
     }
 
-    ExprCfgNode getNamedArgument(string name) {
+    override ExprCfgNode getNamedArgument(string name) {
       s.hasCfgChild(s.getNamedArgument(name), this, result)
     }
 
-    ExprCfgNode getAnArgument() { s.hasCfgChild(s.getAnArgument(), this, result) }
+    override ExprCfgNode getAnArgument() { s.hasCfgChild(s.getAnArgument(), this, result) }
 
     ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
   }

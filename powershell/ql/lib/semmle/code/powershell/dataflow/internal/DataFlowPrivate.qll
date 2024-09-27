@@ -229,9 +229,10 @@ class SsaInputNode extends SsaNode {
   override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
 }
 
-private string getANamedArgument(Cmd c) { exists(c.getNamedArgument(result)) }
+private string getANamedArgument(CfgNodes::CallCfgNode c) { exists(c.getNamedArgument(result)) }
 
-private module NamedSetModule = QlBuiltins::InternSets<Cmd, string, getANamedArgument/1>;
+private module NamedSetModule =
+  QlBuiltins::InternSets<CfgNodes::CallCfgNode, string, getANamedArgument/1>;
 
 private newtype NamedSet0 =
   TEmptyNamedSet() or
@@ -257,11 +258,11 @@ class NamedSet extends NamedSet0 {
   }
 
   /**
-   * Gets a `Cmd` that provides a named parameter for every name in `this`.
+   * Gets a `CfgNodes::CallCfgNode` that provides a named parameter for every name in `this`.
    *
-   * NOTE: The `Cmd` may also provide more names.
+   * NOTE: The `CfgNodes::CallCfgNode` may also provide more names.
    */
-  Cmd getABindingCall() {
+  CfgNodes::CallCfgNode getABindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name)))
     or
     this.isEmpty() and
@@ -272,7 +273,7 @@ class NamedSet extends NamedSet0 {
    * Gets a `Cmd` that provides exactly the named parameters represented by
    * this set.
    */
-  Cmd getAnExactBindingCall() {
+  CfgNodes::CallCfgNode getAnExactBindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
     forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
     or
@@ -366,7 +367,7 @@ module ArgumentNodes {
         or
         exists(NamedSet ns, int i |
           i = arg.getPosition() and
-          ns.getAnExactBindingCall() = call.asCall().getStmt() and
+          ns.getAnExactBindingCall() = call.asCall() and
           pos.isPositional(i, ns)
         )
       )

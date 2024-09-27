@@ -77,7 +77,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying source code call, if any. */
-  abstract CfgNodes::StmtNodes::CmdCfgNode asCall();
+  abstract CfgNodes::CallCfgNode asCall();
 
   /** Gets a textual representation of this call. */
   abstract string toString();
@@ -107,11 +107,11 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 class NormalCall extends DataFlowCall, TNormalCall {
-  private CfgNodes::StmtNodes::CmdCfgNode c;
+  private CfgNodes::CallCfgNode c;
 
   NormalCall() { this = TNormalCall(c) }
 
-  override CfgNodes::StmtNodes::CmdCfgNode asCall() { result = c }
+  override CfgNodes::CallCfgNode asCall() { result = c }
 
   override DataFlowCallable getEnclosingCallable() { result = TCfgScope(c.getScope()) }
 
@@ -121,7 +121,7 @@ class NormalCall extends DataFlowCall, TNormalCall {
 }
 
 /** A call for which we want to compute call targets. */
-private class RelevantCall extends CfgNodes::StmtNodes::CmdCfgNode { }
+private class RelevantCall extends CfgNodes::CallCfgNode { }
 
 /** Holds if `call` may resolve to the returned source-code method. */
 private DataFlowCallable viableSourceCallable(DataFlowCall call) {
@@ -139,15 +139,7 @@ class AdditionalCallTarget extends Unit {
   /**
    * Gets a viable target for `call`.
    */
-  abstract DataFlowCallable viableTarget(CfgNodes::StmtNodes::CmdCfgNode call);
-}
-
-/** Holds if `call` may resolve to the returned summarized library method. */
-DataFlowCallable viableLibraryCallable(DataFlowCall call) {
-  exists(LibraryCallable callable |
-    result = TLibraryCallable(callable) and
-    call.asCall().getStmt() = callable.getACall()
-  )
+  abstract DataFlowCallable viableTarget(CfgNodes::CallCfgNode call);
 }
 
 cached
@@ -158,23 +150,19 @@ private module Cached {
     TLibraryCallable(LibraryCallable callable)
 
   cached
-  newtype TDataFlowCall = TNormalCall(CfgNodes::StmtNodes::CmdCfgNode c)
+  newtype TDataFlowCall = TNormalCall(CfgNodes::CallCfgNode c)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableCallable(DataFlowCall call) {
-    result = viableSourceCallable(call)
-    or
-    result = viableLibraryCallable(call)
-  }
+  DataFlowCallable viableCallable(DataFlowCall call) { result = viableSourceCallable(call) }
 
   cached
   newtype TArgumentPosition =
     TKeywordArgumentPosition(string name) { name = any(CmdParameter p).getName() } or
     TPositionalArgumentPosition(int pos, NamedSet ns) {
-      exists(Cmd cmd |
-        cmd = ns.getABindingCall() and
-        exists(cmd.getArgument(pos))
+      exists(CfgNodes::CallCfgNode call |
+        call = ns.getABindingCall() and
+        exists(call.getArgument(pos))
       )
     }
 
@@ -182,9 +170,9 @@ private module Cached {
   newtype TParameterPosition =
     TKeywordParameter(string name) { name = any(CmdParameter p).getName() } or
     TPositionalParameter(int pos, NamedSet ns) {
-      exists(Cmd cmd |
-        cmd = ns.getABindingCall() and
-        exists(cmd.getArgument(pos))
+      exists(CfgNodes::CallCfgNode call |
+        call = ns.getABindingCall() and
+        exists(call.getArgument(pos))
       )
     }
 }
