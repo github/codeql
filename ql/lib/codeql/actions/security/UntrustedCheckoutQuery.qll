@@ -1,5 +1,6 @@
 import actions
 private import codeql.actions.DataFlow
+private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.TaintTracking
 
 /**
@@ -8,6 +9,17 @@ private import codeql.actions.TaintTracking
  */
 private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
+    // remote flow sources
+    source instanceof ArtifactSource
+    or
+    source instanceof GitHubCtxSource
+    or
+    source instanceof GitHubEventCtxSource
+    or
+    source instanceof GitHubEventJsonSource
+    or
+    source instanceof MaDSource
+    or
     // `ref` argument contains the PR id/number or head ref
     exists(Expression e |
       source.asExpr() = e and
