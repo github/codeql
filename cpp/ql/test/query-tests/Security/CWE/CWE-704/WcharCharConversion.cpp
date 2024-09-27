@@ -61,7 +61,7 @@ using FOO = BYTE*;
 void NonStringFalsePositiveTest3(FOO buffer)
 {
 	wchar_t *lpWchar = NULL;
-	lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+	lpWchar = (LPWSTR)buffer; // GOOD
 }
 
 #define UNICODE 0x8
@@ -77,19 +77,19 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 {
 	wchar_t *lpWchar = NULL;
 	if(flags & UNICODE)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // GOOD
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) == 0x8)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // GOOD
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0x8)
 		lpWchar = (LPWSTR)buffer; // BUG
 	else
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // GOOD
 
 	// Bad operator precedence
 	if(flags & UNICODE == 0x8)
@@ -98,14 +98,14 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) != 0)
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // GOOD
 	else
 		lpWchar = (LPWSTR)buffer; // BUG
 
 	if((flags & UNICODE) == 0)
 		lpWchar = (LPWSTR)buffer; // BUG
 	else
-		lpWchar = (LPWSTR)buffer; // GOOD [False Positive]
+		lpWchar = (LPWSTR)buffer; // GOOD
 
 	lpWchar = (LPWSTR)buffer; // BUG
 }
