@@ -283,3 +283,30 @@ string getRepoRoot() {
     result = ""
   )
 }
+
+bindingset[path]
+string normalizePath(string path) {
+  exists(string trimmed_path | trimmed_path = trimQuotes(path) |
+    // ./foo -> GITHUB_WORKSPACE/foo
+    if path.indexOf("./") = 0
+    then result = path.replaceAll("./", "GITHUB_WORKSPACE/")
+    else
+      // GITHUB_WORKSPACE/foo -> GITHUB_WORKSPACE/foo
+      if path.indexOf("GITHUB_WORKSPACE/") = 0
+      then result = path
+      else
+        // foo -> GITHUB_WORKSPACE/foo
+        if path.regexpMatch("^[^/~].*")
+        then result = "GITHUB_WORKSPACE/" + path.regexpReplaceAll("/$", "")
+        else
+          // ~/foo -> ~/foo
+          // /foo -> /foo
+          result = path
+  )
+}
+
+/**
+ * Holds if the path cache_path is a subpath of the path untrusted_path.
+ */
+bindingset[subpath, path]
+predicate isSubpath(string subpath, string path) { subpath.substring(0, path.length()) = path }

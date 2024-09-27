@@ -36,18 +36,18 @@ class JavascriptImportnUsesStep extends PoisonableStep, UsesStep {
 }
 
 class LocalScriptExecutionRunStep extends PoisonableStep, Run {
-  string cmd;
+  string path;
 
   LocalScriptExecutionRunStep() {
-    exists(string line, string regexp, int command_group |
+    exists(string line, string regexp, int path_group |
       line = this.getScript().splitAt("\n").trim()
     |
-      poisonableLocalScriptsDataModel(regexp, command_group) and
-      cmd = line.regexpCapture(regexp, command_group)
+      poisonableLocalScriptsDataModel(regexp, path_group) and
+      path = line.regexpCapture(regexp, path_group)
     )
   }
 
-  string getCommand() { result = cmd }
+  string getPath() { result = normalizePath(path.splitAt(" ")) }
 }
 
 class LocalActionUsesStep extends PoisonableStep, UsesStep {
