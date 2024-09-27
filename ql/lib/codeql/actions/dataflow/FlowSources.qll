@@ -107,7 +107,7 @@ class MaDSource extends RemoteFlowSource {
 /**
  * A downloaded artifact.
  */
-private class ArtifactSource extends RemoteFlowSource {
+class ArtifactSource extends RemoteFlowSource {
   ArtifactSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
 
   override string getSourceType() { result = "artifact" }

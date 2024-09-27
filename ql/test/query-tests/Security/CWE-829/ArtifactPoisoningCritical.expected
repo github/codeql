@@ -1,4 +1,7 @@
 edges
+| .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:25:9:28:6 | Uses Step | provenance |  |
+| .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | provenance |  |
+| .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | provenance |  |
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | provenance |  |
 | .github/workflows/artifactpoisoning12.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning12.yml:38:11:38:25 | python foo/x.py | provenance |  |
 | .github/workflows/artifactpoisoning21.yml:13:9:18:6 | Uses Step | .github/workflows/artifactpoisoning21.yml:19:14:20:21 | sh foo/cmd\n | provenance |  |
@@ -14,7 +17,10 @@ edges
 | .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance |  |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | provenance |  |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | provenance |  |
+| .github/workflows/artifactpoisoning92.yml:25:9:28:6 | Uses Step | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | provenance |  |
+| .github/workflows/artifactpoisoning92.yml:25:9:28:6 | Uses Step | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | provenance |  |
 nodes
+| .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | semmle.label | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
 | .github/workflows/artifactpoisoning12.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
@@ -45,6 +51,9 @@ nodes
 | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | semmle.label | sed -f config foo.md > bar.md\n |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | semmle.label | python test.py |
+| .github/workflows/artifactpoisoning92.yml:25:9:28:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | semmle.label | make snapshot |
 subpaths
 #select
 | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
@@ -62,3 +71,5 @@ subpaths
 | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n | {\n  echo 'JSON_RESPONSE<<EOF'\n  ls \| grep -E "*.(tar.gz\|zip)$"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | sed -f config foo.md > bar.md\n |
 | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | python test.py |
+| .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | Uses Step |
+| .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | make snapshot |
