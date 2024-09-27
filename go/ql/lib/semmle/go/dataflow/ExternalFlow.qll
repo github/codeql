@@ -26,7 +26,12 @@
  *    predicate.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ *    arbitrary subtype of that type. When the type column is empty this has no
+ *    effect. When the type column specifies an interface type, this means that
+ *    we also consider all interface types which embed the given type, and also
+ *    any struct type which embeds the given type.
+ *    When the type column specifies a non-interface type, this means that we
+ *    also consider any struct type which embeds the given type.
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column is always empty.
  * 6. The `ext` column is always empty.
