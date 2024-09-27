@@ -18,29 +18,6 @@ import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-/**
- * Holds if the path cache_path is a subpath of the path untrusted_path.
- */
-bindingset[cache_path, untrusted_path]
-predicate controlledCachePath(string cache_path, string untrusted_path) {
-  exists(string normalized_cache_path, string normalized_untrusted_path |
-    (
-      cache_path.regexpMatch("^[a-zA-Z0-9_-].*") and
-      normalized_cache_path = "./" + cache_path.regexpReplaceAll("/$", "")
-      or
-      normalized_cache_path = cache_path.regexpReplaceAll("/$", "")
-    ) and
-    (
-      untrusted_path.regexpMatch("^[a-zA-Z0-9_-].*") and
-      normalized_untrusted_path = "./" + untrusted_path.regexpReplaceAll("/$", "")
-      or
-      normalized_untrusted_path = untrusted_path.regexpReplaceAll("/$", "")
-    ) and
-    normalized_cache_path.substring(0, normalized_untrusted_path.length()) =
-      normalized_untrusted_path
-  )
-}
-
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
 from LocalJob job, Event event, Step source, Step step, string message, string path
@@ -86,7 +63,7 @@ where
     step.(CacheWritingStep).getPath() = "?"
     or
     // the cache writing step reads from a path the attacker can control
-    not path = "?" and controlledCachePath(step.(CacheWritingStep).getPath(), path)
+    not path = "?" and isSubpath(step.(CacheWritingStep).getPath(), path)
   ) and
   not step instanceof PoisonableStep
 select step, source, step,

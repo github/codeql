@@ -35,7 +35,9 @@ class GitHubDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, Us
   }
 
   override string getPath() {
-    if exists(this.getArgument("path")) then result = this.getArgument("path") else result = ""
+    if exists(this.getArgument("path"))
+    then result = normalizePath(this.getArgument("path"))
+    else result = "GITHUB_WORKSPACE/"
   }
 }
 
@@ -79,11 +81,11 @@ class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep
 
   override string getPath() {
     if exists(this.getArgument(["path", "download_path"]))
-    then result = this.getArgument(["path", "download_path"])
+    then result = normalizePath(this.getArgument(["path", "download_path"]))
     else
       if exists(this.getArgument("paths"))
-      then result = this.getArgument("paths").splitAt(" ")
-      else result = ""
+      then result = normalizePath(this.getArgument("paths").splitAt(" "))
+      else result = "GITHUB_WORKSPACE/"
   }
 }
 
@@ -114,8 +116,8 @@ class LegitLabsDownloadArtifactActionStep extends UntrustedArtifactDownloadStep,
 
   override string getPath() {
     if exists(this.getArgument("path"))
-    then result = this.getArgument("path")
-    else result = "./artifacts"
+    then result = normalizePath(this.getArgument("path"))
+    else result = "GITHUB_WORKSPACE/artifacts"
   }
 }
 
@@ -161,14 +163,14 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
           .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        trimQuotes(this.getAFollowingStep()
-              .(Run)
-              .getScript()
-              .splitAt("\n")
-              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
+        normalizePath(trimQuotes(this.getAFollowingStep()
+                .(Run)
+                .getScript()
+                .splitAt("\n")
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
     else
       if this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp())
-      then result = ""
+      then result = "GITHUB_WORKSPACE/"
       else none()
   }
 }
@@ -197,18 +199,20 @@ class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
       script.splitAt("\n").regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        trimQuotes(script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)) or
+        normalizePath(trimQuotes(script
+                .splitAt("\n")
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
       result =
-        trimQuotes(this.getAFollowingStep()
-              .(Run)
-              .getScript()
-              .splitAt("\n")
-              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
+        normalizePath(trimQuotes(this.getAFollowingStep()
+                .(Run)
+                .getScript()
+                .splitAt("\n")
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
     else
       if
         this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp()) or
         script.splitAt("\n").regexpMatch(unzipRegexp())
-      then result = ""
+      then result = "GITHUB_WORKSPACE/"
       else none()
   }
 }
@@ -244,14 +248,16 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
           .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        trimQuotes(script.splitAt("\n").regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)) or
+        normalizePath(trimQuotes(script
+                .splitAt("\n")
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
       result =
-        trimQuotes(this.getAFollowingStep()
-              .(Run)
-              .getScript()
-              .splitAt("\n")
-              .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))
-    else result = ""
+        normalizePath(trimQuotes(this.getAFollowingStep()
+                .(Run)
+                .getScript()
+                .splitAt("\n")
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
+    else result = "GITHUB_WORKSPACE/"
   }
 }
 
@@ -268,18 +274,16 @@ class ArtifactPoisoningSink extends DataFlow::Node {
       (
         // Check if the poisonable step is a local script execution step
         // and the path of the command or script matches the path of the downloaded artifact
+        isSubpath(poisonable.(LocalScriptExecutionRunStep).getPath(), download.getPath())
+        or
         // Checking the path for non local script execution steps is very difficult
         not poisonable instanceof LocalScriptExecutionRunStep
-        or
-        // TODO: account for Run's working directory
-        poisonable
-            .(LocalScriptExecutionRunStep)
-            .getCommand()
-            .matches(["./", ""] + download.getPath() + "%")
+        // Its not easy to extract the path from a non-local script execution step so skipping this check for now
+        // and isSubpath(poisonable.(Run).getWorkingDirectory(), download.getPath())
       )
       or
       poisonable.(UsesStep) = this.asExpr() and
-      download.getPath() = ""
+      download.getPath() = "GITHUB_WORKSPACE/"
     )
   }
 

@@ -1317,6 +1317,18 @@ class RunImpl extends StepImpl {
   override string toString() {
     if exists(this.getId()) then result = "Run Step: " + this.getId() else result = "Run Step"
   }
+
+  /** Gets the working directory for this `runs` mapping. */
+  string getWorkingDirectory() {
+    if exists(n.lookup("working-directory").(YamlString).getValue())
+    then
+      result =
+        n.lookup("working-directory")
+            .(YamlString)
+            .getValue()
+            .regexpReplaceAll("^\\./", "GITHUB_WORKSPACE/")
+    else result = "GITHUB_WORKSPACE/"
+  }
 }
 
 /**

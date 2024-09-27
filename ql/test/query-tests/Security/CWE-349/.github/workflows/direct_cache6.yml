@@ -1,7 +1,7 @@
 name: Test
 
 on:
-  issue_comment:
+  pull_request_target:
 
 permissions:
   actions: write
@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
@@ -22,14 +24,3 @@ jobs:
           path: ./results/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: ${{ runner.os }}-pip-
-      - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: results
-          path: results/
-      - name: Upload results
-        uses: actions/upload-artifact@v4
-        with:
-          name: results
-          path: results/
-          if-no-files-found: ignore

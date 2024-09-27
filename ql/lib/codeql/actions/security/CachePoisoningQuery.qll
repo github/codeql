@@ -51,13 +51,17 @@ abstract class CacheWritingStep extends Step {
 class CacheActionUsesStep extends CacheWritingStep, UsesStep {
   CacheActionUsesStep() { this.getCallee() = "actions/cache" }
 
-  override string getPath() { result = this.(UsesStep).getArgument("path").splitAt("\n") }
+  override string getPath() {
+    result = normalizePath(this.(UsesStep).getArgument("path").splitAt("\n"))
+  }
 }
 
 class CacheActionSaveUsesStep extends CacheWritingStep, UsesStep {
   CacheActionSaveUsesStep() { this.getCallee() = "actions/cache/save" }
 
-  override string getPath() { result = this.(UsesStep).getArgument("path").splitAt("\n") }
+  override string getPath() {
+    result = normalizePath(this.(UsesStep).getArgument("path").splitAt("\n"))
+  }
 }
 
 class SetupRubyUsesStep extends CacheWritingStep, UsesStep {
@@ -66,5 +70,5 @@ class SetupRubyUsesStep extends CacheWritingStep, UsesStep {
     this.getArgument("bundler-cache") = "true"
   }
 
-  override string getPath() { result = "vendor/bundle" }
+  override string getPath() { result = normalizePath("vendor/bundle") }
 }
