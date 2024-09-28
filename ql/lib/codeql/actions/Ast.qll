@@ -13,6 +13,8 @@ class AstNode instanceof AstNodeImpl {
 
   string toString() { result = super.toString() }
 
+  Step getEnclosingStep() { result = super.getEnclosingStep() }
+
   Job getEnclosingJob() { result = super.getEnclosingJob() }
 
   Workflow getEnclosingWorkflow() { result = super.getEnclosingWorkflow() }

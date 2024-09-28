@@ -22,19 +22,20 @@ from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink, E
 where
   EnvVarInjectionFlow::flowPath(source, sink) and
   inPrivilegedContext(sink.getNode().asExpr(), event) and
-  not exists(ControlCheck check |
-    check.protects(sink.getNode().asExpr(), event, "envvar-injection")
-  ) and
   // exclude paths to file read sinks from non-artifact sources
   (
+    // source is text
     not source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
     not exists(ControlCheck check |
-      check.protects(sink.getNode().asExpr(), event, "code-injection")
+      check.protects(sink.getNode().asExpr(), event, ["envvar-injection", "code-injection"])
     )
     or
+    // source is an artifact or a file from an untrusted checkout
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
     not exists(ControlCheck check |
-      check.protects(sink.getNode().asExpr(), event, ["untrusted-checkout", "artifact-poisoning"])
+      check
+          .protects(sink.getNode().asExpr(), event,
+            ["envvar-injection", "untrusted-checkout", "artifact-poisoning"])
     ) and
     (
       sink.getNode() instanceof EnvVarInjectionFromFileReadSink or
