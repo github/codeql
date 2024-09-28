@@ -111,6 +111,18 @@ abstract class AstNodeImpl extends TAstNode {
   }
 
   /**
+   * Gets the enclosing Step.
+   */
+  StepImpl getEnclosingStep() {
+    if this instanceof StepImpl
+    then result = this
+    else
+      if this instanceof ScalarValueImpl
+      then result.getAChildNode*() = this.getParentNode()
+      else none()
+  }
+
+  /**
    * Gets the enclosing workflow if any.
    */
   WorkflowImpl getEnclosingWorkflow() { this = result.getAChildNode*() }

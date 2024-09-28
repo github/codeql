@@ -37,29 +37,29 @@ abstract class ControlCheck extends AstNode {
     this instanceof Run
   }
 
-  predicate protects(Step step, Event event, string category) {
+  predicate protects(AstNode node, Event event, string category) {
     // The check dominates the step it should protect
-    this.dominates(step) and
+    this.dominates(node) and
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
     this.getEnclosingJob().getATriggerEvent() = event
   }
 
-  predicate dominates(Step step) {
+  predicate dominates(AstNode node) {
     this instanceof If and
     (
-      step.getIf() = this or
-      step.getEnclosingJob().getIf() = this or
-      step.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
-      step.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+      node.getEnclosingStep().getIf() = this or
+      node.getEnclosingJob().getIf() = this or
+      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+      node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
     )
     or
     this instanceof Environment and
     (
-      step.getEnclosingJob().getEnvironment() = this
+      node.getEnclosingJob().getEnvironment() = this
       or
-      step.getEnclosingJob().getANeededJob().getEnvironment() = this
+      node.getEnclosingJob().getANeededJob().getEnvironment() = this
     )
     or
     (
@@ -67,9 +67,9 @@ abstract class ControlCheck extends AstNode {
       this instanceof UsesStep
     ) and
     (
-      this.(Step).getAFollowingStep() = step
+      this.(Step).getAFollowingStep() = node.getEnclosingStep()
       or
-      step.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
+      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
     )
   }
 
