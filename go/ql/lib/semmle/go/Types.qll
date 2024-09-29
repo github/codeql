@@ -742,7 +742,8 @@ class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) {
     // Note that negative indices correspond to embedded interfaces and type
-    // set literals.
+    // set literals. Note also that methods coming from embedded interfaces
+    // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
   }
 
