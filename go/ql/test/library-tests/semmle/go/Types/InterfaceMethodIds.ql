@@ -4,5 +4,5 @@ from NamedType nt, InterfaceType it, Type methodType, string id
 where
   nt.getName() = "MixedExportedAndNot" and
   it = nt.getUnderlyingType() and
-  methodType = it.getMethodTypeById(id)
+  methodType = it.getMethodTypeByQualifiedName(id)
 select it.pp(), methodType.pp(), id

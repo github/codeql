@@ -465,7 +465,11 @@ class StructType extends @structtype, CompositeType {
    */
   predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
     this.hasOwnField(i, name, tp, isEmbedded) and
-    component_tags(this, i, tag)
+    (
+      component_tags(this, i, tag)
+      or
+      not component_tags(this, i, _) and tag = ""
+    )
   }
 
   /**
@@ -586,10 +590,13 @@ class StructType extends @structtype, CompositeType {
   override string pp() {
     result =
       "struct { " +
-        concat(int i, string name, Type tp, string tag, string tagToPrint |
+        concat(int i, string name, Type tp, string tagToPrint |
           component_types(this, i, name, tp) and
-          component_tags(this, i, tag) and
-          (if tag = "" then tagToPrint = "" else tagToPrint = " `" + tag + "`")
+          (
+            tagToPrint = " `" + any(string tag | component_tags(this, i, tag)) + "`"
+            or
+            tagToPrint = "" and not component_tags(this, i, _)
+          )
         |
           name + " " + tp.pp() + tagToPrint, "; " order by i
         ) + " }"
@@ -761,10 +768,10 @@ class InterfaceType extends @interfacetype, CompositeType {
   }
 
   /**
-   * Gets the type of method `id` of this interface type.
+   * Gets the type of method `qname` of this interface type.
    *
-   * This differs from `getMethodType` in that if the method is not exported, the `id`
-   * will be package-qualified. This means that the set of `id`s` together with any
+   * This differs from `getMethodType` in that if the method is not exported, the `qname`
+   * will be package-qualified. This means that the set of `qname`s` together with any
    * embedded types fully distinguishes the interface from any other, whereas the set
    * of names matched by `getMethodName` may be ambiguous between interfaces with matching
    * exported methods and unexported methods that have matching names but belong to
@@ -772,15 +779,17 @@ class InterfaceType extends @interfacetype, CompositeType {
    *
    * For example, `interface { Exported() int; notExported() int }` declared in two
    * different packages defines two distinct types, but they appear identical according to
-   * `getMethodType`.
+   * `getMethodType`. If the packages were named `a` and `b`, `getMethodType` would yield
+   * `notExported -> int` for both, whereas this method would yield `a.notExported -> int`
+   * and `b.notExported -> int` respectively.
    */
-  Type getMethodTypeById(string id) {
+  Type getMethodTypeByQualifiedName(string qname) {
     exists(int i, string name | i >= 0 |
       component_types(this, i, name, result) and
       (
-        interface_private_method_ids(this, i, id)
+        interface_private_method_ids(this, i, qname)
         or
-        name = id and not interface_private_method_ids(this, i, _)
+        name = qname and not interface_private_method_ids(this, i, _)
       )
     )
   }

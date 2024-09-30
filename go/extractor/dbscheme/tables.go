@@ -1150,14 +1150,14 @@ var ComponentTypesTable = NewTable("component_types",
 	EntityColumn(TypeType, "tp"),
 ).KeySet("parent", "index")
 
-// ComponentTagsTable is the table associating composite types with their component types' tags
+// ComponentTagsTable is the table associating struct types with their component types' tags
 var ComponentTagsTable = NewTable("component_tags",
-	EntityColumn(CompositeType, "parent"),
+	EntityColumn(StructType, "parent"),
 	IntColumn("index"),
 	StringColumn("tag"),
 ).KeySet("parent", "index")
 
-// InterfacePrivateMethodIdsTable is the table associating interface types with their private method ids
+// InterfacePrivateMethodIdsTable is the table associating interface types with the indices and ids of their private methods.
 var InterfacePrivateMethodIdsTable = NewTable("interface_private_method_ids",
 	EntityColumn(InterfaceType, "interface"),
 	IntColumn("index"),
