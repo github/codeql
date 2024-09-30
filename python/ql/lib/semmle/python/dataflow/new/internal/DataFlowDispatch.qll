@@ -1768,6 +1768,12 @@ class SynthCompCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImp
     this = TSynthCompCapturedVariablesArgumentPostUpdateNode(comp)
   }
 
+  override string toString() { result = "[post] Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getScope() }
+
+  override Location getLocation() { result = comp.getLocation() }
+
   override Node getPreUpdateNode() { result = TSynthCompCapturedVariablesArgumentNode(comp) }
 }
 
