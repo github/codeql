@@ -69,6 +69,7 @@ class Type extends @type {
    * is contained in the method set of this type and any type restrictions are
    * satisfied.
    */
+  pragma[nomagic]
   predicate implements(InterfaceType i) {
     if i = any(ComparableType comparable).getUnderlyingType()
     then this.implementsComparable()
