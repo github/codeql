@@ -50,6 +50,20 @@ mod loop_expression {
             }
         }
     }
+
+    fn test_while() {
+        let mut b = true;
+        while b {
+            1;
+            b = false;
+        }
+    }
+
+    fn test_for() {
+        for i in 0..10 {
+            1;
+        }
+    }
 }
 
 fn test_nested_function(n: i64) -> i64 {
@@ -100,6 +114,62 @@ mod if_expression {
             0
         }
     }
+
+    fn test_nested_if_block(a: i64) -> i64 {
+        if {
+            ();
+            a > 0
+        } {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_assignment(a: i64) -> i64 {
+        let mut x = false;
+        if x = true {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_loop1(a: i64) -> i64 {
+        if (loop {
+            if a > 0 {
+                break a > 10;
+            };
+            a < 10;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_loop2(a: i64) -> i64 {
+        if ('label: loop {
+            if a > 0 {
+                break 'label a > 10;
+            };
+            a < 10;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_labelled_block(a: i64) -> i64 {
+        if ('block: {
+            break 'block a > 0;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
 }
 
 mod logical_operators {
@@ -117,6 +187,35 @@ mod logical_operators {
     fn test_or_operator_2(a: bool, b: i64, c: bool) -> bool {
         let d = a || (b == 28) || c;
         d
+    }
+
+    fn test_not_operator(a: bool) -> bool {
+        let d = !a;
+        d
+    }
+
+    fn test_if_and_operator(a: bool, b: i64, c: bool) -> bool {
+        if a && b && c {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn test_if_or_operator(a: bool, b: i64, c: bool) -> bool {
+        if a || b || c {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn test_if_not_operator(a: bool) -> bool {
+        if !a {
+            true
+        } else {
+            false
+        }
     }
 }
 
@@ -147,4 +246,19 @@ fn dead_code() -> i64 {
         return 0;
     }
     return 1;
+}
+
+fn labelled_block() -> i64 {
+    let result = 'block: {
+        do_thing();
+        if condition_not_met() {
+            break 'block 1;
+        }
+        do_next_thing();
+        if condition_not_met() {
+            break 'block 2;
+        }
+        do_last_thing();
+        3
+    };
 }

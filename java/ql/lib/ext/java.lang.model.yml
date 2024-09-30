@@ -200,6 +200,7 @@ extensions:
       - ["java.lang", "ClassLoader", "loadClass", "(String,boolean)", "summary", "df-manual"]
       - ["java.lang", "ClassLoader", "setClassAssertionStatus", "(String,boolean)", "summary", "df-manual"]
       - ["java.lang", "ClassLoader", "setPackageAssertionStatus", "(String,boolean)", "summary", "df-manual"]
+      - ["java.lang", "Comparable", "compareTo", "", "summary", "manual"]
       - ["java.lang", "Enum", "Enum", "(String,int)", "summary", "manual"]
       - ["java.lang", "Enum", "equals", "(Object)", "summary", "manual"]
       - ["java.lang", "Enum", "hashCode", "()", "summary", "manual"]
