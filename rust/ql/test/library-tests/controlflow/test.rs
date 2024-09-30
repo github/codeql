@@ -51,16 +51,22 @@ mod loop_expression {
         }
     }
 
-    fn test_while() {
+    fn test_while(i: i64) {
         let mut b = true;
         while b {
             1;
+            if (i > 0) {
+                break;
+            }
             b = false;
         }
     }
 
-    fn test_for() {
+    fn test_for(j: i64) {
         for i in 0..10 {
+            if (i == j) {
+                break;
+            }
             1;
         }
     }
