@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.rmi.registry", "Registry", True, "bind", "(String,Remote)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi.registry", "Registry", True, "bind", "(String,Remote)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi.registry", "Registry", True, "list", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi.registry", "Registry", True, "lookup", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi.registry", "Registry", True, "rebind", "(String,Remote)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi.registry", "Registry", True, "rebind", "(String,Remote)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.rmi.registry", "LocateRegistry", "createRegistry", "(int)", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "createRegistry", "(int,RMIClientSocketFactory,RMIServerSocketFactory)", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "getRegistry", "()", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "getRegistry", "(String)", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "getRegistry", "(String,int)", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "getRegistry", "(String,int,RMIClientSocketFactory)", "summary", "df-generated"]
+      - ["java.rmi.registry", "LocateRegistry", "getRegistry", "(int)", "summary", "df-generated"]

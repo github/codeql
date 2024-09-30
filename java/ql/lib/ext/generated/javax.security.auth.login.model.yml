@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.security.auth.login", "AccountException", True, "AccountException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "AccountExpiredException", True, "AccountExpiredException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "AccountLockedException", True, "AccountLockedException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "AccountNotFoundException", True, "AccountNotFoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "AppConfigurationEntry", "(String,AppConfigurationEntry$LoginModuleControlFlag,Map)", "", "Argument[0]", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.loginModuleName]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "AppConfigurationEntry", "(String,AppConfigurationEntry$LoginModuleControlFlag,Map)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.controlFlag]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "AppConfigurationEntry", "(String,AppConfigurationEntry$LoginModuleControlFlag,Map)", "", "Argument[2].MapKey", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.options].MapKey", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "AppConfigurationEntry", "(String,AppConfigurationEntry$LoginModuleControlFlag,Map)", "", "Argument[2].MapValue", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.options].MapValue", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "getControlFlag", "()", "", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.controlFlag]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "getLoginModuleName", "()", "", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.loginModuleName]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "AppConfigurationEntry", True, "getOptions", "()", "", "Argument[this].SyntheticField[javax.security.auth.login.AppConfigurationEntry.options]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getAppConfigurationEntry", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.type]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters)", "", "Argument[1]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.params]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters,Provider)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.type]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters,Provider)", "", "Argument[1]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.params]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters,String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.type]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getInstance", "(String,Configuration$Parameters,String)", "", "Argument[1]", "ReturnValue.SyntheticField[javax.security.auth.login.Configuration$ConfigDelegate.params]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getParameters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", True, "getType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.login", "CredentialException", True, "CredentialException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "CredentialExpiredException", True, "CredentialExpiredException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "CredentialNotFoundException", True, "CredentialNotFoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "FailedLoginException", True, "FailedLoginException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "LoginContext", True, "LoginContext", "(String,CallbackHandler)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.login", "LoginContext", True, "LoginContext", "(String,Subject)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.login.LoginContext.subject]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "LoginContext", True, "LoginContext", "(String,Subject,CallbackHandler)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.login.LoginContext.subject]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "LoginContext", True, "LoginContext", "(String,Subject,CallbackHandler,Configuration)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.login.LoginContext.subject]", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "LoginContext", True, "getSubject", "()", "", "Argument[this].SyntheticField[javax.security.auth.login.LoginContext.subject]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.login", "LoginException", True, "LoginException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.security.auth.login", "Configuration", "getConfiguration", "()", "summary", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", "refresh", "()", "summary", "df-generated"]
+      - ["javax.security.auth.login", "Configuration", "setConfiguration", "(Configuration)", "summary", "df-generated"]
+      - ["javax.security.auth.login", "LoginContext", "LoginContext", "(String)", "summary", "df-generated"]
+      - ["javax.security.auth.login", "LoginContext", "login", "()", "summary", "df-generated"]
+      - ["javax.security.auth.login", "LoginContext", "logout", "()", "summary", "df-generated"]

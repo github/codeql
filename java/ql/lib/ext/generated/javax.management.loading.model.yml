@@ -1,0 +1,55 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.management.loading", "ClassLoaderRepository", True, "loadClassBefore", "(ClassLoader,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "ClassLoaderRepository", True, "loadClassWithout", "(ClassLoader,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader,URLStreamHandlerFactory,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "MLet", "(URL[],ClassLoader,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "getLibraryDirectory", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLet.libraryDirectory]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLet", True, "loadClass", "(String,ClassLoaderRepository)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "MLet", True, "preRegister", "(MBeanServer,ObjectName)", "", "Argument[1]", "Argument[this].SyntheticField[javax.management.loading.MLet.mletObjectName]", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLet", True, "preRegister", "(MBeanServer,ObjectName)", "", "Argument[this].SyntheticField[javax.management.loading.MLet.mletObjectName]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLet", True, "setLibraryDirectory", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.management.loading.MLet.libraryDirectory]", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[0]", "Argument[this].SyntheticField[javax.management.loading.MLetContent.baseURL]", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[0]", "Argument[this].SyntheticField[javax.management.loading.MLetContent.documentURL]", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[1].MapKey", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapKey", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[1].MapValue", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[1].MapValue", "Argument[this].SyntheticField[javax.management.loading.MLetContent.baseURL]", "taint", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[2].Element", "Argument[this].SyntheticField[javax.management.loading.MLetContent.types].Element", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[3].Element", "Argument[this].SyntheticField[javax.management.loading.MLetContent.values].Element", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "Argument[this].SyntheticField[javax.management.loading.MLetContent.baseURL]", "taint", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "MLetContent", "(URL,Map,List,List)", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.documentURL]", "Argument[this].SyntheticField[javax.management.loading.MLetContent.baseURL]", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getAttributes", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getCode", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getCodeBase", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.baseURL]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getDocumentBase", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.documentURL]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getJarFiles", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getName", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getParameterTypes", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.types]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getParameterValues", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.values]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getSerializedObject", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetContent", True, "getVersion", "()", "", "Argument[this].SyntheticField[javax.management.loading.MLetContent.attributes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.management.loading", "MLetMBean", True, "getMBeansFromURL", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.loading", "MLetMBean", True, "getMBeansFromURL", "(URL)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.loading", "MLetMBean", True, "getURLs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.loading", "PrivateMLet", True, "PrivateMLet", "(URL[],ClassLoader,URLStreamHandlerFactory,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.management.loading", "PrivateMLet", True, "PrivateMLet", "(URL[],ClassLoader,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.management.loading", "DefaultLoaderRepository", "loadClass", "(String)", "summary", "df-generated"]
+      - ["javax.management.loading", "DefaultLoaderRepository", "loadClassWithout", "(ClassLoader,String)", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "MLet", "(URL[])", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "MLet", "(URL[],boolean)", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "addURL", "(String)", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "addURL", "(URL)", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "postDeregister", "()", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "postRegister", "(Boolean)", "summary", "df-generated"]
+      - ["javax.management.loading", "MLet", "preDeregister", "()", "summary", "df-generated"]
+      - ["javax.management.loading", "PrivateMLet", "PrivateMLet", "(URL[],boolean)", "summary", "df-generated"]

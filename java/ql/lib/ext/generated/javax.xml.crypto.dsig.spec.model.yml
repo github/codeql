@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.crypto.dsig.spec", "ExcC14NParameterSpec", False, "ExcC14NParameterSpec", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.ExcC14NParameterSpec.prefixList].Element", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "ExcC14NParameterSpec", False, "getPrefixList", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.ExcC14NParameterSpec.prefixList]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "RSAPSSParameterSpec", False, "RSAPSSParameterSpec", "(PSSParameterSpec)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.RSAPSSParameterSpec.spec]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "RSAPSSParameterSpec", False, "getPSSParameterSpec", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.RSAPSSParameterSpec.spec]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilter2ParameterSpec", False, "XPathFilter2ParameterSpec", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec.xPathList].Element", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilter2ParameterSpec", False, "getXPathList", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec.xPathList]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "XPathFilterParameterSpec", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.xPath]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "XPathFilterParameterSpec", "(String,Map)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.xPath]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "XPathFilterParameterSpec", "(String,Map)", "", "Argument[1].MapKey", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.nsMap].MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "XPathFilterParameterSpec", "(String,Map)", "", "Argument[1].MapValue", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.nsMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "getNamespaceMap", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.nsMap]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathFilterParameterSpec", False, "getXPath", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathFilterParameterSpec.xPath]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.expression]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.filter]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter,Map)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.expression]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter,Map)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.filter]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter,Map)", "", "Argument[2].MapKey", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.nsMap].MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "XPathType", "(String,XPathType$Filter,Map)", "", "Argument[2].MapValue", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.nsMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "getExpression", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.expression]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "getFilter", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.filter]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XPathType", True, "getNamespaceMap", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XPathType.nsMap]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XSLTTransformParameterSpec", False, "XSLTTransformParameterSpec", "(XMLStructure)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec.stylesheet]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.spec", "XSLTTransformParameterSpec", False, "getStylesheet", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec.stylesheet]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.crypto.dsig.spec", "HMACParameterSpec", "HMACParameterSpec", "(int)", "summary", "df-generated"]
+      - ["javax.xml.crypto.dsig.spec", "HMACParameterSpec", "getOutputLength", "()", "summary", "df-generated"]
