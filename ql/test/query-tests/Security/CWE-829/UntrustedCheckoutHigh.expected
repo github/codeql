@@ -18,3 +18,5 @@
 | .github/workflows/untrusted_checkout2.yml:14:9:19:72 | Run Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/workflow_run_untrusted_checkout_2.yml:13:9:16:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/workflow_run_untrusted_checkout_2.yml:16:9:18:31 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
