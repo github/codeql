@@ -372,10 +372,6 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
       result.getParameter() = func.getArg(index + this.positionalOffset())
     )
     or
-    exists(int index1, int index2 | ppos.isPositionalLowerBound(index1) and index2 >= index1 |
-      result.getParameter() = func.getArg(index2 + this.positionalOffset())
-    )
-    or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
     or
     // `*args`
