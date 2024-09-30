@@ -1597,7 +1597,7 @@ module Raw {
    * An expression statement. For example:
    * ```rust
    * start();
-   * finish()
+   * finish();
    * use std::env;
    * ```
    */
@@ -1793,7 +1793,7 @@ module Raw {
    *     1
    * } else {
    *     0
-   * }
+   * };
    * ```
    */
   class IfExpr extends @if_expr, Expr {
@@ -2378,9 +2378,9 @@ module Raw {
    * INTERNAL: Do not use.
    * A unary operation expression. For example:
    * ```rust
-   * let x = -42
-   * let y = !true
-   * let z = *ptr
+   * let x = -42;
+   * let y = !true;
+   * let z = *ptr;
    * ```
    */
   class PrefixExpr extends @prefix_expr, Expr {

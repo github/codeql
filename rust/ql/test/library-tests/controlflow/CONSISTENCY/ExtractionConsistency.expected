@@ -1,7 +1,0 @@
-| test.rs:26:35:26:34 | expected `,` |
-| test.rs:26:35:26:34 | missing type for function parameter |
-| test.rs:26:37:26:36 | missing type for function parameter |
-| test.rs:40:38:40:37 | expected `,` |
-| test.rs:40:38:40:37 | missing type for function parameter |
-| test.rs:40:40:40:39 | missing type for function parameter |
-| test.rs:122:43:122:42 | expected type |
