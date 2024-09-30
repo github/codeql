@@ -1,0 +1,3 @@
+| gen_prefix_expr.rs:5:16:5:15 | expected SEMICOLON |
+| gen_prefix_expr.rs:6:18:6:17 | expected SEMICOLON |
+| gen_prefix_expr.rs:7:17:7:16 | expected SEMICOLON |
