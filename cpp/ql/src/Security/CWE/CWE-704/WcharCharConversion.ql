@@ -20,10 +20,8 @@ class WideCharPointerType extends PointerType {
 }
 
 /**
- * Recurse through types to find any intermediate type or final type
- * that suggests the type is unlikely to be a string.
- * Specifically looking for any unsigned character, or datatype with name containing "byte"
- * or datatype uint8_t.
+ * Given type `cur`, recurses through all intermediate types to find 
+ * any intermediate type equal to type `targ`
  */
 predicate hasIntermediateType(Type cur, Type targ) {
   cur = targ
