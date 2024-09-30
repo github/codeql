@@ -289,6 +289,14 @@ class _:
         }
     };
     ```
+    ```rust
+    let x = 'label: {
+        if exit() {
+            break 'label 42;
+        }
+        0;
+    };
+    ```
   """
 
 
