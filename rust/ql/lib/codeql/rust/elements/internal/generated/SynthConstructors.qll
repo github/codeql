@@ -21,6 +21,7 @@ import codeql.rust.elements.internal.CallExprConstructor
 import codeql.rust.elements.internal.CastExprConstructor
 import codeql.rust.elements.internal.ClosureBinderConstructor
 import codeql.rust.elements.internal.ClosureExprConstructor
+import codeql.rust.elements.internal.CommentConstructor
 import codeql.rust.elements.internal.ConstConstructor
 import codeql.rust.elements.internal.ConstArgConstructor
 import codeql.rust.elements.internal.ConstBlockPatConstructor

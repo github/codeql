@@ -23,6 +23,7 @@ import codeql.rust.elements.CallExpr
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr
+import codeql.rust.elements.Comment
 import codeql.rust.elements.Const
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.ConstBlockPat
@@ -126,6 +127,7 @@ import codeql.rust.elements.Static
 import codeql.rust.elements.Stmt
 import codeql.rust.elements.StmtList
 import codeql.rust.elements.Struct
+import codeql.rust.elements.Token
 import codeql.rust.elements.TokenTree
 import codeql.rust.elements.Trait
 import codeql.rust.elements.TraitAlias

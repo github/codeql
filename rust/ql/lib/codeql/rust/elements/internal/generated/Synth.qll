@@ -89,6 +89,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TComment(Raw::Comment id) { constructComment(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TConst(Raw::Const id) { constructConst(id) } or
     /**
      * INTERNAL: Do not use.
@@ -595,8 +599,9 @@ module Synth {
         TParam or TParamList or TPat or TPath or TPathSegment or TRecordExprField or
         TRecordExprFieldList or TRecordField or TRecordPatField or TRecordPatFieldList or TRename or
         TRetType or TReturnTypeSyntax or TSelfParam or TSourceFile or TStmt or TStmtList or
-        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRef or TUseTree or
-        TUseTreeList or TVariant or TVariantList or TVisibility or TWhereClause or TWherePred;
+        TToken or TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRef or
+        TUseTree or TUseTreeList or TVariant or TVariantList or TVisibility or TWhereClause or
+        TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -654,6 +659,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt = TExprStmt or TItem or TLetStmt;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TToken = TComment;
 
   /**
    * INTERNAL: Do not use.
@@ -775,6 +785,12 @@ module Synth {
    * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TComment`, if possible.
+   */
+  TComment convertCommentFromRaw(Raw::Element e) { result = TComment(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1621,6 +1637,8 @@ module Synth {
     or
     result = convertStmtListFromRaw(e)
     or
+    result = convertTokenFromRaw(e)
+    or
     result = convertTokenTreeFromRaw(e)
     or
     result = convertTupleFieldFromRaw(e)
@@ -1882,6 +1900,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TToken`, if possible.
+   */
+  TToken convertTokenFromRaw(Raw::Element e) { result = convertCommentFromRaw(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TTypeRef`, if possible.
    */
   TTypeRef convertTypeRefFromRaw(Raw::Element e) {
@@ -2031,6 +2055,12 @@ module Synth {
    * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TComment` to a raw DB element, if possible.
+   */
+  Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2877,6 +2907,8 @@ module Synth {
     or
     result = convertStmtListToRaw(e)
     or
+    result = convertTokenToRaw(e)
+    or
     result = convertTokenTreeToRaw(e)
     or
     result = convertTupleFieldToRaw(e)
@@ -3135,6 +3167,12 @@ module Synth {
     or
     result = convertLetStmtToRaw(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TToken` to a raw DB element, if possible.
+   */
+  Raw::Element convertTokenToRaw(TToken e) { result = convertCommentToRaw(e) }
 
   /**
    * INTERNAL: Do not use.

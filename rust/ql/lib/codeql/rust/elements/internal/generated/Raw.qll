@@ -843,6 +843,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for all tokens.
+   */
+  class Token extends @token, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
    * A TokenTree. For example:
    * ```rust
    * todo!()
@@ -1484,6 +1490,28 @@ module Raw {
      * Gets the ret type of this closure expression, if it exists.
      */
     RetType getRetType() { closure_expr_ret_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A comment. For example:
+   * ```rust
+   * // this is a comment
+   * /// This is a doc comment
+   * ```
+   */
+  class Comment extends @comment, Token {
+    override string toString() { result = "Comment" }
+
+    /**
+     * Gets the parent of this comment.
+     */
+    AstNode getParent() { comments(this, result, _) }
+
+    /**
+     * Gets the text of this comment.
+     */
+    string getText() { comments(this, _, result) }
   }
 
   /**
