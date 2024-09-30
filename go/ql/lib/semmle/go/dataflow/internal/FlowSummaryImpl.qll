@@ -324,7 +324,8 @@ module SourceSinkInterpretationInput implements
   ) {
     depth = 1 and
     embeddedParent = st.getOwnField(_, true) and
-    embeddedParent.getType().hasQualifiedName(pkg, name)
+    embeddedParent.getType().hasQualifiedName(pkg, name) and
+    m = st.getMethod(_)
     or
     depth > 1 and
     exists(Type embeddedType, StructType st2 |
