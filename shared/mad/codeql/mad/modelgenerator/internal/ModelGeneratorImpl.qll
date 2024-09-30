@@ -673,23 +673,21 @@ module MakeModelGenerator<
     }
 
     private string getReversedHash(PropagateContentFlow::AccessPath ap) {
-      result = concat(int i | | getHashAtIndex(ap, i), "" order by i desc)
+      result = strictconcat(int i | | getHashAtIndex(ap, i), "." order by i desc)
     }
 
     private string getHash(PropagateContentFlow::AccessPath ap) {
-      result = concat(int i | | getHashAtIndex(ap, i), "" order by i)
+      result = strictconcat(int i | | getHashAtIndex(ap, i), "." order by i)
     }
 
     /**
-     * Gets all access paths that contains the synthetic fields
+     * Gets all access paths that contain the synthetic fields
      * from `ap` in reverse order (if `ap` contains at least one synthetic field).
      * These are the possible candidates for synthetic path continuations.
      */
     private PropagateContentFlow::AccessPath getSyntheticPathCandidate(
       PropagateContentFlow::AccessPath ap
     ) {
-      hasSyntheticContent(ap) and
-      hasSyntheticContent(result) and
       getHash(ap) = getReversedHash(result)
     }
 
