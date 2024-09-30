@@ -277,42 +277,79 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
 
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
-class LoopExprTree extends PostOrderTree instanceof LoopExpr {
+abstract class LoopingExprTree extends PostOrderTree {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
-  override predicate first(AstNode node) { first(super.getLoopBody(), node) }
+  abstract BlockExpr getLoopBody();
 
-  /** Whether this `LoopExpr` captures the `c` completion. */
-  private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
+  abstract Label getLabel();
+
+  /** Whether this loop captures the `c` completion. */
+  predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
-    c.getLabelName() = super.getLabel().getLifetime().getText()
+    c.getLabelName() = this.getLabel().getLifetime().getText()
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge for exiting the loop with a break expressions
+    last(this.getLoopBody(), pred, c) and
+    c.(LoopJumpCompletion).isBreak() and
+    this.capturesLoopJumpCompletion(c) and
+    succ = this
+    or
     // Edge back to the start for final expression and continue expressions
-    last(super.getLoopBody(), pred, c) and
+    last(this.getLoopBody(), pred, c) and
     (
       completionIsNormal(c)
       or
       c.(LoopJumpCompletion).isContinue() and this.capturesLoopJumpCompletion(c)
     ) and
     this.first(succ)
-    or
-    // Edge for exiting the loop with a break expressions
-    last(super.getLoopBody(), pred, c) and
-    c.(LoopJumpCompletion).isBreak() and
-    this.capturesLoopJumpCompletion(c) and
-    succ = this
   }
 
   override predicate last(AstNode last, Completion c) {
     super.last(last, c)
     or
     // Any abnormal completions that this loop does not capture should propagate
-    last(super.getLoopBody(), last, c) and
+    last(this.getLoopBody(), last, c) and
     not completionIsNormal(c) and
     not this.capturesLoopJumpCompletion(c)
+  }
+}
+
+class LoopExprTree extends LoopingExprTree instanceof LoopExpr {
+  override BlockExpr getLoopBody() { result = LoopExpr.super.getLoopBody() }
+
+  override Label getLabel() { result = LoopExpr.super.getLabel() }
+
+  override predicate first(AstNode node) { first(this.getLoopBody(), node) }
+}
+
+class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
+  override BlockExpr getLoopBody() { result = WhileExpr.super.getLoopBody() }
+
+  override Label getLabel() { result = WhileExpr.super.getLabel() }
+
+  override predicate first(AstNode node) { first(super.getCondition(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c)
+    or
+    last(super.getCondition(), pred, c) and
+    c.(BooleanCompletion).succeeded() and
+    first(this.getLoopBody(), succ)
+    or
+    last(super.getCondition(), pred, c) and
+    c.(BooleanCompletion).failed() and
+    succ = this
+  }
+
+  override predicate last(AstNode last, Completion c) {
+    super.last(last, c)
+    or
+    last(super.getCondition(), last, c) and
+    not completionIsNormal(c)
   }
 }
 

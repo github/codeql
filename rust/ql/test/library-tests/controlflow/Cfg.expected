@@ -98,8 +98,30 @@
 | test.rs:49:17:49:31 | ContinueExpr | test.rs:44:17:48:17 | ExprStmt | continue('inner) |
 | test.rs:49:17:49:32 | ExprStmt | test.rs:49:17:49:31 | ContinueExpr |  |
 | test.rs:54:5:63:5 | enter test_while | test.rs:55:9:55:25 | LetStmt |  |
+| test.rs:54:5:63:5 | exit test_while (normal) | test.rs:54:5:63:5 | exit test_while |  |
+| test.rs:54:27:63:5 | BlockExpr | test.rs:54:5:63:5 | exit test_while (normal) |  |
 | test.rs:55:9:55:25 | LetStmt | test.rs:55:21:55:24 | true |  |
+| test.rs:55:13:55:17 | b | test.rs:56:15:56:15 | b | match, no-match |
 | test.rs:55:21:55:24 | true | test.rs:55:13:55:17 | b |  |
+| test.rs:56:9:62:9 | WhileExpr | test.rs:54:27:63:5 | BlockExpr |  |
+| test.rs:56:15:56:15 | b | test.rs:56:9:62:9 | WhileExpr | false |
+| test.rs:56:15:56:15 | b | test.rs:57:13:57:14 | ExprStmt | true |
+| test.rs:56:17:62:9 | BlockExpr | test.rs:56:15:56:15 | b |  |
+| test.rs:57:13:57:13 | 1 | test.rs:58:13:60:13 | ExprStmt |  |
+| test.rs:57:13:57:14 | ExprStmt | test.rs:57:13:57:13 | 1 |  |
+| test.rs:58:13:60:13 | ExprStmt | test.rs:58:17:58:17 | i |  |
+| test.rs:58:13:60:13 | IfExpr | test.rs:61:13:61:22 | ExprStmt |  |
+| test.rs:58:16:58:22 | ParenExpr | test.rs:58:13:60:13 | IfExpr | false |
+| test.rs:58:16:58:22 | ParenExpr | test.rs:59:17:59:22 | ExprStmt | true |
+| test.rs:58:17:58:17 | i | test.rs:58:21:58:21 | 0 |  |
+| test.rs:58:17:58:21 | ... > ... | test.rs:58:16:58:22 | ParenExpr |  |
+| test.rs:58:21:58:21 | 0 | test.rs:58:17:58:21 | ... > ... |  |
+| test.rs:59:17:59:21 | BreakExpr | test.rs:56:9:62:9 | WhileExpr | break |
+| test.rs:59:17:59:22 | ExprStmt | test.rs:59:17:59:21 | BreakExpr |  |
+| test.rs:61:13:61:13 | PathExpr | test.rs:61:17:61:21 | false |  |
+| test.rs:61:13:61:21 | ... = ... | test.rs:56:17:62:9 | BlockExpr |  |
+| test.rs:61:13:61:22 | ExprStmt | test.rs:61:13:61:13 | PathExpr |  |
+| test.rs:61:17:61:21 | false | test.rs:61:13:61:21 | ... = ... |  |
 | test.rs:75:1:78:1 | enter test_nested_function | test.rs:76:5:76:28 | LetStmt |  |
 | test.rs:75:1:78:1 | exit test_nested_function (normal) | test.rs:75:1:78:1 | exit test_nested_function |  |
 | test.rs:75:40:78:1 | BlockExpr | test.rs:75:1:78:1 | exit test_nested_function (normal) |  |
