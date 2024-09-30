@@ -81,11 +81,23 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 		}
 	}
 
-	testMessage := ""
+	// If CODEQL_EXTRACTOR_GO_[OPTION_]EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
+	// otherwise (the default) is to exclude them from extraction
+	includeVendor := util.IsVendorDirExtractionEnabled()
+
+	modeNotifications := make([]string, 0, 2)
 	if extractTests {
-		testMessage = " (test extraction enabled)"
+		modeNotifications = append(modeNotifications, "test extraction enabled")
 	}
-	log.Printf("Running packages.Load%s.", testMessage)
+	if includeVendor {
+		modeNotifications = append(modeNotifications, "extracting vendor directories")
+	}
+
+	modeMessage := strings.Join(modeNotifications, ", ")
+	if modeMessage != "" {
+		modeMessage = " (" + modeMessage + ")"
+	}
+	log.Printf("Running packages.Load%s.", modeMessage)
 
 	// This includes test packages if either we're tracing a `go test` command,
 	// or if CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS is set to "true".
@@ -233,9 +245,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	// Construct a list of directory segments to exclude from extraction, starting with ".."
 	excludedDirs := []string{`\.\.`}
 
-	// If CODEQL_EXTRACTOR_GO_[OPTION_]EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
-	// otherwise (the default) is to exclude them from extraction
-	includeVendor := util.IsVendorDirExtractionEnabled()
 	if !includeVendor {
 		excludedDirs = append(excludedDirs, "vendor")
 	}
