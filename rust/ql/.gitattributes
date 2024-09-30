@@ -266,7 +266,6 @@
 /lib/codeql/rust/elements/internal/LifetimeParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LifetimeParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/LiteralExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LoopExprConstructor.qll linguist-generated

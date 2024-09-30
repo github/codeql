@@ -23,12 +23,12 @@ mod loop_expression {
         return true;
     }
 
-    fn test_break_with_labels() -> bool {
+    fn test_break_with_labels(bool b) -> bool {
         'outer: loop {
             'inner: loop {
-                if false {
+                if b {
                     break;
-                } else if true {
+                } else if b {
                     break 'outer;
                 }
                 break 'inner;
@@ -37,13 +37,13 @@ mod loop_expression {
         true
     }
 
-    fn test_continue_with_labels() -> ! {
+    fn test_continue_with_labels(bool b) -> ! {
         'outer: loop {
             1;
             'inner: loop {
-                if false {
+                if b {
                     continue;
-                } else if true {
+                } else if b {
                     continue 'outer;
                 }
                 continue 'inner;
@@ -141,4 +141,11 @@ mod divergence {
         };
         n
     }
+}
+
+fn dead_code() -> i64 {
+    if (true) {
+        return 0;
+    }
+    return 1;
 }
