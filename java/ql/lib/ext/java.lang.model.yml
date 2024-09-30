@@ -162,6 +162,10 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.lang", "AbstractStringBuilder", "indexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "indexOf", "(String,int)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "lastIndexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "lastIndexOf", "(String,int)", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "length", "()", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "setCharAt", "(int,char)", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "setLength", "(int)", "summary", "manual"]
