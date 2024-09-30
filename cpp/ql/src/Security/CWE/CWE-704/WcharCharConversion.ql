@@ -78,9 +78,9 @@ class UnicodeMacroInvocation extends MacroInvocation {
  * the flag would indicate if UNICODE typing is set correctly to allow
  * or disallow a widening cast.
  */
-predicate isLikelyDynamicChecked(Expr e, GuardCondition gc) {
+predicate isLikelyDynamicallyChecked(Expr e) {
   e.getType() instanceof UnicodeMacroDependentWidthType and
-  exists(BitwiseAndExpr bai, UnicodeMacroInvocation umi | bai.getAnOperand() = umi.getExpr() |
+  exists(GuardCondition gc, BitwiseAndExpr bai, UnicodeMacroInvocation umi | bai.getAnOperand() = umi.getExpr() |
     // bai == 0 is false when reaching `e.getBasicBlock()`.
     // That is, bai != 0 when reaching `e.getBasicBlock()`.
     gc.ensuresEq(bai, 0, e.getBasicBlock(), false)
@@ -106,7 +106,7 @@ where
   // Avoid cases where the cast is guarded by a check to determine if
   // unicode encoding is enabled in such a way to disallow the dangerous cast
   // at runtime.
-  not isLikelyDynamicChecked(e1, _)
+  not isLikelyDynamicallyChecked(e1)
 select e1,
   "Conversion from " + e1.getType().toString() + " to " + e2.getType().toString() +
     ". Use of invalid string can lead to undefined behavior."
