@@ -168,7 +168,7 @@ private predicate synthDictSplatArgumentNodeStoreStep(
   )
 }
 
-private predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(Yield yield, Function func |
     nodeTo.asCfgNode() = yield.getAFlowNode() and
     nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
@@ -883,31 +883,6 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
     node.asCfgNode() = subscript.getObject() and
     c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
-}
-
-/** Data flows from an element expression in a comprehension to the comprehension. */
-predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // Comprehension
-  //   `[x+1 for x in l]`
-  //   nodeFrom is `x+1`, cfg node
-  //   nodeTo is `[x+1 for x in l]`, cfg node
-  //   c denotes list or set or dictionary without index
-  //
-  // List
-  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
-  or
-  // Set
-  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof SetElementContent
-  or
-  // Dictionary
-  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof DictionaryElementAnyContent
-  or
-  // Generator
-  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
 }
 
 /**

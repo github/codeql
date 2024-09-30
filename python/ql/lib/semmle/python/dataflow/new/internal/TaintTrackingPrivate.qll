@@ -188,7 +188,7 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // TODO: once we have proper flow-summary modeling, we might not need this step any
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
-  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
+  DataFlowPrivate::yieldStoreStep(nodeFrom, _, nodeTo)
 }
 
 /**
