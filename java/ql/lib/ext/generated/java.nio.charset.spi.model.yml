@@ -1,8 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: neutralModel
-    data:
-      - ["java.nio.charset.spi", "CharsetProvider", "charsetForName", "(String)", "summary", "df-generated"]
-      - ["java.nio.charset.spi", "CharsetProvider", "charsets", "()", "summary", "df-generated"]
