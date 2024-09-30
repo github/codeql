@@ -1033,13 +1033,31 @@ private predicate isBlockedLegacyNode(Node node) {
 }
 
 /**
+ * Holds if `thisNode` represents a value of `this` that is being tracked by the
+ * variable capture library.
+ *
+ * In this case we need to suppress the default flow steps between `thisNode` and
+ * the `ThisExpr` nodes; especially those that would become jump steps.
+ *
+ * Note that local uses of `this` are sometimes tracked by the local SSA library, but we should
+ * not block local def-use flow, since we only switch to use-use flow after a post-update.
+ */
+pragma[nomagic]
+private predicate isThisNodeTrackedByVariableCapture(DataFlow::ThisNode thisNode) {
+  exists(StmtContainer container | thisNode = TThisNode(container) |
+    any(VariableCaptureConfig::CapturedVariable v).asThisContainer() = container
+  )
+}
+
+/**
  * Holds if there is a value-preserving steps `node1` -> `node2` that might
  * be cross function boundaries.
  */
 private predicate valuePreservingStep(Node node1, Node node2) {
   node1.getASuccessor() = node2 and
   not isBlockedLegacyNode(node1) and
-  not isBlockedLegacyNode(node2)
+  not isBlockedLegacyNode(node2) and
+  not isThisNodeTrackedByVariableCapture(node1)
   or
   FlowSteps::propertyFlowStep(node1, node2)
   or
