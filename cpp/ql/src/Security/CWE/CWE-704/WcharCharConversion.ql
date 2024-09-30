@@ -20,15 +20,15 @@ class WideCharPointerType extends PointerType {
 }
 
 /**
- * Given type `cur`, recurses through all intermediate types to find 
- * any intermediate type equal to type `targ`
+ * Given type `t`, recurses through and returns all
+ * intermediate base types, including `t`.
  */
-predicate hasIntermediateType(Type cur, Type targ) {
-  cur = targ
+Type getABaseType(Type t) {
+  result = t
   or
-  hasIntermediateType(cur.(DerivedType).getBaseType(), targ)
+  result = getABaseType(t.(DerivedType).getBaseType())
   or
-  hasIntermediateType(cur.(TypedefType).getBaseType(), targ)
+  result = getABaseType(t.(TypedefType).getBaseType())
 }
 
 /**
@@ -40,7 +40,7 @@ class UnlikelyToBeAStringType extends Type {
       targ.(CharType).isUnsigned() or
       targ.getName().toLowerCase().matches(["uint8_t", "%byte%"])
     |
-      hasIntermediateType(this, targ)
+      getABaseType(this) = targ
     )
   }
 }
@@ -59,7 +59,7 @@ class UnicodeMacroDependentWidthType extends Type {
           "TCHAR"
         ]
     |
-      hasIntermediateType(this, targ)
+      getABaseType(this) = targ
     )
   }
 }
