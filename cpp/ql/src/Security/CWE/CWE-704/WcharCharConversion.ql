@@ -80,7 +80,9 @@ class UnicodeMacroInvocation extends MacroInvocation {
  */
 predicate isLikelyDynamicallyChecked(Expr e) {
   e.getType() instanceof UnicodeMacroDependentWidthType and
-  exists(GuardCondition gc, BitwiseAndExpr bai, UnicodeMacroInvocation umi | bai.getAnOperand() = umi.getExpr() |
+  exists(GuardCondition gc, BitwiseAndExpr bai, UnicodeMacroInvocation umi |
+    bai.getAnOperand() = umi.getExpr()
+  |
     // bai == 0 is false when reaching `e.getBasicBlock()`.
     // That is, bai != 0 when reaching `e.getBasicBlock()`.
     gc.ensuresEq(bai, 0, e.getBasicBlock(), false)
