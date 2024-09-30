@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming.ldap.spi", "LdapDnsProviderResult", False, "LdapDnsProviderResult", "(String,List)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.ldap.spi.LdapDnsProviderResult.domainName]", "value", "dfc-generated"]
+      - ["javax.naming.ldap.spi", "LdapDnsProviderResult", False, "LdapDnsProviderResult", "(String,List)", "", "Argument[1].Element", "Argument[this].SyntheticField[javax.naming.ldap.spi.LdapDnsProviderResult.endpoints].Element", "value", "dfc-generated"]
+      - ["javax.naming.ldap.spi", "LdapDnsProviderResult", False, "getDomainName", "()", "", "Argument[this].SyntheticField[javax.naming.ldap.spi.LdapDnsProviderResult.domainName]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.ldap.spi", "LdapDnsProviderResult", False, "getEndpoints", "()", "", "Argument[this].SyntheticField[javax.naming.ldap.spi.LdapDnsProviderResult.endpoints]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.naming.ldap.spi", "LdapDnsProvider", "lookupEndpoints", "(String,Map)", "summary", "df-generated"]
