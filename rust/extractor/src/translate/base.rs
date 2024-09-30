@@ -1,9 +1,11 @@
-use crate::trap::{DiagnosticSeverity, TrapFile};
+use crate::generated::{self, AstNode};
+use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_parser::SyntaxKind;
 use ra_ap_syntax::ast::RangeItem;
-use ra_ap_syntax::{ast, SyntaxError, TextRange};
+use ra_ap_syntax::{ast, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxToken, TextRange};
 pub trait TextValue {
     fn try_get_text(&self) -> Option<String>;
 }
@@ -87,8 +89,12 @@ impl Translator {
         let end = self.line_index.line_col(range_end);
         (start, end)
     }
-    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: impl ast::AstNode) {
+    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
         let (start, end) = self.location(node.syntax().text_range());
+        self.trap.emit_location(self.label, label, start, end)
+    }
+    pub fn emit_location_token(&mut self, label: Label<generated::Token>, token: &SyntaxToken) {
+        let (start, end) = self.location(token.text_range());
         self.trap.emit_location(self.label, label, start, end)
     }
     pub fn emit_parse_error(&mut self, path: &str, err: SyntaxError) {
@@ -103,5 +109,19 @@ impl Translator {
             message,
             location,
         );
+    }
+    pub fn emit_tokens(&mut self, parent: Label<AstNode>, children: SyntaxElementChildren) {
+        for child in children {
+            if let NodeOrToken::Token(token) = child {
+                if token.kind() == SyntaxKind::COMMENT {
+                    let label = self.trap.emit(generated::Comment {
+                        id: TrapId::Star,
+                        parent,
+                        text: token.text().to_owned(),
+                    });
+                    self.emit_location_token(label.into(), &token);
+                }
+            }
+        }
     }
 }
