@@ -287,6 +287,12 @@ abstract class PostUpdateNodeImpl extends Node {
   abstract Node getPreUpdateNode();
 }
 
+/**
+ * A post-update node synthesised for an existing control flow node.
+ * Add to `TSyntheticPostUpdateNode` to get the synthetic post-update node synthesised.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
   ControlFlowNode node;
 
@@ -301,6 +307,11 @@ class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNo
   override Location getLocation() { result = node.getLocation() }
 }
 
+/**
+ * An existsing control flow node being the post-update node of a synthetic pre-update node.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
   SyntheticPreUpdateNode pre;
 

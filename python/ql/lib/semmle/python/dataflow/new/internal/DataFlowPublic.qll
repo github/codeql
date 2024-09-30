@@ -71,6 +71,9 @@ newtype TNode =
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
     )
+    or
+    // the iterable argument to the implicit comprehension function
+    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) {
@@ -127,6 +130,9 @@ newtype TNode =
     exists(TFunction(f))
   } or
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  TSynthCompCapturedVariablesArgumentPostUpdateNode(Comp comp) {
     comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
   } or
   /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */

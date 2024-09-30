@@ -1752,11 +1752,23 @@ class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVar
 
   override string toString() { result = "Capturing closure argument (comp)" }
 
-  override Scope getScope() { result = comp.getFunction() }
+  override Scope getScope() { result = comp.getScope() }
 
   override Location getLocation() { result = comp.getLocation() }
 
   Comp getComprehension() { result = comp }
+}
+
+class SynthCompCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
+  TSynthCompCapturedVariablesArgumentPostUpdateNode
+{
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentPostUpdateNode() {
+    this = TSynthCompCapturedVariablesArgumentPostUpdateNode(comp)
+  }
+
+  override Node getPreUpdateNode() { result = TSynthCompCapturedVariablesArgumentNode(comp) }
 }
 
 /** Gets a viable run-time target for the call `call`. */
