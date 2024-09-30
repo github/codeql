@@ -9,6 +9,6 @@ type G struct {
 }
 
 type MixedExportedAndNot interface {
-        Exported()
-        notExported()
+	Exported()
+	notExported()
 }
