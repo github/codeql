@@ -163,6 +163,10 @@ newtype TArgumentPosition =
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
     FlowSummaryImpl::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    or
+    // the generated function inside a comprehension has a positional argument at index 0
+    exists(Comp c) and
+    index = 0
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
