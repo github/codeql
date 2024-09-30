@@ -211,4 +211,4 @@ def flow_in_generator():
 
 def flow_from_generator():
     for x in flow_in_generator():
-        SINK(x)  # Flow not found
+        SINK(x)
