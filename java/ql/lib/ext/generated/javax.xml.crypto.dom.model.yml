@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "get", "(Object)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.objMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getBaseURI", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.baseURI]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getDefaultNamespacePrefix", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.defaultPrefix]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getElementById", "(String)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.idMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getKeySelector", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.ks]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getNamespacePrefix", "(String,String)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.nsMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getProperty", "(String)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.propMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "getURIDereferencer", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.dereferencer]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "iterator", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.idMap].MapKey", "ReturnValue.Element.MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "iterator", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.idMap].MapValue", "ReturnValue.Element.MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "put", "(Object,Object)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.objMap].MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "put", "(Object,Object)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.objMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "put", "(Object,Object)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.objMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "putNamespacePrefix", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.nsMap].MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "putNamespacePrefix", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.nsMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "putNamespacePrefix", "(String,String)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.nsMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setBaseURI", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.baseURI]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setDefaultNamespacePrefix", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.defaultPrefix]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setIdAttributeNS", "(Element,String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.idMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setKeySelector", "(KeySelector)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.ks]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setProperty", "(String,Object)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.propMap].MapKey", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setProperty", "(String,Object)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.propMap].MapValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setProperty", "(String,Object)", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.propMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMCryptoContext", True, "setURIDereferencer", "(URIDereferencer)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMCryptoContext.dereferencer]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMStructure", True, "DOMStructure", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMStructure.node]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMStructure", True, "getNode", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dom.DOMStructure.node]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dom", "DOMURIReference", True, "getHere", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.crypto.dom", "DOMStructure", "isFeatureSupported", "(String)", "summary", "df-generated"]
