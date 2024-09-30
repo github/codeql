@@ -129,9 +129,11 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     exists(TFunction(f))
   } or
+  /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
     comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
   } or
+  /** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
   TSynthCompCapturedVariablesArgumentPostUpdateNode(Comp comp) {
     comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
   } or
