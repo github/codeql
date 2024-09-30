@@ -430,6 +430,7 @@ extensions:
       - ["java.util", "Collection", "contains", "(Object)", "summary", "manual"]
       - ["java.util", "Collection", "containsAll", "(Collection)", "summary", "manual"]
       - ["java.util", "Collection", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Collection", "remove", "(Object)", "summary", "manual"]
       - ["java.util", "Collection", "removeIf", "(Predicate)", "summary", "manual"]
       - ["java.util", "Collection", "size", "()", "summary", "manual"]
       - ["java.util", "Collections", "emptyList", "()", "summary", "manual"]
