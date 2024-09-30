@@ -18,6 +18,7 @@
 /CastExpr/gen_cast_expr.rs linguist-generated
 /ClosureBinder/gen_closure_binder.rs linguist-generated
 /ClosureExpr/gen_closure_expr.rs linguist-generated
+/Comment/gen_comment.rs linguist-generated
 /Const/gen_const.rs linguist-generated
 /ConstArg/gen_const_arg.rs linguist-generated
 /ConstBlockPat/gen_const_block_pat.rs linguist-generated

@@ -884,6 +884,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfToken(Token e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfTokenTree(TokenTree e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -1445,6 +1458,19 @@ private module Impl {
         partialPredicateCall = "ParamList()"
         or
         index = nParamList and result = e.getRetType() and partialPredicateCall = "RetType()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfComment(Comment e, int index, string partialPredicateCall) {
+    exists(int b, int bToken, int n |
+      b = 0 and
+      bToken = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfToken(e, i, _)) | i) and
+      n = bToken and
+      (
+        none()
+        or
+        result = getImmediateChildOfToken(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3498,6 +3524,8 @@ private module Impl {
     result = getImmediateChildOfCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfComment(e, index, partialAccessor)
     or
     result = getImmediateChildOfConstArg(e, index, partialAccessor)
     or
