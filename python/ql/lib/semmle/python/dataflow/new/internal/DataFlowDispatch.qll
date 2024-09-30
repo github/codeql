@@ -318,14 +318,10 @@ newtype TDataFlowCallable =
    * class instantiations, and (in the future) special methods.
    */
   TFunction(Function func) {
-    // For generators/list-comprehensions we create a synthetic function. In the
-    // points-to call-graph these were not considered callable, and instead we added
-    // data-flow steps (read/write) for these. As an easy solution for now, we do the
-    // same to keep things easy to reason about (and therefore exclude things that do
-    // not have a definition)
+    // Functions with an explicit definition
     exists(func.getDefinition())
     or
-    // ...scratch that, variable capture requires a callable
+    // For generators/list-comprehensions we create a synthetic function.
     exists(Comp c | c.getFunction() = func)
   } or
   /** see QLDoc for `DataFlowModuleScope` for why we need this. */
@@ -1389,6 +1385,7 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // =============================================================================
 newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  /** A call to the generated function inside a comprhension */
   TComprehensionCall(Comp c) or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
@@ -1476,6 +1473,7 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
   CallType getCallType() { result = type }
 }
 
+/** A call to the generated function inside a comprhension */
 class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
   Comp c;
   Function target;
@@ -1733,23 +1731,10 @@ class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
   }
 }
 
-class ComprehensionCapturedVariablesArgumentNode extends Node, ArgumentNode {
-  Comp comp;
-
-  ComprehensionCapturedVariablesArgumentNode() {
-    this = TSynthCompCapturedVariablesArgumentNode(comp) and
-    exists(Function target | target = comp.getFunction() |
-      target = any(VariableCapture::CapturedVariable v).getACapturingScope()
-    )
-  }
-
-  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    call.(ComprehensionCall).getComprehension() = comp and
-    pos.isLambdaSelf()
-  }
-}
-
-class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode {
+/** A synthetic node representing the values of variables captured by a comprehension. */
+class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode,
+  ArgumentNode
+{
   Comp comp;
 
   SynthCompCapturedVariablesArgumentNode() { this = TSynthCompCapturedVariablesArgumentNode(comp) }
@@ -1761,8 +1746,14 @@ class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVar
   override Location getLocation() { result = comp.getLocation() }
 
   Comp getComprehension() { result = comp }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call.(ComprehensionCall).getComprehension() = comp and
+    pos.isLambdaSelf()
+  }
 }
 
+/** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
 class SynthCompCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
   TSynthCompCapturedVariablesArgumentPostUpdateNode
 {

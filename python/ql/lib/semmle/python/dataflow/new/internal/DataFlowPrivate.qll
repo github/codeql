@@ -168,6 +168,16 @@ private predicate synthDictSplatArgumentNodeStoreStep(
   )
 }
 
+/**
+ * Holds if `nodeFrom` is the value yielded by the `yield` found at `nodeTo`.
+ *
+ * For example, in
+ * ```python
+ * for x in l:
+ *   yield x.name
+ * ```
+ * data from `x.name` is stored into the `yield` (and can subsequently be read out of the iterable).
+ */
 predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(Yield yield, Function func |
     nodeTo.asCfgNode() = yield.getAFlowNode() and
