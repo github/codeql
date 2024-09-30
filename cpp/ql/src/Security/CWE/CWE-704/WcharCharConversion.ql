@@ -49,7 +49,7 @@ class UnlikelyToBeAStringType extends Type {
 // see https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types
 class UnicodeMacroDependentWidthType extends Type {
   UnicodeMacroDependentWidthType() {
-    exists(Type targ |
+    exists(Type targ | getABaseType(this) = targ |
       targ.getName() in [
           "LPCTSTR",
           "LPTSTR",
@@ -58,8 +58,6 @@ class UnicodeMacroDependentWidthType extends Type {
           "TBYTE",
           "TCHAR"
         ]
-    |
-      getABaseType(this) = targ
     )
   }
 }
