@@ -36,13 +36,11 @@ Type getABaseType(Type t) {
  */
 class UnlikelyToBeAStringType extends Type {
   UnlikelyToBeAStringType() {
-    exists(Type targ |
-      // NOTE: not using CharType isUnsigned, but rather look for any explicitly declared unsigned 
+    exists(Type targ | getABaseType(this) = targ |
+      // NOTE: not using CharType isUnsigned, but rather look for any explicitly declared unsigned
       // char types. Assuming these are used for buffers, not strings.
       targ.(CharType).getName().toLowerCase().matches(["unsigned%"]) or
       targ.getName().toLowerCase().matches(["uint8_t", "%byte%"])
-    |
-      getABaseType(this) = targ
     )
   }
 }
