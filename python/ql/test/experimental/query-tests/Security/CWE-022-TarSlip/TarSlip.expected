@@ -34,7 +34,9 @@ edges
 | TarSlipImprov.py:142:9:142:13 | ControlFlowNode for entry | TarSlipImprov.py:143:36:143:40 | ControlFlowNode for entry | provenance |  |
 | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | provenance |  |
 | TarSlipImprov.py:151:22:151:49 | ControlFlowNode for Attribute() | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | provenance | Config |
+| TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | TarSlipImprov.py:152:13:152:20 | ControlFlowNode for Yield | provenance |  |
 | TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | TarSlipImprov.py:152:19:152:20 | ControlFlowNode for tf | provenance |  |
+| TarSlipImprov.py:152:13:152:20 | ControlFlowNode for Yield | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | provenance |  |
 | TarSlipImprov.py:152:19:152:20 | ControlFlowNode for tf | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | provenance |  |
 | TarSlipImprov.py:157:9:157:14 | ControlFlowNode for tar_cm | TarSlipImprov.py:162:20:162:23 | ControlFlowNode for tarc | provenance |  |
 | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | TarSlipImprov.py:157:9:157:14 | ControlFlowNode for tar_cm | provenance |  |
@@ -131,6 +133,7 @@ nodes
 | TarSlipImprov.py:151:14:151:50 | ControlFlowNode for closing() | semmle.label | ControlFlowNode for closing() |
 | TarSlipImprov.py:151:22:151:49 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:151:55:151:56 | ControlFlowNode for tf | semmle.label | ControlFlowNode for tf |
+| TarSlipImprov.py:152:13:152:20 | ControlFlowNode for Yield | semmle.label | ControlFlowNode for Yield |
 | TarSlipImprov.py:152:19:152:20 | ControlFlowNode for tf | semmle.label | ControlFlowNode for tf |
 | TarSlipImprov.py:157:9:157:14 | ControlFlowNode for tar_cm | semmle.label | ControlFlowNode for tar_cm |
 | TarSlipImprov.py:157:18:157:40 | ControlFlowNode for py2_tarxz() | semmle.label | ControlFlowNode for py2_tarxz() |
