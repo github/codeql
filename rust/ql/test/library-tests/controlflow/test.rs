@@ -23,7 +23,7 @@ mod loop_expression {
         return true;
     }
 
-    fn test_break_with_labels(bool b) -> bool {
+    fn test_break_with_labels(b: bool) -> bool {
         'outer: loop {
             'inner: loop {
                 if b {
@@ -37,7 +37,7 @@ mod loop_expression {
         true
     }
 
-    fn test_continue_with_labels(bool b) -> ! {
+    fn test_continue_with_labels(b: bool) -> ! {
         'outer: loop {
             1;
             'inner: loop {
@@ -83,7 +83,7 @@ mod if_expression {
     }
 
     fn test_nested_if(a: i64) -> i64 {
-        if (if a < 0 { a < -10 } else { a > 10}) {
+        if (if a < 0 { a < -10 } else { a > 10 }) {
             1
         } else {
             0
@@ -91,13 +91,15 @@ mod if_expression {
     }
 
     fn test_nested_if_match(a: i64) -> i64 {
-        if (match a { 0 => true, _ => false }) {
+        if (match a {
+            0 => true,
+            _ => false,
+        }) {
             1
         } else {
             0
         }
     }
-
 }
 
 mod logical_operators {
@@ -116,10 +118,9 @@ mod logical_operators {
         let d = a || (b == 28) || c;
         d
     }
-
 }
 
-fn test_match(maybe_digit: Option<i64>) -> {
+fn test_match(maybe_digit: Option<i64>) -> i64 {
     match maybe_digit {
         Option::Some(x) if x < 10 => x + 5,
         Option::Some(x) => x,
@@ -136,9 +137,7 @@ mod divergence {
     }
 
     fn test_let_match(a: Option<i64>) {
-        let Some(n) = a else {
-            "Expected some"
-        };
+        let Some(n) = a else { "Expected some" };
         n
     }
 }

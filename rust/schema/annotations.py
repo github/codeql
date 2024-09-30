@@ -122,7 +122,7 @@ class _:
         1
     } else {
         0
-    }
+    };
     ```
     """
 
@@ -426,9 +426,9 @@ class _:
     """
     A unary operation expression. For example:
     ```rust
-    let x = -42
-    let y = !true
-    let z = *ptr
+    let x = -42;
+    let y = !true;
+    let z = *ptr;
     ```
     """
 
@@ -581,7 +581,7 @@ class _:
     An expression statement. For example:
     ```rust
     start();
-    finish()
+    finish();
     use std::env;
     ```
     """

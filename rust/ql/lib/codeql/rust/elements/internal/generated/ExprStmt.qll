@@ -18,7 +18,7 @@ module Generated {
    * An expression statement. For example:
    * ```rust
    * start();
-   * finish()
+   * finish();
    * use std::env;
    * ```
    * INTERNAL: Do not reference the `Generated::ExprStmt` class directly.
