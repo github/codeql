@@ -99,9 +99,6 @@ abstract class RepositoryCheck extends ControlCheck {
   // for pull_requests, that means that it triggers only on local branches or repos from the same org
   // - they are effective against pull requests/workflow_run since they can control where the code is coming from
   // - they are not effective against issue_comment since the repository will always be the same
-  override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
-  }
 }
 
 abstract class PermissionCheck extends ControlCheck {
@@ -173,9 +170,9 @@ class ActorIfCheck extends ActorCheck instanceof If {
   }
 }
 
-class RepositoryIfCheck extends RepositoryCheck instanceof If {
-  RepositoryIfCheck() {
-    // eg: github.repository == 'test/foo'
+class PullRequestTargetRepositoryIfCheck extends RepositoryCheck instanceof If {
+  PullRequestTargetRepositoryIfCheck() {
+    // eg: github.event.pull_request.head.repo.full_name == github.repository
     exists(
       normalizeExpr(this.getCondition())
           // github.repository in a workflow_run event triggered by a pull request is the base repository
@@ -187,6 +184,28 @@ class RepositoryIfCheck extends RepositoryCheck instanceof If {
               "\\bgithub\\.event\\.workflow_run\\.head_repository\\.owner\\.name\\b"
             ], _, _)
     )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = "pull_request_target" and category = any_relevant_category()
+  }
+}
+
+class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
+  WorkflowRunRepositoryIfCheck() {
+    // eg: github.event.workflow_run.head_repository.full_name == github.repository
+    exists(
+      normalizeExpr(this.getCondition())
+          // github.repository in a workflow_run event triggered by a pull request is the base repository
+          .regexpFind([
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.full_name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.owner\\.name\\b"
+            ], _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = "workflow_run" and category = any_relevant_category()
   }
 }
 
