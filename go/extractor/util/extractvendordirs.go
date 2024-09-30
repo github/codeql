@@ -5,5 +5,6 @@ import (
 )
 
 func IsVendorDirExtractionEnabled() bool {
-	return os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true"
+	return os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true" ||
+		os.Getenv("CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_VENDOR_DIRS") == "true"
 }
