@@ -245,7 +245,7 @@ def gen(x):
 
 def test_yield():
     g = gen(SOURCE)
-    SINK(next(g)) #$ MISSING:flow="SOURCE, l:-1 -> next()"
+    SINK(next(g)) #$ flow="SOURCE, l:-1 -> next(..)"
 
 
 def gen_from(x):
@@ -260,7 +260,7 @@ def test_yield_from():
 # a statement rather than an expression, but related to generators
 def test_for():
     for x in gen(SOURCE):
-        SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+        SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
 
 # 6.2.9.1. Generator-iterator methods

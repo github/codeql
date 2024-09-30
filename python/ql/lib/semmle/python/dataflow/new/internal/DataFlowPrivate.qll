@@ -168,6 +168,37 @@ private predicate synthDictSplatArgumentNodeStoreStep(
   )
 }
 
+private predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+  exists(Yield yield, Function func |
+    nodeTo.asCfgNode() = yield.getAFlowNode() and
+    nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    func.containsInScope(yield)
+  |
+    exists(Comp comp | func = comp.getFunction() |
+      (
+        comp instanceof ListComp or
+        comp instanceof GeneratorExp
+      ) and
+      c instanceof ListElementContent
+      or
+      comp instanceof SetComp and
+      c instanceof SetElementContent
+      or
+      comp instanceof DictComp and
+      c instanceof DictionaryElementContent
+    )
+    or
+    not exists(Comp comp | func = comp.getFunction()) and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+      or
+      c instanceof DictionaryElementContent
+    )
+  )
+}
+
 /**
  * Ensures that the a `**kwargs` parameter will not contain elements with names of
  * keyword parameters.
@@ -668,8 +699,6 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   or
   setStoreStep(nodeFrom, c, nodeTo)
   or
-  comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
   matchStoreStep(nodeFrom, c, nodeTo)
@@ -682,6 +711,8 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  yieldStoreStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::storeStep(nodeFrom, c, nodeTo)
 }

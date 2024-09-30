@@ -1755,6 +1755,8 @@ class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVar
   override Scope getScope() { result = comp.getFunction() }
 
   override Location getLocation() { result = comp.getLocation() }
+
+  Comp getComprehension() { result = comp }
 }
 
 /** Gets a viable run-time target for the call `call`. */
@@ -1796,7 +1798,10 @@ abstract class ReturnNode extends Node {
 /** A data flow node that represents a value returned by a callable. */
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
-  ExtractedReturnNode() { node = any(Return ret).getValue().getAFlowNode() }
+  ExtractedReturnNode() {
+    node = any(Return ret).getValue().getAFlowNode() or
+    node = any(Yield yield).getAFlowNode()
+  }
 
   override ReturnKind getKind() { any() }
 }
