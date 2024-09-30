@@ -1361,6 +1361,14 @@ module Raw {
    *     }
    * };
    * ```
+   * ```rust
+   * let x = 'label: {
+   *     if exit() {
+   *         break 'label 42;
+   *     }
+   *     0;
+   * };
+   * ```
    */
   class BreakExpr extends @break_expr, Expr {
     override string toString() { result = "BreakExpr" }
