@@ -46,23 +46,25 @@ variable
 | variables.rs:210:13:210:13 | e |
 | variables.rs:211:14:211:51 | a11 |
 | variables.rs:214:33:214:35 | a12 |
-| variables.rs:224:5:224:6 | a8 |
-| variables.rs:226:9:226:10 | b3 |
-| variables.rs:227:9:227:10 | c1 |
-| variables.rs:235:6:235:41 | a9 |
-| variables.rs:242:13:242:15 | a10 |
-| variables.rs:243:13:243:14 | b4 |
-| variables.rs:244:13:244:14 | c2 |
-| variables.rs:265:13:265:15 | a10 |
-| variables.rs:266:13:266:14 | b4 |
-| variables.rs:278:9:278:23 | example_closure |
-| variables.rs:279:10:279:10 | x |
-| variables.rs:281:9:281:10 | n1 |
-| variables.rs:286:9:286:26 | immutable_variable |
-| variables.rs:287:10:287:10 | x |
-| variables.rs:289:9:289:10 | n2 |
-| variables.rs:295:9:295:9 | v |
-| variables.rs:297:9:297:12 | text |
+| variables.rs:231:9:231:10 | fv |
+| variables.rs:233:9:233:109 | a13 |
+| variables.rs:239:5:239:6 | a8 |
+| variables.rs:241:9:241:10 | b3 |
+| variables.rs:242:9:242:10 | c1 |
+| variables.rs:250:6:250:41 | a9 |
+| variables.rs:257:13:257:15 | a10 |
+| variables.rs:258:13:258:14 | b4 |
+| variables.rs:259:13:259:14 | c2 |
+| variables.rs:280:13:280:15 | a10 |
+| variables.rs:281:13:281:14 | b4 |
+| variables.rs:293:9:293:23 | example_closure |
+| variables.rs:294:10:294:10 | x |
+| variables.rs:296:9:296:10 | n1 |
+| variables.rs:301:9:301:26 | immutable_variable |
+| variables.rs:302:10:302:10 | x |
+| variables.rs:304:9:304:10 | n2 |
+| variables.rs:310:9:310:9 | v |
+| variables.rs:312:9:312:12 | text |
 variableAccess
 | variables.rs:11:15:11:16 | x1 | variables.rs:10:9:10:10 | x1 |
 | variables.rs:16:15:16:16 | x2 | variables.rs:15:13:15:14 | x2 |
@@ -114,31 +116,33 @@ variableAccess
 | variables.rs:213:23:213:25 | a11 | variables.rs:211:14:211:51 | a11 |
 | variables.rs:215:15:215:15 | e | variables.rs:210:13:210:13 | e |
 | variables.rs:216:28:216:30 | a12 | variables.rs:214:33:214:35 | a12 |
-| variables.rs:229:15:229:16 | a8 | variables.rs:224:5:224:6 | a8 |
-| variables.rs:230:15:230:16 | b3 | variables.rs:226:9:226:10 | b3 |
-| variables.rs:231:15:231:16 | c1 | variables.rs:227:9:227:10 | c1 |
-| variables.rs:237:15:237:16 | a9 | variables.rs:235:6:235:41 | a9 |
-| variables.rs:246:15:246:17 | a10 | variables.rs:242:13:242:15 | a10 |
-| variables.rs:247:15:247:16 | b4 | variables.rs:243:13:243:14 | b4 |
-| variables.rs:248:15:248:16 | c2 | variables.rs:244:13:244:14 | c2 |
-| variables.rs:251:9:251:10 | c2 | variables.rs:244:13:244:14 | c2 |
-| variables.rs:252:9:252:10 | b4 | variables.rs:243:13:243:14 | b4 |
-| variables.rs:253:9:253:11 | a10 | variables.rs:242:13:242:15 | a10 |
-| variables.rs:255:9:255:11 | a10 | variables.rs:242:13:242:15 | a10 |
-| variables.rs:256:9:256:10 | b4 | variables.rs:243:13:243:14 | b4 |
-| variables.rs:257:9:257:10 | c2 | variables.rs:244:13:244:14 | c2 |
-| variables.rs:259:15:259:17 | a10 | variables.rs:242:13:242:15 | a10 |
-| variables.rs:260:15:260:16 | b4 | variables.rs:243:13:243:14 | b4 |
-| variables.rs:261:15:261:16 | c2 | variables.rs:244:13:244:14 | c2 |
-| variables.rs:268:23:268:25 | a10 | variables.rs:265:13:265:15 | a10 |
-| variables.rs:269:23:269:24 | b4 | variables.rs:266:13:266:14 | b4 |
-| variables.rs:273:15:273:17 | a10 | variables.rs:242:13:242:15 | a10 |
-| variables.rs:274:15:274:16 | b4 | variables.rs:243:13:243:14 | b4 |
-| variables.rs:280:9:280:9 | x | variables.rs:279:10:279:10 | x |
-| variables.rs:282:9:282:23 | example_closure | variables.rs:278:9:278:23 | example_closure |
-| variables.rs:283:15:283:16 | n1 | variables.rs:281:9:281:10 | n1 |
-| variables.rs:288:9:288:9 | x | variables.rs:287:10:287:10 | x |
-| variables.rs:290:9:290:26 | immutable_variable | variables.rs:286:9:286:26 | immutable_variable |
-| variables.rs:291:15:291:16 | n2 | variables.rs:289:9:289:10 | n2 |
-| variables.rs:298:12:298:12 | v | variables.rs:295:9:295:9 | v |
-| variables.rs:299:19:299:22 | text | variables.rs:297:9:297:12 | text |
+| variables.rs:232:11:232:12 | fv | variables.rs:231:9:231:10 | fv |
+| variables.rs:234:26:234:28 | a13 | variables.rs:233:9:233:109 | a13 |
+| variables.rs:244:15:244:16 | a8 | variables.rs:239:5:239:6 | a8 |
+| variables.rs:245:15:245:16 | b3 | variables.rs:241:9:241:10 | b3 |
+| variables.rs:246:15:246:16 | c1 | variables.rs:242:9:242:10 | c1 |
+| variables.rs:252:15:252:16 | a9 | variables.rs:250:6:250:41 | a9 |
+| variables.rs:261:15:261:17 | a10 | variables.rs:257:13:257:15 | a10 |
+| variables.rs:262:15:262:16 | b4 | variables.rs:258:13:258:14 | b4 |
+| variables.rs:263:15:263:16 | c2 | variables.rs:259:13:259:14 | c2 |
+| variables.rs:266:9:266:10 | c2 | variables.rs:259:13:259:14 | c2 |
+| variables.rs:267:9:267:10 | b4 | variables.rs:258:13:258:14 | b4 |
+| variables.rs:268:9:268:11 | a10 | variables.rs:257:13:257:15 | a10 |
+| variables.rs:270:9:270:11 | a10 | variables.rs:257:13:257:15 | a10 |
+| variables.rs:271:9:271:10 | b4 | variables.rs:258:13:258:14 | b4 |
+| variables.rs:272:9:272:10 | c2 | variables.rs:259:13:259:14 | c2 |
+| variables.rs:274:15:274:17 | a10 | variables.rs:257:13:257:15 | a10 |
+| variables.rs:275:15:275:16 | b4 | variables.rs:258:13:258:14 | b4 |
+| variables.rs:276:15:276:16 | c2 | variables.rs:259:13:259:14 | c2 |
+| variables.rs:283:23:283:25 | a10 | variables.rs:280:13:280:15 | a10 |
+| variables.rs:284:23:284:24 | b4 | variables.rs:281:13:281:14 | b4 |
+| variables.rs:288:15:288:17 | a10 | variables.rs:257:13:257:15 | a10 |
+| variables.rs:289:15:289:16 | b4 | variables.rs:258:13:258:14 | b4 |
+| variables.rs:295:9:295:9 | x | variables.rs:294:10:294:10 | x |
+| variables.rs:297:9:297:23 | example_closure | variables.rs:293:9:293:23 | example_closure |
+| variables.rs:298:15:298:16 | n1 | variables.rs:296:9:296:10 | n1 |
+| variables.rs:303:9:303:9 | x | variables.rs:302:10:302:10 | x |
+| variables.rs:305:9:305:26 | immutable_variable | variables.rs:301:9:301:26 | immutable_variable |
+| variables.rs:306:15:306:16 | n2 | variables.rs:304:9:304:10 | n2 |
+| variables.rs:313:12:313:12 | v | variables.rs:310:9:310:9 | v |
+| variables.rs:314:19:314:22 | text | variables.rs:312:9:312:12 | text |

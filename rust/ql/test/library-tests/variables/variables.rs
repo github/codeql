@@ -220,6 +220,21 @@ fn match_pattern8() {
     }
 }
 
+enum FourValued {
+    First(i64),
+    Second(i64),
+    Third(i64),
+    Fourth(i64),
+}
+
+fn match_pattern9() {
+    let fv = FourValued::Second(62); // tv
+    match fv { // $ access=tv
+        FourValued::First(a13) | (FourValued::Second(a13) | FourValued::Third(a13)) | FourValued::Fourth(a13) // a13
+            => print_i64(a13), // $ access=a13
+    }
+}
+
 fn param_pattern1(
     a8: &str, // a8
     (
@@ -317,6 +332,7 @@ fn main() {
     match_pattern6();
     match_pattern7();
     match_pattern8();
+    match_pattern9();
     param_pattern1("a", ("b", "c"));
     param_pattern2(Either::Left(45));
     destruct_assignment();
