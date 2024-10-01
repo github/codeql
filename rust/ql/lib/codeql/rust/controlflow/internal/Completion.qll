@@ -86,7 +86,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     or
     e = any(WhileExpr c).getCondition()
     or
-    any(MatchArm arm).getGuard() = e
+    any(MatchGuard guard).getCondition() = e
     or
     exists(BinaryExpr expr |
       expr.getOperatorName() = ["&&", "||"] and

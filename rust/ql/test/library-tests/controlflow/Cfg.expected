@@ -428,7 +428,12 @@
 | test.rs:230:9:230:23 | TupleStructPat | test.rs:230:28:230:28 | x | match |
 | test.rs:230:9:230:23 | TupleStructPat | test.rs:231:9:231:23 | TupleStructPat | no-match |
 | test.rs:230:28:230:28 | x | test.rs:230:32:230:33 | 10 |  |
+| test.rs:230:28:230:33 | ... < ... | test.rs:230:38:230:38 | x | true |
+| test.rs:230:28:230:33 | ... < ... | test.rs:231:9:231:23 | TupleStructPat | false |
 | test.rs:230:32:230:33 | 10 | test.rs:230:28:230:33 | ... < ... |  |
+| test.rs:230:38:230:38 | x | test.rs:230:42:230:42 | 5 |  |
+| test.rs:230:38:230:42 | ... + ... | test.rs:229:5:233:5 | MatchExpr |  |
+| test.rs:230:42:230:42 | 5 | test.rs:230:38:230:42 | ... + ... |  |
 | test.rs:231:9:231:23 | TupleStructPat | test.rs:231:28:231:28 | x | match |
 | test.rs:231:9:231:23 | TupleStructPat | test.rs:232:9:232:20 | PathPat | no-match |
 | test.rs:231:28:231:28 | x | test.rs:229:5:233:5 | MatchExpr |  |
