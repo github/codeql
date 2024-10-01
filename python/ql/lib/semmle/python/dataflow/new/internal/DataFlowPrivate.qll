@@ -195,7 +195,7 @@ predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
       c instanceof SetElementContent
       or
       comp instanceof DictComp and
-      c instanceof DictionaryElementContent
+      c instanceof DictionaryElementAnyContent
     )
     or
     not exists(Comp comp | func = comp.getFunction()) and
@@ -204,7 +204,7 @@ predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
       or
       c instanceof SetElementContent
       or
-      c instanceof DictionaryElementContent
+      c instanceof DictionaryElementAnyContent
     )
   )
 }
