@@ -369,6 +369,8 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
 
   override predicate entry(AstNode node) { this.first(node) }
 
+  override predicate propagatesAbnormal(AstNode child) { child = super.getCondition() }
+
   override predicate first(AstNode node) { first(super.getCondition(), node) }
 
   private ConditionalCompletion conditionCompletion(Completion c) {
@@ -388,13 +390,6 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
     this.conditionCompletion(c).failed() and
     succ = this
   }
-
-  override predicate last(AstNode last, Completion c) {
-    super.last(last, c)
-    or
-    last(super.getCondition(), last, c) and
-    not completionIsNormal(c)
-  }
 }
 
 class ForExprTree extends LoopingExprTree instanceof ForExpr {
@@ -403,6 +398,8 @@ class ForExprTree extends LoopingExprTree instanceof ForExpr {
   override Label getLabel() { result = ForExpr.super.getLabel() }
 
   override predicate entry(AstNode n) { first(super.getPat(), n) }
+
+  override predicate propagatesAbnormal(AstNode child) { child = super.getIterable() }
 
   override predicate first(AstNode node) { first(super.getIterable(), node) }
 
@@ -420,13 +417,6 @@ class ForExprTree extends LoopingExprTree instanceof ForExpr {
     last(super.getPat(), pred, c) and
     c.(MatchCompletion).failed() and
     succ = this
-  }
-
-  override predicate last(AstNode last, Completion c) {
-    super.last(last, c)
-    or
-    last(super.getIterable(), last, c) and
-    not completionIsNormal(c)
   }
 }
 
