@@ -62,6 +62,15 @@ mod loop_expression {
         }
     }
 
+    fn test_while_let() {
+        let mut iter = 1..10;
+        while let Some(x) = iter.next() {
+            if (i = 5) {
+                break;
+            }
+        }
+    }
+
     fn test_for(j: i64) {
         for i in 0..10 {
             if (i == j) {
@@ -254,7 +263,7 @@ fn dead_code() -> i64 {
     return 1;
 }
 
-fn labelled_block() -> i64 {
+fn labelled_block1() -> i64 {
     let result = 'block: {
         do_thing();
         if condition_not_met() {
@@ -266,5 +275,15 @@ fn labelled_block() -> i64 {
         }
         do_last_thing();
         3
+    };
+}
+
+fn labelled_block2() -> i64 {
+    let result = 'block: {
+        let x: Option<i64> = None;
+        let Some(y) = x else {
+            break 'block 1;
+        };
+        x
     };
 }
