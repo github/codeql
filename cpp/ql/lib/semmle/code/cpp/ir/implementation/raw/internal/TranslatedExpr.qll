@@ -3040,6 +3040,7 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
       kind instanceof ExceptionEdge and
+      not kind.(ExceptionEdge).isSEH() and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }
@@ -3079,6 +3080,7 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       or
       not exists(this.getDestructors()) and
       kind instanceof ExceptionEdge and
+      not kind.(ExceptionEdge).isSEH() and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }

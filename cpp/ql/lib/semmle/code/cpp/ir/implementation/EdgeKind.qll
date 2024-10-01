@@ -8,7 +8,7 @@ private newtype TEdgeKind =
   TGotoEdge() or // Single successor (including fall-through)
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
-  TExceptionEdge() or // Thrown exception
+  TExceptionEdge(boolean isSEH){isSEH in [true, false]} or // Thrown exception, true for SEH exceptions, false otherwise
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
@@ -54,7 +54,15 @@ class FalseEdge extends EdgeKind, TFalseEdge {
  * instruction's evaluation throws an exception.
  */
 class ExceptionEdge extends EdgeKind, TExceptionEdge {
-  final override string toString() { result = "Exception" }
+  boolean isSEH; //true for Structured Exception Handling, false for C++ exceptions
+
+  ExceptionEdge() { this = TExceptionEdge(isSEH) }
+
+  final predicate isSEH() { isSEH = true }
+
+  final override string toString() { 
+    result = "Exception"
+   }
 }
 
 /**
@@ -123,7 +131,7 @@ module EdgeKind {
   /**
    * Gets the single instance of the `ExceptionEdge` class.
    */
-  ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
+  ExceptionEdge exceptionEdge() { result = TExceptionEdge(_) }
 
   /**
    * Gets the single instance of the `DefaultEdge` class.

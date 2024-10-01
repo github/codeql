@@ -88,9 +88,12 @@ abstract class TranslatedCall extends TranslatedExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       this.mayThrowException() and
-      kind instanceof ExceptionEdge and
+      kind instanceof ExceptionEdge and not kind.(ExceptionEdge).isSEH() and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
+    or
+    kind instanceof ExceptionEdge and kind.(ExceptionEdge).isSEH() and
+    result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
