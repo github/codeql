@@ -25,7 +25,10 @@ abstract class Sink extends ApiSinkExprNode { }
 /**
  * A sanitizer for uncontrolled data in path expression vulnerabilities.
  */
-abstract class Sanitizer extends DataFlow::ExprNode { }
+abstract class Sanitizer extends DataFlow::ExprNode {
+  /** Holds if this is a sanitizer when the flow state is `state`. */
+  predicate isBarrier(TaintedPathConfig::FlowState state) { any() }
+}
 
 /** A path normalization step. */
 private class PathNormalizationStep extends Unit {
@@ -141,7 +144,7 @@ class StreamWriterTaintedPathSink extends Sink {
 }
 
 /**
- * A weak guard that is insufficient to prevent path tampering.
+ * A weak guard that may be insufficient to prevent path tampering.
  */
 private class WeakGuard extends Guard {
   WeakGuard() {
@@ -160,6 +163,14 @@ private class WeakGuard extends Guard {
     or
     this.(LogicalOperation).getAnOperand() instanceof WeakGuard
   }
+
+  predicate isBarrier(TaintedPathConfig::FlowState state) {
+    state = TaintedPathConfig::Normalized() and
+    exists(Method m | this.(MethodCall).getTarget() = m |
+      m.getName() = "StartsWith" or
+      m.getName() = "EndsWith"
+    )
+  }
 }
 
 /**
@@ -168,12 +179,17 @@ private class WeakGuard extends Guard {
  * A weak check is one that is insufficient to prevent path tampering.
  */
 class PathCheck extends Sanitizer {
+  Guard g;
+
   PathCheck() {
-    // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, AbstractValues::BooleanValue v |
-      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
-      not g instanceof WeakGuard
-    )
+    // This expression is structurally replicated in a dominating guard
+    exists(AbstractValues::BooleanValue v | g = this.(GuardedDataFlowNode).getAGuard(_, v))
+  }
+
+  override predicate isBarrier(TaintedPathConfig::FlowState state) {
+    g.(WeakGuard).isBarrier(state)
+    or
+    not g instanceof WeakGuard
   }
 }
 
