@@ -4233,6 +4233,10 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
+      input = "Argument[0].ListElement.TupleElement[1]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = true
+      or
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[" + key + ":]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
