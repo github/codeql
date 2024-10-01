@@ -195,7 +195,6 @@
 /lib/codeql/rust/elements/internal/ClosureExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CommentConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/CommentImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstBlockPatConstructor.qll linguist-generated
@@ -241,7 +240,6 @@
 /lib/codeql/rust/elements/internal/GenericParamListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IdentPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/IdentPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplConstructor.qll linguist-generated
