@@ -151,7 +151,7 @@ private predicate ignoreExprOnly(Expr expr) {
   // The extractor deliberately emits an `ErrorExpr` as the first argument to
   // the allocator call, if any, of a `NewOrNewArrayExpr`. That `ErrorExpr`
   // should not be translated.
-  expr.(ErrorExpr).isFirstAllocatorCallArgument()
+  exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
   or
   not translateFunction(getEnclosingFunction(expr)) and
   not Raw::varHasIRFunc(getEnclosingVariable(expr))

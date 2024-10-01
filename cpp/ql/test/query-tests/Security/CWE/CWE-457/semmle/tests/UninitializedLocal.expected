@@ -1,6 +1,5 @@
 edges
 nodes
-| errors.cpp:4:7:4:7 | definition of x | semmle.label | definition of x |
 | errors.cpp:13:7:13:7 | definition of x | semmle.label | definition of x |
 | test.cpp:11:6:11:8 | definition of foo | semmle.label | definition of foo |
 | test.cpp:111:6:111:8 | definition of foo | semmle.label | definition of foo |

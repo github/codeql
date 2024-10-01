@@ -505,8 +505,11 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Holds if this function has extraction errors that create an `ErrorExpr`.
    */
   predicate hasErrors() {
-    // Exclude allocator call arguments because they are are always extracted as `ErrorExpr`.
-    exists(ErrorExpr e | e.getEnclosingFunction() = this and not e.isFirstAllocatorCallArgument())
+    exists(ErrorExpr e |
+      e.getEnclosingFunction() = this and
+      // Exclude the first allocator call argument because it is always extracted as `ErrorExpr`.
+      not exists(NewOrNewArrayExpr new | e = new.getAllocatorCall().getArgument(0))
+    )
   }
 }
 
