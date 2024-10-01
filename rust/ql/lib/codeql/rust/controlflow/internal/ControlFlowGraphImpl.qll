@@ -230,6 +230,8 @@ class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
   }
 }
 
+class ItemTree extends LeafTree, Item { }
+
 // `LetExpr` is a pre-order tree such that the pattern itself ends up
 // dominating successors in the graph in the same way that patterns do in
 // `match` expressions.
@@ -472,18 +474,6 @@ class ParenExprTree extends StandardPostOrderTree, ParenExpr {
 // This covers all patterns as they all extend `Pat`
 class PatExprTree extends LeafTree instanceof Pat { }
 
-class PathTree extends StandardPostOrderTree, Path {
-  override AstNode getChildNode(int i) {
-    i = 0 and result = this.getQualifier()
-    or
-    i = 1 and result = this.getPart()
-  }
-}
-
-class PathSegmentTree extends StandardPostOrderTree, PathSegment {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getNameRef() }
-}
-
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
 class PrefixExprTree extends StandardPostOrderTree instanceof PrefixExpr {
@@ -522,14 +512,6 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   }
 }
 
-class StaticTree extends StandardPostOrderTree, Static {
-  override AstNode getChildNode(int i) {
-    i = 0 and result = this.getName()
-    or
-    i = 1 and result = this.getBody()
-  }
-}
-
 class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
   override AstNode getChildNode(int i) { result = super.getField(i) }
 }
@@ -537,10 +519,6 @@ class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
 class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
-
-class UseTree_ extends StandardPreOrderTree, Use {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getUseTree().getPath() }
-}
 
 // NOTE: `yield` is a reserved but unused keyword.
 class YieldExprTree extends StandardPostOrderTree instanceof YieldExpr {
