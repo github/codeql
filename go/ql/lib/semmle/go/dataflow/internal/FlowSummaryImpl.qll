@@ -229,50 +229,49 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the target of this call, if any. */
     SourceOrSinkElement getCallTarget() {
-      exists(
-        DataFlow::CallNode cn, Method m, string pkg, string name, boolean subtypes,
-        DataFlow::Node syntacticRecv, Type syntacticRecvType, Type syntacticRecvBaseType
+      exists(DataFlow::CallNode cn, Function callTarget |
+        cn = this.asCall().getNode() and
+        callTarget = cn.getTarget()
       |
-        cn = this.asCall().getNode() and
-        result.asEntity() = cn.getTarget() and
-        // result.asEntity().getName() = "Source" and
-        cn = this.asCall().getNode() and
-        result.asEntity() = cn.getTarget() and
-        m = cn.getTarget() and
-        result.hasReceiverInfo(pkg, name, subtypes) and
-        syntacticRecv = skipImplicitFieldReads(cn.getReceiver()) and
-        syntacticRecvType = syntacticRecv.getType() and
+        result.asEntity() = callTarget and
         (
-          if syntacticRecvType instanceof PointerType
-          then syntacticRecvBaseType = syntacticRecvType.(PointerType).getBaseType()
-          else syntacticRecvBaseType = syntacticRecvType
-        ) and
-        (
-          syntacticRecvBaseType.hasQualifiedName(pkg, name)
+          not callTarget instanceof Method
           or
-          subtypes = true and
-          (
-            // `syntacticRecvBaseType`'s underlying type might be a struct type and `result`
-            // might relate to a promoted method.
-            exists(string ppm, StructType st, string ppst, Field embeddedParent, int depth |
-              ppm = m.getQualifiedName() and
-              st = syntacticRecvBaseType.getUnderlyingType() and
-              ppst = st.pp() and
-              m = st.getMethodOfEmbedded(embeddedParent, _, depth) and
-              receiverInfoHelper(m, embeddedParent, st, depth, pkg, name)
-              //  and
-              // //redundant
-              // syntacticRecvBaseType = cn.getReceiver().getType() and
-              // m = cn.getTarget()
-            )
+          exists(
+            Method m, string pkg, string name, boolean subtypes, DataFlow::Node syntacticRecv,
+            Type syntacticRecvType, Type syntacticRecvBaseType
+          |
+            m = callTarget and
+            result.hasReceiverInfo(pkg, name, subtypes) and
+            syntacticRecv = skipImplicitFieldReads(cn.getReceiver()) and
+            syntacticRecvType = syntacticRecv.getType() and
+            if syntacticRecvType instanceof PointerType
+            then syntacticRecvBaseType = syntacticRecvType.(PointerType).getBaseType()
+            else syntacticRecvBaseType = syntacticRecvType
+          |
+            syntacticRecvBaseType.hasQualifiedName(pkg, name)
             or
-            // `syntacticRecvBaseType`'s underlying type might be an interface type and `result`
-            // might relate to an embedded interface.
-            exists(Type t, string pprecv |
-              pprecv = syntacticRecvBaseType.pp() and
-              t = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
-              t.hasQualifiedName(pkg, name) and
-              m.hasQualifiedName(pkg, name, _)
+            subtypes = true and
+            (
+              // `syntacticRecvBaseType`'s underlying type might be a struct type and `result`
+              // might relate to a promoted method.
+              exists(string ppm, StructType st, string ppst, Field embeddedParent, int depth |
+                ppm = m.getQualifiedName() and
+                st = syntacticRecvBaseType.getUnderlyingType() and
+                ppst = st.pp() and
+                m = st.getMethodOfEmbedded(embeddedParent, _, depth) and
+                receiverInfoHelper(m, embeddedParent, st, depth, pkg, name)
+              )
+              or
+              // `syntacticRecvBaseType`'s underlying type might be an interface type and `result`
+              // might relate to an embedded interface.
+              exists(Type t, string pprecv |
+                pprecv = syntacticRecvBaseType.pp() and
+                t =
+                  syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
+                t.hasQualifiedName(pkg, name) and
+                m.(Method).hasQualifiedName(pkg, name, _)
+              )
             )
           )
         )
@@ -315,9 +314,9 @@ module SourceSinkInterpretationInput implements
   }
 
   /**
-   * Holds if `st` has a method `m` at depth `methodDepth` and an embedded
-   * field at depth `fieldDepth` which is on the chain of embedded fields which
-   * leads to `m` being promoted, and the type of the field is `pkg.name`.
+   * Holds if `st` has an embedded field `embeddedParent` at depth `depth` - 1,
+   * which has a method `m` defined directly on it, and the type of
+   * `embeddedParent` is `pkg.name`.
    */
   private predicate receiverInfoHelper(
     Method m, Field embeddedParent, StructType st, int depth, string pkg, string name
@@ -325,14 +324,14 @@ module SourceSinkInterpretationInput implements
     depth = 1 and
     embeddedParent = st.getOwnField(_, true) and
     embeddedParent.getType().hasQualifiedName(pkg, name) and
-    m = st.getMethod(_)
+    m = embeddedParent.getType().getMethod(_)
     or
     depth > 1 and
-    exists(Type embeddedType, StructType st2 |
-      st.hasOwnField(_, _, embeddedType, true) and
-      st2 = embeddedType.getUnderlyingType() and
+    exists(Field f, StructType st2 |
+      f = st.getOwnField(_, true) and
+      st2 = f.getType().getUnderlyingType() and
       m = st2.getMethodOfEmbedded(embeddedParent, _, depth - 1) and
-      receiverInfoHelper(m, embeddedParent, st2, depth - 1, pkg, name)
+      receiverInfoHelper(m, f, st2, depth - 1, pkg, name)
     )
   }
 
