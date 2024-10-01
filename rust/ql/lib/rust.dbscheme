@@ -176,6 +176,7 @@ locatable_locations(
 | @source_file
 | @stmt
 | @stmt_list
+| @token
 | @token_tree
 | @tuple_field
 | @type_bound
@@ -869,6 +870,10 @@ stmt_list_tail_exprs(
   int tail_expr: @expr ref
 );
 
+@token =
+  @comment
+;
+
 token_trees(
   unique int id: @token_tree
 );
@@ -1375,6 +1380,12 @@ closure_expr_param_lists(
 closure_expr_ret_types(
   int id: @closure_expr ref,
   int ret_type: @ret_type ref
+);
+
+comments(
+  unique int id: @comment,
+  int parent: @ast_node ref,
+  string text: string ref
 );
 
 const_args(

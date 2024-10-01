@@ -43,7 +43,7 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
 module LogForging = TaintTracking::Global<LogForgingConfig>;
 
 /** A source of remote user input. */
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class HtmlSanitizer extends Sanitizer {
   HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }

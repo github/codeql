@@ -45,7 +45,7 @@ def func2(environ, start_response): # $ requestHandler
     start_response(status, headers) # $ headerWriteBulk=headers headerWriteBulkUnsanitized=name,value
     return [b"Hello"] # $ HttpResponse responseBody=List
 
-case = sys.argv[1]
+case = sys.argv[1] # $ threatModelSource[commandargs]=sys.argv
 if case == "1":
     server = wsgiref.simple_server.WSGIServer(ADDRESS, wsgiref.simple_server.WSGIRequestHandler)
     server.set_app(func)

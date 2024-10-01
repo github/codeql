@@ -3,11 +3,11 @@
 use super::base::{TextValue, Translator};
 use crate::generated;
 use crate::trap::{Label, TrapId};
-use ra_ap_syntax::ast;
 use ra_ap_syntax::ast::{
     HasArgList, HasAttrs, HasGenericArgs, HasGenericParams, HasLoopBody, HasModuleItem, HasName,
     HasTypeBounds, HasVisibility, RangeItem,
 };
+use ra_ap_syntax::{ast, AstNode};
 
 impl Translator {
     fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {
@@ -185,7 +185,8 @@ impl Translator {
             id: TrapId::Star,
             abi_string,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -195,7 +196,8 @@ impl Translator {
             id: TrapId::Star,
             args,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -207,7 +209,8 @@ impl Translator {
             attrs,
             exprs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -219,7 +222,8 @@ impl Translator {
             const_arg,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -231,7 +235,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -249,7 +254,8 @@ impl Translator {
             assoc_items,
             attrs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -280,7 +286,8 @@ impl Translator {
             ty,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -290,7 +297,8 @@ impl Translator {
             id: TrapId::Star,
             meta,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -302,7 +310,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -317,7 +326,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -333,7 +343,8 @@ impl Translator {
             operator_name,
             rhs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -347,7 +358,8 @@ impl Translator {
             label,
             stmt_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -357,7 +369,8 @@ impl Translator {
             id: TrapId::Star,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -371,7 +384,8 @@ impl Translator {
             expr,
             lifetime,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -385,7 +399,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -399,7 +414,8 @@ impl Translator {
             expr,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -414,7 +430,8 @@ impl Translator {
             id: TrapId::Star,
             generic_param_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -435,7 +452,8 @@ impl Translator {
             param_list,
             ret_type,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -453,7 +471,8 @@ impl Translator {
             ty,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -463,7 +482,8 @@ impl Translator {
             id: TrapId::Star,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -476,7 +496,8 @@ impl Translator {
             id: TrapId::Star,
             block_expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -495,7 +516,8 @@ impl Translator {
             name,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -510,7 +532,8 @@ impl Translator {
             attrs,
             lifetime,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -523,7 +546,8 @@ impl Translator {
             id: TrapId::Star,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -545,7 +569,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -555,7 +580,8 @@ impl Translator {
             id: TrapId::Star,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -574,7 +600,8 @@ impl Translator {
             attrs,
             extern_item_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -593,7 +620,8 @@ impl Translator {
             rename,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -611,7 +639,8 @@ impl Translator {
             attrs,
             extern_items,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -625,7 +654,8 @@ impl Translator {
             expr,
             name_ref,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -653,7 +683,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -667,7 +698,8 @@ impl Translator {
             param_list,
             ret_type,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -685,7 +717,8 @@ impl Translator {
             loop_body,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -699,7 +732,8 @@ impl Translator {
             generic_param_list,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -714,7 +748,8 @@ impl Translator {
             expr,
             name,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -731,7 +766,8 @@ impl Translator {
             attrs,
             template,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -747,7 +783,8 @@ impl Translator {
             id: TrapId::Star,
             generic_args,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -763,7 +800,8 @@ impl Translator {
             id: TrapId::Star,
             generic_params,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -777,7 +815,8 @@ impl Translator {
             name,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -793,7 +832,8 @@ impl Translator {
             else_,
             then,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -817,7 +857,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -830,7 +871,8 @@ impl Translator {
             id: TrapId::Star,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -844,13 +886,15 @@ impl Translator {
             base,
             index,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
     pub(crate) fn emit_infer_type(&mut self, node: ast::InferType) -> Label<generated::InferType> {
         let label = self.trap.emit(generated::InferType { id: TrapId::Star });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -862,7 +906,8 @@ impl Translator {
             attrs,
             items,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -872,7 +917,8 @@ impl Translator {
             id: TrapId::Star,
             lifetime,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -882,7 +928,8 @@ impl Translator {
             id: TrapId::Star,
             block_expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -896,7 +943,8 @@ impl Translator {
             expr,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -914,7 +962,8 @@ impl Translator {
             pat,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -924,7 +973,8 @@ impl Translator {
             id: TrapId::Star,
             text,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -937,7 +987,8 @@ impl Translator {
             id: TrapId::Star,
             lifetime,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -954,7 +1005,8 @@ impl Translator {
             lifetime,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -966,7 +1018,8 @@ impl Translator {
             attrs,
             text_value,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -979,7 +1032,8 @@ impl Translator {
             id: TrapId::Star,
             literal,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -993,7 +1047,8 @@ impl Translator {
             label,
             loop_body,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1007,7 +1062,8 @@ impl Translator {
             path,
             token_tree,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1025,7 +1081,8 @@ impl Translator {
             name,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1035,7 +1092,8 @@ impl Translator {
             id: TrapId::Star,
             macro_call,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1045,7 +1103,8 @@ impl Translator {
             id: TrapId::Star,
             macro_call,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1064,7 +1123,8 @@ impl Translator {
             token_tree,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1074,7 +1134,8 @@ impl Translator {
             id: TrapId::Star,
             macro_call,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1090,7 +1151,8 @@ impl Translator {
             guard,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1105,7 +1167,8 @@ impl Translator {
             arms,
             attrs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1119,7 +1182,8 @@ impl Translator {
             expr,
             match_arm_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1132,7 +1196,8 @@ impl Translator {
             id: TrapId::Star,
             condition,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1146,7 +1211,8 @@ impl Translator {
             path,
             token_tree,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1169,7 +1235,8 @@ impl Translator {
             name_ref,
             receiver,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1185,7 +1252,8 @@ impl Translator {
             name,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1195,7 +1263,8 @@ impl Translator {
             id: TrapId::Star,
             text,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1205,13 +1274,15 @@ impl Translator {
             id: TrapId::Star,
             text,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
     pub(crate) fn emit_never_type(&mut self, node: ast::NeverType) -> Label<generated::NeverType> {
         let label = self.trap.emit(generated::NeverType { id: TrapId::Star });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1228,7 +1299,8 @@ impl Translator {
             fields,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1238,7 +1310,8 @@ impl Translator {
             id: TrapId::Star,
             pats,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1252,7 +1325,8 @@ impl Translator {
             pat,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1264,7 +1338,8 @@ impl Translator {
             params,
             self_param,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1276,7 +1351,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1286,7 +1362,8 @@ impl Translator {
             id: TrapId::Star,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1296,7 +1373,8 @@ impl Translator {
             id: TrapId::Star,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1308,7 +1386,8 @@ impl Translator {
             qualifier,
             part,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1320,7 +1399,8 @@ impl Translator {
             attrs,
             path,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1330,7 +1410,8 @@ impl Translator {
             id: TrapId::Star,
             path,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1359,7 +1440,8 @@ impl Translator {
             return_type_syntax,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1369,7 +1451,8 @@ impl Translator {
             id: TrapId::Star,
             path,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1386,7 +1469,8 @@ impl Translator {
             expr,
             operator_name,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1396,7 +1480,8 @@ impl Translator {
             id: TrapId::Star,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1412,7 +1497,8 @@ impl Translator {
             operator_name,
             start,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1426,7 +1512,8 @@ impl Translator {
             operator_name,
             start,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1443,7 +1530,8 @@ impl Translator {
             path,
             record_expr_field_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1460,7 +1548,8 @@ impl Translator {
             expr,
             name_ref,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1480,7 +1569,8 @@ impl Translator {
             fields,
             spread,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1499,7 +1589,8 @@ impl Translator {
             ty,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1512,7 +1603,8 @@ impl Translator {
             id: TrapId::Star,
             fields,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1526,7 +1618,8 @@ impl Translator {
             path,
             record_pat_field_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1543,7 +1636,8 @@ impl Translator {
             name_ref,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1561,7 +1655,8 @@ impl Translator {
             fields,
             rest_pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1573,7 +1668,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1583,7 +1679,8 @@ impl Translator {
             id: TrapId::Star,
             pat,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1595,7 +1692,8 @@ impl Translator {
             lifetime,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1605,7 +1703,8 @@ impl Translator {
             id: TrapId::Star,
             name,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1615,7 +1714,8 @@ impl Translator {
             id: TrapId::Star,
             attrs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1625,7 +1725,8 @@ impl Translator {
             id: TrapId::Star,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1640,7 +1741,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1651,7 +1753,8 @@ impl Translator {
         let label = self
             .trap
             .emit(generated::ReturnTypeSyntax { id: TrapId::Star });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1667,7 +1770,8 @@ impl Translator {
             name,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1677,7 +1781,8 @@ impl Translator {
             id: TrapId::Star,
             pats,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1687,7 +1792,8 @@ impl Translator {
             id: TrapId::Star,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1702,7 +1808,8 @@ impl Translator {
             attrs,
             items,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1720,7 +1827,8 @@ impl Translator {
             ty,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1734,7 +1842,8 @@ impl Translator {
             statements,
             tail_expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1756,13 +1865,15 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
     pub(crate) fn emit_token_tree(&mut self, node: ast::TokenTree) -> Label<generated::TokenTree> {
         let label = self.trap.emit(generated::TokenTree { id: TrapId::Star });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1786,7 +1897,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1811,7 +1923,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1823,7 +1936,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1835,7 +1949,8 @@ impl Translator {
             attrs,
             fields,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1852,7 +1967,8 @@ impl Translator {
             ty,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1865,7 +1981,8 @@ impl Translator {
             id: TrapId::Star,
             fields,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1875,7 +1992,8 @@ impl Translator {
             id: TrapId::Star,
             fields,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1890,7 +2008,8 @@ impl Translator {
             fields,
             path,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1900,7 +2019,8 @@ impl Translator {
             id: TrapId::Star,
             fields,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1924,7 +2044,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1934,7 +2055,8 @@ impl Translator {
             id: TrapId::Star,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1950,7 +2072,8 @@ impl Translator {
             lifetime,
             ty,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1963,7 +2086,8 @@ impl Translator {
             id: TrapId::Star,
             bounds,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1979,7 +2103,8 @@ impl Translator {
             name,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1992,7 +2117,8 @@ impl Translator {
             id: TrapId::Star,
             attrs,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2016,7 +2142,8 @@ impl Translator {
             visibility,
             where_clause,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2030,7 +2157,8 @@ impl Translator {
             use_tree,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2044,7 +2172,8 @@ impl Translator {
             rename,
             use_tree_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2057,7 +2186,8 @@ impl Translator {
             id: TrapId::Star,
             use_trees,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2075,7 +2205,8 @@ impl Translator {
             name,
             visibility,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2088,7 +2219,8 @@ impl Translator {
             id: TrapId::Star,
             variants,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2101,7 +2233,8 @@ impl Translator {
             id: TrapId::Star,
             path,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2114,7 +2247,8 @@ impl Translator {
             id: TrapId::Star,
             predicates,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2132,7 +2266,8 @@ impl Translator {
             ty,
             type_bound_list,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2148,7 +2283,8 @@ impl Translator {
             label,
             loop_body,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2157,7 +2293,8 @@ impl Translator {
         node: ast::WildcardPat,
     ) -> Label<generated::WildcardPat> {
         let label = self.trap.emit(generated::WildcardPat { id: TrapId::Star });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2169,7 +2306,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2181,7 +2319,8 @@ impl Translator {
             attrs,
             expr,
         });
-        self.emit_location(label, node);
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
         label
     }
 }

@@ -3,7 +3,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
 private import SuccessorType
 
-private newtype TCompletion =
+newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or
@@ -67,6 +67,13 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
+/** Holds if node `n` has the Boolean constant value `value`. */
+private predicate isBooleanConstant(AstNode n, Boolean value) {
+  n.(LiteralExpr).getTextValue() = value.toString()
+  or
+  isBooleanConstant(n.(ParenExpr).getExpr(), value)
+}
+
 /**
  * A completion that represents evaluation of an expression
  * with a Boolean value.
@@ -74,7 +81,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) {
+  private predicate isValidForSpecific0(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
     any(MatchArm arm).getGuard() = e
@@ -84,7 +91,7 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
       e = expr.getLhs()
     )
     or
-    exists(Expr parent | this.isValidForSpecific(parent) |
+    exists(Expr parent | this.isValidForSpecific0(parent) |
       parent =
         any(PrefixExpr expr |
           expr.getOperatorName() = "!" and
@@ -100,6 +107,15 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
       parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
       or
       parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
+    )
+  }
+
+  override predicate isValidForSpecific(AstNode e) {
+    this.isValidForSpecific0(e) and
+    (
+      isBooleanConstant(e, value)
+      or
+      not isBooleanConstant(e, _)
     )
   }
 

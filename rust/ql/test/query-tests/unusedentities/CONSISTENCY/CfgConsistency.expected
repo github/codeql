@@ -1,0 +1,8 @@
+deadEnd
+| main.rs:14:2:14:23 | ExprStmt |
+| main.rs:38:2:38:23 | ExprStmt |
+| main.rs:93:2:93:44 | ExprStmt |
+| main.rs:107:2:107:20 | LetStmt |
+| main.rs:151:2:151:53 | ExprStmt |
+scopeNoFirst
+| main.rs:125:1:133:1 | statics |

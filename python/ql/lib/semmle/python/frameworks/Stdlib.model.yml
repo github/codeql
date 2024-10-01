@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      - ['os', 'Member[getenv].ReturnValue', 'environment']
+      - ['os', 'Member[getenvb].ReturnValue', 'environment']
+      - ['os', 'Member[environ]', 'environment']
+      - ['os', 'Member[environb]', 'environment']
+      - ['posix', 'Member[environ]', 'environment']
+
+      - ['sys', 'Member[argv]', 'commandargs']
+      - ['sys', 'Member[orig_argv]', 'commandargs']
+
+      - ['sys', 'Member[stdin]', 'stdin']
+      - ['builtins', 'Member[input].ReturnValue', 'stdin']
+      - ['builtins', 'Member[raw_input].ReturnValue', 'stdin'] # python 2 only
+
+
+      # if no argument is given, the default is to use sys.argv[1:]
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args].WithArity[0].ReturnValue', 'commandargs']
+
+      - ['os', 'Member[read].ReturnValue', 'file']
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args]', 'Argument[0,args:]', 'ReturnValue', 'taint']
+      # note: taint of attribute lookups is handled in QL

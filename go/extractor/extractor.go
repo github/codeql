@@ -1618,6 +1618,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Interface:
 			kind = dbscheme.InterfaceType.Index()
 			for i := 0; i < tp.NumMethods(); i++ {
+				// Note that methods coming from embedded interfaces can be
+				// accessed through `Method(i)`, so there is no need to
+				// deal with them separately.
 				meth := tp.Method(i)
 
 				// Note that methods do not have a parent scope, so they are

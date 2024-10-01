@@ -1,0 +1,6 @@
+deadEnd
+| test.rs:55:13:55:17 | IdentPat |
+| test.rs:224:28:224:33 | ... < ... |
+| test.rs:239:30:239:48 | BlockExpr |
+scopeNoFirst
+| test.rs:62:5:66:5 | test_for |

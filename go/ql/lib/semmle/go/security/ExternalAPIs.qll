@@ -183,24 +183,24 @@ class UnknownExternalApiDataNode extends ExternalApiDataNode {
 }
 
 private module UntrustedDataConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
 /**
- * Tracks data flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s.
+ * Tracks data flow from `ActiveThreatModelSource`s to `ExternalApiDataNode`s.
  */
 module UntrustedDataToExternalApiFlow = DataFlow::Global<UntrustedDataConfig>;
 
 private module UntrustedDataToUnknownExternalApiConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalApiDataNode }
 }
 
 /**
- * Tracks data flow from `ThreatModelFlowSource`s to `UnknownExternalApiDataNode`s.
+ * Tracks data flow from `ActiveThreatModelSource`s to `UnknownExternalApiDataNode`s.
  */
 module UntrustedDataToUnknownExternalApiFlow =
   DataFlow::Global<UntrustedDataToUnknownExternalApiConfig>;

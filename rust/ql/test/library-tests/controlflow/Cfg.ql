@@ -1,7 +1,3 @@
-/**
- * @id rust/controlflow/cfg
- */
-
 import rust
 import codeql.rust.controlflow.ControlFlowGraph
 import TestUtils

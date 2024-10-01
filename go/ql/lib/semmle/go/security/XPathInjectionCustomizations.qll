@@ -25,12 +25,12 @@ module XPathInjection {
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
   /**
-   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
   deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, used in an XPath expression. */
-  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** An XPath expression string, considered as a taint sink for XPath injection. */
   class XPathExpressionStringAsSink extends Sink instanceof XPath::XPathExpressionString { }
