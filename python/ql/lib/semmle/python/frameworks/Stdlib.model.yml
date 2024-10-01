@@ -25,5 +25,7 @@ extensions:
       pack: codeql/python-all
       extensible: summaryModel
     data:
-      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args]', 'Argument[0,args:]', 'ReturnValue', 'taint']
       # note: taint of attribute lookups is handled in QL
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args]', 'Argument[0,args:]', 'ReturnValue', 'taint']
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
+      - ["urllib", "Member[parse].Member[parse_qs]", "Argument[0,qs:]", "ReturnValue", "taint"]
