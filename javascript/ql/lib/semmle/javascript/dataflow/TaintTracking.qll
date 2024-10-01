@@ -182,7 +182,39 @@ module TaintTracking {
    * for analysis-specific taint sanitizer guards.
    */
   cached
-  abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
+  abstract class AdditionalSanitizerGuardNode extends DataFlow::Node {
+    // For backwards compatibility, this contains a copy of the SanitizerGuard interface,
+    // but is does not inherit from it as that would cause re-evaluation of cached barriers.
+    /**
+     * Holds if this node blocks expression `e`, provided it evaluates to `outcome`.
+     */
+    cached
+    predicate blocks(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node sanitizes expression `e`, provided it evaluates
+     * to `outcome`.
+     */
+    cached
+    abstract predicate sanitizes(boolean outcome, Expr e);
+
+    /**
+     * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
+     */
+    cached
+    predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.sanitizes(outcome, e) and label.isTaint()
+      or
+      this.sanitizes(outcome, e, label)
+    }
+
+    /**
+     * Holds if this node sanitizes expression `e`, provided it evaluates
+     * to `outcome`.
+     */
+    cached
+    predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+
     /**
      * Holds if this guard applies to the flow in `cfg`.
      */

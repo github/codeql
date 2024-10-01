@@ -287,6 +287,9 @@ private predicate isBarrierGuardInternal(Configuration cfg, BarrierGuardNodeInte
   guard.(AdditionalBarrierGuardNode).appliesTo(cfg)
   or
   guard.(DerivedBarrierGuardNode).appliesTo(cfg)
+  or
+  cfg instanceof TaintTracking::Configuration and
+  guard.(TaintTracking::AdditionalSanitizerGuardNode).appliesTo(cfg)
 }
 
 /**
@@ -391,6 +394,12 @@ abstract private class DerivedBarrierGuardNode extends BarrierGuardNodeInternal 
 }
 
 /**
+ * Barrier guards derived from `AdditionalSanitizerGuard`
+ */
+private class BarrierGuardNodeFromAdditionalSanitizerGuard extends BarrierGuardNodeInternal instanceof TaintTracking::AdditionalSanitizerGuardNode
+{ }
+
+/**
  * Holds if data flow node `guard` acts as a barrier for data flow.
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
@@ -404,6 +413,10 @@ private predicate barrierGuardBlocksExpr(
   guard.(BarrierGuardNode).blocks(outcome, test, label)
   or
   guard.(DerivedBarrierGuardNode).blocks(outcome, test, label)
+  or
+  guard.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(outcome, test) and label = "taint"
+  or
+  guard.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(outcome, test, label)
 }
 
 /**
@@ -534,7 +547,7 @@ private predicate isBarrierEdgeRaw(Configuration cfg, DataFlow::Node pred, DataF
   cfg.isBarrierEdge(pred, succ)
   or
   exists(BarrierGuardNodeInternal guard |
-    cfg.isBarrierGuard(guard) and
+    isBarrierGuardInternal(cfg, guard) and
     barrierGuardBlocksEdge(guard, pred, succ, "")
   )
 }
@@ -564,7 +577,7 @@ private predicate isLabeledBarrierEdgeRaw(
   cfg.isBarrierEdge(pred, succ, label)
   or
   exists(BarrierGuardNodeInternal guard |
-    cfg.isBarrierGuard(guard) and
+    isBarrierGuardInternal(cfg, guard) and
     barrierGuardBlocksEdge(guard, pred, succ, label)
   )
 }
