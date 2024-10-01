@@ -4,6 +4,7 @@
  */
 
 import csharp
+private import codeql.util.Unit
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
@@ -26,21 +27,62 @@ abstract class Sink extends ApiSinkExprNode { }
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
+/** A path normalization step. */
+private class PathNormalizationStep extends Unit {
+  /**
+   * Holds if the flow step from `n1` to `n2` transforms the path into an
+   * absolute path.
+   *
+   * For example, the argument-to-return-value step through a call
+   * to `System.IO.Path.GetFullPath` is a normalization step.
+   */
+  abstract predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2);
+}
+
+private class GetFullPathStep extends PathNormalizationStep {
+  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(Call call |
+      call.getARuntimeTarget().hasFullyQualifiedName("System.IO.Path", "GetFullPath") and
+      n1.asExpr() = call.getArgument(0) and
+      n2.asExpr() = call
+    )
+  }
+}
+
 /**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
-private module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
+private module TaintedPathConfig implements DataFlow::StateConfigSig {
+  newtype FlowState =
+    additional NotNormalized() or
+    additional Normalized()
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof Source and state = NotNormalized()
+  }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof Sink and
+    exists(state)
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, FlowState s1, DataFlow::Node n2, FlowState s2) {
+    any(PathNormalizationStep step).isAdditionalFlowStep(n1, n2) and
+    s1 = NotNormalized() and
+    s2 = Normalized()
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { node.(Sanitizer).isBarrier(state) }
+
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) {
+    isAdditionalFlowStep(node, state, _, _)
+  }
 }
 
 /**
  * A taint-tracking module for uncontrolled data in path expression vulnerabilities.
  */
-module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
+module TaintedPath = TaintTracking::GlobalWithState<TaintedPathConfig>;
 
 /**
  * DEPRECATED: Use `ThreatModelSource` instead.
