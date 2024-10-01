@@ -122,6 +122,27 @@
 | test.rs:61:13:61:21 | ... = ... | test.rs:56:17:62:9 | BlockExpr |  |
 | test.rs:61:13:61:22 | ExprStmt | test.rs:61:13:61:13 | PathExpr |  |
 | test.rs:61:17:61:21 | false | test.rs:61:13:61:21 | ... = ... |  |
+| test.rs:65:5:72:5 | enter test_for | test.rs:66:18:66:18 | 0 |  |
+| test.rs:65:5:72:5 | exit test_for (normal) | test.rs:65:5:72:5 | exit test_for |  |
+| test.rs:65:25:72:5 | BlockExpr | test.rs:65:5:72:5 | exit test_for (normal) |  |
+| test.rs:66:9:71:9 | ForExpr | test.rs:65:25:72:5 | BlockExpr |  |
+| test.rs:66:13:66:13 | i | test.rs:66:9:71:9 | ForExpr | no-match |
+| test.rs:66:13:66:13 | i | test.rs:67:13:69:13 | ExprStmt | match |
+| test.rs:66:18:66:18 | 0 | test.rs:66:21:66:22 | 10 |  |
+| test.rs:66:18:66:22 | RangeExpr | test.rs:66:13:66:13 | i |  |
+| test.rs:66:21:66:22 | 10 | test.rs:66:18:66:22 | RangeExpr |  |
+| test.rs:66:24:71:9 | BlockExpr | test.rs:66:13:66:13 | i |  |
+| test.rs:67:13:69:13 | ExprStmt | test.rs:67:17:67:17 | i |  |
+| test.rs:67:13:69:13 | IfExpr | test.rs:70:13:70:14 | ExprStmt |  |
+| test.rs:67:16:67:23 | ParenExpr | test.rs:67:13:69:13 | IfExpr | false |
+| test.rs:67:16:67:23 | ParenExpr | test.rs:68:17:68:22 | ExprStmt | true |
+| test.rs:67:17:67:17 | i | test.rs:67:22:67:22 | j |  |
+| test.rs:67:17:67:22 | ... == ... | test.rs:67:16:67:23 | ParenExpr |  |
+| test.rs:67:22:67:22 | j | test.rs:67:17:67:22 | ... == ... |  |
+| test.rs:68:17:68:21 | BreakExpr | test.rs:66:9:71:9 | ForExpr | break |
+| test.rs:68:17:68:22 | ExprStmt | test.rs:68:17:68:21 | BreakExpr |  |
+| test.rs:70:13:70:13 | 1 | test.rs:66:24:71:9 | BlockExpr |  |
+| test.rs:70:13:70:14 | ExprStmt | test.rs:70:13:70:13 | 1 |  |
 | test.rs:75:1:78:1 | enter test_nested_function | test.rs:76:5:76:28 | LetStmt |  |
 | test.rs:75:1:78:1 | exit test_nested_function (normal) | test.rs:75:1:78:1 | exit test_nested_function |  |
 | test.rs:75:40:78:1 | BlockExpr | test.rs:75:1:78:1 | exit test_nested_function (normal) |  |

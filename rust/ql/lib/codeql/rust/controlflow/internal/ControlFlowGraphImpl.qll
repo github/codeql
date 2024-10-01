@@ -284,7 +284,9 @@ abstract class LoopingExprTree extends PostOrderTree {
 
   abstract Label getLabel();
 
-  /** Whether this loop captures the `c` completion. */
+  abstract predicate entry(AstNode node);
+
+  /** Holds if this loop captures the `c` completion. */
   predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
@@ -305,7 +307,7 @@ abstract class LoopingExprTree extends PostOrderTree {
       or
       c.(LoopJumpCompletion).isContinue() and this.capturesLoopJumpCompletion(c)
     ) and
-    this.first(succ)
+    this.entry(succ)
   }
 
   override predicate last(AstNode last, Completion c) {
@@ -323,6 +325,8 @@ class LoopExprTree extends LoopingExprTree instanceof LoopExpr {
 
   override Label getLabel() { result = LoopExpr.super.getLabel() }
 
+  override predicate entry(AstNode node) { this.first(node) }
+
   override predicate first(AstNode node) { first(this.getLoopBody(), node) }
 }
 
@@ -330,6 +334,8 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
   override BlockExpr getLoopBody() { result = WhileExpr.super.getLoopBody() }
 
   override Label getLabel() { result = WhileExpr.super.getLabel() }
+
+  override predicate entry(AstNode node) { this.first(node) }
 
   override predicate first(AstNode node) { first(super.getCondition(), node) }
 
@@ -349,6 +355,39 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
     super.last(last, c)
     or
     last(super.getCondition(), last, c) and
+    not completionIsNormal(c)
+  }
+}
+
+class ForExprTree extends LoopingExprTree instanceof ForExpr {
+  override BlockExpr getLoopBody() { result = ForExpr.super.getLoopBody() }
+
+  override Label getLabel() { result = ForExpr.super.getLabel() }
+
+  override predicate entry(AstNode n) { first(super.getPat(), n) }
+
+  override predicate first(AstNode node) { first(super.getIterable(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c)
+    or
+    last(super.getIterable(), pred, c) and
+    first(super.getPat(), succ) and
+    completionIsNormal(c)
+    or
+    last(super.getPat(), pred, c) and
+    c.(MatchCompletion).succeeded() and
+    first(this.getLoopBody(), succ)
+    or
+    last(super.getPat(), pred, c) and
+    c.(MatchCompletion).failed() and
+    succ = this
+  }
+
+  override predicate last(AstNode last, Completion c) {
+    super.last(last, c)
+    or
+    last(super.getIterable(), last, c) and
     not completionIsNormal(c)
   }
 }
