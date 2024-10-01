@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added several models of standard library functions and classes. This should make the analysis much more complete in cases where the standard library is not extracted.
+* Added several models of standard library functions and classes, in anticipation of no longer extracting the standard library in a future release.
