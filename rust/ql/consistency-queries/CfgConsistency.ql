@@ -25,3 +25,9 @@ query predicate scopeNoFirst(CfgScope scope) {
   not scope = any(Function f | not exists(f.getBody())) and
   not scope = any(ClosureExpr c | not exists(c.getBody()))
 }
+
+query predicate deadEnd(CfgImpl::Node node) {
+  Consistency::deadEnd(node) and
+  // `else` blocks in `let` statements diverge, so they are by definition dead ends
+  not node.getAstNode() = any(LetStmt let).getLetElse().getBlockExpr()
+}
