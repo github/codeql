@@ -1,9 +1,3 @@
-## 1.1.0
-
-### Query Metadata Changes
-
-* The precision of the `go/incorrect-integer-conversion-query` query was decreased from `very-high` to `high`, since there is at least one known class of false positives involving dynamic bounds checking.
-
 ## 1.0.8
 
 No user-facing changes.
