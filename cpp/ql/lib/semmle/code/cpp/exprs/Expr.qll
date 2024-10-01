@@ -748,7 +748,7 @@ class ErrorExpr extends Expr, @errorexpr {
   /**
    * Holds if this error expression is the first argument to a `new` allocation call.
    */
-  predicate isFirstAllocatorCallArgument() { 
+  predicate isFirstAllocatorCallArgument() {
     this = any(NewOrNewArrayExpr new).getAllocatorCall().getArgument(0)
   }
 }
