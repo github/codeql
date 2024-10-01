@@ -30,7 +30,8 @@ where
     check.protects(source.getNode().asExpr(), event, "code-injection")
   ) and
   // excluding privileged workflows since they can be exploited in easier circumstances
-  not job.isPrivileged() and
+  // which is covered by `actions/code-injection/critical`
+  not job.isPrivilegedExternallyTriggerable(event) and
   (
     // the workflow runs in the context of the default branch
     runsOnDefaultBranch(event)
