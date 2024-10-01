@@ -193,7 +193,7 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
     child = [super.getCondition(), super.getThen(), super.getElse()]
   }
 
-  ConditionalCompletion conditionCompletion(Completion c) {
+  private ConditionalCompletion conditionCompletion(Completion c) {
     if super.getCondition() instanceof LetExpr
     then result = c.(MatchCompletion)
     else result = c.(BooleanCompletion)
@@ -345,15 +345,21 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
 
   override predicate first(AstNode node) { first(super.getCondition(), node) }
 
+  private ConditionalCompletion conditionCompletion(Completion c) {
+    if super.getCondition() instanceof LetExpr
+    then result = c.(MatchCompletion)
+    else result = c.(BooleanCompletion)
+  }
+
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     super.succ(pred, succ, c)
     or
     last(super.getCondition(), pred, c) and
-    c.(BooleanCompletion).succeeded() and
+    this.conditionCompletion(c).succeeded() and
     first(this.getLoopBody(), succ)
     or
     last(super.getCondition(), pred, c) and
-    c.(BooleanCompletion).failed() and
+    this.conditionCompletion(c).failed() and
     succ = this
   }
 
