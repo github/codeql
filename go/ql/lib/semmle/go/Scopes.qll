@@ -479,8 +479,8 @@ class Function extends ValueEntity, @functionobject {
   ResultVariable getAResult() { result = this.getResult(_) }
 }
 
-pragma[inline_late]
 bindingset[m]
+pragma[inline_late]
 private Type implementsIncludingInterfaceMethodsCand(Method m, string mname) {
   result.implements(m.getReceiverType().getUnderlyingType()) and
   mname = m.getName()
