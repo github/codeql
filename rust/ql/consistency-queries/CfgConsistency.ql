@@ -26,8 +26,13 @@ query predicate scopeNoFirst(CfgScope scope) {
   not scope = any(ClosureExpr c | not exists(c.getBody()))
 }
 
+/** Holds if  `be` is the `else` branch of a `let` statement that results in a panic. */
+private predicate letElsePanic(BlockExpr be) {
+  be = any(LetStmt let).getLetElse().getBlockExpr() and
+  exists(Completion c | CfgImpl::last(be, _, c) | completionIsNormal(c))
+}
+
 query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
-  // `else` blocks in `let` statements diverge, so they are by definition dead ends
-  not node.getAstNode() = any(LetStmt let).getLetElse().getBlockExpr()
+  not letElsePanic(node.getAstNode())
 }
