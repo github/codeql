@@ -54,6 +54,8 @@ public class C {
     // The summary for the parameter is ignored, because it is generated and
     // because there is a manual neutral summary model for this callable.
     lib.apiStepArgQualGeneratedIgnored(arg1);
+
+    lib.getValue();
   }
 
   void fooPossibleLibraryDispatch(Library lib) {

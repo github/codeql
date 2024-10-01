@@ -36,4 +36,4 @@
 | utf8-identifiers.rs:11:5:11:24 | LetStmt |
 | utf8-identifiers.rs:11:9:11:9 | IdentPat |
 | utf8-identifiers.rs:11:9:11:9 | Name |
-| utf8-identifiers.rs:11:14:11:23 | LiteralExpr |
+| utf8-identifiers.rs:11:14:11:23 | 0.00001f64 |

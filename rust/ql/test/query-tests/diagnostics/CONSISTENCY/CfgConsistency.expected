@@ -1,0 +1,4 @@
+deadEnd
+| error.rs:2:5:2:32 | ExprStmt |
+| my_macro.rs:16:9:16:19 | ExprStmt |
+| my_struct.rs:17:9:17:34 | ExprStmt |
