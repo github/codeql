@@ -59,7 +59,7 @@ public class TaintedPathHandler : IHttpHandler
         string fullPath = Path.GetFullPath(path);
         if (fullPath.StartsWith("C:\\Foo"))
         {
-            File.ReadAllText(fullPath); // GOOD [FALSE POSITIVE]
+            File.ReadAllText(fullPath); // GOOD
         }
     }
 
