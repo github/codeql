@@ -1,7 +1,7 @@
 ---
 library: false
 name: github/actions-queries
-version: 0.1.60
+version: 0.1.61
 groups: [actions, queries]
 suites: codeql-suites
 extractor: javascript
