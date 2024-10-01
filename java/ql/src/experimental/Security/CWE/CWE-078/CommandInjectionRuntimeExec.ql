@@ -14,7 +14,7 @@
 import CommandInjectionRuntimeExec
 import ExecUserFlow::PathGraph
 
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 from
   ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,

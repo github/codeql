@@ -1386,5 +1386,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ord = sk.getListOrder() and
       strictcount(sk.getListOrder()) > 1
     }
+
+    /** Holds if `n` has multiple textual representations. */
+    query predicate multipleToString(Node n, string s) {
+      s = strictconcat(n.toString(), ",") and
+      strictcount(n.toString()) > 1
+    }
+
+    /** Holds if CFG scope `scope` lacks an initial AST node. */
+    query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
   }
 }

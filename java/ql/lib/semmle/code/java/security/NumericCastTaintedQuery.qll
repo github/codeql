@@ -85,7 +85,7 @@ private predicate smallExpr(Expr e) {
  * numeric cast.
  */
 module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and

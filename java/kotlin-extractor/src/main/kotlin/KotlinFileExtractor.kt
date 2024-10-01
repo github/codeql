@@ -27,30 +27,7 @@ import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
-import org.jetbrains.kotlin.ir.util.companionObject
-import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
-import org.jetbrains.kotlin.ir.util.hasAnnotation
-import org.jetbrains.kotlin.ir.util.hasInterfaceParent
-import org.jetbrains.kotlin.ir.util.isAnnotationClass
-import org.jetbrains.kotlin.ir.util.isAnonymousObject
-import org.jetbrains.kotlin.ir.util.isFakeOverride
-import org.jetbrains.kotlin.ir.util.isFunctionOrKFunction
-import org.jetbrains.kotlin.ir.util.isInterface
-import org.jetbrains.kotlin.ir.util.isLocal
-import org.jetbrains.kotlin.ir.util.isNonCompanionObject
-import org.jetbrains.kotlin.ir.util.isObject
-import org.jetbrains.kotlin.ir.util.isSuspend
-import org.jetbrains.kotlin.ir.util.isSuspendFunctionOrKFunction
-import org.jetbrains.kotlin.ir.util.isVararg
-import org.jetbrains.kotlin.ir.util.kotlinFqName
-import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.parentAsClass
-import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.ir.util.parents
-import org.jetbrains.kotlin.ir.util.primaryConstructor
-import org.jetbrains.kotlin.ir.util.render
-import org.jetbrains.kotlin.ir.util.target
+import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.java.NOT_NULL_ANNOTATIONS
 import org.jetbrains.kotlin.load.java.NULLABLE_ANNOTATIONS
@@ -826,7 +803,7 @@ open class KotlinFileExtractor(
         fun exprId() = tw.getLabelFor<DbExpr>("@\"annotationExpr;{$parent};$idx\"")
 
         return when (v) {
-            is IrConst<*> -> {
+            is CodeQLIrConst<*> -> {
                 extractConstant(v, parent, idx, null, null, overrideId = exprId())
             }
             is IrGetEnumValue -> {
@@ -5998,7 +5975,7 @@ open class KotlinFileExtractor(
                         extractExpressionExpr(a, callable, id, i, exprParent.enclosingStmt)
                     }
                 }
-                is IrConst<*> -> {
+                is CodeQLIrConst<*> -> {
                     val exprParent = parent.expr(e, callable)
                     extractConstant(
                         e,
@@ -6210,9 +6187,9 @@ open class KotlinFileExtractor(
                     if (
                         (isAndAnd || isOrOr) &&
                             e.branches.size == 2 &&
-                            (e.branches[1].condition as? IrConst<*>)?.value == true &&
+                            (e.branches[1].condition as? CodeQLIrConst<*>)?.value == true &&
                             (e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result
-                                    as? IrConst<*>)
+                                    as? CodeQLIrConst<*>)
                                 ?.value == isOrOr
                     ) {
 
@@ -6868,7 +6845,7 @@ open class KotlinFileExtractor(
         }
 
     private fun extractConstant(
-        e: IrConst<*>,
+        e: CodeQLIrConst<*>,
         parent: Label<out DbExprparent>,
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
@@ -9040,7 +9017,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
-        val unitType = useType(pluginContext.irBuiltIns.unitType)
+        val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, id, ids.constructor)
         tw.writeConstrsKotlinType(ids.constructor, unitType.kotlinResult.id)
         tw.writeHasLocation(ids.constructor, locId)

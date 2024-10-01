@@ -1,5 +1,5 @@
 import csharp
-import utils.modelgenerator.internal.CaptureSummaryFlowQuery
+import utils.modelgenerator.internal.CaptureModels
 import TestUtilities.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {

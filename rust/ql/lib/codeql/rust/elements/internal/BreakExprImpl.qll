@@ -28,6 +28,14 @@ module Impl {
    *     }
    * };
    * ```
+   * ```rust
+   * let x = 'label: {
+   *     if exit() {
+   *         break 'label 42;
+   *     }
+   *     0;
+   * };
+   * ```
    */
   class BreakExpr extends Generated::BreakExpr { }
 }

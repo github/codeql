@@ -43,6 +43,8 @@ extensions:
       - ["My.Qltest", "K", false, "GetMyNestedSyntheticField", "()", "", "Argument[this].SyntheticField[My.Qltest.K.MySyntheticField1].SyntheticField[MySyntheticField1.MyNestedSyntheticField]", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "K", false, "SetMyFieldOnSyntheticField", "(System.Object)", "", "Argument[0]", "Argument[this].SyntheticField[My.Qltest.K.MySyntheticField2].Field[My.Qltest.K.MyField]", "value", "manual"]
       - ["My.Qltest", "K", false, "GetMyFieldOnSyntheticField", "()", "", "Argument[this].SyntheticField[My.Qltest.K.MySyntheticField2].Field[My.Qltest.K.MyField]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "Library", false, "SetValue", "(System.Object)", "", "Argument[0]", "Argument[this].SyntheticField[X]", "value", "dfc-generated"]
+      - ["My.Qltest", "Library", false, "GetValue", "()", "", "Argument[this].SyntheticField[X]", "ReturnValue", "value", "dfc-generated"]
 
   - addsTo:
       pack: codeql/csharp-all

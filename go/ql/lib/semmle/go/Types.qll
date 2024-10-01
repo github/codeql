@@ -742,7 +742,8 @@ class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) {
     // Note that negative indices correspond to embedded interfaces and type
-    // set literals.
+    // set literals. Note also that methods coming from embedded interfaces
+    // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
   }
 
@@ -1011,7 +1012,7 @@ class NamedType extends @namedtype, CompositeType {
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
-      not exists(Method m2 | m2.getReceiverType() = this and m2.getName() = m)
+      not exists(Method m2 | m2.getReceiverBaseType() = this and m2.getName() = m)
     |
       // If S contains an embedded field T, the method set of S includes promoted methods with receiver T
       result = embedded.getMethod(m)

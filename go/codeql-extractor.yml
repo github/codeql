@@ -27,3 +27,10 @@ options:
       The default is 'false'.
     type: string
     pattern: "^(false|true)$"
+  extract_vendor_dirs:
+    title: Whether to include Go vendor directories in the CodeQL database.
+    description: >
+      A value indicating whether Go vendor directories should be included in the CodeQL database.
+      The default is 'false'.
+    type: string
+    pattern: "^(false|true)$"

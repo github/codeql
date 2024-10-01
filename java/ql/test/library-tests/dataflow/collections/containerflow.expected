@@ -297,7 +297,7 @@ models
 | 296 | Summary: java.util; SequencedMap; true; sequencedValues; ; ; Argument[this].MapValue; ReturnValue.Element; value; manual |
 | 297 | Summary: java.util; SequencedSet; true; reversed; ; ; Argument[this].Element; ReturnValue.Element; value; manual |
 | 298 | Summary: java.util; Set; false; copyOf; (Collection); ; Argument[0].Element; ReturnValue.Element; value; manual |
-| 299 | Summary: java.util; Set; false; clear; (); ; Argument[this].WithoutElement; Argument[this]; value; manual |
+| 299 | Summary: java.util; Set; true; clear; (); ; Argument[this].WithoutElement; Argument[this]; value; manual |
 | 300 | Summary: java.util; Set; false; of; (Object); ; Argument[0]; ReturnValue.Element; value; manual |
 | 301 | Summary: java.util; Set; false; of; (Object,Object); ; Argument[0..1]; ReturnValue.Element; value; manual |
 | 302 | Summary: java.util; Set; false; of; (Object,Object,Object); ; Argument[0..2]; ReturnValue.Element; value; manual |

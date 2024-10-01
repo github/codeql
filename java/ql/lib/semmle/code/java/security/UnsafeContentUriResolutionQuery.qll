@@ -9,7 +9,7 @@ import semmle.code.java.security.UnsafeContentUriResolution
  * A taint-tracking configuration to find paths from remote sources to content URI resolutions.
  */
 module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
 

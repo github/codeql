@@ -1,3 +1,9 @@
+## 1.3.0
+
+### New Queries
+
+* The `py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.
+
 ## 1.2.2
 
 ### Minor Analysis Improvements
