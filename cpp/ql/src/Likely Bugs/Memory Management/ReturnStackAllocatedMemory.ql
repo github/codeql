@@ -29,7 +29,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
   override predicate isSource(Instruction source) {
     exists(Function func |
       // Rule out FPs caused by extraction errors.
-      not any(ErrorExpr e).getEnclosingFunction() = func and
+      not func.hasErrors() and
       not intentionallyReturnsStackPointer(func) and
       func = source.getEnclosingFunction()
     |
