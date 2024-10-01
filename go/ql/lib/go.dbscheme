@@ -208,7 +208,7 @@ underlying_type(unique int named: @namedtype ref, int tp: @type ref);
 component_types(int parent: @compositetype ref, int index: int ref, string name: string ref, int tp: @type ref);
 
 #keyset[parent, index]
-component_tags(int parent: @structtype ref, int index: int ref, string tag: string ref);
+struct_tags(int parent: @structtype ref, int index: int ref, string tag: string ref);
 
 #keyset[interface, index]
 interface_private_method_ids(int interface: @interfacetype ref, int index: int ref, string id: string ref);

@@ -13979,7 +13979,7 @@
             </dependencies>
         </relation>
         <relation>
-            <name>component_tags</name>
+            <name>struct_tags</name>
             <cardinality>41038845</cardinality>
             <columnsizes>
                 <e>

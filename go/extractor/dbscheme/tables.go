@@ -1150,8 +1150,8 @@ var ComponentTypesTable = NewTable("component_types",
 	EntityColumn(TypeType, "tp"),
 ).KeySet("parent", "index")
 
-// ComponentTagsTable is the table associating struct types with their component types' tags
-var ComponentTagsTable = NewTable("component_tags",
+// StructTagsTable is the table associating struct types with their component types' tags
+var StructTagsTable = NewTable("struct_tags",
 	EntityColumn(StructType, "parent"),
 	IntColumn("index"),
 	StringColumn("tag"),

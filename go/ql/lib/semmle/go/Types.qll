@@ -467,9 +467,9 @@ class StructType extends @structtype, CompositeType {
   predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
     this.hasOwnField(i, name, tp, isEmbedded) and
     (
-      component_tags(this, i, tag)
+      struct_tags(this, i, tag)
       or
-      not component_tags(this, i, _) and tag = ""
+      not struct_tags(this, i, _) and tag = ""
     )
   }
 
@@ -594,9 +594,9 @@ class StructType extends @structtype, CompositeType {
         concat(int i, string name, Type tp, string tagToPrint |
           component_types(this, i, name, tp) and
           (
-            tagToPrint = " `" + any(string tag | component_tags(this, i, tag)) + "`"
+            tagToPrint = " `" + any(string tag | struct_tags(this, i, tag)) + "`"
             or
-            tagToPrint = "" and not component_tags(this, i, _)
+            tagToPrint = "" and not struct_tags(this, i, _)
           )
         |
           name + " " + tp.pp() + tagToPrint, "; " order by i

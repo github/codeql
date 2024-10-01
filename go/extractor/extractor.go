@@ -1625,7 +1625,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				}
 				extractComponentType(tw, lbl, i, name, field.Type())
 				if tp.Tag(i) != "" {
-					dbscheme.ComponentTagsTable.Emit(tw, lbl, i, tp.Tag(i))
+					dbscheme.StructTagsTable.Emit(tw, lbl, i, tp.Tag(i))
 				}
 			}
 		case *types.Pointer:
