@@ -136,13 +136,39 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree, LogicalAndExpr {
   }
 }
 
-class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExpr {
+class BlockExprTree extends StandardPostOrderTree, BlockExpr {
   override AstNode getChildNode(int i) {
     result = super.getStmtList().getStatement(i)
     or
     not exists(super.getStmtList().getStatement(i)) and
     (exists(super.getStmtList().getStatement(i - 1)) or i = 0) and
     result = super.getStmtList().getTailExpr()
+  }
+
+  override predicate propagatesAbnormal(AstNode child) { none() }
+
+  /** Holds if this block captures the break completion `c`. */
+  private predicate capturesBreakCompletion(LoopJumpCompletion c) {
+    c.isBreak() and
+    c.getLabelName() = this.getLabel().getLifetime().getText()
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c)
+    or
+    // Edge for exiting the block with a break expressions
+    last(this.getChildNode(_), pred, c) and
+    this.capturesBreakCompletion(c) and
+    succ = this
+  }
+
+  override predicate last(AstNode last, Completion c) {
+    super.last(last, c)
+    or
+    // Any abnormal completions that this block does not capture should propagate
+    last(this.getChildNode(_), last, c) and
+    not completionIsNormal(c) and
+    not this.capturesBreakCompletion(c)
   }
 }
 
@@ -293,7 +319,7 @@ abstract class LoopingExprTree extends PostOrderTree {
   abstract predicate entry(AstNode node);
 
   /** Holds if this loop captures the `c` completion. */
-  predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
+  private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
     not c.hasLabel()
     or
     c.getLabelName() = this.getLabel().getLifetime().getText()
