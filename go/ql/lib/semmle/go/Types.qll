@@ -782,7 +782,7 @@ class InterfaceType extends @interfacetype, CompositeType {
    * different packages defines two distinct types, but they appear identical according to
    * `getMethodType`. If the packages were named `a` and `b`, `getMethodType` would yield
    * `notExported -> int` for both, whereas this method would yield `a.notExported -> int`
-   * and `b.notExported -> int` respectively.
+   * and `b.notExported -> int` respectively, while both yielding `Exported -> int`.
    */
   Type getMethodTypeByQualifiedName(string qname) {
     exists(int i, string name | i >= 0 |
