@@ -769,29 +769,13 @@ class InterfaceType extends @interfacetype, CompositeType {
   }
 
   /**
-   * Gets the type of method `qname` of this interface type.
-   *
-   * This differs from `getMethodType` in that if the method is not exported, the `qname`
-   * will be package-qualified. This means that the set of `qname`s` together with any
-   * embedded types fully distinguishes the interface from any other, whereas the set
-   * of names matched by `getMethodName` may be ambiguous between interfaces with matching
-   * exported methods and unexported methods that have matching names but belong to
-   * different packages.
-   *
-   * For example, `interface { Exported() int; notExported() int }` declared in two
-   * different packages defines two distinct types, but they appear identical according to
-   * `getMethodType`. If the packages were named `a` and `b`, `getMethodType` would yield
-   * `notExported -> int` for both, whereas this method would yield `a.notExported -> int`
-   * and `b.notExported -> int` respectively, while both yielding `Exported -> int`.
+   * Holds if this interface type has a private method `name`,
+   * with qualified name `qname` and type `type`.
    */
-  Type getMethodTypeByQualifiedName(string qname) {
-    exists(int i, string name | i >= 0 |
-      component_types(this, i, name, result) and
-      (
-        interface_private_method_ids(this, i, qname)
-        or
-        name = qname and not interface_private_method_ids(this, i, _)
-      )
+  predicate hasPrivateMethodWithQualifiedName(string name, string qname, Type type) {
+    exists(int i | i >= 0 |
+      component_types(this, i, name, type) and
+      interface_private_method_ids(this, i, qname)
     )
   }
 
