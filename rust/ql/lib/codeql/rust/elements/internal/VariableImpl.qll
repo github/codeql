@@ -231,6 +231,53 @@ module Impl {
     TVariableOrAccessCandVariable(Variable v) or
     TVariableOrAccessCandVariableAccessCand(VariableAccessCand va)
 
+  /**
+   * A variable declaration or variable access candidate.
+   *
+   * In order to determine whether a candidate is an actual variable access,
+   * we rank declarations and candidates by their position in source code.
+   *
+   * The ranking must take variable names into account, but also variable scopes;
+   * below a comment `rank(scope, name, i)` means that the declaration/access on
+   * the given line has rank `i` amongst all declarations/accesses inside variable
+   * scope `scope`, for variable name `name`:
+   *
+   * ```rust
+   * fn f() {           // scope0
+   *     let x = 0;     // rank(scope0, "x", 0)
+   *     use(x);        // rank(scope0, "x", 1)
+   *     let x =        // rank(scope0, "x", 3)
+   *         x + 1;     // rank(scope0, "x", 2)
+   *     let y =        // rank(scope0, "y", 0)
+   *         x;         // rank(scope0, "x", 4)
+   *
+   *     {              // scope1
+   *         use(x);    // rank(scope1, "x", 0), rank(scope0, "x", 4)
+   *         use(y);    // rank(scope1, "y", 0), rank(scope0, "y", 1)
+   *         let x = 2; // rank(scope1, "x", 1)
+   *         use(x);    // rank(scope1, "x", 2), rank(scope0, "x", 4)
+   *     }
+   * }
+   * ```
+   *
+   * Variable declarations are only ranked in the scope that they bind into, while
+   * accesses candidates propagate outwards through scopes, as they may access
+   * declarations from outer scopes.
+   *
+   * For an access candidate with ranks `{ rank(scope_i, name, rnk_i) | i in I }` and
+   * declarations `d in D` with ranks `rnk(scope_d, name, rnk_d)`,  the target is
+   * calculated as
+   * ```
+   * max_{i in I} (
+   *   max_{d in D | scope_d = scope_i and rnk_d < rnk_i} (
+   *     d
+   *   )
+   * )
+   * ```
+   *
+   * i.e., its the nearest declaration before the access in the same (or outer) scope
+   * as the access.
+   */
   private class VariableOrAccessCand extends TVariableOrAccessCand {
     Variable asVariable() { this = TVariableOrAccessCandVariable(result) }
 
