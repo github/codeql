@@ -61,6 +61,10 @@ import CfgImpl
 /** Holds if `p` is a trivial pattern that is always guaranteed to match. */
 predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
 
+class ArrayExprTree extends StandardPostOrderTree, ArrayExpr {
+  override AstNode getChildNode(int i) { result = this.getExpr(i) }
+}
+
 class AsmExprTree extends LeafTree instanceof AsmExpr { }
 
 class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
@@ -392,6 +396,9 @@ class ForExprTree extends LoopingExprTree instanceof ForExpr {
   }
 }
 
+// TODO: replace with expanded macro once the extractor supports it
+class MacroExprTree extends LeafTree, MacroExpr { }
+
 class MatchArmTree extends ControlFlowTree instanceof MatchArm {
   override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
 
@@ -452,6 +459,10 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
   }
 }
 
+class NameTree extends LeafTree, Name { }
+
+class NameRefTree extends LeafTree, NameRef { }
+
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
 class ParenExprTree extends StandardPostOrderTree, ParenExpr {
@@ -460,6 +471,18 @@ class ParenExprTree extends StandardPostOrderTree, ParenExpr {
 
 // This covers all patterns as they all extend `Pat`
 class PatExprTree extends LeafTree instanceof Pat { }
+
+class PathTree extends StandardPostOrderTree, Path {
+  override AstNode getChildNode(int i) {
+    i = 0 and result = this.getQualifier()
+    or
+    i = 1 and result = this.getPart()
+  }
+}
+
+class PathSegmentTree extends StandardPostOrderTree, PathSegment {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getNameRef() }
+}
 
 class PathExprTree extends LeafTree instanceof PathExpr { }
 
@@ -499,6 +522,14 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   }
 }
 
+class StaticTree extends StandardPostOrderTree, Static {
+  override AstNode getChildNode(int i) {
+    i = 0 and result = this.getName()
+    or
+    i = 1 and result = this.getBody()
+  }
+}
+
 class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
   override AstNode getChildNode(int i) { result = super.getField(i) }
 }
@@ -506,6 +537,10 @@ class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
 class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
+
+class UseTree_ extends StandardPreOrderTree, Use {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getUseTree().getPath() }
+}
 
 // NOTE: `yield` is a reserved but unused keyword.
 class YieldExprTree extends StandardPostOrderTree instanceof YieldExpr {
