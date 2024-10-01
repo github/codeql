@@ -94,6 +94,8 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     )
     or
     exists(Expr parent | this.isValidForSpecific0(parent) |
+      e = parent.(ParenExpr).getExpr()
+      or
       parent =
         any(PrefixExpr expr |
           expr.getOperatorName() = "!" and

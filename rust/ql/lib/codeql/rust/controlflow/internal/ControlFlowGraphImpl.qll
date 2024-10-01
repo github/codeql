@@ -499,8 +499,18 @@ class NameRefTree extends LeafTree, NameRef { }
 
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
-class ParenExprTree extends StandardPostOrderTree, ParenExpr {
-  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+class ParenExprTree extends ControlFlowTree, ParenExpr {
+  private ControlFlowTree expr;
+
+  ParenExprTree() { expr = super.getExpr() }
+
+  override predicate propagatesAbnormal(AstNode child) { expr.propagatesAbnormal(child) }
+
+  override predicate first(AstNode first) { expr.first(first) }
+
+  override predicate last(AstNode last, Completion c) { expr.last(last, c) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
 }
 
 // This covers all patterns as they all extend `Pat`
