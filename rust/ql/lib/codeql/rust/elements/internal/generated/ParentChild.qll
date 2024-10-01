@@ -398,6 +398,43 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMacroItems(MacroItems e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nItem |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nItem = n + 1 + max(int i | i = -1 or exists(e.getItem(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getItem(index - n) and
+        partialPredicateCall = "Item(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMacroStmts(MacroStmts e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nExpr, int nStatement |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nExpr = n + 1 and
+      nStatement = nExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+        or
+        result = e.getStatement(index - nExpr) and
+        partialPredicateCall = "Statement(" + (index - nExpr).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n, int nAttr, int nExpr, int nGuard, int nPat |
       b = 0 and
@@ -3434,6 +3471,10 @@ private module Impl {
     result = getImmediateChildOfLetElse(e, index, partialAccessor)
     or
     result = getImmediateChildOfLifetime(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMacroItems(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMacroStmts(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
     or

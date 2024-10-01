@@ -331,6 +331,35 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class MacroItems extends @macro_items, AstNode {
+    override string toString() { result = "MacroItems" }
+
+    /**
+     * Gets the `index`th item of this macro items (0-based).
+     */
+    Item getItem(int index) { macro_items_items(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class MacroStmts extends @macro_stmts, AstNode {
+    override string toString() { result = "MacroStmts" }
+
+    /**
+     * Gets the expression of this macro statements, if it exists.
+     */
+    Expr getExpr() { macro_stmts_exprs(this, result) }
+
+    /**
+     * Gets the `index`th statement of this macro statements (0-based).
+     */
+    Stmt getStatement(int index) { macro_stmts_statements(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A match arm. For example:
    * ```rust
    * match x {
