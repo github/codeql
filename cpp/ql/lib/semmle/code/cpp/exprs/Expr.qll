@@ -744,6 +744,13 @@ class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }
 
   override string getAPrimaryQlClass() { result = "ErrorExpr" }
+
+  /**
+   * Holds if this error expression is the first argument to a `new` allocation call.
+   */
+  predicate isFirstAllocatorCallArgument() { 
+    this = any(NewOrNewArrayExpr new).getAllocatorCall().getArgument(0)
+  }
 }
 
 /**
