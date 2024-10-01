@@ -55,6 +55,12 @@ public class TaintedPathHandler : IHttpHandler
 
         // GOOD: A simple type.
         File.ReadAllText(int.Parse(path).ToString());
+
+        string fullPath = Path.GetFullPath(path);
+        if (fullPath.StartsWith("C:\\Foo"))
+        {
+            File.ReadAllText(fullPath); // GOOD [FALSE POSITIVE]
+        }
     }
 
     public bool IsReusable
