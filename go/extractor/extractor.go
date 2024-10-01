@@ -83,7 +83,11 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 
 	// If CODEQL_EXTRACTOR_GO_[OPTION_]EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
 	// otherwise (the default) is to exclude them from extraction
-	includeVendor := util.IsVendorDirExtractionEnabled()
+	includeVendor, oldOptionUsed := util.IsVendorDirExtractionEnabled()
+
+	if oldOptionUsed {
+		log.Println("Warning: obsolete option \"CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS\" was set. Use \"CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_VENDOR_DIRS\" or pass `--extractor-option extract_vendor_dirs=true` instead.")
+	}
 
 	modeNotifications := make([]string, 0, 2)
 	if extractTests {
