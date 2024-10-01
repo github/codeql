@@ -479,6 +479,13 @@ class Function extends ValueEntity, @functionobject {
   ResultVariable getAResult() { result = this.getResult(_) }
 }
 
+pragma[inline_late]
+bindingset[m]
+private Type implementsIncludingInterfaceMethodsCand(Method m, string mname) {
+  result.implements(m.getReceiverType().getUnderlyingType()) and
+  mname = m.getName()
+}
+
 /**
  * A method, that is, a function with a receiver variable, or a function declared in an interface.
  *
@@ -580,9 +587,14 @@ class Method extends Function {
   predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    exists(Type t |
-      this = t.getMethod(m.getName()) and
-      t.implements(m.getReceiverType().getUnderlyingType())
+    // Take all methods
+    // Get receiver type then underlying type ==> [method, recvutype]
+    // Map through Type.implements ==> [method, candtype]
+    // Get method name ==> [mname, candtype]
+    // Get corresponding method
+    exists(Type t, string mname |
+      t = implementsIncludingInterfaceMethodsCand(m, mname) and
+      this = t.getMethod(mname)
     )
   }
 
