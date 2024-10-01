@@ -538,9 +538,6 @@ fn main() -> std::io::Result<()> {
         .parse()
         .unwrap();
     let mut grammar = codegen::grammar::lower(&grammar);
-    grammar
-        .nodes
-        .retain(|x| x.name != "MacroStmts" && x.name != "MacroItems");
 
     grammar.enums.retain(|x| x.name != "Adt");
 

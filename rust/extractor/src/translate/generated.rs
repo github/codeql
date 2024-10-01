@@ -1004,6 +1004,17 @@ impl Translator {
         label
     }
 
+    pub(crate) fn emit_macro_items(&mut self, node: ast::MacroItems) -> Label<generated::MacroItems> {
+        let items = node.items().map(|x| self.emit_item(x)).collect();
+        let label = self.trap.emit(generated::MacroItems {
+            id: TrapId::Star,
+            items,
+        });
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
     pub(crate) fn emit_macro_pat(&mut self, node: ast::MacroPat) -> Label<generated::MacroPat> {
         let macro_call = node.macro_call().map(|x| self.emit_macro_call(x));
         let label = self.trap.emit(generated::MacroPat {
@@ -1026,6 +1037,19 @@ impl Translator {
             name,
             token_tree,
             visibility,
+        });
+        self.emit_location(label, &node);
+        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Label<generated::MacroStmts> {
+        let expr = node.expr().map(|x| self.emit_expr(x));
+        let statements = node.statements().map(|x| self.emit_stmt(x)).collect();
+        let label = self.trap.emit(generated::MacroStmts {
+            id: TrapId::Star,
+            expr,
+            statements,
         });
         self.emit_location(label, &node);
         self.emit_tokens(label.into(), node.syntax().children_with_tokens());
