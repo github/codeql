@@ -132,8 +132,8 @@ def test_dict_from_keyword():
 @expects(2)
 def test_dict_from_list():
     d = dict([("k", SOURCE), ("k1", NONSOURCE)])
-    SINK(d["k"]) #$ MISSING: flow="SOURCE, l:-1 -> d[k]"
-    SINK_F(d["k1"])
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"]) #$ SPURIOUS: flow="SOURCE, l:-2 -> d['k1']"  // due to imprecise list content
 
 @expects(2)
 def test_dict_from_dict():

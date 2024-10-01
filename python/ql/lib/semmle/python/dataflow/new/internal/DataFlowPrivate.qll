@@ -179,33 +179,10 @@ private predicate synthDictSplatArgumentNodeStoreStep(
  * data from `x.name` is stored into the `yield` (and can subsequently be read out of the iterable).
  */
 predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-  exists(Yield yield, Function func |
+  exists(Yield yield |
     nodeTo.asCfgNode() = yield.getAFlowNode() and
     nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
-    func.containsInScope(yield)
-  |
-    exists(Comp comp | func = comp.getFunction() |
-      (
-        comp instanceof ListComp or
-        comp instanceof GeneratorExp
-      ) and
-      c instanceof ListElementContent
-      or
-      comp instanceof SetComp and
-      c instanceof SetElementContent
-      or
-      comp instanceof DictComp and
-      c instanceof DictionaryElementAnyContent
-    )
-    or
-    not exists(Comp comp | func = comp.getFunction()) and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
-      or
-      c instanceof DictionaryElementAnyContent
-    )
+    c instanceof ListElementContent
   )
 }
 
