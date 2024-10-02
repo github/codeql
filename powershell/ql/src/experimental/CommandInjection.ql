@@ -24,7 +24,7 @@ predicate constantBinaryExpression(BinaryExpr binary) {
 }
 
 predicate onlyConstantExpressions(Expr expr){
-  expr instanceof StringConstExpression or constantBinaryExpression(expr) or constantTernaryExpression(expr)
+  expr instanceof StringConstExpr or constantBinaryExpression(expr) or constantTernaryExpression(expr)
 }
 
 VarAccess getNonConstantVariableAssignment(VarAccess varexpr) {
@@ -39,7 +39,7 @@ VarAccess getNonConstantVariableAssignment(VarAccess varexpr) {
 
 VarAccess getParameterWithVariableScope(VarAccess varexpr) {
   exists(Parameter parameter |
-    result = parameter.getName() and
+    result = parameter.getAnAccess() and
     containsScope(result, varexpr)
   )
 }
@@ -48,16 +48,16 @@ Expr getAllSubExpressions(Expr expr)
 {
   result = expr or
   result = getAllSubExpressions(expr.(ArrayLiteral).getAnElement()) or
-  result = getAllSubExpressions(expr.(ArrayExpr).getStatementBlock().getAStatement().(Pipeline).getAComponent().(CmdExpr).getExpr())
+  result = getAllSubExpressions(expr.(ArrayExpr).getStmtBlock().getAStmt().(Pipeline).getAComponent().(CmdExpr).getExpr())
 }
 
 Expr dangerousCommandElement(Cmd command)
 {
   (
     command.getKind() = 28 or
-    command.getName() = "Invoke-Expression"
+    command.getCommandName() = "Invoke-Expression"
   ) and
-  result = getAllSubExpressions(command.getAnElement())
+  result = getAllSubExpressions(command.getAnArgument())
 }
 
 from Expr commandarg, VarAccess unknownDeclaration
