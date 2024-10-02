@@ -51,6 +51,20 @@ mod loop_expression {
         }
     }
 
+    fn test_loop_label_shadowing(b: bool) -> ! {
+        'loop: loop {
+            1;
+            'loop: loop {
+                if b {
+                    continue;
+                } else if b {
+                    continue 'loop;
+                }
+                continue 'loop;
+            }
+        }
+    }
+
     fn test_while(i: i64) {
         let mut b = true;
         while b {
