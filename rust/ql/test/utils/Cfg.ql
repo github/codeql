@@ -7,3 +7,7 @@ class MyRelevantNode extends CfgNode {
 }
 
 import codeql.rust.controlflow.internal.ControlFlowGraphImpl::TestOutput<MyRelevantNode>
+
+query predicate breakTarget(BreakExpr be, Expr target) { target = be.getTarget() }
+
+query predicate continueTarget(ContinueExpr ce, Expr target) { target = ce.getTarget() }

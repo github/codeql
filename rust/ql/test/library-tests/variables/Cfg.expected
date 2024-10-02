@@ -1,3 +1,4 @@
+edges
 | variables.rs:1:1:3:1 | enter print_str | variables.rs:2:5:2:22 | ExprStmt |  |
 | variables.rs:1:1:3:1 | exit print_str (normal) | variables.rs:1:1:3:1 | exit print_str |  |
 | variables.rs:1:23:3:1 | BlockExpr | variables.rs:1:1:3:1 | exit print_str (normal) |  |
@@ -592,3 +593,5 @@
 | variables.rs:340:5:340:16 | PathExpr | variables.rs:340:5:340:18 | CallExpr |  |
 | variables.rs:340:5:340:18 | CallExpr | variables.rs:318:11:341:1 | BlockExpr |  |
 | variables.rs:340:5:340:19 | ExprStmt | variables.rs:340:5:340:16 | PathExpr |  |
+breakTarget
+continueTarget

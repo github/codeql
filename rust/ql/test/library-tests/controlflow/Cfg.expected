@@ -1,3 +1,4 @@
+edges
 | test.rs:1:1:4:1 | enter test_call | test.rs:2:5:2:41 | ExprStmt |  |
 | test.rs:1:1:4:1 | exit test_call (normal) | test.rs:1:1:4:1 | exit test_call |  |
 | test.rs:1:24:4:1 | BlockExpr | test.rs:1:1:4:1 | exit test_call (normal) |  |
@@ -545,3 +546,25 @@
 | test.rs:299:13:299:27 | ExprStmt | test.rs:299:26:299:26 | 1 |  |
 | test.rs:299:26:299:26 | 1 | test.rs:299:13:299:26 | BreakExpr |  |
 | test.rs:301:9:301:9 | x | test.rs:296:18:302:5 | BlockExpr |  |
+breakTarget
+| test.rs:16:17:16:21 | BreakExpr | test.rs:10:9:22:9 | LoopExpr |
+| test.rs:30:21:30:25 | BreakExpr | test.rs:28:13:35:13 | LoopExpr |
+| test.rs:32:21:32:32 | BreakExpr | test.rs:27:9:36:9 | LoopExpr |
+| test.rs:34:17:34:28 | BreakExpr | test.rs:28:13:35:13 | LoopExpr |
+| test.rs:73:17:73:21 | BreakExpr | test.rs:70:9:76:9 | WhileExpr |
+| test.rs:83:17:83:21 | BreakExpr | test.rs:81:9:85:9 | WhileExpr |
+| test.rs:91:17:91:21 | BreakExpr | test.rs:89:9:94:9 | ForExpr |
+| test.rs:170:17:170:28 | BreakExpr | test.rs:168:13:173:9 | LoopExpr |
+| test.rs:183:17:183:35 | BreakExpr | test.rs:181:13:186:9 | LoopExpr |
+| test.rs:195:13:195:30 | BreakExpr | test.rs:194:13:196:9 | BlockExpr |
+| test.rs:284:13:284:26 | BreakExpr | test.rs:281:18:292:5 | BlockExpr |
+| test.rs:288:13:288:26 | BreakExpr | test.rs:281:18:292:5 | BlockExpr |
+| test.rs:299:13:299:26 | BreakExpr | test.rs:296:18:302:5 | BlockExpr |
+continueTarget
+| test.rs:19:17:19:24 | ContinueExpr | test.rs:10:9:22:9 | LoopExpr |
+| test.rs:45:21:45:28 | ContinueExpr | test.rs:43:13:50:13 | LoopExpr |
+| test.rs:47:21:47:35 | ContinueExpr | test.rs:41:9:51:9 | LoopExpr |
+| test.rs:49:17:49:31 | ContinueExpr | test.rs:43:13:50:13 | LoopExpr |
+| test.rs:59:21:59:28 | ContinueExpr | test.rs:57:13:64:13 | LoopExpr |
+| test.rs:61:21:61:34 | ContinueExpr | test.rs:57:13:64:13 | LoopExpr |
+| test.rs:63:17:63:30 | ContinueExpr | test.rs:57:13:64:13 | LoopExpr |
