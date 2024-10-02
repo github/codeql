@@ -5,6 +5,12 @@ query predicate variable(Variable v) { any() }
 
 query predicate variableAccess(VariableAccess va, Variable v) { v = va.getVariable() }
 
+query predicate variableWriteAccess(VariableWriteAccess va, Variable v) { v = va.getVariable() }
+
+query predicate variableReadAccess(VariableReadAccess va, Variable v) { v = va.getVariable() }
+
+query predicate variableInitializer(Variable v, Expr e) { e = v.getInitializer() }
+
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = "access" }
 
