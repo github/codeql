@@ -11,8 +11,10 @@ query predicate isLabeledBarrier(
 
 query predicate isSanitizer(ExampleConfiguration cfg, DataFlow::Node n) { cfg.isSanitizer(n) }
 
-query predicate sanitizingGuard(TaintTracking::SanitizerGuardNode g, Expr e, boolean b) {
-  g.sanitizes(b, e)
+query predicate sanitizingGuard(DataFlow::Node g, Expr e, boolean b) {
+  g.(TaintTracking::SanitizerGuardNode).sanitizes(b, e)
+  or
+  g.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(b, e)
 }
 
 query predicate taintedSink(DataFlow::Node source, DataFlow::Node sink) {
