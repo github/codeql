@@ -77,9 +77,7 @@ module OpenUrlRedirect {
 
   bindingset[var, w]
   pragma[inline_late]
-  private predicate useIsDominated(
-    SsaWithFields var, Write w, DataFlow::ReadNode sanitizedRead
-  ) {
+  private predicate useIsDominated(SsaWithFields var, Write w, DataFlow::ReadNode sanitizedRead) {
     w.dominatesNode(sanitizedRead.asInstruction()) and
     sanitizedRead = var.getAUse()
   }
