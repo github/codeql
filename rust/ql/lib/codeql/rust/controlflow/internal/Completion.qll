@@ -84,7 +84,9 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   private predicate isValidForSpecific0(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
-    any(MatchArm arm).getGuard() = e
+    e = any(WhileExpr c).getCondition()
+    or
+    any(MatchGuard guard).getCondition() = e
     or
     exists(BinaryExpr expr |
       expr.getOperatorName() = ["&&", "||"] and
@@ -92,6 +94,8 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     )
     or
     exists(Expr parent | this.isValidForSpecific0(parent) |
+      e = parent.(ParenExpr).getExpr()
+      or
       parent =
         any(PrefixExpr expr |
           expr.getOperatorName() = "!" and

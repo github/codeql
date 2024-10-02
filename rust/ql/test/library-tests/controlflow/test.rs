@@ -51,16 +51,45 @@ mod loop_expression {
         }
     }
 
-    fn test_while() {
+    fn test_loop_label_shadowing(b: bool) -> ! {
+        'loop: loop {
+            1;
+            'loop: loop {
+                if b {
+                    continue;
+                } else if b {
+                    continue 'loop;
+                }
+                continue 'loop;
+            }
+        }
+    }
+
+    fn test_while(i: i64) {
         let mut b = true;
         while b {
             1;
+            if (i > 0) {
+                break;
+            }
             b = false;
         }
     }
 
-    fn test_for() {
+    fn test_while_let() {
+        let mut iter = 1..10;
+        while let Some(x) = iter.next() {
+            if (i = 5) {
+                break;
+            }
+        }
+    }
+
+    fn test_for(j: i64) {
         for i in 0..10 {
+            if (i == j) {
+                break;
+            }
             1;
         }
     }
@@ -248,7 +277,7 @@ fn dead_code() -> i64 {
     return 1;
 }
 
-fn labelled_block() -> i64 {
+fn labelled_block1() -> i64 {
     let result = 'block: {
         do_thing();
         if condition_not_met() {
@@ -260,5 +289,15 @@ fn labelled_block() -> i64 {
         }
         do_last_thing();
         3
+    };
+}
+
+fn labelled_block2() -> i64 {
+    let result = 'block: {
+        let x: Option<i64> = None;
+        let Some(y) = x else {
+            break 'block 1;
+        };
+        x
     };
 }
