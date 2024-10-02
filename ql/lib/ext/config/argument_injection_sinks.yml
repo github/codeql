@@ -3,7 +3,14 @@ extensions:
       pack: github/actions-all
       extensible: argumentInjectionSinksDataModel
     # https://gtfobins.github.io/
+    # https://0xn3va.gitbook.io/cheat-sheets/web-application/command-injection/argument-injection
     data:
       - ["(awk)(.*?)", 2, 3]
+      - ["(curl)(.*?)", 2, 3]
+      - ["(find)(.*?)", 2, 3]
+      - ["(git)(.*?)", 2, 3]
       - ["(sed)(.*?)", 2, 3]
+      - ["(tar)(.*?)", 2, 3]
+      - ["(wget)(.*?)", 2, 3]
+      - ["(zip)(.*?)", 2, 3]
 
