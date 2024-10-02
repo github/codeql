@@ -18,7 +18,7 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      exists(this.getScript().splitAt("\n").trim().regexpFind(regexp, _, _))
+      exists(this.getACommand().regexpFind(regexp, _, _))
     )
   }
 }
@@ -39,11 +39,9 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   string path;
 
   LocalScriptExecutionRunStep() {
-    exists(string line, string regexp, int path_group |
-      line = this.getScript().splitAt("\n").trim()
-    |
+    exists(string cmd, string regexp, int path_group | cmd = this.getACommand() |
       poisonableLocalScriptsDataModel(regexp, path_group) and
-      path = line.regexpCapture(regexp, path_group)
+      path = cmd.regexpCapture(regexp, path_group)
     )
   }
 

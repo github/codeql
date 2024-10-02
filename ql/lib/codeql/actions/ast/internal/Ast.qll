@@ -722,13 +722,10 @@ class EventImpl extends AstNodeImpl, TEventNode {
     not this.getName() = "workflow_run"
     or
     this.getName() = "workflow_run" and
-    // workflow_run cannot be externally triggered if they triggering workflow runs in the context of the default branch
-    // since an attacker can change the triggering workflow from any event to `pull_request` to trigger the workflow
-    // but in that case, the triggering workflow will run in the context of the PR head branch
-    (
-      not exists(this.getAPropertyValue("branches")) or
-      this.getAPropertyValue("branches").matches("%*%")
-    )
+    // workflow_run cannot be externally triggered if the triggering workflow runs in the context of the default branch
+    // An attacker can change the triggering workflow from any event to `pull_request` to trigger the workflow
+    // in that case, the triggering workflow will run in the context of the PR head branch
+    not exists(this.getAPropertyValue("branches"))
     or
     // the event is `workflow_call` and there is a caller workflow that can be triggered externally
     this.getName() = "workflow_call" and
@@ -1321,6 +1318,12 @@ class RunImpl extends StepImpl {
   RunImpl() { this.getNode().lookup("run") = script }
 
   string getScript() { result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
+
+  string getACommand() { result = Bash::getACommand(this.getScript()) }
+
+  predicate getAnAssignment(string name, string value) {
+    Bash::getAnAssignment(this.getScript(), name, value)
+  }
 
   ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
 

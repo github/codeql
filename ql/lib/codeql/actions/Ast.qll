@@ -293,6 +293,10 @@ class Run extends Step instanceof RunImpl {
   Expression getAnScriptExpr() { result = super.getAnScriptExpr() }
 
   string getWorkingDirectory() { result = super.getWorkingDirectory() }
+
+  string getACommand() { result = super.getACommand() }
+
+  predicate getAnAssignment(string name, string value) { super.getAnAssignment(name, value) }
 }
 
 abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {

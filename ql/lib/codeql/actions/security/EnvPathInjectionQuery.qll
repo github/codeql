@@ -37,11 +37,8 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
             // e.g.
             // FOO=$(cat test-results/sha-number)
             // echo "FOO=$FOO" >> $GITHUB_PATH
-            exists(string line, string var_name, string var_value |
-              run.getScript().splitAt("\n") = line
-            |
-              var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
-              var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+            exists(string var_name, string var_value |
+              run.getAnAssignment(var_name, var_value) and
               outputsPartialFileContent(var_value) and
               (
                 value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
