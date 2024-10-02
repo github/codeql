@@ -316,7 +316,11 @@ abstract class LoopingExprTree extends PostOrderTree {
 
   abstract Label getLabel();
 
-  abstract predicate entry(AstNode node);
+  /**
+   * Gets the node to execute when continuing the loop; either after
+   * executing the last node in the body or after an explicit `continue`.
+   */
+  abstract AstNode getLoopContinue();
 
   /** Holds if this loop captures the `c` completion. */
   private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
@@ -339,7 +343,7 @@ abstract class LoopingExprTree extends PostOrderTree {
       or
       c.(LoopJumpCompletion).isContinue() and this.capturesLoopJumpCompletion(c)
     ) and
-    this.entry(succ)
+    first(this.getLoopContinue(), succ)
   }
 
   override predicate last(AstNode last, Completion c) {
@@ -357,7 +361,7 @@ class LoopExprTree extends LoopingExprTree instanceof LoopExpr {
 
   override Label getLabel() { result = LoopExpr.super.getLabel() }
 
-  override predicate entry(AstNode node) { this.first(node) }
+  override AstNode getLoopContinue() { result = this.getLoopBody() }
 
   override predicate first(AstNode node) { first(this.getLoopBody(), node) }
 }
@@ -367,7 +371,7 @@ class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
 
   override Label getLabel() { result = WhileExpr.super.getLabel() }
 
-  override predicate entry(AstNode node) { this.first(node) }
+  override AstNode getLoopContinue() { result = super.getCondition() }
 
   override predicate propagatesAbnormal(AstNode child) { child = super.getCondition() }
 
@@ -397,7 +401,7 @@ class ForExprTree extends LoopingExprTree instanceof ForExpr {
 
   override Label getLabel() { result = ForExpr.super.getLabel() }
 
-  override predicate entry(AstNode n) { first(super.getPat(), n) }
+  override AstNode getLoopContinue() { result = super.getPat() }
 
   override predicate propagatesAbnormal(AstNode child) { child = super.getIterable() }
 
