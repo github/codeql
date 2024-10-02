@@ -597,22 +597,25 @@ predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind = TLambdaCallKind()
 
-/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+private class CmdName extends StringConstExpr {
+  CmdName() { this = any(Cmd c).getCmdName() }
 
-/**
- * Holds if `call` is a from-source lambda call of kind `kind` where `receiver`
- * is the lambda expression.
- */
-predicate lambdaSourceCall(CfgNodes::StmtNodes::CmdCfgNode call, LambdaCallKind kind, Node receiver) {
-  none()
+  string getName() { result = this.getValue().getValue() }
+}
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  creation.asExpr().getExpr().(CmdName).getName() = c.asCfgScope().getEnclosingFunction().getName() and
+  exists(kind)
 }
 
 /**
  * Holds if `call` is a (from-source or from-summary) lambda call of kind `kind`
  * where `receiver` is the lambda expression.
  */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  call.asCall().getCommand() = receiver.asExpr() and exists(kind)
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
