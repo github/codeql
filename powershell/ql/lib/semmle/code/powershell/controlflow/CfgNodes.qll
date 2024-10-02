@@ -214,7 +214,7 @@ module ExprNodes {
 
     override InvokeMemberChildMapping e;
 
-    final override InvokeMemberExpr getExpr() { result = super.getExpr() }
+    override InvokeMemberExpr getExpr() { result = super.getExpr() }
 
     final override ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
 
@@ -229,6 +229,15 @@ module ExprNodes {
     final override string getName() { none() }
 
     final override ExprCfgNode getCommand() { none() }
+  }
+
+    /** A control-flow node that wraps an `ConstructorCall` expression. */
+  class ConstructorCallCfgNode extends InvokeMemberCfgNode {
+    ConstructorCallCfgNode() { super.getExpr() instanceof ConstructorCall }
+
+    final override ConstructorCall getExpr() { result = super.getExpr() }
+
+    Type getConstructedType() { result = this.getExpr().getConstructedType() }
   }
 
   /** A control-flow node that wraps a qualifier expression. */

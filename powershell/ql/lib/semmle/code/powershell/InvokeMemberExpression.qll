@@ -17,3 +17,9 @@ class InvokeMemberExpr extends @invoke_member_expression, MemberExprBase {
 
   override predicate isStatic() { this.getQualifier() instanceof TypeNameExpr }
 }
+
+class ConstructorCall extends InvokeMemberExpr {
+  ConstructorCall() { this.isStatic() and this.getName() = "new" }
+
+  Type getConstructedType() { result = this.getQualifier().(TypeNameExpr).getType() }
+}

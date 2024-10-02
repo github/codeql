@@ -1,6 +1,8 @@
 private import powershell
 private import semmle.code.powershell.Cfg
 private import DataFlowPrivate
+private import DataFlowPublic
+private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import codeql.util.Boolean
 private import codeql.util.Unit
 
@@ -123,11 +125,47 @@ class NormalCall extends DataFlowCall, TNormalCall {
 /** A call for which we want to compute call targets. */
 private class RelevantCall extends CfgNodes::CallCfgNode { }
 
-/** Holds if `call` may resolve to the returned source-code method. */
-private DataFlowCallable viableSourceCallable(DataFlowCall call) {
-  none() // TODO
-  or
-  result = any(AdditionalCallTarget t).viableTarget(call.asCall())
+private module TrackInstanceInput implements CallGraphConstruction::InputSig {
+  newtype State = additional MkState(Type m, Boolean exact)
+
+  predicate start(Node start, State state) {
+    exists(Type tp, boolean exact | state = MkState(tp, exact) |
+      start.asExpr().(CfgNodes::ExprNodes::ConstructorCallCfgNode).getConstructedType() = tp
+    )
+  }
+
+  pragma[nomagic]
+  predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+    smallStepNoCall(nodeFrom, nodeTo, summary)
+  }
+
+  predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+    smallStepCall(nodeFrom, nodeTo, summary)
+  }
+
+  class StateProj = Unit;
+
+  Unit stateProj(State state) { exists(state) and exists(result) }
+
+  predicate filter(Node n, Unit u) { none() }
+}
+
+private predicate qualifiedCall(CfgNodes::CallCfgNode call, Node receiver, string method) {
+  call.getQualifier() = receiver.asExpr() and
+  call.getName() = method
+}
+
+private Node trackInstance(Type t, boolean exact) {
+  result =
+    CallGraphConstruction::Make<TrackInstanceInput>::track(TrackInstanceInput::MkState(t, exact))
+}
+
+private CfgScope getTargetInstance(CfgNodes::CallCfgNode call) {
+  exists(Node receiver, string method, Type t |
+    qualifiedCall(call, receiver, method) and
+    receiver = trackInstance(t, _) and
+    result = t.getMemberFunction(method).getBody()
+  )
 }
 
 /**
@@ -154,7 +192,14 @@ private module Cached {
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableCallable(DataFlowCall call) { result = viableSourceCallable(call) }
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    result.asCfgScope() = getTargetInstance(call.asCall())
+    or
+    result = any(AdditionalCallTarget t).viableTarget(call.asCall())
+  }
+
+  cached
+  CfgScope getTarget(DataFlowCall call) { result = viableCallable(call).asCfgScope() }
 
   cached
   newtype TArgumentPosition =
