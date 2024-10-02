@@ -3284,6 +3284,14 @@ module StdlibPrivate {
     }
   }
 
+  private API::Node re(string name) {
+    name = "re.Match" and
+    result = API::moduleImport("re")
+    or
+    name = "compiled re.Match" and
+    result = any(RePatternSummary c).getACall().(API::CallNode).getReturn()
+  }
+
   /**
    * A flow summary for methods returning a `re.Match` object
    *
@@ -3293,17 +3301,9 @@ module StdlibPrivate {
     ReMatchSummary() { this = ["re.Match", "compiled re.Match"] }
 
     override DataFlow::CallCfgNode getACall() {
-      this = "re.Match" and
-      result = API::moduleImport("re").getMember(["match", "search", "fullmatch"]).getACall()
-      or
-      this = "compiled re.Match" and
-      result =
-        any(RePatternSummary c)
-            .getACall()
-            .(API::CallNode)
-            .getReturn()
-            .getMember(["match", "search", "fullmatch"])
-            .getACall()
+      exists(API::Node re | re = re(this) |
+        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+      )
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -3340,6 +3340,12 @@ module StdlibPrivate {
     }
   }
 
+  private API::Node match() {
+    result = any(ReMatchSummary c).getACall().(API::CallNode).getReturn()
+    or
+    result = re(_).getMember("finditer").getReturn().getASubscript()
+  }
+
   /**
    * A flow summary for methods on a `re.Match` object
    *
@@ -3353,15 +3359,7 @@ module StdlibPrivate {
       methodName in ["expand", "group", "groups", "groupdict"]
     }
 
-    override DataFlow::CallCfgNode getACall() {
-      result =
-        any(ReMatchSummary c)
-            .getACall()
-            .(API::CallNode)
-            .getReturn()
-            .getMember(methodName)
-            .getACall()
-    }
+    override DataFlow::CallCfgNode getACall() { result = match().getMember(methodName).getACall() }
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
@@ -3447,6 +3445,9 @@ module StdlibPrivate {
             or
             methodName = "subn" and
             output = "ReturnValue.TupleElement[0]"
+            or
+            methodName = "finditer" and
+            output = "ReturnValue.ListElement.Attribute[string]"
           )
         )
         or
