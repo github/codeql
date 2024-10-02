@@ -5,7 +5,6 @@ private import codeql.util.FileSystem
 private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
-private import codeql.rust.elements.internal.generated.ParentChild
 
 private module Input implements InputSig {
   abstract class ContainerBase extends @container {
@@ -48,7 +47,7 @@ class File extends Container, Impl::File {
         exists(AstNode node, Location loc |
           not node instanceof Comment and
           not node instanceof SourceFile and
-          not getImmediateParent(node) instanceof SourceFile and // ignore top-level elements for now as we're getting their locations wrong when a comment is attached
+          not node instanceof Item and // ignore Items for now as we're getting their locations wrong when a comment is attached
           loc = node.getLocation()
         |
           node.getFile() = this and
