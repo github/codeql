@@ -186,12 +186,9 @@ class ContinueExprTree extends LeafTree, ContinueExpr {
   override predicate last(AstNode last, Completion c) { none() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    exists(Expr target |
-      pred = this and
-      c.isValidFor(pred) and
-      target = this.getTarget() and
-      first(target.(LoopingExprTree).getLoopContinue(), succ)
-    )
+    pred = this and
+    c.isValidFor(pred) and
+    first(this.getTarget().(LoopingExprTree).getLoopContinue(), succ)
   }
 }
 
