@@ -77,6 +77,13 @@ class ParameterNode extends Node {
 }
 
 /**
+ * A data-flow node that is a source of local flow.
+ */
+class LocalSourceNode extends Node {
+  LocalSourceNode() { isLocalSourceNode(this) }
+}
+
+/**
  * A node associated with an object after an operation that might have
  * changed its state.
  *

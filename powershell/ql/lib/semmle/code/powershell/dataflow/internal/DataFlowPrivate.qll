@@ -107,6 +107,8 @@ module VariableCapture {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
+
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
@@ -150,6 +152,66 @@ private module Cached {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
+
+  /**
+   * This is the local flow predicate that is used in type tracking.
+   */
+  cached
+  predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
+
+  /** Holds if `n` wraps an SSA definition without ingoing flow. */
+  private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
+    n.getDefinitionExt() =
+      any(SsaImpl::WriteDefinition def | not def.(Ssa::WriteDefinition).assigns(_))
+  }
+
+  pragma[nomagic]
+  private predicate reachedFromExprOrEntrySsaDef(Node n) {
+    localFlowStepTypeTracker(any(Node n0 |
+        n0 instanceof ExprNode
+        or
+        entrySsaDefinition(n0)
+      ), n)
+    or
+    exists(Node mid |
+      reachedFromExprOrEntrySsaDef(mid) and
+      localFlowStepTypeTracker(mid, n)
+    )
+  }
+
+  private predicate isStoreTargetNode(Node n) {
+    TypeTrackingInput::storeStep(_, n, _)
+    or
+    TypeTrackingInput::loadStoreStep(_, n, _, _)
+    or
+    TypeTrackingInput::withContentStepImpl(_, n, _)
+    or
+    TypeTrackingInput::withoutContentStepImpl(_, n, _)
+  }
+
+  cached
+  predicate isLocalSourceNode(Node n) {
+    n instanceof ParameterNode
+    or
+    // Expressions that can't be reached from another entry definition or expression
+    n instanceof ExprNode and
+    not reachedFromExprOrEntrySsaDef(n)
+    or
+    // Ensure all entry SSA definitions are local sources, except those that correspond
+    // to parameters (which are themselves local sources)
+    entrySsaDefinition(n) and
+    not exists(SsaImpl::ParameterExt p |
+      p.isInitializedBy(n.(SsaDefinitionExtNode).getDefinitionExt())
+    )
+    or
+    isStoreTargetNode(n)
+    or
+    TypeTrackingInput::loadStep(_, n, _)
   }
 
   cached
