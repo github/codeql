@@ -128,6 +128,8 @@ abstract private class NonExprChildMapping extends ChildMapping {
 abstract private class AbstractCallCfgNode extends AstCfgNode {
   override string getAPrimaryQlClass() { result = "CfgCall" }
 
+  abstract string getName();
+
   ExprCfgNode getQualifier() { none() }
 
   abstract ExprCfgNode getArgument(int i);
@@ -137,6 +139,8 @@ abstract private class AbstractCallCfgNode extends AstCfgNode {
   abstract ExprCfgNode getNamedArgument(string name);
 
   abstract ExprCfgNode getAnArgument();
+
+  abstract ExprCfgNode getCommand();
 }
 
 final class CallCfgNode = AbstractCallCfgNode;
@@ -221,6 +225,10 @@ module ExprNodes {
     final override ExprCfgNode getNamedArgument(string name) { none() }
 
     final override ExprCfgNode getAnArgument() { e.hasCfgChild(e.getAnArgument(), this, result) }
+
+    final override string getName() { none() }
+
+    final override ExprCfgNode getCommand() { none() }
   }
 
   /** A control-flow node that wraps a qualifier expression. */
@@ -308,7 +316,9 @@ module StmtNodes {
 
     override ExprCfgNode getAnArgument() { s.hasCfgChild(s.getAnArgument(), this, result) }
 
-    ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
+    final override ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
+
+    final override string getName() { result = s.getCmdName().getValue().getValue() }
   }
 
   private class AssignStmtChildMapping extends NonExprChildMapping, AssignStmt {

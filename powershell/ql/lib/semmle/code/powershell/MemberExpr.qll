@@ -12,7 +12,7 @@ class MemberExpr extends @member_expression, MemberExprBase {
 
   predicate isNullConditional() { member_expression(this, _, _, true, _) }
 
-  predicate isStatic() { member_expression(this, _, _, _, true) }
+  override predicate isStatic() { member_expression(this, _, _, _, true) }
 
   final override string toString() { result = this.getMember().toString() }
 }
