@@ -1,16 +1,15 @@
 /**
  * total lines in this file: 18
- * of which code: 7
- * of which only comments: 7
+ * of which code: 8
+ * of which only comments: 6
  * of which blank: 4
  */
 
 mod my_struct;
 mod my_macro;
+mod comments;
 
-// another comment
-
-fn main() { // another comment
+fn main() {
     println!("Hello, world!");
 
     my_struct::my_func();
