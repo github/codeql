@@ -308,7 +308,7 @@ numlines(
 );
 
 /**
- * Associates the filepath `name` with the ID `id`.
+ * `id` is the file with absolute path `name`.
  */
 files(
   unique int id: @file,
@@ -316,7 +316,7 @@ files(
 );
 
 /**
- * Associates the filepath `name` with the ID `id`.
+ * `id` is the folder (directory) with absolute path `name`.
  */
 folders(
   unique int id: @folder,
