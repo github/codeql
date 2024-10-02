@@ -55,6 +55,6 @@ pub fn my_func_with_comments()
     my_simple_func();
 }
 
-/**
+/*
  * Comment.
  */
