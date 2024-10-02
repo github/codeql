@@ -214,12 +214,12 @@ fun doAnalysis(
 
     val checkTrapIdentical = false // TODO
 
-    val psiFiles = session.modulesWithFiles.getValue(sourceModule)
-    var fileNumber = 0
-    val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
-    for (psiFile in psiFiles) {
-        if (psiFile is KtFile) {
-            analyze(psiFile) {
+    analyze(sourceModule) {
+        val psiFiles = session.modulesWithFiles.getValue(sourceModule)
+        var fileNumber = 0
+        val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
+        for (psiFile in psiFiles) {
+            if (psiFile is KtFile) {
                 if (dump_psi) {
                     val showWhitespaces = false
                     val showRanges = true
@@ -269,11 +269,11 @@ fun doAnalysis(
                                         fileExtractionProblems.setNonRecoverableProblem()
                     */
                 }
+            } else {
+                System.out.println("Warning: Not a KtFile")
             }
-            fileNumber += 1
-        } else {
-            System.out.println("Warning: Not a KtFile")
         }
+        fileNumber += 1
     }
 }
 
