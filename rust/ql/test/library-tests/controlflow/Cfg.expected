@@ -234,20 +234,24 @@ edges
 | test.rs:128:5:134:5 | exit test_nested_if (normal) | test.rs:128:5:134:5 | exit test_nested_if |  |
 | test.rs:128:38:134:5 | BlockExpr | test.rs:128:5:134:5 | exit test_nested_if (normal) |  |
 | test.rs:129:9:133:9 | IfExpr | test.rs:128:38:134:5 | BlockExpr |  |
-| test.rs:129:13:129:48 | IfExpr | test.rs:130:13:130:13 | 1 | true |
-| test.rs:129:13:129:48 | IfExpr | test.rs:132:13:132:13 | 0 | false |
+| test.rs:129:13:129:48 | [boolean(false)] IfExpr | test.rs:132:13:132:13 | 0 | false |
+| test.rs:129:13:129:48 | [boolean(true)] IfExpr | test.rs:130:13:130:13 | 1 | true |
 | test.rs:129:16:129:16 | PathExpr | test.rs:129:20:129:20 | 0 |  |
 | test.rs:129:16:129:20 | ... < ... | test.rs:129:24:129:24 | a | true |
 | test.rs:129:16:129:20 | ... < ... | test.rs:129:41:129:41 | a | false |
 | test.rs:129:20:129:20 | 0 | test.rs:129:16:129:20 | ... < ... |  |
-| test.rs:129:22:129:32 | BlockExpr | test.rs:129:13:129:48 | IfExpr | false, true |
+| test.rs:129:22:129:32 | [boolean(false)] BlockExpr | test.rs:129:13:129:48 | [boolean(false)] IfExpr | false |
+| test.rs:129:22:129:32 | [boolean(true)] BlockExpr | test.rs:129:13:129:48 | [boolean(true)] IfExpr | true |
 | test.rs:129:24:129:24 | a | test.rs:129:29:129:30 | 10 |  |
-| test.rs:129:24:129:30 | ... < ... | test.rs:129:22:129:32 | BlockExpr | false, true |
+| test.rs:129:24:129:30 | ... < ... | test.rs:129:22:129:32 | [boolean(false)] BlockExpr | false |
+| test.rs:129:24:129:30 | ... < ... | test.rs:129:22:129:32 | [boolean(true)] BlockExpr | true |
 | test.rs:129:28:129:30 | - ... | test.rs:129:24:129:30 | ... < ... |  |
 | test.rs:129:29:129:30 | 10 | test.rs:129:28:129:30 | - ... |  |
-| test.rs:129:39:129:48 | BlockExpr | test.rs:129:13:129:48 | IfExpr | false, true |
+| test.rs:129:39:129:48 | [boolean(false)] BlockExpr | test.rs:129:13:129:48 | [boolean(false)] IfExpr | false |
+| test.rs:129:39:129:48 | [boolean(true)] BlockExpr | test.rs:129:13:129:48 | [boolean(true)] IfExpr | true |
 | test.rs:129:41:129:41 | a | test.rs:129:45:129:46 | 10 |  |
-| test.rs:129:41:129:46 | ... > ... | test.rs:129:39:129:48 | BlockExpr | false, true |
+| test.rs:129:41:129:46 | ... > ... | test.rs:129:39:129:48 | [boolean(false)] BlockExpr | false |
+| test.rs:129:41:129:46 | ... > ... | test.rs:129:39:129:48 | [boolean(true)] BlockExpr | true |
 | test.rs:129:45:129:46 | 10 | test.rs:129:41:129:46 | ... > ... |  |
 | test.rs:129:51:131:9 | BlockExpr | test.rs:129:9:133:9 | IfExpr |  |
 | test.rs:130:13:130:13 | 1 | test.rs:129:51:131:9 | BlockExpr |  |
@@ -257,14 +261,14 @@ edges
 | test.rs:136:5:145:5 | exit test_nested_if_match (normal) | test.rs:136:5:145:5 | exit test_nested_if_match |  |
 | test.rs:136:44:145:5 | BlockExpr | test.rs:136:5:145:5 | exit test_nested_if_match (normal) |  |
 | test.rs:137:9:144:9 | IfExpr | test.rs:136:44:145:5 | BlockExpr |  |
-| test.rs:137:13:140:9 | MatchExpr | test.rs:141:13:141:13 | 1 | true |
-| test.rs:137:13:140:9 | MatchExpr | test.rs:143:13:143:13 | 0 | false |
+| test.rs:137:13:140:9 | [boolean(false)] MatchExpr | test.rs:143:13:143:13 | 0 | false |
+| test.rs:137:13:140:9 | [boolean(true)] MatchExpr | test.rs:141:13:141:13 | 1 | true |
 | test.rs:137:19:137:19 | a | test.rs:138:13:138:13 | LiteralPat |  |
 | test.rs:138:13:138:13 | LiteralPat | test.rs:138:18:138:21 | true | match |
 | test.rs:138:13:138:13 | LiteralPat | test.rs:139:13:139:13 | WildcardPat | no-match |
-| test.rs:138:18:138:21 | true | test.rs:137:13:140:9 | MatchExpr |  |
+| test.rs:138:18:138:21 | true | test.rs:137:13:140:9 | [boolean(true)] MatchExpr | true |
 | test.rs:139:13:139:13 | WildcardPat | test.rs:139:18:139:22 | false | match |
-| test.rs:139:18:139:22 | false | test.rs:137:13:140:9 | MatchExpr |  |
+| test.rs:139:18:139:22 | false | test.rs:137:13:140:9 | [boolean(false)] MatchExpr | false |
 | test.rs:140:12:142:9 | BlockExpr | test.rs:137:9:144:9 | IfExpr |  |
 | test.rs:141:13:141:13 | 1 | test.rs:140:12:142:9 | BlockExpr |  |
 | test.rs:142:16:144:9 | BlockExpr | test.rs:137:9:144:9 | IfExpr |  |
@@ -273,12 +277,13 @@ edges
 | test.rs:147:5:156:5 | exit test_nested_if_block (normal) | test.rs:147:5:156:5 | exit test_nested_if_block |  |
 | test.rs:147:44:156:5 | BlockExpr | test.rs:147:5:156:5 | exit test_nested_if_block (normal) |  |
 | test.rs:148:9:155:9 | IfExpr | test.rs:147:44:156:5 | BlockExpr |  |
-| test.rs:148:12:151:9 | BlockExpr | test.rs:152:13:152:13 | 1 | true |
-| test.rs:148:12:151:9 | BlockExpr | test.rs:154:13:154:13 | 0 | false |
+| test.rs:148:12:151:9 | [boolean(false)] BlockExpr | test.rs:154:13:154:13 | 0 | false |
+| test.rs:148:12:151:9 | [boolean(true)] BlockExpr | test.rs:152:13:152:13 | 1 | true |
 | test.rs:149:13:149:14 | TupleExpr | test.rs:150:13:150:13 | a |  |
 | test.rs:149:13:149:15 | ExprStmt | test.rs:149:13:149:14 | TupleExpr |  |
 | test.rs:150:13:150:13 | a | test.rs:150:17:150:17 | 0 |  |
-| test.rs:150:13:150:17 | ... > ... | test.rs:148:12:151:9 | BlockExpr | false, true |
+| test.rs:150:13:150:17 | ... > ... | test.rs:148:12:151:9 | [boolean(false)] BlockExpr | false |
+| test.rs:150:13:150:17 | ... > ... | test.rs:148:12:151:9 | [boolean(true)] BlockExpr | true |
 | test.rs:150:17:150:17 | 0 | test.rs:150:13:150:17 | ... > ... |  |
 | test.rs:151:11:153:9 | BlockExpr | test.rs:148:9:155:9 | IfExpr |  |
 | test.rs:152:13:152:13 | 1 | test.rs:151:11:153:9 | BlockExpr |  |
@@ -303,8 +308,8 @@ edges
 | test.rs:167:5:178:5 | exit test_if_loop1 (normal) | test.rs:167:5:178:5 | exit test_if_loop1 |  |
 | test.rs:167:37:178:5 | BlockExpr | test.rs:167:5:178:5 | exit test_if_loop1 (normal) |  |
 | test.rs:168:9:177:9 | IfExpr | test.rs:167:37:178:5 | BlockExpr |  |
-| test.rs:168:13:173:9 | LoopExpr | test.rs:174:13:174:13 | 1 | true |
-| test.rs:168:13:173:9 | LoopExpr | test.rs:176:13:176:13 | 0 | false |
+| test.rs:168:13:173:9 | [boolean(false)] LoopExpr | test.rs:176:13:176:13 | 0 | false |
+| test.rs:168:13:173:9 | [boolean(true)] LoopExpr | test.rs:174:13:174:13 | 1 | true |
 | test.rs:168:18:173:9 | BlockExpr | test.rs:169:13:171:14 | ExprStmt |  |
 | test.rs:169:13:171:13 | IfExpr | test.rs:172:13:172:19 | ExprStmt |  |
 | test.rs:169:13:171:14 | ExprStmt | test.rs:169:16:169:16 | a |  |
@@ -312,10 +317,12 @@ edges
 | test.rs:169:16:169:20 | ... > ... | test.rs:169:13:171:13 | IfExpr | false |
 | test.rs:169:16:169:20 | ... > ... | test.rs:170:17:170:29 | ExprStmt | true |
 | test.rs:169:20:169:20 | 0 | test.rs:169:16:169:20 | ... > ... |  |
-| test.rs:170:17:170:28 | BreakExpr | test.rs:168:13:173:9 | LoopExpr | break |
+| test.rs:170:17:170:28 | [boolean(false)] BreakExpr | test.rs:168:13:173:9 | [boolean(false)] LoopExpr | break |
+| test.rs:170:17:170:28 | [boolean(true)] BreakExpr | test.rs:168:13:173:9 | [boolean(true)] LoopExpr | break |
 | test.rs:170:17:170:29 | ExprStmt | test.rs:170:23:170:23 | a |  |
 | test.rs:170:23:170:23 | a | test.rs:170:27:170:28 | 10 |  |
-| test.rs:170:23:170:28 | ... > ... | test.rs:170:17:170:28 | BreakExpr |  |
+| test.rs:170:23:170:28 | ... > ... | test.rs:170:17:170:28 | [boolean(false)] BreakExpr | false |
+| test.rs:170:23:170:28 | ... > ... | test.rs:170:17:170:28 | [boolean(true)] BreakExpr | true |
 | test.rs:170:27:170:28 | 10 | test.rs:170:23:170:28 | ... > ... |  |
 | test.rs:172:13:172:13 | a | test.rs:172:17:172:18 | 10 |  |
 | test.rs:172:13:172:18 | ... < ... | test.rs:168:18:173:9 | BlockExpr |  |
@@ -329,8 +336,8 @@ edges
 | test.rs:180:5:191:5 | exit test_if_loop2 (normal) | test.rs:180:5:191:5 | exit test_if_loop2 |  |
 | test.rs:180:37:191:5 | BlockExpr | test.rs:180:5:191:5 | exit test_if_loop2 (normal) |  |
 | test.rs:181:9:190:9 | IfExpr | test.rs:180:37:191:5 | BlockExpr |  |
-| test.rs:181:13:186:9 | LoopExpr | test.rs:187:13:187:13 | 1 | true |
-| test.rs:181:13:186:9 | LoopExpr | test.rs:189:13:189:13 | 0 | false |
+| test.rs:181:13:186:9 | [boolean(false)] LoopExpr | test.rs:189:13:189:13 | 0 | false |
+| test.rs:181:13:186:9 | [boolean(true)] LoopExpr | test.rs:187:13:187:13 | 1 | true |
 | test.rs:181:26:186:9 | BlockExpr | test.rs:182:13:184:14 | ExprStmt |  |
 | test.rs:182:13:184:13 | IfExpr | test.rs:185:13:185:19 | ExprStmt |  |
 | test.rs:182:13:184:14 | ExprStmt | test.rs:182:16:182:16 | a |  |
@@ -338,10 +345,12 @@ edges
 | test.rs:182:16:182:20 | ... > ... | test.rs:182:13:184:13 | IfExpr | false |
 | test.rs:182:16:182:20 | ... > ... | test.rs:183:17:183:36 | ExprStmt | true |
 | test.rs:182:20:182:20 | 0 | test.rs:182:16:182:20 | ... > ... |  |
-| test.rs:183:17:183:35 | BreakExpr | test.rs:181:13:186:9 | LoopExpr | break |
+| test.rs:183:17:183:35 | [boolean(false)] BreakExpr | test.rs:181:13:186:9 | [boolean(false)] LoopExpr | break |
+| test.rs:183:17:183:35 | [boolean(true)] BreakExpr | test.rs:181:13:186:9 | [boolean(true)] LoopExpr | break |
 | test.rs:183:17:183:36 | ExprStmt | test.rs:183:30:183:30 | a |  |
 | test.rs:183:30:183:30 | a | test.rs:183:34:183:35 | 10 |  |
-| test.rs:183:30:183:35 | ... > ... | test.rs:183:17:183:35 | BreakExpr |  |
+| test.rs:183:30:183:35 | ... > ... | test.rs:183:17:183:35 | [boolean(false)] BreakExpr | false |
+| test.rs:183:30:183:35 | ... > ... | test.rs:183:17:183:35 | [boolean(true)] BreakExpr | true |
 | test.rs:183:34:183:35 | 10 | test.rs:183:30:183:35 | ... > ... |  |
 | test.rs:185:13:185:13 | a | test.rs:185:17:185:18 | 10 |  |
 | test.rs:185:13:185:18 | ... < ... | test.rs:181:26:186:9 | BlockExpr |  |
@@ -355,12 +364,14 @@ edges
 | test.rs:193:5:201:5 | exit test_labelled_block (normal) | test.rs:193:5:201:5 | exit test_labelled_block |  |
 | test.rs:193:43:201:5 | BlockExpr | test.rs:193:5:201:5 | exit test_labelled_block (normal) |  |
 | test.rs:194:9:200:9 | IfExpr | test.rs:193:43:201:5 | BlockExpr |  |
-| test.rs:194:13:196:9 | BlockExpr | test.rs:197:13:197:13 | 1 | true |
-| test.rs:194:13:196:9 | BlockExpr | test.rs:199:13:199:13 | 0 | false |
-| test.rs:195:13:195:30 | BreakExpr | test.rs:194:13:196:9 | BlockExpr | break |
+| test.rs:194:13:196:9 | [boolean(false)] BlockExpr | test.rs:199:13:199:13 | 0 | false |
+| test.rs:194:13:196:9 | [boolean(true)] BlockExpr | test.rs:197:13:197:13 | 1 | true |
+| test.rs:195:13:195:30 | [boolean(false)] BreakExpr | test.rs:194:13:196:9 | [boolean(false)] BlockExpr | break |
+| test.rs:195:13:195:30 | [boolean(true)] BreakExpr | test.rs:194:13:196:9 | [boolean(true)] BlockExpr | break |
 | test.rs:195:13:195:31 | ExprStmt | test.rs:195:26:195:26 | a |  |
 | test.rs:195:26:195:26 | a | test.rs:195:30:195:30 | 0 |  |
-| test.rs:195:26:195:30 | ... > ... | test.rs:195:13:195:30 | BreakExpr |  |
+| test.rs:195:26:195:30 | ... > ... | test.rs:195:13:195:30 | [boolean(false)] BreakExpr | false |
+| test.rs:195:26:195:30 | ... > ... | test.rs:195:13:195:30 | [boolean(true)] BreakExpr | true |
 | test.rs:195:30:195:30 | 0 | test.rs:195:26:195:30 | ... > ... |  |
 | test.rs:196:12:198:9 | BlockExpr | test.rs:194:9:200:9 | IfExpr |  |
 | test.rs:197:13:197:13 | 1 | test.rs:196:12:198:9 | BlockExpr |  |
@@ -369,43 +380,46 @@ edges
 | test.rs:206:5:209:5 | enter test_and_operator | test.rs:207:9:207:28 | LetStmt |  |
 | test.rs:206:5:209:5 | exit test_and_operator (normal) | test.rs:206:5:209:5 | exit test_and_operator |  |
 | test.rs:206:61:209:5 | BlockExpr | test.rs:206:5:209:5 | exit test_and_operator (normal) |  |
-| test.rs:207:9:207:28 | LetStmt | test.rs:207:17:207:27 | ... && ... |  |
+| test.rs:207:9:207:28 | LetStmt | test.rs:207:17:207:17 | a |  |
 | test.rs:207:13:207:13 | d | test.rs:208:9:208:9 | d | match, no-match |
-| test.rs:207:17:207:17 | a | test.rs:207:13:207:13 | d | false |
+| test.rs:207:17:207:17 | a | test.rs:207:17:207:22 | [boolean(false)] ... && ... | false |
 | test.rs:207:17:207:17 | a | test.rs:207:22:207:22 | b | true |
-| test.rs:207:17:207:22 | ... && ... | test.rs:207:17:207:17 | a |  |
-| test.rs:207:17:207:27 | ... && ... | test.rs:207:17:207:22 | ... && ... |  |
-| test.rs:207:22:207:22 | b | test.rs:207:13:207:13 | d | false |
-| test.rs:207:22:207:22 | b | test.rs:207:27:207:27 | c | true |
-| test.rs:207:27:207:27 | c | test.rs:207:13:207:13 | d |  |
+| test.rs:207:17:207:22 | [boolean(false)] ... && ... | test.rs:207:17:207:27 | ... && ... | false |
+| test.rs:207:17:207:22 | [boolean(true)] ... && ... | test.rs:207:27:207:27 | c | true |
+| test.rs:207:17:207:27 | ... && ... | test.rs:207:13:207:13 | d |  |
+| test.rs:207:22:207:22 | b | test.rs:207:17:207:22 | [boolean(false)] ... && ... | false |
+| test.rs:207:22:207:22 | b | test.rs:207:17:207:22 | [boolean(true)] ... && ... | true |
+| test.rs:207:27:207:27 | c | test.rs:207:17:207:27 | ... && ... |  |
 | test.rs:208:9:208:9 | d | test.rs:206:61:209:5 | BlockExpr |  |
 | test.rs:211:5:214:5 | enter test_or_operator | test.rs:212:9:212:28 | LetStmt |  |
 | test.rs:211:5:214:5 | exit test_or_operator (normal) | test.rs:211:5:214:5 | exit test_or_operator |  |
 | test.rs:211:60:214:5 | BlockExpr | test.rs:211:5:214:5 | exit test_or_operator (normal) |  |
-| test.rs:212:9:212:28 | LetStmt | test.rs:212:17:212:27 | ... \|\| ... |  |
+| test.rs:212:9:212:28 | LetStmt | test.rs:212:17:212:17 | a |  |
 | test.rs:212:13:212:13 | d | test.rs:213:9:213:9 | d | match, no-match |
-| test.rs:212:17:212:17 | a | test.rs:212:13:212:13 | d | true |
+| test.rs:212:17:212:17 | a | test.rs:212:17:212:22 | [boolean(true)] ... \|\| ... | true |
 | test.rs:212:17:212:17 | a | test.rs:212:22:212:22 | b | false |
-| test.rs:212:17:212:22 | ... \|\| ... | test.rs:212:17:212:17 | a |  |
-| test.rs:212:17:212:27 | ... \|\| ... | test.rs:212:17:212:22 | ... \|\| ... |  |
-| test.rs:212:22:212:22 | b | test.rs:212:13:212:13 | d | true |
-| test.rs:212:22:212:22 | b | test.rs:212:27:212:27 | c | false |
-| test.rs:212:27:212:27 | c | test.rs:212:13:212:13 | d |  |
+| test.rs:212:17:212:22 | [boolean(false)] ... \|\| ... | test.rs:212:27:212:27 | c | false |
+| test.rs:212:17:212:22 | [boolean(true)] ... \|\| ... | test.rs:212:17:212:27 | ... \|\| ... | true |
+| test.rs:212:17:212:27 | ... \|\| ... | test.rs:212:13:212:13 | d |  |
+| test.rs:212:22:212:22 | b | test.rs:212:17:212:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:212:22:212:22 | b | test.rs:212:17:212:22 | [boolean(true)] ... \|\| ... | true |
+| test.rs:212:27:212:27 | c | test.rs:212:17:212:27 | ... \|\| ... |  |
 | test.rs:213:9:213:9 | d | test.rs:211:60:214:5 | BlockExpr |  |
 | test.rs:216:5:219:5 | enter test_or_operator_2 | test.rs:217:9:217:36 | LetStmt |  |
 | test.rs:216:5:219:5 | exit test_or_operator_2 (normal) | test.rs:216:5:219:5 | exit test_or_operator_2 |  |
 | test.rs:216:61:219:5 | BlockExpr | test.rs:216:5:219:5 | exit test_or_operator_2 (normal) |  |
-| test.rs:217:9:217:36 | LetStmt | test.rs:217:17:217:35 | ... \|\| ... |  |
+| test.rs:217:9:217:36 | LetStmt | test.rs:217:17:217:17 | a |  |
 | test.rs:217:13:217:13 | d | test.rs:218:9:218:9 | d | match, no-match |
-| test.rs:217:17:217:17 | a | test.rs:217:13:217:13 | d | true |
+| test.rs:217:17:217:17 | a | test.rs:217:17:217:30 | [boolean(true)] ... \|\| ... | true |
 | test.rs:217:17:217:17 | a | test.rs:217:23:217:23 | b | false |
-| test.rs:217:17:217:30 | ... \|\| ... | test.rs:217:17:217:17 | a |  |
-| test.rs:217:17:217:35 | ... \|\| ... | test.rs:217:17:217:30 | ... \|\| ... |  |
+| test.rs:217:17:217:30 | [boolean(false)] ... \|\| ... | test.rs:217:35:217:35 | c | false |
+| test.rs:217:17:217:30 | [boolean(true)] ... \|\| ... | test.rs:217:17:217:35 | ... \|\| ... | true |
+| test.rs:217:17:217:35 | ... \|\| ... | test.rs:217:13:217:13 | d |  |
 | test.rs:217:23:217:23 | b | test.rs:217:28:217:29 | 28 |  |
-| test.rs:217:23:217:29 | ... == ... | test.rs:217:13:217:13 | d | true |
-| test.rs:217:23:217:29 | ... == ... | test.rs:217:35:217:35 | c | false |
+| test.rs:217:23:217:29 | ... == ... | test.rs:217:17:217:30 | [boolean(false)] ... \|\| ... | false |
+| test.rs:217:23:217:29 | ... == ... | test.rs:217:17:217:30 | [boolean(true)] ... \|\| ... | true |
 | test.rs:217:28:217:29 | 28 | test.rs:217:23:217:29 | ... == ... |  |
-| test.rs:217:35:217:35 | c | test.rs:217:13:217:13 | d |  |
+| test.rs:217:35:217:35 | c | test.rs:217:17:217:35 | ... \|\| ... |  |
 | test.rs:218:9:218:9 | d | test.rs:216:61:219:5 | BlockExpr |  |
 | test.rs:221:5:224:5 | enter test_not_operator | test.rs:222:9:222:19 | LetStmt |  |
 | test.rs:221:5:224:5 | exit test_not_operator (normal) | test.rs:221:5:224:5 | exit test_not_operator |  |
@@ -415,34 +429,38 @@ edges
 | test.rs:222:17:222:18 | ! ... | test.rs:222:13:222:13 | d |  |
 | test.rs:222:18:222:18 | a | test.rs:222:17:222:18 | ! ... |  |
 | test.rs:223:9:223:9 | d | test.rs:221:43:224:5 | BlockExpr |  |
-| test.rs:226:5:232:5 | enter test_if_and_operator | test.rs:227:12:227:22 | ... && ... |  |
+| test.rs:226:5:232:5 | enter test_if_and_operator | test.rs:227:12:227:12 | a |  |
 | test.rs:226:5:232:5 | exit test_if_and_operator (normal) | test.rs:226:5:232:5 | exit test_if_and_operator |  |
 | test.rs:226:63:232:5 | BlockExpr | test.rs:226:5:232:5 | exit test_if_and_operator (normal) |  |
 | test.rs:227:9:231:9 | IfExpr | test.rs:226:63:232:5 | BlockExpr |  |
+| test.rs:227:12:227:12 | a | test.rs:227:12:227:17 | [boolean(false)] ... && ... | false |
 | test.rs:227:12:227:12 | a | test.rs:227:17:227:17 | b | true |
-| test.rs:227:12:227:12 | a | test.rs:230:13:230:17 | false | false |
-| test.rs:227:12:227:17 | ... && ... | test.rs:227:12:227:12 | a |  |
-| test.rs:227:12:227:22 | ... && ... | test.rs:227:12:227:17 | ... && ... |  |
-| test.rs:227:17:227:17 | b | test.rs:227:22:227:22 | c | true |
-| test.rs:227:17:227:17 | b | test.rs:230:13:230:17 | false | false |
-| test.rs:227:22:227:22 | c | test.rs:228:13:228:16 | true | true |
-| test.rs:227:22:227:22 | c | test.rs:230:13:230:17 | false | false |
+| test.rs:227:12:227:17 | [boolean(false)] ... && ... | test.rs:227:12:227:22 | [boolean(false)] ... && ... | false |
+| test.rs:227:12:227:17 | [boolean(true)] ... && ... | test.rs:227:22:227:22 | c | true |
+| test.rs:227:12:227:22 | [boolean(false)] ... && ... | test.rs:230:13:230:17 | false | false |
+| test.rs:227:12:227:22 | [boolean(true)] ... && ... | test.rs:228:13:228:16 | true | true |
+| test.rs:227:17:227:17 | b | test.rs:227:12:227:17 | [boolean(false)] ... && ... | false |
+| test.rs:227:17:227:17 | b | test.rs:227:12:227:17 | [boolean(true)] ... && ... | true |
+| test.rs:227:22:227:22 | c | test.rs:227:12:227:22 | [boolean(false)] ... && ... | false |
+| test.rs:227:22:227:22 | c | test.rs:227:12:227:22 | [boolean(true)] ... && ... | true |
 | test.rs:227:24:229:9 | BlockExpr | test.rs:227:9:231:9 | IfExpr |  |
 | test.rs:228:13:228:16 | true | test.rs:227:24:229:9 | BlockExpr |  |
 | test.rs:229:16:231:9 | BlockExpr | test.rs:227:9:231:9 | IfExpr |  |
 | test.rs:230:13:230:17 | false | test.rs:229:16:231:9 | BlockExpr |  |
-| test.rs:234:5:240:5 | enter test_if_or_operator | test.rs:235:12:235:22 | ... \|\| ... |  |
+| test.rs:234:5:240:5 | enter test_if_or_operator | test.rs:235:12:235:12 | a |  |
 | test.rs:234:5:240:5 | exit test_if_or_operator (normal) | test.rs:234:5:240:5 | exit test_if_or_operator |  |
 | test.rs:234:62:240:5 | BlockExpr | test.rs:234:5:240:5 | exit test_if_or_operator (normal) |  |
 | test.rs:235:9:239:9 | IfExpr | test.rs:234:62:240:5 | BlockExpr |  |
+| test.rs:235:12:235:12 | a | test.rs:235:12:235:17 | [boolean(true)] ... \|\| ... | true |
 | test.rs:235:12:235:12 | a | test.rs:235:17:235:17 | b | false |
-| test.rs:235:12:235:12 | a | test.rs:236:13:236:16 | true | true |
-| test.rs:235:12:235:17 | ... \|\| ... | test.rs:235:12:235:12 | a |  |
-| test.rs:235:12:235:22 | ... \|\| ... | test.rs:235:12:235:17 | ... \|\| ... |  |
-| test.rs:235:17:235:17 | b | test.rs:235:22:235:22 | c | false |
-| test.rs:235:17:235:17 | b | test.rs:236:13:236:16 | true | true |
-| test.rs:235:22:235:22 | c | test.rs:236:13:236:16 | true | true |
-| test.rs:235:22:235:22 | c | test.rs:238:13:238:17 | false | false |
+| test.rs:235:12:235:17 | [boolean(false)] ... \|\| ... | test.rs:235:22:235:22 | c | false |
+| test.rs:235:12:235:17 | [boolean(true)] ... \|\| ... | test.rs:235:12:235:22 | [boolean(true)] ... \|\| ... | true |
+| test.rs:235:12:235:22 | [boolean(false)] ... \|\| ... | test.rs:238:13:238:17 | false | false |
+| test.rs:235:12:235:22 | [boolean(true)] ... \|\| ... | test.rs:236:13:236:16 | true | true |
+| test.rs:235:17:235:17 | b | test.rs:235:12:235:17 | [boolean(false)] ... \|\| ... | false |
+| test.rs:235:17:235:17 | b | test.rs:235:12:235:17 | [boolean(true)] ... \|\| ... | true |
+| test.rs:235:22:235:22 | c | test.rs:235:12:235:22 | [boolean(false)] ... \|\| ... | false |
+| test.rs:235:22:235:22 | c | test.rs:235:12:235:22 | [boolean(true)] ... \|\| ... | true |
 | test.rs:235:24:237:9 | BlockExpr | test.rs:235:9:239:9 | IfExpr |  |
 | test.rs:236:13:236:16 | true | test.rs:235:24:237:9 | BlockExpr |  |
 | test.rs:237:16:239:9 | BlockExpr | test.rs:235:9:239:9 | IfExpr |  |
@@ -451,9 +469,10 @@ edges
 | test.rs:242:5:248:5 | exit test_if_not_operator (normal) | test.rs:242:5:248:5 | exit test_if_not_operator |  |
 | test.rs:242:46:248:5 | BlockExpr | test.rs:242:5:248:5 | exit test_if_not_operator (normal) |  |
 | test.rs:243:9:247:9 | IfExpr | test.rs:242:46:248:5 | BlockExpr |  |
-| test.rs:243:12:243:13 | ! ... | test.rs:244:13:244:16 | true | true |
-| test.rs:243:12:243:13 | ! ... | test.rs:246:13:246:17 | false | false |
-| test.rs:243:13:243:13 | a | test.rs:243:12:243:13 | ! ... | false, true |
+| test.rs:243:12:243:13 | [boolean(false)] ! ... | test.rs:246:13:246:17 | false | false |
+| test.rs:243:12:243:13 | [boolean(true)] ! ... | test.rs:244:13:244:16 | true | true |
+| test.rs:243:13:243:13 | a | test.rs:243:12:243:13 | [boolean(false)] ! ... | true |
+| test.rs:243:13:243:13 | a | test.rs:243:12:243:13 | [boolean(true)] ! ... | false |
 | test.rs:243:15:245:9 | BlockExpr | test.rs:243:9:247:9 | IfExpr |  |
 | test.rs:244:13:244:16 | true | test.rs:243:15:245:9 | BlockExpr |  |
 | test.rs:245:16:247:9 | BlockExpr | test.rs:243:9:247:9 | IfExpr |  |
