@@ -4,6 +4,8 @@ import semmle.code.powershell.controlflow.BasicBlocks
 abstract private class AbstractFunction extends Ast {
   abstract string getName();
 
+  final predicate hasName(string name) { this.getName() = name }
+
   abstract ScriptBlock getBody();
 
   abstract Parameter getFunctionParameter(int i);

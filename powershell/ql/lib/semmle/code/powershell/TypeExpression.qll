@@ -8,4 +8,7 @@ class TypeNameExpr extends @type_expression, Expr {
   override string toString() { result = this.getName() }
 
   override SourceLocation getLocation() { type_expression_location(this, result) }
+
+  /** Gets the type referred to by this `TypeNameExpr`. */
+  Type getType() { result.getName() = this.getName() }
 }

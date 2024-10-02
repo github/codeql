@@ -107,6 +107,8 @@ module VariableCapture {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
+
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
@@ -150,6 +152,66 @@ private module Cached {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
+
+  /**
+   * This is the local flow predicate that is used in type tracking.
+   */
+  cached
+  predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
+
+  /** Holds if `n` wraps an SSA definition without ingoing flow. */
+  private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
+    n.getDefinitionExt() =
+      any(SsaImpl::WriteDefinition def | not def.(Ssa::WriteDefinition).assigns(_))
+  }
+
+  pragma[nomagic]
+  private predicate reachedFromExprOrEntrySsaDef(Node n) {
+    localFlowStepTypeTracker(any(Node n0 |
+        n0 instanceof ExprNode
+        or
+        entrySsaDefinition(n0)
+      ), n)
+    or
+    exists(Node mid |
+      reachedFromExprOrEntrySsaDef(mid) and
+      localFlowStepTypeTracker(mid, n)
+    )
+  }
+
+  private predicate isStoreTargetNode(Node n) {
+    TypeTrackingInput::storeStep(_, n, _)
+    or
+    TypeTrackingInput::loadStoreStep(_, n, _, _)
+    or
+    TypeTrackingInput::withContentStepImpl(_, n, _)
+    or
+    TypeTrackingInput::withoutContentStepImpl(_, n, _)
+  }
+
+  cached
+  predicate isLocalSourceNode(Node n) {
+    n instanceof ParameterNode
+    or
+    // Expressions that can't be reached from another entry definition or expression
+    n instanceof ExprNode and
+    not reachedFromExprOrEntrySsaDef(n)
+    or
+    // Ensure all entry SSA definitions are local sources, except those that correspond
+    // to parameters (which are themselves local sources)
+    entrySsaDefinition(n) and
+    not exists(SsaImpl::ParameterExt p |
+      p.isInitializedBy(n.(SsaDefinitionExtNode).getDefinitionExt())
+    )
+    or
+    isStoreTargetNode(n)
+    or
+    TypeTrackingInput::loadStep(_, n, _)
   }
 
   cached
@@ -229,9 +291,10 @@ class SsaInputNode extends SsaNode {
   override CfgScope getCfgScope() { result = node.getDefinitionExt().getBasicBlock().getScope() }
 }
 
-private string getANamedArgument(Cmd c) { exists(c.getNamedArgument(result)) }
+private string getANamedArgument(CfgNodes::CallCfgNode c) { exists(c.getNamedArgument(result)) }
 
-private module NamedSetModule = QlBuiltins::InternSets<Cmd, string, getANamedArgument/1>;
+private module NamedSetModule =
+  QlBuiltins::InternSets<CfgNodes::CallCfgNode, string, getANamedArgument/1>;
 
 private newtype NamedSet0 =
   TEmptyNamedSet() or
@@ -257,11 +320,11 @@ class NamedSet extends NamedSet0 {
   }
 
   /**
-   * Gets a `Cmd` that provides a named parameter for every name in `this`.
+   * Gets a `CfgNodes::CallCfgNode` that provides a named parameter for every name in `this`.
    *
-   * NOTE: The `Cmd` may also provide more names.
+   * NOTE: The `CfgNodes::CallCfgNode` may also provide more names.
    */
-  Cmd getABindingCall() {
+  CfgNodes::CallCfgNode getABindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name)))
     or
     this.isEmpty() and
@@ -272,7 +335,7 @@ class NamedSet extends NamedSet0 {
    * Gets a `Cmd` that provides exactly the named parameters represented by
    * this set.
    */
-  Cmd getAnExactBindingCall() {
+  CfgNodes::CallCfgNode getAnExactBindingCall() {
     forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
     forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
     or
@@ -366,7 +429,7 @@ module ArgumentNodes {
         or
         exists(NamedSet ns, int i |
           i = arg.getPosition() and
-          ns.getAnExactBindingCall() = call.asCall().getStmt() and
+          ns.getAnExactBindingCall() = call.asCall() and
           pos.isPositional(i, ns)
         )
       )
@@ -534,22 +597,25 @@ predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind = TLambdaCallKind()
 
-/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+private class CmdName extends StringConstExpr {
+  CmdName() { this = any(Cmd c).getCmdName() }
 
-/**
- * Holds if `call` is a from-source lambda call of kind `kind` where `receiver`
- * is the lambda expression.
- */
-predicate lambdaSourceCall(CfgNodes::StmtNodes::CmdCfgNode call, LambdaCallKind kind, Node receiver) {
-  none()
+  string getName() { result = this.getValue().getValue() }
+}
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  creation.asExpr().getExpr().(CmdName).getName() = c.asCfgScope().getEnclosingFunction().getName() and
+  exists(kind)
 }
 
 /**
  * Holds if `call` is a (from-source or from-summary) lambda call of kind `kind`
  * where `receiver` is the lambda expression.
  */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  call.asCall().getCommand() = receiver.asExpr() and exists(kind)
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

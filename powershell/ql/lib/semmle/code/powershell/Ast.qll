@@ -8,5 +8,7 @@ class Ast extends @ast {
 
   Location getLocation() { none() }
 
-  final Scope getEnclosingScope() { result = scopeOf(this) }
+  Scope getEnclosingScope() { result = scopeOf(this) }
+
+  final Function getEnclosingFunction() { this.getEnclosingScope() = result.getBody() }
 }
