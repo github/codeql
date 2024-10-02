@@ -1,4 +1,5 @@
 import powershell
+private import semmle.code.powershell.controlflow.internal.Scope
 
 class ScriptBlock extends @script_block, Ast {
   predicate isTopLevel() { not exists(this.getParent()) }
@@ -48,4 +49,6 @@ class ScriptBlock extends @script_block, Ast {
   }
 
   ModuleSpecification getAModuleSpecification() { result = this.getModuleSpecification(_) }
+
+  final override Scope getEnclosingScope() { result = this }
 }
