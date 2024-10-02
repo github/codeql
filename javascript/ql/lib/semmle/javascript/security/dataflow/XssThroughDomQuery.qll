@@ -22,7 +22,8 @@ module XssThroughDomConfig implements DataFlow::ConfigSig {
     node instanceof DomBasedXss::Sanitizer or
     DomBasedXss::isOptionallySanitizedNode(node) or
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode() or
-    node = DataFlow::MakeBarrierGuard<UnsafeJQuery::BarrierGuard>::getABarrierNode()
+    node = DataFlow::MakeBarrierGuard<UnsafeJQuery::BarrierGuard>::getABarrierNode() or
+    node = Shared::BarrierGuard::getABarrierNode()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {

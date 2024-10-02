@@ -55,7 +55,9 @@ module DomBasedXssConfig implements DataFlow::StateConfigSig {
     label = prefixLabel()
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or node = Shared::BarrierGuard::getABarrierNode()
+  }
 
   predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
     // copy all taint barrier guards to the TaintedUrlSuffix/PrefixLabel label

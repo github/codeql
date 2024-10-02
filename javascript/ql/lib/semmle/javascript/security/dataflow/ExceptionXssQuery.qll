@@ -140,7 +140,9 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
     sink instanceof XssShared::Sink and not label instanceof NotYetThrown
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof XssShared::Sanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof XssShared::Sanitizer or node = XssShared::BarrierGuard::getABarrierNode()
+  }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node pred, DataFlow::FlowLabel inlbl, DataFlow::Node succ, DataFlow::FlowLabel outlbl

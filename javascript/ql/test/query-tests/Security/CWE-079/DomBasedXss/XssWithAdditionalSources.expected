@@ -289,16 +289,10 @@ nodes
 | sanitiser.js:16:17:16:27 | window.name | semmle.label | window.name |
 | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
 | sanitiser.js:23:29:23:35 | tainted | semmle.label | tainted |
-| sanitiser.js:25:21:25:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
-| sanitiser.js:25:29:25:35 | tainted | semmle.label | tainted |
-| sanitiser.js:28:21:28:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
-| sanitiser.js:28:29:28:35 | tainted | semmle.label | tainted |
 | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
 | sanitiser.js:30:29:30:35 | tainted | semmle.label | tainted |
 | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
 | sanitiser.js:33:29:33:35 | tainted | semmle.label | tainted |
-| sanitiser.js:35:21:35:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
-| sanitiser.js:35:29:35:35 | tainted | semmle.label | tainted |
 | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
 | sanitiser.js:38:29:38:35 | tainted | semmle.label | tainted |
 | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' | semmle.label | '<b>' + ...  '</b>' |
@@ -876,21 +870,15 @@ edges
 | react-use-state.js:22:14:22:17 | prev | react-use-state.js:23:35:23:38 | prev | provenance |  |
 | react-use-state.js:25:20:25:30 | window.name | react-use-state.js:21:10:21:14 | state | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:23:29:23:35 | tainted | provenance |  |
-| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:25:29:25:35 | tainted | provenance |  |
-| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:28:29:28:35 | tainted | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:30:29:30:35 | tainted | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:33:29:33:35 | tainted | provenance |  |
-| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:35:29:35:35 | tainted | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:38:29:38:35 | tainted | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:45:29:45:35 | tainted | provenance |  |
 | sanitiser.js:16:7:16:27 | tainted | sanitiser.js:48:19:48:25 | tainted | provenance |  |
 | sanitiser.js:16:17:16:27 | window.name | sanitiser.js:16:7:16:27 | tainted | provenance |  |
 | sanitiser.js:23:29:23:35 | tainted | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' | provenance |  |
-| sanitiser.js:25:29:25:35 | tainted | sanitiser.js:25:21:25:44 | '<b>' + ...  '</b>' | provenance |  |
-| sanitiser.js:28:29:28:35 | tainted | sanitiser.js:28:21:28:44 | '<b>' + ...  '</b>' | provenance |  |
 | sanitiser.js:30:29:30:35 | tainted | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' | provenance |  |
 | sanitiser.js:33:29:33:35 | tainted | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' | provenance |  |
-| sanitiser.js:35:29:35:35 | tainted | sanitiser.js:35:21:35:44 | '<b>' + ...  '</b>' | provenance |  |
 | sanitiser.js:38:29:38:35 | tainted | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' | provenance |  |
 | sanitiser.js:45:29:45:35 | tainted | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' | provenance |  |
 | sanitiser.js:48:19:48:25 | tainted | sanitiser.js:48:19:48:46 | tainted ... /g, '') | provenance |  |
