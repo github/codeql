@@ -18,7 +18,7 @@ jobs:
       - run: |
           {
             echo 'JSON_RESPONSE<<EOF'
-            ls | grep -E "*.(tar.gz|zip)$"
+            cat foo
             echo EOF
           } >> "$GITHUB_ENV"
 

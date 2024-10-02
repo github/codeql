@@ -18,8 +18,7 @@ jobs:
       - name: Env Var Injection
         run: |
           echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"
-          ls | grep -E "*.(tar.gz|zip)$" >> "${GITHUB_ENV}"
-          ls | grep -E "*.(txt|md)$" >> "${GITHUB_ENV}"
+          cat foo >> "$GITHUB_ENV"
           echo "EOF" >> "${GITHUB_ENV}"
 
 
