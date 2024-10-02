@@ -255,10 +255,13 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
 
 class BashCommentVsHeadDateCheck extends CommentVsHeadDateCheck, Run {
   BashCommentVsHeadDateCheck() {
-    exists(string line |
-      line = this.getScript().splitAt("\n") and
-      line.toLowerCase()
-          .regexpMatch(".*date\\s+-d.*(commit_at|pushed_at|comment_at|commented_at).*date\\s+-d.*(commit_at|pushed_at|comment_at|commented_at).*")
+    // eg: if [[ $(date -d "$pushed_at" +%s) -gt $(date -d "$COMMENT_AT" +%s) ]]; then
+    exists(string cmd1, string cmd2 |
+      cmd1 = this.getACommand() and
+      cmd2 = this.getACommand() and
+      not cmd1 = cmd2 and
+      cmd1.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*") and
+      cmd2.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*")
     )
   }
 }

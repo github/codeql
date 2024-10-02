@@ -265,11 +265,10 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
-    exists(string line |
-      this.getScript().splitAt("\n") = line and
-      line.regexpMatch(".*git\\s+(fetch|pull).*") and
+    exists(string cmd | this.getACommand() = cmd |
+      cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
-        (containsHeadRef(line) or containsPullRequestNumber(line))
+        (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
         or
         exists(string varname, string expr |
           expr = this.getInScopeEnvVarExpr(varname).getExpression() and
@@ -277,7 +276,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
             containsHeadRef(expr) or
             containsPullRequestNumber(expr)
           ) and
-          exists(line.regexpFind(varname, _, _))
+          exists(cmd.regexpFind(varname, _, _))
         )
       )
     )
@@ -289,16 +288,15 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
-    exists(string line |
-      this.getScript().splitAt("\n") = line and
-      line.regexpMatch(".*git\\s+(fetch|pull).*") and
+    exists(string cmd | this.getACommand() = cmd |
+      cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
-        containsHeadSHA(line)
+        containsHeadSHA(cmd)
         or
         exists(string varname, string expr |
           expr = this.getInScopeEnvVarExpr(varname).getExpression() and
           containsHeadSHA(expr) and
-          exists(line.regexpFind(varname, _, _))
+          exists(cmd.regexpFind(varname, _, _))
         )
       )
     )
@@ -310,18 +308,17 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
-    exists(string line |
-      this.getScript().splitAt("\n") = line and
-      line.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
+    exists(string cmd | this.getACommand() = cmd |
+      cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
-        (containsHeadRef(line) or containsPullRequestNumber(line))
+        (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
         or
         exists(string varname |
           (
             containsHeadRef(this.getInScopeEnvVarExpr(varname).getExpression()) or
             containsPullRequestNumber(this.getInScopeEnvVarExpr(varname).getExpression())
           ) and
-          exists(line.regexpFind(varname, _, _))
+          exists(cmd.regexpFind(varname, _, _))
         )
       )
     )
@@ -333,15 +330,14 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
-    exists(string line |
-      this.getScript().splitAt("\n") = line and
-      line.regexpMatch(".*gh\\s+pr\\s+checkout.*") and
+    exists(string cmd | this.getACommand() = cmd |
+      cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
-        containsHeadSHA(line)
+        containsHeadSHA(cmd)
         or
         exists(string varname |
           containsHeadSHA(this.getInScopeEnvVarExpr(varname).getExpression()) and
-          exists(line.regexpFind(varname, _, _))
+          exists(cmd.regexpFind(varname, _, _))
         )
       )
     )

@@ -56,11 +56,8 @@ class OutputClobberingFromFileReadSink extends OutputClobberingSink {
             // e.g.
             // FOO=$(cat test-results/sha-number)
             // echo "FOO=$FOO" >> $GITHUB_OUTPUT
-            exists(string line, string var_name, string var_value |
-              run.getScript().splitAt("\n") = line
-            |
-              var_name = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 1) and
-              var_value = line.regexpCapture("([a-zA-Z0-9\\-_]+)=(.*)", 2) and
+            exists(string var_name, string var_value |
+              run.getAnAssignment(var_name, var_value) and
               outputsPartialFileContent(var_value) and
               (
                 value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
@@ -154,11 +151,11 @@ class WorkflowCommandClobberingFromFileReadSink extends OutputClobberingSink {
         // A file is read and its content is printed to stdout
         // - run: echo "foo=$(<pr-id.txt)"
         clobbering_line.regexpMatch(".*echo\\s+(-e)?\\s*(\"|')?") and
-        clobbering_line.regexpMatch(partialFileContentRegexp() + ".*")
+        clobbering_line.regexpMatch(["ls", Bash::partialFileContentCommand()] + "\\s.*")
         or
         // A file content is printed to stdout
         // - run: cat pr-id.txt
-        clobbering_line.regexpMatch(partialFileContentRegexp() + ".*")
+        clobbering_line.regexpMatch(["ls", Bash::partialFileContentCommand()] + "\\s.*")
       )
     )
   }

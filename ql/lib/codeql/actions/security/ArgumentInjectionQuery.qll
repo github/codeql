@@ -28,13 +28,13 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
     )
     or
     exists(
-      Run run, string line, string argument, string regexp, int argument_group, int command_group
+      Run run, string cmd, string argument, string regexp, int argument_group, int command_group
     |
-      run.getScript().splitAt("\n") = line and
+      run.getACommand() = cmd and
       run.getScriptScalar() = this.asExpr() and
       argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-      argument = line.regexpCapture(regexp, argument_group) and
-      command = line.regexpCapture(regexp, command_group) and
+      argument = cmd.regexpCapture(regexp, argument_group) and
+      command = cmd.regexpCapture(regexp, command_group) and
       argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
     )
   }
@@ -60,12 +60,12 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
     source instanceof RemoteFlowSource
     or
     exists(
-      Run run, string argument, string line, string regexp, int command_group, int argument_group
+      Run run, string argument, string cmd, string regexp, int command_group, int argument_group
     |
       run.getScriptScalar() = source.asExpr() and
-      run.getScript().splitAt("\n") = line and
+      run.getACommand() = cmd and
       argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-      argument = line.regexpCapture(regexp, argument_group) and
+      argument = cmd.regexpCapture(regexp, argument_group) and
       argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
     )
   }

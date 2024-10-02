@@ -155,71 +155,54 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
   }
 
   override string getPath() {
-    if
-      this.getAFollowingStep()
-          .(Run)
-          .getScript()
-          .splitAt("\n")
-          .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
+    if this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
         normalizePath(trimQuotes(this.getAFollowingStep()
                 .(Run)
-                .getScript()
-                .splitAt("\n")
+                .getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
     else
-      if this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp())
+      if this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp())
       then result = "GITHUB_WORKSPACE/"
       else none()
   }
 }
 
 class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
-  string script;
-
   GHRunArtifactDownloadStep() {
     // eg: - run: gh run download ${{ github.event.workflow_run.id }} --repo "${GITHUB_REPOSITORY}" --name "artifact_name"
-    this.getScript() = script and
-    script.splitAt("\n").regexpMatch(".*gh\\s+run\\s+download.*") and
-    script.splitAt("\n").matches("%github.event.workflow_run.id%") and
+    this.getACommand().regexpMatch(".*gh\\s+run\\s+download.*") and
+    this.getACommand().matches("%github.event.workflow_run.id%") and
     (
-      script.splitAt("\n").regexpMatch(unzipRegexp()) or
-      this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp())
+      this.getACommand().regexpMatch(unzipRegexp()) or
+      this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp())
     )
   }
 
   override string getPath() {
     if
-      this.getAFollowingStep()
-          .(Run)
-          .getScript()
-          .splitAt("\n")
-          .regexpMatch(unzipRegexp() + unzipDirArgRegexp()) or
-      script.splitAt("\n").regexpMatch(unzipRegexp() + unzipDirArgRegexp())
+      this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp() + unzipDirArgRegexp()) or
+      this.getACommand().regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        normalizePath(trimQuotes(script
-                .splitAt("\n")
+        normalizePath(trimQuotes(this.getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
       result =
         normalizePath(trimQuotes(this.getAFollowingStep()
                 .(Run)
-                .getScript()
-                .splitAt("\n")
+                .getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
     else
       if
-        this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp()) or
-        script.splitAt("\n").regexpMatch(unzipRegexp())
+        this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp()) or
+        this.getACommand().regexpMatch(unzipRegexp())
       then result = "GITHUB_WORKSPACE/"
       else none()
   }
 }
 
 class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
-  string script;
-
   DirectArtifactDownloadStep() {
     // eg:
     // run: |
@@ -230,32 +213,25 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
     //     gh api $url > "$name.zip"
     //     unzip -d "$name" "$name.zip"
     //   done
-    this.getScript() = script and
-    script.splitAt("\n").matches("%github.event.workflow_run.artifacts_url%") and
+    this.getACommand().matches("%github.event.workflow_run.artifacts_url%") and
     (
-      script.splitAt("\n").regexpMatch(unzipRegexp()) or
-      this.getAFollowingStep().(Run).getScript().splitAt("\n").regexpMatch(unzipRegexp())
+      this.getACommand().regexpMatch(unzipRegexp()) or
+      this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp())
     )
   }
 
   override string getPath() {
     if
-      script.splitAt("\n").regexpMatch(unzipRegexp() + unzipDirArgRegexp()) or
-      this.getAFollowingStep()
-          .(Run)
-          .getScript()
-          .splitAt("\n")
-          .regexpMatch(unzipRegexp() + unzipDirArgRegexp())
+      this.getACommand().regexpMatch(unzipRegexp() + unzipDirArgRegexp()) or
+      this.getAFollowingStep().(Run).getACommand().regexpMatch(unzipRegexp() + unzipDirArgRegexp())
     then
       result =
-        normalizePath(trimQuotes(script
-                .splitAt("\n")
+        normalizePath(trimQuotes(this.getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
       result =
         normalizePath(trimQuotes(this.getAFollowingStep()
                 .(Run)
-                .getScript()
-                .splitAt("\n")
+                .getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
     else result = "GITHUB_WORKSPACE/"
   }
