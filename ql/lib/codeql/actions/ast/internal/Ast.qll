@@ -1319,6 +1319,12 @@ class RunImpl extends StepImpl {
 
   string getScript() { result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
 
+  string getACommand() { result = Bash::getACommand(this.getScript()) }
+
+  predicate getAnAssignment(string name, string value) {
+    Bash::getAnAssignment(this.getScript(), name, value)
+  }
+
   ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
 
   ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }

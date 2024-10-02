@@ -54,7 +54,6 @@ predicate isBashParameterExpansion(string expr, string parameter, string operato
   )
 }
 
-// TODO, the followinr test fails
 bindingset[raw_content]
 predicate extractVariableAndValue(string raw_content, string key, string value) {
   exists(string regexp, string content | content = trimQuotes(raw_content) |
@@ -246,10 +245,6 @@ predicate inNonPrivilegedContext(AstNode node) {
   not node.getEnclosingJob().isPrivilegedExternallyTriggerable(_)
 }
 
-string partialFileContentRegexp() {
-  result = ["cat\\s+", "jq\\s+", "yq\\s+", "tail\\s+", "head\\s+", "ls\\s+"]
-}
-
 bindingset[snippet]
 predicate outputsPartialFileContent(string snippet) {
   // e.g.
@@ -257,7 +252,7 @@ predicate outputsPartialFileContent(string snippet) {
   // echo "FOO=$(<foo.txt)" >> $GITHUB_ENV
   // yq '.foo' foo.yml >> $GITHUB_PATH
   // cat foo.txt >> $GITHUB_PATH
-  snippet.regexpMatch(["(\\$\\(|`)<.*", ".*(\\b|^|\\s+)" + partialFileContentRegexp() + ".*"])
+  Bash::getACommand(snippet).indexOf(["<", Bash::partialFileContentCommand() + " "]) = 0
 }
 
 string defaultBranchNames() {
@@ -310,3 +305,96 @@ string normalizePath(string path) {
  */
 bindingset[subpath, path]
 predicate isSubpath(string subpath, string path) { subpath.substring(0, path.length()) = path }
+
+module Bash {
+  string stmtSeparator() { result = ";" }
+
+  string commandSeparator() { result = ["&&", "||"] }
+
+  string pipeSeparator() { result = "|" }
+
+  string splitSeparators() {
+    result = stmtSeparator() or result = commandSeparator() or result = pipeSeparator()
+  }
+
+  string redirectionSeparator() { result = [">", ">>", "2>", "2>>", ">&", "2>&", "<", "<<<"] }
+
+  string partialFileContentCommand() { result = ["cat", "jq", "yq", "tail", "head"] }
+
+  bindingset[script]
+  string getACommand(string script) {
+    exists(string stmt_, string stmt, string subline2, string cmd |
+      stmt_ = script.regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n") and
+      stmt =
+        [
+          // $() command substitution
+          stmt_
+              .regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", _, _)
+              .regexpReplaceAll("^\\$\\(", "")
+              .regexpReplaceAll("\\)$", ""),
+          // `...` command substitution
+          stmt_
+              .regexpFind("\\`[^\\`]+\\`", _, _)
+              .regexpReplaceAll("^\\`", "")
+              .regexpReplaceAll("\\`$", ""),
+          // original line with no substitutions
+          stmt_
+              .regexpReplaceAll("\\`[^\\`]+\\`", "SUBCOMMAND")
+              .regexpReplaceAll("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", "SUBCOMMAND")
+        ] and
+      // We shoulg replace quoted arguments with a placeholder to avoid splitting them
+      // eg: ls | grep -E "*.(tar.gz|zip)$"
+      //subline2 = subline.regexpReplaceAll("\"([^\"]+)\"", "$0").regexpReplaceAll("'([^']+)'", "$0") and
+      (
+        stmt.regexpMatch(".*\"([^\"]+)\".*") and
+        exists(int i |
+          subline2 =
+            stmt.replaceAll(stmt.regexpFind("\"([^\"]+)\"", _, i),
+              stmt.regexpFind("\"([^\"]+)\"", _, i)
+                  .replaceAll("|", "::PIPE::")
+                  .replaceAll(";", "::SEMICOLON::")
+                  .replaceAll("&&", "::AND::")
+                  .replaceAll("||", "::OR::"))
+        )
+        or
+        stmt.regexpMatch(".*'([^']+)'.*") and
+        exists(int i |
+          subline2 =
+            stmt.replaceAll(stmt.regexpFind("'([^']+)'", _, i),
+              stmt.regexpFind("'([^']+)'", _, i)
+                  .replaceAll("|", "::PIPE::")
+                  .replaceAll(";", "::SEMICOLON::")
+                  .replaceAll("&&", "::AND::")
+                  .replaceAll("||", "::OR::"))
+        )
+        or
+        not stmt.regexpMatch(".*'([^']+)'.*") and
+        not stmt.regexpMatch(".*\"([^\"]+)\".*") and
+        subline2 = stmt
+      ) and
+      cmd = subline2.splitAt(splitSeparators()).trim() and
+      // when splitting the line with a separator that is not found, the result is the original line which may contain other separators
+      // we only one the split parts that do not contain any of the separators
+      not cmd.indexOf(splitSeparators()) > -1 and
+      not cmd =
+        [
+          "", "for", "in", "do", "done", "if", "then", "else", "elif", "fi", "while", "until",
+          "case", "esac", "{", "}"
+        ] and
+      result =
+        cmd.replaceAll("::PIPE::", "|")
+            .replaceAll("::SEMICOLON::", ";")
+            .replaceAll("::AND::", "&&")
+            .replaceAll("::OR::", "||")
+    )
+  }
+
+  bindingset[script]
+  predicate getAnAssignment(string script, string name, string value) {
+    exists(string stmt |
+      stmt = script.regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n").trim() and
+      name = stmt.regexpCapture("^([a-zA-Z0-9\\-_]+)=.*", 1) and
+      value = stmt.regexpCapture("^[a-zA-Z0-9\\-_]+=(.*)", 1)
+    )
+  }
+}
