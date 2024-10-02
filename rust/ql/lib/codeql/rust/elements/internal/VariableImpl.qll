@@ -98,6 +98,27 @@ module Impl {
 
     /** Gets an access to this variable. */
     VariableAccess getAnAccess() { result.getVariable() = this }
+
+    /**
+     * Gets the pattern that declares this variable.
+     *
+     * Normally, the pattern is unique, except when introduced in an or pattern:
+     *
+     * ```rust
+     * match either {
+     *    Either::Left(x) | Either::Right(x) => println!(x),
+     * }
+     * ```
+     */
+    IdentPat getPat() { variableDecl(definingNode, result, name) }
+
+    /** Gets the initial value of this variable, if any. */
+    Expr getInitializer() {
+      exists(LetStmt let |
+        this.getPat() = let.getPat() and
+        result = let.getInitializer()
+      )
+    }
   }
 
   /** A path expression that may access a local variable. */
@@ -364,6 +385,29 @@ module Impl {
     override string toString() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
+  }
+
+  /** Holds if `e` occurs in the LHS of a (compound) assignment. */
+  private predicate assignLhs(Expr e) {
+    exists(BinaryExpr be |
+      be.getOperatorName().regexpMatch(".*=") and
+      e = be.getLhs()
+    )
+    or
+    exists(Expr mid |
+      assignLhs(mid) and
+      getImmediateParent(e) = mid
+    )
+  }
+
+  /** A variable write. */
+  class VariableWriteAccess extends VariableAccess {
+    VariableWriteAccess() { assignLhs(this) }
+  }
+
+  /** A variable read. */
+  class VariableReadAccess extends VariableAccess {
+    VariableReadAccess() { not this instanceof VariableWriteAccess }
   }
 
   cached
