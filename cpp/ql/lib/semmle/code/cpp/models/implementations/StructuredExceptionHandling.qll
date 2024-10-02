@@ -1,9 +1,29 @@
 import semmle.code.cpp.models.interfaces.Throwing
 
-class WindowsDriverFunction extends ThrowingFunction {
-  WindowsDriverFunction() {
+/**
+ * The default behavior for SEH is any function may (conditionally) raise an exception.
+ * NOTE: this can be overriden by for any specific function to make in
+ * unconditional or non-throwing. IR generation will enforce
+ * the most strict interpretation.
+ */
+class DefaultSEHExceptionBehavior extends ExceptionAnnotation {
+  DefaultSEHExceptionBehavior() { this = any(Function f) }
+
+  override predicate raisesException(boolean unconditional) { 
+    unconditional = false
+  }
+
+  override TSEHException getExceptionType() { any() }
+}
+
+class WindowsDriverExceptionAnnotation extends ExceptionAnnotation {
+  WindowsDriverExceptionAnnotation() {
     this.hasGlobalName(["RaiseException", "ExRaiseAccessViolation", "ExRaiseDatatypeMisalignment"])
   }
 
-  final override predicate mayThrowException(boolean unconditional) { unconditional = true }
+  override predicate raisesException(boolean unconditional) { 
+    unconditional = true
+  }
+
+  override TSEHException getExceptionType() { any() }
 }

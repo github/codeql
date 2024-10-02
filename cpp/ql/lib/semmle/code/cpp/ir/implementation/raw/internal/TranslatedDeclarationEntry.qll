@@ -165,8 +165,13 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result = this.getInstruction(DynamicInitializationFlagLoadTag())
     or
     tag = DynamicInitializationFlagLoadTag() and
-    kind instanceof GotoEdge and
-    result = this.getInstruction(DynamicInitializationConditionalBranchTag())
+    (
+      kind instanceof GotoEdge and
+      result = this.getInstruction(DynamicInitializationConditionalBranchTag())
+      or
+      kind.(ExceptionEdge).isSEH() and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
     or
     tag = DynamicInitializationConditionalBranchTag() and
     (
@@ -182,7 +187,12 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result = this.getInstruction(DynamicInitializationFlagStoreTag())
     or
     tag = DynamicInitializationFlagStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All store instructions may throw an SEH exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and kind.(ExceptionEdge).isSEH()
+    )
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
