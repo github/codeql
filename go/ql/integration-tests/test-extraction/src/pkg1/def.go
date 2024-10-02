@@ -4,4 +4,4 @@ type Generic[T any] struct {
 	element T
 }
 
-func TestMe() { }
+func TestMe() {}
