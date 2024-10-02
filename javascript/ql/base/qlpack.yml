@@ -1,0 +1,8 @@
+name: codeql/javascript-base
+version: 1.0.0-dev
+groups: javascript
+dbscheme: semmlecode.javascript.dbscheme
+extractor: javascript
+library: true
+upgrades: upgrades
+warnOnImplicitThis: true
