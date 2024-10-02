@@ -52,3 +52,8 @@ class Diagnostic extends @diagnostic {
 class ExtractionError extends Diagnostic {
   ExtractionError() { this.getTag() = "parse_error" }
 }
+
+/** A diagnostic that is warning severity. */
+class ExtractionWarning extends Diagnostic {
+  ExtractionWarning() { this.getSeverity() = 30 }
+}
