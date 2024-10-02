@@ -96,12 +96,16 @@ abstract class Completion extends TCompletion {
 /** Holds if node `n` has the Boolean constant value `value`. */
 private predicate isBooleanConstant(Ast n, boolean value) {
   mustHaveBooleanCompletion(n) and
-  none() // TODO
+  // TODO
+  exists(value) and
+  none()
 }
 
 private predicate isMatchingConstant(Ast n, boolean value) {
   inMatchingContext(n) and
-  none() // TODO
+  // TODO
+  exists(value) and
+  none()
 }
 
 /**
