@@ -1,4 +1,7 @@
 import powershell
+private import semmle.code.powershell.dataflow.internal.DataFlowImplCommon
+private import semmle.code.powershell.dataflow.internal.DataFlowDispatch
+private import semmle.code.powershell.controlflow.CfgNodes
 
 abstract private class AbstractCall extends Ast {
   abstract Expr getCommand();
@@ -17,6 +20,9 @@ abstract private class AbstractCall extends Ast {
 
   /** Gets the qualifier of this call, if any. */
   Expr getQualifier() { none() }
+
+  /** Gets a possible runtime target of this call. */
+  abstract Function getATarget();
 }
 
 private class CmdCall extends AbstractCall instanceof Cmd {
@@ -27,6 +33,14 @@ private class CmdCall extends AbstractCall instanceof Cmd {
   final override Expr getArgument(int i) { result = Cmd.super.getArgument(i) }
 
   final override Expr getNamedArgument(string name) { result = Cmd.super.getNamedArgument(name) }
+
+  final override Function getATarget() {
+    exists(DataFlowCall call | call.asCall().(StmtNodes::CmdCfgNode).getStmt() = this |
+      result.getBody() = viableCallableLambda(call, _).asCfgScope()
+      or
+      result.getBody() = getTarget(call)
+    )
+  }
 }
 
 private class InvokeMemberCall extends AbstractCall instanceof InvokeMemberExpr {
@@ -41,6 +55,14 @@ private class InvokeMemberCall extends AbstractCall instanceof InvokeMemberExpr 
   final override Expr getQualifier() { result = InvokeMemberExpr.super.getQualifier() }
 
   final override Expr getNamedArgument(string name) { none() }
+
+  final override Function getATarget() {
+    exists(DataFlowCall call | call.asCall().(ExprNodes::InvokeMemberCfgNode).getExpr() = this |
+      result.getBody() = viableCallableLambda(call, _).asCfgScope()
+      or
+      result.getBody() = getTarget(call)
+    )
+  }
 }
 
 final class Call = AbstractCall;
