@@ -501,10 +501,11 @@ module IR {
     override StructLit lit;
 
     /** Gets the name of the initialized field. */
+    pragma[nomagic]
     string getFieldName() {
       if elt instanceof KeyValueExpr
       then result = elt.(KeyValueExpr).getKey().(Ident).getName()
-      else lit.getStructType().hasOwnField(i, result, _, _)
+      else pragma[only_bind_out](lit.getStructType()).hasOwnField(i, result, _, _)
     }
 
     /** Gets the initialized field. */

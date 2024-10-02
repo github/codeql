@@ -2098,6 +2098,7 @@ class LabelName extends Name {
  * may be identified as such, so not all type expressions can be determined by
  * a bottom-up analysis. In such cases, `isTypeExprTopDown` below is useful.
  */
+pragma[nomagic]
 private predicate isTypeExprBottomUp(Expr e) {
   e instanceof TypeName
   or

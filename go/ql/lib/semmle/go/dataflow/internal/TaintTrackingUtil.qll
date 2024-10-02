@@ -190,6 +190,7 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
+  pragma[nomagic]
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
