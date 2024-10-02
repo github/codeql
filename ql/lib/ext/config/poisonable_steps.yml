@@ -19,6 +19,7 @@ extensions:
       - ["asv"]
       - ["awk\\s+-f"]
       - ["bundle"]
+      - ["bun"]
       - ["cargo"]
       - ["checkov"]
       - ["eslint"]
