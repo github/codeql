@@ -109,7 +109,7 @@ fn arrays() {
 
     println!("lets use {:?}", js);
 
-    for k // BAD: unused variable [SPURIOUS: macros not yet supported]
+    for k // SPURIOUS: unused variable [macros not yet supported]
 	in ks
 	{
         println!("lets use {}", k);
