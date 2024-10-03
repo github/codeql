@@ -8,7 +8,7 @@ fn locals_1() {
     let c = 1;
     let d = String::from("a"); // BAD: unused value [NOT DETECTED]
     let e = String::from("b");
-
+    let f = 1;
     let _ = 1; // (deliberately unused)
 
     println!("use {}", b);
@@ -18,7 +18,7 @@ fn locals_1() {
     }
 
     println!("use {}", e);
-
+    assert!(f == 1);
 }
 
 fn locals_2() {
@@ -144,11 +144,113 @@ fn parameters(
     return x;
 }
 
+// --- loops ---
+
+fn loops() {
+    let mut a: i64 = 10;
+    let b: i64 = 20;
+    let c: i64 = 30;
+    let d: i64 = 40;
+    let mut e: i64 = 50;
+
+    while a < b {
+        a += 1;
+    }
+
+    for x in c..d {
+        e += x;
+    }
+
+    for x in 1..10 { // BAD: unused variable
+    }
+
+    for _ in 1..10 {
+    }
+
+    for x in 1..10 { // SPURIOUS: unused variable [macros not yet supported]
+        println!("x is {}", x);
+    }
+
+    for x in 1..10 { // SPURIOUS: unused variable [macros not yet supported]
+        assert!(x != 11);
+    }
+}
+
+// --- lets ---
+
+enum MyOption<T> {
+    None,
+    Some(T),
+}
+
+enum YesOrNo {
+    Yes,
+    No,
+}
+
+fn if_lets() {
+    let mut total: i64 = 0;
+
+    if let Some(a) = Some(10) { // BAD: unused variable
+    }
+
+    if let Some(b) = Some(20) {
+        total += b;
+    }
+
+    let mut next = Some(30);
+    while let Some(val) = next { // BAD: unused variable
+        next = None;
+    }
+
+    let mut next2 = Some(40);
+    while let Some(val) = next2 { // SPURIOUS: unused variable 'val'
+        total += val;
+        next2 = None;
+    }
+
+    let c = Some(60);
+    match c {
+        Some(val) => { // BAD: unused variable
+        },
+        None => { // SPURIOUS: unused variable 'None'
+        }
+    }
+
+    let d = Some(70);
+    match d {
+        Some(val) => {
+            total += val;
+        },
+        None => { // SPURIOUS: unused variable 'None'
+        }
+    }
+
+    let e = MyOption::Some(80);
+    match e {
+        MyOption::Some(val) => { // BAD: unused variable
+        },
+        MyOption::None => {
+        }
+    }
+
+    let f = YesOrNo::Yes;
+    match f {
+        YesOrNo::Yes => {
+        },
+        YesOrNo::No => {
+        },
+    }
+}
+
 fn main() {
     locals_1();
     locals_2();
     structs();
     arrays();
     statics();
+    loops();
+    if_lets();
+
     println!("lets use result {}", parameters(1, 2, 3));
 }
