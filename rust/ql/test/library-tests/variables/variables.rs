@@ -85,6 +85,15 @@ fn let_pattern4() {
     print_str(x5); // $ access=x5
 }
 
+fn let_pattern5() {
+    let s1 = Some(String::from("Hello!")); // s1
+
+    while let Some(ref s2) // s2
+        = s1 { // $ access=s1
+        print_str(s2); // $ access=s2
+    }
+}
+
 fn match_pattern1() {
     let x6 = Some(5); // x6
     let y1 = 10; // y1_1
