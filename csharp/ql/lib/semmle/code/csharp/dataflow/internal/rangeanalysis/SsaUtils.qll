@@ -26,10 +26,10 @@ ExprNode getAnExplicitDefinitionRead(ExprNode src) {
 /**
  * Gets an expression that equals `v - delta`.
  */
-ExprNode ssaRead(Definition v, int delta) {
-  exists(v.getAReadAtNode(result)) and delta = 0
+ExprNode ssaRead(Definition v, QlBuiltins::BigInt delta) {
+  exists(v.getAReadAtNode(result)) and delta = 0.toBigInt()
   or
-  exists(ExprNode::AddExpr add, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::AddExpr add, QlBuiltins::BigInt d1, ConstantIntegerExpr c |
     result = add and
     delta = d1 - c.getIntValue()
   |
@@ -38,22 +38,27 @@ ExprNode ssaRead(Definition v, int delta) {
     add.getRightOperand() = ssaRead(v, d1) and add.getLeftOperand() = c
   )
   or
-  exists(ExprNode::SubExpr sub, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::SubExpr sub, QlBuiltins::BigInt d1, ConstantIntegerExpr c |
     result = sub and
     sub.getLeftOperand() = ssaRead(v, d1) and
     sub.getRightOperand() = c and
     delta = d1 + c.getIntValue()
   )
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreIncrExpr) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreIncrExpr) = result and
+  delta = 0.toBigInt()
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreDecrExpr) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreDecrExpr) = result and
+  delta = 0.toBigInt()
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostIncrExpr) = result and
+  delta = 1.toBigInt() // x++ === ++x - 1
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostDecrExpr) = result and delta = -1 // x-- === --x + 1
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostDecrExpr) = result and
+  delta = -1.toBigInt() // x-- === --x + 1
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
+  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::Assignment) = result and
+  delta = 0.toBigInt()
   or
   result.(ExprNode::AssignExpr).getRValue() = ssaRead(v, delta)
 }

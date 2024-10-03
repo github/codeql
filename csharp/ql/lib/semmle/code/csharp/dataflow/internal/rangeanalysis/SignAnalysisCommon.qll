@@ -12,12 +12,12 @@ private import Sign
 
 /** Gets the sign of `e` if this can be directly determined. */
 private Sign certainExprSign(Expr e) {
-  exists(int i | e.(ConstantIntegerExpr).getIntValue() = i |
-    i < 0 and result = TNeg()
+  exists(QlBuiltins::BigInt i | e.(ConstantIntegerExpr).getIntValue() = i |
+    i < 0.toBigInt() and result = TNeg()
     or
-    i = 0 and result = TZero()
+    i = 0.toBigInt() and result = TZero()
     or
-    i > 0 and result = TPos()
+    i > 0.toBigInt() and result = TPos()
   )
   or
   not exists(e.(ConstantIntegerExpr).getIntValue()) and
@@ -67,12 +67,12 @@ private predicate lowerBound(Expr lowerbound, SsaVariable v, SsaReadPosition pos
   |
     testIsTrue = true and
     comp.getLesserOperand() = lowerbound and
-    comp.getGreaterOperand() = ssaRead(v, 0) and
+    comp.getGreaterOperand() = ssaRead(v, 0.toBigInt()) and
     (if comp.isStrict() then isStrict = true else isStrict = false)
     or
     testIsTrue = false and
     comp.getGreaterOperand() = lowerbound and
-    comp.getLesserOperand() = ssaRead(v, 0) and
+    comp.getLesserOperand() = ssaRead(v, 0.toBigInt()) and
     (if comp.isStrict() then isStrict = false else isStrict = true)
   )
 }
@@ -89,12 +89,12 @@ private predicate upperBound(Expr upperbound, SsaVariable v, SsaReadPosition pos
   |
     testIsTrue = true and
     comp.getGreaterOperand() = upperbound and
-    comp.getLesserOperand() = ssaRead(v, 0) and
+    comp.getLesserOperand() = ssaRead(v, 0.toBigInt()) and
     (if comp.isStrict() then isStrict = true else isStrict = false)
     or
     testIsTrue = false and
     comp.getLesserOperand() = upperbound and
-    comp.getGreaterOperand() = ssaRead(v, 0) and
+    comp.getGreaterOperand() = ssaRead(v, 0.toBigInt()) and
     (if comp.isStrict() then isStrict = false else isStrict = true)
   )
 }
@@ -110,7 +110,7 @@ private predicate eqBound(Expr eqbound, SsaVariable v, SsaReadPosition pos, bool
   exists(Guard guard, boolean testIsTrue, boolean polarity |
     pos.hasReadOfVar(v) and
     guardControlsSsaRead(guard, pos, testIsTrue) and
-    guard.isEquality(eqbound, ssaRead(v, 0), polarity) and
+    guard.isEquality(eqbound, ssaRead(v, 0.toBigInt()), polarity) and
     isEq = polarity.booleanXor(testIsTrue).booleanNot() and
     not unknownSign(eqbound)
   )
