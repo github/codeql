@@ -221,7 +221,7 @@ fun doAnalysis(
 
     analyze(sourceModule) {
         val maxThreads = 1 // TODO: Default to 8 temporarily to ensure concurrency,
-                           //       and $CODEQL_THREADS or Runtime.getRuntime().availableProcessors() later
+                           // TODO: Later, default to $CODEQL_THREADS or Runtime.getRuntime().availableProcessors()
         Executors.newFixedThreadPool(maxThreads).asCoroutineDispatcher().use { dispatcher ->
 
             runBlocking {
