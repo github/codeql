@@ -63,53 +63,82 @@ predicate methodCallHasConstantArguments(MethodCall mc) {
   )
 }
 
-/** Classes for `java.util.List`. */
-module JavaUtilList {
-  private class JavaUtilListContainsCall extends MethodCall {
-    JavaUtilListContainsCall() {
+class CollectionClass extends string {
+  CollectionClass() { this = ["List", "Set"] }
+}
+
+/** Classes for `java.util.List` and `java.util.Set`. */
+module Collection {
+  private class CollectionContainsCall extends MethodCall {
+    CollectionClass collectionClass;
+
+    /** Gets whether the collection is a "List" or a "Set". */
+    CollectionClass getCollectionClass() { result = collectionClass }
+
+    CollectionContainsCall() {
       exists(Method m |
         this.getMethod() = m and
         m.hasName("contains") and
-        m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "List")
+        m.getDeclaringType()
+            .getSourceDeclaration()
+            .getASourceSupertype*()
+            .hasQualifiedName("java.util", collectionClass)
       )
     }
   }
 
   private class NonConstantElementAddition extends Expr {
+    CollectionClass collectionClass;
+
+    /** Gets whether the collection is a "List" or a "Set". */
+    CollectionClass getCollectionClass() { result = collectionClass }
+
     NonConstantElementAddition() {
       exists(Method m, RefType t, MethodCall mc |
         this = mc.getQualifier() and
         mc.getMethod() = m and
         t = m.getDeclaringType().getSourceDeclaration().getASourceSupertype*()
       |
+        collectionClass = "List" and
         t.hasQualifiedName("java.util", "List") and
         m.getName() = ["add", "addFirst", "addLast"] and
         not mc.getArgument(m.getNumberOfParameters() - 1).isCompileTimeConstant()
         or
+        collectionClass = "Set" and
+        t.hasQualifiedName("java.util", "Set") and
+        m.getName() = ["add"] and
+        not mc.getArgument(0).isCompileTimeConstant()
+        or
         // If a whole collection is added then we don't try to track if it contains
         // only compile-time constants, and conservatively assume that it does.
-        t.hasQualifiedName("java.util", ["Collection", "List"]) and m.getName() = "addAll"
+        t.hasQualifiedName("java.util", "Collection") and
+        m.getName() = "addAll"
       )
     }
   }
 
-  private predicate javaUtilListOfConstantsLocalFlowTo(Expr e) {
-    exists(JavaUtilListOfConstants loc | DataFlow::localExprFlow(loc, e) |
+  private predicate collectionOfConstantsLocalFlowTo(CollectionClass collectionClass, Expr e) {
+    exists(CollectionOfConstants loc |
+      loc.getCollectionClass() = collectionClass and DataFlow::localExprFlow(loc, e)
+    |
       loc.isImmutable()
       or
       not DataFlow::localExprFlow(any(NonConstantElementAddition ncea), e)
     )
   }
 
-  private predicate javaUtilListOfConstantsFlowsTo(Expr e) {
-    javaUtilListOfConstantsLocalFlowTo(e)
+  private predicate collectionOfConstantsFlowsTo(CollectionClass collectionClass, Expr e) {
+    collectionOfConstantsLocalFlowTo(collectionClass, e)
     or
     // Access a static final field to get an immutable list of constants.
     exists(Field f |
       f.isStatic() and
       f.isFinal() and
       forall(Expr v | v = f.getInitializer() or v = f.getAnAccess().(FieldWrite).getASource() |
-        v = any(JavaUtilListOfConstants loc | loc.isImmutable())
+        v =
+          any(CollectionOfConstants loc |
+            loc.getCollectionClass() = collectionClass and loc.isImmutable()
+          )
       )
     |
       DataFlow::localExprFlow(f.getAnAccess(), e)
@@ -120,13 +149,13 @@ module JavaUtilList {
    * An invocation of `java.util.List.contains` where the qualifier contains only
    * compile-time constants.
    */
-  private class JavaUtilListOfConstantsContains extends ListOfConstantsComparison {
-    JavaUtilListOfConstantsContains() {
-      exists(JavaUtilListContainsCall mc |
+  private class CollectionOfConstantsContains extends ListOfConstantsComparison {
+    CollectionOfConstantsContains() {
+      exists(CollectionContainsCall mc |
         this = mc and
         e = mc.getArgument(0) and
         outcome = true and
-        javaUtilListOfConstantsFlowsTo(mc.getQualifier())
+        collectionOfConstantsFlowsTo(mc.getCollectionClass(), mc.getQualifier())
       )
     }
   }
@@ -134,28 +163,37 @@ module JavaUtilList {
   /**
    * An instance of `java.util.List` which contains only compile-time constants.
    */
-  abstract class JavaUtilListOfConstants extends Call {
+  abstract class CollectionOfConstants extends Call {
+    CollectionClass collectionClass;
+
+    /** Gets whether the collection is a "List" or a "Set". */
+    CollectionClass getCollectionClass() { result = collectionClass }
+
     /** Holds if this list of constants is immutable. */
     abstract predicate isImmutable();
   }
 
   /**
-   * A invocation of a constructor of a type that extends `java.util.List`
-   * which constructs an empty mutable list.
+   * A invocation of a constructor of a type that extends `java.util.List` or
+   * `java.util.Set` which constructs an empty mutable list.
    */
-  private class JavaUtilListOfConstantsEmptyConstructor extends ClassInstanceExpr,
-    JavaUtilListOfConstants
+  private class CollectionOfConstantsEmptyConstructor extends ClassInstanceExpr,
+    CollectionOfConstants
   {
-    JavaUtilListOfConstantsEmptyConstructor() {
+    CollectionOfConstantsEmptyConstructor() {
       this.getConstructedType()
           .getSourceDeclaration()
           .getASourceSupertype*()
-          .hasQualifiedName("java.util", "List") and
+          .hasQualifiedName("java.util", collectionClass) and
       exists(Constructor c | c = this.getConstructor() |
         c.hasNoParameters()
         or
         c.getNumberOfParameters() = 1 and
         c.getParameter(0).getType().(PrimitiveType).hasName("int")
+        or
+        c.getNumberOfParameters() = 2 and
+        c.getParameter(0).getType().(PrimitiveType).hasName("int") and
+        c.getParameter(0).getType().(PrimitiveType).hasName("float")
       )
     }
 
@@ -163,17 +201,17 @@ module JavaUtilList {
   }
 
   /**
-   * A invocation of a constructor of a type that extends `java.util.List`
-   * which constructs an empty mutable list.
+   * A invocation of a constructor of a type that extends `java.util.List` or
+   * `java.util.Set` which constructs a non-empty mutable list.
    */
-  private class JavaUtilListOfConstantsNonEmptyConstructor extends ClassInstanceExpr,
-    JavaUtilListOfConstants
+  private class CollectionOfConstantsNonEmptyConstructor extends ClassInstanceExpr,
+    CollectionOfConstants
   {
-    JavaUtilListOfConstantsNonEmptyConstructor() {
+    CollectionOfConstantsNonEmptyConstructor() {
       this.getConstructedType()
           .getSourceDeclaration()
           .getASourceSupertype*()
-          .hasQualifiedName("java.util", "List") and
+          .hasQualifiedName("java.util", collectionClass) and
       exists(Constructor c | c = this.getConstructor() |
         c.getNumberOfParameters() = 1 and
         c.getParameter(0)
@@ -182,7 +220,7 @@ module JavaUtilList {
             .getASourceSupertype*()
             .hasQualifiedName("java.util", "Collection")
       ) and
-      javaUtilListOfConstantsFlowsTo(this.getArgument(0))
+      collectionOfConstantsFlowsTo(_, this.getArgument(0))
     }
 
     override predicate isImmutable() { none() }
@@ -191,11 +229,15 @@ module JavaUtilList {
   /**
    * A invocation of `java.util.Arrays.asList` which constructs a mutable list.
    */
-  private class JavaUtilArraysAsList extends MethodCall, JavaUtilListOfConstants {
+  private class JavaUtilArraysAsList extends MethodCall, CollectionOfConstants {
     JavaUtilArraysAsList() {
+      collectionClass = "List" and
       exists(Method m | this.getMethod() = m |
         m.hasName("asList") and
-        m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "Arrays")
+        m.getDeclaringType()
+            .getSourceDeclaration()
+            .getASourceSupertype*()
+            .hasQualifiedName("java.util", "Arrays")
       ) and
       methodCallHasConstantArguments(this)
     }
@@ -207,12 +249,14 @@ module JavaUtilList {
    * An invocation of `java.util.List.of` which constructs an immutable list
    * which contains only compile-time constants.
    */
-  private class JavaUtilListOfConstantsCreatedWithListOf extends MethodCall, JavaUtilListOfConstants
-  {
-    JavaUtilListOfConstantsCreatedWithListOf() {
+  private class CollectionOfConstantsCreatedWithOf extends MethodCall, CollectionOfConstants {
+    CollectionOfConstantsCreatedWithOf() {
       exists(Method m | this.getMethod() = m |
         m.hasName("of") and
-        m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "List")
+        m.getDeclaringType()
+            .getSourceDeclaration()
+            .getASourceSupertype*()
+            .hasQualifiedName("java.util", collectionClass)
       ) and
       methodCallHasConstantArguments(this)
     }
@@ -221,19 +265,23 @@ module JavaUtilList {
   }
 
   /**
-   * An invocation of `java.util.Collections.unmodifiableList` which constructs an immutable list
-   * which contains only compile-time constants.
+   * An invocation of `java.util.Collections.unmodifiableList` or
+   * `java.util.Collections.unmodifiableSet` which constructs an immutable
+   * list/set which contains only compile-time constants.
    */
-  private class JavaUtilListOfConstantsCreatedWithCollectionsUnmodifiableList extends MethodCall,
-    JavaUtilListOfConstants
+  private class CollectionOfConstantsCreatedWithCollectionsUnmodifiableList extends MethodCall,
+    CollectionOfConstants
   {
-    JavaUtilListOfConstantsCreatedWithCollectionsUnmodifiableList() {
+    CollectionOfConstantsCreatedWithCollectionsUnmodifiableList() {
       exists(Method m |
-        m.hasName("unmodifiableList") and
-        m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "Collections") and
+        m.hasName("unmodifiable" + collectionClass) and
+        m.getDeclaringType()
+            .getSourceDeclaration()
+            .getASourceSupertype*()
+            .hasQualifiedName("java.util", "Collections") and
         this.getMethod() = m
       |
-        javaUtilListOfConstantsFlowsTo(this.getArgument(0))
+        collectionOfConstantsFlowsTo(collectionClass, this.getArgument(0))
       )
     }
 
