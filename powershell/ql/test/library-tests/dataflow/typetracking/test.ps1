@@ -7,13 +7,13 @@ class MyClass {
 
 $myClass = [MyClass]::new("hello")
 
-Sink $myClass # $ MISSING: type=MyClass
+Sink $myClass # $ type=MyClass
 
 
 $withNamedArg = New-Object -TypeName PSObject
 
-Sink $withNamedArg # $ MISSING: type=PSObject
+Sink $withNamedArg # $ type=PSObject
 
 $withPositionalArg = New-Object PSObject
 
-Sink $withPositionalArg # $ MISSING: type=PSObject
+Sink $withPositionalArg # $ type=PSObject
