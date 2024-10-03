@@ -81,7 +81,7 @@ query predicate writeToGitHubEnv1(string content) {
         //"FOO\necho \"VAR3<<EOF\" >> $GITHUB_ENV\necho \"$TITLE\" >> $GITHUB_ENV\necho \"EOF\" >> $GITHUB_ENV\nBAR",
       ] and
     //linesFileWrite(t, _, "$GITHUB_ENV", content, _)
-    blockFileWrite(t, _, "$GITHUB_ENV", content, _)
+    Bash::blockFileWrite(t, _, "$GITHUB_ENV", content, _)
     //extractFileWrite(t, "GITHUB_ENV", content)
   )
 }
@@ -113,8 +113,8 @@ query predicate writeToGitHubEnv(string key, string value, string content) {
         "echo VAR15=$(<test-results3/sha-number) >> $GITHUB_ENV",
         "echo VAR16=$(cat issue.txt | sed 's/\\r/\\n/g' | grep -ioE '\\s*[a-z0-9_-]+/[a-z0-9_-]+\\s*$' | tr -d ' ') >> $GITHUB_ENV",
       ] and
-    extractFileWrite(t, "GITHUB_ENV", content) and
-    extractVariableAndValue(content, key, value)
+    Bash::extractFileWrite(t, "GITHUB_ENV", content) and
+    Bash::extractVariableAndValue(content, key, value)
   )
 }
 
@@ -132,8 +132,8 @@ query predicate writeToGitHubOutput(string key, string value, string content) {
         "echo VAR8=$(<test-results5/sha-number) >> ${GITHUB_OUTPUT}",
         "echo VAR9=$(<test-results6/sha-number) >> \"${GITHUB_OUTPUT}\"",
       ] and
-    extractFileWrite(t, "GITHUB_OUTPUT", content) and
-    extractVariableAndValue(content, key, value)
+    Bash::extractFileWrite(t, "GITHUB_OUTPUT", content) and
+    Bash::extractVariableAndValue(content, key, value)
   )
 }
 
@@ -150,6 +150,6 @@ query predicate isBashParameterExpansion(string parameter, string operator, stri
         "${parameter21%%pattern}", "${parameter22/pattern/string}",
         "${parameter23//pattern/string}",
       ] and
-    isBashParameterExpansion(test, parameter, operator, params)
+    Bash::isBashParameterExpansion(test, parameter, operator, params)
   )
 }

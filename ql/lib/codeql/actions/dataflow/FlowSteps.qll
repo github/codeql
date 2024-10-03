@@ -82,20 +82,17 @@ predicate envToArgInjSink(string var_name, Run run, string command) {
  */
 bindingset[var_name]
 predicate envToSpecialFile(string file, string var_name, Run run, string key) {
-  exists(string content, string value |
+  exists(string value |
     (
       file = "GITHUB_ENV" and
-      writeToGitHubEnv(run, content) and
-      extractVariableAndValue(content, key, value)
+      run.getAWriteToGitHubEnv(key, value)
       or
       file = "GITHUB_OUTPUT" and
-      writeToGitHubOutput(run, content) and
-      extractVariableAndValue(content, key, value)
+      run.getAWriteToGitHubOutput(key, value)
       or
       file = "GITHUB_PATH" and
-      writeToGitHubPath(run, content) and
-      key = "path" and
-      value = content
+      run.getAWriteToGitHubPath(value) and
+      key = "path"
     ) and
     envToRunExpr(var_name, run, value)
   )
@@ -144,14 +141,13 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
 }
 
 predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string var_name, string content, string key, string value |
-    writeToGitHubEnv(run, content) and
-    extractVariableAndValue(content, key, value) and
+  exists(Run run, string var_name, string key, string value |
+    run.getAWriteToGitHubEnv(key, value) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     pred.asExpr() = run.getInScopeEnvVarExpr(var_name) and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
-    isBashParameterExpansion(value, var_name, _, _)
+    Bash::isBashParameterExpansion(value, var_name, _, _)
   )
 }
 
@@ -178,29 +174,24 @@ predicate controlledCWD(Step artifact) {
  *    echo "::set-output name=id::$foo
  */
 predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, Step artifact, string content, string key, string value |
+  exists(Run run, Step artifact, string key, string value |
     controlledCWD(artifact) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
       //     foo=$(<pr-id.txt)"
       //     echo "::set-output name=id::$foo
-      exists(string var_name, string line, string assignment_regexp, string file_read |
-        run.getScript().splitAt("\n") = line and
-        assignment_regexp = "([a-zA-Z0-9\\-_]+)=(.*)" and
-        var_name = line.regexpCapture(assignment_regexp, 1) and
-        file_read = line.regexpCapture(assignment_regexp, 2) and
-        outputsPartialFileContent(file_read) and
+      exists(string var_name, string file_read |
+        run.getAnAssignment(var_name, file_read) and
+        Bash::outputsPartialFileContent(run, file_read) and
         envToRunExpr(var_name, run, value) and
-        writeToGitHubOutput(run, content) and
-        extractVariableAndValue(content, key, value)
+        run.getAWriteToGitHubOutput(key, value)
       )
       or
       // A file is read and its content is assigned to an output
       // - run: echo "::set-output name=id::$(<pr-id.txt)"
-      writeToGitHubOutput(run, content) and
-      extractVariableAndValue(content, key, value) and
-      outputsPartialFileContent(value)
+      run.getAWriteToGitHubOutput(key, value) and
+      Bash::outputsPartialFileContent(run, value)
     ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     artifact.getAFollowingStep() = run and
@@ -217,29 +208,24 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
  *    echo "bar=${foo}" >> "$GITHUB_ENV"
  */
 predicate artifactToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(Run run, string content, string key, string value, Step artifact |
+  exists(Run run, string key, string value, Step artifact |
     controlledCWD(artifact) and
     (
       // A file is read and its content is assigned to an env var
       // - run: |
       //     foo=$(<pr-id.txt)"
       //     echo "bar=${foo}" >> "$GITHUB_ENV"
-      exists(string var_name, string line, string assignment_regexp, string file_read |
-        run.getScript().splitAt("\n") = line and
-        assignment_regexp = "([a-zA-Z0-9\\-_]+)=(.*)" and
-        var_name = line.regexpCapture(assignment_regexp, 1) and
-        file_read = line.regexpCapture(assignment_regexp, 2) and
-        outputsPartialFileContent(file_read) and
+      exists(string var_name, string file_read |
+        run.getAnAssignment(var_name, file_read) and
+        Bash::outputsPartialFileContent(run, file_read) and
         envToRunExpr(var_name, run, value) and
-        writeToGitHubEnv(run, content) and
-        extractVariableAndValue(content, key, value)
+        run.getAWriteToGitHubEnv(key, value)
       )
       or
       // A file is read and its content is assigned to an output
       // - run: echo "foo=$(<pr-id.txt)" >> "$GITHUB_ENV"
-      writeToGitHubEnv(run, content) and
-      extractVariableAndValue(content, key, value) and
-      outputsPartialFileContent(value)
+      run.getAWriteToGitHubEnv(key, value) and
+      Bash::outputsPartialFileContent(run, value)
     ) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     artifact.getAFollowingStep() = run and

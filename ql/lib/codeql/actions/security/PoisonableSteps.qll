@@ -53,11 +53,10 @@ class LocalActionUsesStep extends PoisonableStep, UsesStep {
 }
 
 class EnvVarInjectionFromFileReadRunStep extends PoisonableStep, Run {
+  string value;
+
   EnvVarInjectionFromFileReadRunStep() {
-    exists(string content, string value |
-      writeToGitHubEnv(this, content) and
-      extractVariableAndValue(content, _, value) and
-      outputsPartialFileContent(value)
-    )
+    this.getAWriteToGitHubEnv(_, value) and
+    Bash::outputsPartialFileContent(this, value)
   }
 }

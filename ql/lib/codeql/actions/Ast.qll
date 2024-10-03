@@ -294,9 +294,27 @@ class Run extends Step instanceof RunImpl {
 
   string getWorkingDirectory() { result = super.getWorkingDirectory() }
 
+  string getStmt(int i) { result = super.getStmt(i) }
+
+  string getAStmt() { result = super.getAStmt() }
+
+  string getCommand(int i) { result = super.getCommand(i) }
+
   string getACommand() { result = super.getACommand() }
 
+  predicate getAssignment(int i, string name, string value) { super.getAssignment(i, name, value) }
+
   predicate getAnAssignment(string name, string value) { super.getAnAssignment(name, value) }
+
+  predicate getAWriteToGitHubEnv(string name, string value) {
+    super.getAWriteToGitHubEnv(name, value)
+  }
+
+  predicate getAWriteToGitHubOutput(string name, string value) {
+    super.getAWriteToGitHubOutput(name, value)
+  }
+
+  predicate getAWriteToGitHubPath(string value) { super.getAWriteToGitHubPath(value) }
 }
 
 abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {
