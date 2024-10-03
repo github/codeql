@@ -34,7 +34,7 @@ abstract class NodeImpl extends Node {
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
-  override CfgScope getCfgScope() { none() /* TODO */ }
+  override CfgScope getCfgScope() { result = this.getExprNode().getExpr().getEnclosingScope() }
 
   override Location getLocationImpl() { result = this.getExprNode().getLocation() }
 
@@ -42,7 +42,7 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
 }
 
 private class StmtNodeImpl extends StmtNode, NodeImpl {
-  override CfgScope getCfgScope() { none() /* TODO */ }
+  override CfgScope getCfgScope() { result = this.getStmtNode().getStmt().getEnclosingScope() }
 
   override Location getLocationImpl() { result = this.getStmtNode().getLocation() }
 
@@ -69,7 +69,9 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.asExpr() // TODO: Statement nodes?
+    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(Impl::ExprNode).getExpr() = n.asStmt()
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -371,7 +373,8 @@ private module ParameterNodes {
     override Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(CfgScope callable | callable = c.asCfgScope() |
+      parameter.getDeclaringScope() = c.asCfgScope() and
+      (
         pos.isKeyword(parameter.getName())
         or
         // Given a function f with parameters x, y we map
