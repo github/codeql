@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 """
 
 import random
-
+random.seed(42) # seting seed to be deterministic
 
 def random_choice():
     return bool(random.randint(0, 1))
