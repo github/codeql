@@ -219,3 +219,27 @@ predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     contextManager.strictlyDominates(var)
   )
 }
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
+
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      call instanceof DataFlowDispatch::PotentialLibraryCall and
+      src.(DataFlowPublic::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPublic::ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(DataFlowDispatch::OutNode).getCall(_) = call
+    )
+  }
+}
