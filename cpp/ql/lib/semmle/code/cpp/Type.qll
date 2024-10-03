@@ -290,7 +290,7 @@ class Type extends Locatable, @type {
 
   override Location getLocation() {
     suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 }
 
@@ -1714,7 +1714,7 @@ class AutoType extends TemplateParameter {
 
   override Location getLocation() {
     suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 }
 

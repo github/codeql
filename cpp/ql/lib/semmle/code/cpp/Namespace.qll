@@ -40,7 +40,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   override Location getLocation() {
     if strictcount(this.getADeclarationEntry()) = 1
     then result = this.getADeclarationEntry().getLocation()
-    else result instanceof UnknownDefaultLocation
+    else result instanceof UnknownLocation
   }
 
   /** Gets the simple name of this namespace. */

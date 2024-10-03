@@ -26,7 +26,7 @@ class ValueNumber extends TValueNumber {
             l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
             l.getEndColumn()
         )
-    else result instanceof Language::UnknownDefaultLocation
+    else result instanceof Language::UnknownLocation
   }
 
   /**
