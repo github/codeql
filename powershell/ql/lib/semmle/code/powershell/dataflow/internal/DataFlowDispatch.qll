@@ -155,7 +155,7 @@ private predicate qualifiedCall(CfgNodes::CallCfgNode call, Node receiver, strin
   call.getName() = method
 }
 
-private Node trackInstance(Type t, boolean exact) {
+Node trackInstance(Type t, boolean exact) {
   result =
     CallGraphConstruction::Make<TrackInstanceInput>::track(TrackInstanceInput::MkState(t, exact))
 }

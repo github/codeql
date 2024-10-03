@@ -128,6 +128,8 @@ abstract private class NonExprChildMapping extends ChildMapping {
 abstract private class AbstractCallCfgNode extends AstCfgNode {
   override string getAPrimaryQlClass() { result = "CfgCall" }
 
+  final predicate hasName(string name) { this.getName() = name }
+
   abstract string getName();
 
   ExprCfgNode getQualifier() { none() }
@@ -231,7 +233,7 @@ module ExprNodes {
     final override ExprCfgNode getCommand() { none() }
   }
 
-    /** A control-flow node that wraps an `ConstructorCall` expression. */
+  /** A control-flow node that wraps an `ConstructorCall` expression. */
   class ConstructorCallCfgNode extends InvokeMemberCfgNode {
     ConstructorCallCfgNode() { super.getExpr() instanceof ConstructorCall }
 
