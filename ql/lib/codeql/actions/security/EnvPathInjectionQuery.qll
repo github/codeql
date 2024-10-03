@@ -27,19 +27,19 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
       (
         // e.g.
         // cat test-results/.env >> $GITHUB_PATH
-        fileToGitHubPath(run, _)
+        Bash::fileToGitHubPath(run, _)
         or
         exists(string value |
-          writeToGitHubPath(run, value) and
+          run.getAWriteToGitHubPath(value) and
           (
-            outputsPartialFileContent(value)
+            Bash::outputsPartialFileContent(run, value)
             or
             // e.g.
             // FOO=$(cat test-results/sha-number)
             // echo "FOO=$FOO" >> $GITHUB_PATH
             exists(string var_name, string var_value |
               run.getAnAssignment(var_name, var_value) and
-              outputsPartialFileContent(var_value) and
+              Bash::outputsPartialFileContent(run, var_value) and
               (
                 value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
                 or

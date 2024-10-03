@@ -29,22 +29,21 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       (
         // e.g.
         // cat test-results/.env >> $GITHUB_ENV
-        fileToGitHubEnv(run, _)
+        Bash::fileToGitHubEnv(run, _)
         or
-        exists(string content, string value |
-          writeToGitHubEnv(run, content) and
-          extractVariableAndValue(content, _, value) and
+        exists(string value |
+          run.getAWriteToGitHubEnv(_, value) and
           (
             // e.g.
             // echo "FOO=$(cat test-results/sha-number)" >> $GITHUB_ENV
-            outputsPartialFileContent(value)
+            Bash::outputsPartialFileContent(run, value)
             or
             // e.g.
             // FOO=$(cat test-results/sha-number)
             // echo "FOO=$FOO" >> $GITHUB_ENV
             exists(string var_name, string var_value |
               run.getAnAssignment(var_name, var_value) and
-              outputsPartialFileContent(var_value) and
+              Bash::outputsPartialFileContent(run, var_value) and
               (
                 value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
                 or

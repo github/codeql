@@ -2,15 +2,15 @@
 | .github/workflows/commands.yml:7:9:9:6 | Run Step | command2 |
 | .github/workflows/commands.yml:9:9:11:6 | Run Step | command3 |
 | .github/workflows/commands.yml:9:9:11:6 | Run Step | command4 |
-| .github/workflows/commands.yml:11:9:13:6 | Run Step | command5 "SUBCOMMAND" |
+| .github/workflows/commands.yml:11:9:13:6 | Run Step | command5 "$(command6)" |
 | .github/workflows/commands.yml:11:9:13:6 | Run Step | command6 |
 | .github/workflows/commands.yml:13:9:15:6 | Run Step | command7 |
 | .github/workflows/commands.yml:13:9:15:6 | Run Step | command8 |
 | .github/workflows/commands.yml:15:9:17:6 | Run Step | command9 |
 | .github/workflows/commands.yml:15:9:17:6 | Run Step | command10 |
-| .github/workflows/commands.yml:17:9:19:6 | Run Step | command11 "SUBCOMMAND" |
+| .github/workflows/commands.yml:17:9:19:6 | Run Step | command11 "`command12`" |
 | .github/workflows/commands.yml:17:9:19:6 | Run Step | command12 |
-| .github/workflows/commands.yml:19:9:20:50 | Run Step | command13 "SUBCOMMAND SUBCOMMAND" |
+| .github/workflows/commands.yml:19:9:20:50 | Run Step | command13 "`command14` $(date \| wc -l)" |
 | .github/workflows/commands.yml:19:9:20:50 | Run Step | command14 |
 | .github/workflows/commands.yml:19:9:20:50 | Run Step | date |
 | .github/workflows/commands.yml:19:9:20:50 | Run Step | wc -l |
@@ -20,19 +20,23 @@
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | LINE 2 echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:13:9:16:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 1 echo qstr:0:0:12:34:githubeventcommentbody |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 1 echo qstr:2:0:12:34:githubeventcommentbody |
 | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 2 echo '${{github.event.issue.body}}' |
 | .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 3 echo '${{ github.event.comment.body }}' |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 3 echo qstr:0:0:12:34:githubeventcommentbody |
+| .github/workflows/expression_nodes.yml:16:9:20:6 | Run Step | LINE 3 echo qstr:2:0:12:34:githubeventcommentbody |
 | .github/workflows/expression_nodes.yml:20:9:21:47 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' echo '${{github.event.issue.body}}' |
 | .github/workflows/multiline2.yml:11:9:15:6 | Run Step | echo "CHANGELOGEOF" |
 | .github/workflows/multiline2.yml:11:9:15:6 | Run Step | echo "changelog<<CHANGELOGEOF" |
 | .github/workflows/multiline2.yml:11:9:15:6 | Run Step | echo -e "$FILTERED_CHANGELOG" |
 | .github/workflows/multiline2.yml:11:9:15:6 | Run Step | tee -a $GITHUB_OUTPUT |
-| .github/workflows/multiline2.yml:15:9:20:6 | Run Step | EOF=SUBCOMMAND |
+| .github/workflows/multiline2.yml:15:9:20:6 | Run Step | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64) |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | base64 |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | cat status.output.json |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | dd if=/dev/urandom bs=15 count=1 status=none |
+| .github/workflows/multiline2.yml:15:9:20:6 | Run Step | echo "$(cat status.output.json)" |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | echo "$EOF" |
-| .github/workflows/multiline2.yml:15:9:20:6 | Run Step | echo "SUBCOMMAND" |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | echo "status<<$EOF" |
 | .github/workflows/multiline2.yml:15:9:20:6 | Run Step | tee -a $GITHUB_OUTPUT |
 | .github/workflows/multiline2.yml:20:9:24:6 | Run Step | echo "$EOF" |
@@ -71,7 +75,7 @@
 | .github/workflows/multiline2.yml:58:9:63:6 | Run Step | echo "FOO=$TITLE" |
 | .github/workflows/multiline2.yml:58:9:63:6 | Run Step | tee -a "$GITHUB_ENV" |
 | .github/workflows/multiline2.yml:63:9:66:6 | Run Step | cat issue.txt |
-| .github/workflows/multiline2.yml:63:9:66:6 | Run Step | echo REPO_NAME=SUBCOMMAND |
+| .github/workflows/multiline2.yml:63:9:66:6 | Run Step | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') |
 | .github/workflows/multiline2.yml:63:9:66:6 | Run Step | grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' |
 | .github/workflows/multiline2.yml:63:9:66:6 | Run Step | sed 's/\\\\r/\\\\n/g' |
 | .github/workflows/multiline2.yml:63:9:66:6 | Run Step | tee -a $GITHUB_ENV |
@@ -93,12 +97,12 @@
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "CHANGELOGEOF" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | EOF=SUBCOMMAND |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64) |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | base64 |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | cat status.output.json |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | dd if=/dev/urandom bs=15 count=1 status=none |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$(cat status.output.json)" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$EOF" >> $GITHUB_OUTPUT |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "SUBCOMMAND" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "status<<$EOF" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "$EOF" >> $GITHUB_OUTPUT |
 | .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "response<<$EOF" >> $GITHUB_OUTPUT |
@@ -132,7 +136,7 @@
 | .github/workflows/multiline.yml:58:9:63:6 | Run Step | cat <<-EOF >> "$GITHUB_ENV" |
 | .github/workflows/multiline.yml:58:9:63:6 | Run Step | echo "FOO=$TITLE" |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | cat issue.txt |
-| .github/workflows/multiline.yml:63:9:66:6 | Run Step | echo REPO_NAME=SUBCOMMAND >> $GITHUB_ENV |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') >> $GITHUB_ENV |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | sed 's/\\\\r/\\\\n/g' |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | tr -d ' ' |
@@ -159,7 +163,7 @@
 | .github/workflows/poisonable_steps.yml:16:9:17:6 | Run Step | echo foo |
 | .github/workflows/poisonable_steps.yml:17:9:18:6 | Run Step | ./venv/bin/activate |
 | .github/workflows/poisonable_steps.yml:18:9:19:6 | Run Step | sh venv/bin/activate.sh |
-| .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step | echo SUBCOMMAND |
+| .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step | echo $(sh venv/bin/activate.sh) |
 | .github/workflows/poisonable_steps.yml:19:9:20:6 | Run Step | sh venv/bin/activate.sh |
 | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | echo bar |
 | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | echo foo |
@@ -185,15 +189,11 @@
 | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | echo "bar" |
 | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | echo "foo" |
 | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step | npm i |
-| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | echo "foo SUBCOMMAND bar" |
+| .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | echo "foo `npm i` bar" |
 | .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step | npm i |
 | .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step | dotnet test foo/Tests.csproj -c Release |
 | .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step | go run foo.go |
-| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | " config.json |
-| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | git_branch = .* |
-| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
-| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | sed -i "s |
-| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\" |
+| .github/workflows/poisonable_steps.yml:36:9:37:6 | Run Step | sed -i "s\|git_branch = .*\|git_branch = \\"$GITHUB_HEAD_REF\\"\|" config.json |
 | .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step | sed -f ./config.sed file.txt > foo.txt |
 | .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step | sed -f config file.txt > foo.txt |
 | .github/workflows/poisonable_steps.yml:39:9:40:6 | Run Step | awk -f ./config.awk > foo.txt |

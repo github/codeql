@@ -1319,12 +1319,6 @@ class RunImpl extends StepImpl {
 
   string getScript() { result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
 
-  string getACommand() { result = Bash::getACommand(this.getScript()) }
-
-  predicate getAnAssignment(string name, string value) {
-    Bash::getAnAssignment(this.getScript(), name, value)
-  }
-
   ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
 
   ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }
@@ -1343,6 +1337,194 @@ class RunImpl extends StepImpl {
             .getValue()
             .regexpReplaceAll("^\\./", "GITHUB_WORKSPACE/")
     else result = "GITHUB_WORKSPACE/"
+  }
+
+  private string lineProducer(int i) {
+    result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", i)
+  }
+
+  private predicate cmdSubstitutionReplacement(string cmdSubs, string id, int k) {
+    exists(string line | line = this.lineProducer(k) |
+      exists(int i, int j |
+        cmdSubs =
+          // $() cmd substitution
+          line.regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", i, j)
+              .regexpReplaceAll("^\\$\\(", "")
+              .regexpReplaceAll("\\)$", "") and
+        id = "cmdsubs:" + k + ":" + i + ":" + j
+      )
+      or
+      exists(int i, int j |
+        // `...` cmd substitution
+        cmdSubs =
+          line.regexpFind("\\`[^\\`]+\\`", i, j)
+              .regexpReplaceAll("^\\`", "")
+              .regexpReplaceAll("\\`$", "") and
+        id = "cmd:" + k + ":" + i + ":" + j
+      )
+    )
+  }
+
+  private predicate rankedCmdSubstitutionReplacements(int i, string old, string new) {
+    old = rank[i](string old2 | this.cmdSubstitutionReplacement(old2, _, _) | old2) and
+    this.cmdSubstitutionReplacement(old, new, _)
+  }
+
+  private predicate doReplaceCmdSubstitutions(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.lineProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doReplaceCmdSubstitutions(line, round - 1, old, middle) and
+      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
+      new = middle.replaceAll(target, replacement)
+    )
+  }
+
+  private string cmdSubstitutedLineProducer(int i) {
+    // script lines where any command substitution has been replaced with a unique placeholder
+    result =
+      max(int round, string new |
+        this.doReplaceCmdSubstitutions(i, round, _, new)
+      |
+        new order by round
+      )
+    or
+    this.cmdSubstitutionReplacement(result, _, i)
+  }
+
+  private predicate quotedStringReplacement(string quotedStr, string id) {
+    exists(string line, int k | line = this.cmdSubstitutedLineProducer(k) |
+      exists(int i, int j |
+        // double quoted string
+        quotedStr = line.regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", i, j) and
+        id =
+          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
+            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+      )
+      or
+      exists(int i, int j |
+        // single quoted string
+        quotedStr = line.regexpFind("'((?:\\\\.|[^'\\\\])*)'", i, j) and
+        id =
+          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
+            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+      )
+    )
+  }
+
+  private predicate rankedQuotedStringReplacements(int i, string old, string new) {
+    old = rank[i](string old2 | this.quotedStringReplacement(old2, _) | old2) and
+    this.quotedStringReplacement(old, new)
+  }
+
+  private predicate doReplaceQuotedStrings(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.cmdSubstitutedLineProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doReplaceQuotedStrings(line, round - 1, old, middle) and
+      this.rankedQuotedStringReplacements(round, target, replacement) and
+      new = middle.replaceAll(target, replacement)
+    )
+  }
+
+  private string quotedStringLineProducer(int i) {
+    result =
+      max(int round, string new | this.doReplaceQuotedStrings(i, round, _, new) | new order by round)
+  }
+
+  private string cmdProducer(int i) {
+    result = this.quotedStringLineProducer(i).splitAt(Bash::splitSeparators()).trim() and
+    // when splitting the line with a separator that is not present, the result is the original line which may contain other separators
+    // we only one the split parts that do not contain any of the separators
+    not result.indexOf(Bash::splitSeparators()) > -1
+  }
+
+  private predicate doRestoreQuotedStrings(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.cmdProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doRestoreQuotedStrings(line, round - 1, old, middle) and
+      this.rankedQuotedStringReplacements(round, target, replacement) and
+      new = middle.replaceAll(replacement, target)
+    )
+  }
+
+  private string restoredQuotedStringLineProducer(int i) {
+    result =
+      max(int round, string new | this.doRestoreQuotedStrings(i, round, _, new) | new order by round)
+  }
+
+  private predicate doRestoreCmdSubstitutions(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.restoredQuotedStringLineProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doRestoreCmdSubstitutions(line, round - 1, old, middle) and
+      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
+      new = middle.replaceAll(replacement, target)
+    )
+  }
+
+  string getStmt(int i) {
+    result =
+      max(int round, string new |
+        this.doRestoreCmdSubstitutions(i, round, _, new)
+      |
+        new order by round
+      )
+  }
+
+  string getAStmt() { result = this.getStmt(_) }
+
+  predicate getAssignment(int i, string name, string value) {
+    exists(string stmt |
+      stmt = this.getStmt(i) and
+      name = stmt.regexpCapture("^([a-zA-Z0-9\\-_]+)=.*", 1) and
+      value = stmt.regexpCapture("^[a-zA-Z0-9\\-_]+=(.*)", 1)
+    )
+  }
+
+  predicate getAnAssignment(string name, string value) { this.getAssignment(_, name, value) }
+
+  string getCommand(int i) {
+    result = this.getStmt(i) and
+    // exclude the following keywords
+    not result =
+      [
+        "", "for", "in", "do", "done", "if", "then", "else", "elif", "fi", "while", "until", "case",
+        "esac", "{", "}"
+      ]
+  }
+
+  string getACommand() { result = this.getCommand(_) }
+
+  predicate getAWriteToGitHubEnv(string name, string value) {
+    exists(string raw |
+      Bash::extractFileWrite(this.getScript(), "GITHUB_ENV", raw) and
+      Bash::extractVariableAndValue(raw, name, value)
+    )
+  }
+
+  predicate getAWriteToGitHubOutput(string name, string value) {
+    exists(string raw |
+      Bash::extractFileWrite(this.getScript(), "GITHUB_OUTPUT", raw) and
+      Bash::extractVariableAndValue(raw, name, value)
+    )
+  }
+
+  predicate getAWriteToGitHubPath(string value) {
+    Bash::extractFileWrite(this.getScript(), "GITHUB_PATH", value)
   }
 }
 
