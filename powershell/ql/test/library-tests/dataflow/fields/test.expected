@@ -1,6 +1,14 @@
 models
 edges
+| test.ps1:1:1:1:3 | [post] a [f] | test.ps1:2:6:2:8 | a [f] | provenance |  |
+| test.ps1:1:8:1:18 | Source | test.ps1:1:1:1:3 | [post] a [f] | provenance |  |
+| test.ps1:2:6:2:8 | a [f] | test.ps1:2:6:2:10 | f | provenance |  |
 nodes
+| test.ps1:1:1:1:3 | [post] a [f] | semmle.label | [post] a [f] |
+| test.ps1:1:8:1:18 | Source | semmle.label | Source |
+| test.ps1:2:6:2:8 | a [f] | semmle.label | a [f] |
+| test.ps1:2:6:2:10 | f | semmle.label | f |
 subpaths
 testFailures
 #select
+| test.ps1:2:6:2:10 | f | test.ps1:1:8:1:18 | Source | test.ps1:2:6:2:10 | f | $@ | test.ps1:1:8:1:18 | Source | Source |
