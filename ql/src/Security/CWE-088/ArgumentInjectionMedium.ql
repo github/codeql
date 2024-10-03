@@ -8,6 +8,7 @@
  * @id actions/argument-injection/medium
  * @tags actions
  *       security
+ *       experimental
  *       external/cwe/cwe-088
  */
 
