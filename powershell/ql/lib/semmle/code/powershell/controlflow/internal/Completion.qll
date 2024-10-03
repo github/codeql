@@ -43,6 +43,9 @@ private predicate completionIsValidForStmt(Ast n, Completion c) {
     unconditional = false and
     c instanceof SimpleCompletion
   )
+  or
+  n instanceof ExitStmt and
+  c instanceof ExitCompletion
 }
 
 /** A completion of a statement or an expression. */
