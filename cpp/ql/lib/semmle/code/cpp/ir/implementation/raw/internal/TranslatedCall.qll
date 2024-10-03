@@ -91,26 +91,28 @@ abstract class TranslatedCall extends TranslatedExpr {
       |
         // Call throw behavior is resolved from most restricted to least restricted in order
         // if there are conflicting throwing specificaitons for a function.
+        // Enumerating all scenarios to be explicit.
         (
-          // Highest Restriction: If the call is known to never throw, regardless of other defined throwing behavior,
+          // If the call is known to never throw, regardless of other defined throwing behavior,
           // do not generate any exception edges, only an ordinary successor
           if this.(TranslatedCallExpr).neverRaiseException(isSEH)
           then result = this.getParent().getChildSuccessor(this, kind)
           else
-            // Medium Restriction: If the call is known to always throw, regardless of other defined throwing behavior,
+            // If the call is known to always throw, regardless of other defined throwing behavior,
             // only generate an exception edge.
             if this.(TranslatedCallExpr).alwaysRaiseException(isSEH)
             then result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
-            else (
-              // Lowest Restruction: if the call is known to conditionally throw, generate both an exception edge and an
-              // ordinary successor
-              this.(TranslatedCallExpr).mayRaiseException(isSEH) and
-              (
+            else
+              if this.(TranslatedCallExpr).mayRaiseException(isSEH)
+              then (
+                // if the call is known to conditionally throw, generate both an exception edge and an
+                // ordinary successor
                 result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
                 or
                 result = this.getParent().getChildSuccessor(this, kind)
-              )
-            )
+              ) else
+                // fallthrough case, no exceptions, just get the ordinary successor
+                result = this.getParent().getChildSuccessor(this, kind)
         )
       )
   }
@@ -418,7 +420,8 @@ class TranslatedExprCall extends TranslatedCallExpr {
       f.mayRaiseException() and f.isSEH() and isSEH = true
     )
     or
-    not exists(ExceptionAnnotation f | f = expr.getTarget() and f.isSEH()) and isSEH = true
+    not exists(ExceptionAnnotation f | f = expr.getTarget() and f.isSEH()) and
+    isSEH = true
   }
 
   override predicate neverRaiseException(boolean isSEH) {
