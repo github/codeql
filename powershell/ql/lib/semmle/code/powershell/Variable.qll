@@ -4,8 +4,6 @@ private import internal.Internal as Internal
 
 private predicate isFunctionParameterImpl(Internal::Parameter p, Function f, int i) {
   function_definition_parameter(f, i, p)
-  or
-  function_member_parameter(f, i, p)
 }
 
 private predicate hasParameterBlockImpl(Internal::Parameter p, ParamBlock block, int i) {
