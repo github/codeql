@@ -1,14 +1,14 @@
 function Foo($a) {
-    Sink $a # $ MISSING: hasValueFlow=1
+    Sink $a # $ hasValueFlow=1
 }
 
 $x = Source "1"
 Foo $x
 
 function ThreeArgs($x, $y, $z) {
-    Sink $x # $ MISSING: hasValueFlow=x
-    Sink $y # $ MISSING: hasValueFlow=y
-    Sink $z # $ MISSING: hasValueFlow=z
+    Sink $x # $ hasValueFlow=x
+    Sink $y # $ hasValueFlow=y
+    Sink $z # $ hasValueFlow=z
 }
 
 $first = Source "x"

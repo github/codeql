@@ -82,6 +82,18 @@ module Trees {
     }
   }
 
+  class AttributeTree extends StandardPostOrderTree instanceof Attribute {
+    override AstNode getChildNode(int i) {
+      result = super.getPositionalArgument(i)
+      or
+      exists(int n |
+        n = super.getNumberOfPositionalArguments() and
+        i >= n and
+        result = super.getNamedArgument(i - n)
+      )
+    }
+  }
+
   abstract class ScriptBlockTree extends ControlFlowTree instanceof ScriptBlock {
     abstract predicate succEntry(AstNode n, Completion c);
 
@@ -353,6 +365,11 @@ module Trees {
       last(super.getIterator(), pred, c) and
       completionIsNormal(c) and
       first(super.getCondition(), succ)
+      or
+      // Body -> condition
+      last(this.getBody(), pred, c) and
+      c.continuesLoop() and
+      first(super.getCondition(), succ)
     }
   }
 
@@ -420,6 +437,16 @@ module Trees {
       )
     }
   }
+
+  class MemberExprTree extends StandardPostOrderTree instanceof MemberExpr {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = super.getBase()
+      or
+      i = 1 and result = super.getMember()
+    }
+  }
+
+  class CmdParameterTree extends LeafTree instanceof CmdParameter { }
 
   class IfStmtTree extends PreOrderTree instanceof IfStmt {
     final override predicate propagatesAbnormal(AstNode child) {
@@ -541,11 +568,33 @@ module Trees {
     override AstNode getChildNode(int i) { i = 0 and result = super.getOperand() }
   }
 
+  class ScriptBlockExprTree extends LeafTree instanceof ScriptBlockExpr { }
+
+  class ConvertExprTree extends StandardPostOrderTree instanceof ConvertExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  }
+
+  class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = super.getBase()
+      or
+      i = 1 and result = super.getIndex()
+    }
+  }
+
+  class ParenExprTree extends StandardPostOrderTree instanceof ParenExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  }
+
+  class TypeNameExprTree extends LeafTree instanceof TypeNameExpr { }
+
   class ArrayLiteralTree extends StandardPostOrderTree instanceof ArrayLiteral {
     override AstNode getChildNode(int i) { result = super.getElement(i) }
   }
 
-  class TypeConstraintTree extends LeafTree instanceof TypeConstraint { }
+  class ArrayExprTree extends StandardPostOrderTree instanceof ArrayExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getStmtBlock() }
+  }
 
   class CatchClauseTree extends PreOrderTree instanceof CatchClause {
     final override predicate propagatesAbnormal(Ast child) { none() }
@@ -584,6 +633,10 @@ module Trees {
     }
   }
 
+  class TypeConstraintTree extends LeafTree instanceof TypeConstraint { }
+
+  class TypeTree extends LeafTree instanceof Type { }
+
   class TryStmtBlock extends PreOrderTree instanceof TryStmt {
     final override predicate propagatesAbnormal(AstNode child) { child = super.getFinally() }
 
@@ -616,18 +669,70 @@ module Trees {
     }
   }
 
+  class ExpandableSubExprTree extends StandardPostOrderTree instanceof ExpandableSubExpr {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  }
+
+  class ExpandableStringExprTree extends StandardPostOrderTree instanceof ExpandableStringExpr {
+    override AstNode getChildNode(int i) { result = super.getExpr(i) }
+  }
+
+  class ReturnStmtTree extends StandardPreOrderTree instanceof ReturnStmt {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getPipeline() }
+  }
+
+  class ExitStmtTre extends StandardPreOrderTree instanceof ExitStmt {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getPipeline() }
+  }
+
+  class ExitStmtTree extends StandardPreOrderTree instanceof ExitStmt {
+    override AstNode getChildNode(int i) { i = 0 and result = super.getPipeline() }
+  }
+
   class ThrowStmtTree extends StandardPreOrderTree instanceof ThrowStmt {
     override AstNode getChildNode(int i) { i = 0 and result = super.getPipeline() }
   }
 
   class ConstExprTree extends LeafTree instanceof ConstExpr { }
 
+  class HashTableTree extends StandardPostOrderTree instanceof HashTableExpr {
+    override AstNode getChildNode(int i) {
+      exists(int k |
+        // First evaluate the key
+        i = 2 * k and
+        super.hasEntry(k, result, _)
+        or
+        // Then evaluate the value
+        i = 2 * k + 1 and
+        super.hasEntry(k, _, result)
+      )
+    }
+  }
+
   class CmdExprTree extends StandardPreOrderTree instanceof CmdExpr {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
 
+  class CmdTree extends StandardPostOrderTree instanceof Cmd {
+    override AstNode getChildNode(int i) {
+      i = -1 and result = super.getCommand()
+      or
+      result = super.getArgument(i)
+    }
+  }
+
+  class StringConstTree extends LeafTree instanceof StringConstExpr { }
+
   class PipelineTree extends StandardPreOrderTree instanceof Pipeline {
     override AstNode getChildNode(int i) { result = super.getComponent(i) }
+  }
+
+  class InvokeMemberExprTree extends StandardPostOrderTree instanceof InvokeMemberExpr {
+    override AstNode getChildNode(int i) {
+      i = -1 and result = super.getQualifier()
+      or
+      result = super.getArgument(i)
+    }
   }
 }
 

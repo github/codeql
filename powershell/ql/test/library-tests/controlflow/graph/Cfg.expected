@@ -19,6 +19,11 @@ conditionals.ps1:
 #    1| enter {...}
 #-----|  -> {...}
 
+#    1| exit {...}
+
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
+
 #    1| {...}
 #-----|  -> param(...)
 
@@ -38,12 +43,36 @@ conditionals.ps1:
 #-----|  -> myBool
 
 #    5| {...}
+#-----|  -> return ...
+
+#    6| return ...
+#-----|  -> 10
+
+#    6| 10
+#-----|  -> return ...
+
+#    6| 10
+#-----|  -> 10
+
+#    8| return ...
+#-----|  -> 11
+
+#    8| 11
+#-----|  -> exit {...} (normal)
+
+#    8| 11
+#-----|  -> 11
 
 #   11| test-if-else
 #-----|  -> test-if-conj
 
 #   11| enter {...}
 #-----|  -> {...}
+
+#   11| exit {...}
+
+#   11| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   11| {...}
 #-----|  -> param(...)
@@ -65,14 +94,39 @@ conditionals.ps1:
 #-----|  -> myBool
 
 #   15| {...}
+#-----|  -> return ...
+
+#   16| return ...
+#-----|  -> 10
+
+#   16| 10
+#-----|  -> exit {...} (normal)
+
+#   16| 10
+#-----|  -> 10
 
 #   19| {...}
+#-----|  -> return ...
+
+#   20| return ...
+#-----|  -> 11
+
+#   20| 11
+#-----|  -> exit {...} (normal)
+
+#   20| 11
+#-----|  -> 11
 
 #   24| test-if-conj
 #-----|  -> test-if-else-conj
 
 #   24| enter {...}
 #-----|  -> {...}
+
+#   24| exit {...}
+
+#   24| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   24| {...}
 #-----|  -> param(...)
@@ -99,12 +153,36 @@ conditionals.ps1:
 #-----| false, true -> ... -and ...
 
 #   28| {...}
+#-----|  -> return ...
+
+#   29| return ...
+#-----|  -> 10
+
+#   29| 10
+#-----|  -> return ...
+
+#   29| 10
+#-----|  -> 10
+
+#   31| return ...
+#-----|  -> 11
+
+#   31| 11
+#-----|  -> exit {...} (normal)
+
+#   31| 11
+#-----|  -> 11
 
 #   34| test-if-else-conj
 #-----|  -> test-if-disj
 
 #   34| enter {...}
 #-----|  -> {...}
+
+#   34| exit {...}
+
+#   34| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   34| {...}
 #-----|  -> param(...)
@@ -132,14 +210,39 @@ conditionals.ps1:
 #-----| false, true -> ... -and ...
 
 #   38| {...}
+#-----|  -> return ...
+
+#   39| return ...
+#-----|  -> 10
+
+#   39| 10
+#-----|  -> exit {...} (normal)
+
+#   39| 10
+#-----|  -> 10
 
 #   42| {...}
+#-----|  -> return ...
+
+#   43| return ...
+#-----|  -> 11
+
+#   43| 11
+#-----|  -> exit {...} (normal)
+
+#   43| 11
+#-----|  -> 11
 
 #   47| test-if-disj
 #-----|  -> test-if-else-disj
 
 #   47| enter {...}
 #-----|  -> {...}
+
+#   47| exit {...}
+
+#   47| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   47| {...}
 #-----|  -> param(...)
@@ -166,12 +269,36 @@ conditionals.ps1:
 #-----| false, true -> ... -or ...
 
 #   51| {...}
+#-----|  -> return ...
+
+#   52| return ...
+#-----|  -> 10
+
+#   52| 10
+#-----|  -> return ...
+
+#   52| 10
+#-----|  -> 10
+
+#   54| return ...
+#-----|  -> 11
+
+#   54| 11
+#-----|  -> exit {...} (normal)
+
+#   54| 11
+#-----|  -> 11
 
 #   57| test-if-else-disj
 #-----|  -> test-else-if
 
 #   57| enter {...}
 #-----|  -> {...}
+
+#   57| exit {...}
+
+#   57| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   57| {...}
 #-----|  -> param(...)
@@ -199,14 +326,39 @@ conditionals.ps1:
 #-----| false, true -> ... -or ...
 
 #   61| {...}
+#-----|  -> return ...
+
+#   62| return ...
+#-----|  -> 10
+
+#   62| 10
+#-----|  -> exit {...} (normal)
+
+#   62| 10
+#-----|  -> 10
 
 #   65| {...}
+#-----|  -> return ...
+
+#   66| return ...
+#-----|  -> 11
+
+#   66| 11
+#-----|  -> exit {...} (normal)
+
+#   66| 11
+#-----|  -> 11
 
 #   70| test-else-if
 #-----|  -> test-else-if-else
 
 #   70| enter {...}
 #-----|  -> {...}
+
+#   70| exit {...}
+
+#   70| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   70| {...}
 #-----|  -> param(...)
@@ -227,12 +379,36 @@ conditionals.ps1:
 #-----|  -> myBool1
 
 #   74| {...}
+#-----|  -> return ...
+
+#   75| return ...
+#-----|  -> 10
+
+#   75| 10
+#-----|  -> return ...
+
+#   75| 10
+#-----|  -> 10
+
+#   81| return ...
+#-----|  -> 12
+
+#   81| 12
+#-----|  -> exit {...} (normal)
+
+#   81| 12
+#-----|  -> 12
 
 #   84| test-else-if-else
 #-----|  -> test-switch
 
 #   84| enter {...}
 #-----|  -> {...}
+
+#   84| exit {...}
+
+#   84| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   84| {...}
 #-----|  -> param(...)
@@ -254,14 +430,39 @@ conditionals.ps1:
 #-----|  -> myBool1
 
 #   88| {...}
+#-----|  -> return ...
+
+#   89| return ...
+#-----|  -> 10
+
+#   89| 10
+#-----|  -> exit {...} (normal)
+
+#   89| 10
+#-----|  -> 10
 
 #   96| {...}
+#-----|  -> return ...
+
+#   97| return ...
+#-----|  -> 12
+
+#   97| 12
+#-----|  -> exit {...} (normal)
+
+#   97| 12
+#-----|  -> 12
 
 #  101| test-switch
 #-----|  -> test-switch-default
 
 #  101| enter {...}
 #-----|  -> {...}
+
+#  101| exit {...}
+
+#  101| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  101| {...}
 #-----|  -> {...}
@@ -273,15 +474,69 @@ conditionals.ps1:
 #-----|  -> switch(...) {...}
 
 #  102| n
+#-----|  -> 0:
 
 #  102| n
 #-----|  -> n
+
+#  104| 0:
+#-----| true -> {...}
+#-----| false -> 1:
+
+#  104| {...}
+#-----|  -> return ...
+
+#  104| return ...
+#-----|  -> 0
+
+#  104| 0
+#-----|  -> exit {...} (normal)
+
+#  104| 0
+#-----|  -> 0
+
+#  105| 1:
+#-----| true -> {...}
+#-----| false -> 2:
+
+#  105| {...}
+#-----|  -> return ...
+
+#  105| return ...
+#-----|  -> 1
+
+#  105| 1
+#-----|  -> exit {...} (normal)
+
+#  105| 1
+#-----|  -> 1
+
+#  106| 2:
+#-----| false -> exit {...} (normal)
+#-----| true -> {...}
+
+#  106| {...}
+#-----|  -> return ...
+
+#  106| return ...
+#-----|  -> 2
+
+#  106| 2
+#-----|  -> exit {...} (normal)
+
+#  106| 2
+#-----|  -> 2
 
 #  110| test-switch-default
 #-----|  -> test-switch-assign
 
 #  110| enter {...}
 #-----|  -> {...}
+
+#  110| exit {...}
+
+#  110| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  110| {...}
 #-----|  -> {...}
@@ -293,15 +548,94 @@ conditionals.ps1:
 #-----|  -> switch(...) {...}
 
 #  111| n
+#-----|  -> 0:
 
 #  111| n
 #-----|  -> n
+
+#  113| 0:
+#-----| true -> {...}
+#-----| false -> 1:
+
+#  113| {...}
+#-----|  -> return ...
+
+#  113| return ...
+#-----|  -> 0
+
+#  113| 0
+#-----|  -> exit {...} (normal)
+
+#  113| 0
+#-----|  -> 0
+
+#  114| 1:
+#-----| true -> {...}
+#-----| false -> 2:
+
+#  114| {...}
+#-----|  -> return ...
+
+#  114| return ...
+#-----|  -> 1
+
+#  114| 1
+#-----|  -> exit {...} (normal)
+
+#  114| 1
+#-----|  -> 1
+
+#  115| 2:
+#-----| true -> {...}
+#-----| false -> default:
+
+#  115| {...}
+#-----|  -> return ...
+
+#  115| return ...
+#-----|  -> 2
+
+#  115| 2
+#-----|  -> exit {...} (normal)
+
+#  115| 2
+#-----|  -> 2
+
+#  116| default:
+#-----| false -> exit {...} (normal)
+#-----| true -> {...}
+
+#  116| {...}
+#-----|  -> Write-Output
+
+#  117| Write-Output
+#-----|  -> Error!
+
+#  117| Write-Output
+#-----|  -> return ...
+
+#  117| Error!
+#-----|  -> Write-Output
+
+#  118| return ...
+#-----|  -> 3
+
+#  118| 3
+#-----|  -> exit {...} (normal)
+
+#  118| 3
+#-----|  -> 3
 
 #  123| test-switch-assign
 #-----|  -> exit conditionals.ps1 (normal)
 
 #  123| enter {...}
 #-----|  -> {...}
+
+#  123| exit {...}
+
+#  123| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  123| {...}
 #-----|  -> {...}
@@ -319,9 +653,49 @@ conditionals.ps1:
 #-----|  -> n
 
 #  124| n
+#-----|  -> 0:
 
 #  124| n
 #-----|  -> n
+
+#  125| 0:
+#-----| true -> {...}
+#-----| false -> 1:
+
+#  125| {...}
+#-----|  -> 0
+
+#  125| 0
+#-----|  -> exit {...} (normal)
+
+#  125| 0
+#-----|  -> 0
+
+#  126| 1:
+#-----| true -> {...}
+#-----| false -> 2:
+
+#  126| {...}
+#-----|  -> 1
+
+#  126| 1
+#-----|  -> exit {...} (normal)
+
+#  126| 1
+#-----|  -> 1
+
+#  127| 2:
+#-----| false -> exit {...} (normal)
+#-----| true -> {...}
+
+#  127| {...}
+#-----|  -> 2
+
+#  127| 2
+#-----|  -> exit {...} (normal)
+
+#  127| 2
+#-----|  -> 2
 
 functions.ps1:
 #    1| Add-Numbers-Arguments
@@ -1020,6 +1394,7 @@ loops.ps1:
 #-----|  -> 1
 
 #   45| ...+...
+#-----|  -> ... -le ...
 #-----|  -> ...=...
 
 #   45| ...+...
@@ -1034,6 +1409,11 @@ loops.ps1:
 #   49| enter {...}
 #-----|  -> {...}
 
+#   49| exit {...}
+
+#   49| exit {...} (normal)
+#-----|  -> exit {...}
+
 #   49| {...}
 #-----|  -> {...}
 
@@ -1046,7 +1426,69 @@ loops.ps1:
 #   50| {...}
 #-----|  -> ...=...
 
+#   50| a
+#-----|  -> b
+
 #   50| ...,...
+#-----|  -> ...=...
+
+#   50| ...,...
+#-----|  -> a
+
+#   50| b
+#-----|  -> c
+
+#   50| c
+#-----|  -> d
+
+#   50| d
+#-----|  -> ...,...
+
+#   51| a
+#-----|  -> 0
+
+#   51| ...=...
+#-----|  -> a
+
+#   51| 0
+#-----|  -> letterArray
+
+#   51| 0
+#-----|  -> 0
+
+#   52| forach(... in ...)
+#-----|  -> exit {...} (normal)
+#-----|  -> letter
+
+#   52| letter
+#-----|  -> {...}
+
+#   52| letterArray
+#-----|  -> forach(... in ...)
+
+#   52| letterArray
+#-----|  -> letterArray
+
+#   53| {...}
+#-----|  -> ...=...
+
+#   54| a
+#-----|  -> ...+...
+
+#   54| ...=...
+#-----|  -> a
+
+#   54| a
+#-----|  -> 1
+
+#   54| ...+...
+#-----|  -> forach(... in ...)
+
+#   54| ...+...
+#-----|  -> a
+
+#   54| 1
+#-----|  -> ...+...
 
 #   58| Test-For-Ever
 #-----|  -> exit loops.ps1 (normal)
@@ -1095,6 +1537,11 @@ try.ps1:
 #    1| enter {...}
 #-----|  -> {...}
 
+#    1| exit {...}
+
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
+
 #    1| {...}
 #-----|  -> {...}
 
@@ -1105,12 +1552,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #    2| {...}
+#-----|  -> Write-Output
+
+#    3| Write-Output
+#-----|  -> Hello!
+
+#    3| Write-Output
+#-----|  -> return ...
+
+#    3| Hello!
+#-----|  -> Write-Output
+
+#    7| return ...
+#-----|  -> 1
+
+#    7| 1
+#-----|  -> exit {...} (normal)
+
+#    7| 1
+#-----|  -> 1
 
 #   10| test-try-with-throw-catch
 #-----|  -> test-try-with-throw-catch-with-throw
 
 #   10| enter {...}
 #-----|  -> {...}
+
+#   10| exit {...}
+
+#   10| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   10| {...}
 #-----|  -> {...}
@@ -1140,15 +1611,30 @@ try.ps1:
 #-----|  -> 42
 
 #   13| 42
+#-----|  -> return ...
 
 #   13| 42
 #-----|  -> 42
+
+#   18| return ...
+#-----|  -> 1
+
+#   18| 1
+#-----|  -> exit {...} (normal)
+
+#   18| 1
+#-----|  -> 1
 
 #   21| test-try-with-throw-catch-with-throw
 #-----|  -> test-try-with-throw-catch-with-rethrow
 
 #   21| enter {...}
 #-----|  -> {...}
+
+#   21| exit {...}
+
+#   21| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   21| {...}
 #-----|  -> {...}
@@ -1178,15 +1664,30 @@ try.ps1:
 #-----|  -> 42
 
 #   24| 42
+#-----|  -> return ...
 
 #   24| 42
 #-----|  -> 42
+
+#   29| return ...
+#-----|  -> 1
+
+#   29| 1
+#-----|  -> exit {...} (normal)
+
+#   29| 1
+#-----|  -> 1
 
 #   32| test-try-with-throw-catch-with-rethrow
 #-----|  -> test-try-catch-specific-1
 
 #   32| enter {...}
 #-----|  -> {...}
+
+#   32| exit {...}
+
+#   32| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   32| {...}
 #-----|  -> {...}
@@ -1216,15 +1717,30 @@ try.ps1:
 #-----|  -> 42
 
 #   35| 42
+#-----|  -> return ...
 
 #   35| 42
 #-----|  -> 42
+
+#   40| return ...
+#-----|  -> 1
+
+#   40| 1
+#-----|  -> exit {...} (normal)
+
+#   40| 1
+#-----|  -> 1
 
 #   43| test-try-catch-specific-1
 #-----|  -> test-try-catch-specific-1
 
 #   43| enter {...}
 #-----|  -> {...}
+
+#   43| exit {...}
+
+#   43| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   43| {...}
 #-----|  -> {...}
@@ -1236,12 +1752,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   44| {...}
+#-----|  -> Write-Output
+
+#   45| Write-Output
+#-----|  -> Hello!
+
+#   45| Write-Output
+#-----|  -> return ...
+
+#   45| Hello!
+#-----|  -> Write-Output
+
+#   49| return ...
+#-----|  -> 1
+
+#   49| 1
+#-----|  -> exit {...} (normal)
+
+#   49| 1
+#-----|  -> 1
 
 #   52| test-try-catch-specific-1
 #-----|  -> test-try-two-catch-specific-1
 
 #   52| enter {...}
 #-----|  -> {...}
+
+#   52| exit {...}
+
+#   52| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   52| {...}
 #-----|  -> {...}
@@ -1253,12 +1793,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   53| {...}
+#-----|  -> Write-Output
+
+#   54| Write-Output
+#-----|  -> Hello!
+
+#   54| Write-Output
+#-----|  -> return ...
+
+#   54| Hello!
+#-----|  -> Write-Output
+
+#   58| return ...
+#-----|  -> 1
+
+#   58| 1
+#-----|  -> exit {...} (normal)
+
+#   58| 1
+#-----|  -> 1
 
 #   61| test-try-two-catch-specific-1
 #-----|  -> test-try-catch-specific-2
 
 #   61| enter {...}
 #-----|  -> {...}
+
+#   61| exit {...}
+
+#   61| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   61| {...}
 #-----|  -> {...}
@@ -1270,12 +1834,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   62| {...}
+#-----|  -> Write-Output
+
+#   63| Write-Output
+#-----|  -> Hello!
+
+#   63| Write-Output
+#-----|  -> return ...
+
+#   63| Hello!
+#-----|  -> Write-Output
+
+#   69| return ...
+#-----|  -> 2
+
+#   69| 2
+#-----|  -> exit {...} (normal)
+
+#   69| 2
+#-----|  -> 2
 
 #   72| test-try-catch-specific-2
 #-----|  -> test-try-two-catch-specific-2
 
 #   72| enter {...}
 #-----|  -> {...}
+
+#   72| exit {...}
+
+#   72| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   72| {...}
 #-----|  -> {...}
@@ -1287,12 +1875,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   73| {...}
+#-----|  -> Write-Output
+
+#   74| Write-Output
+#-----|  -> Hello!
+
+#   74| Write-Output
+#-----|  -> return ...
+
+#   74| Hello!
+#-----|  -> Write-Output
+
+#   78| return ...
+#-----|  -> 1
+
+#   78| 1
+#-----|  -> exit {...} (normal)
+
+#   78| 1
+#-----|  -> 1
 
 #   81| test-try-two-catch-specific-2
 #-----|  -> test-try-three-catch-specific-2
 
 #   81| enter {...}
 #-----|  -> {...}
+
+#   81| exit {...}
+
+#   81| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   81| {...}
 #-----|  -> {...}
@@ -1304,12 +1916,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   82| {...}
+#-----|  -> Write-Output
+
+#   83| Write-Output
+#-----|  -> Hello!
+
+#   83| Write-Output
+#-----|  -> return ...
+
+#   83| Hello!
+#-----|  -> Write-Output
+
+#   89| return ...
+#-----|  -> 2
+
+#   89| 2
+#-----|  -> exit {...} (normal)
+
+#   89| 2
+#-----|  -> 2
 
 #   92| test-try-three-catch-specific-2
 #-----|  -> test-try-catch-finally
 
 #   92| enter {...}
 #-----|  -> {...}
+
+#   92| exit {...}
+
+#   92| exit {...} (normal)
+#-----|  -> exit {...}
 
 #   92| {...}
 #-----|  -> {...}
@@ -1321,12 +1957,36 @@ try.ps1:
 #-----|  -> try {...}
 
 #   93| {...}
+#-----|  -> Write-Output
+
+#   94| Write-Output
+#-----|  -> Hello!
+
+#   94| Write-Output
+#-----|  -> return ...
+
+#   94| Hello!
+#-----|  -> Write-Output
+
+#  102| return ...
+#-----|  -> 3
+
+#  102| 3
+#-----|  -> exit {...} (normal)
+
+#  102| 3
+#-----|  -> 3
 
 #  105| test-try-catch-finally
 #-----|  -> test-try-finally
 
 #  105| enter {...}
 #-----|  -> {...}
+
+#  105| exit {...}
+
+#  105| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  105| {...}
 #-----|  -> {...}
@@ -1338,12 +1998,48 @@ try.ps1:
 #-----|  -> try {...}
 
 #  106| {...}
+#-----|  -> Write-Output
+
+#  107| Write-Output
+#-----|  -> Hello!
+
+#  107| Write-Output
+#-----|  -> {...}
+
+#  107| Hello!
+#-----|  -> Write-Output
+
+#  110| {...}
+#-----|  -> Write-Output
+
+#  111| Write-Output
+#-----|  -> Finally!
+
+#  111| Write-Output
+#-----|  -> return ...
+
+#  111| Finally!
+#-----|  -> Write-Output
+
+#  113| return ...
+#-----|  -> 1
+
+#  113| 1
+#-----|  -> exit {...} (normal)
+
+#  113| 1
+#-----|  -> 1
 
 #  116| test-try-finally
 #-----|  -> test-try-finally-catch-specific-1
 
 #  116| enter {...}
 #-----|  -> {...}
+
+#  116| exit {...}
+
+#  116| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  116| {...}
 #-----|  -> {...}
@@ -1355,12 +2051,48 @@ try.ps1:
 #-----|  -> try {...}
 
 #  117| {...}
+#-----|  -> Write-Output
+
+#  118| Write-Output
+#-----|  -> Hello!
+
+#  118| Write-Output
+#-----|  -> {...}
+
+#  118| Hello!
+#-----|  -> Write-Output
+
+#  119| {...}
+#-----|  -> Write-Output
+
+#  120| Write-Output
+#-----|  -> Finally!
+
+#  120| Write-Output
+#-----|  -> return ...
+
+#  120| Finally!
+#-----|  -> Write-Output
+
+#  122| return ...
+#-----|  -> 1
+
+#  122| 1
+#-----|  -> exit {...} (normal)
+
+#  122| 1
+#-----|  -> 1
 
 #  125| test-try-finally-catch-specific-1
 #-----|  -> test-nested-try-inner-finally
 
 #  125| enter {...}
 #-----|  -> {...}
+
+#  125| exit {...}
+
+#  125| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  125| {...}
 #-----|  -> {...}
@@ -1372,12 +2104,48 @@ try.ps1:
 #-----|  -> try {...}
 
 #  126| {...}
+#-----|  -> Write-Output
+
+#  127| Write-Output
+#-----|  -> Hello!
+
+#  127| Write-Output
+#-----|  -> {...}
+
+#  127| Hello!
+#-----|  -> Write-Output
+
+#  130| {...}
+#-----|  -> Write-Output
+
+#  131| Write-Output
+#-----|  -> Finally!
+
+#  131| Write-Output
+#-----|  -> return ...
+
+#  131| Finally!
+#-----|  -> Write-Output
+
+#  133| return ...
+#-----|  -> 1
+
+#  133| 1
+#-----|  -> exit {...} (normal)
+
+#  133| 1
+#-----|  -> 1
 
 #  136| test-nested-try-inner-finally
 #-----|  -> test-nested-try-inner-finally
 
 #  136| enter {...}
 #-----|  -> {...}
+
+#  136| exit {...}
+
+#  136| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  136| {...}
 #-----|  -> {...}
@@ -1395,12 +2163,36 @@ try.ps1:
 #-----|  -> {...}
 
 #  138| {...}
+#-----|  -> Write-Output
+
+#  139| Write-Output
+#-----|  -> Hello!
+
+#  139| Write-Output
+#-----|  -> return ...
+
+#  139| Hello!
+#-----|  -> Write-Output
+
+#  146| return ...
+#-----|  -> 1
+
+#  146| 1
+#-----|  -> exit {...} (normal)
+
+#  146| 1
+#-----|  -> 1
 
 #  149| test-nested-try-inner-finally
 #-----|  -> test-nested-try-outer-finally
 
 #  149| enter {...}
 #-----|  -> {...}
+
+#  149| exit {...}
+
+#  149| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  149| {...}
 #-----|  -> {...}
@@ -1418,12 +2210,48 @@ try.ps1:
 #-----|  -> {...}
 
 #  151| {...}
+#-----|  -> Write-Output
+
+#  152| Write-Output
+#-----|  -> Hello!
+
+#  152| Write-Output
+#-----|  -> {...}
+
+#  152| Hello!
+#-----|  -> Write-Output
+
+#  155| {...}
+#-----|  -> Write-Output
+
+#  156| Write-Output
+#-----|  -> Finally!
+
+#  156| Write-Output
+#-----|  -> return ...
+
+#  156| Finally!
+#-----|  -> Write-Output
+
+#  161| return ...
+#-----|  -> 1
+
+#  161| 1
+#-----|  -> exit {...} (normal)
+
+#  161| 1
+#-----|  -> 1
 
 #  164| test-nested-try-outer-finally
 #-----|  -> test-nested-try-inner-outer-finally
 
 #  164| enter {...}
 #-----|  -> {...}
+
+#  164| exit {...}
+
+#  164| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  164| {...}
 #-----|  -> {...}
@@ -1441,12 +2269,48 @@ try.ps1:
 #-----|  -> {...}
 
 #  166| {...}
+#-----|  -> Write-Output
+
+#  167| Write-Output
+#-----|  -> Hello!
+
+#  167| Write-Output
+#-----|  -> {...}
+
+#  167| Hello!
+#-----|  -> Write-Output
+
+#  173| {...}
+#-----|  -> Write-Output
+
+#  174| Write-Output
+#-----|  -> Finally!
+
+#  174| Write-Output
+#-----|  -> return ...
+
+#  174| Finally!
+#-----|  -> Write-Output
+
+#  176| return ...
+#-----|  -> 1
+
+#  176| 1
+#-----|  -> exit {...} (normal)
+
+#  176| 1
+#-----|  -> 1
 
 #  179| test-nested-try-inner-outer-finally
 #-----|  -> exit try.ps1 (normal)
 
 #  179| enter {...}
 #-----|  -> {...}
+
+#  179| exit {...}
+
+#  179| exit {...} (normal)
+#-----|  -> exit {...}
 
 #  179| {...}
 #-----|  -> {...}
@@ -1464,3 +2328,46 @@ try.ps1:
 #-----|  -> {...}
 
 #  181| {...}
+#-----|  -> Write-Output
+
+#  182| Write-Output
+#-----|  -> Hello!
+
+#  182| Write-Output
+#-----|  -> {...}
+
+#  182| Hello!
+#-----|  -> Write-Output
+
+#  185| {...}
+#-----|  -> Write-Output
+
+#  186| Write-Output
+#-----|  -> Finally!
+
+#  186| Write-Output
+#-----|  -> {...}
+
+#  186| Finally!
+#-----|  -> Write-Output
+
+#  190| {...}
+#-----|  -> Write-Output
+
+#  191| Write-Output
+#-----|  -> Finally!
+
+#  191| Write-Output
+#-----|  -> return ...
+
+#  191| Finally!
+#-----|  -> Write-Output
+
+#  193| return ...
+#-----|  -> 1
+
+#  193| 1
+#-----|  -> exit {...} (normal)
+
+#  193| 1
+#-----|  -> 1
