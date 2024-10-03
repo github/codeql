@@ -50,7 +50,7 @@ class File extends Container, Impl::File {
           loc = node.getLocation()
         |
           node.getFile() = this and
-          line = [loc.getStartLine(), loc.getEndLine()] and
+          line = [/*loc.getStartLine(), */ loc.getEndLine()] and // ignore start locations for now as we're getting them wrong for things with a comment attached
           not loc instanceof EmptyLocation
         )
       )
