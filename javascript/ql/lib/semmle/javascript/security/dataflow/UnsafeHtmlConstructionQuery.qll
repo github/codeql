@@ -34,6 +34,8 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
     node instanceof UnsafeJQueryPlugin::Sanitizer
     or
     DomBasedXss::isOptionallySanitizedNode(node)
+    or
+    node = Shared::BarrierGuard::getABarrierNode()
   }
 
   predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
