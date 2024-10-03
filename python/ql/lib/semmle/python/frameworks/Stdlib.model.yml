@@ -134,6 +134,8 @@ extensions:
       - ["traceback.StackSummary", "Member[from_list]", "Argument[0,a_list:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/typing.html#typing.cast
       - ["typing", "Member[cast]", "Argument[1,val:]", "ReturnValue", "value"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
+      - ["urllib", "Member[parse].Member[parse_qs]", "Argument[0,qs:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
       - ["urllib", "Member[parse].Member[quote]", "Argument[0,string:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote_plus
