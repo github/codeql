@@ -11,10 +11,15 @@ class Type extends @type_definition, Stmt {
 
   Member getAMember() { result = this.getMember(_) }
 
-  MemberFunction getMemberFunction(string name) {
-    result = this.getAMember() and
+  Method getMethod(string name) {
+    result.getMember() = this.getAMember() and
     result.hasName(name)
   }
 
-  MemberFunction getAMemberFunction() { result = this.getMemberFunction(_) }
+  Constructor getAConstructor() {
+    result = this.getAMethod() and
+    result.getName() = this.getName()
+  }
+
+  Method getAMethod() { result = this.getMethod(_) }
 }

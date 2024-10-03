@@ -49,6 +49,9 @@ class Cmd extends @command, CmdBase {
       )
   }
 
+  /** Holds if this call has an argument named `name`. */
+  predicate hasNamedArgument(string name) { exists(this.getNamedArgument(name)) }
+
   /** Gets the named argument with the given name. */
   Expr getNamedArgument(string name) {
     exists(int i, CmdParameter p |

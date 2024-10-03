@@ -128,6 +128,8 @@ abstract private class NonExprChildMapping extends ChildMapping {
 abstract private class AbstractCallCfgNode extends AstCfgNode {
   override string getAPrimaryQlClass() { result = "CfgCall" }
 
+  final predicate hasName(string name) { this.getName() = name }
+
   abstract string getName();
 
   ExprCfgNode getQualifier() { none() }
@@ -144,6 +146,18 @@ abstract private class AbstractCallCfgNode extends AstCfgNode {
 }
 
 final class CallCfgNode = AbstractCallCfgNode;
+
+class ObjectCreationCfgNode extends CallCfgNode {
+  ObjectCreation objectCreation;
+
+  ObjectCreationCfgNode() { this.getAstNode() = objectCreation }
+
+  ObjectCreation getObjectCreation() { result = objectCreation }
+
+  Type getConstructedType() { result = objectCreation.getConstructedType() }
+
+  string getConstructedTypeName() { result = objectCreation.getConstructedTypeName() }
+}
 
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
@@ -226,12 +240,12 @@ module ExprNodes {
 
     final override ExprCfgNode getAnArgument() { e.hasCfgChild(e.getAnArgument(), this, result) }
 
-    final override string getName() { none() }
+    final override string getName() { result = e.getName() }
 
     final override ExprCfgNode getCommand() { none() }
   }
 
-    /** A control-flow node that wraps an `ConstructorCall` expression. */
+  /** A control-flow node that wraps an `ConstructorCall` expression. */
   class ConstructorCallCfgNode extends InvokeMemberCfgNode {
     ConstructorCallCfgNode() { super.getExpr() instanceof ConstructorCall }
 
@@ -245,6 +259,23 @@ module ExprNodes {
     QualifierCfgNode() { this = any(InvokeMemberCfgNode invoke).getQualifier() }
 
     InvokeMemberCfgNode getInvokeMember() { this = result.getQualifier() }
+  }
+
+  class TypeNameChildMapping extends ExprChildMapping, TypeNameExpr {
+    override predicate relevantChild(Ast n) { none() }
+  }
+
+  /** A control-flow node that wraps a `TypeName` expression. */
+  class TypeNameCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "TypeNameCfgNode" }
+
+    override TypeNameChildMapping e;
+
+    override TypeNameExpr getExpr() { result = super.getExpr() }
+
+    Type getType() { result = this.getExpr().getType() }
+
+    string getTypeName() { result = this.getExpr().getName() }
   }
 
   class ConditionalChildMapping extends ExprChildMapping, ConditionalExpr {
@@ -349,5 +380,20 @@ module StmtNodes {
 
     /** Gets the RHS of this assignment. */
     final StmtCfgNode getRightHandSide() { s.hasCfgChild(s.getRightHandSide(), this, result) }
+  }
+
+  class CmdExprChildMapping extends NonExprChildMapping, CmdExpr {
+    override predicate relevantChild(Ast n) { n = this.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `CmdExpr` expression. */
+  class CmdExprCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "CmdExprCfgNode" }
+
+    override CmdExprChildMapping s;
+
+    override CmdExpr getStmt() { result = super.getStmt() }
+
+    final ExprCfgNode getExpr() { s.hasCfgChild(s.getExpr(), this, result) }
   }
 }

@@ -122,21 +122,34 @@ class NormalCall extends DataFlowCall, TNormalCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
-/** A call for which we want to compute call targets. */
-private class RelevantCall extends CfgNodes::CallCfgNode { }
+private predicate localFlowStep(Node nodeFrom, Node nodeTo, StepSummary summary) {
+  localFlowStepTypeTracker(nodeFrom, nodeTo) and
+  summary.toString() = "level"
+}
 
 private module TrackInstanceInput implements CallGraphConstruction::InputSig {
-  newtype State = additional MkState(Type m, Boolean exact)
+  private predicate start0(Node start, string typename, boolean exact) {
+    start.(ObjectCreationNode).getObjectCreationNode().getConstructedTypeName() = typename and
+    exact = true
+    or
+    start.asExpr().(CfgNodes::ExprNodes::TypeNameCfgNode).getTypeName() = typename and
+    exact = true
+  }
+
+  newtype State = additional MkState(string typename, Boolean exact) { start0(_, typename, exact) }
 
   predicate start(Node start, State state) {
-    exists(Type tp, boolean exact | state = MkState(tp, exact) |
-      start.asExpr().(CfgNodes::ExprNodes::ConstructorCallCfgNode).getConstructedType() = tp
+    exists(string typename, boolean exact |
+      state = MkState(typename, exact) and
+      start0(start, typename, exact)
     )
   }
 
   pragma[nomagic]
   predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
     smallStepNoCall(nodeFrom, nodeTo, summary)
+    or
+    localFlowStep(nodeFrom, nodeTo, summary)
   }
 
   predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
@@ -155,16 +168,22 @@ private predicate qualifiedCall(CfgNodes::CallCfgNode call, Node receiver, strin
   call.getName() = method
 }
 
-private Node trackInstance(Type t, boolean exact) {
+Node trackInstance(string typename, boolean exact) {
   result =
-    CallGraphConstruction::Make<TrackInstanceInput>::track(TrackInstanceInput::MkState(t, exact))
+    CallGraphConstruction::Make<TrackInstanceInput>::track(TrackInstanceInput::MkState(typename,
+        exact))
 }
 
 private CfgScope getTargetInstance(CfgNodes::CallCfgNode call) {
-  exists(Node receiver, string method, Type t |
+  // TODO: Also match argument/parameter types
+  exists(Node receiver, string method, string typename, Type t |
     qualifiedCall(call, receiver, method) and
-    receiver = trackInstance(t, _) and
-    result = t.getMemberFunction(method).getBody()
+    receiver = trackInstance(typename, _) and
+    t.getName() = typename
+  |
+    if method = "new"
+    then result = t.getAConstructor().getBody()
+    else result = t.getMethod(method).getBody()
   )
 }
 
