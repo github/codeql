@@ -12,6 +12,9 @@ abstract private class AbstractCall extends Ast {
   /** Gets the i'th positional argument to this call. */
   abstract Expr getPositionalArgument(int i);
 
+  /** Holds if an argument with name `name` is provided to this call. */
+  final predicate hasNamedArgument(string name) { exists(this.getNamedArgument(name)) }
+
   /** Gets the argument to this call with the name `name`. */
   abstract Expr getNamedArgument(string name);
 
@@ -25,7 +28,8 @@ abstract private class AbstractCall extends Ast {
   abstract Function getATarget();
 }
 
-private class CmdCall extends AbstractCall instanceof Cmd {
+/** A call to a command. For example, `Write-Host "Hello, world!"`. */
+class CmdCall extends AbstractCall instanceof Cmd {
   final override Expr getCommand() { result = Cmd.super.getCommand() }
 
   final override Expr getPositionalArgument(int i) { result = Cmd.super.getPositionalArgument(i) }
@@ -43,7 +47,8 @@ private class CmdCall extends AbstractCall instanceof Cmd {
   }
 }
 
-private class InvokeMemberCall extends AbstractCall instanceof InvokeMemberExpr {
+/** A call to a method on an object. For example, `$obj.ToString()`. */
+class MethodCall extends AbstractCall instanceof InvokeMemberExpr {
   final override Expr getCommand() { result = super.getMember() }
 
   final override Expr getPositionalArgument(int i) {

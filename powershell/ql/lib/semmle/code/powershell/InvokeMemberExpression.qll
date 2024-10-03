@@ -18,8 +18,30 @@ class InvokeMemberExpr extends @invoke_member_expression, MemberExprBase {
   override predicate isStatic() { this.getQualifier() instanceof TypeNameExpr }
 }
 
+/**
+ * A call to a constructor. For example:
+ *
+ * ```powershell
+ * [System.IO.FileInfo]::new("C:\\file.txt")
+ * ```
+ */
 class ConstructorCall extends InvokeMemberExpr {
-  ConstructorCall() { this.isStatic() and this.getName() = "new" }
+  TypeNameExpr typename;
 
-  Type getConstructedType() { result = this.getQualifier().(TypeNameExpr).getType() }
+  ConstructorCall() {
+    this.isStatic() and typename = this.getQualifier() and this.getName() = "new"
+  }
+
+  /**
+   * Gets the type being constructed by this constructor call.
+   *
+   * Note that the type may not exist in the database.
+   *
+   * Use `getConstructedTypeName` to get the name of the type (which will
+   * always exist in the database).
+   */
+  Type getConstructedType() { result = typename.getType() }
+
+  /** Gets the name of the type being constructed by this constructor call. */
+  string getConstructedTypeName() { result = typename.getName() }
 }

@@ -228,3 +228,20 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     none() // TODO
   }
 }
+
+/**
+ * A dataflow node that represents the creation of an object.
+ * 
+ * For example, `[Foo]::new()` or `New-Object Foo`.
+ */
+class ObjectCreationNode extends Node {
+  CfgNodes::ObjectCreationCfgNode objectCreation;
+
+  ObjectCreationNode() {
+    this.asExpr() = objectCreation
+    or
+    this.asStmt() = objectCreation
+  }
+
+  final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+}
