@@ -344,7 +344,7 @@ class ParameterExt extends TParameterExt {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   class Parameter = ParameterExt;
 
-  class Expr extends Cfg::CfgNodes::ExprCfgNode {
+  class Expr extends Cfg::CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
