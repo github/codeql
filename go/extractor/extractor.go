@@ -131,7 +131,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 		if err != nil {
 			log.Printf("Warning: failed to get working directory: %s\n", err.Error())
 		} else if util.FindGoFiles(wd) {
-			diagnostics.EmitGoFilesFoundButNotProcessed()
+			diagnostics.EmitGoFilesFoundButNotProcessedForDirectory(wd)
 		}
 	}
 
