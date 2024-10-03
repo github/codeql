@@ -4207,7 +4207,11 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // Flow summaries for functions contructing containers
   // ---------------------------------------------------------------------------
-  /** A flow summary for `dict`. */
+  /**
+   * A flow summary for `dict`.
+   *
+   * see https://docs.python.org/3/library/stdtypes.html#dict
+   */
   class DictSummary extends SummarizedCallable {
     DictSummary() { this = "builtins.dict" }
 
@@ -4218,18 +4222,23 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // The positional argument contains a mapping.
+      // TODO: Add the list-of-pairs version
+      // TODO: these values can be overwritten by keyword arguments
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[0].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      // The keyword arguments are added to the dictionary.
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[" + key + ":]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      // Imprecise content in any argument ends up on the container itself.
       input = "Argument[0..]" and
       output = "ReturnValue" and
       preservesValue = false
