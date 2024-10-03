@@ -8,34 +8,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
-class AllowListSanitizer {
+class AllowListSanitizerWithJavaUtilSet {
 	public static Connection connection;
-	public static final List<String> goodAllowList1 = List.of("allowed1", "allowed2", "allowed3");
-	public static final List<String> goodAllowList2 = Collections.unmodifiableList(Arrays.asList("allowed1"));
-	public static final List<String> goodAllowList3;
-	public static final List<String> goodAllowList4;
-	public static final List<String> badAllowList1 = List.of("allowed1", "allowed2", getNonConstantString());
-	public static final List<String> badAllowList2 = Collections.unmodifiableList(Arrays.asList("allowed1", getNonConstantString()));
-	public static final List<String> badAllowList3;
-	public static final List<String> badAllowList4;
-	public static final List<String> badAllowList5;
-	public static List<String> badAllowList6 = List.of("allowed1", "allowed2", "allowed3");
-	public final List<String> badAllowList7 = List.of("allowed1", "allowed2", "allowed3");
+	public static final Set<String> goodAllowSet1 = Set.of("allowed1", "allowed2", "allowed3");
+	public static final Set<String> goodAllowSet2 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1","allowed2")));
+	public static final Set<String> goodAllowSet3;
+	public static final Set<String> goodAllowSet4;
+	public static final Set<String> badAllowSet1 = Set.of("allowed1", "allowed2", getNonConstantString());
+	public static final Set<String> badAllowSet2 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", getNonConstantString())));
+	public static final Set<String> badAllowSet3;
+	public static final Set<String> badAllowSet4;
+	public static final Set<String> badAllowSet5;
+	public static Set<String> badAllowSet6 = Set.of("allowed1", "allowed2", "allowed3");
+	public final Set<String> badAllowSet7 = Set.of("allowed1", "allowed2", "allowed3");
 
 	static {
-    	goodAllowList3 = List.of("allowed1", "allowed2", "allowed3");
-    	goodAllowList4 = Collections.unmodifiableList(Arrays.asList("allowed1", "allowed2"));
-    	badAllowList3 = List.of(getNonConstantString(), "allowed2", "allowed3");
-    	badAllowList4 = Collections.unmodifiableList(Arrays.asList("allowed1", getNonConstantString()));
-		badAllowList5 = new ArrayList<String>();
-		badAllowList5.add("allowed1");
-		badAllowList5.add("allowed2");
-		badAllowList5.add("allowed3");
+    	goodAllowSet3 = Set.of("allowed1", "allowed2", "allowed3");
+    	goodAllowSet4 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", "allowed2")));
+    	badAllowSet3 = Set.of(getNonConstantString(), "allowed2", "allowed3");
+    	badAllowSet4 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", getNonConstantString())));
+		badAllowSet5 = new HashSet<String>();
+		badAllowSet5.add("allowed1");
+		badAllowSet5.add("allowed2");
+		badAllowSet5.add("allowed3");
 	}
 
 	public static String getNonConstantString() {
@@ -43,71 +44,71 @@ class AllowListSanitizer {
 	}
 
 	public static void main(String[] args) throws IOException, SQLException {
-		badAllowList6 = List.of("allowed1", getNonConstantString(), "allowed3");
+		badAllowSet6 = Set.of("allowed1", getNonConstantString(), "allowed3");
 		testStaticFields(args);
 		testLocal(args);
-		var x = new AllowListSanitizer();
+		var x = new AllowListSanitizerWithJavaUtilSet();
 		x.testNonStaticFields(args);
 	}
 
 	private static void testStaticFields(String[] args) throws IOException, SQLException {
 		String tainted = args[1];
-		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList1.contains(tainted)){
+		// GOOD: an allowSet is used with constant strings
+		if(goodAllowSet1.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList2.contains(tainted)){
+		// GOOD: an allowSet is used with constant strings
+		if(goodAllowSet2.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList3.contains(tainted)){
+		// GOOD: an allowSet is used with constant strings
+		if(goodAllowSet3.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList4.contains(tainted)){
+		// GOOD: an allowSet is used with constant strings
+		if(goodAllowSet4.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList1.contains(tainted)){
+		// BAD: an allowSet is used with constant strings
+		if(badAllowSet1.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList2.contains(tainted)){
+		// BAD: an allowSet is used with constant strings
+		if(badAllowSet2.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList3.contains(tainted)){
+		// BAD: an allowSet is used with constant strings
+		if(badAllowSet3.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList4.contains(tainted)){
+		// BAD: an allowSet is used with constant strings
+		if(badAllowSet4.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList5.contains(tainted)){
+		// BAD: an allowSet is used with constant strings
+		if(badAllowSet5.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: the allowlist is in a non-final field
-		if(badAllowList6.contains(tainted)){
+		// BAD: the allowSet is in a non-final field
+		if(badAllowSet6.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
@@ -116,8 +117,8 @@ class AllowListSanitizer {
 
 	private void testNonStaticFields(String[] args) throws IOException, SQLException {
 		String tainted = args[0];
-		// BAD: the allowlist is in a non-static field
-		if(badAllowList7.contains(tainted)){
+		// BAD: the allowSet is in a non-static field
+		if(badAllowSet7.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
@@ -125,10 +126,48 @@ class AllowListSanitizer {
 	}
 
 	private static void testLocal(String[] args) throws IOException, SQLException {
-		String tainted = args[1];
+			String tainted = args[1];
+		// GOOD: an allowSet is used with constant strings
+		{
+			Set<String> allowSet = Set.of("allowed1", "allowed2", "allowed3");
+			if(allowSet.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+		// BAD: an allowSet is used but one of the entries is not a compile-time constant
+		{
+			Set<String> allowSet = Set.of("allowed1", "allowed2", args[2]);
+			if(allowSet.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+		// GOOD: an allowSet is used with constant strings
+		{
+			String[] allowedArray = {"allowed1", "allowed2", "allowed3"};
+			Set<String> allowSet = Set.of(allowedArray);
+			if(allowSet.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+		// BAD: an allowSet is used but one of the entries is not a compile-time constant
+		{
+			String[] allowedArray = {"allowed1", "allowed2", args[2]};
+			Set<String> allowSet = Set.of(allowedArray);
+			if(allowSet.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
 		// GOOD: an allowlist is used with constant strings
 		{
-			List<String> allowlist = List.of("allowed1", "allowed2", "allowed3");
+			Set<String> allowlist = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("allowed1")));
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
@@ -137,7 +176,7 @@ class AllowListSanitizer {
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
 		{
-			List<String> allowlist = List.of("allowed1", "allowed2", args[2]);
+			Set<String> allowlist = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("allowed1", "allowed2", args[2])));
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
@@ -147,7 +186,7 @@ class AllowListSanitizer {
 		// GOOD: an allowlist is used with constant strings
 		{
 			String[] allowedArray = {"allowed1", "allowed2", "allowed3"};
-			List<String> allowlist = List.of(allowedArray);
+			Set<String> allowlist = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(allowedArray)));
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
@@ -157,70 +196,32 @@ class AllowListSanitizer {
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
 		{
 			String[] allowedArray = {"allowed1", "allowed2", args[2]};
-			List<String> allowlist = List.of(allowedArray);
+			Set<String> allowlist = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(allowedArray)));
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
 				ResultSet results = connection.createStatement().executeQuery(query);
 			}
 		}
-		// GOOD: an allowlist is used with constant strings
+		// GOOD: an allowSet is used with constant string
 		{
-			List<String> allowlist = Collections.unmodifiableList(Arrays.asList("allowed1"));
-			if(allowlist.contains(tainted)){
+			Set<String> allowSet = new HashSet<String>();
+			allowSet.add("allowed1");
+			allowSet.add("allowed2");
+			allowSet.add("allowed3");
+			if(allowSet.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
 				ResultSet results = connection.createStatement().executeQuery(query);
 			}
 		}
-		// BAD: an allowlist is used but one of the entries is not a compile-time constant
+		// BAD: an allowSet is used but one of the entries is not a compile-time constant
 		{
-			List<String> allowlist = Collections.unmodifiableList(Arrays.asList("allowed1", "allowed2", args[2]));
-			if(allowlist.contains(tainted)){
-				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
-			}
-		}
-		// GOOD: an allowlist is used with constant strings
-		{
-			String[] allowedArray = {"allowed1", "allowed2", "allowed3"};
-			List<String> allowlist = Collections.unmodifiableList(Arrays.asList(allowedArray));
-			if(allowlist.contains(tainted)){
-				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
-			}
-		}
-		// BAD: an allowlist is used but one of the entries is not a compile-time constant
-		{
-			String[] allowedArray = {"allowed1", "allowed2", args[2]};
-			List<String> allowlist = Collections.unmodifiableList(Arrays.asList(allowedArray));
-			if(allowlist.contains(tainted)){
-				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
-			}
-		}
-		// GOOD: an allowlist is used with constant string
-		{
-			List<String> allowlist = new ArrayList<String>();
-			allowlist.add("allowed1");
-			allowlist.add("allowed2");
-			allowlist.add("allowed3");
-			if(allowlist.contains(tainted)){
-				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
-			}
-		}
-		// BAD: an allowlist is used but one of the entries is not a compile-time constant
-		{
-			List<String> allowlist = new ArrayList<String>();
-			allowlist.add("allowed1");
-			allowlist.add(getNonConstantString());
-			allowlist.add("allowed3");
-			if(allowlist.contains(tainted)){
+			Set<String> allowSet = new HashSet<String>();
+			allowSet.add("allowed1");
+			allowSet.add(getNonConstantString());
+			allowSet.add("allowed3");
+			if(allowSet.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
 				ResultSet results = connection.createStatement().executeQuery(query);
