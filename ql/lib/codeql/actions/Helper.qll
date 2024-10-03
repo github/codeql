@@ -202,10 +202,8 @@ module Bash {
           "((echo|printf)\\s+['|\"]?(EOF)['|\"]?\\s*>>\\s*\\S+\\s*[\r\n]*).*" and
       content =
         trimQuotes(script.regexpCapture(regexp, 3)) + "\n" +
-          // "$(" +
-          trimQuotes(script.regexpCapture(regexp, 6)) +
-          // ")\n" +
-          "\n" + trimQuotes(script.regexpCapture(regexp, 4)) and
+          trimQuotes(script.regexpCapture(regexp, 6)) + "\n" +
+          trimQuotes(script.regexpCapture(regexp, 4)) and
       cmd = "echo" and
       file = trimQuotes(script.regexpCapture(regexp, 5)) and
       filters = ""
