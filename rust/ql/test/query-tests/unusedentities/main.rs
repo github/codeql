@@ -164,14 +164,15 @@ fn loops() {
     for x in 1..10 { // BAD: unused variable
     }
 
-    for _ in 1..10 {
-    }
+    for _ in 1..10 {}
 
-    for x in 1..10 { // SPURIOUS: unused variable [macros not yet supported]
+    for x // SPURIOUS: unused variable [macros not yet supported]
+    in 1..10 {    
         println!("x is {}", x);
     }
 
-    for x in 1..10 { // SPURIOUS: unused variable [macros not yet supported]
+    for x // SPURIOUS: unused variable [macros not yet supported]
+    in 1..10 {   
         assert!(x != 11);
     }
 }
@@ -199,12 +200,13 @@ fn if_lets() {
     }
 
     let mut next = Some(30);
-    while let Some(val) = next { // BAD: unused variable
+    while let Some(val) = next // BAD: unused variable
+    {
         next = None;
     }
 
     let mut next2 = Some(40);
-    while let Some(val) = next2 { // SPURIOUS: unused variable 'val'
+    while let Some(val) = next2 {
         total += val;
         next2 = None;
     }
@@ -212,7 +214,7 @@ fn if_lets() {
     let c = Some(60);
     match c {
         Some(val) => { // BAD: unused variable
-        },
+        }
         None => { // SPURIOUS: unused variable 'None'
         }
     }
@@ -221,7 +223,7 @@ fn if_lets() {
     match d {
         Some(val) => {
             total += val;
-        },
+        }
         None => { // SPURIOUS: unused variable 'None'
         }
     }
@@ -229,17 +231,14 @@ fn if_lets() {
     let e = MyOption::Some(80);
     match e {
         MyOption::Some(val) => { // BAD: unused variable
-        },
-        MyOption::None => {
         }
+        MyOption::None => {}
     }
 
     let f = YesOrNo::Yes;
     match f {
-        YesOrNo::Yes => {
-        },
-        YesOrNo::No => {
-        },
+        YesOrNo::Yes => {}
+        YesOrNo::No => {}
     }
 }
 
