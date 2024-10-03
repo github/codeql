@@ -49,11 +49,7 @@ class Diagnostic extends @diagnostic {
 }
 
 /** A diagnostic that is error severity. */
-class ExtractionError extends Diagnostic {
-  ExtractionError() { this.getSeverity() = 40 }
-}
+class ExtractionError extends Diagnostic, @diagnostic_error { }
 
 /** A diagnostic that is warning severity. */
-class ExtractionWarning extends Diagnostic {
-  ExtractionWarning() { this.getSeverity() = 30 }
-}
+class ExtractionWarning extends Diagnostic, @diagnostic_warning { }
