@@ -8,6 +8,7 @@ fn locals_1() {
     let c = 1;
     let d = String::from("a"); // BAD: unused value [NOT DETECTED]
     let e = String::from("b");
+
     let _ = 1; // (deliberately unused)
 
     println!("use {}", b);
@@ -17,6 +18,7 @@ fn locals_1() {
     }
 
     println!("use {}", e);
+
 }
 
 fn locals_2() {

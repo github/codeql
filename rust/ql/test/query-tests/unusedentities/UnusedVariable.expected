@@ -1,4 +1,4 @@
-| main.rs:23:9:23:9 | a | Variable is not used. |
-| main.rs:88:13:88:13 | d | Variable is not used. |
-| main.rs:112:9:112:9 | k | Variable is not used. |
-| main.rs:139:5:139:5 | y | Variable is not used. |
+| main.rs:25:9:25:9 | a | Variable is not used. |
+| main.rs:90:13:90:13 | d | Variable is not used. |
+| main.rs:114:9:114:9 | k | Variable is not used. |
+| main.rs:141:5:141:5 | y | Variable is not used. |
