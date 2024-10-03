@@ -1481,7 +1481,7 @@ module IR {
 
     override predicate refersTo(ValueEntity e) {
       this instanceof MkLhs and
-      loc = e.getAReference()
+      pragma[only_bind_out](loc) = e.getAReference()
       or
       exists(WriteResultInstruction wr | this = MkResultWriteTarget(wr) |
         e = wr.getResultVariable()

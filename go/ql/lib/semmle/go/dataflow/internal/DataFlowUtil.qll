@@ -284,9 +284,11 @@ signature predicate guardChecksSig(Node g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
+    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var |
+      result = pragma[only_bind_out](var).getAUse()
+    |
       guards(_, guard, _, var) and
-      guard.dominates(result.getBasicBlock())
+      pragma[only_bind_out](guard).dominates(result.getBasicBlock())
     )
   }
 
@@ -353,7 +355,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   ) {
     exists(FuncDecl fd, Node arg, Node ret |
       fd.getFunction() = f and
-      localFlow(inp.getExitNode(fd), arg) and
+      localFlow(inp.getExitNode(fd), pragma[only_bind_out](arg)) and
       ret = outp.getEntryNode(fd) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"

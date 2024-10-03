@@ -2137,6 +2137,7 @@ private predicate isTypeExprBottomUp(Expr e) {
  * it may be the latter and so this predicate does not consider the expression to be
  * a type expression.
  */
+pragma[nomagic]
 private predicate isTypeExprTopDown(Expr e) {
   e = any(CompositeLit cl).getTypeExpr()
   or
