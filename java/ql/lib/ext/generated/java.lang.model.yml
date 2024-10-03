@@ -75,7 +75,7 @@ extensions:
       - ["java.lang", "Module", False, "getLayer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang", "Module", False, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.lang", "Module", False, "getPackages", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["java.lang", "Module", False, "getResourceAsStream", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang", "Module", False, "getResourceAsStream", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
       - ["java.lang", "ModuleLayer$Controller", False, "addExports", "(Module,String,Module)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["java.lang", "ModuleLayer$Controller", False, "addOpens", "(Module,String,Module)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["java.lang", "ModuleLayer$Controller", False, "addReads", "(Module,Module)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
