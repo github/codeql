@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.intellij.psi.PsiElement
+import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.io.OutputStreamWriter
@@ -127,15 +128,16 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
         verbosity = System.getenv("CODEQL_EXTRACTOR_KOTLIN_VERBOSITY")?.toIntOrNull() ?: 3
     }
 
-    private val logStream: Writer
+    // Use BufferedWriter as it is threadsafe
+    private val logStream: BufferedWriter
 
     init {
         val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
         if (extractorLogDir == null || extractorLogDir == "") {
-            logStream = OutputStreamWriter(System.out)
+            logStream = BufferedWriter(OutputStreamWriter(System.out))
         } else {
             val logFile = File.createTempFile("kotlin-extractor.", ".log", File(extractorLogDir))
-            logStream = FileWriter(logFile)
+            logStream = BufferedWriter(FileWriter(logFile))
         }
     }
 

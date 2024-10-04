@@ -96,7 +96,7 @@ open class KotlinUsesExtractor(
         val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
         val id = extractFileClass(pkg, jvmName)
-        if (tw.lm.fileClassLocationsExtracted.add(f)) {
+        if (tw.lm.markFileClassLocationAsExtracted(f)) {
             val fileId = tw.mkFileId(f.virtualFilePath, false)
             val locId = tw.getWholeFileLocation(fileId)
             tw.writeHasLocation(id, locId)
