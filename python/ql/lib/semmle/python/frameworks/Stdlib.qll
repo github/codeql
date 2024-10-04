@@ -4239,7 +4239,7 @@ module StdlibPrivate {
       )
       or
       // Imprecise content in any argument ends up on the container itself.
-      input = "Argument[0..]" and
+      input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
     }
