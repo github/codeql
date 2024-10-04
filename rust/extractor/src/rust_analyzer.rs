@@ -59,6 +59,7 @@ impl RustAnalyzer {
         SourceFile,
         Arc<str>,
         Vec<SyntaxError>,
+        Option<EditionedFileId>,
         Option<Semantics<'_, RootDatabase>>,
     ) {
         let mut p = path.as_path();
@@ -80,6 +81,7 @@ impl RustAnalyzer {
                         db.parse_errors(file_id)
                             .map(|x| x.to_vec())
                             .unwrap_or_default(),
+                        Some(file_id),
                         Some(semi),
                     );
                 }
@@ -100,7 +102,7 @@ impl RustAnalyzer {
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
         errors.extend(parse.errors());
         errors.extend(err);
-        (parse.tree(), input.as_ref().into(), errors, None)
+        (parse.tree(), input.as_ref().into(), errors, None, None)
     }
 }
 
