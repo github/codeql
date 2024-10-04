@@ -1075,7 +1075,7 @@ int numberOfTypesWithMethodName(string name) { result = count(Type t | t.hasMeth
  *
  * This is used to restrict the set of interfaces to consider in the definition of `implements`,
  * so it does not matter which method name is chosen (we use the most unusual name the interface
- * require; this is the most discriminating and so shrinks the search space the most).
+ * requires; this is the most discriminating and so shrinks the search space the most).
  */
 private string getExampleMethodName(InterfaceType i) {
   result = min(string m | i.hasMethod(m, _) | m order by numberOfTypesWithMethodName(m))

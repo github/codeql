@@ -587,11 +587,6 @@ class Method extends Function {
   predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    // Take all methods
-    // Get receiver type then underlying type ==> [method, recvutype]
-    // Map through Type.implements ==> [method, candtype]
-    // Get method name ==> [mname, candtype]
-    // Get corresponding method
     exists(Type t, string mname |
       t = implementsIncludingInterfaceMethodsCand(m, mname) and
       this = t.getMethod(mname)
