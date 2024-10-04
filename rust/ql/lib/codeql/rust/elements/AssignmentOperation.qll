@@ -38,7 +38,9 @@ final class AssignmentExpr extends AssignmentOperationImpl {
 final class CompoundAssignmentExpr extends AssignmentOperationImpl {
   private string operator;
 
-  CompoundAssignmentExpr() { this.getOperatorName().regexpCapture("(.)=", 1) = operator }
+  CompoundAssignmentExpr() {
+    this.getOperatorName().regexpCapture("(\\+|-|\\*|/|%|&|\\||\\^|<<|>>)=", 1) = operator
+  }
 
   /**
    * Gets the operator of this compound assignment expression.
