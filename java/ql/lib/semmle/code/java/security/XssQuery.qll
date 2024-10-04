@@ -11,7 +11,9 @@ import semmle.code.java.security.XSS
 module XssConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof XssDiffInformed<XssFlow::hasSourceInDiffRange/0>::XssSink
+  }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof XssSanitizer }
 
