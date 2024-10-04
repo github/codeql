@@ -319,6 +319,7 @@ private fun KotlinFileExtractor.extractExpression(
                 }
                 // TODO: e.getLabeledExpression()
             }
+
             is KtTryExpression -> {
                 val stmtParent = parent.stmt(e, callable)
                 val id = tw.getFreshIdLabel<DbTrystmt>()
@@ -1272,6 +1273,7 @@ private fun KotlinFileExtractor.extractLoop(
     val idx: Int
     val parent: Label<out DbStmtparent>
 
+    // TODO: the below can be removed if KtLabeledExpression is handled in extractExpression.
     val label = (loop.parent as? KtLabeledExpression)?.getLabelName()
     if (label != null) {
         val labeledStmt = tw.getFreshIdLabel<DbLabeledstmt>()
