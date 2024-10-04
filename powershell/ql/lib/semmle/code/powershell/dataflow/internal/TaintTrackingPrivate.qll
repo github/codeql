@@ -30,7 +30,19 @@ private module Cached {
    */
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
-    none()
+    // Although flow through collections is modeled precisely using stores/reads, we still
+    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+    // tracking configurations where the source is a collection.
+    exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
+      c.isSingleton(any(DataFlow::Content::ElementContent ec))
+      or
+      c.isKnownOrUnknownElement(_)
+      // or
+      // TODO: We do't generate this one from readSteps yet, but we will as
+      // soon as we start on models-as-data.
+      // c.isAnyElement()
+    ) and
+    model = ""
   }
 
   /**

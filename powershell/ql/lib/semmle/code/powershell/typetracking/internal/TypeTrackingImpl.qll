@@ -53,11 +53,21 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class ContentFilter = TypeTrackingInput::ContentFilter;
 
   ContentFilter getFilterFromWithoutContentStep(Content content) {
-    none() // TODO
+    (
+      content.isAnyElement()
+      or
+      content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
+    ) and
+    result = MkElementFilter()
   }
 
   ContentFilter getFilterFromWithContentStep(Content content) {
-    none() // TODO
+    (
+      content.isAnyElement()
+      or
+      content.isSingleton(any(DataFlow::Content::ElementContent c))
+    ) and
+    result = MkElementFilter()
   }
 
   // Summaries and their stacks

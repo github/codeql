@@ -169,6 +169,26 @@ class Content extends TContent {
 
 /** Provides different sub classes of `Content`. */
 module Content {
+  /** An element in a collection, for example an element in an array or in a hash. */
+  class ElementContent extends Content, TElementContent { }
+
+  /** An element in a collection at a known index. */
+  class KnownElementContent extends ElementContent, TKnownElementContent {
+    private ConstantValue cv;
+
+    KnownElementContent() { this = TKnownElementContent(cv) }
+
+    /** Gets the index in the collection. */
+    ConstantValue getIndex() { result = cv }
+
+    override string toString() { result = "element " + cv }
+  }
+
+  /** An element in a collection at an unknown index. */
+  class UnknownElementContent extends ElementContent, TUnknownElementContent {
+    override string toString() { result = "element" }
+  }
+
   /** A field of an object. */
   class FieldContent extends Content, TFieldContent {
     private string name;
@@ -192,19 +212,66 @@ class ContentSet extends TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
   predicate isSingleton(Content c) { this = TSingletonContent(c) }
 
+  /** Holds if this content set represents all `ElementContent`s. */
+  predicate isAnyElement() { this = TAnyElementContent() }
+
+  /**
+   * Holds if this content set represents a specific known element index, or an
+   * unknown element index.
+   */
+  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
+    this = TKnownOrUnknownElementContent(c)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
       this.isSingleton(c) and
       result = c.toString()
     )
+    or
+    this.isAnyElement() and
+    result = "any element"
+    or
+    exists(Content::KnownElementContent c |
+      this.isKnownOrUnknownElement(c) and
+      result = c + " or unknown"
+    )
   }
 
-  /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { this.isSingleton(result) }
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    // For reverse stores, `a[unknown][0] = x`, it is important that the read-step
+    // from `a` to `a[unknown]` (which can read any element), gets translated into
+    // a reverse store step that store only into `?`
+    this.isAnyElement() and
+    result = TUnknownElementContent()
+    or
+    // For reverse stores, `a[1][0] = x`, it is important that the read-step
+    // from `a` to `a[1]` (which can read both elements stored at exactly index `1`
+    // and elements stored at unknown index), gets translated into a reverse store
+    // step that store only into `1`
+    this.isKnownOrUnknownElement(result)
+  }
+
+  pragma[nomagic]
+  private Content getAnElementReadContent() {
+    exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
+      result = c or
+      result = TUnknownElementContent()
+    )
+  }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { this.isSingleton(result) }
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyElement() and
+    result instanceof Content::ElementContent
+    or
+    result = this.getAnElementReadContent()
+  }
 }
 
 /**
@@ -231,7 +298,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 
 /**
  * A dataflow node that represents the creation of an object.
- * 
+ *
  * For example, `[Foo]::new()` or `New-Object Foo`.
  */
 class ObjectCreationNode extends Node {

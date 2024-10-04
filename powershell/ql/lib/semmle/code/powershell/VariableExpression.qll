@@ -1,4 +1,5 @@
 import powershell
+private import internal.ExplicitWrite
 
 private predicate isParameterName(@variable_expression ve) { parameter(_, ve, _, _) }
 
@@ -34,14 +35,6 @@ class VarAccess extends @variable_expression, Expr {
   Variable getVariable() { result.getAnAccess() = this }
 }
 
-private predicate isExplicitVariableWriteAccess(Expr e, AssignStmt assign) {
-  e = assign.getLeftHandSide()
-  or
-  e = any(ConvertExpr convert | isExplicitVariableWriteAccess(convert, assign)).getExpr()
-  or
-  e = any(ArrayLiteral array | isExplicitVariableWriteAccess(array, assign)).getAnElement()
-}
-
 private predicate isImplicitVariableWriteAccess(Expr e) { none() }
 
 class VarReadAccess extends VarAccess {
@@ -49,9 +42,9 @@ class VarReadAccess extends VarAccess {
 }
 
 class VarWriteAccess extends VarAccess {
-  VarWriteAccess() { isExplicitVariableWriteAccess(this, _) or isImplicitVariableWriteAccess(this) }
+  VarWriteAccess() { isExplicitWrite(this, _) or isImplicitVariableWriteAccess(this) }
 
-  predicate isExplicit(AssignStmt assign) { isExplicitVariableWriteAccess(this, assign) }
+  predicate isExplicit(AssignStmt assign) { isExplicitWrite(this, assign) }
 
   predicate isImplicit() { isImplicitVariableWriteAccess(this) }
 }
