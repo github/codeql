@@ -9,6 +9,7 @@ use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_parser::SyntaxKind;
+use ra_ap_span::{EditionedFileId, TextSize};
 use ra_ap_syntax::ast::RangeItem;
 use ra_ap_syntax::{
     ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxToken, TextRange,
@@ -63,11 +64,13 @@ impl TextValue for ast::RangePat {
         self.op_token().map(|x| x.text().to_string())
     }
 }
+
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
     label: trap::Label,
     line_index: LineIndex,
+    file_id: Option<EditionedFileId>,
     pub semi: Option<Semantics<'a, RootDatabase>>,
 }
 
@@ -77,6 +80,7 @@ impl<'a> Translator<'a> {
         path: &'a str,
         label: trap::Label,
         line_index: LineIndex,
+        file_id: Option<EditionedFileId>,
         semi: Option<Semantics<'a, RootDatabase>>,
     ) -> Translator<'a> {
         Translator {
@@ -84,6 +88,7 @@ impl<'a> Translator<'a> {
             path,
             label,
             line_index,
+            file_id,
             semi,
         }
     }
@@ -107,18 +112,32 @@ impl<'a> Translator<'a> {
         (start, end)
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> TextRange {
+    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
         if let Some(semi) = self.semi.as_ref() {
             let file_range = semi.original_range(node.syntax());
-            file_range.range
+            let file_id = self.file_id?;
+            if file_id == file_range.file_id {
+                Some(file_range.range)
+            } else {
+                None
+            }
         } else {
-            node.syntax().text_range()
+            Some(node.syntax().text_range())
         }
     }
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        let range = self.text_range_for_node(node);
-        let (start, end) = self.location(range);
-        self.trap.emit_location(self.label, label, start, end)
+        if let Some(range) = self.text_range_for_node(node) {
+            let (start, end) = self.location(range);
+            self.trap.emit_location(self.label, label, start, end)
+        } else {
+            self.emit_diagnostic(
+                DiagnosticSeverity::Info,
+                "locations".to_owned(),
+                "missing location for AstNode".to_owned(),
+                "missing location for AstNode".to_owned(),
+                (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 }),
+            );
+        }
     }
     pub fn emit_location_token(&mut self, label: Label<generated::Token>, token: &SyntaxToken) {
         let (start, end) = self.location(token.text_range());
@@ -248,7 +267,7 @@ impl<'a> Translator<'a> {
                             mcall.path().map(|p| p.to_string()).unwrap_or_default(),
                             kind, expand_to
                         ),
-                        range,
+                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ));
                 }
             } else {
@@ -259,7 +278,7 @@ impl<'a> Translator<'a> {
                         "macro expansion failed: could not resolve macro '{}'",
                         mcall.path().map(|p| p.to_string()).unwrap_or_default()
                     ),
-                    range,
+                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                 ));
             }
         }

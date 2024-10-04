@@ -12,13 +12,19 @@ fn extract(
     traps: &trap::TrapFileProvider,
     file: std::path::PathBuf,
 ) -> anyhow::Result<()> {
-    let (ast, input, parse_errors, semi) = rust_analyzer.parse(&file);
+    let (ast, input, parse_errors, file_id, semi) = rust_analyzer.parse(&file);
     let line_index = LineIndex::new(input.as_ref());
     let display_path = file.to_string_lossy();
     let mut trap = traps.create("source", &file);
     let label = trap.emit_file(&file);
-    let mut translator =
-        translate::Translator::new(trap, display_path.as_ref(), label, line_index, semi);
+    let mut translator = translate::Translator::new(
+        trap,
+        display_path.as_ref(),
+        label,
+        line_index,
+        file_id,
+        semi,
+    );
 
     for err in parse_errors {
         translator.emit_parse_error(&err);
