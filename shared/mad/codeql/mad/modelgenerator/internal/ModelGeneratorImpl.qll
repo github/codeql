@@ -881,7 +881,7 @@ module MakeModelGenerator<
   string captureMixedFlow(DataFlowSummaryTargetApi api, boolean lift) {
     result = ContentSensitive::captureFlow(api, lift)
     or
-    not exists(ContentSensitive::captureFlow(api, lift)) and
+    not exists(ContentSensitive::captureFlow(api, _)) and
     result = captureFlow(api) and
     lift = true
   }
