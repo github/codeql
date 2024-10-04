@@ -222,8 +222,7 @@ fun doAnalysis(
     val checkTrapIdentical = false // TODO
 
     analyze(sourceModule) {
-        val maxThreads = 1 // TODO: Default to 8 temporarily to ensure concurrency,
-                           // TODO: Later, default to $CODEQL_THREADS or Runtime.getRuntime().availableProcessors()
+        val maxThreads = 8 // TODO: Later, default to $CODEQL_THREADS or Runtime.getRuntime().availableProcessors()
         // If a Kotlin coroutine yields, then a thread will be freed up
         // and start extracting the next file. We want to avoid having
         // lots of TRAP files open at once, so we use a semaphore so that
