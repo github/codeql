@@ -4271,7 +4271,7 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      // Imprecise content in any argument ends up on the container itself.
+      // Imprecise content in the first argument ends up on the container itself.
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
