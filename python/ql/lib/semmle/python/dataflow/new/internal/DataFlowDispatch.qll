@@ -368,6 +368,9 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   int positionalOffset() { result = 0 }
 
   override ParameterNode getParameter(ParameterPosition ppos) {
+    // Do not handle lower bound positions (such as `[1..]`) here
+    // they are handled by parameter matching and would create
+    // inconsistencies here as multiple parameters could match such a position.
     exists(int index | ppos.isPositional(index) |
       result.getParameter() = func.getArg(index + this.positionalOffset())
     )
