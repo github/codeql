@@ -1,28 +1,36 @@
 #select
-| AllowListSanitizerWithJavaUtilList.java:83:66:83:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:83:66:83:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:89:66:89:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:89:66:89:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:95:66:95:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:95:66:95:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:101:66:101:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:101:66:101:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:107:66:107:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:107:66:107:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:113:66:113:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:113:66:113:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:123:66:123:70 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:123:66:123:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:144:67:144:71 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:144:67:144:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:164:67:164:71 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:164:67:164:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:182:67:182:71 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:182:67:182:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:202:67:202:71 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:202:67:202:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilList.java:226:67:226:71 | query | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:226:67:226:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:84:66:84:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:84:66:84:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:90:66:90:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:90:66:90:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:96:66:96:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:96:66:96:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:102:66:102:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:102:66:102:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:108:66:108:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:108:66:108:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:114:66:114:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:114:66:114:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:124:66:124:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:124:66:124:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:145:67:145:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:145:67:145:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:165:67:165:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:165:67:165:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:183:67:183:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:183:67:183:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:203:67:203:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:203:67:203:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
-| AllowListSanitizerWithJavaUtilSet.java:227:67:227:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:227:67:227:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:86:66:86:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:86:66:86:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:92:66:92:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:92:66:92:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:98:66:98:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:98:66:98:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:104:66:104:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:104:66:104:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:110:66:110:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:110:66:110:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:116:66:116:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:116:66:116:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:126:66:126:70 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:126:66:126:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:147:67:147:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:147:67:147:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:167:67:167:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:167:67:167:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:185:67:185:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:185:67:185:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:205:67:205:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:205:67:205:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:229:67:229:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:229:67:229:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:240:67:240:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:240:67:240:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:258:67:258:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:258:67:258:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:267:67:267:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:267:67:267:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilList.java:276:67:276:71 | query | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:276:67:276:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:85:66:85:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:85:66:85:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:91:66:91:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:91:66:91:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:97:66:97:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:97:66:97:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:103:66:103:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:103:66:103:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:109:66:109:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:109:66:109:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:115:66:115:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:115:66:115:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:125:66:125:70 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:125:66:125:70 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:146:67:146:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:146:67:146:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:166:67:166:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:166:67:166:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:184:67:184:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:184:67:184:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:204:67:204:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:204:67:204:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:228:67:228:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:228:67:228:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:239:67:239:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:239:67:239:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:257:67:257:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:257:67:257:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:266:67:266:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:266:67:266:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
+| AllowListSanitizerWithJavaUtilSet.java:275:67:275:71 | query | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:275:67:275:71 | query | This query depends on a $@. | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args | user-provided value |
 | Mongo.java:17:45:17:67 | parse(...) | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:17:45:17:67 | parse(...) | This query depends on a $@. | Mongo.java:10:29:10:41 | args | user-provided value |
 | Mongo.java:21:49:21:52 | json | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:21:49:21:52 | json | This query depends on a $@. | Mongo.java:10:29:10:41 | args | user-provided value |
 | Test.java:36:47:36:52 | query1 | Test.java:227:26:227:38 | args : String[] | Test.java:36:47:36:52 | query1 | This query depends on a $@. | Test.java:227:26:227:38 | args | user-provided value |
@@ -34,42 +42,54 @@
 | Test.java:209:47:209:68 | queryWithUserTableName | Test.java:227:26:227:38 | args : String[] | Test.java:209:47:209:68 | queryWithUserTableName | This query depends on a $@. | Test.java:227:26:227:38 | args | user-provided value |
 | Test.java:221:81:221:111 | ... + ... | Test.java:227:26:227:38 | args : String[] | Test.java:221:81:221:111 | ... + ... | This query depends on a $@. | Test.java:227:26:227:38 | args | user-provided value |
 edges
-| AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:47:20:47:23 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:48:13:48:16 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:50:25:50:28 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:47:20:47:23 | args : String[] | AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:48:13:48:16 | args : String[] | AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:50:25:50:28 | args : String[] | AllowListSanitizerWithJavaUtilList.java:117:35:117:47 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:83:66:83:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:89:66:89:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:95:66:95:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:101:66:101:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:107:66:107:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:113:66:113:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:117:35:117:47 | args : String[] | AllowListSanitizerWithJavaUtilList.java:123:66:123:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:144:67:144:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:164:67:164:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:182:67:182:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:202:67:202:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:226:67:226:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:49:20:49:23 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:50:13:50:16 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:52:25:52:28 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | AllowListSanitizerWithJavaUtilList.java:53:23:53:26 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:49:20:49:23 | args : String[] | AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:50:13:50:16 | args : String[] | AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:52:25:52:28 | args : String[] | AllowListSanitizerWithJavaUtilList.java:120:35:120:47 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:53:23:53:26 | args : String[] | AllowListSanitizerWithJavaUtilList.java:245:42:245:54 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:86:66:86:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:92:66:92:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:98:66:98:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:104:66:104:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:110:66:110:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | AllowListSanitizerWithJavaUtilList.java:116:66:116:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:120:35:120:47 | args : String[] | AllowListSanitizerWithJavaUtilList.java:126:66:126:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:147:67:147:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:167:67:167:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:185:67:185:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:205:67:205:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:229:67:229:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | AllowListSanitizerWithJavaUtilList.java:240:67:240:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:245:42:245:54 | args : String[] | AllowListSanitizerWithJavaUtilList.java:258:67:258:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:245:42:245:54 | args : String[] | AllowListSanitizerWithJavaUtilList.java:267:67:267:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilList.java:245:42:245:54 | args : String[] | AllowListSanitizerWithJavaUtilList.java:276:67:276:71 | query | provenance | Sink:MaD:6 |
 | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:48:20:48:23 | args : String[] | provenance |  |
 | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:49:13:49:16 | args : String[] | provenance |  |
 | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:51:25:51:28 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilSet.java:48:20:48:23 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilSet.java:49:13:49:16 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilSet.java:51:25:51:28 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:118:35:118:47 | args : String[] | provenance |  |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:84:66:84:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:90:66:90:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:96:66:96:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:102:66:102:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:108:66:108:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:114:66:114:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:118:35:118:47 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:124:66:124:70 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:145:67:145:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:165:67:165:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:183:67:183:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:203:67:203:71 | query | provenance | Sink:MaD:6 |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:227:67:227:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:52:23:52:26 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilSet.java:48:20:48:23 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilSet.java:49:13:49:16 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilSet.java:51:25:51:28 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:119:35:119:47 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilSet.java:52:23:52:26 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:244:42:244:54 | args : String[] | provenance |  |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:85:66:85:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:91:66:91:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:97:66:97:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:103:66:103:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:109:66:109:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:115:66:115:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:119:35:119:47 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:125:66:125:70 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:146:67:146:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:166:67:166:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:184:67:184:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:204:67:204:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:228:67:228:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:239:67:239:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:244:42:244:54 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:257:67:257:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:244:42:244:54 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:266:67:266:71 | query | provenance | Sink:MaD:6 |
+| AllowListSanitizerWithJavaUtilSet.java:244:42:244:54 | args : String[] | AllowListSanitizerWithJavaUtilSet.java:275:67:275:71 | query | provenance | Sink:MaD:6 |
 | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:17:56:17:66 | stringQuery : String | provenance |  |
 | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:21:49:21:52 | json | provenance |  |
 | Mongo.java:17:56:17:66 | stringQuery : String | Mongo.java:17:45:17:67 | parse(...) | provenance | Config |
@@ -100,44 +120,56 @@ models
 | 6 | Sink: java.sql; Statement; true; executeQuery; ; ; Argument[0]; sql-injection; manual |
 | 7 | Sink: java.sql; Statement; true; executeUpdate; ; ; Argument[0]; sql-injection; manual |
 nodes
-| AllowListSanitizerWithJavaUtilList.java:45:26:45:38 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:47:20:47:23 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:48:13:48:16 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:50:25:50:28 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:53:39:53:51 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:83:66:83:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:89:66:89:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:95:66:95:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:101:66:101:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:107:66:107:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:113:66:113:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:117:35:117:47 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:123:66:123:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:127:32:127:44 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilList.java:144:67:144:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:164:67:164:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:182:67:182:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:202:67:202:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilList.java:226:67:226:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:47:26:47:38 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:49:20:49:23 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:50:13:50:16 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:52:25:52:28 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:53:23:53:26 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:56:39:56:51 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:86:66:86:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:92:66:92:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:98:66:98:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:104:66:104:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:110:66:110:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:116:66:116:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:120:35:120:47 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:126:66:126:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:130:32:130:44 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:147:67:147:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:167:67:167:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:185:67:185:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:205:67:205:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:229:67:229:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:240:67:240:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:245:42:245:54 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilList.java:258:67:258:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:267:67:267:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilList.java:276:67:276:71 | query | semmle.label | query |
 | AllowListSanitizerWithJavaUtilSet.java:46:26:46:38 | args : String[] | semmle.label | args : String[] |
 | AllowListSanitizerWithJavaUtilSet.java:48:20:48:23 | args : String[] | semmle.label | args : String[] |
 | AllowListSanitizerWithJavaUtilSet.java:49:13:49:16 | args : String[] | semmle.label | args : String[] |
 | AllowListSanitizerWithJavaUtilSet.java:51:25:51:28 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilSet.java:54:39:54:51 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilSet.java:84:66:84:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:90:66:90:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:96:66:96:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:102:66:102:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:108:66:108:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:114:66:114:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:118:35:118:47 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilSet.java:124:66:124:70 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:128:32:128:44 | args : String[] | semmle.label | args : String[] |
-| AllowListSanitizerWithJavaUtilSet.java:145:67:145:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:165:67:165:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:183:67:183:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:203:67:203:71 | query | semmle.label | query |
-| AllowListSanitizerWithJavaUtilSet.java:227:67:227:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:52:23:52:26 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilSet.java:55:39:55:51 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilSet.java:85:66:85:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:91:66:91:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:97:66:97:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:103:66:103:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:109:66:109:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:115:66:115:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:119:35:119:47 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilSet.java:125:66:125:70 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:129:32:129:44 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilSet.java:146:67:146:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:166:67:166:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:184:67:184:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:204:67:204:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:228:67:228:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:239:67:239:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:244:42:244:54 | args : String[] | semmle.label | args : String[] |
+| AllowListSanitizerWithJavaUtilSet.java:257:67:257:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:266:67:266:71 | query | semmle.label | query |
+| AllowListSanitizerWithJavaUtilSet.java:275:67:275:71 | query | semmle.label | query |
 | Mongo.java:10:29:10:41 | args : String[] | semmle.label | args : String[] |
 | Mongo.java:17:45:17:67 | parse(...) | semmle.label | parse(...) |
 | Mongo.java:17:56:17:66 | stringQuery : String | semmle.label | stringQuery : String |
