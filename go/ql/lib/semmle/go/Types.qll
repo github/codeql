@@ -1065,9 +1065,18 @@ class ErrorType extends Type {
 }
 
 /**
+ * Gets the number of types with method `name`.
+ */
+bindingset[name]
+int numberOfTypesWithMethodName(string name) { result = count(Type t | t.hasMethod(name, _)) }
+
+/**
  * Gets the name of a method in the method set of `i`.
  *
  * This is used to restrict the set of interfaces to consider in the definition of `implements`,
- * so it does not matter which method name is chosen (we use the lexicographically least).
+ * so it does not matter which method name is chosen (we use the most unusual name the interface
+ * require; this is the most discriminating and so shrinks the search space the most).
  */
-private string getExampleMethodName(InterfaceType i) { result = min(string m | i.hasMethod(m, _)) }
+private string getExampleMethodName(InterfaceType i) {
+  result = min(string m | i.hasMethod(m, _) | m order by numberOfTypesWithMethodName(m))
+}
