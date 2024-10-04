@@ -15,7 +15,7 @@ import semmle.code.java.security.QueryInjection
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
  */
 module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 

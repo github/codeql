@@ -65,7 +65,7 @@ string getCallEdgeValue(CallNode call, Function target) {
   else
     exists(string fixedRelativePath |
       fixedRelativePath =
-        target.getLocation().getFile().getRelativePath().regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
+        target.getLocation().getFile().getAbsolutePath().regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
     |
       // the value needs to be enclosed in quotes to allow special characters
       result = "\"" + fixedRelativePath + ":" + betterQualName(target) + "\""

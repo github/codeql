@@ -2279,6 +2279,42 @@ impl From<trap::Label<StmtList>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
+pub struct Token {
+    _unused: ()
+}
+
+impl trap::TrapClass for Token {
+    fn class_name() -> &'static str { "Token" }
+}
+
+impl From<trap::Label<Token>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Token>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Token is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Token>> for trap::Label<Element> {
+    fn from(value: trap::Label<Token>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Token is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Token>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Token>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Token is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct TokenTree {
     pub id: trap::TrapId<TokenTree>,
 }
@@ -3781,6 +3817,63 @@ impl From<trap::Label<ClosureExpr>> for trap::Label<Expr> {
 impl From<trap::Label<ClosureExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ClosureExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Comment {
+    pub id: trap::TrapId<Comment>,
+    pub parent: trap::Label<AstNode>,
+    pub text: String,
+}
+
+impl trap::TrapEntry for Comment {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("comments", vec![id.into(), self.parent.into(), self.text.into()]);
+    }
+}
+
+impl trap::TrapClass for Comment {
+    fn class_name() -> &'static str { "Comment" }
+}
+
+impl From<trap::Label<Comment>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Comment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Comment>> for trap::Label<Element> {
+    fn from(value: trap::Label<Comment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Comment>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Comment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Comment>> for trap::Label<Token> {
+    fn from(value: trap::Label<Comment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Token
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

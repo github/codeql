@@ -33,7 +33,7 @@ class UrlConstructor extends ClassInstanceExpr {
 }
 
 module RemoteUrlToOpenStreamFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall m |

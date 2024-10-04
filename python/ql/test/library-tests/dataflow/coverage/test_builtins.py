@@ -142,6 +142,14 @@ def test_dict_from_dict():
     SINK(d2["k"]) #$ flow="SOURCE, l:-2 -> d2['k']"
     SINK_F(d2["k1"])
 
+@expects(4)
+def test_dict_from_multiple_args():
+    d = dict([("k", SOURCE), ("k1", NONSOURCE)], k2 = SOURCE, k3 = NONSOURCE)
+    SINK(d["k"]) #$ MISSING: flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"])
+    SINK(d["k2"]) #$ flow="SOURCE, l:-3 -> d['k2']"
+    SINK_F(d["k3"])
+
 ## Container methods
 
 ### List

@@ -1,5 +1,5 @@
 private import csharp as CS
-private import codeql.mad.modelgenerator.ModelPrinting
+private import codeql.mad.modelgenerator.internal.ModelPrinting
 private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 
 private module ModelPrintingLang implements ModelPrintingLangSig {

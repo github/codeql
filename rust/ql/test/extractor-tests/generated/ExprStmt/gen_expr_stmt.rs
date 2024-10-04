@@ -3,6 +3,6 @@
 fn test_expr_stmt() -> () {
     // An expression statement. For example:
     start();
-    finish()
+    finish();
     use std::env;
 }

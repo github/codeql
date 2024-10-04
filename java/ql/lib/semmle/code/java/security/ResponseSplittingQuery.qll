@@ -10,7 +10,7 @@ import semmle.code.java.security.ResponseSplitting
  */
 module ResponseSplittingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource and
+    source instanceof ActiveThreatModelSource and
     not source instanceof SafeHeaderSplittingSource
   }
 

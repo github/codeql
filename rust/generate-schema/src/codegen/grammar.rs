@@ -180,8 +180,12 @@ fn generate_nodes(kinds: KindsSrc, grammar: &AstSrc) -> String {
         .enums
         .iter()
         .map(|en| {
-            let variants: Vec<_> =
-                en.variants.iter().map(|var| format_ident!("{}", var)).sorted().collect();
+            let variants: Vec<_> = en
+                .variants
+                .iter()
+                .map(|var| format_ident!("{}", var))
+                .sorted()
+                .collect();
             let name = format_ident!("{}", en.name);
             let kinds: Vec<_> = variants
                 .iter()
@@ -311,8 +315,10 @@ fn generate_nodes(kinds: KindsSrc, grammar: &AstSrc) -> String {
     let enum_names = grammar.enums.iter().map(|it| &it.name);
     let node_names = grammar.nodes.iter().map(|it| &it.name);
 
-    let display_impls =
-        enum_names.chain(node_names.clone()).map(|it| format_ident!("{}", it)).map(|name| {
+    let display_impls = enum_names
+        .chain(node_names.clone())
+        .map(|it| format_ident!("{}", it))
+        .map(|name| {
             quote! {
                 impl std::fmt::Display for #name {
                     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -356,8 +362,11 @@ fn generate_nodes(kinds: KindsSrc, grammar: &AstSrc) -> String {
 
     let mut res = String::with_capacity(ast.len() * 2);
 
-    let mut docs =
-        grammar.nodes.iter().map(|it| &it.doc).chain(grammar.enums.iter().map(|it| &it.doc));
+    let mut docs = grammar
+        .nodes
+        .iter()
+        .map(|it| &it.doc)
+        .chain(grammar.enums.iter().map(|it| &it.doc));
 
     for chunk in ast.split("# [pretty_doc_comment_placeholder_workaround] ") {
         res.push_str(chunk);
@@ -393,16 +402,21 @@ fn generate_syntax_kinds(grammar: KindsSrc) -> String {
             quote! { #(#cs)* }
         }
     });
-    let punctuation =
-        grammar.punct.iter().map(|(_token, name)| format_ident!("{}", name)).collect::<Vec<_>>();
+    let punctuation = grammar
+        .punct
+        .iter()
+        .map(|(_token, name)| format_ident!("{}", name))
+        .collect::<Vec<_>>();
 
     let fmt_kw_as_variant = |&name| match name {
         "Self" => format_ident!("SELF_TYPE_KW"),
         name => format_ident!("{}_KW", to_upper_snake_case(name)),
     };
     let strict_keywords = grammar.keywords;
-    let strict_keywords_variants =
-        strict_keywords.iter().map(fmt_kw_as_variant).collect::<Vec<_>>();
+    let strict_keywords_variants = strict_keywords
+        .iter()
+        .map(fmt_kw_as_variant)
+        .collect::<Vec<_>>();
     let strict_keywords_tokens = strict_keywords.iter().map(|it| format_ident!("{it}"));
 
     let edition_dependent_keywords_variants_match_arm = grammar
@@ -425,15 +439,23 @@ fn generate_syntax_kinds(grammar: KindsSrc) -> String {
         .iter()
         .map(|(kw, _)| fmt_kw_as_variant(kw))
         .collect::<Vec<_>>();
-    let edition_dependent_keywords_tokens =
-        grammar.edition_dependent_keywords.iter().map(|(it, _)| format_ident!("{it}"));
+    let edition_dependent_keywords_tokens = grammar
+        .edition_dependent_keywords
+        .iter()
+        .map(|(it, _)| format_ident!("{it}"));
 
     let contextual_keywords = grammar.contextual_keywords;
-    let contextual_keywords_variants =
-        contextual_keywords.iter().map(fmt_kw_as_variant).collect::<Vec<_>>();
+    let contextual_keywords_variants = contextual_keywords
+        .iter()
+        .map(fmt_kw_as_variant)
+        .collect::<Vec<_>>();
     let contextual_keywords_tokens = contextual_keywords.iter().map(|it| format_ident!("{it}"));
     let contextual_keywords_str_match_arm = grammar.contextual_keywords.iter().map(|kw| {
-        match grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw) {
+        match grammar
+            .edition_dependent_keywords
+            .iter()
+            .find(|(ed_kw, _)| ed_kw == kw)
+        {
             Some((_, ed)) => quote! { #kw if edition < #ed },
             None => quote! { #kw },
         }
@@ -443,7 +465,11 @@ fn generate_syntax_kinds(grammar: KindsSrc) -> String {
         .iter()
         .map(|kw_s| {
             let kw = fmt_kw_as_variant(kw_s);
-            match grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw_s) {
+            match grammar
+                .edition_dependent_keywords
+                .iter()
+                .find(|(ed_kw, _)| ed_kw == kw_s)
+            {
                 Some((_, ed)) => quote! { #kw if edition < #ed },
                 None => quote! { #kw },
             }
@@ -457,12 +483,23 @@ fn generate_syntax_kinds(grammar: KindsSrc) -> String {
         .dedup()
         .collect::<Vec<_>>();
 
-    let literals =
-        grammar.literals.iter().map(|name| format_ident!("{}", name)).collect::<Vec<_>>();
+    let literals = grammar
+        .literals
+        .iter()
+        .map(|name| format_ident!("{}", name))
+        .collect::<Vec<_>>();
 
-    let tokens = grammar.tokens.iter().map(|name| format_ident!("{}", name)).collect::<Vec<_>>();
+    let tokens = grammar
+        .tokens
+        .iter()
+        .map(|name| format_ident!("{}", name))
+        .collect::<Vec<_>>();
 
-    let nodes = grammar.nodes.iter().map(|name| format_ident!("{}", name)).collect::<Vec<_>>();
+    let nodes = grammar
+        .nodes
+        .iter()
+        .map(|name| format_ident!("{}", name))
+        .collect::<Vec<_>>();
 
     let ast = quote! {
         #![allow(bad_style, missing_docs, unreachable_pub)]
@@ -569,7 +606,10 @@ fn generate_syntax_kinds(grammar: KindsSrc) -> String {
         }
     };
 
-    add_preamble(crate::flags::CodegenType::Grammar, reformat(ast.to_string()))
+    add_preamble(
+        crate::flags::CodegenType::Grammar,
+        reformat(ast.to_string()),
+    )
 }
 
 fn to_upper_snake_case(s: &str) -> String {
@@ -719,13 +759,23 @@ pub(crate) fn lower(grammar: &Grammar) -> AstSrc {
         let rule = &grammar[node].rule;
         match lower_enum(grammar, rule) {
             Some(variants) => {
-                let enum_src = AstEnumSrc { doc: Vec::new(), name, traits: Vec::new(), variants };
+                let enum_src = AstEnumSrc {
+                    doc: Vec::new(),
+                    name,
+                    traits: Vec::new(),
+                    variants,
+                };
                 res.enums.push(enum_src);
             }
             None => {
                 let mut fields = Vec::new();
                 lower_rule(&mut fields, grammar, None, rule);
-                res.nodes.push(AstNodeSrc { doc: Vec::new(), name, traits: Vec::new(), fields });
+                res.nodes.push(AstNodeSrc {
+                    doc: Vec::new(),
+                    name,
+                    traits: Vec::new(),
+                    fields,
+                });
             }
         }
     }
@@ -776,7 +826,11 @@ fn lower_rule(acc: &mut Vec<Field>, grammar: &Grammar, label: Option<&String>, r
         Rule::Node(node) => {
             let ty = grammar[*node].name.clone();
             let name = label.cloned().unwrap_or_else(|| to_lower_snake_case(&ty));
-            let field = Field::Node { name, ty, cardinality: Cardinality::Optional };
+            let field = Field::Node {
+                name,
+                ty,
+                cardinality: Cardinality::Optional,
+            };
             acc.push(field);
         }
         Rule::Token(token) => {
@@ -791,8 +845,14 @@ fn lower_rule(acc: &mut Vec<Field>, grammar: &Grammar, label: Option<&String>, r
         Rule::Rep(inner) => {
             if let Rule::Node(node) = &**inner {
                 let ty = grammar[*node].name.clone();
-                let name = label.cloned().unwrap_or_else(|| pluralize(&to_lower_snake_case(&ty)));
-                let field = Field::Node { name, ty, cardinality: Cardinality::Many };
+                let name = label
+                    .cloned()
+                    .unwrap_or_else(|| pluralize(&to_lower_snake_case(&ty)));
+                let field = Field::Node {
+                    name,
+                    ty,
+                    cardinality: Cardinality::Many,
+                };
                 acc.push(field);
                 return;
             }
@@ -863,8 +923,14 @@ fn lower_separated_list(
         return false;
     }
     let ty = grammar[*node].name.clone();
-    let name = label.cloned().unwrap_or_else(|| pluralize(&to_lower_snake_case(&ty)));
-    let field = Field::Node { name, ty, cardinality: Cardinality::Many };
+    let name = label
+        .cloned()
+        .unwrap_or_else(|| pluralize(&to_lower_snake_case(&ty)));
+    let field = Field::Node {
+        name,
+        ty,
+        cardinality: Cardinality::Many,
+    };
     acc.push(field);
     true
 }
@@ -900,7 +966,11 @@ fn extract_enums(ast: &mut AstSrc) {
                 node.remove_field(to_remove);
                 let ty = enm.name.clone();
                 let name = to_lower_snake_case(&ty);
-                node.fields.push(Field::Node { name, ty, cardinality: Cardinality::Optional });
+                node.fields.push(Field::Node {
+                    name,
+                    ty,
+                    cardinality: Cardinality::Optional,
+                });
             }
         }
     }

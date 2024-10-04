@@ -4,6 +4,7 @@ private import codeql.Locations
 private import codeql.util.FileSystem
 private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
+private import codeql.rust.elements.Comment
 
 private module Input implements InputSig {
   abstract class ContainerBase extends @container {
@@ -44,10 +45,12 @@ class File extends Container, Impl::File {
     result =
       count(int line |
         exists(AstNode node, Location loc |
-          not node instanceof SourceFile and loc = node.getLocation()
+          not node instanceof Comment and
+          not node instanceof SourceFile and
+          loc = node.getLocation()
         |
           node.getFile() = this and
-          line = [loc.getStartLine(), loc.getEndLine()] and
+          line = [/*loc.getStartLine(), */ loc.getEndLine()] and // ignore start locations for now as we're getting them wrong for things with a comment attached
           not loc instanceof EmptyLocation
         )
       )
