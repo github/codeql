@@ -395,34 +395,27 @@ module Impl {
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
-  private predicate assignLhs(Expr e, boolean compound) {
-    exists(BinaryExpr be, string op |
-      op = be.getOperatorName().regexpCapture("(.*)=", 1) and
-      e = be.getLhs()
-    |
-      op = "" and compound = false
-      or
-      op != "" and compound = true
-    )
+  private predicate assignmentExprDescendant(Expr e) {
+    e = any(AssignmentExpr ae).getLhs()
     or
     exists(Expr mid |
-      assignLhs(mid, compound) and
-      getImmediateParent(e) = mid
+      assignmentExprDescendant(mid) and
+      getImmediateParent(e) = mid and
+      not mid.(PrefixExpr).getOperatorName() = "*"
     )
   }
 
   /** A variable write. */
   class VariableWriteAccess extends VariableAccess {
-    VariableWriteAccess() { assignLhs(this, _) }
+    VariableWriteAccess() { assignmentExprDescendant(this) }
   }
 
   /** A variable read. */
   class VariableReadAccess extends VariableAccess {
     VariableReadAccess() {
-      not this instanceof VariableWriteAccess
-      or
-      // consider LHS in compound assignments both reads and writes
-      assignLhs(this, true)
+      not this instanceof VariableWriteAccess and
+      not this = any(RefExpr re).getExpr() and
+      not this = any(CompoundAssignmentExpr cae).getLhs()
     }
   }
 
