@@ -182,6 +182,8 @@ predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(Yield yield |
     nodeTo.asCfgNode() = yield.getAFlowNode() and
     nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    // TODO: Consider if this will also need to transfer dictionary content
+    // once dictionary comprehensions are supported.
     c instanceof ListElementContent
   )
 }
