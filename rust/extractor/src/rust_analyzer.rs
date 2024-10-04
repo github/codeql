@@ -36,7 +36,7 @@ impl RustAnalyzer {
                 .ok(),
             ..Default::default()
         };
-        let progress = |t| (log::info!("progress: {}", t));
+        let progress = |t| (log::trace!("progress: {}", t));
         let load_config = LoadCargoConfig {
             load_out_dirs_from_check: true,
             with_proc_macro_server: ProcMacroServerChoice::Sysroot,
