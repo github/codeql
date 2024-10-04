@@ -43,7 +43,6 @@ fn main() -> anyhow::Result<()> {
         .module(module_path!())
         .verbosity(2 + cfg.verbose as usize)
         .init()?;
-    log::info!("{cfg:?}");
     let rust_analyzer = rust_analyzer::RustAnalyzer::new(&cfg)?;
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
