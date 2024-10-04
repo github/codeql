@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILCompiler", "MethodProfileData", False, "MethodProfileData", "(Internal.TypeSystem.MethodDesc,ILCompiler.MethodProfilingDataFlags,System.Double,System.Collections.Generic.Dictionary<Internal.TypeSystem.MethodDesc,System.Int32>,System.UInt32,Internal.Pgo.PgoSchemaElem[])", "", "Argument[0]", "Argument[this].Field[ILCompiler.MethodProfileData.Method]", "value", "dfc-generated"]
+      - ["ILCompiler", "MethodProfileData", False, "MethodProfileData", "(Internal.TypeSystem.MethodDesc,ILCompiler.MethodProfilingDataFlags,System.Double,System.Collections.Generic.Dictionary<Internal.TypeSystem.MethodDesc,System.Int32>,System.UInt32,Internal.Pgo.PgoSchemaElem[])", "", "Argument[3]", "Argument[this].Field[ILCompiler.MethodProfileData.CallWeights]", "value", "dfc-generated"]
+      - ["ILCompiler", "MethodProfileData", False, "MethodProfileData", "(Internal.TypeSystem.MethodDesc,ILCompiler.MethodProfilingDataFlags,System.Double,System.Collections.Generic.Dictionary<Internal.TypeSystem.MethodDesc,System.Int32>,System.UInt32,Internal.Pgo.PgoSchemaElem[])", "", "Argument[5]", "Argument[this].Field[ILCompiler.MethodProfileData.SchemaData]", "value", "dfc-generated"]
+      - ["ILCompiler", "ProfileData", False, "MergeProfileData", "(System.Collections.Generic.Dictionary<Internal.TypeSystem.MethodDesc,ILCompiler.MethodProfileData>,ILCompiler.ProfileData)", "", "Argument[1]", "Argument[0].Element", "taint", "df-generated"]
+      - ["ILCompiler", "ProfileData", True, "GetAllMethodProfileData", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILCompiler", "EmptyProfileData", "GetMethodBlockCount", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler", "EmptyProfileData", "GetMethodProfileData", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler", "EmptyProfileData", "get_Config", "()", "summary", "df-generated"]
+      - ["ILCompiler", "EmptyProfileData", "get_PartialNGen", "()", "summary", "df-generated"]
+      - ["ILCompiler", "EmptyProfileData", "get_Singleton", "()", "summary", "df-generated"]
+      - ["ILCompiler", "ProfileData", "GetMethodBlockCount", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler", "ProfileData", "GetMethodProfileData", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler", "ProfileData", "get_Config", "()", "summary", "df-generated"]
+      - ["ILCompiler", "ProfileData", "get_PartialNGen", "()", "summary", "df-generated"]

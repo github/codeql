@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["IntrinsicsInSystemPrivateCoreLib", "IntrinsicsInSystemPrivateCoreLibAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["IntrinsicsInSystemPrivateCoreLib", "IntrinsicsInSystemPrivateCoreLibAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]

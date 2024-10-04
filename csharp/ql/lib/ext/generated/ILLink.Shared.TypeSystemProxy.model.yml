@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "Equals", "(ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "GetHashCode", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "ParameterIndex", "(System.Int32)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Addition", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Addition", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,System.Int32)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Equality", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Increment", "(ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Inequality", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Subtraction", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,ILLink.Shared.TypeSystemProxy.ParameterIndex)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "ParameterIndex", "op_Subtraction", "(ILLink.Shared.TypeSystemProxy.ParameterIndex,System.Int32)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "WellKnownTypeExtensions", "GetName", "(ILLink.Shared.TypeSystemProxy.WellKnownType)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "WellKnownTypeExtensions", "GetNamespace", "(ILLink.Shared.TypeSystemProxy.WellKnownType)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "WellKnownTypeExtensions", "GetNamespaceAndName", "(ILLink.Shared.TypeSystemProxy.WellKnownType)", "summary", "df-generated"]
+      - ["ILLink.Shared.TypeSystemProxy", "WellKnownTypeExtensions", "GetWellKnownType", "(System.String,System.String)", "summary", "df-generated"]

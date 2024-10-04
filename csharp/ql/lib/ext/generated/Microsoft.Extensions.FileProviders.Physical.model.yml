@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", False, "PhysicalDirectoryInfo", "(System.IO.DirectoryInfo)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo._info]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", False, "get_Name", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo._info].Property[System.IO.DirectoryInfo.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", False, "get_PhysicalPath", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo._info].Field[System.IO.FileSystemInfo.FullPath]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", False, "get_PhysicalPath", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo._info].Property[System.IO.FileSystemInfo.FullName]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", False, "CreateReadStream", "()", "", "Argument[this].Property[Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo.PhysicalPath]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", False, "CreateReadStream", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo._info].Property[System.IO.FileSystemInfo.FullName]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", False, "PhysicalFileInfo", "(System.IO.FileInfo)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo._info]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", False, "get_Name", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo._info].Property[System.IO.FileInfo.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", False, "get_PhysicalPath", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo._info].Property[System.IO.FileSystemInfo.FullName]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", False, "PhysicalFilesWatcher", "(System.String,System.IO.FileSystemWatcher,System.Boolean,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", False, "PhysicalFilesWatcher", "(System.String,System.IO.FileSystemWatcher,System.Boolean,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PollingFileChangeToken", False, "PollingFileChangeToken", "(System.IO.FileInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", "CreateReadStream", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", "get_IsDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", "get_LastModified", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalDirectoryInfo", "get_Length", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", "get_IsDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", "get_LastModified", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFileInfo", "get_Length", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", "CreateFileChangeToken", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PhysicalFilesWatcher", "PhysicalFilesWatcher", "(System.String,System.IO.FileSystemWatcher,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PollingFileChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PollingWildCardChangeToken", "GetLastWriteUtc", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PollingWildCardChangeToken", "PollingWildCardChangeToken", "(System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Physical", "PollingWildCardChangeToken", "get_HasChanged", "()", "summary", "df-generated"]

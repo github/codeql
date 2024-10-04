@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement,System.Security.Authentication.ExtendedProtection.ChannelBinding)", "", "Argument[1]", "Argument[this].SyntheticField[System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy._customChannelBinding]", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement,System.Security.Authentication.ExtendedProtection.ProtectionScenario,System.Security.Authentication.ExtendedProtection.ServiceNameCollection)", "", "Argument[2]", "Argument[this].SyntheticField[System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy._customServiceNames]", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "ToString", "()", "", "Argument[this].SyntheticField[System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy._customServiceNames].Element", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "get_CustomChannelBinding", "()", "", "Argument[this].SyntheticField[System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy._customChannelBinding]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", False, "get_CustomServiceNames", "()", "", "Argument[this].SyntheticField[System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy._customServiceNames]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "Merge", "(System.Collections.IEnumerable)", "", "Argument[0].Element", "ReturnValue.Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "Merge", "(System.Collections.IEnumerable)", "", "Argument[0].Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "ReturnValue.Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "Merge", "(System.String)", "", "Argument[0]", "ReturnValue.Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "ServiceNameCollection", "(System.Collections.ICollection)", "", "Argument[0].Element", "Argument[this].Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "value", "dfc-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", False, "ServiceNameCollection", "(System.Collections.ICollection)", "", "Argument[0].Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "Argument[this].Property[System.Collections.ReadOnlyCollectionBase.InnerList].Element", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Security.Authentication.ExtendedProtection", "ChannelBinding", "ChannelBinding", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ChannelBinding", "get_Size", "()", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement)", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "ExtendedProtectionPolicy", "(System.Security.Authentication.ExtendedProtection.PolicyEnforcement,System.Security.Authentication.ExtendedProtection.ProtectionScenario,System.Collections.ICollection)", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_OSSupportsExtendedProtection", "()", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_PolicyEnforcement", "()", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicy", "get_ProtectionScenario", "()", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ExtendedProtectionPolicyTypeConverter", "CanConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Type)", "summary", "df-generated"]
+      - ["System.Security.Authentication.ExtendedProtection", "ServiceNameCollection", "Contains", "(System.String)", "summary", "df-generated"]

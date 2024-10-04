@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Drawing.Printing", "PrintingPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermission", "IsUnrestricted", "()", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermission", "PrintingPermission", "(System.Drawing.Printing.PrintingPermissionLevel)", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermission", "PrintingPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermission", "ToXml", "()", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Drawing.Printing", "PrintingPermissionAttribute", "PrintingPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]

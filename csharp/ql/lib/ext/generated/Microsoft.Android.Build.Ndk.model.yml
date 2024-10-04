@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "NdkTools", "(System.String,System.String,System.String)", "", "Argument[2]", "Argument[this].SyntheticField[Microsoft.Android.Build.Ndk.NdkTools.clangPath]", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "get_AsPrefixPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "get_ClangPath", "()", "", "Argument[this].SyntheticField[Microsoft.Android.Build.Ndk.NdkTools.clangPath]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "get_LdName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "get_LdPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", False, "get_ToolPrefixPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkVersion", False, "NdkVersion", "(System.String)", "", "Argument[0]", "Argument[this].Property[Microsoft.Android.Build.Ndk.NdkVersion.Tag]", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkVersion", False, "ToString", "()", "", "Argument[this].Property[Microsoft.Android.Build.Ndk.NdkVersion.Main]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkVersion", False, "ToString", "()", "", "Argument[this].Property[Microsoft.Android.Build.Ndk.NdkVersion.Tag]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.Android.Build.Ndk", "Ndk", False, "get_NdkPath", "()", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Android.Build.Ndk", "AndroidArch", "AndroidArch", "(System.String,System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "Ndk", "get_NdkPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "Ndk", "get_NdkVersion", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkTools", "get_Triple", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkVersion", "get_Main", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Ndk", "NdkVersion", "get_Tag", "()", "summary", "df-generated"]

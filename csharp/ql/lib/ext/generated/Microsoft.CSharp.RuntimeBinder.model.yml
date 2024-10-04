@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.CSharp.RuntimeBinder", "CSharpArgumentInfo", False, "Create", "(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "BinaryOperation", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Linq.Expressions.ExpressionType,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "Convert", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Type)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "GetIndex", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "GetMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "Invoke", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "InvokeConstructor", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "InvokeMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Collections.Generic.IEnumerable<System.Type>,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "IsEvent", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "SetIndex", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "SetMember", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.String,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "Binder", "UnaryOperation", "(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Linq.Expressions.ExpressionType,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderException", "RuntimeBinderException", "(System.String,System.Exception)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderInternalCompilerException", "RuntimeBinderInternalCompilerException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderInternalCompilerException", "RuntimeBinderInternalCompilerException", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.CSharp.RuntimeBinder", "RuntimeBinderInternalCompilerException", "RuntimeBinderInternalCompilerException", "(System.String,System.Exception)", "summary", "df-generated"]

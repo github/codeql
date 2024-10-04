@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", False, "FlowAnnotations", "(Mono.Linker.LinkContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", True, "GetDiagnosticArgumentsForAnnotationMismatch", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILLink.Shared.TrimAnalysis", "FieldReferenceValue", "FieldReferenceValue", "(Mono.Cecil.FieldDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FieldReferenceValue", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FieldReferenceValue", "op_Equality", "(ILLink.Shared.TrimAnalysis.FieldReferenceValue,ILLink.Shared.TrimAnalysis.FieldReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FieldReferenceValue", "op_Inequality", "(ILLink.Shared.TrimAnalysis.FieldReferenceValue,ILLink.Shared.TrimAnalysis.FieldReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetFieldAnnotation", "(Mono.Cecil.FieldDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetGenericParameterAnnotation", "(Mono.Cecil.GenericParameter)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetMethodReturnValueAnnotation", "(Microsoft.CodeAnalysis.IMethodSymbol)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetReturnParameterAnnotation", "(Mono.Cecil.MethodDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetTypeAnnotation", "(Microsoft.CodeAnalysis.ITypeSymbol)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "GetTypeAnnotation", "(Mono.Cecil.TypeDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "IsTypeInterestingForDataflow", "(Mono.Cecil.TypeReference)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "RequiresDataFlowAnalysis", "(Microsoft.CodeAnalysis.IMethodSymbol)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "RequiresDataFlowAnalysis", "(Mono.Cecil.FieldDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "RequiresDataFlowAnalysis", "(Mono.Cecil.MethodDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "RequiresGenericArgumentDataFlowAnalysis", "(Mono.Cecil.GenericParameter)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "RequiresVirtualMethodDataFlowAnalysis", "(Mono.Cecil.MethodDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "ShouldWarnWhenAccessedForReflection", "(Mono.Cecil.FieldDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "ShouldWarnWhenAccessedForReflection", "(Mono.Cecil.IMemberDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "ShouldWarnWhenAccessedForReflection", "(Mono.Cecil.MethodDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "FlowAnnotations", "get_Instance", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "LocalVariableReferenceValue", "LocalVariableReferenceValue", "(Mono.Cecil.Cil.VariableDefinition)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "LocalVariableReferenceValue", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "LocalVariableReferenceValue", "op_Equality", "(ILLink.Shared.TrimAnalysis.LocalVariableReferenceValue,ILLink.Shared.TrimAnalysis.LocalVariableReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "LocalVariableReferenceValue", "op_Inequality", "(ILLink.Shared.TrimAnalysis.LocalVariableReferenceValue,ILLink.Shared.TrimAnalysis.LocalVariableReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "ReferenceValue", "(Mono.Cecil.TypeReference)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "op_Equality", "(ILLink.Shared.TrimAnalysis.ReferenceValue,ILLink.Shared.TrimAnalysis.ReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ReferenceValue", "op_Inequality", "(ILLink.Shared.TrimAnalysis.ReferenceValue,ILLink.Shared.TrimAnalysis.ReferenceValue)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "get_DynamicallyAccessedMemberTypes", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "op_Equality", "(ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers,ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers)", "summary", "df-generated"]
+      - ["ILLink.Shared.TrimAnalysis", "ValueWithDynamicallyAccessedMembers", "op_Inequality", "(ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers,ILLink.Shared.TrimAnalysis.ValueWithDynamicallyAccessedMembers)", "summary", "df-generated"]

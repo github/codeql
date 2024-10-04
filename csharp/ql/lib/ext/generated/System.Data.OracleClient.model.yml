@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Data.OracleClient", "OraclePermission", "Add", "(System.String,System.String,System.Data.KeyRestrictionBehavior)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "IsUnrestricted", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "OraclePermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "ToXml", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "OraclePermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "ShouldSerializeConnectionString", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "ShouldSerializeKeyRestrictions", "()", "summary", "df-generated"]

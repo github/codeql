@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Mobile.Build.Clang", "ClangBuildOptions", "get_CompilerArguments", "()", "summary", "df-generated"]
+      - ["Microsoft.Mobile.Build.Clang", "ClangBuildOptions", "get_IncludePaths", "()", "summary", "df-generated"]
+      - ["Microsoft.Mobile.Build.Clang", "ClangBuildOptions", "get_LinkerArguments", "()", "summary", "df-generated"]
+      - ["Microsoft.Mobile.Build.Clang", "ClangBuildOptions", "get_NativeLibraryPaths", "()", "summary", "df-generated"]
+      - ["Microsoft.Mobile.Build.Clang", "ClangBuildOptions", "get_Sources", "()", "summary", "df-generated"]

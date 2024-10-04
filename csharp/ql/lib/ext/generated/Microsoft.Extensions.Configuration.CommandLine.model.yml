@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "CommandLineConfigurationProvider", "(System.Collections.Generic.IEnumerable<System.String>,System.Collections.Generic.IDictionary<System.String,System.String>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "Load", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

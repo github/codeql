@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["SourceGenerators", "ImmutableEquatableArray<T>+Enumerator", False, "get_Current", "()", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1+Enumerator._values].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "GetEnumerator", "()", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values]", "ReturnValue.SyntheticField[SourceGenerators.ImmutableEquatableArray`1+Enumerator._values]", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "ImmutableEquatableArray", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values].Element", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "get_Item", "(System.Int32)", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["SourceGenerators", "TypeRef", False, "TypeRef", "(Microsoft.CodeAnalysis.ITypeSymbol)", "", "Argument[0].Property[Microsoft.CodeAnalysis.ISymbol.Name]", "Argument[this].Property[SourceGenerators.TypeRef.Name]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["SourceGenerators", "ImmutableEquatableArray<T>+Enumerator", "MoveNext", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", "Equals", "(SourceGenerators.ImmutableEquatableArray<T>)", "summary", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", "GetHashCode", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", "get_Count", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", "get_Empty", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "Equals", "(SourceGenerators.TypeRef)", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "GetHashCode", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_CanBeNull", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_FullyQualifiedName", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_IsValueType", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_Name", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_SpecialType", "()", "summary", "df-generated"]
+      - ["SourceGenerators", "TypeRef", "get_TypeKind", "()", "summary", "df-generated"]

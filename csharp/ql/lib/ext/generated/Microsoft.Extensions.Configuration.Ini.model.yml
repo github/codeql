@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationProvider", "IniConfigurationProvider", "(Microsoft.Extensions.Configuration.Ini.IniConfigurationSource)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "IniStreamConfigurationProvider", "(Microsoft.Extensions.Configuration.Ini.IniStreamConfigurationSource)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "Read", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
