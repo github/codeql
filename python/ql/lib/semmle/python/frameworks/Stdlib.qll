@@ -4251,13 +4251,18 @@ module StdlibPrivate {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // The positional argument contains a mapping.
-      // TODO: Add the list-of-pairs version
       // TODO: these values can be overwritten by keyword arguments
+      //  - dict mapping
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[0].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
+      or
+      //  - list-of-pairs mapping
+      input = "Argument[0].ListElement.TupleElement[1]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = true
       or
       // The keyword arguments are added to the dictionary.
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
@@ -4266,7 +4271,7 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      // Imprecise content in any argument ends up on the container itself.
+      // Imprecise content in the first argument ends up on the container itself.
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
