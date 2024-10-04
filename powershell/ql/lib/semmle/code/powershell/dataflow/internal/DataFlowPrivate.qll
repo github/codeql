@@ -528,6 +528,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     or
     not exists(e.getValue().asInt())
   )
+  or
+  exists(Content::KnownElementContent ec, int index |
+    node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
+    c.isKnownOrUnknownElement(ec) and
+    index = ec.getIndex().asInt()
+  )
 }
 
 /**

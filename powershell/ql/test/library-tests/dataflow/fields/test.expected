@@ -157,6 +157,12 @@ edges
 | test.ps1:31:6:31:22 | ...[...] [element 2] | test.ps1:31:6:31:33 | ...[...] | provenance |  |
 | test.ps1:31:6:31:22 | ...[...] [element 3] | test.ps1:31:6:31:33 | ...[...] | provenance |  |
 | test.ps1:31:6:31:22 | ...[...] [element 4] | test.ps1:31:6:31:33 | ...[...] | provenance |  |
+| test.ps1:33:6:33:17 | Source | test.ps1:35:15:35:17 | x | provenance |  |
+| test.ps1:35:9:35:17 | ...,... [element 2] | test.ps1:38:6:38:11 | arr8 [element 2] | provenance |  |
+| test.ps1:35:9:35:17 | ...,... [element 2] | test.ps1:39:6:39:11 | arr8 [element 2] | provenance |  |
+| test.ps1:35:15:35:17 | x | test.ps1:35:9:35:17 | ...,... [element 2] | provenance |  |
+| test.ps1:38:6:38:11 | arr8 [element 2] | test.ps1:38:6:38:14 | ...[...] | provenance |  |
+| test.ps1:39:6:39:11 | arr8 [element 2] | test.ps1:39:6:39:21 | ...[...] | provenance |  |
 nodes
 | test.ps1:1:1:1:3 | [post] a [f] | semmle.label | [post] a [f] |
 | test.ps1:1:8:1:18 | Source | semmle.label | Source |
@@ -287,6 +293,13 @@ nodes
 | test.ps1:31:6:31:22 | ...[...] [element 3] | semmle.label | ...[...] [element 3] |
 | test.ps1:31:6:31:22 | ...[...] [element 4] | semmle.label | ...[...] [element 4] |
 | test.ps1:31:6:31:33 | ...[...] | semmle.label | ...[...] |
+| test.ps1:33:6:33:17 | Source | semmle.label | Source |
+| test.ps1:35:9:35:17 | ...,... [element 2] | semmle.label | ...,... [element 2] |
+| test.ps1:35:15:35:17 | x | semmle.label | x |
+| test.ps1:38:6:38:11 | arr8 [element 2] | semmle.label | arr8 [element 2] |
+| test.ps1:38:6:38:14 | ...[...] | semmle.label | ...[...] |
+| test.ps1:39:6:39:11 | arr8 [element 2] | semmle.label | arr8 [element 2] |
+| test.ps1:39:6:39:21 | ...[...] | semmle.label | ...[...] |
 subpaths
 testFailures
 #select
@@ -299,3 +312,5 @@ testFailures
 | test.ps1:26:6:26:25 | ...[...] | test.ps1:25:23:25:33 | Source | test.ps1:26:6:26:25 | ...[...] | $@ | test.ps1:25:23:25:33 | Source | Source |
 | test.ps1:30:6:30:17 | ...[...] | test.ps1:29:31:29:41 | Source | test.ps1:30:6:30:17 | ...[...] | $@ | test.ps1:29:31:29:41 | Source | Source |
 | test.ps1:31:6:31:33 | ...[...] | test.ps1:29:31:29:41 | Source | test.ps1:31:6:31:33 | ...[...] | $@ | test.ps1:29:31:29:41 | Source | Source |
+| test.ps1:38:6:38:14 | ...[...] | test.ps1:33:6:33:17 | Source | test.ps1:38:6:38:14 | ...[...] | $@ | test.ps1:33:6:33:17 | Source | Source |
+| test.ps1:39:6:39:21 | ...[...] | test.ps1:33:6:33:17 | Source | test.ps1:39:6:39:21 | ...[...] | $@ | test.ps1:33:6:33:17 | Source | Source |

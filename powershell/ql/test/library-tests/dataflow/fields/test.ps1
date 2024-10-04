@@ -35,8 +35,8 @@ $x = Source "10"
 $arr8 = 0, 1, $x
 Sink $arr8[0] # clean
 Sink $arr8[1] # clean
-Sink $arr8[2] # $ MISSING: hasValueFlow=10
-Sink $arr8[$unknown] # MISSING: hasValueFlow=10
+Sink $arr8[2] # $ hasValueFlow=10
+Sink $arr8[$unknown] # $ hasValueFlow=10
 
 $y = Source "11"
 
