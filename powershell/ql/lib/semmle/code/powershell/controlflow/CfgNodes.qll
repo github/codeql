@@ -334,6 +334,20 @@ module ExprNodes {
     MemberCfgReadAccessNode() { this.getExpr() instanceof MemberExprReadAccess }
   }
 
+  class ArrayLiteralChildMapping extends ExprChildMapping, ArrayLiteral {
+    override predicate relevantChild(Ast n) { n = this.getAnElement() }
+  }
+
+  class ArrayLiteralCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ArrayLiteralCfgNode" }
+
+    override ArrayLiteralChildMapping e;
+
+    ExprCfgNode getElement(int i) { e.hasCfgChild(e.getElement(i), this, result) }
+
+    ExprCfgNode getAnElement() { e.hasCfgChild(e.getAnElement(), this, result) }
+  }
+
   class IndexChildMapping extends ExprChildMapping, IndexExpr {
     override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getIndex() }
   }
