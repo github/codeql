@@ -1,30 +1,44 @@
 import actions
 
-string any_relevant_category() {
+string any_category() {
   result =
     [
       "untrusted-checkout", "output-clobbering", "envpath-injection", "envvar-injection",
       "command-injection", "argument-injection", "code-injection", "cache-poisoning",
-      "untrusted-checkout-toctou", "artifact-poisoning"
+      "untrusted-checkout-toctou", "artifact-poisoning", "artifact-poisoning-toctou"
     ]
 }
 
-string any_non_toctou_category() {
-  result = any_relevant_category() and not result = "untrusted-checkout-toctou"
+string non_toctou_category() {
+  result = any_category() and not result = "untrusted-checkout-toctou"
 }
 
-string any_relevant_event() {
+string toctou_category() { result = ["untrusted-checkout-toctou", "artifact-poisoning-toctou"] }
+
+string any_event() { result = actor_not_attacker_event() or result = actor_is_attacker_event() }
+
+string actor_is_attacker_event() {
   result =
     [
+      // actor and attacker have to be the same
       "pull_request_target",
-      "issue_comment",
-      "pull_request_comment",
       "workflow_run",
+      "discussion_comment",
+      "discussion",
       "issues",
       "fork",
-      "watch",
-      "discussion_comment",
-      "discussion"
+      "watch"
+    ]
+}
+
+string actor_not_attacker_event() {
+  result =
+    [
+      // actor and attacker can be different
+      // actor may be a collaborator, but the attacker is may be the author of the PR that gets commented
+      // therefore it may be vulnerable to TOCTOU races where the actor reviews one thing and the attacker changes it
+      "issue_comment",
+      "pull_request_comment",
     ]
 }
 
@@ -81,7 +95,9 @@ abstract class AssociationCheck extends ControlCheck {
   // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
   // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
   }
 }
 
@@ -90,7 +106,9 @@ abstract class ActorCheck extends ControlCheck {
   // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
   // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run"] and category = any_relevant_category()
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
   }
 }
 
@@ -106,8 +124,9 @@ abstract class PermissionCheck extends ControlCheck {
   // - they are effective against pull requests/workflow_run since they can control who can make changes
   // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run", "issue_comment"] and
-    category = any_relevant_category()
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
   }
 }
 
@@ -115,7 +134,9 @@ abstract class LabelCheck extends ControlCheck {
   // checks if the issue/pull_request is labeled, which implies that it could have been approved
   // - they dont protect against mutation attacks
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run"] and category = any_non_toctou_category()
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
   }
 }
 
@@ -123,14 +144,16 @@ class EnvironmentCheck extends ControlCheck instanceof Environment {
   // Environment checks are not effective against any mutable attacks
   // they do actually protect against untrusted code execution (sha)
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = ["pull_request_target", "workflow_run"] and category = any_non_toctou_category()
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
   }
 }
 
 abstract class CommentVsHeadDateCheck extends ControlCheck {
   override predicate protectsCategoryAndEvent(string category, string event) {
     // by itself, this check is not effective against any attacks
-    none()
+    event = actor_not_attacker_event() and category = toctou_category()
   }
 }
 
@@ -187,7 +210,7 @@ class PullRequestTargetRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = "pull_request_target" and category = any_relevant_category()
+    event = "pull_request_target" and category = any_category()
   }
 }
 
@@ -205,7 +228,7 @@ class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
   }
 
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = "workflow_run" and category = any_relevant_category()
+    event = "workflow_run" and category = any_category()
   }
 }
 
@@ -250,6 +273,9 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
       not exists(this.getArgument("permission-level")) or
       this.getArgument("permission-level") = ["write", "admin"]
     )
+    or
+    this.getCallee() = "actions/github-script" and
+    this.getArgument("script").splitAt("\n").matches("%getCollaboratorPermissionLevel%")
   }
 }
 

@@ -16,17 +16,14 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-from LocalJob job, MutableRefCheckoutStep checkout, ControlCheck check, Event event
+from MutableRefCheckoutStep checkout, Event event
 where
-  job.getAStep() = checkout and
   // there are no evidences that the checked-out gets executed
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
   inPrivilegedContext(checkout, event) and
-  event = job.getATriggerEvent() and
   // the mutable checkout step is protected by an Insufficient access check
-  check.protects(checkout, event, "untrusted-checkout") and
-  not check.protects(checkout, event, "untrusted-checkout-toctou")
+  exists(ControlCheck check1 | check1.protects(checkout, event, "untrusted-checkout")) and
+  not exists(ControlCheck check2 | check2.protects(checkout, event, "untrusted-checkout-toctou"))
 select checkout,
-  "Insufficient protection against execution of untrusted code on a privileged workflow on step $@.",
-  check, check.toString()
+  "Insufficient protection against execution of untrusted code on a privileged workflow."
