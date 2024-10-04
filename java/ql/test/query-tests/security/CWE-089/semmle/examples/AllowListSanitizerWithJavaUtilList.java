@@ -11,7 +11,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class AllowListSanitizerWithJavaUtilList {
 	public static Connection connection;
@@ -48,6 +50,7 @@ class AllowListSanitizerWithJavaUtilList {
 		testLocal(args);
 		var x = new AllowListSanitizerWithJavaUtilList();
 		x.testNonStaticFields(args);
+		testMultipleSources(args);
 	}
 
 	private static void testStaticFields(String[] args) throws IOException, SQLException {
@@ -226,6 +229,57 @@ class AllowListSanitizerWithJavaUtilList {
 				ResultSet results = connection.createStatement().executeQuery(query);
 			}
 		}
+		// BAD: an allowlist is used but it may contain a non-compile-time constant element
+		{
+			List<String> allowlist = new ArrayList<String>();
+			allowlist.add("allowed1");
+			possiblyMutate(allowlist);
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+	}
+
+	private static void testMultipleSources(String[] args) throws IOException, SQLException {
+		String tainted = args[1];
+		boolean b = args[2] == "True";
+		{
+			// BAD: an allowlist is used which might contain constant strings
+			List<String> allowlist = new ArrayList<String>();
+			allowlist.add("allowed1");
+			if (b) {
+				allowlist.add(getNonConstantString());
+			}
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+		{
+			// BAD: an allowlist is used which might contain constant strings
+			List<String> allowlist = b ? goodAllowList1 : badAllowList1;
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+		{
+			// BAD: an allowlist is used which might contain constant strings
+			List<String> allowlist = b ? goodAllowList1 : List.of("allowed1", "allowed2", args[2]);;
+			if(allowlist.contains(tainted)){
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+	}
+
+	private static void possiblyMutate(List list) {
+		list.add(getNonConstantString());
 	}
 
 }
