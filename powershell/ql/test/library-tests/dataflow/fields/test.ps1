@@ -29,3 +29,19 @@ Sink $arr6[2][$unknown4] # clean
 $arr7[$unknown5][$unknown6] = Source "9"
 Sink $arr7[1][2] # $ hasValueFlow=9
 Sink $arr7[$unknown7][$unknown8] # $ hasValueFlow=9
+
+$x = Source "10"
+
+$arr8 = 0, 1, $x
+Sink $arr8[0] # clean
+Sink $arr8[1] # clean
+Sink $arr8[2] # $ MISSING: hasValueFlow=10
+Sink $arr8[$unknown] # MISSING: hasValueFlow=10
+
+$y = Source "11"
+
+$arr9 = @(0, 1, $y)
+Sink $arr9[0] # clean
+Sink $arr9[1] # clean
+Sink $arr9[2] # $ MISSING: hasValueFlow=11
+Sink $arr9[$unknown] # MISSING: hasValueFlow=11
