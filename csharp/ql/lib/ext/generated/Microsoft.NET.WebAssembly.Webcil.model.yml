@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter", False, "FromPortableExecutable", "(System.String,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter", False, "FromPortableExecutable", "(System.String,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "GetMetadataReaderProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "WebcilReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", False, "WebcilReader", "(System.IO.Stream,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilWasmWrapper", False, "WebcilWasmWrapper", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+FilePosition", "FilePosition", "(System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+FilePosition", "op_Addition", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+FilePosition", "op_Equality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+FilePosition", "op_Inequality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+PEFileInfo", "PEFileInfo", "(System.Collections.Immutable.ImmutableArray<System.Reflection.PortableExecutable.SectionHeader>,System.Reflection.PortableExecutable.DirectoryEntry,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition,System.Collections.Immutable.ImmutableArray<System.Reflection.PortableExecutable.DebugDirectoryEntry>)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+PEFileInfo", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+PEFileInfo", "op_Equality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+PEFileInfo", "op_Inequality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+WCFileInfo", "WCFileInfo", "(Microsoft.NET.WebAssembly.Webcil.WebcilHeader,System.Collections.Immutable.ImmutableArray<Microsoft.NET.WebAssembly.Webcil.WebcilSectionHeader>,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+FilePosition)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+WCFileInfo", "get_EqualityContract", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+WCFileInfo", "op_Equality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter+WCFileInfo", "op_Inequality", "(Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter", "ConvertToWebcil", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter", "GatherInfo", "(System.Reflection.PortableExecutable.PEReader,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilConverter", "WriteConversionTo", "(System.IO.Stream,System.IO.FileStream,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+PEFileInfo,Microsoft.NET.WebAssembly.Webcil.WebcilConverter+WCFileInfo)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "GetMetadataReader", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadCodeViewDebugDirectoryData", "(System.Reflection.PortableExecutable.DebugDirectoryEntry)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadDebugDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadEmbeddedPortablePdbDebugDirectoryData", "(System.Reflection.PortableExecutable.DebugDirectoryEntry)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilReader", "ReadPdbChecksumDebugDirectoryData", "(System.Reflection.PortableExecutable.DebugDirectoryEntry)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilSectionHeader", "WebcilSectionHeader", "(System.Int32,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.NET.WebAssembly.Webcil", "WebcilWasmWrapper", "WriteWasmWrappedWebcil", "(System.IO.Stream)", "summary", "df-generated"]

@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan)", "", "Argument[1]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxAge]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan)", "", "Argument[1]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxStale]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan)", "", "Argument[1]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._minFresh]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan,System.TimeSpan)", "", "Argument[1]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxAge]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan,System.TimeSpan)", "", "Argument[2]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxStale]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan,System.TimeSpan)", "", "Argument[2]", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._minFresh]", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "get_MaxAge", "()", "", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxAge]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "get_MaxStale", "()", "", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._maxStale]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", False, "get_MinFresh", "()", "", "Argument[this].SyntheticField[System.Net.Cache.HttpRequestCachePolicy._minFresh]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "HttpRequestCachePolicy", "(System.DateTime)", "summary", "df-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "HttpRequestCachePolicy", "(System.Net.Cache.HttpCacheAgeControl,System.TimeSpan,System.TimeSpan,System.DateTime)", "summary", "df-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "HttpRequestCachePolicy", "(System.Net.Cache.HttpRequestCacheLevel)", "summary", "df-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "ToString", "()", "summary", "df-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "get_CacheSyncDate", "()", "summary", "df-generated"]
+      - ["System.Net.Cache", "HttpRequestCachePolicy", "get_Level", "()", "summary", "df-generated"]
+      - ["System.Net.Cache", "RequestCachePolicy", "RequestCachePolicy", "(System.Net.Cache.RequestCacheLevel)", "summary", "df-generated"]
+      - ["System.Net.Cache", "RequestCachePolicy", "ToString", "()", "summary", "df-generated"]
+      - ["System.Net.Cache", "RequestCachePolicy", "get_Level", "()", "summary", "df-generated"]

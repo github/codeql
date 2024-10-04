@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Json", "JsonConfigurationProvider", "JsonConfigurationProvider", "(Microsoft.Extensions.Configuration.Json.JsonConfigurationSource)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Json", "JsonConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Json", "JsonConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Json", "JsonStreamConfigurationProvider", "JsonStreamConfigurationProvider", "(Microsoft.Extensions.Configuration.Json.JsonStreamConfigurationSource)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Json", "JsonStreamConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Json", "JsonStreamConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

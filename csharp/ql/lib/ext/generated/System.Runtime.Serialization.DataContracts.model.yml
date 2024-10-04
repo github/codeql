@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_BaseContract", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_DataMembers", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.DataContracts.DataContractSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.ISerializationSurrogateProvider,System.Collections.Generic.IEnumerable<System.Type>,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "ImportSchemaSet", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable<System.Xml.Schema.XmlSchemaElement>,System.Boolean)", "", "Argument[1].Element.Property[System.Xml.Schema.XmlSchemaElement.QualifiedName]", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataMember", False, "get_MemberTypeContract", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetArrayTypeName", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetBuiltInDataContract", "(System.String,System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetXmlName", "(System.Type)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_ContractType", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_IsBuiltInDataContract", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_OriginalUnderlyingType", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_UnderlyingType", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetDataContract", "(System.Type)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetDataContract", "(System.Xml.XmlQualifiedName)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetReferencedType", "(System.Xml.XmlQualifiedName,System.Runtime.Serialization.DataContracts.DataContract,System.Runtime.Serialization.DataContracts.DataContract,System.Object[],System.Nullable<System.Boolean>)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "ImportSchemaSet", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable<System.Xml.XmlQualifiedName>,System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "get_Contracts", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "get_ProcessedContracts", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "get_SurrogateData", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "XmlDataContract", "get_ContractType", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "XmlDataContract", "get_IsAnonymous", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "XmlDataContract", "get_IsBuiltInDataContract", "()", "summary", "df-generated"]

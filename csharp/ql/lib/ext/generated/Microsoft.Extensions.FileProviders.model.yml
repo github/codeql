@@ -1,0 +1,51 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "CompositeFileProvider", "(Microsoft.Extensions.FileProviders.IFileProvider[])", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.CompositeFileProvider._fileProviders]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "CompositeFileProvider", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileProvider>)", "", "Argument[0].Element", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.CompositeFileProvider._fileProviders].Element", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "get_FileProviders", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileProviders.CompositeFileProvider._fileProviders]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", "GetDirectoryContents", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", "GetFileInfo", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IDirectoryContents", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "CreateReadStream", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_IsDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_LastModified", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_Length", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_Name", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileInfo", "get_PhysicalPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileProvider", "GetDirectoryContents", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileProvider", "GetFileInfo", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "IFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundDirectoryContents", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundDirectoryContents", "get_Singleton", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "CreateReadStream", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "NotFoundFileInfo", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_Exists", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_IsDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_LastModified", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_Length", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_Name", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NotFoundFileInfo", "get_PhysicalPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullChangeToken", "get_ActiveChangeCallbacks", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullChangeToken", "get_Singleton", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullFileProvider", "GetDirectoryContents", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullFileProvider", "GetFileInfo", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "NullFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "GetDirectoryContents", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "GetFileInfo", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "PhysicalFileProvider", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "PhysicalFileProvider", "(System.String,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "get_Root", "()", "summary", "df-generated"]

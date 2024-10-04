@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", False, "AssemblyQualifiedTypeName", "(System.Reflection.Runtime.TypeParsing.NonQualifiedTypeName,System.Reflection.RuntimeAssemblyName)", "", "Argument[0]", "Argument[this].Property[System.Reflection.Runtime.TypeParsing.AssemblyQualifiedTypeName.TypeName]", "value", "dfc-generated"]
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", False, "AssemblyQualifiedTypeName", "(System.Reflection.Runtime.TypeParsing.NonQualifiedTypeName,System.Reflection.RuntimeAssemblyName)", "", "Argument[1]", "Argument[this].Property[System.Reflection.Runtime.TypeParsing.AssemblyQualifiedTypeName.AssemblyName]", "value", "dfc-generated"]
+      - ["System.Reflection.Runtime.TypeParsing", "TypeName", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", "get_AssemblyName", "()", "summary", "df-generated"]
+      - ["System.Reflection.Runtime.TypeParsing", "AssemblyQualifiedTypeName", "get_TypeName", "()", "summary", "df-generated"]
+      - ["System.Reflection.Runtime.TypeParsing", "TypeParser", "ParseTypeName", "(System.String)", "summary", "df-generated"]

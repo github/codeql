@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net.Quic", "QuicConnection", False, "get_LocalEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", False, "get_NegotiatedApplicationProtocol", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", False, "get_RemoteCertificate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", False, "get_RemoteEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", False, "get_TargetHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.Quic", "QuicConnection", "AcceptInboundStreamAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "CloseAsync", "(System.Int64,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "ConnectAsync", "(System.Net.Quic.QuicClientConnectionOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "OpenOutboundStreamAsync", "(System.Net.Quic.QuicStreamType,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "ToString", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "get_IsSupported", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicException", "QuicException", "(System.Net.Quic.QuicError,System.Nullable<System.Int64>,System.String)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicException", "get_ApplicationErrorCode", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicException", "get_QuicError", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicException", "get_TransportErrorCode", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "AcceptConnectionAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "ListenAsync", "(System.Net.Quic.QuicListenerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "ToString", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "get_IsSupported", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "get_LocalEndPoint", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "Abort", "(System.Net.Quic.QuicAbortDirection,System.Int64)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "CompleteWrites", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "EndRead", "(System.IAsyncResult)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "EndWrite", "(System.IAsyncResult)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "Flush", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "ReadByte", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "Seek", "(System.Int64,System.IO.SeekOrigin)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "ToString", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "Write", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "WriteByte", "(System.Byte)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_CanRead", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_CanSeek", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_CanTimeout", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_CanWrite", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_Id", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_Length", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_ReadsClosed", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_Type", "()", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicStream", "get_WritesClosed", "()", "summary", "df-generated"]

@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Xaml.Permissions", "XamlAccessLevel", "AssemblyAccessTo", "(System.Reflection.Assembly)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlAccessLevel", "AssemblyAccessTo", "(System.Reflection.AssemblyName)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlAccessLevel", "PrivateAccessTo", "(System.String)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlAccessLevel", "PrivateAccessTo", "(System.Type)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlAccessLevel", "get_AssemblyAccessToAssemblyName", "()", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "Includes", "(System.Xaml.Permissions.XamlAccessLevel)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "IsUnrestricted", "()", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "ToXml", "()", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Collections.Generic.IEnumerable<System.Xaml.Permissions.XamlAccessLevel>)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Xaml.Permissions", "XamlLoadPermission", "XamlLoadPermission", "(System.Xaml.Permissions.XamlAccessLevel)", "summary", "df-generated"]

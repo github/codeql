@@ -1,0 +1,45 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Win32.SafeHandles", "SafeFileHandle", False, "SafeFileHandle", "(System.IntPtr,System.Boolean)", "", "Argument[0]", "Argument[this].Field[System.Runtime.InteropServices.SafeHandle.handle]", "value", "dfc-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeWaitHandle", False, "SafeWaitHandle", "(System.IntPtr,System.Boolean)", "", "Argument[0]", "Argument[this].Field[System.Runtime.InteropServices.SafeHandle.handle]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Win32.SafeHandles", "CriticalHandleMinusOneIsInvalid", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "CriticalHandleZeroOrMinusOneIsInvalid", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeAccessTokenHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeAccessTokenHandle", "SafeAccessTokenHandle", "(System.IntPtr)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeAccessTokenHandle", "get_InvalidHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeAccessTokenHandle", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeFileHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeFileHandle", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeHandleMinusOneIsInvalid", "SafeHandleMinusOneIsInvalid", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeHandleMinusOneIsInvalid", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeHandleZeroOrMinusOneIsInvalid", "SafeHandleZeroOrMinusOneIsInvalid", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeHandleZeroOrMinusOneIsInvalid", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeMemoryMappedFileHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeMemoryMappedFileHandle", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeMemoryMappedViewHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptHandle", "ReleaseNativeHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptHandle", "SafeNCryptHandle", "(System.IntPtr,System.Runtime.InteropServices.SafeHandle)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptKeyHandle", "ReleaseNativeHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptKeyHandle", "SafeNCryptKeyHandle", "(System.IntPtr,System.Runtime.InteropServices.SafeHandle)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptProviderHandle", "ReleaseNativeHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeNCryptSecretHandle", "ReleaseNativeHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafePipeHandle", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafePipeHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafePipeHandle", "SafePipeHandle", "(System.IntPtr,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafePipeHandle", "get_IsInvalid", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeProcessHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeProcessHandle", "SafeProcessHandle", "(System.IntPtr,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeRegistryHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeRegistryHandle", "SafeRegistryHandle", "(System.IntPtr,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeWaitHandle", "ReleaseHandle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeX509ChainHandle", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Win32.SafeHandles", "SafeX509ChainHandle", "ReleaseHandle", "()", "summary", "df-generated"]

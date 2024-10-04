@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", False, "get_DiagnosticName", "()", "", "Argument[this].Property[Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem.TypeRefTypeSystemGenericParameter.Name]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "CompareToImpl", "(Internal.TypeSystem.TypeDesc,Internal.TypeSystem.TypeSystemComparer)", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_ClassCode", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Constraints", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Index", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Kind", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Name", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_TypeConstraints", "()", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.Tools.Pgo.TypeRefTypeSystem", "TypeRefTypeSystemGenericParameter", "get_Variance", "()", "summary", "df-generated"]

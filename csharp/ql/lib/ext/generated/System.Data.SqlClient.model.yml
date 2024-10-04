@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Data.SqlClient", "SqlClientPermission", "Add", "(System.String,System.String,System.Data.KeyRestrictionBehavior)", "summary", "df-generated"]
+      - ["System.Data.SqlClient", "SqlClientPermission", "SqlClientPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Data.SqlClient", "SqlClientPermission", "SqlClientPermission", "(System.Security.Permissions.PermissionState,System.Boolean)", "summary", "df-generated"]
+      - ["System.Data.SqlClient", "SqlClientPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Data.SqlClient", "SqlClientPermissionAttribute", "SqlClientPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]

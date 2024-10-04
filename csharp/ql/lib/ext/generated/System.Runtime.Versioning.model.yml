@@ -1,0 +1,50 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Versioning", "FrameworkName", False, "FrameworkName", "(System.String,System.Version,System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._identifier]", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "FrameworkName", "(System.String,System.Version,System.String)", "", "Argument[1]", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._version]", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "FrameworkName", "(System.String,System.Version,System.String)", "", "Argument[2]", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._profile]", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "get_FullName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "get_Identifier", "()", "", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._identifier]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "get_Profile", "()", "", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._profile]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", False, "get_Version", "()", "", "Argument[this].SyntheticField[System.Runtime.Versioning.FrameworkName._version]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "TargetFrameworkAttribute", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Runtime.Versioning.TargetFrameworkAttribute._frameworkName]", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "TargetFrameworkAttribute", False, "get_FrameworkName", "()", "", "Argument[this].SyntheticField[System.Runtime.Versioning.TargetFrameworkAttribute._frameworkName]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Runtime.Versioning", "VersioningHelper", False, "MakeVersionSafeName", "(System.String,System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Versioning", "ComponentGuaranteesAttribute", "ComponentGuaranteesAttribute", "(System.Runtime.Versioning.ComponentGuaranteesOptions)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ComponentGuaranteesAttribute", "get_Guarantees", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "Equals", "(System.Runtime.Versioning.FrameworkName)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "FrameworkName", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "FrameworkName", "(System.String,System.Version)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "op_Equality", "(System.Runtime.Versioning.FrameworkName,System.Runtime.Versioning.FrameworkName)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "FrameworkName", "op_Inequality", "(System.Runtime.Versioning.FrameworkName,System.Runtime.Versioning.FrameworkName)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "OSPlatformAttribute", "get_PlatformName", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "ObsoletedOSPlatformAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "ObsoletedOSPlatformAttribute", "(System.String,System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ObsoletedOSPlatformAttribute", "get_Message", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "RequiresPreviewFeaturesAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "RequiresPreviewFeaturesAttribute", "get_Message", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "ResourceConsumptionAttribute", "(System.Runtime.Versioning.ResourceScope)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "ResourceConsumptionAttribute", "(System.Runtime.Versioning.ResourceScope,System.Runtime.Versioning.ResourceScope)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "get_ConsumptionScope", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceConsumptionAttribute", "get_ResourceScope", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceExposureAttribute", "ResourceExposureAttribute", "(System.Runtime.Versioning.ResourceScope)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "ResourceExposureAttribute", "get_ResourceExposureLevel", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "SupportedOSPlatformAttribute", "SupportedOSPlatformAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "SupportedOSPlatformGuardAttribute", "SupportedOSPlatformGuardAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "TargetPlatformAttribute", "TargetPlatformAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "UnsupportedOSPlatformAttribute", "UnsupportedOSPlatformAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "UnsupportedOSPlatformAttribute", "UnsupportedOSPlatformAttribute", "(System.String,System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "UnsupportedOSPlatformAttribute", "get_Message", "()", "summary", "df-generated"]
+      - ["System.Runtime.Versioning", "UnsupportedOSPlatformGuardAttribute", "UnsupportedOSPlatformGuardAttribute", "(System.String)", "summary", "df-generated"]

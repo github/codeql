@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Android.Build.AndroidProject.projectName]", "value", "dfc-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[this].SyntheticField[Microsoft.Android.Build.AndroidProject.projectName]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "get_Abi", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Android.Build", "AndroidBuildOptions", "get_CompilerArguments", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidBuildOptions", "get_IncludePaths", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidBuildOptions", "get_LinkerArguments", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidBuildOptions", "get_NativeLibraryPaths", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidBuildOptions", "get_Sources", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", "AndroidProject", "(System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", "Build", "(System.String,Microsoft.Mobile.Build.Clang.ClangBuildOptions,System.Boolean,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", "GenerateCMake", "(System.String,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", "GenerateCMake", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]

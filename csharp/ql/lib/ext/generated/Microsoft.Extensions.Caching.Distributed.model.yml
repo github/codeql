@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.DateTimeOffset)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "GetString", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "GetStringAsync", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "Set", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.Byte[])", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "SetAsync", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.Byte[],System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "SetString", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "SetString", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.String,Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "SetStringAsync", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.String,Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheExtensions", "SetStringAsync", "(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "Get", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "GetAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "Refresh", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "RefreshAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "Remove", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "RemoveAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "Set", "(System.String,System.Byte[],Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "IDistributedCache", "SetAsync", "(System.String,System.Byte[],Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Get", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "GetAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "MemoryDistributedCache", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "MemoryDistributedCache", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Refresh", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "RefreshAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Remove", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "RemoveAsync", "(System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "Set", "(System.String,System.Byte[],Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "MemoryDistributedCache", "SetAsync", "(System.String,System.Byte[],Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.Threading.CancellationToken)", "summary", "df-generated"]

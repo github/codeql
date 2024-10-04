@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Formats.Tar", "GnuTarEntry", False, "GnuTarEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "PaxTarEntry", False, "PaxTarEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", False, "ToString", "()", "", "Argument[this].Property[System.Formats.Tar.TarEntry.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Formats.Tar", "TarReader", False, "TarReader", "(System.IO.Stream,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "TarWriter", "(System.IO.Stream,System.Formats.Tar.TarEntryFormat,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntry", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.Formats.Tar.TarEntry,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", False, "WriteEntryAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Tar", "UstarTarEntry", False, "UstarTarEntry", "(System.Formats.Tar.TarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Formats.Tar", "GnuTarEntry", "GnuTarEntry", "(System.Formats.Tar.TarEntryType,System.String)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "PaxGlobalExtendedAttributesTarEntry", "PaxGlobalExtendedAttributesTarEntry", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.String>>)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "PaxGlobalExtendedAttributesTarEntry", "get_GlobalExtendedAttributes", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "PaxTarEntry", "PaxTarEntry", "(System.Formats.Tar.TarEntryType,System.String)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "PaxTarEntry", "PaxTarEntry", "(System.Formats.Tar.TarEntryType,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.String>>)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "PaxTarEntry", "get_ExtendedAttributes", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "ExtractToFile", "(System.String,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "ExtractToFileAsync", "(System.String,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "get_Checksum", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "get_EntryType", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "get_Format", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarEntry", "get_Length", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "CreateFromDirectory", "(System.String,System.IO.Stream,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "CreateFromDirectory", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "CreateFromDirectoryAsync", "(System.String,System.IO.Stream,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "CreateFromDirectoryAsync", "(System.String,System.String,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "ExtractToDirectory", "(System.IO.Stream,System.String,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "ExtractToDirectory", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "ExtractToDirectoryAsync", "(System.IO.Stream,System.String,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarFile", "ExtractToDirectoryAsync", "(System.String,System.String,System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarReader", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarReader", "GetNextEntry", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarReader", "GetNextEntryAsync", "(System.Boolean,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", "TarWriter", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "TarWriter", "TarWriter", "(System.IO.Stream,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "UstarTarEntry", "UstarTarEntry", "(System.Formats.Tar.TarEntryType,System.String)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "V7TarEntry", "V7TarEntry", "(System.Formats.Tar.TarEntry)", "summary", "df-generated"]
+      - ["System.Formats.Tar", "V7TarEntry", "V7TarEntry", "(System.Formats.Tar.TarEntryType,System.String)", "summary", "df-generated"]

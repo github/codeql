@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "CurrentPathSegment", "Match", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "CurrentPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "GetHashCode", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "LiteralPathSegment", "(System.String,System.StringComparison)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "Match", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "get_Value", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "ParentPathSegment", "Match", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "ParentPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "RecursiveWildcardSegment", "Match", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "RecursiveWildcardSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "Match", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "WildcardPathSegment", "(System.String,System.Collections.Generic.List<System.String>,System.String,System.StringComparison)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_BeginsWith", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_Contains", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_EndsWith", "()", "summary", "df-generated"]

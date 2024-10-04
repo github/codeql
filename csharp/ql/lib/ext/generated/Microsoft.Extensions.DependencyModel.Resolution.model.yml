@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "AppBaseCompilationAssemblyResolver", False, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[0].Property[Microsoft.Extensions.DependencyModel.CompilationLibrary.Assemblies].Element", "Argument[1].Element", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "CompositeCompilationAssemblyResolver", False, "CompositeCompilationAssemblyResolver", "(Microsoft.Extensions.DependencyModel.Resolution.ICompilationAssemblyResolver[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", True, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[0]", "Argument[1].Element", "taint", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", True, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[this]", "Argument[1].Element", "taint", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "ReferenceAssemblyPathResolver", False, "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "", "Argument[0].Property[Microsoft.Extensions.DependencyModel.CompilationLibrary.Assemblies].Element", "Argument[1].Element", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "DotNetReferenceAssembliesPathResolver", False, "Resolve", "()", "", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "AppBaseCompilationAssemblyResolver", "AppBaseCompilationAssemblyResolver", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "DotNetReferenceAssembliesPathResolver", "Resolve", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "PackageCompilationAssemblyResolver", "PackageCompilationAssemblyResolver", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyModel.Resolution", "ReferenceAssemblyPathResolver", "ReferenceAssemblyPathResolver", "(System.String,System.String[])", "summary", "df-generated"]
