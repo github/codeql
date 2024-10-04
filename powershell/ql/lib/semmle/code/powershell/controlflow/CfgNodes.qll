@@ -46,6 +46,8 @@ class ExprCfgNode extends AstCfgNode {
 
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
+
+  final ConstantValue getValue() { result = e.getValue() }
 }
 
 /** A control-flow node that wraps an AST statement. */
