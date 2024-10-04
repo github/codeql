@@ -8,7 +8,7 @@ import semmle.code.java.security.LogInjection
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
  */
 module LogInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LogInjectionSink }
 

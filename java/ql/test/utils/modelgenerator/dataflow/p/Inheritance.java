@@ -11,7 +11,7 @@ public class Inheritance {
 
   public class AImplBasePrivateImpl extends BasePrivate {
     // summary=p;Inheritance$AImplBasePrivateImpl;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$AImplBasePrivateImpl;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$AImplBasePrivateImpl;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;
@@ -20,7 +20,7 @@ public class Inheritance {
 
   public class AImplBasePublic extends BasePublic {
     // summary=p;Inheritance$BasePublic;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$BasePublic;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$BasePublic;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;
@@ -61,7 +61,7 @@ public class Inheritance {
 
   public class BImpl extends B {
     // summary=p;Inheritance$IPublic1;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$IPublic1;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$IPublic1;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;
@@ -70,7 +70,7 @@ public class Inheritance {
 
   public class CImpl extends C {
     // summary=p;Inheritance$C;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$C;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$C;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;
@@ -79,7 +79,7 @@ public class Inheritance {
 
   public class DImpl extends D {
     // summary=p;Inheritance$IPublic2;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$IPublic2;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$IPublic2;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;
@@ -88,7 +88,7 @@ public class Inheritance {
 
   public class EImpl extends E {
     // summary=p;Inheritance$EImpl;true;id;(String);;Argument[0];ReturnValue;taint;df-generated
-    // contentbased-summary=p;Inheritance$EImpl;true;id;(String);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=p;Inheritance$EImpl;true;id;(String);;Argument[0];ReturnValue;value;dfc-generated
     @Override
     public String id(String s) {
       return s;

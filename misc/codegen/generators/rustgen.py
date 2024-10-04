@@ -20,7 +20,7 @@ def _get_type(t: str) -> str:
         case "int":
             return "usize"
         case _ if t[0].isupper():
-            return "trap::Label"
+            return f"trap::Label<{t}>"
         case "boolean":
             assert False, "boolean unsupported"
         case _:
@@ -57,26 +57,51 @@ def _get_properties(
         yield cls, p
 
 
+def _get_ancestors(
+    cls: schema.Class, lookup: dict[str, schema.Class]
+) -> typing.Iterable[schema.Class]:
+    for b in cls.bases:
+        base = lookup[b]
+        yield base
+        yield from _get_ancestors(base, lookup)
+
+
 class Processor:
     def __init__(self, data: schema.Schema):
         self._classmap = data.classes
 
     def _get_class(self, name: str) -> rust.Class:
         cls = self._classmap[name]
+        properties = [
+            (c, p)
+            for c, p in _get_properties(cls, self._classmap)
+            if "rust_skip" not in p.pragmas and not p.synth
+        ]
+        fields = []
+        detached_fields = []
+        for c, p in properties:
+            if "rust_detach" in p.pragmas:
+                # only generate detached fields in the actual class defining them, not the derived ones
+                if c is cls:
+                    # TODO lift this restriction if required (requires change in dbschemegen as well)
+                    assert c.derived or not p.is_single, \
+                        f"property {p.name} in concrete class marked as detached but not optional"
+                    detached_fields.append(_get_field(c, p))
+            elif not cls.derived:
+                # for non-detached ones, only generate fields in the concrete classes
+                fields.append(_get_field(c, p))
         return rust.Class(
             name=name,
-            fields=[
-                _get_field(c, p)
-                for c, p in _get_properties(cls, self._classmap)
-                if "rust_skip" not in p.pragmas and not p.synth
-            ],
-            table_name=inflection.tableize(cls.name),
+            fields=fields,
+            detached_fields=detached_fields,
+            ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
+            entry_table=inflection.tableize(cls.name) if not cls.derived else None,
         )
 
     def get_classes(self):
         ret = {"": []}
         for k, cls in self._classmap.items():
-            if not cls.synth and not cls.derived:
+            if not cls.synth:
                 ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 

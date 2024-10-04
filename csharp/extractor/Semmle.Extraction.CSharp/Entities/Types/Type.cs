@@ -77,7 +77,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
-            PopulateMetadataHandle(trapFile);
             PopulateAttributes();
 
             trapFile.Write("types(");

@@ -1,2 +1,0 @@
-| gen_closure_expr.rs:6:5:6:34 | ClosureExpr | 0 | file://:0:0:0:0 | TypeRef |
-| gen_closure_expr.rs:7:5:7:27 | ClosureExpr | 0 | file://:0:0:0:0 | TypeRef |

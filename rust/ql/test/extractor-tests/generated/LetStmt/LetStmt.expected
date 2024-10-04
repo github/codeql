@@ -1,6 +1,6 @@
-| gen_let_stmt.rs:5:9:5:9 | LetStmt | getPat: | gen_let_stmt.rs:5:9:5:9 | IdentPat | hasType: | no | hasInitializer: | yes | hasElse: | no |
-| gen_let_stmt.rs:6:9:6:9 | LetStmt | getPat: | gen_let_stmt.rs:6:9:6:9 | IdentPat | hasType: | yes | hasInitializer: | yes | hasElse: | no |
-| gen_let_stmt.rs:7:9:7:9 | LetStmt | getPat: | gen_let_stmt.rs:7:9:7:9 | IdentPat | hasType: | yes | hasInitializer: | no | hasElse: | no |
-| gen_let_stmt.rs:8:9:8:9 | LetStmt | getPat: | gen_let_stmt.rs:8:9:8:9 | IdentPat | hasType: | no | hasInitializer: | no | hasElse: | no |
-| gen_let_stmt.rs:9:9:9:14 | LetStmt | getPat: | gen_let_stmt.rs:9:9:9:14 | TuplePat | hasType: | no | hasInitializer: | yes | hasElse: | no |
-| gen_let_stmt.rs:10:9:10:15 | LetStmt | getPat: | gen_let_stmt.rs:10:9:10:15 | TupleStructPat | hasType: | no | hasInitializer: | yes | hasElse: | yes |
+| gen_let_stmt.rs:5:5:5:15 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTy: | no |
+| gen_let_stmt.rs:6:5:6:20 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTy: | yes |
+| gen_let_stmt.rs:7:5:7:15 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | no | hasLetElse: | no | hasPat: | yes | hasTy: | yes |
+| gen_let_stmt.rs:8:5:8:10 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | no | hasLetElse: | no | hasPat: | yes | hasTy: | no |
+| gen_let_stmt.rs:9:5:9:24 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTy: | no |
+| gen_let_stmt.rs:10:5:12:6 | LetStmt | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | yes | hasPat: | yes | hasTy: | no |

@@ -18,11 +18,12 @@ ra_ap_paths = "0.0.232"
 ra_ap_project_model = "0.0.232"
 ra_ap_syntax = "0.0.232"
 ra_ap_vfs = "0.0.232"
+ra_ap_parser = "0.0.232"
 serde = "1.0.209"
 serde_with = "3.9.0"
 stderrlog = "0.6.0"
 triomphe = "0.1.13"
-# Ideally, we'd like to pull this in via a relative path.
-# However, our bazel/rust tooling chokes on this, c.f. https://github.com/bazelbuild/rules_rust/issues/1525
-# Therefore, we have a pretty bad hack in place instead, see README.md in the codeql-extractor-fake-crate directory.
+argfile = "0.2.1"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+rust-extractor-macros = { path = "macros" }
+itertools = "0.13.0"

@@ -97,6 +97,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "10f00e1f6e58a40e807377c75c6a7f97bf9044fab57816f2414e6f5f4499d7b8"
 
 [[package]]
+name = "argfile"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0a1cc0ba69de57db40674c66f7cf2caee3981ddef084388482c95c0e2133e5e8"
+dependencies = [
+ "fs-err",
+ "os_str_bytes",
+]
+
+[[package]]
 name = "arrayvec"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -255,7 +265,7 @@ dependencies = [
  "chalk-ir",
  "ena",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "petgraph",
  "rustc-hash",
  "tracing",
@@ -360,9 +370,11 @@ name = "codeql-rust"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "argfile",
  "clap",
  "codeql-extractor",
  "figment",
+ "itertools 0.13.0",
  "log",
  "num-traits",
  "ra_ap_base_db",
@@ -370,10 +382,12 @@ dependencies = [
  "ra_ap_hir_def",
  "ra_ap_ide_db",
  "ra_ap_load-cargo",
+ "ra_ap_parser",
  "ra_ap_paths",
  "ra_ap_project_model",
  "ra_ap_syntax",
  "ra_ap_vfs",
+ "rust-extractor-macros",
  "serde",
  "serde_with",
  "stderrlog",
@@ -644,6 +658,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
+name = "fs-err"
+version = "2.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "88a41f105fe1d5b6b34b2055e3dc59bb79b46b48b2040b9e6c7b4b5de097aa41"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
 name = "fsevent-sys"
 version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -657,6 +680,16 @@ name = "fst"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ab85b9b05e3978cc9a9cf8fea7f01b494e1a09ed3037e16ba39edc7a29eb61a"
+
+[[package]]
+name = "generate-schema"
+version = "0.1.0"
+dependencies = [
+ "itertools 0.10.5",
+ "proc-macro2",
+ "quote",
+ "ungrammar",
+]
 
 [[package]]
 name = "getrandom"
@@ -829,9 +862,27 @@ checksum = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
 
 [[package]]
 name = "itertools"
+version = "0.10.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba291022dbbd398a455acf126c1e341954079855bc60dfdda641363bd6922569"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
 dependencies = [
  "either",
 ]
@@ -1063,6 +1114,15 @@ name = "oorandom"
 version = "11.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b410bbe7e14ab526a0e86877eb47c6996a2bd7746f027ba551028c925390e4e9"
+
+[[package]]
+name = "os_str_bytes"
+version = "7.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7ac44c994af577c799b1b4bd80dc214701e349873ad894d6cdf96f4f7526e0b9"
+dependencies = [
+ "memchr",
+]
 
 [[package]]
 name = "overload"
@@ -1303,7 +1363,7 @@ checksum = "c7c38520eb4770af561c34b908431f4e548c3282093cf3daf3c6e566d99a2937"
 dependencies = [
  "arrayvec",
  "either",
- "itertools",
+ "itertools 0.12.1",
  "ra_ap_base_db",
  "ra_ap_cfg",
  "ra_ap_hir_def",
@@ -1335,7 +1395,7 @@ dependencies = [
  "fst",
  "hashbrown 0.14.5",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra-ap-rustc_abi",
  "ra-ap-rustc_parse_format",
@@ -1365,7 +1425,7 @@ dependencies = [
  "cov-mark",
  "either",
  "hashbrown 0.14.5",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra_ap_base_db",
  "ra_ap_cfg",
@@ -1400,7 +1460,7 @@ dependencies = [
  "either",
  "ena",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "nohash-hasher",
  "oorandom",
@@ -1437,7 +1497,7 @@ dependencies = [
  "either",
  "fst",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "line-index",
  "memchr",
  "nohash-hasher",
@@ -1483,7 +1543,7 @@ checksum = "82e6f24b61f1ef1f3a756493d1fb7e711b69b2e4d5f4746fcb959313dfd41471"
 dependencies = [
  "anyhow",
  "crossbeam-channel",
- "itertools",
+ "itertools 0.12.1",
  "ra_ap_hir_expand",
  "ra_ap_ide_db",
  "ra_ap_intern",
@@ -1578,7 +1638,7 @@ checksum = "db83d1844c74b22c110c4b8e8f2519be2b1723964008527281a11c3398749756"
 dependencies = [
  "anyhow",
  "cargo_metadata",
- "itertools",
+ "itertools 0.12.1",
  "la-arena",
  "ra_ap_base_db",
  "ra_ap_cfg",
@@ -1602,7 +1662,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "370b302873eeafd07ccc6a714fc9395cae11e385955ccb78081093ee3b86f94e"
 dependencies = [
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "lock_api",
  "oorandom",
  "parking_lot",
@@ -1649,7 +1709,7 @@ checksum = "bb63ff9d6b11b4553fc0835f16705975258905e3b1230fcf1ddbf24c46aff69d"
 dependencies = [
  "always-assert",
  "crossbeam-channel",
- "itertools",
+ "itertools 0.12.1",
  "jod-thread",
  "libc",
  "miow",
@@ -1665,7 +1725,7 @@ dependencies = [
  "cov-mark",
  "either",
  "indexmap 2.5.0",
- "itertools",
+ "itertools 0.12.1",
  "ra-ap-rustc_lexer",
  "ra_ap_parser",
  "ra_ap_stdx",
@@ -1699,7 +1759,7 @@ version = "0.0.232"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7cb72ee1901baec556f4f2ef77e287d749ac0e973f063990672d6207b076aeac"
 dependencies = [
- "itertools",
+ "itertools 0.12.1",
  "text-size",
 ]
 
@@ -1873,6 +1933,14 @@ dependencies = [
  "memoffset",
  "rustc-hash",
  "text-size",
+]
+
+[[package]]
+name = "rust-extractor-macros"
+version = "0.1.0"
+dependencies = [
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -2286,6 +2354,12 @@ checksum = "e1b88fcfe09e89d3866a5c11019378088af2d24c3fbd4f0543f96b479ec90697"
 dependencies = [
  "version_check",
 ]
+
+[[package]]
+name = "ungrammar"
+version = "1.16.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3e5df347f0bf3ec1d670aad6ca5c6a1859cd9ea61d2113125794654ccced68f"
 
 [[package]]
 name = "unicode-ident"

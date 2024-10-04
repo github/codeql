@@ -1,0 +1,3 @@
+| gen_range_pat.rs:6:9:6:12 | RangePat | .. |
+| gen_range_pat.rs:7:9:7:15 | RangePat | ..= |
+| gen_range_pat.rs:8:9:8:12 | RangePat | .. |

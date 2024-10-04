@@ -16,6 +16,7 @@ extensions:
       - ["my.qltest.external", "Library", False, "apiStepArgQualGenerated", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["my.qltest.external", "Library", False, "apiStepArgQualGeneratedIgnored", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["my.qltest.external", "Library", False, "id", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

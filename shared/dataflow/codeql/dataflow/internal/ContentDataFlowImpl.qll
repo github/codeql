@@ -271,6 +271,24 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           result = head + "." + tail
         )
       }
+
+      /**
+       * Gets the content set at index `i` in this access path, if any.
+       */
+      ContentSet getAtIndex(int i) {
+        i = 0 and
+        result = this.getHead()
+        or
+        i > 0 and
+        result = this.getTail().getAtIndex(i - 1)
+      }
+
+      private AccessPath reverse0(int i) {
+        i = -1 and result = TAccessPathNil()
+        or
+        i >= 0 and
+        result = TAccessPathCons(this.getAtIndex(i), this.reverse0(i - 1))
+      }
     }
 
     /**

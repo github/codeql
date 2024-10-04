@@ -95,7 +95,7 @@ module TaintedPath = TaintTracking::GlobalWithState<TaintedPathConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A path argument to a `File` method call.

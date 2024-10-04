@@ -1,6 +1,7 @@
 import dataclasses
 import re
 import typing
+import inflection
 
 # taken from https://doc.rust-lang.org/reference/keywords.html
 keywords = {
@@ -106,20 +107,36 @@ class Field:
     def is_label(self):
         return self.base_type == "trap::Label"
 
+    @property
+    def singular_field_name(self) -> str:
+        return inflection.singularize(self.field_name.rstrip("_"))
+
 
 @dataclasses.dataclass
 class Class:
     name: str
-    table_name: str
+    entry_table: str | None = None
     fields: list[Field] = dataclasses.field(default_factory=list)
+    detached_fields: list[Field] = dataclasses.field(default_factory=list)
+    ancestors: list[str] = dataclasses.field(default_factory=list)
 
     @property
-    def single_field_entries(self):
-        ret = {self.table_name: []}
+    def is_entry(self) -> bool:
+        return bool(self.entry_table)
+
+    @property
+    def single_field_entries(self) -> dict[str, list[dict]]:
+        ret = {}
+        if self.is_entry:
+            ret[self.entry_table] = []
         for f in self.fields:
             if f.is_single:
                 ret.setdefault(f.table_name, []).append(f)
         return [{"table_name": k, "fields": v} for k, v in ret.items()]
+
+    @property
+    def has_detached_fields(self) -> bool:
+        return bool(self.detached_fields)
 
 
 @dataclasses.dataclass

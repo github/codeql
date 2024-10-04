@@ -8,14 +8,13 @@ edges
 | RuntimeExecTest.java:17:25:17:51 | getenv(...) : String | RuntimeExecTest.java:25:66:25:71 | script : String | provenance | Src:MaD:2  |
 | RuntimeExecTest.java:17:25:17:51 | getenv(...) : String | RuntimeExecTest.java:31:36:31:41 | script : String | provenance | Src:MaD:2  |
 | RuntimeExecTest.java:17:25:17:51 | getenv(...) : String | RuntimeExecTest.java:38:52:38:57 | script : String | provenance | Src:MaD:2  |
-| RuntimeExecTest.java:22:43:22:73 | {...} : String[] [[]] : String | RuntimeExecTest.java:22:43:22:73 | new String[] | provenance |  Sink:MaD:1 |
+| RuntimeExecTest.java:22:43:22:73 | {...} : String[] [[]] : String | RuntimeExecTest.java:22:43:22:73 | new String[] | provenance | Sink:MaD:1 |
 | RuntimeExecTest.java:22:67:22:72 | script : String | RuntimeExecTest.java:22:43:22:73 | {...} : String[] [[]] : String | provenance |  |
-| RuntimeExecTest.java:25:42:25:72 | {...} : String[] [[]] : String | RuntimeExecTest.java:26:43:26:55 | commandArray1 | provenance |  Sink:MaD:1 |
+| RuntimeExecTest.java:25:42:25:72 | {...} : String[] [[]] : String | RuntimeExecTest.java:26:43:26:55 | commandArray1 | provenance | Sink:MaD:1 |
 | RuntimeExecTest.java:25:66:25:71 | script : String | RuntimeExecTest.java:25:42:25:72 | {...} : String[] [[]] : String | provenance |  |
-| RuntimeExecTest.java:31:17:31:29 | commandArray2 [post update] : String[] [[]] : String | RuntimeExecTest.java:32:43:32:55 | commandArray2 | provenance |  Sink:MaD:1 |
+| RuntimeExecTest.java:31:17:31:29 | commandArray2 [post update] : String[] [[]] : String | RuntimeExecTest.java:32:43:32:55 | commandArray2 | provenance | Sink:MaD:1 |
 | RuntimeExecTest.java:31:36:31:41 | script : String | RuntimeExecTest.java:31:17:31:29 | commandArray2 [post update] : String[] [[]] : String | provenance |  |
-| RuntimeExecTest.java:36:21:39:21 | concat(...) : Stream [<element>] : String | RuntimeExecTest.java:36:21:39:44 | toArray(...) : String[] [[]] : String | provenance | MaD:5 |
-| RuntimeExecTest.java:36:21:39:44 | toArray(...) : String[] [[]] : String | RuntimeExecTest.java:36:21:39:44 | toArray(...) | provenance |  Sink:MaD:1 |
+| RuntimeExecTest.java:36:21:39:21 | concat(...) : Stream [<element>] : String | RuntimeExecTest.java:36:21:39:44 | toArray(...) | provenance | MaD:5 Sink:MaD:1 |
 | RuntimeExecTest.java:38:25:38:59 | stream(...) : Stream [<element>] : String | RuntimeExecTest.java:36:21:39:21 | concat(...) : Stream [<element>] : String | provenance | MaD:4 |
 | RuntimeExecTest.java:38:39:38:58 | new String[] : String[] [[]] : String | RuntimeExecTest.java:38:25:38:59 | stream(...) : Stream [<element>] : String | provenance | MaD:3 |
 | RuntimeExecTest.java:38:39:38:58 | {...} : String[] [[]] : String | RuntimeExecTest.java:38:39:38:58 | new String[] : String[] [[]] : String | provenance |  |
@@ -39,7 +38,6 @@ nodes
 | RuntimeExecTest.java:32:43:32:55 | commandArray2 | semmle.label | commandArray2 |
 | RuntimeExecTest.java:36:21:39:21 | concat(...) : Stream [<element>] : String | semmle.label | concat(...) : Stream [<element>] : String |
 | RuntimeExecTest.java:36:21:39:44 | toArray(...) | semmle.label | toArray(...) |
-| RuntimeExecTest.java:36:21:39:44 | toArray(...) : String[] [[]] : String | semmle.label | toArray(...) : String[] [[]] : String |
 | RuntimeExecTest.java:38:25:38:59 | stream(...) : Stream [<element>] : String | semmle.label | stream(...) : Stream [<element>] : String |
 | RuntimeExecTest.java:38:39:38:58 | new String[] : String[] [[]] : String | semmle.label | new String[] : String[] [[]] : String |
 | RuntimeExecTest.java:38:39:38:58 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |

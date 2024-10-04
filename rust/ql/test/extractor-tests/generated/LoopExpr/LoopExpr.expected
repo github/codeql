@@ -1,3 +1,3 @@
-| gen_loop_expr.rs:5:5:7:5 | LoopExpr | getBody: | gen_loop_expr.rs:5:10:7:5 | BlockExpr | hasLabel: | no |
-| gen_loop_expr.rs:8:5:11:5 | LoopExpr | getBody: | gen_loop_expr.rs:8:18:11:5 | BlockExpr | hasLabel: | yes |
-| gen_loop_expr.rs:13:5:19:5 | LoopExpr | getBody: | gen_loop_expr.rs:13:10:19:5 | BlockExpr | hasLabel: | no |
+| gen_loop_expr.rs:5:5:7:5 | LoopExpr | getNumberOfAttrs: | 0 | hasLabel: | no | hasLoopBody: | yes |
+| gen_loop_expr.rs:8:5:11:5 | LoopExpr | getNumberOfAttrs: | 0 | hasLabel: | yes | hasLoopBody: | yes |
+| gen_loop_expr.rs:13:5:19:5 | LoopExpr | getNumberOfAttrs: | 0 | hasLabel: | no | hasLoopBody: | yes |

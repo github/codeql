@@ -10,7 +10,7 @@
 import rust
 import codeql.rust.printast.PrintAst
 import codeql.IDEContextual
-import codeql.rust.generated.ParentChild
+import codeql.rust.elements.internal.generated.ParentChild
 
 /**
  * Gets the source file to generate an AST from.
