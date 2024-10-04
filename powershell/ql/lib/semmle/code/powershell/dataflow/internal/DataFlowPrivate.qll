@@ -587,7 +587,8 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  result = TUnknownDataFlowType() // TODO
+  result = TUnknownDataFlowType() and // TODO
+  exists(n)
 }
 
 pragma[inline]

@@ -298,7 +298,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 
 /**
  * A dataflow node that represents the creation of an object.
- * 
+ *
  * For example, `[Foo]::new()` or `New-Object Foo`.
  */
 class ObjectCreationNode extends Node {
