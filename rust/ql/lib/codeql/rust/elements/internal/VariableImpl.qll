@@ -218,6 +218,13 @@ module Impl {
         scope = ce.getBody() and
         scope.getLocation().hasLocationInfo(_, line, column, _, _)
       )
+      or
+      exists(WhileExpr we, LetExpr let |
+        let.getPat() = pat and
+        we.getCondition() = let and
+        scope = we.getLoopBody() and
+        scope.getLocation().hasLocationInfo(_, line, column, _, _)
+      )
     )
   }
 

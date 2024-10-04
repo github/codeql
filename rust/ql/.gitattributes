@@ -185,7 +185,6 @@
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BreakExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
@@ -204,7 +203,6 @@
 /lib/codeql/rust/elements/internal/ConstParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ContinueExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
