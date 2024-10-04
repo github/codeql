@@ -128,6 +128,8 @@ private module Cached {
         n = member.getBase() and
         not member.isStatic()
       )
+      or
+      n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
     }
 
   cached
@@ -219,7 +221,16 @@ private module Cached {
   }
 
   cached
-  newtype TContentSet = TSingletonContent(Content c)
+  newtype TContentSet =
+    TSingletonContent(Content c) or
+    TAnyElementContent() or
+    TKnownOrUnknownElementContent(Content::KnownElementContent c)
+
+  private predicate trackKnownValue(ConstantValue cv) {
+    exists(cv.asString())
+    or
+    cv.asInt() = [0 .. 10]
+  }
 
   cached
   newtype TContent =
@@ -227,13 +238,32 @@ private module Cached {
       name = any(PropertyMember member).getName()
       or
       name = any(MemberExpr me).getMemberName()
-    }
+    } or
+    TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
+    TUnknownElementContent()
 
   cached
-  newtype TContentApprox = TNonElementContentApprox(Content c)
+  newtype TContentApprox =
+    TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
+    TUnknownElementContentApprox() or
+    TKnownIntegerElementContentApprox() or
+    TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) }
 
   cached
   newtype TDataFlowType = TUnknownDataFlowType()
+}
+
+class TElementContent = TKnownElementContent or TUnknownElementContent;
+
+/** Gets a string for approximating known element indices. */
+private string approxKnownElementIndex(ConstantValue cv) {
+  not exists(cv.asInt()) and
+  exists(string s | s = cv.serialize() |
+    s.length() < 2 and
+    result = s
+    or
+    result = s.prefix(2)
+  )
 }
 
 import Cached
@@ -477,26 +507,54 @@ predicate jumpStep(Node pred, Node succ) {
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
-  node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
-    any(CfgNodes::ExprNodes::MemberCfgNode var |
-      exists(CfgNodes::StmtNodes::AssignStmtCfgNode assign |
-        var = assign.getLeftHandSide() and
-        node1.asStmt() = assign.getRightHandSide()
-      |
-        c.isSingleton(any(Content::FieldContent ct | ct.getName() = var.getMemberName()))
-      )
-    ).getBase()
+  exists(CfgNodes::ExprNodes::MemberCfgWriteAccessNode var, Content::FieldContent fc |
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
+    node1.asStmt() = var.getAssignStmt().getRightHandSide() and
+    fc.getName() = var.getMemberName() and
+    c.isSingleton(fc)
+  )
+  or
+  exists(
+    CfgNodes::ExprNodes::IndexCfgWriteNode var, Content::KnownElementContent ec, int index,
+    CfgNodes::ExprCfgNode e
+  |
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
+    node1.asStmt() = var.getAssignStmt().getRightHandSide() and
+    c.isKnownOrUnknownElement(ec) and
+    index = ec.getIndex().asInt() and
+    e = var.getIndex()
+  |
+    index = e.getValue().asInt()
+    or
+    not exists(e.getValue().asInt())
+  )
 }
 
 /**
  * Holds if there is a read step of content `c` from `node1` to `node2`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
-  node2.asExpr() =
-    any(CfgNodes::ExprNodes::MemberCfgReadAccessNode var |
-      node1.asExpr() = var.getBase() and
-      c.isSingleton(any(Content::FieldContent ct | ct.getName() = var.getMemberName()))
-    )
+  exists(CfgNodes::ExprNodes::MemberCfgReadAccessNode var, Content::FieldContent fc |
+    node2.asExpr() = var and
+    node1.asExpr() = var.getBase() and
+    fc.getName() = var.getMemberName() and
+    c.isSingleton(fc)
+  )
+  or
+  exists(
+    CfgNodes::ExprNodes::IndexCfgReadNode var, Content::KnownElementContent ec, int index,
+    CfgNodes::ExprCfgNode e
+  |
+    node2.asExpr() = var and
+    node1.asExpr() = var.getBase() and
+    c.isKnownOrUnknownElement(ec) and
+    index = ec.getIndex().asInt() and
+    e = var.getIndex()
+  |
+    index = e.getValue().asInt()
+    or
+    not exists(e.getValue().asInt())
+  )
 }
 
 /**
@@ -584,7 +642,7 @@ class DataFlowExpr = CfgNodes::ExprCfgNode;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
 
 class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
@@ -653,7 +711,18 @@ class ContentApprox extends TContentApprox {
 }
 
 /** Gets an approximated value for content `c`. */
-ContentApprox getContentApprox(Content c) { result = TNonElementContentApprox(c) }
+ContentApprox getContentApprox(Content c) {
+  c instanceof Content::UnknownElementContent and
+  result = TUnknownElementContentApprox()
+  or
+  exists(c.(Content::KnownElementContent).getIndex().asInt()) and
+  result = TKnownIntegerElementContentApprox()
+  or
+  result =
+    TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
+  or
+  result = TNonElementContentApprox(c)
+}
 
 /**
  * A unit class for adding additional jump steps.
