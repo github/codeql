@@ -281,3 +281,5 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
 }
 
 private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }
+
+predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
