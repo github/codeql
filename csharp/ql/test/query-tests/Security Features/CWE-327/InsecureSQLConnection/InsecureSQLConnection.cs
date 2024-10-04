@@ -1,3 +1,4 @@
+using System;
 using System.Data.SqlClient;
 
 namespace InsecureSQLConnection
@@ -34,13 +35,13 @@ namespace InsecureSQLConnection
         public void StringInInitializer()
         {
             string connectString = "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false";
-            SqlConnectionStringBuilder conBuilder = new SqlConnectionStringBuilder(connectString) { Encrypt = true};
+            SqlConnectionStringBuilder conBuilder = new SqlConnectionStringBuilder(connectString) { Encrypt = true}; // False Positive
         }
         
 
         public void TriggerThis()
         {
-            // BAD, Encrypt not specified
+            // BAD, Encrypt not specified (version dependent)
             SqlConnection conn = new SqlConnection("Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;");
         }
 
@@ -48,7 +49,7 @@ namespace InsecureSQLConnection
         {
             string connectString =
                 "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd";
-            // BAD, Encrypt not specified
+            // BAD, Encrypt not specified (version dependent)
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectString);
             var conn = new SqlConnection(builder.ConnectionString);
         }
@@ -60,6 +61,21 @@ namespace InsecureSQLConnection
             // BAD, Encrypt set to false
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectString);
             var conn = new SqlConnection(builder.ConnectionString);
+        }
+
+        void Test6()
+        {
+            var conn = new SqlConnectionStringBuilder(SetToTrueConnStr) { Encrypt = false };    // Bug - cs/insecure-sql-connection-initializer
+        }
+
+        void Test72ndPhase(bool encrypt)
+        {
+            var conn = new SqlConnectionStringBuilder(SetToTrueConnStr) { Encrypt = encrypt };    // Bug - cs/insecure-sql-connection-initializer (sink)
+        }
+
+        void Test7()
+        {
+            Test72ndPhase(false);    // Bug - cs/insecure-sql-connection-initializer (source)
         }
     }
 }
