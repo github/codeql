@@ -45,10 +45,16 @@ impl RustAnalyzer {
         let projects = find_project_manifests(&cfg.inputs).context("loading inputs")?;
         for project in projects {
             let manifest = project.manifest_path();
-            let (db, vfs, _macro_server) =
-                load_workspace_at(manifest.as_ref(), &config, &load_config, &progress)?;
-            let path: &Path = manifest.parent().as_ref();
-            workspace.insert(path.to_path_buf(), (vfs, db));
+
+            match load_workspace_at(manifest.as_ref(), &config, &load_config, &progress) {
+                Ok((db, vfs, _macro_server)) => {
+                    let path: &Path = manifest.parent().as_ref();
+                    workspace.insert(path.to_path_buf(), (vfs, db));
+                }
+                Err(err) => {
+                    log::error!("failed to load workspace for {}: {}", manifest, err);
+                }
+            }
         }
         Ok(RustAnalyzer { workspace })
     }
