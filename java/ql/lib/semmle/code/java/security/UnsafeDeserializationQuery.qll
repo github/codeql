@@ -379,8 +379,12 @@ predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNo
 
 /** A sink representing an argument of a deserialization method */
 private class UnsafeTypeSink extends DataFlow::Node {
+  MethodCall ma;
+
+  MethodCall getMethodCall() { result = ma }
+
   UnsafeTypeSink() {
-    exists(MethodCall ma, int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
+    exists(int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
       (
         ma.getMethod() instanceof ObjectMapperReadMethod
         or
@@ -424,6 +428,25 @@ module UnsafeTypeConfig implements DataFlow::ConfigSig {
    */
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     isUnsafeTypeAdditionalTaintStep(fromNode, toNode)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // Since this configuration is for finding sinks to be used in a main
+    // data-flow configuration, this configuration should only restrict the
+    // sinks to be found if there are no main-configuration sources in the diff
+    // range. That's because if there is such a source, we need to report query
+    // results for it even with sinks outside the diff range.
+    not UnsafeDeserializationFlow::hasSourceInDiffRange()
+  }
+
+  // The query does not select the sources of this configuration
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    // Match by the surrounding method call since the sink of the overall
+    // query will be contained in that (see the body of
+    // `unsafeDeserialization/2`).
+    result = sink.(UnsafeTypeSink).getMethodCall().getLocation()
   }
 }
 
