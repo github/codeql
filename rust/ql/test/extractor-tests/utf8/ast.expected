@@ -34,6 +34,6 @@
 | utf8-identifiers.rs:10:15:12:1 | BlockExpr |
 | utf8-identifiers.rs:10:15:12:1 | StmtList |
 | utf8-identifiers.rs:11:5:11:24 | LetStmt |
-| utf8-identifiers.rs:11:9:11:9 | IdentPat |
 | utf8-identifiers.rs:11:9:11:9 | Name |
+| utf8-identifiers.rs:11:9:11:9 | \u03b1 |
 | utf8-identifiers.rs:11:14:11:23 | 0.00001f64 |

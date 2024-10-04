@@ -1,8 +1,6 @@
 import java
 
-private predicate filterFile(Top t) {
-  t.getFile().getRelativePath().matches("%/local_anonymous.kt")
-}
+private predicate filterFile(Top t) { t.getFile().getRelativePath().matches("%local_anonymous.kt") }
 
 private string isAnonymousType(Type t) {
   if t instanceof AnonymousClass then result = "anonymous" else result = "not anonymous"

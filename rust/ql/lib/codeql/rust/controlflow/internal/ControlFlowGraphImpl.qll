@@ -61,6 +61,10 @@ import CfgImpl
 /** Holds if `p` is a trivial pattern that is always guaranteed to match. */
 predicate trivialPat(Pat p) { p instanceof WildcardPat or p instanceof IdentPat }
 
+class ArrayExprTree extends StandardPostOrderTree, ArrayExpr {
+  override AstNode getChildNode(int i) { result = this.getExpr(i) }
+}
+
 class AsmExprTree extends LeafTree instanceof AsmExpr { }
 
 class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
@@ -132,7 +136,7 @@ class LogicalAndBinaryOpExprTree extends PreOrderTree, LogicalAndExpr {
   }
 }
 
-class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExpr {
+class BlockExprTree extends StandardPostOrderTree, BlockExpr {
   override AstNode getChildNode(int i) {
     result = super.getStmtList().getStatement(i)
     or
@@ -140,19 +144,27 @@ class BlockExprBaseTree extends StandardPostOrderTree instanceof BlockExpr {
     (exists(super.getStmtList().getStatement(i - 1)) or i = 0) and
     result = super.getStmtList().getTailExpr()
   }
+
+  override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 }
 
-class BreakExprTree extends PostOrderTree instanceof BreakExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+class BreakExprTree extends PostOrderTree, BreakExpr {
+  override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
 
   override predicate first(AstNode node) {
-    first(super.getExpr(), node)
+    first(this.getExpr(), node)
     or
-    not super.hasExpr() and node = this
+    not this.hasExpr() and node = this
   }
+
+  override predicate last(AstNode last, Completion c) { none() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     last(super.getExpr(), pred, c) and succ = this
+    or
+    pred = this and
+    c.isValidFor(pred) and
+    succ = this.getTarget()
   }
 }
 
@@ -170,7 +182,15 @@ class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
 
 class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
 
-class ContinueExprTree extends LeafTree instanceof ContinueExpr { }
+class ContinueExprTree extends LeafTree, ContinueExpr {
+  override predicate last(AstNode last, Completion c) { none() }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    pred = this and
+    c.isValidFor(pred) and
+    first(this.getTarget().(LoopingExprTree).getLoopContinue(), succ)
+  }
+}
 
 class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
@@ -189,7 +209,7 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
     child = [super.getCondition(), super.getThen(), super.getElse()]
   }
 
-  ConditionalCompletion conditionCompletion(Completion c) {
+  private ConditionalCompletion conditionCompletion(Completion c) {
     if super.getCondition() instanceof LetExpr
     then result = c.(MatchCompletion)
     else result = c.(BooleanCompletion)
@@ -225,6 +245,8 @@ class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
     i = 1 and result = super.getIndex()
   }
 }
+
+class ItemTree extends LeafTree, Item { }
 
 // `LetExpr` is a pre-order tree such that the pattern itself ends up
 // dominating successors in the graph in the same way that patterns do in
@@ -277,44 +299,97 @@ class LetStmtTree extends PreOrderTree instanceof LetStmt {
 
 class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
-class LoopExprTree extends PostOrderTree instanceof LoopExpr {
-  override predicate propagatesAbnormal(AstNode child) { none() }
+abstract class LoopingExprTree extends PostOrderTree {
+  override predicate propagatesAbnormal(AstNode child) { child = this.getLoopBody() }
 
-  override predicate first(AstNode node) { first(super.getLoopBody(), node) }
+  abstract BlockExpr getLoopBody();
 
-  /** Whether this `LoopExpr` captures the `c` completion. */
-  private predicate capturesLoopJumpCompletion(LoopJumpCompletion c) {
-    not c.hasLabel()
-    or
-    c.getLabelName() = super.getLabel().getLifetime().getText()
-  }
+  /**
+   * Gets the node to execute when continuing the loop; either after
+   * executing the last node in the body or after an explicit `continue`.
+   */
+  abstract AstNode getLoopContinue();
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge back to the start for final expression and continue expressions
-    last(super.getLoopBody(), pred, c) and
-    (
-      completionIsNormal(c)
-      or
-      c.(LoopJumpCompletion).isContinue() and this.capturesLoopJumpCompletion(c)
-    ) and
-    this.first(succ)
-    or
-    // Edge for exiting the loop with a break expressions
-    last(super.getLoopBody(), pred, c) and
-    c.(LoopJumpCompletion).isBreak() and
-    this.capturesLoopJumpCompletion(c) and
-    succ = this
-  }
-
-  override predicate last(AstNode last, Completion c) {
-    super.last(last, c)
-    or
-    // Any abnormal completions that this loop does not capture should propagate
-    last(super.getLoopBody(), last, c) and
-    not completionIsNormal(c) and
-    not this.capturesLoopJumpCompletion(c)
+    last(this.getLoopBody(), pred, c) and
+    completionIsNormal(c) and
+    first(this.getLoopContinue(), succ)
   }
 }
+
+class LoopExprTree extends LoopingExprTree instanceof LoopExpr {
+  override BlockExpr getLoopBody() { result = LoopExpr.super.getLoopBody() }
+
+  override AstNode getLoopContinue() { result = this.getLoopBody() }
+
+  override predicate first(AstNode node) { first(this.getLoopBody(), node) }
+}
+
+class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
+  override BlockExpr getLoopBody() { result = WhileExpr.super.getLoopBody() }
+
+  override AstNode getLoopContinue() { result = super.getCondition() }
+
+  override predicate propagatesAbnormal(AstNode child) {
+    super.propagatesAbnormal(child)
+    or
+    child = super.getCondition()
+  }
+
+  override predicate first(AstNode node) { first(super.getCondition(), node) }
+
+  private ConditionalCompletion conditionCompletion(Completion c) {
+    if super.getCondition() instanceof LetExpr
+    then result = c.(MatchCompletion)
+    else result = c.(BooleanCompletion)
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c)
+    or
+    last(super.getCondition(), pred, c) and
+    this.conditionCompletion(c).succeeded() and
+    first(this.getLoopBody(), succ)
+    or
+    last(super.getCondition(), pred, c) and
+    this.conditionCompletion(c).failed() and
+    succ = this
+  }
+}
+
+class ForExprTree extends LoopingExprTree instanceof ForExpr {
+  override BlockExpr getLoopBody() { result = ForExpr.super.getLoopBody() }
+
+  override AstNode getLoopContinue() { result = super.getPat() }
+
+  override predicate propagatesAbnormal(AstNode child) {
+    super.propagatesAbnormal(child)
+    or
+    child = super.getIterable()
+  }
+
+  override predicate first(AstNode node) { first(super.getIterable(), node) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c)
+    or
+    last(super.getIterable(), pred, c) and
+    first(super.getPat(), succ) and
+    completionIsNormal(c)
+    or
+    last(super.getPat(), pred, c) and
+    c.(MatchCompletion).succeeded() and
+    first(this.getLoopBody(), succ)
+    or
+    last(super.getPat(), pred, c) and
+    c.(MatchCompletion).failed() and
+    succ = this
+  }
+}
+
+// TODO: replace with expanded macro once the extractor supports it
+class MacroExprTree extends LeafTree, MacroExpr { }
 
 class MatchArmTree extends ControlFlowTree instanceof MatchArm {
   override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
@@ -376,10 +451,24 @@ class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr
   }
 }
 
+class NameTree extends LeafTree, Name { }
+
+class NameRefTree extends LeafTree, NameRef { }
+
 class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
-class ParenExprTree extends StandardPostOrderTree, ParenExpr {
-  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+class ParenExprTree extends ControlFlowTree, ParenExpr {
+  private ControlFlowTree expr;
+
+  ParenExprTree() { expr = super.getExpr() }
+
+  override predicate propagatesAbnormal(AstNode child) { expr.propagatesAbnormal(child) }
+
+  override predicate first(AstNode first) { expr.first(first) }
+
+  override predicate last(AstNode last, Completion c) { expr.last(last, c) }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
 }
 
 // This covers all patterns as they all extend `Pat`
