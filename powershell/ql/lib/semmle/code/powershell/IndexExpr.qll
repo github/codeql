@@ -1,4 +1,5 @@
 import powershell
+private import internal.ExplicitWrite
 
 class IndexExpr extends @index_expression, Expr {
   override string toString() { result = "...[...]" }
@@ -10,4 +11,20 @@ class IndexExpr extends @index_expression, Expr {
   Expr getBase() { index_expression(this, _, result, _) } // TODO: Change @ast to @expr in the dbscheme
 
   predicate isNullConditional() { index_expression(this, _, _, true) }
+}
+
+private predicate isImplicitIndexWrite(Expr e) { none() }
+
+/** An index expression that is being written to. */
+class IndexExprWrite extends IndexExpr {
+  IndexExprWrite() { isExplicitWrite(this, _) or isImplicitIndexWrite(this) }
+
+  predicate isExplicit(AssignStmt assign) { isExplicitWrite(this, assign) }
+
+  predicate isImplicit() { isImplicitIndexWrite(this) }
+}
+
+/** An index expression that is being read from. */
+class IndexExprRead extends IndexExpr {
+  IndexExprRead() { not this instanceof IndexExprWrite }
 }

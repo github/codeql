@@ -325,11 +325,40 @@ module ExprNodes {
   /** A control-flow node that wraps a `MemberExpr` expression that is being written to. */
   class MemberCfgWriteAccessNode extends MemberCfgNode {
     MemberCfgWriteAccessNode() { this.getExpr() instanceof MemberExprWriteAccess }
+
+    StmtNodes::AssignStmtCfgNode getAssignStmt() { result.getLeftHandSide() = this }
   }
 
   /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
   class MemberCfgReadAccessNode extends MemberCfgNode {
     MemberCfgReadAccessNode() { this.getExpr() instanceof MemberExprReadAccess }
+  }
+
+  class IndexChildMapping extends ExprChildMapping, IndexExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getIndex() }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression. */
+  class IndexCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "IndexCfgNode" }
+
+    override IndexChildMapping e;
+
+    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+
+    final ExprCfgNode getIndex() { e.hasCfgChild(e.getIndex(), this, result) }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression that is being written to. */
+  class IndexCfgWriteNode extends IndexCfgNode {
+    IndexCfgWriteNode() { this.getExpr() instanceof IndexExprWrite }
+
+    StmtNodes::AssignStmtCfgNode getAssignStmt() { result.getLeftHandSide() = this }
+  }
+
+  /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
+  class IndexCfgReadNode extends IndexCfgNode {
+    IndexCfgReadNode() { this.getExpr() instanceof IndexExprRead }
   }
 }
 
