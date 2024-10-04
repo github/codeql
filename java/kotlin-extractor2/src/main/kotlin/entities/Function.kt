@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.TypeContext
+import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.name
 import org.jetbrains.kotlin.analysis.api.symbols.psiSafe
@@ -301,6 +302,7 @@ private val IrDeclaration.isAnonymousFunction
         }
  */
 
+context(KaSession)
 fun KotlinFileExtractor.extractFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbReftype>,
@@ -375,6 +377,7 @@ fun KotlinFileExtractor.extractFunction(
 }
 
 // TODO: Can this be inlined?
+context(KaSession)
 private fun KotlinFileExtractor.forceExtractFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbReftype>,
