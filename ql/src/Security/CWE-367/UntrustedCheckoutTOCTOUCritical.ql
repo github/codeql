@@ -18,18 +18,14 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from
-  LocalJob job, MutableRefCheckoutStep checkout, PoisonableStep step, ControlCheck check,
-  Event event
+from MutableRefCheckoutStep checkout, PoisonableStep step, Event event
 where
-  job.getAStep() = checkout and
   // the checked-out code may lead to arbitrary code execution
   checkout.getAFollowingStep() = step and
   // the checkout occurs in a privileged context
   inPrivilegedContext(checkout, event) and
   // the mutable checkout step is protected by an Insufficient access check
-  check.protects(checkout, event, "untrusted-checkout") and
-  not check.protects(checkout, event, "untrusted-checkout-toctou")
+  exists(ControlCheck check1 | check1.protects(checkout, event, "untrusted-checkout")) and
+  not exists(ControlCheck check2 | check2.protects(checkout, event, "untrusted-checkout-toctou"))
 select step, checkout, step,
-  "Insufficient protection against execution of untrusted code on a privileged workflow on check $@.",
-  check, check.toString()
+  "Insufficient protection against execution of untrusted code on a privileged workflow."
