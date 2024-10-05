@@ -12,7 +12,7 @@ query predicate variableReadAccess(VariableReadAccess va, Variable v) { v = va.g
 query predicate variableInitializer(Variable v, Expr e) { e = v.getInitializer() }
 
 module VariableAccessTest implements TestSig {
-  string getARelevantTag() { result = "access" }
+  string getARelevantTag() { result = ["", "write_", "read_"] + "access" }
 
   private predicate declAt(Variable v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, _, _, line, _)
@@ -38,8 +38,15 @@ module VariableAccessTest implements TestSig {
     exists(VariableAccess va |
       location = va.getLocation() and
       element = va.toString() and
-      tag = "access" and
       decl(va.getVariable(), value)
+    |
+      va instanceof VariableWriteAccess and tag = "write_access"
+      or
+      va instanceof VariableReadAccess and tag = "read_access"
+      or
+      not va instanceof VariableWriteAccess and
+      not va instanceof VariableReadAccess and
+      tag = "access"
     )
   }
 }

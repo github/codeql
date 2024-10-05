@@ -1,7 +1,5 @@
 test_query1
-|  | 0 |
-| tutorials | 0 |
-| tutorials/Introducing the JavaScript libraries | 2 |
+|  | 2 |
 test_query3
 | tst.js:27:1:27:4 | <!-- | Do not use HTML comments. |
 test_query4
