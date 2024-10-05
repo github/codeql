@@ -25,6 +25,14 @@ private module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements D
       sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(MethodCall ma | result = ma.getLocation() |
+      sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
+    )
+  }
 }
 
 private module ServletWriterSourceToPrintStackTraceMethodFlow =
@@ -69,7 +77,16 @@ private predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
 private module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof
+      InformationLeakDiffInformed<StackTraceStringToHttpResponseSinkFlow::hasSourceInDiffRange/0>::InformationLeakSink
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(Expr e | stackTraceExpr(e, source.asExpr()) and result = e.getLocation())
+  }
 }
 
 private module StackTraceStringToHttpResponseSinkFlow =
