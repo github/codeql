@@ -1,5 +1,0 @@
-| lib.rs:2:9:2:8 | expected `;` or `{` |
-| lib.rs:2:9:2:8 | expected an item |
-| lib.rs:2:10:2:21 | macro expansion failed: could not resolve macro 'identifiers' |
-| lib.rs:2:21:2:20 | expected BANG |
-| lib.rs:2:21:2:20 | expected `{`, `[`, `(` |
