@@ -342,7 +342,13 @@ class Annotatable extends Element {
   }
 }
 
-/** An annotation type is a special kind of interface type declaration. */
+/**
+ * An annotation type is a special kind of interface type declaration.
+ * For example, the type `SomeAnn` defined with
+ * ```
+ * @interface SomeAnn {}
+ * ```
+ */
 class AnnotationType extends Interface {
   AnnotationType() { isAnnotType(this) }
 
@@ -432,7 +438,15 @@ class AnnotationType extends Interface {
   }
 }
 
-/** An annotation element is a member declared in an annotation type. */
+/**
+ * An annotation element is a member declared in an annotation type.
+ * For example, the method `someFun` in
+ * ```
+ * @interface SomeAnn {
+ *     int someFun();
+ * }
+ * ```
+ */
 class AnnotationElement extends Member {
   AnnotationElement() { isAnnotElem(this) }
 

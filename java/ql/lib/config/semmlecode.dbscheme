@@ -637,34 +637,92 @@ isVarargsParam(
   int param: @param ref
 );
 
+/**
+ * `id` is a `throws` clause of the method or constructor `parentid`,
+ * for type `typeid`, e.g.
+ * ```
+ * void someFun() throws SomeType;`.
+ * ```
+ * with `typeid` being `SomeType` and `parentid` being `someFun`.
+ */
 exceptions(
   unique int id: @exception,
   int typeid: @type ref,
   int parentid: @callable ref
 );
 
+/**
+ * Holds if `interfaceid` is an annotation type, e.g. the type `SomeAnn`
+ * defined with
+ * ```
+ * @interface SomeAnn {}
+ * ```
+ */
 isAnnotType(
   int interfaceid: @classorinterface ref
 );
 
+/**
+ * Holds if `methodid` is a member of an annotation type, e.g. the
+ * method `someFun` in
+ * ```
+ * @interface SomeAnn {
+ *     int someFun();
+ * }
+ * ```
+ */
 isAnnotElem(
   int methodid: @method ref
 );
 
+/**
+ * Holds if annotation `parentid` has value `value` for the attribute
+ * `id2`. For example, with
+ * ```
+ * @Deprecated(since = "2.3")
+ * public class Test {}
+ * ```
+ * there will be a row in which `parentid` is the deprecated annotation,
+ * `id2` is the `since` method, and `value` is the string `"2.3"`.
+ */
 annotValue(
   int parentid: @annotation ref,
   int id2: @method ref,
   unique int value: @expr ref
 );
 
+/**
+ * Holds if `classid` is an `enum` type, e.g. the type `X` in
+ * ```
+ * enum X { A, B, C }
+ * ```
+ */
 isEnumType(
   int classid: @classorinterface ref
 );
 
+/**
+ * Holds if `fieldid` is an (implicitly declared `public static final`)
+ * field corresponding to a constant in an enum. For example, there will
+ * be a row for a field with name `A` for
+ * ```
+ * enum X { A, B, C }
+ * ```
+ */
 isEnumConst(
   int fieldid: @field ref
 );
 
+/**
+ * `id` is the `pos`th (0-based) type parameter in the declaration of the
+ * generic type or method `parentid`, and has name `nodeName`.
+ *
+ * For example, `T` is the 0th type parameter in
+ * `class X<T> { }` and in `<T> void m() { }` for `X` and `m` respectively.
+ *
+ * For the type argument of the instantiation of a parameterised element,
+ * see `typeArgs`.
+ */
 #keyset[parentid,pos]
 typeVars(
   unique int id: @typevariable,
@@ -673,12 +731,38 @@ typeVars(
   int parentid: @classorinterfaceorcallable ref
 );
 
+/**
+ * `id` is a wildcard, used as a type argument, with
+ * name `nodeName` and `kind` being 1 for an upper bound or 2
+ * for a lower bound.
+ *
+ * For example, in
+ * ```
+ *   Map<? extends Number, ? super Float>
+ * ```
+ * the first wildcard has an upper bound of `Number`,
+ * so has `nodeName` of `? extends Number` and kind 1,
+ * and the second wildcard has a lower bound of `Float`,
+ * so has `nodeName` of `? super Float` and kind 2.
+ */
 wildcards(
   unique int id: @wildcard,
   string nodeName: string ref,
   int kind: int ref
 );
 
+/**
+ * `id` is the `pos`th (0-based) type bound on the bounded type
+ * `parentid`. The type of this bound is `typeid`.
+ *
+ * For example, in
+ * ```
+ * class X<T extends Runnable & Cloneable> { }
+ * ```
+ * the 0th type bound on bounded type (`parentid`) `T`
+ * has type (`typeid`) `Runnable`, and the 1st type bound
+ * has type (`typeid`) `Cloneable`.
+ */
 #keyset[parentid,pos]
 typeBounds(
   unique int id: @typebound,
@@ -687,6 +771,18 @@ typeBounds(
   int parentid: @boundedtype ref
 );
 
+/**
+ * The `pos`th (0-based) type argument of the instantiation
+ * `parentid` of a generic type or method is `argumentid`.
+ *
+ * For example, for the type
+ * ```
+ * Map<String, Object>
+ * ```
+ * the 0th argument is `String`, and the 1st argument is `Object`.
+ *
+ * For the type parameters of the parameterised element, see `typeVars`.
+ */
 #keyset[parentid,pos]
 typeArgs(
   int argumentid: @reftype ref,
