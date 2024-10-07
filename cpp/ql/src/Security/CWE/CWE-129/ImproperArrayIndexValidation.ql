@@ -16,7 +16,7 @@ import cpp
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.security.FlowSources as FS
 import semmle.code.cpp.dataflow.new.TaintTracking
-import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import ImproperArrayIndexValidation::PathGraph
 
 predicate isFlowSource(FS::FlowSource source, string sourceType) {
@@ -39,6 +39,17 @@ predicate guardChecks(IRGuardCondition g, Expr e, boolean branch) {
   )
 }
 
+/**
+ * Holds if `arrayExpr` accesses an `ArrayType` with a constant size `N`, and
+ * the value of `offsetExpr` is known to be smaller than `N`.
+ */
+predicate offsetIsAlwaysInBounds(ArrayExpr arrayExpr, VariableAccess offsetExpr) {
+  exists(ArrayType arrayType |
+    arrayType = arrayExpr.getArrayBase().getUnspecifiedType() and
+    arrayType.getArraySize() > upperBound(offsetExpr.getFullyConverted())
+  )
+}
+
 module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
@@ -51,7 +62,8 @@ module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ArrayExpr arrayExpr, VariableAccess offsetExpr |
       offsetExpr = arrayExpr.getArrayOffset() and
-      sink.asExpr() = offsetExpr
+      sink.asExpr() = offsetExpr and
+      not offsetIsAlwaysInBounds(arrayExpr, offsetExpr)
     )
   }
 }
