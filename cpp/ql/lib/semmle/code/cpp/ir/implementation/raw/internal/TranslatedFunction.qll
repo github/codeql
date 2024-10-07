@@ -228,7 +228,10 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
+    // only unwind for C++ exceptions since SEH exceptions are too verbose
+    // and would generate unwind for all functions. 
+    isSEH = false and 
     result = this.getInstruction(UnwindTag()) and
     kind instanceof GotoEdge
   }
@@ -406,7 +409,7 @@ abstract class TranslatedParameter extends TranslatedElement {
       result = this.getInstruction(InitializerIndirectStoreTag()) and kind instanceof GotoEdge
       or
       // All load instructions can throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
     or

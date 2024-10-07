@@ -169,8 +169,9 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
       kind instanceof GotoEdge and
       result = this.getInstruction(DynamicInitializationConditionalBranchTag())
       or
+      // All load instructions may throw an SEH exception
       kind.(ExceptionEdge).isSEH() and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true)
     )
     or
     tag = DynamicInitializationConditionalBranchTag() and
@@ -191,7 +192,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions may throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and kind.(ExceptionEdge).isSEH()
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and kind.(ExceptionEdge).isSEH()
     )
   }
 

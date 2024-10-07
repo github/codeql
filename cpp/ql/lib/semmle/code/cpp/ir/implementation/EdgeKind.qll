@@ -58,6 +58,9 @@ class ExceptionEdge extends EdgeKind, TExceptionEdge {
 
   ExceptionEdge() { this = TExceptionEdge(isSEH) }
 
+  /**
+   * Holds if the exception is a Structured Exception Handling (SEH) exception.
+   */
   final predicate isSEH() { isSEH = true }
 
   final override string toString() { 

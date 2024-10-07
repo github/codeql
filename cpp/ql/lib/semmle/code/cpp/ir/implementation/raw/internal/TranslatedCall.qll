@@ -101,13 +101,13 @@ abstract class TranslatedCall extends TranslatedExpr {
             // If the call is known to always throw, regardless of other defined throwing behavior,
             // only generate an exception edge.
             if this.(TranslatedCallExpr).alwaysRaiseException(isSEH)
-            then result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+            then result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
             else
               if this.(TranslatedCallExpr).mayRaiseException(isSEH)
               then (
                 // if the call is known to conditionally throw, generate both an exception edge and an
                 // ordinary successor
-                result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+                result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
                 or
                 result = this.getParent().getChildSuccessor(this, kind)
               ) else

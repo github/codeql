@@ -1104,9 +1104,13 @@ abstract class TranslatedElement extends TTranslatedElement {
    * within this element. This will generally return first `catch` block of the
    * nearest enclosing `try`, or the `Unwind` instruction for the function if
    * there is no enclosing `try`. The successor edge kind is specified by `kind`.
+   * 
+   * `isSEH` is true if the exception is a structured exception, false if otherwise.
+   * The boolean value can be extracted from `ExceptionEdge` from the exception 
+   * edge triggering the call to this function.
    */
-  Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
-    result = this.getParent().getExceptionSuccessorInstruction(kind)
+  Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
+    result = this.getParent().getExceptionSuccessorInstruction(kind, isSEH)
   }
 
   /**

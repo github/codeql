@@ -284,7 +284,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -401,7 +401,7 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -947,7 +947,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -1105,7 +1105,7 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -1926,7 +1926,7 @@ class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
       result = this.getInstruction(AssignmentStoreTag()) and kind instanceof GotoEdge
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
     or
@@ -2683,7 +2683,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
       or
       // All load instructions could throw an SEH exception
       (tag = ConditionValueTrueStoreTag() or tag = ConditionValueFalseStoreTag()) and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
       or
       not this.elseIsVoid() and
@@ -2716,7 +2716,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         result = this.getParent().getChildSuccessor(this, kind)
         or
         // All load instructions could throw an SEH exception
-        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
         kind.(ExceptionEdge).isSEH()
       )
     )
@@ -3085,7 +3085,7 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       not exists(this.getChild(id + 1)) and
       kind instanceof ExceptionEdge and
       not kind.(ExceptionEdge).isSEH() and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), true)
     )
   }
 
@@ -3125,7 +3125,7 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       not exists(this.getDestructors()) and
       kind instanceof ExceptionEdge and
       not kind.(ExceptionEdge).isSEH() and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), true)
     )
   }
 
@@ -3417,7 +3417,7 @@ class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -3493,7 +3493,7 @@ class TranslatedVarArg extends TranslatedNonConstantExpr {
       kind instanceof GotoEdge and result = this.getInstruction(VarArgsArgAddressTag())
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
     or
@@ -3510,7 +3510,7 @@ class TranslatedVarArg extends TranslatedNonConstantExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -3638,7 +3638,7 @@ class TranslatedVarArgCopy extends TranslatedNonConstantExpr {
       result = this.getDestinationVAList().getFirstInstruction(kind)
       or
       // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
     or
@@ -3647,7 +3647,7 @@ class TranslatedVarArgCopy extends TranslatedNonConstantExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
@@ -3857,7 +3857,7 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All load instruction could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e)) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
       kind.(ExceptionEdge).isSEH()
     )
   }
