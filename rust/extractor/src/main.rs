@@ -27,7 +27,7 @@ fn extract(
     );
 
     for err in parse_errors {
-        translator.emit_parse_error(&err);
+        translator.emit_parse_error(&ast, &err);
     }
     let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
     if translator.semi.is_none() {
