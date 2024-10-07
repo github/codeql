@@ -13,6 +13,8 @@ import java.util.concurrent.Executors
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
 import org.jetbrains.kotlin.analysis.api.KaSession
@@ -220,8 +222,13 @@ fun doAnalysis(
     val checkTrapIdentical = false // TODO
 
     analyze(sourceModule) {
-        val maxThreads = 1 // TODO: Default to 8 temporarily to ensure concurrency,
-                           // TODO: Later, default to $CODEQL_THREADS or Runtime.getRuntime().availableProcessors()
+        val maxThreads = 8 // TODO: Later, default to $CODEQL_THREADS or Runtime.getRuntime().availableProcessors()
+        // If a Kotlin coroutine yields, then a thread will be freed up
+        // and start extracting the next file. We want to avoid having
+        // lots of TRAP files open at once, so we use a semaphore so that
+        // we only have `maxThreads` coroutines with an open TRAP file
+        // at once.
+        val extractorThreads = Semaphore(maxThreads)
         Executors.newFixedThreadPool(maxThreads).asCoroutineDispatcher().use { dispatcher ->
 
             runBlocking {
@@ -231,58 +238,60 @@ fun doAnalysis(
                     val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
                     for (psiFile in psiFiles) {
                         launch {
-                            if (psiFile is KtFile) {
-                                if (dump_psi) {
-                                    val showWhitespaces = false
-                                    val showRanges = true
-                                    loggerBase.info(dtw, DebugUtil.psiToString(psiFile, showWhitespaces, showRanges))
-                                }
-                                val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
-                                try {
-                                    val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
-                                    fileDiagnosticTrapWriter.writeCompilation_compiling_files(
-                                        compilation,
-                                        fileNumber,
-                                        fileDiagnosticTrapWriter.fileId
-                                    )
-                                    doFile(
-                                        fileNumber,
-                                        compression,
+                            extractorThreads.withPermit {
+                                if (psiFile is KtFile) {
+                                    if (dump_psi) {
+                                        val showWhitespaces = false
+                                        val showRanges = true
+                                        loggerBase.info(dtw, DebugUtil.psiToString(psiFile, showWhitespaces, showRanges))
+                                    }
+                                    val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
+                                    try {
+                                        val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
+                                        fileDiagnosticTrapWriter.writeCompilation_compiling_files(
+                                            compilation,
+                                            fileNumber,
+                                            fileDiagnosticTrapWriter.fileId
+                                        )
+                                        doFile(
+                                            fileNumber,
+                                            compression,
+                                            /*
+                                            OLD: KE1
+                                            fileExtractionProblems,
+                                            invocationTrapFile,
+                                            */
+                                            fileDiagnosticTrapWriter,
+                                            loggerBase,
+                                            checkTrapIdentical,
+                                            trapDir,
+                                            srcDir,
+                                            psiFile,
+                                            /*
+                                            OLD: KE1
+                                            primitiveTypeMapping,
+                                            pluginContext,
+                                            globalExtensionState
+                                            */
+                                        )
+                                        fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
+                                            compilation,
+                                            fileNumber,
+                                            fileExtractionProblems.extractionResult()
+                                        )
+                                        // We catch Throwable rather than Exception, as we want to
+                                        // continue trying to extract everything else even if we get a
+                                        // stack overflow or an assertion failure in one file.
+                                    } catch (e: Throwable) {
                                         /*
                                         OLD: KE1
-                                        fileExtractionProblems,
-                                        invocationTrapFile,
+                                        logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
+                                        fileExtractionProblems.setNonRecoverableProblem()
                                         */
-                                        fileDiagnosticTrapWriter,
-                                        loggerBase,
-                                        checkTrapIdentical,
-                                        trapDir,
-                                        srcDir,
-                                        psiFile,
-                                        /*
-                                        OLD: KE1
-                                        primitiveTypeMapping,
-                                        pluginContext,
-                                        globalExtensionState
-                                        */
-                                    )
-                                    fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
-                                        compilation,
-                                        fileNumber,
-                                        fileExtractionProblems.extractionResult()
-                                    )
-                                    // We catch Throwable rather than Exception, as we want to
-                                    // continue trying to extract everything else even if we get a
-                                    // stack overflow or an assertion failure in one file.
-                                } catch (e: Throwable) {
-                                    /*
-                                    OLD: KE1
-                                    logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
-                                    fileExtractionProblems.setNonRecoverableProblem()
-                                    */
+                                    }
+                                } else {
+                                    System.out.println("Warning: Not a KtFile")
                                 }
-                            } else {
-                                System.out.println("Warning: Not a KtFile")
                             }
                         }
                         fileNumber += 1
