@@ -54,6 +54,10 @@ void test5(int i) {
   j = myArray[j]; // BAD: j has not been validated
 }
 
-void test6(int i) {
+extern int myTable[256];
 
+void test6(int i) {
+  unsigned char s = i;
+
+  myTable[s] = 0; // GOOD: Input is small [FALSE POSITIVE]
 }
