@@ -1,0 +1,56 @@
+{
+  "markdownMessage": "2 `go.mod` files were found:\n\n`module/go.mod`, `no-packages/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/multiple-go-mod-found-not-nested",
+    "name": "Multiple `go.mod` files found, not all nested under one root `go.mod` file"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "CodeQL was unable to extract any Go files in <test-root-directory>/src/module. If this is unexpected, [specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-found-but-not-processed-for-directory",
+    "name": "Go files were found but not processed for a directory"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "CodeQL was unable to extract any Go files in <test-root-directory>/src/no-packages. If this is unexpected, [specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-found-but-not-processed-for-directory",
+    "name": "Go files were found but not processed for a directory"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-found-but-not-processed",
+    "name": "Go files were found but not processed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
