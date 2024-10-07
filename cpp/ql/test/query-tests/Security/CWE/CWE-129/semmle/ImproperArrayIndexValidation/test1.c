@@ -38,7 +38,7 @@ void test3(int i) {
 }
 
 void test4(int i) {
-  myArray[i] = 0; // BAD: i has not been validated [NOT REPORTED]
+  myArray[i] = 0; // BAD: i has not been validated
 
   if ((i < 0) || (i >= 10)) return;
 
