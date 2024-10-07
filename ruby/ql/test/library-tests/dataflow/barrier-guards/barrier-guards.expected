@@ -1,6 +1,4 @@
 testFailures
-| barrier_flow.rb:105:16:105:26 | # $ guarded | Missing result:guarded= |
-| barrier_flow.rb:111:16:111:26 | # $ guarded | Missing result:guarded= |
 failures
 newStyleBarrierGuards
 | barrier-guards.rb:3:16:4:19 | [input] SSA phi read(foo) |
@@ -55,6 +53,8 @@ newStyleBarrierGuards
 | barrier_flow.rb:91:14:91:14 | x |
 | barrier_flow.rb:96:24:96:24 | x |
 | barrier_flow.rb:97:14:97:14 | x |
+| barrier_flow.rb:105:14:105:14 | x |
+| barrier_flow.rb:111:14:111:14 | x |
 | barrier_flow.rb:118:8:118:19 | [input] SSA phi read(x) |
 | barrier_flow.rb:118:24:118:35 | [input] SSA phi read(x) |
 | barrier_flow.rb:119:14:119:14 | x |
