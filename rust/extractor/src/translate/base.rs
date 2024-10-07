@@ -139,9 +139,21 @@ impl<'a> Translator<'a> {
             );
         }
     }
-    pub fn emit_location_token(&mut self, label: Label<generated::Token>, token: &SyntaxToken) {
-        let (start, end) = self.location(token.text_range());
-        self.trap.emit_location(self.label, label, start, end)
+    pub fn emit_location_token(
+        &mut self,
+        label: Label<generated::Token>,
+        parent: &impl ast::AstNode,
+        token: &SyntaxToken,
+    ) {
+        let parent_range = parent.syntax().text_range();
+        let token_range = token.text_range();
+        if let Some(clipped_range) = token_range.intersect(parent_range) {
+            if let Some(parent_range2) = self.text_range_for_node(parent) {
+                let token_range = clipped_range + parent_range2.start() - parent_range.start();
+                let (start, end) = self.location(token_range);
+                self.trap.emit_location(self.label, label, start, end)
+            }
+        }
     }
     pub fn emit_diagnostic(
         &mut self,
@@ -175,20 +187,30 @@ impl<'a> Translator<'a> {
             location,
         );
     }
-    pub fn emit_parse_error(&mut self, err: &SyntaxError) {
-        let location = self.location(err.range());
-        let message = err.to_string();
-        self.emit_diagnostic(
-            DiagnosticSeverity::Warning,
-            "parse_error".to_owned(),
-            message.clone(),
-            message,
-            location,
-        );
+    pub fn emit_parse_error(&mut self, owner: &impl ast::AstNode, err: &SyntaxError) {
+        let owner_range: TextRange = owner.syntax().text_range();
+        let err_range = err.range();
+        if let Some(owner_range2) = self.text_range_for_node(owner) {
+            let location = if let Some(clipped_range) = err_range.intersect(owner_range) {
+                let err_range = clipped_range + owner_range2.start() - owner_range.start();
+                self.location(err_range)
+            } else {
+                self.location(owner_range2)
+            };
+            let message = err.to_string();
+            self.emit_diagnostic(
+                DiagnosticSeverity::Warning,
+                "parse_error".to_owned(),
+                message.clone(),
+                message,
+                location,
+            );
+        }
     }
     pub fn emit_tokens(
         &mut self,
-        parent: Label<generated::AstNode>,
+        parent_node: &impl ast::AstNode,
+        parent_label: Label<generated::AstNode>,
         children: SyntaxElementChildren,
     ) {
         for child in children {
@@ -196,10 +218,10 @@ impl<'a> Translator<'a> {
                 if token.kind() == SyntaxKind::COMMENT {
                     let label = self.trap.emit(generated::Comment {
                         id: TrapId::Star,
-                        parent,
+                        parent: parent_label,
                         text: token.text().to_owned(),
                     });
-                    self.emit_location_token(label.into(), &token);
+                    self.emit_location_token(label.into(), parent_node, &token);
                 }
             }
         }
@@ -230,11 +252,11 @@ impl<'a> Translator<'a> {
                                     .get_erased(err.span().anchor.ast_id)
                                     .text_range()
                                     .start();
-                            self.emit_parse_error(&SyntaxError::new(message, location));
+                            self.emit_parse_error(mcall, &SyntaxError::new(message, location));
                         };
                     }
                     for err in value.value.iter() {
-                        self.emit_parse_error(err);
+                        self.emit_parse_error(mcall, err);
                     }
                 }
                 let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
@@ -261,7 +283,7 @@ impl<'a> Translator<'a> {
                     MacroCall::emit_expanded(label, value, &mut self.trap.writer);
                 } else {
                     let range = self.text_range_for_node(mcall);
-                    self.emit_parse_error(&SyntaxError::new(
+                    self.emit_parse_error(mcall, &SyntaxError::new(
                         format!(
                             "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
                             mcall.path().map(|p| p.to_string()).unwrap_or_default(),
@@ -273,13 +295,16 @@ impl<'a> Translator<'a> {
             } else {
                 let range = self.text_range_for_node(mcall);
 
-                self.emit_parse_error(&SyntaxError::new(
-                    format!(
-                        "macro expansion failed: could not resolve macro '{}'",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                self.emit_parse_error(
+                    mcall,
+                    &SyntaxError::new(
+                        format!(
+                            "macro expansion failed: could not resolve macro '{}'",
+                            mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                        ),
+                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ),
-                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
-                ));
+                );
             }
         }
     }

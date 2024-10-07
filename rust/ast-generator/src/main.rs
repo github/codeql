@@ -522,7 +522,7 @@ impl Translator<'_> {{
         writeln!(buf, "        self.emit_location(label, &node);")?;
         writeln!(
             buf,
-            "        self.emit_tokens(label.into(), node.syntax().children_with_tokens());"
+            "        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());"
         )?;
         writeln!(buf, "        label")?;
 
