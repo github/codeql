@@ -129,13 +129,16 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	if err != nil {
 		log.Printf("Warning: failed to get working directory: %s\n", err.Error())
 	} else {
+		// Determine whether there are Go source files in the working directory.
+		hasSources := util.FindGoFiles(wd)
+
 		// Determine how many packages we were able to load.
 		pkgCount := len(pkgs)
 
 		if pkgCount == 0 {
 			log.Println("No packages found.")
 
-			if util.FindGoFiles(wd) {
+			if hasSources {
 				diagnostics.EmitGoFilesFoundButNotProcessedForDirectory(wd)
 			}
 		}
@@ -143,6 +146,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 		// Write the number of packages to a file that can be inspected by the autobuilder.
 		util.WriteExtractionResult(wd, util.ExtractionResult{
 			PackageCount: pkgCount,
+			HasSources:   hasSources,
 		})
 	}
 

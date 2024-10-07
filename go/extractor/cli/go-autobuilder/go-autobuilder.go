@@ -627,7 +627,7 @@ func installDependenciesAndBuild() {
 	extractionResults := make(util.ExtractionResults)
 	util.ReadExtractionResults(&extractionResults)
 
-	if extractionResults.TotalPackageCount() == 0 {
+	if extractionResults.HasSources() && extractionResults.TotalPackageCount() == 0 {
 		diagnostics.EmitGoFilesFoundButNotProcessed()
 	}
 }

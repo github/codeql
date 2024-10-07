@@ -15,7 +15,10 @@ func extractionResultsPath() string {
 
 // Represents results of an extractor run that are of interest to the autobuilder.
 type ExtractionResult struct {
+	// The number of packages that were extracted.
 	PackageCount int `json:"packageCount"`
+	// Indicates whether there are Go sources for this project.
+	HasSources bool `json:"hasSources"`
 }
 
 // Represents a mapping of module roots to extraction results.
@@ -28,6 +31,16 @@ func (results ExtractionResults) TotalPackageCount() int {
 		result += v.PackageCount
 	}
 	return result
+}
+
+/* Returns a value indicating whether any Go source files were found */
+func (results ExtractionResults) HasSources() bool {
+	for _, v := range results {
+		if v.HasSources {
+			return true
+		}
+	}
+	return false
 }
 
 // Reads extraction results produced by the extractor from a well-known location in the
