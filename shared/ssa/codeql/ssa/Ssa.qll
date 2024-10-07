@@ -1635,7 +1635,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     bindingset[this]
     signature class StateSig;
 
-    module WithState<StateSig State> {
+    private module WithState<StateSig State> {
       /**
        * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`, blocking
        * flow in the given `state`.
