@@ -620,6 +620,16 @@ func installDependenciesAndBuild() {
 	} else {
 		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
+
+	// Check whether we have been able to extract any packages. Emit an error-level diagnostic if not.
+	// Each extractor run should have stored information about the outcome in a file in the database
+	// scratch directory, which are retrieving this information from.
+	extractionResults := make(util.ExtractionResults)
+	util.ReadExtractionResults(&extractionResults)
+
+	if extractionResults.TotalPackageCount() == 0 {
+		diagnostics.EmitGoFilesFoundButNotProcessed()
+	}
 }
 
 func main() {
