@@ -1,6 +1,5 @@
 package com.github.codeql
 
-import com.github.codeql.KotlinUsesExtractor.TypeContext
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
 
@@ -50,7 +49,7 @@ private fun extractErrorType(): TypeResults {
 */
 
 // TODO
-fun fakeKotlinType(): Label<out DbKt_type> {
+fun KotlinUsesExtractor.fakeKotlinType(): Label<out DbKt_type> {
     val fakeKotlinPackageId: Label<DbPackage> =
         tw.getLabelFor("@\"FakeKotlinPackage\"", { tw.writePackages(it, "fake.kotlin") })
     val fakeKotlinClassId: Label<DbClassorinterface> =
