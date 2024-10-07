@@ -13,6 +13,8 @@ edges
 | test1.c:42:16:42:16 | i | test1.c:43:11:43:11 | i | provenance |  |
 | test1.c:50:16:50:16 | i | test1.c:53:3:53:7 | ... = ... | provenance |  |
 | test1.c:53:3:53:7 | ... = ... | test1.c:55:15:55:15 | j | provenance |  |
+| test1.c:76:11:76:23 | ... = ... | test1.c:77:20:77:21 | ch | provenance |  |
+| test1.c:76:16:76:19 | call to getc | test1.c:76:11:76:23 | ... = ... | provenance |  |
 nodes
 | test1.c:7:26:7:29 | **argv | semmle.label | **argv |
 | test1.c:8:11:8:14 | call to atoi | semmle.label | call to atoi |
@@ -29,9 +31,13 @@ nodes
 | test1.c:50:16:50:16 | i | semmle.label | i |
 | test1.c:53:3:53:7 | ... = ... | semmle.label | ... = ... |
 | test1.c:55:15:55:15 | j | semmle.label | j |
+| test1.c:76:11:76:23 | ... = ... | semmle.label | ... = ... |
+| test1.c:76:16:76:19 | call to getc | semmle.label | call to getc |
+| test1.c:77:20:77:21 | ch | semmle.label | ch |
 subpaths
 #select
 | test1.c:20:16:20:16 | i | test1.c:7:26:7:29 | **argv | test1.c:20:16:20:16 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | **argv | a command-line argument |
 | test1.c:35:11:35:11 | i | test1.c:7:26:7:29 | **argv | test1.c:35:11:35:11 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | **argv | a command-line argument |
 | test1.c:43:11:43:11 | i | test1.c:7:26:7:29 | **argv | test1.c:43:11:43:11 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | **argv | a command-line argument |
 | test1.c:55:15:55:15 | j | test1.c:7:26:7:29 | **argv | test1.c:55:15:55:15 | j | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | **argv | a command-line argument |
+| test1.c:77:20:77:21 | ch | test1.c:76:16:76:19 | call to getc | test1.c:77:20:77:21 | ch | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:76:16:76:19 | call to getc | external |

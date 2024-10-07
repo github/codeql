@@ -63,4 +63,17 @@ void test6(int i) {
   myTable[s] = 0; // GOOD: Input is small [FALSE POSITIVE]
 }
 
-void test7(char *s) { }
+typedef void FILE;
+#define EOF (-1)
+
+int getc(FILE*);
+
+extern int myMaxCharTable[256];
+
+void test7(FILE* fp) {
+  int ch;
+  while ((ch = getc(fp)) != EOF) {
+    myMaxCharTable[ch] = 0; // GOOD [FALSE POSITIVE]
+  }
+}
+
