@@ -736,8 +736,13 @@ class TranslatedTryStmt extends TranslatedStmt {
     // of the `try`, because the exception successor of the `try` itself is
     // the first catch clause.
     handler = this.getHandler(stmt.getNumberOfCatchClauses() - 1) and
-    // TODO: uncertain of the SEH behavior here, not sure where a boolean would come from if I needed it
-    result = this.getParent().getExceptionSuccessorInstruction(kind, false)
+    exists(boolean isSEH |
+      stmt instanceof MicrosoftTryStmt and isSEH = true
+      or
+      stmt instanceof TryStmt and isSEH = false
+    |
+      result = this.getParent().getExceptionSuccessorInstruction(kind, isSEH)
+    )
   }
 
   final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
@@ -747,9 +752,9 @@ class TranslatedTryStmt extends TranslatedStmt {
     // They are either all SEH or all C++ within a single try block depending on the
     // try type (TryStmt vs MicrosoftTryStmt).
     (
-      stmt.getStmt() instanceof TryStmt and isSEH = false
+      stmt instanceof TryStmt and isSEH = false
       or
-      stmt.getStmt() instanceof MicrosoftTryStmt and isSEH = true
+      stmt instanceof MicrosoftTryStmt and isSEH = true
     ) and
     (
       result = this.getHandler(0).getFirstInstruction(kind)
