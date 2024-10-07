@@ -3,6 +3,7 @@ use anyhow::Context;
 use itertools::Itertools;
 use log::info;
 use ra_ap_base_db::SourceDatabase;
+use ra_ap_base_db::SourceDatabaseFileInputExt;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
@@ -59,7 +60,7 @@ impl RustAnalyzer {
         Ok(RustAnalyzer { workspace })
     }
     pub fn parse(
-        &self,
+        &mut self,
         path: &PathBuf,
     ) -> (
         SourceFile,
@@ -68,31 +69,6 @@ impl RustAnalyzer {
         Option<EditionedFileId>,
         Option<Semantics<'_, RootDatabase>>,
     ) {
-        let mut p = path.as_path();
-        while let Some(parent) = p.parent() {
-            p = parent;
-            if let Some((vfs, db)) = self.workspace.get(parent) {
-                if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
-                    .ok()
-                    .and_then(|x| AbsPathBuf::try_from(x).ok())
-                    .map(VfsPath::from)
-                    .and_then(|x| vfs.file_id(&x))
-                {
-                    let semi = Semantics::new(db);
-                    let file_id = EditionedFileId::current_edition(file_id);
-
-                    return (
-                        semi.parse(file_id),
-                        db.file_text(file_id.into()),
-                        db.parse_errors(file_id)
-                            .map(|x| x.to_vec())
-                            .unwrap_or_default(),
-                        Some(file_id),
-                        Some(semi),
-                    );
-                }
-            }
-        }
         let mut errors = Vec::new();
         let input = match std::fs::read(path) {
             Ok(data) => data,
@@ -105,6 +81,40 @@ impl RustAnalyzer {
             }
         };
         let (input, err) = from_utf8_lossy(&input);
+
+        let mut p = path.as_path();
+        while let Some(parent) = p.parent() {
+            p = parent;
+            if self.workspace.contains_key(parent) {
+                let (vfs, db) = self.workspace.get_mut(parent).unwrap();
+                if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
+                    .ok()
+                    .and_then(|x| AbsPathBuf::try_from(x).ok())
+                    .map(VfsPath::from)
+                    .and_then(|x| vfs.file_id(&x))
+                {
+                    db.set_file_text(file_id, &input);
+                    let semi = Semantics::new(db);
+
+                    let file_id = EditionedFileId::current_edition(file_id);
+                    let source_file = semi.parse(file_id);
+                    errors.extend(
+                        db.parse_errors(file_id)
+                            .into_iter()
+                            .flat_map(|x| x.to_vec()),
+                    );
+                    return (
+                        source_file,
+                        input.as_ref().into(),
+                        errors,
+                        Some(file_id),
+                        Some(semi),
+                    );
+                } else {
+                    break;
+                }
+            }
+        }
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
         errors.extend(parse.errors());
         errors.extend(err);
