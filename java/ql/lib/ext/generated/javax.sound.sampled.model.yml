@@ -103,7 +103,6 @@ extensions:
       - ["javax.sound.sampled", "AudioFormat", "isBigEndian", "()", "summary", "df-generated"]
       - ["javax.sound.sampled", "AudioFormat", "matches", "(AudioFormat)", "summary", "df-generated"]
       - ["javax.sound.sampled", "AudioInputStream", "available", "()", "summary", "df-generated"]
-      - ["javax.sound.sampled", "AudioInputStream", "close", "()", "summary", "df-generated"]
       - ["javax.sound.sampled", "AudioInputStream", "getFrameLength", "()", "summary", "df-generated"]
       - ["javax.sound.sampled", "AudioInputStream", "mark", "(int)", "summary", "df-generated"]
       - ["javax.sound.sampled", "AudioInputStream", "markSupported", "()", "summary", "df-generated"]

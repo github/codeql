@@ -24,13 +24,11 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.nio.channels.spi", "AbstractInterruptibleChannel", "close", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractInterruptibleChannel", "isOpen", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractSelectableChannel", "isBlocking", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractSelectableChannel", "isRegistered", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractSelectionKey", "cancel", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractSelectionKey", "isValid", "()", "summary", "df-generated"]
-      - ["java.nio.channels.spi", "AbstractSelector", "close", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AbstractSelector", "isOpen", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "AsynchronousChannelProvider", "provider", "()", "summary", "df-generated"]
       - ["java.nio.channels.spi", "SelectorProvider", "inheritedChannel", "()", "summary", "df-generated"]

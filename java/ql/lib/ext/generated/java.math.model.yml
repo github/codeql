@@ -72,7 +72,6 @@ extensions:
       - ["java.math", "BigInteger", "bitLength", "()", "summary", "df-generated"]
       - ["java.math", "BigInteger", "byteValueExact", "()", "summary", "df-generated"]
       - ["java.math", "BigInteger", "clearBit", "(int)", "summary", "df-generated"]
-      - ["java.math", "BigInteger", "compareTo", "(BigInteger)", "summary", "df-generated"]
       - ["java.math", "BigInteger", "divide", "(BigInteger)", "summary", "df-generated"]
       - ["java.math", "BigInteger", "divideAndRemainder", "(BigInteger)", "summary", "df-generated"]
       - ["java.math", "BigInteger", "flipBit", "(int)", "summary", "df-generated"]

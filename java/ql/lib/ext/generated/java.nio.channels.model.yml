@@ -199,7 +199,6 @@ extensions:
       - ["java.nio.channels", "SelectionKey", "isValid", "()", "summary", "df-generated"]
       - ["java.nio.channels", "SelectionKey", "isWritable", "()", "summary", "df-generated"]
       - ["java.nio.channels", "SelectionKey", "readyOps", "()", "summary", "df-generated"]
-      - ["java.nio.channels", "Selector", "close", "()", "summary", "df-generated"]
       - ["java.nio.channels", "Selector", "isOpen", "()", "summary", "df-generated"]
       - ["java.nio.channels", "Selector", "open", "()", "summary", "df-generated"]
       - ["java.nio.channels", "Selector", "select", "()", "summary", "df-generated"]

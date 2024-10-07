@@ -33,7 +33,6 @@ extensions:
     data:
       - ["java.nio.file.attribute", "AclEntry", "newBuilder", "()", "summary", "df-generated"]
       - ["java.nio.file.attribute", "AclEntry", "type", "()", "summary", "df-generated"]
-      - ["java.nio.file.attribute", "FileTime", "compareTo", "(FileTime)", "summary", "df-generated"]
       - ["java.nio.file.attribute", "FileTime", "from", "(long,TimeUnit)", "summary", "df-generated"]
       - ["java.nio.file.attribute", "FileTime", "fromMillis", "(long)", "summary", "df-generated"]
       - ["java.nio.file.attribute", "FileTime", "to", "(TimeUnit)", "summary", "df-generated"]

@@ -11,7 +11,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.time.zone", "ZoneOffsetTransition", "compareTo", "(ZoneOffsetTransition)", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "getDuration", "()", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "getInstant", "()", "summary", "df-generated"]
       - ["java.time.zone", "ZoneOffsetTransition", "isGap", "()", "summary", "df-generated"]

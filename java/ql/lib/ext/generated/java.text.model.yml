@@ -224,7 +224,6 @@ extensions:
       - ["java.text", "CollationElementIterator", "setText", "(CharacterIterator)", "summary", "df-generated"]
       - ["java.text", "CollationElementIterator", "setText", "(String)", "summary", "df-generated"]
       - ["java.text", "CollationElementIterator", "tertiaryOrder", "(int)", "summary", "df-generated"]
-      - ["java.text", "CollationKey", "compareTo", "(CollationKey)", "summary", "df-generated"]
       - ["java.text", "CollationKey", "toByteArray", "()", "summary", "df-generated"]
       - ["java.text", "Collator", "compare", "(Object,Object)", "summary", "df-generated"]
       - ["java.text", "Collator", "compare", "(String,String)", "summary", "df-generated"]

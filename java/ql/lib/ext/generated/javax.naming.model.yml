@@ -156,12 +156,10 @@ extensions:
       extensible: neutralModel
     data:
       - ["javax.naming", "CompositeName", "CompositeName", "(String)", "summary", "df-generated"]
-      - ["javax.naming", "CompositeName", "compareTo", "(Object)", "summary", "df-generated"]
       - ["javax.naming", "CompositeName", "endsWith", "(Name)", "summary", "df-generated"]
       - ["javax.naming", "CompositeName", "isEmpty", "()", "summary", "df-generated"]
       - ["javax.naming", "CompositeName", "size", "()", "summary", "df-generated"]
       - ["javax.naming", "CompositeName", "startsWith", "(Name)", "summary", "df-generated"]
-      - ["javax.naming", "CompoundName", "compareTo", "(Object)", "summary", "df-generated"]
       - ["javax.naming", "CompoundName", "endsWith", "(Name)", "summary", "df-generated"]
       - ["javax.naming", "CompoundName", "isEmpty", "()", "summary", "df-generated"]
       - ["javax.naming", "CompoundName", "size", "()", "summary", "df-generated"]

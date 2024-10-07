@@ -77,7 +77,6 @@ extensions:
       - ["javax.tools", "DocumentationTool$Location", "isOutputLocation", "()", "summary", "df-generated"]
       - ["javax.tools", "ForwardingFileObject", "delete", "()", "summary", "df-generated"]
       - ["javax.tools", "ForwardingFileObject", "getLastModified", "()", "summary", "df-generated"]
-      - ["javax.tools", "ForwardingJavaFileManager", "close", "()", "summary", "df-generated"]
       - ["javax.tools", "ForwardingJavaFileManager", "contains", "(JavaFileManager$Location,FileObject)", "summary", "df-generated"]
       - ["javax.tools", "ForwardingJavaFileManager", "flush", "()", "summary", "df-generated"]
       - ["javax.tools", "ForwardingJavaFileManager", "getClassLoader", "(JavaFileManager$Location)", "summary", "df-generated"]

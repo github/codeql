@@ -74,7 +74,6 @@ extensions:
     data:
       - ["javax.naming.ldap", "BasicControl", "isCritical", "()", "summary", "df-generated"]
       - ["javax.naming.ldap", "InitialLdapContext", "extendedOperation", "(ExtendedRequest)", "summary", "df-generated"]
-      - ["javax.naming.ldap", "LdapName", "compareTo", "(Object)", "summary", "df-generated"]
       - ["javax.naming.ldap", "LdapName", "endsWith", "(List)", "summary", "df-generated"]
       - ["javax.naming.ldap", "LdapName", "endsWith", "(Name)", "summary", "df-generated"]
       - ["javax.naming.ldap", "LdapName", "isEmpty", "()", "summary", "df-generated"]
@@ -87,7 +86,6 @@ extensions:
       - ["javax.naming.ldap", "Rdn", "Rdn", "(Attributes)", "summary", "df-generated"]
       - ["javax.naming.ldap", "Rdn", "Rdn", "(String)", "summary", "df-generated"]
       - ["javax.naming.ldap", "Rdn", "Rdn", "(String,Object)", "summary", "df-generated"]
-      - ["javax.naming.ldap", "Rdn", "compareTo", "(Object)", "summary", "df-generated"]
       - ["javax.naming.ldap", "Rdn", "escapeValue", "(Object)", "summary", "df-generated"]
       - ["javax.naming.ldap", "Rdn", "size", "()", "summary", "df-generated"]
       - ["javax.naming.ldap", "Rdn", "unescapeValue", "(String)", "summary", "df-generated"]

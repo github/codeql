@@ -393,7 +393,6 @@ extensions:
       - ["java.sql", "Timestamp", "Timestamp", "(int,int,int,int,int,int,int)", "summary", "df-generated"]
       - ["java.sql", "Timestamp", "after", "(Timestamp)", "summary", "df-generated"]
       - ["java.sql", "Timestamp", "before", "(Timestamp)", "summary", "df-generated"]
-      - ["java.sql", "Timestamp", "compareTo", "(Date)", "summary", "df-generated"]
       - ["java.sql", "Timestamp", "compareTo", "(Timestamp)", "summary", "df-generated"]
       - ["java.sql", "Timestamp", "equals", "(Timestamp)", "summary", "df-generated"]
       - ["java.sql", "Timestamp", "from", "(Instant)", "summary", "df-generated"]

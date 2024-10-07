@@ -416,7 +416,6 @@ extensions:
       - ["java.security", "ProtectionDomain", "implies", "(Permission)", "summary", "df-generated"]
       - ["java.security", "ProtectionDomain", "staticPermissionsOnly", "()", "summary", "df-generated"]
       - ["java.security", "Provider$Service", "supportsParameter", "(Object)", "summary", "df-generated"]
-      - ["java.security", "Provider", "clear", "()", "summary", "df-generated"]
       - ["java.security", "Provider", "compute", "(Object,BiFunction)", "summary", "df-generated"]
       - ["java.security", "Provider", "computeIfPresent", "(Object,BiFunction)", "summary", "df-generated"]
       - ["java.security", "Provider", "configure", "(String)", "summary", "df-generated"]

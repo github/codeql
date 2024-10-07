@@ -102,7 +102,6 @@ extensions:
       - ["java.nio.file", "FileStore", "isReadOnly", "()", "summary", "df-generated"]
       - ["java.nio.file", "FileStore", "supportsFileAttributeView", "(Class)", "summary", "df-generated"]
       - ["java.nio.file", "FileStore", "supportsFileAttributeView", "(String)", "summary", "df-generated"]
-      - ["java.nio.file", "FileSystem", "close", "()", "summary", "df-generated"]
       - ["java.nio.file", "FileSystem", "getSeparator", "()", "summary", "df-generated"]
       - ["java.nio.file", "FileSystem", "getUserPrincipalLookupService", "()", "summary", "df-generated"]
       - ["java.nio.file", "FileSystem", "isOpen", "()", "summary", "df-generated"]

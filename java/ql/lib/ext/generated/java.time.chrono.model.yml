@@ -11,8 +11,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.time.chrono", "AbstractChronology", "compareTo", "(Chronology)", "summary", "df-generated"]
-      - ["java.time.chrono", "ChronoLocalDate", "compareTo", "(ChronoLocalDate)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDate", "isAfter", "(ChronoLocalDate)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDate", "isBefore", "(ChronoLocalDate)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDate", "isEqual", "(ChronoLocalDate)", "summary", "df-generated"]
@@ -22,7 +20,6 @@ extensions:
       - ["java.time.chrono", "ChronoLocalDate", "lengthOfYear", "()", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDate", "timeLineOrder", "()", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDate", "toEpochDay", "()", "summary", "df-generated"]
-      - ["java.time.chrono", "ChronoLocalDateTime", "compareTo", "(ChronoLocalDateTime)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDateTime", "isAfter", "(ChronoLocalDateTime)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDateTime", "isBefore", "(ChronoLocalDateTime)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoLocalDateTime", "isEqual", "(ChronoLocalDateTime)", "summary", "df-generated"]
@@ -32,7 +29,6 @@ extensions:
       - ["java.time.chrono", "ChronoLocalDateTime", "toInstant", "(ZoneOffset)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoPeriod", "isNegative", "()", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoPeriod", "isZero", "()", "summary", "df-generated"]
-      - ["java.time.chrono", "ChronoZonedDateTime", "compareTo", "(ChronoZonedDateTime)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoZonedDateTime", "get", "(TemporalField)", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoZonedDateTime", "getChronology", "()", "summary", "df-generated"]
       - ["java.time.chrono", "ChronoZonedDateTime", "getLong", "(TemporalField)", "summary", "df-generated"]

@@ -366,7 +366,6 @@ extensions:
       - ["javax.management", "NotificationFilterSupport", "disableType", "(String)", "summary", "df-generated"]
       - ["javax.management", "NotificationFilterSupport", "isNotificationEnabled", "(Notification)", "summary", "df-generated"]
       - ["javax.management", "ObjectName", "apply", "(ObjectName)", "summary", "df-generated"]
-      - ["javax.management", "ObjectName", "compareTo", "(ObjectName)", "summary", "df-generated"]
       - ["javax.management", "ObjectName", "isDomainPattern", "()", "summary", "df-generated"]
       - ["javax.management", "ObjectName", "isPattern", "()", "summary", "df-generated"]
       - ["javax.management", "ObjectName", "isPropertyListPattern", "()", "summary", "df-generated"]

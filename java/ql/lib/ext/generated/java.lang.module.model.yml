@@ -93,14 +93,8 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.lang.module", "Configuration", "empty", "()", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor$Exports", "compareTo", "(ModuleDescriptor$Exports)", "summary", "df-generated"]
       - ["java.lang.module", "ModuleDescriptor$Exports", "isQualified", "()", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor$Opens", "compareTo", "(ModuleDescriptor$Opens)", "summary", "df-generated"]
       - ["java.lang.module", "ModuleDescriptor$Opens", "isQualified", "()", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor$Provides", "compareTo", "(ModuleDescriptor$Provides)", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor$Requires", "compareTo", "(ModuleDescriptor$Requires)", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor$Version", "compareTo", "(ModuleDescriptor$Version)", "summary", "df-generated"]
-      - ["java.lang.module", "ModuleDescriptor", "compareTo", "(ModuleDescriptor)", "summary", "df-generated"]
       - ["java.lang.module", "ModuleDescriptor", "isAutomatic", "()", "summary", "df-generated"]
       - ["java.lang.module", "ModuleDescriptor", "isOpen", "()", "summary", "df-generated"]
       - ["java.lang.module", "ModuleDescriptor", "read", "(ByteBuffer)", "summary", "df-generated"]

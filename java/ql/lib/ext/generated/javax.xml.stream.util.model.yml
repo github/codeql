@@ -18,8 +18,6 @@ extensions:
     data:
       - ["javax.xml.stream.util", "EventReaderDelegate", "close", "()", "summary", "df-generated"]
       - ["javax.xml.stream.util", "EventReaderDelegate", "getProperty", "(String)", "summary", "df-generated"]
-      - ["javax.xml.stream.util", "EventReaderDelegate", "hasNext", "()", "summary", "df-generated"]
-      - ["javax.xml.stream.util", "EventReaderDelegate", "remove", "()", "summary", "df-generated"]
       - ["javax.xml.stream.util", "StreamReaderDelegate", "close", "()", "summary", "df-generated"]
       - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeCount", "()", "summary", "df-generated"]
       - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeLocalName", "(int)", "summary", "df-generated"]
