@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
   test4(i);
   test5(i);
   test6(i);
+  test7(argv[1]);
 }
 
 void test1(int i) {
@@ -61,3 +62,5 @@ void test6(int i) {
 
   myTable[s] = 0; // GOOD: Input is small [FALSE POSITIVE]
 }
+
+void test7(char *s) { }
