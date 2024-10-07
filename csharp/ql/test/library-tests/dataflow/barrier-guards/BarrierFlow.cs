@@ -80,4 +80,104 @@ class BarrierFlow
 
         Sink(x);
     }
+
+    void M7()
+    {
+        var x = Source(7);
+
+        if (x == "safe" && x == "safe")
+        {
+            Sink(x);
+        }
+        else
+        {
+            Sink(x);  // $ hasValueFlow=7
+        }
+
+        if (x != "safe" && x == "safe2")
+        {
+            Sink(x);
+        }
+        else
+        {
+            Sink(x);  // $ hasValueFlow=7
+        }
+
+        if (x == "safe" && x != "safe2")
+        {
+            Sink(x);
+        }
+        else
+        {
+            Sink(x);  // $ hasValueFlow=7
+        }
+
+        if (x != "safe1" && x != "safe2")
+        {
+            Sink(x);  // $ hasValueFlow=7
+        }
+        else
+        {
+            Sink(x);
+        }
+
+        if (!(x == "safe1") && x != "safe2")
+        {
+            Sink(x);  // $ hasValueFlow=7
+        }
+        else
+        {
+            Sink(x);
+        }
+    }
+
+    void M8()
+    {
+        var x = Source(8);
+
+        if (x == "safe1" || x == "safe2")
+        {
+            Sink(x);
+        }
+        else
+        {
+            Sink(x);  // $ hasValueFlow=8
+        }
+
+        if (x != "safe1" || x == "safe2")
+        {
+            Sink(x);  // $ hasValueFlow=8
+        }
+        else
+        {
+            Sink(x);
+        }
+
+        if (x == "safe1" || x != "safe2")
+        {
+            Sink(x);  // $ hasValueFlow=8
+        }
+        else
+        {
+            Sink(x);
+        }
+
+        if (x != "safe" || x != "safe")
+        {
+            Sink(x);  // $ hasValueFlow=8
+        }
+        else
+        {
+            Sink(x);
+        }
+
+        if (!(x == "safe") || x != "safe")
+        {
+            Sink(x);  // $ hasValueFlow=8
+        }
+        else
+        {
+            Sink(x);
+        }
+    }
 }
