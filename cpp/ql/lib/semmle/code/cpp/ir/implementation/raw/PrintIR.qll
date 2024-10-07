@@ -36,7 +36,7 @@
  * * Literals: `Constant`.
  * * Variable addresses: `VariableAddress`.
  * * Function entry points: `EnterFunction`.
- * * Return form a function: `Return`, `ReturnVoid`. Note that the value being returned is set separately by a
+ * * Return from a function: `Return`, `ReturnVoid`. Note that the value being returned is set separately by a
  *   `Store` to a special `#return` variable.
  * * Stack unwinding for C++ function that throw and where the exception escapes the function: `Unwind`.
  * * Common exit point for `Unwind` and `Return`: `ExitFunction`.
@@ -93,7 +93,7 @@
  * int x = 5;
  * int y = 7;
  * int* p = condition ? &x : &y;
- * p = 6;
+ * *p = 6;
  * return x;
  * ```
  *
