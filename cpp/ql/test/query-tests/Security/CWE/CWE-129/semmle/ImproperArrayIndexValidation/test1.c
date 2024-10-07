@@ -73,7 +73,7 @@ extern int myMaxCharTable[256];
 void test7(FILE* fp) {
   int ch;
   while ((ch = getc(fp)) != EOF) {
-    myMaxCharTable[ch] = 0; // GOOD [FALSE POSITIVE]
+    myMaxCharTable[ch] = 0; // GOOD
   }
 }
 
