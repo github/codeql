@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`workspace/subdir/go.mod`, `module/go.mod`",
+  "markdownMessage": "Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`workspace/subdir/go.mod`, `module/go.mod`, `no-packages/go.mod`",
   "severity": "note",
   "source": {
     "extractorName": "go",
@@ -23,6 +23,20 @@
   "visibility": {
     "cliSummaryTable": false,
     "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "The following 1 Go project could not be extracted successfully:\n\n`no-packages`\n",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/extraction-failed-for-project",
+    "name": "Unable to extract some Go projects"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
     "telemetry": true
   }
 }
