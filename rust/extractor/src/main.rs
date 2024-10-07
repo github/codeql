@@ -8,7 +8,7 @@ mod translate;
 pub mod trap;
 
 fn extract(
-    rust_analyzer: &rust_analyzer::RustAnalyzer,
+    rust_analyzer: &mut rust_analyzer::RustAnalyzer,
     traps: &trap::TrapFileProvider,
     file: std::path::PathBuf,
 ) -> anyhow::Result<()> {
@@ -49,7 +49,7 @@ fn main() -> anyhow::Result<()> {
         .module(module_path!())
         .verbosity(2 + cfg.verbose as usize)
         .init()?;
-    let rust_analyzer = rust_analyzer::RustAnalyzer::new(&cfg)?;
+    let mut rust_analyzer = rust_analyzer::RustAnalyzer::new(&cfg)?;
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
@@ -59,7 +59,7 @@ fn main() -> anyhow::Result<()> {
         let file = std::path::absolute(&file).unwrap_or(file);
         let file = std::fs::canonicalize(&file).unwrap_or(file);
         archiver.archive(&file);
-        extract(&rust_analyzer, &traps, file)?;
+        extract(&mut rust_analyzer, &traps, file)?;
     }
 
     Ok(())
