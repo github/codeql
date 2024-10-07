@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.Throwing
  * unconditional or non-throwing. IR generation will enforce
  * the most strict interpretation.
  */
-class DefaultSEHExceptionBehavior extends ExceptionAnnotation {
+class DefaultSEHExceptionBehavior extends ThrowingFunction {
   DefaultSEHExceptionBehavior() { this = any(Function f) }
 
   override predicate raisesException(boolean unconditional) { 
@@ -16,7 +16,7 @@ class DefaultSEHExceptionBehavior extends ExceptionAnnotation {
   override TSEHException getExceptionType() { any() }
 }
 
-class WindowsDriverExceptionAnnotation extends ExceptionAnnotation {
+class WindowsDriverExceptionAnnotation extends ThrowingFunction {
   WindowsDriverExceptionAnnotation() {
     this.hasGlobalName(["RaiseException", "ExRaiseAccessViolation", "ExRaiseDatatypeMisalignment"])
   }

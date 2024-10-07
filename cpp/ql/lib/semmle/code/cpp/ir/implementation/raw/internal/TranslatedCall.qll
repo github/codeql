@@ -364,7 +364,7 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   }
 
   override predicate alwaysRaiseException(boolean isSEH) {
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
+    exists(ThrowingFunction f | f = expr.getTarget() |
       f.alwaysRaisesException() and f.isSEH() and isSEH = true
       or
       f.alwaysRaisesException() and f.isCxx() and isSEH = false
@@ -372,7 +372,7 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   }
 
   override predicate mayRaiseException(boolean isSEH) {
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
+    exists(ThrowingFunction f | f = expr.getTarget() |
       f.mayRaiseException() and f.isSEH() and isSEH = true
       or
       f.mayRaiseException() and f.isCxx() and isSEH = false
@@ -380,10 +380,10 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   }
 
   override predicate neverRaiseException(boolean isSEH) {
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
-      f.neverRaisesException() and f.isSEH() and isSEH = true
+    exists(NonThrowingFunction f | f = expr.getTarget() |
+      f.isSEH() and isSEH = true
       or
-      f.neverRaisesException() and f.isCxx() and isSEH = false
+      f.isCxx() and isSEH = false
     )
   }
 }
@@ -405,7 +405,7 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // For SEH exceptions, use the defined ThrowingFunction behavior and
     // if no throwing function is found, assume a conditional SEH exception
     // see `mayRaiseException`
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
+    exists(ThrowingFunction f | f = expr.getTarget() |
       f.alwaysRaisesException() and f.isSEH() and isSEH = true
     )
   }
@@ -414,13 +414,14 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // We assume that a call to a function pointer will not throw a CXX exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
-    // For SEH exceptions, use the defined ThrowingFunction behavior and
-    // if no throwing function is found, assume a conditional SEH exception.
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
+    // For SEH exceptions, use the defined ThrowingFunction behavior.
+    // ASSUMPTION: if no ThrowingFunction is found for the given call, assume a conditional SEH exception
+    // on the call.
+    exists(ThrowingFunction f | f = expr.getTarget() |
       f.mayRaiseException() and f.isSEH() and isSEH = true
     )
     or
-    not exists(ExceptionAnnotation f | f = expr.getTarget() and f.isSEH()) and
+    not exists(ThrowingFunction f | f = expr.getTarget() and f.isSEH()) and
     isSEH = true
   }
 
@@ -431,8 +432,8 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // For SEH exceptions, use the defined ThrowingFunction behavior and
     // if no throwing function is found, assume a conditional SEH exception
     // see `mayRaiseException`
-    exists(ExceptionAnnotation f | f = expr.getTarget() |
-      f.neverRaisesException() and f.isSEH() and isSEH = true
+    exists(NonThrowingFunction f | f = expr.getTarget() |
+      f.isSEH() and isSEH = true
     )
   }
 }
