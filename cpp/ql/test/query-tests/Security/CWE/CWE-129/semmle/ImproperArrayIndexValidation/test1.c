@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
   test3(i);
   test4(i);
   test5(i);
+  test6(i);
 }
 
 void test1(int i) {
@@ -51,4 +52,8 @@ void test5(int i) {
   j = i;
 
   j = myArray[j]; // BAD: j has not been validated
+}
+
+void test6(int i) {
+
 }
