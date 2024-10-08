@@ -1,5 +1,13 @@
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
+
 use anyhow::Context;
+use archive::Archiver;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_project_model::ProjectManifest;
+use rust_analyzer::RustAnalyzer;
 mod archive;
 mod config;
 pub mod generated;
@@ -9,10 +17,13 @@ pub mod trap;
 
 fn extract(
     rust_analyzer: &mut rust_analyzer::RustAnalyzer,
+    archiver: &Archiver,
     traps: &trap::TrapFileProvider,
-    file: std::path::PathBuf,
-) -> anyhow::Result<()> {
-    let (ast, input, parse_errors, file_id, semi) = rust_analyzer.parse(&file);
+    file: &std::path::Path,
+) -> () {
+    archiver.archive(&file);
+
+    let (ast, input, parse_errors, file_id, semi) = rust_analyzer.parse(file);
     let line_index = LineIndex::new(input.as_ref());
     let display_path = file.to_string_lossy();
     let mut trap = traps.create("source", &file);
@@ -40,8 +51,13 @@ fn extract(
         );
     }
     translator.emit_source_file(ast);
-    translator.trap.commit()?;
-    Ok(())
+    translator.trap.commit().unwrap_or_else(|err| {
+        log::error!(
+            "Failed to write trap file for: {}: {}",
+            display_path,
+            err.to_string()
+        )
+    });
 }
 fn main() -> anyhow::Result<()> {
     let cfg = config::Config::extract().context("failed to load configuration")?;
@@ -49,17 +65,49 @@ fn main() -> anyhow::Result<()> {
         .module(module_path!())
         .verbosity(2 + cfg.verbose as usize)
         .init()?;
-    let mut rust_analyzer = rust_analyzer::RustAnalyzer::new(&cfg)?;
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
         root: cfg.source_archive_dir,
     };
-    for file in cfg.inputs {
-        let file = std::path::absolute(&file).unwrap_or(file);
-        let file = std::fs::canonicalize(&file).unwrap_or(file);
-        archiver.archive(&file);
-        extract(&mut rust_analyzer, &traps, file)?;
+    let files: Vec<PathBuf> = cfg
+        .inputs
+        .iter()
+        .map(|file| {
+            let file = std::path::absolute(&file).unwrap_or(file.to_path_buf());
+            std::fs::canonicalize(&file).unwrap_or(file)
+        })
+        .collect();
+    let manifests = rust_analyzer::find_project_manifests(&files)?;
+    let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
+        .iter()
+        .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
+        .collect();
+    let mut other_files = Vec::new();
+
+    'outer: for file in &files {
+        let mut p = file.as_path();
+        while let Some(parent) = p.parent() {
+            p = parent;
+            if let Some((_, files)) = map.get_mut(parent) {
+                files.push(file);
+                continue 'outer;
+            }
+        }
+        other_files.push(file);
+    }
+    for (manifest, files) in map.values() {
+        if files.is_empty() {
+            break;
+        }
+        let mut rust_analyzer = RustAnalyzer::new(manifest, &cfg.scratch_dir);
+        for file in files {
+            extract(&mut rust_analyzer, &archiver, &traps, file);
+        }
+    }
+    let mut rust_analyzer = RustAnalyzer::WithoutDatabase();
+    for file in other_files {
+        extract(&mut rust_analyzer, &archiver, &traps, file);
     }
 
     Ok(())

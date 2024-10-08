@@ -1,5 +1,3 @@
-use crate::config::Config;
-use anyhow::Context;
 use itertools::Itertools;
 use log::info;
 use ra_ap_base_db::SourceDatabase;
@@ -9,6 +7,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::Utf8PathBuf;
 use ra_ap_project_model::CargoConfig;
+use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::RustLibSource;
 use ra_ap_span::Edition;
 use ra_ap_span::EditionedFileId;
@@ -20,19 +19,18 @@ use ra_ap_vfs::AbsPathBuf;
 use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
-pub struct RustAnalyzer {
-    workspace: HashMap<PathBuf, (Vfs, RootDatabase)>,
+pub enum RustAnalyzer {
+    WithDatabase { db: RootDatabase, vfs: Vfs },
+    WithoutDatabase(),
 }
 
 impl RustAnalyzer {
-    pub fn new(cfg: &Config) -> anyhow::Result<RustAnalyzer> {
-        let mut workspace = HashMap::new();
+    pub fn new(project: &ProjectManifest, scratch_dir: &Path) -> Self {
         let config = CargoConfig {
             sysroot: Some(RustLibSource::Discover),
-            target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(cfg.scratch_dir.to_path_buf())
+            target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(scratch_dir.to_path_buf())
                 .map(|x| x.join("target"))
                 .ok(),
             ..Default::default()
@@ -43,25 +41,19 @@ impl RustAnalyzer {
             with_proc_macro_server: ProcMacroServerChoice::Sysroot,
             prefill_caches: false,
         };
-        let projects = find_project_manifests(&cfg.inputs).context("loading inputs")?;
-        for project in projects {
-            let manifest = project.manifest_path();
+        let manifest = project.manifest_path();
 
-            match load_workspace_at(manifest.as_ref(), &config, &load_config, &progress) {
-                Ok((db, vfs, _macro_server)) => {
-                    let path: &Path = manifest.parent().as_ref();
-                    workspace.insert(path.to_path_buf(), (vfs, db));
-                }
-                Err(err) => {
-                    log::error!("failed to load workspace for {}: {}", manifest, err);
-                }
+        match load_workspace_at(manifest.as_ref(), &config, &load_config, &progress) {
+            Ok((db, vfs, _macro_server)) => RustAnalyzer::WithDatabase { db, vfs },
+            Err(err) => {
+                log::error!("failed to load workspace for {}: {}", manifest, err);
+                RustAnalyzer::WithoutDatabase()
             }
         }
-        Ok(RustAnalyzer { workspace })
     }
     pub fn parse(
         &mut self,
-        path: &PathBuf,
+        path: &Path,
     ) -> (
         SourceFile,
         Arc<str>,
@@ -82,37 +74,30 @@ impl RustAnalyzer {
         };
         let (input, err) = from_utf8_lossy(&input);
 
-        let mut p = path.as_path();
-        while let Some(parent) = p.parent() {
-            p = parent;
-            if self.workspace.contains_key(parent) {
-                let (vfs, db) = self.workspace.get_mut(parent).unwrap();
-                if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
-                    .ok()
-                    .and_then(|x| AbsPathBuf::try_from(x).ok())
-                    .map(VfsPath::from)
-                    .and_then(|x| vfs.file_id(&x))
-                {
-                    db.set_file_text(file_id, &input);
-                    let semi = Semantics::new(db);
+        if let RustAnalyzer::WithDatabase { vfs, db } = self {
+            if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
+                .ok()
+                .and_then(|x| AbsPathBuf::try_from(x).ok())
+                .map(VfsPath::from)
+                .and_then(|x| vfs.file_id(&x))
+            {
+                db.set_file_text(file_id, &input);
+                let semi = Semantics::new(db);
 
-                    let file_id = EditionedFileId::current_edition(file_id);
-                    let source_file = semi.parse(file_id);
-                    errors.extend(
-                        db.parse_errors(file_id)
-                            .into_iter()
-                            .flat_map(|x| x.to_vec()),
-                    );
-                    return (
-                        source_file,
-                        input.as_ref().into(),
-                        errors,
-                        Some(file_id),
-                        Some(semi),
-                    );
-                } else {
-                    break;
-                }
+                let file_id = EditionedFileId::current_edition(file_id);
+                let source_file = semi.parse(file_id);
+                errors.extend(
+                    db.parse_errors(file_id)
+                        .into_iter()
+                        .flat_map(|x| x.to_vec()),
+                );
+                return (
+                    source_file,
+                    input.as_ref().into(),
+                    errors,
+                    Some(file_id),
+                    Some(semi),
+                );
             }
         }
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
@@ -122,7 +107,7 @@ impl RustAnalyzer {
     }
 }
 
-fn find_project_manifests(
+pub fn find_project_manifests(
     files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
     let current = std::env::current_dir()?;
