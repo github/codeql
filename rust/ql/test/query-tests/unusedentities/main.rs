@@ -111,7 +111,7 @@ fn arrays() {
 
     println!("lets use {:?}", js);
 
-    for k
+    for k // SPURIOUS: unused variable [macros not yet supported]
 	in ks
 	{
         println!("lets use {}", k); // [unreachable FALSE POSITIVE]
@@ -251,12 +251,12 @@ fn main() {
 	arrays();
 	statics();
 	println!("lets use result {}", parameters(1, 2, 3));
-    loops();
-    if_lets();
+	loops();
+	if_lets();
 	unreachable_if();
 	unreachable_panic();
 	unreachable_match();
 	unreachable_loop();
 
-    println!("lets use result {}", parameters(1, 2, 3));
+	println!("lets use result {}", parameters(1, 2, 3));
 }
