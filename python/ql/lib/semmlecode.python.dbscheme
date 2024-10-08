@@ -617,6 +617,7 @@ py_extracted_version(int module : @py_Module ref,
 
 /* <Field> ParamSpec.location = 0, location */
 /* <Field> ParamSpec.name = 1, expr */
+/* <Field> ParamSpec.default = 2, expr */
 
 /* <Field> Pass.location = 0, location */
 
@@ -715,9 +716,11 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> TypeVar.location = 0, location */
 /* <Field> TypeVar.name = 1, expr */
 /* <Field> TypeVar.bound = 2, expr */
+/* <Field> TypeVar.default = 3, expr */
 
 /* <Field> TypeVarTuple.location = 0, location */
 /* <Field> TypeVarTuple.name = 1, expr */
+/* <Field> TypeVarTuple.default = 2, expr */
 
 /* <Field> UnaryExpr.location = 0, location */
 /* <Field> UnaryExpr.parenthesised = 1, bool */
