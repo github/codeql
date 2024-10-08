@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", True, "onOptionsItemSelected", "(MenuItem)", "", "Argument[0]", "intent-redirection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", "onContextItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", "onCreateContextMenu", "(ContextMenu,View,ContextMenu$ContextMenuInfo)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.selection.fancy", "FancySelectionDemoActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]

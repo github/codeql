@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "postsuite", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "presuite", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "registerWebSource_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "registerWebTrigger_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testDeleteRegistrations_withRequest_withEmptyLists_withRange_withCallback_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testDeleteRegistrations_withRequest_withInvalidArguments_withCallback_hasError", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testDeleteRegistrations_withRequest_withNoRange_withCallback_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testMeasurementApiStatus_returnResultStatus", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testRegisterAppSources_NoServerSetup_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testRegisterSource_NoServerSetup_NoErrors", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.measurement", "MeasurementManagerTest", "testRegisterTrigger_NoServerSetup_NoErrors", "()", "summary", "df-generated"]

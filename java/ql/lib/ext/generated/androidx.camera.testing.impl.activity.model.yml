@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.testing.impl.activity", "RequestResultTestActivity", True, "getResultErrorMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.testing.impl.activity", "Camera2TestActivity", "onPause", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.activity", "Camera2TestActivity", "onResume", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.activity", "ForegroundTestActivity", "getViewReadyIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.activity", "ForegroundTestActivity", "onWindowFocusChanged", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.activity", "RequestResultTestActivity", "getRequestResultReadyIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.activity", "RequestResultTestActivity", "getResultErrorCode", "()", "summary", "df-generated"]

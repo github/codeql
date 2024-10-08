@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appcompat.app.g3", "AndroidTestUtil", "getScreenOrientation", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "AndroidTestUtil", "setScreenOrientation", "(Context,AndroidTestUtil$ScreenOrientation)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "FilternatorActivity", "onConfigurationChanged", "(Configuration)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "FilternatorActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "FilternatorActivityWithCustomDefault", "onConfigurationChanged", "(Configuration)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "FilternatorActivityWithCustomDefault", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "UITestUtils", "rotateScreen", "(Instrumentation,AndroidTestUtil$ScreenOrientation)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.g3", "UITestUtils", "verifyPressBackAndExit", "()", "summary", "df-generated"]

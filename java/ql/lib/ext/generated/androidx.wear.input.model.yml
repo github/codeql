@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.input", "DeviceWearableButtonsProvider", "getAvailableButtonKeyCodes", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.input", "DeviceWearableButtonsProvider", "getButtonInfo", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons$ButtonInfo", "ButtonInfo", "(int,float,float,int)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons$ButtonInfo", "getKeycode", "()", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons$ButtonInfo", "getLocationZone", "()", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons$ButtonInfo", "getX", "()", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons$ButtonInfo", "getY", "()", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons", "getButtonCount", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons", "getButtonIcon", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons", "getButtonInfo", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons", "getButtonLabel", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.wear.input", "WearableButtons", "setWearableButtonsProvider", "(WearableButtonsProvider)", "summary", "df-generated"]

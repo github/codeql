@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverter", "platformAppSearchBatchResultToJetpack", "(AppSearchBatchResult,Function)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverter", "platformAppSearchResultToFuture", "(AppSearchResult,ResolvableFuture)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverter", "platformAppSearchResultToFuture", "(AppSearchResult,ResolvableFuture,Function)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverter", "platformAppSearchResultToJetpack", "(AppSearchResult,Function)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverterTest", "testPlatformAppSearchResultToFuture_catchException", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "AppSearchResultToPlatformConverterTest", "testPlatformAppSearchResultToJetpack_catchException", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "GenericDocumentToPlatformConverter", "toJetpackGenericDocument", "(GenericDocument)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "GenericDocumentToPlatformConverter", "toPlatformGenericDocument", "(GenericDocument)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "GetSchemaResponseToPlatformConverter", "toJetpackGetSchemaResponse", "(GetSchemaResponse)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "JoinSpecToPlatformConverter", "toPlatformJoinSpec", "(JoinSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "ObserverSpecToPlatformConverter", "toJetpackDocumentChangeInfo", "(DocumentChangeInfo)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "ObserverSpecToPlatformConverter", "toJetpackSchemaChangeInfo", "(SchemaChangeInfo)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "ObserverSpecToPlatformConverter", "toPlatformObserverSpec", "(ObserverSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "RequestToPlatformConverter", "toPlatformGetByDocumentIdRequest", "(GetByDocumentIdRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "RequestToPlatformConverter", "toPlatformPutDocumentsRequest", "(PutDocumentsRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "RequestToPlatformConverter", "toPlatformRemoveByDocumentIdRequest", "(RemoveByDocumentIdRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "RequestToPlatformConverter", "toPlatformReportSystemUsageRequest", "(ReportSystemUsageRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "RequestToPlatformConverter", "toPlatformReportUsageRequest", "(ReportUsageRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "ResponseToPlatformConverter", "toJetpackStorageInfo", "(StorageInfo)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SchemaToPlatformConverter", "toJetpackSchema", "(AppSearchSchema)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SchemaToPlatformConverter", "toPlatformSchema", "(AppSearchSchema)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SearchContextToPlatformConverter", "toPlatformSearchContext", "(PlatformStorage$SearchContext)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SearchResultToPlatformConverter", "toJetpackSearchResult", "(SearchResult)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SearchSpecToPlatformConverter", "toPlatformSearchSpec", "(SearchSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SearchSuggestionResultToPlatformConverter", "toJetpackSearchSuggestionResults", "(List)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SearchSuggestionSpecToPlatformConverter", "toPlatformSearchSuggestionSpec", "(SearchSuggestionSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SetSchemaRequestToPlatformConverter", "toJetpackSetSchemaResponse", "(SetSchemaResponse)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage.converter", "SetSchemaRequestToPlatformConverter", "toPlatformSetSchemaRequest", "(SetSchemaRequest)", "summary", "df-generated"]

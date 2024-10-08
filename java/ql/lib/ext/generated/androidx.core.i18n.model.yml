@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.i18n", "CheckTheJavaApisTest", "afterTest", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "CheckTheJavaApisTest", "beforeClass", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "CheckTheJavaApisTest", "beforeTest", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "CheckTheJavaApisTest", "testJdkOptions", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "CheckTheJavaApisTest", "testSkeletonOptions", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatBenchmarkTest", "testTimeGenders", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatBenchmarkTest", "testTimePlurals", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatDateTimeTest", "testAndroidCannotFormatCalendar", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatDateTimeTest", "testSimplePattern", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatDateTimeTest", "testSimpleSkeleton", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "MessageFormatDateTimeTest", "testSimpleStyles", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testBasic", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testPlural", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testSelect", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testSelectAndPlural", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testSelectOrdinal", "()", "summary", "df-generated"]
+      - ["androidx.core.i18n", "SimpleMessageFormatTest", "testSelectOrdinalDefaultLocale", "()", "summary", "df-generated"]

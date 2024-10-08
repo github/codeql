@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.localstorage.util", "MapUtil", False, "getOrDefault", "(Map,Object,Object)", "", "Argument[0].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "MapUtil", False, "getOrDefault", "(Map,Object,Object)", "", "Argument[2]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "createPackagePrefix", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "createPrefix", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "createPrefix", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "getDatabaseName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "getPackageName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "getPrefix", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", True, "removePrefix", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.localstorage.util", "FutureUtil", "execute", "(Executor,Callable)", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", "addPrefixToDocument", "(Builder,String)", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", "removePrefixesFromDocument", "(Builder)", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtil", "removePrefixesFromSchemaType", "(Builder)", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testAddPrefixToDocument", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testCreatePackagePrefix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testCreatePrefix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetDatabaseName", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetDatabaseName_databaseDelimiterBeforePackageDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetDatabaseName_missingDatabaseDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetDatabaseName_missingPackageDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetPackageName", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetPackageName_missingDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetPrefix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testGetPrefix_missingDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefix_missingDelimiter", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefixesFromDocument", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefixesFromDocument_multiplePrefixNames", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefixesFromDocument_multiplePrefixNamesFromNested", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.localstorage.util", "PrefixUtilTest", "testRemovePrefixesFromSchemaType", "()", "summary", "df-generated"]

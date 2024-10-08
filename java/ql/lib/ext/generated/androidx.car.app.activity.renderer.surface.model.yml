@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", True, "SurfaceHolderListener", "(ServiceDispatcher,SurfaceWrapperProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", True, "SurfaceHolderListener", "(ServiceDispatcher,SurfaceWrapperProvider)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", False, "SurfaceWrapper", "(IBinder,int,int,int,int,Surface)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.activity.renderer.surface.SurfaceWrapper.mHostToken]", "value", "dfc-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", False, "SurfaceWrapper", "(IBinder,int,int,int,int,Surface)", "", "Argument[5]", "Argument[this].SyntheticField[androidx.car.app.activity.renderer.surface.SurfaceWrapper.mSurface]", "value", "dfc-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", False, "getHostToken", "()", "", "Argument[this].SyntheticField[androidx.car.app.activity.renderer.surface.SurfaceWrapper.mHostToken]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", False, "getSurface", "()", "", "Argument[this].SyntheticField[androidx.car.app.activity.renderer.surface.SurfaceWrapper.mSurface]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapperProvider", False, "SurfaceWrapperProvider", "(TemplateSurfaceView)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", False, "onCreateInputConnection", "(EditorInfo)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", False, "setOnCreateInputConnectionListener", "(OnCreateInputConnectionListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", False, "setServiceDispatcher", "(ServiceDispatcher)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", False, "setViewModel", "(CarAppViewModel)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.activity.renderer.surface", "LegacySurfacePackage", "LegacySurfacePackage", "(SurfaceControlCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceControlCallback", "onError", "(String,Throwable)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", "setSurfaceListener", "(ISurfaceListener)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", "surfaceChanged", "(SurfaceHolder,int,int,int)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", "surfaceCreated", "(SurfaceHolder)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceHolderListener", "surfaceDestroyed", "(SurfaceHolder)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", "getDensityDpi", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", "getDisplayId", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", "getHeight", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapper", "getWidth", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "SurfaceWrapperProvider", "createSurfaceWrapper", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "TemplateSurfaceView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "checkInputConnectionProxy", "(View)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "dispatchKeyEvent", "(KeyEvent)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "getAccessibilityClassName", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "getSurfaceToken", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "onCheckIsTextEditor", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "onStartInput", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "onStopInput", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "onUpdateSelection", "(int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.renderer.surface", "TemplateSurfaceView", "setSurfacePackage", "(Object)", "summary", "df-generated"]

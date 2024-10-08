@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "addInnerEditTexts", "(EditText[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[androidx.draganddrop.DropHelper$Options$Builder.mInnerEditTexts].Element", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "addInnerEditTexts", "(EditText[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[androidx.draganddrop.DropHelper$Options$Builder.mInnerEditTexts].Element", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "addInnerEditTexts", "(EditText[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.draganddrop.DropHelper$Options$Builder.mInnerEditTexts].Element", "ReturnValue.SyntheticField[androidx.draganddrop.DropHelper$Options.mInnerEditTexts].Element", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "setAcceptDragsWithLocalState", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "setHighlightColor", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options$Builder", False, "setHighlightCornerRadiusPx", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", False, "getInnerEditTexts", "()", "", "Argument[this].SyntheticField[androidx.draganddrop.DropHelper$Options.mInnerEditTexts].Element", "ReturnValue.Element", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.draganddrop", "DragAndDropActivity", "requestDragAndDropPermissions", "(DragEvent)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DragAndDropTestUtils", "makeImageDragEvent", "(int)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DragAndDropTestUtils", "makeImageDragEventWithLocalState", "(int,Object)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DragAndDropTestUtils", "makeTextDragEvent", "(int)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DragAndDropTestUtils", "makeTextDragEvent", "(int,String)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", "getHighlightColor", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", "getHighlightCornerRadiusPx", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", "hasHighlightColor", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", "hasHighlightCornerRadiusPx", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper$Options", "shouldAcceptDragsWithLocalState", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper", "configureView", "(Activity,View,String[],DropHelper$Options,OnReceiveContentListener)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelper", "configureView", "(Activity,View,String[],OnReceiveContentListener)", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_acceptDragsWithLocalState_default_hasNoHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_acceptDragsWithLocalState_false_hasNoHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_acceptDragsWithLocalState_true_hasHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_dragToInnerNestedView_retainsActiveHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_drop_appCompatEditText_handlesUri", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_drop_appCompatEditText_insertsText", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_drop_callsListener", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_drop_editText_handlesUri", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_drop_editText_insertsText", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_endDrag_hasNoHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_enterAndExit_togglesHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_nonEditText_drop_callsListener", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_startDrag_hasInactiveHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_usesColorFromSystemAsDefault", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_usesCornerRadius", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_usesDefaultCornerRadius", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_wrongMimeTypeImage_hasNoHighlight", "()", "summary", "df-generated"]
+      - ["androidx.draganddrop", "DropHelperTest", "testDropHelper_wrongMimeTypeText_hasNoHighlight", "()", "summary", "df-generated"]

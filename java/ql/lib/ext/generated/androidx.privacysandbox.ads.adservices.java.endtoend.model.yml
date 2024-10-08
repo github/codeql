@@ -1,0 +1,50 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", True, "TestUtil", "(Instrumentation,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", True, "TestUtil", "(Instrumentation,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "configure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "resetConfiguration", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelectionFlow_skipCAsThatTimeoutDuringBidding_Success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelectionFlow_skipExpiredCA_Success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelectionFlow_skipNonActivatedCA_Success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_errorGettingScoringLogic_failure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_etldViolation_failure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_malformedScoringLogic_failure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_overallTimeout_Failure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_skipAdsFailedGettingBiddingLogic_success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testAdSelection_skipAdsMalformedBiddingLogic_success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testFledgeAuctionSelectionFlow_overall_Success", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "FledgeCtsDebuggableTest", "testReportImpression_etldViolation_failure", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "disableBackCompatOnS", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "disableDeviceConfigSyncForTests", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "disableFledgeEnrollmentCheck", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "enableAdServiceSystemService", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "enableBackCompatOnS", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "enableEnrollmentCheck", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "enableVerboseLogging", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "enforceFledgeJsIsolateMaxHeapSize", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "forceEpochComputationJob", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "getAdServicesPackageName", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideAdIdKillSwitch", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideAllowlists", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideAppSetIdKillSwitch", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideConsentManagerDebugMode", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideDisableMeasurementEnrollmentCheck", "(String)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideEpochPeriod", "(long)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideFledgeCustomAudienceServiceKillSwitch", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideFledgeSelectAdsKillSwitch", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideKillSwitches", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideMeasurementKillSwitches", "(boolean)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overridePercentageForRandomTopic", "(long)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "overrideSdkRequestPermitsPerSecond", "(long)", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "resetOverrideDisableMeasurementEnrollmentCheck", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend", "TestUtil", "shouldForceUseBundledFiles", "(boolean)", "summary", "df-generated"]

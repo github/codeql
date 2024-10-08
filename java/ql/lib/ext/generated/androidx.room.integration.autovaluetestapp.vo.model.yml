@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.room.integration.autovaluetestapp.vo", "EmbeddedAutoValue", True, "EmbeddedAutoValue", "(Pet$Cat,String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.room.integration.autovaluetestapp.vo.EmbeddedAutoValue.mCat]", "value", "dfc-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "EmbeddedAutoValue", True, "EmbeddedAutoValue", "(Pet$Cat,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.room.integration.autovaluetestapp.vo.EmbeddedAutoValue.mSomething]", "value", "dfc-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "EmbeddedAutoValue", True, "getCat", "()", "", "Argument[this].SyntheticField[androidx.room.integration.autovaluetestapp.vo.EmbeddedAutoValue.mCat]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "EmbeddedAutoValue", True, "getSomething", "()", "", "Argument[this].SyntheticField[androidx.room.integration.autovaluetestapp.vo.EmbeddedAutoValue.mSomething]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.integration.autovaluetestapp.vo", "DogWithOwner", "create", "(Pet$Dog,Person)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "DogWithOwner", "getDog", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "DogWithOwner", "getOwner", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Mail", "create", "(String,String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Mail", "getBody", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Mail", "getSubject", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "ParcelableEntity", "create", "(String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "ParcelableEntity", "getValue", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "builder", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "create", "(String,String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "create", "(long,String,String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "getFirstName", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "getFullName", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "getId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "getLastName", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Person", "isCoolPerson", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonAndCat", "create", "(Person,Pet$Cat)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonAndCat", "getCat", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonAndCat", "getPerson", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonWithCats", "create", "(Person,List)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonWithCats", "getCats", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "PersonWithCats", "getPerson", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet$Cat", "create", "(long,long,String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet$Cat", "getName", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet$Dog", "create", "(long,long,String)", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet$Dog", "getName", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet", "getOwnerId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.autovaluetestapp.vo", "Pet", "getPetId", "()", "summary", "df-generated"]

@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "CarHardwareDemoScreen", False, "CarHardwareDemoScreen", "(CarContext,ShowcaseSession)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "CarHardwareInfoScreen", False, "CarHardwareInfoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "ContentLimitsDemoScreen", True, "ContentLimitsDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "LatestFeatures", True, "LatestFeatures", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "ParkedVsDrivingDemoScreen", False, "ParkedVsDrivingDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "ContentLimitsDemoScreen", "onStart", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "LatestFeatures", "onStart", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "LoadingScreen", "loadingScreenTemplate", "(CarContext)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.settings", "ParkedVsDrivingDemoScreen", "onStart", "(LifecycleOwner)", "summary", "df-generated"]

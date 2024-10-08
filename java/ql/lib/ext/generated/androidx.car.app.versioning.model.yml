@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.versioning", "CarAppApiLevels", "getLatest", "()", "summary", "df-generated"]
+      - ["androidx.car.app.versioning", "CarAppApiLevels", "getOldest", "()", "summary", "df-generated"]
+      - ["androidx.car.app.versioning", "CarAppApiLevels", "isValid", "(int)", "summary", "df-generated"]

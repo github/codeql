@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.cts.usagereporting", "ClickActionCtsTest", "testBuilder", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "ClickActionCtsTest", "testBuilderCopy_allFieldsAreCopied", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "ClickActionCtsTest", "testBuilder_defaultValues", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "ClickActionCtsTest", "testToGenericDocument", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "SearchActionCtsTest", "testBuilder", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "SearchActionCtsTest", "testBuilderCopy_allFieldsAreCopied", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "SearchActionCtsTest", "testBuilder_defaultValues", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.usagereporting", "SearchActionCtsTest", "testToGenericDocument", "()", "summary", "df-generated"]

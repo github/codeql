@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.activity", "ConfirmationActivityTestActivity", True, "setMessage", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.activity", "ConfirmationActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.wear.activity", "ConfirmationActivityTest", "testConfirmationDialogShownForDefaultDuration", "()", "summary", "df-generated"]
+      - ["androidx.wear.activity", "ConfirmationActivityTest", "testConfirmationDialogShownForLongerDuration", "()", "summary", "df-generated"]
+      - ["androidx.wear.activity", "ConfirmationActivityTest", "testConfirmationDialogWithMissingMessage", "()", "summary", "df-generated"]
+      - ["androidx.wear.activity", "ConfirmationActivityTestActivity", "setDuration", "(int)", "summary", "df-generated"]

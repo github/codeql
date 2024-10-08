@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.window.extensions.area", "ExtensionWindowAreaPresentation", "getWindow", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "addRearDisplayPresentationStatusListener", "(Consumer)", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "endRearDisplayPresentationSession", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "getRearDisplayMetrics", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "getRearDisplayPresentation", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "removeRearDisplayPresentationStatusListener", "(Consumer)", "summary", "df-generated"]
+      - ["androidx.window.extensions.area", "WindowAreaComponent", "startRearDisplayPresentationSession", "(Activity,Consumer)", "summary", "df-generated"]

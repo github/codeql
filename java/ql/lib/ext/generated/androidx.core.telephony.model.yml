@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.telephony", "SubscriptionManagerCompat", "getSlotIndex", "(int)", "summary", "df-generated"]
+      - ["androidx.core.telephony", "SubscriptionManagerCompatTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.telephony", "SubscriptionManagerCompatTest", "testGetSlotIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.telephony", "TelephonyManagerCompat", "getImei", "(TelephonyManager)", "summary", "df-generated"]
+      - ["androidx.core.telephony", "TelephonyManagerCompat", "getSubscriptionId", "(TelephonyManager)", "summary", "df-generated"]
+      - ["androidx.core.telephony", "TelephonyManagerCompatTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.telephony", "TelephonyManagerCompatTest", "testGetImei", "()", "summary", "df-generated"]
+      - ["androidx.core.telephony", "TelephonyManagerCompatTest", "testGetSubscriptionId", "()", "summary", "df-generated"]

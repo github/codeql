@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.work.impl.background.greedy", "DelayedWorkTracker", True, "DelayedWorkTracker", "(Scheduler,RunnableScheduler,Clock)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "DelayedWorkTracker", True, "DelayedWorkTracker", "(Scheduler,RunnableScheduler,Clock)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "DelayedWorkTracker", True, "DelayedWorkTracker", "(Scheduler,RunnableScheduler,Clock)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "DelayedWorkTracker", True, "schedule", "(WorkSpec,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", True, "GreedyScheduler", "(Context,Configuration,Trackers,Processor,WorkLauncher,TaskExecutor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", True, "GreedyScheduler", "(Context,Configuration,Trackers,Processor,WorkLauncher,TaskExecutor)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", True, "GreedyScheduler", "(Context,Configuration,Trackers,Processor,WorkLauncher,TaskExecutor)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", True, "GreedyScheduler", "(Context,Configuration,Trackers,Processor,WorkLauncher,TaskExecutor)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", True, "setDelayedWorkTracker", "(DelayedWorkTracker)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.impl.background.greedy", "DelayedWorkTracker", "unschedule", "(String)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", "cancel", "(String)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", "hasLimitedSchedulingSlots", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", "onConstraintsStateChanged", "(WorkSpec,ConstraintsState)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", "onExecuted", "(WorkGenerationalId,boolean)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedyScheduler", "schedule", "(WorkSpec[])", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_constraintsAreAddedAndRemovedForTracking", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_executionListenerIsRegistered", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_executionListenerIsRegisteredOnlyOnce", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_ignoresIdleWorkConstraint", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_ignoresRequestsInADifferentProcess", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_startsBackedOffWork", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_startsDelayedWork", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_startsPeriodicWorkRequests", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_startsUnconstrainedWork", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_startsWorkWhenConstraintsMet", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_stopsWorkWhenConstraintsNotMet", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.greedy", "GreedySchedulerTest", "testGreedyScheduler_throttleWork", "()", "summary", "df-generated"]

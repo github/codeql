@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.provider", "WearableCalendarContract", "addCalendarAuthorityUri", "(UriMatcher,String,int)", "summary", "df-generated"]
+      - ["androidx.wear.provider", "WearableCalendarContract", "addCalendarDataAuthority", "(IntentFilter,String)", "summary", "df-generated"]

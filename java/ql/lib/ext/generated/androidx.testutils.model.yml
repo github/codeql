@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.testutils", "SwipeInjector", True, "SwipeInjector", "(Instrumentation)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", True, "initialize", "(View)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", True, "perform", "(UiController,View)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.testutils", "NullObject", "get", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "PollingCheck", "PollingCheck", "(long)", "summary", "df-generated"]
+      - ["androidx.testutils", "PollingCheck", "run", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "PollingCheck", "waitFor", "(PollingCheck$PollingCheckCondition)", "summary", "df-generated"]
+      - ["androidx.testutils", "PollingCheck", "waitFor", "(long,PollingCheck$PollingCheckCondition)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragBy", "(float,float)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragBy", "(float,float,long)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragTo", "(CoordinatesProvider,View)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragTo", "(CoordinatesProvider,View,long)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragTo", "(float,float)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "dragTo", "(float,float,long)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "finishDrag", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "startDrag", "(CoordinatesProvider,View)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeInjector", "startDrag", "(float,float)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "flingTo", "(float[])", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "flingToCenter", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "getConstraints", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "getDescription", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "perform", "(Instrumentation)", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "swipeTo", "(float[])", "summary", "df-generated"]
+      - ["androidx.testutils", "SwipeToLocation", "swipeToCenter", "()", "summary", "df-generated"]
+      - ["androidx.testutils", "TranslatedCoordinatesProvider", "TranslatedCoordinatesProvider", "(CoordinatesProvider,float,float)", "summary", "df-generated"]
+      - ["androidx.testutils", "TranslatedCoordinatesProvider", "calculateCoordinates", "(View)", "summary", "df-generated"]
