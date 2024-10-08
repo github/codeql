@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang --clang_version 180000
+// semmle-extractor-options: --clang --edg --clang_version --edg 190000
 
 struct S {
     void f() {}
@@ -108,3 +108,16 @@ bool b_is_unbounded_array2 = __is_unbounded_array(int[42]);
 
 bool b_is_referenceable1 = __is_referenceable(int);
 bool b_is_referenceable2 = __is_referenceable(void);
+
+bool b_is_trivially_equality_comparable1 = __is_trivially_equality_comparable(int);
+bool b_is_trivially_equality_comparable2 = __is_trivially_equality_comparable(void);
+
+enum class E {
+    a, b
+};
+
+bool b_is_scoped_enum1 = __is_scoped_enum(E);
+bool b_is_scoped_enum2 = __is_scoped_enum(int);
+
+bool b_is_trivially_relocatable1 = __is_trivially_relocatable(int);
+bool b_is_trivially_relocatable2 = __is_trivially_relocatable(void);

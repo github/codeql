@@ -1,7 +1,7 @@
 /**
- * @name Overflow in uncontrolled allocation size
- * @description Allocating memory with a size controlled by an external
- *              user can result in integer overflow.
+ * @name Uncontrolled allocation size
+ * @description Allocating memory with a size controlled by an external user can result in
+ *              arbitrary amounts of memory being allocated.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
@@ -20,6 +20,7 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.security.FlowSources
 import TaintedAllocationSize::PathGraph
+import Bounded
 
 /**
  * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
@@ -61,16 +62,7 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     exists(Expr e | e = node.asExpr() |
-      // There can be two separate reasons for `convertedExprMightOverflow` not holding:
-      // 1. `e` really cannot overflow.
-      // 2. `e` isn't analyzable.
-      // If we didn't rule out case 2 we would place barriers on anything that isn't analyzable.
-      (
-        e instanceof UnaryArithmeticOperation or
-        e instanceof BinaryArithmeticOperation or
-        e instanceof AssignArithmeticOperation
-      ) and
-      not convertedExprMightOverflow(e)
+      bounded(e)
       or
       // Subtracting two pointers is either well-defined (and the result will likely be small), or
       // terribly undefined and dangerous. Here, we assume that the programmer has ensured that the
@@ -104,5 +96,6 @@ where
   isFlowSource(source.getNode(), taintCause) and
   TaintedAllocationSize::flowPath(source, sink) and
   allocSink(alloc, sink.getNode())
-select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
+select alloc, source, sink,
+  "This allocation size is derived from $@ and could allocate arbitrary amounts of memory.",
   source.getNode(), "user input (" + taintCause + ")"

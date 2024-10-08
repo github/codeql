@@ -59,11 +59,11 @@ func init() {
 
 // Extract extracts the packages specified by the given patterns
 func Extract(patterns []string) error {
-	return ExtractWithFlags(nil, patterns)
+	return ExtractWithFlags(nil, patterns, false)
 }
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
-func ExtractWithFlags(buildFlags []string, patterns []string) error {
+func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool) error {
 	startTime := time.Now()
 
 	extraction := NewExtraction(buildFlags, patterns)
@@ -81,7 +81,30 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 	}
 
-	log.Println("Running packages.Load.")
+	// If CODEQL_EXTRACTOR_GO_[OPTION_]EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
+	// otherwise (the default) is to exclude them from extraction
+	includeVendor, oldOptionUsed := util.IsVendorDirExtractionEnabled()
+
+	if oldOptionUsed {
+		log.Println("Warning: obsolete option \"CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS\" was set. Use \"CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_VENDOR_DIRS\" or pass `--extractor-option extract_vendor_dirs=true` instead.")
+	}
+
+	modeNotifications := make([]string, 0, 2)
+	if extractTests {
+		modeNotifications = append(modeNotifications, "test extraction enabled")
+	}
+	if includeVendor {
+		modeNotifications = append(modeNotifications, "extracting vendor directories")
+	}
+
+	modeMessage := strings.Join(modeNotifications, ", ")
+	if modeMessage != "" {
+		modeMessage = " (" + modeMessage + ")"
+	}
+	log.Printf("Running packages.Load%s.", modeMessage)
+
+	// This includes test packages if either we're tracing a `go test` command,
+	// or if CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS is set to "true".
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
 			packages.NeedCompiledGoFiles |
@@ -89,6 +112,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			packages.NeedTypes | packages.NeedTypesSizes |
 			packages.NeedTypesInfo | packages.NeedSyntax,
 		BuildFlags: buildFlags,
+		Tests:      extractTests,
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 	if err != nil {
@@ -123,7 +147,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "false" {
 		log.Printf("Running go list to resolve package and module directories.")
 		// get all packages information
-		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, modFlags...)
+		pkgInfos, err = toolchain.GetPkgsInfo(patterns, true, extractTests, modFlags...)
 		if err != nil {
 			log.Fatalf("Error getting dependency package or module directories: %v.", err)
 		}
@@ -132,8 +156,36 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
+	// Build a map from package paths to their longest IDs--
+	// in the context of a `go test -c` compilation, we will see the same package more than
+	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
+	// that contains and is used by test code.
+	// For our purposes it is simplest to just ignore the non-test version, since the test
+	// version seems to be a superset of it.
+	longestPackageIds := make(map[string]string)
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		if longestIDSoFar, present := longestPackageIds[pkg.PkgPath]; present {
+			if len(pkg.ID) > len(longestIDSoFar) {
+				longestPackageIds[pkg.PkgPath] = pkg.ID
+			}
+		} else {
+			longestPackageIds[pkg.PkgPath] = pkg.ID
+		}
+	})
+
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		// Note that if test extraction is enabled, we will encounter a package twice here:
+		// once as the main package, and once as the test package (with a package ID like
+		// "abc.com/pkgname [abc.com/pkgname.test]").
+		//
+		// We will extract it both times however, because we need to visit the packages
+		// in the right order in order to visit used types before their users, and the
+		// ordering determined by packages.Visit for the main and the test package may differ.
+		//
+		// This should only cause some wasted time and not inconsistency because the names for
+		// objects seen in this process should be the same each time.
+
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
@@ -197,9 +249,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// Construct a list of directory segments to exclude from extraction, starting with ".."
 	excludedDirs := []string{`\.\.`}
 
-	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
-	// otherwise (the default) is to exclude them from extraction
-	includeVendor := os.Getenv("CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS") == "true"
 	if !includeVendor {
 		excludedDirs = append(excludedDirs, "vendor")
 	}
@@ -210,6 +259,19 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+
+		// If this is a variant of a package that also occurs with a longer ID, skip it;
+		// otherwise we would extract the same file more than once including extracting the
+		// body of methods twice, causing database inconsistencies.
+		//
+		// We prefer the version with the longest ID because that is (so far as I know) always
+		// the version that defines more entities -- the only case I'm aware of being a test
+		// variant of a package, which includes test-only functions in addition to the complete
+		// contents of the main variant.
+		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+			return
+		}
+
 		for root := range wantedRoots {
 			pkgInfo := pkgInfos[pkg.PkgPath]
 			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
@@ -1507,9 +1569,24 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 	extractNodeLocation(tw, spec, lbl)
 }
 
+// Determines whether the given type is an alias.
+func isAlias(tp types.Type) bool {
+	_, ok := tp.(*types.Alias)
+	return ok
+}
+
+// If the given type is a type alias, this function resolves it to its underlying type.
+func resolveTypeAlias(tp types.Type) types.Type {
+	if isAlias(tp) {
+		return types.Unalias(tp) // tp.Underlying()
+	}
+	return tp
+}
+
 // extractType extracts type information for `tp` and returns its associated label;
 // types are only extracted once, so the second time `extractType` is invoked it simply returns the label
 func extractType(tw *trap.Writer, tp types.Type) trap.Label {
+	tp = resolveTypeAlias(tp)
 	lbl, exists := getTypeLabel(tw, tp)
 	if !exists {
 		var kind int
@@ -1554,6 +1631,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Interface:
 			kind = dbscheme.InterfaceType.Index()
 			for i := 0; i < tp.NumMethods(); i++ {
+				// Note that methods coming from embedded interfaces can be
+				// accessed through `Method(i)`, so there is no need to
+				// deal with them separately.
 				meth := tp.Method(i)
 
 				// Note that methods do not have a parent scope, so they are
@@ -1666,6 +1746,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 // is constructed from their globally unique ID. This prevents cyclic type keys
 // since type recursion in Go always goes through named types.
 func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
+	tp = resolveTypeAlias(tp)
 	lbl, exists := tw.Labeler.TypeLabels[tp]
 	if !exists {
 		switch tp := tp.(type) {
@@ -1776,7 +1857,8 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
 			parentlbl := getTypeParamParentLabel(tw, tp)
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
+			idx := tp.Index()
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {

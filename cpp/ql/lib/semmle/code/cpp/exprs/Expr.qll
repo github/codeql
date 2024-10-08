@@ -304,6 +304,8 @@ class Expr extends StmtParent, @expr {
       e instanceof NoExceptExpr
       or
       e instanceof AlignofOperator
+      or
+      e instanceof DatasizeofOperator
     )
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
@@ -631,6 +633,106 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
+ * A node representing a C11 `_Generic` selection expression.
+ *
+ * For example:
+ * ```
+ * _Generic(e, int: "int", default: "unknown")
+ * ```
+ */
+class C11GenericExpr extends Conversion, @c11_generic {
+  int associationCount;
+
+  C11GenericExpr() { associationCount = (count(this.getAChild()) - 1) / 2 }
+
+  override string toString() { result = "_Generic" }
+
+  override string getAPrimaryQlClass() { result = "C11GenericExpr" }
+
+  /**
+   * Gets the controlling expression of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the result is `e`.
+   */
+  Expr getControllingExpr() { result = this.getChild(0) }
+
+  /**
+   * Gets the type of the `n`th element in the association list of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the type of the 0th element is `int`. In the case of the default element the
+   * type will an instance of `VoidType`.
+   */
+  Type getAssociationType(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 1).(TypeName).getType()
+  }
+
+  /**
+   * Gets the type of an element in the association list of the generic selection.
+   */
+  Type getAnAssociationType() { result = this.getAssociationType(_) }
+
+  /**
+   * Gets the expression of the `n`th element in the association list of
+   * the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the expression for 0th element is `"a"`, and the expression for the
+   * 1st element is `"b"`. For the selected expression, this predicate
+   * will yield a `ReuseExpr`, such that
+   * ```
+   * this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+   * ```
+   */
+  Expr getAssociationExpr(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 2)
+  }
+
+  /**
+   * Gets the expression of an element in the association list of the generic selection.
+   */
+  Expr getAnAssociationExpr() { result = this.getAssociationExpr(_) }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * default element.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 1.
+   */
+  predicate isDefaultAssociation(int n) { this.getAssociationType(n) instanceof VoidType }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * one whose expression was selected.
+   *
+   * For example, with `e` of type `int` and
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 0.
+   */
+  predicate isSelectedAssociation(int n) {
+    this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+  }
+}
+
+/**
  * A C/C++ expression that could not be resolved, or that can no longer be
  * represented due to a database upgrade or downgrade.
  *
@@ -666,6 +768,8 @@ class AssumeExpr extends Expr, @assume {
 
 /**
  * A C/C++ comma expression.
+ *
+ * For example:
  * ```
  * int c = compute1(), compute2(), resulting_value;
  * ```

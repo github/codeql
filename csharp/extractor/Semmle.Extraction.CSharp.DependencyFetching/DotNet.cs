@@ -248,7 +248,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
-                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"));
+                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"),
+                        logger);
 
                     var chmod = new CommandBuilder(actions).
                         RunCommand("chmod").

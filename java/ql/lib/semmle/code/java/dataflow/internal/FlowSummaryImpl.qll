@@ -29,6 +29,15 @@ private string positionToString(int pos) {
 module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
   class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
+  predicate neutralElement(
+    Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
+  ) {
+    exists(string namespace, string type, string name, string signature |
+      neutralModel(namespace, type, name, signature, kind, provenance) and
+      c.asCallable() = interpretElement(namespace, type, true, name, signature, "", isExact)
+    )
+  }
+
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
   ReturnKind getStandardReturnValueKind() { any() }
@@ -332,18 +341,7 @@ module Private {
       )
     }
 
-    /**
-     * Holds if a neutral model exists for `c` of kind `kind`
-     * and with provenance `provenance`.
-     */
-    predicate neutralElement(
-      Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
-    ) {
-      exists(string namespace, string type, string name, string signature |
-        neutralModel(namespace, type, name, signature, kind, provenance) and
-        c.asCallable() = interpretElement(namespace, type, false, name, signature, "", isExact)
-      )
-    }
+    predicate neutralElement = Input::neutralElement/4;
   }
 
   /** Provides predicates for constructing summary components. */

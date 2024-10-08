@@ -6,7 +6,6 @@ private import java
 private import semmle.code.Location as Location
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.security.PathCreation
 private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
@@ -320,7 +319,7 @@ class FrameworkModeMetadataExtractor extends string {
       package = callable.getDeclaringType().getPackage().getName() and
       // we're using the erased types because the MaD convention is to not specify type parameters.
       // Whether something is or isn't a sink doesn't usually depend on the type parameters.
-      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
+      type = callable.getDeclaringType().getErasure().(RefType).getNestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
       signature = ExternalFlow::paramsString(callable) and

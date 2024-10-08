@@ -101,20 +101,20 @@ class Class:
 
     name: str
     bases: List[Base] = field(default_factory=list)
+    bases_impl: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
     import_prefix: Optional[str] = None
-    qltest_skip: bool = False
-    qltest_collapse_hierarchy: bool = False
-    qltest_uncollapse_hierarchy: bool = False
     internal: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
 
     def __post_init__(self):
-        self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
+        def get_bases(bases): return [Base(str(b), str(prev)) for b, prev in zip(bases, itertools.chain([""], bases))]
+        self.bases = get_bases(self.bases)
+        self.bases_impl = get_bases(self.bases_impl)
         if self.properties:
             self.properties[0].first = True
 
@@ -159,12 +159,25 @@ class Stub:
     base_import: str
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
-    internal: bool = False
     doc: List[str] = field(default_factory=list)
 
     @property
     def has_synth_accessors(self) -> bool:
         return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc)
+
+
+@dataclass
+class ClassPublic:
+    template: ClassVar = 'ql_class_public'
+
+    name: str
+    imports: List[str] = field(default_factory=list)
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
 
     @property
     def has_qldoc(self) -> bool:

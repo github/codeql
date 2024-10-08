@@ -3,7 +3,7 @@
  * @description High sensitvity and precision version of java/command-line-injection, designed to find more cases of command injection in rare cases that the default query does not find
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 9.8
  * @precision high
  * @id java/command-line-injection-extra
  * @tags security
@@ -14,7 +14,7 @@
 import CommandInjectionRuntimeExec
 import ExecUserFlow::PathGraph
 
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 from
   ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,

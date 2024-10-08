@@ -12,6 +12,7 @@ import DatabaseQuality
 
 predicate compilationInfo(string key, float value) {
   not key.matches("Compiler diagnostic count for%") and
+  not key.matches("Extractor message count for group%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
@@ -20,6 +21,16 @@ predicate compilationInfo(string key, float value) {
     key = infoKey + ": " + infoValue and
     value = 1
   )
+}
+
+predicate compilerDiagnostics(string key, int value) {
+  key.matches("Compiler diagnostic count for%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
+}
+
+predicate extractorMessages(string key, int value) {
+  key.matches("Extractor message count for group%") and
+  strictsum(Compilation c | | c.getInfo(key).toInt()) = value
 }
 
 predicate fileCount(string key, int value) {
@@ -136,18 +147,12 @@ predicate analyzerAssemblies(string key, float value) {
   value = 1.0
 }
 
-predicate timingValues(string key, float value) {
-  exists(Compilation c |
-    key = "Total elapsed seconds" and value = c.getElapsedSeconds()
-    or
-    key = "Extractor elapsed seconds" and value = c.getExtractorElapsedSeconds()
-  )
-}
-
 from string key, float value
 where
   (
     compilationInfo(key, value) or
+    compilerDiagnostics(key, value) or
+    extractorMessages(key, value) or
     fileCount(key, value) or
     fileCountByExtension(key, value) or
     totalNumberOfLines(key, value) or
@@ -173,8 +178,7 @@ where
     ExprStatsReport::numberOfOk(key, value) or
     ExprStatsReport::numberOfNotOk(key, value) or
     ExprStatsReport::percentageOfOk(key, value) or
-    analyzerAssemblies(key, value) or
-    timingValues(key, value)
+    analyzerAssemblies(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

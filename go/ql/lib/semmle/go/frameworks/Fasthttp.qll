@@ -175,9 +175,11 @@ module Fasthttp {
    */
   module Functions {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * A function that doesn't sanitize user-provided file paths.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Function f |
           f.hasQualifiedName(packagePath(),
@@ -399,12 +401,14 @@ module Fasthttp {
   /**
    * Provide modeling for fasthttp.Response Type.
    */
-  module Response {
+  deprecated module Response {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * A Method that sends files from its input.
      * It does not check the input path against path traversal attacks, So it is a dangerous method.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Method mcn |
           mcn.hasQualifiedName(packagePath(), "Response", "SendFile") and
@@ -477,9 +481,11 @@ module Fasthttp {
    */
   module RequestCtx {
     /**
+     * DEPRECATED: Use `FileSystemAccess::Range` instead.
+     *
      * The Methods that don't sanitize user provided file paths.
      */
-    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    deprecated class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Method mcn |
           mcn.hasQualifiedName(packagePath(), "RequestCtx", ["SendFile", "SendFileBytes"]) and
@@ -488,22 +494,6 @@ module Fasthttp {
       }
 
       override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-    }
-
-    /**
-     * The Methods that can be dangerous if they take user controlled URL as their first argument.
-     */
-    class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-      Redirect() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "RequestCtx", ["Redirect", "RedirectBytes"]) and
-          this = m.getACall()
-        )
-      }
-
-      override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-      override Http::ResponseWriter getResponseWriter() { none() }
     }
 
     /**

@@ -51,6 +51,7 @@ public class PrivateFlowViaPublicInterface {
   }
 
   // summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated
+  // contentbased-summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue.SyntheticField[p.PrivateFlowViaPublicInterface$PrivateImplWithSink.file];value;dfc-generated
   public static SPI createAnSPI(File file) {
     return new PrivateImplWithSink(file);
   }

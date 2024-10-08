@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override Microsoft.CodeAnalysis.Location ReportingLocation =>
             IsCompilerGeneratedDelegate()
                 ? Symbol.ContainingType.GetSymbolLocation()
-                : Symbol.GetSymbolLocation();
+                : BodyDeclaringSymbol.GetSymbolLocation();
 
         public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
 

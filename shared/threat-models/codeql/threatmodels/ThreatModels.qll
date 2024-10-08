@@ -29,7 +29,7 @@ extensible predicate threatModelConfiguration(string kind, boolean enable, int p
 extensible private predicate threatModelGrouping(string kind, string group);
 
 /** Holds if the specified threat model kind is mentioned in either the configuration or grouping table. */
-private predicate knownThreatModel(string kind) {
+predicate knownThreatModel(string kind) {
   threatModelConfiguration(kind, _, _) or
   threatModelGrouping(kind, _) or
   threatModelGrouping(_, kind) or

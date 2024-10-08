@@ -254,9 +254,13 @@ module Stdlib {
    * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
    */
   module Logger {
+    private import semmle.python.dataflow.new.internal.DataFlowDispatch as DD
+
     /** Gets a reference to the `logging.Logger` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+      or
+      result = API::moduleImport("logging").getMember("getLoggerClass").getReturn().getASubclass*()
       or
       result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
@@ -276,6 +280,13 @@ module Stdlib {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       ClassInstantiation() {
         this = subclassRef().getACall()
+        or
+        this =
+          DD::selfTracker(subclassRef()
+                .getAValueReachableFromSource()
+                .asExpr()
+                .(ClassExpr)
+                .getInnerScope())
         or
         this = API::moduleImport("logging").getMember("root").asSource()
         or
@@ -338,7 +349,7 @@ module StdlibPrivate {
    * Modeling of path related functions in the `os` module.
    * Wrapped in QL module to make it easy to fold/unfold.
    */
-  private module OsFileSystemAccessModeling {
+  module OsFileSystemAccessModeling {
     /**
      * A call to the `os.fsencode` function.
      *
@@ -395,7 +406,7 @@ module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.open
      */
-    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
       OsOpenCall() { this = os().getMember("open").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -1492,6 +1503,9 @@ module StdlibPrivate {
     or
     // io.open is a special case, since it is an alias for the builtin `open`
     result = API::moduleImport("io").getMember("open")
+    or
+    // similarly, coecs.open calls the builtin `open`: https://github.com/python/cpython/blob/3.12/Lib/codecs.py#L918
+    result = API::moduleImport("codecs").getMember("open")
   }
 
   /**
@@ -1499,13 +1513,22 @@ module StdlibPrivate {
    * See https://docs.python.org/3/library/functions.html#open
    */
   private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
-    DataFlow::CallCfgNode
+    ThreatModelSource::Range, DataFlow::CallCfgNode
   {
-    OpenCall() { this = getOpenFunctionRef().getACall() }
+    OpenCall() {
+      this = getOpenFunctionRef().getACall() and
+      // when analyzing stdlib code for os.py we wrongly assume that `os.open` is an
+      // alias of the builtins `open` function
+      not this instanceof OsFileSystemAccessModeling::OsOpenCall
+    }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("file")]
     }
+
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "open()" }
   }
 
   /**
@@ -3251,8 +3274,13 @@ module StdlibPrivate {
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input in ["Argument[0]", "Argument[pattern:]"] and
-      output = "ReturnValue.Attribute[pattern]" and
-      preservesValue = true
+      (
+        output = "ReturnValue.Attribute[pattern]" and
+        preservesValue = true
+        or
+        output = "ReturnValue" and
+        preservesValue = false
+      )
     }
   }
 
@@ -4207,7 +4235,11 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // Flow summaries for functions contructing containers
   // ---------------------------------------------------------------------------
-  /** A flow summary for `dict`. */
+  /**
+   * A flow summary for `dict`.
+   *
+   * see https://docs.python.org/3/library/stdtypes.html#dict
+   */
   class DictSummary extends SummarizedCallable {
     DictSummary() { this = "builtins.dict" }
 
@@ -4218,18 +4250,28 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // The positional argument contains a mapping.
+      // TODO: these values can be overwritten by keyword arguments
+      //  - dict mapping
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[0].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      //  - list-of-pairs mapping
+      input = "Argument[0].ListElement.TupleElement[1]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = true
+      or
+      // The keyword arguments are added to the dictionary.
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[" + key + ":]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      // Imprecise content in the first argument ends up on the container itself.
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -4988,6 +5030,39 @@ module StdlibPrivate {
     override DataFlow::Node getOutput() { result = this }
 
     override string getKind() { result = Escaping::getHtmlKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // argparse
+  // ---------------------------------------------------------------------------
+  /**
+   * if result of `parse_args` is tainted (because it uses command-line arguments),
+   *    then the parsed values accesssed on any attribute lookup is also tainted.
+   */
+  private class ArgumentParserAnyAttributeStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getReturn()
+            .getMember("parse_args")
+            .getReturn()
+            .getAValueReachableFromSource() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sys
+  // ---------------------------------------------------------------------------
+  /**
+   * An access of `sys.stdin`/`sys.stdout`/`sys.stderr`, to get additional FileLike
+   * modeling.
+   */
+  private class SysStandardStreams extends Stdlib::FileLikeObject::InstanceSource, DataFlow::Node {
+    SysStandardStreams() {
+      this = API::moduleImport("sys").getMember(["stdin", "stdout", "stderr"]).asSource()
+    }
   }
 }
 

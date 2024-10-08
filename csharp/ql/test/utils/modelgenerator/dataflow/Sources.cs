@@ -14,7 +14,7 @@ public class NewSources
 
 
     // New source
-    // source=Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;df-generated
+    // source=Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;stdin;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadLine;();summary;df-generated
     public string? WrapConsoleReadLine()
     {
@@ -22,7 +22,7 @@ public class NewSources
     }
 
     // New source
-    // source=Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;local;df-generated
+    // source=Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;stdin;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadLineAndProcees;(System.String);summary;df-generated
     public string WrapConsoleReadLineAndProcees(string prompt)
     {
@@ -37,7 +37,7 @@ public class NewSources
     }
 
     // New source
-    // source=Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;local;df-generated
+    // source=Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;stdin;df-generated
     // neutral=Sources;NewSources;WrapConsoleReadKey;();summary;df-generated
     public ConsoleKeyInfo WrapConsoleReadKey()
     {

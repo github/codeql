@@ -1,3 +1,29 @@
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+- Added a new query (`js/actions/actions-artifact-leak`) to detect GitHub Actions artifacts that may leak the GITHUB_TOKEN token.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Message events in the browser are now properly classified as client-side taint sources. Previously they were
+  incorrectly classified as server-side taint sources, which resulted in some alerts being reported by
+  the wrong query, such as server-side URL redirection instead of client-side URL redirection.
+
+## 1.1.1
+
+No user-facing changes.
+
 ## 1.1.0
 
 ### New Queries

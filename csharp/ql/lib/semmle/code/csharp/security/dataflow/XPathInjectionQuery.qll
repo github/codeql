@@ -25,21 +25,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `XpathInjection` instead.
- *
- * A taint-tracking configuration for untrusted user input used in XPath expression.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "XPathInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input used in XPath expression.
  */
 module XpathInjectionConfig implements DataFlow::ConfigSig {
@@ -73,7 +58,7 @@ module XpathInjection = TaintTracking::Global<XpathInjectionConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The `xpath` argument to an `XPathExpression.Compile(..)` call. */
 class XPathExpressionCompileSink extends Sink {

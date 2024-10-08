@@ -3,6 +3,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
+private import codeql.threatmodels.ThreatModels
 
 module SystemCommandExecutionTest implements TestSig {
   string getARelevantTag() { result = "getCommand" }
@@ -632,14 +633,44 @@ module XmlParsingTest implements TestSig {
   }
 }
 
+module ThreatModelSourceTest implements TestSig {
+  string getARelevantTag() {
+    exists(string kind | knownThreatModel(kind) | result = "threatModelSource" + "[" + kind + "]")
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(ThreatModelSource src | not src.getThreatModel() = "remote" |
+      location = src.getLocation() and
+      element = src.toString() and
+      value = prettyNodeForInlineTest(src) and
+      tag = "threatModelSource[" + src.getThreatModel() + "]"
+    )
+  }
+}
+
+module CorsMiddlewareTest implements TestSig {
+  string getARelevantTag() { result = "CorsMiddleware" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Http::Server::CorsMiddleware cm |
+      location = cm.getLocation() and
+      element = cm.toString() and
+      value = cm.getMiddlewareName().toString() and
+      tag = "CorsMiddleware"
+    )
+  }
+}
+
 import MakeTest<MergeTests5<MergeTests5<SystemCommandExecutionTest, DecodingTest, EncodingTest, LoggingTest,
     CodeExecutionTest>,
   MergeTests5<SqlConstructionTest, SqlExecutionTest, XPathConstructionTest, XPathExecutionTest,
     EscapingTest>,
   MergeTests5<HttpServerRouteSetupTest, HttpServerRequestHandlerTest, HttpServerHttpResponseTest,
     HttpServerHttpRedirectResponseTest,
-    MergeTests<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest>>,
+    MergeTests3<HttpServerCookieWriteTest, HttpResponseHeaderWriteTest, CorsMiddlewareTest>>,
   MergeTests5<FileSystemAccessTest, FileSystemWriteAccessTest, PathNormalizationTest,
     SafeAccessCheckTest, PublicKeyGenerationTest>,
   MergeTests5<CryptographicOperationTest, HttpClientRequestTest, CsrfProtectionSettingTest,
-    CsrfLocalProtectionSettingTest, XmlParsingTest>>>
+    CsrfLocalProtectionSettingTest, MergeTests<XmlParsingTest, ThreatModelSourceTest>>>>

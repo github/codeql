@@ -4,7 +4,7 @@
 | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:29:38:29:72 | getParameter(...) | user-provided value |
 | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:53:14:53:48 | getParameter(...) | user-provided value |
 edges
-| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance |  Sink:MaD:2 |
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance | Sink:MaD:2 |
 | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | provenance | Src:MaD:5 MaD:4 |
 | ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String | provenance | Src:MaD:5  |
 | ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | provenance | MaD:1 Sink:MaD:3 |

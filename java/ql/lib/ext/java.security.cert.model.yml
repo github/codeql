@@ -4,6 +4,14 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.security.cert", "X509CertSelector", False, "setSubjectPublicKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.security.cert", "X509Certificate", True, "getIssuerX500Principal", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["java.security.cert", "X509Certificate", True, "getSubjectX500Principal", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

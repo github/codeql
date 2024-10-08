@@ -45,3 +45,25 @@ extensible predicate typeModel(string type1, string type2, string path);
  * Holds if `path` can be substituted for a token `TypeVar[name]`.
  */
 extensible predicate typeVariableModel(string name, string path);
+
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}

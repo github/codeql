@@ -10,7 +10,12 @@ namespace Test
     using System.Data;
     using System.Data.Entity;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.UI.WebControls;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
     public class EntityFrameworkContext : DbContext
     {
@@ -109,5 +114,29 @@ namespace Test
         }
 
         System.Windows.Forms.TextBox box1;
+    }
+
+    public abstract class MyController : Controller
+    {
+        [HttpPost("{userId:string}")]
+        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
+        {
+            // This is a vulnerable method due to SQL injection
+            string query = "SELECT * FROM Users WHERE UserId = '" + userId + "'";
+
+            using (SqlConnection connection = new SqlConnection("YourConnectionString"))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine(String.Format("{0}, {1}", reader["UserId"], reader["Username"]));
+                }
+            }
+
+            return Ok();
+        }
     }
 }

@@ -1,3 +1,28 @@
+## 1.0.9
+
+No user-facing changes.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+### Minor Analysis Improvements
+
+* False positive results from the `swift/cleartext-transmission` ("Cleartext transmission of sensitive information") query involving `tel:`, `mailto:` and similar URLs have been fixed.
+
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* The `swift/constant-salt` ("Use of constant salts") query now considers string concatenation and interpolation as a barrier. As a result, there will be fewer false positive results from this query involving constructed strings.
+* The `swift/constant-salt` ("Use of constant salts") query message now contains a link to the source node.
+
 ## 1.0.4
 
 No user-facing changes.

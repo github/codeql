@@ -285,9 +285,6 @@ abstract private class MemoryLocation0 extends TMemoryLocation {
   predicate isAlwaysAllocatedOnStack() { none() }
 
   final predicate canReuseSsa() { none() }
-
-  /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { this.canReuseSsa() }
 }
 
 /**

@@ -25,21 +25,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `SqlInjection` instead.
- *
- * A taint-tracking configuration for SQL injection vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "SqlInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for SQL injection vulnerabilities.
  */
 module SqlInjectionConfig implements DataFlow::ConfigSig {
@@ -80,7 +65,7 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** An SQL expression passed to an API call that executes SQL. */
 class SqlInjectionExprSink extends Sink {

@@ -24,7 +24,7 @@ A suitable [model pack](https://docs.github.com/en/code-security/codeql-cli/usin
 name: my-org/javascript-helmet-insecure-config-model-pack
 version: 1.0.0
 extensionTargets:
-  codeql/java-all: '*'
+  codeql/javascript-all: '*'
 dataExtensions:
   - models/**/*.yml
 ```

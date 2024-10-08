@@ -63,15 +63,10 @@ predicate isVMObserver(RefType rt) {
 from Field f, FieldRead fr
 where
   f.fromSource() and
-  fr.getField().getSourceDeclaration() = f and
+  fr.getField() = f and
   not f.getDeclaringType() instanceof EnumType and
-  forall(Assignment ae, Field g | ae.getDest() = g.getAnAccess() and g.getSourceDeclaration() = f |
-    ae.getSource() instanceof NullLiteral
-  ) and
-  not exists(UnaryAssignExpr ua, Field g |
-    ua.getExpr() = g.getAnAccess() and
-    g.getSourceDeclaration() = f
-  ) and
+  forall(Assignment ae | ae.getDest() = f.getAnAccess() | ae.getSource() instanceof NullLiteral) and
+  not exists(UnaryAssignExpr ua | ua.getExpr() = f.getAnAccess()) and
   not f.isFinal() and
   // Exclude fields that may be accessed reflectively.
   not reflectivelyWritten(f) and

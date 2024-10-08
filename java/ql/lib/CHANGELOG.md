@@ -1,3 +1,70 @@
+## 4.1.0
+
+### Deprecated APIs
+
+* The `Field.getSourceDeclaration()` predicate has been deprecated. The result was always the original field, so calls to it can simply be removed.
+* The `Field.isSourceDeclaration()` predicate has been deprecated. It always holds.
+* The `RefType.nestedName()` predicate has been deprecated, and `RefType.getNestedName()` added to replace it.
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 23.
+* Kotlin versions up to 2.1.0\ *x* are now supported.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ProcessBuilderConstructor`, `MethodProcessBuilderCommand`, and `MethodRuntimeExec` from `JDK.qll`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted the deprecated `getURI` predicate from `CamelJavaDslToDecl` and `SpringCamelXmlToElement`, use `getUri` instead.
+* Deleted the deprecated `ExecCallable` class from `ExternalProcess.qll`.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `PathCreation.qll` file.
+* Deleted the deprecated `WebviewDubuggingEnabledQuery.qll` file.
+
+### Major Analysis Improvements
+
+* A generated (Models as Data) summary model is no longer used, if there exists a source code alternative. This primarily affects the analysis, when the analysis includes generated models for the source code being analysed.
+
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Threat-model for `System.in` changed from `commandargs` to newly created `stdin` (both subgroups of `local`).
+
+### Bug Fixes
+
+* Fixed an issue where analysis in `build-mode: none` may very occasionally throw a `CoderMalfunctionError` while resolving dependencies provided by a build system (Maven or Gradle), which could cause some dependency resolution and consequently alerts to vary unpredictably from one run to another.
+* Fixed an issue where Java analysis in `build-mode: none` would fail to resolve dependencies using the `executable-war` Maven artifact type.
+* Fixed an issue where analysis in `build-mode: none` may fail to resolve dependencies of Gradle projects where the dependency uses a non-empty artifact classifier -- for example, `someproject-1.2.3-tests.jar`, which has the classifier `tests`.
+
+## 3.0.0
+
+### Breaking Changes
+
+* The Java and Kotlin extractors no longer support the `SOURCE_ARCHIVE` and `TRAP_FOLDER` legacy environment variable.
+
+### New Features
+
+* Java support for `build-mode: none` is now out of beta, and generally available.
+
+### Major Analysis Improvements
+
+* We previously considered reverse DNS resolutions (IP address -> domain name) as sources of untrusted data, since compromised/malicious DNS servers could potentially return malicious responses to arbitrary requests. We have now removed this source from the default set of untrusted sources and made a new threat model kind for them, called "reverse-dns". You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+### Minor Analysis Improvements
+
+* Added flow through some methods of the class `java.net.URL` by ensuring that the fields of a URL are tainted.
+* Added path-injection sinks for `org.apache.tools.ant.taskdefs.Property.setFile` and `org.apache.tools.ant.taskdefs.Property.setResource`.
+* Adds models for request handlers using the `org.lastaflute.web` web framework.
+
 ## 2.0.0
 
 ### Breaking Changes

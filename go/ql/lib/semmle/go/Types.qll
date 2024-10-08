@@ -381,6 +381,12 @@ class TypeParamType extends @typeparamtype, CompositeType {
 
   override InterfaceType getUnderlyingType() { result = this.getConstraint().getUnderlyingType() }
 
+  /** Gets the parent object of this type parameter type. */
+  TypeParamParentEntity getParent() { typeparam(this, _, _, result, _) }
+
+  /** Gets the index of this type parameter type. */
+  int getIndex() { typeparam(this, _, _, _, result) }
+
   override string pp() { result = this.getParamName() }
 
   /**
@@ -736,7 +742,8 @@ class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) {
     // Note that negative indices correspond to embedded interfaces and type
-    // set literals.
+    // set literals. Note also that methods coming from embedded interfaces
+    // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
   }
 
@@ -916,8 +923,19 @@ class SignatureType extends @signaturetype, CompositeType {
   language[monotonicAggregates]
   override string pp() {
     result =
-      "func(" + concat(int i, Type tp | tp = this.getParameterType(i) | tp.pp(), ", " order by i) +
-        ") " + concat(int i, Type tp | tp = this.getResultType(i) | tp.pp(), ", " order by i)
+      "func(" +
+        concat(int i, Type tp, string prefix |
+          if i = this.getNumParameter() - 1 and this.isVariadic()
+          then
+            tp = this.getParameterType(i).(SliceType).getElementType() and
+            prefix = "..."
+          else (
+            tp = this.getParameterType(i) and
+            prefix = ""
+          )
+        |
+          prefix + tp.pp(), ", " order by i
+        ) + ") " + concat(int i, Type tp | tp = this.getResultType(i) | tp.pp(), ", " order by i)
   }
 
   override string toString() { result = "signature type" }
@@ -994,7 +1012,7 @@ class NamedType extends @namedtype, CompositeType {
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
-      not exists(Method m2 | m2.getReceiverType() = this and m2.getName() = m)
+      not exists(Method m2 | m2.getReceiverBaseType() = this and m2.getName() = m)
     |
       // If S contains an embedded field T, the method set of S includes promoted methods with receiver T
       result = embedded.getMethod(m)
