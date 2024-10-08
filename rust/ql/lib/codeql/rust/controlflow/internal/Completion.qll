@@ -62,7 +62,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
-/** Holds if node `n` has the Boolean constant value `value`. */
+/** Holds if node `le` has the Boolean constant value `value`. */
 private predicate isBooleanConstant(LiteralExpr le, Boolean value) {
   le.getTextValue() = value.toString()
 }
