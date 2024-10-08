@@ -1466,9 +1466,6 @@ private fun KotlinFileExtractor.extractConstant(
                 t.isLongType -> {
                     // OLD: KE1: Was: exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
                     tw.getFreshIdLabel<DbLongliteral>().also { id ->
-                        if (t == null) {
-                            TODO()
-                        }
                         val type = useType(t)
                         val locId = tw.getLocation(e)
                         tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
