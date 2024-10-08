@@ -11,8 +11,12 @@ private fun KotlinUsesExtractor.useClassType(
     return TypeResults(javaResult, kotlinResult)
 }
 
-fun KotlinUsesExtractor.useType(t: KaType, context: TypeContext = TypeContext.OTHER): TypeResults {
+fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
     when (t) {
+        null -> {
+            logger.error("Unexpected null type")
+            return extractErrorType()
+        }
         is KaClassType -> return useClassType(t)
         else -> TODO()
     }
@@ -28,14 +32,12 @@ fun KotlinUsesExtractor.useType(t: KaType, context: TypeContext = TypeContext.OT
     */
 }
 
-/*
-OLD: KE1
-private fun extractJavaErrorType(): TypeResult<DbErrortype> {
+private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> {
     val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") { tw.writeError_type(it) }
-    return TypeResult(typeId, "<CodeQL error type>", "<CodeQL error type>")
+    return TypeResult(typeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
 }
 
-private fun extractErrorType(): TypeResults {
+private fun KotlinUsesExtractor.extractErrorType(): TypeResults {
     val javaResult = extractJavaErrorType()
     val kotlinTypeId =
         tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
@@ -43,10 +45,9 @@ private fun extractErrorType(): TypeResults {
         }
     return TypeResults(
         javaResult,
-        TypeResult(kotlinTypeId, "<CodeQL error type>", "<CodeQL error type>")
+        TypeResult(kotlinTypeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
     )
 }
-*/
 
 // TODO
 fun KotlinUsesExtractor.fakeKotlinType(): Label<out DbKt_type> {
