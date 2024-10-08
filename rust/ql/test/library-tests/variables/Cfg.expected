@@ -633,13 +633,13 @@ edges
 | variables.rs:367:19:370:5 | enter ClosureExpr | variables.rs:368:9:368:21 | ExprStmt |  |
 | variables.rs:367:19:370:5 | exit ClosureExpr (normal) | variables.rs:367:19:370:5 | exit ClosureExpr |  |
 | variables.rs:367:22:370:5 | BlockExpr | variables.rs:367:19:370:5 | exit ClosureExpr (normal) |  |
-| variables.rs:368:9:368:17 | PathExpr | variables.rs:368:19:368:19 | PathExpr |  |
+| variables.rs:368:9:368:17 | PathExpr | variables.rs:368:19:368:19 | x |  |
 | variables.rs:368:9:368:20 | CallExpr | variables.rs:369:9:369:15 | ExprStmt |  |
 | variables.rs:368:9:368:21 | ExprStmt | variables.rs:368:9:368:17 | PathExpr |  |
-| variables.rs:368:19:368:19 | PathExpr | variables.rs:368:9:368:20 | CallExpr |  |
-| variables.rs:369:9:369:9 | PathExpr | variables.rs:369:14:369:14 | 1 |  |
+| variables.rs:368:19:368:19 | x | variables.rs:368:9:368:20 | CallExpr |  |
+| variables.rs:369:9:369:9 | x | variables.rs:369:14:369:14 | 1 |  |
 | variables.rs:369:9:369:14 | ... += ... | variables.rs:367:22:370:5 | BlockExpr |  |
-| variables.rs:369:9:369:15 | ExprStmt | variables.rs:369:9:369:9 | PathExpr |  |
+| variables.rs:369:9:369:15 | ExprStmt | variables.rs:369:9:369:9 | x |  |
 | variables.rs:369:14:369:14 | 1 | variables.rs:369:9:369:14 | ... += ... |  |
 | variables.rs:371:5:371:7 | cap | variables.rs:371:5:371:9 | CallExpr |  |
 | variables.rs:371:5:371:9 | CallExpr | variables.rs:372:5:372:17 | ExprStmt |  |

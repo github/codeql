@@ -1,6 +1,4 @@
 testFailures
-| variables.rs:368:23:368:40 | Comment | Missing result:read_access=x |
-| variables.rs:369:17:369:29 | Comment | Missing result:access=x |
 failures
 variable
 | variables.rs:3:14:3:14 | s |
@@ -176,6 +174,8 @@ variableAccess
 | variables.rs:360:14:360:14 | x | variables.rs:358:13:358:13 | x |
 | variables.rs:361:6:361:6 | y | variables.rs:359:9:359:9 | y |
 | variables.rs:362:15:362:15 | x | variables.rs:358:13:358:13 | x |
+| variables.rs:368:19:368:19 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:369:9:369:9 | x | variables.rs:366:13:366:13 | x |
 | variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
 | variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
 variableWriteAccess
@@ -272,6 +272,7 @@ variableReadAccess
 | variables.rs:354:15:354:15 | x | variables.rs:352:13:352:13 | x |
 | variables.rs:361:6:361:6 | y | variables.rs:359:9:359:9 | y |
 | variables.rs:362:15:362:15 | x | variables.rs:358:13:358:13 | x |
+| variables.rs:368:19:368:19 | x | variables.rs:366:13:366:13 | x |
 | variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
 | variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
 variableInitializer
@@ -307,3 +308,8 @@ variableInitializer
 | variables.rs:359:9:359:9 | y | variables.rs:360:9:360:14 | RefExpr |
 | variables.rs:366:13:366:13 | x | variables.rs:366:17:366:18 | 10 |
 | variables.rs:367:13:367:15 | cap | variables.rs:367:19:370:5 | ClosureExpr |
+capturedVariable
+| variables.rs:366:13:366:13 | x |
+capturedAccess
+| variables.rs:368:19:368:19 | x |
+| variables.rs:369:9:369:9 | x |
