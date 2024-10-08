@@ -3388,6 +3388,7 @@
 (typevar_parameter
     name: (_) @name
     bound: (_)? @bound
+    default: (_)? @default
 ) @typevar
 {
     attr (@name.node) ctx = "store"
@@ -3396,22 +3397,36 @@
         attr (@bound.node) ctx = "load"
         attr (@typevar.node) bound = @bound.node
     }
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevar.node) default = @default.node
+    }
 }
 
 (typevartuple_parameter
     name: (_) @name
+    default: (_)? @default
 ) @typevartuple
 {
     attr (@name.node) ctx = "store"
     attr (@typevartuple.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevartuple.node) default = @default.node
+    }
 }
 
 (paramspec_parameter
     name: (_) @name
+    default: (_)? @default
 ) @paramspec
 {
     attr (@name.node) ctx = "store"
     attr (@paramspec.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@paramspec.node) default = @default.node
+    }
 }
 
 ;;;;;; End of Type parameters (`T: ..., *T, **T`)
