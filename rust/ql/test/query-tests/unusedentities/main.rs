@@ -257,6 +257,5 @@ fn main() {
 	unreachable_panic();
 	unreachable_match();
 	unreachable_loop();
-
-	println!("lets use result {}", parameters(1, 2, 3));
+	unreachable_paren();
 }

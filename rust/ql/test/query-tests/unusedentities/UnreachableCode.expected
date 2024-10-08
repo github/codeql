@@ -26,3 +26,6 @@
 | unreachable.rs:156:3:156:17 | ExprStmt | This code is never reached. |
 | unreachable.rs:162:4:162:18 | ExprStmt | This code is never reached. |
 | unreachable.rs:165:2:165:16 | ExprStmt | This code is never reached. |
+| unreachable.rs:171:10:171:16 | ParenExpr | This code is never reached. |
+| unreachable.rs:171:11:171:15 | ParenExpr | This code is never reached. |
+| unreachable.rs:171:12:171:14 | ParenExpr | This code is never reached. |

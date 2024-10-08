@@ -166,3 +166,7 @@ fn unreachable_loop() {
 	do_something();
 	do_something();
 }
+
+fn unreachable_paren() {
+	let _ = (((1))); // SPURIOUS: unreachable (x3)
+}
