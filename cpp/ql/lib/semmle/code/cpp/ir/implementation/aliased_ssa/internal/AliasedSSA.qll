@@ -687,8 +687,7 @@ private Overlap getExtentOverlap(MemoryLocation0 def, MemoryLocation0 use) {
     def instanceof EntireAllocationMemoryLocation and
     (
       // EntireAllocationMemoryLocation exactly overlaps itself.
-      use instanceof EntireAllocationMemoryLocation and
-      //def.getAnAllocation() = use.getAnAllocation() and
+      use = def and
       result instanceof MustExactlyOverlap
       or
       not use instanceof EntireAllocationMemoryLocation and
