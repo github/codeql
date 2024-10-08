@@ -202,8 +202,8 @@ private fun KotlinUsesExtractor.getClassLabel(
 context(KaSession)
 fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorinterface> {
     // For source classes, the label doesn't include any type arguments
-    val classTypeResult = addClassLabel(buildClassType(c) as KaClassType)
-    return classTypeResult.id
+    val id = addClassLabel(buildClassType(c) as KaClassType)
+    return id
 }
 
 // `typeArgs` can be null to describe a raw generic type.
@@ -216,7 +216,7 @@ fun KotlinUsesExtractor.addClassLabel(
             argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?,
             inReceiverContext: Boolean = false
     */
-): TypeResult<DbClassorinterface> {
+): Label<out DbClassorinterface> {
     /*
     OLD: KE1
             val replaced =
@@ -268,6 +268,7 @@ OLD: KE1
                 }
             }
 
+            // TODO: This used to do the below, but that is a "type" thing rather than a "class" thing
             val fqName = replacedClass.fqNameWhenAvailable
             val signature =
                 if (replacedClass.isAnonymousObject) {
@@ -278,8 +279,9 @@ OLD: KE1
                 } else {
                     fqName.asString()
                 }
+            return TypeResult(classLabel /* TODO , signature, classLabelResult.shortName */)
     */
-    return TypeResult(classLabel /* TODO , signature, classLabelResult.shortName */)
+    return classLabel
 }
 
 /*

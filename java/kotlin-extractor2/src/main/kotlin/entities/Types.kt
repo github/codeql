@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.analysis.api.types.KaType
 private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
-    val javaResult = addClassLabel(c)
+    val javaResult = TypeResult(addClassLabel(c) /* , TODO, TODO */)
     val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
     return TypeResults(javaResult, kotlinResult)
 }
