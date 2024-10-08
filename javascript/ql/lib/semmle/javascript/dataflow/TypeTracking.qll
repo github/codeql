@@ -293,7 +293,7 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(StepSummary summary |
       StepSummary::step(pred, succ, summary) and
-      this = result.prepend(summary)
+      this = result.prepend(pragma[only_bind_into](summary))
     )
   }
 
