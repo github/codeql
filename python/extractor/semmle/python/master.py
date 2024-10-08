@@ -397,6 +397,7 @@ Num.field('n', number, 'value')
 Num.field('text', number)
 
 ParamSpec.field('name', expr)
+ParamSpec.field('default', expr)
 
 Print.field('dest', expr, 'destination')
 Print.field('values', expr_list)
@@ -448,8 +449,10 @@ TypeAlias.field('value', expr)
 
 TypeVar.field('name', expr)
 TypeVar.field('bound', expr)
+TypeVar.field('default', expr)
 
 TypeVarTuple.field('name', expr)
+TypeVarTuple.field('default', expr)
 
 UnaryOp.field('op', unaryop, 'operator')
 UnaryOp.field('operand', expr)
