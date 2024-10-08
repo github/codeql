@@ -17,18 +17,14 @@ import go
 import semmle.go.security.HardcodedCredentials
 import semmle.go.security.SensitiveActions
 
-bindingset[write]
-pragma[inline_late]
-private predicate isWriteRhs(Write write, DataFlow::Node rhs) { write.getRhs() = rhs }
-
 /**
  * Holds if `sink` is used in a context that suggests it may hold sensitive data of
  * the given `type`.
  */
 predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(Write write, string name |
-    isWriteRhs(write, sink) and
-    name = write.getLhs().getName() and
+    pragma[only_bind_out](write).getRhs() = sink and
+    name = pragma[only_bind_out](write).getLhs().getName() and
     // allow obvious test password variables
     not name.regexpMatch(HeuristicNames::notSensitive())
   |
