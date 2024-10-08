@@ -41,7 +41,7 @@ fn unreachable_if() {
 	do_something();
 
 	if cond() {
-		bool x = cond();
+		let x = cond();
 
 		if (x) { // SPURIOUS: unreachable
 			do_something();
@@ -143,7 +143,7 @@ fn unreachable_loop() {
 
 	if cond() {
 		while cond() {
-			do_something();{
+			do_something();
 		}
 
 		while false {
