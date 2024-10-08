@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.migrator.helper", "Abbreviator", True, "abbreviate", "(String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.migrator.helper", "SpringLayoutHelper", True, "SpringLayoutHelper", "(SpringLayout,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.migrator.helper", "Abbreviator", "Abbreviator", "(int,int,char)", "summary", "df-generated"]
+      - ["org.slf4j.migrator.helper", "SpringLayoutHelper", "placeBelow", "(Component,Component)", "summary", "df-generated"]
+      - ["org.slf4j.migrator.helper", "SpringLayoutHelper", "placeBelow", "(Component,Component,int,int)", "summary", "df-generated"]
+      - ["org.slf4j.migrator.helper", "SpringLayoutHelper", "placeToTheRight", "(Component,Component)", "summary", "df-generated"]
+      - ["org.slf4j.migrator.helper", "SpringLayoutHelper", "placeToTheRight", "(Component,Component,int,int)", "summary", "df-generated"]
