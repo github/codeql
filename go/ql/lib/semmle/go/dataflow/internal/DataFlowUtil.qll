@@ -7,6 +7,7 @@ private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Unit
 import DataFlowNodes::Public
 
 /**
@@ -48,6 +49,18 @@ abstract class FunctionModel extends Function {
   predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
     this.flowStepForCall(pred, succ, _)
   }
+}
+
+/**
+ * A unit class for adding nodes that should implicitly read from all nested content.
+ *
+ * For example, this might be appopriate for the argument to a method that serializes a struct.
+ */
+class ImplicitFieldReadNode extends Unit {
+  /**
+   * Holds if the node `n` should implicitly read from all nested content in a taint-tracking context.
+   */
+  abstract predicate shouldImplicitlyReadAllFields(DataFlow::Node n);
 }
 
 /**

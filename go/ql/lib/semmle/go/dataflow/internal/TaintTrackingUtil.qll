@@ -34,14 +34,6 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
 }
 
-private Type getElementType(Type containerType) {
-  result = containerType.(ArrayType).getElementType() or
-  result = containerType.(SliceType).getElementType() or
-  result = containerType.(ChanType).getElementType() or
-  result = containerType.(MapType).getValueType() or
-  result = containerType.(PointerType).getPointerType()
-}
-
 /**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
@@ -50,21 +42,9 @@ bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType
+    DataFlowPrivate::getElementType*(node.getType()) = containerType
   |
-    containerType instanceof ArrayType and
-    c instanceof DataFlow::ArrayContent
-    or
-    containerType instanceof SliceType and
-    c instanceof DataFlow::ArrayContent
-    or
-    containerType instanceof ChanType and
-    c instanceof DataFlow::CollectionContent
-    or
-    containerType instanceof MapType and
-    c instanceof DataFlow::MapValueContent
-    or
-    c.(DataFlow::PointerContent).getPointerType() = containerType
+    c = DataFlowPrivate::getContentForType(containerType)
   )
 }
 

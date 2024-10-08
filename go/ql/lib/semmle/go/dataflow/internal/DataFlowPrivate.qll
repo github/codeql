@@ -166,6 +166,53 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 }
 
 /**
+ * Gets a `DataFlow::ContentSet` containing a single `Content` appropriate
+ * for reading a field, element, map value or channel message of type `containerType`.
+ */
+DataFlow::ContentSet getContentForType(Type containerType) {
+  containerType instanceof ArrayType and
+  result instanceof DataFlow::ArrayContent
+  or
+  containerType instanceof SliceType and
+  result instanceof DataFlow::ArrayContent
+  or
+  containerType instanceof ChanType and
+  result instanceof DataFlow::CollectionContent
+  or
+  containerType instanceof MapType and
+  result instanceof DataFlow::MapValueContent
+  or
+  result.(DataFlow::PointerContent).getPointerType() = containerType
+  or
+  exists(Field f | f = containerType.(StructType).getField(_) |
+    result.(DataFlow::FieldContent).getField() = f
+  )
+}
+
+/**
+ * Gets the type of an array/slice element, channel value, map value,
+ * pointer base type or named-type underlying type relating to `containerType`.
+ */
+Type getElementType(Type containerType) {
+  result = containerType.(ArrayType).getElementType() or
+  result = containerType.(SliceType).getElementType() or
+  result = containerType.(ChanType).getElementType() or
+  result = containerType.(MapType).getValueType() or
+  result = containerType.(PointerType).getPointerType() or
+  result = containerType.(NamedType).getUnderlyingType()
+}
+
+/**
+ * Gets the type of an array/slice element, channel value, map value,
+ * pointer base type, named-type underlying type or struct field type
+ * relating to `containerType`.
+ */
+Type getAnElementOrFieldType(Type containerType) {
+  result = getElementType(containerType) or
+  result = containerType.(StructType).getField(_).getType()
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of `c`.
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
@@ -184,6 +231,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.(FlowSummaryNode).getSummaryNode())
   or
   containerReadStep(node1, node2, c)
+  or
+  exists(Type containerType |
+    any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
+    getAnElementOrFieldType*(node1.getType()) = containerType
+  |
+    c = getContentForType(containerType) and
+    node1 = node2
+  )
 }
 
 /**
