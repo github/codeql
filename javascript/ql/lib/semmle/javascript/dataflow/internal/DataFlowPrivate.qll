@@ -1062,7 +1062,8 @@ private predicate samePhi(SsaPhiNode legacyPhi, Ssa2::PhiNode newPhi) {
   )
 }
 
-private Node getNodeFromSsa2(Ssa2::Node node) {
+cached
+Node getNodeFromSsa2(Ssa2::Node node) {
   result = TSsaUseNode(node.(Ssa2::ExprNode).getExpr())
   or
   result = TExprPostUpdateNode(node.(Ssa2::ExprPostUpdateNode).getExpr())
