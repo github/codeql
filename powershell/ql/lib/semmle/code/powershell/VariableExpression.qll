@@ -1,5 +1,5 @@
 import powershell
-private import internal.ExplicitWrite
+private import internal.ExplicitWrite::Private
 
 private predicate isParameterName(@variable_expression ve) { parameter(_, ve, _, _) }
 

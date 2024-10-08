@@ -1,6 +1,6 @@
 private import powershell
 private import semmle.code.powershell.controlflow.internal.Scope
-private import internal.Internal as Internal
+private import internal.Parameter::Private as Internal
 
 private predicate isFunctionParameterImpl(Internal::Parameter p, Function f, int i) {
   function_definition_parameter(f, i, p)
