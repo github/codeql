@@ -53,7 +53,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
 
 import Make<js::DbLocation, SsaConfig>
 
-private module SsaDataflowInput implements DataFlowIntegrationInputSig {
+module SsaDataflowInput implements DataFlowIntegrationInputSig {
   class Expr extends js::ControlFlowNode {
     Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
 
@@ -66,11 +66,28 @@ private module SsaDataflowInput implements DataFlowIntegrationInputSig {
 
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() } // Not handled here
 
-  abstract class Guard extends Expr { } // empty class
+  class Guard extends js::ControlFlowNode {
+    Guard() { this = any(js::ConditionGuardNode g).getTest() }
 
-  predicate guardControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) { none() }
+    predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
 
-  js::BasicBlock getAConditionalBasicBlockSuccessor(js::BasicBlock bb, boolean branch) { none() }
+  pragma[inline]
+  predicate guardControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
+    exists(js::ConditionGuardNode g |
+      g.getTest() = guard and
+      g.dominates(bb) and
+      branch = g.getOutcome()
+    )
+  }
+
+  js::BasicBlock getAConditionalBasicBlockSuccessor(js::BasicBlock bb, boolean branch) {
+    exists(js::ConditionGuardNode g |
+      bb = g.getTest().getBasicBlock() and
+      result = g.getBasicBlock() and
+      branch = g.getOutcome()
+    )
+  }
 }
 
 import DataFlowIntegration<SsaDataflowInput>

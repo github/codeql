@@ -111,3 +111,34 @@ function t7() {
     const c = new Sub(source('t7.1'));
     sink(c.field); // $ hasTaintFlow=t7.1
 }
+
+function t8() {
+    function foo(x) {
+        const obj = {};
+        obj.field = x;
+
+        sink(obj.field); // $ hasTaintFlow=t8.1
+
+        if (obj) {
+            sink(obj.field); // $ hasTaintFlow=t8.1
+        } else {
+            sink(obj.field);
+        }
+
+        if (!obj) {
+            sink(obj.field);
+        } else {
+            sink(obj.field); // $ hasTaintFlow=t8.1
+        }
+
+        if (!obj || !obj) {
+            sink(obj.field);
+        } else {
+            sink(obj.field); // $ hasTaintFlow=t8.1
+        }
+    }
+
+    // The guards used above are specific to taint-tracking, to ensure only taint flows in
+    const taint = source('t8.1') + ' taint';
+    foo(taint);
+}

@@ -5,6 +5,7 @@ private import semmle.javascript.dataflow.internal.Contents::Public
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.BarrierGuards
+private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -44,6 +45,43 @@ private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTrack
   predicate blocksExpr(boolean outcome, Expr e) { super.sanitizes(outcome, e) }
 }
 
+bindingset[node]
+pragma[inline_late]
+private BasicBlock getBasicBlockFromSsa2(Ssa2::Node node) {
+  result = node.(Ssa2::ExprNode).getExpr().getBasicBlock()
+  or
+  node.(Ssa2::SsaInputNode).isInputInto(_, result)
+}
+
+/**
+ * Holds if `node` should act as a taint barrier, as it occurs after a variable has been checked to be falsy.
+ *
+ * For example:
+ * ```js
+ * if (!x) {
+ *   use(x); // <-- 'x' is a varAccessBarrier
+ * }
+ * ```
+ *
+ * This is particularly important for ensuring that query-specific barrier guards work when they
+ * occur after a truthiness-check:
+ * ```js
+ * if (x && !isSafe(x)) {
+ *   throw new Error()
+ * }
+ * use(x); // both inputs to the phi-read for 'x' are blocked (one by varAccessBarrier, one by isSafe(x))
+ * ```
+ */
+private predicate varAccessBarrier(DataFlow::Node node) {
+  exists(ConditionGuardNode guard, Ssa2::ExprNode nodeFrom, Ssa2::Node nodeTo |
+    guard.getOutcome() = false and
+    guard.getTest().(VarAccess) = nodeFrom.getExpr() and
+    Ssa2::localFlowStep(_, nodeFrom, nodeTo, true) and
+    guard.dominates(getBasicBlockFromSsa2(nodeTo)) and
+    node = getNodeFromSsa2(nodeTo)
+  )
+}
+
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
@@ -51,6 +89,7 @@ private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTrack
 cached
 predicate defaultTaintSanitizer(DataFlow::Node node) {
   node instanceof DataFlow::VarAccessBarrier or
+  varAccessBarrier(node) or
   node = MakeBarrierGuard<SanitizerGuardAdapter>::getABarrierNode()
 }
 
