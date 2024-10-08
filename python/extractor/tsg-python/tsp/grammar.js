@@ -589,23 +589,31 @@ module.exports = grammar({
 
     typevar_parameter: $ => seq(
       field('name', $.identifier),
-      optional($._type_bound)
+      optional($._type_bound),
+      optional($._type_param_default)
     ),
 
     typevartuple_parameter: $ => seq(
       '*',
       field('name', $.identifier),
+      optional($._type_param_default)
     ),
 
     paramspec_parameter: $ => seq(
       '**',
       field('name', $.identifier),
+      optional($._type_param_default),
     ),
 
     _type_parameter: $ => choice(
         $.typevar_parameter,
         $.typevartuple_parameter,
         $.paramspec_parameter,
+    ),
+
+    _type_param_default: $ => seq(
+      '=',
+      field('default', choice($.list_splat, $.expression))
     ),
 
     parenthesized_list_splat: $ => prec(PREC.parenthesized_list_splat, seq(
@@ -923,7 +931,7 @@ module.exports = grammar({
     subscript: $ => prec(PREC.call, seq(
       field('value', $.primary_expression),
       '[',
-      commaSep1(field('subscript', choice($.expression, $.slice))),
+      commaSep1(field('subscript', choice($.list_splat, $.expression, $.slice))),
       optional(','),
       ']'
     )),
