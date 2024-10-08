@@ -196,6 +196,12 @@ private predicate isInvalidFunction(Function func) {
     expr.getEnclosingFunction() = func and
     not exists(expr.getType())
   )
+  or
+  exists(Location l1, Location l2 |
+    l1 = func.getEntryPoint().getLocation() and l2 = func.getEntryPoint().getLocation()
+  |
+    l1 != l2
+  )
 }
 
 /**
