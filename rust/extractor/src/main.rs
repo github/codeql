@@ -63,7 +63,7 @@ fn main() -> anyhow::Result<()> {
     let cfg = config::Config::extract().context("failed to load configuration")?;
     stderrlog::new()
         .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
+        .verbosity(1 + cfg.verbose as usize)
         .init()?;
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
