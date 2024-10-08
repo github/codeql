@@ -88,7 +88,11 @@ module Collection {
     }
   }
 
-  /** A call where a collection of constants of class `collectionClass` can be in */
+  /**
+   * A call with a collection of class `collectionClass` as argument `arg` (or
+   * as qualifier, if `arg` is -1) which will not add any new non-constant
+   * elements to it.
+   */
   abstract class SafeCall extends Call {
     int arg;
     CollectionClass collectionClass;
@@ -120,7 +124,7 @@ module Collection {
         or
         collectionClass = "Set" and
         t.hasQualifiedName("java.util", "Set") and
-        m.getName() = ["add"] and
+        m.getName() = "add" and
         this.getArgument(0).isCompileTimeConstant()
       )
     }
@@ -140,40 +144,19 @@ module Collection {
     }
   }
 
-  // Expr foo(Expr q, string s) {
-  //   q = any(CollectionContainsCall ccc).getQualifier() and
-  //   result = getALocalExprFlowRoot(q) and
-  //   (
-  //     if exists(Field f | DataFlow::localExprFlow(f.getAnAccess(), result))
-  //     then
-  //       exists(Field f | DataFlow::localExprFlow(f.getAnAccess(), result) |
-  //         f.isStatic() and
-  //         f.isFinal() and
-  //         s = "static final field"
-  //         or
-  //         not (
-  //           f.isStatic() and
-  //           f.isFinal()
-  //         ) and
-  //         s = "field read"
-  //       )
-  //     else
-  //       if result = any(MethodCall mc)
-  //       then s = "method call"
-  //       else
-  //         if result = any(ConstructorCall cc)
-  //         then s = "constructor call"
-  //         else
-  //           if result = any(Call cc)
-  //           then s = "other call"
-  //           else s = "something else"
-  //   )
-  // }
-  Expr getALocalExprFlowRoot(Expr e) {
+  /**
+   * Gets an `Expr` which locally flows to `e` and which nothing locally flows
+   * to.
+   */
+  private Expr getALocalExprFlowRoot(Expr e) {
     DataFlow::localExprFlow(result, e) and
     not exists(Expr e2 | e2 != result | DataFlow::localExprFlow(e2, result))
   }
 
+  /**
+   * Holds if `e` was not involved in any calls which might add non-constant
+   * elements.
+   */
   private predicate noUnsafeCalls(Expr e) {
     forall(MethodCall mc, int arg, Expr x |
       DataFlow::localExprFlow(x, e) and
@@ -187,7 +170,8 @@ module Collection {
     )
   }
 
-  private predicate collectionOfConstantsFlowsTo(Expr e) {
+  /** Holds if `e` is a collection of constants. */
+  private predicate isCollectionOfConstants(Expr e) {
     forex(Expr r | r = getALocalExprFlowRoot(e) |
       r instanceof CollectionOfConstants
       or
@@ -195,12 +179,10 @@ module Collection {
       exists(Field f | r = f.getAnAccess() |
         f.isStatic() and
         f.isFinal() and
-        forall(Expr v | v = f.getInitializer() |
-          v = any(CollectionOfConstants loc | loc.isImmutable())
-        ) and
+        forall(Expr v | v = f.getInitializer() | v instanceof ImmutableCollectionOfConstants) and
         forall(Expr fieldSource | fieldSource = f.getAnAccess().(FieldWrite).getASource() |
           forall(Expr root | root = getALocalExprFlowRoot(fieldSource) |
-            root.(CollectionOfConstants).isImmutable()
+            root instanceof ImmutableCollectionOfConstants
           ) and
           noUnsafeCalls(fieldSource)
         )
@@ -210,8 +192,8 @@ module Collection {
   }
 
   /**
-   * An invocation of `java.util.List.contains` where the qualifier contains only
-   * compile-time constants.
+   * An invocation of `java.util.List.contains` or `java.util.Set.contains`
+   * where the qualifier contains only compile-time constants.
    */
   private class CollectionOfConstantsContains extends ListOfConstantsComparison {
     CollectionOfConstantsContains() {
@@ -219,27 +201,31 @@ module Collection {
         this = mc and
         e = mc.getArgument(0) and
         outcome = true and
-        collectionOfConstantsFlowsTo(mc.getQualifier())
+        isCollectionOfConstants(mc.getQualifier())
       )
     }
   }
 
   /**
-   * An instance of `java.util.List` which contains only compile-time constants.
+   * An instance of `java.util.List` or `java.util.Set` which contains only
+   * compile-time constants.
    */
   abstract class CollectionOfConstants extends Call {
     CollectionClass collectionClass;
 
     /** Gets whether the collection is a "List" or a "Set". */
     CollectionClass getCollectionClass() { result = collectionClass }
-
-    /** Holds if this list of constants is immutable. */
-    abstract predicate isImmutable();
   }
 
   /**
+   * An immutable instance of `java.util.List` or `java.util.Set` which
+   * contains only compile-time constants.
+   */
+  abstract class ImmutableCollectionOfConstants extends CollectionOfConstants { }
+
+  /**
    * A invocation of a constructor of a type that extends `java.util.List` or
-   * `java.util.Set` which constructs an empty mutable list.
+   * `java.util.Set` which constructs an empty mutable list/set.
    */
   private class CollectionOfConstantsEmptyConstructor extends ClassInstanceExpr,
     CollectionOfConstants
@@ -260,13 +246,11 @@ module Collection {
         c.getParameter(0).getType().(PrimitiveType).hasName("float")
       )
     }
-
-    override predicate isImmutable() { none() }
   }
 
   /**
    * A invocation of a constructor of a type that extends `java.util.List` or
-   * `java.util.Set` which constructs a non-empty mutable list.
+   * `java.util.Set` which constructs a non-empty mutable list/set.
    */
   private class CollectionOfConstantsNonEmptyConstructor extends ClassInstanceExpr,
     CollectionOfConstants
@@ -284,11 +268,9 @@ module Collection {
             .getASourceSupertype*()
             .hasQualifiedName("java.util", "Collection")
       ) and
-      // Any collection can be used in the non-empty constructor.
-      collectionOfConstantsFlowsTo(this.getArgument(0))
+      // Note that any collection can be used in the non-empty constructor.
+      isCollectionOfConstants(this.getArgument(0))
     }
-
-    override predicate isImmutable() { none() }
   }
 
   /**
@@ -306,15 +288,15 @@ module Collection {
       ) and
       methodCallHasConstantArguments(this)
     }
-
-    override predicate isImmutable() { none() }
   }
 
   /**
-   * An invocation of `java.util.List.of` which constructs an immutable list
-   * which contains only compile-time constants.
+   * An invocation of `java.util.List.of` or `java.util.Set.of` which
+   * constructs an immutable list/set which contains only compile-time constants.
    */
-  private class CollectionOfConstantsCreatedWithOf extends MethodCall, CollectionOfConstants {
+  private class CollectionOfConstantsCreatedWithOf extends MethodCall,
+    ImmutableCollectionOfConstants
+  {
     CollectionOfConstantsCreatedWithOf() {
       exists(Method m | this.getMethod() = m |
         m.hasName("of") and
@@ -325,8 +307,6 @@ module Collection {
       ) and
       methodCallHasConstantArguments(this)
     }
-
-    override predicate isImmutable() { any() }
   }
 
   /**
@@ -335,7 +315,7 @@ module Collection {
    * list/set which contains only compile-time constants.
    */
   private class CollectionOfConstantsCreatedWithCollectionsUnmodifiableList extends MethodCall,
-    CollectionOfConstants
+    ImmutableCollectionOfConstants
   {
     CollectionOfConstantsCreatedWithCollectionsUnmodifiableList() {
       exists(Method m |
@@ -346,10 +326,8 @@ module Collection {
             .hasQualifiedName("java.util", "Collections") and
         this.getMethod() = m
       |
-        collectionOfConstantsFlowsTo(this.getArgument(0))
+        isCollectionOfConstants(this.getArgument(0))
       )
     }
-
-    override predicate isImmutable() { any() }
   }
 }
