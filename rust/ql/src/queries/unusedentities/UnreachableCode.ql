@@ -15,9 +15,7 @@ import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraph
 /**
  * Holds if `n` is an AST node that's unreachable.
  */
-private predicate unreachable(AstNode n) {
-  not n = any(CfgNode cfn).getAstNode()
-}
+private predicate unreachable(AstNode n) { not n = any(CfgNode cfn).getAstNode() }
 
 /**
  * Holds if `n` is an AST node that's unreachable, and is not the successor
