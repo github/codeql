@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.example", "GitClone", "getCommitId", "()", "summary", "df-generated"]
+      - ["org.example", "GitClone", "getDestinationDir", "()", "summary", "df-generated"]
+      - ["org.example", "GitClone", "getRemoteUri", "()", "summary", "df-generated"]
+      - ["org.example", "GitClone", "gitClone", "()", "summary", "df-generated"]
+      - ["org.example", "GreetingPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.example", "GreetingTask", "greet", "()", "summary", "df-generated"]
+      - ["org.example", "Instrument", "doIt", "()", "summary", "df-generated"]
+      - ["org.example", "Instrument", "getClassFiles", "()", "summary", "df-generated"]
+      - ["org.example", "Instrument", "getDestinationDir", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "getFs", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "getOutputDir", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "getSourceFiles", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "getTemplateData", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "getTemplateEngine", "()", "summary", "df-generated"]
+      - ["org.example", "ProcessTemplates", "processTemplates", "()", "summary", "df-generated"]
+      - ["org.example", "TemplateData", "getName", "()", "summary", "df-generated"]
+      - ["org.example", "TemplateData", "getVariables", "()", "summary", "df-generated"]

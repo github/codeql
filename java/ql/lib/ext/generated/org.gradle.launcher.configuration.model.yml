@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.configuration", "AllProperties", True, "getDaemonJvmProperties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "AllProperties", True, "getProperties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "AllProperties", True, "merge", "(Map)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "AllProperties", True, "merge", "(Map)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "BuildLayoutResult", True, "applyTo", "(BuildLayoutParameters)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "BuildLayoutResult", True, "applyTo", "(StartParameterInternal)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "BuildLayoutResult", True, "getGradleInstallationHomeDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "BuildLayoutResult", True, "getGradleUserHomeDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.configuration", "BuildLayoutResult", True, "toLayoutConfiguration", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

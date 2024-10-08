@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.specs", "AndSpec", True, "AndSpec", "(Iterable)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs].ArrayElement", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "AndSpec", "(Spec[])", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Closure)", "", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "ReturnValue.SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "taint", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Closure)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.api.specs.CompositeSpec.specs].ArrayElement", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec)", "", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "ReturnValue.SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "taint", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec[])", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec[])", "", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "ReturnValue.SyntheticField[org.gradle.api.specs.CompositeSpec.specs]", "taint", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "and", "(Spec[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "findUnsatisfiedSpec", "(Object)", "", "Argument[this].SyntheticField[org.gradle.api.specs.CompositeSpec.specs].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "CompositeSpec", True, "getSpecs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "NotSpec", True, "NotSpec", "(Spec)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", True, "OrSpec", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", True, "OrSpec", "(Spec[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", True, "or", "(Spec[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "convertClosureToSpec", "(Closure)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "intersect", "(Collection)", "", "Argument[0].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "intersect", "(Spec[])", "", "Argument[0].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "negate", "(Spec)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "union", "(Collection)", "", "Argument[0].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.specs", "Specs", True, "union", "(Spec[])", "", "Argument[0].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.specs", "AndSpec", True, "findUnsatisfiedSpec", "(Object)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "findUnsatisfiedSpec", "(Object)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "AndSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "NotSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "NotSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", True, "isSatisfiedBy", "(Object)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.specs", "AndSpec", "empty", "()", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "AndSpec", "isSatisfiedBy", "(Object)", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "CompositeSpec", "isEmpty", "()", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "NotSpec", "isSatisfiedBy", "(Object)", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", "empty", "()", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "OrSpec", "isSatisfiedBy", "(Object)", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "Specs", "satisfyAll", "()", "summary", "df-generated"]
+      - ["org.gradle.api.specs", "Specs", "satisfyNone", "()", "summary", "df-generated"]

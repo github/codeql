@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.plugins.antlr", "AntlrPlugin", True, "AntlrPlugin", "(ObjectFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "getAntlrClasspath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "getArguments", "()", "", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.arguments]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "getMaxHeapSize", "()", "", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.maxHeapSize]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "getOutputDirectory", "()", "", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.outputDirectory]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "setArguments", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.arguments]", "value", "dfc-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "setMaxHeapSize", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.maxHeapSize]", "value", "dfc-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "setOutputDirectory", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.plugins.antlr.AntlrTask.outputDirectory]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "execute", "(InputChanges)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "execute", "(InputChanges)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "execute", "(InputChanges)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", True, "execute", "(InputChanges)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.plugins.antlr", "AntlrPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "execute", "(InputChanges)", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "isTrace", "()", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "isTraceLexer", "()", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "isTraceParser", "()", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "isTraceTreeWalker", "()", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "setTrace", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "setTraceLexer", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "setTraceParser", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.plugins.antlr", "AntlrTask", "setTraceTreeWalker", "(boolean)", "summary", "df-generated"]

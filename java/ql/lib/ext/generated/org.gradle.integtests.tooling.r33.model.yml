@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.r33", "FetchBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchGradleBuild", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchGradleBuild", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchGradleBuild", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchGradleBuild", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIdeaProject", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIdeaProject", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIdeaProject", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIdeaProject", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedBuildInvocations", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedGradleProjects", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedGradleProjects", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedGradleProjects", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedGradleProjects", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.r33", "FetchBuildInvocations", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchGradleBuild", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIdeaProject", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedBuildInvocations", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r33", "FetchIncludedGradleProjects", "execute", "(BuildController)", "summary", "df-generated"]

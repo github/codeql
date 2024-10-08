@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$AllProjects", True, "getIdeaProject", "(String)", "", "Argument[this].Field[org.gradle.plugins.ide.tooling.r31.IdeaProjectUtil$AllProjects.allIdeaProjects].Element", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugins.ide.tooling.r31", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$GetAllIdeaProjectsAction", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$GetAllIdeaProjectsAction", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$GetAllIdeaProjectsAction", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$GetAllIdeaProjectsAction", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugins.ide.tooling.r31", "FetchIdeaModel", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r31", "IdeaProjectUtil$GetAllIdeaProjectsAction", "execute", "(BuildController)", "summary", "df-generated"]

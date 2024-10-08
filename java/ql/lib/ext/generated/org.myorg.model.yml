@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.myorg", "ProblemReportingPlugin", True, "ProblemReportingPlugin", "(Problems)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.myorg", "ServerEnvironment", True, "ServerEnvironment", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.myorg.ServerEnvironment.name]", "value", "dfc-generated"]
+      - ["org.myorg", "ServerEnvironment", True, "getName", "()", "", "Argument[this].SyntheticField[org.myorg.ServerEnvironment.name]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.myorg", "SiteExtension", True, "siteInfo", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.myorg", "SiteExtension", True, "siteInfo", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.myorg", "SiteExtension", True, "siteInfo", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.myorg", "SiteExtension", True, "siteInfo", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.myorg", "BinaryRepositoryExtension", "getCoordinates", "()", "summary", "df-generated"]
+      - ["org.myorg", "BinaryRepositoryExtension", "getServerUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "BinaryRepositoryVersionPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "DataProcessing", "getDataFiles", "()", "summary", "df-generated"]
+      - ["org.myorg", "DataProcessing", "process", "()", "summary", "df-generated"]
+      - ["org.myorg", "DataProcessingPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "Deploy", "deploy", "()", "summary", "df-generated"]
+      - ["org.myorg", "Deploy", "getUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "JavaToolchainResolverImplementation", "resolve", "(JavaToolchainRequest)", "summary", "df-generated"]
+      - ["org.myorg", "JavaToolchainResolverPlugin", "apply", "(Settings)", "summary", "df-generated"]
+      - ["org.myorg", "LatestArtifactVersion", "getCoordinates", "()", "summary", "df-generated"]
+      - ["org.myorg", "LatestArtifactVersion", "getServerUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "LatestArtifactVersion", "resolveLatestVersion", "()", "summary", "df-generated"]
+      - ["org.myorg", "ProblemReportingPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "ServerEnvironment", "getUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "ServerEnvironmentPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "ServerExtension", "getUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "ServerPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "SiteExtension", "getOutputDir", "()", "summary", "df-generated"]
+      - ["org.myorg", "SiteExtension", "getSiteInfo", "()", "summary", "df-generated"]
+      - ["org.myorg", "SiteExtension", "siteInfo", "(Action)", "summary", "df-generated"]
+      - ["org.myorg", "SiteInfo", "getVcsUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "SiteInfo", "getWebsiteUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "SitePlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.myorg", "UrlVerifierExtension", "getUrl", "()", "summary", "df-generated"]
+      - ["org.myorg", "UrlVerifierPlugin", "apply", "(Project)", "summary", "df-generated"]

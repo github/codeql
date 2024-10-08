@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.tooling.events.transform", "TransformOperationDescriptor$SubjectDescriptor", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events.transform", "TransformOperationDescriptor$TransformerDescriptor", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events.transform", "TransformOperationDescriptor", True, "getDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events.transform", "TransformOperationDescriptor", True, "getSubject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events.transform", "TransformOperationDescriptor", True, "getTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

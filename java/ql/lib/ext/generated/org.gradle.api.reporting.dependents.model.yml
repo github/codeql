@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", True, "getComponents", "()", "", "Argument[this].SyntheticField[org.gradle.api.reporting.dependents.DependentComponentsReport.components]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", True, "setComponents", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.reporting.dependents.DependentComponentsReport.components]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "getShowAll", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "isShowNonBuildable", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "isShowTestSuites", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "report", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "setShowAll", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "setShowNonBuildable", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.reporting.dependents", "DependentComponentsReport", "setShowTestSuites", "(boolean)", "summary", "df-generated"]

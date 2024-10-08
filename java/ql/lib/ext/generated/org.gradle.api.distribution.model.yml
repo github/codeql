@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.distribution", "Distribution", True, "contents", "(Action)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.distribution", "Distribution", True, "getContents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.testng", "UserImpl", True, "UserImpl", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.testng.UserImpl.firstName]", "value", "dfc-generated"]
+      - ["org.gradle.testng", "UserImpl", True, "UserImpl", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.testng.UserImpl.lastName]", "value", "dfc-generated"]
+      - ["org.gradle.testng", "UserImpl", True, "getFirstName", "()", "", "Argument[this].SyntheticField[org.gradle.testng.UserImpl.firstName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testng", "UserImpl", True, "getLastName", "()", "", "Argument[this].SyntheticField[org.gradle.testng.UserImpl.lastName]", "ReturnValue", "value", "dfc-generated"]

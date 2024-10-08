@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.execution", "TaskExecutionGraph", True, "getAllTasks", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.execution", "TaskExecutionAdapter", "afterExecute", "(Task,TaskState)", "summary", "df-generated"]
+      - ["org.gradle.api.execution", "TaskExecutionAdapter", "beforeExecute", "(Task)", "summary", "df-generated"]

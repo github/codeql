@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor$TestDetails", True, "getAnnotation", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor$TestDetails", True, "getAnnotations", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor", True, "interceptFeature", "(FeatureInfo)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor", True, "interceptFeature", "(FeatureInfo)", "", "Argument[this]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor$Execution", "isTestEnabled", "(AbstractMultiTestInterceptor$TestDetails)", "summary", "df-generated"]
+      - ["org.gradle.integtests.fixtures.extensions", "AbstractMultiTestInterceptor", "interceptFeature", "(FeatureInfo)", "summary", "df-generated"]
+      - ["org.gradle.integtests.fixtures.extensions", "MultiTestExtension", "visitSpecAnnotation", "(Annotation,SpecInfo)", "summary", "df-generated"]

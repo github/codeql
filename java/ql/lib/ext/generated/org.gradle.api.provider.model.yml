@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.provider", "ProviderFactory", True, "credentials", "(Class,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.provider", "ProviderFactory", True, "provider", "(Callable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.provider", "ProviderFactory", True, "zip", "(Provider,Provider,BiFunction)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.provider", "ProviderFactory", True, "zip", "(Provider,Provider,BiFunction)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.provider", "ProviderFactory", True, "zip", "(Provider,Provider,BiFunction)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.provider", "SupportsConvention", True, "unset", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.provider", "SupportsConvention", True, "unsetConvention", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]

@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.cpp", "CppBinary", True, "getCompileIncludePath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppBinary", True, "getCompileTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppBinary", True, "getCppSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppBinary", True, "getLinkLibraries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppBinary", True, "getRuntimeLibraries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppBinary", True, "getTargetPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppComponent", True, "getBaseName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppComponent", True, "getCppSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppComponent", True, "getImplementationDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppComponent", True, "getPrivateHeaderDirs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppComponent", True, "getPrivateHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppExecutable", True, "getDebuggerExecutableFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppLibrary", True, "getApiDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppLibrary", True, "getLinkage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppLibrary", True, "getPublicHeaderDirs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppLibrary", True, "getPublicHeaderFiles", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppLibrary", True, "getPublicHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.cpp", "CppPlatform", True, "getTargetMachine", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

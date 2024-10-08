@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.initialization", "ConfigurableIncludedBuild", True, "setName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ConfigurableIncludedPluginBuild", True, "setName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "IncludedBuild", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "IncludedBuild", True, "getProjectDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "IncludedBuild", True, "task", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "IncludedBuild", True, "task", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "getBuildFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "getBuildFileName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "getChildren", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "getProjectDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "setBuildFileName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "ProjectDescriptor", True, "setProjectDir", "(File)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "Settings", True, "getDependencyResolutionManagement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.initialization", "Settings", True, "getSettings", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.initialization", "Settings", True, "getToolchainManagement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.initialization", "Settings", "include", "(String[])", "summary", "df-generated"]
+      - ["org.gradle.api.initialization", "Settings", "includeFlat", "(String[])", "summary", "df-generated"]

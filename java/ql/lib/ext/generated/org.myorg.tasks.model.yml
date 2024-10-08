@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.myorg.tasks", "UrlVerify", True, "verify", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.myorg.tasks", "UrlVerify", True, "verify", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.myorg.tasks", "UrlVerify", True, "verify", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.myorg.tasks", "UrlVerify", True, "verify", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.myorg.tasks", "UrlVerify", "getUrl", "()", "summary", "df-generated"]
+      - ["org.myorg.tasks", "UrlVerify", "verify", "()", "summary", "df-generated"]

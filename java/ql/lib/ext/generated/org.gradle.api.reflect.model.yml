@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.reflect", "ObjectInstantiationException", True, "ObjectInstantiationException", "(Class,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.reflect", "TypeOf", "getActualTypeArguments", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getComponentType", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getConcreteClass", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getFullyQualifiedName", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getLowerBound", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getParameterizedTypeDefinition", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getSimpleName", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "getUpperBound", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isArray", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isAssignableFrom", "(Type)", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isAssignableFrom", "(TypeOf)", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isParameterized", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isPublic", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isSimple", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isSynthetic", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "isWildcard", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "parameterizedTypeOf", "(TypeOf,TypeOf[])", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "typeOf", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.api.reflect", "TypeOf", "typeOf", "(Type)", "summary", "df-generated"]

@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.cli.converter", "BuildLayoutConverter", True, "convert", "(InitialProperties,ParsedCommandLine,File)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildLayoutConverter", True, "convert", "(InitialProperties,ParsedCommandLine,File)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildLayoutConverter", True, "convert", "(InitialProperties,ParsedCommandLine,File,Consumer)", "", "Argument[2]", "ReturnValue.SyntheticField[org.gradle.launcher.cli.converter.BuildLayoutConverter$Result.buildLayout].SyntheticField[org.gradle.initialization.BuildLayoutParameters.currentDir]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "BuildOptionBackedConverter", "(BuildOptionSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[0]", "Argument[2]", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[1].Element", "Argument[2]", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "LayoutToPropertiesConverter", True, "LayoutToPropertiesConverter", "(BuildLayoutFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "LayoutToPropertiesConverter", True, "convert", "(InitialProperties,BuildLayoutResult)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "StartParameterConverter", True, "convert", "(ParsedCommandLine,BuildLayoutResult,AllProperties,StartParameterInternal)", "", "Argument[3]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[2]", "groovy-injection", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[2]", "request-forgery", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", True, "convert", "(ParsedCommandLine,Map,Object)", "", "Argument[2]", "xslt-injection", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "LayoutToPropertiesConverter", True, "convert", "(InitialProperties,BuildLayoutResult)", "", "Argument[1]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.cli.converter", "BuildLayoutConverter", "configure", "(CommandLineParser)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildLayoutConverter", "defaultValues", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "BuildOptionBackedConverter", "configure", "(CommandLineParser)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "InitialPropertiesConverter", "configure", "(CommandLineParser)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "InitialPropertiesConverter", "convert", "(ParsedCommandLine)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "StartParameterConverter", "configure", "(CommandLineParser)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "WelcomeMessageBuildOptions$WelcomeMessageOption", "applyTo", "(WelcomeMessageDisplayMode,WelcomeMessageConfiguration,Origin)", "summary", "df-generated"]
+      - ["org.gradle.launcher.cli.converter", "WelcomeMessageBuildOptions", "getAllOptions", "()", "summary", "df-generated"]

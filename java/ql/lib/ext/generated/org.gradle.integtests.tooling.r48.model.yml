@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", True, "CustomProjectsLoadedAction", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "IntermediateResultHandlerCollector", True, "getResult", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r48.IntermediateResultHandlerCollector.result]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r48", "IntermediateResultHandlerCollector", True, "onComplete", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r48.IntermediateResultHandlerCollector.result]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.r48", "CustomBuildFinishedAction", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomBuildFinishedAction", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomBuildFinishedAction", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomBuildFinishedAction", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.r48", "CustomBuildFinishedAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "CustomProjectsLoadedAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r48", "FailAction", "execute", "(BuildController)", "summary", "df-generated"]

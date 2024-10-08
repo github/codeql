@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.r18", "FetchBuildEnvironment", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchBuildEnvironment", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchBuildEnvironment", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchBuildEnvironment", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchIdeaModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchUnknownModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchUnknownModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchUnknownModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchUnknownModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseGradleBuildToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseGradleBuildToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseGradleBuildToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseGradleBuildToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseOtherTypesToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseOtherTypesToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseOtherTypesToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseOtherTypesToFetchProjectModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.r18", "BrokenAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "CounterAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchBuildEnvironment", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchIdeaModel", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "FetchUnknownModel", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "NullAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseGradleBuildToFetchProjectModel", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r18", "UseOtherTypesToFetchProjectModel", "execute", "(BuildController)", "summary", "df-generated"]

@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.testkit.runner", "BuildResult", True, "getOutput", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "BuildResult", True, "getTasks", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "BuildResult", True, "task", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "BuildResult", True, "taskPaths", "(TaskOutcome)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "BuildResult", True, "tasks", "(TaskOutcome)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "BuildTask", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "forwardOutput", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "forwardStdError", "(Writer)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "forwardStdOutput", "(Writer)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "getArguments", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "getEnvironment", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "getPluginClasspath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "getProjectDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withArguments", "(List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withArguments", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withDebug", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withEnvironment", "(Map)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withGradleDistribution", "(URI)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withGradleInstallation", "(File)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withGradleVersion", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withPluginClasspath", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withPluginClasspath", "(Iterable)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withProjectDir", "(File)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", True, "withTestKitDir", "(File)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "InvalidPluginMetadataException", True, "InvalidPluginMetadataException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "InvalidRunnerConfigurationException", True, "InvalidRunnerConfigurationException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "InvalidRunnerConfigurationException", True, "InvalidRunnerConfigurationException", "(String,UnsupportedVersionException)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "InvalidRunnerConfigurationException", True, "InvalidRunnerConfigurationException", "(String,UnsupportedVersionException)", "", "Argument[1]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.gradle.testkit.runner", "UnexpectedBuildFailure", True, "UnexpectedBuildFailure", "(String,BuildResult)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnexpectedBuildFailure", True, "UnexpectedBuildFailure", "(String,BuildResult)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnexpectedBuildResultException", True, "getBuildResult", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnexpectedBuildSuccess", True, "UnexpectedBuildSuccess", "(String,BuildResult)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnexpectedBuildSuccess", True, "UnexpectedBuildSuccess", "(String,BuildResult)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnsupportedFeatureException", True, "UnsupportedFeatureException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnsupportedFeatureException", True, "UnsupportedFeatureException", "(String,GradleVersion,GradleVersion)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnsupportedFeatureException", True, "UnsupportedFeatureException", "(String,GradleVersion,GradleVersion)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.testkit.runner", "UnsupportedFeatureException", True, "UnsupportedFeatureException", "(String,GradleVersion,GradleVersion)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.testkit.runner", "GradleRunner", "build", "()", "summary", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", "buildAndFail", "()", "summary", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", "create", "()", "summary", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", "isDebug", "()", "summary", "df-generated"]
+      - ["org.gradle.testkit.runner", "GradleRunner", "run", "()", "summary", "df-generated"]

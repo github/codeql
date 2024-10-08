@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.myproduct.server", "MyProductAdminController", "adminForm", "(Model)", "summary", "df-generated"]
+      - ["com.example.myproduct.server", "MyProductAdminController", "adminSubmit", "(VersionRange,Model)", "summary", "df-generated"]
+      - ["com.example.myproduct.server", "MyProductController", "index", "()", "summary", "df-generated"]
+      - ["com.example.myproduct.server", "MyProductJsonController", "json", "()", "summary", "df-generated"]

@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", True, "connectStreams", "(Process,String,Executor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", True, "getProcessOutput", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonStartupCommunication", True, "readDiagnostics", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.launcher.daemon.diagnostics.DaemonStartupInfo.diagnostics].SyntheticField[org.gradle.launcher.daemon.diagnostics.DaemonDiagnostics.daemonLog]", "taint", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonStartupCommunication", True, "readDiagnostics", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.launcher.daemon.diagnostics.DaemonStartupInfo.uid]", "taint", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "ForegroundDaemonAction", True, "ForegroundDaemonAction", "(ServiceRegistry,DaemonServerConfiguration)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "ForegroundDaemonAction", True, "ForegroundDaemonAction", "(ServiceRegistry,DaemonServerConfiguration)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", "disconnect", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", "removeStartupContext", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", "start", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonOutputConsumer", "stop", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonStartupCommunication", "containsGreeting", "(String)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "DaemonStartupCommunication", "printDaemonStarted", "(PrintStream,Long,String,Address,File)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.bootstrap", "ForegroundDaemonAction", "run", "()", "summary", "df-generated"]

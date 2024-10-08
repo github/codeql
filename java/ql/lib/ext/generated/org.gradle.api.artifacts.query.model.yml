@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.artifacts.query", "ArtifactResolutionQuery", True, "forComponents", "(ComponentIdentifier[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.query", "ArtifactResolutionQuery", True, "forComponents", "(Iterable)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.query", "ArtifactResolutionQuery", True, "forModule", "(String,String,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.query", "ArtifactResolutionQuery", True, "withArtifacts", "(Class,Class[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.query", "ArtifactResolutionQuery", True, "withArtifacts", "(Class,Collection)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]

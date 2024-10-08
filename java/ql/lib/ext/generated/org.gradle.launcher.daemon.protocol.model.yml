@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "Build", "(UUID,byte[],BuildAction,GradleLauncherMetaData,long,boolean,BuildActionParameters)", "", "Argument[2]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.action]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "Build", "(UUID,byte[],BuildAction,GradleLauncherMetaData,long,boolean,BuildActionParameters)", "", "Argument[3]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.buildClientMetaData]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "Build", "(UUID,byte[],BuildAction,GradleLauncherMetaData,long,boolean,BuildActionParameters)", "", "Argument[6]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.parameters]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "getAction", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.action]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "getBuildClientMetaData", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.buildClientMetaData]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", True, "getParameters", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Build.parameters]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "BuildEvent", True, "BuildEvent", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.BuildEvent.payload]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "BuildEvent", True, "getPayload", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.BuildEvent.payload]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "BuildStarted", True, "BuildStarted", "(DaemonDiagnostics)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.BuildStarted.diagnostics]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "BuildStarted", True, "getDiagnostics", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.BuildStarted.diagnostics]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Command", True, "Command", "(UUID,byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Command.identifier]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Command", True, "Command", "(UUID,byte[])", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Command.token]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Command", True, "getIdentifier", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Command.identifier]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Command", True, "getToken", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Command.token]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "DaemonUnavailable", True, "DaemonUnavailable", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.DaemonUnavailable.reason]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "DaemonUnavailable", True, "getReason", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.DaemonUnavailable.reason]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Failure", True, "Failure", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "ForwardInput", True, "ForwardInput", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.ForwardInput.bytes]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "ForwardInput", True, "getBytes", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.ForwardInput.bytes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "InvalidateVirtualFileSystemAfterChange", True, "InvalidateVirtualFileSystemAfterChange", "(List,UUID,byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.InvalidateVirtualFileSystemAfterChange.changedPaths]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "InvalidateVirtualFileSystemAfterChange", True, "getChangedPaths", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.InvalidateVirtualFileSystemAfterChange.changedPaths]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "OutputMessage", True, "OutputMessage", "(OutputEvent)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.OutputMessage.event]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "OutputMessage", True, "getEvent", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.OutputMessage.event]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "ReportStatus", True, "ReportStatus", "(UUID,byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "ReportStatus", True, "ReportStatus", "(UUID,byte[])", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Result", True, "Result", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Result.value]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Result", True, "getValue", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Result.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Status", True, "Status", "(Long,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Status.version]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Status", True, "Status", "(Long,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Status.status]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Status", True, "getStatus", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Status.status]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Status", True, "getVersion", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.Status.version]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Stop", True, "Stop", "(UUID,byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Stop", True, "Stop", "(UUID,byte[])", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "StopWhenIdle", True, "StopWhenIdle", "(UUID,byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "StopWhenIdle", True, "StopWhenIdle", "(UUID,byte[])", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Success", True, "Success", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "UserResponse", True, "UserResponse", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.UserResponse.response]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "UserResponse", True, "getResponse", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.protocol.UserResponse.response]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.daemon.protocol", "Build", "getStartTime", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Build", "isInteractive", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "DaemonMessageSerializer", "create", "(Serializer)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.protocol", "Status", "getPid", "()", "summary", "df-generated"]

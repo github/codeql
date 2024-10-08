@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "MSBuildExecutor", "(TestFile,AvailableToolChains$InstalledToolChain)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "MSBuildExecutor", "(TestFile,AvailableToolChains$InstalledToolChain)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "withArgument", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "withConfiguration", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "withProject", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "withSolution", "(SolutionFile)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "withWorkingDir", "(TestFile)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildVersionLocator", True, "MSBuildVersionLocator", "(VswhereVersionLocator)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "fails", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "fails", "(MSBuildExecutor$MSBuildAction)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "run", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "run", "(MSBuildExecutor$MSBuildAction)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "succeeds", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", True, "succeeds", "(MSBuildExecutor$MSBuildAction)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "fails", "()", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "fails", "(MSBuildExecutor$MSBuildAction)", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "run", "()", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "run", "(MSBuildExecutor$MSBuildAction)", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "succeeds", "()", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildExecutor", "succeeds", "(MSBuildExecutor$MSBuildAction)", "summary", "df-generated"]
+      - ["org.gradle.ide.visualstudio.fixtures", "MSBuildVersionLocator", "getMSBuildInstall", "(AvailableToolChains$InstalledToolChain)", "summary", "df-generated"]

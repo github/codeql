@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugins.signing.type", "SignatureType", True, "combinedExtension", "(File)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.plugins.signing.type", "SignatureType", True, "fileFor", "(File)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.plugins.signing.type", "SignatureType", True, "sign", "(Signatory,File)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.plugins.signing.type", "SignatureTypeProvider", True, "getDefaultType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.signing.type", "SignatureTypeProvider", True, "getTypeForExtension", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.signing.type", "SignatureTypeProvider", True, "setDefaultType", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugins.signing.type", "AbstractSignatureType", True, "sign", "(Signatory,File)", "", "Argument[1]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugins.signing.type", "AbstractSignatureType", "sign", "(Signatory,InputStream,OutputStream)", "summary", "df-generated"]
+      - ["org.gradle.plugins.signing.type", "AbstractSignatureTypeProvider", "hasTypeForExtension", "(String)", "summary", "df-generated"]
+      - ["org.gradle.plugins.signing.type", "BinarySignatureType", "getExtension", "()", "summary", "df-generated"]

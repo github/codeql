@@ -1,0 +1,76 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "TestNGOptions", "(ProjectLayout)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "copyFrom", "(TestNGOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "excludeGroups", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.excludeGroups].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "excludeGroups", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.excludeGroups].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "excludeGroups", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getConfigFailurePolicy", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.configFailurePolicy]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getExcludeGroups", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.excludeGroups]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getIncludeGroups", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.includeGroups]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getListeners", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.listeners]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getOutputDirectory", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.outputDirectory]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getParallel", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.parallel]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuiteName", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuiteXmlBuilder", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlBuilder]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuiteXmlFiles", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlFiles]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuiteXmlWriter", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlWriter]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[0]", "ReturnValue.Element", "taint", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlFiles].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getTestName", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.testName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getThreadPoolFactoryClass", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.threadPoolFactoryClass]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "includeGroups", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.includeGroups].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "includeGroups", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.includeGroups].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "includeGroups", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setConfigFailurePolicy", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.configFailurePolicy]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setExcludeGroups", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.excludeGroups]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setIncludeGroups", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.includeGroups]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setListeners", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.listeners]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setOutputDirectory", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.outputDirectory]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setParallel", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.parallel]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setSuiteName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteName]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setSuiteXmlBuilder", "(MarkupBuilder)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlBuilder]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setSuiteXmlFiles", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlFiles]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setSuiteXmlWriter", "(StringWriter)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlWriter]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setTestName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.testName]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "setThreadPoolFactoryClass", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.threadPoolFactoryClass]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "suiteXmlBuilder", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlBuilder]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "suites", "(File[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlFiles].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "suites", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.testng.TestNGOptions.suiteXmlFiles].Element", "taint", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "useDefaultListeners", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "useDefaultListeners", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "copyFrom", "(TestNGOptions)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "copyFrom", "(TestNGOptions)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "copyFrom", "(TestNGOptions)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "copyFrom", "(TestNGOptions)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", True, "getSuites", "(File)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "getGroupByInstances", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "getPreserveOrder", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "getSuiteThreadPoolSize", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "getThreadCount", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "getUseDefaultListeners", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "isGroupByInstances", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "isPreserveOrder", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "isUseDefaultListeners", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "methodMissing", "(String,Object)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "propertyMissing", "(String)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "setGroupByInstances", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "setPreserveOrder", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "setThreadCount", "(int)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.testing.testng", "TestNGOptions", "setUseDefaultListeners", "(boolean)", "summary", "df-generated"]

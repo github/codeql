@@ -1,0 +1,56 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.reporting", "CustomizableHtmlReport", True, "getStylesheet", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "CustomizableHtmlReport", True, "setStylesheet", "(TextResource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "DirectoryReport", True, "getEntryPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "aggregate", "(Reporting[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "getReports", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "reports", "(Action)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "reports", "(Closure)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "Report", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "Report", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "ReportingExtension", "(Project)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "getBaseDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "getReports", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "getInputReports", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "getInputReports", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "getInputReports", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", True, "getInputReports", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "ReportingExtension", "(Project)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "ReportingExtension", "(Project)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "ReportingExtension", "(Project)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "ReportingExtension", "(Project)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "file", "(String)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "file", "(String)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "file", "(String)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "file", "(String)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(File)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(Object)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(Object)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(Object)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", True, "setBaseDir", "(Object)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.reporting", "GenerateBuildDashboard", "getInputReports", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", "file", "(String)", "summary", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", "getApiDocTitle", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", "getBaseDir", "()", "summary", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", "setBaseDir", "(File)", "summary", "df-generated"]
+      - ["org.gradle.api.reporting", "ReportingExtension", "setBaseDir", "(Object)", "summary", "df-generated"]

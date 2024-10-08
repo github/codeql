@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language", "ComponentWithBinaries", True, "getBinaries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language", "ComponentWithDependencies", True, "getDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language", "ComponentWithOutputs", True, "getOutputs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language", "ComponentWithTargetMachines", True, "getTargetMachines", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language", "ProductionComponent", True, "getDevelopmentBinary", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.swiftpm.plugins", "SwiftPackageManagerExportPlugin", True, "SwiftPackageManagerExportPlugin", "(VcsResolver,VersionSelectorScheme,ProjectDependencyPublicationResolver,VersionParser)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.swiftpm.plugins", "SwiftPackageManagerExportPlugin", True, "SwiftPackageManagerExportPlugin", "(VcsResolver,VersionSelectorScheme,ProjectDependencyPublicationResolver,VersionParser)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.swiftpm.plugins", "SwiftPackageManagerExportPlugin", True, "SwiftPackageManagerExportPlugin", "(VcsResolver,VersionSelectorScheme,ProjectDependencyPublicationResolver,VersionParser)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.swiftpm.plugins", "SwiftPackageManagerExportPlugin", True, "SwiftPackageManagerExportPlugin", "(VcsResolver,VersionSelectorScheme,ProjectDependencyPublicationResolver,VersionParser)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.swiftpm.plugins", "SwiftPackageManagerExportPlugin", "apply", "(Project)", "summary", "df-generated"]

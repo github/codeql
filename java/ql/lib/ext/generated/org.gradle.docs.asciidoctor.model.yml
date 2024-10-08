@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.docs.asciidoctor", "ExampleSelfLinkProcessor", True, "process", "(Document)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.docs.asciidoctor", "HeaderInjectingPostprocessor", True, "process", "(Document,String)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.docs.asciidoctor", "HeaderInjectingPostprocessor", True, "process", "(Object,Object)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.docs.asciidoctor", "MetadataDocinfoProcessor", True, "process", "(Object,Object)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.docs.asciidoctor", "GradleDocsAsciidoctorExtensionRegistry", "register", "(Asciidoctor)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "GradleDocsHtmlAsciidoctorExtensionRegistry", "register", "(Asciidoctor)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "GuidesContributeIncludeProcessor", "GuidesContributeIncludeProcessor", "(Map)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "GuidesContributeIncludeProcessor", "handles", "(String)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "GuidesContributeIncludeProcessor", "process", "(Document,PreprocessorReader,String,Map)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "MetadataDocinfoProcessor", "MetadataDocinfoProcessor", "(Map)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "MetadataDocinfoProcessor", "process", "(Document)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "SampleIncludeProcessor", "handles", "(String)", "summary", "df-generated"]
+      - ["org.gradle.docs.asciidoctor", "SampleIncludeProcessor", "process", "(Document,PreprocessorReader,String,Map)", "summary", "df-generated"]

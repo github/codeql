@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.execution.selection", "BuildTaskSelector$BuildSpecificSelector", True, "resolveTaskName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "BuildTaskSelector$Filter", True, "Filter", "(BuildState,Spec)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.execution.selection.BuildTaskSelector$Filter.build]", "value", "dfc-generated"]
+      - ["org.gradle.execution.selection", "BuildTaskSelector$Filter", True, "Filter", "(BuildState,Spec)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.execution.selection.BuildTaskSelector$Filter.filter]", "value", "dfc-generated"]
+      - ["org.gradle.execution.selection", "BuildTaskSelector$Filter", True, "getBuild", "()", "", "Argument[this].SyntheticField[org.gradle.execution.selection.BuildTaskSelector$Filter.build]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.selection", "BuildTaskSelector$Filter", True, "getFilter", "()", "", "Argument[this].SyntheticField[org.gradle.execution.selection.BuildTaskSelector$Filter.filter]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.selection", "BuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "DefaultBuildTaskSelector", "(BuildStateRegistry,TaskSelector,List,InternalProblems)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "DefaultBuildTaskSelector", "(BuildStateRegistry,TaskSelector,List,InternalProblems)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "DefaultBuildTaskSelector", "(BuildStateRegistry,TaskSelector,List,InternalProblems)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "DefaultBuildTaskSelector", "(BuildStateRegistry,TaskSelector,List,InternalProblems)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.execution.selection.BuildTaskSelector$Filter.build]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveExcludedTaskName", "(BuildState,String)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[2]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[2]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[2]", "xslt-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", True, "resolveTaskName", "(File,String,BuildState,String)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.execution.selection", "DefaultBuildTaskSelector", "relativeToBuild", "(BuildState)", "summary", "df-generated"]

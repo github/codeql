@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.caching", "BuildCacheException", True, "BuildCacheException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.caching", "BuildCacheException", True, "BuildCacheException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.caching", "BuildCacheException", True, "BuildCacheException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.caching", "BuildCacheServiceFactory$Describer", True, "config", "(String,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.caching", "BuildCacheServiceFactory$Describer", True, "type", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.caching", "MapBasedBuildCacheService", True, "MapBasedBuildCacheService", "(ConcurrentMap)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.caching", "MapBasedBuildCacheService", "load", "(BuildCacheKey,BuildCacheEntryReader)", "summary", "df-generated"]
+      - ["org.gradle.caching", "MapBasedBuildCacheService", "store", "(BuildCacheKey,BuildCacheEntryWriter)", "summary", "df-generated"]

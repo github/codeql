@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugin.use", "PluginDependency", True, "getPluginId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependency", True, "getVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "apply", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "version", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugin.use", "PluginId", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginId", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginId", True, "getNamespace", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginId", True, "withNamespace", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginId", True, "withNamespace", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", True, "alias", "(Provider)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", True, "alias", "(Provider)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", True, "alias", "(Provider)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", True, "alias", "(Provider)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "version", "(Provider)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "version", "(Provider)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "version", "(Provider)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", True, "version", "(Provider)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", "alias", "(Provider)", "summary", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependenciesSpec", "alias", "(ProviderConvertible)", "summary", "df-generated"]
+      - ["org.gradle.plugin.use", "PluginDependencySpec", "version", "(Provider)", "summary", "df-generated"]

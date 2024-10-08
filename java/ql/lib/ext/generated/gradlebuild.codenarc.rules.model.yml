@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixtureVisitor", "visitMethodCallExpression", "(MethodCallExpression)", "summary", "df-generated"]
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixturesRule", "getDescription", "()", "summary", "df-generated"]
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixturesRule", "getName", "()", "summary", "df-generated"]
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixturesRule", "getPriority", "()", "summary", "df-generated"]
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixturesRule", "setName", "(String)", "summary", "df-generated"]
+      - ["gradlebuild.codenarc.rules", "IntegrationTestFixturesRule", "setPriority", "(int)", "summary", "df-generated"]

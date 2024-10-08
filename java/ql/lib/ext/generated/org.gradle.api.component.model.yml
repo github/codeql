@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.component", "AdhocComponentWithVariants", True, "addVariantsFromConfiguration", "(Configuration,Action)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.component", "ComponentWithCoordinates", True, "getCoordinates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "ComponentWithVariants", True, "getVariants", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "ConfigurationVariantDetails", True, "getConfigurationVariant", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "ConfigurationVariantDetails", True, "mapToMavenScope", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.component", "SoftwareComponentVariant", True, "getArtifacts", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "SoftwareComponentVariant", True, "getCapabilities", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "SoftwareComponentVariant", True, "getDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "SoftwareComponentVariant", True, "getDependencyConstraints", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.component", "SoftwareComponentVariant", True, "getGlobalExcludes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

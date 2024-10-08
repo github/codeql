@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.publish", "PublicationArtifact", True, "getFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "PublishingExtension", True, "getPublications", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "PublishingExtension", True, "getRepositories", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "VariantVersionMappingStrategy", True, "fromResolutionOf", "(Configuration)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "VersionMappingStrategy", True, "allVariants", "(Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "VersionMappingStrategy", True, "usage", "(String,Action)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.publish", "VersionMappingStrategy", True, "variant", "(Attribute,Object,Action)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]

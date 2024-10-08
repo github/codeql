@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[6]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[7]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "DefaultTaskExecutionGraph", "(PlanExecutor,List,BuildOperationRunner,ListenerBuildOperationDecorator,GradleInternal,ListenerBroadcast,ListenerBroadcast,BuildScopeListenerRegistrationListener,ServiceRegistry)", "", "Argument[8]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "NotifyTaskGraphWhenReadyBuildOperationType$Details", True, "getBuildPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "TaskExecutionGraphInternal", True, "populate", "(FinalizedExecutionPlan)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "execute", "(FinalizedExecutionPlan)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "execute", "(FinalizedExecutionPlan)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "execute", "(FinalizedExecutionPlan)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "execute", "(FinalizedExecutionPlan)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "visitScheduledNodes", "(BiConsumer)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "visitScheduledNodes", "(BiConsumer)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "visitScheduledNodes", "(BiConsumer)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", True, "visitScheduledNodes", "(BiConsumer)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "addTaskExecutionGraphListener", "(TaskExecutionGraphListener)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "addTaskExecutionListener", "(TaskExecutionListener)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "afterTask", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "afterTask", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "beforeTask", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "beforeTask", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "execute", "(FinalizedExecutionPlan)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "findTask", "(String)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "getDependencies", "(Task)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "getFilteredTasks", "()", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "hasTask", "(String)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "hasTask", "(Task)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "removeTaskExecutionGraphListener", "(TaskExecutionGraphListener)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "removeTaskExecutionListener", "(TaskExecutionListener)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "resetState", "()", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "size", "()", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "visitScheduledNodes", "(BiConsumer)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "whenReady", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.execution.taskgraph", "DefaultTaskExecutionGraph", "whenReady", "(Closure)", "summary", "df-generated"]

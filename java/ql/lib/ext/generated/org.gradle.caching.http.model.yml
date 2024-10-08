@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "getCredentials", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "getUrl", "()", "", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCache.url]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "setUrl", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCache.url]", "taint", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "setUrl", "(URI)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCache.url]", "value", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "setUrl", "(URL)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCache.url]", "taint", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCacheCredentials", True, "getPassword", "()", "", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCacheCredentials.password]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCacheCredentials", True, "getUsername", "()", "", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCacheCredentials.username]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCacheCredentials", True, "setPassword", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCacheCredentials.password]", "value", "dfc-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCacheCredentials", True, "setUsername", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.caching.http.HttpBuildCacheCredentials.username]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "credentials", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "credentials", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "credentials", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", True, "credentials", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.caching.http", "HttpBuildCache", "credentials", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "isAllowInsecureProtocol", "()", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "isAllowUntrustedServer", "()", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "isUseExpectContinue", "()", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "setAllowInsecureProtocol", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "setAllowUntrustedServer", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.caching.http", "HttpBuildCache", "setUseExpectContinue", "(boolean)", "summary", "df-generated"]

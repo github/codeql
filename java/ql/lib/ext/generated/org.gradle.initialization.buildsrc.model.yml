@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", True, "BuildSourceBuilder", "(BuildState,BuildOperationRunner,BuildSrcBuildListenerFactory,BuildStateRegistry,PublicBuildPath,BuildLogicBuildQueue)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory", True, "BuildSrcBuildListenerFactory", "(Action,ScriptClassPathResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory", True, "BuildSrcBuildListenerFactory", "(Action,ScriptClassPathResolver)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", True, "BuildSrcUpdateFactory", "(BuildSrcBuildListenerFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", True, "projectsLoaded", "(Gradle)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", True, "projectsLoaded", "(Gradle)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", True, "projectsLoaded", "(Gradle)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", True, "projectsLoaded", "(Gradle)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcDetector", True, "isValidBuildSrcBuild", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", True, "create", "(BuildTreeLifecycleController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", True, "create", "(BuildTreeLifecycleController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", True, "create", "(BuildTreeLifecycleController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", True, "create", "(BuildTreeLifecycleController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.initialization.buildsrc", "BuildSourceBuilder", "buildAndGetClassPath", "(GradleInternal)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", "applyTasksTo", "(EntryTaskSelector$Context,ExecutionPlan)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", "getRuntimeClasspath", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcBuildListenerFactory$Listener", "projectsLoaded", "(Gradle)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcDetector", "isValidBuildSrcBuild", "(File)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "BuildSrcUpdateFactory", "create", "(BuildTreeLifecycleController)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "GradlePluginApiVersionAttributeConfigurationAction", "execute", "(ProjectInternal)", "summary", "df-generated"]
+      - ["org.gradle.initialization.buildsrc", "GroovyBuildSrcProjectConfigurationAction", "execute", "(ProjectInternal)", "summary", "df-generated"]

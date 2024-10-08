@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.operations.execution", "ExecuteDeferredWorkProgressDetails", True, "getIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteDeferredWorkProgressDetails", True, "getOriginBuildInvocationId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteDeferredWorkProgressDetails", True, "getWorkType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteWorkBuildOperationType$Details", True, "getIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteWorkBuildOperationType$Details", True, "getWorkType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteWorkBuildOperationType$Result", True, "getExecutionReasons", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "ExecuteWorkBuildOperationType$Result", True, "getOriginBuildInvocationId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "FilePropertyVisitor$VisitState", True, "getHashBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "FilePropertyVisitor$VisitState", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "FilePropertyVisitor$VisitState", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "FilePropertyVisitor$VisitState", True, "getPropertyHashBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.execution", "FilePropertyVisitor$VisitState", True, "getPropertyName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

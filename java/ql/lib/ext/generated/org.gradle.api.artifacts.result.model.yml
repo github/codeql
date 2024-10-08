@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.artifacts.result", "ArtifactResolutionResult", True, "getComponents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ArtifactResolutionResult", True, "getResolvedComponents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ArtifactResult", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ComponentArtifactsResult", True, "getArtifacts", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ComponentResult", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ComponentSelectionDescriptor", True, "getDescription", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ComponentSelectionReason", True, "getDescriptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "DependencyResult", True, "getFrom", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "DependencyResult", True, "getRequested", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolutionResult", True, "getRequestedAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedArtifactResult", True, "getFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedArtifactResult", True, "getVariant", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getDependenciesForVariant", "(ResolvedVariantResult)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getDependents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getModuleVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getSelectionReason", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedComponentResult", True, "getVariants", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedDependencyResult", True, "getResolvedVariant", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedDependencyResult", True, "getSelected", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedVariantResult", True, "getAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedVariantResult", True, "getCapabilities", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedVariantResult", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedVariantResult", True, "getExternalVariant", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "ResolvedVariantResult", True, "getOwner", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "UnresolvedArtifactResult", True, "getFailure", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "UnresolvedComponentResult", True, "getFailure", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "UnresolvedDependencyResult", True, "getAttempted", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "UnresolvedDependencyResult", True, "getAttemptedReason", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.result", "UnresolvedDependencyResult", True, "getFailure", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.artifacts.result", "ComponentSelectionCause", "getDefaultReason", "()", "summary", "df-generated"]

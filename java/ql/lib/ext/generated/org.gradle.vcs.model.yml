@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.vcs", "SourceControl", True, "getVcsMappings", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "SourceControl", True, "gitRepository", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs", "SourceControl", True, "gitRepository", "(URI)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "SourceControl", True, "gitRepository", "(URI,Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VcsMapping", True, "from", "(VersionControlSpec)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VcsMapping", True, "getRequested", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VcsMappings", True, "all", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.vcs", "VcsMappings", True, "withModule", "(String,Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.vcs", "VersionControlRepository", True, "getRootDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VersionControlRepository", True, "setRootDir", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VersionControlSpec", True, "getRepoName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VersionControlSpec", True, "getRootDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VersionControlSpec", True, "getUniqueId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs", "VersionControlSpec", True, "setRootDir", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

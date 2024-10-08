@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.bootstrap", "CommandLineActionFactory", True, "convert", "(List)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.bootstrap", "ExecutionListener", True, "onFailure", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.launcher.bootstrap", "ProcessBootstrap", True, "run", "(String,String,String,String[])", "", "Argument[1]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.bootstrap", "EntryPoint", "run", "(String[])", "summary", "df-generated"]
+      - ["org.gradle.launcher.bootstrap", "ProcessBootstrap", "run", "(String,String,String,String[])", "summary", "df-generated"]
+      - ["org.gradle.launcher.bootstrap", "ProcessCompleter", "complete", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.bootstrap", "ProcessCompleter", "completeWithFailure", "(Throwable)", "summary", "df-generated"]

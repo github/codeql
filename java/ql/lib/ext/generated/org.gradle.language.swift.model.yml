@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getCompileModules", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getCompileTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getLinkLibraries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getModule", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getModuleFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getRuntimeLibraries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getSwiftSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftBinary", True, "getTargetPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftComponent", True, "getImplementationDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftComponent", True, "getModule", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftComponent", True, "getSourceCompatibility", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftComponent", True, "getSwiftSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftExecutable", True, "getDebuggerExecutableFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftLibrary", True, "getApiDependencies", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftLibrary", True, "getLinkage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.swift", "SwiftPlatform", True, "getTargetMachine", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.language.swift", "SwiftVersion", "getVersion", "()", "summary", "df-generated"]

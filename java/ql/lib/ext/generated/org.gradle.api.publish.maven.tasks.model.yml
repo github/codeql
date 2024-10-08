@@ -1,0 +1,48 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.publish.maven.tasks", "AbstractPublishToMaven", True, "getPublication", "()", "", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.AbstractPublishToMaven.publication].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "AbstractPublishToMaven", True, "setPublication", "(MavenPublication)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.AbstractPublishToMaven.publication].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getDestination", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getPom", "()", "", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.GenerateMavenPom.pom].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "setDestination", "(File)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "setDestination", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "setPom", "(MavenPom)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.GenerateMavenPom.pom].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "withCompileScopeAttributes", "(ImmutableAttributes)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "withRuntimeScopeAttributes", "(ImmutableAttributes)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "getRepository", "()", "", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.PublishToMavenRepository.repository].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "setRepository", "(MavenArtifactRepository)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.publish.maven.tasks.PublishToMavenRepository.repository].SyntheticField[org.gradle.internal.serialization.Transient$MutableTransient.value]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "doGenerate", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "doGenerate", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "doGenerate", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "doGenerate", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getDestination", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getDestination", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getDestination", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", True, "getDestination", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenLocal", True, "publish", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenLocal", True, "publish", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenLocal", True, "publish", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenLocal", True, "publish", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "publish", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "publish", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "publish", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "publish", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "setRepository", "(MavenArtifactRepository)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "setRepository", "(MavenArtifactRepository)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "setRepository", "(MavenArtifactRepository)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", True, "setRepository", "(MavenArtifactRepository)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.publish.maven.tasks", "GenerateMavenPom", "doGenerate", "()", "summary", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenLocal", "publish", "()", "summary", "df-generated"]
+      - ["org.gradle.api.publish.maven.tasks", "PublishToMavenRepository", "publish", "()", "summary", "df-generated"]

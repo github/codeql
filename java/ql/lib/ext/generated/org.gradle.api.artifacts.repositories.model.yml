@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.artifacts.repositories", "ArtifactRepository", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "ArtifactRepository", True, "setName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "AuthenticationSupported", True, "getAuthentication", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "ExclusiveContentRepository", True, "filter", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.repositories", "ExclusiveContentRepository", True, "forRepositories", "(ArtifactRepository[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.repositories", "ExclusiveContentRepository", True, "forRepository", "(Factory)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.artifacts.repositories", "FlatDirectoryArtifactRepository", True, "dir", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "FlatDirectoryArtifactRepository", True, "dirs", "(Object[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "FlatDirectoryArtifactRepository", True, "setDirs", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "FlatDirectoryArtifactRepository", True, "setDirs", "(Set)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "IvyArtifactRepository", True, "getMetadataSources", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "IvyArtifactRepository", True, "getResolve", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "IvyPatternRepositoryLayout", True, "artifact", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "IvyPatternRepositoryLayout", True, "ivy", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MavenArtifactRepository", True, "artifactUrls", "(Object[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MavenArtifactRepository", True, "getArtifactUrls", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MavenArtifactRepository", True, "getMetadataSources", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MavenArtifactRepository", True, "setArtifactUrls", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MavenArtifactRepository", True, "setArtifactUrls", "(Set)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MetadataSupplierAware", True, "setComponentVersionsLister", "(Class,Action)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "MetadataSupplierAware", True, "setMetadataSupplier", "(Class,Action)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "RepositoryContentDescriptor", True, "notForConfigurations", "(String[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "RepositoryContentDescriptor", True, "onlyForAttribute", "(Attribute,Object[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "RepositoryContentDescriptor", True, "onlyForConfigurations", "(String[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "UrlArtifactRepository", True, "getUrl", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "UrlArtifactRepository", True, "setUrl", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.repositories", "UrlArtifactRepository", True, "setUrl", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

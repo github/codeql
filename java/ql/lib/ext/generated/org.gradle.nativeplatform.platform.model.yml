@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.nativeplatform.platform", "Architecture", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.platform", "NativePlatform", True, "architecture", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.platform", "NativePlatform", True, "getArchitecture", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.platform", "NativePlatform", True, "getOperatingSystem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.platform", "NativePlatform", True, "operatingSystem", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.platform", "OperatingSystem", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

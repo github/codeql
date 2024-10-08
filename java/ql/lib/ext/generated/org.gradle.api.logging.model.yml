@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.logging", "Logging", True, "getLogger", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.api.logging", "LoggingManager", True, "captureStandardError", "(LogLevel)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.logging", "LoggingManager", True, "captureStandardOutput", "(LogLevel)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.logging", "LoggingOutput", True, "addStandardErrorListener", "(StandardOutputListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.logging", "LoggingOutput", True, "addStandardOutputListener", "(StandardOutputListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.logging", "StandardOutputListener", True, "onOutput", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.logging", "Logging", "getLogger", "(Class)", "summary", "df-generated"]

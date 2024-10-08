@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.r30", "ComplexCustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "ComplexCustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "ComplexCustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "ComplexCustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "CustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "CustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "CustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "CustomModelBuildingAction", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.r30", "ComplexCustomModelBuildingAction", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r30", "CustomModelBuildingAction", "execute", "(BuildController)", "summary", "df-generated"]

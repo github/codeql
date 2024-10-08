@@ -1,0 +1,61 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "getAnalysisFiles", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "getAnalysisMappingFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "getJavaLauncher", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "getOptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "getScalaCompileOptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getAdditionalParameters", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.additionalParameters]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getDebugLevel", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.debugLevel]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getEncoding", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.encoding]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getForkOptions", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.forkOptions]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getIncrementalOptions", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.incrementalOptions]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getKeepAliveMode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getLoggingLevel", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.loggingLevel]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "getLoggingPhases", "()", "", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.loggingPhases]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setAdditionalParameters", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.additionalParameters].Element", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setDebugLevel", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.debugLevel]", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setEncoding", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.encoding]", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setForkOptions", "(ScalaForkOptions)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.forkOptions]", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setIncrementalOptions", "(IncrementalCompileOptions)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.incrementalOptions]", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setLoggingLevel", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.loggingLevel]", "value", "dfc-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "setLoggingPhases", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.scala.tasks.BaseScalaCompileOptions.loggingPhases]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "compile", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "compile", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "compile", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", True, "compile", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "forkOptions", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "forkOptions", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "forkOptions", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "forkOptions", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "incrementalOptions", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "incrementalOptions", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "incrementalOptions", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", True, "incrementalOptions", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.language.scala.tasks", "AbstractScalaCompile", "compile", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "forkOptions", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "incrementalOptions", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isDeprecation", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isFailOnError", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isForce", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isListFiles", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isOptimize", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "isUnchecked", "()", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setDeprecation", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setFailOnError", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setForce", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setListFiles", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setOptimize", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.scala.tasks", "BaseScalaCompileOptions", "setUnchecked", "(boolean)", "summary", "df-generated"]
