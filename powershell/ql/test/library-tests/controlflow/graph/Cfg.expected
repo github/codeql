@@ -276,8 +276,8 @@
 | functions.ps1:28:5:28:13 | ...=... | functions.ps1:28:5:28:9 | sum |  |
 | functions.ps1:28:12:28:13 | 0 | functions.ps1:28:12:28:13 | 0 |  |
 | functions.ps1:28:12:28:13 | 0 | functions.ps1:29:25:29:33 | numbers |  |
-| functions.ps1:29:5:32:6 | forach(... in ...) | functions.ps1:29:14:29:21 | number |  |
-| functions.ps1:29:5:32:6 | forach(... in ...) | functions.ps1:33:5:33:9 | sum |  |
+| functions.ps1:29:5:32:6 | forach(... in ...) | functions.ps1:29:14:29:21 | number | non-empty |
+| functions.ps1:29:5:32:6 | forach(... in ...) | functions.ps1:33:5:33:9 | sum | empty |
 | functions.ps1:29:14:29:21 | number | functions.ps1:29:35:32:6 | {...} |  |
 | functions.ps1:29:25:29:33 | numbers | functions.ps1:29:5:32:6 | forach(... in ...) |  |
 | functions.ps1:29:25:29:33 | numbers | functions.ps1:29:25:29:33 | numbers |  |
@@ -480,8 +480,8 @@
 | loops.ps1:51:5:51:11 | ...=... | loops.ps1:51:5:51:7 | a |  |
 | loops.ps1:51:10:51:11 | 0 | loops.ps1:51:10:51:11 | 0 |  |
 | loops.ps1:51:10:51:11 | 0 | loops.ps1:52:25:52:37 | letterArray |  |
-| loops.ps1:52:5:55:6 | forach(... in ...) | loops.ps1:49:23:56:2 | exit {...} (normal) |  |
-| loops.ps1:52:5:55:6 | forach(... in ...) | loops.ps1:52:14:52:21 | letter |  |
+| loops.ps1:52:5:55:6 | forach(... in ...) | loops.ps1:49:23:56:2 | exit {...} (normal) | empty |
+| loops.ps1:52:5:55:6 | forach(... in ...) | loops.ps1:52:14:52:21 | letter | non-empty |
 | loops.ps1:52:14:52:21 | letter | loops.ps1:53:5:55:6 | {...} |  |
 | loops.ps1:52:25:52:37 | letterArray | loops.ps1:52:5:55:6 | forach(... in ...) |  |
 | loops.ps1:52:25:52:37 | letterArray | loops.ps1:52:25:52:37 | letterArray |  |
