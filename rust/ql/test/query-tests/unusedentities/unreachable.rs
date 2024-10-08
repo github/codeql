@@ -41,6 +41,18 @@ fn unreachable_if() {
 	do_something();
 
 	if cond() {
+		bool x = cond();
+
+		if (x) { // SPURIOUS: unreachable
+			do_something();
+			if (!x) { // SPURIOUS: unreachable
+				do_something(); // BAD: unreachable code [NOT DETECTED]
+			}
+			do_something();
+		}
+	}
+
+	if cond() {
 		return;
 	} else {
 		return;
