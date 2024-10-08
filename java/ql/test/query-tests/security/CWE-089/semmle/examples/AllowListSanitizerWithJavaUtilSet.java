@@ -277,7 +277,7 @@ class AllowListSanitizerWithJavaUtilSet {
 		}
 	}
 
-	private static void possiblyMutate(Set set) {
+	private static void possiblyMutate(Set<String> set) {
 		set.add(getNonConstantString());
 	}
 
