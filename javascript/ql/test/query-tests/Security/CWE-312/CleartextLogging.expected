@@ -3,16 +3,13 @@ edges
 | passwords.js:10:11:10:18 | password | passwords.js:7:20:7:20 | x | provenance |  |
 | passwords.js:14:31:14:38 | password | passwords.js:14:17:14:38 | name +  ... assword | provenance |  |
 | passwords.js:16:29:16:36 | password | passwords.js:16:17:16:38 | `${name ... sword}` | provenance |  |
-| passwords.js:18:9:20:5 | obj1 [password] | passwords.js:21:17:21:20 | obj1 [password] | provenance |  |
+| passwords.js:18:9:20:5 | obj1 [password] | passwords.js:21:17:21:20 | obj1 | provenance |  |
 | passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | passwords.js:18:9:20:5 | obj1 [password] | provenance |  |
 | passwords.js:19:19:19:19 | x | passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | provenance |  |
-| passwords.js:21:17:21:20 | obj1 [password] | passwords.js:21:17:21:20 | obj1 | provenance |  |
-| passwords.js:23:9:25:5 | obj2 [x] | passwords.js:26:17:26:20 | obj2 [x] | provenance |  |
+| passwords.js:23:9:25:5 | obj2 [x] | passwords.js:26:17:26:20 | obj2 | provenance |  |
 | passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | passwords.js:23:9:25:5 | obj2 [x] | provenance |  |
 | passwords.js:24:12:24:19 | password | passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | provenance |  |
-| passwords.js:26:17:26:20 | obj2 [x] | passwords.js:26:17:26:20 | obj2 | provenance |  |
-| passwords.js:28:9:28:17 | obj3 [x] | passwords.js:29:17:29:20 | obj3 [x] | provenance |  |
-| passwords.js:29:17:29:20 | obj3 [x] | passwords.js:29:17:29:20 | obj3 | provenance |  |
+| passwords.js:28:9:28:17 | obj3 [x] | passwords.js:29:17:29:20 | obj3 | provenance |  |
 | passwords.js:30:5:30:8 | [post update] obj3 [x] | passwords.js:28:9:28:17 | obj3 [x] | provenance |  |
 | passwords.js:30:14:30:21 | password | passwords.js:30:5:30:8 | [post update] obj3 [x] | provenance |  |
 | passwords.js:77:9:77:55 | temp [encryptedPassword] | passwords.js:78:17:78:20 | temp [encryptedPassword] | provenance |  |
@@ -32,10 +29,10 @@ edges
 | passwords.js:122:31:122:49 | password.toString() | passwords.js:122:17:122:49 | name +  ... tring() | provenance |  |
 | passwords.js:123:31:123:38 | password | passwords.js:123:31:123:48 | password.valueOf() | provenance |  |
 | passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() | provenance |  |
-| passwords.js:127:9:132:5 | config [password] | passwords.js:135:17:135:22 | config [password] | provenance |  |
-| passwords.js:127:9:132:5 | config [x] | passwords.js:135:17:135:22 | config [x] | provenance |  |
+| passwords.js:127:9:132:5 | config [password] | passwords.js:135:17:135:22 | config | provenance |  |
+| passwords.js:127:9:132:5 | config [x] | passwords.js:135:17:135:22 | config | provenance |  |
 | passwords.js:127:9:132:5 | config [x] | passwords.js:136:17:136:22 | config [x] | provenance |  |
-| passwords.js:127:9:132:5 | config [y] | passwords.js:135:17:135:22 | config [y] | provenance |  |
+| passwords.js:127:9:132:5 | config [y] | passwords.js:135:17:135:22 | config | provenance |  |
 | passwords.js:127:9:132:5 | config [y] | passwords.js:137:17:137:22 | config [y] | provenance |  |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [password] | passwords.js:127:9:132:5 | config [password] | provenance |  |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [x] | passwords.js:127:9:132:5 | config [x] | provenance |  |
@@ -43,27 +40,25 @@ edges
 | passwords.js:128:19:128:19 | x | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [password] | provenance |  |
 | passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [x] | provenance |  |
 | passwords.js:131:12:131:24 | getPassword() | passwords.js:127:18:132:5 | {\\n      ... )\\n    } [y] | provenance |  |
-| passwords.js:135:17:135:22 | config [password] | passwords.js:135:17:135:22 | config | provenance |  |
-| passwords.js:135:17:135:22 | config [x] | passwords.js:135:17:135:22 | config | provenance |  |
-| passwords.js:135:17:135:22 | config [y] | passwords.js:135:17:135:22 | config | provenance |  |
 | passwords.js:136:17:136:22 | config [x] | passwords.js:136:17:136:24 | config.x | provenance |  |
 | passwords.js:137:17:137:22 | config [y] | passwords.js:137:17:137:24 | config.y | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments | provenance |  |
+| passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments [ArrayElement] | provenance |  |
 | passwords.js:142:26:142:34 | [apply call taint node] | passwords.js:142:26:142:34 | arguments [ArrayElement] | provenance |  |
 | passwords.js:142:26:142:34 | arguments | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
 | passwords.js:142:26:142:34 | arguments [0] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
-| passwords.js:142:26:142:34 | arguments [0] | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
 | passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | [apply call taint node] | provenance |  |
-| passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | arguments | provenance |  |
-| passwords.js:142:26:142:34 | arguments [ArrayElement] | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:146:9:148:5 | config [x] | passwords.js:149:21:149:26 | config [x] | provenance |  |
 | passwords.js:146:18:148:5 | {\\n      ... d\\n    } [x] | passwords.js:146:9:148:5 | config [x] | provenance |  |
 | passwords.js:147:12:147:19 | password | passwords.js:146:18:148:5 | {\\n      ... d\\n    } [x] | provenance |  |
 | passwords.js:149:21:149:26 | config [x] | passwords.js:149:21:149:28 | config.x | provenance |  |
+| passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:149:21:149:28 | config.x | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
+| passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:150:21:150:31 | process.env | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
@@ -71,6 +66,7 @@ edges
 | passwords.js:152:20:152:44 | Util.in ... ss.env) | passwords.js:152:20:152:63 | Util.in ... /g, '') | provenance |  |
 | passwords.js:152:20:152:63 | Util.in ... /g, '') | passwords.js:152:9:152:63 | procdesc | provenance |  |
 | passwords.js:152:33:152:43 | process.env | passwords.js:152:20:152:44 | Util.in ... ss.env) | provenance |  |
+| passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance |  |
 | passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments | provenance | Config |
 | passwords.js:154:21:154:28 | procdesc | passwords.js:142:26:142:34 | arguments [0] | provenance |  |
@@ -97,15 +93,12 @@ nodes
 | passwords.js:18:16:20:5 | {\\n      ... x\\n    } [password] | semmle.label | {\\n      ... x\\n    } [password] |
 | passwords.js:19:19:19:19 | x | semmle.label | x |
 | passwords.js:21:17:21:20 | obj1 | semmle.label | obj1 |
-| passwords.js:21:17:21:20 | obj1 [password] | semmle.label | obj1 [password] |
 | passwords.js:23:9:25:5 | obj2 [x] | semmle.label | obj2 [x] |
 | passwords.js:23:16:25:5 | {\\n      ... d\\n    } [x] | semmle.label | {\\n      ... d\\n    } [x] |
 | passwords.js:24:12:24:19 | password | semmle.label | password |
 | passwords.js:26:17:26:20 | obj2 | semmle.label | obj2 |
-| passwords.js:26:17:26:20 | obj2 [x] | semmle.label | obj2 [x] |
 | passwords.js:28:9:28:17 | obj3 [x] | semmle.label | obj3 [x] |
 | passwords.js:29:17:29:20 | obj3 | semmle.label | obj3 |
-| passwords.js:29:17:29:20 | obj3 [x] | semmle.label | obj3 [x] |
 | passwords.js:30:5:30:8 | [post update] obj3 [x] | semmle.label | [post update] obj3 [x] |
 | passwords.js:30:14:30:21 | password | semmle.label | password |
 | passwords.js:77:9:77:55 | temp [encryptedPassword] | semmle.label | temp [encryptedPassword] |
@@ -145,9 +138,6 @@ nodes
 | passwords.js:130:12:130:19 | password | semmle.label | password |
 | passwords.js:131:12:131:24 | getPassword() | semmle.label | getPassword() |
 | passwords.js:135:17:135:22 | config | semmle.label | config |
-| passwords.js:135:17:135:22 | config [password] | semmle.label | config [password] |
-| passwords.js:135:17:135:22 | config [x] | semmle.label | config [x] |
-| passwords.js:135:17:135:22 | config [y] | semmle.label | config [y] |
 | passwords.js:136:17:136:22 | config [x] | semmle.label | config [x] |
 | passwords.js:136:17:136:24 | config.x | semmle.label | config.x |
 | passwords.js:137:17:137:22 | config [y] | semmle.label | config [y] |

@@ -22,13 +22,12 @@ edges
 | express.js:150:7:150:34 | target | express.js:160:18:160:23 | target | provenance |  |
 | express.js:150:16:150:34 | req.param("target") | express.js:150:7:150:34 | target | provenance |  |
 | express.js:164:7:164:54 | myThing | express.js:165:16:165:22 | myThing | provenance |  |
-| express.js:164:7:164:54 | myThing [ArrayElement] | express.js:165:16:165:22 | myThing [ArrayElement] | provenance |  |
+| express.js:164:7:164:54 | myThing [ArrayElement] | express.js:165:16:165:22 | myThing | provenance |  |
 | express.js:164:17:164:41 | JSON.st ... .query) | express.js:164:17:164:54 | JSON.st ... (1, -1) | provenance |  |
 | express.js:164:17:164:41 | JSON.st ... .query) | express.js:164:17:164:54 | JSON.st ... (1, -1) [ArrayElement] | provenance |  |
 | express.js:164:17:164:54 | JSON.st ... (1, -1) | express.js:164:7:164:54 | myThing | provenance |  |
 | express.js:164:17:164:54 | JSON.st ... (1, -1) [ArrayElement] | express.js:164:7:164:54 | myThing [ArrayElement] | provenance |  |
 | express.js:164:32:164:40 | req.query | express.js:164:17:164:41 | JSON.st ... .query) | provenance |  |
-| express.js:165:16:165:22 | myThing [ArrayElement] | express.js:165:16:165:22 | myThing | provenance |  |
 | koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url | provenance |  |
 | koa.js:6:6:6:27 | url | koa.js:8:18:8:20 | url | provenance |  |
 | koa.js:6:6:6:27 | url | koa.js:14:16:14:18 | url | provenance |  |
@@ -93,7 +92,6 @@ nodes
 | express.js:164:17:164:54 | JSON.st ... (1, -1) [ArrayElement] | semmle.label | JSON.st ... (1, -1) [ArrayElement] |
 | express.js:164:32:164:40 | req.query | semmle.label | req.query |
 | express.js:165:16:165:22 | myThing | semmle.label | myThing |
-| express.js:165:16:165:22 | myThing [ArrayElement] | semmle.label | myThing [ArrayElement] |
 | koa.js:6:6:6:27 | url | semmle.label | url |
 | koa.js:6:12:6:27 | ctx.query.target | semmle.label | ctx.query.target |
 | koa.js:7:15:7:17 | url | semmle.label | url |

@@ -243,9 +243,6 @@ nodes
 | pg-promise.js:30:13:30:25 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:34:13:34:25 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | semmle.label | [\\n      ... n\\n    ] |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [0] | semmle.label | [\\n      ... n\\n    ] [0] |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [1] | semmle.label | [\\n      ... n\\n    ] [1] |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [2] | semmle.label | [\\n      ... n\\n    ] [2] |
 | pg-promise.js:39:7:39:19 | req.params.id | semmle.label | req.params.id |
 | pg-promise.js:40:7:40:21 | req.params.name | semmle.label | req.params.name |
 | pg-promise.js:41:7:41:20 | req.params.foo | semmle.label | req.params.foo |
@@ -612,12 +609,9 @@ edges
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:60:20:60:24 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:63:23:63:27 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:64:16:64:20 | query | provenance |  |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [0] | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [1] | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
-| pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [2] | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
-| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [0] | provenance |  |
-| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [1] | provenance |  |
-| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] [2] | provenance |  |
+| pg-promise.js:39:7:39:19 | req.params.id | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
+| pg-promise.js:40:7:40:21 | req.params.name | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
+| pg-promise.js:41:7:41:20 | req.params.foo | pg-promise.js:38:13:42:5 | [\\n      ... n\\n    ] | provenance |  |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | provenance | Config |
 | redis.js:12:9:12:26 | key | redis.js:13:16:13:18 | key | provenance |  |
 | redis.js:12:9:12:26 | key | redis.js:18:16:18:18 | key | provenance |  |

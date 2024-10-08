@@ -90,15 +90,12 @@ edges
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name | provenance |  |
 | lib/lib.js:425:6:425:13 | arr | lib/lib.js:427:14:427:16 | arr | provenance |  |
-| lib/lib.js:425:6:425:13 | arr [ArrayElement] | lib/lib.js:427:14:427:16 | arr [ArrayElement] | provenance |  |
+| lib/lib.js:425:6:425:13 | arr [ArrayElement] | lib/lib.js:427:14:427:16 | arr | provenance |  |
 | lib/lib.js:426:2:426:4 | [post update] arr | lib/lib.js:425:6:425:13 | arr | provenance |  |
 | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | lib/lib.js:425:6:425:13 | arr [ArrayElement] | provenance |  |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:426:2:426:4 | [post update] arr | provenance |  |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | provenance |  |
-| lib/lib.js:427:14:427:16 | arr [ArrayElement] | lib/lib.js:427:14:427:16 | arr | provenance |  |
-| lib/lib.js:428:14:428:58 | build(" ...  + '-') [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') | provenance |  |
-| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') [ArrayElement] | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | provenance |  |
 | lib/lib.js:428:36:428:39 | name | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | provenance |  |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last | provenance |  |
@@ -125,8 +122,7 @@ edges
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name | provenance |  |
 | lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | provenance |  |
 | lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | provenance |  |
-| lib/lib.js:551:33:551:36 | args [1] | lib/lib.js:552:23:552:26 | args [1] | provenance |  |
-| lib/lib.js:552:23:552:26 | args [1] | lib/lib.js:552:23:552:26 | args | provenance |  |
+| lib/lib.js:551:33:551:36 | args [1] | lib/lib.js:552:23:552:26 | args | provenance |  |
 | lib/lib.js:555:25:555:37 | ["-rf", name] [1] | lib/lib.js:551:33:551:36 | args [1] | provenance |  |
 | lib/lib.js:555:33:555:36 | name | lib/lib.js:555:25:555:37 | ["-rf", name] [1] | provenance |  |
 | lib/lib.js:558:41:558:44 | name | lib/lib.js:560:26:560:29 | name | provenance |  |
@@ -283,9 +279,7 @@ nodes
 | lib/lib.js:426:11:426:14 | name | semmle.label | name |
 | lib/lib.js:426:11:426:14 | name | semmle.label | name |
 | lib/lib.js:427:14:427:16 | arr | semmle.label | arr |
-| lib/lib.js:427:14:427:16 | arr [ArrayElement] | semmle.label | arr [ArrayElement] |
 | lib/lib.js:428:14:428:58 | build(" ...  + '-') | semmle.label | build(" ...  + '-') |
-| lib/lib.js:428:14:428:58 | build(" ...  + '-') [ArrayElement] | semmle.label | build(" ...  + '-') [ArrayElement] |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | semmle.label | (name ? ... ) + '-' |
 | lib/lib.js:428:36:428:39 | name | semmle.label | name |
 | lib/lib.js:431:23:431:26 | last | semmle.label | last |
@@ -320,7 +314,6 @@ nodes
 | lib/lib.js:550:39:550:42 | name | semmle.label | name |
 | lib/lib.js:551:33:551:36 | args [1] | semmle.label | args [1] |
 | lib/lib.js:552:23:552:26 | args | semmle.label | args |
-| lib/lib.js:552:23:552:26 | args [1] | semmle.label | args [1] |
 | lib/lib.js:555:25:555:37 | ["-rf", name] [1] | semmle.label | ["-rf", name] [1] |
 | lib/lib.js:555:33:555:36 | name | semmle.label | name |
 | lib/lib.js:555:33:555:36 | name | semmle.label | name |
@@ -359,7 +352,7 @@ subpaths
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:239:28:239:28 | s | lib/lib.js:245:9:245:9 | s | lib/lib.js:251:16:251:31 | cleanInput(name) |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x | lib/lib.js:340:22:340:26 | id(n) |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
-| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') [ArrayElement] |
+| lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
 #select
 | lib/isImported.js:6:10:6:25 | "rm -rf " + name | lib/isImported.js:5:49:5:52 | name | lib/isImported.js:6:22:6:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/isImported.js:5:49:5:52 | name | library input | lib/isImported.js:6:2:6:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib2.js:3:28:3:31 | name | library input | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |

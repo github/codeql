@@ -13,10 +13,8 @@ edges
 | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:43:8:43:16 | untrusted | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | tst-UntrustedDataToExternalAPI.js:44:8:44:16 | untrusted | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:3:17:3:27 | window.name | tst-UntrustedDataToExternalAPI.js:3:5:3:27 | untrusted | provenance |  |
-| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] [1] | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | provenance |  |
-| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] [1] | provenance |  |
-| tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } [y, z] | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | provenance |  |
-| tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } [z] | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } [y, z] | provenance |  |
+| tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | provenance |  |
+| tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } [z] | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:15:16:15:24 | untrusted | tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } [z] | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | [post update] {\\n    x ... usted\\n} [x] | tst-UntrustedDataToExternalAPI.js:41:7:41:8 | {} | provenance |  |
 | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | [post update] {\\n    x ... usted\\n} [x] | tst-UntrustedDataToExternalAPI.js:41:11:45:1 | {\\n    x ... usted\\n} | provenance |  |
@@ -36,11 +34,9 @@ nodes
 | tst-UntrustedDataToExternalAPI.js:8:31:8:39 | untrusted | semmle.label | untrusted |
 | tst-UntrustedDataToExternalAPI.js:9:18:9:26 | untrusted | semmle.label | untrusted |
 | tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] | semmle.label | ['x', u ... d, 'y'] |
-| tst-UntrustedDataToExternalAPI.js:10:13:10:33 | ['x', u ... d, 'y'] [1] | semmle.label | ['x', u ... d, 'y'] [1] |
 | tst-UntrustedDataToExternalAPI.js:10:19:10:27 | untrusted | semmle.label | untrusted |
 | tst-UntrustedDataToExternalAPI.js:11:20:11:28 | untrusted | semmle.label | untrusted |
 | tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } | semmle.label | {\\n      ... }\\n    } |
-| tst-UntrustedDataToExternalAPI.js:13:8:17:5 | {\\n      ... }\\n    } [y, z] | semmle.label | {\\n      ... }\\n    } [y, z] |
 | tst-UntrustedDataToExternalAPI.js:14:12:16:9 | {\\n      ...       } [z] | semmle.label | {\\n      ...       } [z] |
 | tst-UntrustedDataToExternalAPI.js:15:16:15:24 | untrusted | semmle.label | untrusted |
 | tst-UntrustedDataToExternalAPI.js:33:14:33:22 | untrusted | semmle.label | untrusted |

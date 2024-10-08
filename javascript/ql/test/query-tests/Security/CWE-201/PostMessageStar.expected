@@ -1,9 +1,8 @@
 edges
-| PostMessageStar2.js:4:7:4:15 | data [foo] | PostMessageStar2.js:8:29:8:32 | data [foo] | provenance |  |
+| PostMessageStar2.js:4:7:4:15 | data [foo] | PostMessageStar2.js:8:29:8:32 | data | provenance |  |
 | PostMessageStar2.js:4:7:4:15 | data [foo] | PostMessageStar2.js:9:29:9:32 | data [foo] | provenance |  |
 | PostMessageStar2.js:5:3:5:6 | [post update] data [foo] | PostMessageStar2.js:4:7:4:15 | data [foo] | provenance |  |
 | PostMessageStar2.js:5:14:5:21 | password | PostMessageStar2.js:5:3:5:6 | [post update] data [foo] | provenance |  |
-| PostMessageStar2.js:8:29:8:32 | data [foo] | PostMessageStar2.js:8:29:8:32 | data | provenance |  |
 | PostMessageStar2.js:9:29:9:32 | data [foo] | PostMessageStar2.js:9:29:9:36 | data.foo | provenance |  |
 nodes
 | PostMessageStar2.js:1:27:1:34 | password | semmle.label | password |
@@ -11,7 +10,6 @@ nodes
 | PostMessageStar2.js:5:3:5:6 | [post update] data [foo] | semmle.label | [post update] data [foo] |
 | PostMessageStar2.js:5:14:5:21 | password | semmle.label | password |
 | PostMessageStar2.js:8:29:8:32 | data | semmle.label | data |
-| PostMessageStar2.js:8:29:8:32 | data [foo] | semmle.label | data [foo] |
 | PostMessageStar2.js:9:29:9:32 | data [foo] | semmle.label | data [foo] |
 | PostMessageStar2.js:9:29:9:36 | data.foo | semmle.label | data.foo |
 | PostMessageStar2.js:13:27:13:33 | authKey | semmle.label | authKey |

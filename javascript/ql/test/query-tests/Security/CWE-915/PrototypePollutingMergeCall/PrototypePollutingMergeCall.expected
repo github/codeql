@@ -6,14 +6,12 @@ nodes
 | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | semmle.label | req.query.foo |
 | src-vulnerable-lodash/tst.js:10:17:12:5 | [post update] {\\n      ... K\\n    } [value] | semmle.label | [post update] {\\n      ... K\\n    } [value] |
 | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | semmle.label | {\\n      ... K\\n    } |
-| src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } [value] | semmle.label | {\\n      ... K\\n    } [value] |
 | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | semmle.label | req.query.value |
 | src-vulnerable-lodash/tst.js:14:9:16:5 | opts [thing] | semmle.label | opts [thing] |
 | src-vulnerable-lodash/tst.js:14:16:16:5 | {\\n      ... e\\n    } [thing] | semmle.label | {\\n      ... e\\n    } [thing] |
 | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | semmle.label | req.query.value |
 | src-vulnerable-lodash/tst.js:17:17:19:5 | [post update] {\\n      ... K\\n    } [value] | semmle.label | [post update] {\\n      ... K\\n    } [value] |
 | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | semmle.label | {\\n      ... K\\n    } |
-| src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } [value] | semmle.label | {\\n      ... K\\n    } [value] |
 | src-vulnerable-lodash/tst.js:18:16:18:19 | opts [thing] | semmle.label | opts [thing] |
 | src-vulnerable-lodash/tst.js:18:16:18:25 | opts.thing | semmle.label | opts.thing |
 | webix/webix.html:3:34:3:38 | event | semmle.label | event |
@@ -34,14 +32,12 @@ edges
 | angularmerge.js:1:30:1:34 | event | angularmerge.js:2:32:2:36 | event | provenance |  |
 | angularmerge.js:2:32:2:36 | event | angularmerge.js:2:32:2:41 | event.data | provenance |  |
 | angularmerge.js:2:32:2:41 | event.data | angularmerge.js:2:21:2:42 | JSON.pa ... t.data) | provenance | Config |
-| src-vulnerable-lodash/tst.js:10:17:12:5 | [post update] {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } [value] | provenance |  |
-| src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | provenance |  |
+| src-vulnerable-lodash/tst.js:10:17:12:5 | [post update] {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | provenance |  |
 | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | src-vulnerable-lodash/tst.js:10:17:12:5 | [post update] {\\n      ... K\\n    } [value] | provenance |  |
 | src-vulnerable-lodash/tst.js:14:9:16:5 | opts [thing] | src-vulnerable-lodash/tst.js:18:16:18:19 | opts [thing] | provenance |  |
 | src-vulnerable-lodash/tst.js:14:16:16:5 | {\\n      ... e\\n    } [thing] | src-vulnerable-lodash/tst.js:14:9:16:5 | opts [thing] | provenance |  |
 | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | src-vulnerable-lodash/tst.js:14:16:16:5 | {\\n      ... e\\n    } [thing] | provenance |  |
-| src-vulnerable-lodash/tst.js:17:17:19:5 | [post update] {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } [value] | provenance |  |
-| src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | provenance |  |
+| src-vulnerable-lodash/tst.js:17:17:19:5 | [post update] {\\n      ... K\\n    } [value] | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | provenance |  |
 | src-vulnerable-lodash/tst.js:18:16:18:19 | opts [thing] | src-vulnerable-lodash/tst.js:18:16:18:25 | opts.thing | provenance |  |
 | src-vulnerable-lodash/tst.js:18:16:18:25 | opts.thing | src-vulnerable-lodash/tst.js:17:17:19:5 | [post update] {\\n      ... K\\n    } [value] | provenance |  |
 | webix/webix.html:3:34:3:38 | event | webix/webix.html:4:37:4:41 | event | provenance |  |

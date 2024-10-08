@@ -589,7 +589,6 @@ nodes
 | various-concat-obfuscations.js:5:12:5:18 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | semmle.label | "<div>" ... ainted) |
 | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | semmle.label | "<div>" ... /div>") |
-| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | semmle.label | "<div>" ... /div>") [ArrayElement] |
 | various-concat-obfuscations.js:6:19:6:25 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | semmle.label | ["<div> ... /div>"] |
 | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() | semmle.label | ["<div> ... .join() |
@@ -600,7 +599,6 @@ nodes
 | various-concat-obfuscations.js:10:16:10:22 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | semmle.label | "<div i ... ainted) |
 | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | semmle.label | "<div i ... t("/>") |
-| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | semmle.label | "<div i ... t("/>") [ArrayElement] |
 | various-concat-obfuscations.js:11:24:11:30 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | semmle.label | ["<div  ... "\\"/>"] |
 | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() | semmle.label | ["<div  ... .join() |
@@ -621,7 +619,6 @@ nodes
 | various-concat-obfuscations.js:20:17:20:40 | documen ... .search | semmle.label | documen ... .search |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | semmle.label | documen ... h.attrs |
 | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | semmle.label | indirec ... .attrs) |
-| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | semmle.label | indirec ... .attrs) [ArrayElement] |
 | various-concat-obfuscations.js:21:17:21:40 | documen ... .search | semmle.label | documen ... .search |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | semmle.label | documen ... h.attrs |
 | winjs.js:2:7:2:53 | tainted | semmle.label | tainted |
@@ -1122,16 +1119,12 @@ edges
 | various-concat-obfuscations.js:4:14:4:20 | tainted | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | provenance | Config |
 | various-concat-obfuscations.js:5:12:5:18 | tainted | various-concat-obfuscations.js:5:4:5:26 | `<div>$ ... </div>` | provenance | Config |
 | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | provenance |  |
-| various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | provenance |  |
-| various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") [ArrayElement] | various-concat-obfuscations.js:6:4:6:43 | "<div>" ... /div>") | provenance |  |
 | various-concat-obfuscations.js:6:19:6:25 | tainted | various-concat-obfuscations.js:6:4:6:26 | "<div>" ... ainted) | provenance | Config |
 | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | various-concat-obfuscations.js:7:4:7:38 | ["<div> ... .join() | provenance |  |
 | various-concat-obfuscations.js:7:14:7:20 | tainted | various-concat-obfuscations.js:7:4:7:31 | ["<div> ... /div>"] | provenance | Config |
 | various-concat-obfuscations.js:9:19:9:25 | tainted | various-concat-obfuscations.js:9:4:9:34 | "<div i ...  "\\"/>" | provenance | Config |
 | various-concat-obfuscations.js:10:16:10:22 | tainted | various-concat-obfuscations.js:10:4:10:27 | `<div i ... ed}"/>` | provenance | Config |
 | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | provenance |  |
-| various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | provenance |  |
-| various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") [ArrayElement] | various-concat-obfuscations.js:11:4:11:44 | "<div i ... t("/>") | provenance |  |
 | various-concat-obfuscations.js:11:24:11:30 | tainted | various-concat-obfuscations.js:11:4:11:31 | "<div i ... ainted) | provenance | Config |
 | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() | provenance |  |
 | various-concat-obfuscations.js:12:19:12:25 | tainted | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | provenance | Config |
@@ -1150,11 +1143,9 @@ edges
 | various-concat-obfuscations.js:20:17:20:40 | documen ... .search | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | provenance |  |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | provenance |  |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) | provenance | Config |
-| various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | provenance |  |
 | various-concat-obfuscations.js:21:17:21:40 | documen ... .search | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | provenance |  |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | provenance |  |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) | provenance | Config |
-| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] | provenance | Config |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted | provenance |  |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted | provenance |  |
 | winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) | provenance |  |
@@ -1183,7 +1174,7 @@ subpaths
 | tst.js:58:26:58:30 | bar() | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:58:21:58:31 | chop(bar()) |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
-| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) [ArrayElement] |
+| various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 #select
 | jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |

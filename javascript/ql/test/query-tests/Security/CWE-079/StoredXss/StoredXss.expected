@@ -36,7 +36,6 @@ edges
 | xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | provenance |  |
 | xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | provenance |  |
 | xss-through-filenames.js:33:19:33:24 | files2 | xss-through-filenames.js:35:29:35:34 | files2 | provenance |  |
-| xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 | provenance |  |
 | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | provenance |  |
 | xss-through-filenames.js:35:13:35:35 | files3 | xss-through-filenames.js:37:19:37:24 | files3 | provenance |  |
 | xss-through-filenames.js:35:22:35:35 | format(files2) | xss-through-filenames.js:35:13:35:35 | files3 | provenance |  |
@@ -97,6 +96,7 @@ subpaths
 | xss-through-filenames.js:19:9:19:25 | files2.sort(sort) [ArrayElement] | xss-through-filenames.js:19:45:19:48 | file | xss-through-filenames.js:20:13:20:18 | [post update] files3 [ArrayElement] | xss-through-filenames.js:22:16:22:21 | files3 [ArrayElement] |
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | xss-through-filenames.js:33:19:33:24 | files2 |
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 | xss-through-filenames.js:33:19:33:24 | files2 |
+| xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 |
 | xss-through-filenames.js:30:9:30:14 | files1 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] |
 | xss-through-filenames.js:35:29:35:34 | files2 | xss-through-filenames.js:17:21:17:26 | files2 | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | xss-through-filenames.js:22:16:22:30 | files3.join('') | xss-through-filenames.js:35:22:35:35 | format(files2) |
