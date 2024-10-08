@@ -12,13 +12,17 @@ abstract class CfgScope extends AstNode {
 }
 
 final class FunctionScope extends CfgScope, Function {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
+  override predicate scopeFirst(AstNode node) {
+    first(this.(FunctionTree).getFirstChildNode(), node)
+  }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
 }
 
 final class ClosureScope extends CfgScope, ClosureExpr {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
+  override predicate scopeFirst(AstNode node) {
+    first(this.(ClosureExprTree).getFirstChildNode(), node)
+  }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
 }

@@ -183,7 +183,26 @@ class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class ClosureExprTree extends LeafTree instanceof ClosureExpr { }
+// Closures have their own CFG scope, so we need to make sure that their
+// CFG is not mixed with the surrounding CFG. This is done by retrofitting
+// `first`, `propagatesAbnormal`, and `succ` below.
+class ClosureExprTree extends StandardPostOrderTree, ClosureExpr {
+  override predicate first(AstNode first) { first = this }
+
+  override predicate propagatesAbnormal(AstNode child) { none() }
+
+  override AstNode getChildNode(int i) {
+    result = this.getParamList().getParam(i)
+    or
+    i = this.getParamList().getNumberOfParams() and
+    result = this.getBody()
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c) and
+    not succ = this
+  }
+}
 
 class ContinueExprTree extends LeafTree, ContinueExpr {
   override predicate last(AstNode last, Completion c) { none() }
@@ -203,7 +222,34 @@ class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class FunctionTree extends LeafTree instanceof Function { }
+// Functions have their own CFG scope, so we need to make sure that their
+// CFG is not mixed with the surrounding CFG in case of nested functions.
+// This is done by retrofitting `last`, `propagatesAbnormal`, and `succ`
+// below.
+class FunctionTree extends StandardPreOrderTree, Function {
+  override predicate last(AstNode last, Completion c) {
+    last = this and
+    completionIsValidFor(c, this)
+  }
+
+  override predicate propagatesAbnormal(AstNode child) { none() }
+
+  override AstNode getChildNode(int i) {
+    result = this.getParamList().getParam(i)
+    or
+    i = this.getParamList().getNumberOfParams() and
+    result = this.getBody()
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    super.succ(pred, succ, c) and
+    not pred = this
+  }
+}
+
+class ParamTree extends StandardPostOrderTree, Param {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getPat() }
+}
 
 class IfExprTree extends PostOrderTree instanceof IfExpr {
   override predicate first(AstNode node) { first(super.getCondition(), node) }
