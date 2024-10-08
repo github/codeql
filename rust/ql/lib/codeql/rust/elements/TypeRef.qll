@@ -5,7 +5,6 @@
 
 private import internal.TypeRefImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Unimplemented
 
 /**
  * The base class for type references.

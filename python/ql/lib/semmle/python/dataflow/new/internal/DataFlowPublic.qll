@@ -71,6 +71,9 @@ newtype TNode =
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
     )
+    or
+    // the iterable argument to the implicit comprehension function
+    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) {
@@ -124,8 +127,15 @@ newtype TNode =
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TSynthCapturedVariablesParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
-    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension. */
+  TSynthCompCapturedVariablesArgumentNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
+  TSynthCompCapturedVariablesArgumentPostUpdateNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
   } or
   /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
   TForbiddenRecursionGuard() {
@@ -350,6 +360,9 @@ class ExtractedArgumentNode extends ArgumentNode {
     or
     // and self arguments
     this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+    or
+    // for comprehensions, we allow the synthetic `iterable` argument
+    this.asExpr() = any(Comp c).getIterable()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {

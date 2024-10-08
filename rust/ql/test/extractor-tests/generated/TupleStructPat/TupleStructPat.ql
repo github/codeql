@@ -2,12 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from TupleStructPat x, string hasPath, int getNumberOfArgs, string hasEllipsisIndex
+from TupleStructPat x, int getNumberOfFields, string hasPath
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  getNumberOfArgs = x.getNumberOfArgs() and
-  if x.hasEllipsisIndex() then hasEllipsisIndex = "yes" else hasEllipsisIndex = "no"
-select x, "hasPath:", hasPath, "getNumberOfArgs:", getNumberOfArgs, "hasEllipsisIndex:",
-  hasEllipsisIndex
+  getNumberOfFields = x.getNumberOfFields() and
+  if x.hasPath() then hasPath = "yes" else hasPath = "no"
+select x, "getNumberOfFields:", getNumberOfFields, "hasPath:", hasPath

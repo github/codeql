@@ -640,7 +640,7 @@ private MethodCall callReturningSameType(Expr ref) {
 }
 
 private SrcRefType entrypointType() {
-  exists(ThreatModelFlowSource s, RefType t |
+  exists(ActiveThreatModelSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and

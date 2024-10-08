@@ -2,10 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from TupleExpr x, int getNumberOfExprs, string isAssigneeExpr
+from TupleExpr x, int getNumberOfAttrs, int getNumberOfFields
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfExprs = x.getNumberOfExprs() and
-  if x.isAssigneeExpr() then isAssigneeExpr = "yes" else isAssigneeExpr = "no"
-select x, "getNumberOfExprs:", getNumberOfExprs, "isAssigneeExpr:", isAssigneeExpr
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  getNumberOfFields = x.getNumberOfFields()
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfFields:", getNumberOfFields

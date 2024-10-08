@@ -18,6 +18,7 @@ ra_ap_paths = "0.0.232"
 ra_ap_project_model = "0.0.232"
 ra_ap_syntax = "0.0.232"
 ra_ap_vfs = "0.0.232"
+ra_ap_parser = "0.0.232"
 serde = "1.0.209"
 serde_with = "3.9.0"
 stderrlog = "0.6.0"
@@ -25,3 +26,4 @@ triomphe = "0.1.13"
 argfile = "0.2.1"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 rust-extractor-macros = { path = "macros" }
+itertools = "0.13.0"

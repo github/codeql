@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Path
 
@@ -29,11 +30,34 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PathExpr" }
 
     /**
-     * Gets the path of this path expression.
+     * Gets the `index`th attr of this path expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertPathExprToRaw(this).(Raw::PathExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this path expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this path expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the path of this path expression, if it exists.
      */
     Path getPath() {
       result =
         Synth::convertPathFromRaw(Synth::convertPathExprToRaw(this).(Raw::PathExpr).getPath())
     }
+
+    /**
+     * Holds if `getPath()` exists.
+     */
+    final predicate hasPath() { exists(this.getPath()) }
   }
 }

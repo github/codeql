@@ -2,12 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from BlockExpr x, int getNumberOfStatements, string hasTail, string hasLabel
+from BlockExpr x, int getNumberOfAttrs, string hasLabel, string hasStmtList
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfStatements = x.getNumberOfStatements() and
-  (if x.hasTail() then hasTail = "yes" else hasTail = "no") and
-  if x.hasLabel() then hasLabel = "yes" else hasLabel = "no"
-select x, "getNumberOfStatements:", getNumberOfStatements, "hasTail:", hasTail, "hasLabel:",
-  hasLabel
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
+  if x.hasStmtList() then hasStmtList = "yes" else hasStmtList = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasLabel:", hasLabel, "hasStmtList:", hasStmtList

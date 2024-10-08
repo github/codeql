@@ -1,404 +1,295 @@
 /**
- * Provides classes and predicates related to capturing summary, source,
- * and sink models of the Standard or a 3rd party library.
+ * Provides predicates related to capturing summary models of the Standard or a 3rd party library.
  */
 
-private import CaptureModelsSpecific
-private import CaptureModelsPrinting
+private import java as J
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
+private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
+private import semmle.code.java.dataflow.internal.DataFlowDispatch
+private import semmle.code.java.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
+private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
+private import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlowUtil
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.java.dataflow.internal.ModelExclusions
+private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
+private import semmle.code.java.dataflow.SSA as Ssa
+private import semmle.code.java.dataflow.TaintTracking
+private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 
 /**
- * A node from which flow can return to the caller. This is either a regular
- * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
+ * Holds if the type `t` is a primitive type used for bulk data.
  */
-private class ReturnNodeExt extends DataFlow::Node {
-  private DataFlowImplCommon::ReturnKindExt kind;
+predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
+  t.hasName(["byte", "char", "Byte", "Character"])
+}
 
-  ReturnNodeExt() {
-    kind = DataFlowImplCommon::getValueReturnPosition(this).getKind() or
-    kind = DataFlowImplCommon::getParamReturnPosition(this, _).getKind()
+module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataFlow> {
+  class Type = J::Type;
+
+  class Parameter = J::Parameter;
+
+  class Callable = J::Callable;
+
+  class NodeExtended extends DataFlow::Node {
+    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
+  }
+
+  private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
+    cu.getPackage().getName().matches("javax.swing%") or
+    cu.getPackage().getName().matches("java.awt%")
+  }
+
+  private predicate relevant(Callable api) {
+    api.isPublic() and
+    api.getDeclaringType().isPublic() and
+    api.fromSource() and
+    not isUninterestingForModels(api) and
+    not isInfrequentlyUsed(api.getCompilationUnit())
+  }
+
+  private J::Method getARelevantOverride(J::Method m) {
+    result = m.getAnOverride() and
+    relevant(result) and
+    // Other exclusions for overrides.
+    not m instanceof J::ToStringMethod
   }
 
   /**
-   * Gets the kind of the return node.
+   * Gets the super implementation of `m` if it is relevant.
+   * If such a super implementations does not exist, returns `m` if it is relevant.
    */
-  DataFlowImplCommon::ReturnKindExt getKind() { result = kind }
-}
+  private J::Callable liftedImpl(J::Callable m) {
+    (
+      result = getARelevantOverride(m)
+      or
+      result = m and relevant(m)
+    ) and
+    not exists(getARelevantOverride(result))
+  }
 
-bindingset[c]
-private signature string printCallableParamSig(Callable c, ParameterPosition p);
+  private predicate hasManualSummaryModel(Callable api) {
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+    api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
+  }
 
-private module PrintReturnNodeExt<printCallableParamSig/2 printCallableParam> {
-  string getOutput(ReturnNodeExt node) {
-    node.getKind() instanceof DataFlowImplCommon::ValueReturnKind and
-    result = "ReturnValue"
-    or
-    exists(ParameterPosition pos |
-      pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition() and
-      result = printCallableParam(returnNodeEnclosingCallable(node), pos)
+  private predicate hasManualSourceModel(Callable api) {
+    api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel()).asCallable()
+  }
+
+  private predicate hasManualSinkModel(Callable api) {
+    api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel()).asCallable()
+  }
+
+  predicate isUninterestingForDataFlowModels(Callable api) {
+    api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
+  }
+
+  class SourceOrSinkTargetApi extends Callable {
+    SourceOrSinkTargetApi() { relevant(this) }
+  }
+
+  class SinkTargetApi extends SourceOrSinkTargetApi {
+    SinkTargetApi() { not hasManualSinkModel(this) }
+  }
+
+  class SourceTargetApi extends SourceOrSinkTargetApi {
+    SourceTargetApi() { not hasManualSourceModel(this) }
+  }
+
+  class SummaryTargetApi extends Callable {
+    private Callable lift;
+
+    SummaryTargetApi() {
+      lift = liftedImpl(this) and
+      not hasManualSummaryModel(lift)
+    }
+
+    Callable lift() { result = lift }
+
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
+  }
+
+  private string isExtensible(Callable c) {
+    if c.getDeclaringType().isFinal() then result = "false" else result = "true"
+  }
+
+  /**
+   * Holds if the callable `c` is in package `package`
+   * and is a member of `type`.
+   */
+  private predicate qualifiedName(Callable c, string package, string type) {
+    exists(RefType t | t = c.getDeclaringType() |
+      package = t.getCompilationUnit().getPackage().getName() and
+      type = t.getErasure().(J::RefType).getNestedName()
     )
   }
-}
 
-string getOutput(ReturnNodeExt node) {
-  result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
-}
-
-string getContentOutput(ReturnNodeExt node) {
-  result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
-}
-
-class DataFlowSummaryTargetApi extends SummaryTargetApi {
-  DataFlowSummaryTargetApi() { not isUninterestingForDataFlowModels(this) }
-}
-
-class DataFlowSourceTargetApi = SourceTargetApi;
-
-class DataFlowSinkTargetApi = SinkTargetApi;
-
-private module ModelPrintingInput implements ModelPrintingSig {
-  class SummaryApi = DataFlowSummaryTargetApi;
-
-  class SourceOrSinkApi = SourceOrSinkTargetApi;
-
-  string getProvenance() { result = "df-generated" }
-}
-
-module Printing = ModelPrinting<ModelPrintingInput>;
-
-/**
- * Holds if `c` is a relevant content kind, where the underlying type is relevant.
- */
-private predicate isRelevantTypeInContent(DataFlow::ContentSet c) {
-  isRelevantType(getUnderlyingContentType(c))
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
- */
-private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(DataFlow::ContentSet f |
-    DataFlowPrivate::readStep(node1, f, node2) and
-    // Partially restrict the content types used for intermediate steps.
-    (not exists(getUnderlyingContentType(f)) or isRelevantTypeInContent(f))
-  )
-  or
-  exists(DataFlow::ContentSet f | DataFlowPrivate::storeStep(node1, f, node2) | containerContent(f))
-}
-
-/**
- * Holds if content `c` is either a field, a synthetic field or language specific
- * content of a relevant type or a container like content.
- */
-pragma[nomagic]
-private predicate isRelevantContent0(DataFlow::ContentSet c) {
-  isRelevantTypeInContent(c) or
-  containerContent(c)
-}
-
-/**
- * Gets the MaD string representation of the parameter node `p`.
- */
-string parameterNodeAsInput(DataFlow::ParameterNode p) {
-  result = parameterAccess(p.asParameter())
-  or
-  result = qualifierString() and p instanceof InstanceParameterNode
-}
-
-/**
- * Gets the MaD string representation of the parameter `p`
- * when used in content flow.
- */
-string parameterNodeAsContentInput(DataFlow::ParameterNode p) {
-  result = parameterContentAccess(p.asParameter())
-  or
-  result = qualifierString() and p instanceof InstanceParameterNode
-}
-
-/**
- * Gets the MaD input string representation of `source`.
- */
-string asInputArgument(DataFlow::Node source) { result = asInputArgumentSpecific(source) }
-
-/**
- * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
- */
-string captureQualifierFlow(DataFlowSummaryTargetApi api) {
-  exists(ReturnNodeExt ret |
-    api = returnNodeEnclosingCallable(ret) and
-    isOwnInstanceAccessNode(ret)
-  ) and
-  result = Printing::asValueModel(api, qualifierString(), "ReturnValue")
-}
-
-private int accessPathLimit0() { result = 2 }
-
-private newtype TTaintState =
-  TTaintRead(int n) { n in [0 .. accessPathLimit0()] } or
-  TTaintStore(int n) { n in [1 .. accessPathLimit0()] }
-
-abstract private class TaintState extends TTaintState {
-  abstract string toString();
-}
-
-/**
- * A FlowState representing a tainted read.
- */
-private class TaintRead extends TaintState, TTaintRead {
-  private int step;
-
-  TaintRead() { this = TTaintRead(step) }
-
-  /**
-   * Gets the flow state step number.
-   */
-  int getStep() { result = step }
-
-  override string toString() { result = "TaintRead(" + step + ")" }
-}
-
-/**
- * A FlowState representing a tainted write.
- */
-private class TaintStore extends TaintState, TTaintStore {
-  private int step;
-
-  TaintStore() { this = TTaintStore(step) }
-
-  /**
-   * Gets the flow state step number.
-   */
-  int getStep() { result = step }
-
-  override string toString() { result = "TaintStore(" + step + ")" }
-}
-
-/**
- * A data-flow configuration for tracking flow through APIs.
- * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
- *
- * This can be used to generate Flow summaries for APIs from parameter to return.
- */
-module PropagateFlowConfig implements DataFlow::StateConfigSig {
-  class FlowState = TaintState;
-
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
-    state.(TaintRead).getStep() = 0
+  predicate isRelevantType(Type t) {
+    not t instanceof J::TypeClass and
+    not t instanceof J::EnumType and
+    not t instanceof J::PrimitiveType and
+    not t instanceof J::BoxedType and
+    not t.(J::RefType).getAnAncestor().hasQualifiedName("java.lang", "Number") and
+    not t.(J::RefType).getAnAncestor().hasQualifiedName("java.nio.charset", "Charset") and
+    (
+      not t.(J::Array).getElementType() instanceof J::PrimitiveType or
+      isPrimitiveTypeUsedForBulkData(t.(J::Array).getElementType())
+    ) and
+    (
+      not t.(J::Array).getElementType() instanceof J::BoxedType or
+      isPrimitiveTypeUsedForBulkData(t.(J::Array).getElementType())
+    ) and
+    (
+      not t.(ContainerFlow::CollectionType).getElementType() instanceof J::BoxedType or
+      isPrimitiveTypeUsedForBulkData(t.(ContainerFlow::CollectionType).getElementType())
+    )
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink instanceof ReturnNodeExt and
-    not isOwnInstanceAccessNode(sink) and
-    not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable())) and
-    (state instanceof TaintRead or state instanceof TaintStore)
+  Type getUnderlyingContentType(DataFlow::ContentSet c) {
+    result = c.(DataFlow::FieldContent).getField().getType() or
+    result = c.(DataFlow::SyntheticFieldContent).getField().getType()
   }
 
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  string qualifierString() { result = "Argument[this]" }
+
+  string parameterAccess(J::Parameter p) {
+    if
+      p.getType() instanceof J::Array and
+      not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
+    then result = "Argument[" + p.getPosition() + "].ArrayElement"
+    else
+      if p.getType() instanceof ContainerFlow::ContainerType
+      then result = "Argument[" + p.getPosition() + "].Element"
+      else result = "Argument[" + p.getPosition() + "]"
+  }
+
+  string parameterContentAccess(J::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+
+  class InstanceParameterNode = DataFlow::InstanceParameterNode;
+
+  bindingset[c]
+  string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
+    result = parameterAccess(c.getParameter(pos))
+    or
+    result = qualifierString() and pos = -1
+  }
+
+  bindingset[c]
+  string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
+    result = parameterContentAccess(c.getParameter(pos))
+    or
+    result = qualifierString() and pos = -1
+  }
+
+  Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
+    result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
+  }
+
+  predicate isOwnInstanceAccessNode(DataFlowPrivate::ReturnNode node) {
+    node.asExpr().(J::ThisAccess).isOwnInstanceAccess()
+  }
+
+  predicate sinkModelSanitizer(DataFlow::Node node) {
+    // exclude variable capture jump steps
+    exists(Ssa::SsaImplicitInit closure |
+      closure.captures(_) and
+      node.asExpr() = closure.getAFirstUse()
+    )
+  }
+
+  predicate apiSource(DataFlow::Node source) {
+    (
+      source.asExpr().(J::FieldAccess).isOwnFieldAccess() or
+      source instanceof DataFlow::ParameterNode
+    ) and
+    exists(J::RefType t |
+      t = source.getEnclosingCallable().getDeclaringType().getAnAncestor() and
+      not t instanceof J::TypeObject and
+      t.isPublic()
+    )
+  }
+
+  predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
+
+  string getInputArgument(DataFlow::Node source) {
+    exists(int pos |
+      source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
+      if pos >= 0 then result = "Argument[" + pos + "]" else result = qualifierString()
+    )
+    or
+    source.asExpr() instanceof J::FieldAccess and
+    result = qualifierString()
+  }
+
+  bindingset[kind]
+  predicate isRelevantSinkKind(string kind) {
+    not kind = "log-injection" and
+    not kind.matches("regex-use%") and
+    not kind = "file-content-store"
+  }
+
+  bindingset[kind]
+  predicate isRelevantSourceKind(string kind) { any() }
+
+  predicate containerContent = DataFlowPrivate::containerContent/1;
+
+  predicate isAdditionalContentFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    TaintTracking::defaultAdditionalTaintStep(node1, node2, _) and
+    not exists(DataFlow::Content f |
+      DataFlowPrivate::readStep(node1, f, node2) and containerContent(f)
+    )
+  }
+
+  predicate isField(DataFlow::ContentSet c) {
+    c instanceof DataFlowUtil::FieldContent or
+    c instanceof DataFlowUtil::SyntheticFieldContent
+  }
+
+  string getSyntheticName(DataFlow::ContentSet c) {
+    exists(Field f |
+      not f.isPublic() and
+      f = c.(DataFlowUtil::FieldContent).getField() and
+      result = f.getQualifiedName()
+    )
+    or
+    result = c.(DataFlowUtil::SyntheticFieldContent).getField()
+  }
+
+  string printContent(DataFlow::ContentSet c) {
+    exists(Field f | f = c.(DataFlowUtil::FieldContent).getField() and f.isPublic() |
+      result = "Field[" + f.getQualifiedName() + "]"
+    )
+    or
+    result = "SyntheticField[" + getSyntheticName(c) + "]"
+    or
+    c instanceof DataFlowUtil::CollectionContent and result = "Element"
+    or
+    c instanceof DataFlowUtil::ArrayContent and result = "ArrayElement"
+    or
+    c instanceof DataFlowUtil::MapValueContent and result = "MapValue"
+    or
+    c instanceof DataFlowUtil::MapKeyContent and result = "MapKey"
+  }
+
+  predicate partialModel(
+    Callable api, string package, string type, string extensible, string name, string parameters
   ) {
-    exists(DataFlow::ContentSet c |
-      DataFlowImplCommon::store(node1, c.getAStoreContent(), node2, _, _) and
-      isRelevantContent0(c) and
-      (
-        state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
-        or
-        state1.(TaintStore).getStep() + 1 = state2.(TaintStore).getStep()
-      )
-    )
-    or
-    exists(DataFlow::ContentSet c |
-      DataFlowPrivate::readStep(node1, c, node2) and
-      isRelevantContent0(c) and
-      state1.(TaintRead).getStep() + 1 = state2.(TaintRead).getStep()
-    )
+    qualifiedName(api, package, type) and
+    extensible = isExtensible(api) and
+    name = api.getName() and
+    parameters = ExternalFlow::paramsString(api)
   }
 
-  predicate isBarrier(DataFlow::Node n) {
-    exists(Type t | t = n.getType() and not isRelevantType(t))
-  }
+  predicate sourceNode = ExternalFlow::sourceNode/2;
 
-  DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-  }
+  predicate sinkNode = ExternalFlow::sinkNode/2;
 }
 
-module PropagateFlow = TaintTracking::GlobalWithState<PropagateFlowConfig>;
-
-/**
- * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
- */
-string captureThroughFlow0(
-  DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt
-) {
-  exists(string input, string output |
-    p.getEnclosingCallable() = api and
-    returnNodeExt.(DataFlow::Node).getEnclosingCallable() = api and
-    input = parameterNodeAsInput(p) and
-    output = getOutput(returnNodeExt) and
-    input != output and
-    result = Printing::asTaintModel(api, input, output)
-  )
-}
-
-/**
- * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
- */
-string captureThroughFlow(DataFlowSummaryTargetApi api) {
-  exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
-    PropagateFlow::flow(p, returnNodeExt) and
-    result = captureThroughFlow0(api, p, returnNodeExt)
-  )
-}
-
-private module PropagateContentFlowConfig implements ContentDataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof DataFlowSummaryTargetApi
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink instanceof ReturnNodeExt and
-    sink.getEnclosingCallable() instanceof DataFlowSummaryTargetApi
-  }
-
-  predicate isAdditionalFlowStep = isAdditionalContentFlowStep/2;
-
-  predicate isBarrier(DataFlow::Node n) {
-    exists(Type t | t = n.getType() and not isRelevantType(t))
-  }
-
-  int accessPathLimit() { result = 2 }
-
-  predicate isRelevantContent(DataFlow::ContentSet s) { isRelevantContent0(s) }
-
-  DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-  }
-}
-
-private module PropagateContentFlow = ContentDataFlow::Global<PropagateContentFlowConfig>;
-
-private string getContent(PropagateContentFlow::AccessPath ap, int i) {
-  exists(ContentSet head, PropagateContentFlow::AccessPath tail |
-    head = ap.getHead() and
-    tail = ap.getTail()
-  |
-    i = 0 and
-    result = "." + printContent(head)
-    or
-    i > 0 and result = getContent(tail, i - 1)
-  )
-}
-
-private string printStoreAccessPath(PropagateContentFlow::AccessPath ap) {
-  result = concat(int i | | getContent(ap, i), "" order by i)
-}
-
-private string printReadAccessPath(PropagateContentFlow::AccessPath ap) {
-  result = concat(int i | | getContent(ap, i), "" order by i desc)
-}
-
-string captureContentFlow(DataFlowSummaryTargetApi api) {
-  exists(
-    DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt, string input, string output,
-    PropagateContentFlow::AccessPath reads, PropagateContentFlow::AccessPath stores,
-    boolean preservesValue
-  |
-    PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-    returnNodeExt.getEnclosingCallable() = api and
-    input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
-    output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
-    input != output and
-    result = Printing::asModel(api, input, output, preservesValue)
-  )
-}
-
-/**
- * A dataflow configuration used for finding new sources.
- * The sources are the already known existing sources and the sinks are the API return nodes.
- *
- * This can be used to generate Source summaries for an API, if the API expose an already known source
- * via its return (then the API itself becomes a source).
- */
-module PropagateFromSourceConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    exists(string kind |
-      isRelevantSourceKind(kind) and
-      ExternalFlow::sourceNode(source, kind)
-    )
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink instanceof ReturnNodeExt and
-    sink.getEnclosingCallable() instanceof DataFlowSourceTargetApi
-  }
-
-  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }
-
-  predicate isBarrier(DataFlow::Node n) {
-    exists(Type t | t = n.getType() and not isRelevantType(t))
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isRelevantTaintStep(node1, node2)
-  }
-}
-
-private module PropagateFromSource = TaintTracking::Global<PropagateFromSourceConfig>;
-
-/**
- * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
- */
-string captureSource(DataFlowSourceTargetApi api) {
-  exists(DataFlow::Node source, ReturnNodeExt sink, string kind |
-    PropagateFromSource::flow(source, sink) and
-    ExternalFlow::sourceNode(source, kind) and
-    api = sink.getEnclosingCallable() and
-    not irrelevantSourceSinkApi(source.getEnclosingCallable(), api) and
-    result = Printing::asSourceModel(api, getOutput(sink), kind)
-  )
-}
-
-/**
- * A dataflow configuration used for finding new sinks.
- * The sources are the parameters of the API and the fields of the enclosing type.
- *
- * This can be used to generate Sink summaries for APIs, if the API propagates a parameter (or enclosing type field)
- * into an existing known sink (then the API itself becomes a sink).
- */
-module PropagateToSinkConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    apiSource(source) and source.getEnclosingCallable() instanceof DataFlowSinkTargetApi
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(string kind | isRelevantSinkKind(kind) and ExternalFlow::sinkNode(sink, kind))
-  }
-
-  predicate isBarrier(DataFlow::Node node) {
-    exists(Type t | t = node.getType() and not isRelevantType(t))
-    or
-    sinkModelSanitizer(node)
-  }
-
-  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isRelevantTaintStep(node1, node2)
-  }
-}
-
-private module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
-
-/**
- * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
- */
-string captureSink(DataFlowSinkTargetApi api) {
-  exists(DataFlow::Node src, DataFlow::Node sink, string kind |
-    PropagateToSink::flow(src, sink) and
-    ExternalFlow::sinkNode(sink, kind) and
-    api = src.getEnclosingCallable() and
-    result = Printing::asSinkModel(api, asInputArgument(src), kind)
-  )
-}
+import MakeModelGenerator<Location, JavaDataFlow, JavaTaintTracking, ModelGeneratorInput>

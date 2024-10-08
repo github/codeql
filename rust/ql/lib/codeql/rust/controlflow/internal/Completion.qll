@@ -3,9 +3,12 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import rust
 private import SuccessorType
 
-private newtype TCompletion =
+newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
+  TMatchCompletion(Boolean isMatch) or
+  TBreakCompletion() or
+  TContinueCompletion() or
   TReturnCompletion()
 
 /** A completion of a statement or an expression. */
@@ -51,8 +54,19 @@ abstract class ConditionalCompletion extends NormalCompletion {
   /** Gets the Boolean value of this conditional completion. */
   final boolean getValue() { result = value }
 
+  final predicate succeeded() { value = true }
+
+  final predicate failed() { value = false }
+
   /** Gets the dual completion. */
   abstract ConditionalCompletion getDual();
+}
+
+/** Holds if node `n` has the Boolean constant value `value`. */
+private predicate isBooleanConstant(AstNode n, Boolean value) {
+  n.(LiteralExpr).getTextValue() = value.toString()
+  or
+  isBooleanConstant(n.(ParenExpr).getExpr(), value)
 }
 
 /**
@@ -62,7 +76,47 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e = any(IfExpr c).getCondition() }
+  private predicate isValidForSpecific0(AstNode e) {
+    e = any(IfExpr c).getCondition()
+    or
+    e = any(WhileExpr c).getCondition()
+    or
+    any(MatchGuard guard).getCondition() = e
+    or
+    exists(BinaryExpr expr |
+      expr.getOperatorName() = ["&&", "||"] and
+      e = expr.getLhs()
+    )
+    or
+    exists(Expr parent | this.isValidForSpecific0(parent) |
+      e = parent.(ParenExpr).getExpr()
+      or
+      parent =
+        any(PrefixExpr expr |
+          expr.getOperatorName() = "!" and
+          e = expr.getExpr()
+        )
+      or
+      parent =
+        any(BinaryExpr expr |
+          expr.getOperatorName() = ["&&", "||"] and
+          e = expr.getRhs()
+        )
+      or
+      parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
+      or
+      parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
+    )
+  }
+
+  override predicate isValidForSpecific(AstNode e) {
+    this.isValidForSpecific0(e) and
+    (
+      isBooleanConstant(e, value)
+      or
+      not isBooleanConstant(e, _)
+    )
+  }
 
   /** Gets the dual Boolean completion. */
   override BooleanCompletion getDual() { result = TBooleanCompletion(value.booleanNot()) }
@@ -70,6 +124,44 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { result = "boolean(" + value + ")" }
+}
+
+/**
+ * A completion that represents the result of a pattern match.
+ */
+class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
+  MatchCompletion() { this = TMatchCompletion(value) }
+
+  override predicate isValidForSpecific(AstNode e) { e instanceof Pat }
+
+  override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  /** Gets the dual match completion. */
+  override MatchCompletion getDual() { result = TMatchCompletion(value.booleanNot()) }
+
+  override string toString() { result = "match(" + value + ")" }
+}
+
+/**
+ * A completion that represents a `break`.
+ */
+class BreakCompletion extends TBreakCompletion, Completion {
+  override BreakSuccessor getAMatchingSuccessorType() { any() }
+
+  override predicate isValidForSpecific(AstNode e) { e instanceof BreakExpr }
+
+  override string toString() { result = this.getAMatchingSuccessorType().toString() }
+}
+
+/**
+ * A completion that represents a `continue`.
+ */
+class ContinueCompletion extends TContinueCompletion, Completion {
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
+
+  override predicate isValidForSpecific(AstNode e) { e instanceof ContinueExpr }
+
+  override string toString() { result = this.getAMatchingSuccessorType().toString() }
 }
 
 /**

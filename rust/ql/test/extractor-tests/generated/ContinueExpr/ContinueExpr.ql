@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from ContinueExpr x, string hasLabel
+from ContinueExpr x, int getNumberOfAttrs, string hasLifetime
 where
   toBeTested(x) and
   not x.isUnknown() and
-  if x.hasLabel() then hasLabel = "yes" else hasLabel = "no"
-select x, "hasLabel:", hasLabel
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasLifetime:", hasLifetime

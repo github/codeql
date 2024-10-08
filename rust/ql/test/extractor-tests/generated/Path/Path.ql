@@ -2,6 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from Path x
-where toBeTested(x) and not x.isUnknown()
-select x
+from Path x, string hasQualifier, string hasPart
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  (if x.hasQualifier() then hasQualifier = "yes" else hasQualifier = "no") and
+  if x.hasPart() then hasPart = "yes" else hasPart = "no"
+select x, "hasQualifier:", hasQualifier, "hasPart:", hasPart

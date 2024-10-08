@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from AwaitExpr x, Expr getExpr
+from AwaitExpr x, int getNumberOfAttrs, string hasExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getExpr = x.getExpr()
-select x, "getExpr:", getExpr
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr

@@ -2,9 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from OrPat x, int getNumberOfArgs
+from OrPat x, int getNumberOfPats
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfArgs = x.getNumberOfArgs()
-select x, "getNumberOfArgs:", getNumberOfArgs
+  getNumberOfPats = x.getNumberOfPats()
+select x, "getNumberOfPats:", getNumberOfPats

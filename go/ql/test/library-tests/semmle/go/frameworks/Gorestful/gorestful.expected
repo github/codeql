@@ -5,14 +5,14 @@ models
 | 4 | Source: github.com/emicklei/go-restful; Request; true; ReadEntity; ; ; Argument[0]; remote; manual |
 | 5 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
 edges
-| gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | provenance | Src:MaD:1  Sink:MaD:5 |
-| gorestful.go:17:2:17:39 | ... := ...[0] | gorestful.go:18:15:18:17 | val | provenance | Src:MaD:2  Sink:MaD:5 |
-| gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression | provenance | Src:MaD:3  Sink:MaD:5 |
-| gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:4  Sink:MaD:5 |
-| gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression | provenance | Src:MaD:1  Sink:MaD:5 |
-| gorestful_v2.go:17:2:17:39 | ... := ...[0] | gorestful_v2.go:18:15:18:17 | val | provenance | Src:MaD:2  Sink:MaD:5 |
-| gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression | provenance | Src:MaD:3  Sink:MaD:5 |
-| gorestful_v2.go:23:21:23:24 | &... | gorestful_v2.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:4  Sink:MaD:5 |
+| gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | provenance | Src:MaD:1 Sink:MaD:5 |
+| gorestful.go:17:2:17:39 | ... := ...[0] | gorestful.go:18:15:18:17 | val | provenance | Src:MaD:2 Sink:MaD:5 |
+| gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression | provenance | Src:MaD:3 Sink:MaD:5 |
+| gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:4 Sink:MaD:5 |
+| gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression | provenance | Src:MaD:1 Sink:MaD:5 |
+| gorestful_v2.go:17:2:17:39 | ... := ...[0] | gorestful_v2.go:18:15:18:17 | val | provenance | Src:MaD:2 Sink:MaD:5 |
+| gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression | provenance | Src:MaD:3 Sink:MaD:5 |
+| gorestful_v2.go:23:21:23:24 | &... | gorestful_v2.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:4 Sink:MaD:5 |
 nodes
 | gorestful.go:15:15:15:44 | call to QueryParameters | semmle.label | call to QueryParameters |
 | gorestful.go:15:15:15:47 | index expression | semmle.label | index expression |

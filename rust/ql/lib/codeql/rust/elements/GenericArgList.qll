@@ -5,7 +5,7 @@
 
 private import internal.GenericArgListImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.GenericArg
 
 /**
  * The base class for generic arguments.

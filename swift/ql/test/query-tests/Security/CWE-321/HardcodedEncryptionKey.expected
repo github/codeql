@@ -26,8 +26,8 @@ edges
 | cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:155:26:155:26 | keyString | provenance |  |
 | cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:164:24:164:24 | keyString | provenance |  |
 | cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:166:24:166:24 | keyString | provenance |  |
-| file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self | provenance |  |
 | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [encryptionKey] | provenance |  |
 | grdb.swift:21:20:21:20 | abc123 | grdb.swift:27:23:27:23 | constString | provenance |  |
 | grdb.swift:21:20:21:20 | abc123 | grdb.swift:31:26:31:26 | constString | provenance |  |
@@ -40,18 +40,14 @@ edges
 | misc.swift:57:19:57:38 | call to Data.init(_:) | misc.swift:66:25:66:25 | myConstKey | provenance |  |
 | misc.swift:57:19:57:38 | call to Data.init(_:) | misc.swift:70:41:70:41 | myConstKey | provenance |  |
 | misc.swift:57:24:57:24 | abcdef123456 | misc.swift:57:19:57:38 | call to Data.init(_:) | provenance |  |
-| misc.swift:66:2:66:2 | [post] config [encryptionKey] | misc.swift:66:2:66:2 | [post] config | provenance |  |
 | misc.swift:66:25:66:25 | myConstKey | misc.swift:30:7:30:7 | value | provenance |  |
-| misc.swift:66:25:66:25 | myConstKey | misc.swift:66:2:66:2 | [post] config [encryptionKey] | provenance |  |
-| misc.swift:70:2:70:18 | [post] getter for .config [encryptionKey] | misc.swift:70:2:70:18 | [post] getter for .config | provenance |  |
+| misc.swift:66:25:66:25 | myConstKey | misc.swift:66:2:66:2 | [post] config | provenance |  |
 | misc.swift:70:41:70:41 | myConstKey | misc.swift:30:7:30:7 | value | provenance |  |
-| misc.swift:70:41:70:41 | myConstKey | misc.swift:70:2:70:18 | [post] getter for .config [encryptionKey] | provenance |  |
+| misc.swift:70:41:70:41 | myConstKey | misc.swift:70:2:70:18 | [post] getter for .config | provenance |  |
 | misc.swift:73:14:73:20 | k1 | misc.swift:76:26:76:29 | .utf8 | provenance |  |
 | misc.swift:73:28:73:34 | k2 | misc.swift:77:26:77:29 | .utf8 | provenance |  |
-| misc.swift:76:20:76:33 | call to Array<Element>.init(_:) [Collection element] | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | provenance |  |
-| misc.swift:76:26:76:29 | .utf8 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
-| misc.swift:77:20:77:33 | call to Array<Element>.init(_:) [Collection element] | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | provenance |  |
-| misc.swift:77:26:77:29 | .utf8 | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
+| misc.swift:76:26:76:29 | .utf8 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | provenance |  |
+| misc.swift:77:26:77:29 | .utf8 | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | provenance |  |
 | misc.swift:82:10:82:10 | abc123 | misc.swift:73:14:73:20 | k1 | provenance |  |
 | misc.swift:83:10:83:10 | abc123 | misc.swift:73:14:73:20 | k1 | provenance |  |
 | misc.swift:83:20:83:20 | abc123 | misc.swift:73:28:73:34 | k2 | provenance |  |
@@ -128,18 +124,14 @@ nodes
 | misc.swift:57:24:57:24 | abcdef123456 | semmle.label | abcdef123456 |
 | misc.swift:62:41:62:41 | myConstKey | semmle.label | myConstKey |
 | misc.swift:66:2:66:2 | [post] config | semmle.label | [post] config |
-| misc.swift:66:2:66:2 | [post] config [encryptionKey] | semmle.label | [post] config [encryptionKey] |
 | misc.swift:66:25:66:25 | myConstKey | semmle.label | myConstKey |
 | misc.swift:70:2:70:18 | [post] getter for .config | semmle.label | [post] getter for .config |
-| misc.swift:70:2:70:18 | [post] getter for .config [encryptionKey] | semmle.label | [post] getter for .config [encryptionKey] |
 | misc.swift:70:41:70:41 | myConstKey | semmle.label | myConstKey |
 | misc.swift:73:14:73:20 | k1 | semmle.label | k1 |
 | misc.swift:73:28:73:34 | k2 | semmle.label | k2 |
 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
-| misc.swift:76:20:76:33 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
 | misc.swift:76:26:76:29 | .utf8 | semmle.label | .utf8 |
 | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
-| misc.swift:77:20:77:33 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
 | misc.swift:77:26:77:29 | .utf8 | semmle.label | .utf8 |
 | misc.swift:82:10:82:10 | abc123 | semmle.label | abc123 |
 | misc.swift:83:10:83:10 | abc123 | semmle.label | abc123 |
@@ -168,8 +160,8 @@ nodes
 | sqlite3_c_api.swift:49:36:49:36 | buffer | semmle.label | buffer |
 | sqlite3_c_api.swift:50:38:50:38 | buffer | semmle.label | buffer |
 subpaths
-| misc.swift:66:25:66:25 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:66:2:66:2 | [post] config [encryptionKey] |
-| misc.swift:70:41:70:41 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:70:2:70:18 | [post] getter for .config [encryptionKey] |
+| misc.swift:66:25:66:25 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:66:2:66:2 | [post] config |
+| misc.swift:70:41:70:41 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:70:2:70:18 | [post] getter for .config |
 #select
 | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:43:13:43:13 | hardcoded_key | hardcoded_key |
 | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |

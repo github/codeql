@@ -15,3 +15,4 @@ extensions:
       - ["org.springframework.core.io", "ClassPathResource", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.core.io", "ClassPathResource", True, "getURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.core.io", "ClassPathResource", True, "resolveURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.core.io", "InputStreamSource", True, "getInputStream", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

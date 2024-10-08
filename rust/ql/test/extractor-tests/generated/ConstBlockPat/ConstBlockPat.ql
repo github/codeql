@@ -2,9 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from ConstBlockPat x, Expr getExpr
+from ConstBlockPat x, string hasBlockExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getExpr = x.getExpr()
-select x, "getExpr:", getExpr
+  if x.hasBlockExpr() then hasBlockExpr = "yes" else hasBlockExpr = "no"
+select x, "hasBlockExpr:", hasBlockExpr

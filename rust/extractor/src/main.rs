@@ -1,33 +1,79 @@
-use crate::trap::TrapId;
 use anyhow::Context;
-use ra_ap_hir::db::DefDatabase;
-use ra_ap_hir::Crate;
-use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
-use ra_ap_project_model::CargoConfig;
-use ra_ap_project_model::RustLibSource;
-use ra_ap_vfs::AbsPathBuf;
-use std::path::PathBuf;
-
+use ra_ap_ide_db::line_index::LineIndex;
+use ra_ap_parser::Edition;
+use std::borrow::Cow;
 mod archive;
 mod config;
 pub mod generated;
-pub mod path;
 mod translate;
 pub mod trap;
+use ra_ap_syntax::ast::SourceFile;
+use ra_ap_syntax::{AstNode, SyntaxError, TextRange, TextSize};
 
-fn find_project_manifests(
-    files: &[PathBuf],
-) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
-    let current = std::env::current_dir()?;
-    let abs_files: Vec<_> = files
-        .iter()
-        .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
-        .collect();
-    Ok(ra_ap_project_model::ProjectManifest::discover_all(
-        &abs_files,
-    ))
+fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
+    let mut iter = v.utf8_chunks();
+    let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
+        let valid = chunk.valid();
+        let invalid = chunk.invalid();
+        if invalid.is_empty() {
+            debug_assert_eq!(valid.len(), v.len());
+            return (Cow::Borrowed(valid), None);
+        }
+        (valid, invalid)
+    } else {
+        return (Cow::Borrowed(""), None);
+    };
+
+    const REPLACEMENT: &str = "\u{FFFD}";
+    let error_start = first_valid.len() as u32;
+    let error_end = error_start + first_invalid.len() as u32;
+    let error_range = TextRange::new(TextSize::new(error_start), TextSize::new(error_end));
+    let error = SyntaxError::new("invalid utf-8 sequence".to_owned(), error_range);
+    let mut res = String::with_capacity(v.len());
+    res.push_str(first_valid);
+
+    res.push_str(REPLACEMENT);
+
+    for chunk in iter {
+        res.push_str(chunk.valid());
+        if !chunk.invalid().is_empty() {
+            res.push_str(REPLACEMENT);
+        }
+    }
+
+    (Cow::Owned(res), Some(error))
 }
 
+fn extract(
+    archiver: &archive::Archiver,
+    traps: &trap::TrapFileProvider,
+    file: std::path::PathBuf,
+) -> anyhow::Result<()> {
+    let file = std::path::absolute(&file).unwrap_or(file);
+    let file = std::fs::canonicalize(&file).unwrap_or(file);
+    archiver.archive(&file);
+    let input = std::fs::read(&file)?;
+    let (input, err) = from_utf8_lossy(&input);
+    let line_index = LineIndex::new(&input);
+    let display_path = file.to_string_lossy();
+    let mut trap = traps.create("source", &file);
+    let label = trap.emit_file(&file);
+    let mut translator = translate::Translator::new(trap, label, line_index);
+    if let Some(err) = err {
+        translator.emit_parse_error(display_path.as_ref(), err);
+    }
+    let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
+    for err in parse.errors() {
+        translator.emit_parse_error(display_path.as_ref(), err);
+    }
+    if let Some(ast) = SourceFile::cast(parse.syntax_node()) {
+        translator.emit_source_file(ast);
+    } else {
+        log::warn!("Skipped {}", display_path);
+    }
+    translator.trap.commit()?;
+    Ok(())
+}
 fn main() -> anyhow::Result<()> {
     let cfg = config::Config::extract().context("failed to load configuration")?;
     stderrlog::new()
@@ -39,52 +85,9 @@ fn main() -> anyhow::Result<()> {
     let archiver = archive::Archiver {
         root: cfg.source_archive_dir,
     };
-
-    let config = CargoConfig {
-        sysroot: Some(RustLibSource::Discover),
-        target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(cfg.scratch_dir)
-            .map(|x| x.join("target"))
-            .ok(),
-        ..Default::default()
-    };
-    let progress = |t| (log::info!("progress: {}", t));
-    let load_config = LoadCargoConfig {
-        load_out_dirs_from_check: true,
-        with_proc_macro_server: ProcMacroServerChoice::Sysroot,
-        prefill_caches: false,
-    };
-    let projects = find_project_manifests(&cfg.inputs).context("loading inputs")?;
-    for project in projects {
-        let (db, vfs, _macro_server) = load_workspace_at(
-            project.manifest_path().as_ref(),
-            &config,
-            &load_config,
-            &progress,
-        )?;
-
-        let crates = <dyn DefDatabase>::crate_graph(&db);
-        for crate_id in crates.iter() {
-            let krate = Crate::from(crate_id);
-            if !cfg.extract_dependencies && !krate.origin(&db).is_local() {
-                continue;
-            }
-            let name = krate.display_name(&db);
-            let crate_name = name
-                .as_ref()
-                .map(|n| n.canonical_name().as_str())
-                .unwrap_or("");
-            let trap = traps.create(
-                "crates",
-                &PathBuf::from(format!(
-                    "/{}_{}",
-                    crate_name,
-                    crate_id.into_raw().into_u32()
-                )),
-            );
-            translate::CrateTranslator::new(&db, trap, &krate, &vfs, &archiver)
-                .emit_crate()
-                .context("writing trap file")?;
-        }
+    for file in cfg.inputs {
+        extract(&archiver, &traps, file)?;
     }
+
     Ok(())
 }

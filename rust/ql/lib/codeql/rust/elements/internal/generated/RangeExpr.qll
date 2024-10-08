@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -31,34 +32,59 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RangeExpr" }
 
     /**
-     * Gets the lhs of this range expression, if it exists.
+     * Gets the `index`th attr of this range expression (0-based).
      */
-    Expr getLhs() {
+    Attr getAttr(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getLhs())
+        Synth::convertAttrFromRaw(Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getAttr(index))
     }
 
     /**
-     * Holds if `getLhs()` exists.
+     * Gets any of the attrs of this range expression.
      */
-    final predicate hasLhs() { exists(this.getLhs()) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the rhs of this range expression, if it exists.
+     * Gets the number of attrs of this range expression.
      */
-    Expr getRhs() {
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the end of this range expression, if it exists.
+     */
+    Expr getEnd() {
       result =
-        Synth::convertExprFromRaw(Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getRhs())
+        Synth::convertExprFromRaw(Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getEnd())
     }
 
     /**
-     * Holds if `getRhs()` exists.
+     * Holds if `getEnd()` exists.
      */
-    final predicate hasRhs() { exists(this.getRhs()) }
+    final predicate hasEnd() { exists(this.getEnd()) }
 
     /**
-     * Holds if this range expression is inclusive.
+     * Gets the operator name of this range expression, if it exists.
      */
-    predicate isInclusive() { Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).isInclusive() }
+    string getOperatorName() {
+      result = Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getOperatorName()
+    }
+
+    /**
+     * Holds if `getOperatorName()` exists.
+     */
+    final predicate hasOperatorName() { exists(this.getOperatorName()) }
+
+    /**
+     * Gets the start of this range expression, if it exists.
+     */
+    Expr getStart() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertRangeExprToRaw(this).(Raw::RangeExpr).getStart())
+    }
+
+    /**
+     * Holds if `getStart()` exists.
+     */
+    final predicate hasStart() { exists(this.getStart()) }
   }
 }

@@ -6,6 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.ArgList
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -29,36 +31,47 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CallExpr" }
 
     /**
-     * Gets the callee of this call expression.
+     * Gets the argument list of this call expression, if it exists.
      */
-    Expr getCallee() {
+    ArgList getArgList() {
       result =
-        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getCallee())
+        Synth::convertArgListFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getArgList())
     }
 
     /**
-     * Gets the `index`th argument of this call expression (0-based).
+     * Holds if `getArgList()` exists.
      */
-    Expr getArg(int index) {
+    final predicate hasArgList() { exists(this.getArgList()) }
+
+    /**
+     * Gets the `index`th attr of this call expression (0-based).
+     */
+    Attr getAttr(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getArg(index))
+        Synth::convertAttrFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getAttr(index))
     }
 
     /**
-     * Gets any of the arguments of this call expression.
+     * Gets any of the attrs of this call expression.
      */
-    final Expr getAnArg() { result = this.getArg(_) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of arguments of this call expression.
+     * Gets the number of attrs of this call expression.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Holds if this call expression is assignee expression.
+     * Gets the expression of this call expression, if it exists.
      */
-    predicate isAssigneeExpr() {
-      Synth::convertCallExprToRaw(this).(Raw::CallExpr).isAssigneeExpr()
+    Expr getExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getExpr())
     }
+
+    /**
+     * Holds if `getExpr()` exists.
+     */
+    final predicate hasExpr() { exists(this.getExpr()) }
   }
 }
