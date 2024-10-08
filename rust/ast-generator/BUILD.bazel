@@ -1,3 +1,4 @@
+load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(
@@ -11,4 +12,10 @@ codeql_rust_binary(
     deps = all_crate_deps(
         normal = True,
     ),
+)
+
+filegroup(
+    name = "manifest",
+    srcs = ["Cargo.toml"],
+    visibility = ["//rust:__subpackages__"],
 )
