@@ -19,7 +19,8 @@ private newtype TCompletion =
   TContinueCompletion() or
   TThrowCompletion() or
   TExitCompletion() or
-  TMatchingCompletion(Boolean b)
+  TMatchingCompletion(Boolean b) or
+  TEmptinessCompletion(Boolean isEmpty)
 
 private predicate commandThrows(Cmd c, boolean unconditional) {
   c.getNamedArgument("ErrorAction").(StringConstExpr).getValue().getValue() = "Stop" and
@@ -68,6 +69,9 @@ abstract class Completion extends TCompletion {
       not isMatchingConstant(n, _) and
       this = TMatchingCompletion(_)
     )
+    or
+    mustHaveEmptinessCompletion(n) and
+    this = TEmptinessCompletion(_)
   }
 
   private predicate isValidForSpecific(Ast n) { this.isValidForSpecific0(n) }
@@ -184,6 +188,12 @@ private predicate inMatchingContext(Ast n) {
 }
 
 /**
+ * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
+ * whether `cfe` determines whether to execute the body of a `foreach` statement.
+ */
+private predicate mustHaveEmptinessCompletion(Ast n) { n instanceof ForEachStmt }
+
+/**
  * A completion that represents normal evaluation of a statement or an
  * expression.
  */
@@ -295,4 +305,21 @@ class ExitCompletion extends Completion, TExitCompletion {
   override ExitSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "exit" }
+}
+
+/**
+ * A completion that represents evaluation of an emptiness test, for example
+ * a test in a `foreach` statement.
+ */
+class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
+  EmptinessCompletion() { this = TEmptinessCompletion(value) }
+
+  /** Holds if the emptiness test evaluates to `true`. */
+  predicate isEmpty() { value = true }
+
+  EmptinessCompletion getDual() { result = TEmptinessCompletion(value.booleanNot()) }
+
+  override EmptinessSuccessor getAMatchingSuccessorType() { result.getValue() = value }
+
+  override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
 }

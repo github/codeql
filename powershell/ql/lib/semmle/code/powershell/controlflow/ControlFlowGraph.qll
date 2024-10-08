@@ -108,6 +108,15 @@ module SuccessorTypes {
   class ExitSuccessor extends SuccessorType, CfgImpl::TExitSuccessor {
     final override string toString() { result = "exit" }
   }
+
+  class EmptinessSuccessor extends ConditionalSuccessor, CfgImpl::TEmptinessSuccessor {
+    EmptinessSuccessor() { this = CfgImpl::TEmptinessSuccessor(value) }
+
+    /** Holds if this is an empty successor. */
+    predicate isEmpty() { value = true }
+
+    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
+  }
 }
 
 class Split = Splitting::Split;

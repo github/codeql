@@ -404,7 +404,7 @@ module Trees {
     final override predicate last(AstNode last, Completion c) {
       // Emptiness test exits with no more elements
       last = this and
-      completionIsSimple(c)
+      c.(EmptinessCompletion).isEmpty()
       or
       super.last(last, c)
     }
@@ -418,7 +418,7 @@ module Trees {
       // Emptiness test to variable declaration
       pred = this and
       first(super.getVarAccess(), succ) and
-      completionIsSimple(c)
+      c = any(EmptinessCompletion ec | not ec.isEmpty())
       or
       // Variable declaration to body
       last(super.getVarAccess(), pred, c) and
@@ -779,7 +779,8 @@ private module Cached {
     TContinueSuccessor() or
     TThrowSuccessor() or
     TExitSuccessor() or
-    TMatchingSuccessor(Boolean b)
+    TMatchingSuccessor(Boolean b) or
+    TEmptinessSuccessor(Boolean b)
 }
 
 import Cached
