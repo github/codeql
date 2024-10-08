@@ -50,7 +50,7 @@ class MyClass {
     [string] $field
 
     [void]callSink() {
-        Sink $this.field # $ MISSING: hasValueFlow=12
+        Sink $this.field # $ hasValueFlow=12
     }
 }
 
