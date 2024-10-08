@@ -82,6 +82,22 @@ fn unreachable_panic() {
 		_ = maybe.unwrap(); // (always panics)
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
+
+	if cond() {
+		do_something();
+		_ = false && panic!(); // does not panic due to short-circuiting
+		do_something();
+		_ = false || panic!();
+		do_something(); // BAD: unreachable code [NOT DETECTED]
+	}
+
+	if cond() {
+		do_something();
+		_ = true || panic!(); // does not panic due to short-circuiting
+		do_something();
+		_ = true && panic!();
+		do_something(); // BAD: unreachable code [NOT DETECTED]
+	}
 }
 
 fn unreachable_match() {
