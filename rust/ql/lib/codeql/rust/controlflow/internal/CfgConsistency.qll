@@ -45,3 +45,50 @@ query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
   not letElsePanic(node.getAstNode())
 }
+
+/**
+ * Gets counts of control flow graph inconsistencies of each type.
+ */
+int getCfgInconsistencyCounts(string type) {
+  // total results from all the CFG consistency query predicates in:
+  //  - `codeql.rust.controlflow.internal.CfgConsistency` (this file)
+  //  - `shared.controlflow.codeql.controlflow.Cfg`
+  type = "Non-unique set representation" and
+  result = count(CfgImpl::Splits ss | Consistency::nonUniqueSetRepresentation(ss, _) | ss)
+  or
+  type = "Splitting invariant 2" and
+  result = count(AstNode n | Consistency::breakInvariant2(n, _, _, _, _, _) | n)
+  or
+  type = "Splitting invariant 3" and
+  result = count(AstNode n | Consistency::breakInvariant3(n, _, _, _, _, _) | n)
+  or
+  type = "Splitting invariant 4" and
+  result = count(AstNode n | Consistency::breakInvariant4(n, _, _, _, _, _) | n)
+  or
+  type = "Splitting invariant 5" and
+  result = count(AstNode n | Consistency::breakInvariant5(n, _, _, _, _, _) | n)
+  or
+  type = "Multiple successors of the same type" and
+  result = count(CfgNode n | Consistency::multipleSuccessors(n, _, _) | n)
+  or
+  type = "Simple and normal successors" and
+  result = count(CfgNode n | Consistency::simpleAndNormalSuccessors(n, _, _, _, _) | n)
+  or
+  type = "Dead end" and
+  result = count(CfgNode n | Consistency::deadEnd(n) | n)
+  or
+  type = "Non-unique split kind" and
+  result = count(CfgImpl::SplitImpl si | Consistency::nonUniqueSplitKind(si, _) | si)
+  or
+  type = "Non-unique list order" and
+  result = count(CfgImpl::SplitKind sk | Consistency::nonUniqueListOrder(sk, _) | sk)
+  or
+  type = "Multiple toStrings" and
+  result = count(CfgNode n | Consistency::multipleToString(n, _) | n)
+  or
+  type = "CFG scope lacks initial AST node" and
+  result = count(CfgScope s | Consistency::scopeNoFirst(s) | s)
+  or
+  type = "Non-PostOrderTree Expr node" and
+  result = count(Expr e | nonPostOrderExpr(e, _) | e)
+}
