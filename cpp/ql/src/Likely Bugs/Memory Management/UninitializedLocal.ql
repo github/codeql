@@ -65,6 +65,7 @@ predicate isSinkImpl(Instruction sink, VariableAccess va) {
   exists(LoadInstruction load |
     va = load.getUnconvertedResultExpression() and
     not va = commonException() and
+    not va.getTarget().(LocalVariable).getFunction().hasErrors() and
     sink = load.getSourceValue()
   )
 }

@@ -9017,7 +9017,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
-        val unitType = useType(pluginContext.irBuiltIns.unitType)
+        val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, id, ids.constructor)
         tw.writeConstrsKotlinType(ids.constructor, unitType.kotlinResult.id)
         tw.writeHasLocation(ids.constructor, locId)

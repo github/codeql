@@ -20,4 +20,8 @@ public class Library {
   public Object id(Object x) {
     return null;
   }
+
+  public Object getValue() {
+    return null;
+  }
 }

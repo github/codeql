@@ -412,11 +412,11 @@ fn write_extractor(grammar: &AstSrc) -> std::io::Result<String> {
 use crate::generated;
 use super::base::{{TextValue, Translator}};
 use crate::trap::{{Label, TrapId}};
-use ra_ap_syntax::ast;
 use ra_ap_syntax::ast::{{
     HasArgList, HasAttrs, HasGenericArgs, HasGenericParams, HasLoopBody, HasModuleItem, HasName,
     HasTypeBounds, HasVisibility, RangeItem,
 }};
+use ra_ap_syntax::{{ast, AstNode}};
 
 impl Translator {{
     fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {{
@@ -509,7 +509,11 @@ impl Translator {{
             writeln!(buf, "            {},", class_field_name)?;
         }
         writeln!(buf, "        }});")?;
-        writeln!(buf, "        self.emit_location(label, node);")?;
+        writeln!(buf, "        self.emit_location(label, &node);")?;
+        writeln!(
+            buf,
+            "        self.emit_tokens(label.into(), node.syntax().children_with_tokens());"
+        )?;
         writeln!(buf, "        label")?;
 
         writeln!(buf, "    }}\n")?;

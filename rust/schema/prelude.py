@@ -3,6 +3,7 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+
 @qltest.skip
 class Element:
     pass
@@ -16,6 +17,26 @@ class Locatable(Element):
 @qltest.skip
 class AstNode(Locatable):
     pass
+
+
+@qltest.skip
+class Token(AstNode):
+    """
+    The base class for all tokens.
+    """
+    pass
+
+
+class Comment(Token):
+    """
+    A comment. For example:
+    ```rust
+    // this is a comment
+    /// This is a doc comment
+    ```
+    """
+    parent: AstNode
+    text: string
 
 
 @qltest.skip

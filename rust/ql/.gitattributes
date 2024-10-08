@@ -20,6 +20,7 @@
 /lib/codeql/rust/elements/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/ClosureExpr.qll linguist-generated
+/lib/codeql/rust/elements/Comment.qll linguist-generated
 /lib/codeql/rust/elements/Const.qll linguist-generated
 /lib/codeql/rust/elements/ConstArg.qll linguist-generated
 /lib/codeql/rust/elements/ConstBlockPat.qll linguist-generated
@@ -123,6 +124,7 @@
 /lib/codeql/rust/elements/Stmt.qll linguist-generated
 /lib/codeql/rust/elements/StmtList.qll linguist-generated
 /lib/codeql/rust/elements/Struct.qll linguist-generated
+/lib/codeql/rust/elements/Token.qll linguist-generated
 /lib/codeql/rust/elements/TokenTree.qll linguist-generated
 /lib/codeql/rust/elements/Trait.qll linguist-generated
 /lib/codeql/rust/elements/TraitAlias.qll linguist-generated
@@ -183,7 +185,6 @@
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BreakExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
@@ -192,6 +193,7 @@
 /lib/codeql/rust/elements/internal/ClosureBinderImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureExprImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/CommentConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstBlockPatConstructor.qll linguist-generated
@@ -201,7 +203,6 @@
 /lib/codeql/rust/elements/internal/ConstParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ContinueExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
@@ -237,7 +238,6 @@
 /lib/codeql/rust/elements/internal/GenericParamListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IdentPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/IdentPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/IfExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplConstructor.qll linguist-generated
@@ -266,7 +266,6 @@
 /lib/codeql/rust/elements/internal/LifetimeParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LifetimeParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/LiteralExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LoopExprConstructor.qll linguist-generated
@@ -383,6 +382,7 @@
 /lib/codeql/rust/elements/internal/StmtListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/TokenImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TraitAliasConstructor.qll linguist-generated
@@ -465,6 +465,7 @@
 /lib/codeql/rust/elements/internal/generated/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Comment.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Const.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ConstArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ConstBlockPat.qll linguist-generated
@@ -573,6 +574,7 @@
 /lib/codeql/rust/elements/internal/generated/Struct.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Synth.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/SynthConstructors.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Token.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TokenTree.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Trait.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TraitAlias.qll linguist-generated
@@ -670,6 +672,7 @@
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getClosureBinder.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getParamList.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getRetType.ql linguist-generated
+/test/extractor-tests/generated/Comment/Comment.ql linguist-generated
 /test/extractor-tests/generated/Const/Const.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getBody.ql linguist-generated

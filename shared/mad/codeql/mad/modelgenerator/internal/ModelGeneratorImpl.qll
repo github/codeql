@@ -31,11 +31,6 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
    */
   class Callable {
     /**
-     * Gets the number of parameters of this callable.
-     */
-    int getNumberOfParameters();
-
-    /**
      * Gets a string representation of this callable.
      */
     string toString();
@@ -561,6 +556,16 @@ module MakeModelGenerator<
 
     private module PropagateContentFlow = ContentDataFlow::Global<PropagateContentFlowConfig>;
 
+    private module ContentModelPrintingInput implements Printing::ModelPrintingSig {
+      class SummaryApi = DataFlowSummaryTargetApi;
+
+      class SourceOrSinkApi = SourceOrSinkTargetApi;
+
+      string getProvenance() { result = "dfc-generated" }
+    }
+
+    private module ContentModelPrinting = Printing::ModelPrinting<ContentModelPrintingInput>;
+
     private string getContentOutput(ReturnNodeExt node) {
       result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
     }
@@ -576,15 +581,7 @@ module MakeModelGenerator<
     }
 
     private string getContent(PropagateContentFlow::AccessPath ap, int i) {
-      exists(DataFlow::ContentSet head, PropagateContentFlow::AccessPath tail |
-        head = ap.getHead() and
-        tail = ap.getTail()
-      |
-        i = 0 and
-        result = "." + printContent(head)
-        or
-        i > 0 and result = getContent(tail, i - 1)
-      )
+      result = "." + printContent(ap.getAtIndex(i))
     }
 
     /**
@@ -605,12 +602,7 @@ module MakeModelGenerator<
      * Holds if the access path `ap` contains a field or synthetic field access.
      */
     private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
-      exists(DataFlow::ContentSet head, PropagateContentFlow::AccessPath tail |
-        head = ap.getHead() and
-        tail = ap.getTail()
-      |
-        mentionsField(tail) or isField(head)
-      )
+      isField(ap.getAtIndex(_))
     }
 
     private predicate apiFlow(
@@ -626,28 +618,35 @@ module MakeModelGenerator<
     /**
      * A class of APIs relevant for modeling using content flow.
      * The following heuristic is applied:
-     * Content flow is only relevant for an API, if
-     *    #content flow <= 2 * #parameters + 3
-     * If an API produces more content flow, it is likely that
-     * 1. Types are not sufficiently constrained leading to a combinatorial
+     * Content flow is only relevant for an API on a parameter, if
+     *    #content flow from parameter <= 3
+     * If an API produces more content flow on a parameter, it is likely that
+     * 1. Types are not sufficiently constrained on the parameter leading to a combinatorial
      * explosion in dispatch and thus in the generated summaries.
      * 2. It is a reasonable approximation to use the non-content based flow
      * detection instead, as reads and stores would use a significant
      * part of an objects internal state.
      */
     private class ContentDataFlowSummaryTargetApi extends DataFlowSummaryTargetApi {
+      private DataFlow::ParameterNode parameter;
+
       ContentDataFlowSummaryTargetApi() {
         count(string input, string output |
           exists(
-            DataFlow::ParameterNode p, PropagateContentFlow::AccessPath reads,
-            ReturnNodeExt returnNodeExt, PropagateContentFlow::AccessPath stores
+            PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+            PropagateContentFlow::AccessPath stores
           |
-            apiFlow(this, p, reads, returnNodeExt, stores, _) and
-            input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
+            apiFlow(this, parameter, reads, returnNodeExt, stores, _) and
+            input = parameterNodeAsContentInput(parameter) + printReadAccessPath(reads) and
             output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores)
           )
-        ) <= 2 * this.getNumberOfParameters() + 3
+        ) <= 3
       }
+
+      /**
+       * Gets a parameter node of `this` api, where there are less than 3 possible models, if any.
+       */
+      DataFlow::ParameterNode getARelevantParameterNode() { result = parameter }
     }
 
     pragma[nomagic]
@@ -658,20 +657,38 @@ module MakeModelGenerator<
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
       returnNodeExt.getEnclosingCallable() = api and
-      p.(NodeExtended).getEnclosingCallable() = api
+      p.(NodeExtended).getEnclosingCallable() = api and
+      p = api.getARelevantParameterNode()
     }
 
     /**
      * Holds if any of the content sets in `path` translates into a synthetic field.
      */
     private predicate hasSyntheticContent(PropagateContentFlow::AccessPath path) {
-      exists(PropagateContentFlow::AccessPath tail, DataFlow::ContentSet head |
-        head = path.getHead() and
-        tail = path.getTail()
-      |
-        exists(getSyntheticName(head)) or
-        hasSyntheticContent(tail)
-      )
+      exists(getSyntheticName(path.getAtIndex(_)))
+    }
+
+    private string getHashAtIndex(PropagateContentFlow::AccessPath ap, int i) {
+      result = getSyntheticName(ap.getAtIndex(i))
+    }
+
+    private string getReversedHash(PropagateContentFlow::AccessPath ap) {
+      result = strictconcat(int i | | getHashAtIndex(ap, i), "." order by i desc)
+    }
+
+    private string getHash(PropagateContentFlow::AccessPath ap) {
+      result = strictconcat(int i | | getHashAtIndex(ap, i), "." order by i)
+    }
+
+    /**
+     * Gets all access paths that contain the synthetic fields
+     * from `ap` in reverse order (if `ap` contains at least one synthetic field).
+     * These are the possible candidates for synthetic path continuations.
+     */
+    private PropagateContentFlow::AccessPath getSyntheticPathCandidate(
+      PropagateContentFlow::AccessPath ap
+    ) {
+      getHash(ap) = getReversedHash(result)
     }
 
     /**
@@ -737,7 +754,7 @@ module MakeModelGenerator<
         exists(PropagateContentFlow::AccessPath mid, Type midType |
           hasSyntheticContent(mid) and
           step(t, read, midType, mid) and
-          reachesSynthExit(midType, mid.reverse())
+          reachesSynthExit(midType, getSyntheticPathCandidate(mid))
         )
       }
 
@@ -753,7 +770,7 @@ module MakeModelGenerator<
         exists(PropagateContentFlow::AccessPath mid, Type midType |
           hasSyntheticContent(mid) and
           step(midType, mid, t, store) and
-          synthEntryReaches(midType, mid.reverse())
+          synthEntryReaches(midType, getSyntheticPathCandidate(mid))
         )
       }
 
@@ -782,14 +799,15 @@ module MakeModelGenerator<
         Type t1, PropagateContentFlow::AccessPath read, Type t2,
         PropagateContentFlow::AccessPath store
       ) {
-        synthPathEntry(t1, read, t2, store) and reachesSynthExit(t2, store.reverse())
+        synthPathEntry(t1, read, t2, store) and
+        reachesSynthExit(t2, getSyntheticPathCandidate(store))
         or
-        exists(PropagateContentFlow::AccessPath store0 | store0.reverse() = read |
+        exists(PropagateContentFlow::AccessPath store0 | getSyntheticPathCandidate(store0) = read |
           synthEntryReaches(t1, store0) and synthPathExit(t1, read, t2, store)
           or
           synthEntryReaches(t1, store0) and
           step(t1, read, t2, store) and
-          reachesSynthExit(t2, store.reverse())
+          reachesSynthExit(t2, getSyntheticPathCandidate(store))
         )
       }
     }
@@ -828,24 +846,62 @@ module MakeModelGenerator<
         input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
         output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
         input != output and
-        (if mentionsField(reads) or mentionsField(stores) then lift = false else lift = true)
+        (
+          if mentionsField(reads) or mentionsField(stores)
+          then lift = false and api.isRelevant()
+          else lift = true
+        )
       )
     }
 
     /**
      * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
-     * the return value or a parameter).
+     * the return value or a parameter). `lift` is true, if the model should be lifted, otherwise false.
      *
      * Models are lifted to the best type in case the read and store access paths do not
      * contain a field or synthetic field access.
      */
-    string captureFlow(ContentDataFlowSummaryTargetApi api) {
-      exists(string input, string output, boolean lift, boolean preservesValue |
+    string captureFlow(ContentDataFlowSummaryTargetApi api, boolean lift) {
+      exists(string input, string output, boolean preservesValue |
         captureFlow0(api, input, output, _, lift) and
         preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
-        result = ModelPrinting::asModel(api, input, output, preservesValue, lift)
+        result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
       )
     }
+  }
+
+  /**
+   * Gets the summary model(s) for `api`, if any. `lift` is true if the model is lifted
+   * otherwise false.
+   * The following heuristic is applied:
+   * 1. If content based flow yields at lease one summary for an API, then we use that.
+   * 2. If content based flow does not yield any summary for an API, then we try and
+   * generate flow summaries using the non-content based summary generator.
+   */
+  string captureMixedFlow(DataFlowSummaryTargetApi api, boolean lift) {
+    result = ContentSensitive::captureFlow(api, lift)
+    or
+    not exists(ContentSensitive::captureFlow(api, _)) and
+    result = captureFlow(api) and
+    lift = true
+  }
+
+  /**
+   * Gets the neutral summary model for `api`, if any.
+   * A neutral summary model is generated, if we are not generating
+   * a mixed summary model that applies to `api`.
+   */
+  string captureMixedNeutral(DataFlowSummaryTargetApi api) {
+    not exists(DataFlowSummaryTargetApi api0, boolean lift |
+      exists(captureMixedFlow(api0, lift)) and
+      (
+        lift = false and api0 = api
+        or
+        lift = true and api0.lift() = api.lift()
+      )
+    ) and
+    api.isRelevant() and
+    result = ModelPrinting::asNeutralSummaryModel(api)
   }
 
   /**

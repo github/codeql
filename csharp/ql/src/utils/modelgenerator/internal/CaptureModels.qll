@@ -131,7 +131,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
 
     Callable lift() { result = lift }
 
-    predicate isRelevant() { relevant(this) }
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
   }
 
   /**

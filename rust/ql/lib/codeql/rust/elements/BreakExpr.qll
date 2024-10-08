@@ -24,5 +24,13 @@ import codeql.rust.elements.Lifetime
  *     }
  * };
  * ```
+ * ```rust
+ * let x = 'label: {
+ *     if exit() {
+ *         break 'label 42;
+ *     }
+ *     0;
+ * };
+ * ```
  */
 final class BreakExpr = Impl::BreakExpr;

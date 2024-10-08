@@ -7,13 +7,8 @@ newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or
-  TLoopCompletion(TLoopJumpType kind, TLabelType label) {
-    label = TNoLabel()
-    or
-    kind = TBreakJump() and label = TLabel(any(BreakExpr b).getLifetime().getText())
-    or
-    kind = TContinueJump() and label = TLabel(any(ContinueExpr b).getLifetime().getText())
-  } or
+  TBreakCompletion() or
+  TContinueCompletion() or
   TReturnCompletion()
 
 /** A completion of a statement or an expression. */
@@ -67,6 +62,13 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
+/** Holds if node `n` has the Boolean constant value `value`. */
+private predicate isBooleanConstant(AstNode n, Boolean value) {
+  n.(LiteralExpr).getTextValue() = value.toString()
+  or
+  isBooleanConstant(n.(ParenExpr).getExpr(), value)
+}
+
 /**
  * A completion that represents evaluation of an expression
  * with a Boolean value.
@@ -74,17 +76,21 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) {
+  private predicate isValidForSpecific0(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
-    any(MatchArm arm).getGuard() = e
+    e = any(WhileExpr c).getCondition()
+    or
+    any(MatchGuard guard).getCondition() = e
     or
     exists(BinaryExpr expr |
       expr.getOperatorName() = ["&&", "||"] and
       e = expr.getLhs()
     )
     or
-    exists(Expr parent | this.isValidForSpecific(parent) |
+    exists(Expr parent | this.isValidForSpecific0(parent) |
+      e = parent.(ParenExpr).getExpr()
+      or
       parent =
         any(PrefixExpr expr |
           expr.getOperatorName() = "!" and
@@ -100,6 +106,15 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
       parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
       or
       parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
+    )
+  }
+
+  override predicate isValidForSpecific(AstNode e) {
+    this.isValidForSpecific0(e) and
+    (
+      isBooleanConstant(e, value)
+      or
+      not isBooleanConstant(e, _)
     )
   }
 
@@ -128,42 +143,23 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 }
 
 /**
- * A completion that represents a break or a continue.
+ * A completion that represents a `break`.
  */
-class LoopJumpCompletion extends TLoopCompletion, Completion {
-  override LoopJumpSuccessor getAMatchingSuccessorType() {
-    result = TLoopSuccessor(this.getKind(), this.getLabelType())
-  }
+class BreakCompletion extends TBreakCompletion, Completion {
+  override BreakSuccessor getAMatchingSuccessorType() { any() }
 
-  final TLoopJumpType getKind() { this = TLoopCompletion(result, _) }
+  override predicate isValidForSpecific(AstNode e) { e instanceof BreakExpr }
 
-  final TLabelType getLabelType() { this = TLoopCompletion(_, result) }
+  override string toString() { result = this.getAMatchingSuccessorType().toString() }
+}
 
-  final predicate hasLabel() { this.getLabelType() = TLabel(_) }
+/**
+ * A completion that represents a `continue`.
+ */
+class ContinueCompletion extends TContinueCompletion, Completion {
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
 
-  final string getLabelName() { TLabel(result) = this.getLabelType() }
-
-  final predicate isContinue() { this.getKind() = TContinueJump() }
-
-  final predicate isBreak() { this.getKind() = TBreakJump() }
-
-  override predicate isValidForSpecific(AstNode e) {
-    this.isBreak() and
-    e instanceof BreakExpr and
-    (
-      not e.(BreakExpr).hasLifetime() and not this.hasLabel()
-      or
-      e.(BreakExpr).getLifetime().getText() = this.getLabelName()
-    )
-    or
-    this.isContinue() and
-    e instanceof ContinueExpr and
-    (
-      not e.(ContinueExpr).hasLifetime() and not this.hasLabel()
-      or
-      e.(ContinueExpr).getLifetime().getText() = this.getLabelName()
-    )
-  }
+  override predicate isValidForSpecific(AstNode e) { e instanceof ContinueExpr }
 
   override string toString() { result = this.getAMatchingSuccessorType().toString() }
 }

@@ -13,5 +13,9 @@ namespace My.Qltest
         public static object StepArgReturnGenerated(object x) => throw null;
 
         public static object StepArgReturnGeneratedIgnored(object x) => throw null;
+
+        public void SetValue(object o) => throw null;
+
+        public object GetValue() => throw null;
     }
 }
