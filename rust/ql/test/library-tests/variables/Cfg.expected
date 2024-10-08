@@ -602,90 +602,142 @@ edges
 | variables.rs:354:5:354:16 | CallExpr | variables.rs:351:17:355:1 | BlockExpr |  |
 | variables.rs:354:5:354:17 | ExprStmt | variables.rs:354:5:354:13 | PathExpr |  |
 | variables.rs:354:15:354:15 | x | variables.rs:354:5:354:16 | CallExpr |  |
-| variables.rs:357:1:383:1 | enter main | variables.rs:358:5:358:25 | ExprStmt |  |
-| variables.rs:357:1:383:1 | exit main (normal) | variables.rs:357:1:383:1 | exit main |  |
-| variables.rs:357:11:383:1 | BlockExpr | variables.rs:357:1:383:1 | exit main (normal) |  |
-| variables.rs:358:5:358:22 | PathExpr | variables.rs:358:5:358:24 | CallExpr |  |
-| variables.rs:358:5:358:24 | CallExpr | variables.rs:359:5:359:23 | ExprStmt |  |
-| variables.rs:358:5:358:25 | ExprStmt | variables.rs:358:5:358:22 | PathExpr |  |
-| variables.rs:359:5:359:20 | PathExpr | variables.rs:359:5:359:22 | CallExpr |  |
-| variables.rs:359:5:359:22 | CallExpr | variables.rs:360:5:360:23 | ExprStmt |  |
-| variables.rs:359:5:359:23 | ExprStmt | variables.rs:359:5:359:20 | PathExpr |  |
-| variables.rs:360:5:360:20 | PathExpr | variables.rs:360:5:360:22 | CallExpr |  |
-| variables.rs:360:5:360:22 | CallExpr | variables.rs:361:5:361:23 | ExprStmt |  |
-| variables.rs:360:5:360:23 | ExprStmt | variables.rs:360:5:360:20 | PathExpr |  |
-| variables.rs:361:5:361:20 | PathExpr | variables.rs:361:5:361:22 | CallExpr |  |
-| variables.rs:361:5:361:22 | CallExpr | variables.rs:362:5:362:19 | ExprStmt |  |
-| variables.rs:361:5:361:23 | ExprStmt | variables.rs:361:5:361:20 | PathExpr |  |
-| variables.rs:362:5:362:16 | PathExpr | variables.rs:362:5:362:18 | CallExpr |  |
-| variables.rs:362:5:362:18 | CallExpr | variables.rs:363:5:363:19 | ExprStmt |  |
-| variables.rs:362:5:362:19 | ExprStmt | variables.rs:362:5:362:16 | PathExpr |  |
-| variables.rs:363:5:363:16 | PathExpr | variables.rs:363:5:363:18 | CallExpr |  |
-| variables.rs:363:5:363:18 | CallExpr | variables.rs:364:5:364:19 | ExprStmt |  |
-| variables.rs:363:5:363:19 | ExprStmt | variables.rs:363:5:363:16 | PathExpr |  |
-| variables.rs:364:5:364:16 | PathExpr | variables.rs:364:5:364:18 | CallExpr |  |
-| variables.rs:364:5:364:18 | CallExpr | variables.rs:365:5:365:19 | ExprStmt |  |
-| variables.rs:364:5:364:19 | ExprStmt | variables.rs:364:5:364:16 | PathExpr |  |
-| variables.rs:365:5:365:16 | PathExpr | variables.rs:365:5:365:18 | CallExpr |  |
-| variables.rs:365:5:365:18 | CallExpr | variables.rs:366:5:366:21 | ExprStmt |  |
-| variables.rs:365:5:365:19 | ExprStmt | variables.rs:365:5:365:16 | PathExpr |  |
-| variables.rs:366:5:366:18 | PathExpr | variables.rs:366:5:366:20 | CallExpr |  |
-| variables.rs:366:5:366:20 | CallExpr | variables.rs:367:5:367:21 | ExprStmt |  |
-| variables.rs:366:5:366:21 | ExprStmt | variables.rs:366:5:366:18 | PathExpr |  |
-| variables.rs:367:5:367:18 | PathExpr | variables.rs:367:5:367:20 | CallExpr |  |
-| variables.rs:367:5:367:20 | CallExpr | variables.rs:368:5:368:21 | ExprStmt |  |
-| variables.rs:367:5:367:21 | ExprStmt | variables.rs:367:5:367:18 | PathExpr |  |
-| variables.rs:368:5:368:18 | PathExpr | variables.rs:368:5:368:20 | CallExpr |  |
-| variables.rs:368:5:368:20 | CallExpr | variables.rs:369:5:369:21 | ExprStmt |  |
-| variables.rs:368:5:368:21 | ExprStmt | variables.rs:368:5:368:18 | PathExpr |  |
-| variables.rs:369:5:369:18 | PathExpr | variables.rs:369:5:369:20 | CallExpr |  |
-| variables.rs:369:5:369:20 | CallExpr | variables.rs:370:5:370:21 | ExprStmt |  |
-| variables.rs:369:5:369:21 | ExprStmt | variables.rs:369:5:369:18 | PathExpr |  |
-| variables.rs:370:5:370:18 | PathExpr | variables.rs:370:5:370:20 | CallExpr |  |
-| variables.rs:370:5:370:20 | CallExpr | variables.rs:371:5:371:21 | ExprStmt |  |
-| variables.rs:370:5:370:21 | ExprStmt | variables.rs:370:5:370:18 | PathExpr |  |
-| variables.rs:371:5:371:18 | PathExpr | variables.rs:371:5:371:20 | CallExpr |  |
-| variables.rs:371:5:371:20 | CallExpr | variables.rs:372:5:372:21 | ExprStmt |  |
-| variables.rs:371:5:371:21 | ExprStmt | variables.rs:371:5:371:18 | PathExpr |  |
-| variables.rs:372:5:372:18 | PathExpr | variables.rs:372:5:372:20 | CallExpr |  |
-| variables.rs:372:5:372:20 | CallExpr | variables.rs:373:5:373:21 | ExprStmt |  |
-| variables.rs:372:5:372:21 | ExprStmt | variables.rs:372:5:372:18 | PathExpr |  |
-| variables.rs:373:5:373:18 | PathExpr | variables.rs:373:5:373:20 | CallExpr |  |
-| variables.rs:373:5:373:20 | CallExpr | variables.rs:374:5:374:21 | ExprStmt |  |
-| variables.rs:373:5:373:21 | ExprStmt | variables.rs:373:5:373:18 | PathExpr |  |
-| variables.rs:374:5:374:18 | PathExpr | variables.rs:374:5:374:20 | CallExpr |  |
-| variables.rs:374:5:374:20 | CallExpr | variables.rs:375:5:375:36 | ExprStmt |  |
-| variables.rs:374:5:374:21 | ExprStmt | variables.rs:374:5:374:18 | PathExpr |  |
-| variables.rs:375:5:375:18 | PathExpr | variables.rs:375:20:375:22 | "a" |  |
-| variables.rs:375:5:375:35 | CallExpr | variables.rs:376:5:376:37 | ExprStmt |  |
-| variables.rs:375:5:375:36 | ExprStmt | variables.rs:375:5:375:18 | PathExpr |  |
-| variables.rs:375:20:375:22 | "a" | variables.rs:375:26:375:28 | "b" |  |
-| variables.rs:375:25:375:34 | TupleExpr | variables.rs:375:5:375:35 | CallExpr |  |
-| variables.rs:375:26:375:28 | "b" | variables.rs:375:31:375:33 | "c" |  |
-| variables.rs:375:31:375:33 | "c" | variables.rs:375:25:375:34 | TupleExpr |  |
-| variables.rs:376:5:376:18 | PathExpr | variables.rs:376:20:376:31 | PathExpr |  |
-| variables.rs:376:5:376:36 | CallExpr | variables.rs:377:5:377:26 | ExprStmt |  |
-| variables.rs:376:5:376:37 | ExprStmt | variables.rs:376:5:376:18 | PathExpr |  |
-| variables.rs:376:20:376:31 | PathExpr | variables.rs:376:33:376:34 | 45 |  |
-| variables.rs:376:20:376:35 | CallExpr | variables.rs:376:5:376:36 | CallExpr |  |
-| variables.rs:376:33:376:34 | 45 | variables.rs:376:20:376:35 | CallExpr |  |
-| variables.rs:377:5:377:23 | PathExpr | variables.rs:377:5:377:25 | CallExpr |  |
-| variables.rs:377:5:377:25 | CallExpr | variables.rs:378:5:378:23 | ExprStmt |  |
-| variables.rs:377:5:377:26 | ExprStmt | variables.rs:377:5:377:23 | PathExpr |  |
+| variables.rs:357:1:363:1 | enter alias | variables.rs:358:5:358:18 | LetStmt |  |
+| variables.rs:357:1:363:1 | exit alias (normal) | variables.rs:357:1:363:1 | exit alias |  |
+| variables.rs:357:12:363:1 | BlockExpr | variables.rs:357:1:363:1 | exit alias (normal) |  |
+| variables.rs:358:5:358:18 | LetStmt | variables.rs:358:17:358:17 | 1 |  |
+| variables.rs:358:9:358:13 | x | variables.rs:359:5:360:15 | LetStmt | match, no-match |
+| variables.rs:358:17:358:17 | 1 | variables.rs:358:9:358:13 | x |  |
+| variables.rs:359:5:360:15 | LetStmt | variables.rs:360:14:360:14 | x |  |
+| variables.rs:359:9:359:9 | y | variables.rs:361:5:361:11 | ExprStmt | match, no-match |
+| variables.rs:360:9:360:14 | RefExpr | variables.rs:359:9:359:9 | y |  |
+| variables.rs:360:14:360:14 | x | variables.rs:360:9:360:14 | RefExpr |  |
+| variables.rs:361:5:361:6 | * ... | variables.rs:361:10:361:10 | 2 |  |
+| variables.rs:361:5:361:10 | ... = ... | variables.rs:362:5:362:17 | ExprStmt |  |
+| variables.rs:361:5:361:11 | ExprStmt | variables.rs:361:6:361:6 | y |  |
+| variables.rs:361:6:361:6 | y | variables.rs:361:5:361:6 | * ... |  |
+| variables.rs:361:10:361:10 | 2 | variables.rs:361:5:361:10 | ... = ... |  |
+| variables.rs:362:5:362:13 | PathExpr | variables.rs:362:15:362:15 | x |  |
+| variables.rs:362:5:362:16 | CallExpr | variables.rs:357:12:363:1 | BlockExpr |  |
+| variables.rs:362:5:362:17 | ExprStmt | variables.rs:362:5:362:13 | PathExpr |  |
+| variables.rs:362:15:362:15 | x | variables.rs:362:5:362:16 | CallExpr |  |
+| variables.rs:365:1:373:1 | enter capture | variables.rs:366:5:366:19 | LetStmt |  |
+| variables.rs:365:1:373:1 | exit capture (normal) | variables.rs:365:1:373:1 | exit capture |  |
+| variables.rs:365:14:373:1 | BlockExpr | variables.rs:365:1:373:1 | exit capture (normal) |  |
+| variables.rs:366:5:366:19 | LetStmt | variables.rs:366:17:366:18 | 10 |  |
+| variables.rs:366:9:366:13 | x | variables.rs:367:5:370:6 | LetStmt | match, no-match |
+| variables.rs:366:17:366:18 | 10 | variables.rs:366:9:366:13 | x |  |
+| variables.rs:367:5:370:6 | LetStmt | variables.rs:367:19:370:5 | ClosureExpr |  |
+| variables.rs:367:9:367:15 | cap | variables.rs:371:5:371:10 | ExprStmt | match, no-match |
+| variables.rs:367:19:370:5 | ClosureExpr | variables.rs:367:9:367:15 | cap |  |
+| variables.rs:367:19:370:5 | enter ClosureExpr | variables.rs:368:9:368:21 | ExprStmt |  |
+| variables.rs:367:19:370:5 | exit ClosureExpr (normal) | variables.rs:367:19:370:5 | exit ClosureExpr |  |
+| variables.rs:367:22:370:5 | BlockExpr | variables.rs:367:19:370:5 | exit ClosureExpr (normal) |  |
+| variables.rs:368:9:368:17 | PathExpr | variables.rs:368:19:368:19 | PathExpr |  |
+| variables.rs:368:9:368:20 | CallExpr | variables.rs:369:9:369:15 | ExprStmt |  |
+| variables.rs:368:9:368:21 | ExprStmt | variables.rs:368:9:368:17 | PathExpr |  |
+| variables.rs:368:19:368:19 | PathExpr | variables.rs:368:9:368:20 | CallExpr |  |
+| variables.rs:369:9:369:9 | PathExpr | variables.rs:369:14:369:14 | 1 |  |
+| variables.rs:369:9:369:14 | ... += ... | variables.rs:367:22:370:5 | BlockExpr |  |
+| variables.rs:369:9:369:15 | ExprStmt | variables.rs:369:9:369:9 | PathExpr |  |
+| variables.rs:369:14:369:14 | 1 | variables.rs:369:9:369:14 | ... += ... |  |
+| variables.rs:371:5:371:7 | cap | variables.rs:371:5:371:9 | CallExpr |  |
+| variables.rs:371:5:371:9 | CallExpr | variables.rs:372:5:372:17 | ExprStmt |  |
+| variables.rs:371:5:371:10 | ExprStmt | variables.rs:371:5:371:7 | cap |  |
+| variables.rs:372:5:372:13 | PathExpr | variables.rs:372:15:372:15 | x |  |
+| variables.rs:372:5:372:16 | CallExpr | variables.rs:365:14:373:1 | BlockExpr |  |
+| variables.rs:372:5:372:17 | ExprStmt | variables.rs:372:5:372:13 | PathExpr |  |
+| variables.rs:372:15:372:15 | x | variables.rs:372:5:372:16 | CallExpr |  |
+| variables.rs:375:1:403:1 | enter main | variables.rs:376:5:376:25 | ExprStmt |  |
+| variables.rs:375:1:403:1 | exit main (normal) | variables.rs:375:1:403:1 | exit main |  |
+| variables.rs:375:11:403:1 | BlockExpr | variables.rs:375:1:403:1 | exit main (normal) |  |
+| variables.rs:376:5:376:22 | PathExpr | variables.rs:376:5:376:24 | CallExpr |  |
+| variables.rs:376:5:376:24 | CallExpr | variables.rs:377:5:377:23 | ExprStmt |  |
+| variables.rs:376:5:376:25 | ExprStmt | variables.rs:376:5:376:22 | PathExpr |  |
+| variables.rs:377:5:377:20 | PathExpr | variables.rs:377:5:377:22 | CallExpr |  |
+| variables.rs:377:5:377:22 | CallExpr | variables.rs:378:5:378:23 | ExprStmt |  |
+| variables.rs:377:5:377:23 | ExprStmt | variables.rs:377:5:377:20 | PathExpr |  |
 | variables.rs:378:5:378:20 | PathExpr | variables.rs:378:5:378:22 | CallExpr |  |
-| variables.rs:378:5:378:22 | CallExpr | variables.rs:379:5:379:19 | ExprStmt |  |
+| variables.rs:378:5:378:22 | CallExpr | variables.rs:379:5:379:23 | ExprStmt |  |
 | variables.rs:378:5:378:23 | ExprStmt | variables.rs:378:5:378:20 | PathExpr |  |
-| variables.rs:379:5:379:16 | PathExpr | variables.rs:379:5:379:18 | CallExpr |  |
-| variables.rs:379:5:379:18 | CallExpr | variables.rs:380:5:380:17 | ExprStmt |  |
-| variables.rs:379:5:379:19 | ExprStmt | variables.rs:379:5:379:16 | PathExpr |  |
-| variables.rs:380:5:380:14 | PathExpr | variables.rs:380:5:380:16 | CallExpr |  |
-| variables.rs:380:5:380:16 | CallExpr | variables.rs:381:5:381:13 | ExprStmt |  |
-| variables.rs:380:5:380:17 | ExprStmt | variables.rs:380:5:380:14 | PathExpr |  |
-| variables.rs:381:5:381:10 | PathExpr | variables.rs:381:5:381:12 | CallExpr |  |
-| variables.rs:381:5:381:12 | CallExpr | variables.rs:382:5:382:17 | ExprStmt |  |
-| variables.rs:381:5:381:13 | ExprStmt | variables.rs:381:5:381:10 | PathExpr |  |
-| variables.rs:382:5:382:14 | PathExpr | variables.rs:382:5:382:16 | CallExpr |  |
-| variables.rs:382:5:382:16 | CallExpr | variables.rs:357:11:383:1 | BlockExpr |  |
-| variables.rs:382:5:382:17 | ExprStmt | variables.rs:382:5:382:14 | PathExpr |  |
+| variables.rs:379:5:379:20 | PathExpr | variables.rs:379:5:379:22 | CallExpr |  |
+| variables.rs:379:5:379:22 | CallExpr | variables.rs:380:5:380:19 | ExprStmt |  |
+| variables.rs:379:5:379:23 | ExprStmt | variables.rs:379:5:379:20 | PathExpr |  |
+| variables.rs:380:5:380:16 | PathExpr | variables.rs:380:5:380:18 | CallExpr |  |
+| variables.rs:380:5:380:18 | CallExpr | variables.rs:381:5:381:19 | ExprStmt |  |
+| variables.rs:380:5:380:19 | ExprStmt | variables.rs:380:5:380:16 | PathExpr |  |
+| variables.rs:381:5:381:16 | PathExpr | variables.rs:381:5:381:18 | CallExpr |  |
+| variables.rs:381:5:381:18 | CallExpr | variables.rs:382:5:382:19 | ExprStmt |  |
+| variables.rs:381:5:381:19 | ExprStmt | variables.rs:381:5:381:16 | PathExpr |  |
+| variables.rs:382:5:382:16 | PathExpr | variables.rs:382:5:382:18 | CallExpr |  |
+| variables.rs:382:5:382:18 | CallExpr | variables.rs:383:5:383:19 | ExprStmt |  |
+| variables.rs:382:5:382:19 | ExprStmt | variables.rs:382:5:382:16 | PathExpr |  |
+| variables.rs:383:5:383:16 | PathExpr | variables.rs:383:5:383:18 | CallExpr |  |
+| variables.rs:383:5:383:18 | CallExpr | variables.rs:384:5:384:21 | ExprStmt |  |
+| variables.rs:383:5:383:19 | ExprStmt | variables.rs:383:5:383:16 | PathExpr |  |
+| variables.rs:384:5:384:18 | PathExpr | variables.rs:384:5:384:20 | CallExpr |  |
+| variables.rs:384:5:384:20 | CallExpr | variables.rs:385:5:385:21 | ExprStmt |  |
+| variables.rs:384:5:384:21 | ExprStmt | variables.rs:384:5:384:18 | PathExpr |  |
+| variables.rs:385:5:385:18 | PathExpr | variables.rs:385:5:385:20 | CallExpr |  |
+| variables.rs:385:5:385:20 | CallExpr | variables.rs:386:5:386:21 | ExprStmt |  |
+| variables.rs:385:5:385:21 | ExprStmt | variables.rs:385:5:385:18 | PathExpr |  |
+| variables.rs:386:5:386:18 | PathExpr | variables.rs:386:5:386:20 | CallExpr |  |
+| variables.rs:386:5:386:20 | CallExpr | variables.rs:387:5:387:21 | ExprStmt |  |
+| variables.rs:386:5:386:21 | ExprStmt | variables.rs:386:5:386:18 | PathExpr |  |
+| variables.rs:387:5:387:18 | PathExpr | variables.rs:387:5:387:20 | CallExpr |  |
+| variables.rs:387:5:387:20 | CallExpr | variables.rs:388:5:388:21 | ExprStmt |  |
+| variables.rs:387:5:387:21 | ExprStmt | variables.rs:387:5:387:18 | PathExpr |  |
+| variables.rs:388:5:388:18 | PathExpr | variables.rs:388:5:388:20 | CallExpr |  |
+| variables.rs:388:5:388:20 | CallExpr | variables.rs:389:5:389:21 | ExprStmt |  |
+| variables.rs:388:5:388:21 | ExprStmt | variables.rs:388:5:388:18 | PathExpr |  |
+| variables.rs:389:5:389:18 | PathExpr | variables.rs:389:5:389:20 | CallExpr |  |
+| variables.rs:389:5:389:20 | CallExpr | variables.rs:390:5:390:21 | ExprStmt |  |
+| variables.rs:389:5:389:21 | ExprStmt | variables.rs:389:5:389:18 | PathExpr |  |
+| variables.rs:390:5:390:18 | PathExpr | variables.rs:390:5:390:20 | CallExpr |  |
+| variables.rs:390:5:390:20 | CallExpr | variables.rs:391:5:391:21 | ExprStmt |  |
+| variables.rs:390:5:390:21 | ExprStmt | variables.rs:390:5:390:18 | PathExpr |  |
+| variables.rs:391:5:391:18 | PathExpr | variables.rs:391:5:391:20 | CallExpr |  |
+| variables.rs:391:5:391:20 | CallExpr | variables.rs:392:5:392:21 | ExprStmt |  |
+| variables.rs:391:5:391:21 | ExprStmt | variables.rs:391:5:391:18 | PathExpr |  |
+| variables.rs:392:5:392:18 | PathExpr | variables.rs:392:5:392:20 | CallExpr |  |
+| variables.rs:392:5:392:20 | CallExpr | variables.rs:393:5:393:36 | ExprStmt |  |
+| variables.rs:392:5:392:21 | ExprStmt | variables.rs:392:5:392:18 | PathExpr |  |
+| variables.rs:393:5:393:18 | PathExpr | variables.rs:393:20:393:22 | "a" |  |
+| variables.rs:393:5:393:35 | CallExpr | variables.rs:394:5:394:37 | ExprStmt |  |
+| variables.rs:393:5:393:36 | ExprStmt | variables.rs:393:5:393:18 | PathExpr |  |
+| variables.rs:393:20:393:22 | "a" | variables.rs:393:26:393:28 | "b" |  |
+| variables.rs:393:25:393:34 | TupleExpr | variables.rs:393:5:393:35 | CallExpr |  |
+| variables.rs:393:26:393:28 | "b" | variables.rs:393:31:393:33 | "c" |  |
+| variables.rs:393:31:393:33 | "c" | variables.rs:393:25:393:34 | TupleExpr |  |
+| variables.rs:394:5:394:18 | PathExpr | variables.rs:394:20:394:31 | PathExpr |  |
+| variables.rs:394:5:394:36 | CallExpr | variables.rs:395:5:395:26 | ExprStmt |  |
+| variables.rs:394:5:394:37 | ExprStmt | variables.rs:394:5:394:18 | PathExpr |  |
+| variables.rs:394:20:394:31 | PathExpr | variables.rs:394:33:394:34 | 45 |  |
+| variables.rs:394:20:394:35 | CallExpr | variables.rs:394:5:394:36 | CallExpr |  |
+| variables.rs:394:33:394:34 | 45 | variables.rs:394:20:394:35 | CallExpr |  |
+| variables.rs:395:5:395:23 | PathExpr | variables.rs:395:5:395:25 | CallExpr |  |
+| variables.rs:395:5:395:25 | CallExpr | variables.rs:396:5:396:23 | ExprStmt |  |
+| variables.rs:395:5:395:26 | ExprStmt | variables.rs:395:5:395:23 | PathExpr |  |
+| variables.rs:396:5:396:20 | PathExpr | variables.rs:396:5:396:22 | CallExpr |  |
+| variables.rs:396:5:396:22 | CallExpr | variables.rs:397:5:397:19 | ExprStmt |  |
+| variables.rs:396:5:396:23 | ExprStmt | variables.rs:396:5:396:20 | PathExpr |  |
+| variables.rs:397:5:397:16 | PathExpr | variables.rs:397:5:397:18 | CallExpr |  |
+| variables.rs:397:5:397:18 | CallExpr | variables.rs:398:5:398:17 | ExprStmt |  |
+| variables.rs:397:5:397:19 | ExprStmt | variables.rs:397:5:397:16 | PathExpr |  |
+| variables.rs:398:5:398:14 | PathExpr | variables.rs:398:5:398:16 | CallExpr |  |
+| variables.rs:398:5:398:16 | CallExpr | variables.rs:399:5:399:13 | ExprStmt |  |
+| variables.rs:398:5:398:17 | ExprStmt | variables.rs:398:5:398:14 | PathExpr |  |
+| variables.rs:399:5:399:10 | PathExpr | variables.rs:399:5:399:12 | CallExpr |  |
+| variables.rs:399:5:399:12 | CallExpr | variables.rs:400:5:400:17 | ExprStmt |  |
+| variables.rs:399:5:399:13 | ExprStmt | variables.rs:399:5:399:10 | PathExpr |  |
+| variables.rs:400:5:400:14 | PathExpr | variables.rs:400:5:400:16 | CallExpr |  |
+| variables.rs:400:5:400:16 | CallExpr | variables.rs:401:5:401:12 | ExprStmt |  |
+| variables.rs:400:5:400:17 | ExprStmt | variables.rs:400:5:400:14 | PathExpr |  |
+| variables.rs:401:5:401:9 | PathExpr | variables.rs:401:5:401:11 | CallExpr |  |
+| variables.rs:401:5:401:11 | CallExpr | variables.rs:402:5:402:14 | ExprStmt |  |
+| variables.rs:401:5:401:12 | ExprStmt | variables.rs:401:5:401:9 | PathExpr |  |
+| variables.rs:402:5:402:11 | PathExpr | variables.rs:402:5:402:13 | CallExpr |  |
+| variables.rs:402:5:402:13 | CallExpr | variables.rs:375:11:403:1 | BlockExpr |  |
+| variables.rs:402:5:402:14 | ExprStmt | variables.rs:402:5:402:11 | PathExpr |  |
 breakTarget
 continueTarget
