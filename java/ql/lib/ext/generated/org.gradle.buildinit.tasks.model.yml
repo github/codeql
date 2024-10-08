@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getDsl", "()", "", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.dsl]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getInsecureProtocol", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getJavaVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getPackageName", "()", "", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.packageName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getProjectLayoutRegistry", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getProjectName", "()", "", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.projectName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getSplitProject", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getTestFramework", "()", "", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.testFramework]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getType", "()", "", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.type]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getUseIncubating", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "setDsl", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.dsl]", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "setPackageName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.packageName]", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "setProjectName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.projectName]", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "setTestFramework", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.testFramework]", "value", "dfc-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "setType", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.buildinit.tasks.InitBuild.type]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getType", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getType", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getType", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", True, "getType", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getAllowFileOverwrite", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getAvailableBuildTypes", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getAvailableDSLs", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getAvailableTestFrameworks", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getComments", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "getUseDefaults", "()", "summary", "df-generated"]
+      - ["org.gradle.buildinit.tasks", "InitBuild", "setupProjectLayout", "()", "summary", "df-generated"]

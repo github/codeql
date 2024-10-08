@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", True, "GitFileRepository", "(File)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", True, "GitFileRepository", "(String,File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.vcs.fixtures.GitFileRepository.repoName]", "value", "dfc-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", True, "getGit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", True, "getName", "()", "", "Argument[this].SyntheticField[org.gradle.vcs.fixtures.GitFileRepository.repoName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", True, "init", "(File)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", True, "GitHttpRepository", "(BlockingHttpServer,String,File)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.vcs.fixtures.GitHttpRepository.backingRepo].SyntheticField[org.gradle.vcs.fixtures.GitFileRepository.repoName]", "value", "dfc-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", True, "getUrl", "()", "", "Argument[this].SyntheticField[org.gradle.vcs.fixtures.GitHttpRepository.backingRepo].SyntheticField[org.gradle.vcs.fixtures.GitFileRepository.repoName]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", True, "listVersions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "addSubmodule", "(GitFileRepository)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "checkout", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "close", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "commit", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "commit", "(String,String[])", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "createAnnotatedTag", "(String,String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "createBranch", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "createLightWeightTag", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "file", "(Object[])", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "getHead", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "getId", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "getUrl", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "getWorkTree", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitFileRepository", "updateSubmodulesToLatest", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "apply", "(Statement,Description)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "checkout", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "commit", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "createBranch", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "createLightWeightTag", "(String)", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "expectCloneSomething", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "expectListVersions", "()", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "file", "(Object[])", "summary", "df-generated"]
+      - ["org.gradle.vcs.fixtures", "GitHttpRepository", "getWorkTree", "()", "summary", "df-generated"]

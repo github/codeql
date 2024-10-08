@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.reporting", "HtmlReportBuilder", True, "requireResource", "(URL)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.reporting", "TabbedPageRenderer", True, "render", "(Object,HtmlPageBuilder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.reporting", "HtmlReportRenderer", True, "render", "(Object,ReportRenderer,File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", True, "render", "(Object,ReportRenderer,File)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", True, "renderRawSinglePage", "(Object,ReportRenderer,File)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", True, "renderSinglePage", "(Object,ReportRenderer,File)", "", "Argument[2]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.reporting", "CodePanelRenderer", "render", "(String,SimpleHtmlWriter)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", "render", "(Object,ReportRenderer,File)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", "renderRawSinglePage", "(Object,ReportRenderer,File)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "HtmlReportRenderer", "renderSinglePage", "(Object,ReportRenderer,File)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "ReportRenderer", "render", "(Object,Object)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "TabsRenderer", "add", "(String,ReportRenderer)", "summary", "df-generated"]
+      - ["org.gradle.reporting", "TabsRenderer", "clear", "()", "summary", "df-generated"]
+      - ["org.gradle.reporting", "TabsRenderer", "render", "(Object,SimpleHtmlWriter)", "summary", "df-generated"]

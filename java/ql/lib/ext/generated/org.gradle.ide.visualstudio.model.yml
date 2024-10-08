@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.ide.visualstudio", "ConfigFile", True, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "ConfigFile", True, "setLocation", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "TextConfigFile", True, "withContent", "(Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "VisualStudioExtension", True, "getProjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "VisualStudioProject", True, "getFiltersFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "VisualStudioProject", True, "getProjectFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "VisualStudioRootExtension", True, "getSolution", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "VisualStudioSolution", True, "getSolutionFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio", "XmlConfigFile", True, "withXml", "(Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

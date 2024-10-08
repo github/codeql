@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "XcodebuildExecutor", "(TestFile)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "withArgument", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "withConfiguration", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "withProject", "(XcodeProjectPackage)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "withScheme", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", True, "withWorkspace", "(XcodeWorkspacePackage)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", "execWithFailure", "(XcodebuildExecutor$XcodeAction)", "summary", "df-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", "fails", "()", "summary", "df-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", "fails", "(XcodebuildExecutor$XcodeAction)", "summary", "df-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", "succeeds", "()", "summary", "df-generated"]
+      - ["org.gradle.ide.xcode.fixtures", "XcodebuildExecutor", "succeeds", "(XcodebuildExecutor$XcodeAction)", "summary", "df-generated"]

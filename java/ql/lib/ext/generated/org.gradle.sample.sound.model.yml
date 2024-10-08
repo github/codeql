@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.sample.sound", "SoundFeedbackPlugin", "apply", "(Settings)", "summary", "df-generated"]
+      - ["org.gradle.sample.sound", "SoundPlay", "execute", "(SoundPlay$Parameters)", "summary", "df-generated"]
+      - ["org.gradle.sample.sound", "SoundService", "playSoundFile", "(File)", "summary", "df-generated"]

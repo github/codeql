@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "find", "(String)", "", "Argument[this].SyntheticField[gradlebuild.docs.model.SimpleClassMetaDataRepository.classes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "get", "(String)", "", "Argument[this].SyntheticField[gradlebuild.docs.model.SimpleClassMetaDataRepository.classes].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "put", "(String,Attachable)", "", "Argument[0]", "Argument[this].SyntheticField[gradlebuild.docs.model.SimpleClassMetaDataRepository.classes].MapKey", "value", "dfc-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "put", "(String,Attachable)", "", "Argument[1]", "Argument[this].SyntheticField[gradlebuild.docs.model.SimpleClassMetaDataRepository.classes].MapValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "each", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "each", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "each", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "each", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "load", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", True, "store", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", "each", "(Action)", "summary", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", "each", "(Closure)", "summary", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", "load", "(File)", "summary", "df-generated"]
+      - ["gradlebuild.docs.model", "SimpleClassMetaDataRepository", "store", "(File)", "summary", "df-generated"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.language.objectivecpp.plugins", "ObjectiveCppLangPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.gradle.language.objectivecpp.plugins", "ObjectiveCppPlugin", "apply", "(Project)", "summary", "df-generated"]

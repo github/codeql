@@ -1,0 +1,51 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.initialization.layout", "BuildLayout", True, "BuildLayout", "(File,File,File,ScriptFileResolver)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayout.rootDirectory]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayout", True, "getRootDirectory", "()", "", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayout.rootDirectory]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(BuildLayoutParameters)", "", "Argument[0].SyntheticField[org.gradle.initialization.BuildLayoutParameters.buildFile]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.buildFile]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(BuildLayoutParameters)", "", "Argument[0].SyntheticField[org.gradle.initialization.BuildLayoutParameters.currentDir]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.currentDir]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(BuildLayoutParameters)", "", "Argument[0].SyntheticField[org.gradle.initialization.BuildLayoutParameters.settingsFile]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.settingsFile]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(StartParameter)", "", "Argument[0].SyntheticField[org.gradle.StartParameter.buildFile]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.buildFile]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(StartParameter)", "", "Argument[0].SyntheticField[org.gradle.StartParameter.currentDir]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.currentDir]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "BuildLayoutConfiguration", "(StartParameter)", "", "Argument[0].SyntheticField[org.gradle.StartParameter.settingsFile]", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.settingsFile]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "getBuildFile", "()", "", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.buildFile]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "getCurrentDir", "()", "", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.currentDir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", True, "getSettingsFile", "()", "", "Argument[this].SyntheticField[org.gradle.initialization.layout.BuildLayoutConfiguration.settingsFile]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "BuildLayoutFactory", "(ScriptFileResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "findExistingSettingsFileIn", "(File)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(BuildLayoutConfiguration)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(BuildLayoutConfiguration)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(File,boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(File,boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "GlobalCacheDir", True, "getDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "ProjectCacheDir", True, "ProjectCacheDir", "(File,BuildOperationRunner,Deleter)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.initialization.layout.ProjectCacheDir.dir]", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "ProjectCacheDir", True, "getDir", "()", "", "Argument[this].SyntheticField[org.gradle.initialization.layout.ProjectCacheDir.dir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", True, "ResolvedBuildLayout", "(GradleInternal,BuildLayout,BuildScopedCacheBuilderFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", True, "ResolvedBuildLayout", "(GradleInternal,BuildLayout,BuildScopedCacheBuilderFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", True, "ResolvedBuildLayout", "(GradleInternal,BuildLayout,BuildScopedCacheBuilderFactory)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", True, "getBuildScopeCacheDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.initialization.layout", "BuildLayout", True, "isBuildDefinitionMissing", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "findExistingSettingsFileIn", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(BuildLayoutConfiguration)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutFactory", True, "getLayoutFor", "(File,boolean)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", True, "isBuildDefinitionMissing", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.initialization.layout", "BuildLayout", "isBuildDefinitionMissing", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", "isSearchUpwards", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "BuildLayoutConfiguration", "isUseEmptySettings", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "GlobalCacheDir", "GlobalCacheDir", "(GradleUserHomeDirProvider)", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "ProjectCacheDir", "stop", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", "getCurrentDirectory", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", "getGlobalScopeCacheDirectory", "()", "summary", "df-generated"]
+      - ["org.gradle.initialization.layout", "ResolvedBuildLayout", "isBuildDefinitionMissing", "()", "summary", "df-generated"]

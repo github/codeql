@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.tooling.model.eclipse", "EclipseRuntime", True, "getWorkspace", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model.eclipse", "EclipseRuntime", True, "setWorkspace", "(EclipseWorkspace)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.tooling.model.eclipse", "EclipseWorkspace", True, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model.eclipse", "EclipseWorkspace", True, "getProjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model.eclipse", "EclipseWorkspaceProject", True, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model.eclipse", "EclipseWorkspaceProject", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

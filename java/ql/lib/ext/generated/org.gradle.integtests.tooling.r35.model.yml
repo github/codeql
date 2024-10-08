@@ -4,4 +4,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["example", "ExamplePlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r35", "SimpleAction", "execute", "(BuildController)", "summary", "df-generated"]
