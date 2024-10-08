@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.location.altitude.impl.db", "AltitudeConverterDatabase", "mapParamsDao", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "AltitudeConverterDatabase", "tilesDao", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "MapParamsEntity", "fromValue", "(MapParamsProto)", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "MapParamsEntity", "toValue", "(byte[])", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "MapParamsEntity", "value", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "TilesEntity", "fromTile", "(S2TileProto)", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "TilesEntity", "tile", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "TilesEntity", "toTile", "(byte[])", "summary", "df-generated"]
+      - ["androidx.core.location.altitude.impl.db", "TilesEntity", "token", "()", "summary", "df-generated"]

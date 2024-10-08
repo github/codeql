@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.inspection", "ArtToolingImpl", True, "onExit", "(String,Object)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.inspection", "DefaultArtTooling", True, "DefaultArtTooling", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.inspection", "Inspector", True, "Inspector", "(Connection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.inspection", "InspectorFactory", True, "InspectorFactory", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.inspection.InspectorFactory.mInspectorId]", "value", "dfc-generated"]
+      - ["androidx.inspection", "InspectorFactory", True, "getInspectorId", "()", "", "Argument[this].SyntheticField[androidx.inspection.InspectorFactory.mInspectorId]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.inspection", "ArtToolingImpl", "addEntryHook", "(String,Class,String,ArtTooling$EntryHook)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "addExitHook", "(String,Class,String,ArtTooling$ExitHook)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "findInstances", "(Class)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "instance", "()", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onEntry", "(Object[])", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,boolean)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,byte)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,char)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,double)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,float)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,int)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,long)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "onExit", "(String,short)", "summary", "df-generated"]
+      - ["androidx.inspection", "ArtToolingImpl", "unregisterHooks", "(String)", "summary", "df-generated"]
+      - ["androidx.inspection", "Connection", "sendEvent", "(byte[])", "summary", "df-generated"]
+      - ["androidx.inspection", "DefaultArtTooling", "findInstances", "(Class)", "summary", "df-generated"]
+      - ["androidx.inspection", "DefaultArtTooling", "registerEntryHook", "(Class,String,ArtTooling$EntryHook)", "summary", "df-generated"]
+      - ["androidx.inspection", "DefaultArtTooling", "registerExitHook", "(Class,String,ArtTooling$ExitHook)", "summary", "df-generated"]
+      - ["androidx.inspection", "DefaultArtTooling", "unregisterHooks", "()", "summary", "df-generated"]
+      - ["androidx.inspection", "Inspector", "onDispose", "()", "summary", "df-generated"]
+      - ["androidx.inspection", "Inspector", "onReceiveCommand", "(byte[],Inspector$CommandCallback)", "summary", "df-generated"]
+      - ["androidx.inspection", "InspectorEnvironment", "executors", "()", "summary", "df-generated"]
+      - ["androidx.inspection", "InspectorFactory", "createInspector", "(Connection,InspectorEnvironment)", "summary", "df-generated"]

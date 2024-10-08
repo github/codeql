@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.cts.ast", "NegationNodeCtsTest", "testConstructor_mChildRetainsType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "NegationNodeCtsTest", "testConstructor_throwsOnNullNode", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "NegationNodeCtsTest", "testGetChildren_returnsListOfSizeOne", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "NegationNodeCtsTest", "testGetChildren_returnsViewOfList", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "NegationNodeCtsTest", "testSetChildren_throwsOnNullNode", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testConstructor_prefixVerbatimFalseByDefault", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testConstructor_throwsIfStringNull", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testCopyConstructor_fieldsCorrectlyCopied", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testCopyConstructor_originalUnchanged", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testCopyConstructor_throwsIfStringNodeNull", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast", "TextNodeCtsTest", "testGetChildren_alwaysReturnEmptyList", "()", "summary", "df-generated"]

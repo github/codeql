@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.util", "DBUtilTest", "verifyInstanceOfWindowedCursor", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "ignoreMalformed", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "testEmpty", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "testMultiple", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "testNegative", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "testNull", "()", "summary", "df-generated"]
+      - ["androidx.room.util", "StringUtilTest", "testSingle", "()", "summary", "df-generated"]

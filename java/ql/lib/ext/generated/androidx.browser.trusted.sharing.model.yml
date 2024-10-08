@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.browser.trusted.sharing", "ShareData", False, "ShareData", "(String,String,List)", "", "Argument[0]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareData.title]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareData", False, "ShareData", "(String,String,List)", "", "Argument[1]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareData.text]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareData", False, "ShareData", "(String,String,List)", "", "Argument[2]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareData.uris]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareData", False, "fromBundle", "(Bundle)", "", "Argument[0].MapValue", "ReturnValue.Field[androidx.browser.trusted.sharing.ShareData.uris]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareData", False, "toBundle", "()", "", "Argument[this].Field[androidx.browser.trusted.sharing.ShareData.uris].Element", "ReturnValue.MapValue.Element", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget$FileFormField", False, "FileFormField", "(String,List)", "", "Argument[0]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget$FileFormField.name]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget$FileFormField", False, "FileFormField", "(String,List)", "", "Argument[1].Element", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget$FileFormField.acceptedTypes].Element", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget$Params", True, "Params", "(String,String,List)", "", "Argument[0]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget$Params.title]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget$Params", True, "Params", "(String,String,List)", "", "Argument[1]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget$Params.text]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget$Params", True, "Params", "(String,String,List)", "", "Argument[2]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget$Params.files]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget", False, "ShareTarget", "(String,String,String,ShareTarget$Params)", "", "Argument[0]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget.action]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget", False, "ShareTarget", "(String,String,String,ShareTarget$Params)", "", "Argument[1]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget.method]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget", False, "ShareTarget", "(String,String,String,ShareTarget$Params)", "", "Argument[2]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget.encodingType]", "value", "dfc-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget", False, "ShareTarget", "(String,String,String,ShareTarget$Params)", "", "Argument[3]", "Argument[this].Field[androidx.browser.trusted.sharing.ShareTarget.params]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.browser.trusted.sharing", "ShareTarget", "fromBundle", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.browser.trusted.sharing", "ShareTarget", "toBundle", "()", "summary", "df-generated"]

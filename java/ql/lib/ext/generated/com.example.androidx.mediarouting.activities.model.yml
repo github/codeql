@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$ControllerDialogFragment", True, "ControllerDialogFragment", "(MainActivity,CheckBox)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$ControllerDialogFragment", True, "ControllerDialogFragment", "(MainActivity,CheckBox)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$DiscoveryFragment", False, "onCreateCallback", "()", "", "Argument[this].SyntheticField[com.example.androidx.mediarouting.activities.MainActivity$DiscoveryFragment.mCallback]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$DiscoveryFragment", False, "setCallback", "(MediaRouter$Callback)", "", "Argument[0]", "Argument[this].SyntheticField[com.example.androidx.mediarouting.activities.MainActivity$DiscoveryFragment.mCallback]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.activities", "AddEditRouteActivity", "launchActivity", "(Context,String)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$ControllerDialogFragment", "onCreateControllerDialog", "(Context,Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity$DiscoveryFragment", "onPrepareCallbackFlags", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity", "onKeyDown", "(int,KeyEvent)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity", "onKeyUp", "(int,KeyEvent)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "MainActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities", "RouteListingPreferenceActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]

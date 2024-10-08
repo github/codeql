@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.renderer", "CarHardwareRenderer", False, "CarHardwareRenderer", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "Renderer", True, "enable", "(Runnable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "SurfaceController", False, "SurfaceController", "(CarContext,Lifecycle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "SurfaceController", False, "overrideRenderer", "(Renderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.renderer", "CarHardwareRenderer", "disable", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "CarHardwareRenderer", "renderFrame", "(Canvas,Rect,Rect)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "DefaultRenderer", "disable", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "DefaultRenderer", "renderFrame", "(Canvas,Rect,Rect)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "SurfaceController", "onCarConfigurationChanged", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.renderer", "SurfaceController", "onCreate", "(LifecycleOwner)", "summary", "df-generated"]

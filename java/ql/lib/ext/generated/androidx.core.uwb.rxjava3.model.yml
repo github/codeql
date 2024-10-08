@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.uwb.rxjava3", "UwbClientSessionScopeRxTest", "testRangingResultFlowable_returnsRangingResultFlowable", "()", "summary", "df-generated"]
+      - ["androidx.core.uwb.rxjava3", "UwbClientSessionScopeRxTest", "testRangingResultObservable_returnsRangingResultObservable", "()", "summary", "df-generated"]
+      - ["androidx.core.uwb.rxjava3", "UwbManagerRxTest", "testControleeSessionScopeSingle_returnsControleeSessionScope", "()", "summary", "df-generated"]
+      - ["androidx.core.uwb.rxjava3", "UwbManagerRxTest", "testControllerSessionScopeSingle_returnsControllerSessionScope", "()", "summary", "df-generated"]

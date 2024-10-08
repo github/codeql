@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.integration.noappcompat", "BareDatabaseTest", "init", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.noappcompat", "BareDatabaseTest", "observeInvalidation", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.noappcompat", "BareDatabaseTest", "simpleRead", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.noappcompat", "BareRelationDatabaseTest", "large_nonCollectionRelation", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.noappcompat", "BareRelationDatabaseTest", "simpleReadWrite", "()", "summary", "df-generated"]

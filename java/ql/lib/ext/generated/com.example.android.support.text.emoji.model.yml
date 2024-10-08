@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.support.text.emoji", "Config$Source", "forPosition", "(int)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "Config$Source", "getPosition", "()", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "Config$Source", "isEnabled", "()", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "ConfigLayout", "ConfigLayout", "(Context)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "ConfigLayout", "ConfigLayout", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "ConfigLayout", "ConfigLayout", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "ConfigLayout", "ConfigLayout", "(Context,AttributeSet,int,int)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "CustomTextView", "CustomTextView", "(Context)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "CustomTextView", "CustomTextView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "CustomTextView", "CustomTextView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "CustomTextView", "setAllCaps", "(boolean)", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "CustomTextView", "setFilters", "(InputFilter[])", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "EmojiCompatApplication", "onCreate", "()", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "MainFragment", "onStart", "()", "summary", "df-generated"]
+      - ["com.example.android.support.text.emoji", "MainFragment", "onStop", "()", "summary", "df-generated"]

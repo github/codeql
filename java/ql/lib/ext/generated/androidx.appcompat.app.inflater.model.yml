@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomButton", "CustomButton", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomButton", "CustomButton", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomButton", "CustomButton", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomImageButton", "CustomImageButton", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomImageButton", "CustomImageButton", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomImageButton", "CustomImageButton", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomTextView", "CustomTextView", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomTextView", "CustomTextView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomTextView", "CustomTextView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomToggleButton", "CustomToggleButton", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomToggleButton", "CustomToggleButton", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.appcompat.app.inflater", "CustomViewInflater$CustomToggleButton", "CustomToggleButton", "(Context,AttributeSet,int)", "summary", "df-generated"]

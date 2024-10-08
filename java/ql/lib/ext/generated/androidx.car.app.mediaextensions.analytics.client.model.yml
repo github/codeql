@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.mediaextensions.analytics.client", "RootHintsPopulator", False, "RootHintsPopulator", "(Bundle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "RootHintsPopulator", False, "setAnalyticsOptIn", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "RootHintsPopulator", False, "setShareOem", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "RootHintsPopulator", False, "setSharePlatform", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.mediaextensions.analytics.client", "AnalyticsCallback", "onUnknownEvent", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "AnalyticsParser", "isAnalyticsAction", "(String)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "AnalyticsParser", "parseAnalyticsAction", "(String,Bundle,AnalyticsCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "AnalyticsParser", "parseAnalyticsAction", "(String,Bundle,Executor,AnalyticsCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.client", "AnalyticsParser", "parseAnalyticsBundle", "(Bundle,Executor,AnalyticsCallback)", "summary", "df-generated"]

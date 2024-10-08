@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "Builder", "(ClickAction)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "Builder", "(String,String,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "Builder", "(String,String,long)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "setQuery", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "setReferencedQualifiedId", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "setResultRankGlobal", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "setResultRankInBlock", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction$Builder", False, "setTimeStayOnResultMillis", "(long)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction", True, "getQuery", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction", True, "getReferencedQualifiedId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "Builder", "(SearchAction)", "", "Argument[0].SyntheticField[androidx.appsearch.usagereporting.SearchAction.mQuery]", "Argument[this].SyntheticField[androidx.appsearch.usagereporting.SearchAction$Builder.mQuery]", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "Builder", "(String,String,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "Builder", "(String,String,long)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.usagereporting.SearchAction$Builder.mQuery]", "ReturnValue.SyntheticField[androidx.appsearch.usagereporting.SearchAction.mQuery]", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "setFetchedResultCount", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "setQuery", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.usagereporting.SearchAction$Builder.mQuery]", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "setQuery", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.usagereporting.SearchAction$Builder.mQuery]", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction$Builder", False, "setQuery", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction", True, "getQuery", "()", "", "Argument[this].SyntheticField[androidx.appsearch.usagereporting.SearchAction.mQuery]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.usagereporting", "TakenAction", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "TakenAction", True, "getNamespace", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.usagereporting", "ClickAction", "getResultRankGlobal", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction", "getResultRankInBlock", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "ClickAction", "getTimeStayOnResultMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "SearchAction", "getFetchedResultCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "TakenAction", "getActionTimestampMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "TakenAction", "getActionType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.usagereporting", "TakenAction", "getDocumentTtlMillis", "()", "summary", "df-generated"]

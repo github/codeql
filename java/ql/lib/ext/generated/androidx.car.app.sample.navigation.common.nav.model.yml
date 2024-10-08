@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", True, "executeInstructions", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", True, "onBind", "(Intent)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", True, "setCarContext", "(CarContext,NavigationService$Listener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", True, "setCarContext", "(CarContext,NavigationService$Listener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", True, "executeInstructions", "(List)", "", "Argument[0]", "notification", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService$LocalBinder", "getService", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "clearCarContext", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "getIsNavigating", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "onUnbind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "startNavigation", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.nav", "NavigationService", "stopNavigation", "()", "summary", "df-generated"]

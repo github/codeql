@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.watchface.samples.minimal", "WatchFaceRenderer", "WatchFaceRenderer", "(SurfaceHolder,CurrentUserStyleRepository,WatchState)", "summary", "df-generated"]
+      - ["androidx.wear.watchface.samples.minimal", "WatchFaceRenderer", "render", "(Canvas,Rect,ZonedDateTime)", "summary", "df-generated"]
+      - ["androidx.wear.watchface.samples.minimal", "WatchFaceRenderer", "renderHighlightLayer", "(Canvas,Rect,ZonedDateTime)", "summary", "df-generated"]

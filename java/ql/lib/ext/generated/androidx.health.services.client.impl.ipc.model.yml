@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.health.services.client.impl.ipc", "Client", True, "Client", "(ClientConfiguration,ConnectionManager,Client$ServiceGetter,RemoteOperation)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "Client", True, "Client", "(ClientConfiguration,ConnectionManager,Client$ServiceGetter,RemoteOperation)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "Client", True, "Client", "(ClientConfiguration,ConnectionManager,Client$ServiceGetter,RemoteOperation)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "Client", True, "Client", "(ClientConfiguration,ConnectionManager,Client$ServiceGetter,RemoteOperation)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "ClientConfiguration", "(String,String,String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mApiClientName]", "value", "dfc-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "ClientConfiguration", "(String,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mServicePackageName]", "value", "dfc-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "ClientConfiguration", "(String,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mBindAction]", "value", "dfc-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "getApiClientName", "()", "", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mApiClientName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "getBindAction", "()", "", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mBindAction]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ClientConfiguration", True, "getServicePackageName", "()", "", "Argument[this].SyntheticField[androidx.health.services.client.impl.ipc.ClientConfiguration.mServicePackageName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.health.services.client.impl.ipc", "ApiVersionException", "ApiVersionException", "(int,int)", "summary", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ApiVersionException", "getMinVersion", "()", "summary", "df-generated"]
+      - ["androidx.health.services.client.impl.ipc", "ApiVersionException", "getRemoteVersion", "()", "summary", "df-generated"]

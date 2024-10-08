@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.extensions", "CameraExtensionsInfo", True, "getCurrentExtensionMode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.extensions", "CameraExtensionsInfo", True, "getExtensionStrength", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", False, "getCameraExtensionsControl", "(CameraControl)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", False, "getCameraExtensionsInfo", "(CameraInfo)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", False, "getExtensionEnabledCameraSelector", "(CameraSelector,int)", "", "Argument[0].SyntheticField[androidx.camera.core.CameraSelector.mCameraFilterSet].Element", "ReturnValue.SyntheticField[androidx.camera.core.CameraSelector.mCameraFilterSet].Element", "value", "dfc-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", False, "getExtensionEnabledCameraSelector", "(CameraSelector,int)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.extensions", "CameraExtensionsControl", "setExtensionStrength", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "CameraExtensionsInfo", "isCurrentExtensionModeAvailable", "()", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "CameraExtensionsInfo", "isExtensionStrengthAvailable", "()", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "getEstimatedCaptureLatencyRange", "(CameraSelector,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "getInstanceAsync", "(Context,CameraProvider)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "getInstanceAsync", "(Context,CameraProvider,String)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "isExtensionAvailable", "(CameraSelector,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "isImageAnalysisSupported", "(CameraSelector,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions", "ExtensionsManager", "shutdown", "()", "summary", "df-generated"]

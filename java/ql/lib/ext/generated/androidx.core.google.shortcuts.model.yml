@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", True, "getInstance", "(Context)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", "onAllShortcutsRemoved", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", "onShortcutAdded", "(List)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", "onShortcutRemoved", "(List)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", "onShortcutUpdated", "(List)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImpl", "onShortcutUsageReported", "(List)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onAllShortcutRemoved_removeFromAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutAdded_savesToAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutRemoved_removeFromAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_privateIntent_savesToAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_publicIntent_savesToAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_withAdaptiveUriIcon_savesToAppIndexWithUri", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_withCapabilityBindingNoParams_savesToAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_withCapabilityBinding_savesToAppIndex", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUpdated_withUriIcon_savesToAppIndexWithUri", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "onShortcutUsageReported_savesToUserActions", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "ShortcutInfoChangeListenerImplTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "testManifest_canDiscoverMetadata", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "testOnCreate_withMismatchTag_exits", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "testOnCreate_withNoShortcutUrl_exits", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "testOnCreate_withNoTag_exits", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts", "TrampolineActivityTest", "testOnCreate_withTrampolineIntent_launchesShortcut", "()", "summary", "df-generated"]

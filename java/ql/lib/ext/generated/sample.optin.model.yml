@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["sample.optin", "RegressionTestJava313686921", True, "unsafeAnnotatedAnnotationUsageOnMethod", "(Object)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["sample.optin", "RegressionTestJava344616929", True, "safeAnnotatedAnnotationUsageOnMethod", "(Object)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["sample.optin", "RegressionTestJava344616929", True, "safeAnnotatedAnnotationUsageOnParam", "(Object)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["sample.optin", "AnnotatedJavaClass", "method", "()", "summary", "df-generated"]
+      - ["sample.optin", "AnnotatedJavaClass", "methodStatic", "()", "summary", "df-generated"]
+      - ["sample.optin", "RegressionTestJava313686921", "unsafeAnnotatedAnnotationUsageOnParam", "(Object)", "summary", "df-generated"]

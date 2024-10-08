@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature$Builder", False, "addProperties", "(int[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature$Builder", False, "addProperty", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature$Builder", False, "clearProperties", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "SupportedWindowFeatures$Builder", False, "Builder", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.window.extensions.layout.SupportedWindowFeatures$Builder.mDisplayFoldFeatures].Element", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "SupportedWindowFeatures$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.window.extensions.layout.SupportedWindowFeatures$Builder.mDisplayFoldFeatures].Element", "ReturnValue.SyntheticField[androidx.window.extensions.layout.SupportedWindowFeatures.mDisplayFoldFeatureList].Element", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "SupportedWindowFeatures", False, "getDisplayFoldFeatures", "()", "", "Argument[this].SyntheticField[androidx.window.extensions.layout.SupportedWindowFeatures.mDisplayFoldFeatureList].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfo", True, "WindowLayoutInfo", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.window.extensions.layout.WindowLayoutInfo.mDisplayFeatures].Element", "value", "dfc-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfo", True, "getDisplayFeatures", "()", "", "Argument[this].SyntheticField[androidx.window.extensions.layout.WindowLayoutInfo.mDisplayFeatures]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature$Builder", "Builder", "(int)", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature$Builder", "build", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature", "getType", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature", "hasProperties", "(int[])", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "DisplayFoldFeature", "hasProperty", "(int)", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeature", "FoldingFeature", "(Rect,int,int)", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeature", "getBounds", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeature", "getState", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeature", "getType", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeatureTest", "testEquals_differentRect", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeatureTest", "testEquals_differentState", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeatureTest", "testEquals_differentType", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeatureTest", "testEquals_sameAttributes", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "FoldingFeatureTest", "testHashCode_matchesIfEqual", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutComponent", "addWindowLayoutInfoListener", "(Context,Consumer)", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutComponent", "getSupportedWindowFeatures", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutComponent", "removeWindowLayoutInfoListener", "(Consumer)", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfoTest", "testEquals_differentFeatures", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfoTest", "testEquals_sameFeatures", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfoTest", "testHashCode_matchesIfEqual", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.layout", "WindowLayoutInfoTest", "testHashCode_matchesIfEqualFeatures", "()", "summary", "df-generated"]

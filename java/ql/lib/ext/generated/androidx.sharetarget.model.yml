@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.sharetarget", "ChooserTargetServiceCompat", "onGetChooserTargets", "(ComponentName,IntentFilter)", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ChooserTargetServiceCompatTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ChooserTargetServiceCompatTest", "testConvertShortcutstoChooserTargets", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShareTargetXmlParserTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShareTargetXmlParserTest", "testGetShareTargets", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "addShortcuts", "(List)", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "getInstance", "(Context)", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "getShortcutIcon", "(String)", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "getShortcuts", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "removeAllShortcuts", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverImpl", "removeShortcuts", "(List)", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testAddShortcuts_forceReload", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testAddShortcuts_incrementalAddWithIdOverlap", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testAddShortcuts_skipShortcutsWithNoCategories", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testGetInstance", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testGetShortcutIcon", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testGetShortcutIcon_forceReload", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testGetShortcutIcon_unknownId", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testGetShortcuts_noShortcuts", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testRemoveAllShortcuts", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "testRemoveShortcuts", "()", "summary", "df-generated"]
+      - ["androidx.sharetarget", "ShortcutInfoCompatSaverTest", "verifyIconsAreNotKeptInMemory", "()", "summary", "df-generated"]

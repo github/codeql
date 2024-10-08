@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextMappingWorker", "TextMappingWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextMappingWorker", "create", "(String)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextMappingWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextReducingWorker", "TextReducingWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextReducingWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextStartupWorker", "TextStartupWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.sherlockholmes", "TextStartupWorker", "doWork", "()", "summary", "df-generated"]

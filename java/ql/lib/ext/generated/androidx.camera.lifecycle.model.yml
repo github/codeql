@@ -1,0 +1,74 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "getCameraUseCaseAdapter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "getLifecycleOwner", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "getUseCases", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "onDestroy", "(LifecycleOwner)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "onStart", "(LifecycleOwner)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", False, "unsuspend", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "isActive", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "isBound", "(UseCase)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "isUseCasesCombinationSupported", "(boolean,UseCase[])", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "onDestroy", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "onPause", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "onResume", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "onStart", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "onStop", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "suspend", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCamera", "unsuspend", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "concurrentModeOn_twoLifecycleCamerasControlledByOneLifecycle_start", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "concurrentModeOn_twoLifecycleCamerasControlledByOneLifecycle_stop", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "concurrentModeOn_twoLifecycleCamerasControlledByTwoLifecycles_start", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "concurrentModeOn_twoLifecycleCamerasControlledByTwoLifecycles_stop", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "differentLifecycleCamerasAreCreated_forDifferentCameraConfig", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "differentLifecycleCamerasAreCreated_forDifferentCameraSets", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "differentLifecycleCamerasAreCreated_forDifferentLifecycles", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "getLifecycleCameraWithDifferentCameraConfig_returnDifferentInstance", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "keys", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsActive_bindToLifecycleCameraAfterLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsActive_lifecycleStartedAfterBindUseCase", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsActive_withUseCase_unbindAfterLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsInactive_createAndBindToLifecycleCamera_AfterLifecycleDestroyed", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsNotActive_bindUseCase_whenLifecycleIsNotStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsNotActive_createWithNoUseCasesAfterLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsNotActive_createWithNoUseCasesBeforeLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsNotActive_unbindAllAfterLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsNotActive_withNoUseCase_unbindAfterLifecycleStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraIsStopped_whenNewLifecycleIsStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraOf1stActiveLifecycleIsActive_bindNewUseCase", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraOf1stActiveLifecycleIsInactive_bindToNewActiveLifecycleCamera", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraOf2ndActiveLifecycleIsActive_unbindFromActiveLifecycleCamera", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraOf2ndActiveLifecycleIsStarted_when1stActiveLifecycleIsStopped", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "lifecycleCameraWithUseCaseIsActive_whenNewLifecycleCameraWithoutUseCaseIsStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "noException_setInactiveAfterUnregisterLifecycle", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "onlyLifecycleCameraWithUseCaseIsActive_afterLifecycleIsStarted", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "retrievesExistingCamera", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "throwException_ifTryingToCreateWithExistingIdentifier", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "throwException_withUseCase_twoLifecycleCamerasControlledByOneLifecycle", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraRepositoryTest", "useCaseIsCleared_whenLifecycleIsDestroyed", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "bind_willBindToCameraInternal", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleCameraCanBeMadeObserverOfLifecycle", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleCameraCanBeReleasedMultipleTimes", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleCameraCanStopObservingALifecycle", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleStart_doesNotTriggerOnActiveIfSuspended", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleStart_restoreInteropConfig", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleStart_triggersOnActive", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleStop_clearInteropConfig", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "lifecycleStop_triggersOnInactive", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "unbindAll_willUnbindFromCameraInternal", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "unbind_willUnbindFromCameraInternal", "()", "summary", "df-generated"]
+      - ["androidx.camera.lifecycle", "LifecycleCameraTest", "unsuspendOfStartedLifecycle_triggersOnActive", "()", "summary", "df-generated"]

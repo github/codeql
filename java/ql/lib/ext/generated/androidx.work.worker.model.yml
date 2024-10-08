@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.worker", "ChainedArgumentWorker", "ChainedArgumentWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "ChainedArgumentWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "ChainedArgumentWorker", "getChainedArguments", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "EchoingWorker", "EchoingWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "EchoingWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "ExceptionWorker", "ExceptionWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "ExceptionWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "FailureWorker", "FailureWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "FailureWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "InfiniteTestWorker", "InfiniteTestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "InfiniteTestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "InterruptionAwareWorker", "InterruptionAwareWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "InterruptionAwareWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "LatchWorker", "LatchWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "LatchWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "RandomSleepTestWorker", "RandomSleepTestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "RandomSleepTestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "RetryWorker", "RetryWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "RetryWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "ReturnNullResultWorker", "ReturnNullResultWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "ReturnNullResultWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "SleepTestWorker", "SleepTestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "SleepTestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "StopAwareWorker", "StopAwareWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "StopAwareWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "TestWorker", "TestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "TestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.worker", "UsedWorker", "UsedWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.worker", "UsedWorker", "doWork", "()", "summary", "df-generated"]

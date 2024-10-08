@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEvent", True, "getComponent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "BrowseChangeEvent", True, "getBrowseNodeId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "MediaClickedEvent", True, "getMediaId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", True, "VisibleItemsEvent", "(Bundle)", "", "Argument[0].MapValue", "Argument[this].SyntheticField[androidx.car.app.mediaextensions.analytics.event.VisibleItemsEvent.mItemsIds]", "value", "dfc-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", True, "getItemsIds", "()", "", "Argument[this].SyntheticField[androidx.car.app.mediaextensions.analytics.event.VisibleItemsEvent.mItemsIds]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", True, "getNodeId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEvent", "AnalyticsEvent", "(Bundle,int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEvent", "getAnalyticsVersion", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEvent", "getEventType", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEvent", "getTimestampMillis", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEventsUtil", "browseModeToString", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEventsUtil", "viewActionModeToString", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEventsUtil", "viewActionToString", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "AnalyticsEventsUtil", "viewComponentToString", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "BrowseChangeEvent", "BrowseChangeEvent", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "BrowseChangeEvent", "getBrowseMode", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "BrowseChangeEvent", "getViewAction", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "ErrorEvent", "ErrorEvent", "(Bundle,int)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "ErrorEvent", "getErrorCode", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "MediaClickedEvent", "MediaClickedEvent", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "MediaClickedEvent", "getViewComponent", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "ViewChangeEvent", "ViewChangeEvent", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "ViewChangeEvent", "getViewAction", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "ViewChangeEvent", "getViewComponent", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", "getViewAction", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", "getViewActionMode", "()", "summary", "df-generated"]
+      - ["androidx.car.app.mediaextensions.analytics.event", "VisibleItemsEvent", "getViewComponent", "()", "summary", "df-generated"]

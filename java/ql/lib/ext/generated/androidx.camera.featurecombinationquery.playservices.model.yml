@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.featurecombinationquery.playservices", "MetadataHolderService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.camera.featurecombinationquery.playservices", "PlayServicesCameraDeviceSetupCompat", "PlayServicesCameraDeviceSetupCompat", "(String)", "summary", "df-generated"]
+      - ["androidx.camera.featurecombinationquery.playservices", "PlayServicesCameraDeviceSetupCompat", "isSessionConfigurationSupported", "(SessionConfiguration)", "summary", "df-generated"]
+      - ["androidx.camera.featurecombinationquery.playservices", "PlayServicesCameraDeviceSetupCompatProvider", "PlayServicesCameraDeviceSetupCompatProvider", "(Context)", "summary", "df-generated"]
+      - ["androidx.camera.featurecombinationquery.playservices", "PlayServicesCameraDeviceSetupCompatProvider", "getCameraDeviceSetupCompat", "(String)", "summary", "df-generated"]

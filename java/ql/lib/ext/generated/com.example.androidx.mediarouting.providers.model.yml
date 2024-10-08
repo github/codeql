@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.providers", "SampleDynamicGroupMediaRouteProvider", False, "SampleDynamicGroupMediaRouteProvider", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.providers", "SampleMediaRouteProvider", True, "SampleMediaRouteProvider", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.providers", "SampleDynamicGroupMediaRouteProvider", "reloadDynamicRoutesEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.providers", "SampleDynamicGroupMediaRouteProvider", "reloadRoutes", "()", "summary", "df-generated"]

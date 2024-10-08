@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.pdf.service", "LoadPdfResult", True, "LoadPdfResult", "(int,PdfDocument)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.pdf.service.LoadPdfResult.mPdfDocument]", "value", "dfc-generated"]
+      - ["androidx.pdf.service", "LoadPdfResult", True, "getPdfDocument", "()", "", "Argument[this].SyntheticField[androidx.pdf.service.LoadPdfResult.mPdfDocument]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.pdf.service", "LoadPdfResult", "getStatus", "()", "summary", "df-generated"]
+      - ["androidx.pdf.service", "LoadPdfResult", "isLoaded", "()", "summary", "df-generated"]
+      - ["androidx.pdf.service", "PdfDocumentRemoteProto", "PdfDocumentRemoteProto", "(PdfDocumentRemote)", "summary", "df-generated"]
+      - ["androidx.pdf.service", "PdfDocumentRemoteProto", "getPdfDocumentRemote", "()", "summary", "df-generated"]
+      - ["androidx.pdf.service", "PdfDocumentService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.pdf.service", "PdfDocumentService", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.pdf.service", "PdfDocumentService", "onUnbind", "(Intent)", "summary", "df-generated"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.datastore.preferences.rxjava3", "RxPreferencesDataStoreBuilderTest", "teardown", "()", "summary", "df-generated"]
+      - ["androidx.datastore.preferences.rxjava3", "RxPreferencesDataStoreBuilderTest", "testConstructWithContextAndName", "()", "summary", "df-generated"]
+      - ["androidx.datastore.preferences.rxjava3", "RxPreferencesDataStoreBuilderTest", "testConstructWithProduceFile", "()", "summary", "df-generated"]
+      - ["androidx.datastore.preferences.rxjava3", "RxPreferencesDataStoreBuilderTest", "testCorruptionHandlerIsUsed", "()", "summary", "df-generated"]
+      - ["androidx.datastore.preferences.rxjava3", "RxPreferencesDataStoreBuilderTest", "testMigrationsAreInstalledAndRun", "()", "summary", "df-generated"]

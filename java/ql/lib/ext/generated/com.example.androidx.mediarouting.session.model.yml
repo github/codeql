@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "SessionManager", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String)", "", "Argument[0]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mTitle]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String)", "", "Argument[1]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mUri]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String)", "", "Argument[2]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mMime]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String,long,PendingIntent)", "", "Argument[0]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mTitle]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String,long,PendingIntent)", "", "Argument[1]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mUri]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String,long,PendingIntent)", "", "Argument[2]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mMime]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "add", "(String,Uri,String,long,PendingIntent)", "", "Argument[4]", "ReturnValue.SyntheticField[com.example.androidx.mediarouting.data.PlaylistItem.mUpdateReceiver]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "getCurrentItem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "getPlaylist", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "getStatus", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "remove", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "seek", "(String,long)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "setCallback", "(SessionManager$Callback)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "setPlayer", "(Player)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", True, "setPlayer", "(Player)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "endSession", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "getSessionId", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "getSessionStatus", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "hasSession", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "isPaused", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "onCompletion", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "onError", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "onPlaylistChanged", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "onPlaylistReady", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "pause", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "resume", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "startSession", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "suspend", "(long)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "syncWithManager", "(SessionManager)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "unsuspend", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.session", "SessionManager", "updateStatus", "()", "summary", "df-generated"]

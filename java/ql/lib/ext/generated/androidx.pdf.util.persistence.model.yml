@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "currentThreadTimeMillis", "()", "summary", "df-generated"]
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "currentTimeMillis", "()", "summary", "df-generated"]
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "elapsedRealtime", "()", "summary", "df-generated"]
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "elapsedRealtimeNanos", "()", "summary", "df-generated"]
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "nanoTime", "()", "summary", "df-generated"]
+      - ["androidx.pdf.util.persistence", "SystemClockImpl", "uptimeMillis", "()", "summary", "df-generated"]

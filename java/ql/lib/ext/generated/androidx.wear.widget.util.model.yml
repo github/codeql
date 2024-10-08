@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.widget.util", "ArcSwipe", True, "ArcSwipe", "(ArcSwipe$Gesture,RectF)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.widget.util", "ArcSwipe", "sendSwipe", "(UiController,float[],float[],float[])", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "ArcSwipeTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "ArcSwipeTest", "testGetAngle", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "ArcSwipeTest", "testSweepAngleAntiClockwise", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "ArcSwipeTest", "testSweepAngleClockwise", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "AsyncViewActions", "waitForMatchingView", "(Matcher,long)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "FrameLocationAvoidingEdges", "calculateCoordinates", "(View)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "approximateBottom", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "approximateTop", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "bottom", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "left", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "right", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "screenBottom", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "screenLeft", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "screenRight", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "screenTop", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "top", "(Matcher)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "withNoVerticalScrollOffset", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "withPositiveVerticalScrollOffset", "()", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "MoreViewAssertions", "withTranslationX", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.widget.util", "WakeLockRule", "apply", "(Statement,Description)", "summary", "df-generated"]

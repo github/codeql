@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.debugview.samples", "NotesActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.samples", "NotesActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.samples", "NotesAppSearchManager", "createNotesAppSearchManager", "(Context,Executor)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.samples", "NotesAppSearchManager", "insertNotes", "(List)", "summary", "df-generated"]

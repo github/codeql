@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.activity.ui", "ErrorMessageView", "ErrorMessageView", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "ErrorMessageView", "ErrorMessageView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "ErrorMessageView", "ErrorMessageView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "ErrorMessageView", "ErrorMessageView", "(Context,AttributeSet,int,int)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "ErrorMessageView", "setError", "(ErrorHandler$ErrorType)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "LoadingView", "LoadingView", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "LoadingView", "LoadingView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "LoadingView", "LoadingView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.car.app.activity.ui", "LoadingView", "LoadingView", "(Context,AttributeSet,int,int)", "summary", "df-generated"]

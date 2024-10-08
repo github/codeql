@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.room.integration.testapp.database", "Customer", True, "getLastName", "()", "", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Customer.mLastName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Customer", True, "getName", "()", "", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Customer.mName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Customer", True, "setLastName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Customer.mLastName]", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Customer", True, "setName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Customer.mName]", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Description", True, "Description", "(int,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Description.mText]", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Description", True, "getText", "()", "", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Description.mText]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Product", True, "Product", "(int,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Product.mName]", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Product", True, "getName", "()", "", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Product.mName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.room.integration.testapp.database", "Product", True, "setName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.room.integration.testapp.database.Product.mName]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.integration.testapp.database", "Customer", "getId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Customer", "setId", "(int)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Description", "getProductId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Product", "getId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Product", "setId", "(int)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Review", "getProductId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Review", "getRating", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "Review", "getReviewId", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "SampleDatabase", "getCustomerDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "SampleDatabase", "getProductDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.database", "SampleFtsDatabase", "getProductDao", "()", "summary", "df-generated"]

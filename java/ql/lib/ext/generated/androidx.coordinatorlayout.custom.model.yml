@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.coordinatorlayout.custom", "CustomBar", "CustomBar", "(Context)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomBar", "CustomBar", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomBar", "CustomBar", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView2", "CustomTextView2", "(Context)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView2", "CustomTextView2", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView2", "CustomTextView2", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView2", "getBehavior", "()", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView", "CustomTextView", "(Context)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView", "CustomTextView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "CustomTextView", "CustomTextView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "TestFloatingBehavior", "TestFloatingBehavior", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "TestFloatingBehavior", "layoutDependsOn", "(CoordinatorLayout,TextView,View)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.custom", "TestFloatingBehavior", "onDependentViewChanged", "(CoordinatorLayout,TextView,View)", "summary", "df-generated"]

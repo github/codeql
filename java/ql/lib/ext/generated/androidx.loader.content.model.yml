@@ -1,0 +1,75 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.loader.content", "CursorLoader", True, "CursorLoader", "(Context,Uri,String[],String,String[],String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mUri]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "CursorLoader", "(Context,Uri,String[],String,String[],String)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mProjection]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "CursorLoader", "(Context,Uri,String[],String,String[],String)", "", "Argument[3]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelection]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "CursorLoader", "(Context,Uri,String[],String,String[],String)", "", "Argument[4]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelectionArgs]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "CursorLoader", "(Context,Uri,String[],String,String[],String)", "", "Argument[5]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSortOrder]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "deliverResult", "(Cursor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "getProjection", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mProjection]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "getSelection", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelection]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "getSelectionArgs", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelectionArgs]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "getSortOrder", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSortOrder]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "getUri", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "loadInBackground", "()", "", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mUri]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "setProjection", "(String[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mProjection]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "setSelection", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelection]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "setSelectionArgs", "(String[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSelectionArgs]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "setSortOrder", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mSortOrder]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "CursorLoader", True, "setUri", "(Uri)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.loader.content.CursorLoader.mUri]", "value", "dfc-generated"]
+      - ["androidx.loader.content", "Loader", True, "deliverResult", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.loader.content", "Loader", True, "getContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.content", "Loader", True, "registerListener", "(int,Loader$OnLoadCompleteListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.loader.content", "Loader", True, "registerOnLoadCanceledListener", "(Loader$OnLoadCanceledListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.loader.content", "CursorLoader", True, "loadInBackground", "()", "", "Argument[this]", "sql-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.loader.content", "AsyncTaskLoader", "AsyncTaskLoader", "(Context)", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "cancelLoadInBackground", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "isLoadInBackgroundCanceled", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "loadInBackground", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "onCanceled", "(Object)", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoader", "setUpdateThrottle", "(long)", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoaderTest", "testForceLoad_runsAsyncTask", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoaderTest", "testForceLoad_runsOnCustomExecutor", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoaderTest", "testGetExecutor_forceLoadMultipleTimes_getExecutorCalledOnce", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "AsyncTaskLoaderTest", "testGetExecutor_notCalledOnConstruction", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "CursorLoader", "CursorLoader", "(Context)", "summary", "df-generated"]
+      - ["androidx.loader.content", "CursorLoader", "cancelLoadInBackground", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "CursorLoader", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.loader.content", "CursorLoader", "onCanceled", "(Cursor)", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader$ForceLoadContentObserver", "deliverSelfNotifications", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader$ForceLoadContentObserver", "onChange", "(boolean)", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "Loader", "(Context)", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "abandon", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "cancelLoad", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "commitContentChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "dataToString", "(Object)", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "deliverCancellation", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "forceLoad", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "getId", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "isAbandoned", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "isReset", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "isStarted", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "onContentChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "reset", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "rollbackContentChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "startLoading", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "stopLoading", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "takeContentChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "unregisterListener", "(Loader$OnLoadCompleteListener)", "summary", "df-generated"]
+      - ["androidx.loader.content", "Loader", "unregisterOnLoadCanceledListener", "(Loader$OnLoadCanceledListener)", "summary", "df-generated"]
+      - ["androidx.loader.content", "ModernAsyncTaskTest", "testCancellationWithException", "()", "summary", "df-generated"]
+      - ["androidx.loader.content", "ModernAsyncTaskTest", "testException", "()", "summary", "df-generated"]

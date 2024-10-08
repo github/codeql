@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "GridTemplateDemoScreen", False, "GridTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "NotificationDemoScreen", False, "NotificationDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "GridTemplateDemoScreen", "onCreate", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "GridTemplateDemoScreen", "onStart", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "NotificationDemoScreen", "onCreate", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts.gridtemplates", "NotificationDemoScreen", "onDestroy", "(LifecycleOwner)", "summary", "df-generated"]

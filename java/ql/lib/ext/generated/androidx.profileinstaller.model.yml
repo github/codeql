@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "DeviceProfileWriter", "(AssetManager,Executor,ProfileInstaller$DiagnosticsCallback,String,String,String,File)", "", "Argument[6]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "read", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "transcodeIfNeeded", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "deviceAllowsProfileInstallerAotWrites", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", True, "write", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.profileinstaller", "DeviceProfileWriter", "deviceAllowsProfileInstallerAotWrites", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "DeviceProfileWriter", "write", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileInstallReceiver", "onReceive", "(Context,Intent)", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileInstaller", "writeProfile", "(Context)", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileInstaller", "writeProfile", "(Context,Executor,ProfileInstaller$DiagnosticsCallback)", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileInstallerInitializer", "create", "(Context)", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileInstallerInitializer", "dependencies", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier$CompilationStatus", "appApkHasEmbeddedProfile", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier$CompilationStatus", "getProfileInstallResultCode", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier$CompilationStatus", "hasProfileEnqueuedForCompilation", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier$CompilationStatus", "isCompiledWithProfile", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier", "getCompilationStatusAsync", "()", "summary", "df-generated"]
+      - ["androidx.profileinstaller", "ProfileVerifier", "writeProfileVerification", "(Context)", "summary", "df-generated"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.remotecallback.demos", "RemoteCallbackProvider", "createRemoteViews", "(Context,int[],int)", "summary", "df-generated"]
+      - ["com.example.androidx.remotecallback.demos", "RemoteCallbackProvider", "onUpdate", "(Context,AppWidgetManager,int[])", "summary", "df-generated"]
+      - ["com.example.androidx.remotecallback.demos", "RemoteCallbackProvider", "setValue", "(Context,int[],int)", "summary", "df-generated"]

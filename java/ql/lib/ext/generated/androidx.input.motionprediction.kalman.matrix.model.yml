@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", True, "dot", "(Matrix,Matrix)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", True, "dotTranspose", "(Matrix,Matrix)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", True, "inverse", "(Matrix)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", True, "minus", "(Matrix)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", True, "plus", "(Matrix)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.input.motionprediction.kalman.matrix", "DVector2", "magnitude", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "DVector2", "set", "(DVector2)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "Matrix", "(Matrix)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "Matrix", "(int,double[])", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "Matrix", "(int,int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "fill", "(double)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "get", "(int,int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "getNumCols", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "getNumRows", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "identity", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "put", "(int,int,double)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "scale", "(double)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman.matrix", "Matrix", "setIdentity", "(Matrix)", "summary", "df-generated"]

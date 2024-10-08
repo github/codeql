@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.integration.testapp.db", "TestDatabase", "getImageDao", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.db", "TestDatabase", "getInstance", "(Context)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.db", "TestDatabase", "getWordCountDao", "()", "summary", "df-generated"]

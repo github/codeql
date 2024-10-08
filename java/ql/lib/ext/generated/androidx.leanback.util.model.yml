@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.leanback.util", "StateMachine$Condition", True, "Condition", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$Event", True, "Event", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$State", True, "State", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$State", True, "State", "(String,boolean,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", False, "addState", "(StateMachine$State)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.leanback.util", "MathUtil", "safeLongToInt", "(long)", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$Condition", "canProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$State", "getStatus", "()", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine$State", "run", "()", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "addTransition", "(StateMachine$State,StateMachine$State)", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "addTransition", "(StateMachine$State,StateMachine$State,StateMachine$Condition)", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "addTransition", "(StateMachine$State,StateMachine$State,StateMachine$Event)", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "fireEvent", "(StateMachine$Event)", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "reset", "()", "summary", "df-generated"]
+      - ["androidx.leanback.util", "StateMachine", "start", "()", "summary", "df-generated"]

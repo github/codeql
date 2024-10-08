@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.view", "SystemUIModes$IV", True, "setActivity", "(SystemUIModes)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.androidx.view", "SystemUIModes$IV", True, "startActionMode", "()", "", "Argument[this]", "intent-redirection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.view", "GridLayout3", "create", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "IV", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "IV", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "onSizeChanged", "(int,int,int,int)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "onSystemUiVisibilityChange", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "startActionMode", "()", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes$IV", "stopActionMode", "()", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "clearActionMode", "()", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onAttachedToWindow", "()", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onQueryTextChange", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onQueryTextSubmit", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onSort", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onTabReselected", "(ActionBar$Tab,FragmentTransaction)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onTabSelected", "(ActionBar$Tab,FragmentTransaction)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "onTabUnselected", "(ActionBar$Tab,FragmentTransaction)", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "updateCheckControls", "()", "summary", "df-generated"]
+      - ["com.example.androidx.view", "SystemUIModes", "updateSystemUi", "()", "summary", "df-generated"]

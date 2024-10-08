@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.utils", "ActivityAnimationUtil", "getStandardActivityAnimation", "(Context,int,boolean)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "MetadataConstants", "getPreviewDrawableResourceId", "(Context,boolean)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "MetadataConstants", "isNotificationBridgingEnabled", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "MetadataConstants", "isStandalone", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "WearApiVersionHelper", "isApiVersionAtLeast", "(String)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "WearTypeHelper", "isChinaBuild", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.utils", "WearableNavigationHelper", "isSwipeToDismissEnabled", "()", "summary", "df-generated"]
+      - ["androidx.wear.utils", "WearableNavigationHelper", "isSwipeToDismissEnabled", "(Context)", "summary", "df-generated"]

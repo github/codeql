@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseService", False, "createDeepLinkUri", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseSession", True, "overrideRenderer", "(Renderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", False, "StartScreen", "(CarContext,ShowcaseSession)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", False, "StartScreen", "(CarContext,ShowcaseSession)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", False, "createRowForScreen", "(int,CarIcon,Screen)", "", "Argument[1]", "ReturnValue.SyntheticField[androidx.car.app.model.Row.mImage]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseService", "createHostValidator", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseService", "onCreateSession", "(SessionInfo)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseSession", "onCarConfigurationChanged", "(Configuration)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseSession", "onDestroy", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "ShowcaseSession", "onNewIntent", "(Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", "createCarIconForImage", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", "createRowForScreen", "(int,Screen)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common", "StartScreen", "createSettingsActionButton", "()", "summary", "df-generated"]

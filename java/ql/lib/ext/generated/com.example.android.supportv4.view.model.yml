@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.supportv4.view", "CheckableFrameLayout", "CheckableFrameLayout", "(Context)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.view", "CheckableFrameLayout", "CheckableFrameLayout", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.view", "CheckableFrameLayout", "isChecked", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.view", "CheckableFrameLayout", "setChecked", "(boolean)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.view", "CheckableFrameLayout", "toggle", "()", "summary", "df-generated"]

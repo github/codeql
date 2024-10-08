@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.topics", "TopicsManagerTest", "postsuite", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.topics", "TopicsManagerTest", "presuite", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.topics", "TopicsManagerTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.topics", "TopicsManagerTest", "teardown", "()", "summary", "df-generated"]
+      - ["androidx.privacysandbox.ads.adservices.java.endtoend.topics", "TopicsManagerTest", "testGetTopics_initialCall_returnsEmptyTopics", "()", "summary", "df-generated"]

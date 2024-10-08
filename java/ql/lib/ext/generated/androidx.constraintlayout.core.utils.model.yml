@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "getColumnWeights", "()", "", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mColumnWeights]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "getContainer", "()", "", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mContainer]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "getRowWeights", "()", "", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mRowWeights]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "measure", "(int,int,int,int)", "", "Argument[this].Field[androidx.constraintlayout.core.widgets.ConstraintWidget.mParent]", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mContainer]", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "setColumnWeights", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mColumnWeights]", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "setContainer", "(ConstraintWidgetContainer)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mContainer]", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "setRowWeights", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.constraintlayout.core.utils.GridCore.mRowWeights]", "value", "dfc-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "setSkips", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", True, "setSpans", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", True, "setSkips", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", True, "setSpans", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.constraintlayout.core.utils", "GridCore", "GridCore", "(int,int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "addToSolver", "(LinearSystem,boolean)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "getFlags", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "getHorizontalGaps", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "getOrientation", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "getVerticalGaps", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setColumns", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setFlags", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setHorizontalGaps", "(float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setOrientation", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setRows", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridCore", "setVerticalGaps", "(float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "GridEngine", "(int,int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "GridEngine", "(int,int,int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "bottomOfWidget", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "leftOfWidget", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "rightOfWidget", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "setColumns", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "setNumWidgets", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "setOrientation", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "setRows", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "setup", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.core.utils", "GridEngine", "topOfWidget", "(int)", "summary", "df-generated"]

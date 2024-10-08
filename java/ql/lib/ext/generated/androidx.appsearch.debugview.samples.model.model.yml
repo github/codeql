@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mId]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note.mId]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mNamespace]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note.mNamespace]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mText]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note.mText]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mId]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setId", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mId]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setId", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setNamespace", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mNamespace]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setNamespace", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mNamespace]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setNamespace", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setText", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mText]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setText", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.debugview.samples.model.Note$Builder.mText]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note$Builder", False, "setText", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note", True, "getId", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note.mId]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note", True, "getNamespace", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note.mNamespace]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.samples.model", "Note", True, "getText", "()", "", "Argument[this].SyntheticField[androidx.appsearch.debugview.samples.model.Note.mText]", "ReturnValue", "value", "dfc-generated"]

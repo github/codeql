@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.flags", "CheckFlagsRule", False, "apply", "(Statement,Description)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.flags", "DeviceFlagsValueProvider", "createCheckFlagsRule", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableAbstractSyntaxTrees", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableAdditionalBuilderCopyConstructors", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableBlobStore", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableEnterpriseEmptyBatchResultFix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableEnterpriseGlobalSearchSession", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableGenericDocumentBuilderHiddenMethods", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableGenericDocumentCopyConstructor", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableGetParentTypesAndIndexableNestedProperties", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableGroupingTypePerSchema", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableInformationalRankingExpressions", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableListFilterHasPropertyFunction", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enablePutDocumentsRequestAddTakenActions", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableResultAlreadyExists", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableResultDeniedAndResultRateLimited", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSafeParcelable", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSchemaEmbeddingPropertyConfig", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSearchSpecFilterProperties", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSearchSpecSearchStringParameters", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSearchSpecSetSearchSourceLogTag", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSetPubliclyVisibleSchema", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "Flags", "enableSetSchemaVisibleToConfigs", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableAbstractSyntaxTree", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableAdditionalBuilderCopyConstructors", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableBlobStore", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableEnterpriseEmptyBatchResultFix", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableEnterpriseGlobalSearchSession", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableGenericDocumentBuilderHiddenMethods", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableGenericDocumentCopyConstructor", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableGetParentTypesAndIndexableNestedProperties", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableGroupingTypePerSchema", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableInformationalRankingExpressions", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableListFilterHasPropertyFunction", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enablePutDocumentsRequestAddTakenActions", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableResultAlreadyExists", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableResultDeniedAndResultRateLimited", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSafeParcelable2", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSchemaEmbeddingPropertyConfig", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSearchSpecFilterProperties", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSearchSpecSearchStringParameters", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSearchSpecSetSearchSourceLogTag", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSetPubliclyVisibleSchema", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.flags", "FlagsTest", "testFlagValue_enableSetSchemaVisibleToConfigs", "()", "summary", "df-generated"]

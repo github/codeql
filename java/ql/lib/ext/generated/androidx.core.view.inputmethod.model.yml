@@ -1,0 +1,57 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.view.inputmethod", "InputConnectionCompat", False, "createWrapper", "(InputConnection,EditorInfo,InputConnectionCompat$OnCommitContentListener)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompat", False, "createWrapper", "(View,InputConnection,EditorInfo)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "InputContentInfoCompat", "(Uri,ClipDescription,Uri)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mContentUri]", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "InputContentInfoCompat", "(Uri,ClipDescription,Uri)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mDescription]", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "InputContentInfoCompat", "(Uri,ClipDescription,Uri)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mLinkUri]", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "getContentUri", "()", "", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mContentUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "getDescription", "()", "", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mDescription]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "getLinkUri", "()", "", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatBaseImpl.mLinkUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "unwrap", "()", "", "Argument[this].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatApi25Impl.mObject]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", False, "wrap", "(Object)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat.mImpl].SyntheticField[androidx.core.view.inputmethod.InputContentInfoCompat$InputContentInfoCompatApi25Impl.mObject]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "getContentMimeTypes", "(EditorInfo)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "getInitialSelectedText", "(EditorInfo,int)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "getInitialTextAfterCursor", "(EditorInfo,int,int)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "getInitialTextBeforeCursor", "(EditorInfo,int,int)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "isStylusHandwritingEnabled", "(EditorInfo)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "setContentMimeTypes", "(EditorInfo,String[])", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "setInitialSurroundingSubText", "(EditorInfo,CharSequence,int)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "setInitialSurroundingText", "(EditorInfo,CharSequence)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompat", "setStylusHandwritingEnabled", "(EditorInfo,boolean)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "isStylusHandwritingEnabled_coreVersion1_13", "(EditorInfo)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialSubText_trimmedSubText_dividesByOriginalCursorPosition", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_cursorAtHead_dividesByCursorPosition", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_cursorAtMiddle_dividesByCursorPosition", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_cursorAtTail_dividesByCursorPosition", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_incorrectCursorOrder_correctsThenDivide", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_invalidCursorPosition_returnsNull", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setInitialText_nullInputText_throwsException", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setOverSizeInitialText_cursorAtMiddle_dividesProportionately", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "setOverSizeInitialText_overSizeSelection_dropsSelection", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "surroundingTextRetrieval_writeToParcel_noException", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testRoundTrip", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testRoundTripSupportLibAndroidX100", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testRoundTripSupportLibAndroidX110", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testSetStylusHandwritingEnabled", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testSetStylusHandwritingEnabled_compatWithAndroidV", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "EditorInfoCompatTest", "testSetStylusHandwritingEnabled_compatWithCoreVersion1_13", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "ImeMultiWindowTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "ImeMultiWindowTest", "testImeShowAndHide_splitScreen", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "ImeViewCompatMultiWindowTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "ImeViewCompatMultiWindowTest", "testImeShowAndHide_splitScreen", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompat", "commitContent", "(InputConnection,EditorInfo,InputContentInfoCompat,int,Bundle)", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompatTest", "commitContentAndroidX100", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompatTest", "commitContentAndroidX110", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompatTest", "commitContentPlatformApi", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputConnectionCompatTest", "commitContentSupportLib", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", "releasePermission", "()", "summary", "df-generated"]
+      - ["androidx.core.view.inputmethod", "InputContentInfoCompat", "requestPermission", "()", "summary", "df-generated"]

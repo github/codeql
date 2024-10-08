@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.integration.core", "CameraXService", True, "onBind", "(Intent)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel$CameraProviderResult", False, "getError", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.camera.integration.core", "CameraXService", True, "onStartCommand", "(Intent,int,int)", "", "Argument[this]", "pending-intents", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.integration.core", "CameraXService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXService", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel$CameraProviderResult", "getProvider", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel$CameraProviderResult", "hasProvider", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel", "CameraXViewModel", "(Application)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel", "getConfiguredCameraXCameraImplementation", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "CameraXViewModel", "isCameraProviderUnInitializedOrSameAsParameter", "(String)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "ConcurrentCameraActivity", "onRequestPermissionsResult", "(int,String[],int[])", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "OpenGLActivity", "chooseViewFinder", "(Bundle,ViewStub,OpenGLRenderer)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "OpenGLActivity", "getHighDynamicRangesSupportedByDisplay", "(Display)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "OpenGLActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "OpenGLActivity", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "SurfaceViewRenderSurface", "inflateNonBlockingWith", "(ViewStub,OpenGLRenderer)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "SurfaceViewRenderSurface", "inflateWith", "(ViewStub,OpenGLRenderer)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "Surfaces", "toSurfaceRotationDegrees", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "TextureViewRenderSurface", "inflateWith", "(ViewStub,OpenGLRenderer)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core", "VideoCameraSwitchingActivity", "onRequestPermissionsResult", "(int,String[],int[])", "summary", "df-generated"]

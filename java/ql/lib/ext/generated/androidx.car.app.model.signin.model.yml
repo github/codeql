@@ -1,0 +1,48 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setDefaultValue", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setErrorMessage", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setHint", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setInputType", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setKeyboardType", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", False, "setShowKeyboardByDefault", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", False, "getDefaultValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", False, "getErrorMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", False, "getHint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", False, "getInputCallbackDelegate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "PinSignInMethod", False, "PinSignInMethod", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "PinSignInMethod", False, "getPinCode", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "ProviderSignInMethod", False, "ProviderSignInMethod", "(Action)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.model.signin.ProviderSignInMethod.mAction]", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "ProviderSignInMethod", False, "getAction", "()", "", "Argument[this].SyntheticField[androidx.car.app.model.signin.ProviderSignInMethod.mAction]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "QRCodeSignInMethod", False, "QRCodeSignInMethod", "(Uri)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.model.signin.QRCodeSignInMethod.mUri]", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "QRCodeSignInMethod", False, "getUri", "()", "", "Argument[this].SyntheticField[androidx.car.app.model.signin.QRCodeSignInMethod.mUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "Builder", "(SignInTemplate$SignInMethod)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "addAction", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setActionStrip", "(ActionStrip)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setAdditionalText", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setHeaderAction", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setInstructions", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setLoading", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate$Builder", False, "setTitle", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getActionStrip", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getActions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getAdditionalText", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getHeaderAction", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getInstructions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getSignInMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", False, "getTitle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.model.signin", "InputSignInMethod$Builder", "Builder", "(InputCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", "getInputType", "()", "summary", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", "getKeyboardType", "()", "summary", "df-generated"]
+      - ["androidx.car.app.model.signin", "InputSignInMethod", "isShowKeyboardByDefault", "()", "summary", "df-generated"]
+      - ["androidx.car.app.model.signin", "SignInTemplate", "isLoading", "()", "summary", "df-generated"]

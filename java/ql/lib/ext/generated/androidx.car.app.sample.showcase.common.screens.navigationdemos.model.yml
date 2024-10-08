@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "ArrivedDemoScreen", False, "ArrivedDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "JunctionImageDemoScreen", False, "JunctionImageDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "LoadingDemoScreen", False, "LoadingDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigatingDemoScreen", False, "NavigatingDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigationMapOnlyScreen", False, "NavigationMapOnlyScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigationNotificationsDemoScreen", False, "NavigationNotificationsDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", True, "RoutingDemoModelFactory", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigationNotificationService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigationNotificationService", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "NavigationNotificationService", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", "getActionStrip", "(OnClickListener)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", "getCurrentStep", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", "getMapActionStrip", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", "getNextStep", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.navigationdemos", "RoutingDemoModelFactory", "getTravelEstimate", "()", "summary", "df-generated"]

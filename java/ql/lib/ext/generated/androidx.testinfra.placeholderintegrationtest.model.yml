@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.testinfra.placeholderintegrationtest", "PlaceholderTest", "testLarge", "()", "summary", "df-generated"]
+      - ["androidx.testinfra.placeholderintegrationtest", "PlaceholderTest", "testMedium", "()", "summary", "df-generated"]
+      - ["androidx.testinfra.placeholderintegrationtest", "PlaceholderTest", "testSmall", "()", "summary", "df-generated"]

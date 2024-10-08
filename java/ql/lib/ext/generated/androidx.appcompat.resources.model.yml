@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appcompat.resources", "Compatibility$Api21Impl", "createFromXmlInner", "(Resources,XmlPullParser,AttributeSet,Resources$Theme)", "summary", "df-generated"]
+      - ["androidx.appcompat.resources", "Compatibility$Api21Impl", "getChangingConfigurations", "(TypedArray)", "summary", "df-generated"]
+      - ["androidx.appcompat.resources", "Compatibility$Api21Impl", "inflate", "(Drawable,Resources,XmlPullParser,AttributeSet,Resources$Theme)", "summary", "df-generated"]

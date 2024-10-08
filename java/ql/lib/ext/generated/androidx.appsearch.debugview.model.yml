@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.debugview", "DebugAppSearchManager", "createAsync", "(Context,ExecutorService,String,String,int,int)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview", "DebugAppSearchManager", "getAllDocumentsSearchResultsAsync", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview", "DebugAppSearchManager", "getDocumentAsync", "(String,String)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview", "DebugAppSearchManager", "getNextPageAsync", "(SearchResults)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview", "DebugAppSearchManager", "getSchemaAsync", "()", "summary", "df-generated"]

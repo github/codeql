@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.supportv4.accessibility", "AccessibilityDelegateSupportActivity$AccessibilityDelegateSupportView", "AccessibilityDelegateSupportView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.accessibility", "AccessibilityDelegateSupportActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.accessibility", "AccessibilityManagerSupportActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.accessibility", "AccessibilityManagerSupportActivity", "onResume", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.accessibility", "AccessibilityRoleDescriptionSupportActivity", "onCreate", "(Bundle)", "summary", "df-generated"]

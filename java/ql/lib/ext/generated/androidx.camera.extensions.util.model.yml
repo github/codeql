@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addOutputConfig", "(Camera2OutputConfigImpl)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mCamera2OutputConfigs].Element", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addOutputConfig", "(Camera2OutputConfigImpl)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mCamera2OutputConfigs].Element", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addOutputConfig", "(Camera2OutputConfigImpl)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addSessionParameter", "(CaptureRequest$Key,Object)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters].MapKey", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addSessionParameter", "(CaptureRequest$Key,Object)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters].MapKey", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addSessionParameter", "(CaptureRequest$Key,Object)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters].MapValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addSessionParameter", "(CaptureRequest$Key,Object)", "", "Argument[1]", "ReturnValue.SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters].MapValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "addSessionParameter", "(CaptureRequest$Key,Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "build", "()", "", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mCamera2OutputConfigs]", "ReturnValue.SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder$Camera2SessionConfigImplImpl.mCamera2OutputConfigs]", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "build", "()", "", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters]", "ReturnValue.SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder$Camera2SessionConfigImplImpl.mSessionParameters]", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "getCamera2OutputConfigs", "()", "", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mCamera2OutputConfigs]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "getSessionParameters", "()", "", "Argument[this].SyntheticField[androidx.camera.extensions.util.Camera2SessionConfigImplBuilder.mSessionParameters]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "setSessionTemplateId", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", True, "setSessionType", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", "getSessionTemplateId", "()", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "Camera2SessionConfigImplBuilder", "getSessionType", "()", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "createVendorExtender", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "extensionsDisabledByQuirk", "(String)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "getAllImplExtensionsLensFacingCombinations", "(Context,boolean)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "isExtensionAvailable", "(ExtensionsManager,CameraSelector,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "isExtensionAvailable", "(ExtensionsManager,int,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "isTargetDeviceAvailableForExtensions", "(int,int)", "summary", "df-generated"]
+      - ["androidx.camera.extensions.util", "ExtensionsTestUtil", "setCamera2SessionCaptureCallback", "(ExtendableBuilder,CameraCaptureSession$CaptureCallback)", "summary", "df-generated"]

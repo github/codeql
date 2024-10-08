@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.leanback.animation", "LogAccelerateInterpolator", "LogAccelerateInterpolator", "(int,int)", "summary", "df-generated"]
+      - ["androidx.leanback.animation", "LogAccelerateInterpolator", "getInterpolation", "(float)", "summary", "df-generated"]
+      - ["androidx.leanback.animation", "LogDecelerateInterpolator", "LogDecelerateInterpolator", "(int,int)", "summary", "df-generated"]
+      - ["androidx.leanback.animation", "LogDecelerateInterpolator", "getInterpolation", "(float)", "summary", "df-generated"]

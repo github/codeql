@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.paging.integration.testapp.room", "Customer", True, "getLastName", "()", "", "Argument[this].SyntheticField[androidx.paging.integration.testapp.room.Customer.mLastName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.paging.integration.testapp.room", "Customer", True, "getName", "()", "", "Argument[this].SyntheticField[androidx.paging.integration.testapp.room.Customer.mName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.paging.integration.testapp.room", "Customer", True, "setLastName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.paging.integration.testapp.room.Customer.mLastName]", "value", "dfc-generated"]
+      - ["androidx.paging.integration.testapp.room", "Customer", True, "setName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.paging.integration.testapp.room.Customer.mName]", "value", "dfc-generated"]
+      - ["androidx.paging.integration.testapp.room", "LastNameAscCustomerDataSource", True, "getKey", "(Customer)", "", "Argument[0].SyntheticField[androidx.paging.integration.testapp.room.Customer.mLastName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.paging.integration.testapp.room", "Customer", "getId", "()", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "Customer", "setId", "(int)", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "CustomerViewModel", "CustomerViewModel", "(Application)", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "LastNameAscCustomerDataSource", "isInvalid", "()", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "LastNameAscCustomerDataSource", "loadAfter", "(ItemKeyedDataSource$LoadParams,ItemKeyedDataSource$LoadCallback)", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "LastNameAscCustomerDataSource", "loadBefore", "(ItemKeyedDataSource$LoadParams,ItemKeyedDataSource$LoadCallback)", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "LastNameAscCustomerDataSource", "loadInitial", "(ItemKeyedDataSource$LoadInitialParams,ItemKeyedDataSource$LoadInitialCallback)", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "SampleDatabase", "getCustomerDao", "()", "summary", "df-generated"]
+      - ["androidx.paging.integration.testapp.room", "SampleDatabase", "getRemoteKeyDao", "()", "summary", "df-generated"]

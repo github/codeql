@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.debugview.model", "DocumentListModel$DocumentListModelFactory", True, "DocumentListModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel$DocumentListModelFactory", True, "DocumentListModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel$DocumentListModelFactory", True, "create", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", True, "DocumentListModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", True, "DocumentListModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", True, "addAdditionalResultsPage", "(SearchResults)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", True, "getAllDocumentsSearchResults", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", True, "getAllLoadedDocuments", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel$DocumentModelFactory", True, "DocumentModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel$DocumentModelFactory", True, "DocumentModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel$DocumentModelFactory", True, "create", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel", True, "DocumentModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel", True, "DocumentModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "DocumentModel", True, "getDocument", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel$SchemaTypeListModelFactory", True, "SchemaTypeListModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel$SchemaTypeListModelFactory", True, "SchemaTypeListModelFactory", "(ListeningExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel$SchemaTypeListModelFactory", True, "create", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel", True, "SchemaTypeListModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel", True, "SchemaTypeListModel", "(ExecutorService,DebugAppSearchManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.debugview.model", "DocumentListModel", "hasAdditionalPages", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel", "getSchemaTypes", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.model", "SchemaTypeListModel", "getSchemaVersion", "()", "summary", "df-generated"]

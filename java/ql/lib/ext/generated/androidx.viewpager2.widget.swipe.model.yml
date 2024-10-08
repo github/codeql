@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", True, "PageSwiperManual", "(ViewPager2)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.viewpager2.widget.swipe", "BaseActivity", "createIntent", "(int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "BaseActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "BaseActivity", "updatePageContent", "(int,int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "BaseActivity", "validateState", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "cancel", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "perform", "(View)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "perform", "(View,Interpolator)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "swipeDown", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "swipeLeft", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "swipeRight", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "ManualSwipeInjector", "swipeUp", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperEspresso", "PageSwiperEspresso", "(ViewPager2)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperEspresso", "swipeNext", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperEspresso", "swipePrevious", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", "cancel", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", "swipeBackward", "(float,Interpolator)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", "swipeForward", "(float,Interpolator)", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", "swipeNext", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.widget.swipe", "PageSwiperManual", "swipePrevious", "()", "summary", "df-generated"]

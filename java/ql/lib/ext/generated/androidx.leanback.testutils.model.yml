@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.leanback.testutils", "LeakDetector", False, "observeObject", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ActivityStop", True, "ActivityStop", "(Activity)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ViewStableOnScreen", True, "ViewStableOnScreen", "(View)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.leanback.testutils", "LeakDetector", "assertNoLeak", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ActivityStop", "canProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$PollingCheckCondition", "canPreProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$PollingCheckCondition", "canProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ViewScreenPositionDetector", "isViewStableOnScreen", "(View)", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ViewStableOnScreen", "canPreProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck$ViewStableOnScreen", "canProceed", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck", "PollingCheck", "(long)", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck", "run", "()", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck", "waitFor", "(PollingCheck$PollingCheckCondition)", "summary", "df-generated"]
+      - ["androidx.leanback.testutils", "PollingCheck", "waitFor", "(long,PollingCheck$PollingCheckCondition)", "summary", "df-generated"]

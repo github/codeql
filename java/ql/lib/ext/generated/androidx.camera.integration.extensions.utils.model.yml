@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.integration.extensions.utils", "FpsRecorder", "FpsRecorder", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions.utils", "FpsRecorder", "recordTimestamp", "(long)", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions.utils", "FpsRecorder", "reset", "()", "summary", "df-generated"]

@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["android.support.v4.testutils", "LayoutDirectionActions", "setLayoutDirection", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtils", "assertAllPixelsOfColor", "(String,Drawable,int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtils", "assertAllPixelsOfColor", "(String,Drawable,int,int,int,boolean)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtils", "assertRectangleBounds", "(String,Rect,int,int,int,int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsAssertions", "hasDisplayedChildren", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "backgroundColor", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "centerAlignedInParent", "()", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "endAlignedToParent", "()", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "isOfClass", "(Class)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "matches", "(int[])", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TestUtilsMatchers", "startAlignedToParent", "()", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setCompoundDrawablesRelative", "(Drawable,Drawable,Drawable,Drawable)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setCompoundDrawablesRelativeWithIntrinsicBounds", "(Drawable,Drawable,Drawable,Drawable)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setCompoundDrawablesRelativeWithIntrinsicBounds", "(int,int,int,int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setMaxLines", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setMinLines", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setText", "(int)", "summary", "df-generated"]
+      - ["android.support.v4.testutils", "TextViewActions", "setTextAppearance", "(int)", "summary", "df-generated"]

@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", True, "from", "(ListenableFuture)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", True, "get", "(long,TimeUnit)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", True, "transform", "(Function,Executor)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", True, "transformAsync", "(AsyncFunction,Executor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", True, "transformAsync", "(AsyncFunction,Executor)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "addCallback", "(ListenableFuture,FutureCallback,Executor)", "", "Argument[2]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "allAsList", "(Collection)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "getDone", "(Future)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "getUninterruptibly", "(Future)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "immediateFailedFuture", "(Throwable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "immediateFailedScheduledFuture", "(Throwable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "immediateFuture", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "nonCancellationPropagating", "(ListenableFuture)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "propagateTransform", "(ListenableFuture,Function,CallbackToFutureAdapter$Completer,Executor)", "", "Argument[3]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "successfulAsList", "(Collection)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "transform", "(ListenableFuture,Function,Executor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "transform", "(ListenableFuture,Function,Executor)", "", "Argument[2]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "transformAsync", "(ListenableFuture,AsyncFunction,Executor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "transformAsync", "(ListenableFuture,AsyncFunction,Executor)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", False, "transformAsync", "(ListenableFuture,AsyncFunction,Executor)", "", "Argument[2]", "Argument[0]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", "addCallback", "(FutureCallback,Executor)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", "addListener", "(Runnable,Executor)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", "cancel", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", "isCancelled", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "FutureChain", "isDone", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", "makeTimeoutFuture", "(long,ScheduledExecutorService,ListenableFuture)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", "makeTimeoutFuture", "(long,ScheduledExecutorService,Object,boolean,ListenableFuture)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", "propagate", "(ListenableFuture,CallbackToFutureAdapter$Completer)", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.futures", "Futures", "transformAsyncOnCompletion", "(ListenableFuture)", "summary", "df-generated"]

@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", False, "DualOpenGlRenderer", "(CompositionSettings,CompositionSettings)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", False, "DualOpenGlRenderer", "(CompositionSettings,CompositionSettings)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", False, "render", "(long,Surface,SurfaceOutput,SurfaceTexture,SurfaceTexture)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessor$Factory", True, "newInstance", "(DynamicRange,CompositionSettings,CompositionSettings)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessor$Factory", True, "newInstance", "(DynamicRange,CompositionSettings,CompositionSettings)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", True, "DualSurfaceProcessorNode", "(CameraInternal,CameraInternal,SurfaceProcessorInternal)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", True, "DualSurfaceProcessorNode", "(CameraInternal,CameraInternal,SurfaceProcessorInternal)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", True, "DualSurfaceProcessorNode", "(CameraInternal,CameraInternal,SurfaceProcessorInternal)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", True, "transform", "(DualSurfaceProcessorNode$In)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", True, "transform", "(DualSurfaceProcessorNode$In)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", "getTextureName", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", "init", "(DynamicRange,Map)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOpenGlRenderer", "release", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOutConfig", "getPrimaryOutConfig", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOutConfig", "getSecondaryOutConfig", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualOutConfig", "of", "(OutConfig,OutConfig)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessor$Factory", "setSupplier", "(Function3)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessor", "onFrameAvailable", "(SurfaceTexture)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessor", "release", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode$In", "getOutConfigs", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode$In", "getPrimarySurfaceEdge", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode$In", "getSecondarySurfaceEdge", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode$In", "of", "(SurfaceEdge,SurfaceEdge,List)", "summary", "df-generated"]
+      - ["androidx.camera.core.processing.concurrent", "DualSurfaceProcessorNode", "release", "()", "summary", "df-generated"]

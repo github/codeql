@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "TestNavigationManager", "(TestCarContext,HostDispatcher)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "TestNavigationManager", "(TestCarContext,HostDispatcher)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "getNavigationManagerCallback", "()", "", "Argument[this].SyntheticField[androidx.car.app.testing.navigation.TestNavigationManager.mCallback]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "getTripsSent", "()", "", "Argument[this].SyntheticField[androidx.car.app.testing.navigation.TestNavigationManager.mTripsSent].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "setNavigationManagerCallback", "(Executor,NavigationManagerCallback)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.car.app.testing.navigation.TestNavigationManager.mCallback]", "value", "dfc-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", True, "updateTrip", "(Trip)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.testing.navigation.TestNavigationManager.mTripsSent].Element", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "clearNavigationManagerCallback", "()", "summary", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "getNavigationEndedCount", "()", "summary", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "getNavigationStartedCount", "()", "summary", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "navigationEnded", "()", "summary", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "navigationStarted", "()", "summary", "df-generated"]
+      - ["androidx.car.app.testing.navigation", "TestNavigationManager", "reset", "()", "summary", "df-generated"]

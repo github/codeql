@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.protolayout.renderer.common", "LoggingUtilsImpl", True, "LoggingUtilsImpl", "(ComponentName)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$LayoutDiff", False, "getChangedNodes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", False, "getPosId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", True, "createNodePosId", "(String,int)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", True, "getParentNodePosId", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "RenderingArtifact$SuccessfulRenderingArtifact", True, "getInflaterStatsLogger", "()", "", "Argument[this].SyntheticField[androidx.wear.protolayout.renderer.common.RenderingArtifact$SuccessfulRenderingArtifact.mInflaterStatsLogger]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "RenderingArtifact", True, "create", "(ProviderStatsLogger$InflaterStatsLogger)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.wear.protolayout.renderer.common.RenderingArtifact$SuccessfulRenderingArtifact.mInflaterStatsLogger]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.protolayout.renderer.common", "LoggingUtilsImpl", "canLogD", "(String)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "LoggingUtilsImpl", "logD", "(String,String)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "LoggingUtilsImpl", "logD", "(String,String,Object[])", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger$NoOpInflaterStatsLogger", "logDrawableUsage", "(Drawable)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger$NoOpInflaterStatsLogger", "logIgnoredFailure", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger$NoOpInflaterStatsLogger", "logInflationFailed", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger$NoOpInflaterStatsLogger", "logMutationChangedNodes", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger$NoOpInflaterStatsLogger", "logTotalNodeCount", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "NoOpProviderStatsLogger", "(String)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "createInflaterStatsLogger", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logIgnoredFailure", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logInflationFailed", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logInflationFinished", "(ProviderStatsLogger$InflaterStatsLogger)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logLayoutSchemaVersion", "(int,int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logStateStructure", "(State,boolean)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "NoOpProviderStatsLogger", "logTileRequestReason", "(int)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", "getArcLayoutElement", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", "getChangeType", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", "getFingerprint", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", "getLayoutElement", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer$TreeNodeWithChange", "isSelfOnlyChange", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", "areNodesEquivalent", "(NodeFingerprint,NodeFingerprint)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", "areSameFingerprints", "(TreeFingerprint,TreeFingerprint)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", "getDiff", "(TreeFingerprint,Layout)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "ProtoLayoutDiffer", "isDescendantOf", "(String,String)", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "RenderingArtifact", "failed", "()", "summary", "df-generated"]
+      - ["androidx.wear.protolayout.renderer.common", "RenderingArtifact", "skipped", "()", "summary", "df-generated"]

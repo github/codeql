@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.appdigest", "Checksum", False, "getInstallerPackageName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.core.appdigest", "Checksum", False, "getSplitName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.core.appdigest", "Checksum", False, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.appdigest", "Checksum", "getInstallerCertificate", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "Checksum", "getType", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "Checksums", "getChecksums", "(Context,String,boolean,int,List,Executor)", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "Checksums", "getFileChecksums", "(Context,String,int,String,List,Executor)", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "getResourceAsStream", "(String)", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "onAfter", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "onBefore", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "onBeforeClass", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testAllChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testAllFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testDefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testDefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllChecksumsDirectExecutor", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllChecksumsSingleThread", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllFileChecksumsDirectExecutor", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedAllFileChecksumsSingleThread", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedDefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedDefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedSha512DefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedSha512DefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedV1AllChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedV1AllFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedV1DefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedV1DefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedVerityDefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testFixedVerityDefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerChecksumsTrustAll", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerChecksumsTrustNone", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerFileChecksumsTrustAll", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerFileChecksumsTrustNone", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerSignedChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testInstallerSignedFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testReadWriteChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testSplitsDefaultChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testSplitsDefaultFileChecksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testSplitsSha256Checksums", "()", "summary", "df-generated"]
+      - ["androidx.core.appdigest", "ChecksumsTest", "testSplitsSha256FileChecksums", "()", "summary", "df-generated"]

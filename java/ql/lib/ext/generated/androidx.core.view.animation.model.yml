@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.view.animation", "PathInterpolatorCompat", "create", "(Path)", "summary", "df-generated"]
+      - ["androidx.core.view.animation", "PathInterpolatorCompat", "create", "(float,float)", "summary", "df-generated"]
+      - ["androidx.core.view.animation", "PathInterpolatorCompat", "create", "(float,float,float,float)", "summary", "df-generated"]

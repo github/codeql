@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.ambient", "AmbientMode$AmbientCallback", "onAmbientOffloadInvalidated", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode$AmbientCallback", "onEnterAmbient", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode$AmbientCallback", "onExitAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode$AmbientCallback", "onUpdateAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode$AmbientController", "isAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode$AmbientController", "setAmbientOffloadEnabled", "(boolean)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "attachAmbientSupport", "(Activity)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onAttach", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onDetach", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onPause", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onResume", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientMode", "onStop", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientCallback", "onAmbientOffloadInvalidated", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientCallback", "onEnterAmbient", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientCallback", "onExitAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientCallback", "onUpdateAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientController", "isAmbient", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientController", "setAmbientOffloadEnabled", "(boolean)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport$AmbientController", "setAutoResumeEnabled", "(boolean)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "attach", "(FragmentActivity)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onAttach", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onDetach", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onPause", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onResume", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "AmbientModeSupport", "onStop", "()", "summary", "df-generated"]
+      - ["androidx.wear.ambient", "WearableControllerProvider", "getWearableController", "(Activity,AmbientDelegate$AmbientCallback)", "summary", "df-generated"]

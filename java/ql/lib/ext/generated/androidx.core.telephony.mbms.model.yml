@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.telephony.mbms", "MbmsHelper", "getBestNameForService", "(Context,ServiceInfo)", "summary", "df-generated"]
+      - ["androidx.core.telephony.mbms", "MbmsHelperTest", "testNameMatchFound", "()", "summary", "df-generated"]
+      - ["androidx.core.telephony.mbms", "MbmsHelperTest", "testNameMatchNotFound", "()", "summary", "df-generated"]

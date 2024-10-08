@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.location.altitude", "AltitudeConverterCompat", "addMslAltitudeToLocation", "(Context,Location)", "summary", "df-generated"]
+      - ["androidx.core.location.altitude", "AltitudeConverterCompatTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude", "AltitudeConverterCompatTest", "testAddMslAltitudeToLocation_expectedBehavior", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude", "AltitudeConverterCompatTest", "testAddMslAltitudeToLocation_invalidAltitudeThrows", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude", "AltitudeConverterCompatTest", "testAddMslAltitudeToLocation_invalidLatitudeThrows", "()", "summary", "df-generated"]
+      - ["androidx.core.location.altitude", "AltitudeConverterCompatTest", "testAddMslAltitudeToLocation_invalidLongitudeThrows", "()", "summary", "df-generated"]

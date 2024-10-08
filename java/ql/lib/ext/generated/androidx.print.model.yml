@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.print", "PrintHelper", False, "PrintHelper", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.print", "PrintHelper", "getColorMode", "()", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "getOrientation", "()", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "getScaleMode", "()", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "printBitmap", "(String,Bitmap)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "printBitmap", "(String,Bitmap,PrintHelper$OnPrintFinishCallback)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "printBitmap", "(String,Uri)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "printBitmap", "(String,Uri,PrintHelper$OnPrintFinishCallback)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "setColorMode", "(int)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "setOrientation", "(int)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "setScaleMode", "(int)", "summary", "df-generated"]
+      - ["androidx.print", "PrintHelper", "systemSupportsPrint", "()", "summary", "df-generated"]

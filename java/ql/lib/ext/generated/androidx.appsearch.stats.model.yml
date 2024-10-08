@@ -1,0 +1,45 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "Builder", "(SchemaMigrationStats)", "", "Argument[0].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mDatabase]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mDatabase]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "Builder", "(SchemaMigrationStats)", "", "Argument[0].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mPackageName]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mPackageName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "Builder", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mPackageName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "Builder", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mDatabase]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mDatabase]", "ReturnValue.SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mDatabase]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats$Builder.mPackageName]", "ReturnValue.SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mPackageName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setExecutorAcquisitionLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setFirstSetSchemaLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setGetSchemaLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setIsFirstSetSchemaSuccess", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setMigrationFailureCount", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setQueryAndTransformLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setSaveDocumentLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setSecondSetSchemaLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setStatusCode", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setTotalLatencyMillis", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setTotalNeedMigratedDocumentCount", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats$Builder", True, "setTotalSuccessMigratedDocumentCount", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", False, "SchemaMigrationStats", "(String,String,int,int,int,int,int,int,boolean,int,int,int,int,int)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mPackageName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", False, "SchemaMigrationStats", "(String,String,int,int,int,int,int,int,boolean,int,int,int,int,int)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mDatabase]", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", False, "getDatabase", "()", "", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mDatabase]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", False, "getPackageName", "()", "", "Argument[this].SyntheticField[androidx.appsearch.stats.SchemaMigrationStats.mPackageName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getExecutorAcquisitionLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getFirstSetSchemaLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getGetSchemaLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getMigrationFailureCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getQueryAndTransformLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getSaveDocumentLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getSecondSetSchemaLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getStatusCode", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getTotalLatencyMillis", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getTotalNeedMigratedDocumentCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "getTotalSuccessMigratedDocumentCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "isFirstSetSchemaSuccess", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.stats", "SchemaMigrationStats", "writeToParcel", "(Parcel,int)", "summary", "df-generated"]

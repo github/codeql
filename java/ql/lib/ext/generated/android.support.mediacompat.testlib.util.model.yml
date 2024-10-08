@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["android.support.mediacompat.testlib.util", "IntentUtil", "callMediaBrowserServiceMethod", "(int,Object,Context)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "IntentUtil", "callMediaControllerMethod", "(int,Object,Context,Parcelable)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "IntentUtil", "callMediaSessionMethod", "(int,Object,Context)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "IntentUtil", "callTransportControlsMethod", "(int,Object,Context,Parcelable)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "PollingCheck", "PollingCheck", "(long)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "PollingCheck", "run", "()", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "PollingCheck", "waitFor", "(PollingCheck$PollingCheckCondition)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "PollingCheck", "waitFor", "(long,PollingCheck$PollingCheckCondition)", "summary", "df-generated"]
+      - ["android.support.mediacompat.testlib.util", "TestUtil", "assertBundleEquals", "(Bundle,Bundle)", "summary", "df-generated"]

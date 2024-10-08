@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", True, "FragmentStateAdapter", "(Fragment)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", True, "FragmentStateAdapter", "(FragmentManager,Lifecycle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", True, "FragmentStateAdapter", "(FragmentManager,Lifecycle)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter$FragmentTransactionCallback", "onFragmentMaxLifecyclePreUpdated", "(Fragment,Lifecycle$State)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter$FragmentTransactionCallback", "onFragmentPreAdded", "(Fragment)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter$FragmentTransactionCallback", "onFragmentPreRemoved", "(Fragment)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter$FragmentTransactionCallback", "onFragmentPreSavedInstanceState", "(Fragment)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "FragmentStateAdapter", "(FragmentActivity)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "containsItem", "(long)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "createFragment", "(int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "getItemId", "(int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onAttachedToRecyclerView", "(RecyclerView)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onBindViewHolder", "(FragmentViewHolder,int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onDetachedFromRecyclerView", "(RecyclerView)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onFailedToRecycleView", "(FragmentViewHolder)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onViewAttachedToWindow", "(FragmentViewHolder)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "onViewRecycled", "(FragmentViewHolder)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "registerFragmentTransactionCallback", "(FragmentStateAdapter$FragmentTransactionCallback)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "restoreState", "(Parcelable)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "saveState", "()", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "setHasStableIds", "(boolean)", "summary", "df-generated"]
+      - ["androidx.viewpager2.adapter", "FragmentStateAdapter", "unregisterFragmentTransactionCallback", "(FragmentStateAdapter$FragmentTransactionCallback)", "summary", "df-generated"]

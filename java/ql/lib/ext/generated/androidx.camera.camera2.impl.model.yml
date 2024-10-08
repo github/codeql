@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "getMutableConfig", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "insertAllOptions", "(Config)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "insertAllOptions", "(Config,Config$OptionPriority)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "setCaptureRequestOption", "(CaptureRequest$Key,Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig$Builder", False, "setCaptureRequestOptionWithPriority", "(CaptureRequest$Key,Object,Config$OptionPriority)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "Camera2ImplConfig", "(Config)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "getCaptureRequestTag", "(Object)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "getDeviceStateCallback", "(CameraDevice$StateCallback)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "getPhysicalCameraId", "(String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "getSessionCaptureCallback", "(CameraCaptureSession$CaptureCallback)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", False, "getSessionStateCallback", "(CameraCaptureSession$StateCallback)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", "createCaptureRequestOption", "(CaptureRequest$Key)", "summary", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", "getCaptureRequestOptions", "()", "summary", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", "getCaptureRequestTemplate", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.camera2.impl", "Camera2ImplConfig", "getStreamUseCase", "(long)", "summary", "df-generated"]

@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.autofill.inline", "UiVersions$Content", True, "getSlice", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersions$StylesBuilder", False, "addStyle", "(UiVersions$Style)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.autofill.inline", "UiVersions$StylesBuilder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersions", False, "getVersions", "(Bundle)", "", "Argument[0].MapValue.Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.autofill.inline", "VersionUtils", False, "getSupportedVersions", "(Bundle)", "", "Argument[0].MapValue.Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.autofill.inline", "VersionUtils", False, "readStyleByVersion", "(Bundle,String)", "", "Argument[0].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.autofill.inline", "VersionUtils", False, "writeStylesToBundle", "(List,Bundle)", "", "Argument[0].Element", "Argument[1]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.autofill.inline", "Renderer", "getAttributionIntent", "(Slice)", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "Renderer", "getSupportedInlineUiVersionsAsBundle", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "Renderer", "render", "(Context,Slice,Bundle)", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "RendererTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "RendererTest", "testRender_emptyStyle_nullView", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "RendererTest", "testRender_validStyleAndContent", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersions", "getUiVersions", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersions", "newStylesBuilder", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersionsTest", "testStylesBuilder_emptyStyles_exception", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "UiVersionsTest", "testStylesBuilder_validStyles", "()", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "VersionUtils", "isVersionSupported", "(String)", "summary", "df-generated"]
+      - ["androidx.autofill.inline", "VersionUtils", "writeSupportedVersions", "(Bundle)", "summary", "df-generated"]

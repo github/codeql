@@ -1,0 +1,48 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", True, "debug", "(String,float)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", True, "CustomSet", "(String,SparseArray)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", True, "CustomSet", "(String,SparseArray)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline", True, "makeCustomSpline", "(String,SparseArray)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline", True, "makeCustomSpline", "(String,SparseArray)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$CustomSet", True, "CustomSet", "(String,SparseArray)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$CustomSet", True, "CustomSet", "(String,SparseArray)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$PathRotate", True, "setPathRotate", "(View,KeyCache,float,long,double,double)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle", True, "get", "(float,long,View,KeyCache)", "", "Argument[2]", "Argument[3]", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle", True, "makeCustomSpline", "(String,SparseArray)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle", True, "makeCustomSpline", "(String,SparseArray)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle", True, "setProperty", "(View,float,long,KeyCache)", "", "Argument[0]", "Argument[3]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.constraintlayout.motion.utils", "CustomSupport", "setInterpolatedValue", "(ConstraintAttribute,View,float[])", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "config", "(float,float,float,float,float,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "getInterpolation", "(float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "getVelocity", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "getVelocity", "(float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "isStopped", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "StopLogic", "springConfig", "(float,float,float,float,float,float,float,int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewOscillator$PathRotateSet", "setPathRotate", "(View,float,double,double)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewOscillator$PathRotateSet", "setProperty", "(View,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewOscillator", "makeSpline", "(String)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewOscillator", "setProperty", "(View,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", "setPoint", "(int,ConstraintAttribute)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", "setPoint", "(int,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", "setProperty", "(View,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$CustomSet", "setup", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$PathRotate", "setPathRotate", "(View,float,double,double)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline$PathRotate", "setProperty", "(View,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline", "makeSpline", "(String)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewSpline", "setProperty", "(View,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewState", "getState", "(View)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewState", "height", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewState", "width", "()", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$CustomSet", "setPoint", "(int,ConstraintAttribute,float,int,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$CustomSet", "setPoint", "(int,float,float,int,float)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle$CustomSet", "setup", "(int)", "summary", "df-generated"]
+      - ["androidx.constraintlayout.motion.utils", "ViewTimeCycle", "makeSpline", "(String,long)", "summary", "df-generated"]

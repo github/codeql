@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.widget.util", "ConfigToggle", True, "getText", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.widget.util", "ConfigViewHolder", True, "ConfigViewHolder", "(View)", "", "Argument[0]", "Argument[this].Field[androidx.recyclerview.widget.RecyclerView$ViewHolder.itemView]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.util", "ConfigViewHolder", True, "bind", "(ConfigToggle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.widget.util", "ConfigToggle", "isChecked", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.util", "ConfigToggle", "onChange", "(boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.util", "ConfigViewHolder", "onCheckedChanged", "(CompoundButton,boolean)", "summary", "df-generated"]

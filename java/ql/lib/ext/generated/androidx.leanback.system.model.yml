@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.leanback.system", "Settings", "getBoolean", "(String)", "summary", "df-generated"]
+      - ["androidx.leanback.system", "Settings", "getInstance", "(Context)", "summary", "df-generated"]
+      - ["androidx.leanback.system", "Settings", "isOutlineClippingDisabled", "()", "summary", "df-generated"]
+      - ["androidx.leanback.system", "Settings", "preferStaticShadows", "()", "summary", "df-generated"]
+      - ["androidx.leanback.system", "Settings", "setBoolean", "(String,boolean)", "summary", "df-generated"]

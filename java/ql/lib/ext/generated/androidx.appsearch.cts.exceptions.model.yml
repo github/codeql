@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.cts.exceptions", "AppSearchExceptionCtsTest", "testExceptionWithMessage", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.exceptions", "AppSearchExceptionCtsTest", "testExceptionWithThrowable", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.exceptions", "AppSearchExceptionCtsTest", "testNoMessageException", "()", "summary", "df-generated"]

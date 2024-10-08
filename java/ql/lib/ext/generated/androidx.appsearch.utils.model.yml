@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.utils", "BootCountUtil", "getCurrentBootCount", "(Context)", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidator", "validateDateFormat", "(String,String)", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidator", "validateISO8601Date", "(String)", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidator", "validateISO8601DateTime", "(String)", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601DateTime_invalidDate_returnsFalse", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601DateTime_nonArabicNumeralLocale_returnsTrue", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601DateTime_notExactMatch_returnsFalse", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601DateTime_validDateWithoutSeconds_returnsTrue", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601DateTime_validDate_returnsTrue", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601Date_invalidDate_returnsFalse", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601Date_notExactMatch_returnsFalse", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.utils", "DateTimeFormatValidatorTest", "testValidateISO8601Date_validDate_returnsTrue", "()", "summary", "df-generated"]

@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "Builder", "(Context,Executor,Consumer)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mUiContext]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "Builder", "(Context,Executor,Consumer)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mLoadActionExecutor]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "Builder", "(Context,Executor,Consumer)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mLoadActionListener]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "addPlatformDataProvider", "(PlatformDataProvider,PlatformDataKey[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mLoadActionExecutor]", "ReturnValue.SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionExecutor]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mLoadActionListener]", "ReturnValue.SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionListener]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer$Builder.mUiContext]", "ReturnValue.SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mUiContext]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer$Builder", False, "setTilesTheme", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,Executor,Consumer)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mUiContext]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,Executor,Consumer)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionExecutor]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,Executor,Consumer)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionListener]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,LayoutElementBuilders$Layout,ResourceBuilders$Resources,Executor,TileRenderer$LoadActionListener)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mUiContext]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,LayoutElementBuilders$Layout,ResourceBuilders$Resources,Executor,TileRenderer$LoadActionListener)", "", "Argument[3]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionExecutor]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,LayoutElementBuilders$Layout,int,ResourceBuilders$Resources,Executor,TileRenderer$LoadActionListener)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mUiContext]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "TileRenderer", "(Context,LayoutElementBuilders$Layout,int,ResourceBuilders$Resources,Executor,TileRenderer$LoadActionListener)", "", "Argument[4]", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionExecutor]", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "getLoadActionExecutor", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionExecutor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "getLoadActionListener", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mLoadActionListener]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "getPlatformDataProviders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "getUiContext", "()", "", "Argument[this].SyntheticField[androidx.wear.tiles.renderer.TileRenderer.mUiContext]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "inflate", "(ViewGroup)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "inflate", "(ViewGroup)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "inflateAsync", "(LayoutElementBuilders$Layout,ResourceBuilders$Resources,ViewGroup)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", False, "inflateAsync", "(LayoutElementBuilders$Layout,ResourceBuilders$Resources,ViewGroup)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.tiles.renderer", "TileRenderer", "getAnimations", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", "getTilesTheme", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.renderer", "TileRenderer", "setState", "(Map)", "summary", "df-generated"]

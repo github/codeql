@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.integration.testapp", "InfiniteWorker", "InfiniteWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "InfiniteWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "RecursiveWorker", "RecursiveWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "RecursiveWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "RetryWorker", "RetryWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "RetryWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "SleepWorker", "SleepWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "SleepWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "TestApplication", "getWorkManagerConfiguration", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "TestWorker", "TestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "TestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "ToastWorker", "ToastWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "ToastWorker", "create", "(String)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp", "ToastWorker", "doWork", "()", "summary", "df-generated"]

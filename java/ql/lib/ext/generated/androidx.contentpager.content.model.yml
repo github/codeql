@@ -1,0 +1,53 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.contentpager.content", "ContentPager$ContentCallback", True, "onCursorReady", "(Query,Cursor)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager$QueryRunner$Callback", True, "onQueryFinished", "(Query,Cursor)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager$QueryRunner", True, "query", "(Query,ContentPager$QueryRunner$Callback)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", True, "ContentPager", "(ContentResolver,ContentPager$QueryRunner)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", True, "ContentPager", "(ContentResolver,ContentPager$QueryRunner)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", True, "ContentPager", "(ContentResolver,ContentPager$QueryRunner,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", True, "ContentPager", "(ContentResolver,ContentPager$QueryRunner,int)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", True, "query", "(Uri,String[],Bundle,CancellationSignal,ContentPager$ContentCallback)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.contentpager.content.Query.mUri]", "value", "dfc-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunner", False, "LoaderQueryRunner", "(Context,LoaderManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunner", False, "LoaderQueryRunner", "(Context,LoaderManager)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.contentpager.content", "Query", False, "getUri", "()", "", "Argument[this].SyntheticField[androidx.contentpager.content.Query.mUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", False, "forceRecordCount", "(Uri,int)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.contentpager.content", "ContentPager", "createArgs", "(int,int)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPager", "reset", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testAdaptsUnpagedToPaged", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testCachesUnpagedCursor", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testCancelsRunningQueriesOnReset", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testCorrectlyCopiesRecords_EndOfResults", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testLimitsPagedResultsToWindowSize", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testRelaysContentChangeNotificationsOnPagedCursors", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testRelaysProviderPagedResults", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "ContentPagerTest", "testWrapsCursorsThatJustHappenToFitInPageRange", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunner", "cancel", "(Query)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunner", "isRunning", "(Query)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunnerTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "LoaderQueryRunnerTest", "testRunsQuery", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "Query", "getId", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "Query", "getLimit", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "Query", "getOffset", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "QueryTest", "testDistinctIdsForDifferentPagingArgs", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "QueryTest", "testDistinctIdsForDifferentUris", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "assertExpectedCellValue", "(Cursor,int,int)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "delete", "(Uri,String,String[])", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "forcePagingSpec", "(Uri,int,int)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "getType", "(Uri)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "getTypeOfObject", "(Object)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "insert", "(Uri,ContentValues)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "query", "(Uri,String[],Bundle,CancellationSignal)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestContentProvider", "update", "(Uri,ContentValues,String,String[])", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestQueryRunner", "cancel", "(Query)", "summary", "df-generated"]
+      - ["androidx.contentpager.content", "TestQueryRunner", "isRunning", "(Query)", "summary", "df-generated"]

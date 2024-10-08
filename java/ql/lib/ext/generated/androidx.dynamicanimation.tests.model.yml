@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.dynamicanimation.tests", "AnimationActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "FlingTests", "setup", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "FlingTests", "testCustomProperties", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "FlingTests", "testFloatValueHolder", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "FlingTests", "testFriction", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "FlingTests", "testVelocityThreshold", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "setup", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testAllProperties", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testAnimateToFinalPosition", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testCancelAfterAnimateToFinalPosition", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testCancelOnNonAnimationHandlerThread", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testCustomHandler", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testCustomProperties", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testDampingRatioOverAndCriticallyDamped", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testDampingRatioUnderDamped", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testDurationScaleChangeListener", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testFloatValueHolder", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testGetDampingRatio", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testGetFinalPosition", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testGetStiffness", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testInvalidDampingRatio", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testInvalidStartingCondition", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testInvalidStiffness", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testRemoveListeners", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testScaleMinChange", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testSetMinMax", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testSkipToEnd", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testSkipToEndOnNonAnimationHandlerThread", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testStartOnNonAnimationHandlerThread", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testStiffness", "()", "summary", "df-generated"]
+      - ["androidx.dynamicanimation.tests", "SpringTests", "testUndampedSpring", "()", "summary", "df-generated"]

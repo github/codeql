@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "Builder", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "addAllowedHost", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.validation.HostValidator$Builder.mAllowedHosts].MapKey", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "addAllowedHost", "(String,String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.car.app.validation.HostValidator$Builder.mAllowedHosts].MapKey", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "addAllowedHost", "(String,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "addAllowedHosts", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.car.app.validation.HostValidator$Builder.mAllowedHosts]", "ReturnValue.SyntheticField[androidx.car.app.validation.HostValidator.mAllowedHosts]", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator", False, "getAllowedHosts", "()", "", "Argument[this].SyntheticField[androidx.car.app.validation.HostValidator.mAllowedHosts].MapKey", "ReturnValue.MapKey", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator", False, "getAllowedHosts", "()", "", "Argument[this].SyntheticField[androidx.car.app.validation.HostValidator.mAllowedHosts].MapValue", "ReturnValue.MapValue", "value", "dfc-generated"]
+      - ["androidx.car.app.validation", "HostValidator", False, "isValidHost", "(HostInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

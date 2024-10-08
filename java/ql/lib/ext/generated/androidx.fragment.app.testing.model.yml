@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.fragment.app.testing", "NoDefaultConstructorFragment", True, "NoDefaultConstructorFragment", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.fragment.app.testing.NoDefaultConstructorFragment.mConstructorArg]", "value", "dfc-generated"]
+      - ["androidx.fragment.app.testing", "NoDefaultConstructorFragment", True, "getConstructorArg", "()", "", "Argument[this].SyntheticField[androidx.fragment.app.testing.NoDefaultConstructorFragment.mConstructorArg]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "getNumberOfRecreations", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "getState", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "isViewAttachedToWindow", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "onPause", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "onResume", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "onStart", "()", "summary", "df-generated"]
+      - ["androidx.fragment.app.testing", "StateRecordingFragment", "onStop", "()", "summary", "df-generated"]
