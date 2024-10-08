@@ -4864,13 +4864,9 @@ OLD: KE1
         override fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent {
             val id = tw.getFreshIdLabel<DbStmtexpr>()
             val et = e.expressionType
-            if (et != null) {
-                val type = useType(et)
-                val locId = tw.getLocation(e)
-                tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
-            } else {
-                logger.errorElement("Unexpected null type: ${e.javaClass}", e)
-            }
+            val type = useType(et)
+            val locId = tw.getLocation(e)
+            tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
             /*
             OLD: KE1
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
