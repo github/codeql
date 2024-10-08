@@ -156,6 +156,8 @@ abstract deprecated class Configuration extends DataFlow::Configuration {
       this.isAdditionalTaintStep(node, _, _, _)
     ) and
     defaultImplicitTaintRead(node, c)
+    or
+    defaultImplicitTaintReadGlobal(node, c)
   }
 
   /**
