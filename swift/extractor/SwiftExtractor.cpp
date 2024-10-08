@@ -152,10 +152,10 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   }
 
   std::vector<swift::Token> comments;
-  if (primaryFile && primaryFile->getBufferID().hasValue()) {
+  if (primaryFile && primaryFile->getBufferID()) {
     auto& sourceManager = compiler.getSourceMgr();
     auto tokens = swift::tokenize(compiler.getInvocation().getLangOptions(), sourceManager,
-                                  primaryFile->getBufferID().getValue());
+                                  *primaryFile->getBufferID());
     for (auto& token : tokens) {
       if (token.getKind() == swift::tok::comment) {
         comments.push_back(token);
@@ -188,6 +188,7 @@ static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInst
   std::unordered_set<std::string> sourceFiles;
   const auto& inOuts = compiler.getInvocation().getFrontendOptions().InputsAndOutputs;
   for (auto& input : inOuts.getAllInputs()) {
+    LOG_INFO("> {}", input.getFileName());
     if (input.getType() == swift::file_types::TY_Swift &&
         (!inOuts.hasPrimaryInputs() || input.isPrimary())) {
       sourceFiles.insert(input.getFileName());
