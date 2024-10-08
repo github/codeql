@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.jvm.toolchain", "JavaCompiler", True, "getMetadata", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaInstallationMetadata", True, "getInstallationPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaInstallationMetadata", True, "getJavaRuntimeVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaInstallationMetadata", True, "getJvmVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaInstallationMetadata", True, "getLanguageVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaInstallationMetadata", True, "getVendor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaLauncher", True, "getMetadata", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainDownload", True, "fromUri", "(URI)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.jvm.toolchain.internal.DefaultJavaToolchainDownload.uri]", "value", "dfc-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainDownload", True, "getUri", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainRepository", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainRepositoryHandler", True, "getAsList", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainRequest", True, "getBuildPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaToolchainRequest", True, "getJavaToolchainSpec", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavadocTool", True, "getMetadata", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JvmVendorSpec", True, "matching", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.jvm.toolchain", "JavaLanguageVersion", "current", "()", "summary", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaLanguageVersion", "of", "(String)", "summary", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JavaLanguageVersion", "of", "(int)", "summary", "df-generated"]
+      - ["org.gradle.jvm.toolchain", "JvmVendorSpec", "matches", "(String)", "summary", "df-generated"]

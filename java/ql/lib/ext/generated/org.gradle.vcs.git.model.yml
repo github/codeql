@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.vcs.git", "GitVersionControlSpec", True, "getUrl", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.vcs.git", "GitVersionControlSpec", True, "setUrl", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.vcs.git", "GitVersionControlSpec", True, "setUrl", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

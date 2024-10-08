@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoPluginExtension", True, "automaticModule", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoPluginExtension", True, "automaticModule", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoPluginExtension", True, "module", "(String,String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoPluginExtension", True, "module", "(String,String,String,Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform$Parameter", True, "getAutomaticModules", "()", "", "Argument[this].SyntheticField[org.gradle.sample.transform.javamodules.ExtraModuleInfoTransform$Parameter.automaticModules]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform$Parameter", True, "getModuleInfo", "()", "", "Argument[this].SyntheticField[org.gradle.sample.transform.javamodules.ExtraModuleInfoTransform$Parameter.moduleInfo]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform$Parameter", True, "setAutomaticModules", "(Map)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.sample.transform.javamodules.ExtraModuleInfoTransform$Parameter.automaticModules]", "value", "dfc-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform$Parameter", True, "setModuleInfo", "(Map)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.sample.transform.javamodules.ExtraModuleInfoTransform$Parameter.moduleInfo]", "value", "dfc-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ModuleInfo", True, "exports", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ModuleInfo", True, "getModuleName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ModuleInfo", True, "requires", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ModuleInfo", True, "requiresTransitive", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform", True, "transform", "(TransformOutputs)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform", True, "transform", "(TransformOutputs)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform", True, "transform", "(TransformOutputs)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform", True, "transform", "(TransformOutputs)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.gradle.sample.transform.javamodules", "ExtraModuleInfoTransform", "transform", "(TransformOutputs)", "summary", "df-generated"]

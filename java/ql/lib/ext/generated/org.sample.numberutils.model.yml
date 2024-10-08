@@ -4,4 +4,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["example", "ExamplePlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.sample.numberutils", "Numbers", "add", "(int,int)", "summary", "df-generated"]

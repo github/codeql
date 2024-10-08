@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.model", "ObjectFactory", True, "directoryProperty", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "fileCollection", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "fileProperty", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "fileTree", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "listProperty", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "mapProperty", "(Class,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "property", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.model", "ObjectFactory", True, "setProperty", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

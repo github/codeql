@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example", "CheckstyleUtil", True, "getCheckstyleConfig", "(String)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["com.example", "ExampleExtension", True, "dependencies", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["com.example", "ExampleExtension", True, "dependencies", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["com.example", "ExampleExtension", True, "dependencies", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["com.example", "ExampleExtension", True, "dependencies", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example", "CheckstyleUtil", "getCheckstyleConfig", "(String)", "summary", "df-generated"]
+      - ["com.example", "DependencyReportsPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["com.example", "ExampleExtension", "dependencies", "(Action)", "summary", "df-generated"]
+      - ["com.example", "ExamplePlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponents", "action", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponents", "getOutputFile", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponents", "getRootComponent", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponentsAndFiles", "action", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponentsAndFiles", "getArtifactFiles", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponentsAndFiles", "getArtifactIdentifiers", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponentsAndFiles", "getOutputFile", "()", "summary", "df-generated"]
+      - ["com.example", "GraphResolvedComponentsAndFiles", "getRootComponent", "()", "summary", "df-generated"]
+      - ["com.example", "GreetingTask", "getGreeting", "()", "summary", "df-generated"]
+      - ["com.example", "GreetingTask", "greet", "()", "summary", "df-generated"]
+      - ["com.example", "ListResolvedArtifacts", "action", "()", "summary", "df-generated"]
+      - ["com.example", "ListResolvedArtifacts", "getArtifactFiles", "()", "summary", "df-generated"]
+      - ["com.example", "ListResolvedArtifacts", "getArtifactIds", "()", "summary", "df-generated"]
+      - ["com.example", "ListResolvedArtifacts", "getArtifactVariants", "()", "summary", "df-generated"]
+      - ["com.example", "ListResolvedArtifacts", "getOutputFile", "()", "summary", "df-generated"]
+      - ["com.example", "LumberJack", "sing", "()", "summary", "df-generated"]
+      - ["com.example", "MavenRepositoryStub", "start", "()", "summary", "df-generated"]
+      - ["com.example", "MavenRepositoryStub", "stop", "()", "summary", "df-generated"]
+      - ["com.example", "ReadmeVerificationTask", "getReadme", "()", "summary", "df-generated"]
+      - ["com.example", "ReadmeVerificationTask", "getReadmePatterns", "()", "summary", "df-generated"]

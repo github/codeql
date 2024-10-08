@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", True, "DefaultGarbageCollectionMonitor", "(GarbageCollectorMonitoringStrategy,ScheduledExecutorService)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", True, "DefaultGarbageCollectionMonitor", "(GarbageCollectorMonitoringStrategy,ScheduledExecutorService)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", True, "getHeapEvents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", True, "getNonHeapEvents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultSlidingWindow", True, "latest", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.DefaultSlidingWindow.deque].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultSlidingWindow", True, "slideAndInsert", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.DefaultSlidingWindow.deque].Element", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultSlidingWindow", True, "snapshot", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.DefaultSlidingWindow.deque].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", True, "GarbageCollectionCheck", "(Clock,GarbageCollectorMXBean,String,SlidingWindow,String,SlidingWindow)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionEvent", True, "GarbageCollectionEvent", "(long,MemoryUsage,long)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectionEvent.usage]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionEvent", True, "getUsage", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectionEvent.usage]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "GarbageCollectorMonitoringStrategy", "(String,String,String,double,int,int,double)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.heapPoolName]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "GarbageCollectorMonitoringStrategy", "(String,String,String,double,int,int,double)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.nonHeapPoolName]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "GarbageCollectorMonitoringStrategy", "(String,String,String,double,int,int,double)", "", "Argument[2]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.garbageCollectorName]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "getGarbageCollectorName", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.garbageCollectorName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "getHeapPoolName", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.heapPoolName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", True, "getNonHeapPoolName", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.server.health.gc.GarbageCollectorMonitoringStrategy.nonHeapPoolName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", "getHeapStats", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultGarbageCollectionMonitor", "getNonHeapStats", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "DefaultSlidingWindow", "DefaultSlidingWindow", "(int)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionCheck", "run", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionEvent", "getCount", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionEvent", "getTimestamp", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionInfo", "getCollectionTime", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionStats", "getEventCount", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionStats", "getGcRate", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionStats", "getMaxSizeInBytes", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionStats", "getUsedPercent", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectionStats", "isValid", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "determineGcStrategy", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "getGcRateThreshold", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "getHeapUsageThreshold", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "getNonHeapUsageThreshold", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "getThrashingThreshold", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "isAboveGcRateThreshold", "(double)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "isAboveGcThrashingThreshold", "(double)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "isAboveHeapUsageThreshold", "(int)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health.gc", "GarbageCollectorMonitoringStrategy", "isAboveNonHeapUsageThreshold", "(int)", "summary", "df-generated"]

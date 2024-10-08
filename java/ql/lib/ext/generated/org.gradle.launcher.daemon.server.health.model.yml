@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", True, "DaemonHealthCheck", "(DaemonExpirationStrategy,ListenerManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", True, "DaemonHealthStats", "(DaemonRunningStats,GarbageCollectorMonitoringStrategy,ExecutorFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", True, "DaemonHealthStats", "(DaemonRunningStats,GarbageCollectorMonitoringStrategy,ExecutorFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", True, "getGcMonitor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "HealthExpirationStrategy", "(DaemonHealthStats,GarbageCollectorMonitoringStrategy)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "HealthExpirationStrategy", "(DaemonHealthStats,GarbageCollectorMonitoringStrategy)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "LowMemoryDaemonExpirationStrategy", True, "onOsMemoryStatus", "(OsMemoryStatus)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", True, "executeHealthCheck", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", True, "executeHealthCheck", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", True, "executeHealthCheck", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", True, "executeHealthCheck", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "checkExpiration", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "checkExpiration", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "checkExpiration", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", True, "checkExpiration", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthCheck", "executeHealthCheck", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", "getHealthInfo", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", "getHeapStats", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", "getNonHeapStats", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "DaemonHealthStats", "stop", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "HealthExpirationStrategy", "checkExpiration", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "LowMemoryDaemonExpirationStrategy", "LowMemoryDaemonExpirationStrategy", "(double)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.server.health", "LowMemoryDaemonExpirationStrategy", "checkExpiration", "()", "summary", "df-generated"]

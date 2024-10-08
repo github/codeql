@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.operations.dependencies.transforms", "ExecutePlannedTransformStepBuildOperationType$Details", True, "getPlannedTransformStepIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "ExecutePlannedTransformStepBuildOperationType$Details", True, "getSubjectName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "ExecutePlannedTransformStepBuildOperationType$Details", True, "getTransformerName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "IdentifyTransformExecutionProgressDetails", True, "getArtifactName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "IdentifyTransformExecutionProgressDetails", True, "getIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getArtifactName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getCapabilities", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getComponentId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getConsumerBuildPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getConsumerProjectPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getDependenciesConfigurationIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getSourceAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.operations.dependencies.transforms", "PlannedTransformStepIdentity", True, "getTargetAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
