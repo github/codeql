@@ -343,7 +343,16 @@ module Trees {
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Start with initialization
       this = pred and
-      first(super.getInitializer(), succ) and
+      (
+        first(super.getInitializer(), succ)
+        or
+        not exists(super.getInitializer()) and
+        first(super.getCondition(), succ)
+        or
+        not exists(super.getInitializer()) and
+        not exists(super.getCondition()) and
+        first(this.getBody(), succ)
+      ) and
       completionIsSimple(c)
       or
       // Initialization -> condition
@@ -359,7 +368,16 @@ module Trees {
       // Body -> iterator
       last(this.getBody(), pred, c) and
       completionIsNormal(c) and
-      first(super.getIterator(), succ)
+      (
+        first(super.getIterator(), succ)
+        or
+        not exists(super.getIterator()) and
+        first(super.getCondition(), succ)
+        or
+        not exists(super.getIterator()) and
+        not exists(super.getCondition()) and
+        first(this.getBody(), succ)
+      )
       or
       // Iterator -> condition
       last(super.getIterator(), pred, c) and
