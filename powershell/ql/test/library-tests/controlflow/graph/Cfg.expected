@@ -280,84 +280,242 @@ try.ps1:
 #-----|  -> {...}
 
 conditionals.ps1:
+#    1| exit conditionals.ps1 (normal)
+#-----|  -> exit conditionals.ps1
+
+#    1| exit conditionals.ps1
+
 #    1| {...}
 #-----|  -> test-if
 
 #    1| test-if
 #-----|  -> test-if-else
 
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
+
+#    1| exit {...}
+
+#   11| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   11| exit {...}
+
+#   24| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   24| exit {...}
+
 #   11| test-if-else
 #-----|  -> test-if-conj
+
+#   34| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   34| exit {...}
 
 #   24| test-if-conj
 #-----|  -> test-if-else-conj
 
+#   47| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   47| exit {...}
+
 #   34| test-if-else-conj
 #-----|  -> test-if-disj
+
+#   57| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   57| exit {...}
 
 #   47| test-if-disj
 #-----|  -> test-if-else-disj
 
+#   70| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   70| exit {...}
+
 #   57| test-if-else-disj
 #-----|  -> test-else-if
+
+#   84| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   84| exit {...}
 
 #   70| test-else-if
 #-----|  -> test-else-if-else
 
+#  101| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  101| exit {...}
+
 #   84| test-else-if-else
 #-----|  -> test-switch
+
+#  110| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  110| exit {...}
 
 #  101| test-switch
 #-----|  -> test-switch-default
 
+#  123| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  123| exit {...}
+
 #  110| test-switch-default
 #-----|  -> test-switch-assign
 
+functions.ps1:
+#    1| exit functions.ps1 (normal)
+#-----|  -> exit functions.ps1
+
+#    1| exit functions.ps1
+
+conditionals.ps1:
 #  123| test-switch-assign
 #-----|  -> exit conditionals.ps1 (normal)
 
-#    1| exit conditionals.ps1 (normal)
-#-----|  -> exit conditionals.ps1
+functions.ps1:
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
 
+#    1| exit {...}
+
+#   11| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   11| exit {...}
+
+conditionals.ps1:
 #    4| myBool
 #-----|  -> {...}
 
 #    5| {...}
 #-----|  -> return ...
 
+functions.ps1:
+#   13| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   13| exit {...}
+
+conditionals.ps1:
 #    6| 10
 #-----|  -> return ...
 
 #    8| return ...
 #-----|  -> 11
 
+functions.ps1:
+#   22| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   22| exit {...}
+
+conditionals.ps1:
 #    8| 11
 #-----|  -> exit {...} (normal)
 
-#    1| exit {...} (normal)
+functions.ps1:
+#   36| exit {...} (normal)
 #-----|  -> exit {...}
 
+#   36| exit {...}
+
+conditionals.ps1:
 #    2| param(...)
 #-----|  -> {...}
 
+global.ps1:
+#    1| exit global.ps1 (normal)
+#-----|  -> exit global.ps1
+
+#    1| exit global.ps1
+
+conditionals.ps1:
 #    2| {...}
 #-----|  -> if (...) {...}
 
+loops.ps1:
+#    1| exit loops.ps1 (normal)
+#-----|  -> exit loops.ps1
+
+#    1| exit loops.ps1
+
+conditionals.ps1:
 #    4| if (...) {...}
 #-----|  -> myBool
 
+loops.ps1:
+#    1| exit {...} (normal)
+#-----|  -> exit {...}
+
+#    1| exit {...}
+
+conditionals.ps1:
 #    4| myBool
 #-----|  -> myBool
 
+loops.ps1:
+#    9| exit {...} (normal)
+#-----|  -> exit {...}
+
+#    9| exit {...}
+
+#   17| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   17| exit {...}
+
+conditionals.ps1:
 #    6| return ...
 #-----|  -> 10
 
+loops.ps1:
+#   25| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   25| exit {...}
+
+conditionals.ps1:
 #    6| 10
 #-----|  -> 10
 
+loops.ps1:
+#   33| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   33| exit {...}
+
+#   41| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   41| exit {...}
+
+conditionals.ps1:
 #    8| 11
 #-----|  -> 11
 
+loops.ps1:
+#   49| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   49| exit {...}
+
+#   58| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   58| exit {...}
+
+conditionals.ps1:
 #   14| myBool
 #-----|  -> {...}
 #-----|  -> {...}
@@ -368,18 +526,113 @@ conditionals.ps1:
 #   19| {...}
 #-----|  -> return ...
 
+try.ps1:
+#    1| exit try.ps1 (normal)
+#-----|  -> exit try.ps1
+
+#    1| exit try.ps1
+
+conditionals.ps1:
 #   16| 10
 #-----|  -> exit {...} (normal)
 
-#   11| exit {...} (normal)
+try.ps1:
+#    1| exit {...} (normal)
 #-----|  -> exit {...}
 
+#    1| exit {...}
+
+conditionals.ps1:
 #   20| 11
 #-----|  -> exit {...} (normal)
 
+try.ps1:
+#   10| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   10| exit {...}
+
+conditionals.ps1:
 #   12| param(...)
 #-----|  -> {...}
 
+try.ps1:
+#   21| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   21| exit {...}
+
+#   32| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   32| exit {...}
+
+#   43| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   43| exit {...}
+
+#   52| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   52| exit {...}
+
+#   61| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   61| exit {...}
+
+#   72| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   72| exit {...}
+
+#   81| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   81| exit {...}
+
+#   92| exit {...} (normal)
+#-----|  -> exit {...}
+
+#   92| exit {...}
+
+#  105| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  105| exit {...}
+
+#  116| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  116| exit {...}
+
+#  125| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  125| exit {...}
+
+#  136| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  136| exit {...}
+
+#  149| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  149| exit {...}
+
+#  164| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  164| exit {...}
+
+#  179| exit {...} (normal)
+#-----|  -> exit {...}
+
+#  179| exit {...}
+
+conditionals.ps1:
 #   12| {...}
 #-----|  -> if (...) {...} else {...}
 
@@ -415,9 +668,6 @@ conditionals.ps1:
 
 #   31| 11
 #-----|  -> exit {...} (normal)
-
-#   24| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   25| param(...)
 #-----|  -> {...}
@@ -458,9 +708,6 @@ conditionals.ps1:
 
 #   39| 10
 #-----|  -> exit {...} (normal)
-
-#   34| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   43| 11
 #-----|  -> exit {...} (normal)
@@ -510,9 +757,6 @@ conditionals.ps1:
 #   54| 11
 #-----|  -> exit {...} (normal)
 
-#   47| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   48| param(...)
 #-----|  -> {...}
 
@@ -552,9 +796,6 @@ conditionals.ps1:
 
 #   62| 10
 #-----|  -> exit {...} (normal)
-
-#   57| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   66| 11
 #-----|  -> exit {...} (normal)
@@ -604,9 +845,6 @@ conditionals.ps1:
 #   81| 12
 #-----|  -> exit {...} (normal)
 
-#   70| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   71| param(...)
 #-----|  -> {...}
 
@@ -640,9 +878,6 @@ conditionals.ps1:
 
 #   89| 10
 #-----|  -> exit {...} (normal)
-
-#   84| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   97| 12
 #-----|  -> exit {...} (normal)
@@ -687,9 +922,6 @@ conditionals.ps1:
 #  104| 0
 #-----|  -> exit {...} (normal)
 
-#  101| exit {...} (normal)
-#-----|  -> exit {...}
-
 #  105| 1
 #-----|  -> exit {...} (normal)
 
@@ -716,8 +948,8 @@ conditionals.ps1:
 #-----|  -> return ...
 
 #  106| 2:
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #  105| return ...
 #-----|  -> 1
@@ -749,9 +981,6 @@ conditionals.ps1:
 
 #  113| 0
 #-----|  -> exit {...} (normal)
-
-#  110| exit {...} (normal)
-#-----|  -> exit {...}
 
 #  114| 1
 #-----|  -> exit {...} (normal)
@@ -795,8 +1024,8 @@ conditionals.ps1:
 #-----|  -> return ...
 
 #  116| default:
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #  115| return ...
 #-----|  -> 2
@@ -838,9 +1067,6 @@ conditionals.ps1:
 #  125| 0
 #-----|  -> exit {...} (normal)
 
-#  123| exit {...} (normal)
-#-----|  -> exit {...}
-
 #  126| 1
 #-----|  -> exit {...} (normal)
 
@@ -870,8 +1096,8 @@ conditionals.ps1:
 #-----|  -> 1
 
 #  127| 2:
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #  126| 1
 #-----|  -> 1
@@ -901,14 +1127,8 @@ functions.ps1:
 #   36| Add-Numbers-From-Pipeline
 #-----|  -> exit functions.ps1 (normal)
 
-#    1| exit functions.ps1 (normal)
-#-----|  -> exit functions.ps1
-
 #    8| ...+...
 #-----|  -> exit {...} (normal)
-
-#    1| exit {...} (normal)
-#-----|  -> exit {...}
 
 #    3| param(...)
 #-----|  -> {...}
@@ -928,17 +1148,11 @@ functions.ps1:
 #   11| {...}
 #-----|  -> exit {...} (normal)
 
-#   11| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   11| param(...)
 #-----|  -> {...}
 
 #   19| ...+...
 #-----|  -> exit {...} (normal)
-
-#   13| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   16| 0
 #-----|  -> name1
@@ -986,9 +1200,6 @@ functions.ps1:
 #   33| sum
 #-----|  -> exit {...} (normal)
 
-#   22| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   24| param(...)
 #-----|  -> {...}
 
@@ -1030,9 +1241,6 @@ functions.ps1:
 
 #   50| sum
 #-----|  -> exit {...} (normal)
-
-#   36| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   46| _
 #-----|  -> {...}
@@ -1083,9 +1291,6 @@ global.ps1:
 
 #    6| ...+...
 #-----|  -> exit global.ps1 (normal)
-
-#    1| exit global.ps1 (normal)
-#-----|  -> exit global.ps1
 
 #    1| {...}
 #-----|  -> ...=...
@@ -1148,9 +1353,6 @@ loops.ps1:
 #   58| Test-For-Ever
 #-----|  -> exit loops.ps1 (normal)
 
-#    1| exit loops.ps1 (normal)
-#-----|  -> exit loops.ps1
-
 #    2| 0
 #-----|  -> while(...) {...}
 
@@ -1164,14 +1366,11 @@ loops.ps1:
 #-----|  -> a
 
 #    4| ... -le ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #    4| {...}
 #-----|  -> ...=...
-
-#    1| exit {...} (normal)
-#-----|  -> exit {...}
 
 #    2| {...}
 #-----|  -> ...=...
@@ -1213,14 +1412,11 @@ loops.ps1:
 #-----|  -> ... -le ...
 
 #   11| ... -le ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #   11| {...}
 #-----|  -> break
-
-#    9| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   10| {...}
 #-----|  -> ...=...
@@ -1253,14 +1449,11 @@ loops.ps1:
 #-----|  -> ... -le ...
 
 #   19| ... -le ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #   19| {...}
 #-----|  -> continue
-
-#   17| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   18| {...}
 #-----|  -> ...=...
@@ -1299,14 +1492,11 @@ loops.ps1:
 #-----|  -> a
 
 #   30| ... -le ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #   28| {...}
 #-----|  -> ...=...
-
-#   25| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   26| {...}
 #-----|  -> ...=...
@@ -1354,14 +1544,11 @@ loops.ps1:
 #-----|  -> a
 
 #   38| ... -ge ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #   36| {...}
 #-----|  -> ...=...
-
-#   33| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   34| {...}
 #-----|  -> ...=...
@@ -1416,14 +1603,11 @@ loops.ps1:
 #-----|  -> ... -le ...
 
 #   44| ... -le ...
-#-----|  -> {...}
 #-----|  -> exit {...} (normal)
+#-----|  -> {...}
 
 #   44| {...}
 #-----|  -> ...=...
-
-#   41| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   44| ...+...
 #-----|  -> ... -le ...
@@ -1498,8 +1682,8 @@ loops.ps1:
 #-----|  -> forach(... in ...)
 
 #   52| forach(... in ...)
-#-----|  -> letter
 #-----|  -> exit {...} (normal)
+#-----|  -> letter
 
 #   54| ...+...
 #-----|  -> forach(... in ...)
@@ -1540,9 +1724,6 @@ loops.ps1:
 #   53| {...}
 #-----|  -> ...=...
 
-#   49| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   54| ...=...
 #-----|  -> a
 
@@ -1562,6 +1743,13 @@ loops.ps1:
 #-----|  -> for(...;...;...)
 
 #   61| for(...;...;...)
+#-----|  -> {...}
+
+#   63| ... -le ...
+#-----|  -> {...}
+
+#   64| {...}
+#-----|  -> break
 
 #   59| {...}
 #-----|  -> ...=...
@@ -1574,6 +1762,24 @@ loops.ps1:
 
 #   59| 0
 #-----|  -> 0
+
+#   62| {...}
+#-----|  -> if (...) {...}
+
+#   63| if (...) {...}
+#-----|  -> ... -le ...
+
+#   63| ... -le ...
+#-----|  -> a
+
+#   63| a
+#-----|  -> 10
+
+#   63| 10
+#-----|  -> ... -le ...
+
+#   65| break
+#-----|  -> exit {...} (normal)
 
 try.ps1:
 #    1| {...}
@@ -1630,14 +1836,8 @@ try.ps1:
 #  179| test-nested-try-inner-outer-finally
 #-----|  -> exit try.ps1 (normal)
 
-#    1| exit try.ps1 (normal)
-#-----|  -> exit try.ps1
-
 #    7| 1
 #-----|  -> exit {...} (normal)
-
-#    1| exit {...} (normal)
-#-----|  -> exit {...}
 
 #    2| {...}
 #-----|  -> try {...}
@@ -1678,9 +1878,6 @@ try.ps1:
 #   18| 1
 #-----|  -> exit {...} (normal)
 
-#   10| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   11| {...}
 #-----|  -> try {...}
 
@@ -1719,9 +1916,6 @@ try.ps1:
 
 #   29| 1
 #-----|  -> exit {...} (normal)
-
-#   21| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   22| {...}
 #-----|  -> try {...}
@@ -1762,9 +1956,6 @@ try.ps1:
 #   40| 1
 #-----|  -> exit {...} (normal)
 
-#   32| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   33| {...}
 #-----|  -> try {...}
 
@@ -1791,9 +1982,6 @@ try.ps1:
 
 #   49| 1
 #-----|  -> exit {...} (normal)
-
-#   43| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   44| {...}
 #-----|  -> try {...}
@@ -1822,9 +2010,6 @@ try.ps1:
 #   58| 1
 #-----|  -> exit {...} (normal)
 
-#   52| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   53| {...}
 #-----|  -> try {...}
 
@@ -1851,9 +2036,6 @@ try.ps1:
 
 #   69| 2
 #-----|  -> exit {...} (normal)
-
-#   61| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   62| {...}
 #-----|  -> try {...}
@@ -1882,9 +2064,6 @@ try.ps1:
 #   78| 1
 #-----|  -> exit {...} (normal)
 
-#   72| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   73| {...}
 #-----|  -> try {...}
 
@@ -1911,9 +2090,6 @@ try.ps1:
 
 #   89| 2
 #-----|  -> exit {...} (normal)
-
-#   81| exit {...} (normal)
-#-----|  -> exit {...}
 
 #   82| {...}
 #-----|  -> try {...}
@@ -1942,9 +2118,6 @@ try.ps1:
 #  102| 3
 #-----|  -> exit {...} (normal)
 
-#   92| exit {...} (normal)
-#-----|  -> exit {...}
-
 #   93| {...}
 #-----|  -> try {...}
 
@@ -1971,9 +2144,6 @@ try.ps1:
 
 #  113| 1
 #-----|  -> exit {...} (normal)
-
-#  105| exit {...} (normal)
-#-----|  -> exit {...}
 
 #  106| {...}
 #-----|  -> try {...}
@@ -2014,9 +2184,6 @@ try.ps1:
 #  122| 1
 #-----|  -> exit {...} (normal)
 
-#  116| exit {...} (normal)
-#-----|  -> exit {...}
-
 #  117| {...}
 #-----|  -> try {...}
 
@@ -2056,9 +2223,6 @@ try.ps1:
 #  133| 1
 #-----|  -> exit {...} (normal)
 
-#  125| exit {...} (normal)
-#-----|  -> exit {...}
-
 #  126| {...}
 #-----|  -> try {...}
 
@@ -2097,9 +2261,6 @@ try.ps1:
 
 #  146| 1
 #-----|  -> exit {...} (normal)
-
-#  136| exit {...} (normal)
-#-----|  -> exit {...}
 
 #  137| {...}
 #-----|  -> try {...}
@@ -2161,9 +2322,6 @@ try.ps1:
 #  161| 1
 #-----|  -> exit {...} (normal)
 
-#  149| exit {...} (normal)
-#-----|  -> exit {...}
-
 #  156| Write-Output
 #-----|  -> Finally!
 
@@ -2181,9 +2339,6 @@ try.ps1:
 
 #  176| 1
 #-----|  -> exit {...} (normal)
-
-#  164| exit {...} (normal)
-#-----|  -> exit {...}
 
 #  165| {...}
 #-----|  -> try {...}
@@ -2229,9 +2384,6 @@ try.ps1:
 
 #  193| 1
 #-----|  -> exit {...} (normal)
-
-#  179| exit {...} (normal)
-#-----|  -> exit {...}
 
 #  180| {...}
 #-----|  -> try {...}
@@ -2286,98 +2438,3 @@ try.ps1:
 
 #  193| 1
 #-----|  -> 1
-
-conditionals.ps1:
-#    1| exit conditionals.ps1
-
-#    1| exit {...}
-
-#   11| exit {...}
-
-#   24| exit {...}
-
-#   34| exit {...}
-
-#   47| exit {...}
-
-#   57| exit {...}
-
-#   70| exit {...}
-
-#   84| exit {...}
-
-#  101| exit {...}
-
-#  110| exit {...}
-
-#  123| exit {...}
-
-functions.ps1:
-#    1| exit functions.ps1
-
-#    1| exit {...}
-
-#   11| exit {...}
-
-#   13| exit {...}
-
-#   22| exit {...}
-
-#   36| exit {...}
-
-global.ps1:
-#    1| exit global.ps1
-
-loops.ps1:
-#    1| exit loops.ps1
-
-#    1| exit {...}
-
-#    9| exit {...}
-
-#   17| exit {...}
-
-#   25| exit {...}
-
-#   33| exit {...}
-
-#   41| exit {...}
-
-#   49| exit {...}
-
-try.ps1:
-#    1| exit try.ps1
-
-#    1| exit {...}
-
-#   10| exit {...}
-
-#   21| exit {...}
-
-#   32| exit {...}
-
-#   43| exit {...}
-
-#   52| exit {...}
-
-#   61| exit {...}
-
-#   72| exit {...}
-
-#   81| exit {...}
-
-#   92| exit {...}
-
-#  105| exit {...}
-
-#  116| exit {...}
-
-#  125| exit {...}
-
-#  136| exit {...}
-
-#  149| exit {...}
-
-#  164| exit {...}
-
-#  179| exit {...}
