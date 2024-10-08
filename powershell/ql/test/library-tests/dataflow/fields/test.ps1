@@ -45,3 +45,17 @@ Sink $arr9[0] # clean
 Sink $arr9[1] # clean
 Sink $arr9[2] # $ MISSING: hasValueFlow=11
 Sink $arr9[$unknown] # MISSING: hasValueFlow=11
+
+class MyClass {
+    [string] $field
+
+    [void]callSink() {
+        Sink $this.field # $ MISSING: hasValueFlow=12
+    }
+}
+
+$myClass = [MyClass]::new()
+
+$myClass.field = Source "12"
+
+$myClass.callSink()
