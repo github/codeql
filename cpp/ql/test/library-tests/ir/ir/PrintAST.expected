@@ -23564,6 +23564,26 @@ ir.cpp:
 # 2686|           Value = [CStyleCast] 0
 # 2686|           ValueCategory = prvalue
 # 2687|     getStmt(1): [ReturnStmt] return ...
+# 2691| [TopLevelFunction] int concepts::requires_use()
+# 2691|   <params>: 
+# 2691|   getEntryPoint(): [BlockStmt] { ... }
+# 2692|     getStmt(0): [DeclStmt] declaration
+# 2692|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2692|           Type = [IntType] int
+# 2692|         getVariable().getInitializer(): [Initializer] initializer for y
+#-----|           getExpr(): [RequiresExpr] requires ...
+#-----|               Type = [BoolType] bool
+#-----|               Value = [RequiresExpr] 1
+#-----|               ValueCategory = prvalue
+#-----|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+#-----|               Conversion = [IntegralConversion] integral conversion
+#-----|               Type = [IntType] int
+#-----|               Value = [CStyleCast] 1
+#-----|               ValueCategory = prvalue
+# 2693|     getStmt(1): [ReturnStmt] return ...
+# 2693|       getExpr(): [VariableAccess] y
+# 2693|           Type = [IntType] int
+# 2693|           ValueCategory = prvalue(load)
 many-defs-per-use.cpp:
 #   34| [TopLevelFunction] void many_defs_per_use()
 #   34|   <params>: 

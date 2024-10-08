@@ -1790,7 +1790,6 @@ case @expr.kind of
 | 387 = @istriviallyrelocatable
 | 388 = @datasizeof
 | 389 = @c11_generic
-| 390 = @requires_expr
 ;
 
 @var_args_expr = @vastartexpr
