@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j", "ILoggerFactory", True, "getLogger", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atDebug", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atError", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atLevel", "(Level)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atTrace", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "atWarn", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "Logger", True, "makeLoggingEventBuilder", "(Level)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "LoggerFactory", False, "getLogger", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "MDC", True, "putCloseable", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "MarkerFactory", True, "getDetachedMarker", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j", "MarkerFactory", True, "getMarker", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j", "Logger", "isEnabledForLevel", "(Level)", "summary", "df-generated"]
+      - ["org.slf4j", "LoggerFactory", "getILoggerFactory", "()", "summary", "df-generated"]
+      - ["org.slf4j", "LoggerFactory", "getLogger", "(Class)", "summary", "df-generated"]
+      - ["org.slf4j", "LoggerFactoryFriend", "reset", "()", "summary", "df-generated"]
+      - ["org.slf4j", "LoggerFactoryFriend", "setDetectLoggerNameMismatch", "(boolean)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "clear", "()", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "get", "(String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "getCopyOfContextMap", "()", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "getCopyOfDequeByKey", "(String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "getMDCAdapter", "()", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "popByKey", "(String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "pushByKey", "(String,String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "put", "(String,String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "remove", "(String)", "summary", "df-generated"]
+      - ["org.slf4j", "MDC", "setContextMap", "(Map)", "summary", "df-generated"]
+      - ["org.slf4j", "MarkerFactory", "getIMarkerFactory", "()", "summary", "df-generated"]
+      - ["org.slf4j", "NDC", "pop", "()", "summary", "df-generated"]
+      - ["org.slf4j", "NDC", "push", "(String)", "summary", "df-generated"]

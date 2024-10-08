@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.simple", "SimpleLogger", "isDebugEnabled", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleLogger", "isErrorEnabled", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleLogger", "isInfoEnabled", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleLogger", "isTraceEnabled", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleLogger", "isWarnEnabled", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleLogger", "log", "(LoggingEvent)", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleServiceProvider", "getRequestedApiVersion", "()", "summary", "df-generated"]
+      - ["org.slf4j.simple", "SimpleServiceProvider", "initialize", "()", "summary", "df-generated"]

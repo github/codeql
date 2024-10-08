@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.instrumentation", "LogTransformer$Builder", True, "addEntryExit", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.instrumentation", "LogTransformer$Builder", True, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.instrumentation", "LogTransformer$Builder", True, "ignore", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.instrumentation", "LogTransformer$Builder", True, "level", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.instrumentation", "LogTransformer$Builder", True, "verbose", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.instrumentation", "LogTransformer", True, "transform", "(ClassLoader,String,Class,ProtectionDomain,byte[])", "", "Argument[4]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.instrumentation", "JavassistHelper", "getSignature", "(CtBehavior)", "summary", "df-generated"]
+      - ["org.slf4j.instrumentation", "JavassistHelper", "returnValue", "(CtBehavior)", "summary", "df-generated"]
+      - ["org.slf4j.instrumentation", "ToStringHelper", "render", "(Object)", "summary", "df-generated"]

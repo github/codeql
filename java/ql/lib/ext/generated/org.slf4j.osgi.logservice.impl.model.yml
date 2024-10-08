@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.osgi.logservice.impl", "Activator", "start", "(BundleContext)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "Activator", "stop", "(BundleContext)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceFactory", "getService", "(Bundle,ServiceRegistration)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceFactory", "ungetService", "(Bundle,ServiceRegistration,Object)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceImpl", "LogServiceImpl", "(Bundle)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceImpl", "log", "(ServiceReference,int,String)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceImpl", "log", "(ServiceReference,int,String,Throwable)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceImpl", "log", "(int,String)", "summary", "df-generated"]
+      - ["org.slf4j.osgi.logservice.impl", "LogServiceImpl", "log", "(int,String,Throwable)", "summary", "df-generated"]

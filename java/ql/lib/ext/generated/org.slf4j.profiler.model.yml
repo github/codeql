@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.profiler", "Profiler", True, "Profiler", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.globalStopWatch].SyntheticField[org.slf4j.profiler.StopWatch.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "Profiler", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "getCopyOfChildTimeInstruments", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "getCopyOfGlobalStopWatch", "()", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.globalStopWatch].SyntheticField[org.slf4j.profiler.StopWatch.name]", "ReturnValue.SyntheticField[org.slf4j.profiler.StopWatch.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "getLogger", "()", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.logger]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "getName", "()", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "getProfilerRegistry", "()", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.profilerRegistry]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "registerWith", "(ProfilerRegistry)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.profilerRegistry]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "registerWith", "(ProfilerRegistry)", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.name]", "Argument[0].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapKey", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "registerWith", "(ProfilerRegistry)", "", "Argument[this]", "Argument[0].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "setLogger", "(Logger)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.logger]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "startNested", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.slf4j.profiler.Profiler.globalStopWatch].SyntheticField[org.slf4j.profiler.StopWatch.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "startNested", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.slf4j.profiler.Profiler.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "startNested", "(String)", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.logger]", "ReturnValue.SyntheticField[org.slf4j.profiler.Profiler.logger]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "Profiler", True, "startNested", "(String)", "", "Argument[this].SyntheticField[org.slf4j.profiler.Profiler.profilerRegistry]", "ReturnValue.SyntheticField[org.slf4j.profiler.Profiler.profilerRegistry]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", True, "get", "(String)", "", "Argument[this].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", True, "put", "(Profiler)", "", "Argument[0].SyntheticField[org.slf4j.profiler.Profiler.name]", "Argument[this].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapKey", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", True, "put", "(Profiler)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", True, "put", "(String,Profiler)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapKey", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", True, "put", "(String,Profiler)", "", "Argument[1]", "Argument[this].SyntheticField[org.slf4j.profiler.ProfilerRegistry.profilerMap].MapValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", True, "leftPad", "(StringBuffer,String,int)", "", "Argument[1]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", True, "leftPad", "(StringBuilder,String,int)", "", "Argument[1]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", True, "rightPad", "(StringBuffer,String,int)", "", "Argument[1]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", True, "rightPad", "(StringBuilder,String,int)", "", "Argument[1]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.slf4j.profiler", "StopWatch", True, "StopWatch", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.StopWatch.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "StopWatch", True, "getName", "()", "", "Argument[this].SyntheticField[org.slf4j.profiler.StopWatch.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "StopWatch", True, "start", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.profiler.StopWatch.name]", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "StopWatch", True, "stop", "(long)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.profiler", "TimeInstrument", True, "stop", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.profiler", "Profiler", "elapsedTime", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "Profiler", "getStatus", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "Profiler", "log", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "Profiler", "print", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "Profiler", "start", "(String)", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", "clear", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "ProfilerRegistry", "getThreadContextInstance", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", "spacePad", "(StringBuffer,int)", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "SpacePadder", "spacePad", "(StringBuilder,int)", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "StopWatch", "elapsedTime", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "StopWatch", "getStatus", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "StopWatch", "log", "()", "summary", "df-generated"]
+      - ["org.slf4j.profiler", "StopWatch", "print", "()", "summary", "df-generated"]
