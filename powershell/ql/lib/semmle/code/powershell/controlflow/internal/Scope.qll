@@ -36,4 +36,11 @@ class Scope extends Ast, @script_block {
    * This may be both function paramters and parameter block parameters.
    */
   Parameter getAParameter() { result = this.getParameter(_) }
+
+  Parameter getThisParameter() {
+    exists(Function func |
+      func.getBody() = this and
+      result = func.getThisParameter()
+    )
+  }
 }

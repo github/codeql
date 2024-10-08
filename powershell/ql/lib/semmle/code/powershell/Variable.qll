@@ -42,7 +42,8 @@ private newtype TParameterImpl =
   TInternalParameter(Internal::Parameter p) or
   TUnderscore(Scope scope) {
     exists(VarAccess va | va.getUserPath() = "_" and scope = va.getEnclosingScope())
-  }
+  } or
+  TThisParameter(Scope scope) { exists(scope.getEnclosingFunction().getDeclaringType()) }
 
 private class ParameterImpl extends TParameterImpl {
   abstract Location getLocation();
@@ -109,9 +110,22 @@ private class Underscore extends ParameterImpl, TUnderscore {
   final override Scope getEnclosingScope() { result = scope }
 }
 
+private class ThisParameter extends ParameterImpl, TThisParameter {
+  Scope scope;
+
+  ThisParameter() { this = TThisParameter(scope) }
+
+  override Location getLocation() { result = scope.getLocation() }
+
+  override string getName() { result = "this" }
+
+  final override Scope getEnclosingScope() { result = scope }
+}
+
 private newtype TVariable =
   TLocalVariable(string name, Scope scope) {
     not isParameterImpl(name, scope) and
+    not name = "this" and // This is modeled as a parameter
     exists(VarAccess va | va.getUserPath() = name and scope = va.getEnclosingScope())
   } or
   TParameter(ParameterImpl p)
@@ -186,8 +200,11 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   predicate hasDefaultValue() { exists(this.getDefaultValue()) }
 
+  /** Holds if this is the `this` parameter. */
+  predicate isThis() { p instanceof ThisParameter }
+
   /**
-   * Gets the index of this parameter.
+   * Gets the index of this parameter, if any.
    *
    * The parameter may be in a parameter block or a function parameter.
    */
