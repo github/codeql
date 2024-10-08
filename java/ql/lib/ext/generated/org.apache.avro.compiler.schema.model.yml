@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.compiler.schema", "CloningVisitor$PropertyCopier", True, "copy", "(Schema$Field,Schema$Field)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor$PropertyCopier", True, "copy", "(Schema,Schema)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "CloningVisitor", "(CloningVisitor$PropertyCopier,boolean,Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "CloningVisitor", "(CloningVisitor$PropertyCopier,boolean,Schema)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "CloningVisitor", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "afterVisitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.schema.CloningVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "get", "()", "", "Argument[this].SyntheticField[org.apache.avro.compiler.schema.CloningVisitor.replace].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "visitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.schema.CloningVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "CloningVisitor", False, "visitTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.schema.CloningVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "copyAliases", "(Schema$Field,Schema$Field)", "", "Argument[0].SyntheticField[org.apache.avro.Schema$Field.aliases].Element", "Argument[1].SyntheticField[org.apache.avro.Schema$Field.aliases].Element", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "copyLogicalTypes", "(Schema,Schema)", "", "Argument[0].SyntheticField[org.apache.avro.Schema.logicalType]", "Argument[1].SyntheticField[org.apache.avro.Schema.logicalType]", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "copyProperties", "(JsonProperties,JsonProperties)", "", "Argument[0].SyntheticField[org.apache.avro.JsonProperties.props].MapKey", "Argument[1].SyntheticField[org.apache.avro.JsonProperties.props].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "getJavaClassName", "(Schema)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "visit", "(Schema,SchemaVisitor)", "", "Argument[0]", "Argument[1].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", False, "visit", "(Schema,SchemaVisitor)", "", "Argument[1].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapValue", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.compiler.schema", "Schemas", "copyAliases", "(Schema,Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.compiler.schema", "Schemas", "hasGeneratedJavaClass", "(Schema)", "summary", "df-generated"]

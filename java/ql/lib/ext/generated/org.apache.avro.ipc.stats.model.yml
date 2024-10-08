@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.ipc.stats", "Histogram$SegmenterException", True, "SegmenterException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", True, "TreeMapSegmenter", "(SortedSet)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.apache.avro.ipc.stats.Histogram$TreeMapSegmenter.index].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", True, "getBoundaryLabels", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.stats.Histogram$TreeMapSegmenter.index].MapKey", "ReturnValue.Element", "taint", "dfc-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsPlugin", True, "StatsPlugin", "(Stopwatch$Ticks,Histogram$Segmenter,Histogram$Segmenter)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsPlugin", True, "StatsPlugin", "(Stopwatch$Ticks,Histogram$Segmenter,Histogram$Segmenter)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsPlugin", True, "StatsPlugin", "(Stopwatch$Ticks,Histogram$Segmenter,Histogram$Segmenter)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet$RenderableMessage", True, "RenderableMessage", "(String)", "", "Argument[0]", "Argument[this].Field[org.apache.avro.ipc.stats.StatsServlet$RenderableMessage.name]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet$RenderableMessage", True, "getCharts", "()", "", "Argument[this].Field[org.apache.avro.ipc.stats.StatsServlet$RenderableMessage.charts]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet$RenderableMessage", True, "getname", "()", "", "Argument[this].Field[org.apache.avro.ipc.stats.StatsServlet$RenderableMessage.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet", True, "StatsServlet", "(StatsPlugin)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", "getBucketLabels", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", "getBuckets", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", "segment", "(Comparable)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "Histogram$TreeMapSegmenter", "size", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet$RenderableMessage", "getNumCalls", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.stats", "StatsServlet", "writeStats", "(Writer)", "summary", "df-generated"]

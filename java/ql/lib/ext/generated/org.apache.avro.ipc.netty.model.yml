@@ -1,0 +1,61 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer,Consumer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer,Consumer,EventLoopGroup,EventLoopGroup,EventLoopGroup)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer,Consumer,EventLoopGroup,EventLoopGroup,EventLoopGroup)", "", "Argument[4].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer,Consumer,EventLoopGroup,EventLoopGroup,EventLoopGroup)", "", "Argument[5].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", True, "NettyServer", "(Responder,InetSocketAddress,Consumer,Consumer,EventLoopGroup,EventLoopGroup,EventLoopGroup)", "", "Argument[6].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Consumer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer,Consumer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "getRemote", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.netty.NettyTransceiver.remote]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "setRemote", "(Protocol)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.ipc.netty.NettyTransceiver.remote]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", True, "NettyDataPack", "(int,List)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.avro.ipc.netty.NettyTransportCodec$NettyDataPack.datas]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", True, "getDatas", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.netty.NettyTransportCodec$NettyDataPack.datas]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", True, "getDatas", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", True, "setDatas", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.ipc.netty.NettyTransportCodec$NettyDataPack.datas]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Consumer)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Consumer)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer,Consumer)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "NettyTransceiver", "(InetSocketAddress,Integer,Consumer,Consumer)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "getRemoteName", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "transceive", "(List)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "transceive", "(List,Callback)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", True, "writeBuffers", "(List)", "", "Argument[this]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.ipc.netty", "NettyServer", "close", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", "getNumActiveConnections", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", "getPort", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", "join", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyServer", "start", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "close", "(boolean)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "getRemoteName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "isConnected", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "lockChannel", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "readBuffers", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "transceive", "(List)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "unlockChannel", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransceiver", "writeBuffers", "(List)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", "getSerial", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.netty", "NettyTransportCodec$NettyDataPack", "setSerial", "(int)", "summary", "df-generated"]
