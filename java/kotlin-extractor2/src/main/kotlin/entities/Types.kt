@@ -1,12 +1,13 @@
 package com.github.codeql
 
+import org.jetbrains.kotlin.analysis.api.symbols.KaClassSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
 
 private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
-    val javaResult = TypeResult(addClassLabel(c) /* , TODO, TODO */)
+    val javaResult = TypeResult(addClassLabel(c.symbol as KaClassSymbol) /* , TODO, TODO */)
     val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
     return TypeResults(javaResult, kotlinResult)
 }

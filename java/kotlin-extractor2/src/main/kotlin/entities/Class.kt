@@ -189,7 +189,7 @@ fun KotlinFileExtractor.extractClassSource(
         // For non-generic types it will be zero-length list.
     */
 private fun KotlinUsesExtractor.getClassLabel(
-    c: KaClassType,
+    c: KaClassSymbol,
     /*
     OLD: KE1
             argsIncludingOuterClasses: List<IrTypeArgument>?
@@ -202,7 +202,7 @@ private fun KotlinUsesExtractor.getClassLabel(
 context(KaSession)
 fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorinterface> {
     // For source classes, the label doesn't include any type arguments
-    val id = addClassLabel(buildClassType(c) as KaClassType)
+    val id = addClassLabel(c)
     return id
 }
 
@@ -210,7 +210,7 @@ fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorint
 // For non-generic types it will be zero-length list.
 // TODO: Should this be private?
 fun KotlinUsesExtractor.addClassLabel(
-    c: KaClassType, // TODO cBeforeReplacement: IrClass,
+    c: KaClassSymbol, // TODO cBeforeReplacement: IrClass,
     /*
     OLD: KE1
             argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?,
@@ -241,8 +241,13 @@ OLD: KE1
                 extractClassLaterIfExternal(replacedClass)
 */
             // TODO: This shouldn't be done here, but keeping it simple for now
-            val pkgId = extractPackage(c.classId.packageFqName.asString())
-            tw.writeClasses_or_interfaces(it, c.classId.relativeClassName.asString(), pkgId, it)
+            val classId = c.classId
+            if (classId == null) {
+                TODO() // this is a local class
+            } else {
+                val pkgId = extractPackage(classId.packageFqName.asString())
+                tw.writeClasses_or_interfaces(it, classId.relativeClassName.asString(), pkgId, it)
+            }
         }
 
     /*
@@ -294,14 +299,18 @@ OLD: KE1
          */
     */
 private fun KotlinUsesExtractor.getUnquotedClassLabel(
-    c: KaClassType,
+    c: KaClassSymbol,
     /*
     OLD: KE1
             argsIncludingOuterClasses: List<IrTypeArgument>?
     */
 ): ClassLabelResults {
-    val pkg = c.classId.packageFqName.asString()
-    val cls = c.classId.relativeClassName.asString()
+    val classId = c.classId
+    if (classId == null) {
+        TODO() // This is a local class
+    }
+    val pkg = classId.packageFqName.asString()
+    val cls = classId.relativeClassName.asString()
     val label =
         /*
         OLD: KE1
