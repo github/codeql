@@ -14,6 +14,15 @@ use ra_ap_syntax::ast::RangeItem;
 use ra_ap_syntax::{
     ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxToken, TextRange,
 };
+
+#[macro_export]
+macro_rules! emit_detached {
+    (MacroCall, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_macro_call_expanded(&$node, $label.into());
+    };
+    ($($_:tt)*) => {};
+}
+
 pub trait TextValue {
     fn try_get_text(&self) -> Option<String>;
 }
