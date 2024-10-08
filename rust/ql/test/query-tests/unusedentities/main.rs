@@ -167,12 +167,12 @@ fn loops() {
     for _ in 1..10 {}
 
     for x // SPURIOUS: unused variable [macros not yet supported]
-    in 1..10 {    
+    in 1..10 {
         println!("x is {}", x);
     }
 
     for x // SPURIOUS: unused variable [macros not yet supported]
-    in 1..10 {   
+    in 1..10 {
         assert!(x != 11);
     }
 }
@@ -189,7 +189,14 @@ enum YesOrNo {
     No,
 }
 
-fn if_lets() {
+
+
+
+
+
+
+
+fn if_lets_matches() {
     let mut total: i64 = 0;
 
     if let Some(a) = Some(10) { // BAD: unused variable
@@ -228,18 +235,39 @@ fn if_lets() {
         }
     }
 
-    let e = MyOption::Some(80);
-    match e {
+
+
+
+
+
+
+
+
+    let f = MyOption::Some(90);
+    match f {
         MyOption::Some(val) => { // BAD: unused variable
         }
         MyOption::None => {}
     }
 
-    let f = YesOrNo::Yes;
-    match f {
+
+
+
+
+
+
+
+    let h = YesOrNo::Yes;
+    match h {
         YesOrNo::Yes => {}
         YesOrNo::No => {}
     }
+
+
+
+
+
+
 }
 
 fn main() {
@@ -249,7 +277,7 @@ fn main() {
     arrays();
     statics();
     loops();
-    if_lets();
+    if_lets_matches();
 
     println!("lets use result {}", parameters(1, 2, 3));
 }

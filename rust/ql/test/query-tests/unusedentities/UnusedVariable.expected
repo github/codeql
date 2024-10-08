@@ -5,9 +5,9 @@
 | main.rs:164:9:164:9 | x | Variable is not used. |
 | main.rs:169:9:169:9 | x | Variable is not used. |
 | main.rs:174:9:174:9 | x | Variable is not used. |
-| main.rs:195:17:195:17 | a | Variable is not used. |
-| main.rs:203:20:203:22 | val | Variable is not used. |
-| main.rs:216:14:216:16 | val | Variable is not used. |
-| main.rs:218:9:218:12 | None | Variable is not used. |
-| main.rs:227:9:227:12 | None | Variable is not used. |
-| main.rs:233:24:233:26 | val | Variable is not used. |
+| main.rs:202:17:202:17 | a | Variable is not used. |
+| main.rs:210:20:210:22 | val | Variable is not used. |
+| main.rs:223:14:223:16 | val | Variable is not used. |
+| main.rs:225:9:225:12 | None | Variable is not used. |
+| main.rs:234:9:234:12 | None | Variable is not used. |
+| main.rs:248:24:248:26 | val | Variable is not used. |
