@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.protobuf", "ProtobufData", True, "getSchema", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumReader", True, "ProtobufDatumReader", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumReader", True, "ProtobufDatumReader", "(Schema,Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumReader", True, "ProtobufDatumReader", "(Schema,Schema)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumWriter", True, "ProtobufDatumWriter", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMicrosConversion", "fromLong", "(Long,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMicrosConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMicrosConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMicrosConversion", "getRecommendedSchema", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMicrosConversion", "toLong", "(Timestamp,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMillisConversion", "fromLong", "(Long,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMillisConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMillisConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMillisConversion", "getRecommendedSchema", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampMillisConversion", "toLong", "(Timestamp,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampNanosConversion", "fromLong", "(Long,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampNanosConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampNanosConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampNanosConversion", "getRecommendedSchema", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtoConversions$TimestampNanosConversion", "toLong", "(Timestamp,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufData", "get", "()", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufData", "getNamespace", "(Descriptors$FileDescriptor,Descriptors$Descriptor)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufData", "getSchema", "(Descriptors$Descriptor)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufData", "getSchema", "(Descriptors$EnumDescriptor)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufData", "getSchema", "(Descriptors$FieldDescriptor)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumReader", "ProtobufDatumReader", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.protobuf", "ProtobufDatumWriter", "ProtobufDatumWriter", "(Class)", "summary", "df-generated"]

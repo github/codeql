@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.idl", "IdlFile", True, "getMainSchema", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlFile", True, "getNamedSchema", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlFile", True, "getNamedSchemas", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlFile", True, "getProtocol", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlFile", True, "getWarnings", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlFile", True, "getWarnings", "(String)", "", "Argument[0]", "ReturnValue.Element", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlReader", True, "IdlReader", "(ParseContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlReader", True, "parse", "(Path)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlProtocol", "(Writer,JsonProperties,String,String,Collection,Collection)", "", "Argument[1].SyntheticField[org.apache.avro.JsonProperties.props].MapKey", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlProtocol", "(Writer,JsonProperties,String,String,Collection,Collection)", "", "Argument[2]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlProtocol", "(Writer,JsonProperties,String,String,Collection,Collection)", "", "Argument[3]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlProtocol", "(Writer,Protocol)", "", "Argument[1].SyntheticField[org.apache.avro.Protocol.name]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlProtocol", "(Writer,Protocol)", "", "Argument[1].SyntheticField[org.apache.avro.Protocol.namespace]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlSchema", "(Writer,Schema)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", False, "writeIdlSchemas", "(Writer,String,Collection)", "", "Argument[1]", "Argument[0]", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.idl", "IdlReader", True, "parse", "(Path)", "", "Argument[0]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.idl", "IdlReader", "parse", "(InputStream)", "summary", "df-generated"]
+      - ["org.apache.avro.idl", "IdlReader", "parse", "(URI,CharSequence)", "summary", "df-generated"]
+      - ["org.apache.avro.idl", "IdlSchemaFormatter", "format", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", "uncheckExceptions", "(Callable)", "summary", "df-generated"]
+      - ["org.apache.avro.idl", "IdlUtils", "writeIdlProtocol", "(Writer,Schema)", "summary", "df-generated"]

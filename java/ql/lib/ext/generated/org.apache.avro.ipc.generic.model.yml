@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.ipc.generic", "GenericRequestor", True, "GenericRequestor", "(Protocol,Transceiver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericRequestor", True, "GenericRequestor", "(Protocol,Transceiver)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericRequestor", True, "GenericRequestor", "(Protocol,Transceiver,GenericData)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericRequestor.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericRequestor", True, "getGenericData", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericRequestor.data]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericResponder", True, "GenericResponder", "(Protocol)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericResponder", True, "GenericResponder", "(Protocol,GenericData)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericResponder.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.generic", "GenericResponder", True, "getGenericData", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericResponder.data]", "ReturnValue", "value", "dfc-generated"]

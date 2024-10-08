@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.path", "LocationStep", True, "LocationStep", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "LocationStep", True, "LocationStep", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "MapKeyPredicate", True, "MapKeyPredicate", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.path.MapKeyPredicate.key]", "value", "dfc-generated"]
+      - ["org.apache.avro.path", "MapKeyPredicate", True, "getKey", "()", "", "Argument[this].SyntheticField[org.apache.avro.path.MapKeyPredicate.key]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.path", "TracingAvroTypeException", True, "TracingAvroTypeException", "(AvroTypeException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingAvroTypeException", True, "summarize", "(Schema)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingAvroTypeException", True, "summarize", "(Schema)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingAvroTypeException", True, "tracePath", "(PathElement)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingClassCastException", True, "TracingClassCastException", "(ClassCastException,Object,Schema,boolean)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.avro.path.TracingClassCastException.datum]", "value", "dfc-generated"]
+      - ["org.apache.avro.path", "TracingClassCastException", True, "summarize", "(Schema)", "", "Argument[this].SyntheticField[org.apache.avro.path.TracingClassCastException.datum]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.path", "TracingClassCastException", True, "tracePath", "(PathElement)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingNullPointException", True, "TracingNullPointException", "(NullPointerException,Schema,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingNullPointException", True, "TracingNullPointException", "(NullPointerException,Schema,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingNullPointException", True, "summarize", "(Schema)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingNullPointException", True, "summarize", "(Schema)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.path", "TracingNullPointException", True, "tracePath", "(PathElement)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.path", "UnionTypePredicate", True, "UnionTypePredicate", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.path", "ArrayPositionPredicate", "ArrayPositionPredicate", "(long)", "summary", "df-generated"]

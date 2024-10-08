@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["example", "AvroWordCount$Map", "map", "(LongWritable,Text,OutputCollector,Reporter)", "summary", "df-generated"]
+      - ["example", "AvroWordCount$Reduce", "reduce", "(Text,Iterator,OutputCollector,Reporter)", "summary", "df-generated"]
+      - ["example", "AvroWordCount", "run", "(String[])", "summary", "df-generated"]
+      - ["example", "MapReduceAvroWordCount$Map", "map", "(LongWritable,Text,Mapper$Context)", "summary", "df-generated"]
+      - ["example", "MapReduceAvroWordCount$Reduce", "reduce", "(Text,Iterable,Reducer$Context)", "summary", "df-generated"]
+      - ["example", "MapReduceAvroWordCount", "run", "(String[])", "summary", "df-generated"]
+      - ["example", "MapReduceColorCount$ColorCountMapper", "map", "(AvroKey,NullWritable,Mapper$Context)", "summary", "df-generated"]
+      - ["example", "MapReduceColorCount$ColorCountReducer", "reduce", "(Text,Iterable,Reducer$Context)", "summary", "df-generated"]
+      - ["example", "MapReduceColorCount", "run", "(String[])", "summary", "df-generated"]
+      - ["example", "MapredColorCount$ColorCountMapper", "map", "(User,AvroCollector,Reporter)", "summary", "df-generated"]
+      - ["example", "MapredColorCount$ColorCountReducer", "reduce", "(CharSequence,Iterable,AvroCollector,Reporter)", "summary", "df-generated"]
+      - ["example", "MapredColorCount", "run", "(String[])", "summary", "df-generated"]

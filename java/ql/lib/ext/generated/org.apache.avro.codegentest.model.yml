@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", True, "toFixed", "(CustomDecimal,Schema,LogicalType)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.avro.generic.GenericData$Fixed.schema]", "value", "dfc-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumConversion", True, "fromEnumSymbol", "(GenericEnumSymbol,Schema,LogicalType)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumConversion", True, "toEnumSymbol", "(CustomEnumType,Schema,LogicalType)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.avro.generic.GenericData$EnumSymbol.schema]", "value", "dfc-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumLogicalTypeFactory$CustomEnumLogicalType", True, "CustomEnumLogicalType", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumType", True, "getUnderlying", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeString", True, "FixedSizeString", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.codegentest.FixedSizeString.value]", "value", "dfc-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeString", True, "getValue", "()", "", "Argument[this].SyntheticField[org.apache.avro.codegentest.FixedSizeString.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeString", True, "setValue", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.codegentest.FixedSizeString.value]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.codegentest", "CustomDecimal", "CustomDecimal", "(BigInteger,int)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimal", "toByteArray", "(int)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", "fromBytes", "(ByteBuffer,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", "fromFixed", "(GenericFixed,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomDecimalConversion", "toBytes", "(CustomDecimal,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumConversion", "getRecommendedSchema", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumLogicalTypeFactory$CustomEnumLogicalType", "validate", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumLogicalTypeFactory", "fromSchema", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "CustomEnumLogicalTypeFactory", "getTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringConversion", "fromBytes", "(ByteBuffer,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringConversion", "getConvertedType", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringConversion", "getLogicalTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringConversion", "toBytes", "(FixedSizeString,Schema,LogicalType)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringFactory", "fromSchema", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringFactory", "getTypeName", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringLogicalType", "FixedSizeStringLogicalType", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringLogicalType", "getMaxLength", "()", "summary", "df-generated"]
+      - ["org.apache.avro.codegentest", "FixedSizeStringLogicalType", "getMinLength", "()", "summary", "df-generated"]

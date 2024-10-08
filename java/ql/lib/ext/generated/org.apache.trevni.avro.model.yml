@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.trevni.avro", "AvroColumnReader$Params", True, "Params", "(Input)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnReader$Params", True, "setModel", "(GenericData)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnReader$Params", True, "setSchema", "(Schema)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnReader", True, "AvroColumnReader", "(AvroColumnReader$Params)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnReader", True, "getFileSchema", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "AvroColumnWriter", "(Schema,ColumnFileMetaData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "AvroColumnWriter", "(Schema,ColumnFileMetaData)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "AvroColumnWriter", "(Schema,ColumnFileMetaData,GenericData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "AvroColumnWriter", "(Schema,ColumnFileMetaData,GenericData)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "AvroColumnWriter", "(Schema,ColumnFileMetaData,GenericData)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "writeTo", "(OutputStream)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.trevni.avro", "AvroColumnReader$Params", True, "Params", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", True, "writeTo", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.trevni.avro", "AvroColumnReader$Params", "Params", "(File)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnReader", "getRowCount", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", "sizeEstimate", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", "write", "(Object)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroColumnWriter", "writeTo", "(File)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroTrevniInputFormat", "getRecordReader", "(InputSplit,JobConf,Reporter)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroTrevniOutputFormat", "getRecordWriter", "(FileSystem,JobConf,String,Progressable)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "AvroTrevniOutputFormat", "setMeta", "(JobConf,String,String)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "HadoopInput", "HadoopInput", "(Path,Configuration)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro", "HadoopInput", "length", "()", "summary", "df-generated"]

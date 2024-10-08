@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.reflect", "MapEntry", True, "MapEntry", "(Object,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "MapEntry", True, "MapEntry", "(Object,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "ReflectData", "(ClassLoader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "addStringable", "(Class)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "createFixed", "(Object,Schema)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.avro.generic.GenericData$Fixed.schema]", "value", "dfc-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "makeNullable", "(Schema)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "newRecord", "(Object,Schema)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.avro.generic.GenericData$Record.schema]", "value", "dfc-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "setDefaultGeneratedValue", "(Type,Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", True, "setDefaultsGenerated", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(ReflectData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema,Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema,Schema)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema,Schema,ReflectData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema,Schema,ReflectData)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", True, "ReflectDatumReader", "(Schema,Schema,ReflectData)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumWriter", True, "ReflectDatumWriter", "(Class,ReflectData)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumWriter", True, "ReflectDatumWriter", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumWriter", True, "ReflectDatumWriter", "(Schema,ReflectData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumWriter", True, "ReflectDatumWriter", "(Schema,ReflectData)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.reflect", "ReflectData$AllowNull", "get", "()", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", "get", "()", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", "getClass", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", "getProtocol", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", "useCustomCoders", "()", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectData", "validate", "(Schema,Object)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumReader", "ReflectDatumReader", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectDatumWriter", "ReflectDatumWriter", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectionUtil", "getConstructorAsFunction", "(Class,Class)", "summary", "df-generated"]
+      - ["org.apache.avro.reflect", "ReflectionUtil", "getFieldAccess", "()", "summary", "df-generated"]

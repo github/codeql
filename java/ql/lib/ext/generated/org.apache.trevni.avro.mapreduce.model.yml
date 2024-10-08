@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyRecordReader", True, "getCurrentKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueRecordReader", True, "getCurrentKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueRecordReader", True, "getCurrentValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyInputFormat", "createRecordReader", "(InputSplit,TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyOutputFormat", "getRecordWriter", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyRecordReader", "getCurrentValue", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyRecordReader", "nextKeyValue", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyRecordWriter", "AvroTrevniKeyRecordWriter", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyRecordWriter", "write", "(AvroKey,NullWritable)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueInputFormat", "createRecordReader", "(InputSplit,TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueOutputFormat", "getRecordWriter", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueRecordReader", "nextKeyValue", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueRecordWriter", "AvroTrevniKeyValueRecordWriter", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniKeyValueRecordWriter", "write", "(AvroKey,AvroValue)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordReaderBase", "getProgress", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordReaderBase", "initialize", "(InputSplit,TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordReaderBase", "nextKeyValue", "()", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordWriterBase", "AvroTrevniRecordWriterBase", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordWriterBase", "close", "(TaskAttemptContext)", "summary", "df-generated"]
+      - ["org.apache.trevni.avro.mapreduce", "AvroTrevniRecordWriterBase", "flush", "()", "summary", "df-generated"]
