@@ -62,11 +62,9 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
-/** Holds if node `n` has the Boolean constant value `value`. */
-private predicate isBooleanConstant(AstNode n, Boolean value) {
-  n.(LiteralExpr).getTextValue() = value.toString()
-  or
-  isBooleanConstant(n.(ParenExpr).getExpr(), value)
+/** Holds if node `le` has the Boolean constant value `value`. */
+private predicate isBooleanConstant(LiteralExpr le, Boolean value) {
+  le.getTextValue() = value.toString()
 }
 
 /**
@@ -83,29 +81,22 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     or
     any(MatchGuard guard).getCondition() = e
     or
-    exists(BinaryExpr expr |
-      expr.getOperatorName() = ["&&", "||"] and
-      e = expr.getLhs()
-    )
+    e = any(BinaryLogicalOperation blo).getLhs()
     or
     exists(Expr parent | this.isValidForSpecific0(parent) |
       e = parent.(ParenExpr).getExpr()
       or
-      parent =
-        any(PrefixExpr expr |
-          expr.getOperatorName() = "!" and
-          e = expr.getExpr()
-        )
+      e = parent.(LogicalNotExpr).getExpr()
       or
-      parent =
-        any(BinaryExpr expr |
-          expr.getOperatorName() = ["&&", "||"] and
-          e = expr.getRhs()
-        )
+      e = parent.(BinaryLogicalOperation).getRhs()
       or
       parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
       or
-      parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
+      e = parent.(MatchExpr).getAnArm().getExpr()
+      or
+      e = parent.(BlockExpr).getStmtList().getTailExpr()
+      or
+      e = any(BreakExpr be | be.getTarget() = parent).getExpr()
     )
   }
 
