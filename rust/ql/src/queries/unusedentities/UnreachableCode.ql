@@ -13,18 +13,28 @@ import codeql.rust.controlflow.ControlFlowGraph
 import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 
 /**
+ * Holds if `n` is an AST node that's unreachable.
+ */
+private predicate unreachable(AstNode n) {
+  not n = any(CfgNode cfn).getAstNode()
+}
+
+/**
  * Holds if `n` is an AST node that's unreachable, and is not the successor
  * of an unreachable node (which would be a duplicate result).
  */
-predicate firstUnreachable(AstNode n) {
-  // entry nodes are reachable
-  not exists(CfgScope s | s.scopeFirst(n)) and
-  // we never want a `ControlFlowTree` successor node:
-  //  - if the predecessor is reachable, so are we.
-  //  - if the predecessor is unreachable, we're not the *first* unreachable node.
-  not ControlFlowGraphImpl::succ(_, n, _)
-  // (note that an unreachable cycle of nodes could be missed by this logic, in
-  //  general it wouldn't be possible to pick one node to represent it)
+private predicate firstUnreachable(AstNode n) {
+  unreachable(n) and
+  (
+    // no predecessor -> we are the first unreachable node.
+    not ControlFlowGraphImpl::succ(_, n, _)
+    or
+    // reachable predecessor -> we are the first unreachable node.
+    exists(AstNode pred |
+      ControlFlowGraphImpl::succ(pred, n, _) and
+      not unreachable(pred)
+    )
+  )
 }
 
 /**
