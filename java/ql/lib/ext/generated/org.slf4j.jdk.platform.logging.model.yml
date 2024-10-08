@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.jdk.platform.logging", "SLF4JPlatformLoggerFactory", True, "getLogger", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.jdk.platform.logging.SLF4JPlatformLoggerFactory.loggerMap].MapKey", "value", "dfc-generated"]
+      - ["org.slf4j.jdk.platform.logging", "SLF4JPlatformLoggerFactory", True, "getLogger", "(String)", "", "Argument[this].SyntheticField[org.slf4j.jdk.platform.logging.SLF4JPlatformLoggerFactory.loggerMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.jdk.platform.logging", "SLF4JSystemLoggerFinder", True, "getLogger", "(String,Module)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.jdk.platform.logging", "SLF4JSystemLoggerFinder", True, "getLogger", "(String,Module)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

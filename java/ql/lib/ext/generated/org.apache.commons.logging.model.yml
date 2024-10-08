@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.commons.logging", "LogConfigurationException", True, "LogConfigurationException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogConfigurationException", True, "LogConfigurationException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogConfigurationException", True, "LogConfigurationException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogConfigurationException", True, "LogConfigurationException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", True, "getInstance", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", True, "getInstance", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", True, "getInstance", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", True, "getInstance", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", True, "getLog", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.commons.logging", "LogFactory", "getAttribute", "(String)", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "getAttributeNames", "()", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "getFactory", "()", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "getLog", "(Class)", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "objectId", "(Object)", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "release", "()", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "release", "(ClassLoader)", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "releaseAll", "()", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "removeAttribute", "(String)", "summary", "df-generated"]
+      - ["org.apache.commons.logging", "LogFactory", "setAttribute", "(String,Object)", "summary", "df-generated"]
