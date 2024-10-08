@@ -278,7 +278,7 @@ class AllowListSanitizerWithJavaUtilList {
 		}
 	}
 
-	private static void possiblyMutate(List list) {
+	private static void possiblyMutate(List<String> list) {
 		list.add(getNonConstantString());
 	}
 
