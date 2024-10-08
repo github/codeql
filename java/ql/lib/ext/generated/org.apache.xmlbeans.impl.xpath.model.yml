@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath", "Path", True, "execute", "(Cur,XmlOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "Path", True, "execute", "(Cur,XmlOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathExecutionContext", True, "element", "(QName)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathExecutionContext", True, "init", "(XPath)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "compilePath", "(String,XmlOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "compileQuery", "(String,XmlOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "cursorExecQuery", "(Cur,String,XmlOptions)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPath", "(String,XmlOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPath", "(String,XmlOptions)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPath", "(String,XmlOptions,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPath", "(String,XmlOptions,String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPathSaxon", "(String,String,Map)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPathSaxon", "(String,String,Map)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledPathSaxon", "(String,String,Map)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "getCompiledQuery", "(String,XmlOptions)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "objectExecQuery", "(Cur,String,XmlOptions)", "", "Argument[2].SyntheticField[org.apache.xmlbeans.XmlOptions._map].MapValue", "ReturnValue.ArrayElement", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "cursorExecQuery", "(Cur,String,XmlOptions)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "cursorExecQuery", "(Cur,String,XmlOptions)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "objectExecQuery", "(Cur,String,XmlOptions)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathFactory", True, "objectExecQuery", "(Cur,String,XmlOptions)", "", "Argument[2]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath", "XPath", "compileXPath", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPath", "compileXPath", "(String,Map)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPath", "compileXPath", "(String,String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPath", "compileXPath", "(String,String,Map)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPath", "sawDeepDot", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathExecutionContext", "attr", "(QName)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathExecutionContext", "end", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath", "XPathExecutionContext", "start", "()", "summary", "df-generated"]

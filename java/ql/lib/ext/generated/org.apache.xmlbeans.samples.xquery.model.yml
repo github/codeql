@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.samples.xquery", "XQueryXPath", True, "parseXml", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.samples.xquery", "ExecQuery", True, "collectZips", "(XmlObject)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "SelectPath", True, "updateWorkPhone", "(XmlObject)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "XQueryXPath", True, "executeQueries", "(String[])", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "XQueryXPath", True, "parseXml", "(String)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.samples.xquery", "ExecQuery", "collectZips", "(XmlObject)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "ExecQuery", "updateWorkPhone", "(XmlObject)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "SelectPath", "collectNames", "(XmlObject)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "SelectPath", "updateWorkPhone", "(XmlObject)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.xquery", "XQueryXPath", "executeQueries", "(String[])", "summary", "df-generated"]

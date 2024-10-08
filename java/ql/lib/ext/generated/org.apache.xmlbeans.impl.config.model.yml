@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.impl.config", "BindingConfigImpl", True, "forConfigDocuments", "(ConfigDocument$Config[],File[],File[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "BindingConfigImpl", True, "forConfigDocuments", "(ConfigDocument$Config[],File[],File[])", "", "Argument[2].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "BindingConfigImpl", True, "lookupJavanameForQName", "(QName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "intersect", "(NameSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "intersect", "(NameSet)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "invert", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "substract", "(NameSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "substract", "(NameSet)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "substractFrom", "(NameSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "substractFrom", "(NameSet)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "union", "(NameSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", True, "union", "(NameSet)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSetBuilder", True, "add", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSetBuilder", True, "toNameSet", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "PrePostExtensionImpl", True, "getNameSet", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.impl.config", "BindingConfigImpl", True, "forConfigDocuments", "(ConfigDocument$Config[],File[],File[])", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "BindingConfigImpl", True, "forConfigDocuments", "(ConfigDocument$Config[],File[],File[])", "", "Argument[2]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.config", "InterfaceExtensionImpl", "contains", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSet", "contains", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "NameSetBuilder", "invert", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "PrePostExtensionImpl", "contains", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "PrePostExtensionImpl", "getHandlerNameForJavaSource", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "PrePostExtensionImpl", "hasPostCall", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.config", "PrePostExtensionImpl", "hasPreCall", "()", "summary", "df-generated"]
