@@ -111,7 +111,7 @@ fn arrays() {
 
     println!("lets use {:?}", js);
 
-    for k // SPURIOUS: unused variable [macros not yet supported]
+    for k
 	in ks
 	{
         println!("lets use {}", k); // [unreachable FALSE POSITIVE]
@@ -213,32 +213,32 @@ fn if_lets() {
 
     let c = Some(60);
     match c {
-        Some(val) => { // BAD: unused variable
+        Some(val) => { // BAD: unused variable SPURIOUS: unreachable
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => { // SPURIOUS: unused variable 'None', unreachable
         }
     }
 
     let d = Some(70);
     match d {
-        Some(val) => {
+        Some(val) => { // SPURIOUS: unreachable
             total += val;
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => { // SPURIOUS: unused variable 'None', unreachable
         }
     }
 
     let e = MyOption::Some(80);
     match e {
-        MyOption::Some(val) => { // BAD: unused variable
+        MyOption::Some(val) => { // BAD: unused variable, unreachable
         }
-        MyOption::None => {}
+        MyOption::None => {} // SPURIOUS: unreachable
     }
 
     let f = YesOrNo::Yes;
     match f {
-        YesOrNo::Yes => {}
-        YesOrNo::No => {}
+        YesOrNo::Yes => {} // SPURIOUS: unreachable
+        YesOrNo::No => {} // SPURIOUS: unreachable
     }
 }
 

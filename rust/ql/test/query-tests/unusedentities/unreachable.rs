@@ -9,7 +9,7 @@ fn do_something() {
 
 fn unreachable_if() {
 	if false {
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	} else {
 		do_something();
 	}
@@ -17,7 +17,7 @@ fn unreachable_if() {
 	if true {
 		do_something();
 	} else {
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	}
 
 	let v = get_a_number();
@@ -86,7 +86,7 @@ fn unreachable_panic() {
 	if cond() {
 		do_something();
 		_ = false && panic!(); // does not panic due to short-circuiting
-		do_something();
+		do_something(); // SPURIOUS: unreachable
 		_ = false || panic!();
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
@@ -94,7 +94,7 @@ fn unreachable_panic() {
 	if cond() {
 		do_something();
 		_ = true || panic!(); // does not panic due to short-circuiting
-		do_something();
+		do_something(); // SPURIOUS: unreachable
 		_ = true && panic!();
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
@@ -131,7 +131,7 @@ fn unreachable_loop() {
 
 	if cond() {
 		while cond() {
-			do_something();{ // [unreachable FALSE POSITIVE]
+			do_something();{
 		}
 
 		while false {
@@ -139,9 +139,9 @@ fn unreachable_loop() {
 		}
 
 		while true {
-			do_something(); // [unreachable FALSE POSITIVE]
+			do_something();
 		}
-		do_something(); // BAD: unreachable code [NOT DETECTED]
+		do_something(); // BAD: unreachable code
 	}
 
 	loop {
