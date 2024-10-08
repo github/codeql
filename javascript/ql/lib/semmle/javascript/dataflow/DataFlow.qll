@@ -26,6 +26,7 @@ private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
 private import semmle.javascript.internal.CachedStages
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as Private
+private import semmle.javascript.dataflow.internal.VariableOrThis
 
 module DataFlow {
   /**
@@ -729,9 +730,7 @@ module DataFlow {
   private class ParameterFieldAsPropWrite extends PropWrite, PropNode {
     override ParameterField prop;
 
-    override Node getBase() {
-      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
-    }
+    override Node getBase() { result = TImplicitThisUse(prop, false) }
 
     override Expr getPropertyNameExpr() {
       none() // The parameter value is not the name of the field
@@ -758,9 +757,7 @@ module DataFlow {
       exists(prop.getInit())
     }
 
-    override Node getBase() {
-      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
-    }
+    override Node getBase() { result = TImplicitThisUse(prop, false) }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
 
@@ -1045,12 +1042,12 @@ module DataFlow {
   }
 
   /**
-   * A node representing the value passed as `this` argument in a `new` call or a `super` call.
+   * A node representing the value passed as `this` argument in a `new` call.
    */
-  class ConstructorThisArgumentNode extends TConstructorThisArgumentNode, DataFlow::Node {
-    private InvokeExpr expr;
+  class NewCallThisArgumentNode extends TNewCallThisArgument, DataFlow::Node {
+    private NewExpr expr;
 
-    ConstructorThisArgumentNode() { this = TConstructorThisArgumentNode(expr) }
+    NewCallThisArgumentNode() { this = TNewCallThisArgument(expr) }
 
     override string toString() { result = "implicit 'this' argument of " + expr }
 
@@ -1060,18 +1057,23 @@ module DataFlow {
   }
 
   /**
-   * A node representing the post-update node corresponding to implicit uses of `this` in a constructor.
+   * A node representing an implicit use of `this` or its post-update node.
    */
-  private class ConstructorThisPostUpdateNode extends TConstructorThisPostUpdate, DataFlow::Node {
-    private Function constructor;
+  private class ImplicitThisUseNode extends TImplicitThisUse, DataFlow::Node {
+    private ImplicitThisUse use;
+    private boolean isPost;
 
-    ConstructorThisPostUpdateNode() { this = TConstructorThisPostUpdate(constructor) }
+    ImplicitThisUseNode() { this = TImplicitThisUse(use, isPost) }
 
-    override string toString() { result = "[post-update] 'this' parameter of " + constructor }
+    override string toString() {
+      if isPost = false
+      then result = "implicit 'this'"
+      else result = "[post-update] implicit 'this'"
+    }
 
-    override StmtContainer getContainer() { result = constructor }
+    override StmtContainer getContainer() { result = use.getUseContainer() }
 
-    override Location getLocation() { result = constructor.getLocation() }
+    override Location getLocation() { result = use.getLocation() }
   }
 
   /**
@@ -1682,6 +1684,12 @@ module DataFlow {
       pred = TReflectiveCallNode(call, _) and
       succ = TValueNode(call)
     )
+    or
+    // Pass 'this' into implicit uses of 'this'
+    exists(ImplicitThisUse use |
+      pred = TThisNode(use.getBindingContainer()) and
+      succ = TImplicitThisUse(use, false)
+    )
   }
 
   pragma[nomagic]
@@ -1771,12 +1779,6 @@ module DataFlow {
     exists(Function f |
       pred = TReflectiveParametersNode(f) and
       succ = TValueNode(f.getArgumentsVariable().getAnAccess())
-    )
-    or
-    // Pass 'this' into super calls
-    exists(SuperCall call |
-      pred = TThisNode(call.getBinder()) and
-      succ = TConstructorThisArgumentNode(call)
     )
   }
 
