@@ -1,11 +1,15 @@
 edges
-| variables.rs:3:1:5:1 | enter print_str | variables.rs:4:5:4:22 | ExprStmt |  |
+| variables.rs:3:1:5:1 | enter print_str | variables.rs:3:14:3:14 | s |  |
 | variables.rs:3:1:5:1 | exit print_str (normal) | variables.rs:3:1:5:1 | exit print_str |  |
+| variables.rs:3:14:3:14 | s | variables.rs:3:14:3:20 | Param | match, no-match |
+| variables.rs:3:14:3:20 | Param | variables.rs:4:5:4:22 | ExprStmt |  |
 | variables.rs:3:23:5:1 | BlockExpr | variables.rs:3:1:5:1 | exit print_str (normal) |  |
 | variables.rs:4:5:4:21 | MacroExpr | variables.rs:3:23:5:1 | BlockExpr |  |
 | variables.rs:4:5:4:22 | ExprStmt | variables.rs:4:5:4:21 | MacroExpr |  |
-| variables.rs:7:1:9:1 | enter print_i64 | variables.rs:8:5:8:22 | ExprStmt |  |
+| variables.rs:7:1:9:1 | enter print_i64 | variables.rs:7:14:7:14 | i |  |
 | variables.rs:7:1:9:1 | exit print_i64 (normal) | variables.rs:7:1:9:1 | exit print_i64 |  |
+| variables.rs:7:14:7:14 | i | variables.rs:7:14:7:19 | Param | match, no-match |
+| variables.rs:7:14:7:19 | Param | variables.rs:8:5:8:22 | ExprStmt |  |
 | variables.rs:7:22:9:1 | BlockExpr | variables.rs:7:1:9:1 | exit print_i64 (normal) |  |
 | variables.rs:8:5:8:21 | MacroExpr | variables.rs:7:22:9:1 | BlockExpr |  |
 | variables.rs:8:5:8:22 | ExprStmt | variables.rs:8:5:8:21 | MacroExpr |  |
@@ -393,8 +397,12 @@ edges
 | variables.rs:245:16:245:24 | PathExpr | variables.rs:245:26:245:28 | a13 |  |
 | variables.rs:245:16:245:29 | CallExpr | variables.rs:243:5:246:5 | MatchExpr |  |
 | variables.rs:245:26:245:28 | a13 | variables.rs:245:16:245:29 | CallExpr |  |
-| variables.rs:249:1:258:1 | enter param_pattern1 | variables.rs:255:5:255:18 | ExprStmt |  |
+| variables.rs:249:1:258:1 | enter param_pattern1 | variables.rs:250:5:250:6 | a8 |  |
 | variables.rs:249:1:258:1 | exit param_pattern1 (normal) | variables.rs:249:1:258:1 | exit param_pattern1 |  |
+| variables.rs:250:5:250:6 | a8 | variables.rs:250:5:250:12 | Param | match, no-match |
+| variables.rs:250:5:250:12 | Param | variables.rs:251:5:254:5 | TuplePat |  |
+| variables.rs:251:5:254:5 | TuplePat | variables.rs:251:5:254:19 | Param | match, no-match |
+| variables.rs:251:5:254:19 | Param | variables.rs:255:5:255:18 | ExprStmt |  |
 | variables.rs:254:28:258:1 | BlockExpr | variables.rs:249:1:258:1 | exit param_pattern1 (normal) |  |
 | variables.rs:255:5:255:13 | PathExpr | variables.rs:255:15:255:16 | a8 |  |
 | variables.rs:255:5:255:17 | CallExpr | variables.rs:256:5:256:18 | ExprStmt |  |
@@ -408,8 +416,10 @@ edges
 | variables.rs:257:5:257:17 | CallExpr | variables.rs:254:28:258:1 | BlockExpr |  |
 | variables.rs:257:5:257:18 | ExprStmt | variables.rs:257:5:257:13 | PathExpr |  |
 | variables.rs:257:15:257:16 | c1 | variables.rs:257:5:257:17 | CallExpr |  |
-| variables.rs:260:1:264:1 | enter param_pattern2 | variables.rs:263:5:263:18 | ExprStmt |  |
+| variables.rs:260:1:264:1 | enter param_pattern2 | variables.rs:261:5:261:42 | ParenPat |  |
 | variables.rs:260:1:264:1 | exit param_pattern2 (normal) | variables.rs:260:1:264:1 | exit param_pattern2 |  |
+| variables.rs:261:5:261:42 | ParenPat | variables.rs:261:5:261:50 | Param | match, no-match |
+| variables.rs:261:5:261:50 | Param | variables.rs:263:5:263:18 | ExprStmt |  |
 | variables.rs:262:9:264:1 | BlockExpr | variables.rs:260:1:264:1 | exit param_pattern2 (normal) |  |
 | variables.rs:263:5:263:13 | PathExpr | variables.rs:263:15:263:16 | a9 |  |
 | variables.rs:263:5:263:17 | CallExpr | variables.rs:262:9:264:1 | BlockExpr |  |
@@ -487,8 +497,10 @@ edges
 | variables.rs:304:5:306:10 | LetStmt | variables.rs:305:9:306:9 | ClosureExpr |  |
 | variables.rs:304:9:304:23 | example_closure | variables.rs:307:5:308:27 | LetStmt | match, no-match |
 | variables.rs:305:9:306:9 | ClosureExpr | variables.rs:304:9:304:23 | example_closure |  |
-| variables.rs:305:9:306:9 | enter ClosureExpr | variables.rs:306:9:306:9 | x |  |
+| variables.rs:305:9:306:9 | enter ClosureExpr | variables.rs:305:10:305:10 | x |  |
 | variables.rs:305:9:306:9 | exit ClosureExpr (normal) | variables.rs:305:9:306:9 | exit ClosureExpr |  |
+| variables.rs:305:10:305:10 | x | variables.rs:305:10:305:15 | Param | match, no-match |
+| variables.rs:305:10:305:15 | Param | variables.rs:306:9:306:9 | x |  |
 | variables.rs:306:9:306:9 | x | variables.rs:305:9:306:9 | exit ClosureExpr (normal) |  |
 | variables.rs:307:5:308:27 | LetStmt | variables.rs:308:9:308:23 | example_closure |  |
 | variables.rs:307:9:307:10 | n1 | variables.rs:309:5:309:18 | ExprStmt | match, no-match |
@@ -505,8 +517,10 @@ edges
 | variables.rs:312:5:314:10 | LetStmt | variables.rs:313:9:314:9 | ClosureExpr |  |
 | variables.rs:312:9:312:26 | immutable_variable | variables.rs:315:5:316:30 | LetStmt | match, no-match |
 | variables.rs:313:9:314:9 | ClosureExpr | variables.rs:312:9:312:26 | immutable_variable |  |
-| variables.rs:313:9:314:9 | enter ClosureExpr | variables.rs:314:9:314:9 | x |  |
+| variables.rs:313:9:314:9 | enter ClosureExpr | variables.rs:313:10:313:10 | x |  |
 | variables.rs:313:9:314:9 | exit ClosureExpr (normal) | variables.rs:313:9:314:9 | exit ClosureExpr |  |
+| variables.rs:313:10:313:10 | x | variables.rs:313:10:313:15 | Param | match, no-match |
+| variables.rs:313:10:313:15 | Param | variables.rs:314:9:314:9 | x |  |
 | variables.rs:314:9:314:9 | x | variables.rs:313:9:314:9 | exit ClosureExpr (normal) |  |
 | variables.rs:315:5:316:30 | LetStmt | variables.rs:316:9:316:26 | immutable_variable |  |
 | variables.rs:315:9:315:10 | n2 | variables.rs:317:5:317:18 | ExprStmt | match, no-match |
@@ -575,8 +589,10 @@ edges
 | variables.rs:342:5:342:16 | CallExpr | variables.rs:337:13:343:1 | BlockExpr |  |
 | variables.rs:342:5:342:17 | ExprStmt | variables.rs:342:5:342:13 | PathExpr |  |
 | variables.rs:342:15:342:15 | i | variables.rs:342:5:342:16 | CallExpr |  |
-| variables.rs:345:1:349:1 | enter mutate_param | variables.rs:346:5:348:11 | ExprStmt |  |
+| variables.rs:345:1:349:1 | enter mutate_param | variables.rs:345:17:345:17 | x |  |
 | variables.rs:345:1:349:1 | exit mutate_param (normal) | variables.rs:345:1:349:1 | exit mutate_param |  |
+| variables.rs:345:17:345:17 | x | variables.rs:345:17:345:28 | Param | match, no-match |
+| variables.rs:345:17:345:28 | Param | variables.rs:346:5:348:11 | ExprStmt |  |
 | variables.rs:345:31:349:1 | BlockExpr | variables.rs:345:1:349:1 | exit mutate_param (normal) |  |
 | variables.rs:346:5:346:6 | * ... | variables.rs:347:10:347:10 | x |  |
 | variables.rs:346:5:348:10 | ... = ... | variables.rs:345:31:349:1 | BlockExpr |  |
