@@ -69,8 +69,14 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
  * function f($a, $b) { ... }
  * ```
  * the inverted index of `$a` is 1, and the inverted index of `$b` is 0.
+ *
+ * The inverted index of `$this` is always always the number of
+ * parameters (excluding `this`).
  */
 private int getInvertedIndex(Parameter p) {
+  p.isThis() and
+  result = p.getFunction().getNumberOfParameters()
+  or
   exists(int i |
     p.getIndex() = i or
     p.hasParameterBlock(_, i)
