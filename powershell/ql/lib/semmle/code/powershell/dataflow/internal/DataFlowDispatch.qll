@@ -37,7 +37,7 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  Cmd getACall() { none() }
+  Call getACall() { none() }
 }
 
 /**
@@ -222,7 +222,8 @@ private module Cached {
 
   cached
   newtype TArgumentPosition =
-    TKeywordArgumentPosition(string name) { name = any(CmdParameter p).getName() } or
+    TThisArgumentPosition() or
+    TKeywordArgumentPosition(string name) { name = any(Argument p).getName() } or
     TPositionalArgumentPosition(int pos, NamedSet ns) {
       exists(CfgNodes::CallCfgNode call |
         call = ns.getABindingCall() and
@@ -232,7 +233,8 @@ private module Cached {
 
   cached
   newtype TParameterPosition =
-    TKeywordParameter(string name) { name = any(CmdParameter p).getName() } or
+    TThisParameterPosition() or
+    TKeywordParameter(string name) { name = any(Argument p).getName() } or
     TPositionalParameter(int pos, NamedSet ns) {
       exists(CfgNodes::CallCfgNode call |
         call = ns.getABindingCall() and
@@ -245,6 +247,9 @@ import Cached
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {
+  /** Holds if this position represents a `this` parameter. */
+  predicate isThis() { this = TThisParameterPosition() }
+
   /**
    * Holds if this position represents a positional parameter at position `pos`
    * with function is called with exactly the named parameters from the set `ns`
@@ -256,6 +261,8 @@ class ParameterPosition extends TParameterPosition {
 
   /** Gets a textual representation of this position. */
   string toString() {
+    this.isThis() and result = "this"
+    or
     exists(int pos, NamedSet ns |
       this.isPositional(pos, ns) and result = "pos(" + pos + ", " + ns.toString() + ")"
     )
@@ -266,6 +273,9 @@ class ParameterPosition extends TParameterPosition {
 
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
+  /** Holds if this position represents a `this` argument. */
+  predicate isThis() { this = TThisArgumentPosition() }
+
   /** Holds if this position represents a positional argument at position `pos`. */
   predicate isPositional(int pos, NamedSet ns) { this = TPositionalArgumentPosition(pos, ns) }
 
@@ -273,6 +283,8 @@ class ArgumentPosition extends TArgumentPosition {
 
   /** Gets a textual representation of this position. */
   string toString() {
+    this.isThis() and result = "this"
+    or
     exists(int pos, NamedSet ns |
       this.isPositional(pos, ns) and result = "pos(" + pos + ", " + ns.toString() + ")"
     )
@@ -284,6 +296,8 @@ class ArgumentPosition extends TArgumentPosition {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  ppos.isThis() and apos.isThis()
+  or
   exists(string name |
     ppos.isKeyword(name) and
     apos.isKeyword(name)

@@ -1,5 +1,5 @@
 import powershell
-private import internal.ExplicitWrite
+private import internal.ExplicitWrite::Private
 
 class IndexExpr extends @index_expression, Expr {
   override string toString() { result = "...[...]" }

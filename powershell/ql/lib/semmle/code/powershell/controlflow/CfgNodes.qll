@@ -217,7 +217,11 @@ module ExprNodes {
     /** Gets the name of this argument, if any. */
     string getName() { result = e.getName() }
 
-    StmtNodes::CmdCfgNode getCmd() { result.getAnArgument() = this }
+    /** Holds if `this` is a qualifier to a call. */
+    predicate isQualifier() { e.isQualifier() }
+
+    /** Gets the call for which this is an argument. */
+    CallCfgNode getCall() { result.getAnArgument() = this or result.getQualifier() = this }
   }
 
   private class InvokeMemberChildMapping extends ExprChildMapping, InvokeMemberExpr {

@@ -80,3 +80,4 @@ import semmle.code.powershell.HashTable
 import semmle.code.powershell.SplitExpr
 import semmle.code.powershell.CommentEntity
 import semmle.code.powershell.Variable
+import semmle.code.powershell.internal.Internal::Public

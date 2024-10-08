@@ -33,14 +33,26 @@ abstract private class AbstractFunction extends Ast {
   /** Gets the number of function parameters. */
   final int getNumberOfFunctionParameters() { result = count(this.getAFunctionParameter()) }
 
-  /** Gets the number of parameters (both function and block). */
+  /**
+   * Gets the number of parameters (both function and block).
+   * Note: This excludes the `this` parameter.
+   */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
-  /** Gets the i'th parameter of this function, if any. */
+  /**
+   * Gets the i'th parameter of this function, if any.
+   *
+   * This does not include the `this` parameter.
+   */
   final Parameter getParameter(int i) {
     result = this.getFunctionParameter(i)
     or
     result = this.getBody().getParamBlock().getParameter(i)
+  }
+
+  final Parameter getThisParameter() {
+    result.isThis() and
+    result.getFunction() = this
   }
 
   /** Gets any parameter of this function. */

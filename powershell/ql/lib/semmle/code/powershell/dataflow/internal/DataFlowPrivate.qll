@@ -407,6 +407,9 @@ private module ParameterNodes {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       parameter.getDeclaringScope() = c.asCfgScope() and
       (
+        pos.isThis() and
+        parameter.isThis()
+        or
         pos.isKeyword(parameter.getName())
         or
         // Given a function f with parameters x, y we map
@@ -432,7 +435,9 @@ private module ParameterNodes {
       )
     }
 
-    override CfgScope getCfgScope() { result.getAParameter() = parameter }
+    override CfgScope getCfgScope() {
+      result.getAParameter() = parameter or result.getThisParameter() = parameter
+    }
 
     override Location getLocationImpl() { result = parameter.getLocation() }
 
@@ -458,7 +463,7 @@ module ArgumentNodes {
     ExplicitArgumentNode() { this.asExpr() = arg }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      arg.getCmd() = call.asCall() and
+      arg.getCall() = call.asCall() and
       (
         pos.isKeyword(arg.getName())
         or
@@ -467,6 +472,9 @@ module ArgumentNodes {
           ns.getAnExactBindingCall() = call.asCall() and
           pos.isPositional(i, ns)
         )
+        or
+        arg.isQualifier() and
+        pos.isThis()
       )
     }
   }
