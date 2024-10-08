@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.samples.substitutiongroup", "SubstitutionGroup", True, "validateXml", "(XmlObject)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.samples.substitutiongroup", "SubstitutionGroup", "createDocument", "(PurchaseOrderDocument,String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.substitutiongroup", "SubstitutionGroup", "parseXml", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.substitutiongroup", "SubstitutionGroup", "printComments", "(PurchaseOrderDocument)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.substitutiongroup", "SubstitutionGroup", "validateXml", "(XmlObject)", "summary", "df-generated"]

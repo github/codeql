@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPath", True, "SaxonXPath", "(String,String,Map)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPath", True, "SaxonXPath", "(String,String,Map)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPath", True, "SaxonXPath", "(String,String,Map)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "SaxonXQuery", "(String,String,Integer,XmlOptions)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "SaxonXQuery", "(String,String,Integer,XmlOptions)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "cursorExecute", "(Cur,XmlOptions)", "", "Argument[1].SyntheticField[org.apache.xmlbeans.XmlOptions._map].MapValue", "ReturnValue.SyntheticField[org.apache.xmlbeans.impl.store.Cursor._cur].SyntheticField[org.apache.xmlbeans.impl.store.Cur._locale]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "objectExecute", "(Cur,XmlOptions)", "", "Argument[1].SyntheticField[org.apache.xmlbeans.XmlOptions._map].MapValue", "ReturnValue.ArrayElement", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPathEngine", True, "next", "(Cur)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPathEngine", True, "next", "(Cur)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "cursorExecute", "(Cur,XmlOptions)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "cursorExecute", "(Cur,XmlOptions)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "cursorExecute", "(Cur,XmlOptions)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "execQuery", "(Object,Map)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "objectExecute", "(Cur,XmlOptions)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "objectExecute", "(Cur,XmlOptions)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", True, "objectExecute", "(Cur,XmlOptions)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPath", "selectNodes", "(Object)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPath", "selectPath", "(Object)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPathEngine", "next", "(Cur)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXPathEngine", "release", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", "execQuery", "(Object,Map)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.xpath.saxon", "SaxonXQuery", "release", "()", "summary", "df-generated"]

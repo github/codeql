@@ -1,0 +1,73 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getByteArrayValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getCurrentAttribute", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getCurrentElement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getCurrentWildcardAttribute", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getCurrentWildcardElement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getGDateValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getGDurationValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getListTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getListValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getQNameValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getStringValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "getUnionType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "getProperty", "(String)", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[5].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "Validator", "(SchemaType,SchemaField,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "Validator", "(SchemaType,SchemaField,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "Validator", "(SchemaType,SchemaField,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "Validator", "(SchemaType,SchemaField,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "Validator", "(SchemaType,SchemaField,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[4].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getByteArrayValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getCurrentAttribute", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getCurrentElement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getCurrentElementSchemaType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getCurrentWildcardAttribute", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getCurrentWildcardElement", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getGDateValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getGDurationValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getListTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getListValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getQNameValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getStringValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "getUnionType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", True, "nextWithAttributes", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[2]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[3]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "init", "(XMLStreamReader,boolean,SchemaType,SchemaTypeLoader,XmlOptions,Collection)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", True, "next", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "nextEvent", "(int,ValidatorListener$Event)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", False, "nextEvent", "(int,ValidatorListener$Event)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatorUtil", True, "validateSimpleType", "(SchemaType,String,Collection,PrefixResolver)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatorUtil", True, "validateSimpleType", "(SchemaType,String,Collection,PrefixResolver)", "", "Argument[3]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "getBooleanValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "getCurrentElementSchemaType", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "getDecimalValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "getDoubleValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "getFloatValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingInfoXMLStreamReader", "nextWithAttributes", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", "isValid", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatingXMLStreamReader", "next", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", "getBooleanValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", "getDecimalValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", "getDoubleValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", "getFloatValue", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "Validator", "isValid", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.validator", "ValidatorUtil", "validateSimpleType", "(SchemaType,String,Collection,PrefixResolver)", "summary", "df-generated"]

@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.samples.vxsdb", "VelocityXmlBeansDB", True, "setOutput", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.samples.vxsdb", "VelocityXmlBeansDB", True, "setSchema", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.samples.vxsdb", "VelocityXmlBeansDB", True, "setTemplate", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.samples.vxsdb", "VelocityXmlBeansDB", True, "execute", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.samples.vxsdb", "VelocityXmlBeansDB", "execute", "()", "summary", "df-generated"]

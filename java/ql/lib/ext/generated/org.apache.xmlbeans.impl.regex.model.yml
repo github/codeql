@@ -1,0 +1,48 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.xmlbeans.impl.regex", "BMPattern", True, "BMPattern", "(String,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "BMPattern", True, "BMPattern", "(String,int,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", True, "clone", "()", "", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.Match.strSource]", "ReturnValue.SyntheticField[org.apache.xmlbeans.impl.regex.Match.strSource]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", True, "getCapturedText", "(int)", "", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.Match.charSource]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", True, "getCapturedText", "(int)", "", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.Match.strSource]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "ParseException", True, "ParseException", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "REUtil", False, "createRegex", "(String,String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "REUtil", False, "quoteMeta", "(String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "RegularExpression", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "RegularExpression", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "RegularExpression", "(String,String,Locale)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "getPattern", "()", "", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "matches", "(CharacterIterator,Match)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "matches", "(String,Match)", "", "Argument[0]", "Argument[1].SyntheticField[org.apache.xmlbeans.impl.regex.Match.strSource]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "matches", "(String,int,int,Match)", "", "Argument[0]", "Argument[3].SyntheticField[org.apache.xmlbeans.impl.regex.Match.strSource]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "matches", "(char[],Match)", "", "Argument[0]", "Argument[1].SyntheticField[org.apache.xmlbeans.impl.regex.Match.charSource]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "matches", "(char[],int,int,Match)", "", "Argument[0]", "Argument[3].SyntheticField[org.apache.xmlbeans.impl.regex.Match.charSource]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "setPattern", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "setPattern", "(String,Locale)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "setPattern", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", True, "setPattern", "(String,String,Locale)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "SchemaRegularExpression", True, "forPattern", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.apache.xmlbeans.impl.regex.RegularExpression.regex]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.regex", "BMPattern", "matches", "(CharacterIterator,int,int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "BMPattern", "matches", "(String,int,int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "BMPattern", "matches", "(char[],int,int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", "getBeginning", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", "getEnd", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "Match", "getNumberOfGroups", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "ParseException", "getLocation", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "REUtil", "matches", "(String,String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "REUtil", "matches", "(String,String,String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "getNumberOfGroups", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "getOptions", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "matches", "(CharacterIterator)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "matches", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "matches", "(String,int,int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "matches", "(char[])", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.regex", "RegularExpression", "matches", "(char[],int,int)", "summary", "df-generated"]

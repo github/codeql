@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2Xsd", "inst2xsd", "(Reader[],Inst2XsdOptions)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2Xsd", "inst2xsd", "(XmlObject[],Inst2XsdOptions)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "getDesign", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "getSimpleContentTypes", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "getUseEnumerations", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "isUseEnumerations", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "isVerbose", "()", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "setDesign", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "setSimpleContentTypes", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "setUseEnumerations", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "Inst2XsdOptions", "setVerbose", "(boolean)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.impl.inst2xsd", "RussianDollStrategy", "processDoc", "(XmlObject[],Inst2XsdOptions,TypeSystemHolder)", "summary", "df-generated"]
