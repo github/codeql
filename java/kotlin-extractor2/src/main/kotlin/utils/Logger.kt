@@ -294,7 +294,7 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
             val severity = caller.second
             if (count >= diagnosticCounter.diagnosticLimit) {
                 val message =
-                    "Total of $count diagnostics (reached limit of ${diagnosticCounter.diagnosticLimit}) from $caller."
+                    "Total of $count diagnostics (reached limit of ${diagnosticCounter.diagnosticLimit}) from $callDescription."
                 if (verbosity >= 1) {
                     emitDiagnostic(dtw, null, severity, "Limit", message, message, null, dtw.unknownLocation)
                 }
