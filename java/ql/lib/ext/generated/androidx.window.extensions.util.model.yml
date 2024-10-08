@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.window.extensions.util", "SetCompat", "create", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions.util", "SetUtilApi23", "createSet", "()", "summary", "df-generated"]

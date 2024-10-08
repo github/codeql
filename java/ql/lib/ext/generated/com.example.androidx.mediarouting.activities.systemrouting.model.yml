@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "Builder", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "Builder", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setAddress", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setDescription", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setName", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setSelectionSupportState", "(SystemRouteItem$SelectionSupportState)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setSuitabilityStatus", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setTransferInitiatedBySelf", "(Boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRouteItem$Builder", False, "setTransferReason", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRoutesSourceItem", False, "SystemRoutesSourceItem", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[com.example.androidx.mediarouting.activities.systemrouting.SystemRoutesSourceItem.mName]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRoutesSourceItem", False, "getSourceName", "()", "", "Argument[this].SyntheticField[com.example.androidx.mediarouting.activities.systemrouting.SystemRoutesSourceItem.mName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRoutingActivity", "launch", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting", "SystemRoutingActivity", "onRequestPermissionsResult", "(int,String[],int[])", "summary", "df-generated"]

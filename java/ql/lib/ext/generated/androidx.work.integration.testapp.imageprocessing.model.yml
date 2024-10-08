@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageCleanupWorker", "ImageCleanupWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageCleanupWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageProcessingWorker", "ImageProcessingWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageProcessingWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageRecyclerViewAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageRecyclerViewAdapter", "onBindViewHolder", "(ImageRecyclerViewAdapter$ViewHolder,int)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageRecyclerViewAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageRecyclerViewAdapter", "onViewRecycled", "(ImageRecyclerViewAdapter$ViewHolder)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageSetupWorker", "ImageSetupWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.integration.testapp.imageprocessing", "ImageSetupWorker", "doWork", "()", "summary", "df-generated"]

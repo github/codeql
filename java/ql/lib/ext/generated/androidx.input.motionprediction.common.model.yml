@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.input.motionprediction.common", "Configuration", "getInstance", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "Configuration", "predictLift", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "Configuration", "predictionOffset", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "Configuration", "predictionStrategy", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "Configuration", "preferSystemPrediction", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "PredictionEstimator", "PredictionEstimator", "(Context)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "PredictionEstimator", "estimate", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "PredictionEstimator", "record", "(MotionEvent)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "SystemProperty", "getBoolean", "(String)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.common", "SystemProperty", "getInt", "(String)", "summary", "df-generated"]

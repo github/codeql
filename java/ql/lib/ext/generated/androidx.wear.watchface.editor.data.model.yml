@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "EditorStateWireFormat", "(String,UserStyleWireFormat,List,boolean,Bundle)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mWatchFaceInstanceId]", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "EditorStateWireFormat", "(String,UserStyleWireFormat,List,boolean,Bundle)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mUserStyle]", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "EditorStateWireFormat", "(String,UserStyleWireFormat,List,boolean,Bundle)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mPreviewComplicationData]", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "EditorStateWireFormat", "(String,UserStyleWireFormat,List,boolean,Bundle)", "", "Argument[4]", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mPreviewImageBundle]", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "getPreviewComplicationData", "()", "", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mPreviewComplicationData]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "getPreviewImageBundle", "()", "", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mPreviewImageBundle]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "getUserStyle", "()", "", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mUserStyle]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", False, "getWatchFaceInstanceId", "()", "", "Argument[this].SyntheticField[androidx.wear.watchface.editor.data.EditorStateWireFormat.mWatchFaceInstanceId]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", "describeContents", "()", "summary", "df-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", "getCommitChanges", "()", "summary", "df-generated"]
+      - ["androidx.wear.watchface.editor.data", "EditorStateWireFormat", "writeToParcel", "(Parcel,int)", "summary", "df-generated"]

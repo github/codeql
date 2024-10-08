@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.appcompat", "ActivityWithClick", "myButtonClick", "(View)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "AppCompatLintDemo", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "AppCompatLintDemoExt", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "CoreActivityExt", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "CustomSwitch", "CustomSwitch", "(Context)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "CustomSwitch", "CustomSwitch", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.android.appcompat", "CustomSwitch", "CustomSwitch", "(Context,AttributeSet,int)", "summary", "df-generated"]

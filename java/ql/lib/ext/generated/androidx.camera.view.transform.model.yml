@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.view.transform", "OutputTransform", False, "OutputTransform", "(Matrix,Size)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.view.transform.OutputTransform.mMatrix]", "value", "dfc-generated"]
+      - ["androidx.camera.view.transform", "OutputTransform", False, "getMatrix", "()", "", "Argument[this].SyntheticField[androidx.camera.view.transform.OutputTransform.mMatrix]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.camera.view.transform", "FileTransformFactory", False, "getOutputTransform", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.view.transform", "CoordinateTransform", "CoordinateTransform", "(OutputTransform,OutputTransform)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "CoordinateTransform", "mapPoint", "(PointF)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "CoordinateTransform", "mapPoints", "(float[])", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "CoordinateTransform", "mapRect", "(RectF)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "CoordinateTransform", "transform", "(Matrix)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "FileTransformFactory", "getOutputTransform", "(ContentResolver,Uri)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "FileTransformFactory", "getOutputTransform", "(File)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "FileTransformFactory", "getOutputTransform", "(InputStream)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "FileTransformFactory", "isUsingExifOrientation", "()", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "FileTransformFactory", "setUsingExifOrientation", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "ImageProxyTransformFactory", "getOutputTransform", "(ImageProxy)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "ImageProxyTransformFactory", "isUsingCropRect", "()", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "ImageProxyTransformFactory", "isUsingRotationDegrees", "()", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "ImageProxyTransformFactory", "setUsingCropRect", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.view.transform", "ImageProxyTransformFactory", "setUsingRotationDegrees", "(boolean)", "summary", "df-generated"]

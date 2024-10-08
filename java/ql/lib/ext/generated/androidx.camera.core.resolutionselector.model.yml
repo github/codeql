@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mAspectRatioStrategy]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mAspectRatioStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionFilter]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionFilter]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionStrategy]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "fromResolutionSelector", "(ResolutionSelector)", "", "Argument[0].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mAspectRatioStrategy]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mAspectRatioStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "fromResolutionSelector", "(ResolutionSelector)", "", "Argument[0].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionFilter]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionFilter]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "fromResolutionSelector", "(ResolutionSelector)", "", "Argument[0].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionStrategy]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setAllowedResolutionMode", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setAspectRatioStrategy", "(AspectRatioStrategy)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mAspectRatioStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setAspectRatioStrategy", "(AspectRatioStrategy)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mAspectRatioStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setAspectRatioStrategy", "(AspectRatioStrategy)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionFilter", "(ResolutionFilter)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionFilter]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionFilter", "(ResolutionFilter)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionFilter]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionFilter", "(ResolutionFilter)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionStrategy", "(ResolutionStrategy)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionStrategy", "(ResolutionStrategy)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector$Builder.mResolutionStrategy]", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector$Builder", False, "setResolutionStrategy", "(ResolutionStrategy)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector", False, "getAspectRatioStrategy", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mAspectRatioStrategy]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector", False, "getResolutionFilter", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionFilter]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector", False, "getResolutionStrategy", "()", "", "Argument[this].SyntheticField[androidx.camera.core.resolutionselector.ResolutionSelector.mResolutionStrategy]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.core.resolutionselector", "AspectRatioStrategy", "AspectRatioStrategy", "(int,int)", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "AspectRatioStrategy", "getFallbackRule", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "AspectRatioStrategy", "getPreferredAspectRatio", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionSelector", "getAllowedResolutionMode", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionStrategy", "ResolutionStrategy", "(Size,int)", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionStrategy", "getBoundSize", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.resolutionselector", "ResolutionStrategy", "getFallbackRule", "()", "summary", "df-generated"]

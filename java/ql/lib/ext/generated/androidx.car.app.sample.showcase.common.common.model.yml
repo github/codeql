@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceDetailsScreen", True, "create", "(CarContext,PlaceInfo)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceDetailsScreen", True, "create", "(CarContext,PlaceInfo)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[0]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.title]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[1]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.address]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[2]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.description]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[3]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.phoneNumber]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[4]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.location]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "PlaceInfo", True, "PlaceInfo", "(CharSequence,CharSequence,CharSequence,CharSequence,Location,PlaceMarker)", "", "Argument[5]", "Argument[this].Field[androidx.car.app.sample.showcase.common.common.PlaceInfo.marker]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.showcase.common.common", "SamplePlaces", True, "create", "(Screen)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.common", "SamplePlaces", "getPlaceList", "(boolean)", "summary", "df-generated"]

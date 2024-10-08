@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "ContentDescriptionLabel", "(Rect,TimeDependentText)", "", "Argument[0]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mBounds]", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "ContentDescriptionLabel", "(Rect,TimeDependentText)", "", "Argument[1]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mText]", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "ContentDescriptionLabel", "(Rect,TimeDependentText,PendingIntent)", "", "Argument[0]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mBounds]", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "ContentDescriptionLabel", "(Rect,TimeDependentText,PendingIntent)", "", "Argument[1]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mText]", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "ContentDescriptionLabel", "(Rect,TimeDependentText,PendingIntent)", "", "Argument[2]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mTapAction]", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "getBounds", "()", "", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mBounds]", "ReturnValue", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "getTapAction", "()", "", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mTapAction]", "ReturnValue", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "getText", "()", "", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mText]", "ReturnValue", "value", "dfc-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", False, "setTapAction", "(PendingIntent)", "", "Argument[0]", "Argument[this].SyntheticField[android.support.wearable.watchface.accessibility.ContentDescriptionLabel.mTapAction]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["android.support.wearable.watchface.accessibility", "AccessibilityUtils", "makeTimeAsComplicationText", "(Context)", "summary", "df-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", "describeContents", "()", "summary", "df-generated"]
+      - ["android.support.wearable.watchface.accessibility", "ContentDescriptionLabel", "writeToParcel", "(Parcel,int)", "summary", "df-generated"]

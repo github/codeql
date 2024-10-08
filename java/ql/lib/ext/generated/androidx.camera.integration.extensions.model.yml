@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", True, "getImageCapture", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", True, "getLastTakePictureErrorMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", True, "getPreview", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.integration.extensions", "ExtensionsApplication", True, "getCameraXConfig", "()", "", "Argument[this].SyntheticField[androidx.camera.integration.extensions.ExtensionsApplication.mCameraXConfig]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.integration.extensions", "ExtensionsApplication", True, "setCameraXConfig", "(CameraXConfig)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.camera.integration.extensions.ExtensionsApplication.mCameraXConfig]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getCurrentExtensionMode", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getCurrentStreamState", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getInitializationIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getPostviewIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getPreviewViewIdleStateIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getPreviewViewStreamingStateIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "getTakePictureIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "onRequestPermissionsResult", "(int,String[],int[])", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "resetPreviewViewIdleStateIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.extensions", "CameraExtensionsActivity", "resetPreviewViewStreamingStateIdlingResource", "()", "summary", "df-generated"]

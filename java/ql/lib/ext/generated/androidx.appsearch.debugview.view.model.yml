@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.debugview.view", "AppSearchDebugActivity", True, "getBackgroundExecutor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "AppSearchDebugActivity", True, "getDebugAppSearchManager", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter$ViewHolder", True, "ViewHolder", "(View)", "", "Argument[0]", "Argument[this].Field[androidx.recyclerview.widget.RecyclerView$ViewHolder.itemView]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter$ViewHolder", True, "getIdLabel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter$ViewHolder", True, "getNamespaceLabel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter", True, "setDocuments", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter$ViewHolder", True, "ViewHolder", "(View)", "", "Argument[0]", "Argument[this].Field[androidx.recyclerview.widget.RecyclerView$ViewHolder.itemView]", "value", "dfc-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter$ViewHolder", True, "getSchemaTypeLabel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter", True, "setSchemaTypes", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "ScrollListener", True, "ScrollListener", "(LinearLayoutManager)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.debugview.view", "DocumentFragment", "createDocumentFragment", "(String,String)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter", "onBindViewHolder", "(DocumentListItemAdapter$ViewHolder,int)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "DocumentListItemAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter", "onBindViewHolder", "(SchemaTypeListItemAdapter$ViewHolder,int)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "SchemaTypeListItemAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "ScrollListener", "hasAdditionalPages", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "ScrollListener", "isLoading", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "ScrollListener", "loadNextPage", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.debugview.view", "ScrollListener", "onScrolled", "(RecyclerView,int,int)", "summary", "df-generated"]

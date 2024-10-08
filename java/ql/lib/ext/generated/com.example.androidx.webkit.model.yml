@@ -1,0 +1,67 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.webkit", "FeatureNotAvailableTestAppTest", True, "FeatureNotAvailableTestAppTest", "(Map$Entry)", "", "Argument[0].MapKey", "Argument[this].Field[com.example.androidx.webkit.FeatureNotAvailableTestAppTest.mFeature]", "value", "dfc-generated"]
+      - ["com.example.androidx.webkit", "HttpServer$RequestHandlerFactory", True, "create", "(Socket)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", True, "HttpServer", "(int,HttpServer$RequestHandlerFactory,HttpServer$OnRequestCallback)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", True, "HttpServer", "(int,HttpServer$RequestHandlerFactory,HttpServer$OnRequestCallback)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView$MenuItem", True, "MenuItem", "(String,Intent)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView$MenuItem", True, "MenuItem", "(String,Intent)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.androidx.webkit", "MenuListView$MenuItem", True, "start", "(Context)", "", "Argument[this]", "intent-redirection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.webkit", "AllowlistActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderAjaxActivity", "getUriIdlingResource", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderAjaxActivity", "loadUrl", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderAjaxActivityTestAppTest", "setUp", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderAjaxActivityTestAppTest", "tearDown", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderAjaxActivityTestAppTest", "testAssetLoaderAjaxActivity", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderInternalStorageActivityTestAppTest", "setUp", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderInternalStorageActivityTestAppTest", "testAssetLoaderInternalStorageActivity", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderSimpleActivityTestAppTest", "setUp", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "AssetLoaderSimpleActivityTestAppTest", "testAssetLoaderSimpleActivity", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "CustomInterstitialActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "FeatureNotAvailableTestAppTest", "getFeatures", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "FeatureNotAvailableTestAppTest", "setUp", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "FeatureNotAvailableTestAppTest", "testFeatureNotAvailable", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "FullPageInterstitialActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "FullscreenActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", "getPort", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", "getRequestCount", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", "shutdown", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "HttpServer", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView$MenuItem", "start", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView", "MenuListView", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView", "MenuListView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView", "MenuListView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView", "MenuListView", "(Context,AttributeSet,int,int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "MenuListView", "setItems", "(MenuListView$MenuItem[])", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "ProcessGlobalConfigActivityTestAppTest", "testSetDataDirectorySuffix", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "ProcessGlobalConfigActivityTestAppTest", "testSetDirectoryBasePaths", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "ProxyOverrideTestAppTest", "setUp", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "ProxyOverrideTestAppTest", "testProxyOverride", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "ProxyOverrideTestAppTest", "testReverseBypass", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "RendererTerminationActivity$RendererTerminatedDialogFragment", "newInstance", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "RendererTerminationActivity$RendererUnresponsiveDialogFragment", "newInstance", "()", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "RequestedWithHeaderActivity", "onRadioGroupChanged", "(RadioGroup,int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "UserAgentMetadataActivity", "onRadioGroupChanged", "(RadioGroup,int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitHelpers", "appendWebViewVersionToTitle", "(Activity)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitHelpers", "showMessageInActivity", "(Activity,int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assertHtmlElementContainsText", "(int,String,String)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assertViewHasText", "(int,int,Object[])", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assumeFeature", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assumeFeatureNotAvailable", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assumeStartupFeature", "(String,Context)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "assumeStartupFeatureNotAvailable", "(String,Context)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "clickMenuListItemWithString", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "clickViewWithId", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.webkit", "WebkitTestHelpers", "enableJavaScript", "(int[])", "summary", "df-generated"]

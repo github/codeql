@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.utils", "CollectionUtils", False, "emptyIfNull", "(List)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.utils", "CollectionUtils", False, "unmodifiableCopy", "(List)", "", "Argument[0].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.car.app.utils", "CollectionUtils", False, "unmodifiableCopy", "(Map)", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "dfc-generated"]
+      - ["androidx.car.app.utils", "CollectionUtils", False, "unmodifiableCopy", "(Map)", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "dfc-generated"]
+      - ["androidx.car.app.utils", "StringUtils", False, "shortenString", "(String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.utils", "CommonUtils", "isAutomotiveOS", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "createOnDoneCallbackStub", "(OnDoneCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "dispatchCallFromHost", "(IOnDoneCallback,String,RemoteUtils$HostCall)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "dispatchCallFromHost", "(Lifecycle,IOnDoneCallback,String,RemoteUtils$HostCall)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "dispatchCallToHost", "(String,RemoteUtils$RemoteCall)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "dispatchCallToHostForResult", "(String,RemoteUtils$RemoteCall)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "sendFailureResponseToHost", "(IOnDoneCallback,String,Throwable)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "sendSuccessResponseToHost", "(IOnDoneCallback,String,Object)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "RemoteUtils", "stubSurfaceCallback", "(Lifecycle,SurfaceCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "ThreadUtils", "checkMainThread", "()", "summary", "df-generated"]
+      - ["androidx.car.app.utils", "ThreadUtils", "runOnMain", "(Runnable)", "summary", "df-generated"]

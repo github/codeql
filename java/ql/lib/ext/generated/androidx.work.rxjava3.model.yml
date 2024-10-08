@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.rxjava3", "RxWorker", "RxWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "createWork", "()", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "getForegroundInfo", "()", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "getForegroundInfoAsync", "()", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "setCompletableProgress", "(Data)", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "setForeground", "(ForegroundInfo)", "summary", "df-generated"]
+      - ["androidx.work.rxjava3", "RxWorker", "startWork", "()", "summary", "df-generated"]

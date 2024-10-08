@@ -1,0 +1,69 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "from", "(Context,Class)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setForegroundUpdater", "(ForegroundUpdater)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setId", "(UUID)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setInputData", "(Data)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setNetwork", "(Network)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setProgressUpdater", "(ProgressUpdater)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setRunAttemptCount", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setTags", "(List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setTriggeredContentAuthorities", "(List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setTriggeredContentUris", "(List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", True, "setWorkerFactory", "(WorkerFactory)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.work.testing", "TestWorkerBuilder", True, "from", "(Context,Class,Executor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.work.testing", "TestWorkerBuilder", True, "from", "(Context,Class,Executor)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.work.testing", "TestWorkerBuilder", True, "from", "(Context,WorkRequest,Executor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.work.testing", "TestWorkerBuilder", True, "from", "(Context,WorkRequest,Executor)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.work.testing", "SynchronousExecutor", True, "execute", "(Runnable)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.testing", "TestForegroundUpdater", "setForegroundAsync", "(Context,UUID,ForegroundInfo)", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", "build", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestListenableWorkerBuilder", "from", "(Context,WorkRequest)", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestProgressUpdater", "updateProgress", "(Context,UUID,Data)", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testOneTimeWorkerRetry", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testOverrideWorker_afterExpiring_periodDelayMetRuns", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testOverrideWorker_doesntRunYet", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testOverrideWorker_firstRun_initialDelayMet_doesntRun", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testOverrideWorker_firstRun_periodDelayMet_runs", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testPeriodicWorkerRetry", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorkerUnique", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_afterSuccessfulRun_postConditions", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_afterSuccessfulRun_throwsExceptionWhenSetPeriodDelayMet", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_multipleSetInitialDelayMetMultiThreaded_noDeadLock", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_multipleSetInitialDelayMet_noDeadLock", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_shouldSucceedSynchronously", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withConstraints_shouldNoOp", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withConstraints_shouldSucceedAfterSetConstraints", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withDependentWork_shouldSucceedSynchronously", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withInitialDelay_shouldNoOp", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withInitialDelay_shouldSucceedAfterSetInitialDelay", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withPeriodDelay_shouldRun", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withPeriodDelay_shouldRunAfterEachSetPeriodDelay", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withPeriod_cancelAndResume_shouldRun", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withPeriodicWorkerFlex_shouldRun", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "TestSchedulerTest", "testWorker_withPeriodicWorkerWithInitialDelay_shouldRun", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerInitHelperTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerInitHelperTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerInitHelperTest", "testWorkManagerInitialized_withFullConfiguration", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerInitHelperTest", "testWorkManagerInitialized_withSynchronousTaskExecutor", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerInitHelperTest", "testWorkManagerIsInitialized", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "closeWorkDatabase", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "getTestDriver", "()", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "getTestDriver", "(Context)", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "initializeTestWorkManager", "(Context)", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "initializeTestWorkManager", "(Context,Configuration)", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "initializeTestWorkManager", "(Context,Configuration,WorkManagerTestInitHelper$ExecutorsMode)", "summary", "df-generated"]
+      - ["androidx.work.testing", "WorkManagerTestInitHelper", "initializeTestWorkManager", "(Context,WorkManagerTestInitHelper$ExecutorsMode)", "summary", "df-generated"]

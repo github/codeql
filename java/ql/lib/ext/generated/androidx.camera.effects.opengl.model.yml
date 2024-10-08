@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.effects.opengl", "GlRenderer", "GlRenderer", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "createBufferTextureIds", "(Size)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "getInputTextureId", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "getOverlayTextureId", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "init", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "registerOutputSurface", "(Surface)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "release", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "renderInputToBitmap", "(int,int,float[])", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "renderInputToQueueTexture", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "renderInputToSurface", "(long,float[],Surface)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "renderQueueTextureToBitmap", "(int,int,int,float[])", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "renderQueueTextureToSurface", "(int,long,float[],Surface)", "summary", "df-generated"]
+      - ["androidx.camera.effects.opengl", "GlRenderer", "unregisterOutputSurface", "(Surface)", "summary", "df-generated"]

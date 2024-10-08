@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AndroidXMediaRouterSystemRoutesSource", False, "create", "(Context)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", False, "create", "(Context)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", True, "fetchSourceRouteItems", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", True, "setOnRoutesChangedListener", "(Runnable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", False, "start", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AndroidXMediaRouterSystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AndroidXMediaRouterSystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AndroidXMediaRouterSystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AndroidXMediaRouterSystemRoutesSource", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AudioManagerSystemRoutesSource", "create", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AudioManagerSystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AudioManagerSystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AudioManagerSystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "AudioManagerSystemRoutesSource", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "BluetoothManagerSystemRoutesSource", "create", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "BluetoothManagerSystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "BluetoothManagerSystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "BluetoothManagerSystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "BluetoothManagerSystemRoutesSource", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouter2SystemRoutesSource", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouterSystemRoutesSource", "create", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouterSystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouterSystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouterSystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "MediaRouterSystemRoutesSource", "stop", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", "getSourceId", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", "getSourceItem", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", "select", "(SystemRouteItem)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", "start", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.activities.systemrouting.source", "SystemRoutesSource", "stop", "()", "summary", "df-generated"]

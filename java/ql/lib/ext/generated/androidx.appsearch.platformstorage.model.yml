@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext$Builder", False, "Builder", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$GlobalSearchContext$Builder.mExecutor]", "ReturnValue.SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$GlobalSearchContext.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$GlobalSearchContext$Builder.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$GlobalSearchContext$Builder.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$GlobalSearchContext", False, "getWorkerExecutor", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$GlobalSearchContext.mExecutor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "Builder", "(Context,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext$Builder.mDatabaseName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext$Builder.mDatabaseName]", "ReturnValue.SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext.mDatabaseName]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "build", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext$Builder.mExecutor]", "ReturnValue.SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext$Builder.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext$Builder.mExecutor]", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext$Builder", False, "setWorkerExecutor", "(Executor)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext", False, "getDatabaseName", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext.mDatabaseName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage$SearchContext", False, "getWorkerExecutor", "()", "", "Argument[this].SyntheticField[androidx.appsearch.platformstorage.PlatformStorage$SearchContext.mExecutor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage", False, "createGlobalSearchSessionAsync", "(PlatformStorage$GlobalSearchContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorage", False, "createSearchSessionAsync", "(PlatformStorage$SearchContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.platformstorage", "PlatformStorage", "createEnterpriseGlobalSearchSessionAsync", "(PlatformStorage$GlobalSearchContext)", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorageTest", "testSearchContext_databaseName", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorageTest", "testSearchContext_withClientExecutor", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorageTest", "testSearchContext_withDefaultExecutor", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.platformstorage", "PlatformStorageTest", "testSearchContext_withInvalidDatabaseName", "()", "summary", "df-generated"]

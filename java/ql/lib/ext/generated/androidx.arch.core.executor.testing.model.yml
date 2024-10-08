@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRule", "drainTasks", "(int,TimeUnit)", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRule", "isIdle", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "busyIO", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "busyMain", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "drainFailure", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "drainSuccess", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "initialIdle", "()", "summary", "df-generated"]
+      - ["androidx.arch.core.executor.testing", "CountingTaskExecutorRuleTest", "multipleTasks", "()", "summary", "df-generated"]

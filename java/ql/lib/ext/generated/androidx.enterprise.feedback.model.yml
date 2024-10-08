@@ -1,0 +1,53 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getKeyedAppStates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getKeyedAppStatesByKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getOnDeviceKeyedAppStates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getOnDeviceKeyedAppStatesByKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getUploadedKeyedAppStates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", True, "getUploadedKeyedAppStatesByKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesCallback", True, "onResult", "(int,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", True, "create", "(Context,Executor)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", True, "setStates", "(Collection)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", True, "setStates", "(Collection,KeyedAppStatesCallback)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", True, "setStatesImmediate", "(Collection)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", True, "setStatesImmediate", "(Collection,KeyedAppStatesCallback)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.enterprise.feedback", "FakeKeyedAppStatesReporter", "getNumberOfUploads", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState$KeyedAppStateBuilder", "build", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState$KeyedAppStateBuilder", "setData", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState$KeyedAppStateBuilder", "setKey", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState$KeyedAppStateBuilder", "setMessage", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState$KeyedAppStateBuilder", "setSeverity", "(int)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "builder", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getData", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getKey", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getMaxDataLength", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getMaxKeyLength", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getMaxMessageLength", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getMessage", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppState", "getSeverity", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesReporter", "create", "(Context)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "KeyedAppStatesService", "onReceive", "(Collection,boolean)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "build", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setData", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setKey", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setMessage", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setPackageName", "(String)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setSeverity", "(int)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState$ReceivedKeyedAppStateBuilder", "setTimestamp", "(long)", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "builder", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getData", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getKey", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getMessage", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getPackageName", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getSeverity", "()", "summary", "df-generated"]
+      - ["androidx.enterprise.feedback", "ReceivedKeyedAppState", "getTimestamp", "()", "summary", "df-generated"]

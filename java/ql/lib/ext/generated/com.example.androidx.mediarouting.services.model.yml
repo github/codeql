@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.services", "SampleDynamicGroupMediaRouteProviderService$LocalBinder", "getService", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.services", "SampleDynamicGroupMediaRouteProviderService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.services", "SampleDynamicGroupMediaRouteProviderService", "reloadDynamicRoutesEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.services", "SampleDynamicGroupMediaRouteProviderService", "reloadRoutes", "()", "summary", "df-generated"]

@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter$ViewHolder", True, "ViewHolder", "(TextView)", "", "Argument[0]", "Argument[this].Field[androidx.recyclerview.widget.RecyclerView$ViewHolder.itemView]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter$ViewHolder", True, "ViewHolder", "(TextView)", "", "Argument[0]", "Argument[this].Field[com.example.androidx.widget.adapter.SimpleStringAdapter$ViewHolder.mTextView]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "SimpleStringAdapter", "(Context,String[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[com.example.androidx.widget.adapter.SimpleStringAdapter.mValues].Element", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "getValueAt", "(int)", "", "Argument[this].SyntheticField[com.example.androidx.widget.adapter.SimpleStringAdapter.mValues].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "getValues", "()", "", "Argument[this].SyntheticField[com.example.androidx.widget.adapter.SimpleStringAdapter.mValues]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "onBindViewHolder", "(SimpleStringAdapter$ViewHolder,int)", "", "Argument[this].SyntheticField[com.example.androidx.widget.adapter.SimpleStringAdapter.mValues].Element", "Argument[0].Field[com.example.androidx.widget.adapter.SimpleStringAdapter$ViewHolder.mBoundString]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "onBindViewHolder", "(SimpleStringAdapter$ViewHolder,int)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", True, "setValues", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[com.example.androidx.widget.adapter.SimpleStringAdapter.mValues]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", "getLayoutParams", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.adapter", "SimpleStringAdapter", "swap", "(int,int)", "summary", "df-generated"]

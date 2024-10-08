@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.preference", "LeanbackPreferences$DemoFragment", "onCreatePreferences", "(Bundle,String)", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "LeanbackPreferences$SettingsFragment", "onPreferenceStartFragment", "(PreferenceFragmentCompat,Preference)", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "LeanbackPreferences$SettingsFragment", "onPreferenceStartInitialScreen", "()", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "LeanbackPreferences$SettingsFragment", "onPreferenceStartScreen", "(PreferenceFragmentCompat,PreferenceScreen)", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "MainActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "Preferences$DemoFragment", "onCreatePreferences", "(Bundle,String)", "summary", "df-generated"]
+      - ["com.example.androidx.preference", "Preferences", "onSupportNavigateUp", "()", "summary", "df-generated"]

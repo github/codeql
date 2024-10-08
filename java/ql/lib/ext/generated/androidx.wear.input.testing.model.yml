@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider$TestWearableButtonLocation", True, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider$TestWearableButtonLocation", True, "getRotatedLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider", True, "TestWearableButtonsProvider", "(Map)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider$TestWearableButtonLocation", "TestWearableButtonLocation", "(float,float)", "summary", "df-generated"]
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider$TestWearableButtonLocation", "TestWearableButtonLocation", "(float,float,float,float)", "summary", "df-generated"]
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider", "getAvailableButtonKeyCodes", "(Context)", "summary", "df-generated"]
+      - ["androidx.wear.input.testing", "TestWearableButtonsProvider", "getButtonInfo", "(Context,int)", "summary", "df-generated"]

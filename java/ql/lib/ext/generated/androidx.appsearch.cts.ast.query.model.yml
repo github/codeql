@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testConstructor_throwsOnNegativeIndex", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testGetChildren_returnsEmptyList", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testGetFunctionName_functionNameCorrect", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testGetIndex_returnsIndex", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testSetSearchStringIndex_correctlySetsIndex", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "GetSearchStringParameterNodeCtsTest", "testSetSearchStringIndex_throwsOnNegativeIndex", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testConstructor_throwsOnNullPointer", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testGetChildren_returnsEmptyList", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testGetFunctionName_functionNameCorrect", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testGetProperty_returnsCorrectProperty", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testSetProperty_replaceOldProperty", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "HasPropertyNodeCtsTest", "testSetProperty_throwsOnNullPointer", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testConstructor_throwsOnNullPointer", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testGetChildren_returnsEmptyList", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testGetFunctionName_functionNameCorrect", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testGetProperty_returnsCorrectProperty", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testSetProperty_setsCorrectProperty", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.cts.ast.query", "PropertyDefinedNodeCtsTest", "testSetProperty_throwsOnNullPointer", "()", "summary", "df-generated"]

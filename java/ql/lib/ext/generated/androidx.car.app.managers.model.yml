@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.managers", "ManagerCache", True, "addFactory", "(Class,String,ManagerFactory)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.car.app.managers.ManagerCache.mNameByClass].MapValue", "value", "dfc-generated"]
+      - ["androidx.car.app.managers", "ManagerCache", True, "getName", "(Class)", "", "Argument[this].SyntheticField[androidx.car.app.managers.ManagerCache.mNameByClass].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.managers", "ManagerCache", True, "getOrCreate", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.managers", "ManagerCache", True, "getOrCreate", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.managers", "Manager", "create", "(Class,String,Object[])", "summary", "df-generated"]
+      - ["androidx.car.app.managers", "ResultManager", "create", "(CarContext)", "summary", "df-generated"]
