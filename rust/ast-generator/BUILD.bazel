@@ -1,7 +1,7 @@
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(
-    name = "generate-schema",
+    name = "ast-generator",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
     proc_macro_deps = all_crate_deps(
