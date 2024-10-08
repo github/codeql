@@ -89,27 +89,26 @@ OLD: KE1
         tw.writeHasLocation(it, locId)
     }
 
-/*
-OLD: KE1
-    private fun extractExpressionStmt(
-        e: IrExpression,
-        callable: Label<out DbCallable>,
-        parent: Label<out DbStmtparent>,
-        idx: Int
-    ) {
-        extractExpression(e, callable, StmtParent(parent, idx))
-    }
+context(KaSession)
+private fun KotlinFileExtractor.extractExpressionStmt(
+    e: KtExpression,
+    callable: Label<out DbCallable>,
+    parent: Label<out DbStmtparent>,
+    idx: Int
+) {
+    extractExpression(e, callable, StmtParent(parent, idx))
+}
 
-    fun extractExpressionExpr(
-        e: IrExpression,
-        callable: Label<out DbCallable>,
-        parent: Label<out DbExprparent>,
-        idx: Int,
-        enclosingStmt: Label<out DbStmt>
-    ) {
-        extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
-    }
-*/
+context(KaSession)
+fun KotlinFileExtractor.extractExpressionExpr(
+    e: KtExpression,
+    callable: Label<out DbCallable>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    enclosingStmt: Label<out DbStmt>
+) {
+    extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
+}
 
 private fun KotlinFileExtractor.extractExprContext(
     id: Label<out DbExpr>,
@@ -219,6 +218,11 @@ private fun KotlinFileExtractor.extractExpression(
 ) {
     with("expression", e) {
         when (e) {
+            is KtLabeledExpression -> {
+                // TODO: we could handle this here, or in each child that might have a label
+                // We're handling it in the children with the below
+                extractExpression(e.baseExpression!!, callable, parent)
+            }
             /*
             OLD: KE1
                             is IrDelegatingConstructorCall -> {
@@ -278,27 +282,31 @@ private fun KotlinFileExtractor.extractExpression(
 
                                 // todo: type arguments at index -2, -3, ...
                             }
-                            is IrThrow -> {
-                                val stmtParent = parent.stmt(e, callable)
-                                val id = tw.getFreshIdLabel<DbThrowstmt>()
-                                val locId = tw.getLocation(e)
-                                tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                                tw.writeHasLocation(id, locId)
-                                extractExpressionExpr(e.value, callable, id, 0, id)
-                            }
-                            is IrBreak -> {
-                                val stmtParent = parent.stmt(e, callable)
-                                val id = tw.getFreshIdLabel<DbBreakstmt>()
-                                tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, callable)
-                                extractBreakContinue(e, id)
-                            }
-                            is IrContinue -> {
-                                val stmtParent = parent.stmt(e, callable)
-                                val id = tw.getFreshIdLabel<DbContinuestmt>()
-                                tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
-                                extractBreakContinue(e, id)
-                            }
             */
+            is KtThrowExpression -> {
+                val stmtParent = parent.stmt(e, callable)
+                val id = tw.getFreshIdLabel<DbThrowstmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeHasLocation(id, locId)
+                val thrown = e.thrownExpression!!
+                extractExpressionExpr(thrown, callable, id, 0, id)
+            }
+
+            is KtBreakExpression -> {
+                val stmtParent = parent.stmt(e, callable)
+                val id = tw.getFreshIdLabel<DbBreakstmt>()
+                tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                extractBreakContinue(e, id)
+            }
+
+            is KtContinueExpression -> {
+                val stmtParent = parent.stmt(e, callable)
+                val id = tw.getFreshIdLabel<DbContinuestmt>()
+                tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
+                extractBreakContinue(e, id)
+            }
+
             is KtReturnExpression -> {
                 val stmtParent = parent.stmt(e, callable)
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
@@ -311,57 +319,66 @@ private fun KotlinFileExtractor.extractExpression(
                 }
                 // TODO: e.getLabeledExpression()
             }
-            /*
-            OLD: KE1
-                            is IrTry -> {
-                                val stmtParent = parent.stmt(e, callable)
-                                val id = tw.getFreshIdLabel<DbTrystmt>()
-                                val locId = tw.getLocation(e)
-                                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
-                                tw.writeHasLocation(id, locId)
-                                extractExpressionStmt(e.tryResult, callable, id, -1)
-                                val finallyStmt = e.finallyExpression
-                                if (finallyStmt != null) {
-                                    extractExpressionStmt(finallyStmt, callable, id, -2)
-                                }
-                                for ((catchIdx, catchClause) in e.catches.withIndex()) {
-                                    val catchId = tw.getFreshIdLabel<DbCatchclause>()
-                                    tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
-                                    val catchLocId = tw.getLocation(catchClause)
-                                    tw.writeHasLocation(catchId, catchLocId)
-                                    extractTypeAccessRecursive(
-                                        catchClause.catchParameter.type,
-                                        tw.getLocation(catchClause.catchParameter),
-                                        catchId,
-                                        -1,
-                                        callable,
-                                        catchId
-                                    )
-                                    extractVariableExpr(
-                                        catchClause.catchParameter,
-                                        callable,
-                                        catchId,
-                                        0,
-                                        catchId
-                                    )
-                                    extractExpressionStmt(catchClause.result, callable, catchId, 1)
-                                }
-                            }
-                            is IrContainerExpression -> {
-                                if (
-                                    !tryExtractArrayUpdate(e, callable, parent) &&
-                                        !tryExtractForLoop(e, callable, parent)
-                                ) {
 
-                                    extractBlock(e, e.statements, parent, callable)
-                                }
-                            }
-                            is IrWhileLoop -> {
-                                extractLoopWithCondition(e, parent, callable)
-                            }
-                            is IrDoWhileLoop -> {
-                                extractLoopWithCondition(e, parent, callable)
-                            }
+            is KtTryExpression -> {
+                val stmtParent = parent.stmt(e, callable)
+                val id = tw.getFreshIdLabel<DbTrystmt>()
+                val locId = tw.getLocation(e)
+                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeHasLocation(id, locId)
+                extractExpressionStmt(e.tryBlock, callable, id, -1)
+                val finallyStmt = e.finallyBlock?.finalExpression
+                if (finallyStmt != null) {
+                    extractExpressionStmt(finallyStmt, callable, id, -2)
+                }
+                for ((catchIdx, catchClause) in e.catchClauses.withIndex()) {
+                    val catchId = tw.getFreshIdLabel<DbCatchclause>()
+                    tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
+                    val catchLocId = tw.getLocation(catchClause)
+                    tw.writeHasLocation(catchId, catchLocId)
+                    /*
+                    OLD: KE1
+                    extractTypeAccessRecursive(
+                        catchClause.catchParameter.type,
+                        tw.getLocation(catchClause.catchParameter),
+                        catchId,
+                        -1,
+                        callable,
+                        catchId
+                    )
+                    extractVariableExpr(
+                        catchClause.catchParameter,
+                        callable,
+                        catchId,
+                        0,
+                        catchId
+                    )
+                    */
+                    extractExpressionStmt(catchClause.catchBody!!, callable, catchId, 1)
+                }
+            }
+
+            is KtBlockExpression -> {
+                /*
+                OLD: KE1
+                if (
+                    !tryExtractArrayUpdate(e, callable, parent) &&
+                        !tryExtractForLoop(e, callable, parent)
+                ) {
+                    extractBlock(e, e.statements, parent, callable)
+                }
+                */
+                extractBlock(e, e.statements, parent, callable)
+            }
+
+            is KtWhileExpression -> {
+                extractLoopWithCondition(e, parent, callable)
+            }
+
+            is KtDoWhileExpression -> {
+                extractLoopWithCondition(e, parent, callable)
+            }
+            /*
                             is IrInstanceInitializerCall -> {
                                 val irConstructor = declarationStack.peek().first as? IrConstructor
                                 if (irConstructor == null) {
@@ -934,32 +951,108 @@ private fun KotlinFileExtractor.extractExpression(
     }
 }
 
+context(KaSession)
+private fun KotlinFileExtractor.extractBlock(
+    e: KtBlockExpression,
+    statements: List<KtExpression>,
+    parent: StmtExprParent,
+    callable: Label<out DbCallable>
+) {
+    val stmtParent = parent.stmt(e, callable)
+    extractBlock(e, statements, stmtParent.parent, stmtParent.idx, callable)
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractBlock(
+    e: KtBlockExpression,
+    statements: List<KtExpression>,
+    parent: Label<out DbStmtparent>,
+    idx: Int,
+    callable: Label<out DbCallable>
+) {
+    val id = tw.getFreshIdLabel<DbBlock>()
+    val locId = tw.getLocation(e)
+    tw.writeStmts_block(id, parent, idx, callable)
+    tw.writeHasLocation(id, locId)
+    statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractStatement(
+    s: KtExpression,
+    callable: Label<out DbCallable>,
+    parent: Label<out DbStmtparent>,
+    idx: Int
+) {
+    with("statement", s) {
+        when (s) {
+            is KtStatementExpression -> {
+                extractExpressionStmt(s, callable, parent, idx)
+            }
+            /*
+            OLD: KE1
+            is IrVariable -> {
+                extractVariable(s, callable, parent, idx)
+            }
+            is IrClass -> {
+                extractLocalTypeDeclStmt(s, callable, parent, idx)
+            }
+            is IrFunction -> {
+                if (s.isLocalFunction()) {
+                    val compilerGeneratedKindOverride =
+                        if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
+                            CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS
+                        } else {
+                            null
+                        }
+                    val classId =
+                        extractGeneratedClass(
+                            s,
+                            listOf(pluginContext.irBuiltIns.anyType),
+                            compilerGeneratedKindOverride = compilerGeneratedKindOverride
+                        )
+                    extractLocalTypeDeclStmt(classId, s, callable, parent, idx)
+                    val ids = getLocallyVisibleFunctionLabels(s)
+                    tw.writeKtLocalFunction(ids.function)
+                } else {
+                    logger.errorElement("Expected to find local function", s)
+                }
+            }
+            is IrLocalDelegatedProperty -> {
+                val blockId = tw.getFreshIdLabel<DbBlock>()
+                val locId = tw.getLocation(s)
+                tw.writeStmts_block(blockId, parent, idx, callable)
+                tw.writeHasLocation(blockId, locId)
+                extractVariable(s.delegate, callable, blockId, 0)
+
+                val propId = tw.getFreshIdLabel<DbKt_property>()
+                tw.writeKtProperties(propId, s.name.asString())
+                tw.writeHasLocation(propId, locId)
+                tw.writeKtPropertyDelegates(propId, useVariable(s.delegate))
+
+                // Getter:
+                extractStatement(s.getter, callable, blockId, 1)
+                val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
+                tw.writeKtPropertyGetters(propId, getterLabel)
+
+                val setter = s.setter
+                if (setter != null) {
+                    extractStatement(setter, callable, blockId, 2)
+                    val setterLabel = getLocallyVisibleFunctionLabels(setter).function
+                    tw.writeKtPropertySetters(propId, setterLabel)
+                }
+            }
+
+             */
+            else -> {
+                logger.errorElement("Unhandled statement: " + s.javaClass, s)
+            }
+        }
+    }
+}
+
 /*
 OLD: KE1
-    private fun extractBlock(
-        e: IrContainerExpression,
-        statements: List<IrStatement>,
-        parent: StmtExprParent,
-        callable: Label<out DbCallable>
-    ) {
-        val stmtParent = parent.stmt(e, callable)
-        extractBlock(e, statements, stmtParent.parent, stmtParent.idx, callable)
-    }
-
-    private fun extractBlock(
-        e: IrElement,
-        statements: List<IrStatement>,
-        parent: Label<out DbStmtparent>,
-        idx: Int,
-        callable: Label<out DbCallable>
-    ) {
-        val id = tw.getFreshIdLabel<DbBlock>()
-        val locId = tw.getLocation(e)
-        tw.writeStmts_block(id, parent, idx, callable)
-        tw.writeHasLocation(id, locId)
-        statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
-    }
-
     private inline fun <D : DeclarationDescriptor, reified B : IrSymbolOwner> getBoundSymbolOwner(
         symbol: IrBindableSymbol<D, B>,
         e: IrExpression
@@ -1165,65 +1258,71 @@ OLD: KE1
             callable,
             enclosingStmt
         )
+*/
+context(KaSession)
+private fun KotlinFileExtractor.extractLoop(
+    loop: KtLoopExpression,
+    bodyIdx: Int?,
+    stmtExprParent: StmtExprParent,
+    callable: Label<out DbCallable>,
+    getId: (Label<out DbStmtparent>, Int) -> Label<out DbStmt>
+): Label<out DbStmt> {
+    val stmtParent = stmtExprParent.stmt(loop, callable)
+    val locId = tw.getLocation(loop)
 
-    private fun extractLoop(
-        loop: IrLoop,
-        bodyIdx: Int?,
-        stmtExprParent: StmtExprParent,
-        callable: Label<out DbCallable>,
-        getId: (Label<out DbStmtparent>, Int) -> Label<out DbStmt>
-    ): Label<out DbStmt> {
-        val stmtParent = stmtExprParent.stmt(loop, callable)
-        val locId = tw.getLocation(loop)
+    val idx: Int
+    val parent: Label<out DbStmtparent>
 
-        val idx: Int
-        val parent: Label<out DbStmtparent>
+    // TODO: the below can be removed if KtLabeledExpression is handled in extractExpression.
+    val label = (loop.parent as? KtLabeledExpression)?.getLabelName()
+    if (label != null) {
+        val labeledStmt = tw.getFreshIdLabel<DbLabeledstmt>()
+        tw.writeStmts_labeledstmt(labeledStmt, stmtParent.parent, stmtParent.idx, callable)
+        tw.writeHasLocation(labeledStmt, locId)
 
-        val label = loop.label
-        if (label != null) {
-            val labeledStmt = tw.getFreshIdLabel<DbLabeledstmt>()
-            tw.writeStmts_labeledstmt(labeledStmt, stmtParent.parent, stmtParent.idx, callable)
-            tw.writeHasLocation(labeledStmt, locId)
-
-            tw.writeNamestrings(label, "", labeledStmt)
-            idx = 0
-            parent = labeledStmt
-        } else {
-            idx = stmtParent.idx
-            parent = stmtParent.parent
-        }
-
-        val id = getId(parent, idx)
-        tw.writeHasLocation(id, locId)
-
-        val body = loop.body
-        if (body != null && bodyIdx != null) {
-            extractExpressionStmt(body, callable, id, bodyIdx)
-        }
-
-        return id
+        tw.writeNamestrings(label, "", labeledStmt)
+        idx = 0
+        parent = labeledStmt
+    } else {
+        idx = stmtParent.idx
+        parent = stmtParent.parent
     }
 
-    private fun extractLoopWithCondition(
-        loop: IrLoop,
-        stmtExprParent: StmtExprParent,
-        callable: Label<out DbCallable>
-    ) {
-        val id =
-            extractLoop(loop, 1, stmtExprParent, callable) { parent, idx ->
-                if (loop is IrWhileLoop) {
-                    tw.getFreshIdLabel<DbWhilestmt>().also {
-                        tw.writeStmts_whilestmt(it, parent, idx, callable)
-                    }
-                } else {
-                    tw.getFreshIdLabel<DbDostmt>().also {
-                        tw.writeStmts_dostmt(it, parent, idx, callable)
-                    }
+    val id = getId(parent, idx)
+    tw.writeHasLocation(id, locId)
+
+    val body = loop.body
+    if (body != null && bodyIdx != null) {
+        extractExpressionStmt(body, callable, id, bodyIdx)
+    }
+
+    return id
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractLoopWithCondition(
+    loop: KtWhileExpressionBase,
+    stmtExprParent: StmtExprParent,
+    callable: Label<out DbCallable>
+) {
+    val id =
+        extractLoop(loop, 1, stmtExprParent, callable) { parent, idx ->
+            if (loop is KtWhileExpression) {
+                tw.getFreshIdLabel<DbWhilestmt>().also {
+                    tw.writeStmts_whilestmt(it, parent, idx, callable)
+                }
+            } else {
+                tw.getFreshIdLabel<DbDostmt>().also {
+                    tw.writeStmts_dostmt(it, parent, idx, callable)
                 }
             }
-        extractExpressionExpr(loop.condition, callable, id, 0, id)
-    }
+        }
+    val condition = loop.condition!!
+    extractExpressionExpr(condition, callable, id, 0, id)
+}
 
+/*
+OLD: KE1
     private fun <T : DbExpr> exprIdOrFresh(id: Label<out DbExpr>?) =
         id?.cast<T>() ?: tw.getFreshIdLabel()
 
@@ -2217,15 +2316,15 @@ private fun KotlinFileExtractor.extractConstant(
                 }
             }
         }
-
-        private fun extractBreakContinue(e: IrBreakContinue, id: Label<out DbNamedexprorstmt>) {
-            with("break/continue", e) {
-                val locId = tw.getLocation(e)
-                tw.writeHasLocation(id, locId)
-                val label = e.label
-                if (label != null) {
-                    tw.writeNamestrings(label, "", id)
-                }
-            }
-        }
  */
+
+private fun KotlinFileExtractor.extractBreakContinue(e: KtExpressionWithLabel, id: Label<out DbNamedexprorstmt>) {
+    with("break/continue", e) {
+        val locId = tw.getLocation(e)
+        tw.writeHasLocation(id, locId)
+        val label = e.getLabelName()
+        if (label != null) {
+            tw.writeNamestrings(label, "", id)
+        }
+    }
+}
