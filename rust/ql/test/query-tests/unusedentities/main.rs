@@ -278,6 +278,10 @@ fn if_lets_matches() {
         }
     }
 
+    let l = Yes;
+    if let Yes = l { // SPURIOUS: unused variable 'Yes'
+    }
+
     match 1 {
         1 => {}
         _ => {}

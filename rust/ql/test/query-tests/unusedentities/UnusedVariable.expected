@@ -16,8 +16,9 @@
 | main.rs:268:9:268:11 | Yes | Variable is not used. |
 | main.rs:269:9:269:10 | No | Variable is not used. |
 | main.rs:272:12:272:12 | j | Variable is not used. |
-| main.rs:290:25:290:25 | y | Variable is not used. |
-| main.rs:294:28:294:28 | a | Variable is not used. |
-| main.rs:298:9:298:9 | p | Variable is not used. |
-| main.rs:305:13:305:13 | y | Variable is not used. |
-| main.rs:313:21:313:21 | y | Variable is not used. |
+| main.rs:282:12:282:14 | Yes | Variable is not used. |
+| main.rs:294:25:294:25 | y | Variable is not used. |
+| main.rs:298:28:298:28 | a | Variable is not used. |
+| main.rs:302:9:302:9 | p | Variable is not used. |
+| main.rs:309:13:309:13 | y | Variable is not used. |
+| main.rs:317:21:317:21 | y | Variable is not used. |
