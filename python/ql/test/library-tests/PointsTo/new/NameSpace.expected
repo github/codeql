@@ -85,15 +85,12 @@
 | h_classes.py:23 | Class Base | __init__ | Function __init__ |
 | h_classes.py:48 | Class D | m | Function f |
 | h_classes.py:48 | Class D | n | Function n |
-| i_imports.py:0 | Module code.i_imports | BytesIO | builtin-class _io.BytesIO |
-| i_imports.py:0 | Module code.i_imports | StringIO | builtin-class _io.StringIO |
 | i_imports.py:0 | Module code.i_imports | _io | Module _io |
 | i_imports.py:0 | Module code.i_imports | a | int 1 |
 | i_imports.py:0 | Module code.i_imports | argv | list object |
 | i_imports.py:0 | Module code.i_imports | b | int 2 |
 | i_imports.py:0 | Module code.i_imports | c | int 3 |
 | i_imports.py:0 | Module code.i_imports | code | Module code |
-| i_imports.py:0 | Module code.i_imports | io | Module io |
 | i_imports.py:0 | Module code.i_imports | module1 | Module code.test_package.module1 |
 | i_imports.py:0 | Module code.i_imports | module2 | Module code.test_package.module2 |
 | i_imports.py:0 | Module code.i_imports | p | int 1 |

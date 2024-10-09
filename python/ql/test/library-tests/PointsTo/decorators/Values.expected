@@ -7,8 +7,8 @@
 | test.py:11:21:11:24 | ControlFlowNode for args | runtime | instance of tuple |
 | test.py:13:12:13:18 | ControlFlowNode for wrapper | runtime | Function wraps1.wrapper |
 | test.py:13:12:13:18 | ControlFlowNode for wrapper | test.py:26 from import | Function wraps1.wrapper |
-| test.py:16:6:16:14 | ControlFlowNode for functools | runtime | Module functools |
-| test.py:16:6:16:14 | ControlFlowNode for functools | test.py:30 from import | Module functools |
+| test.py:16:6:16:14 | ControlFlowNode for functools | runtime | Missing module functools |
+| test.py:16:6:16:14 | ControlFlowNode for functools | test.py:30 from import | Missing module functools |
 | test.py:16:22:16:25 | ControlFlowNode for func | runtime | Unknown value |
 | test.py:16:22:16:25 | ControlFlowNode for func | test.py:30 from import | Function func3 |
 | test.py:18:21:18:24 | ControlFlowNode for args | runtime | instance of tuple |
