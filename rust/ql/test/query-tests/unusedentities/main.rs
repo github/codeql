@@ -213,32 +213,32 @@ fn if_lets() {
 
     let c = Some(60);
     match c {
-        Some(val) => { // BAD: unused variable SPURIOUS: unreachable
+        Some(val) => { // BAD: unused variable
         }
-        None => { // SPURIOUS: unused variable 'None', unreachable
+        None => { // SPURIOUS: unused variable 'None'
         }
     }
 
     let d = Some(70);
     match d {
-        Some(val) => { // SPURIOUS: unreachable
+        Some(val) => {
             total += val;
         }
-        None => { // SPURIOUS: unused variable 'None', unreachable
+        None => { // SPURIOUS: unused variable 'None'
         }
     }
 
     let e = MyOption::Some(80);
     match e {
-        MyOption::Some(val) => { // BAD: unused variable, unreachable
+        MyOption::Some(val) => { // BAD: unused variable
         }
-        MyOption::None => {} // SPURIOUS: unreachable
+        MyOption::None => {}
     }
 
     let f = YesOrNo::Yes;
     match f {
-        YesOrNo::Yes => {} // SPURIOUS: unreachable
-        YesOrNo::No => {} // SPURIOUS: unreachable
+        YesOrNo::Yes => {}
+        YesOrNo::No => {}
     }
 }
 

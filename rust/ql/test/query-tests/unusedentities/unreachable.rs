@@ -43,9 +43,9 @@ fn unreachable_if() {
 	if cond() {
 		let x = cond();
 
-		if (x) { // SPURIOUS: unreachable
+		if (x) {
 			do_something();
-			if (!x) { // SPURIOUS: unreachable
+			if (!x) {
 				do_something(); // BAD: unreachable code [NOT DETECTED]
 			}
 			do_something();
@@ -114,20 +114,20 @@ fn unreachable_panic() {
 
 fn unreachable_match() {
 	match get_a_number() {
-		1=>{ // [unreachable FALSE POSITIVE]
+		1=>{
 			return;
 		}
-		_=>{ // [unreachable FALSE POSITIVE]
+		_=>{
 			do_something();
 		}
 	}
 	do_something(); // [unreachable FALSE POSITIVE]
 
 	match get_a_number() {
-		1=>{ // [unreachable FALSE POSITIVE]
+		1=>{
 			return;
 		}
-		_=>{ // [unreachable FALSE POSITIVE]
+		_=>{
 			return;
 		}
 	}
@@ -168,5 +168,5 @@ fn unreachable_loop() {
 }
 
 fn unreachable_paren() {
-	let _ = (((1))); // SPURIOUS: unreachable (x3)
+	let _ = (((1)));
 }

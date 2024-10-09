@@ -17,7 +17,12 @@ import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraph
  */
 private predicate unreachable(AstNode n) {
   not n = any(CfgNode cfn).getAstNode() and // reachable nodes
-  n instanceof ControlFlowGraphImpl::ControlFlowTree // part of the CFG
+  exists(ControlFlowGraphImpl::ControlFlowTree cft |
+    // nodes intended to be part of the CFG
+    cft.succ(n, _, _)
+    or
+    cft.succ(_, n, _)
+  )
 }
 
 /**
