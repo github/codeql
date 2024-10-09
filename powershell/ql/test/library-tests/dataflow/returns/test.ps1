@@ -3,7 +3,7 @@ function callSourceOnce {
 }
 
 $x = callSourceOnce
-Sink $x # $ MISSING: hasValueFlow=1
+Sink $x # $ hasValueFlow=1
 
 function callSourceTwice {
     Source "2"
@@ -11,14 +11,14 @@ function callSourceTwice {
 }
 
 $x = callSourceTwice
-Sink $x # $ MISSING: hasValueFlow=2 hasValueFlow=3
+Sink $x # $ hasValueFlow=2 hasValueFlow=3
 
 function returnSource1 {
     return Source "4"
 }
 
 $x = returnSource1
-Sink $x # $ MISSING: hasValueFlow=4
+Sink $x # $ hasValueFlow=4
 
 function returnSource2 {
     $x = Source "5"
@@ -28,4 +28,4 @@ function returnSource2 {
 }
 
 $x = returnSource2
-Sink $x # $ MISSING: hasValueFlow=5 hasValueFlow=6
+Sink $x # $ hasValueFlow=5 hasValueFlow=6
