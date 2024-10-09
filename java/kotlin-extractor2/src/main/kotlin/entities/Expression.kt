@@ -242,7 +242,7 @@ private fun KotlinFileExtractor.extractExpression(
 
                 tw.writeExprsKotlinType(id, type.kotlinResult.id)
                 extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                extractExpressionExpr(e, callable, id, 0, exprParent.enclosingStmt)
+                extractExpressionExpr(e.leftHandSide, callable, id, 0, exprParent.enclosingStmt)
 
                 // TODO: KE1
                 //extractTypeAccessRecursive(e.typeReference, locId, id, 1, callable, exprParent.enclosingStmt)
