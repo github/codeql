@@ -4,7 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Reflection.PortableExecutable", "PEBuilder+Section", False, "Section", "(System.String,System.Reflection.PortableExecutable.SectionCharacteristics)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Reflection.PortableExecutable", "PEBuilder+Section", False, "Section", "(System.String,System.Reflection.PortableExecutable.SectionCharacteristics)", "", "Argument[0]", "Argument[this].Field[System.Reflection.PortableExecutable.PEBuilder+Section.Name]", "value", "dfc-generated"]
       - ["System.Reflection.PortableExecutable", "PEBuilder", False, "GetSections", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEBuilder", False, "Serialize", "(System.Reflection.Metadata.BlobBuilder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEBuilder", True, "GetDirectories", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

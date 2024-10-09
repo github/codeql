@@ -4,13 +4,14 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Web", "HttpUtility", False, "HtmlDecode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "HtmlDecode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlPathEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Web", "HttpUtility", False, "HtmlDecode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[])", "", "Argument[0].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[])", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Web", "HttpUtility", False, "UrlPathEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -23,6 +24,7 @@ extensions:
       - ["System.Web", "AspNetHostingPermission", "ToXml", "()", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermissionAttribute", "AspNetHostingPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Web", "HttpUtility", "HtmlDecode", "(System.String,System.IO.TextWriter)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "ParseQueryString", "(System.String)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "ParseQueryString", "(System.String,System.Text.Encoding)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecode", "(System.Byte[],System.Int32,System.Int32,System.Text.Encoding)", "summary", "df-generated"]

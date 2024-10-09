@@ -6,10 +6,9 @@ extensions:
     data:
       - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveAssemblyToPath", "(System.Reflection.AssemblyName)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveAssemblyToPath", "(System.Reflection.AssemblyName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveUnmanagedDllToPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveUnmanagedDllToPath", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveUnmanagedDllToPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", False, "EnterContextualReflection", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.Loader", "AssemblyLoadContext", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", False, "ToString", "()", "", "Argument[this].Property[System.Runtime.Loader.AssemblyLoadContext.Name]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

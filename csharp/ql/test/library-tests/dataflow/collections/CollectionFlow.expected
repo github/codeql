@@ -24,6 +24,7 @@ models
 | 23 | Summary: System; Span<T>; false; Span; (T); ; Argument[0]; Argument[this].Element; value; manual |
 | 24 | Summary: System; Span<T>; false; Span; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
 | 25 | Summary: System; Span<T>; false; ToArray; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 26 | Summary: System.Collections.Generic; List<T>+Enumerator; false; get_Current; (); ; Argument[this].Property[System.Collections.Generic.List`1+Enumerator.Current]; ReturnValue; value; dfc-generated |
 edges
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : null [element] : A | provenance |  |
@@ -235,9 +236,14 @@ edges
 | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | provenance |  |
 | CollectionFlow.cs:289:18:289:18 | access to local variable a : A | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | provenance | MaD:3 |
 | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
+| CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
+| CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | provenance | MaD:14 |
 | CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | provenance | MaD:14 |
 | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
+| CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
 | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance |  |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance | MaD:26 |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance | MaD:26 |
 | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | CollectionFlow.cs:308:43:308:43 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:306:17:306:23 | object creation of type A : A | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:308:9:308:12 | [post] access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | provenance |  |
@@ -540,8 +546,11 @@ nodes
 | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | semmle.label | [post] access to local variable list : List<T> [element] : A |
 | CollectionFlow.cs:289:18:289:18 | access to local variable a : A | semmle.label | access to local variable a : A |
 | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | semmle.label | access to local variable list : List<T> [element] : A |
 | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | semmle.label | call to method GetEnumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | semmle.label | call to method GetEnumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:292:18:292:35 | access to property Current | semmle.label | access to property Current |
 | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | semmle.label | access to local variable a : A |

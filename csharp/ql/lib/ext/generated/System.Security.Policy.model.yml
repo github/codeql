@@ -4,8 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Security.Policy", "IMembershipCondition", True, "Copy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
-      - ["System.Security.Policy", "PolicyStatement", False, "Copy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.Security.Policy", "IMembershipCondition", True, "Copy", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Security.Policy", "PolicyStatement", False, "Copy", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
