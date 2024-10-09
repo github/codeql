@@ -42,8 +42,8 @@ ensure_tainted(
     list(re.finditer(pat, ts))[0].string, # $ tainted
     [m.string for m in re.finditer(pat, ts)], # $ tainted
 
-    list(re.finditer(pat, ts))[0].groups()[0], # $ MISSING: tainted
-    [m.groups()[0] for m in re.finditer(pat, ts)], # $ MISSING: tainted
+    list(re.finditer(pat, ts))[0].groups()[0], # $ MISSING: tainted  // this requires list content in type tracking
+    [m.groups()[0] for m in re.finditer(pat, ts)], # $ tainted
 )
 ensure_not_tainted(
     safe_match.expand("Hello \1"),
