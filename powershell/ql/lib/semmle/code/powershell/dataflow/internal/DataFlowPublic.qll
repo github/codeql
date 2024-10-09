@@ -33,6 +33,16 @@ class Node extends TNode {
   Node getASuccessor() { localFlowStep(this, result) }
 }
 
+/** A control-flow node, viewed as a node in a data flow graph. */
+abstract private class AbstractAstNode extends Node {
+  CfgNodes::AstCfgNode n;
+
+  /** Gets the control-flow node corresponding to this node. */
+  CfgNodes::AstCfgNode getCfgNode() { result = n }
+}
+
+final class AstNode = AbstractAstNode;
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *
@@ -40,8 +50,8 @@ class Node extends TNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node, TExprNode {
-  private CfgNodes::ExprCfgNode n;
+class ExprNode extends AbstractAstNode, TExprNode {
+  override CfgNodes::ExprCfgNode n;
 
   ExprNode() { this = TExprNode(n) }
 
@@ -56,8 +66,8 @@ class ExprNode extends Node, TExprNode {
  * to multiple `StmtNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class StmtNode extends Node, TStmtNode {
-  private CfgNodes::StmtCfgNode n;
+class StmtNode extends AbstractAstNode, TStmtNode {
+  override CfgNodes::StmtCfgNode n;
 
   StmtNode() { this = TStmtNode(n) }
 
@@ -311,4 +321,13 @@ class ObjectCreationNode extends Node {
   }
 
   final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+}
+
+/** A call, viewed as a node in a data flow graph. */
+class CallNode extends AstNode {
+  CfgNodes::CallCfgNode call;
+
+  CallNode() { call = this.getCfgNode() }
+
+  CfgNodes::CallCfgNode getCallNode() { result = call }
 }
