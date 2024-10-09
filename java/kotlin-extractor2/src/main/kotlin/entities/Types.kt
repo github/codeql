@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.analysis.api.types.KaType
 private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
+    // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
     val javaResult = TypeResult(addClassLabel(c.symbol as KaClassSymbol) /* , TODO, TODO */)
     val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
     return TypeResults(javaResult, kotlinResult)
