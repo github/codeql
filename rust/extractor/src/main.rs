@@ -20,14 +20,14 @@ fn extract(
     archiver: &Archiver,
     traps: &trap::TrapFileProvider,
     file: &std::path::Path,
-) -> () {
-    archiver.archive(&file);
+) {
+    archiver.archive(file);
 
     let (ast, input, parse_errors, file_id, semi) = rust_analyzer.parse(file);
     let line_index = LineIndex::new(input.as_ref());
     let display_path = file.to_string_lossy();
-    let mut trap = traps.create("source", &file);
-    let label = trap.emit_file(&file);
+    let mut trap = traps.create("source", file);
+    let label = trap.emit_file(file);
     let mut translator = translate::Translator::new(
         trap,
         display_path.as_ref(),
@@ -74,7 +74,7 @@ fn main() -> anyhow::Result<()> {
         .inputs
         .iter()
         .map(|file| {
-            let file = std::path::absolute(&file).unwrap_or(file.to_path_buf());
+            let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
             std::fs::canonicalize(&file).unwrap_or(file)
         })
         .collect();
