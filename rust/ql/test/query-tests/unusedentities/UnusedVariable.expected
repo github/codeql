@@ -20,3 +20,16 @@
 | main.rs:386:21:386:21 | y | Variable is not used. |
 | main.rs:434:27:434:29 | val | Variable is not used. |
 | main.rs:437:22:437:24 | acc | Variable is not used. |
+| main.rs:164:9:164:9 | x | Variable is not used. |
+| main.rs:202:17:202:17 | a | Variable is not used. |
+| main.rs:210:20:210:22 | val | Variable is not used. |
+| main.rs:224:14:224:16 | val | Variable is not used. |
+| main.rs:239:22:239:24 | val | Variable is not used. |
+| main.rs:246:24:246:26 | val | Variable is not used. |
+| main.rs:254:13:254:15 | num | Variable is not used. |
+| main.rs:269:12:269:12 | j | Variable is not used. |
+| main.rs:289:25:289:25 | y | Variable is not used. |
+| main.rs:292:28:292:28 | a | Variable is not used. |
+| main.rs:295:9:295:9 | p | Variable is not used. |
+| main.rs:302:13:302:13 | y | Variable is not used. |
+| main.rs:310:21:310:21 | y | Variable is not used. |
