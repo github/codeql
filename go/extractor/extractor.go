@@ -2155,4 +2155,9 @@ func checkObjectNotSpecialized(obj types.Object) {
 	if varObj, ok := obj.(*types.Var); ok && varObj != varObj.Origin() {
 		log.Fatalf("Encountered unexpected specialization %s of generic variable object %s", varObj.String(), varObj.Origin().String())
 	}
+	if typeNameObj, ok := obj.(*types.TypeName); ok {
+		if namedType, ok := typeNameObj.Type().(*types.Named); ok && namedType != namedType.Origin() {
+			log.Fatalf("Encountered type object for specialization %s of named type %s", namedType.String(), namedType.Origin().String())
+		}
+	}
 }
