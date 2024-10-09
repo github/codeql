@@ -385,6 +385,11 @@ class Field extends Variable {
       this = base.getField(f)
     )
   }
+
+  /**
+   * Gets the tag associated with this field, or the empty string if this field has no tag.
+   */
+  string getTag() { declaringType.hasOwnFieldWithTag(_, this.getName(), this.getType(), _, result) }
 }
 
 /**
@@ -472,6 +477,13 @@ class Function extends ValueEntity, @functionobject {
 
   /** Gets a result variable of this function. */
   ResultVariable getAResult() { result = this.getResult(_) }
+}
+
+bindingset[m]
+pragma[inline_late]
+private Type implementsIncludingInterfaceMethodsCand(Method m, string mname) {
+  result.implements(m.getReceiverType().getUnderlyingType()) and
+  mname = m.getName()
 }
 
 /**
@@ -575,9 +587,9 @@ class Method extends Function {
   predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    exists(Type t |
-      this = t.getMethod(m.getName()) and
-      t.implements(m.getReceiverType().getUnderlyingType())
+    exists(Type t, string mname |
+      t = implementsIncludingInterfaceMethodsCand(m, mname) and
+      this = t.getMethod(mname)
     )
   }
 

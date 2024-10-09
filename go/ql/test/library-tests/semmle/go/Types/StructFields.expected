@@ -66,3 +66,7 @@
 | pkg2/tst.go:3:6:3:6 | T | pkg2/tst.go:7:8:9:1 | struct type | g | int |
 | pkg2/tst.go:7:6:7:6 | G | pkg2/tst.go:3:8:5:1 | struct type | g | int |
 | pkg2/tst.go:7:6:7:6 | G | pkg2/tst.go:7:8:9:1 | struct type | g | int |
+| struct_tags.go:3:6:3:7 | S1 | struct_tags.go:3:9:6:1 | struct type | field1 | int |
+| struct_tags.go:3:6:3:7 | S1 | struct_tags.go:3:9:6:1 | struct type | field2 | int |
+| struct_tags.go:8:6:8:7 | S2 | struct_tags.go:8:9:11:1 | struct type | field1 | int |
+| struct_tags.go:8:6:8:7 | S2 | struct_tags.go:8:9:11:1 | struct type | field2 | int |

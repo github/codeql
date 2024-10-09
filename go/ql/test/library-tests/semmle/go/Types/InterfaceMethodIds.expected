@@ -1,0 +1,3 @@
+| interface { Exported func() ; notExported func()  } | func()  | Exported |
+| interface { Exported func() ; notExported func()  } | func()  | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.notExported |
+| interface { Exported func() ; notExported func()  } | func()  | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.notExported |

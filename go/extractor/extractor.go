@@ -1624,6 +1624,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					name = ""
 				}
 				extractComponentType(tw, lbl, i, name, field.Type())
+				if tp.Tag(i) != "" {
+					dbscheme.StructTagsTable.Emit(tw, lbl, i, tp.Tag(i))
+				}
 			}
 		case *types.Pointer:
 			kind = dbscheme.PointerType.Index()
@@ -1641,6 +1644,10 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
+
+				if !meth.Exported() {
+					dbscheme.InterfacePrivateMethodIdsTable.Emit(tw, lbl, i, meth.Id())
+				}
 			}
 			for i := 0; i < tp.NumEmbeddeds(); i++ {
 				component := tp.EmbeddedType(i)

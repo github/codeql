@@ -69,6 +69,7 @@ class Type extends @type {
    * is contained in the method set of this type and any type restrictions are
    * satisfied.
    */
+  pragma[nomagic]
   predicate implements(InterfaceType i) {
     if i = any(ComparableType comparable).getUnderlyingType()
     then this.implementsComparable()
@@ -458,6 +459,21 @@ class StructType extends @structtype, CompositeType {
   }
 
   /**
+   * Holds if this struct contains a field `name` with type `tp` and tag `tag`;
+   * `isEmbedded` is true if the field is embedded.
+   *
+   * Note that this predicate does not take promoted fields into account.
+   */
+  predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
+    this.hasOwnField(i, name, tp, isEmbedded) and
+    (
+      struct_tags(this, i, tag)
+      or
+      not struct_tags(this, i, _) and tag = ""
+    )
+  }
+
+  /**
    * Get a field with the name `name`; `isEmbedded` is true if the field is embedded.
    *
    * Note that this does not take promoted fields into account.
@@ -575,10 +591,15 @@ class StructType extends @structtype, CompositeType {
   override string pp() {
     result =
       "struct { " +
-        concat(int i, string name, Type tp |
-          component_types(this, i, name, tp)
+        concat(int i, string name, Type tp, string tagToPrint |
+          component_types(this, i, name, tp) and
+          (
+            tagToPrint = " `" + any(string tag | struct_tags(this, i, tag)) + "`"
+            or
+            tagToPrint = "" and not struct_tags(this, i, _)
+          )
         |
-          name + " " + tp.pp(), "; " order by i
+          name + " " + tp.pp() + tagToPrint, "; " order by i
         ) + " }"
   }
 
@@ -745,6 +766,17 @@ class InterfaceType extends @interfacetype, CompositeType {
     // set literals. Note also that methods coming from embedded interfaces
     // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
+  }
+
+  /**
+   * Holds if this interface type has a private method `name`,
+   * with qualified name `qname` and type `type`.
+   */
+  predicate hasPrivateMethodWithQualifiedName(string name, string qname, Type type) {
+    exists(int i | i >= 0 |
+      component_types(this, i, name, type) and
+      interface_private_method_ids(this, i, qname)
+    )
   }
 
   override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
@@ -1033,9 +1065,18 @@ class ErrorType extends Type {
 }
 
 /**
+ * Gets the number of types with method `name`.
+ */
+bindingset[name]
+int numberOfTypesWithMethodName(string name) { result = count(Type t | t.hasMethod(name, _)) }
+
+/**
  * Gets the name of a method in the method set of `i`.
  *
  * This is used to restrict the set of interfaces to consider in the definition of `implements`,
- * so it does not matter which method name is chosen (we use the lexicographically least).
+ * so it does not matter which method name is chosen (we use the most unusual name the interface
+ * requires; this is the most discriminating and so shrinks the search space the most).
  */
-private string getExampleMethodName(InterfaceType i) { result = min(string m | i.hasMethod(m, _)) }
+private string getExampleMethodName(InterfaceType i) {
+  result = min(string m | i.hasMethod(m, _) | m order by numberOfTypesWithMethodName(m))
+}
