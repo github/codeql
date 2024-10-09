@@ -85,7 +85,13 @@ module Impl {
     private AstNode definingNode;
     private string name;
 
-    Variable() { this = MkVariable(definingNode, name) }
+    Variable() {
+      this = MkVariable(definingNode, name) and
+      // exclude for now anything starting with an uppercase character, which may be an enum constant (e.g. `None`). This excludes
+      // static and constant variables (UPPERCASE), which we don't appear to recognize yet anyway. This also assumes programmers
+      // follow the naming guidelines, which they generally do, but they're not enforced.
+      not name.charAt(0).isUppercase()
+    }
 
     /** Gets the name of this variable. */
     string getName() { result = name }
