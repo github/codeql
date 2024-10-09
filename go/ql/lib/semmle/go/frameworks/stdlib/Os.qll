@@ -43,4 +43,10 @@ module Os {
       input = inp and output = outp
     }
   }
+
+  private class ArgsSource extends SourceNode {
+    ArgsSource() { exists(Variable v | v.hasQualifiedName("os", "Args") | this = v.getARead()) }
+
+    override string getThreatModel() { result = "commandargs" }
+  }
 }
