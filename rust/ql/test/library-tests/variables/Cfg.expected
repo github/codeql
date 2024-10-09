@@ -149,10 +149,11 @@ edges
 | variables.rs:74:19:74:40 | CallExpr | variables.rs:74:14:74:41 | CallExpr |  |
 | variables.rs:74:32:74:39 | "Hello!" | variables.rs:74:19:74:40 | CallExpr |  |
 | variables.rs:76:5:79:5 | IfExpr | variables.rs:73:19:80:1 | BlockExpr |  |
-| variables.rs:76:8:77:12 | LetExpr | variables.rs:76:12:76:23 | TupleStructPat |  |
+| variables.rs:76:8:77:12 | LetExpr | variables.rs:77:11:77:12 | s1 |  |
 | variables.rs:76:12:76:23 | TupleStructPat | variables.rs:76:5:79:5 | IfExpr | no-match |
 | variables.rs:76:12:76:23 | TupleStructPat | variables.rs:76:17:76:22 | s2 | match |
 | variables.rs:76:17:76:22 | s2 | variables.rs:78:9:78:22 | ExprStmt | match |
+| variables.rs:77:11:77:12 | s1 | variables.rs:76:12:76:23 | TupleStructPat |  |
 | variables.rs:77:14:79:5 | BlockExpr | variables.rs:76:5:79:5 | IfExpr |  |
 | variables.rs:78:9:78:17 | PathExpr | variables.rs:78:19:78:20 | s2 |  |
 | variables.rs:78:9:78:21 | CallExpr | variables.rs:77:14:79:5 | BlockExpr |  |
@@ -184,10 +185,11 @@ edges
 | variables.rs:91:19:91:40 | CallExpr | variables.rs:91:14:91:41 | CallExpr |  |
 | variables.rs:91:32:91:39 | "Hello!" | variables.rs:91:19:91:40 | CallExpr |  |
 | variables.rs:93:5:96:5 | WhileExpr | variables.rs:90:19:97:1 | BlockExpr |  |
-| variables.rs:93:11:94:12 | LetExpr | variables.rs:93:15:93:26 | TupleStructPat |  |
+| variables.rs:93:11:94:12 | LetExpr | variables.rs:94:11:94:12 | s1 |  |
 | variables.rs:93:15:93:26 | TupleStructPat | variables.rs:93:5:96:5 | WhileExpr | no-match |
 | variables.rs:93:15:93:26 | TupleStructPat | variables.rs:93:20:93:25 | s2 | match |
 | variables.rs:93:20:93:25 | s2 | variables.rs:95:9:95:22 | ExprStmt | match |
+| variables.rs:94:11:94:12 | s1 | variables.rs:93:15:93:26 | TupleStructPat |  |
 | variables.rs:94:14:96:5 | BlockExpr | variables.rs:93:11:94:12 | LetExpr |  |
 | variables.rs:95:9:95:17 | PathExpr | variables.rs:95:19:95:20 | s2 |  |
 | variables.rs:95:9:95:21 | CallExpr | variables.rs:94:14:96:5 | BlockExpr |  |
@@ -455,10 +457,11 @@ edges
 | variables.rs:224:13:224:27 | ExprStmt | variables.rs:224:13:224:21 | PathExpr |  |
 | variables.rs:224:23:224:25 | a11 | variables.rs:224:13:224:26 | CallExpr |  |
 | variables.rs:225:13:228:13 | IfExpr | variables.rs:223:12:229:9 | BlockExpr |  |
-| variables.rs:225:16:226:15 | LetExpr | variables.rs:225:20:225:36 | TupleStructPat |  |
+| variables.rs:225:16:226:15 | LetExpr | variables.rs:226:15:226:15 | e |  |
 | variables.rs:225:20:225:36 | TupleStructPat | variables.rs:225:13:228:13 | IfExpr | no-match |
 | variables.rs:225:20:225:36 | TupleStructPat | variables.rs:225:33:225:35 | a12 | match |
 | variables.rs:225:33:225:35 | a12 | variables.rs:227:17:227:32 | ExprStmt | match |
+| variables.rs:226:15:226:15 | e | variables.rs:225:20:225:36 | TupleStructPat |  |
 | variables.rs:226:17:228:13 | BlockExpr | variables.rs:225:13:228:13 | IfExpr |  |
 | variables.rs:227:17:227:25 | PathExpr | variables.rs:227:28:227:30 | a12 |  |
 | variables.rs:227:17:227:31 | CallExpr | variables.rs:226:17:228:13 | BlockExpr |  |
@@ -674,7 +677,10 @@ edges
 | variables.rs:332:5:332:17 | ExprStmt | variables.rs:332:5:332:13 | PathExpr |  |
 | variables.rs:332:15:332:15 | a | variables.rs:332:5:332:16 | CallExpr |  |
 | variables.rs:333:5:333:27 | MethodCallExpr | variables.rs:334:5:334:17 | ExprStmt |  |
-| variables.rs:333:5:333:28 | ExprStmt | variables.rs:333:5:333:27 | MethodCallExpr |  |
+| variables.rs:333:5:333:28 | ExprStmt | variables.rs:333:25:333:26 | 10 |  |
+| variables.rs:333:6:333:11 | RefExpr | variables.rs:333:5:333:27 | MethodCallExpr |  |
+| variables.rs:333:11:333:11 | a | variables.rs:333:6:333:11 | RefExpr |  |
+| variables.rs:333:25:333:26 | 10 | variables.rs:333:11:333:11 | a |  |
 | variables.rs:334:5:334:13 | PathExpr | variables.rs:334:15:334:15 | a |  |
 | variables.rs:334:5:334:16 | CallExpr | variables.rs:329:17:335:1 | BlockExpr |  |
 | variables.rs:334:5:334:17 | ExprStmt | variables.rs:334:5:334:13 | PathExpr |  |
