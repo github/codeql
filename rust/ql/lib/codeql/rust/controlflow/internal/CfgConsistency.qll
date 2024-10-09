@@ -23,6 +23,9 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
   )
 }
 
+/**
+ * Holds if CFG scope `scope` lacks an initial AST node.  Overrides shared consistency predicate.
+ */
 query predicate scopeNoFirst(CfgScope scope) {
   Consistency::scopeNoFirst(scope) and
   not scope = any(Function f | not exists(f.getBody())) and
@@ -35,6 +38,9 @@ private predicate letElsePanic(BlockExpr be) {
   exists(Completion c | CfgImpl::last(be, _, c) | completionIsNormal(c))
 }
 
+/**
+ * Holds if `node` is lacking a successor. Overrides shared consistency predicate.
+ */
 query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
   not letElsePanic(node.getAstNode())
