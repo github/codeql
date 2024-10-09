@@ -8,6 +8,7 @@
  * @precision high
  * @id py/cors-misconfiguration-with-credentials
  * @tags security
+ *       experimental
  *       external/cwe/cwe-942
  */
 
