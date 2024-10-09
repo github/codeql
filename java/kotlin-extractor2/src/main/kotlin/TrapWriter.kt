@@ -152,6 +152,7 @@ abstract class TrapWriter(
      * same variable may be referred to from distant places in the IR, so we need a way to find out
      * which label is used for a given local variable. This information is stored in this mapping.
      */
+    // TODO: This should be in a subclass so that DiagnosticTrapWriter doesn't include it, as it is not threadsafe
     private val variableLabelMapping: MutableMap<KtProperty, Label<out DbLocalvar>> =
         mutableMapOf<KtProperty, Label<out DbLocalvar>>()
 
@@ -167,9 +168,12 @@ abstract class TrapWriter(
         }
     }
 
+    /*
+    OLD: KE1
     fun getExistingVariableLabelFor(v: KtProperty): Label<out DbLocalvar>? {
         return variableLabelMapping[v]
     }
+    */
 
     /**
      * This returns a label for the location described by its arguments. Typically users will not

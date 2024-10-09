@@ -2383,7 +2383,7 @@ private fun KotlinFileExtractor.extractVariableExpr(
     parent: Label<out DbExprparent>,
     idx: Int,
     enclosingStmt: Label<out DbStmt>,
-    extractInitializer: Boolean = true
+    //extractInitializer: Boolean = true  // OLD KE1
 ) {
     with("variable expr", v) {
         val varId = useVariable(v)
@@ -2397,7 +2397,8 @@ private fun KotlinFileExtractor.extractVariableExpr(
         tw.writeExprsKotlinType(exprId, type.kotlinResult.id)
         extractExprContext(exprId, locId, callable, enclosingStmt)
         val i = v.initializer
-        if (i != null && extractInitializer) {
+        //OLD KE1: if (i != null && extractInitializer) {
+        if (i != null) {
             extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
         }
         if (!v.isVar) {
