@@ -54,7 +54,7 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFu
     output.isReturnValueDeref()
     or
     // The out parameter is a pointer to a `FILE*`.
-    this.hasGlobalOrStdName(["fopen_s"]) and
+    this.hasGlobalOrStdName("fopen_s") and
     input.isParameterDeref(1) and
     output.isParameterDeref(0, 2)
     or
