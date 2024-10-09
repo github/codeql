@@ -1,4 +1,7 @@
-/** Provides modules for computing dense `rank`s. */
+/**
+ * Provides modules for computing dense `rank`s. See the `DenseRank` module
+ * below for a more detailed explanation.
+ */
 
 /** Provides the input to `DenseRank`. */
 signature module DenseRankInputSig {
@@ -77,7 +80,7 @@ signature module DenseRankInputSig2 {
 module DenseRank2<DenseRankInputSig2 Input> {
   private import Input
 
-  private int rank0(C c, Ranked r, int rnk) {
+  private int rankRank(C c, Ranked r, int rnk) {
     rnk = getRank(c, r) and
     rnk = rank[result](int rnk0 | rnk0 = getRank(c, _) | rnk0)
   }
@@ -85,7 +88,7 @@ module DenseRank2<DenseRankInputSig2 Input> {
   /** Gets the dense rank of `r` in the context provided by `c`. */
   int denseRank(C c, Ranked r) {
     exists(int rnk |
-      result = rank0(c, r, rnk) and
+      result = rankRank(c, r, rnk) and
       rnk = getRank(c, r)
     )
   }
@@ -113,7 +116,7 @@ signature module DenseRankInputSig3 {
 module DenseRank3<DenseRankInputSig3 Input> {
   private import Input
 
-  private int rank0(C1 c1, C2 c2, Ranked r, int rnk) {
+  private int rankRank(C1 c1, C2 c2, Ranked r, int rnk) {
     rnk = getRank(c1, c2, r) and
     rnk = rank[result](int rnk0 | rnk0 = getRank(c1, c2, _) | rnk0)
   }
@@ -121,7 +124,7 @@ module DenseRank3<DenseRankInputSig3 Input> {
   /** Gets the dense rank of `r` in the context provided by `c1` and `c2`. */
   int denseRank(C1 c1, C2 c2, Ranked r) {
     exists(int rnk |
-      result = rank0(c1, c2, r, rnk) and
+      result = rankRank(c1, c2, r, rnk) and
       rnk = getRank(c1, c2, r)
     )
   }
