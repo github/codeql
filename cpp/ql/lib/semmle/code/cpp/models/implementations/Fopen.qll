@@ -49,7 +49,10 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFu
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    this.hasGlobalOrStdName(["fopen", "freopen", "_wfopen", "_fsopen", "_wfsopen"]) and
+    (
+      this.hasGlobalOrStdName(["fopen", "freopen"]) or
+      this.hasGlobalName(["_wfopen", "_fsopen", "_wfsopen"])
+    ) and
     input.isParameterDeref(0) and
     output.isReturnValueDeref()
     or
