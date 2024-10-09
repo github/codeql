@@ -158,9 +158,8 @@ impl<'a> fmt::Display for Expression<'a> {
             Expression::Var(x) => write!(f, "{}", x),
             Expression::String(s) => {
                 let s = s
-                    .replace("\'", "\\\'")
-                    .replace("\"", "\\\"")
-                    .replace("\\", "\\\\");
+                    .replace('\'', "\'")
+                    .replace('"', "\"");
                 write!(f, "\"{}\"", s)
             },
             Expression::Integer(n) => write!(f, "{}", n),
