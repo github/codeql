@@ -5,7 +5,7 @@
 import semmle.code.cpp.exprs.Expr
 
 /**
- * A C/C++ requires expression.
+ * A C++ requires expression.
  */
 class RequiresExpr extends Expr, @requires_expr {
   override string toString() { result = "requires ..." }
