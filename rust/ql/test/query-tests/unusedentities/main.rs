@@ -265,8 +265,8 @@ fn if_lets_matches() {
 
     let i = Yes;
     match i {
-        Yes => {} // SPURIOUS: unused variable 'None'
-        No => {} // SPURIOUS: unused variable 'None'
+        Yes => {} // SPURIOUS: unused variable 'Yes'
+        No => {} // SPURIOUS: unused variable 'No'
     }
 
     if let j = Yes { // BAD: unused variable
