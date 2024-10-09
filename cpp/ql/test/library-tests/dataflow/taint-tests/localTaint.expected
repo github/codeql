@@ -6588,6 +6588,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:785:23:785:28 | source | taint.cpp:786:18:786:23 | source |  |
 | taint.cpp:785:23:785:28 | source | taint.cpp:790:15:790:20 | source |  |
 | taint.cpp:786:12:786:16 | call to fopen | taint.cpp:787:7:787:7 | f |  |
+| taint.cpp:786:18:786:23 | source | taint.cpp:786:12:786:16 | call to fopen | TAINT |
 | taint.cpp:789:8:789:9 | f2 | taint.cpp:790:11:790:12 | f2 |  |
 | taint.cpp:789:8:789:9 | f2 | taint.cpp:791:7:791:8 | f2 |  |
 | taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:790:11:790:12 | f2 [inner post update] |  |
