@@ -1,4 +1,12 @@
 edges
+| InsecureSQLConnectionInitializer.cs:21:33:21:39 | encrypt : Boolean | InsecureSQLConnectionInitializer.cs:24:104:24:110 | access to parameter encrypt | provenance |  |
+| InsecureSQLConnectionInitializer.cs:29:27:29:31 | false : Boolean | InsecureSQLConnectionInitializer.cs:21:33:21:39 | encrypt : Boolean | provenance |  |
 nodes
+| InsecureSQLConnectionInitializer.cs:18:104:18:108 | false | semmle.label | false |
+| InsecureSQLConnectionInitializer.cs:21:33:21:39 | encrypt : Boolean | semmle.label | encrypt : Boolean |
+| InsecureSQLConnectionInitializer.cs:24:104:24:110 | access to parameter encrypt | semmle.label | access to parameter encrypt |
+| InsecureSQLConnectionInitializer.cs:29:27:29:31 | false : Boolean | semmle.label | false : Boolean |
 subpaths
 #select
+| InsecureSQLConnectionInitializer.cs:18:104:18:108 | false | InsecureSQLConnectionInitializer.cs:18:104:18:108 | false | InsecureSQLConnectionInitializer.cs:18:104:18:108 | false | A value evaluating to $@ flows to $@ and sets the `encrypt` property. | InsecureSQLConnectionInitializer.cs:18:104:18:108 | false | `false` | InsecureSQLConnectionInitializer.cs:18:24:18:110 | object creation of type SqlConnectionStringBuilder | this SQL connection initializer |
+| InsecureSQLConnectionInitializer.cs:24:104:24:110 | access to parameter encrypt | InsecureSQLConnectionInitializer.cs:29:27:29:31 | false : Boolean | InsecureSQLConnectionInitializer.cs:24:104:24:110 | access to parameter encrypt | A value evaluating to $@ flows to $@ and sets the `encrypt` property. | InsecureSQLConnectionInitializer.cs:29:27:29:31 | false | `false` | InsecureSQLConnectionInitializer.cs:24:24:24:112 | object creation of type SqlConnectionStringBuilder | this SQL connection initializer |
