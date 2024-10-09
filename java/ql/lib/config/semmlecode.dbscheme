@@ -790,10 +790,26 @@ typeArgs(
   int parentid: @classorinterfaceorcallable ref
 );
 
+/**
+ * This holds if `memberid` is a parameterised instantiation of a
+ * generic type; i.e. if `typeArgs(_, _, memberid)` holds.
+ *
+ * Note that despite the general `@member ref` type, it is only
+ * populated for `@reftype`s.
+ */
 isParameterized(
   int memberid: @member ref
 );
 
+/**
+ * This holds if `memberid` is the raw instantiation of a
+ * generic type; i.e. if `classes_or_interfaces(memberid, _, _, sourceid)`
+ * holds (where `memberid != sourceid`) and typeArgs(_, _, memberid)`
+ * doesn't hold.
+ *
+ * Note that despite the general `@member ref` type, it is only
+ * populated for `@reftype`s.
+ */
 isRaw(
   int memberid: @member ref
 );
