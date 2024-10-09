@@ -1,0 +1,16 @@
+| main.rs:6:9:6:9 | a | Variable is assigned a value that is never used. |
+| main.rs:9:9:9:9 | d | Variable is assigned a value that is never used. |
+| main.rs:35:5:35:5 | b | Variable is assigned a value that is never used. |
+| main.rs:37:5:37:5 | c | Variable is assigned a value that is never used. |
+| main.rs:40:5:40:5 | c | Variable is assigned a value that is never used. |
+| main.rs:44:9:44:9 | d | Variable is assigned a value that is never used. |
+| main.rs:50:5:50:5 | e | Variable is assigned a value that is never used. |
+| main.rs:61:5:61:5 | f | Variable is assigned a value that is never used. |
+| main.rs:63:5:63:5 | f | Variable is assigned a value that is never used. |
+| main.rs:65:5:65:5 | g | Variable is assigned a value that is never used. |
+| main.rs:87:9:87:9 | a | Variable is assigned a value that is never used. |
+| main.rs:108:9:108:10 | is | Variable is assigned a value that is never used. |
+| main.rs:133:13:133:17 | total | Variable is assigned a value that is never used. |
+| main.rs:232:13:232:17 | total | Variable is assigned a value that is never used. |
+| main.rs:301:9:301:9 | x | Variable is assigned a value that is never used. |
+| main.rs:309:17:309:17 | x | Variable is assigned a value that is never used. |
