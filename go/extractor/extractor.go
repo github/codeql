@@ -518,6 +518,7 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 // For more information on objects, see:
 // https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
+	checkObjectNotSpecialized(obj)
 	name := obj.Name()
 	isBuiltin := obj.Parent() == types.Universe
 	var kind int
@@ -2142,4 +2143,16 @@ func skipExtractingValueForLeftOperand(tw *trap.Writer, be *ast.BinaryExpr) bool
 		return false
 	}
 	return true
+}
+
+// checkObjectNotSpecialized exits the program if `obj` is specialized. Note
+// that specialization is only possible for function objects and variable
+// objects.
+func checkObjectNotSpecialized(obj types.Object) {
+	if funcObj, ok := obj.(*types.Func); ok && funcObj != funcObj.Origin() {
+		log.Fatalf("Encountered unexpected specialization %s of generic function object %s", funcObj.FullName(), funcObj.Origin().FullName())
+	}
+	if varObj, ok := obj.(*types.Var); ok && varObj != varObj.Origin() {
+		log.Fatalf("Encountered unexpected specialization %s of generic variable object %s", varObj.String(), varObj.Origin().String())
+	}
 }
