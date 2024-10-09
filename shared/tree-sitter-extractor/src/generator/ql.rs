@@ -156,7 +156,13 @@ impl<'a> fmt::Display for Expression<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
-            Expression::String(s) => write!(f, "\"{}\"", s),
+            Expression::String(s) => {
+                let s = s
+                    .replace("\'", "\\\'")
+                    .replace("\"", "\\\"")
+                    .replace("\\", "\\\\");
+                write!(f, "\"{}\"", s)
+            },
             Expression::Integer(n) => write!(f, "{}", n),
             Expression::Pred(n, args) => {
                 write!(f, "{}(", n)?;
