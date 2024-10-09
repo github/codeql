@@ -2,7 +2,7 @@
 
 set -eu
 
-source misc/bazel/runfiles.sh 2>/dev/null || source external/ql~/misc/bazel/runfiles.sh
+source misc/bazel/runfiles.sh 2>/dev/null || source external/ql+/misc/bazel/runfiles.sh
 
 dest="${2:-$HOME/.local/bin}"
 
