@@ -75,6 +75,12 @@ variable
 | variables.rs:359:9:359:9 | y |
 | variables.rs:366:13:366:13 | x |
 | variables.rs:367:13:367:15 | cap |
+| variables.rs:375:8:375:8 | b |
+| variables.rs:376:13:376:13 | x |
+| variables.rs:385:13:385:14 | b1 |
+| variables.rs:385:24:385:25 | b2 |
+| variables.rs:386:9:386:9 | x |
+| variables.rs:412:13:412:13 | a |
 variableAccess
 | variables.rs:13:15:13:16 | x1 | variables.rs:12:9:12:10 | x1 |
 | variables.rs:18:15:18:16 | x2 | variables.rs:17:13:17:14 | x2 |
@@ -177,11 +183,29 @@ variableAccess
 | variables.rs:369:9:369:9 | x | variables.rs:366:13:366:13 | x |
 | variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
 | variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:377:8:377:8 | b | variables.rs:375:8:375:8 | b |
+| variables.rs:378:9:378:9 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:380:9:380:9 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:382:15:382:15 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:387:8:387:9 | b1 | variables.rs:385:13:385:14 | b1 |
+| variables.rs:388:19:388:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:390:19:390:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:393:8:393:9 | b2 | variables.rs:385:24:385:25 | b2 |
+| variables.rs:394:19:394:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:396:19:396:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:413:15:413:15 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:414:5:414:5 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:415:15:415:15 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:416:5:416:5 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:417:15:417:15 | a | variables.rs:412:13:412:13 | a |
 variableWriteAccess
 | variables.rs:19:5:19:6 | x2 | variables.rs:17:13:17:14 | x2 |
 | variables.rs:277:9:277:10 | c2 | variables.rs:270:13:270:14 | c2 |
 | variables.rs:278:9:278:10 | b4 | variables.rs:269:13:269:14 | b4 |
 | variables.rs:279:9:279:11 | a10 | variables.rs:268:13:268:15 | a10 |
+| variables.rs:378:9:378:9 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:380:9:380:9 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:416:5:416:5 | a | variables.rs:412:13:412:13 | a |
 variableReadAccess
 | variables.rs:13:15:13:16 | x1 | variables.rs:12:9:12:10 | x1 |
 | variables.rs:18:15:18:16 | x2 | variables.rs:17:13:17:14 | x2 |
@@ -274,6 +298,18 @@ variableReadAccess
 | variables.rs:368:19:368:19 | x | variables.rs:366:13:366:13 | x |
 | variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
 | variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:377:8:377:8 | b | variables.rs:375:8:375:8 | b |
+| variables.rs:382:15:382:15 | x | variables.rs:376:13:376:13 | x |
+| variables.rs:387:8:387:9 | b1 | variables.rs:385:13:385:14 | b1 |
+| variables.rs:388:19:388:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:390:19:390:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:393:8:393:9 | b2 | variables.rs:385:24:385:25 | b2 |
+| variables.rs:394:19:394:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:396:19:396:19 | x | variables.rs:386:9:386:9 | x |
+| variables.rs:413:15:413:15 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:414:5:414:5 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:415:15:415:15 | a | variables.rs:412:13:412:13 | a |
+| variables.rs:417:15:417:15 | a | variables.rs:412:13:412:13 | a |
 variableInitializer
 | variables.rs:12:9:12:10 | x1 | variables.rs:12:14:12:16 | "a" |
 | variables.rs:17:13:17:14 | x2 | variables.rs:17:18:17:18 | 4 |
@@ -307,6 +343,9 @@ variableInitializer
 | variables.rs:359:9:359:9 | y | variables.rs:360:9:360:14 | RefExpr |
 | variables.rs:366:13:366:13 | x | variables.rs:366:17:366:18 | 10 |
 | variables.rs:367:13:367:15 | cap | variables.rs:367:19:370:5 | ClosureExpr |
+| variables.rs:376:13:376:13 | x | variables.rs:376:17:376:17 | 1 |
+| variables.rs:386:9:386:9 | x | variables.rs:386:13:386:13 | 1 |
+| variables.rs:412:13:412:13 | a | variables.rs:412:17:412:35 | RecordExpr |
 capturedVariable
 | variables.rs:366:13:366:13 | x |
 capturedAccess
