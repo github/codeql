@@ -61,7 +61,7 @@ r.from_cargo(
         "//ruby/extractor:Cargo.toml",
         "//rust/extractor:Cargo.toml",
         "//rust/extractor/macros:Cargo.toml",
-        "//rust/generate-schema:Cargo.toml",
+        "//rust/ast-generator:Cargo.toml",
         "//shared/tree-sitter-extractor:Cargo.toml",
     ],
 )

@@ -12,5 +12,5 @@ pub fn ensure_file_contents(
     contents: &String,
     _check: bool,
 ) {
-    std::fs::write(path, contents).expect("Unable to write file");
+    std::fs::write(path, contents).unwrap_or_else(|_| panic!("Unable to write {}", path.display()));
 }
