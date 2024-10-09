@@ -1637,7 +1637,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				// Note that methods coming from embedded interfaces can be
 				// accessed through `Method(i)`, so there is no need to
 				// deal with them separately.
-				meth := tp.Method(i)
+				meth := tp.Method(i).Origin()
 
 				// Note that methods do not have a parent scope, so they are
 				// not dealt with by `extractScopes`
@@ -1707,7 +1707,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// ensure all methods have labels - note that methods do not have a
 			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
-				meth := origintp.Method(i)
+				meth := origintp.Method(i).Origin()
 
 				extractMethod(tw, meth)
 			}
@@ -1715,7 +1715,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// associate all methods of underlying interface with this type
 			if underlyingInterface, ok := underlying.(*types.Interface); ok {
 				for i := 0; i < underlyingInterface.NumMethods(); i++ {
-					methlbl := extractMethod(tw, underlyingInterface.Method(i))
+					methlbl := extractMethod(tw, underlyingInterface.Method(i).Origin())
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
 			}
@@ -1787,7 +1787,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 		case *types.Interface:
 			var b strings.Builder
 			for i := 0; i < tp.NumMethods(); i++ {
-				meth := tp.Method(i)
+				meth := tp.Method(i).Origin()
 				methLbl := extractType(tw, meth.Type())
 				if i > 0 {
 					b.WriteString(",")
