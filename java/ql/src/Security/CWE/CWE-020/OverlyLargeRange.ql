@@ -12,8 +12,16 @@
  *       external/cwe/cwe-020
  */
 
+import semmle.code.java.regex.RegexDiffInformed
+import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
+
+class OverlyLargeRangeDiffInformed extends RegexDiffInformedConfig {
+  override predicate observeDiffInformedIncrementalMode() { any() }
+
+  override Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
+}
 
 TreeView::RegExpCharacterClass potentialMisparsedCharClass() {
   // nested char classes are currently misparsed

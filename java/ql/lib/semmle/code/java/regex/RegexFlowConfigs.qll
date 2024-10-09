@@ -6,6 +6,7 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.SecurityTests
+private import RegexDiffInformed
 
 private class ExploitableStringLiteral extends StringLiteral {
   ExploitableStringLiteral() { this.getValue().matches(["%+%", "%*%", "%{%}%"]) }
@@ -157,6 +158,14 @@ private module RegexFlowConfig implements DataFlow::ConfigSig {
   }
 
   int fieldFlowBranchLimit() { result = 1 }
+
+  predicate observeDiffInformedIncrementalMode() {
+    exists(RegexDiffInformedConfig c | c.observeDiffInformedIncrementalMode())
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(RegexDiffInformedConfig c | result = c.getASelectedSinkLocation(sink))
+  }
 }
 
 private module RegexFlow = DataFlow::Global<RegexFlowConfig>;

@@ -4,6 +4,7 @@ private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView> as SuperlinearBackTracking
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.regex.RegexFlowConfigs
+import semmle.code.java.regex.RegexDiffInformed
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 
@@ -31,6 +32,14 @@ private class LengthRestrictedMethod extends Method {
     this.getDeclaringType().getName().toLowerCase().matches("%request%") and
     this.getName().toLowerCase().matches(["%get%path%", "get%user%", "%querystring%"])
   }
+}
+
+class PolynomialRedDosDiffInformed extends RegexDiffInformedConfig {
+  override predicate observeDiffInformedIncrementalMode() {
+    not PolynomialRedosFlow::hasSourceInDiffRange()
+  }
+
+  override Location getASelectedSinkLocation(DataFlow::Node sink) { result = sink.getLocation() }
 }
 
 /** A configuration for Polynomial ReDoS queries. */
