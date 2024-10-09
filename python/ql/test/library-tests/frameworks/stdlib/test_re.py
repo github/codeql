@@ -39,8 +39,8 @@ ensure_tainted(
     compiled_pat.match(ts).string, # $ tainted
     re.compile(ts).match("safe").re.pattern, # $ tainted
 
-    list(re.finditer(pat, ts))[0].string, # $ MISSING: tainted
-    [m.string for m in re.finditer(pat, ts)], # $ MISSING: tainted
+    list(re.finditer(pat, ts))[0].string, # $ tainted
+    [m.string for m in re.finditer(pat, ts)], # $ tainted
 
     list(re.finditer(pat, ts))[0].groups()[0], # $ MISSING: tainted
     [m.groups()[0] for m in re.finditer(pat, ts)], # $ MISSING: tainted

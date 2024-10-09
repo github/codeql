@@ -3463,6 +3463,14 @@ module StdlibPrivate {
           ) and
           preservesValue = false
         )
+        or
+        // flow from input string to attribute on match object
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          methodName = "finditer" and
+          output = "ReturnValue.ListElement.Attribute[string]" and
+          preservesValue = true
+        )
       )
     }
   }
