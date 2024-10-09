@@ -25,11 +25,11 @@ predicate isFlowSource(FS::FlowSource source, string sourceType) {
 
 predicate guardChecks(IRGuardCondition g, Expr e, boolean branch) {
   exists(Operand op | op.getDef().getConvertedResultExpression() = e |
-    // op < k
-    g.comparesLt(op, _, true, any(BooleanValue bv | bv.getValue() = branch))
+    // `op < k` is true and `k > 0`
+    g.comparesLt(op, any(int k | k > 0), true, any(BooleanValue bv | bv.getValue() = branch))
     or
-    // op < _ + k
-    g.comparesLt(op, _, _, true, branch)
+    // `op < _ + k` is true and `k > 0`.
+    g.comparesLt(op, _, any(int k | k > 0), true, branch)
     or
     // op == k
     g.comparesEq(op, _, true, any(BooleanValue bv | bv.getValue() = branch))
