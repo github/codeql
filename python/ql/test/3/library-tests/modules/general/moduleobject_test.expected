@@ -37,7 +37,6 @@
 | Module package.assistant | e | Wrong() |
 | Module package.assistant | f | int 1 |
 | Module package.helper | __name__ | str u'package.helper' |
-| Module package.helper | absolute_import | _Feature() |
 | Module package.helper | assistant | Module package.assistant |
 | Module package.helper | d | int 4 |
 | Module package.helper | e | int 5 |
