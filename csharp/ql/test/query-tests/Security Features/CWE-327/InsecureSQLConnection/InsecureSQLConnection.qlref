@@ -1,1 +1,1 @@
-Security Features/CWE-327/InsecureSQLConnectionInitializer.ql
+Security Features/CWE-327/InsecureSQLConnection.ql
