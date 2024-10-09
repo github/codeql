@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appcompat.content.res", "AppCompatResources", False, "getDrawable", "(Context,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appcompat.content.res", "AppCompatResources", "getColorStateList", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.appcompat.content.res", "AppCompatResourcesTestCase", "testColorStateListCaching", "()", "summary", "df-generated"]
+      - ["androidx.appcompat.content.res", "AppCompatResourcesTestCase", "testGetAnimatedStateListDrawable", "()", "summary", "df-generated"]
+      - ["androidx.appcompat.content.res", "AppCompatResourcesTestCase", "testGetColorStateListDrawable", "()", "summary", "df-generated"]
+      - ["androidx.appcompat.content.res", "AppCompatResourcesTestCase", "testGetCustomDrawable", "()", "summary", "df-generated"]
+      - ["androidx.appcompat.content.res", "AppCompatResourcesTestCase", "testGetDrawableVectorResource", "()", "summary", "df-generated"]

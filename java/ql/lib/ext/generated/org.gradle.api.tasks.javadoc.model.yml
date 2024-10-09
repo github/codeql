@@ -1,0 +1,74 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc$Link", True, "Link", "(String,String[])", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc$Link.url]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc$Link", True, "Link", "(String,String[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc$Link.packages].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc$Link", True, "getPackages", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc$Link.packages].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc$Link", True, "getUrl", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc$Link.url]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getAccess", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getAntGroovydoc", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.antGroovydoc]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getClasspath", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.classpath]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getDestinationDir", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.destinationDir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getDocTitle", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.docTitle]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getFooter", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.footer]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getGroovyClasspath", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.groovyClasspath]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getHeader", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.header]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getIncludeAuthor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getIncludeMainForScripts", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getLinks", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.links].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getOverviewText", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.overview]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getProcessScripts", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "getWindowTitle", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.windowTitle]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setAntGroovydoc", "(AntGroovydoc)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.antGroovydoc]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setClasspath", "(FileCollection)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.classpath]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setDestinationDir", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.destinationDir]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setDocTitle", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.docTitle]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setFooter", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.footer]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setGroovyClasspath", "(FileCollection)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.groovyClasspath]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setHeader", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.header]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setLinks", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.links]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setOverviewText", "(TextResource)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.overview]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", True, "setWindowTitle", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Groovydoc.windowTitle]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getClasspath", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.classpath]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getDestinationDir", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.destinationDir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getExecutable", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.executable]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getJavadocTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getMaxMemory", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.maxMemory]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getModularity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getOptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getOptionsFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getTitle", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.title]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "setClasspath", "(FileCollection)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.classpath]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "setDestinationDir", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.destinationDir]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "setExecutable", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.executable]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "setMaxMemory", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.maxMemory]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "setTitle", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.javadoc.Javadoc.title]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "getOptionsFile", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "options", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "options", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "options", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", True, "options", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "isNoTimestamp", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "isNoVersionStamp", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "isUse", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "link", "(String,String[])", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "setNoTimestamp", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "setNoVersionStamp", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Groovydoc", "setUse", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "isFailOnError", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "isVerbose", "()", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "options", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "options", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "setFailOnError", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.api.tasks.javadoc", "Javadoc", "setVerbose", "(boolean)", "summary", "df-generated"]

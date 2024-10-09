@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.accessibilityservice", "AccessibilityServiceInfoCompat", "capabilityToString", "(int)", "summary", "df-generated"]
+      - ["androidx.core.accessibilityservice", "AccessibilityServiceInfoCompat", "feedbackTypeToString", "(int)", "summary", "df-generated"]
+      - ["androidx.core.accessibilityservice", "AccessibilityServiceInfoCompat", "flagToString", "(int)", "summary", "df-generated"]
+      - ["androidx.core.accessibilityservice", "AccessibilityServiceInfoCompat", "getCapabilities", "(AccessibilityServiceInfo)", "summary", "df-generated"]
+      - ["androidx.core.accessibilityservice", "AccessibilityServiceInfoCompat", "loadDescription", "(AccessibilityServiceInfo,PackageManager)", "summary", "df-generated"]

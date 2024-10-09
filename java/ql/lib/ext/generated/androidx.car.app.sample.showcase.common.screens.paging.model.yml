@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.paging", "PagedListTemplate", True, "PagedListTemplate", "(PagedListTemplate$RowList,CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.paging", "PagedListTemplate", True, "PagedListTemplate", "(PagedListTemplate$RowList,CarContext)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.paging", "PagedListTemplate", True, "PagedListTemplate", "(PagedListTemplate$RowList,CarContext,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.paging", "PagedListTemplate", True, "PagedListTemplate", "(PagedListTemplate$RowList,CarContext,int)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]

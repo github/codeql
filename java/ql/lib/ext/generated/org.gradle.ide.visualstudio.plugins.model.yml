@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.ide.visualstudio.plugins", "VisualStudioPlugin", True, "VisualStudioPlugin", "(Instantiator,FileResolver,IdeArtifactRegistry,CollectionCallbackActionDecorator)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio.plugins", "VisualStudioPlugin", True, "VisualStudioPlugin", "(Instantiator,FileResolver,IdeArtifactRegistry,CollectionCallbackActionDecorator)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio.plugins", "VisualStudioPlugin", True, "VisualStudioPlugin", "(Instantiator,FileResolver,IdeArtifactRegistry,CollectionCallbackActionDecorator)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.ide.visualstudio.plugins", "VisualStudioPlugin", True, "VisualStudioPlugin", "(Instantiator,FileResolver,IdeArtifactRegistry,CollectionCallbackActionDecorator)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]

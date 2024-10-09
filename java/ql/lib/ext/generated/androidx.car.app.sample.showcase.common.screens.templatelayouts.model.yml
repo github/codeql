@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "GridTemplateMenuDemoScreen", False, "GridTemplateMenuDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "ListTemplateDemoScreen", False, "ListTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "MessageTemplateDemoScreen", False, "MessageTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "PaneTemplateDemoScreen", False, "PaneTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "SearchTemplateDemoScreen", True, "SearchTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "SignInTemplateDemoScreen", True, "SignInTemplateDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "TabTemplateLayoutsDemoScreen", False, "TabTemplateLayoutsDemoScreen", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.showcase.common.screens.templatelayouts", "PaneTemplateDemoScreen", "onCreate", "(LifecycleOwner)", "summary", "df-generated"]

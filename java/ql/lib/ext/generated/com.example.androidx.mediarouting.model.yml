@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow$OverlayWindowListener", True, "onWindowCreated", "(Surface)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow$OverlayWindowListener", True, "onWindowCreated", "(SurfaceHolder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", True, "create", "(Context,String,int,int,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", True, "create", "(Context,String,int,int,int)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", True, "getContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", True, "setOverlayWindowListener", "(OverlayDisplayWindow$OverlayWindowListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager$RouteListingPreferenceItemHolder", False, "RouteListingPreferenceItemHolder", "(RouteListingPreference$Item,String)", "", "Argument[0]", "Argument[this].Field[com.example.androidx.mediarouting.RoutesManager$RouteListingPreferenceItemHolder.mItem]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager$RouteListingPreferenceItemHolder", False, "RouteListingPreferenceItemHolder", "(RouteListingPreference$Item,String)", "", "Argument[1]", "Argument[this].Field[com.example.androidx.mediarouting.RoutesManager$RouteListingPreferenceItemHolder.mRouteName]", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "addRoute", "(RouteItem)", "", "Argument[0].SyntheticField[com.example.androidx.mediarouting.data.RouteItem.mId]", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteItems].MapKey", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "addRoute", "(RouteItem)", "", "Argument[0]", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteItems].MapValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "getInstance", "(Context)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "getRouteItems", "()", "", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteItems].MapValue", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "getRouteListingPreferenceItems", "()", "", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteListingPreferenceItems]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "getRouteWithId", "(String)", "", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteItems].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", False, "setRouteListingPreferenceItems", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[com.example.androidx.mediarouting.RoutesManager.mRouteListingPreferenceItems].Element", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting", "MyMediaRouteControllerDialog", "MyMediaRouteControllerDialog", "(Context)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "MyMediaRouteControllerDialog", "onCreateMediaControlView", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", "dismiss", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", "getSnapshot", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", "show", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "OverlayDisplayWindow", "updateAspectRatio", "(int,int)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager$RouteListingPreferenceItemHolder", "hasFlag", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "deleteRouteWithId", "(String)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "getRouteListingSystemOrderingPreferred", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "isDynamicRoutingEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "isRouteListingPreferenceEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "reloadDialogType", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "setDialogType", "(RoutesManager$DialogType)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "setDynamicRoutingEnabled", "(boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "setRouteListingPreferenceEnabled", "(boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting", "RoutesManager", "setRouteListingSystemOrderingPreferred", "(boolean)", "summary", "df-generated"]

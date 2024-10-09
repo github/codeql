@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.input.motionprediction.kalman", "BatchedMotionEvent$IterableMotionEvent", True, "getMotionEvent", "()", "", "Argument[this].SyntheticField[androidx.input.motionprediction.kalman.BatchedMotionEvent$IterableMotionEvent.mMotionEvent]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman", "BatchedMotionEvent", True, "iterate", "(MotionEvent)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.input.motionprediction.kalman.BatchedMotionEvent$IterableMotionEvent.mMotionEvent]", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanFilter", True, "predict", "()", "", "Argument[this].Field[androidx.input.motionprediction.kalman.KalmanFilter.x]", "Argument[this].SyntheticField[androidx.input.motionprediction.kalman.KalmanFilter.mBufferXDimOne]", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanFilter", True, "predict", "()", "", "Argument[this].SyntheticField[androidx.input.motionprediction.kalman.KalmanFilter.mBufferXDimOne]", "Argument[this].Field[androidx.input.motionprediction.kalman.KalmanFilter.x]", "value", "dfc-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", True, "getAcceleration", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", True, "getJank", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", True, "getPosition", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", True, "getVelocity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.input.motionprediction.kalman", "BatchedMotionEvent$IterableMotionEvent", "getPointerCount", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "BatchedMotionEvent", "BatchedMotionEvent", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanFilter", "KalmanFilter", "(int,int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanFilter", "reset", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanFilter", "update", "(Matrix)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanMotionEventPredictor", "KalmanMotionEventPredictor", "(Context,int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanMotionEventPredictor", "predict", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "KalmanMotionEventPredictor", "record", "(MotionEvent)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "MultiPointerPredictor", "MultiPointerPredictor", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "MultiPointerPredictor", "onTouchEvent", "(MotionEvent)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "MultiPointerPredictor", "predict", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "MultiPointerPredictor", "setReportRate", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "PointerKalmanFilter", "(double,double)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "getNumIterations", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "getPressure", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "getPressureChange", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "reset", "()", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "PointerKalmanFilter", "update", "(float,float,float)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "SinglePointerPredictor", "SinglePointerPredictor", "(int,int,int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "SinglePointerPredictor", "onTouchEvent", "(MotionEvent)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "SinglePointerPredictor", "predict", "(int)", "summary", "df-generated"]
+      - ["androidx.input.motionprediction.kalman", "SinglePointerPredictor", "setReportRate", "(int)", "summary", "df-generated"]

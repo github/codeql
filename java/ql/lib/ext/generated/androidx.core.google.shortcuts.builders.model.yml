@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.google.shortcuts.builders", "CapabilityBuilder", True, "getParameters", "()", "", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.CapabilityBuilder.mParameters]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.google.shortcuts.builders", "CapabilityBuilder", True, "setParameter", "(ParameterBuilder[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.CapabilityBuilder.mParameters]", "value", "dfc-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ParameterBuilder", True, "getValues", "()", "", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.ParameterBuilder.mValues]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ParameterBuilder", True, "setValue", "(String[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.ParameterBuilder.mValues]", "value", "dfc-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilder", True, "getCapabilities", "()", "", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.ShortcutBuilder.mCapabilities]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilder", True, "setCapability", "(CapabilityBuilder[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.google.shortcuts.builders.ShortcutBuilder.mCapabilities]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilder", "setShortcutDescription", "(String)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilder", "setShortcutLabel", "(String)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilder", "setShortcutUrl", "(String)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilderTest", "testBuildShortcut", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilderTest", "testBuildShortcutWithCapability", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.builders", "ShortcutBuilderTest", "testBuildShortcutWithCapabilityAndParameter", "()", "summary", "df-generated"]

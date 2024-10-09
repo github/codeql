@@ -1,0 +1,45 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.tooling.fixture", "GradleVersionSpec", True, "GradleVersionSpec", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "SetWorkingDirectoryAction", True, "SetWorkingDirectoryAction", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.fixture.SetWorkingDirectoryAction.workingDirectory]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "SetWorkingDirectoryAction", True, "execute", "(BuildController)", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.fixture.SetWorkingDirectoryAction.workingDirectory]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "TextUtil", True, "convertLineSeparators", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "TextUtil", True, "convertLineSeparators", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "TextUtil", True, "normaliseFileSeparators", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "TextUtil", True, "normaliseLineSeparators", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.fixture", "ActionDiscardsConfigurationFailure", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionDiscardsConfigurationFailure", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionDiscardsConfigurationFailure", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionDiscardsConfigurationFailure", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresConfigurationPhase", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresConfigurationPhase", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresConfigurationPhase", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresConfigurationPhase", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresOnlySettingsEvaluation", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresOnlySettingsEvaluation", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresOnlySettingsEvaluation", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresOnlySettingsEvaluation", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", True, "discover", "(EngineDiscoveryRequest,UniqueId)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", True, "discover", "(EngineDiscoveryRequest,UniqueId)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", True, "discover", "(EngineDiscoveryRequest,UniqueId)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", True, "discover", "(EngineDiscoveryRequest,UniqueId)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.fixture", "ActionDiscardsConfigurationFailure", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresConfigurationPhase", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionQueriesModelThatRequiresOnlySettingsEvaluation", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "ActionShouldNotBeCalled", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", "discover", "(EngineDiscoveryRequest,UniqueId)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "CrossVersionTestEngine", "getId", "()", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "GradleVersionSpec", "toSpec", "(String)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.fixture", "TextUtil", "escapeString", "(Object)", "summary", "df-generated"]

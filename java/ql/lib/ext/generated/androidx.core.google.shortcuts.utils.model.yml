@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtils", "getIndexableShortcutUrl", "(Context,Intent,KeysetHandle)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtils", "getIndexableUrl", "(Context,String)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtils", "getOrCreateShortcutKeysetHandle", "(Context)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtils", "isAppActionCapability", "(String)", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testGetIndexableShortcutUrl_noKeysetHandle_returnsShortcutUrl", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testGetIndexableShortcutUrl_withKeyset_returnsTrampolineIntent", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testGetIndexableUrl_returnsTrampolineActivityIntentUriWithIdExtra", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testGetOrCreateShortcutKeysetHandle_multipleCalls_returnsSameKeyset", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testGetOrCreateShortcutKeysetHandle_returnsKeysetHandle", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testIsAppActionCapability_returnsFalse", "()", "summary", "df-generated"]
+      - ["androidx.core.google.shortcuts.utils", "ShortcutUtilsTest", "testIsAppActionCapability_returnsTrue", "()", "summary", "df-generated"]

@@ -1,0 +1,62 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "addAction", "(int,CharSequence,PendingIntent)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setChannelId", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setColor", "(CarColor)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setContentIntent", "(PendingIntent)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setContentText", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setContentTitle", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setDeleteIntent", "(PendingIntent)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setImportance", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setLargeIcon", "(Bitmap)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender$Builder", False, "setSmallIcon", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getChannelId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getColor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getContentIntent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getContentText", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getContentTitle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getDeleteIntent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", False, "getLargeIcon", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppNotificationBroadcastReceiver", True, "onReceive", "(Context,Intent)", "", "Argument[1].SyntheticField[android.content.Intent.extras].MapValue", "Argument[1]", "taint", "dfc-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", False, "from", "(Context)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.car.app.notification", "CarNotificationManager", False, "notify", "(String,int,NotificationCompat$Builder)", "", "Argument[2]", "pending-intents", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", False, "notify", "(int,NotificationCompat$Builder)", "", "Argument[1]", "pending-intents", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.notification", "CarAppExtender", "CarAppExtender", "(Notification)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", "getActions", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", "getImportance", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", "getSmallIcon", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarAppExtender", "isExtended", "(Notification)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "areNotificationsEnabled", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "cancel", "(String,int)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "cancel", "(int)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "cancelAll", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "createNotificationChannel", "(NotificationChannelCompat)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "createNotificationChannelGroup", "(NotificationChannelGroupCompat)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "createNotificationChannelGroups", "(List)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "createNotificationChannels", "(List)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "deleteNotificationChannel", "(String)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "deleteNotificationChannelGroup", "(String)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "deleteUnlistedNotificationChannels", "(Collection)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getEnabledListenerPackages", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getImportance", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getNotificationChannel", "(String)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getNotificationChannel", "(String,String)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getNotificationChannelGroup", "(String)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getNotificationChannelGroups", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "getNotificationChannels", "()", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "notify", "(String,int,NotificationCompat$Builder)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarNotificationManager", "notify", "(int,NotificationCompat$Builder)", "summary", "df-generated"]
+      - ["androidx.car.app.notification", "CarPendingIntent", "getCarApp", "(Context,int,Intent,int)", "summary", "df-generated"]

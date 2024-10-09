@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.integration.testapp.paging", "DataSourceFactoryTest", "getUsersAsPagedList", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "DataSourceFactoryTest", "getUsersAsPagedList_ViaRawQuery_WithObservable", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "DataSourceFactoryTest", "withRelation", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "emptyPage", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "initial", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "loadAfter", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "loadAll", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "loadCount", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "singleItem", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "LimitOffsetDataSourceTest", "teardown", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp.paging", "PagingSourceTest", "returnsNewInstance", "()", "summary", "df-generated"]

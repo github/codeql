@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugins.ide.eclipse", "EclipsePlugin", True, "EclipsePlugin", "(UniqueProjectNameProvider,IdeArtifactRegistry,JvmPluginServices)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "EclipsePlugin", True, "EclipsePlugin", "(UniqueProjectNameProvider,IdeArtifactRegistry,JvmPluginServices)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "EclipsePlugin", True, "EclipsePlugin", "(UniqueProjectNameProvider,IdeArtifactRegistry,JvmPluginServices)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "EclipseWtpPlugin", True, "EclipseWtpPlugin", "(Instantiator)", "", "Argument[0]", "Argument[this].Field[org.gradle.plugins.ide.eclipse.EclipseWtpPlugin.instantiator]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseClasspath", True, "GenerateEclipseClasspath", "(EclipseClasspath)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseClasspath.classpath]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseClasspath", True, "getClasspath", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseClasspath.classpath]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseClasspath", True, "getXmlTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseClasspath", True, "setClasspath", "(EclipseClasspath)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseClasspath.classpath]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseJdt", True, "GenerateEclipseJdt", "(EclipseJdt)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseJdt.jdt]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseJdt", True, "getJdt", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseJdt.jdt]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseJdt", True, "setJdt", "(EclipseJdt)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseJdt.jdt]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseProject", True, "GenerateEclipseProject", "(EclipseProject)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseProject.projectModel]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseProject", True, "getProjectModel", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseProject.projectModel]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseProject", True, "getXmlTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseProject", True, "setProjectModel", "(EclipseProject)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseProject.projectModel]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpComponent", True, "GenerateEclipseWtpComponent", "(EclipseWtpComponent)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpComponent.component]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpComponent", True, "getComponent", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpComponent.component]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpComponent", True, "getXmlTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpComponent", True, "setComponent", "(EclipseWtpComponent)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpComponent.component]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpFacet", True, "GenerateEclipseWtpFacet", "(EclipseWtpFacet)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpFacet.facet]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpFacet", True, "getFacet", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpFacet.facet]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpFacet", True, "getXmlTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.eclipse", "GenerateEclipseWtpFacet", True, "setFacet", "(EclipseWtpFacet)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.eclipse.GenerateEclipseWtpFacet.facet]", "value", "dfc-generated"]

@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "dir", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "dir", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "dir", "(Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "file", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "file", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "TransformOutputs", True, "file", "(Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "VariantTransformConfigurationException", True, "VariantTransformConfigurationException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "VariantTransformConfigurationException", True, "VariantTransformConfigurationException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.transform", "VariantTransformConfigurationException", True, "VariantTransformConfigurationException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]

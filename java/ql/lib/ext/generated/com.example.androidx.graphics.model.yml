@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", True, "onLoadFinished", "(Loader,Cursor)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onActivityCreated", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onCreateLoader", "(int,Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onCreateOptionsMenu", "(Menu,MenuInflater)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onListItemClick", "(ListView,View,int,long)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onLoaderReset", "(Loader)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteActivity$PaletteMediaStoreListFragment", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteDetailActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["com.example.androidx.graphics", "PaletteDetailActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.datastore.core", "GuavaDataStoreSingleProcessTest", "testCreate", "()", "summary", "df-generated"]
+      - ["androidx.datastore.core", "GuavaDataStoreSingleProcessTest", "testRead", "()", "summary", "df-generated"]
+      - ["androidx.datastore.core", "GuavaDataStoreSingleProcessTest", "testUpdate_withValueChange", "()", "summary", "df-generated"]
+      - ["androidx.datastore.core", "GuavaDataStoreSingleProcessTest", "testUpdate_withoutValueChange", "()", "summary", "df-generated"]

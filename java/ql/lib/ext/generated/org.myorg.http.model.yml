@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.myorg.http", "HttpCallException", True, "HttpCallException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.myorg.http", "HttpCallException", True, "HttpCallException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.myorg.http", "HttpCallException", True, "HttpCallException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.myorg.http", "HttpCallException", True, "HttpCallException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.myorg.http", "HttpResponse", True, "HttpResponse", "(int,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.myorg.http.HttpResponse.message]", "value", "dfc-generated"]
+      - ["org.myorg.http", "HttpResponse", True, "getMessage", "()", "", "Argument[this].SyntheticField[org.myorg.http.HttpResponse.message]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.myorg.http", "DefaultHttpCaller", True, "get", "(String)", "", "Argument[0]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.myorg.http", "DefaultHttpCaller", "get", "(String)", "summary", "df-generated"]
+      - ["org.myorg.http", "HttpResponse", "getCode", "()", "summary", "df-generated"]

@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil$ForegroundOccupiedError", True, "ForegroundOccupiedError", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "assumeCanTestCameraDisconnect", "()", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "assumeCompatibleDevice", "()", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "checkKeyguard", "(Context)", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "clearDeviceUI", "(Instrumentation)", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "launchActivity", "(Instrumentation,Class,Intent)", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "CoreAppTestUtil", "prepareDeviceUI", "(Instrumentation)", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "ForegroundTestActivity", "getViewReadyIdlingResource", "()", "summary", "df-generated"]
+      - ["androidx.camera.viewfinder.utils", "ForegroundTestActivity", "onWindowFocusChanged", "(boolean)", "summary", "df-generated"]

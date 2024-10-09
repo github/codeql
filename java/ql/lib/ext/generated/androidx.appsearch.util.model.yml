@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,GenericDocument)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,GenericDocument)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,String,String)", "", "Argument[2]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "DocumentIdUtil", True, "createQualifiedId", "(String,String,String,String)", "", "Argument[3]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilder", True, "append", "(Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilder", True, "append", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilder", True, "decreaseIndentLevel", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilder", True, "increaseIndentLevel", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.util", "SchemaMigrationUtil", False, "getActiveMigrators", "(Set,Map,int,int)", "", "Argument[1].MapKey", "ReturnValue.MapKey", "value", "dfc-generated"]
+      - ["androidx.appsearch.util", "SchemaMigrationUtil", False, "getActiveMigrators", "(Set,Map,int,int)", "", "Argument[1].MapValue", "ReturnValue.MapValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.util", "BundleUtil", "bundleValueEquals", "(Object,Object)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtil", "deepCopy", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtil", "deepEquals", "(Bundle,Bundle)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtil", "deepHashCode", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepCopy", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_keyMismatch", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_nestedNotEquals", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_self", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_simple", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_sparseArray", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_thorough_equal", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepEquals_thorough_notEqual", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepHashCode_different", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepHashCode_differentKeys", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testDeepHashCode_same", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "BundleUtilTest", "testHashCode_sparseArray", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "ExceptionUtil", "handleException", "(Exception)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "ExceptionUtil", "handleRemoteException", "(RemoteException)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilderTest", "testAppendIndentedObjects", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilderTest", "testAppendIndentedStrings", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilderTest", "testAppendIndentedStrings_doesNotIndentLineBreak", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "IndentingStringBuilderTest", "testDecreaseIndentLevel_throwsException", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "LogUtil", "isPiiTraceEnabled", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "LogUtil", "piiTrace", "(String,String)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "LogUtil", "piiTrace", "(String,String,Object)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "LogUtil", "piiTrace", "(String,String,Object,Object)", "summary", "df-generated"]
+      - ["androidx.appsearch.util", "SchemaMigrationUtil", "checkDeletedAndIncompatibleAfterMigration", "(InternalSetSchemaResponse,Set)", "summary", "df-generated"]

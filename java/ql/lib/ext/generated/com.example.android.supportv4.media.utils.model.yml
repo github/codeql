@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "createBrowseCategoryMediaID", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "createBrowseCategoryMediaID", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "createMediaID", "(String,String[])", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "createMediaID", "(String,String[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "extractBrowseCategoryValueFromMediaID", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "extractMusicIDFromMediaID", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "getHierarchy", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["com.example.android.supportv4.media.utils", "MediaIDHelper", True, "getParentMediaID", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.android.supportv4.media.utils", "BitmapHelper", True, "fetchAndRescaleBitmap", "(String,int,int)", "", "Argument[0]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.supportv4.media.utils", "BitmapHelper", "fetchAndRescaleBitmap", "(String,int,int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "BitmapHelper", "findScaleFactor", "(int,int,InputStream)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "BitmapHelper", "scaleBitmap", "(Bitmap,int,int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "BitmapHelper", "scaleBitmap", "(int,InputStream)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "CarHelper", "isValidCarPackage", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "CarHelper", "setSlotReservationFlags", "(Bundle,boolean,boolean,boolean)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "getMusicIndexOnQueue", "(Iterable,String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "getMusicIndexOnQueue", "(Iterable,long)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "getPlayingQueue", "(String,MusicProvider)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "getPlayingQueueFromSearch", "(String,MusicProvider)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "getRandomQueue", "(MusicProvider)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "QueueHelper", "isIndexPlayable", "(int,List)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.utils", "ResourceHelper", "getThemeColor", "(Context,int,int)", "summary", "df-generated"]

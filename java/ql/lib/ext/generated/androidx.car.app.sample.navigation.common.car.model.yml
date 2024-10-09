@@ -1,0 +1,46 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.car", "FavoritesScreen", False, "FavoritesScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "FavoritesScreen", False, "FavoritesScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "FavoritesScreen", False, "FavoritesScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "MicrophoneRecorder", True, "MicrophoneRecorder", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationCarAppService", False, "createDeepLinkUri", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "NavigationScreen", "(CarContext,Action,NavigationScreen$Listener,SurfaceRenderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "NavigationScreen", "(CarContext,Action,NavigationScreen$Listener,SurfaceRenderer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "NavigationScreen", "(CarContext,Action,NavigationScreen$Listener,SurfaceRenderer)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "NavigationScreen", "(CarContext,Action,NavigationScreen$Listener,SurfaceRenderer)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "updateTrip", "(boolean,boolean,boolean,List,List,TravelEstimate,Distance,boolean,boolean,CarIcon)", "", "Argument[3].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "updateTrip", "(boolean,boolean,boolean,List,List,TravelEstimate,Distance,boolean,boolean,CarIcon)", "", "Argument[4].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "updateTrip", "(boolean,boolean,boolean,List,List,TravelEstimate,Distance,boolean,boolean,CarIcon)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "updateTrip", "(boolean,boolean,boolean,List,List,TravelEstimate,Distance,boolean,boolean,CarIcon)", "", "Argument[6]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationScreen", False, "updateTrip", "(boolean,boolean,boolean,List,List,TravelEstimate,Distance,boolean,boolean,CarIcon)", "", "Argument[9]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "RequestPermissionScreen", True, "RequestPermissionScreen", "(CarContext,RequestPermissionScreen$LocationPermissionCheckCallback)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "RequestPermissionScreen", True, "RequestPermissionScreen", "(CarContext,RequestPermissionScreen$LocationPermissionCheckCallback)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "RoutePreviewScreen", False, "RoutePreviewScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "RoutePreviewScreen", False, "RoutePreviewScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "RoutePreviewScreen", False, "RoutePreviewScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchResultsScreen", False, "SearchResultsScreen", "(CarContext,Action,SurfaceRenderer,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchResultsScreen", False, "SearchResultsScreen", "(CarContext,Action,SurfaceRenderer,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchResultsScreen", False, "SearchResultsScreen", "(CarContext,Action,SurfaceRenderer,String)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchResultsScreen", False, "SearchResultsScreen", "(CarContext,Action,SurfaceRenderer,String)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchScreen", False, "SearchScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchScreen", False, "SearchScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SearchScreen", False, "SearchScreen", "(CarContext,Action,SurfaceRenderer)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", False, "SurfaceRenderer", "(CarContext,Lifecycle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", False, "updateLocationString", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.car", "MicrophoneRecorder", "record", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationCarAppService", "createHostValidator", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "NavigationCarAppService", "onCreateSession", "(SessionInfo)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", "handleRecenter", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", "handleScale", "(float,float,float)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", "onCarConfigurationChanged", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", "onCreate", "(LifecycleOwner)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.car", "SurfaceRenderer", "updateMarkerVisibility", "(boolean,int,int)", "summary", "df-generated"]

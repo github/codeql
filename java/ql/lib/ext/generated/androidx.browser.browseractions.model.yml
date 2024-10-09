@@ -1,0 +1,51 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mTitle]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mAction]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent,Uri)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mTitle]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent,Uri)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mAction]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent,Uri)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mIconUri]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent,int)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mTitle]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "BrowserActionItem", "(String,PendingIntent,int)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mAction]", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "getAction", "()", "", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mAction]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "getIconUri", "()", "", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mIconUri]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionItem", True, "getTitle", "()", "", "Argument[this].SyntheticField[androidx.browser.browseractions.BrowserActionItem.mTitle]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "Builder", "(Context,Uri)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "Builder", "(Context,Uri)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "setCustomItems", "(ArrayList)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "setCustomItems", "(BrowserActionItem[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "setOnItemSelectedAction", "(PendingIntent)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", False, "setUrlType", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", True, "getIntent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", True, "parseBrowserActionItems", "(ArrayList)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", True, "launchIntent", "(Context,Intent)", "", "Argument[1]", "intent-redirection", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserServiceFileProvider", False, "saveBitmap", "(Context,Bitmap,String,int)", "", "Argument[2]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.browser.browseractions", "BrowserActionItem", "getIconId", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsFallbackMenuUiTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsFallbackMenuUiTest", "testBrowserActionsFallbackDialogOpened", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsFallbackMenuUiTest", "testBrowserActionsFallbackMenuShownCorrectly", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsFallbackMenuView", "BrowserActionsFallbackMenuView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent$Builder", "build", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "getBrowserActionsIntentHandlers", "(Context)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "getCreatorPackageName", "(Intent)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "getUntrustedCreatorPackageName", "(Intent)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "launchIntent", "(Context,Intent)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "openBrowserAction", "(Context,Uri)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntent", "openBrowserAction", "(Context,Uri,int,ArrayList,PendingIntent)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntentTest", "testCustomItem", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserActionsIntentTest", "testDefaultBrowserActionsIntent", "()", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserServiceFileProvider", "grantReadPermission", "(Intent,List,Context)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserServiceFileProvider", "loadBitmap", "(ContentResolver,Uri)", "summary", "df-generated"]
+      - ["androidx.browser.browseractions", "BrowserServiceFileProvider", "saveBitmap", "(Context,Bitmap,String,int)", "summary", "df-generated"]

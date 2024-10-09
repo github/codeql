@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.playservicesstorage.converter", "AppSearchResultToGmsConverter", "gmsAppSearchBatchResultToJetpack", "(<any>,<any>)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "AppSearchResultToGmsConverter", "gmsAppSearchResultToFuture", "(<any>,ResolvableFuture)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "AppSearchResultToGmsConverter", "gmsAppSearchResultToFuture", "(<any>,ResolvableFuture,<any>)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "AppSearchResultToGmsConverter", "gmsAppSearchResultToJetpack", "(<any>,<any>)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "GenericDocumentToGmsConverter", "toGmsGenericDocument", "(GenericDocument)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "GenericDocumentToGmsConverter", "toJetpackGenericDocument", "(GenericDocument)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "GetSchemaResponseToGmsConverter", "toJetpackGetSchemaResponse", "(GetSchemaResponse)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "JoinSpecToGmsConverter", "toGmsJoinSpec", "(JoinSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "RequestToGmsConverter", "toGmsGetByDocumentIdRequest", "(GetByDocumentIdRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "RequestToGmsConverter", "toGmsPutDocumentsRequest", "(PutDocumentsRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "RequestToGmsConverter", "toGmsRemoveByDocumentIdRequest", "(RemoveByDocumentIdRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "RequestToGmsConverter", "toGmsReportUsageRequest", "(ReportUsageRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "ResponseToGmsConverter", "toJetpackStorageInfo", "(StorageInfo)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SchemaToGmsConverter", "toGmsSchema", "(AppSearchSchema)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SchemaToGmsConverter", "toJetpackSchema", "(AppSearchSchema)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SearchResultToGmsConverter", "toJetpackSearchResult", "(SearchResult)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SearchResultToGmsConverter", "toJetpackSearchResultList", "(List)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SearchSpecToGmsConverter", "toGmsSearchSpec", "(SearchSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SearchSuggestionResultToGmsConverter", "toGmsSearchSuggestionResults", "(List)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SearchSuggestionSpecToGmsConverter", "toGmsSearchSuggestionSpec", "(SearchSuggestionSpec)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SetSchemaRequestToGmsConverter", "toGmsSetSchemaRequest", "(SetSchemaRequest)", "summary", "df-generated"]
+      - ["androidx.appsearch.playservicesstorage.converter", "SetSchemaRequestToGmsConverter", "toJetpackSetSchemaResponse", "(SetSchemaResponse)", "summary", "df-generated"]

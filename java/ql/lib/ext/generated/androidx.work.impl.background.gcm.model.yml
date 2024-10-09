@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.work.impl.background.gcm", "GcmTaskConverter", True, "GcmTaskConverter", "(Clock)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmDispatcher", True, "WorkManagerGcmDispatcher", "(WorkManagerImpl,WorkTimer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmDispatcher", True, "WorkManagerGcmDispatcher", "(WorkManagerImpl,WorkTimer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.impl.background.gcm", "GcmScheduler", "GcmScheduler", "(Context,Clock)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "GcmScheduler", "cancel", "(String)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "GcmScheduler", "hasLimitedSchedulingSlots", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "GcmScheduler", "schedule", "(WorkSpec[])", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "GcmTaskConverter", "now", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmDispatcher", "onInitializeTasks", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmDispatcher", "onRunTask", "(TaskParams)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmService", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmService", "onInitializeTasks", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.gcm", "WorkManagerGcmService", "onRunTask", "(TaskParams)", "summary", "df-generated"]

@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.acme", "Family", True, "Family", "(Person[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[com.acme.Family.members].Element", "value", "dfc-generated"]
+      - ["com.acme", "Family", True, "getMembers", "()", "", "Argument[this].SyntheticField[com.acme.Family.members]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.acme", "Person", True, "Person", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[com.acme.Person.firstName]", "value", "dfc-generated"]
+      - ["com.acme", "Person", True, "Person", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[com.acme.Person.lastName]", "value", "dfc-generated"]
+      - ["com.acme", "Person", True, "getFirstName", "()", "", "Argument[this].SyntheticField[com.acme.Person.firstName]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.acme", "Person", True, "getLastName", "()", "", "Argument[this].SyntheticField[com.acme.Person.lastName]", "ReturnValue", "value", "dfc-generated"]
+      - ["com.acme", "Simpsons", True, "of", "(Pair)", "", "Argument[0].Field[org.apache.commons.lang3.tuple.ImmutablePair.left]", "ReturnValue.SyntheticField[com.acme.Person.firstName]", "value", "dfc-generated"]
+      - ["com.acme", "Simpsons", True, "of", "(Pair)", "", "Argument[0].Field[org.apache.commons.lang3.tuple.ImmutablePair.right]", "ReturnValue.SyntheticField[com.acme.Person.lastName]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.acme", "DefaultHeatSensor", "getTemperature", "()", "summary", "df-generated"]
+      - ["com.acme", "Family", "contains", "(Person)", "summary", "df-generated"]
+      - ["com.acme", "Family", "size", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "bart", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "homer", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "lisa", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "maggie", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "marge", "()", "summary", "df-generated"]
+      - ["com.acme", "Simpsons", "named", "(String)", "summary", "df-generated"]

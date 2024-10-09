@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "ClassLinkMetaData", "(ClassMetaData)", "", "Argument[0].SyntheticField[gradlebuild.docs.dsl.source.model.ClassMetaData.className]", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.className]", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "ClassLinkMetaData", "(ClassMetaData)", "", "Argument[0].SyntheticField[gradlebuild.docs.dsl.source.model.ClassMetaData.className]", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.simpleName]", "taint", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "ClassLinkMetaData", "(ClassMetaData)", "", "Argument[0].SyntheticField[gradlebuild.docs.dsl.source.model.ClassMetaData.packageName]", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.packageName]", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "addBlockMethod", "(MethodMetaData)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "addEnumConstant", "(EnumConstantMetaData,LinkMetaData$Style)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "addMethod", "(MethodMetaData,LinkMetaData$Style)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "addPropertyAccessorMethod", "(String,MethodMetaData)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "getClassLink", "()", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.simpleName]", "ReturnValue.SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.displayName]", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "getMethod", "(String)", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.className]", "ReturnValue.SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.urlFragment]", "taint", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "getMethod", "(String)", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.simpleName]", "ReturnValue.SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.displayName]", "taint", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", True, "getPackageName", "()", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.ClassLinkMetaData.packageName]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "LinkMetaData", True, "LinkMetaData", "(LinkMetaData$Style,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.displayName]", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "LinkMetaData", True, "LinkMetaData", "(LinkMetaData$Style,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.urlFragment]", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "LinkMetaData", True, "getDisplayName", "()", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.displayName]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.docs.dsl.links", "LinkMetaData", True, "getUrlFragment", "()", "", "Argument[this].SyntheticField[gradlebuild.docs.dsl.links.LinkMetaData.urlFragment]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", "attach", "(ClassMetaDataRepository)", "summary", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", "getStyle", "()", "summary", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "ClassLinkMetaData", "setStyle", "(LinkMetaData$Style)", "summary", "df-generated"]
+      - ["gradlebuild.docs.dsl.links", "LinkMetaData", "getStyle", "()", "summary", "df-generated"]

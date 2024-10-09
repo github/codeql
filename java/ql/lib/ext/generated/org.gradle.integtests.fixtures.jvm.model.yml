@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "JvmSourceFile", "(String,String,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "JvmSourceFile", "(String,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.name]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "JvmSourceFile", "(String,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.content]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getClassFile", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.name]", "ReturnValue.SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.name]", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getClassFile", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "ReturnValue.SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getContent", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.content]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getFullPath", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getFullPath", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getName", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "getPath", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "withPath", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "withPath", "(String)", "", "Argument[this].SyntheticField[org.gradle.integtests.fixtures.jvm.JvmSourceFile.path]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "writeToDir", "(TestFile)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "writeToDir", "(TestFile)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", True, "writeToFile", "(TestFile)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.fixtures.jvm", "JvmSourceFile", "writeToFile", "(TestFile)", "summary", "df-generated"]
+      - ["org.gradle.integtests.fixtures.jvm", "TestJavaClassUtil", "getClassVersion", "(JavaVersion)", "summary", "df-generated"]

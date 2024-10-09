@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", True, "RunNotifierWrapper", "(RunNotifier)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.docs.samples", "IntegrationTestSamplesRunnerTest", "canAddReproductionInstructionsUponFailure", "()", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "PartitioningSamplesRunner$SamplesBucket", "SamplesBucket", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "PartitioningSamplesRunner$SnippetsBucket1", "SnippetsBucket1", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "PartitioningSamplesRunner$SnippetsBucket2", "SnippetsBucket2", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "PartitioningSamplesRunner$SnippetsBucket3", "SnippetsBucket3", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "addFirstListener", "(RunListener)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "addListener", "(RunListener)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestAssumptionFailed", "(Failure)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestFailure", "(Failure)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestFinished", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestIgnored", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestRunFinished", "(Result)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestRunStarted", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestStarted", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestSuiteFinished", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "fireTestSuiteStarted", "(Description)", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "pleaseStop", "()", "summary", "df-generated"]
+      - ["org.gradle.docs.samples", "RunNotifierWrapper", "removeListener", "(RunListener)", "summary", "df-generated"]

@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.compiler.annotationwrapper", "BooleanPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mBooleanPrimitiveType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "BytesPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mBytePrimitiveArrayType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", True, "getConfigClassName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", True, "getGenericDocArrayGetterName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DocumentPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mGenericDocumentType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DoublePropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mDoublePrimitiveType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "EmbeddingPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mEmbeddingType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "LongPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mLongPrimitiveType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "MetadataPropertyAnnotation", False, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mIntPrimitiveType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "MetadataPropertyAnnotation", False, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mLongPrimitiveType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "MetadataPropertyAnnotation", False, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mStringType]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "PropertyAnnotation", True, "getClassName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "PropertyAnnotation", True, "getGenericDocGetterName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "PropertyAnnotation", True, "getGenericDocSetterName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", True, "getUnderlyingTypeWithinGenericDoc", "(IntrospectionHelper)", "", "Argument[0].Field[androidx.appsearch.compiler.IntrospectionHelper.mStringType]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.compiler.annotationwrapper", "BooleanPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "BytesPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", "getName", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", "getPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", "isRequired", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DataPropertyAnnotation", "tryParse", "(AnnotationMirror,String,IntrospectionHelper)", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DocumentPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DocumentPropertyAnnotation", "getIndexableNestedPropertiesList", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DocumentPropertyAnnotation", "shouldIndexNestedProperties", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DocumentPropertyAnnotation", "shouldInheritIndexableNestedPropertiesFromSuperClass", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "DoublePropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "EmbeddingPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "EmbeddingPropertyAnnotation", "getIndexingType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "LongPropertyAnnotation", "getCustomSerializer", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "LongPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "LongPropertyAnnotation", "getIndexingType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "MetadataPropertyAnnotation", "getPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "MetadataPropertyAnnotation", "tryParse", "(AnnotationMirror)", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "SerializerClass", "create", "(TypeElement,SerializerClass$Kind)", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "SerializerClass", "getCustomType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "SerializerClass", "getDefaultConstructor", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "SerializerClass", "getElement", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "SerializerClass", "getKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", "getCustomSerializer", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", "getDataPropertyKind", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", "getIndexingType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", "getJoinableValueType", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.compiler.annotationwrapper", "StringPropertyAnnotation", "getTokenizerType", "()", "summary", "df-generated"]
