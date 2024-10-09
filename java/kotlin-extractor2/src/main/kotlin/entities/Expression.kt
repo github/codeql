@@ -279,6 +279,11 @@ private fun KotlinFileExtractor.extractExpression(
                 extractExpressionExpr(e.left, callable, id, 1, exprParent.enclosingStmt)
             }
 
+            is KtProperty -> {
+                val stmtParent = parent.stmt(e, callable)
+                extractVariable(e, callable, stmtParent.parent, stmtParent.idx)
+            }
+
             /*
             OLD: KE1
                             is IrDelegatingConstructorCall -> {
@@ -2340,4 +2345,73 @@ private fun KotlinFileExtractor.extractBreakContinue(e: KtExpressionWithLabel, i
             tw.writeNamestrings(label, "", id)
         }
     }
+}
+
+/*
+OLD KE1:
+private fun KotlinFileExtractor.getVariableLocationProvider(v: KtProperty): IrElement {
+    val init = v.initializer
+    if (v.startOffset < 0 && init != null) {
+        // IR_TEMPORARY_VARIABLEs have no proper location
+        return init
+    }
+
+    return v
+}
+*/
+
+context(KaSession)
+private fun KotlinFileExtractor.extractVariable(
+    v: KtProperty,
+    callable: Label<out DbCallable>,
+    parent: Label<out DbStmtparent>,
+    idx: Int
+) {
+    with("variable", v) {
+        val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
+        val locId = tw.getLocation(v) // OLD KE1: getVariableLocationProvider(v))
+        tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
+        tw.writeHasLocation(stmtId, locId)
+        extractVariableExpr(v, callable, stmtId, 1, stmtId)
+    }
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractVariableExpr(
+    v: KtProperty,
+    callable: Label<out DbCallable>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    enclosingStmt: Label<out DbStmt>,
+    extractInitializer: Boolean = true
+) {
+    with("variable expr", v) {
+        val varId = useVariable(v)
+        val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
+        val locId = tw.getLocation(v) // OLD KE1: getVariableLocationProvider(v))
+        val type = useType(v.returnType)
+        tw.writeLocalvars(varId, v.name!!, type.javaResult.id, exprId)
+        tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
+        tw.writeHasLocation(varId, locId)
+        tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(exprId, type.kotlinResult.id)
+        extractExprContext(exprId, locId, callable, enclosingStmt)
+        val i = v.initializer
+        if (i != null && extractInitializer) {
+            extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
+        }
+        if (!v.isVar) {
+            addModifiers(varId, "final")
+        }
+        /*
+        OLD KE1:
+        if (v.isLateinit) {
+            addModifiers(varId, "lateinit")
+        }
+        */
+    }
+}
+
+private fun KotlinFileExtractor.useVariable(v: KtProperty): Label<out DbLocalvar> {
+    return tw.getVariableLabelFor<DbLocalvar>(v)
 }
