@@ -4,6 +4,7 @@ import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 import org.jetbrains.kotlin.psi.*
 
@@ -223,6 +224,61 @@ private fun KotlinFileExtractor.extractExpression(
                 // We're handling it in the children with the below
                 extractExpression(e.baseExpression!!, callable, parent)
             }
+
+            is KtIsExpression -> {
+
+                val locId = tw.getLocation(e)
+                val type = useType(e.expressionType!!)
+                val exprParent = parent.expr(e, callable)
+
+                val id: Label<out DbExpr>
+                if (e.isNegated) {
+                    id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
+                    tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                } else {
+                    id = tw.getFreshIdLabel<DbInstanceofexpr>()
+                    tw.writeExprs_instanceofexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                }
+
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                extractExpressionExpr(e.leftHandSide, callable, id, 0, exprParent.enclosingStmt)
+
+                // TODO: KE1
+                //extractTypeAccessRecursive(e.typeReference, locId, id, 1, callable, exprParent.enclosingStmt)
+            }
+
+            is KtBinaryExpressionWithTypeRHS -> {
+                val locId = tw.getLocation(e)
+                val type = useType(e.expressionType!!)
+                val exprParent = parent.expr(e, callable)
+
+                val id: Label<out DbExpr>
+                val op = (e.operationReference as? KtOperationReferenceExpression)?.operationSignTokenType
+
+                when (op) {
+                    KtTokens.AS_KEYWORD -> {
+                        id = tw.getFreshIdLabel<DbCastexpr>()
+                        tw.writeExprs_castexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                    }
+
+                    KtTokens.AS_SAFE -> {
+                        id = tw.getFreshIdLabel<DbSafecastexpr>()
+                        tw.writeExprs_safecastexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                    }
+
+                    else -> {
+                        TODO()
+                    }
+                }
+
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                // TODO: KE1
+                //extractTypeAccessRecursive(e.typeOperand, locId, id, 0, callable, exprParent.enclosingStmt)
+                extractExpressionExpr(e.left, callable, id, 1, exprParent.enclosingStmt)
+            }
+
             /*
             OLD: KE1
                             is IrDelegatingConstructorCall -> {
@@ -1947,16 +2003,6 @@ private fun KotlinFileExtractor.extractConstant(
         ) {
             with("type operator call", e) {
                 when (e.operator) {
-                    IrTypeOperator.CAST -> {
-                        val id = tw.getFreshIdLabel<DbCastexpr>()
-                        val locId = tw.getLocation(e)
-                        val type = useType(e.type)
-                        tw.writeExprs_castexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, callable, enclosingStmt)
-                        extractTypeAccessRecursive(e.typeOperand, locId, id, 0, callable, enclosingStmt)
-                        extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-                    }
                     IrTypeOperator.IMPLICIT_CAST -> {
                         val id = tw.getFreshIdLabel<DbImplicitcastexpr>()
                         val locId = tw.getLocation(e)
@@ -1986,36 +2032,6 @@ private fun KotlinFileExtractor.extractConstant(
                         extractExprContext(id, locId, callable, enclosingStmt)
                         extractTypeAccessRecursive(e.typeOperand, locId, id, 0, callable, enclosingStmt)
                         extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-                    }
-                    IrTypeOperator.SAFE_CAST -> {
-                        val id = tw.getFreshIdLabel<DbSafecastexpr>()
-                        val locId = tw.getLocation(e)
-                        val type = useType(e.type)
-                        tw.writeExprs_safecastexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, callable, enclosingStmt)
-                        extractTypeAccessRecursive(e.typeOperand, locId, id, 0, callable, enclosingStmt)
-                        extractExpressionExpr(e.argument, callable, id, 1, enclosingStmt)
-                    }
-                    IrTypeOperator.INSTANCEOF -> {
-                        val id = tw.getFreshIdLabel<DbInstanceofexpr>()
-                        val locId = tw.getLocation(e)
-                        val type = useType(e.type)
-                        tw.writeExprs_instanceofexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, callable, enclosingStmt)
-                        extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                        extractTypeAccessRecursive(e.typeOperand, locId, id, 1, callable, enclosingStmt)
-                    }
-                    IrTypeOperator.NOT_INSTANCEOF -> {
-                        val id = tw.getFreshIdLabel<DbNotinstanceofexpr>()
-                        val locId = tw.getLocation(e)
-                        val type = useType(e.type)
-                        tw.writeExprs_notinstanceofexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, callable, enclosingStmt)
-                        extractExpressionExpr(e.argument, callable, id, 0, enclosingStmt)
-                        extractTypeAccessRecursive(e.typeOperand, locId, id, 1, callable, enclosingStmt)
                     }
                     IrTypeOperator.SAM_CONVERSION -> {
 
