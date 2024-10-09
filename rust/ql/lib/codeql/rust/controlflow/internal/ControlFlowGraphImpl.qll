@@ -296,8 +296,14 @@ class ItemTree extends LeafTree, Item { }
 // `LetExpr` is a pre-order tree such that the pattern itself ends up
 // dominating successors in the graph in the same way that patterns do in
 // `match` expressions.
-class LetExprTree extends StandardPreOrderTree instanceof LetExpr {
-  override AstNode getChildNode(int i) { i = 0 and result = super.getPat() }
+class LetExprTree extends StandardPreOrderTree, LetExpr {
+  override AstNode getChildNode(int i) {
+    i = 0 and
+    result = this.getExpr()
+    or
+    i = 1 and
+    result = this.getPat()
+  }
 }
 
 class LetStmtTree extends PreOrderTree, LetStmt {
@@ -479,10 +485,12 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   }
 }
 
-class MethodCallExprTree extends StandardPostOrderTree instanceof MethodCallExpr {
+class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
   override AstNode getChildNode(int i) {
-    result = super.getReceiver() and
-    result = super.getArgList().getArg(i + 1)
+    i = 0 and
+    result = this.getReceiver()
+    or
+    result = this.getArgList().getArg(i + 1)
   }
 }
 

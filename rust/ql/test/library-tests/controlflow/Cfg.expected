@@ -157,10 +157,12 @@ edges
 | test.rs:80:24:80:28 | RangeExpr | test.rs:80:13:80:20 | iter |  |
 | test.rs:80:27:80:28 | 10 | test.rs:80:24:80:28 | RangeExpr |  |
 | test.rs:81:9:85:9 | WhileExpr | test.rs:79:25:86:5 | BlockExpr |  |
-| test.rs:81:15:81:39 | LetExpr | test.rs:81:19:81:25 | TupleStructPat |  |
+| test.rs:81:15:81:39 | LetExpr | test.rs:81:29:81:32 | iter |  |
 | test.rs:81:19:81:25 | TupleStructPat | test.rs:81:9:85:9 | WhileExpr | no-match |
 | test.rs:81:19:81:25 | TupleStructPat | test.rs:81:24:81:24 | x | match |
 | test.rs:81:24:81:24 | x | test.rs:82:17:82:17 | PathExpr | match |
+| test.rs:81:29:81:32 | iter | test.rs:81:29:81:39 | MethodCallExpr |  |
+| test.rs:81:29:81:39 | MethodCallExpr | test.rs:81:19:81:25 | TupleStructPat |  |
 | test.rs:81:41:85:9 | BlockExpr | test.rs:81:15:81:39 | LetExpr |  |
 | test.rs:82:13:84:13 | IfExpr | test.rs:81:41:85:9 | BlockExpr |  |
 | test.rs:82:17:82:17 | PathExpr | test.rs:82:21:82:21 | 5 |  |
@@ -233,10 +235,11 @@ edges
 | test.rs:113:25:113:38 | Param | test.rs:114:12:114:26 | LetExpr |  |
 | test.rs:113:48:119:5 | BlockExpr | test.rs:113:5:119:5 | exit test_if_let_else (normal) |  |
 | test.rs:114:9:118:9 | IfExpr | test.rs:113:48:119:5 | BlockExpr |  |
-| test.rs:114:12:114:26 | LetExpr | test.rs:114:16:114:22 | TupleStructPat |  |
+| test.rs:114:12:114:26 | LetExpr | test.rs:114:26:114:26 | a |  |
 | test.rs:114:16:114:22 | TupleStructPat | test.rs:114:21:114:21 | n | match |
 | test.rs:114:16:114:22 | TupleStructPat | test.rs:117:13:117:13 | 0 | no-match |
 | test.rs:114:21:114:21 | n | test.rs:115:13:115:13 | n | match |
+| test.rs:114:26:114:26 | a | test.rs:114:16:114:22 | TupleStructPat |  |
 | test.rs:114:28:116:9 | BlockExpr | test.rs:114:9:118:9 | IfExpr |  |
 | test.rs:115:13:115:13 | n | test.rs:114:28:116:9 | BlockExpr |  |
 | test.rs:116:16:118:9 | BlockExpr | test.rs:114:9:118:9 | IfExpr |  |
@@ -248,10 +251,11 @@ edges
 | test.rs:121:43:126:5 | BlockExpr | test.rs:121:5:126:5 | exit test_if_let (normal) |  |
 | test.rs:122:9:124:9 | ExprStmt | test.rs:122:12:122:26 | LetExpr |  |
 | test.rs:122:9:124:9 | IfExpr | test.rs:125:9:125:9 | 0 |  |
-| test.rs:122:12:122:26 | LetExpr | test.rs:122:16:122:22 | TupleStructPat |  |
+| test.rs:122:12:122:26 | LetExpr | test.rs:122:26:122:26 | a |  |
 | test.rs:122:16:122:22 | TupleStructPat | test.rs:122:9:124:9 | IfExpr | no-match |
 | test.rs:122:16:122:22 | TupleStructPat | test.rs:122:21:122:21 | n | match |
 | test.rs:122:21:122:21 | n | test.rs:123:13:123:13 | n | match |
+| test.rs:122:26:122:26 | a | test.rs:122:16:122:22 | TupleStructPat |  |
 | test.rs:122:28:124:9 | BlockExpr | test.rs:122:9:124:9 | IfExpr |  |
 | test.rs:123:13:123:13 | n | test.rs:122:28:124:9 | BlockExpr |  |
 | test.rs:125:9:125:9 | 0 | test.rs:121:43:126:5 | BlockExpr |  |
