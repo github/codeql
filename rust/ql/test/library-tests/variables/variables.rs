@@ -354,6 +354,24 @@ fn mutate_arg() {
     print_i64(x); // $ read_access=x
 }
 
+fn alias() {
+    let mut x = 1; // x
+    let y = // y
+        &mut x; // $ access=x
+    *y = 2; // $ read_access=y
+    print_i64(x); // $ read_access=x
+}
+
+fn capture() {
+    let mut x = 10; // x
+    let mut cap = || {
+        print_i64(x); // $ read_access=x
+        x += 1; // $ access=x
+    };
+    cap(); // $ read_access=cap
+    print_i64(x); // $ read_access=x
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
@@ -380,4 +398,6 @@ fn main() {
     add_assign();
     mutate();
     mutate_arg();
+    alias();
+    capture();
 }
