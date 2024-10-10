@@ -112,6 +112,15 @@ module Fmt {
     Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
   }
 
+  private class ScannerSource extends SourceNode {
+    ScannerSource() {
+      // All of the arguments which are sources are varargs.
+      this.asExpr() = any(Scanner s).getACall().getAnImplicitVarargsArgument().asExpr()
+    }
+
+    override string getThreatModel() { result = "stdin" }
+  }
+
   /**
    * The `Fscan` function or one of its variants,
    * all of which read from a specified `io.Reader`.
