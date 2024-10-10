@@ -17,17 +17,10 @@ import codeql.rust.elements.internal.generated.ParentChild
  */
 external string selectedSourceFile();
 
-class PrintAstConfigurationOverride extends PrintAstConfiguration {
-  /**
-   * Holds if the location matches the selected file in the VS Code extension and
-   * the element is `e`.
-   */
-  override predicate shouldPrint(Locatable e) {
-    super.shouldPrint(e) and
-    (
-      e.getFile() = getFileBySourceArchiveName(selectedSourceFile())
-      or
-      exists(Locatable parent | this.shouldPrint(parent) and parent = getImmediateParent(e))
-    )
-  }
+predicate shouldPrint(Locatable e) {
+  e.getFile() = getFileBySourceArchiveName(selectedSourceFile())
+  or
+  exists(Locatable parent | shouldPrint(parent) and parent = getImmediateParent(e))
 }
+
+import PrintAst<shouldPrint/1>

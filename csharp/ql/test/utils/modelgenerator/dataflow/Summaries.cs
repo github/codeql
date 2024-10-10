@@ -639,7 +639,7 @@ public class Inheritance
         public override string Prop { get { return tainted; } }
     }
 
-    public abstract class BaseContent 
+    public abstract class BaseContent
     {
         public abstract object GetValue();
 
@@ -959,5 +959,32 @@ public class Fanout
     public string ConcatValueOnBase2(string other, Base2 b2)
     {
         return other + b2.GetValue();
+    }
+}
+
+public class AvoidDuplicateLifted
+{
+    public class A
+    {
+        public object Prop { get; set; }
+
+        // contentbased-summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this].Property[Models.AvoidDuplicateLifted+A.Prop];ReturnValue;value;dfc-generated
+        // summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        public virtual object GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    public class B : A
+    {
+        private object field;
+
+        // No content based summary as field is a dead synthetic field.
+        // summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        public override object GetValue()
+        {
+            return field;
+        }
     }
 }

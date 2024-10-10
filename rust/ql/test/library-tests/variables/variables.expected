@@ -72,6 +72,10 @@ variable
 | variables.rs:339:9:339:13 | ref_i |
 | variables.rs:345:17:345:17 | x |
 | variables.rs:352:13:352:13 | x |
+| variables.rs:358:13:358:13 | x |
+| variables.rs:359:9:359:9 | y |
+| variables.rs:366:13:366:13 | x |
+| variables.rs:367:13:367:15 | cap |
 variableAccess
 | variables.rs:13:15:13:16 | x1 | variables.rs:12:9:12:10 | x1 |
 | variables.rs:18:15:18:16 | x2 | variables.rs:17:13:17:14 | x2 |
@@ -167,6 +171,13 @@ variableAccess
 | variables.rs:348:10:348:10 | x | variables.rs:345:17:345:17 | x |
 | variables.rs:353:23:353:23 | x | variables.rs:352:13:352:13 | x |
 | variables.rs:354:15:354:15 | x | variables.rs:352:13:352:13 | x |
+| variables.rs:360:14:360:14 | x | variables.rs:358:13:358:13 | x |
+| variables.rs:361:6:361:6 | y | variables.rs:359:9:359:9 | y |
+| variables.rs:362:15:362:15 | x | variables.rs:358:13:358:13 | x |
+| variables.rs:368:19:368:19 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:369:9:369:9 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
+| variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
 variableWriteAccess
 | variables.rs:19:5:19:6 | x2 | variables.rs:17:13:17:14 | x2 |
 | variables.rs:277:9:277:10 | c2 | variables.rs:270:13:270:14 | c2 |
@@ -259,6 +270,11 @@ variableReadAccess
 | variables.rs:347:10:347:10 | x | variables.rs:345:17:345:17 | x |
 | variables.rs:348:10:348:10 | x | variables.rs:345:17:345:17 | x |
 | variables.rs:354:15:354:15 | x | variables.rs:352:13:352:13 | x |
+| variables.rs:361:6:361:6 | y | variables.rs:359:9:359:9 | y |
+| variables.rs:362:15:362:15 | x | variables.rs:358:13:358:13 | x |
+| variables.rs:368:19:368:19 | x | variables.rs:366:13:366:13 | x |
+| variables.rs:371:5:371:7 | cap | variables.rs:367:13:367:15 | cap |
+| variables.rs:372:15:372:15 | x | variables.rs:366:13:366:13 | x |
 variableInitializer
 | variables.rs:12:9:12:10 | x1 | variables.rs:12:14:12:16 | "a" |
 | variables.rs:17:13:17:14 | x2 | variables.rs:17:18:17:18 | 4 |
@@ -288,3 +304,12 @@ variableInitializer
 | variables.rs:338:13:338:13 | i | variables.rs:338:17:338:17 | 1 |
 | variables.rs:339:9:339:13 | ref_i | variables.rs:340:9:340:14 | RefExpr |
 | variables.rs:352:13:352:13 | x | variables.rs:352:17:352:17 | 2 |
+| variables.rs:358:13:358:13 | x | variables.rs:358:17:358:17 | 1 |
+| variables.rs:359:9:359:9 | y | variables.rs:360:9:360:14 | RefExpr |
+| variables.rs:366:13:366:13 | x | variables.rs:366:17:366:18 | 10 |
+| variables.rs:367:13:367:15 | cap | variables.rs:367:19:370:5 | ClosureExpr |
+capturedVariable
+| variables.rs:366:13:366:13 | x |
+capturedAccess
+| variables.rs:368:19:368:19 | x |
+| variables.rs:369:9:369:9 | x |
