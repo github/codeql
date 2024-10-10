@@ -1,3 +1,4 @@
+extractionWarning
 | does_not_compile.rs:2:6:2:5 | expected SEMICOLON |
 | does_not_compile.rs:2:9:2:8 | expected SEMICOLON |
 | does_not_compile.rs:2:13:2:12 | expected SEMICOLON |
