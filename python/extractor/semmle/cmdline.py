@@ -102,8 +102,8 @@ def make_parser():
     config_options.add_option("--colorize", dest="colorize", default=False, action="store_true",
                       help = """Colorize the logging output.""")
 
-    config_options.add_option("--dont-extract-stdlib", dest="extract_stdlib", default=True, action="store_false",
-        help="Do not extract the standard library.")
+    config_options.add_option("--extract-stdlib", dest="extract_stdlib", default=False, action="store_true",
+        help="Extract the standard library.")
 
     parser.add_option_group(config_options)
 
@@ -224,8 +224,8 @@ def parse(command_line):
         max_import_depth = float('inf')
     options.max_import_depth = max_import_depth
 
-    if 'CODEQL_EXTRACTOR_PYTHON_DONT_EXTRACT_STDLIB' in os.environ:
-        options.extract_stdlib = False
+    if 'CODEQL_EXTRACTOR_PYTHON_EXTRACT_STDLIB' in os.environ:
+        options.extract_stdlib = True
 
     options.prune = True
     return options, args
