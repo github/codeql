@@ -4,6 +4,18 @@ edges
 | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | BarrierFlow.cs:10:13:10:13 | access to local variable x : Object | provenance |  |
 | BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | BarrierFlow.cs:21:18:21:18 | access to local variable x | provenance |  |
 | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | provenance |  |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | BarrierFlow.cs:94:18:94:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | BarrierFlow.cs:103:18:103:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | BarrierFlow.cs:112:18:112:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | BarrierFlow.cs:117:18:117:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | BarrierFlow.cs:126:18:126:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | provenance |  |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | BarrierFlow.cs:144:18:144:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | BarrierFlow.cs:149:18:149:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | BarrierFlow.cs:158:18:158:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | BarrierFlow.cs:167:18:167:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | BarrierFlow.cs:176:18:176:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | provenance |  |
 nodes
 | BarrierFlow.cs:10:13:10:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
 | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | semmle.label | call to method Source : Object |
@@ -11,8 +23,32 @@ nodes
 | BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
 | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | semmle.label | call to method Source : Object |
 | BarrierFlow.cs:21:18:21:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:86:13:86:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
+| BarrierFlow.cs:86:17:86:25 | call to method Source : Object | semmle.label | call to method Source : Object |
+| BarrierFlow.cs:94:18:94:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:103:18:103:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:112:18:112:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:117:18:117:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:126:18:126:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:136:13:136:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
+| BarrierFlow.cs:136:17:136:25 | call to method Source : Object | semmle.label | call to method Source : Object |
+| BarrierFlow.cs:144:18:144:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:149:18:149:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:158:18:158:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:167:18:167:18 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:176:18:176:18 | access to local variable x | semmle.label | access to local variable x |
 subpaths
 testFailures
 #select
 | BarrierFlow.cs:12:14:12:14 | access to local variable x | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | BarrierFlow.cs:12:14:12:14 | access to local variable x | $@ | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | call to method Source : Object |
 | BarrierFlow.cs:21:18:21:18 | access to local variable x | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | BarrierFlow.cs:21:18:21:18 | access to local variable x | $@ | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:94:18:94:18 | access to local variable x | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:94:18:94:18 | access to local variable x | $@ | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:103:18:103:18 | access to local variable x | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:103:18:103:18 | access to local variable x | $@ | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:112:18:112:18 | access to local variable x | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:112:18:112:18 | access to local variable x | $@ | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:117:18:117:18 | access to local variable x | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:117:18:117:18 | access to local variable x | $@ | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:126:18:126:18 | access to local variable x | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | BarrierFlow.cs:126:18:126:18 | access to local variable x | $@ | BarrierFlow.cs:86:17:86:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:144:18:144:18 | access to local variable x | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:144:18:144:18 | access to local variable x | $@ | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:149:18:149:18 | access to local variable x | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:149:18:149:18 | access to local variable x | $@ | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:158:18:158:18 | access to local variable x | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:158:18:158:18 | access to local variable x | $@ | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:167:18:167:18 | access to local variable x | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:167:18:167:18 | access to local variable x | $@ | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:176:18:176:18 | access to local variable x | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | BarrierFlow.cs:176:18:176:18 | access to local variable x | $@ | BarrierFlow.cs:136:17:136:25 | call to method Source : Object | call to method Source : Object |
