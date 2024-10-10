@@ -102,6 +102,31 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
+     * Holds if this function is async.
+     */
+    predicate isAsync() { Synth::convertFunctionToRaw(this).(Raw::Function).isAsync() }
+
+    /**
+     * Holds if this function is const.
+     */
+    predicate isConst() { Synth::convertFunctionToRaw(this).(Raw::Function).isConst() }
+
+    /**
+     * Holds if this function is default.
+     */
+    predicate isDefault() { Synth::convertFunctionToRaw(this).(Raw::Function).isDefault() }
+
+    /**
+     * Holds if this function is gen.
+     */
+    predicate isGen() { Synth::convertFunctionToRaw(this).(Raw::Function).isGen() }
+
+    /**
+     * Holds if this function is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertFunctionToRaw(this).(Raw::Function).isUnsafe() }
+
+    /**
      * Gets the name of this function, if it exists.
      */
     Name getName() {
