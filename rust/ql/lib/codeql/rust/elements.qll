@@ -46,6 +46,7 @@ import codeql.rust.elements.ForType
 import codeql.rust.elements.FormatArgsArg
 import codeql.rust.elements.FormatArgsExpr
 import codeql.rust.elements.Function
+import codeql.rust.elements.FunctionOrMethodCallExpr
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.GenericParam
