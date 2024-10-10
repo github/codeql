@@ -301,3 +301,11 @@ fn labelled_block2() -> i64 {
         x
     };
 }
+
+fn test_nested_function() {
+    let mut x = 0;
+    fn nested(x : &mut i64) {
+        *x += 1;
+    }
+    nested(&mut x);
+}
