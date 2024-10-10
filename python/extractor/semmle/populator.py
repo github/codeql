@@ -67,7 +67,7 @@ def main(sys_path = sys.path[:]):
         update_analysis_version(last_version)
 
     found_py2 = False
-    if get_analysis_major_version() == 2:
+    if get_analysis_major_version() == 2 and options.extract_stdlib:
         # Setup `sys_path` to use the Python 2 standard library
         sys_path, found_py2 = get_py2_sys_path(logger, sys_path)
 
