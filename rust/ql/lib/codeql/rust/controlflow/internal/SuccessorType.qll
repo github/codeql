@@ -2,14 +2,6 @@ private import rust
 private import codeql.util.Boolean
 private import Completion
 
-newtype TLoopJumpType =
-  TContinueJump() or
-  TBreakJump()
-
-newtype TLabelType =
-  TLabel(string s) { any(Label l).getLifetime().getText() = s } or
-  TNoLabel()
-
 cached
 newtype TSuccessorType =
   TSuccessorSuccessor() or
