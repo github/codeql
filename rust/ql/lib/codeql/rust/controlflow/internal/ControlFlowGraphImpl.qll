@@ -7,7 +7,6 @@ private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private module CfgInput implements InputSig<Location> {
   private import rust as Rust
   private import Completion as C
-  private import Splitting as S
 
   class AstNode = Rust::AstNode;
 
@@ -23,10 +22,6 @@ private module CfgInput implements InputSig<Location> {
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) { result = Scope::scopeOfAst(n) }
-
-  class SplitKindBase = S::TSplitKind;
-
-  class Split = S::Split;
 
   class SuccessorType = Cfg::SuccessorType;
 
@@ -51,7 +46,22 @@ private module CfgInput implements InputSig<Location> {
   predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
 }
 
-private module CfgImpl = Make<Location, CfgInput>;
+private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+private module CfgImpl =
+  MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>;
 
 import CfgImpl
 
