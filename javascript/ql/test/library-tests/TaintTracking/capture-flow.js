@@ -29,3 +29,20 @@ function confuse(x) {
 
 sink(confuse('safe')); // OK
 sink(confuse(source())); // NOT OK
+
+function innerRead(x) {
+    let captured = { data: x };
+    function read() {
+        if (blah()) {}
+        captured;
+        if (blah()) {}
+        return (captured || {}).data;
+    }
+    function other() {
+        captured = {};
+    }
+    return read();
+}
+
+sink(innerRead('safe')); // OK
+sink(innerRead(source())); // NOT OK
