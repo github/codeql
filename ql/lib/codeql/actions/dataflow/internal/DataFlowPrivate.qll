@@ -266,21 +266,6 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
       madSource(nodeFrom, _, "env." + astTo.getFieldName())
       or
       astTo.getTarget() = astFrom
-      or
-      // e.g:
-      // - run: echo ISSUE_KEY=$(echo "${{ github.event.pull_request.title }}") >> $GITHUB_ENV
-      // - run: echo ${{ env.ISSUE_KEY }}
-      exists(Run run, string script, Expression expr, string line, string key, string value |
-        run.getScript() = script and
-        run.getAnScriptExpr() = expr and
-        line = script.splitAt("\n") and
-        key = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 1) and
-        value = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 2) and
-        value.indexOf(expr.getRawExpression()) > 0 and
-        key = astTo.getFieldName() and
-        expr = astFrom and
-        expr.getEnclosingWorkflow() = run.getEnclosingWorkflow()
-      )
     )
   )
 }
