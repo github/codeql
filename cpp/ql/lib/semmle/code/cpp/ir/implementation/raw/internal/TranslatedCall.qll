@@ -10,6 +10,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import DefaultOptions as DefaultOptions
+private import EdgeKind
 
 /**
  * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
@@ -83,14 +84,36 @@ abstract class TranslatedCall extends TranslatedExpr {
         any(UnreachedInstruction instr |
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
-    else (
-      not this.mustThrowException() and
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      this.mayThrowException() and
-      kind instanceof ExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
-    )
+    else
+      exists(boolean isSEH | kind = exceptionEdge(isSEH) |
+        // Call throw behavior is resolved from most restricted to least restricted in order
+        // if there are conflicting throwing specificaitons for a function.
+        // Enumerating all scenarios to be explicit.
+        (
+          // If the call is known to never throw, regardless of other defined throwing behavior,
+          // do not generate any exception edges, only an ordinary successor
+          if this.(TranslatedCallExpr).neverRaiseException(isSEH)
+          then result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+          else
+            // If the call is known to always throw, regardless of other defined throwing behavior,
+            // only generate an exception edge.
+            if this.(TranslatedCallExpr).alwaysRaiseException(isSEH)
+            then
+              result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+            else
+              if this.(TranslatedCallExpr).mayRaiseException(isSEH)
+              then (
+                // if the call is known to conditionally throw, generate both an exception edge and an
+                // ordinary successor
+                result =
+                  this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+                or
+                result = this.getParent().getChildSuccessor(this, kind)
+              ) else
+                // fallthrough case, no exceptions, just get the ordinary successor
+                result = this.getParent().getChildSuccessor(this, kind)
+        )
+      )
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
@@ -117,14 +140,28 @@ abstract class TranslatedCall extends TranslatedExpr {
   final override Instruction getResult() { result = this.getInstruction(CallTag()) }
 
   /**
-   * Holds if the evaluation of this call may throw an exception.
+   * The call target is known to always raise an exception.
+   * Note that `alwaysRaiseException`, `mayRaiseException`,
+   * and `neverRaiseException` may conflict (e.g., all hold for a given target).
+   * Conflicting results are resolved during IR generation.
    */
-  abstract predicate mayThrowException();
+  abstract predicate alwaysRaiseException(boolean isSEH);
 
   /**
-   * Holds if the evaluation of this call always throws an exception.
+   * The call target is known to conditionally raise an exception.
+   * Note that `alwaysRaiseException`, `mayRaiseException`,
+   * and `neverRaiseException` may conflict (e.g., all hold for a given target).
+   * Conflicting results are resolved during IR generation.
    */
-  abstract predicate mustThrowException();
+  abstract predicate mayRaiseException(boolean isSEH);
+
+  /**
+   * The call target is known to never raise an exception.
+   * Note that `alwaysRaiseException`, `mayRaiseException`,
+   * and `neverRaiseException` may conflict (e.g., all hold for a given target).
+   * Conflicting results are resolved during IR generation.
+   */
+  abstract predicate neverRaiseException(boolean isSEH);
 
   /**
    * Gets the result type of the call.
@@ -320,6 +357,34 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
 
   final override predicate isNoReturn() { any(Options opt).exits(expr.getTarget()) }
+
+  override Function getInstructionFunction(InstructionTag tag) {
+    tag = CallTargetTag() and result = expr.getTarget()
+  }
+
+  override predicate alwaysRaiseException(boolean isSEH) {
+    exists(ThrowingFunction f | f = expr.getTarget() |
+      f.alwaysRaisesException() and f.isSEH() and isSEH = true
+      or
+      f.alwaysRaisesException() and f.isCxx() and isSEH = false
+    )
+  }
+
+  override predicate mayRaiseException(boolean isSEH) {
+    exists(ThrowingFunction f | f = expr.getTarget() |
+      f.mayRaiseException() and f.isSEH() and isSEH = true
+      or
+      f.mayRaiseException() and f.isCxx() and isSEH = false
+    )
+  }
+
+  override predicate neverRaiseException(boolean isSEH) {
+    exists(NonThrowingFunction f | f = expr.getTarget() |
+      f.isSEH() and isSEH = true
+      or
+      f.isCxx() and isSEH = false
+    )
+  }
 }
 
 /**
@@ -332,14 +397,42 @@ class TranslatedExprCall extends TranslatedCallExpr {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
-    // We assume that a call to a function pointer will not throw an exception.
+  override predicate alwaysRaiseException(boolean isSEH) {
+    // We assume that a call to a function pointer will not throw a CXX exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
-    none()
+    // For SEH exceptions, use the defined ThrowingFunction behavior and
+    // if no throwing function is found, assume a conditional SEH exception
+    // see `mayRaiseException`
+    exists(ThrowingFunction f | f = expr.getTarget() |
+      f.alwaysRaisesException() and f.isSEH() and isSEH = true
+    )
   }
 
-  final override predicate mustThrowException() { none() }
+  override predicate mayRaiseException(boolean isSEH) {
+    // We assume that a call to a function pointer will not throw a CXX exception.
+    // This is not sound in general, but this will greatly reduce the number of
+    // exceptional edges.
+    // For SEH exceptions, use the defined ThrowingFunction behavior.
+    // ASSUMPTION: if no ThrowingFunction is found for the given call, assume a conditional SEH exception
+    // on the call.
+    exists(ThrowingFunction f | f = expr.getTarget() |
+      f.mayRaiseException() and f.isSEH() and isSEH = true
+    )
+    or
+    not exists(ThrowingFunction f | f = expr.getTarget() and f.isSEH()) and
+    isSEH = true
+  }
+
+  override predicate neverRaiseException(boolean isSEH) {
+    // We assume that a call to a function pointer will not throw a CXX exception.
+    // This is not sound in general, but this will greatly reduce the number of
+    // exceptional edges.
+    // For SEH exceptions, use the defined ThrowingFunction behavior and
+    // if no throwing function is found, assume a conditional SEH exception
+    // see `mayRaiseException`
+    exists(NonThrowingFunction f | f = expr.getTarget() | f.isSEH() and isSEH = true)
+  }
 }
 
 /**
@@ -347,10 +440,6 @@ class TranslatedExprCall extends TranslatedCallExpr {
  */
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override FunctionCall expr;
-
-  override Function getInstructionFunction(InstructionTag tag) {
-    tag = CallTargetTag() and result = expr.getTarget()
-  }
 
   override Instruction getQualifierResult() {
     this.hasQualifier() and
@@ -360,14 +449,6 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override predicate hasQualifier() {
     exists(this.getQualifier()) and
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
-  }
-
-  final override predicate mayThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(_)
-  }
-
-  final override predicate mustThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(true)
   }
 }
 
