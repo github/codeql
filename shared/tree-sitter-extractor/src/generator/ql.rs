@@ -157,7 +157,8 @@ impl<'a> fmt::Display for Expression<'a> {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
             Expression::String(s) => {
-                let s = s.replace('\'', "\'").replace('"', "\"");
+                // Escape single and double quotes so that the string can be used in a QL query.
+                let s = s.replace('\'', "\\\'").replace('"', "\\\"");
                 write!(f, "\"{}\"", s)
             }
             Expression::Integer(n) => write!(f, "{}", n),
