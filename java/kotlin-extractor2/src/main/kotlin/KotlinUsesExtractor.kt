@@ -1699,9 +1699,5 @@ open class KotlinUsesExtractor(
 
         fun useTypeAlias(ta: IrTypeAlias): Label<out DbKt_type_alias> =
             tw.getLabelFor(getTypeAliasLabel(ta))
-
-        fun useVariable(v: IrVariable): Label<out DbLocalvar> {
-            return tw.getVariableLabelFor<DbLocalvar>(v)
-        }
     */
 }

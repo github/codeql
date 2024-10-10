@@ -147,30 +147,32 @@ abstract class TrapWriter(
         return label
     }
 
+    /**
+     * It is not easy to assign keys to local variables, so they get given `*` IDs. However, the
+     * same variable may be referred to from distant places in the IR, so we need a way to find out
+     * which label is used for a given local variable. This information is stored in this mapping.
+     */
+    // TODO: This should be in a subclass so that DiagnosticTrapWriter doesn't include it, as it is not threadsafe
+    private val variableLabelMapping: MutableMap<KtProperty, Label<out DbLocalvar>> =
+        mutableMapOf<KtProperty, Label<out DbLocalvar>>()
+
+    /** This returns the label used for a local variable, creating one if none currently exists. */
+    fun <T> getVariableLabelFor(v: KtProperty): Label<out DbLocalvar> {
+        val maybeLabel = variableLabelMapping[v]
+        if (maybeLabel == null) {
+            val label = getFreshIdLabel<DbLocalvar>()
+            variableLabelMapping.put(v, label)
+            return label
+        } else {
+            return maybeLabel
+        }
+    }
+
     /*
     OLD: KE1
-        /**
-         * It is not easy to assign keys to local variables, so they get given `*` IDs. However, the
-         * same variable may be referred to from distant places in the IR, so we need a way to find out
-         * which label is used for a given local variable. This information is stored in this mapping.
-         */
-        private val variableLabelMapping: MutableMap<IrVariable, Label<out DbLocalvar>> =
-            mutableMapOf<IrVariable, Label<out DbLocalvar>>()
-        /** This returns the label used for a local variable, creating one if none currently exists. */
-        fun <T> getVariableLabelFor(v: IrVariable): Label<out DbLocalvar> {
-            val maybeLabel = variableLabelMapping.get(v)
-            if (maybeLabel == null) {
-                val label = getFreshIdLabel<DbLocalvar>()
-                variableLabelMapping.put(v, label)
-                return label
-            } else {
-                return maybeLabel
-            }
-        }
-
-        fun getExistingVariableLabelFor(v: IrVariable): Label<out DbLocalvar>? {
-            return variableLabelMapping.get(v)
-        }
+    fun getExistingVariableLabelFor(v: KtProperty): Label<out DbLocalvar>? {
+        return variableLabelMapping[v]
+    }
     */
 
     /**
