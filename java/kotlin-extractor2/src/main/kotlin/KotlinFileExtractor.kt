@@ -3515,18 +3515,6 @@ OLD: KE1
             isNullable: Boolean? = false
         ) = isFunction(target, pkgName, className, { it == className }, fName, isNullable)
 
-        private fun isNumericFunction(target: IrFunction, fName: String): Boolean {
-            return isFunction(target, "kotlin", "Int", fName) ||
-                isFunction(target, "kotlin", "Byte", fName) ||
-                isFunction(target, "kotlin", "Short", fName) ||
-                isFunction(target, "kotlin", "Long", fName) ||
-                isFunction(target, "kotlin", "Float", fName) ||
-                isFunction(target, "kotlin", "Double", fName)
-        }
-
-        private fun isNumericFunction(target: IrFunction, vararg fNames: String) =
-            fNames.any { isNumericFunction(target, it) }
-
         private fun isArrayType(typeName: String) =
             when (typeName) {
                 "Array" -> true
@@ -3747,11 +3735,6 @@ OLD: KE1
                         val type = useType(c.type)
                         val id: Label<out DbExpr> =
                             when (val targetName = target.name.asString()) {
-                                "plus" -> {
-                                    val id = tw.getFreshIdLabel<DbAddexpr>()
-                                    tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
                                 "minus" -> {
                                     val id = tw.getFreshIdLabel<DbSubexpr>()
                                     tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)

@@ -3,6 +3,10 @@ package com.github.codeql
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
+import org.jetbrains.kotlin.analysis.api.resolution.KaSuccessCallInfo
+import org.jetbrains.kotlin.analysis.api.resolution.symbol
+import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
@@ -211,6 +215,64 @@ OLD: KE1
         }
 */
 
+private fun isFunction(
+    symbol: KaFunctionSymbol,
+    packageName: String,
+    className: String,
+    functionName: String
+): Boolean {
+
+    return symbol.callableId?.packageName?.asString() == packageName &&
+            symbol.callableId?.className?.asString() == className &&
+            symbol.callableId?.callableName?.asString() == functionName
+}
+
+private fun isNumericFunction(target: KaFunctionSymbol, fName: String): Boolean {
+    return isFunction(target, "kotlin", "Int", fName) ||
+            isFunction(target, "kotlin", "Byte", fName) ||
+            isFunction(target, "kotlin", "Short", fName) ||
+            isFunction(target, "kotlin", "Long", fName) ||
+            isFunction(target, "kotlin", "Float", fName) ||
+            isFunction(target, "kotlin", "Double", fName)
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractBinaryExpression(
+    expression: KtBinaryExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent
+) {
+    val op = expression.operationToken
+    val target = ((expression.resolveToCall() as? KaSuccessCallInfo)?.call as? KaSimpleFunctionCall)?.symbol
+
+    when (op) {
+        KtTokens.PLUS -> {
+            if (target == null) {
+                TODO()
+            }
+
+            if (isNumericFunction(target, "plus")) {
+                val id = tw.getFreshIdLabel<DbAddexpr>()
+                val type = useType(expression.expressionType)
+                val exprParent = parent.expr(expression, callable)
+                tw.writeExprs_addexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+
+                extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
+                extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
+                extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
+
+                return
+            }
+
+            TODO()
+        }
+
+        else -> TODO()
+    }
+
+}
+
 context(KaSession)
 private fun KotlinFileExtractor.extractExpression(
     e: KtExpression,
@@ -223,6 +285,10 @@ private fun KotlinFileExtractor.extractExpression(
                 // TODO: we could handle this here, or in each child that might have a label
                 // We're handling it in the children with the below
                 extractExpression(e.baseExpression!!, callable, parent)
+            }
+
+            is KtBinaryExpression -> {
+                extractBinaryExpression(e, callable, parent)
             }
 
             is KtIsExpression -> {
