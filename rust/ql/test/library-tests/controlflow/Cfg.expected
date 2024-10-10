@@ -565,6 +565,26 @@ edges
 | test.rs:299:13:299:27 | ExprStmt | test.rs:299:26:299:26 | 1 |  |
 | test.rs:299:26:299:26 | 1 | test.rs:299:13:299:26 | BreakExpr |  |
 | test.rs:301:9:301:9 | x | test.rs:296:18:302:5 | BlockExpr |  |
+| test.rs:305:1:311:1 | enter test_nested_function | test.rs:306:5:306:18 | LetStmt |  |
+| test.rs:305:1:311:1 | exit test_nested_function (normal) | test.rs:305:1:311:1 | exit test_nested_function |  |
+| test.rs:305:27:311:1 | BlockExpr | test.rs:305:1:311:1 | exit test_nested_function (normal) |  |
+| test.rs:306:5:306:18 | LetStmt | test.rs:306:17:306:17 | 0 |  |
+| test.rs:306:9:306:13 | x | test.rs:307:5:309:5 | nested | match, no-match |
+| test.rs:306:17:306:17 | 0 | test.rs:306:9:306:13 | x |  |
+| test.rs:307:5:309:5 | enter nested | test.rs:308:9:308:16 | ExprStmt |  |
+| test.rs:307:5:309:5 | exit nested (normal) | test.rs:307:5:309:5 | exit nested |  |
+| test.rs:307:5:309:5 | nested | test.rs:310:5:310:19 | ExprStmt |  |
+| test.rs:307:29:309:5 | BlockExpr | test.rs:307:5:309:5 | exit nested (normal) |  |
+| test.rs:308:9:308:10 | * ... | test.rs:308:15:308:15 | 1 |  |
+| test.rs:308:9:308:15 | ... += ... | test.rs:307:29:309:5 | BlockExpr |  |
+| test.rs:308:9:308:16 | ExprStmt | test.rs:308:10:308:10 | x |  |
+| test.rs:308:10:308:10 | x | test.rs:308:9:308:10 | * ... |  |
+| test.rs:308:15:308:15 | 1 | test.rs:308:9:308:15 | ... += ... |  |
+| test.rs:310:5:310:10 | PathExpr | test.rs:310:17:310:17 | x |  |
+| test.rs:310:5:310:18 | CallExpr | test.rs:305:27:311:1 | BlockExpr |  |
+| test.rs:310:5:310:19 | ExprStmt | test.rs:310:5:310:10 | PathExpr |  |
+| test.rs:310:12:310:17 | RefExpr | test.rs:310:5:310:18 | CallExpr |  |
+| test.rs:310:17:310:17 | x | test.rs:310:12:310:17 | RefExpr |  |
 breakTarget
 | test.rs:16:17:16:21 | BreakExpr | test.rs:10:9:22:9 | LoopExpr |
 | test.rs:30:21:30:25 | BreakExpr | test.rs:28:13:35:13 | LoopExpr |
