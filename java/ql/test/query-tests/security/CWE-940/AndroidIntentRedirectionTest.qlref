@@ -1,2 +1,2 @@
-query: Numerics/Pythagorean.ql
+query: Security/CWE/CWE-940/AndroidIntentRedirection.ql
 postprocess: TestUtilities/InlineExpectationsTestQuery.ql

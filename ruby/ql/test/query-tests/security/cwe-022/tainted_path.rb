@@ -2,50 +2,50 @@ class FooController < ActionController::Base
   # BAD
   def route0
     path = params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.absolute_path preserves taint
   def route1
     path = File.absolute_path params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.dirname preserves taint
   def route2
     path = "#{File.dirname(params[:path])}/foo"
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.expand_path preserves taint
   def route3
     path = File.expand_path params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.path preserves taint
   def route4
     path = File.path params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.realdirpath preserves taint
   def route5
     path = File.realdirpath params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - File.realpath preserves taint
   def route6
     path = File.realpath params[:path]
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # BAD - tainted arguments in any position propagate to the return value of
   # File.join
   def route7
     path = File.join("foo", "bar", "baz", params[:path], "qux")
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # GOOD - File.basename does not preserve taint
@@ -57,7 +57,7 @@ class FooController < ActionController::Base
   # BAD
   def route9
     path = ActiveStorage::Filename.new(params[:path])
-    @content = File.read path
+    @content = File.read path # $ BAD
   end
 
   # GOOD - explicitly sanitized
@@ -69,26 +69,26 @@ class FooController < ActionController::Base
   # BAD
   def route11
     path = ActiveStorage::Filename.new(params[:path])
-    send_file path
+    send_file path # $ BAD
   end
 
   # BAD
   def route12
     path = ActiveStorage::Filename.new(params[:path])
-    bla (Dir.glob path)
-    bla (Dir[path])
+    bla (Dir.glob path) # $ BAD
+    bla (Dir[path]) # $ BAD
   end
 
   # BAD
   def route13
     path = ActiveStorage::Filename.new(params[:path])
-    load(path)
-    autoload(:MyModule, path)
+    load(path) # $ BAD
+    autoload(:MyModule, path) # $ BAD
   end
 
   def require_relative()
     path = ActiveStorage::Filename.new(params[:path])
     puts "Debug: require_relative(#{path})"
-    super(path)
+    super(path) # $ BAD
   end
 end

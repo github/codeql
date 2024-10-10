@@ -56,7 +56,7 @@ class TestContoller < ActionController::Base
         else
           destination_directory = File.dirname(destination_file)
           FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
-          File.open destination_file, "wb" do |f|
+          File.open destination_file, "wb" do |f| # $ BAD
             f.print tarfile.read
           end
         end
@@ -65,7 +65,7 @@ class TestContoller < ActionController::Base
   end
 
   def unzip(file)
-    Zip::File.open(file) do |zip_file|
+    Zip::File.open(file) do |zip_file| # $ BAD
       zip_file.each do |entry|
         entry.extract
       end
@@ -73,7 +73,7 @@ class TestContoller < ActionController::Base
   end
 
   def zip(filename, files = [])
-    Zip::File.new(filename) do |zf|
+    Zip::File.new(filename) do |zf| # $ BAD
       files.each do |f|
         zf.add f
       end
