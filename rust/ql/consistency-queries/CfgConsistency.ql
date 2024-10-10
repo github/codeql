@@ -12,8 +12,6 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
   cls = e.getPrimaryQlClasses() and
   not e instanceof LetExpr and
   not e instanceof ParenExpr and
-  not e instanceof LogicalAndExpr and // todo
-  not e instanceof LogicalOrExpr and
   exists(AstNode last, Completion c |
     CfgImpl::last(e, last, c) and
     last != e and

@@ -7,7 +7,6 @@ private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private module CfgInput implements InputSig<Location> {
   private import rust as Rust
   private import Completion as C
-  private import Splitting as S
 
   class AstNode = Rust::AstNode;
 
@@ -23,10 +22,6 @@ private module CfgInput implements InputSig<Location> {
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) { result = Scope::scopeOfAst(n) }
-
-  class SplitKindBase = S::TSplitKind;
-
-  class Split = S::Split;
 
   class SuccessorType = Cfg::SuccessorType;
 
@@ -44,9 +39,6 @@ private module CfgInput implements InputSig<Location> {
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
-  /** Gets the maximum number of splits allowed for a given node. */
-  int maxSplits() { result = 0 }
-
   /** Holds if `first` is first executed when entering `scope`. */
   predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
 
@@ -54,7 +46,22 @@ private module CfgInput implements InputSig<Location> {
   predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
 }
 
-private module CfgImpl = Make<Location, CfgInput>;
+private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+private module CfgImpl =
+  MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>;
 
 import CfgImpl
 
@@ -86,53 +93,49 @@ class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
   }
 }
 
-class LogicalOrBinaryOpExprTree extends PreOrderTree, LogicalOrExpr {
+class LogicalOrTree extends PostOrderTree, LogicalOrExpr {
   final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge to the first node in the lhs
-    pred = this and
-    first(this.getLhs(), succ) and
-    completionIsSimple(c)
-    or
-    // Edge from the last node in the lhs to the first node in the rhs
-    last(this.getLhs(), pred, c) and
-    first(this.getRhs(), succ) and
-    c.(BooleanCompletion).failed()
-  }
+  override predicate first(AstNode node) { first(this.getLhs(), node) }
 
-  override predicate last(AstNode node, Completion c) {
-    // Lhs. as the last node
-    last(this.getLhs(), node, c) and
-    c.(BooleanCompletion).succeeded()
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge from lhs to rhs
+    last(this.getLhs(), pred, c) and
+    c.(BooleanCompletion).failed() and
+    first(this.getRhs(), succ)
     or
-    // Rhs. as the last node
-    last(this.getRhs(), node, c)
+    // Edge from lhs to this
+    last(this.getLhs(), pred, c) and
+    c.(BooleanCompletion).succeeded() and
+    succ = this
+    or
+    // Edge from rhs to this
+    last(this.getRhs(), pred, c) and
+    succ = this and
+    completionIsNormal(c)
   }
 }
 
-class LogicalAndBinaryOpExprTree extends PreOrderTree, LogicalAndExpr {
+class LogicalAndTree extends PostOrderTree, LogicalAndExpr {
   final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge to the first node in the lhs
-    pred = this and
-    first(this.getLhs(), succ) and
-    completionIsSimple(c)
-    or
-    // Edge from the last node in the lhs to the first node in the rhs
-    last(this.getLhs(), pred, c) and
-    first(this.getRhs(), succ) and
-    c.(BooleanCompletion).succeeded()
-  }
+  override predicate first(AstNode node) { first(this.getLhs(), node) }
 
-  override predicate last(AstNode node, Completion c) {
-    // Lhs. as the last node
-    last(this.getLhs(), node, c) and
-    c.(BooleanCompletion).failed()
+  override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    // Edge from lhs to rhs
+    last(this.getLhs(), pred, c) and
+    c.(BooleanCompletion).succeeded() and
+    first(this.getRhs(), succ)
     or
-    // Rhs. as the last node
-    last(this.getRhs(), node, c)
+    // Edge from lhs to this
+    last(this.getLhs(), pred, c) and
+    c.(BooleanCompletion).failed() and
+    succ = this
+    or
+    // Edge from rhs to this
+    last(this.getRhs(), pred, c) and
+    succ = this and
+    completionIsNormal(c)
   }
 }
 

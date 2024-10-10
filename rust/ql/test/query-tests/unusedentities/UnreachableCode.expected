@@ -1,0 +1,14 @@
+| unreachable.rs:12:3:12:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:20:3:20:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:32:3:32:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:39:3:39:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:60:2:60:16 | ExprStmt | This code is never reached. |
+| unreachable.rs:101:3:101:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:109:3:109:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:124:2:124:16 | ExprStmt | This code is never reached. |
+| unreachable.rs:134:2:134:16 | ExprStmt | This code is never reached. |
+| unreachable.rs:141:3:141:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:150:4:150:18 | ExprStmt | This code is never reached. |
+| unreachable.rs:156:3:156:17 | ExprStmt | This code is never reached. |
+| unreachable.rs:162:4:162:18 | ExprStmt | This code is never reached. |
+| unreachable.rs:165:2:165:16 | ExprStmt | This code is never reached. |

@@ -114,7 +114,7 @@ fn arrays() {
     for k // SPURIOUS: unused variable [macros not yet supported]
 	in ks
 	{
-        println!("lets use {}", k);
+        println!("lets use {}", k); // [unreachable FALSE POSITIVE]
     }
 }
 
@@ -167,12 +167,12 @@ fn loops() {
     for _ in 1..10 {}
 
     for x // SPURIOUS: unused variable [macros not yet supported]
-    in 1..10 {    
+    in 1..10 {
         println!("x is {}", x);
     }
 
     for x // SPURIOUS: unused variable [macros not yet supported]
-    in 1..10 {   
+    in 1..10 {
         assert!(x != 11);
     }
 }
@@ -189,7 +189,14 @@ enum YesOrNo {
     No,
 }
 
-fn if_lets() {
+use YesOrNo::{Yes, No}; // allows `Yes`, `No` to be accessed without qualifiers.
+
+struct MyPoint {
+    x: i64,
+    y: i64,
+}
+
+fn if_lets_matches() {
     let mut total: i64 = 0;
 
     if let Some(a) = Some(10) { // BAD: unused variable
@@ -215,7 +222,7 @@ fn if_lets() {
     match c {
         Some(val) => { // BAD: unused variable
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => {
         }
     }
 
@@ -224,32 +231,112 @@ fn if_lets() {
         Some(val) => {
             total += val;
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => {
         }
     }
 
-    let e = MyOption::Some(80);
+    let e = Option::Some(80);
     match e {
+        Option::Some(val) => { // BAD: unused variable
+        }
+        Option::None => {
+        }
+    }
+
+    let f = MyOption::Some(90);
+    match f {
         MyOption::Some(val) => { // BAD: unused variable
         }
         MyOption::None => {}
     }
 
-    let f = YesOrNo::Yes;
-    match f {
+    let g : Result<i64, i64> = Ok(100);
+    match g {
+        Ok(_) => {
+        }
+        Err(num) => {} // BAD: unused variable
+    }
+
+    let h = YesOrNo::Yes;
+    match h {
         YesOrNo::Yes => {}
         YesOrNo::No => {}
     }
+
+    let i = Yes;
+    match i {
+        Yes => {}
+        No => {}
+    }
+
+    if let j = Yes { // BAD: unused variable
+    }
+
+    if let k = Yes {
+        match k {
+            _ => {}
+        }
+    }
+
+    let l = Yes;
+    if let Yes = l {
+    }
+
+    match 1 {
+        1 => {}
+        _ => {}
+    }
+
+    let p1 = MyPoint { x: 1, y: 2 };
+    match p1 {
+        MyPoint { x: 0, y: 0 } => {
+        }
+        MyPoint { x: 1, y } => { // BAD: unused variable
+        }
+        MyPoint { x: 2, y: _ } => {
+        }
+        MyPoint { x: 3, y: a } => { // BAD: unused variable
+        }
+        MyPoint { x: 4, .. } => {
+        }
+        p => { // BAD: unused variable
+        }
+    }
 }
 
+fn shadowing() -> i32 {
+    let x = 1; // BAD: unused value [NOT DETECTED]
+    let mut y: i32; // BAD: unused variable
+
+    {
+        let x = 2;
+        let mut y: i32;
+
+        {
+            let x = 3; // BAD: unused value [NOT DETECTED]
+            let mut y: i32; // BAD: unused variable
+        }
+
+        y = x;
+        return y;
+    }
+}
+
+// --- main ---
 fn main() {
     locals_1();
     locals_2();
     structs();
     arrays();
     statics();
+	println!("lets use result {}", parameters(1, 2, 3));
     loops();
-    if_lets();
+    if_lets_matches();
+    shadowing();
 
-    println!("lets use result {}", parameters(1, 2, 3));
+	unreachable_if();
+	unreachable_panic();
+	unreachable_match();
+	unreachable_loop();
+	unreachable_paren();
 }
