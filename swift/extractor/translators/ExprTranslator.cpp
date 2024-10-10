@@ -378,7 +378,7 @@ codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExp
     for (const auto& component : expr.getComponents()) {
       entry.components.push_back(emitKeyPathComponent(component));
     }
-    if (auto rootTypeRepr = expr.getRootType()) {
+    if (auto rootTypeRepr = expr.getExplicitRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
       CODEQL_EXPECT_OR(return entry, keyPathType, "KeyPathExpr must have BoundGenericClassType");
       auto keyPathTypeArgs = keyPathType->getGenericArgs();
