@@ -2,9 +2,15 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.sound.midi.spi", "MidiDeviceProvider", True, "getDevice", "(MidiDevice$Info)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sound.midi.spi", "SoundbankReader", True, "getSoundbank", "(File)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sound.midi.spi", "SoundbankReader", True, "getSoundbank", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["javax.sound.midi.spi", "MidiDeviceProvider", "getDevice", "(MidiDevice$Info)", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "MidiDeviceProvider", "getDeviceInfo", "()", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "MidiDeviceProvider", "isDeviceSupported", "(MidiDevice$Info)", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "MidiFileReader", "getMidiFileFormat", "(File)", "summary", "df-generated"]
@@ -19,6 +25,4 @@ extensions:
       - ["javax.sound.midi.spi", "MidiFileWriter", "isFileTypeSupported", "(int,Sequence)", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "MidiFileWriter", "write", "(Sequence,int,File)", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "MidiFileWriter", "write", "(Sequence,int,OutputStream)", "summary", "df-generated"]
-      - ["javax.sound.midi.spi", "SoundbankReader", "getSoundbank", "(File)", "summary", "df-generated"]
-      - ["javax.sound.midi.spi", "SoundbankReader", "getSoundbank", "(InputStream)", "summary", "df-generated"]
       - ["javax.sound.midi.spi", "SoundbankReader", "getSoundbank", "(URL)", "summary", "df-generated"]
