@@ -149,3 +149,29 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
+
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(
+      DataFlowDispatch::DataFlowCall call, MethodCall srcCall,
+      DataFlowDispatch::ArgumentPosition argpos
+    |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      call.asCall().getExpr() = srcCall and
+      src.(ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}
