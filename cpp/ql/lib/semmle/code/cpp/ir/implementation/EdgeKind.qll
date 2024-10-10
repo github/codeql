@@ -3,12 +3,13 @@
  */
 
 private import internal.EdgeKindInternal
+private import codeql.util.Boolean
 
 private newtype TEdgeKind =
   TGotoEdge() or // Single successor (including fall-through)
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
-  TExceptionEdge(boolean isSEH){isSEH in [true, false]} or // Thrown exception, true for SEH exceptions, false otherwise
+  TExceptionEdge(Boolean isSEH) or // Thrown exception, true for SEH exceptions, false otherwise
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
@@ -63,9 +64,9 @@ class ExceptionEdge extends EdgeKind, TExceptionEdge {
    */
   final predicate isSEH() { isSEH = true }
 
-  final override string toString() { 
-    result = "Exception"
-   }
+  final override string toString() {
+    if isSEH = true then result = "SEH Exception" else result = "C++ Exception"
+  }
 }
 
 /**
@@ -132,9 +133,10 @@ module EdgeKind {
   FalseEdge falseEdge() { result = TFalseEdge() }
 
   /**
-   * Gets the single instance of the `ExceptionEdge` class.
+   * Gets the instance of the `ExceptionEdge` class.
+   * `isSEH` is true if the exception is an SEH exception, and false for a C++ edge.
    */
-  ExceptionEdge exceptionEdge() { result = TExceptionEdge(_) }
+  ExceptionEdge exceptionEdge(boolean isSEH) { result = TExceptionEdge(isSEH) }
 
   /**
    * Gets the single instance of the `DefaultEdge` class.
