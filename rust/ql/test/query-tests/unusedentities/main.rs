@@ -114,7 +114,7 @@ fn arrays() {
     for k // SPURIOUS: unused variable [macros not yet supported]
 	in ks
 	{
-        println!("lets use {}", k);
+        println!("lets use {}", k); // [unreachable FALSE POSITIVE]
     }
 }
 
@@ -322,15 +322,21 @@ fn shadowing() -> i32 {
     }
 }
 
+// --- main ---
 fn main() {
     locals_1();
     locals_2();
     structs();
     arrays();
     statics();
+	println!("lets use result {}", parameters(1, 2, 3));
     loops();
     if_lets_matches();
     shadowing();
 
-    println!("lets use result {}", parameters(1, 2, 3));
+	unreachable_if();
+	unreachable_panic();
+	unreachable_match();
+	unreachable_loop();
+	unreachable_paren();
 }
