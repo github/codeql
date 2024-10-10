@@ -39,7 +39,33 @@ private Type getElementType(Type containerType) {
   result = containerType.(SliceType).getElementType() or
   result = containerType.(ChanType).getElementType() or
   result = containerType.(MapType).getValueType() or
-  result = containerType.(PointerType).getPointerType()
+  result = containerType.(PointerType).getPointerType() or
+  result = containerType.(NamedType).getUnderlyingType()
+}
+
+private Type getElementTypeIncludingFields(Type containerType) {
+  result = getElementType(containerType) or
+  result = containerType.(StructType).getField(_).getType()
+}
+
+private DataFlow::ContentSet getContentForType(Type containerType) {
+  containerType instanceof ArrayType and
+  result instanceof DataFlow::ArrayContent
+  or
+  containerType instanceof SliceType and
+  result instanceof DataFlow::ArrayContent
+  or
+  containerType instanceof ChanType and
+  result instanceof DataFlow::CollectionContent
+  or
+  containerType instanceof MapType and
+  result instanceof DataFlow::MapValueContent
+  or
+  result.(DataFlow::PointerContent).getPointerType() = containerType
+  or
+  exists(Field f | f = containerType.(StructType).getField(_) |
+    result.(DataFlow::FieldContent).getField() = f
+  )
 }
 
 /**
@@ -51,21 +77,39 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) 
   exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
     getElementType*(node.getType()) = containerType
+    or
+    any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node) and
+    getElementTypeIncludingFields*(node.getType()) = containerType
   |
-    containerType instanceof ArrayType and
-    c instanceof DataFlow::ArrayContent
-    or
-    containerType instanceof SliceType and
-    c instanceof DataFlow::ArrayContent
-    or
-    containerType instanceof ChanType and
-    c instanceof DataFlow::CollectionContent
-    or
-    containerType instanceof MapType and
-    c instanceof DataFlow::MapValueContent
-    or
-    c.(DataFlow::PointerContent).getPointerType() = containerType
+    c = getContentForType(containerType)
   )
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at `node` in any context.
+ */
+bindingset[node]
+predicate defaultImplicitTaintReadGlobal(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(Type containerType |
+    any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node) and
+    getElementTypeIncludingFields*(node.getType()) = containerType
+  |
+    c = getContentForType(containerType)
+  )
+}
+
+/**
+ * A unit class for adding nodes that should implicitly read from all nested content
+ * in a taint-tracking context.
+ *
+ * For example, this might be appopriate for the argument to a method that serializes a struct.
+ */
+class ImplicitFieldReadNode extends Unit {
+  /**
+   * Holds if the node `n` should implicitly read from all nested content in a taint-tracking context.
+   */
+  abstract predicate shouldImplicitlyReadAllFields(DataFlow::Node n);
 }
 
 /**

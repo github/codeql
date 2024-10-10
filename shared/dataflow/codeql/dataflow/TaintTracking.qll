@@ -29,6 +29,12 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
    */
   bindingset[node]
   predicate defaultImplicitTaintRead(Lang::Node node, Lang::ContentSet c);
+
+  /**
+   * Holds if taint flow configurations should allow implicit reads of `c` in any context.
+   */
+  bindingset[node]
+  predicate defaultImplicitTaintReadGlobal(Lang::Node node, Lang::ContentSet c);
 }
 
 /**
@@ -66,6 +72,8 @@ module TaintFlowMake<
         Config::isAdditionalFlowStep(node, _, _, _)
       ) and
       defaultImplicitTaintRead(node, c)
+      or
+      defaultImplicitTaintReadGlobal(node, c)
     }
   }
 
