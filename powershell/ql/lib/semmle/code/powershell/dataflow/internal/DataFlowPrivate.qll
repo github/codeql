@@ -489,7 +489,89 @@ abstract class ReturnNode extends Node {
 }
 
 private module ReturnNodes {
-  // TODO
+  /** An AST element that may produce return values when evaluated. */
+  abstract private class ReturnContainer extends Ast {
+    /**
+     * Gets a direct node that will may be returned when evaluating this node.
+     */
+    Node getANode() { none() }
+
+    /** Gets a child that may produce more nodes that may be returned. */
+    abstract ReturnContainer getAChild();
+
+    /**
+     * Gets a (possibly transitive) node that may be returned when evaluating
+     * this node.
+     */
+    final Node getAReturnedNode() {
+      result = this.getANode()
+      or
+      result = this.getAChild().getAReturnedNode()
+    }
+  }
+
+  class ScriptBlockReturnContainer extends ReturnContainer, ScriptBlock {
+    final override ReturnContainer getAChild() { result = this.getEndBlock() }
+  }
+
+  class NamedBlockReturnContainer extends ReturnContainer, NamedBlock {
+    final override ReturnContainer getAChild() { result = this.getAStmt() }
+  }
+
+  class CmdExprReturnContainer extends ReturnContainer, CmdExpr {
+    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+
+    final override ReturnContainer getAChild() { none() }
+  }
+
+  class LoopStmtReturnContainer extends ReturnContainer, LoopStmt {
+    final override ReturnContainer getAChild() { result = this.getBody() }
+  }
+
+  class StmtBlockReturnConainer extends ReturnContainer, StmtBlock {
+    final override ReturnContainer getAChild() { result = this.getAStmt() }
+  }
+
+  class TryStmtReturnContainer extends ReturnContainer, TryStmt {
+    final override ReturnContainer getAChild() {
+      result = this.getBody() or result = this.getACatchClause() or result = this.getFinally()
+    }
+  }
+
+  class ReturnStmtReturnContainer extends ReturnContainer, ReturnStmt {
+    final override ReturnContainer getAChild() { result = this.getPipeline() }
+  }
+
+  class CatchClausReturnContainer extends ReturnContainer, CatchClause {
+    final override ReturnContainer getAChild() { result = this.getBody() }
+  }
+
+  class SwitchStmtReturnContainer extends ReturnContainer, SwitchStmt {
+    final override ReturnContainer getAChild() { result = this.getACase() }
+  }
+
+  class CmdBaseReturnContainer extends ReturnContainer, CmdExpr {
+    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+
+    final override ReturnContainer getAChild() { none() }
+  }
+
+  class CmdReturnContainer extends ReturnContainer, Cmd {
+    final override StmtNode getANode() { result.getStmtNode().getStmt() = this }
+
+    final override ReturnContainer getAChild() { none() }
+  }
+
+  class NormalReturnNode extends ReturnNode instanceof NodeImpl {
+    NormalReturnNode() {
+      exists(ReturnContainer container |
+        container = this.getEnclosingCallable().asCfgScope() and
+        this = container.getAReturnedNode()
+      )
+    }
+
+    final override NormalReturnKind getKind() { any() }
+  }
 }
 
 import ReturnNodes
@@ -501,7 +583,13 @@ abstract class OutNode extends Node {
 }
 
 private module OutNodes {
-  // TODO
+  /** A data-flow node that reads a value returned directly by a callable */
+  class CallOutNode extends OutNode instanceof CallNode {
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asCall() = super.getCallNode() and
+      kind instanceof NormalReturnKind
+    }
+  }
 }
 
 import OutNodes

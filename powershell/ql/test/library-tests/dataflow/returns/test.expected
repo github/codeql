@@ -1,0 +1,40 @@
+models
+edges
+| test.ps1:2:5:2:15 | Source | test.ps1:5:6:5:20 | callSourceOnce | provenance |  |
+| test.ps1:5:6:5:20 | callSourceOnce | test.ps1:6:6:6:8 | x | provenance |  |
+| test.ps1:9:5:9:15 | Source | test.ps1:13:6:13:21 | callSourceTwice | provenance |  |
+| test.ps1:10:5:10:15 | Source | test.ps1:13:6:13:21 | callSourceTwice | provenance |  |
+| test.ps1:13:6:13:21 | callSourceTwice | test.ps1:14:6:14:8 | x | provenance |  |
+| test.ps1:17:12:17:22 | Source | test.ps1:20:6:20:19 | returnSource1 | provenance |  |
+| test.ps1:20:6:20:19 | returnSource1 | test.ps1:21:6:21:8 | x | provenance |  |
+| test.ps1:24:10:24:20 | Source | test.ps1:25:5:25:7 | x | provenance |  |
+| test.ps1:25:5:25:7 | x | test.ps1:30:6:30:19 | returnSource2 | provenance |  |
+| test.ps1:26:10:26:20 | Source | test.ps1:27:12:27:14 | y | provenance |  |
+| test.ps1:27:12:27:14 | y | test.ps1:30:6:30:19 | returnSource2 | provenance |  |
+| test.ps1:30:6:30:19 | returnSource2 | test.ps1:31:6:31:8 | x | provenance |  |
+nodes
+| test.ps1:2:5:2:15 | Source | semmle.label | Source |
+| test.ps1:5:6:5:20 | callSourceOnce | semmle.label | callSourceOnce |
+| test.ps1:6:6:6:8 | x | semmle.label | x |
+| test.ps1:9:5:9:15 | Source | semmle.label | Source |
+| test.ps1:10:5:10:15 | Source | semmle.label | Source |
+| test.ps1:13:6:13:21 | callSourceTwice | semmle.label | callSourceTwice |
+| test.ps1:14:6:14:8 | x | semmle.label | x |
+| test.ps1:17:12:17:22 | Source | semmle.label | Source |
+| test.ps1:20:6:20:19 | returnSource1 | semmle.label | returnSource1 |
+| test.ps1:21:6:21:8 | x | semmle.label | x |
+| test.ps1:24:10:24:20 | Source | semmle.label | Source |
+| test.ps1:25:5:25:7 | x | semmle.label | x |
+| test.ps1:26:10:26:20 | Source | semmle.label | Source |
+| test.ps1:27:12:27:14 | y | semmle.label | y |
+| test.ps1:30:6:30:19 | returnSource2 | semmle.label | returnSource2 |
+| test.ps1:31:6:31:8 | x | semmle.label | x |
+subpaths
+testFailures
+#select
+| test.ps1:6:6:6:8 | x | test.ps1:2:5:2:15 | Source | test.ps1:6:6:6:8 | x | $@ | test.ps1:2:5:2:15 | Source | Source |
+| test.ps1:14:6:14:8 | x | test.ps1:9:5:9:15 | Source | test.ps1:14:6:14:8 | x | $@ | test.ps1:9:5:9:15 | Source | Source |
+| test.ps1:14:6:14:8 | x | test.ps1:10:5:10:15 | Source | test.ps1:14:6:14:8 | x | $@ | test.ps1:10:5:10:15 | Source | Source |
+| test.ps1:21:6:21:8 | x | test.ps1:17:12:17:22 | Source | test.ps1:21:6:21:8 | x | $@ | test.ps1:17:12:17:22 | Source | Source |
+| test.ps1:31:6:31:8 | x | test.ps1:24:10:24:20 | Source | test.ps1:31:6:31:8 | x | $@ | test.ps1:24:10:24:20 | Source | Source |
+| test.ps1:31:6:31:8 | x | test.ps1:26:10:26:20 | Source | test.ps1:31:6:31:8 | x | $@ | test.ps1:26:10:26:20 | Source | Source |
