@@ -273,13 +273,13 @@ closure_binder_generic_param_lists(
 | @binary_expr
 | @block_expr
 | @break_expr
-| @call_expr
 | @cast_expr
 | @closure_expr
 | @continue_expr
 | @field_expr
 | @for_expr
 | @format_args_expr
+| @function_or_method_call_expr
 | @if_expr
 | @index_expr
 | @let_expr
@@ -287,7 +287,6 @@ closure_binder_generic_param_lists(
 | @loop_expr
 | @macro_expr
 | @match_expr
-| @method_call_expr
 | @offset_of_expr
 | @paren_expr
 | @path_expr
@@ -1301,29 +1300,6 @@ break_expr_lifetimes(
   int lifetime: @lifetime ref
 );
 
-call_exprs(
-  unique int id: @call_expr
-);
-
-#keyset[id]
-call_expr_arg_lists(
-  int id: @call_expr ref,
-  int arg_list: @arg_list ref
-);
-
-#keyset[id, index]
-call_expr_attrs(
-  int id: @call_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-call_expr_exprs(
-  int id: @call_expr ref,
-  int expr: @expr ref
-);
-
 cast_exprs(
   unique int id: @cast_expr
 );
@@ -1592,6 +1568,24 @@ format_args_expr_attrs(
 format_args_expr_templates(
   int id: @format_args_expr ref,
   int template: @expr ref
+);
+
+@function_or_method_call_expr =
+  @call_expr
+| @method_call_expr
+;
+
+#keyset[id]
+function_or_method_call_expr_arg_lists(
+  int id: @function_or_method_call_expr ref,
+  int arg_list: @arg_list ref
+);
+
+#keyset[id, index]
+function_or_method_call_expr_attrs(
+  int id: @function_or_method_call_expr ref,
+  int index: int ref,
+  int attr: @attr ref
 );
 
 ident_pats(
@@ -1895,41 +1889,6 @@ match_expr_exprs(
 match_expr_match_arm_lists(
   int id: @match_expr ref,
   int match_arm_list: @match_arm_list ref
-);
-
-method_call_exprs(
-  unique int id: @method_call_expr
-);
-
-#keyset[id]
-method_call_expr_arg_lists(
-  int id: @method_call_expr ref,
-  int arg_list: @arg_list ref
-);
-
-#keyset[id, index]
-method_call_expr_attrs(
-  int id: @method_call_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-method_call_expr_generic_arg_lists(
-  int id: @method_call_expr ref,
-  int generic_arg_list: @generic_arg_list ref
-);
-
-#keyset[id]
-method_call_expr_name_refs(
-  int id: @method_call_expr ref,
-  int name_ref: @name_ref ref
-);
-
-#keyset[id]
-method_call_expr_receivers(
-  int id: @method_call_expr ref,
-  int receiver: @expr ref
 );
 
 never_types(
@@ -2466,6 +2425,16 @@ yield_expr_exprs(
   int expr: @expr ref
 );
 
+call_exprs(
+  unique int id: @call_expr
+);
+
+#keyset[id]
+call_expr_exprs(
+  int id: @call_expr ref,
+  int expr: @expr ref
+);
+
 consts(
   unique int id: @const
 );
@@ -2785,6 +2754,28 @@ macro_rules_token_trees(
 macro_rules_visibilities(
   int id: @macro_rules ref,
   int visibility: @visibility ref
+);
+
+method_call_exprs(
+  unique int id: @method_call_expr
+);
+
+#keyset[id]
+method_call_expr_generic_arg_lists(
+  int id: @method_call_expr ref,
+  int generic_arg_list: @generic_arg_list ref
+);
+
+#keyset[id]
+method_call_expr_name_refs(
+  int id: @method_call_expr ref,
+  int name_ref: @name_ref ref
+);
+
+#keyset[id]
+method_call_expr_receivers(
+  int id: @method_call_expr ref,
+  int receiver: @expr ref
 );
 
 modules(

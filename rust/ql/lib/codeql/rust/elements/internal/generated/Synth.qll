@@ -608,9 +608,9 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or TParenExpr or
+        TBreakExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or TForExpr or
+        TFormatArgsExpr or TFunctionOrMethodCallExpr or TIfExpr or TIndexExpr or TLetExpr or
+        TLiteralExpr or TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or
         TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or
         TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
 
@@ -623,6 +623,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TFieldList = TRecordFieldList or TTupleFieldList;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TFunctionOrMethodCallExpr = TCallExpr or TMethodCallExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1693,8 +1698,6 @@ module Synth {
     or
     result = convertBreakExprFromRaw(e)
     or
-    result = convertCallExprFromRaw(e)
-    or
     result = convertCastExprFromRaw(e)
     or
     result = convertClosureExprFromRaw(e)
@@ -1706,6 +1709,8 @@ module Synth {
     result = convertForExprFromRaw(e)
     or
     result = convertFormatArgsExprFromRaw(e)
+    or
+    result = convertFunctionOrMethodCallExprFromRaw(e)
     or
     result = convertIfExprFromRaw(e)
     or
@@ -1720,8 +1725,6 @@ module Synth {
     result = convertMacroExprFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
-    or
-    result = convertMethodCallExprFromRaw(e)
     or
     result = convertOffsetOfExprFromRaw(e)
     or
@@ -1774,6 +1777,16 @@ module Synth {
     result = convertRecordFieldListFromRaw(e)
     or
     result = convertTupleFieldListFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TFunctionOrMethodCallExpr`, if possible.
+   */
+  TFunctionOrMethodCallExpr convertFunctionOrMethodCallExprFromRaw(Raw::Element e) {
+    result = convertCallExprFromRaw(e)
+    or
+    result = convertMethodCallExprFromRaw(e)
   }
 
   /**
@@ -2963,8 +2976,6 @@ module Synth {
     or
     result = convertBreakExprToRaw(e)
     or
-    result = convertCallExprToRaw(e)
-    or
     result = convertCastExprToRaw(e)
     or
     result = convertClosureExprToRaw(e)
@@ -2976,6 +2987,8 @@ module Synth {
     result = convertForExprToRaw(e)
     or
     result = convertFormatArgsExprToRaw(e)
+    or
+    result = convertFunctionOrMethodCallExprToRaw(e)
     or
     result = convertIfExprToRaw(e)
     or
@@ -2990,8 +3003,6 @@ module Synth {
     result = convertMacroExprToRaw(e)
     or
     result = convertMatchExprToRaw(e)
-    or
-    result = convertMethodCallExprToRaw(e)
     or
     result = convertOffsetOfExprToRaw(e)
     or
@@ -3044,6 +3055,16 @@ module Synth {
     result = convertRecordFieldListToRaw(e)
     or
     result = convertTupleFieldListToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TFunctionOrMethodCallExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertFunctionOrMethodCallExprToRaw(TFunctionOrMethodCallExpr e) {
+    result = convertCallExprToRaw(e)
+    or
+    result = convertMethodCallExprToRaw(e)
   }
 
   /**

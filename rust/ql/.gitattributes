@@ -43,6 +43,7 @@
 /lib/codeql/rust/elements/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/Function.qll linguist-generated
+/lib/codeql/rust/elements/FunctionOrMethodCallExpr.qll linguist-generated
 /lib/codeql/rust/elements/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgList.qll linguist-generated
 /lib/codeql/rust/elements/GenericParam.qll linguist-generated
@@ -231,6 +232,7 @@
 /lib/codeql/rust/elements/internal/FormatArgsExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FunctionOrMethodCallExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgListImpl.qll linguist-generated
@@ -488,6 +490,7 @@
 /lib/codeql/rust/elements/internal/generated/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Function.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/FunctionOrMethodCallExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArgList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericParam.qll linguist-generated
