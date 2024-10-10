@@ -831,7 +831,8 @@
 /test/extractor-tests/generated/MacroDef/MacroDef_getVisibility.ql linguist-generated
 /test/extractor-tests/generated/MacroExpr/MacroExpr.ql linguist-generated
 /test/extractor-tests/generated/MacroExpr/MacroExpr_getMacroCall.ql linguist-generated
-/test/extractor-tests/generated/MacroItems/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/MacroItems/MacroItems.ql linguist-generated
+/test/extractor-tests/generated/MacroItems/MacroItems_getItem.ql linguist-generated
 /test/extractor-tests/generated/MacroPat/MacroPat.ql linguist-generated
 /test/extractor-tests/generated/MacroPat/MacroPat_getMacroCall.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules.ql linguist-generated
@@ -839,7 +840,9 @@
 /test/extractor-tests/generated/MacroRules/MacroRules_getName.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getTokenTree.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getVisibility.ql linguist-generated
-/test/extractor-tests/generated/MacroStmts/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts.ql linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts_getExpr.ql linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts_getStatement.ql linguist-generated
 /test/extractor-tests/generated/MacroType/MacroType.ql linguist-generated
 /test/extractor-tests/generated/MacroType/MacroType_getMacroCall.ql linguist-generated
 /test/extractor-tests/generated/MatchArm/MatchArm.ql linguist-generated
