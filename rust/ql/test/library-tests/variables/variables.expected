@@ -24,7 +24,6 @@ variable
 | variables.rs:100:9:100:10 | x6 |
 | variables.rs:101:9:101:10 | y1 |
 | variables.rs:105:14:105:15 | y1 |
-| variables.rs:110:9:110:12 | None |
 | variables.rs:117:9:117:15 | numbers |
 | variables.rs:121:13:121:17 | first |
 | variables.rs:122:13:122:17 | third |

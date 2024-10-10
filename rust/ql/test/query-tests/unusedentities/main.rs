@@ -222,7 +222,7 @@ fn if_lets_matches() {
     match c {
         Some(val) => { // BAD: unused variable
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => {
         }
     }
 
@@ -231,7 +231,7 @@ fn if_lets_matches() {
         Some(val) => {
             total += val;
         }
-        None => { // SPURIOUS: unused variable 'None'
+        None => {
         }
     }
 
@@ -265,8 +265,8 @@ fn if_lets_matches() {
 
     let i = Yes;
     match i {
-        Yes => {} // SPURIOUS: unused variable 'Yes'
-        No => {} // SPURIOUS: unused variable 'No'
+        Yes => {}
+        No => {}
     }
 
     if let j = Yes { // BAD: unused variable
@@ -279,7 +279,7 @@ fn if_lets_matches() {
     }
 
     let l = Yes;
-    if let Yes = l { // SPURIOUS: unused variable 'Yes'
+    if let Yes = l {
     }
 
     match 1 {
