@@ -10,6 +10,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import DefaultOptions as DefaultOptions
+private import EdgeKind
 
 /**
  * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
@@ -84,11 +85,7 @@ abstract class TranslatedCall extends TranslatedExpr {
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
     else
-      exists(boolean isSEH |
-        isSEH = true and kind.(ExceptionEdge).isSEH()
-        or
-        isSEH = false and not kind.(ExceptionEdge).isSEH()
-      |
+      exists(boolean isSEH | kind = exceptionEdge(isSEH) |
         // Call throw behavior is resolved from most restricted to least restricted in order
         // if there are conflicting throwing specificaitons for a function.
         // Enumerating all scenarios to be explicit.
@@ -96,18 +93,20 @@ abstract class TranslatedCall extends TranslatedExpr {
           // If the call is known to never throw, regardless of other defined throwing behavior,
           // do not generate any exception edges, only an ordinary successor
           if this.(TranslatedCallExpr).neverRaiseException(isSEH)
-          then result = this.getParent().getChildSuccessor(this, kind)
+          then result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
           else
             // If the call is known to always throw, regardless of other defined throwing behavior,
             // only generate an exception edge.
             if this.(TranslatedCallExpr).alwaysRaiseException(isSEH)
-            then result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+            then
+              result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
             else
               if this.(TranslatedCallExpr).mayRaiseException(isSEH)
               then (
                 // if the call is known to conditionally throw, generate both an exception edge and an
                 // ordinary successor
-                result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+                result =
+                  this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
                 or
                 result = this.getParent().getChildSuccessor(this, kind)
               ) else
@@ -432,9 +431,7 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // For SEH exceptions, use the defined ThrowingFunction behavior and
     // if no throwing function is found, assume a conditional SEH exception
     // see `mayRaiseException`
-    exists(NonThrowingFunction f | f = expr.getTarget() |
-      f.isSEH() and isSEH = true
-    )
+    exists(NonThrowingFunction f | f = expr.getTarget() | f.isSEH() and isSEH = true)
   }
 }
 

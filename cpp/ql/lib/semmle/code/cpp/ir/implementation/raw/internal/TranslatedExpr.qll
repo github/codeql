@@ -15,6 +15,7 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
 private import IRConstruction
+private import EdgeKind
 import TranslatedCall
 
 /**
@@ -280,13 +281,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
     )
     or
     tag = ConditionValueResultLoadTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -943,13 +938,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
     result = this.getInstruction(ThisLoadTag())
     or
     tag = ThisLoadTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -2681,11 +2670,6 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         result = this.getInstruction(ConditionValueResultTempAddressTag())
       )
       or
-      // All load instructions could throw an SEH exception
-      (tag = ConditionValueTrueStoreTag() or tag = ConditionValueFalseStoreTag()) and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-      or
       not this.elseIsVoid() and
       kind instanceof GotoEdge and
       (
@@ -2712,13 +2696,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
       or
       (not expr.hasLValueToRValueConversion() or not isExtractorFrontendVersion65OrHigher()) and
       tag = ConditionValueResultLoadTag() and
-      (
-        result = this.getParent().getChildSuccessor(this, kind)
-        or
-        // All load instructions could throw an SEH exception
-        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-        kind.(ExceptionEdge).isSEH()
-      )
+      result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
@@ -3084,8 +3062,8 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
       kind instanceof ExceptionEdge and
-      not kind.(ExceptionEdge).isSEH() and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), true)
+      kind = exceptionEdge(false) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), false)
     )
   }
 
@@ -3124,8 +3102,8 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       or
       not exists(this.getDestructors()) and
       kind instanceof ExceptionEdge and
-      not kind.(ExceptionEdge).isSEH() and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), true)
+      kind = exceptionEdge(false) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), false)
     )
   }
 
@@ -3413,13 +3391,7 @@ class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
     result = this.getVAList().getFirstInstruction(kind)
     or
     tag = VarArgsVAListStoreTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -3489,13 +3461,7 @@ class TranslatedVarArg extends TranslatedNonConstantExpr {
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = VarArgsVAListLoadTag() and
-    (
-      kind instanceof GotoEdge and result = this.getInstruction(VarArgsArgAddressTag())
-      or
-      // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    (kind instanceof GotoEdge and result = this.getInstruction(VarArgsArgAddressTag()))
     or
     tag = VarArgsArgAddressTag() and
     kind instanceof GotoEdge and
