@@ -34,18 +34,6 @@ module Zap {
     override int getFormatStringIndex() { result = 0 }
   }
 
-  /**
-   * A call to a logger function in Zap.
-   *
-   * Functions which add data to be included the next time a direct logging
-   * function is called are included.
-   */
-  private class ZapCall extends LoggerCall::Range, DataFlow::MethodCallNode {
-    ZapCall() { this = any(ZapFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
   // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   /** The function `Fields` that creates an `Option` that can be added to the logger out of `Field`s. */
   class FieldsFunction extends TaintTracking::FunctionModel {
