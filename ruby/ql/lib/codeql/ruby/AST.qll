@@ -172,7 +172,7 @@ class RubyFile extends File {
  * A successfully extracted file, that is, a file that was extracted and
  * contains no extraction errors or warnings.
  */
-class SuccessfullyExtractedFile extends RubyFile {
+class SuccessfullyExtractedFile extends File {
   SuccessfullyExtractedFile() {
     not exists(Diagnostic d |
       d.getLocation().getFile() = this and
