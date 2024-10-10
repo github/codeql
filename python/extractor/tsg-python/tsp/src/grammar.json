@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "python",
   "word": "identifier",
   "rules": {
@@ -2970,6 +2971,18 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_type_param_default"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -2987,6 +3000,18 @@
             "type": "SYMBOL",
             "name": "identifier"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_type_param_default"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -3004,6 +3029,18 @@
             "type": "SYMBOL",
             "name": "identifier"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_type_param_default"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -3021,6 +3058,32 @@
         {
           "type": "SYMBOL",
           "name": "paramspec_parameter"
+        }
+      ]
+    },
+    "_type_param_default": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "default",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "list_splat"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expression"
+              }
+            ]
+          }
         }
       ]
     },
@@ -5008,6 +5071,10 @@
                   "members": [
                     {
                       "type": "SYMBOL",
+                      "name": "list_splat"
+                    },
+                    {
+                      "type": "SYMBOL",
                       "name": "expression"
                     },
                     {
@@ -5032,6 +5099,10 @@
                       "content": {
                         "type": "CHOICE",
                         "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "list_splat"
+                          },
                           {
                             "type": "SYMBOL",
                             "name": "expression"
@@ -6612,4 +6683,3 @@
     "parameter"
   ]
 }
-
