@@ -478,8 +478,6 @@ open class KotlinFileExtractor(
                 tw.writeIsRaw(id)
             }
 
-            val unbound = useClassSource(c)
-            tw.writeErasure(id, unbound)
             extractClassModifiers(c, id)
             extractClassSupertypes(
                 c,
