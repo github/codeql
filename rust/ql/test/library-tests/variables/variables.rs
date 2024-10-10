@@ -372,6 +372,51 @@ fn capture() {
     print_i64(x); // $ read_access=x
 }
 
+fn phi(b : bool) {
+    let mut x = 1; // x
+    if b { // $ read_access=b
+        x = 2; // $ write_access=x
+    } else {
+        x = 3; // $ write_access=x
+    }
+    print_i64(x); // $ read_access=x
+}
+
+fn phi_read(b1 : bool, b2 : bool) {
+    let x = 1; // x
+    if b1 { // $ read_access=b1
+        print_i64(x); // $ read_access=x
+    } else {
+        print_i64(x); // $ read_access=x
+    }
+
+    if b2 { // $ read_access=b2
+        print_i64(x); // $ read_access=x
+    } else {
+        print_i64(x); // $ read_access=x
+    }
+}
+
+#[derive(Debug)]
+struct MyStruct {
+    val: i64,
+}
+
+impl MyStruct {
+    fn my_get(&mut self) -> i64 {
+        return self.val;
+    }
+}
+
+fn structs() {
+    let mut a = MyStruct { val: 1 }; // a
+    print_i64(a.my_get()); // $ read_access=a
+    a.val = 5; // $ read_access=a
+    print_i64(a.my_get()); // $ read_access=a
+    a = MyStruct { val: 2 }; // $ write_access=a
+    print_i64(a.my_get()); // $ read_access=a
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
@@ -400,4 +445,5 @@ fn main() {
     mutate_arg();
     alias();
     capture();
+    structs();
 }

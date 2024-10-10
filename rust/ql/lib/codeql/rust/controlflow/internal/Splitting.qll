@@ -78,6 +78,11 @@ module ConditionalCompletionSplitting {
         child = parent.(MatchExpr).getAnArm().getExpr()
         or
         child = parent.(BlockExpr).getStmtList().getTailExpr()
+        or
+        child = parent.(PatternTrees::PreOrderPatTree).getPat(_) and
+        childCompletion.(MatchCompletion).failed()
+        or
+        child = parent.(PatternTrees::PostOrderPatTree).getPat(_)
       )
     }
   }

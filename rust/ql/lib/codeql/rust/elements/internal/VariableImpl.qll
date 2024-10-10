@@ -118,16 +118,17 @@ module Impl {
      */
     IdentPat getPat() { variableDecl(definingNode, result, name) }
 
+    /** Gets the `let` statement that introduces this variable, if any. */
+    LetStmt getLetStmt() { this.getPat() = result.getPat() }
+
     /** Gets the initial value of this variable, if any. */
-    Expr getInitializer() {
-      exists(LetStmt let |
-        this.getPat() = let.getPat() and
-        result = let.getInitializer()
-      )
-    }
+    Expr getInitializer() { result = this.getLetStmt().getInitializer() }
 
     /** Holds if this variable is captured. */
     predicate isCaptured() { this.getAnAccess().isCapture() }
+
+    /** Gets the parameter that introduces this variable, if any. */
+    Param getParameter() { parameterDeclInScope(result, this, _) }
   }
 
   /** A path expression that may access a local variable. */
@@ -181,6 +182,27 @@ module Impl {
   }
 
   /**
+   * Holds if parameter `p` introduces the variable `v` inside variable scope
+   * `scope`.
+   */
+  private predicate parameterDeclInScope(Param p, Variable v, VariableScope scope) {
+    exists(Pat pat |
+      pat = getAVariablePatAncestor(v) and
+      p.getPat() = pat
+    |
+      exists(Function f |
+        f.getParamList().getAParam() = p and
+        scope = f.getBody()
+      )
+      or
+      exists(ClosureExpr ce |
+        ce.getParamList().getAParam() = p and
+        scope = ce.getBody()
+      )
+    )
+  }
+
+  /**
    * Holds if `v` is named `name` and is declared inside variable scope
    * `scope`, and `v` is bound starting from `(line, column)`.
    */
@@ -188,51 +210,44 @@ module Impl {
     Variable v, VariableScope scope, string name, int line, int column
   ) {
     name = v.getName() and
-    exists(Pat pat | pat = getAVariablePatAncestor(v) |
-      scope =
-        any(MatchArmScope arm |
-          arm.getPat() = pat and
-          arm.getLocation().hasLocationInfo(_, line, column, _, _)
+    (
+      parameterDeclInScope(_, v, scope) and
+      scope.getLocation().hasLocationInfo(_, line, column, _, _)
+      or
+      exists(Pat pat | pat = getAVariablePatAncestor(v) |
+        scope =
+          any(MatchArmScope arm |
+            arm.getPat() = pat and
+            arm.getLocation().hasLocationInfo(_, line, column, _, _)
+          )
+        or
+        exists(LetStmt let |
+          let.getPat() = pat and
+          scope = getEnclosingScope(let) and
+          // for `let` statements, variables are bound _after_ the statement, i.e.
+          // not in the RHS
+          let.getLocation().hasLocationInfo(_, _, _, line, column)
         )
-      or
-      exists(Function f |
-        f.getParamList().getAParam().getPat() = pat and
-        scope = f.getBody() and
-        scope.getLocation().hasLocationInfo(_, line, column, _, _)
-      )
-      or
-      exists(LetStmt let |
-        let.getPat() = pat and
-        scope = getEnclosingScope(let) and
-        // for `let` statements, variables are bound _after_ the statement, i.e.
-        // not in the RHS
-        let.getLocation().hasLocationInfo(_, _, _, line, column)
-      )
-      or
-      exists(IfExpr ie, LetExpr let |
-        let.getPat() = pat and
-        ie.getCondition() = let and
-        scope = ie.getThen() and
-        scope.getLocation().hasLocationInfo(_, line, column, _, _)
-      )
-      or
-      exists(ForExpr fe |
-        fe.getPat() = pat and
-        scope = fe.getLoopBody() and
-        scope.getLocation().hasLocationInfo(_, line, column, _, _)
-      )
-      or
-      exists(ClosureExpr ce |
-        ce.getParamList().getAParam().getPat() = pat and
-        scope = ce.getBody() and
-        scope.getLocation().hasLocationInfo(_, line, column, _, _)
-      )
-      or
-      exists(WhileExpr we, LetExpr let |
-        let.getPat() = pat and
-        we.getCondition() = let and
-        scope = we.getLoopBody() and
-        scope.getLocation().hasLocationInfo(_, line, column, _, _)
+        or
+        exists(IfExpr ie, LetExpr let |
+          let.getPat() = pat and
+          ie.getCondition() = let and
+          scope = ie.getThen() and
+          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+        )
+        or
+        exists(ForExpr fe |
+          fe.getPat() = pat and
+          scope = fe.getLoopBody() and
+          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+        )
+        or
+        exists(WhileExpr we, LetExpr let |
+          let.getPat() = pat and
+          we.getCondition() = let and
+          scope = we.getLoopBody() and
+          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+        )
       )
     )
   }
@@ -427,7 +442,8 @@ module Impl {
     exists(Expr mid |
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
-      not mid.(PrefixExpr).getOperatorName() = "*"
+      not mid.(PrefixExpr).getOperatorName() = "*" and
+      not mid instanceof FieldExpr
     )
   }
 
