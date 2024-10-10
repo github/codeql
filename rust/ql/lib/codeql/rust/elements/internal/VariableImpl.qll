@@ -1,6 +1,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.util.DenseRank
 
 module Impl {
   /**
@@ -77,7 +78,12 @@ module Impl {
       not exists(getOutermostEnclosingOrPat(p)) and
       definingNode = p.getName()
     ) and
-    name = p.getName().getText()
+    name = p.getName().getText() and
+    // exclude for now anything starting with an uppercase character, which may be a reference to
+    // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+    // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+    // naming guidelines, which they generally do, but they're not enforced.
+    not name.charAt(0).isUppercase()
   }
 
   /** A variable. */
@@ -119,6 +125,9 @@ module Impl {
         result = let.getInitializer()
       )
     }
+
+    /** Holds if this variable is captured. */
+    predicate isCaptured() { this.getAnAccess().isCapture() }
   }
 
   /** A path expression that may access a local variable. */
@@ -251,7 +260,7 @@ module Impl {
       // Use the location of the inner scope as the location of the access, instead of the
       // actual access location. This allows us to collapse multiple accesses in inner
       // scopes to a single entity
-      scope.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
+      inner.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
     )
   }
 
@@ -334,18 +343,30 @@ module Impl {
     }
   }
 
+  private module DenseRankInput implements DenseRankInputSig3 {
+    class C1 = VariableScope;
+
+    class C2 = string;
+
+    class Ranked = VariableOrAccessCand;
+
+    int getRank(VariableScope scope, string name, VariableOrAccessCand v) {
+      v =
+        rank[result](VariableOrAccessCand v0, int startline, int startcolumn, int endline,
+          int endcolumn |
+          v0.rankBy(name, scope, startline, startcolumn, endline, endcolumn)
+        |
+          v0 order by startline, startcolumn, endline, endcolumn
+        )
+    }
+  }
+
   /**
    * Gets the rank of `v` amongst all other declarations or access candidates
    * to a variable named `name` in the variable scope `scope`.
    */
   private int rankVariableOrAccess(VariableScope scope, string name, VariableOrAccessCand v) {
-    v =
-      rank[result + 1](VariableOrAccessCand v0, int startline, int startcolumn, int endline,
-        int endcolumn |
-        v0.rankBy(name, scope, startline, startcolumn, endline, endcolumn)
-      |
-        v0 order by startline, startcolumn, endline, endcolumn
-      )
+    result = DenseRank3<DenseRankInput>::denseRank(scope, name, v) - 1
   }
 
   /**
@@ -379,15 +400,20 @@ module Impl {
     )
   }
 
+  private import codeql.rust.controlflow.internal.Scope
+
   /** A variable access. */
   class VariableAccess extends PathExprImpl::PathExpr instanceof VariableAccessCand {
     private string name;
     private Variable v;
 
-    VariableAccess() { variableAccess(_, name, v, this) }
+    VariableAccess() { variableAccess(name, v, this) }
 
     /** Gets the variable being accessed. */
     Variable getVariable() { result = v }
+
+    /** Holds if this access is a capture. */
+    predicate isCapture() { scopeOfAst(this) != scopeOfAst(v.getPat()) }
 
     override string toString() { result = name }
 
@@ -426,10 +452,10 @@ module Impl {
       MkVariable(AstNode definingNode, string name) { variableDecl(definingNode, _, name) }
 
     cached
-    predicate variableAccess(VariableScope scope, string name, Variable v, VariableAccessCand cand) {
+    predicate variableAccess(string name, Variable v, VariableAccessCand cand) {
       v =
         min(Variable v0, int nestLevel |
-          variableReachesCand(scope, name, v0, cand, nestLevel)
+          variableReachesCand(_, name, v0, cand, nestLevel)
         |
           v0 order by nestLevel
         )
