@@ -84,6 +84,31 @@ module Generated {
     final predicate hasClosureBinder() { exists(this.getClosureBinder()) }
 
     /**
+     * Holds if this closure expression is async.
+     */
+    predicate isAsync() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isAsync() }
+
+    /**
+     * Holds if this closure expression is const.
+     */
+    predicate isConst() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isConst() }
+
+    /**
+     * Holds if this closure expression is gen.
+     */
+    predicate isGen() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isGen() }
+
+    /**
+     * Holds if this closure expression is move.
+     */
+    predicate isMove() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isMove() }
+
+    /**
+     * Holds if this closure expression is static.
+     */
+    predicate isStatic() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isStatic() }
+
+    /**
      * Gets the parameter list of this closure expression, if it exists.
      */
     ParamList getParamList() {

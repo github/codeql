@@ -64,6 +64,11 @@ module Generated {
     final predicate hasDefaultVal() { exists(this.getDefaultVal()) }
 
     /**
+     * Holds if this const parameter is const.
+     */
+    predicate isConst() { Synth::convertConstParamToRaw(this).(Raw::ConstParam).isConst() }
+
+    /**
      * Gets the name of this const parameter, if it exists.
      */
     Name getName() {

@@ -1202,6 +1202,7 @@ impl From<trap::Label<MatchGuard>> for trap::Label<Locatable> {
 pub struct Meta {
     pub id: trap::TrapId<Meta>,
     pub expr: Option<trap::Label<Expr>>,
+    pub is_unsafe: bool,
     pub path: Option<trap::Label<Path>>,
     pub token_tree: Option<trap::Label<TokenTree>>,
 }
@@ -1215,6 +1216,9 @@ impl trap::TrapEntry for Meta {
         out.add_tuple("meta", vec![id.into()]);
         if let Some(v) = self.expr {
             out.add_tuple("meta_exprs", vec![id.into(), v.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("meta_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.path {
             out.add_tuple("meta_paths", vec![id.into(), v.into()]);
@@ -2072,6 +2076,7 @@ impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Locatable> {
 pub struct SelfParam {
     pub id: trap::TrapId<SelfParam>,
     pub attrs: Vec<trap::Label<Attr>>,
+    pub is_mut: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub name: Option<trap::Label<Name>>,
     pub ty: Option<trap::Label<TypeRef>>,
@@ -2086,6 +2091,9 @@ impl trap::TrapEntry for SelfParam {
         out.add_tuple("self_params", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("self_param_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if self.is_mut {
+            out.add_tuple("self_param_is_mut", vec![id.into()]);
         }
         if let Some(v) = self.lifetime {
             out.add_tuple("self_param_lifetimes", vec![id.into(), v.into()]);
@@ -2422,6 +2430,8 @@ impl From<trap::Label<TupleField>> for trap::Label<Locatable> {
 pub struct TypeBound {
     pub id: trap::TrapId<TypeBound>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub is_async: bool,
+    pub is_const: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub ty: Option<trap::Label<TypeRef>>,
 }
@@ -2435,6 +2445,12 @@ impl trap::TrapEntry for TypeBound {
         out.add_tuple("type_bounds", vec![id.into()]);
         if let Some(v) = self.generic_param_list {
             out.add_tuple("type_bound_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("type_bound_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("type_bound_is_const", vec![id.into()]);
         }
         if let Some(v) = self.lifetime {
             out.add_tuple("type_bound_lifetimes", vec![id.into(), v.into()]);
@@ -3425,6 +3441,12 @@ impl From<trap::Label<BinaryExpr>> for trap::Label<Locatable> {
 pub struct BlockExpr {
     pub id: trap::TrapId<BlockExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
+    pub is_async: bool,
+    pub is_const: bool,
+    pub is_gen: bool,
+    pub is_move: bool,
+    pub is_try: bool,
+    pub is_unsafe: bool,
     pub label: Option<trap::Label<Label>>,
     pub stmt_list: Option<trap::Label<StmtList>>,
 }
@@ -3438,6 +3460,24 @@ impl trap::TrapEntry for BlockExpr {
         out.add_tuple("block_exprs", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("block_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("block_expr_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("block_expr_is_const", vec![id.into()]);
+        }
+        if self.is_gen {
+            out.add_tuple("block_expr_is_gen", vec![id.into()]);
+        }
+        if self.is_move {
+            out.add_tuple("block_expr_is_move", vec![id.into()]);
+        }
+        if self.is_try {
+            out.add_tuple("block_expr_is_try", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("block_expr_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.label {
             out.add_tuple("block_expr_labels", vec![id.into(), v.into()]);
@@ -3754,6 +3794,11 @@ pub struct ClosureExpr {
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<Expr>>,
     pub closure_binder: Option<trap::Label<ClosureBinder>>,
+    pub is_async: bool,
+    pub is_const: bool,
+    pub is_gen: bool,
+    pub is_move: bool,
+    pub is_static: bool,
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetType>>,
 }
@@ -3773,6 +3818,21 @@ impl trap::TrapEntry for ClosureExpr {
         }
         if let Some(v) = self.closure_binder {
             out.add_tuple("closure_expr_closure_binders", vec![id.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("closure_expr_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("closure_expr_is_const", vec![id.into()]);
+        }
+        if self.is_gen {
+            out.add_tuple("closure_expr_is_gen", vec![id.into()]);
+        }
+        if self.is_move {
+            out.add_tuple("closure_expr_is_move", vec![id.into()]);
+        }
+        if self.is_static {
+            out.add_tuple("closure_expr_is_static", vec![id.into()]);
         }
         if let Some(v) = self.param_list {
             out.add_tuple("closure_expr_param_lists", vec![id.into(), v.into()]);
@@ -3943,6 +4003,7 @@ impl From<trap::Label<ConstArg>> for trap::Label<Locatable> {
 pub struct ConstBlockPat {
     pub id: trap::TrapId<ConstBlockPat>,
     pub block_expr: Option<trap::Label<BlockExpr>>,
+    pub is_const: bool,
 }
 
 impl trap::TrapEntry for ConstBlockPat {
@@ -3954,6 +4015,9 @@ impl trap::TrapEntry for ConstBlockPat {
         out.add_tuple("const_block_pats", vec![id.into()]);
         if let Some(v) = self.block_expr {
             out.add_tuple("const_block_pat_block_exprs", vec![id.into(), v.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("const_block_pat_is_const", vec![id.into()]);
         }
     }
 }
@@ -4003,6 +4067,7 @@ pub struct ConstParam {
     pub id: trap::TrapId<ConstParam>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub default_val: Option<trap::Label<ConstArg>>,
+    pub is_const: bool,
     pub name: Option<trap::Label<Name>>,
     pub ty: Option<trap::Label<TypeRef>>,
 }
@@ -4019,6 +4084,9 @@ impl trap::TrapEntry for ConstParam {
         }
         if let Some(v) = self.default_val {
             out.add_tuple("const_param_default_vals", vec![id.into(), v.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("const_param_is_const", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("const_param_names", vec![id.into(), v.into()]);
@@ -4321,6 +4389,9 @@ impl From<trap::Label<FieldExpr>> for trap::Label<Locatable> {
 pub struct FnPtrType {
     pub id: trap::TrapId<FnPtrType>,
     pub abi: Option<trap::Label<Abi>>,
+    pub is_async: bool,
+    pub is_const: bool,
+    pub is_unsafe: bool,
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetType>>,
 }
@@ -4334,6 +4405,15 @@ impl trap::TrapEntry for FnPtrType {
         out.add_tuple("fn_ptr_types", vec![id.into()]);
         if let Some(v) = self.abi {
             out.add_tuple("fn_ptr_type_abis", vec![id.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("fn_ptr_type_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("fn_ptr_type_is_const", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("fn_ptr_type_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.param_list {
             out.add_tuple("fn_ptr_type_param_lists", vec![id.into(), v.into()]);
@@ -4593,6 +4673,8 @@ impl From<trap::Label<FormatArgsExpr>> for trap::Label<Locatable> {
 pub struct IdentPat {
     pub id: trap::TrapId<IdentPat>,
     pub attrs: Vec<trap::Label<Attr>>,
+    pub is_mut: bool,
+    pub is_ref: bool,
     pub name: Option<trap::Label<Name>>,
     pub pat: Option<trap::Label<Pat>>,
 }
@@ -4606,6 +4688,12 @@ impl trap::TrapEntry for IdentPat {
         out.add_tuple("ident_pats", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("ident_pat_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if self.is_mut {
+            out.add_tuple("ident_pat_is_mut", vec![id.into()]);
+        }
+        if self.is_ref {
+            out.add_tuple("ident_pat_is_ref", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("ident_pat_names", vec![id.into(), v.into()]);
@@ -6342,6 +6430,8 @@ impl From<trap::Label<PrefixExpr>> for trap::Label<Locatable> {
 #[derive(Debug)]
 pub struct PtrType {
     pub id: trap::TrapId<PtrType>,
+    pub is_const: bool,
+    pub is_mut: bool,
     pub ty: Option<trap::Label<TypeRef>>,
 }
 
@@ -6352,6 +6442,12 @@ impl trap::TrapEntry for PtrType {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("ptr_types", vec![id.into()]);
+        if self.is_const {
+            out.add_tuple("ptr_type_is_const", vec![id.into()]);
+        }
+        if self.is_mut {
+            out.add_tuple("ptr_type_is_mut", vec![id.into()]);
+        }
         if let Some(v) = self.ty {
             out.add_tuple("ptr_type_ties", vec![id.into(), v.into()]);
         }
@@ -6726,6 +6822,9 @@ pub struct RefExpr {
     pub id: trap::TrapId<RefExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub expr: Option<trap::Label<Expr>>,
+    pub is_const: bool,
+    pub is_mut: bool,
+    pub is_raw: bool,
 }
 
 impl trap::TrapEntry for RefExpr {
@@ -6740,6 +6839,15 @@ impl trap::TrapEntry for RefExpr {
         }
         if let Some(v) = self.expr {
             out.add_tuple("ref_expr_exprs", vec![id.into(), v.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("ref_expr_is_const", vec![id.into()]);
+        }
+        if self.is_mut {
+            out.add_tuple("ref_expr_is_mut", vec![id.into()]);
+        }
+        if self.is_raw {
+            out.add_tuple("ref_expr_is_raw", vec![id.into()]);
         }
     }
 }
@@ -6787,6 +6895,7 @@ impl From<trap::Label<RefExpr>> for trap::Label<Locatable> {
 #[derive(Debug)]
 pub struct RefPat {
     pub id: trap::TrapId<RefPat>,
+    pub is_mut: bool,
     pub pat: Option<trap::Label<Pat>>,
 }
 
@@ -6797,6 +6906,9 @@ impl trap::TrapEntry for RefPat {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("ref_pats", vec![id.into()]);
+        if self.is_mut {
+            out.add_tuple("ref_pat_is_mut", vec![id.into()]);
+        }
         if let Some(v) = self.pat {
             out.add_tuple("ref_pat_pats", vec![id.into(), v.into()]);
         }
@@ -6846,6 +6958,7 @@ impl From<trap::Label<RefPat>> for trap::Label<Pat> {
 #[derive(Debug)]
 pub struct RefType {
     pub id: trap::TrapId<RefType>,
+    pub is_mut: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub ty: Option<trap::Label<TypeRef>>,
 }
@@ -6857,6 +6970,9 @@ impl trap::TrapEntry for RefType {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("ref_types", vec![id.into()]);
+        if self.is_mut {
+            out.add_tuple("ref_type_is_mut", vec![id.into()]);
+        }
         if let Some(v) = self.lifetime {
             out.add_tuple("ref_type_lifetimes", vec![id.into(), v.into()]);
         }
@@ -7958,6 +8074,8 @@ pub struct Const {
     pub id: trap::TrapId<Const>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<Expr>>,
+    pub is_const: bool,
+    pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
     pub ty: Option<trap::Label<TypeRef>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -7975,6 +8093,12 @@ impl trap::TrapEntry for Const {
         }
         if let Some(v) = self.body {
             out.add_tuple("const_bodies", vec![id.into(), v.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("const_is_const", vec![id.into()]);
+        }
+        if self.is_default {
+            out.add_tuple("const_is_default", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("const_names", vec![id.into(), v.into()]);
@@ -8140,6 +8264,7 @@ pub struct ExternBlock {
     pub abi: Option<trap::Label<Abi>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub extern_item_list: Option<trap::Label<ExternItemList>>,
+    pub is_unsafe: bool,
 }
 
 impl trap::TrapEntry for ExternBlock {
@@ -8157,6 +8282,9 @@ impl trap::TrapEntry for ExternBlock {
         }
         if let Some(v) = self.extern_item_list {
             out.add_tuple("extern_block_extern_item_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("extern_block_is_unsafe", vec![id.into()]);
         }
     }
 }
@@ -8297,6 +8425,11 @@ pub struct Function {
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<BlockExpr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub is_async: bool,
+    pub is_const: bool,
+    pub is_default: bool,
+    pub is_gen: bool,
+    pub is_unsafe: bool,
     pub name: Option<trap::Label<Name>>,
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetType>>,
@@ -8322,6 +8455,21 @@ impl trap::TrapEntry for Function {
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("function_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("function_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("function_is_const", vec![id.into()]);
+        }
+        if self.is_default {
+            out.add_tuple("function_is_default", vec![id.into()]);
+        }
+        if self.is_gen {
+            out.add_tuple("function_is_gen", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("function_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("function_names", vec![id.into(), v.into()]);
@@ -8414,6 +8562,9 @@ pub struct Impl {
     pub assoc_item_list: Option<trap::Label<AssocItemList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub is_const: bool,
+    pub is_default: bool,
+    pub is_unsafe: bool,
     pub self_ty: Option<trap::Label<TypeRef>>,
     pub trait_: Option<trap::Label<TypeRef>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -8435,6 +8586,15 @@ impl trap::TrapEntry for Impl {
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("impl_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("impl_is_const", vec![id.into()]);
+        }
+        if self.is_default {
+            out.add_tuple("impl_is_default", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("impl_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.self_ty {
             out.add_tuple("impl_self_ties", vec![id.into(), v.into()]);
@@ -8843,6 +9003,8 @@ pub struct Static {
     pub id: trap::TrapId<Static>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<Expr>>,
+    pub is_mut: bool,
+    pub is_static: bool,
     pub name: Option<trap::Label<Name>>,
     pub ty: Option<trap::Label<TypeRef>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -8860,6 +9022,12 @@ impl trap::TrapEntry for Static {
         }
         if let Some(v) = self.body {
             out.add_tuple("static_bodies", vec![id.into(), v.into()]);
+        }
+        if self.is_mut {
+            out.add_tuple("static_is_mut", vec![id.into()]);
+        }
+        if self.is_static {
+            out.add_tuple("static_is_static", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("static_names", vec![id.into(), v.into()]);
@@ -9025,6 +9193,8 @@ pub struct Trait {
     pub assoc_item_list: Option<trap::Label<AssocItemList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub is_auto: bool,
+    pub is_unsafe: bool,
     pub name: Option<trap::Label<Name>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -9046,6 +9216,12 @@ impl trap::TrapEntry for Trait {
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("trait_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_auto {
+            out.add_tuple("trait_is_auto", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("trait_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("trait_names", vec![id.into(), v.into()]);
@@ -9204,6 +9380,7 @@ pub struct TypeAlias {
     pub id: trap::TrapId<TypeAlias>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
     pub ty: Option<trap::Label<TypeRef>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
@@ -9223,6 +9400,9 @@ impl trap::TrapEntry for TypeAlias {
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("type_alias_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if self.is_default {
+            out.add_tuple("type_alias_is_default", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("type_alias_names", vec![id.into(), v.into()]);
