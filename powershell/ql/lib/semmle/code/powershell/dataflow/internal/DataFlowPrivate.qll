@@ -641,6 +641,18 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
   )
+  or
+  c.isAnyElement() and
+  exists(CfgNode cfgNode |
+    node1 = TPreReturnNodeImpl(cfgNode, false) and
+    node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+  )
+  or
+  exists(CfgNode cfgNode |
+    node1 = TImplicitWrapNode(cfgNode, true) and
+    c.isAnyElement() and
+    node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+  )
 }
 
 /**
@@ -668,6 +680,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     or
     not exists(e.getValue().asInt())
   )
+  or
+  exists(CfgNode cfgNode |
+    node1 = TPreReturnNodeImpl(cfgNode, true) and
+    node2 = TImplicitWrapNode(cfgNode, true) and
+    c.isSingleton(any(Content::KnownElementContent ec))
+  )
 }
 
 /**
@@ -676,7 +694,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
+  c.isSingleton(any(Content::FieldContent fc)) and
   n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  or
+  n = TPreReturnNodeImpl(_, false) and
+  c.isAnyElement()
 }
 
 /**
@@ -684,7 +706,11 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  none() // TODO
+  n = TPreReturnNodeImpl(_, true) and
+  c.isKnownOrUnknownElement(_)
+  or
+  n = TImplicitWrapNode(_, false) and
+  c.isSingleton(any(Content::UnknownElementContent ec))
 }
 
 class DataFlowType extends TDataFlowType {
