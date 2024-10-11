@@ -70,8 +70,10 @@
 /lib/codeql/rust/elements/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/MacroExpr.qll linguist-generated
+/lib/codeql/rust/elements/MacroItems.qll linguist-generated
 /lib/codeql/rust/elements/MacroPat.qll linguist-generated
 /lib/codeql/rust/elements/MacroRules.qll linguist-generated
+/lib/codeql/rust/elements/MacroStmts.qll linguist-generated
 /lib/codeql/rust/elements/MacroType.qll linguist-generated
 /lib/codeql/rust/elements/MatchArm.qll linguist-generated
 /lib/codeql/rust/elements/MatchArmList.qll linguist-generated
@@ -278,10 +280,14 @@
 /lib/codeql/rust/elements/internal/MacroDefImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroExprImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/MacroItemsConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/MacroItemsImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroRulesConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroRulesImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/MacroStmtsConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/MacroStmtsImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchArmConstructor.qll linguist-generated
@@ -516,8 +522,10 @@
 /lib/codeql/rust/elements/internal/generated/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/MacroItems.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroRules.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/MacroStmts.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroType.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MatchArm.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MatchArmList.qll linguist-generated
@@ -814,6 +822,7 @@
 /test/extractor-tests/generated/LoopExpr/LoopExpr_getLoopBody.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getAttr.ql linguist-generated
+/test/extractor-tests/generated/MacroCall/MacroCall_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getPath.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall_getTokenTree.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef.ql linguist-generated
@@ -824,6 +833,8 @@
 /test/extractor-tests/generated/MacroDef/MacroDef_getVisibility.ql linguist-generated
 /test/extractor-tests/generated/MacroExpr/MacroExpr.ql linguist-generated
 /test/extractor-tests/generated/MacroExpr/MacroExpr_getMacroCall.ql linguist-generated
+/test/extractor-tests/generated/MacroItems/MacroItems.ql linguist-generated
+/test/extractor-tests/generated/MacroItems/MacroItems_getItem.ql linguist-generated
 /test/extractor-tests/generated/MacroPat/MacroPat.ql linguist-generated
 /test/extractor-tests/generated/MacroPat/MacroPat_getMacroCall.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules.ql linguist-generated
@@ -831,6 +842,9 @@
 /test/extractor-tests/generated/MacroRules/MacroRules_getName.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getTokenTree.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getVisibility.ql linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts.ql linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts_getExpr.ql linguist-generated
+/test/extractor-tests/generated/MacroStmts/MacroStmts_getStatement.ql linguist-generated
 /test/extractor-tests/generated/MacroType/MacroType.ql linguist-generated
 /test/extractor-tests/generated/MacroType/MacroType_getMacroCall.ql linguist-generated
 /test/extractor-tests/generated/MatchArm/MatchArm.ql linguist-generated

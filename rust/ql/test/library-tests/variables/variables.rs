@@ -1,11 +1,11 @@
 use std::ops::AddAssign;
 
-fn print_str(s: &str) {
-    println!("{}", s);
+fn print_str(s: &str) { // s
+    println!("{}", s); // $ read_access=s
 }
 
-fn print_i64(i: i64) {
-    println!("{}", i);
+fn print_i64(i: i64) { // i
+    println!("{}", i); // $ read_access=i
 }
 
 fn immutable_variable() {

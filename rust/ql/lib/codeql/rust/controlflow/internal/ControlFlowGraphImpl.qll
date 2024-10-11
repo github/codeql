@@ -273,6 +273,14 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
   }
 }
 
+class FormatArgsExprTree extends StandardPostOrderTree, FormatArgsExpr {
+  override AstNode getChildNode(int i) {
+    i = -1 and result = this.getTemplate()
+    or
+    result = this.getArg(i).getExpr()
+  }
+}
+
 class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
   override AstNode getChildNode(int i) {
     i = 0 and result = super.getBase()
@@ -281,7 +289,12 @@ class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
   }
 }
 
-class ItemTree extends LeafTree, Item { }
+class ItemTree extends LeafTree, Item {
+  ItemTree() {
+    not this instanceof MacroCall and
+    this = [any(StmtList s).getAStatement(), any(MacroStmts s).getAStatement()]
+  }
+}
 
 // `LetExpr` is a pre-order tree such that the pattern itself ends up
 // dominating successors in the graph in the same way that patterns do in
@@ -418,8 +431,38 @@ class ForExprTree extends LoopingExprTree instanceof ForExpr {
   }
 }
 
-// TODO: replace with expanded macro once the extractor supports it
-class MacroExprTree extends LeafTree, MacroExpr { }
+class MacroCallTree extends ControlFlowTree, MacroCall {
+  override predicate first(AstNode first) {
+    first(this.getExpanded(), first)
+    or
+    not exists(this.getExpanded()) and first = this
+  }
+
+  override predicate last(AstNode last, Completion c) {
+    last(this.getExpanded(), last, c)
+    or
+    not exists(this.getExpanded()) and
+    last = this and
+    completionIsValidFor(c, last)
+  }
+
+  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+
+  override predicate propagatesAbnormal(AstNode child) { child = this.getExpanded() }
+}
+
+class MacroExprTree extends StandardPostOrderTree, MacroExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCall() }
+}
+
+class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {
+  override AstNode getChildNode(int i) {
+    result = this.getStatement(i)
+    or
+    i = this.getNumberOfStatements() and
+    result = this.getExpr()
+  }
+}
 
 class MatchArmTree extends ControlFlowTree, MatchArm {
   override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
@@ -661,7 +704,9 @@ module PatternTrees {
 
   class LiteralPatTree extends LeafTree, LiteralPat { }
 
-  class MacroPatTree extends LeafTree, MacroPat { } // todo
+  class MacroPatTree extends PreOrderPatTree, MacroPat {
+    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getExpanded() }
+  }
 
   class OrPatTree extends PostOrderPatTree instanceof OrPat {
     override Pat getPat(int i) { result = OrPat.super.getPat(i) }
