@@ -5,7 +5,7 @@
 
 private import DataFlowPrivate
 private import codeql.actions.DataFlow
-private import codeql.actions.dataflow.FlowSteps
+private import codeql.actions.dataflow.TaintSteps
 private import codeql.actions.Ast
 
 /**

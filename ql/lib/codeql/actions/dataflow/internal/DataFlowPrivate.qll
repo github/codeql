@@ -351,8 +351,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   madStoreStep(node1, node2, c) or
   envToOutputStoreStep(node1, node2, c) or
   envToEnvStoreStep(node1, node2, c) or
-  artifactToOutputStoreStep(node1, node2, c) or
-  artifactToEnvStoreStep(node1, node2, c)
+  fileToOutputStoreStep(node1, node2, c) or
+  fileToEnvStoreStep(node1, node2, c) or
+  commandToOutputStoreStep(node1, node2, c) or
+  commandToEnvStoreStep(node1, node2, c)
 }
 
 /**
