@@ -1,0 +1,38 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          echo "title=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title }}"
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})
+          echo "title=$PR_TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title }}"
+  test3:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          echo "TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"
+      - run: echo "${{ env.TITLE }}"
+  test4:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title 
+        run: |
+          PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})
+          echo "TITLE=$PR_TITLE" >> "$GITHUB_ENV"
+      - run: echo "${{ env.TITLE }}"
+
+

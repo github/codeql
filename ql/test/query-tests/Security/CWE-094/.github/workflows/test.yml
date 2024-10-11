@@ -1,26 +1,29 @@
-on: push
+on:
+  pull_request_target:
+
+permissions:
+  actions: write
 
 jobs:
   job1:
     runs-on: ubuntu-latest
-
     outputs:
       job_output: ${{ steps.step5.outputs.MSG5 }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - id: step0 
         uses: mad9000/actions-find-and-replace-string@3
         with:
-          source: ${{ github.event['head_commit']['message'] }}
+          source: ${{ github.event['pull_request']['body'] }}
           find: 'foo'
           replace: ''
       - id: step1
         env:
           BODY: ${{ steps.step0.outputs.value}}
-        shell: powershell
-        run: |
-          Write-Output "::set-output name=MSG::$ENV{BODY}"
+        run: echo "::set-output name=MSG::${BODY}"
       - id: step2
         env:
             MSG: ${{steps.step1.outputs.MSG}}

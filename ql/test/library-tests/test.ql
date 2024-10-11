@@ -150,6 +150,6 @@ query predicate isBashParameterExpansion(string parameter, string operator, stri
         "${parameter21%%pattern}", "${parameter22/pattern/string}",
         "${parameter23//pattern/string}",
       ] and
-    Bash::isBashParameterExpansion(test, parameter, operator, params)
+    Bash::isParameterExpansion(test, parameter, operator, params)
   )
 }

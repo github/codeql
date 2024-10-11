@@ -19,28 +19,28 @@ edges
 | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | provenance |  |
 | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | provenance |  |
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | provenance |  |
-| .github/workflows/artifactpoisoning1.yml:14:9:20:6 | Uses Step | .github/workflows/artifactpoisoning1.yml:22:14:22:55 | echo "::set-output name=id::$(<pr-id.txt)" | provenance |  |
+| .github/workflows/artifactpoisoning1.yml:14:9:20:6 | Uses Step | .github/workflows/artifactpoisoning1.yml:22:14:22:55 | echo "::set-output name=id::$(<pr-id.txt)" | provenance | Config |
 | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | .github/workflows/artifactpoisoning1.yml:27:67:27:92 | steps.pr.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning1.yml:22:14:22:55 | echo "::set-output name=id::$(<pr-id.txt)" | .github/workflows/artifactpoisoning1.yml:20:9:24:6 | Run Step: pr [id] | provenance |  |
 | .github/workflows/artifactpoisoning2.yml:13:9:19:6 | Uses Step: pr | .github/workflows/artifactpoisoning2.yml:22:17:22:42 | steps.pr.outputs.id | provenance |  |
-| .github/workflows/artifactpoisoning3.yml:20:9:41:6 | Uses Step | .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | provenance |  |
+| .github/workflows/artifactpoisoning3.yml:20:9:41:6 | Uses Step | .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | provenance | Config |
 | .github/workflows/artifactpoisoning3.yml:41:9:53:6 | Run Step: prepare [pr] | .github/workflows/artifactpoisoning3.yml:53:20:53:50 | steps.prepare.outputs.pr | provenance |  |
 | .github/workflows/artifactpoisoning3.yml:43:14:51:45 | unzip input.zip\necho current directory contents\nls -al\n\necho Reading PR number\ntmp=$(<pr)\necho "PR: ${tmp}"\necho "pr=${tmp}" >> $GITHUB_OUTPUT\n | .github/workflows/artifactpoisoning3.yml:41:9:53:6 | Run Step: prepare [pr] | provenance |  |
-| .github/workflows/artifactpoisoning4.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance |  |
+| .github/workflows/artifactpoisoning4.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance | Config |
 | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | .github/workflows/artifactpoisoning4.yml:22:20:22:51 | steps.artifact.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning4.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | .github/workflows/artifactpoisoning4.yml:17:9:21:6 | Run Step: artifact [id] | provenance |  |
 | .github/workflows/artifactpoisoning5.yml:8:9:16:6 | Uses Step | .github/workflows/artifactpoisoning5.yml:16:9:21:6 | Uses Step: artifact [content] | provenance |  |
 | .github/workflows/artifactpoisoning5.yml:16:9:21:6 | Uses Step: artifact [content] | .github/workflows/artifactpoisoning5.yml:22:20:22:56 | steps.artifact.outputs.content | provenance |  |
-| .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
-| .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
+| .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance | Config |
+| .github/workflows/artifactpoisoning6.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance | Config |
 | .github/workflows/artifactpoisoning6.yml:15:9:20:6 | Run Step: artifact [pr_number] | .github/workflows/artifactpoisoning6.yml:21:20:21:58 | steps.artifact.outputs.pr_number | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:16:14:19:57 | echo "::set-output name=pr_number::$(<artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning6.yml:15:9:20:6 | Run Step: artifact [pr_number] | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:23:9:28:6 | Run Step: artifact2 [pr_number] | .github/workflows/artifactpoisoning6.yml:29:20:29:59 | steps.artifact2.outputs.pr_number | provenance |  |
 | .github/workflows/artifactpoisoning6.yml:24:14:27:57 | echo "::set-output name=pr_number::$(cat -e artifact.txt)"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning6.yml:23:9:28:6 | Run Step: artifact2 [pr_number] | provenance |  |
-| .github/workflows/artifactpoisoning7.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance |  |
+| .github/workflows/artifactpoisoning7.yml:8:9:15:6 | Uses Step | .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | provenance | Config |
 | .github/workflows/artifactpoisoning7.yml:15:9:29:6 | Run Step: artifact [pr_number] | .github/workflows/artifactpoisoning7.yml:30:20:30:58 | steps.artifact.outputs.pr_number | provenance |  |
 | .github/workflows/artifactpoisoning7.yml:16:14:28:57 | set -eou pipefail\npr_number=$(cat -e artifact.txt)\npr_number=${pr_number%?}\npr_length=${#pr_number}\nonly_numbers_re="^[0-9]+$"\nif ! [[ $pr_length <= 10 && $pr_number =~ $only_numbers_re ]] ; then\n  echo "invalid PR number"\n  exit 1\nfi\necho "::set-output name=pr_number::$pr_number"\nmkdir firebase-android\nunzip firebase-android.zip -d firebase-android\n | .github/workflows/artifactpoisoning7.yml:15:9:29:6 | Run Step: artifact [pr_number] | provenance |  |
-| .github/workflows/artifactpoisoning8.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance |  |
+| .github/workflows/artifactpoisoning8.yml:9:9:17:6 | Uses Step | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | provenance | Config |
 | .github/workflows/artifactpoisoning8.yml:17:9:21:6 | Run Step: artifact [id] | .github/workflows/artifactpoisoning8.yml:22:20:22:51 | steps.artifact.outputs.id | provenance |  |
 | .github/workflows/artifactpoisoning8.yml:19:14:19:58 | echo "::set-output name=id::$(<artifact.txt)" | .github/workflows/artifactpoisoning8.yml:17:9:21:6 | Run Step: artifact [id] | provenance |  |
 | .github/workflows/changed-files.yml:15:9:18:6 | Uses Step: changed-files1 | .github/workflows/changed-files.yml:20:24:20:76 | steps.changed-files1.outputs.all_changed_files | provenance |  |
@@ -108,7 +108,8 @@ edges
 | .github/workflows/simple2.yml:18:9:26:6 | Uses Step: step [value] | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value | provenance |  |
 | .github/workflows/simple2.yml:22:20:22:64 | steps.source.outputs.all_changed_files | .github/workflows/simple2.yml:18:9:26:6 | Uses Step: step [value] | provenance |  |
 | .github/workflows/slash_command2.yml:11:9:20:6 | Uses Step: command | .github/workflows/slash_command2.yml:20:21:20:66 | steps.command.outputs.command-arguments | provenance |  |
-| .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | provenance |  |
+| .github/workflows/test1.yml:15:5:27:39 | Job: updateJira [ISSUE_KEY] | .github/workflows/test1.yml:27:20:27:39 | env.ISSUE_KEY | provenance |  |
+| .github/workflows/test1.yml:23:19:23:56 | github.event.pull_request.title | .github/workflows/test1.yml:15:5:27:39 | Job: updateJira [ISSUE_KEY] | provenance |  |
 | .github/workflows/test2.yml:17:9:25:6 | Uses Step: changed | .github/workflows/test2.yml:27:26:27:66 | steps.changed.outputs.locale_files | provenance |  |
 | .github/workflows/test2.yml:29:9:37:6 | Uses Step: changed2 | .github/workflows/test2.yml:39:25:39:66 | steps.changed2.outputs.locale_files | provenance |  |
 | .github/workflows/test3.yml:11:7:12:4 | Job outputs node [payload] | .github/workflows/test3.yml:60:27:60:66 | needs.parse-issue.outputs.payload | provenance |  |
@@ -124,29 +125,41 @@ edges
 | .github/workflows/test9.yml:12:9:20:6 | Uses Step: issue_body_parser_request | .github/workflows/test9.yml:10:17:10:70 | steps.issue_body_parser_request.outputs.payload | provenance |  |
 | .github/workflows/test9.yml:12:9:20:6 | Uses Step: issue_body_parser_request | .github/workflows/test9.yml:20:20:20:73 | steps.issue_body_parser_request.outputs.payload | provenance |  |
 | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | .github/workflows/test11.yml:54:20:54:60 | needs.get-artifacts.outputs.pr_num | provenance |  |
-| .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | .github/workflows/test11.yml:55:20:55:57 | needs.get-artifacts.outputs.ref | provenance |  |
 | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | provenance |  |
-| .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | provenance |  |
-| .github/workflows/test11.yml:22:9:30:6 | Uses Step | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | provenance |  |
+| .github/workflows/test11.yml:22:9:30:6 | Uses Step | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | provenance | Config |
 | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | provenance |  |
-| .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | provenance |  |
 | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | provenance |  |
-| .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | provenance |  |
-| .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | provenance |  |
-| .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | provenance |  |
-| .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] | .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value | provenance |  |
-| .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] | provenance |  |
-| .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] | .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | provenance |  |
-| .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value | .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] | provenance |  |
-| .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] | .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 | provenance |  |
-| .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] | provenance |  |
-| .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] | .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 | provenance |  |
-| .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 | .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] | provenance |  |
-| .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] | .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 | provenance |  |
-| .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 | .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] | provenance |  |
-| .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] | .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | provenance |  |
-| .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 | .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] | provenance |  |
-| .github/workflows/untrusted_checkout1.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout1.yml:12:14:13:63 | echo "::set-output name=pr_number::$(<artifact.txt)"\n | provenance |  |
+| .github/workflows/test14.yml:13:9:16:6 | Run Step: changed-files [files] | .github/workflows/test14.yml:16:21:16:60 | steps.changed-files.outputs.files | provenance |  |
+| .github/workflows/test14.yml:14:14:15:117 | echo "files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_OUTPUT"\n | .github/workflows/test14.yml:13:9:16:6 | Run Step: changed-files [files] | provenance |  |
+| .github/workflows/test14.yml:23:9:27:6 | Run Step: changed-files [files] | .github/workflows/test14.yml:27:21:27:60 | steps.changed-files.outputs.files | provenance |  |
+| .github/workflows/test14.yml:24:14:26:52 | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "files=${FILES}" >> "$GITHUB_OUTPUT"\n | .github/workflows/test14.yml:23:9:27:6 | Run Step: changed-files [files] | provenance |  |
+| .github/workflows/test14.yml:29:5:38:2 | Job: test3 [CHANGED-FILES] | .github/workflows/test14.yml:37:21:37:44 | env.CHANGED-FILES | provenance |  |
+| .github/workflows/test14.yml:35:14:36:122 | echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"\n | .github/workflows/test14.yml:29:5:38:2 | Job: test3 [CHANGED-FILES] | provenance |  |
+| .github/workflows/test14.yml:39:5:48:45 | Job: test4 [CHANGED-FILES] | .github/workflows/test14.yml:48:21:48:44 | env.CHANGED-FILES | provenance |  |
+| .github/workflows/test14.yml:45:14:47:57 | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"\n | .github/workflows/test14.yml:39:5:48:45 | Job: test4 [CHANGED-FILES] | provenance |  |
+| .github/workflows/test15.yml:10:9:13:6 | Run Step: title [title] | .github/workflows/test15.yml:13:21:13:52 | steps.title.outputs.title | provenance |  |
+| .github/workflows/test15.yml:11:14:12:103 | echo "title=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_OUTPUT"\n | .github/workflows/test15.yml:10:9:13:6 | Run Step: title [title] | provenance |  |
+| .github/workflows/test15.yml:17:9:21:6 | Run Step: title [title] | .github/workflows/test15.yml:21:21:21:52 | steps.title.outputs.title | provenance |  |
+| .github/workflows/test15.yml:18:14:20:53 | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "title=$PR_TITLE" >> "$GITHUB_OUTPUT"\n | .github/workflows/test15.yml:17:9:21:6 | Run Step: title [title] | provenance |  |
+| .github/workflows/test15.yml:23:5:29:2 | Job: test3 [TITLE] | .github/workflows/test15.yml:28:21:28:36 | env.TITLE | provenance |  |
+| .github/workflows/test15.yml:26:14:27:100 | echo "TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"\n | .github/workflows/test15.yml:23:5:29:2 | Job: test3 [TITLE] | provenance |  |
+| .github/workflows/test15.yml:30:5:36:37 | Job: test4 [TITLE] | .github/workflows/test15.yml:36:21:36:36 | env.TITLE | provenance |  |
+| .github/workflows/test15.yml:33:14:35:50 | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "TITLE=$PR_TITLE" >> "$GITHUB_ENV"\n | .github/workflows/test15.yml:30:5:36:37 | Job: test4 [TITLE] | provenance |  |
+| .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | .github/workflows/test.yml:52:20:52:56 | needs.job1.outputs['job_output'] | provenance |  |
+| .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | provenance |  |
+| .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | provenance |  |
+| .github/workflows/test.yml:20:20:20:62 | github.event['pull_request']['body'] | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | provenance |  |
+| .github/workflows/test.yml:23:9:27:6 | Run Step: step1 [MSG] | .github/workflows/test.yml:29:19:29:46 | steps.step1.outputs.MSG | provenance |  |
+| .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | .github/workflows/test.yml:23:9:27:6 | Run Step: step1 [MSG] | provenance |  |
+| .github/workflows/test.yml:27:9:31:6 | Run Step: step2 [MSG2] | .github/workflows/test.yml:33:20:33:48 | steps.step2.outputs.MSG2 | provenance |  |
+| .github/workflows/test.yml:29:19:29:46 | steps.step1.outputs.MSG | .github/workflows/test.yml:27:9:31:6 | Run Step: step2 [MSG2] | provenance |  |
+| .github/workflows/test.yml:31:9:35:6 | Run Step: step3 [MSG3] | .github/workflows/test.yml:37:20:37:48 | steps.step3.outputs.MSG3 | provenance |  |
+| .github/workflows/test.yml:33:20:33:48 | steps.step2.outputs.MSG2 | .github/workflows/test.yml:31:9:35:6 | Run Step: step3 [MSG3] | provenance |  |
+| .github/workflows/test.yml:35:9:39:6 | Run Step: step4 [MSG4] | .github/workflows/test.yml:41:20:41:48 | steps.step4.outputs.MSG4 | provenance |  |
+| .github/workflows/test.yml:37:20:37:48 | steps.step3.outputs.MSG3 | .github/workflows/test.yml:35:9:39:6 | Run Step: step4 [MSG4] | provenance |  |
+| .github/workflows/test.yml:39:9:44:2 | Run Step: step5 [MSG5] | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | provenance |  |
+| .github/workflows/test.yml:41:20:41:48 | steps.step4.outputs.MSG4 | .github/workflows/test.yml:39:9:44:2 | Run Step: step5 [MSG5] | provenance |  |
+| .github/workflows/untrusted_checkout1.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout1.yml:12:14:13:63 | echo "::set-output name=pr_number::$(<artifact.txt)"\n | provenance | Config |
 | .github/workflows/untrusted_checkout1.yml:11:9:14:6 | Run Step: artifact [pr_number] | .github/workflows/untrusted_checkout1.yml:15:20:15:58 | steps.artifact.outputs.pr_number | provenance |  |
 | .github/workflows/untrusted_checkout1.yml:12:14:13:63 | echo "::set-output name=pr_number::$(<artifact.txt)"\n | .github/workflows/untrusted_checkout1.yml:11:9:14:6 | Run Step: artifact [pr_number] | provenance |  |
 nodes
@@ -363,9 +376,9 @@ nodes
 | .github/workflows/simple3.yml:22:11:22:37 | toJSON(github.event) | semmle.label | toJSON(github.event) |
 | .github/workflows/slash_command2.yml:11:9:20:6 | Uses Step: command | semmle.label | Uses Step: command |
 | .github/workflows/slash_command2.yml:20:21:20:66 | steps.command.outputs.command-arguments | semmle.label | steps.command.outputs.command-arguments |
-| .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
-| .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
-| .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | semmle.label | env.ISSUE_KEY |
+| .github/workflows/test1.yml:15:5:27:39 | Job: updateJira [ISSUE_KEY] | semmle.label | Job: updateJira [ISSUE_KEY] |
+| .github/workflows/test1.yml:23:19:23:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test1.yml:27:20:27:39 | env.ISSUE_KEY | semmle.label | env.ISSUE_KEY |
 | .github/workflows/test2.yml:17:9:25:6 | Uses Step: changed | semmle.label | Uses Step: changed |
 | .github/workflows/test2.yml:27:26:27:66 | steps.changed.outputs.locale_files | semmle.label | steps.changed.outputs.locale_files |
 | .github/workflows/test2.yml:29:9:37:6 | Uses Step: changed2 | semmle.label | Uses Step: changed2 |
@@ -402,35 +415,55 @@ nodes
 | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | semmle.label | Job outputs node [pr_num] |
-| .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | semmle.label | Job outputs node [ref] |
 | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | semmle.label | steps.set-ref.outputs.pr_num |
-| .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | semmle.label | steps.set-ref.outputs.ref |
 | .github/workflows/test11.yml:22:9:30:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | semmle.label | Run Step: set-ref [pr_num] |
-| .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | semmle.label | Run Step: set-ref [ref] |
 | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | semmle.label | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n |
 | .github/workflows/test11.yml:54:20:54:60 | needs.get-artifacts.outputs.pr_num | semmle.label | needs.get-artifacts.outputs.pr_num |
-| .github/workflows/test11.yml:55:20:55:57 | needs.get-artifacts.outputs.ref | semmle.label | needs.get-artifacts.outputs.ref |
 | .github/workflows/test12.yml:10:21:10:67 | github.event.pull_request.title \|\| "foo" | semmle.label | github.event.pull_request.title \|\| "foo" |
 | .github/workflows/test13.yml:10:21:10:57 | github.event.changes.body.from | semmle.label | github.event.changes.body.from |
 | .github/workflows/test13.yml:11:21:11:58 | github.event.changes.title.from | semmle.label | github.event.changes.title.from |
 | .github/workflows/test13.yml:12:21:12:61 | github.event.changes.head.ref.from | semmle.label | github.event.changes.head.ref.from |
 | .github/workflows/test13.yml:13:21:13:55 | toJson(github.event.changes) | semmle.label | toJson(github.event.changes) |
-| .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
-| .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
-| .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |
-| .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | semmle.label | github.event['head_commit']['message'] |
-| .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] | semmle.label | Run Step: step1 [MSG] |
-| .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value | semmle.label | steps.step0.outputs.value |
-| .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] | semmle.label | Run Step: step2 [MSG2] |
-| .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | semmle.label | steps.step1.outputs.MSG |
-| .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] | semmle.label | Run Step: step3 [MSG3] |
-| .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 | semmle.label | steps.step2.outputs.MSG2 |
-| .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] | semmle.label | Run Step: step4 [MSG4] |
-| .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 | semmle.label | steps.step3.outputs.MSG3 |
-| .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] | semmle.label | Run Step: step5 [MSG5] |
-| .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 | semmle.label | steps.step4.outputs.MSG4 |
-| .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | semmle.label | needs.job1.outputs['job_output'] |
+| .github/workflows/test14.yml:13:9:16:6 | Run Step: changed-files [files] | semmle.label | Run Step: changed-files [files] |
+| .github/workflows/test14.yml:14:14:15:117 | echo "files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_OUTPUT"\n | semmle.label | echo "files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test14.yml:16:21:16:60 | steps.changed-files.outputs.files | semmle.label | steps.changed-files.outputs.files |
+| .github/workflows/test14.yml:23:9:27:6 | Run Step: changed-files [files] | semmle.label | Run Step: changed-files [files] |
+| .github/workflows/test14.yml:24:14:26:52 | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "files=${FILES}" >> "$GITHUB_OUTPUT"\n | semmle.label | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "files=${FILES}" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test14.yml:27:21:27:60 | steps.changed-files.outputs.files | semmle.label | steps.changed-files.outputs.files |
+| .github/workflows/test14.yml:29:5:38:2 | Job: test3 [CHANGED-FILES] | semmle.label | Job: test3 [CHANGED-FILES] |
+| .github/workflows/test14.yml:35:14:36:122 | echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"\n | semmle.label | echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"\n |
+| .github/workflows/test14.yml:37:21:37:44 | env.CHANGED-FILES | semmle.label | env.CHANGED-FILES |
+| .github/workflows/test14.yml:39:5:48:45 | Job: test4 [CHANGED-FILES] | semmle.label | Job: test4 [CHANGED-FILES] |
+| .github/workflows/test14.yml:45:14:47:57 | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"\n | semmle.label | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"\n |
+| .github/workflows/test14.yml:48:21:48:44 | env.CHANGED-FILES | semmle.label | env.CHANGED-FILES |
+| .github/workflows/test15.yml:10:9:13:6 | Run Step: title [title] | semmle.label | Run Step: title [title] |
+| .github/workflows/test15.yml:11:14:12:103 | echo "title=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_OUTPUT"\n | semmle.label | echo "title=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test15.yml:13:21:13:52 | steps.title.outputs.title | semmle.label | steps.title.outputs.title |
+| .github/workflows/test15.yml:17:9:21:6 | Run Step: title [title] | semmle.label | Run Step: title [title] |
+| .github/workflows/test15.yml:18:14:20:53 | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "title=$PR_TITLE" >> "$GITHUB_OUTPUT"\n | semmle.label | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "title=$PR_TITLE" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test15.yml:21:21:21:52 | steps.title.outputs.title | semmle.label | steps.title.outputs.title |
+| .github/workflows/test15.yml:23:5:29:2 | Job: test3 [TITLE] | semmle.label | Job: test3 [TITLE] |
+| .github/workflows/test15.yml:26:14:27:100 | echo "TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"\n | semmle.label | echo "TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"\n |
+| .github/workflows/test15.yml:28:21:28:36 | env.TITLE | semmle.label | env.TITLE |
+| .github/workflows/test15.yml:30:5:36:37 | Job: test4 [TITLE] | semmle.label | Job: test4 [TITLE] |
+| .github/workflows/test15.yml:33:14:35:50 | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "TITLE=$PR_TITLE" >> "$GITHUB_ENV"\n | semmle.label | PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})\necho "TITLE=$PR_TITLE" >> "$GITHUB_ENV"\n |
+| .github/workflows/test15.yml:36:21:36:36 | env.TITLE | semmle.label | env.TITLE |
+| .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
+| .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
+| .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |
+| .github/workflows/test.yml:20:20:20:62 | github.event['pull_request']['body'] | semmle.label | github.event['pull_request']['body'] |
+| .github/workflows/test.yml:23:9:27:6 | Run Step: step1 [MSG] | semmle.label | Run Step: step1 [MSG] |
+| .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | semmle.label | steps.step0.outputs.value |
+| .github/workflows/test.yml:27:9:31:6 | Run Step: step2 [MSG2] | semmle.label | Run Step: step2 [MSG2] |
+| .github/workflows/test.yml:29:19:29:46 | steps.step1.outputs.MSG | semmle.label | steps.step1.outputs.MSG |
+| .github/workflows/test.yml:31:9:35:6 | Run Step: step3 [MSG3] | semmle.label | Run Step: step3 [MSG3] |
+| .github/workflows/test.yml:33:20:33:48 | steps.step2.outputs.MSG2 | semmle.label | steps.step2.outputs.MSG2 |
+| .github/workflows/test.yml:35:9:39:6 | Run Step: step4 [MSG4] | semmle.label | Run Step: step4 [MSG4] |
+| .github/workflows/test.yml:37:20:37:48 | steps.step3.outputs.MSG3 | semmle.label | steps.step3.outputs.MSG3 |
+| .github/workflows/test.yml:39:9:44:2 | Run Step: step5 [MSG5] | semmle.label | Run Step: step5 [MSG5] |
+| .github/workflows/test.yml:41:20:41:48 | steps.step4.outputs.MSG4 | semmle.label | steps.step4.outputs.MSG4 |
+| .github/workflows/test.yml:52:20:52:56 | needs.job1.outputs['job_output'] | semmle.label | needs.job1.outputs['job_output'] |
 | .github/workflows/untrusted_checkout1.yml:8:9:11:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/untrusted_checkout1.yml:11:9:14:6 | Run Step: artifact [pr_number] | semmle.label | Run Step: artifact [pr_number] |
 | .github/workflows/untrusted_checkout1.yml:12:14:13:63 | echo "::set-output name=pr_number::$(<artifact.txt)"\n | semmle.label | echo "::set-output name=pr_number::$(<artifact.txt)"\n |
@@ -488,7 +521,6 @@ subpaths
 | .github/workflows/test10.yml:333:34:333:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:333:34:333:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:333:34:333:77 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test10.yml:333:34:333:77 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
 | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
 | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
-| .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | ${{needs.job1.outputs['job_output']}} |
 | .github/workflows/workflow_run_branches1.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches1.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches1.yml:13:20:13:63 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run_branches1.yml:13:20:13:63 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
 | .github/workflows/workflow_run_branches2.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches2.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches2.yml:13:20:13:63 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run_branches2.yml:13:20:13:63 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |
 | .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run_branches4.yml:13:20:13:63 | github.event.workflow_run.head_branch | ${{ github.event.workflow_run.head_branch }} |

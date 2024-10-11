@@ -19,7 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Extract Jira Key
-        run: echo ISSUE_KEY=$(echo "${{ github.event.pull_request.title }}") >> $GITHUB_ENV
+        env: 
+          TITLE: ${{ github.event.pull_request.title }}
+        run: echo ISSUE_KEY=$(echo "$TITLE") >> $GITHUB_ENV
 
       - name: Sink
         run: echo ${{ env.ISSUE_KEY }}
