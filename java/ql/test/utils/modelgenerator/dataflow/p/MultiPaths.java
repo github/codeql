@@ -10,4 +10,11 @@ public class MultiPaths {
     }
     return x;
   }
+
+  // summary=p;MultiPaths;true;clone;();;Argument[this];ReturnValue;value;df-generated
+  // contentbased-summary=p;MultiPaths;true;clone;();;Argument[this];ReturnValue;value;dfc-generated
+  @Override
+  public Object clone() {
+    return this;
+  }
 }
