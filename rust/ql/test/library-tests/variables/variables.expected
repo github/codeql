@@ -1,6 +1,4 @@
 testFailures
-| variables.rs:452:5:452:5 | a | Unexpected result: write_access=a |
-| variables.rs:452:16:452:33 | Comment | Missing result:read_access=a |
 failures
 variable
 | variables.rs:3:14:3:14 | s |
@@ -247,7 +245,6 @@ variableWriteAccess
 | variables.rs:279:9:279:11 | a10 | variables.rs:268:13:268:15 | a10 |
 | variables.rs:412:9:412:9 | x | variables.rs:408:13:408:13 | x |
 | variables.rs:416:9:416:9 | x | variables.rs:408:13:408:13 | x |
-| variables.rs:452:5:452:5 | a | variables.rs:450:13:450:13 | a |
 | variables.rs:454:5:454:5 | a | variables.rs:450:13:450:13 | a |
 variableReadAccess
 | variables.rs:4:20:4:20 | s | variables.rs:3:14:3:14 | s |
@@ -371,6 +368,7 @@ variableReadAccess
 | variables.rs:432:19:432:19 | x | variables.rs:424:9:424:9 | x |
 | variables.rs:434:19:434:19 | x | variables.rs:424:9:424:9 | x |
 | variables.rs:451:15:451:15 | a | variables.rs:450:13:450:13 | a |
+| variables.rs:452:5:452:5 | a | variables.rs:450:13:450:13 | a |
 | variables.rs:453:15:453:15 | a | variables.rs:450:13:450:13 | a |
 | variables.rs:455:15:455:15 | a | variables.rs:450:13:450:13 | a |
 | variables.rs:459:16:459:16 | x | variables.rs:458:14:458:14 | x |
