@@ -236,6 +236,22 @@ private fun isNumericFunction(target: KaFunctionSymbol, fName: String): Boolean 
             isFunction(target, "kotlin", "Double", fName)
 }
 
+/**
+ * Extracts a binary expression as either a binary expression or a function call.
+ *
+ * Overloaded operators are extracted as function calls.
+ *
+ * ```
+ * data class Counter(val dayIndex: Int) {
+ *     operator fun plus(increment: Int): Counter {
+ *         return Counter(dayIndex + increment)
+ *     }
+ * }
+ * ```
+ *
+ * `Counter(1) + 3` is extracted as `Counter(1).plus(3)`.
+ *
+ */
 context(KaSession)
 private fun KotlinFileExtractor.extractBinaryExpression(
     expression: KtBinaryExpression,
@@ -261,11 +277,9 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
                 extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
                 extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
-
-                return
+            } else {
+                TODO()
             }
-
-            TODO()
         }
 
         else -> TODO()
