@@ -56,6 +56,15 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
       uses.getArgumentExpr("ref") = sink.asExpr()
     )
   }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Run run |
+      pred instanceof FileSource and
+      pred.asExpr().(Step).getAFollowingStep() = run and
+      succ.asExpr() = run.getScriptScalar() and
+      Bash::outputsPartialFileContent(run, run.getACommand())
+    )
+  }
 }
 
 module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCheckoutConfig>;
@@ -91,6 +100,15 @@ private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
     exists(Uses uses |
       uses.getCallee() = "actions/checkout" and
       uses.getArgumentExpr("ref") = sink.asExpr()
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Run run |
+      pred instanceof FileSource and
+      pred.asExpr().(Step).getAFollowingStep() = run and
+      succ.asExpr() = run.getScriptScalar() and
+      Bash::outputsPartialFileContent(run, run.getACommand())
     )
   }
 }
@@ -139,7 +157,7 @@ predicate containsHeadSHA(string s) {
             "\\bgithub\\.event\\.merge_group\\.head_sha\\b",
             "\\bgithub\\.event\\.merge_group\\.head_commit\\.id\\b",
             // heuristics
-            "\\bhead\\.sha\\b", "\\bhead_sha\\b", "\\bpr_head_sha\\b"
+            "\\bhead\\.sha\\b", "\\bhead_sha\\b", "\\bmerge_sha\\b", "\\bpr_head_sha\\b"
           ], _, _)
   )
 }
@@ -156,7 +174,7 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.merge_group\\.head_ref\\b",
             // heuristics
-            "\\bhead\\.ref\\b", "\\bhead_ref\\b", "\\bpr_head_ref\\b",
+            "\\bhead\\.ref\\b", "\\bhead_ref\\b", "\\bmerge_ref\\b", "\\bpr_head_ref\\b",
             // env vars
             "GITHUB_HEAD_REF",
           ], _, _)

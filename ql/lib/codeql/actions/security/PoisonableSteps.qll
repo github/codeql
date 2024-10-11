@@ -23,8 +23,8 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   }
 }
 
-class JavascriptImportnUsesStep extends PoisonableStep, UsesStep {
-  JavascriptImportnUsesStep() {
+class JavascriptImportUsesStep extends PoisonableStep, UsesStep {
+  JavascriptImportUsesStep() {
     exists(string script, string line, string import_stmt |
       this.getCallee() = "actions/github-script" and
       script = this.getArgument("script") and
@@ -32,6 +32,13 @@ class JavascriptImportnUsesStep extends PoisonableStep, UsesStep {
       import_stmt = line.regexpCapture(".*await\\s+import\\((.*)\\).*", 1) and
       import_stmt.regexpMatch(".*\\bgithub.workspace\\b.*")
     )
+  }
+}
+
+class SetupNodeUsesStep extends PoisonableStep, UsesStep {
+  SetupNodeUsesStep() {
+    this.getCallee() = "actions/setup-node" and
+    this.getArgument("cache") = "yarn"
   }
 }
 

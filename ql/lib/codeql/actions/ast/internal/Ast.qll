@@ -1526,6 +1526,22 @@ class RunImpl extends StepImpl {
   predicate getAWriteToGitHubPath(string value) {
     Bash::extractFileWrite(this.getScript(), "GITHUB_PATH", value)
   }
+
+  predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field) {
+    Bash::envReachingGitHubFileWrite(this, var, "GITHUB_OUTPUT", output_field)
+  }
+
+  predicate getACmdReachingGitHubOutputWrite(string cmd, string output_field) {
+    Bash::cmdReachingGitHubFileWrite(this, cmd, "GITHUB_OUTPUT", output_field)
+  }
+
+  predicate getAnEnvReachingGitHubEnvWrite(string var, string output_field) {
+    Bash::envReachingGitHubFileWrite(this, var, "GITHUB_ENV", output_field)
+  }
+
+  predicate getACmdReachingGitHubEnvWrite(string cmd, string output_field) {
+    Bash::cmdReachingGitHubFileWrite(this, cmd, "GITHUB_ENV", output_field)
+  }
 }
 
 /**
