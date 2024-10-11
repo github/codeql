@@ -59,7 +59,6 @@ extensions:
       - ["java.net", "FileNameMap", True, "getContentTypeFor", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.net", "HttpCookie", False, "HttpCookie", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[java.net.HttpCookie.name]", "taint", "dfc-generated"]
       - ["java.net", "HttpCookie", False, "HttpCookie", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[java.net.HttpCookie.value]", "value", "dfc-generated"]
-      - ["java.net", "HttpCookie", False, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["java.net", "HttpCookie", False, "getComment", "()", "", "Argument[this].SyntheticField[java.net.HttpCookie.comment]", "ReturnValue", "value", "dfc-generated"]
       - ["java.net", "HttpCookie", False, "getCommentURL", "()", "", "Argument[this].SyntheticField[java.net.HttpCookie.commentURL]", "ReturnValue", "value", "dfc-generated"]
       - ["java.net", "HttpCookie", False, "getDomain", "()", "", "Argument[this].SyntheticField[java.net.HttpCookie.domain]", "ReturnValue", "value", "dfc-generated"]

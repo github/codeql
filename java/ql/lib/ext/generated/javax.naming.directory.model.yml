@@ -5,14 +5,12 @@ extensions:
       extensible: summaryModel
     data:
       - ["javax.naming.directory", "Attribute", True, "add", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["javax.naming.directory", "Attribute", True, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.directory", "Attribute", True, "getAttributeDefinition", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.naming.directory", "Attribute", True, "getAttributeSyntaxDefinition", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.naming.directory", "AttributeInUseException", True, "AttributeInUseException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.naming.directory", "AttributeModificationException", True, "AttributeModificationException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.naming.directory", "AttributeModificationException", True, "getUnexecutedModifications", "()", "", "Argument[this].SyntheticField[javax.naming.directory.AttributeModificationException.unexecs]", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.directory", "AttributeModificationException", True, "setUnexecutedModifications", "(ModificationItem[])", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.directory.AttributeModificationException.unexecs]", "value", "dfc-generated"]
-      - ["javax.naming.directory", "Attributes", True, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.directory", "Attributes", True, "get", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.naming.directory", "Attributes", True, "put", "(Attribute)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.naming.directory", "Attributes", True, "put", "(Attribute)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -25,8 +23,6 @@ extensions:
       - ["javax.naming.directory", "BasicAttribute", True, "BasicAttribute", "(String,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.attrID]", "value", "dfc-generated"]
       - ["javax.naming.directory", "BasicAttribute", True, "add", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.values].Element", "value", "dfc-generated"]
       - ["javax.naming.directory", "BasicAttribute", True, "add", "(int,Object)", "", "Argument[1]", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.values].Element", "value", "dfc-generated"]
-      - ["javax.naming.directory", "BasicAttribute", True, "clone", "()", "", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.attrID]", "ReturnValue.SyntheticField[javax.naming.directory.BasicAttribute.attrID]", "value", "dfc-generated"]
-      - ["javax.naming.directory", "BasicAttribute", True, "clone", "()", "", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.values]", "ReturnValue.SyntheticField[javax.naming.directory.BasicAttribute.values]", "value", "dfc-generated"]
       - ["javax.naming.directory", "BasicAttribute", True, "get", "()", "", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.values].Element", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.directory", "BasicAttribute", True, "get", "(int)", "", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.values].Element", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.directory", "BasicAttribute", True, "getID", "()", "", "Argument[this].SyntheticField[javax.naming.directory.BasicAttribute.attrID]", "ReturnValue", "value", "dfc-generated"]

@@ -64,7 +64,6 @@ extensions:
       - ["javax.xml.datatype", "Duration", "subtract", "(Duration)", "summary", "df-generated"]
       - ["javax.xml.datatype", "XMLGregorianCalendar", "add", "(Duration)", "summary", "df-generated"]
       - ["javax.xml.datatype", "XMLGregorianCalendar", "clear", "()", "summary", "df-generated"]
-      - ["javax.xml.datatype", "XMLGregorianCalendar", "clone", "()", "summary", "df-generated"]
       - ["javax.xml.datatype", "XMLGregorianCalendar", "compare", "(XMLGregorianCalendar)", "summary", "df-generated"]
       - ["javax.xml.datatype", "XMLGregorianCalendar", "getDay", "()", "summary", "df-generated"]
       - ["javax.xml.datatype", "XMLGregorianCalendar", "getEon", "()", "summary", "df-generated"]

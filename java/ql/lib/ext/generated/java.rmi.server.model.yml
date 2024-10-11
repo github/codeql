@@ -31,7 +31,6 @@ extensions:
       - ["java.rmi.server", "SkeletonNotFoundException", True, "SkeletonNotFoundException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
       - ["java.rmi.server", "SocketSecurityException", True, "SocketSecurityException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.rmi.server", "SocketSecurityException", True, "SocketSecurityException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
-      - ["java.rmi.server", "UnicastRemoteObject", True, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["java.rmi.server", "UnicastRemoteObject", True, "exportObject", "(Remote,int,ObjectInputFilter)", "", "Argument[2]", "Argument[0]", "taint", "df-generated"]
       - ["java.rmi.server", "UnicastRemoteObject", True, "exportObject", "(Remote,int,RMIClientSocketFactory,RMIServerSocketFactory,ObjectInputFilter)", "", "Argument[4]", "Argument[0]", "taint", "df-generated"]
   - addsTo:

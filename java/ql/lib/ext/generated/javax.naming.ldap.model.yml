@@ -41,7 +41,6 @@ extensions:
       - ["javax.naming.ldap", "LdapName", True, "addAll", "(int,List)", "", "Argument[1].Element", "Argument[this].SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "value", "dfc-generated"]
       - ["javax.naming.ldap", "LdapName", True, "addAll", "(int,List)", "", "Argument[1].Element", "ReturnValue.SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "value", "dfc-generated"]
       - ["javax.naming.ldap", "LdapName", True, "addAll", "(int,List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
-      - ["javax.naming.ldap", "LdapName", True, "clone", "()", "", "Argument[this].SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "ReturnValue.SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "value", "dfc-generated"]
       - ["javax.naming.ldap", "LdapName", True, "getPrefix", "(int)", "", "Argument[this].SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "ReturnValue.SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "value", "dfc-generated"]
       - ["javax.naming.ldap", "LdapName", True, "getRdn", "(int)", "", "Argument[this].SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "ReturnValue", "value", "dfc-generated"]
       - ["javax.naming.ldap", "LdapName", True, "getRdns", "()", "", "Argument[this].SyntheticField[javax.naming.ldap.LdapName.rdns].Element", "ReturnValue.Element", "value", "dfc-generated"]
