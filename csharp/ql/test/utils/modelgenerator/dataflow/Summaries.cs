@@ -506,9 +506,14 @@ public class HigherOrderParameters
         return s;
     }
 
-    public object M2(Func<object, object> map, object o)
+    public object Map(Func<object, object> map, object o)
     {
         return map(o);
+    }
+
+    public void Apply(Action<object> action, object o)
+    {
+        action(o);
     }
 }
 
