@@ -66,6 +66,12 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
      * Gets the enclosing callable of this node.
      */
     Callable getEnclosingCallable();
+
+    /**
+     * Gets the parameter position of the delegate callable for this
+     * delegate call node.
+     */
+    int getParameterPosition();
   }
 
   /**
@@ -282,8 +288,11 @@ module MakeModelGenerator<
     private DataFlow::ReturnKindExt kind;
 
     ReturnNodeExt() {
-      kind = DataFlow::getValueReturnPosition(this).getKind() or
-      kind = DataFlow::getParamReturnPosition(this, _).getKind()
+      not this instanceof DelegateCallNode and
+      (
+        kind = DataFlow::getValueReturnPosition(this).getKind() or
+        kind = DataFlow::getParamReturnPosition(this, _).getKind()
+      )
     }
 
     /**
@@ -295,20 +304,22 @@ module MakeModelGenerator<
   bindingset[c]
   private signature string printCallableParamSig(Callable c, DataFlow::ParameterPosition p);
 
-  private module PrintReturnNodeExt<printCallableParamSig/2 printCallableParam> {
-    string getOutput(ReturnNodeExt node) {
-      node.getKind() instanceof DataFlow::ValueReturnKind and
+  private module PrintSinkNode<printCallableParamSig/2 printCallableParam> {
+    string getOutput(NodeExtended node) {
+      node.(ReturnNodeExt).getKind() instanceof DataFlow::ValueReturnKind and
       result = "ReturnValue"
       or
       exists(DataFlow::ParameterPosition pos |
-        pos = node.getKind().(DataFlow::ParamUpdateReturnKind).getPosition() and
+        pos = node.(ReturnNodeExt).getKind().(DataFlow::ParamUpdateReturnKind).getPosition() and
         result = printCallableParam(returnNodeEnclosingCallable(node), pos)
       )
+      or
+      result = "Argument[" + node.(DelegateCallNode).getParameterPosition() + "]"
     }
   }
 
   string getOutput(ReturnNodeExt node) {
-    result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
+    result = PrintSinkNode<paramReturnNodeAsOutput/2>::getOutput(node)
   }
 
   final private class SummaryTargetApiFinal = SummaryTargetApi;
@@ -538,6 +549,7 @@ module MakeModelGenerator<
 
     private module PropagateContentFlowConfig implements ContentDataFlow::ConfigSig {
       predicate isSource(DataFlow::Node source) {
+        // TODO: We also need to consider delegate calls as source nodes.
         source instanceof DataFlow::ParameterNode and
         source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
       }
@@ -574,8 +586,8 @@ module MakeModelGenerator<
 
     private module ContentModelPrinting = Printing::ModelPrinting<ContentModelPrintingInput>;
 
-    private string getContentOutput(ReturnNodeExt node) {
-      result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
+    private string getContentOutput(NodeExtended node) {
+      result = PrintSinkNode<paramReturnNodeAsContentOutput/2>::getOutput(node)
     }
 
     /**
@@ -615,11 +627,12 @@ module MakeModelGenerator<
 
     private predicate apiFlow(
       DataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
-      PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+      PropagateContentFlow::AccessPath reads, NodeExtended returnNodeExt,
       PropagateContentFlow::AccessPath stores, boolean preservesValue
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
       returnNodeExt.getEnclosingCallable() = api and
+      // TODO: We also need to consider delegate calls within an API to be sources.
       p.(NodeExtended).getEnclosingCallable() = api
     }
 
@@ -641,7 +654,7 @@ module MakeModelGenerator<
       ContentDataFlowSummaryTargetApi() {
         count(string input, string output |
           exists(
-            PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+            PropagateContentFlow::AccessPath reads, NodeExtended returnNodeExt,
             PropagateContentFlow::AccessPath stores
           |
             apiFlow(this, parameter, reads, returnNodeExt, stores, _) and
@@ -712,7 +725,7 @@ module MakeModelGenerator<
         Type t1, PropagateContentFlow::AccessPath read, Type t2,
         PropagateContentFlow::AccessPath store
       ) {
-        exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
+        exists(DataFlow::ParameterNode p, NodeExtended returnNodeExt |
           p.(NodeExtended).getType() = t1 and
           returnNodeExt.getType() = t2 and
           apiContentFlow(_, p, read, returnNodeExt, store, _)
@@ -829,7 +842,7 @@ module MakeModelGenerator<
      */
     private predicate apiRelevantContentFlow(
       ContentDataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
-      PropagateContentFlow::AccessPath read, ReturnNodeExt returnNodeExt,
+      PropagateContentFlow::AccessPath read, NodeExtended returnNodeExt,
       PropagateContentFlow::AccessPath store, boolean preservesValue
     ) {
       apiContentFlow(api, p, read, returnNodeExt, store, preservesValue) and
@@ -847,7 +860,7 @@ module MakeModelGenerator<
       boolean lift
     ) {
       exists(
-        DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt,
+        DataFlow::ParameterNode p, NodeExtended returnNodeExt,
         PropagateContentFlow::AccessPath reads, PropagateContentFlow::AccessPath stores
       |
         apiRelevantContentFlow(api, p, reads, returnNodeExt, stores, preservesValue) and

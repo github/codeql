@@ -27,22 +27,22 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
   }
 
   class DelegateCallNode extends CS::DataFlow::Node {
-    DelegateCallNode() { this.asExpr() instanceof CS::DelegateCall }
-  }
+    private CS::DelegateCall call;
 
-  /**
-   * Holds if any of the parameters of `api` are `System.Func<>`.
-   */
-  private predicate isHigherOrder(Callable api) { none() }
+    DelegateCallNode() { call = this.asExpr() }
+
+    int getParameterPosition() {
+      exists(Parameter p | p.getAnAccess() = call.getExpr() | result = p.getPosition())
+    }
+  }
 
   private predicate irrelevantAccessor(CS::Accessor a) {
     a.getDeclaration().(CS::Property).isReadWrite()
   }
 
   private predicate isUninterestingForModels(Callable api) {
-    // TODO Comment this back in.
-    // api.getDeclaringType().getNamespace().getFullName() = ""
-    // or
+    api.getDeclaringType().getNamespace().getFullName() = ""
+    or
     api instanceof CS::ConversionOperator
     or
     api instanceof Util::MainMethod
@@ -102,7 +102,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
   }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { isHigherOrder(api) }
+  predicate isUninterestingForDataFlowModels(Callable api) { none() }
 
   class SourceOrSinkTargetApi extends Callable {
     SourceOrSinkTargetApi() { relevant(this) }

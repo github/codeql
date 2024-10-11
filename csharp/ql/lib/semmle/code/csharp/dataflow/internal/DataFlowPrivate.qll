@@ -2282,16 +2282,7 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
   )
 }
 
-// node2 needs to be repsentation of the callable. In this case the parameter itself.
-// node1 needs to be the argument position in the call.
-// private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
-//   exists(DelegateCall call, Parameter p, int i |
-//     node1.asExpr() = call.getArgument(i) and
-//     node2.asExpr() = call.getExpr() and
-//     call.getExpr() = p.getAnAccess() and
-//     c.isDelegateParameter(p, i)
-//   )
-// }
+// TODO: Make comment.
 private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
   exists(DelegateCall call, Parameter p, int i |
     node1.asExpr() = call.getArgument(i) and
@@ -2456,14 +2447,14 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
 }
 
 // TODO: Make comment.
-// Consider putting this into readContentStep.
 private predicate readStepDelegateCall(Node node1, ContentSet c, Node node2) {
-  exists(DelegateCall call, Parameter p |
-    node1.asExpr() = call.getExpr() and
-    node2.asExpr() = call and
-    call.getExpr() = p.getAnAccess() and
-    c.isDelegateParameter(p, _)
-  )
+  none()
+  // exists(DelegateCall call, Parameter p |
+  //   node1.asExpr() = call.getExpr() and
+  //   node2.asExpr() = call and
+  //   call.getExpr() = p.getAnAccess() and
+  //   c.isDelegateParameter(p, _)
+  // )
 }
 
 /**
