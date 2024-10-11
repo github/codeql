@@ -4,8 +4,8 @@
  */
 
 private import internal.CallExprImpl
+import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Expr
-import codeql.rust.elements.FunctionOrMethodCallExpr
 
 /**
  * A function call expression. For example:

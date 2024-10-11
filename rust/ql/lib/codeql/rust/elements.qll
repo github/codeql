@@ -20,6 +20,7 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
 import codeql.rust.elements.CallExpr
+import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr
@@ -46,7 +47,6 @@ import codeql.rust.elements.ForType
 import codeql.rust.elements.FormatArgsArg
 import codeql.rust.elements.FormatArgsExpr
 import codeql.rust.elements.Function
-import codeql.rust.elements.FunctionOrMethodCallExpr
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.GenericParam

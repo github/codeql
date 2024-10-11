@@ -1397,6 +1397,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
+   */
+  class CallExprBase extends @call_expr_base, Expr {
+    /**
+     * Gets the argument list of this call expression base, if it exists.
+     */
+    ArgList getArgList() { call_expr_base_arg_lists(this, result) }
+
+    /**
+     * Gets the `index`th attr of this call expression base (0-based).
+     */
+    Attr getAttr(int index) { call_expr_base_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A cast expression. For example:
    * ```rust
    * value as u64;
@@ -1750,22 +1766,6 @@ module Raw {
      * Gets the template of this format arguments expression, if it exists.
      */
     Expr getTemplate() { format_args_expr_templates(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-   */
-  class FunctionOrMethodCallExpr extends @function_or_method_call_expr, Expr {
-    /**
-     * Gets the argument list of this function or method call expression, if it exists.
-     */
-    ArgList getArgList() { function_or_method_call_expr_arg_lists(this, result) }
-
-    /**
-     * Gets the `index`th attr of this function or method call expression (0-based).
-     */
-    Attr getAttr(int index) { function_or_method_call_expr_attrs(this, index, result) }
   }
 
   /**
@@ -2959,7 +2959,7 @@ module Raw {
    * foo(1) = 4;
    * ```
    */
-  class CallExpr extends @call_expr, FunctionOrMethodCallExpr {
+  class CallExpr extends @call_expr, CallExprBase {
     override string toString() { result = "CallExpr" }
 
     /**
@@ -3311,7 +3311,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, FunctionOrMethodCallExpr {
+  class MethodCallExpr extends @method_call_expr, CallExprBase {
     override string toString() { result = "MethodCallExpr" }
 
     /**

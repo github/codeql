@@ -273,13 +273,13 @@ closure_binder_generic_param_lists(
 | @binary_expr
 | @block_expr
 | @break_expr
+| @call_expr_base
 | @cast_expr
 | @closure_expr
 | @continue_expr
 | @field_expr
 | @for_expr
 | @format_args_expr
-| @function_or_method_call_expr
 | @if_expr
 | @index_expr
 | @let_expr
@@ -1300,6 +1300,24 @@ break_expr_lifetimes(
   int lifetime: @lifetime ref
 );
 
+@call_expr_base =
+  @call_expr
+| @method_call_expr
+;
+
+#keyset[id]
+call_expr_base_arg_lists(
+  int id: @call_expr_base ref,
+  int arg_list: @arg_list ref
+);
+
+#keyset[id, index]
+call_expr_base_attrs(
+  int id: @call_expr_base ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
 cast_exprs(
   unique int id: @cast_expr
 );
@@ -1568,24 +1586,6 @@ format_args_expr_attrs(
 format_args_expr_templates(
   int id: @format_args_expr ref,
   int template: @expr ref
-);
-
-@function_or_method_call_expr =
-  @call_expr
-| @method_call_expr
-;
-
-#keyset[id]
-function_or_method_call_expr_arg_lists(
-  int id: @function_or_method_call_expr ref,
-  int arg_list: @arg_list ref
-);
-
-#keyset[id, index]
-function_or_method_call_expr_attrs(
-  int id: @function_or_method_call_expr ref,
-  int index: int ref,
-  int attr: @attr ref
 );
 
 ident_pats(

@@ -1380,6 +1380,28 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCallExprBase(
+    CallExprBase e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nArgList, int nAttr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nArgList = n + 1 and
+      nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
+        or
+        result = e.getAttr(index - nArgList) and
+        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfCastExpr(CastExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr, int nTy |
       b = 0 and
@@ -1687,28 +1709,6 @@ private module Impl {
         partialPredicateCall = "Attr(" + (index - nArg).toString() + ")"
         or
         index = nAttr and result = e.getTemplate() and partialPredicateCall = "Template()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfFunctionOrMethodCallExpr(
-    FunctionOrMethodCallExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bExpr, int n, int nArgList, int nAttr |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nArgList = n + 1 and
-      nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
       )
     )
   }
@@ -2744,17 +2744,16 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bFunctionOrMethodCallExpr, int n, int nExpr |
+    exists(int b, int bCallExprBase, int n, int nExpr |
       b = 0 and
-      bFunctionOrMethodCallExpr =
-        b + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfFunctionOrMethodCallExpr(e, i, _)) | i) and
-      n = bFunctionOrMethodCallExpr and
+      bCallExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallExprBase(e, i, _)) | i) and
+      n = bCallExprBase and
       nExpr = n + 1 and
       (
         none()
         or
-        result = getImmediateChildOfFunctionOrMethodCallExpr(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfCallExprBase(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
       )
@@ -3080,21 +3079,18 @@ private module Impl {
   private Element getImmediateChildOfMethodCallExpr(
     MethodCallExpr e, int index, string partialPredicateCall
   ) {
-    exists(
-      int b, int bFunctionOrMethodCallExpr, int n, int nGenericArgList, int nNameRef, int nReceiver
-    |
+    exists(int b, int bCallExprBase, int n, int nGenericArgList, int nNameRef, int nReceiver |
       b = 0 and
-      bFunctionOrMethodCallExpr =
-        b + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfFunctionOrMethodCallExpr(e, i, _)) | i) and
-      n = bFunctionOrMethodCallExpr and
+      bCallExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallExprBase(e, i, _)) | i) and
+      n = bCallExprBase and
       nGenericArgList = n + 1 and
       nNameRef = nGenericArgList + 1 and
       nReceiver = nNameRef + 1 and
       (
         none()
         or
-        result = getImmediateChildOfFunctionOrMethodCallExpr(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfCallExprBase(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getGenericArgList() and partialPredicateCall = "GenericArgList()"
         or

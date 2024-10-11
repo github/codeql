@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.FunctionOrMethodCallExprImpl::Impl as FunctionOrMethodCallExprImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 
@@ -25,9 +25,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
-  class MethodCallExpr extends Synth::TMethodCallExpr,
-    FunctionOrMethodCallExprImpl::FunctionOrMethodCallExpr
-  {
+  class MethodCallExpr extends Synth::TMethodCallExpr, CallExprBaseImpl::CallExprBase {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 
     /**
