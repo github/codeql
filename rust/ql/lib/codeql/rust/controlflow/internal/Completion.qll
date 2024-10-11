@@ -117,10 +117,9 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
-/** Holds if node `pat` has the constant match value `value`. */
+/** Holds if `pat` is guaranteed to match. */
 pragma[nomagic]
-private predicate isMatchConstant(Pat pat, boolean value) {
-  value = true and
+private predicate isIrrefutablePattern(Pat pat) {
   (
     pat instanceof WildcardPat
     or
@@ -128,18 +127,18 @@ private predicate isMatchConstant(Pat pat, boolean value) {
     or
     pat instanceof RestPat
     or
-    // `let` statements without an `else` branch must be exhaustive
+    // `let` statements without an `else` branch must be irrefutible
     pat = any(LetStmt let | not let.hasLetElse()).getPat()
     or
-    // `match` expressions must be exhaustive, so last arm cannot fail
+    // `match` expressions must be irrefutible, so last arm cannot fail
     pat = any(MatchExpr me).getLastArm().getPat()
     or
-    // parameter patterns must be exhaustive
+    // parameter patterns must be irrefutible
     pat = any(Param p).getPat()
   ) and
   not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
   or
-  exists(Pat parent | isMatchConstant(parent, value) |
+  exists(Pat parent | isIrrefutablePattern(parent) |
     pat = parent.(BoxPat).getPat()
     or
     pat = parent.(IdentPat).getPat()
@@ -166,11 +165,7 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 
   override predicate isValidForSpecific(AstNode e) {
     e instanceof Pat and
-    (
-      isMatchConstant(e, value)
-      or
-      not isMatchConstant(e, _)
-    )
+    if isIrrefutablePattern(e) then value = true else any()
   }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }

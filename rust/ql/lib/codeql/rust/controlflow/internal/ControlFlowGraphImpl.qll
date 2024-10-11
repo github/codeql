@@ -179,11 +179,13 @@ class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-// Closures have their own CFG scope, so we need to make sure that their
-// CFG is not mixed with the surrounding CFG. This is done by retrofitting
-// `first`, `propagatesAbnormal`, and `succ` below.
-class ClosureExprTree extends StandardPostOrderTree, ClosureExpr {
+class ClosureExprTree extends StandardTree, ClosureExpr {
   override predicate first(AstNode first) { first = this }
+
+  override predicate last(AstNode last, Completion c) {
+    last = this and
+    completionIsValidFor(c, this)
+  }
 
   override predicate propagatesAbnormal(AstNode child) { none() }
 
@@ -192,11 +194,6 @@ class ClosureExprTree extends StandardPostOrderTree, ClosureExpr {
     or
     i = this.getParamList().getNumberOfParams() and
     result = this.getBody()
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    super.succ(pred, succ, c) and
-    not succ = this
   }
 }
 
@@ -218,11 +215,9 @@ class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-// Functions have their own CFG scope, so we need to make sure that their
-// CFG is not mixed with the surrounding CFG in case of nested functions.
-// This is done by retrofitting `last`, `propagatesAbnormal`, and `succ`
-// below.
-class FunctionTree extends StandardPreOrderTree, Function {
+class FunctionTree extends StandardTree, Function {
+  override predicate first(AstNode first) { first = this }
+
   override predicate last(AstNode last, Completion c) {
     last = this and
     completionIsValidFor(c, this)
@@ -235,11 +230,6 @@ class FunctionTree extends StandardPreOrderTree, Function {
     or
     i = this.getParamList().getNumberOfParams() and
     result = this.getBody()
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    super.succ(pred, succ, c) and
-    not pred = this
   }
 }
 
