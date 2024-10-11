@@ -573,14 +573,7 @@ private module ReturnNodes {
     )
   }
 
-  class NormalReturnNode extends ReturnNode instanceof NodeImpl {
-    NormalReturnNode() {
-      exists(ReturnContainer container |
-        container = this.getEnclosingCallable().asCfgScope() and
-        this = container.getAReturnedNode()
-      )
-    }
-
+  class NormalReturnNode extends ReturnNode instanceof ReturnNodeImpl {
     final override NormalReturnKind getKind() { any() }
   }
 }
