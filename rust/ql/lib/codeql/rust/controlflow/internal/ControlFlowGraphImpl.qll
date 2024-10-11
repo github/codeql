@@ -273,11 +273,11 @@ class IfExprTree extends PostOrderTree instanceof IfExpr {
   }
 }
 
-class FormatArgsExprTree extends StandardPostOrderTree instanceof FormatArgsExpr {
+class FormatArgsExprTree extends StandardPostOrderTree, FormatArgsExpr {
   override AstNode getChildNode(int i) {
-    i = -1 and result = super.getTemplate()
+    i = -1 and result = this.getTemplate()
     or
-    result = super.getArg(i).getExpr()
+    result = this.getArg(i).getExpr()
   }
 }
 
@@ -441,14 +441,14 @@ class MacroCallTree extends ControlFlowTree, MacroCall {
   override predicate last(AstNode last, Completion c) {
     last(this.getExpanded(), last, c)
     or
-    not exists(super.getExpanded()) and
+    not exists(this.getExpanded()) and
     last = this and
     completionIsValidFor(c, last)
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
 
-  override predicate propagatesAbnormal(AstNode child) { none() }
+  override predicate propagatesAbnormal(AstNode child) { child = this.getExpanded() }
 }
 
 class MacroExprTree extends StandardPostOrderTree, MacroExpr {
