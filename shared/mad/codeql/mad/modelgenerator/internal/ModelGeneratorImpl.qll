@@ -61,6 +61,13 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
     Parameter asParameter();
   }
 
+  class DelegateCallNode extends Lang::Node {
+    /**
+     * Gets the enclosing callable of this node.
+     */
+    Callable getEnclosingCallable();
+  }
+
   /**
    * A class of callables that are potentially relevant for generating summary or
    * neutral models.
@@ -536,7 +543,8 @@ module MakeModelGenerator<
       }
 
       predicate isSink(DataFlow::Node sink) {
-        sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
+        sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSummaryTargetApi or
+        sink.(DelegateCallNode).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
       }
 
       predicate isAdditionalFlowStep = isAdditionalContentFlowStep/2;
@@ -652,7 +660,7 @@ module MakeModelGenerator<
     pragma[nomagic]
     private predicate apiContentFlow(
       ContentDataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
-      PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
+      PropagateContentFlow::AccessPath reads, NodeExtended returnNodeExt,
       PropagateContentFlow::AccessPath stores, boolean preservesValue
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and

@@ -26,22 +26,23 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
   }
 
+  class DelegateCallNode extends CS::DataFlow::Node {
+    DelegateCallNode() { this.asExpr() instanceof CS::DelegateCall }
+  }
+
   /**
    * Holds if any of the parameters of `api` are `System.Func<>`.
    */
-  private predicate isHigherOrder(Callable api) {
-    exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
-      t instanceof SystemLinqExpressions::DelegateExtType
-    )
-  }
+  private predicate isHigherOrder(Callable api) { none() }
 
   private predicate irrelevantAccessor(CS::Accessor a) {
     a.getDeclaration().(CS::Property).isReadWrite()
   }
 
   private predicate isUninterestingForModels(Callable api) {
-    api.getDeclaringType().getNamespace().getFullName() = ""
-    or
+    // TODO Comment this back in.
+    // api.getDeclaringType().getNamespace().getFullName() = ""
+    // or
     api instanceof CS::ConversionOperator
     or
     api instanceof Util::MainMethod
@@ -175,7 +176,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
    */
   private CS::Type getUnderlyingContType(DataFlow::Content c) {
     result = c.(DataFlow::FieldContent).getField().getType() or
-    result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+    result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
+    result = c.(DataFlow::DelegateParameterContent).getType()
   }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
@@ -337,6 +339,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
       p.isEffectivelyPublic() and
       result = "Property[" + name + "]"
     )
+    or
+    exists(CS::Parameter p, int i | c.isDelegateParameter(p, i) and result = "Parameter[" + i + "]")
     or
     result = "SyntheticField[" + getSyntheticName(c) + "]"
     or

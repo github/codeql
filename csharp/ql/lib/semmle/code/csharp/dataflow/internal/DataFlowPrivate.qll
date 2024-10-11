@@ -13,6 +13,7 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
@@ -1146,7 +1147,15 @@ private module Cached {
     TPrimaryConstructorParameterContent(Parameter p) {
       p.getCallable() instanceof PrimaryConstructor
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TDelegateParameterContent(Parameter p, int i) {
+      i =
+        [0 .. p.getType()
+                .getUnboundDeclaration()
+                .(SystemLinqExpressions::DelegateExtType)
+                .getDelegateType()
+                .getNumberOfParameters() - 1]
+    }
 
   cached
   newtype TContentSet =
@@ -2273,6 +2282,25 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
   )
 }
 
+// node2 needs to be repsentation of the callable. In this case the parameter itself.
+// node1 needs to be the argument position in the call.
+// private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
+//   exists(DelegateCall call, Parameter p, int i |
+//     node1.asExpr() = call.getArgument(i) and
+//     node2.asExpr() = call.getExpr() and
+//     call.getExpr() = p.getAnAccess() and
+//     c.isDelegateParameter(p, i)
+//   )
+// }
+private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
+  exists(DelegateCall call, Parameter p, int i |
+    node1.asExpr() = call.getArgument(i) and
+    node2.asExpr() = call and
+    call.getExpr() = p.getAnAccess() and
+    c.isDelegateParameter(p, i)
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
@@ -2305,6 +2333,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  storeStepDelegateCall(node1, c, node2)
 }
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2425,6 +2455,17 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
   VariableCapture::readStep(node1, c, node2)
 }
 
+// TODO: Make comment.
+// Consider putting this into readContentStep.
+private predicate readStepDelegateCall(Node node1, ContentSet c, Node node2) {
+  exists(DelegateCall call, Parameter p |
+    node1.asExpr() = call.getExpr() and
+    node2.asExpr() = call and
+    call.getExpr() = p.getAnAccess() and
+    c.isDelegateParameter(p, _)
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
@@ -2443,6 +2484,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  readStepDelegateCall(node1, c, node2)
 }
 
 private predicate clearsCont(Node n, Content c) {

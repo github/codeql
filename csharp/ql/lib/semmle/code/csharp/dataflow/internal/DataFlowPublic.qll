@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -238,6 +239,32 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/** A reference to a parameter with delegate type. */
+// TODO: We also need to account for parameter positions.
+class DelegateParameterContent extends Content, TDelegateParameterContent {
+  private Parameter p;
+  private int i;
+
+  DelegateParameterContent() { this = TDelegateParameterContent(p, i) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  Type getType() {
+    result =
+      p.getType()
+          .(SystemLinqExpressions::DelegateExtType)
+          .getDelegateType()
+          .getParameter(i)
+          .getType()
+  }
+
+  // TODO: Also print the index.
+  override string toString() { result = "delegate parameter " + p.getName() + " position " + i }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
 /**
  * A reference to a synthetic field corresponding to a
  * primary constructor parameter.
@@ -298,6 +325,10 @@ class ContentSet extends TContentSet {
    * (reflexively and transitively) override/implement `p` (or vice versa).
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
+
+  predicate isDelegateParameter(Parameter p, int i) {
+    this.isSingleton(TDelegateParameterContent(p, i))
+  }
 
   /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
