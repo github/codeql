@@ -42,5 +42,11 @@ module Impl {
      * Gets the number of arms of this match expression.
      */
     int getNumberOfArms() { result = this.getMatchArmList().getNumberOfArms() }
+
+    /**
+     * Gets the last arm of this match expression. Due to exhaustiveness checking,
+     * this arm is guaranteed to succeed.
+     */
+    MatchArm getLastArm() { result = this.getArm(this.getNumberOfArms() - 1) }
   }
 }

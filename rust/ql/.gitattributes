@@ -314,7 +314,6 @@
 /lib/codeql/rust/elements/internal/OffsetOfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/OffsetOfExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/OrPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/OrPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamListConstructor.qll linguist-generated
