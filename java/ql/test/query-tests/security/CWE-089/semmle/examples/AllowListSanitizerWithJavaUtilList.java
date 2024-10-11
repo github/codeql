@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 class AllowListSanitizerWithJavaUtilList {
 	public static Connection connection;
@@ -51,6 +52,7 @@ class AllowListSanitizerWithJavaUtilList {
 		var x = new AllowListSanitizerWithJavaUtilList();
 		x.testNonStaticFields(args);
 		testMultipleSources(args);
+		testEscape(args);
 	}
 
 	private static void testStaticFields(String[] args) throws IOException, SQLException {
@@ -229,11 +231,11 @@ class AllowListSanitizerWithJavaUtilList {
 				ResultSet results = connection.createStatement().executeQuery(query);
 			}
 		}
-		// BAD: an allowlist is used but it may contain a non-compile-time constant element
+		// BAD: an allowlist is used but it contains a non-compile-time constant element
 		{
 			List<String> allowlist = new ArrayList<String>();
 			allowlist.add("allowed1");
-			possiblyMutate(allowlist);
+			addNonConstantStringDirectly(allowlist);
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
@@ -278,8 +280,27 @@ class AllowListSanitizerWithJavaUtilList {
 		}
 	}
 
-	private static void possiblyMutate(List<String> list) {
+	private static void testEscape(String[] args) throws IOException, SQLException {
+		String tainted = args[1];
+		boolean b = args[2] == "True";
+		{
+			// BAD: an allowlist is used which contains constant strings
+			List<String> allowlist = new ArrayList<String>();
+			addNonConstantStringViaLambda(e -> allowlist.add(e));
+			if(allowlist.contains(tainted)){ // missing result
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+	}
+
+	private static void addNonConstantStringDirectly(List<String> list) {
 		list.add(getNonConstantString());
+	}
+
+	private static void addNonConstantStringViaLambda(Consumer<String> adder) {
+		adder.accept(getNonConstantString());
 	}
 
 }

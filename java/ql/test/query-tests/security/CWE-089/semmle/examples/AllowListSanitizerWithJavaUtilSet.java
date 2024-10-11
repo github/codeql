@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.Consumer;
 
 class AllowListSanitizerWithJavaUtilSet {
 	public static Connection connection;
@@ -50,6 +51,7 @@ class AllowListSanitizerWithJavaUtilSet {
 		var x = new AllowListSanitizerWithJavaUtilSet();
 		x.testNonStaticFields(args);
 		testMultipleSources(args);
+		testEscape(args);
 	}
 
 	private static void testStaticFields(String[] args) throws IOException, SQLException {
@@ -228,11 +230,11 @@ class AllowListSanitizerWithJavaUtilSet {
 				ResultSet results = connection.createStatement().executeQuery(query);
 			}
 		}
-		// BAD: an allowlist is used but it may contain a non-compile-time constant element
+		// BAD: an allowlist is used but it contains a non-compile-time constant element
 		{
 			Set<String> allowlist = new HashSet<String>();
 			allowlist.add("allowed1");
-			possiblyMutate(allowlist);
+			addNonConstantStringDirectly(allowlist);
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
@@ -277,8 +279,27 @@ class AllowListSanitizerWithJavaUtilSet {
 		}
 	}
 
-	private static void possiblyMutate(Set<String> set) {
+	private static void testEscape(String[] args) throws IOException, SQLException {
+		String tainted = args[1];
+		boolean b = args[2] == "True";
+		{
+			// BAD: an allowlist is used which contains constant strings
+			Set<String> allowlist = new HashSet<String>();
+			addNonConstantStringViaLambda(e -> allowlist.add(e));
+			if(allowlist.contains(tainted)){ // missing result
+				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+						+ tainted + "' ORDER BY PRICE";
+				ResultSet results = connection.createStatement().executeQuery(query);
+			}
+		}
+	}
+
+	private static void addNonConstantStringDirectly(Set<String> set) {
 		set.add(getNonConstantString());
+	}
+
+	private static void addNonConstantStringViaLambda(Consumer<String> adder) {
+		adder.accept(getNonConstantString());
 	}
 
 }
