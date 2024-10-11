@@ -1608,7 +1608,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Struct:
 			kind = dbscheme.StructType.Index()
 			for i := 0; i < tp.NumFields(); i++ {
-				field := tp.Field(i)
+				field := tp.Field(i).Origin()
 
 				// ensure the field is associated with a label - note that
 				// struct fields do not have a parent scope, so they are not
