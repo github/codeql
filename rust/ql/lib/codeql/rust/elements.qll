@@ -21,6 +21,7 @@ import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
 import codeql.rust.elements.CallExpr
 import codeql.rust.elements.CallExprBase
+import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr

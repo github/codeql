@@ -139,6 +139,7 @@ locatable_locations(
 | @assoc_item
 | @assoc_item_list
 | @attr
+| @callable
 | @closure_binder
 | @expr
 | @extern_item
@@ -253,6 +254,24 @@ attrs(
 attr_meta(
   int id: @attr ref,
   int meta: @meta ref
+);
+
+@callable =
+  @closure_expr
+| @function
+;
+
+#keyset[id]
+callable_param_lists(
+  int id: @callable ref,
+  int param_list: @param_list ref
+);
+
+#keyset[id, index]
+callable_attrs(
+  int id: @callable ref,
+  int index: int ref,
+  int attr: @attr ref
 );
 
 closure_binders(
@@ -1395,13 +1414,6 @@ closure_exprs(
   unique int id: @closure_expr
 );
 
-#keyset[id, index]
-closure_expr_attrs(
-  int id: @closure_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
 #keyset[id]
 closure_expr_bodies(
   int id: @closure_expr ref,
@@ -1437,12 +1449,6 @@ closure_expr_is_move(
 #keyset[id]
 closure_expr_is_static(
   int id: @closure_expr ref
-);
-
-#keyset[id]
-closure_expr_param_lists(
-  int id: @closure_expr ref,
-  int param_list: @param_list ref
 );
 
 #keyset[id]
@@ -2733,13 +2739,6 @@ function_abis(
   int abi: @abi ref
 );
 
-#keyset[id, index]
-function_attrs(
-  int id: @function ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
 #keyset[id]
 function_bodies(
   int id: @function ref,
@@ -2781,12 +2780,6 @@ function_is_unsafe(
 function_names(
   int id: @function ref,
   int name: @name ref
-);
-
-#keyset[id]
-function_param_lists(
-  int id: @function ref,
-  int param_list: @param_list ref
 );
 
 #keyset[id]

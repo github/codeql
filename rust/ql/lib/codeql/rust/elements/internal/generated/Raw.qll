@@ -125,6 +125,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A callable. Either a `Function` or a `ClosureExpr`.
+   */
+  class Callable extends @callable, AstNode {
+    /**
+     * Gets the parameter list of this callable, if it exists.
+     */
+    ParamList getParamList() { callable_param_lists(this, result) }
+
+    /**
+     * Gets the `index`th attr of this callable (0-based).
+     */
+    Attr getAttr(int index) { callable_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A ClosureBinder. For example:
    * ```rust
    * todo!()
@@ -1500,13 +1516,8 @@ module Raw {
    *  static |x| yield x;
    * ```
    */
-  class ClosureExpr extends @closure_expr, Expr {
+  class ClosureExpr extends @closure_expr, Expr, Callable {
     override string toString() { result = "ClosureExpr" }
-
-    /**
-     * Gets the `index`th attr of this closure expression (0-based).
-     */
-    Attr getAttr(int index) { closure_expr_attrs(this, index, result) }
 
     /**
      * Gets the body of this closure expression, if it exists.
@@ -1542,11 +1553,6 @@ module Raw {
      * Holds if this closure expression is static.
      */
     predicate isStatic() { closure_expr_is_static(this) }
-
-    /**
-     * Gets the parameter list of this closure expression, if it exists.
-     */
-    ParamList getParamList() { closure_expr_param_lists(this, result) }
 
     /**
      * Gets the ret type of this closure expression, if it exists.
@@ -3275,18 +3281,13 @@ module Raw {
    * }
    * ```
    */
-  class Function extends @function, AssocItem, ExternItem, Item {
+  class Function extends @function, AssocItem, ExternItem, Item, Callable {
     override string toString() { result = "Function" }
 
     /**
      * Gets the abi of this function, if it exists.
      */
     Abi getAbi() { function_abis(this, result) }
-
-    /**
-     * Gets the `index`th attr of this function (0-based).
-     */
-    Attr getAttr(int index) { function_attrs(this, index, result) }
 
     /**
      * Gets the body of this function, if it exists.
@@ -3327,11 +3328,6 @@ module Raw {
      * Gets the name of this function, if it exists.
      */
     Name getName() { function_names(this, result) }
-
-    /**
-     * Gets the parameter list of this function, if it exists.
-     */
-    ParamList getParamList() { function_param_lists(this, result) }
 
     /**
      * Gets the ret type of this function, if it exists.
