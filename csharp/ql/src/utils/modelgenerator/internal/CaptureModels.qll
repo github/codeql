@@ -101,7 +101,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
   }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { isHigherOrder(api) }
+  predicate isUninterestingForDataFlowModels(Callable api) { none() }
+
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { isHigherOrder(api) }
 
   class SourceOrSinkTargetApi extends Callable {
     SourceOrSinkTargetApi() { relevant(this) }
@@ -175,7 +177,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
    */
   private CS::Type getUnderlyingContType(DataFlow::Content c) {
     result = c.(DataFlow::FieldContent).getField().getType() or
-    result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+    result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
+    result = c.(DataFlow::DelegateCallArgumentContent).getType() or
+    result = c.(DataFlow::DelegateCallReturnContent).getType()
   }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
@@ -342,6 +346,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     or
     c.isElement() and
     result = "Element"
+    or
+    exists(int i | c.isDelegateCallArgument(_, i) and result = "Parameter[" + i + "]")
+    or
+    c.isDelegateCallReturn(_) and result = "ReturnValue"
   }
 
   predicate partialModel = ExternalFlow::partialModel/6;

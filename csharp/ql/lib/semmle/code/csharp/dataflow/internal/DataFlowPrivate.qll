@@ -13,6 +13,7 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
@@ -1146,7 +1147,18 @@ private module Cached {
     TPrimaryConstructorParameterContent(Parameter p) {
       p.getCallable() instanceof PrimaryConstructor
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentContent(Parameter p, int i) {
+      i =
+        [0 .. p.getType()
+                .getUnboundDeclaration()
+                .(SystemLinqExpressions::DelegateExtType)
+                .getDelegateType()
+                .getNumberOfParameters() - 1]
+    } or
+    TDelegateCallReturnContent(Parameter p) {
+      p.getType().getUnboundDeclaration() instanceof SystemLinqExpressions::DelegateExtType
+    }
 
   cached
   newtype TContentSet =
@@ -1162,7 +1174,13 @@ private module Cached {
     TPrimaryConstructorParameterApproxContent(string firstChar) {
       firstChar = approximatePrimaryConstructorParameterContent(_)
     } or
-    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
+    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentApproxContent(string firstChar) {
+      firstChar = approximateDelegateCallArgumentContent(_)
+    } or
+    TDelegateCallReturnApproxContent(string firstChar) {
+      firstChar = approximateDelegateCallReturnContent(_)
+    }
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
@@ -2275,6 +2293,22 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we store "x" on "f"
+ * using a delegate parameter content set.
+ */
+private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
+  exists(DelegateCall call, Parameter p, int i |
+    node1.asExpr() = call.getArgument(i) and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = call.getExpr() and
+    call.getExpr() = p.getAnAccess() and
+    c.isDelegateCallArgument(p, i)
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
@@ -2305,6 +2339,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  storeStepDelegateCall(node1, c, node2)
 }
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2426,6 +2462,22 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
 }
 
 /**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we read the result of the delegate
+ * call.
+ */
+private predicate readStepDelegateCall(Node node1, ContentSet c, Node node2) {
+  exists(DelegateCall call, Parameter p |
+    node1.asExpr() = call.getExpr() and
+    node2.asExpr() = call and
+    call.getExpr() = p.getAnAccess() and
+    c.isDelegateCallReturn(p)
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
@@ -2443,6 +2495,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  readStepDelegateCall(node1, c, node2)
 }
 
 private predicate clearsCont(Node n, Content c) {
@@ -3037,6 +3091,16 @@ class ContentApprox extends TContentApprox {
     exists(VariableCapture::CapturedVariable v |
       this = TCapturedVariableContentApprox(v) and result = "captured " + v
     )
+    or
+    exists(string firstChar |
+      this = TDelegateCallArgumentApproxContent(firstChar) and
+      result = "approximated delegate call argument " + firstChar
+    )
+    or
+    exists(string firstChar |
+      this = TDelegateCallReturnApproxContent(firstChar) and
+      result = "approximated delegate call return " + firstChar
+    )
   }
 }
 
@@ -3058,6 +3122,22 @@ private string approximatePrimaryConstructorParameterContent(PrimaryConstructorP
   result = pc.getParameter().getName().prefix(1)
 }
 
+private string getApproximateParameterName(Parameter p) {
+  exists(string name | name = p.getName() |
+    name = "" and result = ""
+    or
+    result = name.prefix(1)
+  )
+}
+
+private string approximateDelegateCallArgumentContent(DelegateCallArgumentContent dc) {
+  result = getApproximateParameterName(dc.getParameter())
+}
+
+private string approximateDelegateCallReturnContent(DelegateCallReturnContent dc) {
+  result = getApproximateParameterName(dc.getParameter())
+}
+
 /** Gets an approximated value for content `c`. */
 pragma[nomagic]
 ContentApprox getContentApprox(Content c) {
@@ -3073,6 +3153,10 @@ ContentApprox getContentApprox(Content c) {
     TPrimaryConstructorParameterApproxContent(approximatePrimaryConstructorParameterContent(c))
   or
   result = TCapturedVariableContentApprox(VariableCapture::getCapturedVariableContent(c))
+  or
+  result = TDelegateCallArgumentApproxContent(approximateDelegateCallArgumentContent(c))
+  or
+  result = TDelegateCallReturnApproxContent(approximateDelegateCallReturnContent(c))
 }
 
 /**
