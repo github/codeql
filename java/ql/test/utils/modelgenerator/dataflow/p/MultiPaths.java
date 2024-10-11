@@ -11,8 +11,7 @@ public class MultiPaths {
     return x;
   }
 
-  // summary=p;MultiPaths;true;clone;();;Argument[this];ReturnValue;value;df-generated
-  // contentbased-summary=p;MultiPaths;true;clone;();;Argument[this];ReturnValue;value;dfc-generated
+  // No summary for the clone method as it is explicitly handled by the dataflow library.
   @Override
   public Object clone() {
     return this;
