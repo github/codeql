@@ -40,8 +40,6 @@ extensions:
       - ["java.util.zip", "InflaterOutputStream", True, "InflaterOutputStream", "(OutputStream,Inflater)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
       - ["java.util.zip", "InflaterOutputStream", True, "InflaterOutputStream", "(OutputStream,Inflater,int)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
       - ["java.util.zip", "ZipEntry", True, "ZipEntry", "(ZipEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["java.util.zip", "ZipEntry", True, "clone", "()", "", "Argument[this].SyntheticField[java.util.zip.ZipEntry.extra]", "ReturnValue.SyntheticField[java.util.zip.ZipEntry.extra]", "value", "dfc-generated"]
-      - ["java.util.zip", "ZipEntry", True, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["java.util.zip", "ZipEntry", True, "getComment", "()", "", "Argument[this].SyntheticField[java.util.zip.ZipEntry.comment]", "ReturnValue", "value", "dfc-generated"]
       - ["java.util.zip", "ZipEntry", True, "getCreationTime", "()", "", "Argument[this].SyntheticField[java.util.zip.ZipEntry.ctime]", "ReturnValue", "value", "dfc-generated"]
       - ["java.util.zip", "ZipEntry", True, "getExtra", "()", "", "Argument[this].SyntheticField[java.util.zip.ZipEntry.extra]", "ReturnValue", "value", "dfc-generated"]

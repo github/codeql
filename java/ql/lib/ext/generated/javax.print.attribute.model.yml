@@ -18,7 +18,6 @@ extensions:
       - ["javax.print.attribute", "AttributeSetUtilities", False, "unmodifiableView", "(PrintRequestAttributeSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.print.attribute", "AttributeSetUtilities", False, "unmodifiableView", "(PrintServiceAttributeSet)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.print.attribute", "AttributeSetUtilities", False, "verifyAttributeValue", "(Object,Class)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["javax.print.attribute", "EnumSyntax", True, "clone", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["javax.print.attribute", "HashAttributeSet", True, "HashAttributeSet", "(Attribute)", "", "Argument[0]", "Argument[this].SyntheticField[javax.print.attribute.HashAttributeSet.attrMap].MapValue", "value", "dfc-generated"]
       - ["javax.print.attribute", "HashAttributeSet", True, "HashAttributeSet", "(AttributeSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.print.attribute", "HashAttributeSet", True, "HashAttributeSet", "(Attribute[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[javax.print.attribute.HashAttributeSet.attrMap].MapValue", "value", "dfc-generated"]
