@@ -7,7 +7,7 @@ import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
 /** The function `fopen` and friends. */
-private class Fopen extends Function, AliasFunction, SideEffectFunction {
+private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFunction {
   Fopen() {
     this.hasGlobalOrStdName(["fopen", "fopen_s", "freopen"])
     or
@@ -46,5 +46,23 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction {
     this.hasGlobalName(["_open", "_wopen"]) and
     i = 0 and
     buffer = true
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    (
+      this.hasGlobalOrStdName(["fopen", "freopen"]) or
+      this.hasGlobalName(["_wfopen", "_fsopen", "_wfsopen"])
+    ) and
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
+    or
+    // The out parameter is a pointer to a `FILE*`.
+    this.hasGlobalOrStdName("fopen_s") and
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0, 2)
+    or
+    this.hasGlobalName(["_open", "_wopen"]) and
+    input.isParameterDeref(0) and
+    output.isReturnValue()
   }
 }

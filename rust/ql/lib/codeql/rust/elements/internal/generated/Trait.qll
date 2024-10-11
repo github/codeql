@@ -79,6 +79,16 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
+     * Holds if this trait is auto.
+     */
+    predicate isAuto() { Synth::convertTraitToRaw(this).(Raw::Trait).isAuto() }
+
+    /**
+     * Holds if this trait is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertTraitToRaw(this).(Raw::Trait).isUnsafe() }
+
+    /**
      * Gets the name of this trait, if it exists.
      */
     Name getName() {

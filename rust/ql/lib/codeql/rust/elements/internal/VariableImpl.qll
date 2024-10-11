@@ -78,7 +78,12 @@ module Impl {
       not exists(getOutermostEnclosingOrPat(p)) and
       definingNode = p.getName()
     ) and
-    name = p.getName().getText()
+    name = p.getName().getText() and
+    // exclude for now anything starting with an uppercase character, which may be a reference to
+    // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+    // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+    // naming guidelines, which they generally do, but they're not enforced.
+    not name.charAt(0).isUppercase()
   }
 
   /** A variable. */

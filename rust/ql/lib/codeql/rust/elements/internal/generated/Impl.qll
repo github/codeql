@@ -78,6 +78,21 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
+     * Holds if this impl is const.
+     */
+    predicate isConst() { Synth::convertImplToRaw(this).(Raw::Impl).isConst() }
+
+    /**
+     * Holds if this impl is default.
+     */
+    predicate isDefault() { Synth::convertImplToRaw(this).(Raw::Impl).isDefault() }
+
+    /**
+     * Holds if this impl is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertImplToRaw(this).(Raw::Impl).isUnsafe() }
+
+    /**
      * Gets the self ty of this impl, if it exists.
      */
     TypeRef getSelfTy() {

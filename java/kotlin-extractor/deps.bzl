@@ -17,7 +17,7 @@ def _get_dep(repository_ctx, name):
     return repository_ctx.path(Label("//java/kotlin-extractor/deps:%s" % name))
 
 def _kotlin_dep_impl(repository_ctx):
-    _, _, name = repository_ctx.name.rpartition("~")
+    _, _, name = repository_ctx.name.rpartition("+")
     lfs_smudge(repository_ctx, [_get_dep(repository_ctx, name + ".jar")])
 
     # for some reason rules_kotlin warns about these jars missing, this is to silence those warnings
