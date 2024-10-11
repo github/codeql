@@ -185,8 +185,15 @@ class _:
     ```
     """
 
+class CallExprBase(Expr):
+    """
+    A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
+    """
+    arg_list: optional["ArgList"] | child
+    attrs: list["Attr"] | child
 
-@annotate(CallExpr)
+
+@annotate(CallExpr, replace_bases={Expr: CallExprBase})
 class _:
     """
     A function call expression. For example:
@@ -197,9 +204,10 @@ class _:
     foo(1) = 4;
     ```
     """
+    arg_list: drop
+    attrs: drop
 
-
-@annotate(MethodCallExpr)
+@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase})
 class _:
     """
     A method call expression. For example:
@@ -208,6 +216,8 @@ class _:
     x.foo::<u32, u64>(42);
     ```
     """
+    arg_list: drop
+    attrs: drop
 
 
 @annotate(MatchArm)

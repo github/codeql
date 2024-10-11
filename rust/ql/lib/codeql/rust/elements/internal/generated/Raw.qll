@@ -1447,31 +1447,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A function call expression. For example:
-   * ```rust
-   * foo(42);
-   * foo::<u32, u64>(42);
-   * foo[0](42);
-   * foo(1) = 4;
-   * ```
+   * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
    */
-  class CallExpr extends @call_expr, Expr {
-    override string toString() { result = "CallExpr" }
+  class CallExprBase extends @call_expr_base, Expr {
+    /**
+     * Gets the argument list of this call expression base, if it exists.
+     */
+    ArgList getArgList() { call_expr_base_arg_lists(this, result) }
 
     /**
-     * Gets the argument list of this call expression, if it exists.
+     * Gets the `index`th attr of this call expression base (0-based).
      */
-    ArgList getArgList() { call_expr_arg_lists(this, result) }
-
-    /**
-     * Gets the `index`th attr of this call expression (0-based).
-     */
-    Attr getAttr(int index) { call_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this call expression, if it exists.
-     */
-    Expr getExpr() { call_expr_exprs(this, result) }
+    Attr getAttr(int index) { call_expr_base_attrs(this, index, result) }
   }
 
   /**
@@ -2318,43 +2305,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A method call expression. For example:
-   * ```rust
-   * x.foo(42);
-   * x.foo::<u32, u64>(42);
-   * ```
-   */
-  class MethodCallExpr extends @method_call_expr, Expr {
-    override string toString() { result = "MethodCallExpr" }
-
-    /**
-     * Gets the argument list of this method call expression, if it exists.
-     */
-    ArgList getArgList() { method_call_expr_arg_lists(this, result) }
-
-    /**
-     * Gets the `index`th attr of this method call expression (0-based).
-     */
-    Attr getAttr(int index) { method_call_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the generic argument list of this method call expression, if it exists.
-     */
-    GenericArgList getGenericArgList() { method_call_expr_generic_arg_lists(this, result) }
-
-    /**
-     * Gets the name reference of this method call expression, if it exists.
-     */
-    NameRef getNameRef() { method_call_expr_name_refs(this, result) }
-
-    /**
-     * Gets the receiver of this method call expression, if it exists.
-     */
-    Expr getReceiver() { method_call_expr_receivers(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A NeverType. For example:
    * ```rust
    * todo!()
@@ -3146,6 +3096,25 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function call expression. For example:
+   * ```rust
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * foo(1) = 4;
+   * ```
+   */
+  class CallExpr extends @call_expr, CallExprBase {
+    override string toString() { result = "CallExpr" }
+
+    /**
+     * Gets the expression of this call expression, if it exists.
+     */
+    Expr getExpr() { call_expr_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A Const. For example:
    * ```rust
    * todo!()
@@ -3532,6 +3501,33 @@ module Raw {
      * Gets the visibility of this macro rules, if it exists.
      */
     Visibility getVisibility() { macro_rules_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A method call expression. For example:
+   * ```rust
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
+   * ```
+   */
+  class MethodCallExpr extends @method_call_expr, CallExprBase {
+    override string toString() { result = "MethodCallExpr" }
+
+    /**
+     * Gets the generic argument list of this method call expression, if it exists.
+     */
+    GenericArgList getGenericArgList() { method_call_expr_generic_arg_lists(this, result) }
+
+    /**
+     * Gets the name reference of this method call expression, if it exists.
+     */
+    NameRef getNameRef() { method_call_expr_name_refs(this, result) }
+
+    /**
+     * Gets the receiver of this method call expression, if it exists.
+     */
+    Expr getReceiver() { method_call_expr_receivers(this, result) }
   }
 
   /**
