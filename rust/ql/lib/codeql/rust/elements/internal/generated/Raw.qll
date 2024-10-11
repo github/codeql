@@ -422,6 +422,11 @@ module Raw {
     Expr getExpr() { meta_exprs(this, result) }
 
     /**
+     * Holds if this meta is unsafe.
+     */
+    predicate isUnsafe() { meta_is_unsafe(this) }
+
+    /**
      * Gets the path of this meta, if it exists.
      */
     Path getPath() { meta_paths(this, result) }
@@ -773,6 +778,11 @@ module Raw {
     Attr getAttr(int index) { self_param_attrs(this, index, result) }
 
     /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { self_param_is_mut(this) }
+
+    /**
      * Gets the lifetime of this self parameter, if it exists.
      */
     Lifetime getLifetime() { self_param_lifetimes(this, result) }
@@ -898,6 +908,16 @@ module Raw {
      * Gets the generic parameter list of this type bound, if it exists.
      */
     GenericParamList getGenericParamList() { type_bound_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this type bound is async.
+     */
+    predicate isAsync() { type_bound_is_async(this) }
+
+    /**
+     * Holds if this type bound is const.
+     */
+    predicate isConst() { type_bound_is_const(this) }
 
     /**
      * Gets the lifetime of this type bound, if it exists.
@@ -1321,6 +1341,36 @@ module Raw {
     Attr getAttr(int index) { block_expr_attrs(this, index, result) }
 
     /**
+     * Holds if this block expression is async.
+     */
+    predicate isAsync() { block_expr_is_async(this) }
+
+    /**
+     * Holds if this block expression is const.
+     */
+    predicate isConst() { block_expr_is_const(this) }
+
+    /**
+     * Holds if this block expression is gen.
+     */
+    predicate isGen() { block_expr_is_gen(this) }
+
+    /**
+     * Holds if this block expression is move.
+     */
+    predicate isMove() { block_expr_is_move(this) }
+
+    /**
+     * Holds if this block expression is try.
+     */
+    predicate isTry() { block_expr_is_try(this) }
+
+    /**
+     * Holds if this block expression is unsafe.
+     */
+    predicate isUnsafe() { block_expr_is_unsafe(this) }
+
+    /**
      * Gets the label of this block expression, if it exists.
      */
     Label getLabel() { block_expr_labels(this, result) }
@@ -1469,6 +1519,31 @@ module Raw {
     ClosureBinder getClosureBinder() { closure_expr_closure_binders(this, result) }
 
     /**
+     * Holds if this closure expression is async.
+     */
+    predicate isAsync() { closure_expr_is_async(this) }
+
+    /**
+     * Holds if this closure expression is const.
+     */
+    predicate isConst() { closure_expr_is_const(this) }
+
+    /**
+     * Holds if this closure expression is gen.
+     */
+    predicate isGen() { closure_expr_is_gen(this) }
+
+    /**
+     * Holds if this closure expression is move.
+     */
+    predicate isMove() { closure_expr_is_move(this) }
+
+    /**
+     * Holds if this closure expression is static.
+     */
+    predicate isStatic() { closure_expr_is_static(this) }
+
+    /**
      * Gets the parameter list of this closure expression, if it exists.
      */
     ParamList getParamList() { closure_expr_param_lists(this, result) }
@@ -1534,6 +1609,11 @@ module Raw {
      * Gets the block expression of this const block pat, if it exists.
      */
     BlockExpr getBlockExpr() { const_block_pat_block_exprs(this, result) }
+
+    /**
+     * Holds if this const block pat is const.
+     */
+    predicate isConst() { const_block_pat_is_const(this) }
   }
 
   /**
@@ -1555,6 +1635,11 @@ module Raw {
      * Gets the default val of this const parameter, if it exists.
      */
     ConstArg getDefaultVal() { const_param_default_vals(this, result) }
+
+    /**
+     * Holds if this const parameter is const.
+     */
+    predicate isConst() { const_param_is_const(this) }
 
     /**
      * Gets the name of this const parameter, if it exists.
@@ -1675,6 +1760,21 @@ module Raw {
     Abi getAbi() { fn_ptr_type_abis(this, result) }
 
     /**
+     * Holds if this fn ptr type is async.
+     */
+    predicate isAsync() { fn_ptr_type_is_async(this) }
+
+    /**
+     * Holds if this fn ptr type is const.
+     */
+    predicate isConst() { fn_ptr_type_is_const(this) }
+
+    /**
+     * Holds if this fn ptr type is unsafe.
+     */
+    predicate isUnsafe() { fn_ptr_type_is_unsafe(this) }
+
+    /**
      * Gets the parameter list of this fn ptr type, if it exists.
      */
     ParamList getParamList() { fn_ptr_type_param_lists(this, result) }
@@ -1791,6 +1891,16 @@ module Raw {
      * Gets the `index`th attr of this ident pat (0-based).
      */
     Attr getAttr(int index) { ident_pat_attrs(this, index, result) }
+
+    /**
+     * Holds if this ident pat is mut.
+     */
+    predicate isMut() { ident_pat_is_mut(this) }
+
+    /**
+     * Holds if this ident pat is reference.
+     */
+    predicate isRef() { ident_pat_is_ref(this) }
 
     /**
      * Gets the name of this ident pat, if it exists.
@@ -2399,6 +2509,16 @@ module Raw {
     override string toString() { result = "PtrType" }
 
     /**
+     * Holds if this ptr type is const.
+     */
+    predicate isConst() { ptr_type_is_const(this) }
+
+    /**
+     * Holds if this ptr type is mut.
+     */
+    predicate isMut() { ptr_type_is_mut(this) }
+
+    /**
      * Gets the ty of this ptr type, if it exists.
      */
     TypeRef getTy() { ptr_type_ties(this, result) }
@@ -2558,6 +2678,21 @@ module Raw {
      * Gets the expression of this reference expression, if it exists.
      */
     Expr getExpr() { ref_expr_exprs(this, result) }
+
+    /**
+     * Holds if this reference expression is const.
+     */
+    predicate isConst() { ref_expr_is_const(this) }
+
+    /**
+     * Holds if this reference expression is mut.
+     */
+    predicate isMut() { ref_expr_is_mut(this) }
+
+    /**
+     * Holds if this reference expression is raw.
+     */
+    predicate isRaw() { ref_expr_is_raw(this) }
   }
 
   /**
@@ -2574,6 +2709,11 @@ module Raw {
     override string toString() { result = "RefPat" }
 
     /**
+     * Holds if this reference pat is mut.
+     */
+    predicate isMut() { ref_pat_is_mut(this) }
+
+    /**
      * Gets the pat of this reference pat, if it exists.
      */
     Pat getPat() { ref_pat_pats(this, result) }
@@ -2588,6 +2728,11 @@ module Raw {
    */
   class RefType extends @ref_type, TypeRef {
     override string toString() { result = "RefType" }
+
+    /**
+     * Holds if this reference type is mut.
+     */
+    predicate isMut() { ref_type_is_mut(this) }
 
     /**
      * Gets the lifetime of this reference type, if it exists.
@@ -2989,6 +3134,16 @@ module Raw {
     Expr getBody() { const_bodies(this, result) }
 
     /**
+     * Holds if this const is const.
+     */
+    predicate isConst() { const_is_const(this) }
+
+    /**
+     * Holds if this const is default.
+     */
+    predicate isDefault() { const_is_default(this) }
+
+    /**
      * Gets the name of this const, if it exists.
      */
     Name getName() { const_names(this, result) }
@@ -3069,6 +3224,11 @@ module Raw {
      * Gets the extern item list of this extern block, if it exists.
      */
     ExternItemList getExternItemList() { extern_block_extern_item_lists(this, result) }
+
+    /**
+     * Holds if this extern block is unsafe.
+     */
+    predicate isUnsafe() { extern_block_is_unsafe(this) }
   }
 
   /**
@@ -3139,6 +3299,31 @@ module Raw {
     GenericParamList getGenericParamList() { function_generic_param_lists(this, result) }
 
     /**
+     * Holds if this function is async.
+     */
+    predicate isAsync() { function_is_async(this) }
+
+    /**
+     * Holds if this function is const.
+     */
+    predicate isConst() { function_is_const(this) }
+
+    /**
+     * Holds if this function is default.
+     */
+    predicate isDefault() { function_is_default(this) }
+
+    /**
+     * Holds if this function is gen.
+     */
+    predicate isGen() { function_is_gen(this) }
+
+    /**
+     * Holds if this function is unsafe.
+     */
+    predicate isUnsafe() { function_is_unsafe(this) }
+
+    /**
      * Gets the name of this function, if it exists.
      */
     Name getName() { function_names(this, result) }
@@ -3188,6 +3373,21 @@ module Raw {
      * Gets the generic parameter list of this impl, if it exists.
      */
     GenericParamList getGenericParamList() { impl_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this impl is const.
+     */
+    predicate isConst() { impl_is_const(this) }
+
+    /**
+     * Holds if this impl is default.
+     */
+    predicate isDefault() { impl_is_default(this) }
+
+    /**
+     * Holds if this impl is unsafe.
+     */
+    predicate isUnsafe() { impl_is_unsafe(this) }
 
     /**
      * Gets the self ty of this impl, if it exists.
@@ -3387,6 +3587,16 @@ module Raw {
     Expr getBody() { static_bodies(this, result) }
 
     /**
+     * Holds if this static is mut.
+     */
+    predicate isMut() { static_is_mut(this) }
+
+    /**
+     * Holds if this static is static.
+     */
+    predicate isStatic() { static_is_static(this) }
+
+    /**
      * Gets the name of this static, if it exists.
      */
     Name getName() { static_names(this, result) }
@@ -3469,6 +3679,16 @@ module Raw {
     GenericParamList getGenericParamList() { trait_generic_param_lists(this, result) }
 
     /**
+     * Holds if this trait is auto.
+     */
+    predicate isAuto() { trait_is_auto(this) }
+
+    /**
+     * Holds if this trait is unsafe.
+     */
+    predicate isUnsafe() { trait_is_unsafe(this) }
+
+    /**
      * Gets the name of this trait, if it exists.
      */
     Name getName() { trait_names(this, result) }
@@ -3549,6 +3769,11 @@ module Raw {
      * Gets the generic parameter list of this type alias, if it exists.
      */
     GenericParamList getGenericParamList() { type_alias_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this type alias is default.
+     */
+    predicate isDefault() { type_alias_is_default(this) }
 
     /**
      * Gets the name of this type alias, if it exists.

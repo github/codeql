@@ -3,7 +3,7 @@ use std::{fs, path::PathBuf};
 
 pub mod codegen;
 mod flags;
-use codegen::grammar::ast_src::{AstNodeSrc, AstSrc};
+use codegen::grammar::ast_src::{AstNodeSrc, AstSrc, Field};
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use ungrammar::Grammar;
@@ -94,7 +94,13 @@ fn write_schema(
             }
 
             empty = false;
-            if field.tp == "string" {
+            if field.tp == "predicate" {
+                writeln!(
+                    buf,
+                    "   {}: predicate",
+                    property_name(&node.name, &field.name),
+                )?;
+            } else if field.tp == "string" {
                 writeln!(
                     buf,
                     "   {}: optional[string]",
@@ -131,6 +137,21 @@ struct FieldInfo {
 }
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
+    let predicates = [
+        "async", "auto", "const", "default", "gen", "move", "mut", "raw", "ref", "static", "try",
+        "unsafe",
+    ];
+    for field in &node.fields {
+        if let Field::Token(name) = field {
+            if predicates.contains(&name.as_str()) {
+                result.push(FieldInfo {
+                    name: format!("is_{name}"),
+                    tp: "predicate".to_string(),
+                    is_many: false,
+                });
+            }
+        }
+    }
 
     match node.name.as_str() {
         "Name" | "NameRef" | "Lifetime" => {
@@ -480,7 +501,14 @@ impl Translator {{
             let type_name = &field.tp;
             let struct_field_name = &field.name;
             let class_field_name = property_name(&node.name, &field.name);
-            if field.tp == "string" {
+            if field.tp == "predicate" {
+                writeln!(
+                    buf,
+                    "        let {} = node.{}_token().is_some();",
+                    class_field_name,
+                    &struct_field_name[3..],
+                )?;
+            } else if field.tp == "string" {
                 writeln!(
                     buf,
                     "        let {} = node.try_get_text();",

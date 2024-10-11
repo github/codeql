@@ -58,5 +58,20 @@ module Generated {
      * Holds if `getExpr()` exists.
      */
     final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Holds if this reference expression is const.
+     */
+    predicate isConst() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isConst() }
+
+    /**
+     * Holds if this reference expression is mut.
+     */
+    predicate isMut() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isMut() }
+
+    /**
+     * Holds if this reference expression is raw.
+     */
+    predicate isRaw() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isRaw() }
   }
 }

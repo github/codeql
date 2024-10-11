@@ -500,6 +500,11 @@ meta_exprs(
 );
 
 #keyset[id]
+meta_is_unsafe(
+  int id: @meta ref
+);
+
+#keyset[id]
 meta_paths(
   int id: @meta ref,
   int path: @path ref
@@ -804,6 +809,11 @@ self_param_attrs(
 );
 
 #keyset[id]
+self_param_is_mut(
+  int id: @self_param ref
+);
+
+#keyset[id]
 self_param_lifetimes(
   int id: @self_param ref,
   int lifetime: @lifetime ref
@@ -908,6 +918,16 @@ type_bounds(
 type_bound_generic_param_lists(
   int id: @type_bound ref,
   int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+type_bound_is_async(
+  int id: @type_bound ref
+);
+
+#keyset[id]
+type_bound_is_const(
+  int id: @type_bound ref
 );
 
 #keyset[id]
@@ -1256,6 +1276,36 @@ block_expr_attrs(
 );
 
 #keyset[id]
+block_expr_is_async(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_const(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_gen(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_move(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_try(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_unsafe(
+  int id: @block_expr ref
+);
+
+#keyset[id]
 block_expr_labels(
   int id: @block_expr ref,
   int label: @label ref
@@ -1365,6 +1415,31 @@ closure_expr_closure_binders(
 );
 
 #keyset[id]
+closure_expr_is_async(
+  int id: @closure_expr ref
+);
+
+#keyset[id]
+closure_expr_is_const(
+  int id: @closure_expr ref
+);
+
+#keyset[id]
+closure_expr_is_gen(
+  int id: @closure_expr ref
+);
+
+#keyset[id]
+closure_expr_is_move(
+  int id: @closure_expr ref
+);
+
+#keyset[id]
+closure_expr_is_static(
+  int id: @closure_expr ref
+);
+
+#keyset[id]
 closure_expr_param_lists(
   int id: @closure_expr ref,
   int param_list: @param_list ref
@@ -1402,6 +1477,11 @@ const_block_pat_block_exprs(
   int block_expr: @block_expr ref
 );
 
+#keyset[id]
+const_block_pat_is_const(
+  int id: @const_block_pat ref
+);
+
 const_params(
   unique int id: @const_param
 );
@@ -1417,6 +1497,11 @@ const_param_attrs(
 const_param_default_vals(
   int id: @const_param ref,
   int default_val: @const_arg ref
+);
+
+#keyset[id]
+const_param_is_const(
+  int id: @const_param ref
 );
 
 #keyset[id]
@@ -1499,6 +1584,21 @@ fn_ptr_types(
 fn_ptr_type_abis(
   int id: @fn_ptr_type ref,
   int abi: @abi ref
+);
+
+#keyset[id]
+fn_ptr_type_is_async(
+  int id: @fn_ptr_type ref
+);
+
+#keyset[id]
+fn_ptr_type_is_const(
+  int id: @fn_ptr_type ref
+);
+
+#keyset[id]
+fn_ptr_type_is_unsafe(
+  int id: @fn_ptr_type ref
 );
 
 #keyset[id]
@@ -1597,6 +1697,16 @@ ident_pat_attrs(
   int id: @ident_pat ref,
   int index: int ref,
   int attr: @attr ref
+);
+
+#keyset[id]
+ident_pat_is_mut(
+  int id: @ident_pat ref
+);
+
+#keyset[id]
+ident_pat_is_ref(
+  int id: @ident_pat ref
 );
 
 #keyset[id]
@@ -2032,6 +2142,16 @@ ptr_types(
 );
 
 #keyset[id]
+ptr_type_is_const(
+  int id: @ptr_type ref
+);
+
+#keyset[id]
+ptr_type_is_mut(
+  int id: @ptr_type ref
+);
+
+#keyset[id]
 ptr_type_ties(
   int id: @ptr_type ref,
   int ty: @type_ref ref
@@ -2148,8 +2268,28 @@ ref_expr_exprs(
   int expr: @expr ref
 );
 
+#keyset[id]
+ref_expr_is_const(
+  int id: @ref_expr ref
+);
+
+#keyset[id]
+ref_expr_is_mut(
+  int id: @ref_expr ref
+);
+
+#keyset[id]
+ref_expr_is_raw(
+  int id: @ref_expr ref
+);
+
 ref_pats(
   unique int id: @ref_pat
+);
+
+#keyset[id]
+ref_pat_is_mut(
+  int id: @ref_pat ref
 );
 
 #keyset[id]
@@ -2160,6 +2300,11 @@ ref_pat_pats(
 
 ref_types(
   unique int id: @ref_type
+);
+
+#keyset[id]
+ref_type_is_mut(
+  int id: @ref_type ref
 );
 
 #keyset[id]
@@ -2453,6 +2598,16 @@ const_bodies(
 );
 
 #keyset[id]
+const_is_const(
+  int id: @const ref
+);
+
+#keyset[id]
+const_is_default(
+  int id: @const ref
+);
+
+#keyset[id]
 const_names(
   int id: @const ref,
   int name: @name ref
@@ -2534,6 +2689,11 @@ extern_block_extern_item_lists(
   int extern_item_list: @extern_item_list ref
 );
 
+#keyset[id]
+extern_block_is_unsafe(
+  int id: @extern_block ref
+);
+
 extern_crates(
   unique int id: @extern_crate
 );
@@ -2593,6 +2753,31 @@ function_generic_param_lists(
 );
 
 #keyset[id]
+function_is_async(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_const(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_default(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_gen(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_unsafe(
+  int id: @function ref
+);
+
+#keyset[id]
 function_names(
   int id: @function ref,
   int name: @name ref
@@ -2643,6 +2828,21 @@ impl_attrs(
 impl_generic_param_lists(
   int id: @impl ref,
   int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+impl_is_const(
+  int id: @impl ref
+);
+
+#keyset[id]
+impl_is_default(
+  int id: @impl ref
+);
+
+#keyset[id]
+impl_is_unsafe(
+  int id: @impl ref
 );
 
 #keyset[id]
@@ -2825,6 +3025,16 @@ static_bodies(
 );
 
 #keyset[id]
+static_is_mut(
+  int id: @static ref
+);
+
+#keyset[id]
+static_is_static(
+  int id: @static ref
+);
+
+#keyset[id]
 static_names(
   int id: @static ref,
   int name: @name ref
@@ -2907,6 +3117,16 @@ trait_generic_param_lists(
 );
 
 #keyset[id]
+trait_is_auto(
+  int id: @trait ref
+);
+
+#keyset[id]
+trait_is_unsafe(
+  int id: @trait ref
+);
+
+#keyset[id]
 trait_names(
   int id: @trait ref,
   int name: @name ref
@@ -2986,6 +3206,11 @@ type_alias_attrs(
 type_alias_generic_param_lists(
   int id: @type_alias ref,
   int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+type_alias_is_default(
+  int id: @type_alias ref
 );
 
 #keyset[id]
