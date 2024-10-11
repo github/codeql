@@ -52,6 +52,7 @@ extensions:
       - ["rails\\s+assets:precompile"]
       - ["rubocop"]
       - ["sed\\s+-f"]
+      - ["sonar-scanner"]
       - ["stylelint"]
       - ["terraform"]
       - ["tflint"]
