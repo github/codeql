@@ -3772,7 +3772,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import CallContextSensitivity<CallContextSensitivityInput>
       import NoLocalCallContext
 
-      private module BigStepInput implements PrevStage::LocalFlowBigStepInputSig {
+      additional module BigStepInput implements PrevStage::LocalFlowBigStepInputSig {
         bindingset[node1, state1]
         bindingset[node2, state2]
         predicate localStep(
@@ -4393,11 +4393,36 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       import LocalCallContext
 
       private module BigStepInput implements PrevStage::LocalFlowBigStepInputSig {
+        private predicate smallStep = Stage3Param::BigStepInput::localStep/8;
+
+        private predicate localStepCand(
+          NodeEx node1, FlowState state1, NodeEx node2, FlowState state2
+        ) {
+          PrevStage::revFlow(node1, state1, _) and
+          smallStep(node1, state1, node2, state2, _, _, _, _)
+          or
+          exists(FlowState midState, NodeEx midNode |
+            localStepCand(node1, state1, midNode, midState) and
+            smallStep(midNode, midState, node2, state2, _, _, _, _) and
+            not Stage5Param::localStep(midNode, midState, _, _, _, _, _, _)
+          )
+        }
+
+        /**
+         * When calculating `localFlowBigStep` based on `Stage5Param::localStep`, which
+         * is already a big-step relation, we must be careful to avoid quadratic blowup.
+         *
+         * This is achieved by restricting `Stage5Param::localStep` to those node pairs
+         * reacheable via 1 or more `smallStep`s, where any intermediate node is not
+         * already part of `Stage5Param::localStep`.
+         */
+        pragma[nomagic]
         predicate localStep(
           NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
           DataFlowType t, LocalCallContext lcc, string label
         ) {
-          Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
+          localStepCand(node1, state1, node2, state2) and
+          Stage5Param::localStep(node1, state1, node2, state2, preservesValue, t, lcc, label) and
           PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
           PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
         }
