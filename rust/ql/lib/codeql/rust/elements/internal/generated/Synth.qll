@@ -614,13 +614,18 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TCallExprBase = TCallExpr or TMethodCallExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
+        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or TParenExpr or
-        TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or
-        TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
+        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExpr or
+        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
+        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1690,6 +1695,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCallExprBase`, if possible.
+   */
+  TCallExprBase convertCallExprBaseFromRaw(Raw::Element e) {
+    result = convertCallExprFromRaw(e)
+    or
+    result = convertMethodCallExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
@@ -1717,7 +1732,7 @@ module Synth {
     or
     result = convertBreakExprFromRaw(e)
     or
-    result = convertCallExprFromRaw(e)
+    result = convertCallExprBaseFromRaw(e)
     or
     result = convertCastExprFromRaw(e)
     or
@@ -1744,8 +1759,6 @@ module Synth {
     result = convertMacroExprFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
-    or
-    result = convertMethodCallExprFromRaw(e)
     or
     result = convertOffsetOfExprFromRaw(e)
     or
@@ -2976,6 +2989,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCallExprBase` to a raw DB element, if possible.
+   */
+  Raw::Element convertCallExprBaseToRaw(TCallExprBase e) {
+    result = convertCallExprToRaw(e)
+    or
+    result = convertMethodCallExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
@@ -3003,7 +3026,7 @@ module Synth {
     or
     result = convertBreakExprToRaw(e)
     or
-    result = convertCallExprToRaw(e)
+    result = convertCallExprBaseToRaw(e)
     or
     result = convertCastExprToRaw(e)
     or
@@ -3030,8 +3053,6 @@ module Synth {
     result = convertMacroExprToRaw(e)
     or
     result = convertMatchExprToRaw(e)
-    or
-    result = convertMethodCallExprToRaw(e)
     or
     result = convertOffsetOfExprToRaw(e)
     or

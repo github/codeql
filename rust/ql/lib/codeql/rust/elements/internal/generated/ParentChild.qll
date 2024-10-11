@@ -1417,14 +1417,15 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nArgList, int nAttr, int nExpr |
+  private Element getImmediateChildOfCallExprBase(
+    CallExprBase e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nArgList, int nAttr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nArgList = n + 1 and
       nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
       (
         none()
         or
@@ -1434,8 +1435,6 @@ private module Impl {
         or
         result = e.getAttr(index - nArgList) and
         partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
       )
     )
   }
@@ -2091,42 +2090,6 @@ private module Impl {
         index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
         or
         index = nExpr and result = e.getMatchArmList() and partialPredicateCall = "MatchArmList()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMethodCallExpr(
-    MethodCallExpr e, int index, string partialPredicateCall
-  ) {
-    exists(
-      int b, int bExpr, int n, int nArgList, int nAttr, int nGenericArgList, int nNameRef,
-      int nReceiver
-    |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nArgList = n + 1 and
-      nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nGenericArgList = nAttr + 1 and
-      nNameRef = nGenericArgList + 1 and
-      nReceiver = nNameRef + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and
-        result = e.getGenericArgList() and
-        partialPredicateCall = "GenericArgList()"
-        or
-        index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
-        or
-        index = nNameRef and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -2817,6 +2780,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bCallExprBase, int n, int nExpr |
+      b = 0 and
+      bCallExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallExprBase(e, i, _)) | i) and
+      n = bCallExprBase and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfCallExprBase(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfConst(Const e, int index, string partialPredicateCall) {
     exists(
       int b, int bAssocItem, int bItem, int n, int nAttr, int nBody, int nName, int nTy,
@@ -3133,6 +3113,31 @@ private module Impl {
         index = nName and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
         or
         index = nTokenTree and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMethodCallExpr(
+    MethodCallExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCallExprBase, int n, int nGenericArgList, int nNameRef, int nReceiver |
+      b = 0 and
+      bCallExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallExprBase(e, i, _)) | i) and
+      n = bCallExprBase and
+      nGenericArgList = n + 1 and
+      nNameRef = nGenericArgList + 1 and
+      nReceiver = nNameRef + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfCallExprBase(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getGenericArgList() and partialPredicateCall = "GenericArgList()"
+        or
+        index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+        or
+        index = nNameRef and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -3564,8 +3569,6 @@ private module Impl {
     or
     result = getImmediateChildOfBreakExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
@@ -3625,8 +3628,6 @@ private module Impl {
     result = getImmediateChildOfMacroType(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfNeverType(e, index, partialAccessor)
     or
@@ -3700,6 +3701,8 @@ private module Impl {
     or
     result = getImmediateChildOfYieldExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfConst(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnum(e, index, partialAccessor)
@@ -3717,6 +3720,8 @@ private module Impl {
     result = getImmediateChildOfMacroDef(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRules(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfModule(e, index, partialAccessor)
     or

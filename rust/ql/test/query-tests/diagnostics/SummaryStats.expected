@@ -1,5 +1,9 @@
 | Elements extracted | 376 |
 | Elements unextracted | 0 |
-| Files extracted | 7 |
+| Extraction errors | 0 |
+| Extraction warnings | 7 |
+| Files extracted - total | 7 |
+| Files extracted - with errors | 2 |
+| Files extracted - without errors | 5 |
 | Lines of code extracted | 59 |
 | Lines of user code extracted | 59 |

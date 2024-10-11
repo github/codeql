@@ -17,6 +17,7 @@
 /lib/codeql/rust/elements/BoxPat.qll linguist-generated
 /lib/codeql/rust/elements/BreakExpr.qll linguist-generated
 /lib/codeql/rust/elements/CallExpr.qll linguist-generated
+/lib/codeql/rust/elements/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/ClosureExpr.qll linguist-generated
@@ -187,6 +188,7 @@
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CallExprBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
@@ -468,6 +470,7 @@
 /lib/codeql/rust/elements/internal/generated/BoxPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/BreakExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CallExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureExpr.qll linguist-generated
