@@ -14,8 +14,12 @@ abstract class EnvVarInjectionSink extends DataFlow::Node { }
  * e.g.
  *    run: |
  *      cat test-results/.env >> $GITHUB_ENV
+ *
  *      echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV
  *      echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV
+ *
+ *      FOO=$(cat test-results/sha-number)
+ *      echo "FOO=$FOO" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
@@ -27,33 +31,30 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       this.asExpr() = run.getScriptScalar() and
       step.getAFollowingStep() = run and
       (
-        // e.g.
-        // cat test-results/.env >> $GITHUB_ENV
-        Bash::fileToGitHubEnv(run, _)
-        or
-        exists(string value |
-          run.getAWriteToGitHubEnv(_, value) and
-          (
-            // e.g.
-            // echo "FOO=$(cat test-results/sha-number)" >> $GITHUB_ENV
-            Bash::outputsPartialFileContent(run, value)
-            or
-            // e.g.
-            // FOO=$(cat test-results/sha-number)
-            // echo "FOO=$FOO" >> $GITHUB_ENV
-            exists(string var_name, string var_value |
-              run.getAnAssignment(var_name, var_value) and
-              Bash::outputsPartialFileContent(run, var_value) and
-              (
-                value.matches("%$" + ["", "{", "ENV{"] + var_name + "%")
-                or
-                value.regexpMatch("\\$\\((echo|printf|write-output)\\s+.*") and
-                value.indexOf(var_name) > 0
-              )
-            )
-          )
+        exists(string cmd |
+          Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_ENV", _) and
+          Bash::outputsPartialFileContent(run, cmd)
         )
+        or
+        Bash::fileToGitHubEnv(run, _)
       )
+    )
+  }
+}
+
+/**
+ * Holds if a Run step executes a command that returns untrusted data which flows to GITHUB_ENV
+ * e.g.
+ *    run: |
+ *          COMMIT_MESSAGE=$(git log --format=%s)
+ *          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+ */
+class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
+  EnvVarInjectionFromCommandSink() {
+    exists(CommandSource source |
+      this.asExpr() = source.getEnclosingRun().getScriptScalar() and
+      Bash::cmdReachingGitHubFileWrite(source.getEnclosingRun(), source.getCommand(), "GITHUB_ENV",
+        _)
     )
   }
 }
@@ -69,9 +70,9 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
     exists(Run run, string var_name |
-      envToSpecialFile("GITHUB_ENV", var_name, run, _) and
       exists(run.getInScopeEnvVarExpr(var_name)) and
-      run.getScriptScalar() = this.asExpr()
+      run.getScriptScalar() = this.asExpr() and
+      Bash::envReachingGitHubFileWrite(run, var_name, "GITHUB_ENV", _)
     )
   }
 }
@@ -104,6 +105,28 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EnvVarInjectionSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Run run, string var |
+      run.getInScopeEnvVarExpr(var) = pred.asExpr() and
+      succ.asExpr() = run.getScriptScalar() and
+      Bash::envReachingGitHubFileWrite(run, var, ["GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH"], _)
+    )
+    or
+    exists(Uses step |
+      pred instanceof FileSource and
+      pred.asExpr().(Step).getAFollowingStep() = step and
+      succ.asExpr() = step and
+      madSink(succ, "envvar-injection")
+    )
+    or
+    exists(Run run |
+      pred instanceof FileSource and
+      pred.asExpr().(Step).getAFollowingStep() = run and
+      succ.asExpr() = run.getScriptScalar() and
+      Bash::outputsPartialFileContent(run, run.getACommand())
+    )
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate an environment variable. */

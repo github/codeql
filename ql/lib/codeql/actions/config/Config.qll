@@ -128,3 +128,13 @@ predicate vulnerableActionsDataModel(
 ) {
   Extensions::vulnerableActionsDataModel(action, vulnerable_version, vulnerable_sha, fixed_version)
 }
+
+/**
+ * MaD models for untrusted git commands
+ * Fields:
+ *    - cmd_regex: Regular expression for matching untrusted git commands
+ *    - flag: Flag for the command
+ */
+predicate untrustedGitCommandsDataModel(string cmd_regex, string flag) {
+  Extensions::untrustedGitCommandsDataModel(cmd_regex, flag)
+}

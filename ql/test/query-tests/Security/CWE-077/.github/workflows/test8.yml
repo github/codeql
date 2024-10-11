@@ -20,8 +20,6 @@ jobs:
         contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: foo
 
       - name: Download and Extract Artifacts
         uses: dawidd6/action-download-artifact@v6

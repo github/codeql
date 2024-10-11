@@ -274,6 +274,24 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ArtifactSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ArtifactPoisoningSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(PoisonableStep step |
+      pred instanceof ArtifactSource and
+      pred.asExpr().(Step).getAFollowingStep() = step and
+      (
+        succ.asExpr() = step.(Run).getScriptScalar() or
+        succ.asExpr() = step.(UsesStep)
+      )
+    )
+    or
+    exists(Run run |
+      pred instanceof ArtifactSource and
+      pred.asExpr().(Step).getAFollowingStep() = run and
+      succ.asExpr() = run.getScriptScalar() and
+      Bash::outputsPartialFileContent(run, run.getACommand())
+    )
+  }
 }
 
 /** Tracks flow of unsafe artifacts that is used in an insecure way. */

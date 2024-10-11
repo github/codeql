@@ -315,6 +315,22 @@ class Run extends Step instanceof RunImpl {
   }
 
   predicate getAWriteToGitHubPath(string value) { super.getAWriteToGitHubPath(value) }
+
+  predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field) {
+    super.getAnEnvReachingGitHubOutputWrite(var, output_field)
+  }
+
+  predicate getACmdReachingGitHubOutputWrite(string cmd, string output_field) {
+    super.getACmdReachingGitHubOutputWrite(cmd, output_field)
+  }
+
+  predicate getAnEnvReachingGitHubEnvWrite(string var, string output_field) {
+    super.getAnEnvReachingGitHubEnvWrite(var, output_field)
+  }
+
+  predicate getACmdReachingGitHubEnvWrite(string cmd, string output_field) {
+    super.getACmdReachingGitHubEnvWrite(cmd, output_field)
+  }
 }
 
 abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {

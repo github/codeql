@@ -1,12 +1,12 @@
 edges
-| .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | provenance |  |
-| .github/workflows/output1.yml:30:9:35:6 | Uses Step | .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | provenance |  |
-| .github/workflows/output2.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output2.yml:10:14:13:48 | # VULNERABLE\necho $BODY\necho "::set-output name=OUTPUT::SAFE"\n | provenance |  |
-| .github/workflows/output2.yml:16:18:16:49 | github.event.comment.body | .github/workflows/output2.yml:17:14:20:21 | # VULNERABLE\necho "::set-output name=OUTPUT::SAFE"\necho $BODY\n | provenance |  |
-| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:42:14:46:48 | # VULNERABLE\nPR="$(<pr-number)"\necho "$PR"\necho "::set-output name=OUTPUT::SAFE"\n | provenance |  |
-| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:48:14:51:48 | # VULNERABLE\ncat pr-number\necho "::set-output name=OUTPUT::SAFE"\n | provenance |  |
-| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:53:14:56:19 | # VULNERABLE\necho "::set-output name=OUTPUT::SAFE"\nls *.txt\n | provenance |  |
-| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:58:14:62:48 | # VULNERABLE\nCURRENT_VERSION=$(cat gradle.properties \| sed -n '/^version=/ { s/^version=//;p }')\necho "$CURRENT_VERSION"\necho "::set-output name=OUTPUT::SAFE"\n | provenance |  |
+| .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | provenance | Config |
+| .github/workflows/output1.yml:30:9:35:6 | Uses Step | .github/workflows/output1.yml:36:14:38:58 | echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT\n | provenance | Config |
+| .github/workflows/output2.yml:9:18:9:49 | github.event.comment.body | .github/workflows/output2.yml:10:14:13:48 | # VULNERABLE\necho $BODY\necho "::set-output name=OUTPUT::SAFE"\n | provenance | Config |
+| .github/workflows/output2.yml:16:18:16:49 | github.event.comment.body | .github/workflows/output2.yml:17:14:20:21 | # VULNERABLE\necho "::set-output name=OUTPUT::SAFE"\necho $BODY\n | provenance | Config |
+| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:42:14:46:48 | # VULNERABLE\nPR="$(<pr-number)"\necho "$PR"\necho "::set-output name=OUTPUT::SAFE"\n | provenance | Config |
+| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:48:14:51:48 | # VULNERABLE\ncat pr-number\necho "::set-output name=OUTPUT::SAFE"\n | provenance | Config |
+| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:53:14:56:19 | # VULNERABLE\necho "::set-output name=OUTPUT::SAFE"\nls *.txt\n | provenance | Config |
+| .github/workflows/output2.yml:36:9:41:6 | Uses Step | .github/workflows/output2.yml:58:14:62:48 | # VULNERABLE\nCURRENT_VERSION=$(cat gradle.properties \| sed -n '/^version=/ { s/^version=//;p }')\necho "$CURRENT_VERSION"\necho "::set-output name=OUTPUT::SAFE"\n | provenance | Config |
 nodes
 | .github/workflows/output1.yml:9:18:9:49 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/output1.yml:10:14:13:50 | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n | semmle.label | # VULNERABLE\necho "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT\necho "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT\n |

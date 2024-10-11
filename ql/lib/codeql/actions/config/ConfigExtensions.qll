@@ -57,3 +57,8 @@ extensible predicate argumentInjectionSinksDataModel(
 extensible predicate vulnerableActionsDataModel(
   string action, string vulnerable_version, string vulnerable_sha, string fixed_version
 );
+
+/**
+ * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
+ */
+extensible predicate untrustedGitCommandsDataModel(string cmd_regex, string flag);
