@@ -494,7 +494,7 @@ private module ReturnNodes {
     /**
      * Gets a direct node that will may be returned when evaluating this node.
      */
-    Node getANode() { none() }
+    CfgNode getANode() { none() }
 
     /** Gets a child that may produce more nodes that may be returned. */
     abstract ReturnContainer getAChild();
@@ -503,7 +503,7 @@ private module ReturnNodes {
      * Gets a (possibly transitive) node that may be returned when evaluating
      * this node.
      */
-    final Node getAReturnedNode() {
+    final CfgNode getAReturnedNode() {
       result = this.getANode()
       or
       result = this.getAChild().getAReturnedNode()
@@ -519,7 +519,7 @@ private module ReturnNodes {
   }
 
   class CmdExprReturnContainer extends ReturnContainer, CmdExpr {
-    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
 
     final override ReturnContainer getAChild() { none() }
   }
@@ -551,15 +551,23 @@ private module ReturnNodes {
   }
 
   class CmdBaseReturnContainer extends ReturnContainer, CmdExpr {
-    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
 
     final override ReturnContainer getAChild() { none() }
   }
 
   class CmdReturnContainer extends ReturnContainer, Cmd {
-    final override StmtNode getANode() { result.getStmtNode().getStmt() = this }
+    final override CfgNodes::StmtCfgNode getANode() { result.getStmt() = this }
 
     final override ReturnContainer getAChild() { none() }
+  }
+
+  /** Holds if `n` is returned from the enclosing callable. */
+  predicate isReturned(CfgNodes::AstCfgNode n) {
+    exists(ReturnContainer container |
+      container = n.getScope() and
+      n = container.getAReturnedNode()
+    )
   }
 
   class NormalReturnNode extends ReturnNode instanceof NodeImpl {
