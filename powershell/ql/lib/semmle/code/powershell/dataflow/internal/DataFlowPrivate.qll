@@ -130,7 +130,10 @@ private module Cached {
       )
       or
       n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
-    }
+    } or
+    TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isReturned(n) } or
+    TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isReturned(n) } or
+    TReturnNodeImpl(CfgScope scope)
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -741,6 +744,61 @@ private module PostUpdateNodes {
 }
 
 private import PostUpdateNodes
+
+/**
+ * A node that performs implicit array unwrapping when an expression
+ * (or statement) is being returned from a function.
+ */
+private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
+  private CfgNodes::AstCfgNode n;
+  private boolean shouldWrap;
+
+  ImplicitWrapNode() { this = TImplicitWrapNode(n, shouldWrap) }
+
+  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+
+  predicate shouldWrap() { shouldWrap = true }
+
+  override CfgScope getCfgScope() { result = n.getScope() }
+
+  override Location getLocationImpl() { result = n.getLocation() }
+
+  override string toStringImpl() { result = "implicit unwrapping of " + n.toString() }
+}
+
+/**
+ * A node that represents the return value before any array-unwrapping
+ * has been performed.
+ */
+private class PreReturNodeImpl extends TPreReturnNodeImpl, NodeImpl {
+  private CfgNodes::AstCfgNode n;
+  private boolean isArray;
+
+  PreReturNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
+
+  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+
+  override CfgScope getCfgScope() { result = n.getScope() }
+
+  override Location getLocationImpl() { result = n.getLocation() }
+
+  override string toStringImpl() { result = "pre-return value for " + n.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+/** The node that represents the return value of a function. */
+private class ReturnNodeImpl extends TReturnNodeImpl, NodeImpl {
+  CfgScope scope;
+
+  ReturnNodeImpl() { this = TReturnNodeImpl(scope) }
+
+  override CfgScope getCfgScope() { result = scope }
+
+  override Location getLocationImpl() { result = scope.getLocation() }
+
+  override string toStringImpl() { result = "return value for " + scope.toString() }
+}
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
