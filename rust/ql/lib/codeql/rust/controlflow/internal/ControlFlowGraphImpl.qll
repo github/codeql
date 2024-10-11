@@ -413,7 +413,9 @@ class MacroCallTree extends ControlFlowTree instanceof MacroCall {
   override predicate last(AstNode last, Completion c) {
     last(super.getExpanded(), last, c)
     or
-    not exists(super.getExpanded()) and last = this
+    not exists(super.getExpanded()) and
+    last = this and
+    completionIsValidFor(c, last)
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
