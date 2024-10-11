@@ -31,6 +31,9 @@ abstract class NodeImpl extends Node {
 
   /** Do not call: use `toString()` instead. */
   abstract string toStringImpl();
+
+  /** Holds if this node should be hidden from path explanations. */
+  predicate nodeIsHidden() { none() }
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
@@ -284,7 +287,13 @@ private string approxKnownElementIndex(ConstantValue cv) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n.(NodeImpl).nodeIsHidden() }
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { isReturned(n.(AstNode).getCfgNode()) }
 
 /** An SSA node. */
 abstract class SsaNode extends NodeImpl, TSsaNode {
@@ -795,6 +804,8 @@ private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
   override Location getLocationImpl() { result = n.getLocation() }
 
   override string toStringImpl() { result = "implicit unwrapping of " + n.toString() }
+
+  override predicate nodeIsHidden() { any() }
 }
 
 /**
@@ -829,6 +840,8 @@ private class ReturnNodeImpl extends TReturnNodeImpl, NodeImpl {
   override Location getLocationImpl() { result = scope.getLocation() }
 
   override string toStringImpl() { result = "return value for " + scope.toString() }
+
+  override predicate nodeIsHidden() { any() }
 }
 
 /** A node that performs a type cast. */
