@@ -64,6 +64,88 @@ class GitHubEventCtxSource extends RemoteFlowSource {
   override string getSourceType() { result = flag }
 }
 
+abstract class CommandSource extends RemoteFlowSource {
+  abstract string getCommand();
+
+  abstract Run getEnclosingRun();
+}
+
+class GitCommandSource extends RemoteFlowSource, CommandSource {
+  Run run;
+  string cmd;
+  string flag;
+
+  GitCommandSource() {
+    exists(Step checkout, string cmd_regex |
+      // This shoould be:
+      // source instanceof PRHeadCheckoutStep
+      // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
+      // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
+      // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
+      (
+        exists(Uses uses |
+          checkout = uses and
+          uses.getCallee() = "actions/checkout" and
+          exists(uses.getArgument("ref"))
+        )
+        or
+        checkout instanceof GitMutableRefCheckout
+        or
+        checkout instanceof GitSHACheckout
+        or
+        checkout instanceof GhMutableRefCheckout
+        or
+        checkout instanceof GhSHACheckout
+      ) and
+      this.asExpr() = run.getScriptScalar() and
+      checkout.getAFollowingStep() = run and
+      run.getACommand() = cmd and
+      cmd.indexOf("git") = 0 and
+      untrustedGitCommandsDataModel(cmd_regex, flag) and
+      cmd.regexpMatch(cmd_regex)
+    )
+  }
+
+  override string getSourceType() { result = flag }
+
+  override string getCommand() { result = cmd }
+
+  override Run getEnclosingRun() { result = run }
+}
+
+class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
+  string cmd;
+  string flag;
+  string access_path;
+  Run run;
+
+  // Examples
+  // COMMENT_AUTHOR=$(jq -r .comment.user.login "$GITHUB_EVENT_PATH")
+  // CURRENT_COMMENT=$(jq -r .comment.body "$GITHUB_EVENT_PATH")
+  // PR_HEAD=$(jq --raw-output .pull_request.head.ref ${GITHUB_EVENT_PATH})
+  // PR_NUMBER=$(jq --raw-output .pull_request.number ${GITHUB_EVENT_PATH})
+  // PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})
+  // BODY=$(jq -r '.issue.body' "$GITHUB_EVENT_PATH" | sed -n '3p')
+  GitHubEventPathSource() {
+    this.asExpr() = run.getScriptScalar() and
+    run.getACommand() = cmd and
+    cmd.matches("jq%") and
+    cmd.matches("%GITHUB_EVENT_PATH%") and
+    exists(string regexp |
+      untrustedEventPropertiesDataModel(regexp, flag) and
+      not flag = "json" and
+      access_path = "github.event" + cmd.regexpCapture(".*\\s+([^\\s]+)\\s+.*", 1) and
+      normalizeExpr(access_path).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
+    )
+  }
+
+  override string getSourceType() { result = flag }
+
+  override string getCommand() { result = cmd }
+
+  override Run getEnclosingRun() { result = run }
+}
+
 class GitHubEventJsonSource extends RemoteFlowSource {
   string flag;
 
@@ -104,10 +186,12 @@ class MaDSource extends RemoteFlowSource {
   override string getSourceType() { result = sourceType }
 }
 
+abstract class FileSource extends RemoteFlowSource { }
+
 /**
  * A downloaded artifact.
  */
-class ArtifactSource extends RemoteFlowSource {
+class ArtifactSource extends RemoteFlowSource, FileSource {
   ArtifactSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
 
   override string getSourceType() { result = "artifact" }
@@ -116,8 +200,27 @@ class ArtifactSource extends RemoteFlowSource {
 /**
  * A file from an untrusted checkout.
  */
-private class CheckoutSource extends RemoteFlowSource {
-  CheckoutSource() { this.asExpr() instanceof PRHeadCheckoutStep }
+private class CheckoutSource extends RemoteFlowSource, FileSource {
+  CheckoutSource() {
+    // This shoould be:
+    // source instanceof PRHeadCheckoutStep
+    // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
+    // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
+    // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
+    exists(Uses u |
+      this.asExpr() = u and
+      u.getCallee() = "actions/checkout" and
+      exists(u.getArgument("ref"))
+    )
+    or
+    this.asExpr() instanceof GitMutableRefCheckout
+    or
+    this.asExpr() instanceof GitSHACheckout
+    or
+    this.asExpr() instanceof GhMutableRefCheckout
+    or
+    this.asExpr() instanceof GhSHACheckout
+  }
 
   override string getSourceType() { result = "artifact" }
 }
