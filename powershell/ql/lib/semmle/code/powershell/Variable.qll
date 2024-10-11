@@ -41,7 +41,7 @@ private predicate isParameterImpl(string name, Scope scope) {
 private newtype TParameterImpl =
   TInternalParameter(Internal::Parameter p) or
   TUnderscore(Scope scope) {
-    exists(VarAccess va | va.getUserPath() = "_" and scope = va.getEnclosingScope())
+    exists(VarAccess va | va.getUserPath() = ["_", "PSItem"] and scope = va.getEnclosingScope())
   } or
   TThisParameter(Scope scope) { exists(scope.getEnclosingFunction().getDeclaringType()) }
 
@@ -87,6 +87,11 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
   override Expr getDefaultValue() { result = p.getDefaultValue() }
 }
 
+/**
+ * The variable that represents an element in the pipeline.
+ *
+ * This is either the variable `$_` or the variable `$PSItem`.
+ */
 private class Underscore extends ParameterImpl, TUnderscore {
   Scope scope;
 
