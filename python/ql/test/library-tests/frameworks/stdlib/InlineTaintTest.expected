@@ -1,5 +1,4 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
 testFailures
-| threat_models.py:40:35:40:55 | Comment # $ SPURIOUS: tainted | Fixed spurious result:tainted= |
 failures
