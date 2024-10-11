@@ -1520,3 +1520,21 @@ class _:
     todo!()
     ```
     """
+
+class Callable(AstNode):
+    """
+    A callable. Either a `Function` or a `ClosureExpr`.
+    """
+    param_list: optional["ParamList"] | child
+    attrs: list["Attr"] | child
+
+@annotate(Function, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop
+
+
+@annotate(ClosureExpr, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop
