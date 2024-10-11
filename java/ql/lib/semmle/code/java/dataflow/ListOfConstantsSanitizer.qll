@@ -160,13 +160,14 @@ module Collection {
   private predicate noUnsafeCalls(Expr e) {
     forall(MethodCall mc, int arg, Expr x |
       DataFlow::localExprFlow(x, e) and
+      x != e and
       (
         arg = -1 and x = mc.getQualifier()
         or
         x = mc.getArgument(arg)
       )
     |
-      x = e or arg = mc.(SafeCall).getArg()
+      arg = mc.(SafeCall).getArg()
     )
   }
 
