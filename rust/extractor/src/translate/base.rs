@@ -6,13 +6,15 @@ use codeql_extractor::trap::{self};
 use log::Level;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::Semantics;
+use ra_ap_hir_expand::ExpandTo;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::{EditionedFileId, TextSize};
 use ra_ap_syntax::ast::RangeItem;
 use ra_ap_syntax::{
-    ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxToken, TextRange,
+    ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
+    TextRange,
 };
 
 #[macro_export]
@@ -80,7 +82,7 @@ pub struct Translator<'a> {
     label: trap::Label,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
-    pub semi: Option<Semantics<'a, RootDatabase>>,
+    pub semantics: Option<Semantics<'a, RootDatabase>>,
 }
 
 impl<'a> Translator<'a> {
@@ -90,7 +92,7 @@ impl<'a> Translator<'a> {
         label: trap::Label,
         line_index: LineIndex,
         file_id: Option<EditionedFileId>,
-        semi: Option<Semantics<'a, RootDatabase>>,
+        semantics: Option<Semantics<'a, RootDatabase>>,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -98,7 +100,7 @@ impl<'a> Translator<'a> {
             label,
             line_index,
             file_id,
-            semi,
+            semantics,
         }
     }
     fn location(&self, range: TextRange) -> (LineCol, LineCol) {
@@ -122,8 +124,8 @@ impl<'a> Translator<'a> {
     }
 
     pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
-        if let Some(semi) = self.semi.as_ref() {
-            let file_range = semi.original_range(node.syntax());
+        if let Some(semantics) = self.semantics.as_ref() {
+            let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
             if file_id == file_range.file_id {
                 Some(file_range.range)
@@ -235,64 +237,75 @@ impl<'a> Translator<'a> {
             }
         }
     }
+    fn emit_macro_expansion_parse_errors(&mut self, mcall: &ast::MacroCall, expanded: &SyntaxNode) {
+        let semantics = self.semantics.as_ref().unwrap();
+        if let Some(value) = semantics
+            .hir_file_for(expanded)
+            .macro_file()
+            .and_then(|macro_file| {
+                semantics
+                    .db
+                    .parse_macro_expansion_error(macro_file.macro_call_id)
+            })
+        {
+            if let Some(err) = &value.err {
+                let (message, _error) = err.render_to_string(semantics.db);
+
+                if err.span().anchor.file_id == semantics.hir_file_for(mcall.syntax()) {
+                    let location = err.span().range
+                        + semantics
+                            .db
+                            .ast_id_map(err.span().anchor.file_id.into())
+                            .get_erased(err.span().anchor.ast_id)
+                            .text_range()
+                            .start();
+                    self.emit_parse_error(mcall, &SyntaxError::new(message, location));
+                };
+            }
+            for err in value.value.iter() {
+                self.emit_parse_error(mcall, err);
+            }
+        }
+    }
+
+    fn emit_expanded_as(
+        &mut self,
+        expand_to: ExpandTo,
+        expanded: SyntaxNode,
+    ) -> Option<Label<generated::AstNode>> {
+        match expand_to {
+            ra_ap_hir_expand::ExpandTo::Statements => {
+                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(x).into())
+            }
+            ra_ap_hir_expand::ExpandTo::Items => {
+                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(x).into())
+            }
+
+            ra_ap_hir_expand::ExpandTo::Pattern => {
+                ast::Pat::cast(expanded).map(|x| self.emit_pat(x).into())
+            }
+            ra_ap_hir_expand::ExpandTo::Type => {
+                ast::Type::cast(expanded).map(|x| self.emit_type(x).into())
+            }
+            ra_ap_hir_expand::ExpandTo::Expr => {
+                ast::Expr::cast(expanded).map(|x| self.emit_expr(x).into())
+            }
+        }
+    }
     pub(crate) fn extract_macro_call_expanded(
         &mut self,
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
-        if let Some(semi) = &self.semi {
-            if let Some(expanded) = semi.expand(mcall) {
-                if let Some(value) =
-                    semi.hir_file_for(&expanded)
-                        .macro_file()
-                        .and_then(|macro_file| {
-                            semi.db
-                                .parse_macro_expansion_error(macro_file.macro_call_id)
-                        })
-                {
-                    if let Some(err) = &value.err {
-                        let (message, _error) = err.render_to_string(semi.db);
-
-                        if err.span().anchor.file_id == semi.hir_file_for(mcall.syntax()) {
-                            let location = err.span().range
-                                + semi
-                                    .db
-                                    .ast_id_map(err.span().anchor.file_id.into())
-                                    .get_erased(err.span().anchor.ast_id)
-                                    .text_range()
-                                    .start();
-                            self.emit_parse_error(mcall, &SyntaxError::new(message, location));
-                        };
-                    }
-                    for err in value.value.iter() {
-                        self.emit_parse_error(mcall, err);
-                    }
-                }
-                let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
-                let kind = expanded.kind();
-                let value: Option<Label<crate::generated::AstNode>> = match expand_to {
-                    ra_ap_hir_expand::ExpandTo::Statements => {
-                        ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(x).into())
-                    }
-                    ra_ap_hir_expand::ExpandTo::Items => {
-                        ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(x).into())
-                    }
-
-                    ra_ap_hir_expand::ExpandTo::Pattern => {
-                        ast::Pat::cast(expanded).map(|x| self.emit_pat(x).into())
-                    }
-                    ra_ap_hir_expand::ExpandTo::Type => {
-                        ast::Type::cast(expanded).map(|x| self.emit_type(x).into())
-                    }
-                    ra_ap_hir_expand::ExpandTo::Expr => {
-                        ast::Expr::cast(expanded).map(|x| self.emit_expr(x).into())
-                    }
-                };
-                if let Some(value) = value {
-                    MacroCall::emit_expanded(label, value, &mut self.trap.writer);
-                } else {
-                    let range = self.text_range_for_node(mcall);
-                    self.emit_parse_error(mcall, &SyntaxError::new(
+        if let Some(expanded) = self.semantics.as_ref().and_then(|s| s.expand(mcall)) {
+            self.emit_macro_expansion_parse_errors(mcall, &expanded);
+            let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
+            let kind = expanded.kind();
+            if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
+                MacroCall::emit_expanded(label, value, &mut self.trap.writer);
+            } else {
+                let range = self.text_range_for_node(mcall);
+                self.emit_parse_error(mcall, &SyntaxError::new(
                         format!(
                             "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
                             mcall.path().map(|p| p.to_string()).unwrap_or_default(),
@@ -300,21 +313,19 @@ impl<'a> Translator<'a> {
                         ),
                         range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ));
-                }
-            } else {
-                let range = self.text_range_for_node(mcall);
-
-                self.emit_parse_error(
-                    mcall,
-                    &SyntaxError::new(
-                        format!(
-                            "macro expansion failed: could not resolve macro '{}'",
-                            mcall.path().map(|p| p.to_string()).unwrap_or_default()
-                        ),
-                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
-                    ),
-                );
             }
+        } else {
+            let range = self.text_range_for_node(mcall);
+            self.emit_parse_error(
+                mcall,
+                &SyntaxError::new(
+                    format!(
+                        "macro expansion failed: could not resolve macro '{}'",
+                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                    ),
+                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
+                ),
+            );
         }
     }
 }

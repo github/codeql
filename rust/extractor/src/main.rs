@@ -7,7 +7,7 @@ use anyhow::Context;
 use archive::Archiver;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_project_model::ProjectManifest;
-use rust_analyzer::RustAnalyzer;
+use rust_analyzer::{ParseResult, RustAnalyzer};
 mod archive;
 mod config;
 pub mod generated;
@@ -23,8 +23,14 @@ fn extract(
 ) {
     archiver.archive(file);
 
-    let (ast, input, parse_errors, file_id, semi) = rust_analyzer.parse(file);
-    let line_index = LineIndex::new(input.as_ref());
+    let ParseResult {
+        ast,
+        text,
+        errors,
+        file_id,
+        semantics,
+    } = rust_analyzer.parse(file);
+    let line_index = LineIndex::new(text.as_ref());
     let display_path = file.to_string_lossy();
     let mut trap = traps.create("source", file);
     let label = trap.emit_file(file);
@@ -34,14 +40,14 @@ fn extract(
         label,
         line_index,
         file_id,
-        semi,
+        semantics,
     );
 
-    for err in parse_errors {
+    for err in errors {
         translator.emit_parse_error(&ast, &err);
     }
     let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
-    if translator.semi.is_none() {
+    if translator.semantics.is_none() {
         translator.emit_diagnostic(
             trap::DiagnosticSeverity::Warning,
             "semantics".to_owned(),

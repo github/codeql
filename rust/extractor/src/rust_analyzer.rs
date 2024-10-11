@@ -25,7 +25,13 @@ pub enum RustAnalyzer {
     WithDatabase { db: RootDatabase, vfs: Vfs },
     WithoutDatabase(),
 }
-
+pub struct ParseResult<'a> {
+    pub ast: SourceFile,
+    pub text: Arc<str>,
+    pub errors: Vec<SyntaxError>,
+    pub file_id: Option<EditionedFileId>,
+    pub semantics: Option<Semantics<'a, RootDatabase>>,
+}
 impl RustAnalyzer {
     pub fn new(project: &ProjectManifest, scratch_dir: &Path) -> Self {
         let config = CargoConfig {
@@ -51,16 +57,7 @@ impl RustAnalyzer {
             }
         }
     }
-    pub fn parse(
-        &mut self,
-        path: &Path,
-    ) -> (
-        SourceFile,
-        Arc<str>,
-        Vec<SyntaxError>,
-        Option<EditionedFileId>,
-        Option<Semantics<'_, RootDatabase>>,
-    ) {
+    pub fn parse(&mut self, path: &Path) -> ParseResult<'_> {
         let mut errors = Vec::new();
         let input = match std::fs::read(path) {
             Ok(data) => data,
@@ -82,28 +79,34 @@ impl RustAnalyzer {
                 .and_then(|x| vfs.file_id(&x))
             {
                 db.set_file_text(file_id, &input);
-                let semi = Semantics::new(db);
+                let semantics = Semantics::new(db);
 
                 let file_id = EditionedFileId::current_edition(file_id);
-                let source_file = semi.parse(file_id);
+                let source_file = semantics.parse(file_id);
                 errors.extend(
                     db.parse_errors(file_id)
                         .into_iter()
                         .flat_map(|x| x.to_vec()),
                 );
-                return (
-                    source_file,
-                    input.as_ref().into(),
+                return ParseResult {
+                    ast: source_file,
+                    text: input.as_ref().into(),
                     errors,
-                    Some(file_id),
-                    Some(semi),
-                );
+                    file_id: Some(file_id),
+                    semantics: Some(semantics),
+                };
             }
         }
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
         errors.extend(parse.errors());
         errors.extend(err);
-        (parse.tree(), input.as_ref().into(), errors, None, None)
+        ParseResult {
+            ast: parse.tree(),
+            text: input.as_ref().into(),
+            errors,
+            file_id: None,
+            semantics: None,
+        }
     }
 }
 
