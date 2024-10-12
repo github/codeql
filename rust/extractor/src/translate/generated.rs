@@ -2,8 +2,9 @@
 
 #![cfg_attr(any(), rustfmt::skip)]
 
-use crate::generated;
 use super::base::{TextValue, Translator};
+use crate::emit_detached;
+use crate::generated;
 use crate::trap::{Label, TrapId};
 use ra_ap_syntax::ast::{
     HasArgList, HasAttrs, HasGenericArgs, HasGenericParams, HasLoopBody, HasModuleItem, HasName,
@@ -11,7 +12,7 @@ use ra_ap_syntax::ast::{
 };
 use ra_ap_syntax::{ast, AstNode};
 
-impl Translator {
+impl Translator<'_> {
     fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {
         match node {
             ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),
@@ -179,7 +180,8 @@ impl Translator {
             abi_string,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Abi, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -190,7 +192,8 @@ impl Translator {
             args,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ArgList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -203,7 +206,8 @@ impl Translator {
             exprs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ArrayExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -216,7 +220,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ArrayType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -229,7 +234,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(AsmExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -242,7 +248,8 @@ impl Translator {
             attrs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(AssocItemList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -267,7 +274,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(AssocTypeArg, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -278,7 +286,8 @@ impl Translator {
             meta,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Attr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -291,7 +300,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(AwaitExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -304,7 +314,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(BecomeExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -321,7 +332,8 @@ impl Translator {
             rhs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(BinaryExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -348,7 +360,8 @@ impl Translator {
             stmt_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(BlockExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -359,7 +372,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(BoxPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -374,7 +388,8 @@ impl Translator {
             lifetime,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(BreakExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -389,7 +404,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(CallExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -404,7 +420,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(CastExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -415,7 +432,8 @@ impl Translator {
             generic_param_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ClosureBinder, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -444,7 +462,8 @@ impl Translator {
             ret_type,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ClosureExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -467,7 +486,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Const, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -478,7 +498,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ConstArg, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -491,7 +512,8 @@ impl Translator {
             is_const,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ConstBlockPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -510,7 +532,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ConstParam, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -523,7 +546,8 @@ impl Translator {
             lifetime,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ContinueExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -534,7 +558,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(DynTraitType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -555,7 +580,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Enum, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -566,7 +592,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ExprStmt, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -583,7 +610,8 @@ impl Translator {
             is_unsafe,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ExternBlock, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -600,7 +628,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ExternCrate, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -613,7 +642,8 @@ impl Translator {
             extern_items,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ExternItemList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -628,7 +658,8 @@ impl Translator {
             name_ref,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(FieldExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -665,7 +696,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Function, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -686,7 +718,8 @@ impl Translator {
             ret_type,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(FnPtrType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -705,7 +738,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ForExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -718,7 +752,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ForType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -731,7 +766,8 @@ impl Translator {
             name,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(FormatArgsArg, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -746,7 +782,8 @@ impl Translator {
             template,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(FormatArgsExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -757,7 +794,8 @@ impl Translator {
             generic_args,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(GenericArgList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -768,7 +806,8 @@ impl Translator {
             generic_params,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(GenericParamList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -787,7 +826,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(IdentPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -804,7 +844,8 @@ impl Translator {
             then,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(IfExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -833,7 +874,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Impl, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -844,7 +886,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ImplTraitType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -859,7 +902,8 @@ impl Translator {
             index,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(IndexExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -868,7 +912,8 @@ impl Translator {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(InferType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -881,7 +926,8 @@ impl Translator {
             items,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ItemList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -892,7 +938,8 @@ impl Translator {
             lifetime,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Label, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -903,7 +950,8 @@ impl Translator {
             block_expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LetElse, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -918,7 +966,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LetExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -937,7 +986,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LetStmt, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -948,7 +998,8 @@ impl Translator {
             text,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Lifetime, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -959,7 +1010,8 @@ impl Translator {
             lifetime,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LifetimeArg, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -974,7 +1026,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LifetimeParam, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -987,7 +1040,8 @@ impl Translator {
             text_value,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LiteralExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -998,7 +1052,8 @@ impl Translator {
             literal,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LiteralPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1013,7 +1068,8 @@ impl Translator {
             loop_body,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(LoopExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1028,7 +1084,8 @@ impl Translator {
             token_tree,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroCall, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1047,7 +1104,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroDef, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1058,7 +1116,20 @@ impl Translator {
             macro_call,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_macro_items(&mut self, node: ast::MacroItems) -> Label<generated::MacroItems> {
+        let items = node.items().map(|x| self.emit_item(x)).collect();
+        let label = self.trap.emit(generated::MacroItems {
+            id: TrapId::Star,
+            items,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(MacroItems, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1069,7 +1140,8 @@ impl Translator {
             macro_call,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1086,7 +1158,22 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroRules, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Label<generated::MacroStmts> {
+        let expr = node.expr().map(|x| self.emit_expr(x));
+        let statements = node.statements().map(|x| self.emit_stmt(x)).collect();
+        let label = self.trap.emit(generated::MacroStmts {
+            id: TrapId::Star,
+            expr,
+            statements,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(MacroStmts, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1097,7 +1184,8 @@ impl Translator {
             macro_call,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MacroType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1114,7 +1202,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MatchArm, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1127,7 +1216,8 @@ impl Translator {
             attrs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MatchArmList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1142,7 +1232,8 @@ impl Translator {
             match_arm_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MatchExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1153,7 +1244,8 @@ impl Translator {
             condition,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MatchGuard, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1170,7 +1262,8 @@ impl Translator {
             token_tree,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Meta, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1189,7 +1282,8 @@ impl Translator {
             receiver,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(MethodCallExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1206,7 +1300,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Module, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1217,7 +1312,8 @@ impl Translator {
             text,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Name, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1228,7 +1324,8 @@ impl Translator {
             text,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(NameRef, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1237,7 +1334,8 @@ impl Translator {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(NeverType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1252,7 +1350,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(OffsetOfExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1263,7 +1362,8 @@ impl Translator {
             pats,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(OrPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1278,7 +1378,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Param, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1291,7 +1392,8 @@ impl Translator {
             self_param,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ParamList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1304,7 +1406,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ParenExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1315,7 +1418,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ParenPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1326,7 +1430,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ParenType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1339,7 +1444,8 @@ impl Translator {
             part,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Path, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1352,7 +1458,8 @@ impl Translator {
             path,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PathExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1363,7 +1470,8 @@ impl Translator {
             path,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PathPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1386,7 +1494,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PathSegment, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1397,7 +1506,8 @@ impl Translator {
             path,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PathType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1412,7 +1522,8 @@ impl Translator {
             operator_name,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PrefixExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1427,7 +1538,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(PtrType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1444,7 +1556,8 @@ impl Translator {
             start,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RangeExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1459,7 +1572,8 @@ impl Translator {
             start,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RangePat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1472,7 +1586,8 @@ impl Translator {
             record_expr_field_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1487,7 +1602,8 @@ impl Translator {
             name_ref,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordExprField, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1502,7 +1618,8 @@ impl Translator {
             spread,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordExprFieldList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1519,7 +1636,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordField, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1530,7 +1648,8 @@ impl Translator {
             fields,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordFieldList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1543,7 +1662,8 @@ impl Translator {
             record_pat_field_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1558,7 +1678,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordPatField, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1571,7 +1692,8 @@ impl Translator {
             rest_pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RecordPatFieldList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1590,7 +1712,8 @@ impl Translator {
             is_raw,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RefExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1603,7 +1726,8 @@ impl Translator {
             pat,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RefPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1618,7 +1742,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RefType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1629,7 +1754,8 @@ impl Translator {
             name,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Rename, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1640,7 +1766,8 @@ impl Translator {
             attrs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RestPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1651,7 +1778,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(RetType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1664,7 +1792,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ReturnExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1673,7 +1802,8 @@ impl Translator {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(ReturnTypeSyntax, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1692,7 +1822,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(SelfParam, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1703,7 +1834,8 @@ impl Translator {
             pats,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(SlicePat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1714,7 +1846,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(SliceType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1727,7 +1860,8 @@ impl Translator {
             items,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(SourceFile, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1750,7 +1884,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Static, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1765,7 +1900,8 @@ impl Translator {
             tail_expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(StmtList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1786,7 +1922,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Struct, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1795,7 +1932,8 @@ impl Translator {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TokenTree, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1822,7 +1960,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Trait, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1843,7 +1982,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TraitAlias, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1856,7 +1996,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TryExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1869,7 +2010,8 @@ impl Translator {
             fields,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TupleExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1884,7 +2026,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TupleField, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1895,7 +2038,8 @@ impl Translator {
             fields,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TupleFieldList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1906,7 +2050,8 @@ impl Translator {
             fields,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TuplePat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1919,7 +2064,8 @@ impl Translator {
             path,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TupleStructPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1930,7 +2076,8 @@ impl Translator {
             fields,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TupleType, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1955,7 +2102,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TypeAlias, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1966,7 +2114,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TypeArg, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1985,7 +2134,8 @@ impl Translator {
             ty,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TypeBound, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -1996,7 +2146,8 @@ impl Translator {
             bounds,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TypeBoundList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2013,7 +2164,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(TypeParam, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2024,7 +2176,8 @@ impl Translator {
             attrs,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(UnderscoreExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2045,7 +2198,8 @@ impl Translator {
             where_clause,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Union, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2060,7 +2214,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Use, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2075,7 +2230,8 @@ impl Translator {
             use_tree_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(UseTree, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2086,7 +2242,8 @@ impl Translator {
             use_trees,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(UseTreeList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2105,7 +2262,8 @@ impl Translator {
             visibility,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Variant, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2116,7 +2274,8 @@ impl Translator {
             variants,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(VariantList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2127,7 +2286,8 @@ impl Translator {
             path,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(Visibility, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2138,7 +2298,8 @@ impl Translator {
             predicates,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(WhereClause, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2155,7 +2316,8 @@ impl Translator {
             type_bound_list,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(WherePred, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2172,7 +2334,8 @@ impl Translator {
             loop_body,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(WhileExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2181,7 +2344,8 @@ impl Translator {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(WildcardPat, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2194,7 +2358,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(YeetExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 
@@ -2207,7 +2372,8 @@ impl Translator {
             expr,
         });
         self.emit_location(label, &node);
-        self.emit_tokens(label.into(), node.syntax().children_with_tokens());
+        emit_detached!(YieldExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
 

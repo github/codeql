@@ -44,14 +44,10 @@
 | test.py | 15 | ControlFlowNode for moduleX | Module package.moduleX | builtin-class module | Entry node for Module package.moduleX |
 | test.py | 16 | ControlFlowNode for Attribute | class Y | builtin-class type | ControlFlowNode for ClassExpr |
 | test.py | 16 | ControlFlowNode for moduleX | Module package.moduleX | builtin-class module | Entry node for Module package.moduleX |
-| test.py | 19 | ControlFlowNode for ImportExpr | Module tty | builtin-class module | ControlFlowNode for ImportExpr |
-| test.py | 19 | ControlFlowNode for tty | Module tty | builtin-class module | ControlFlowNode for ImportExpr |
 | test.py | 22 | ControlFlowNode for Attribute | Builtin-function exc_info | builtin-class builtin_function_or_method | ControlFlowNode for from sys import * |
 | test.py | 22 | ControlFlowNode for x | Module package.x | builtin-class module | Entry node for Module package.x |
 | test.py | 24 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | ControlFlowNode for IntegerLiteral |
 | test.py | 24 | ControlFlowNode for argv | int 0 | builtin-class int | ControlFlowNode for IntegerLiteral |
 | test.py | 27 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | ControlFlowNode for ImportExpr |
 | test.py | 31 | ControlFlowNode for argv | list object | builtin-class list | ControlFlowNode for from sys import * |
-| test.py | 33 | ControlFlowNode for ImportExpr | Module socket | builtin-class module | ControlFlowNode for ImportExpr |
-| test.py | 34 | ControlFlowNode for timeout | builtin-class TimeoutError | builtin-class type | ControlFlowNode for from _socket import * |
 | x.py | 2 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | ControlFlowNode for ImportExpr |

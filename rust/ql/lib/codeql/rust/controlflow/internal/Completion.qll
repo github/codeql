@@ -62,7 +62,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
-/** Holds if node `le` has the Boolean constant value `value`. */
+/** Holds if node `le` has the constant Boolean value `value`. */
 private predicate isBooleanConstant(LiteralExpr le, Boolean value) {
   le.getTextValue() = value.toString()
 }
@@ -117,13 +117,56 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
+/** Holds if `pat` is guaranteed to match. */
+pragma[nomagic]
+private predicate isIrrefutablePattern(Pat pat) {
+  (
+    pat instanceof WildcardPat
+    or
+    pat = any(IdentPat ip | not ip.hasPat() and ip = any(Variable v).getPat())
+    or
+    pat instanceof RestPat
+    or
+    // `let` statements without an `else` branch must be irrefutible
+    pat = any(LetStmt let | not let.hasLetElse()).getPat()
+    or
+    // `match` expressions must be irrefutible, so last arm cannot fail
+    pat = any(MatchExpr me).getLastArm().getPat()
+    or
+    // parameter patterns must be irrefutible
+    pat = any(Param p).getPat()
+  ) and
+  not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
+  or
+  exists(Pat parent | isIrrefutablePattern(parent) |
+    pat = parent.(BoxPat).getPat()
+    or
+    pat = parent.(IdentPat).getPat()
+    or
+    pat = parent.(ParenPat).getPat()
+    or
+    pat = parent.(RecordPat).getRecordPatFieldList().getField(_).getPat()
+    or
+    pat = parent.(RefPat).getPat()
+    or
+    pat = parent.(TuplePat).getAField()
+    or
+    pat = parent.(TupleStructPat).getAField()
+    or
+    pat = parent.(OrPat).getLastPat()
+  )
+}
+
 /**
  * A completion that represents the result of a pattern match.
  */
 class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
   MatchCompletion() { this = TMatchCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof Pat }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof Pat and
+    if isIrrefutablePattern(e) then value = true else any()
+  }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 

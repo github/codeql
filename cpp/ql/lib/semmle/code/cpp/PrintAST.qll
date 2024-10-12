@@ -80,6 +80,8 @@ private Declaration getAnEnclosingDeclaration(Locatable ast) {
   or
   result = ast.(Parameter).getFunction()
   or
+  result = ast.(Parameter).getCatchBlock().getEnclosingFunction()
+  or
   result = ast.(Expr).getEnclosingDeclaration()
   or
   result = ast.(Initializer).getDeclaration()
@@ -511,6 +513,22 @@ class DeclStmtNode extends StmtNode {
 }
 
 /**
+ * A node representing a `Handler`.
+ */
+class HandlerNode extends ChildStmtNode {
+  Handler handler;
+
+  HandlerNode() { handler = stmt }
+
+  override BaseAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    childIndex = -1 and
+    result.getAst() = handler.getParameter()
+  }
+}
+
+/**
  * A node representing a `Parameter`.
  */
 class ParameterNode extends AstNode {
@@ -753,6 +771,8 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     s.(ConstexprIfStmt).getThen() = e and pred = "getThen()"
     or
     s.(ConstexprIfStmt).getElse() = e and pred = "getElse()"
+    or
+    s.(Handler).getParameter() = e and pred = "getParameter()"
     or
     s.(IfStmt).getInitialization() = e and pred = "getInitialization()"
     or
