@@ -1438,39 +1438,43 @@ class RunImpl extends StepImpl {
       max(int round, string new | this.doReplaceQuotedStrings(i, round, _, new) | new order by round)
   }
 
-  private string cmdProducer(int i) {
-    result = this.quotedStringLineProducer(i).splitAt(Bash::splitSeparators()).trim() and
+  private string stmtProducer(int i) {
+    result = this.quotedStringLineProducer(i).splitAt(Bash::splitSeparator()).trim() and
     // when splitting the line with a separator that is not present, the result is the original line which may contain other separators
     // we only one the split parts that do not contain any of the separators
-    not result.indexOf(Bash::splitSeparators()) > -1
+    not result.indexOf(Bash::splitSeparator()) > -1
   }
 
-  private predicate doRestoreQuotedStrings(int line, int round, string old, string new) {
+  private predicate doStmtRestoreQuotedStrings(int line, int round, string old, string new) {
     round = 0 and
-    old = this.cmdProducer(line) and
+    old = this.stmtProducer(line) and
     new = old
     or
     round > 0 and
     exists(string middle, string target, string replacement |
-      this.doRestoreQuotedStrings(line, round - 1, old, middle) and
+      this.doStmtRestoreQuotedStrings(line, round - 1, old, middle) and
       this.rankedQuotedStringReplacements(round, target, replacement) and
       new = middle.replaceAll(replacement, target)
     )
   }
 
-  private string restoredQuotedStringLineProducer(int i) {
+  private string restoredStmtQuotedStringLineProducer(int i) {
     result =
-      max(int round, string new | this.doRestoreQuotedStrings(i, round, _, new) | new order by round)
+      max(int round, string new |
+        this.doStmtRestoreQuotedStrings(i, round, _, new)
+      |
+        new order by round
+      )
   }
 
-  private predicate doRestoreCmdSubstitutions(int line, int round, string old, string new) {
+  private predicate doStmtRestoreCmdSubstitutions(int line, int round, string old, string new) {
     round = 0 and
-    old = this.restoredQuotedStringLineProducer(line) and
+    old = this.restoredStmtQuotedStringLineProducer(line) and
     new = old
     or
     round > 0 and
     exists(string middle, string target, string replacement |
-      this.doRestoreCmdSubstitutions(line, round - 1, old, middle) and
+      this.doStmtRestoreCmdSubstitutions(line, round - 1, old, middle) and
       this.rankedCmdSubstitutionReplacements(round, target, replacement) and
       new = middle.replaceAll(replacement, target)
     )
@@ -1479,13 +1483,80 @@ class RunImpl extends StepImpl {
   string getStmt(int i) {
     result =
       max(int round, string new |
-        this.doRestoreCmdSubstitutions(i, round, _, new)
+        this.doStmtRestoreCmdSubstitutions(i, round, _, new)
       |
         new order by round
       )
   }
 
   string getAStmt() { result = this.getStmt(_) }
+
+  private string cmdProducer(int i) {
+    result = this.quotedStringLineProducer(i).splitAt(Bash::separator()).trim() and
+    // when splitting the line with a separator that is not present, the result is the original line which may contain other separators
+    // we only one the split parts that do not contain any of the separators
+    not result.indexOf(Bash::separator()) > -1
+  }
+
+  private predicate doCmdRestoreQuotedStrings(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.cmdProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doCmdRestoreQuotedStrings(line, round - 1, old, middle) and
+      this.rankedQuotedStringReplacements(round, target, replacement) and
+      new = middle.replaceAll(replacement, target)
+    )
+  }
+
+  private string restoredCmdQuotedStringLineProducer(int i) {
+    result =
+      max(int round, string new |
+        this.doCmdRestoreQuotedStrings(i, round, _, new)
+      |
+        new order by round
+      )
+  }
+
+  private predicate doCmdRestoreCmdSubstitutions(int line, int round, string old, string new) {
+    round = 0 and
+    old = this.restoredCmdQuotedStringLineProducer(line) and
+    new = old
+    or
+    round > 0 and
+    exists(string middle, string target, string replacement |
+      this.doCmdRestoreCmdSubstitutions(line, round - 1, old, middle) and
+      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
+      new = middle.replaceAll(replacement, target)
+    )
+  }
+
+  string getCmd(int i) {
+    result =
+      max(int round, string new |
+        this.doCmdRestoreCmdSubstitutions(i, round, _, new)
+      |
+        new order by round
+      )
+  }
+
+  string getACmd() { result = this.getCmd(_) }
+
+  string getCommand(int i) {
+    result = this.getCmd(i) and
+    // exclude variable declarations
+    not result.regexpMatch("^[a-zA-Z0-9\\-_]+=") and
+    // exclude the following keywords
+    not result =
+      [
+        "", "for", "in", "do", "done", "if", "then", "else", "elif", "fi", "while", "until", "case",
+        "esac", "{", "}"
+      ]
+  }
+
+  string getACommand() { result = this.getCommand(_) }
 
   predicate getAssignment(int i, string name, string value) {
     exists(string stmt |
@@ -1496,18 +1567,6 @@ class RunImpl extends StepImpl {
   }
 
   predicate getAnAssignment(string name, string value) { this.getAssignment(_, name, value) }
-
-  string getCommand(int i) {
-    result = this.getStmt(i) and
-    // exclude the following keywords
-    not result =
-      [
-        "", "for", "in", "do", "done", "if", "then", "else", "elif", "fi", "while", "until", "case",
-        "esac", "{", "}"
-      ]
-  }
-
-  string getACommand() { result = this.getCommand(_) }
 
   predicate getAWriteToGitHubEnv(string name, string value) {
     exists(string raw |

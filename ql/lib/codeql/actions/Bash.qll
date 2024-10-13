@@ -8,13 +8,20 @@ module Bash {
 
   string commandSeparator() { result = ["&&", "||"] }
 
-  string pipeSeparator() { result = "|" }
-
-  string splitSeparators() {
-    result = stmtSeparator() or result = commandSeparator() or result = pipeSeparator()
+  string splitSeparator() {
+    result = stmtSeparator() or
+    result = commandSeparator()
   }
 
   string redirectionSeparator() { result = [">", ">>", "2>", "2>>", ">&", "2>&", "<", "<<<"] }
+
+  string pipeSeparator() { result = "|" }
+
+  string separator() {
+    result = stmtSeparator() or
+    result = commandSeparator() or
+    result = pipeSeparator()
+  }
 
   string partialFileContentCommand() { result = ["cat", "jq", "yq", "tail", "head"] }
 

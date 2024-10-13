@@ -18,7 +18,7 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      exists(this.getACommand().regexpFind(regexp, _, _))
+      this.getACommand().regexpMatch("^" + regexp + ".*")
     )
   }
 }
