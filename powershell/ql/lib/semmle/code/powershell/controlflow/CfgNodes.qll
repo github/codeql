@@ -175,6 +175,32 @@ class ObjectCreationCfgNode extends CallCfgNode {
   string getConstructedTypeName() { result = objectCreation.getConstructedTypeName() }
 }
 
+private class NamedBlockChildMapping extends NonExprChildMapping, NamedBlock {
+  override predicate relevantChild(Ast n) { n = this.getAStmt() } // TODO: Handle getATrap
+}
+
+class NamedBlockCfgNode extends AstCfgNode {
+  NamedBlockChildMapping block;
+
+  NamedBlockCfgNode() { this.getAstNode() = block }
+
+  NamedBlock getBlock() { result = block }
+
+  StmtCfgNode getStmt(int i) { block.hasCfgChild(block.getStmt(i), this, result) }
+
+  StmtCfgNode getAStmt() { block.hasCfgChild(block.getAStmt(), this, result) }
+}
+
+private class ProcessBlockChildMapping extends NamedBlockChildMapping, ProcessBlock { }
+
+class ProcessBlockCfgNode extends NamedBlockCfgNode {
+  override ProcessBlockChildMapping block;
+
+  override ProcessBlock getBlock() { result = block }
+
+  PipelineParameter getPipelineParameter() { result = block.getEnclosingFunction().getAParameter() }
+}
+
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   private class VarAccessChildMapping extends ExprChildMapping, VarAccess {

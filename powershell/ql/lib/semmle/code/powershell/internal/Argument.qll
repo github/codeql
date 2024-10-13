@@ -7,10 +7,10 @@ module Private {
    * The argument may be named or positional.
    */
   abstract class AbstractArgument extends Expr {
-    Ast call;
+    Call call;
 
     /** Gets the call that this is an argumnt of. */
-    final Ast getCall() { result = call }
+    final Call getCall() { result = call }
 
     /** Gets the position if this is a positional argument. */
     abstract int getPosition();
@@ -23,7 +23,7 @@ module Private {
   }
 
   class CmdArgument extends AbstractArgument {
-    override Cmd call;
+    override CmdCall call;
 
     CmdArgument() { call.getAnArgument() = this }
 
@@ -34,10 +34,10 @@ module Private {
     final override predicate isQualifier() { none() }
   }
 
-  class InvokeArgument extends AbstractArgument {
-    override InvokeMemberExpr call;
+  class MethodArgument extends AbstractArgument {
+    override MethodCall call;
 
-    InvokeArgument() { call.getAnArgument() = this or call.getQualifier() = this }
+    MethodArgument() { call.getAnArgument() = this or call.getQualifier() = this }
 
     override int getPosition() { call.getArgument(result) = this }
 

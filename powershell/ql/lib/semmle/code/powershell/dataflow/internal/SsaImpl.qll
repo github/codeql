@@ -3,7 +3,9 @@ private import powershell
 private import semmle.code.powershell.Cfg as Cfg
 private import semmle.code.powershell.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.powershell.dataflow.Ssa
-private import Cfg::CfgNodes::ExprNodes
+import Cfg::CfgNodes
+private import ExprNodes
+private import StmtNodes
 
 module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg

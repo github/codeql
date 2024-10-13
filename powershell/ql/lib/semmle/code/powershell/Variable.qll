@@ -169,6 +169,8 @@ private class AbstractVariable extends TVariable {
 
   abstract string getName();
 
+  final predicate hasName(string s) { this.getName() = s }
+
   abstract Scope getDeclaringScope();
 
   VarAccess getAnAccess() {
@@ -265,4 +267,8 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
   predicate isPipeline() {
     this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
   }
+}
+
+class PipelineParameter extends Parameter {
+  PipelineParameter() { this.isPipeline() }
 }
