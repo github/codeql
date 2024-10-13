@@ -727,7 +727,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
