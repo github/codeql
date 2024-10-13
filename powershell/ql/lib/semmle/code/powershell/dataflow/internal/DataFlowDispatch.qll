@@ -229,7 +229,8 @@ private module Cached {
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
-    }
+    } or
+    TPipelineArgumentPosition()
 
   cached
   newtype TParameterPosition =
@@ -240,7 +241,8 @@ private module Cached {
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
-    }
+    } or
+    TPipelineParameter()
 }
 
 import Cached
@@ -259,6 +261,8 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this parameter is a keyword parameter with `name`. */
   predicate isKeyword(string name) { this = TKeywordParameter(name) }
 
+  predicate isPipeline() { this = TPipelineParameter() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isThis() and result = "this"
@@ -268,6 +272,8 @@ class ParameterPosition extends TParameterPosition {
     )
     or
     exists(string name | this.isKeyword(name) and result = "kw(" + name + ")")
+    or
+    this.isPipeline() and result = "pipeline"
   }
 }
 
@@ -281,6 +287,8 @@ class ArgumentPosition extends TArgumentPosition {
 
   predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
+  predicate isPipeline() { this = TPipelineArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isThis() and result = "this"
@@ -290,6 +298,8 @@ class ArgumentPosition extends TArgumentPosition {
     )
     or
     exists(string name | this.isKeyword(name) and result = "kw(" + name + ")")
+    or
+    this.isPipeline() and result = "pipeline"
   }
 }
 
@@ -307,4 +317,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
     ppos.isPositional(pos, ns) and
     apos.isPositional(pos, ns)
   )
+  or
+  ppos.isPipeline() and apos.isPipeline()
 }

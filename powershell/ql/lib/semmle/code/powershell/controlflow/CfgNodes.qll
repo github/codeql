@@ -213,6 +213,8 @@ module ExprNodes {
     override VarAccessChildMapping e;
 
     override VarAccess getExpr() { result = super.getExpr() }
+
+    Variable getVariable() { result = e.getVariable() }
   }
 
   private class VarReadAccessChildMapping extends VarAccessChildMapping, VarReadAccess { }
@@ -233,8 +235,6 @@ module ExprNodes {
     override VarWriteAccessChildMapping e;
 
     override VarWriteAccess getExpr() { result = super.getExpr() }
-
-    Variable getVariable() { result = e.getVariable() }
 
     predicate isExplicitWrite(StmtNodes::AssignStmtCfgNode assignment) {
       this = assignment.getLeftHandSide()
