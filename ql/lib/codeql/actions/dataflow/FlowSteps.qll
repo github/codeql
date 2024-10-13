@@ -49,8 +49,15 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
  *    echo "bar=${foo}" >> "$GITHUB_OUTPUT"
  */
 predicate commandToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(CommandSource source, Run run, string key, string cmd |
-    source.getCommand() = cmd and
+  exists(Run run, string key, string cmd |
+    (
+      exists(CommandSource source | source.getCommand() = cmd)
+      or
+      exists(FileSource source |
+        source.asExpr().(Step).getAFollowingStep() = run and
+        Bash::outputsPartialFileContent(run, cmd)
+      )
+    ) and
     Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_OUTPUT", key) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     pred.asExpr() = run.getScriptScalar() and
@@ -67,47 +74,16 @@ predicate commandToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Dat
  *    echo "bar=${foo}" >> "$GITHUB_ENV"
  */
 predicate commandToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(CommandSource source, Run run, string key, string cmd |
-    source.getCommand() = cmd and
+  exists(Run run, string key, string cmd |
+    (
+      exists(CommandSource source | source.getCommand() = cmd)
+      or
+      exists(FileSource source |
+        source.asExpr().(Step).getAFollowingStep() = run and
+        Bash::outputsPartialFileContent(run, cmd)
+      )
+    ) and
     Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_ENV", key) and
-    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getScriptScalar() and
-    // we store the taint on the enclosing job since there may not be an implicit env attribute
-    succ.asExpr() = run.getEnclosingJob()
-  )
-}
-
-/**
- * A downloaded artifact that gets assigned to a Run step output.
- * - uses: actions/download-artifact@v2
- * - run: echo "::set-output name=id::$(<pr-id.txt)"
- * - run: |
- *    foo=$(<pr-id.txt)"
- *    echo "::set-output name=id::$foo
- */
-predicate fileToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(FileSource source, Run run, string key, string cmd |
-    source.asExpr().(Step).getAFollowingStep() = run and
-    Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_OUTPUT", key) and
-    Bash::outputsPartialFileContent(run, cmd) and
-    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getScriptScalar() and
-    succ.asExpr() = run
-  )
-}
-
-/**
- * A downloaded artifact that gets assigned to an environment variable.
- * - run: echo "foo=$(<pr-id.txt)" >> "$GITHUB_ENV"
- * - run: |
- *    foo=$(<pr-id.txt)"
- *    echo "bar=${foo}" >> "$GITHUB_ENV"
- */
-predicate fileToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(FileSource source, Run run, string key, string cmd |
-    source.asExpr().(Step).getAFollowingStep() = run and
-    Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_ENV", key) and
-    Bash::outputsPartialFileContent(run, cmd) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
     pred.asExpr() = run.getScriptScalar() and
     // we store the taint on the enclosing job since there may not be an implicit env attribute
