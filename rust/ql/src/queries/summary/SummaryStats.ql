@@ -1,7 +1,7 @@
 /**
  * @name Summary Statistics
  * @description A table of summary statistics about a database.
- * @kind table
+ * @kind diagnostic
  * @id rust/summary/summary-statistics
  * @tags summary
  */
