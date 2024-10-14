@@ -10,6 +10,19 @@ private predicate hasParameterBlockImpl(Internal::Parameter p, ParamBlock block,
   param_block_parameter(block, i, p)
 }
 
+private predicate hasParameterBlockExcludingPipelineImpl(
+  Internal::Parameter p, ParamBlock block, int i
+) {
+  p =
+    rank[i + 1](Internal::Parameter cand, int j |
+      hasParameterBlockImpl(cand, block, j) and
+      not cand.getAnAttribute().(Attribute).getANamedArgument() instanceof
+        ValueFromPipelineAttribute
+    |
+      cand order by j
+    )
+}
+
 /**
  * Gets the enclosing scope of `p`.
  *
@@ -56,9 +69,13 @@ private class ParameterImpl extends TParameterImpl {
 
   predicate hasParameterBlock(ParamBlock block, int i) { none() }
 
+  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) { none() }
+
   predicate isFunctionParameter(Function f, int i) { none() }
 
   Expr getDefaultValue() { none() }
+
+  abstract Attribute getAnAttribute();
 
   VarAccess getAnAccess() {
     // TODO: This won't join order nicely.
@@ -82,9 +99,15 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
     hasParameterBlockImpl(p, block, i)
   }
 
+  override predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
+    hasParameterBlockExcludingPipelineImpl(p, block, i)
+  }
+
   override predicate isFunctionParameter(Function f, int i) { isFunctionParameterImpl(p, f, i) }
 
   override Expr getDefaultValue() { result = p.getDefaultValue() }
+
+  override Attribute getAnAttribute() { result = p.getAnAttribute() }
 }
 
 /**
@@ -113,6 +136,8 @@ private class Underscore extends ParameterImpl, TUnderscore {
   override string getName() { result = "_" }
 
   final override Scope getEnclosingScope() { result = scope }
+
+  final override Attribute getAnAttribute() { none() }
 }
 
 private class ThisParameter extends ParameterImpl, TThisParameter {
@@ -125,6 +150,8 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   override string getName() { result = "this" }
 
   final override Scope getEnclosingScope() { result = scope }
+
+  final override Attribute getAnAttribute() { none() }
 }
 
 private newtype TVariable =
@@ -199,6 +226,10 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   predicate hasParameterBlock(ParamBlock block, int i) { p.hasParameterBlock(block, i) }
 
+  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
+    p.hasParameterBlockExcludingPipeline(block, i)
+  }
+
   predicate isFunctionParameter(Function f, int i) { p.isFunctionParameter(f, i) }
 
   Expr getDefaultValue() { result = p.getDefaultValue() }
@@ -215,11 +246,23 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
    */
   int getIndex() { result = this.getFunctionIndex() or result = this.getBlockIndex() }
 
+  int getIndexExcludingPipeline() {
+    result = this.getFunctionIndex() or result = this.getBlockIndexExcludingPipeline()
+  }
+
   /** Gets the index of this parameter in the parameter block, if any. */
   int getBlockIndex() { this.hasParameterBlock(_, result) }
+
+  int getBlockIndexExcludingPipeline() { this.hasParameterBlockExcludingPipeline(_, result) }
 
   /** Gets the index of this parameter in the function, if any. */
   int getFunctionIndex() { this.isFunctionParameter(_, result) }
 
   Function getFunction() { result.getBody() = this.getDeclaringScope() }
+
+  Attribute getAnAttribute() { result = p.getAnAttribute() }
+
+  predicate isPipeline() {
+    this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
+  }
 }

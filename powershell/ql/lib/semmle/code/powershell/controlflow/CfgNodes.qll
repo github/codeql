@@ -130,20 +130,34 @@ abstract private class NonExprChildMapping extends ChildMapping {
 abstract private class AbstractCallCfgNode extends AstCfgNode {
   override string getAPrimaryQlClass() { result = "CfgCall" }
 
+  /** Holds if this call invokes a function with the name `name`. */
   final predicate hasName(string name) { this.getName() = name }
 
+  /** Gets the name of the function that is invoked by this call. */
   abstract string getName();
 
+  /** Gets the qualifier of this call, if any. */
   ExprCfgNode getQualifier() { none() }
 
+  /** Gets the i'th argument to this call. */
   abstract ExprCfgNode getArgument(int i);
 
+  /** Gets the i'th positional argument to this call. */
   abstract ExprCfgNode getPositionalArgument(int i);
 
+  /** Gets the argument with the name `name`, if any. */
   abstract ExprCfgNode getNamedArgument(string name);
 
+  /**
+   * Gets any argument of this call.
+   *
+   * Note that this predicate doesn't get the pipeline argument, if any.
+   */
   abstract ExprCfgNode getAnArgument();
 
+  /**
+   * Gets the expression that provides the call target of this call, if any.
+   */
   abstract ExprCfgNode getCommand();
 }
 
@@ -381,12 +395,12 @@ module ExprNodes {
 }
 
 module StmtNodes {
-  private class CmdChildMapping extends NonExprChildMapping, Cmd {
+  private class CmdChildMapping extends CmdBaseChildMapping, Cmd {
     override predicate relevantChild(Ast n) { n = this.getAnArgument() or n = this.getCommand() }
   }
 
   /** A control-flow node that wraps a `Cmd` AST expression. */
-  class CmdCfgNode extends StmtCfgNode, AbstractCallCfgNode {
+  class CmdCfgNode extends CmdBaseCfgNode, AbstractCallCfgNode {
     override string getAPrimaryQlClass() { result = "CmdCfgNode" }
 
     override CmdChildMapping s;
@@ -410,14 +424,14 @@ module StmtNodes {
     final override string getName() { result = s.getCmdName().getValue().getValue() }
   }
 
-  private class AssignStmtChildMapping extends NonExprChildMapping, AssignStmt {
+  private class AssignStmtChildMapping extends PipelineBaseChildMapping, AssignStmt {
     override predicate relevantChild(Ast n) {
       n = this.getLeftHandSide() or n = this.getRightHandSide()
     }
   }
 
   /** A control-flow node that wraps an `AssignStmt` AST expression. */
-  class AssignStmtCfgNode extends StmtCfgNode {
+  class AssignStmtCfgNode extends PipelineBaseCfgNode {
     override string getAPrimaryQlClass() { result = "AssignCfgNode" }
 
     override AssignStmtChildMapping s;
@@ -431,12 +445,12 @@ module StmtNodes {
     final StmtCfgNode getRightHandSide() { s.hasCfgChild(s.getRightHandSide(), this, result) }
   }
 
-  class CmdExprChildMapping extends NonExprChildMapping, CmdExpr {
+  class CmdExprChildMapping extends CmdBaseChildMapping, CmdExpr {
     override predicate relevantChild(Ast n) { n = this.getExpr() }
   }
 
   /** A control-flow node that wraps a `CmdExpr` expression. */
-  class CmdExprCfgNode extends StmtCfgNode {
+  class CmdExprCfgNode extends CmdBaseCfgNode {
     override string getAPrimaryQlClass() { result = "CmdExprCfgNode" }
 
     override CmdExprChildMapping s;
@@ -444,5 +458,71 @@ module StmtNodes {
     override CmdExpr getStmt() { result = super.getStmt() }
 
     final ExprCfgNode getExpr() { s.hasCfgChild(s.getExpr(), this, result) }
+  }
+
+  class PipelineBaseChildMapping extends NonExprChildMapping, PipelineBase {
+    override predicate relevantChild(Ast n) { none() }
+  }
+
+  class PipelineBaseCfgNode extends StmtCfgNode {
+    override string getAPrimaryQlClass() { result = "PipelineBaseCfgNode" }
+
+    override PipelineBaseChildMapping s;
+
+    override PipelineBase getStmt() { result = super.getStmt() }
+  }
+
+  class ChainableChildMapping extends PipelineBaseChildMapping, Chainable {
+    override predicate relevantChild(Ast n) { none() }
+  }
+
+  class ChainableCfgNode extends PipelineBaseCfgNode {
+    override string getAPrimaryQlClass() { result = "ChainableCfgNode" }
+
+    override ChainableChildMapping s;
+
+    override Chainable getStmt() { result = super.getStmt() }
+  }
+
+  class PipelineChainChildMapping extends ChainableChildMapping, PipelineChain {
+    override predicate relevantChild(Ast n) { n = this.getLeft() or n = this.getRight() }
+  }
+
+  class PipelineChainCfgNode extends ChainableCfgNode {
+    override string getAPrimaryQlClass() { result = "PipelineChainCfgNode" }
+
+    override PipelineChainChildMapping s;
+
+    override PipelineChain getStmt() { result = super.getStmt() }
+
+    final ChainableCfgNode getLeft() { s.hasCfgChild(s.getLeft(), this, result) }
+
+    final ChainableCfgNode getRight() { s.hasCfgChild(s.getRight(), this, result) }
+  }
+
+  class CmdBaseChildMapping extends ChainableChildMapping, CmdBase { }
+
+  class CmdBaseCfgNode extends ChainableCfgNode {
+    override string getAPrimaryQlClass() { result = "CmdBaseCfgNode" }
+
+    override CmdBaseChildMapping s;
+
+    override CmdBase getStmt() { result = super.getStmt() }
+  }
+
+  class PipelineChildMapping extends ChainableChildMapping, Pipeline {
+    override predicate relevantChild(Ast n) { n = this.getAComponent() }
+  }
+
+  class PipelineCfgNode extends ChainableCfgNode {
+    override string getAPrimaryQlClass() { result = "PipelineCfgNode" }
+
+    override PipelineChildMapping s;
+
+    override Pipeline getStmt() { result = super.getStmt() }
+
+    final CmdBaseCfgNode getComponent(int i) { s.hasCfgChild(s.getComponent(i), this, result) }
+
+    final CmdBaseCfgNode getAComponent() { s.hasCfgChild(s.getAComponent(), this, result) }
   }
 }

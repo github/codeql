@@ -50,6 +50,12 @@ abstract private class AbstractFunction extends Ast {
     result = this.getBody().getParamBlock().getParameter(i)
   }
 
+  final Parameter getParameterExcludingPipline(int i) {
+    result = this.getFunctionParameter(i)
+    or
+    result = this.getBody().getParamBlock().getParameterExcludingPipline(i)
+  }
+
   final Parameter getThisParameter() {
     result.isThis() and
     result.getFunction() = this

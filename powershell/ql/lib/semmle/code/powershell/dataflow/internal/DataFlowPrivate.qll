@@ -96,6 +96,18 @@ module LocalFlow {
     nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
     or
     nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
+    or
+    nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
+    or
+    exists(CfgNode cfgNode |
+      nodeFrom = TPreReturnNodeImpl(cfgNode, true) and
+      nodeTo = TImplicitWrapNode(cfgNode, false)
+    )
+    or
+    exists(CfgNode cfgNode |
+      nodeFrom = TImplicitWrapNode(cfgNode, false) and
+      nodeTo = TReturnNodeImpl(cfgNode.getScope())
+    )
   }
 
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
