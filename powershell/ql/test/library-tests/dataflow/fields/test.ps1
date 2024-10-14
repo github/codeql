@@ -43,8 +43,8 @@ $y = Source "11"
 $arr9 = @(0, 1, $y)
 Sink $arr9[0] # clean
 Sink $arr9[1] # clean
-Sink $arr9[2] # $ MISSING: hasValueFlow=11
-Sink $arr9[$unknown] # MISSING: hasValueFlow=11
+Sink $arr9[2] # $ hasValueFlow=11
+Sink $arr9[$unknown] # $ hasValueFlow=11
 
 class MyClass {
     [string] $field

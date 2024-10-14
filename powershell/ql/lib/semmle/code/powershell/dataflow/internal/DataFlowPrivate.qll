@@ -102,6 +102,15 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
     or
+    exists(
+      CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
+    |
+      nodeTo.asExpr() = arrayExpr and
+      container = arrayExpr.getStmtBlock().getAstNode() and
+      nodeFrom.(AstNode).getCfgNode() = container.getAnEscapingElement() and
+      not container.mayBeMultiReturned(_)
+    )
+    or
     nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
     or
     exists(CfgNode cfgNode |
@@ -550,91 +559,36 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
-private module ReturnNodes {
-  /** An AST element that may produce return values when evaluated. */
-  abstract private class ReturnContainer extends Ast {
-    /**
-     * Gets a direct node that will may be returned when evaluating this node.
-     */
-    CfgNode getANode() { none() }
+private module EscapeContainer {
+  private import semmle.code.powershell.internal.AstEscape::Private
 
-    /** Gets a child that may produce more nodes that may be returned. */
-    abstract ReturnContainer getAChild();
+  private module ReturnContainerInterpreter implements InterpretAstInputSig {
+    class T = CfgNodes::AstCfgNode;
 
-    /**
-     * Gets a (possibly transitive) node that may be returned when evaluating
-     * this node.
-     */
-    final CfgNode getAReturnedNode() {
-      result = this.getANode()
+    T interpret(Ast a) {
+      result.(CfgNodes::ExprCfgNode).getExpr() = a
       or
-      result = this.getAChild().getAReturnedNode()
+      result.(CfgNodes::StmtCfgNode).getStmt() = a.(Cmd)
     }
+  }
 
+  class EscapeContainer extends AstEscape<ReturnContainerInterpreter>::Element {
     /** Holds if `n` may be returned multiples times. */
     predicate mayBeMultiReturned(CfgNode n) {
       n = this.getANode() and
       n.getASuccessor+() = n
       or
-      this.getAChild().mayBeMultiReturned(n)
+      this.getAChild().(EscapeContainer).mayBeMultiReturned(n)
     }
   }
+}
 
-  class ScriptBlockReturnContainer extends ReturnContainer, ScriptBlock {
-    final override ReturnContainer getAChild() { result = this.getEndBlock() }
-  }
+private module ReturnNodes {
+  private import EscapeContainer
 
-  class NamedBlockReturnContainer extends ReturnContainer, NamedBlock {
-    final override ReturnContainer getAChild() { result = this.getAStmt() }
-  }
-
-  class CmdExprReturnContainer extends ReturnContainer, CmdExpr {
-    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
-
-    final override ReturnContainer getAChild() { none() }
-  }
-
-  class LoopStmtReturnContainer extends ReturnContainer, LoopStmt {
-    final override ReturnContainer getAChild() { result = this.getBody() }
-  }
-
-  class StmtBlockReturnConainer extends ReturnContainer, StmtBlock {
-    final override ReturnContainer getAChild() { result = this.getAStmt() }
-  }
-
-  class TryStmtReturnContainer extends ReturnContainer, TryStmt {
-    final override ReturnContainer getAChild() {
-      result = this.getBody() or result = this.getACatchClause() or result = this.getFinally()
-    }
-  }
-
-  class ReturnStmtReturnContainer extends ReturnContainer, ReturnStmt {
-    final override ReturnContainer getAChild() { result = this.getPipeline() }
-  }
-
-  class CatchClausReturnContainer extends ReturnContainer, CatchClause {
-    final override ReturnContainer getAChild() { result = this.getBody() }
-  }
-
-  class SwitchStmtReturnContainer extends ReturnContainer, SwitchStmt {
-    final override ReturnContainer getAChild() { result = this.getACase() }
-  }
-
-  class CmdBaseReturnContainer extends ReturnContainer, CmdExpr {
-    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
-
-    final override ReturnContainer getAChild() { none() }
-  }
-
-  class CmdReturnContainer extends ReturnContainer, Cmd {
-    final override CfgNodes::StmtCfgNode getANode() { result.getStmt() = this }
-
-    final override ReturnContainer getAChild() { none() }
-  }
-
-  private predicate isReturnedImpl(CfgNodes::AstCfgNode n, ReturnContainer container) {
+  private predicate isReturnedImpl(CfgNodes::AstCfgNode n, EscapeContainer container) {
     container = n.getScope() and
-    n = container.getAReturnedNode()
+    n = container.getAnEscapingElement()
   }
 
   /**
@@ -642,8 +596,8 @@ private module ReturnNodes {
    * more than one return value from the function.
    */
   predicate isMultiReturned(CfgNodes::AstCfgNode n) {
-    exists(ReturnContainer container | isReturnedImpl(n, container) |
-      strictcount(container.getAReturnedNode()) > 1
+    exists(EscapeContainer container | isReturnedImpl(n, container) |
+      strictcount(container.getAnEscapingElement()) > 1
       or
       container.mayBeMultiReturned(n)
     )
@@ -720,6 +674,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
+  )
+  or
+  exists(
+    CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
+  |
+    node2.asExpr() = arrayExpr and
+    container = arrayExpr.getStmtBlock().getAstNode() and
+    node1.(AstNode).getCfgNode() = container.getAnEscapingElement() and
+    container.mayBeMultiReturned(_)
   )
   or
   c.isAnyElement() and
