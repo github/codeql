@@ -139,7 +139,7 @@ private predicate isExhaustiveMatch(Pat pat) {
     // `match` expressions must be exhaustive, so last arm cannot fail
     pat = any(MatchExpr me).getLastArm().getPat()
     or
-    // macro patterns is exhaustive if its expansion is
+    // macro invocations are exhaustive if their expansion is
     pat = any(MacroPat mp | isExhaustiveMatch(mp.getMacroCall().getExpanded()))
     or
     // parameter patterns must be exhaustive
