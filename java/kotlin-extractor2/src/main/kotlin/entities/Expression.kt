@@ -221,42 +221,31 @@ OLD: KE1
         }
 */
 
-private fun isFunctionMatchingNames(
-    symbol: KaFunctionSymbol,
+private fun KaFunctionSymbol.hasMatchingNames(
     name: CallableId,
-    isExtension: Boolean = false,
+    extensionReceiverClassName: ClassId? = null,
     nullability: KaTypeNullability = KaTypeNullability.UNKNOWN,
-    extensionReceiverClassName: ClassId? = null
 ): Boolean {
 
-    if (symbol.callableId != name)
+    if (this.callableId != name)
         return false
 
-    if (!isExtension)
-        return true
+    val receiverType = this.receiverParameter?.type
+    if (receiverType != null && extensionReceiverClassName != null) {
+        return receiverType.nullability == nullability &&
+                receiverType.symbol?.classId == extensionReceiverClassName
+    }
 
-    val receiverType = symbol.receiverParameter?.type
-    if (receiverType == null)
-        return false
-
-    if (receiverType.nullability != nullability)
-        return false
-
-    if (receiverType.symbol?.classId != extensionReceiverClassName)
-        return false
-
-    return true
+    return receiverType == null && extensionReceiverClassName == null
 }
 
-private fun isFunctionMatchingName(
-    symbol: KaFunctionSymbol,
+private fun KaFunctionSymbol.hasName(
     packageName: String,
     className: String?,
     functionName: String
 ): Boolean {
 
-    return isFunctionMatchingNames(
-        symbol,
+    return this.hasMatchingNames(
         CallableId(
             FqName(packageName),
             if (className == null) null else FqName(className),
@@ -265,13 +254,13 @@ private fun isFunctionMatchingName(
     )
 }
 
-private fun isNumericFunction(target: KaFunctionSymbol, functionName: String): Boolean {
-    return isFunctionMatchingName(target, "kotlin", "Int", functionName) ||
-            isFunctionMatchingName(target, "kotlin", "Byte", functionName) ||
-            isFunctionMatchingName(target, "kotlin", "Short", functionName) ||
-            isFunctionMatchingName(target, "kotlin", "Long", functionName) ||
-            isFunctionMatchingName(target, "kotlin", "Float", functionName) ||
-            isFunctionMatchingName(target, "kotlin", "Double", functionName)
+private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
+    return this.hasName("kotlin", "Int", functionName) ||
+            this.hasName("kotlin", "Byte", functionName) ||
+            this.hasName("kotlin", "Short", functionName) ||
+            this.hasName("kotlin", "Long", functionName) ||
+            this.hasName("kotlin", "Float", functionName) ||
+            this.hasName("kotlin", "Double", functionName)
 }
 
 /**
@@ -305,14 +294,12 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 TODO()
             }
 
-            if (isNumericFunction(target, "plus") ||
-                isFunctionMatchingName(target, "kotlin", "String", "plus") ||
-                isFunctionMatchingNames(
-                    target,
+            if (target.isNumericWithName("plus") ||
+                target.hasName("kotlin", "String", "plus") ||
+                target.hasMatchingNames(
                     CallableId(FqName("kotlin"), null, Name.identifier("plus")),
-                    isExtension = true,
+                    ClassId(FqName("kotlin"), Name.identifier("String")),
                     nullability = KaTypeNullability.NULLABLE,
-                    ClassId(FqName("kotlin"), Name.identifier("String"))
                 )
             ) {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
