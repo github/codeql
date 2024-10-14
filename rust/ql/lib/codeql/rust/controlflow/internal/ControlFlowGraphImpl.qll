@@ -586,6 +586,10 @@ class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
   }
 }
 
+class TryExprTree extends StandardPostOrderTree instanceof TryExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
+
 class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
   override AstNode getChildNode(int i) { result = super.getField(i) }
 }

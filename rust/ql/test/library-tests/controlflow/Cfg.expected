@@ -555,9 +555,34 @@ edges
 | test.rs:245:16:247:9 | BlockExpr | test.rs:243:9:247:9 | IfExpr |  |
 | test.rs:246:13:246:17 | false | test.rs:245:16:247:9 | BlockExpr |  |
 | test.rs:253:5:255:5 | enter test_question_mark_operator_1 | test.rs:253:38:253:38 | s |  |
+| test.rs:253:5:255:5 | exit test_question_mark_operator_1 (normal) | test.rs:253:5:255:5 | exit test_question_mark_operator_1 |  |
 | test.rs:253:38:253:38 | s | test.rs:253:38:253:44 | Param | match |
+| test.rs:253:38:253:44 | Param | test.rs:254:9:254:11 | PathExpr |  |
+| test.rs:253:62:255:5 | BlockExpr | test.rs:253:5:255:5 | exit test_question_mark_operator_1 (normal) |  |
+| test.rs:254:9:254:11 | PathExpr | test.rs:254:9:254:26 | MethodCallExpr |  |
+| test.rs:254:9:254:26 | MethodCallExpr | test.rs:254:9:254:27 | TryExpr |  |
+| test.rs:254:9:254:27 | TryExpr | test.rs:253:5:255:5 | exit test_question_mark_operator_1 (normal) | return |
+| test.rs:254:9:254:27 | TryExpr | test.rs:254:31:254:31 | 4 |  |
+| test.rs:254:9:254:31 | ... + ... | test.rs:253:62:255:5 | BlockExpr |  |
+| test.rs:254:31:254:31 | 4 | test.rs:254:9:254:31 | ... + ... |  |
 | test.rs:257:5:262:5 | enter test_question_mark_operator_2 | test.rs:257:38:257:38 | b |  |
+| test.rs:257:5:262:5 | exit test_question_mark_operator_2 (normal) | test.rs:257:5:262:5 | exit test_question_mark_operator_2 |  |
 | test.rs:257:38:257:38 | b | test.rs:257:38:257:52 | Param | match |
+| test.rs:257:38:257:52 | Param | test.rs:258:15:258:15 | b |  |
+| test.rs:257:71:262:5 | BlockExpr | test.rs:257:5:262:5 | exit test_question_mark_operator_2 (normal) |  |
+| test.rs:258:9:261:9 | MatchExpr | test.rs:257:71:262:5 | BlockExpr |  |
+| test.rs:258:15:258:15 | b | test.rs:258:15:258:16 | TryExpr |  |
+| test.rs:258:15:258:16 | TryExpr | test.rs:257:5:262:5 | exit test_question_mark_operator_2 (normal) | return |
+| test.rs:258:15:258:16 | TryExpr | test.rs:259:13:259:16 | LiteralPat |  |
+| test.rs:259:13:259:16 | LiteralPat | test.rs:259:21:259:24 | PathExpr | match |
+| test.rs:259:13:259:16 | LiteralPat | test.rs:260:13:260:17 | LiteralPat | no-match |
+| test.rs:259:21:259:24 | PathExpr | test.rs:259:26:259:30 | false |  |
+| test.rs:259:21:259:31 | CallExpr | test.rs:258:9:261:9 | MatchExpr |  |
+| test.rs:259:26:259:30 | false | test.rs:259:21:259:31 | CallExpr |  |
+| test.rs:260:13:260:17 | LiteralPat | test.rs:260:22:260:25 | PathExpr | match |
+| test.rs:260:22:260:25 | PathExpr | test.rs:260:27:260:30 | true |  |
+| test.rs:260:22:260:31 | CallExpr | test.rs:258:9:261:9 | MatchExpr |  |
+| test.rs:260:27:260:30 | true | test.rs:260:22:260:31 | CallExpr |  |
 | test.rs:267:5:273:5 | enter test_match | test.rs:267:19:267:29 | maybe_digit |  |
 | test.rs:267:5:273:5 | exit test_match (normal) | test.rs:267:5:273:5 | exit test_match |  |
 | test.rs:267:19:267:29 | maybe_digit | test.rs:267:19:267:42 | Param | match |
