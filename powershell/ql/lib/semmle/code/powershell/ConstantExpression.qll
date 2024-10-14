@@ -13,6 +13,8 @@ class ConstExpr extends @constant_expression, BaseConstExpr {
 private newtype TConstantValue =
   TConstInteger(int value) {
     exists(ConstExpr ce | ce.getType() = "Int32" and ce.getValue().getValue().toInt() = value)
+    or
+    value = [0 .. 10] // needed for `trackKnownValue` in `DataFlowPrivate`
   } or
   TConstDouble(float double) {
     exists(ConstExpr ce | ce.getType() = "Double" and ce.getValue().getValue().toFloat() = double)
