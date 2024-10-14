@@ -146,6 +146,10 @@ fn parameters(
 
 // --- loops ---
 
+
+
+
+
 fn loops() {
     let mut a: i64 = 10;
     let b: i64 = 20;
@@ -171,10 +175,54 @@ fn loops() {
         println!("x is {}", x);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     for x
     in 1..10 {
         assert!(x != 11);
     }
+
+
+
+
+
+
+
+
+
+
 }
 
 // --- lets ---
@@ -302,6 +350,27 @@ fn if_lets_matches() {
         p => { // BAD: unused variable
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 fn shadowing() -> i32 {
@@ -322,7 +391,58 @@ fn shadowing() -> i32 {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // --- main ---
+
 fn main() {
     locals_1();
     locals_2();
@@ -333,6 +453,8 @@ fn main() {
     loops();
     if_lets_matches();
     shadowing();
+
+
 
 	unreachable_if();
 	unreachable_panic();

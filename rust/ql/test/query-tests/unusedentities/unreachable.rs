@@ -79,6 +79,12 @@ fn unreachable_panic() {
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
 
+
+
+
+
+
+
 	if cond() {
 		let mut maybe;
 
