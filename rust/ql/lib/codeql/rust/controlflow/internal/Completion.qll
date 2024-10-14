@@ -123,9 +123,9 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
-/** Holds if `pat` is guaranteed to match. */
+/** Holds if `pat` is guaranteed to match at the point in the AST where it occurs. */
 pragma[nomagic]
-private predicate isIrrefutablePattern(Pat pat) {
+private predicate isExhaustiveMatch(Pat pat) {
   (
     pat instanceof WildcardPat
     or
@@ -133,18 +133,18 @@ private predicate isIrrefutablePattern(Pat pat) {
     or
     pat instanceof RestPat
     or
-    // `let` statements without an `else` branch must be irrefutible
+    // `let` statements without an `else` branch must be exhaustive
     pat = any(LetStmt let | not let.hasLetElse()).getPat()
     or
-    // `match` expressions must be irrefutible, so last arm cannot fail
+    // `match` expressions must be exhaustive, so last arm cannot fail
     pat = any(MatchExpr me).getLastArm().getPat()
     or
-    // parameter patterns must be irrefutible
+    // parameter patterns must be exhaustive
     pat = any(Param p).getPat()
   ) and
   not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
   or
-  exists(Pat parent | isIrrefutablePattern(parent) |
+  exists(Pat parent | isExhaustiveMatch(parent) |
     pat = parent.(BoxPat).getPat()
     or
     pat = parent.(IdentPat).getPat()
@@ -171,7 +171,7 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 
   override predicate isValidForSpecific(AstNode e) {
     e instanceof Pat and
-    if isIrrefutablePattern(e) then value = true else any()
+    if isExhaustiveMatch(e) then value = true else any()
   }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
