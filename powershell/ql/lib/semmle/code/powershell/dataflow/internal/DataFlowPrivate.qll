@@ -102,6 +102,15 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
     or
+    exists(
+      CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
+    |
+      nodeTo.asExpr() = arrayExpr and
+      container = arrayExpr.getStmtBlock().getAstNode() and
+      nodeFrom.(AstNode).getCfgNode() = container.getAnEscapingElement() and
+      not container.mayBeMultiReturned(_)
+    )
+    or
     nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
     or
     exists(CfgNode cfgNode |
@@ -665,6 +674,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
+  )
+  or
+  exists(
+    CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
+  |
+    node2.asExpr() = arrayExpr and
+    container = arrayExpr.getStmtBlock().getAstNode() and
+    node1.(AstNode).getCfgNode() = container.getAnEscapingElement() and
+    container.mayBeMultiReturned(_)
   )
   or
   c.isAnyElement() and
