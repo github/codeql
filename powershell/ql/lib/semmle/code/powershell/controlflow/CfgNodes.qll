@@ -201,6 +201,25 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
   PipelineParameter getPipelineParameter() { result = block.getEnclosingFunction().getAParameter() }
 }
 
+private class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {
+  override predicate relevantChild(Ast n) { n = this.getAStmt() or n = this.getAnElement() }
+}
+
+class StmtBlockCfgNode extends AstCfgNode {
+  StmtBlockChildMapping block;
+
+  StmtBlockCfgNode() { this.getAstNode() = block }
+
+  StmtBlock getBlock() { result = block }
+
+  StmtCfgNode getStmt(int i) { block.hasCfgChild(block.getStmt(i), this, result) }
+
+  StmtCfgNode getAStmt() { block.hasCfgChild(block.getAStmt(), this, result) }
+
+  /** Gets an AST element that may be returned from this `StmtBlockCfgNode`. */
+  AstCfgNode getAnElement() { block.hasCfgChild(block.getAnElement(), this, result) }
+}
+
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   private class VarAccessChildMapping extends ExprChildMapping, VarAccess {
@@ -417,6 +436,22 @@ module ExprNodes {
   /** A control-flow node that wraps a `MemberExpr` expression that is being read from. */
   class IndexCfgReadNode extends IndexCfgNode {
     IndexCfgReadNode() { this.getExpr() instanceof IndexExprRead }
+  }
+
+  class ArrayExprChildMapping extends ExprChildMapping, ArrayExpr {
+    override predicate relevantChild(Ast n) { n = this.getStmtBlock() or n = this.getAnElement() }
+  }
+
+  class ArrayExprCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ArrayExprCfgNode" }
+
+    override ArrayExprChildMapping e;
+
+    ExprCfgNode getElement(int i) { e.hasCfgChild(e.getElement(i), this, result) }
+
+    ExprCfgNode getAnElement() { result = this.getElement(_) }
+
+    StmtBlockCfgNode getStmtBlock() { e.hasCfgChild(e.getStmtBlock(), this, result) }
   }
 }
 
