@@ -146,9 +146,9 @@ fn parameters(
 
 // --- loops ---
 
-
-
-
+fn id(v: i32) -> i32 {
+    return v;
+}
 
 fn loops() {
     let mut a: i64 = 10;
@@ -175,53 +175,53 @@ fn loops() {
         println!("x is {}", x);
     }
 
+    for x
+    in 1..10 {
+        println!("x is {:?}", x);
+    }
 
+    for x
+    in 1..10 {
+        println!("x + 1 is {}", x + 1);
+    }
 
+    for x
+    in 1..10 {
+        for y
+        in 1..x {
+            println!("y is {}", y);
+        }
+    }
 
+    for x // SPURIOUS: unused variable
+    in 1..10 {
+        println!("x is {x}");
+    }
 
+    for x // SPURIOUS: unused variable
+    in 1..10 {
+        _ = format!("x is {x}");
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    for x
+    in 1..10 {
+        println!("x is {val}", val = x);
+    }
 
     for x
     in 1..10 {
         assert!(x != 11);
     }
 
+    for x
+    in 1..10 {
+        assert_eq!(x, 1);
+    }
 
-
-
-
-
-
-
-
+    for x
+    in 1..10 {
+        assert_eq!(id(x), id(1));
+    }
 
 }
 
@@ -351,26 +351,26 @@ fn if_lets_matches() {
         }
     }
 
+    let duration1 = std::time::Duration::new(10, 0); // ten seconds
+    assert_eq!(duration1.as_secs(), 10);
 
+    let duration2:Result<std::time::Duration, String> =
+        Ok(std::time::Duration::new(10, 0));
+    match (duration2) {
+        Ok(n) => { println!("duration was {} seconds", n.as_secs()); }
+        Err(_) => { println!("failed"); }
+    }
 
+    let(left,
+        right) = // BAD: unused value [NOT DETECTED] SPURIOUS: unused variable
+        (1, 2);
+    _ = left;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    let pair = (1, 2);
+    let(left2,
+        right2) = // BAD: unused value [NOT DETECTED] SPURIOUS: unused variable
+        pair;
+    _ = left2;
 }
 
 fn shadowing() -> i32 {
@@ -391,55 +391,55 @@ fn shadowing() -> i32 {
     }
 }
 
+// --- function pointers ---
 
+type FuncPtr = fn(i32) -> i32;
 
+fn increment(x: i32) -> i32 {
+    return x + 1;
+}
 
+fn func_ptrs() {
+    let MyFunc: FuncPtr = increment;
 
+    for x
+    in 1..10 {
+        _ = x + 1;
+    }
 
+    for x
+    in 1..10 {
+        _ = increment(x);
+    }
 
+    for x
+    in 1..10 {
+        _ = MyFunc(x);
+    }
+}
 
+// --- folds and closures ---
 
+fn folds_and_closures() {
+    let a1 = 1..10;
+    _ = a1.sum::<i32>();
 
+    let a2 = 1..10;
+    _ = a2.fold(0, | acc: i32, val: i32 | -> i32 { acc + val } );
 
+    let a3 = 1..10;
+    _ = a3.fold(0, | acc, val | acc + val);
 
+    let a4 = 1..10;
+    _ = a4.fold(0, | acc, val | acc); // BAD: unused variable
 
+    let a5 = 1..10;
+    _ = a5.fold(0, | acc, val | val); // BAD: unused variable
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    let i6 = 1;
+    let a6 = 1..10;
+    _ = a6.fold(0, | acc, val | acc + val + i6);
+}
 
 // --- main ---
 
@@ -453,8 +453,8 @@ fn main() {
     loops();
     if_lets_matches();
     shadowing();
-
-
+    func_ptrs();
+    folds_and_closures();
 
 	unreachable_if();
 	unreachable_panic();
