@@ -82,6 +82,8 @@ private class ParameterImpl extends TParameterImpl {
     result.getUserPath() = this.getName() and
     result.getEnclosingScope() = this.getEnclosingScope()
   }
+
+  abstract predicate isPipeline();
 }
 
 private class InternalParameter extends ParameterImpl, TInternalParameter {
@@ -108,6 +110,10 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
   override Expr getDefaultValue() { result = p.getDefaultValue() }
 
   override Attribute getAnAttribute() { result = p.getAnAttribute() }
+
+  override predicate isPipeline() {
+    this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
+  }
 }
 
 /**
@@ -138,6 +144,10 @@ private class Underscore extends ParameterImpl, TUnderscore {
   final override Scope getEnclosingScope() { result = scope }
 
   final override Attribute getAnAttribute() { none() }
+
+  final override predicate isPipeline() { any() }
+
+  final override predicate isFunctionParameter(Function f, int i) { f.getBody() = scope and i = -1 }
 }
 
 private class ThisParameter extends ParameterImpl, TThisParameter {
@@ -152,6 +162,8 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   final override Scope getEnclosingScope() { result = scope }
 
   final override Attribute getAnAttribute() { none() }
+
+  final override predicate isPipeline() { none() }
 }
 
 private newtype TVariable =
@@ -265,9 +277,7 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   Attribute getAnAttribute() { result = p.getAnAttribute() }
 
-  predicate isPipeline() {
-    this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
-  }
+  predicate isPipeline() { p.isPipeline() }
 }
 
 class PipelineParameter extends Parameter {
@@ -276,7 +286,7 @@ class PipelineParameter extends Parameter {
 
 /**
  * The variable that represents the value of a pipeline during a process block.
- * 
+ *
  * That is, it is _not_ the pipeline variable, but the value that is obtained by reading
  * from the pipeline.
  */
