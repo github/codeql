@@ -3695,29 +3695,6 @@ OLD: KE1
 
                 val dr = c.dispatchReceiver
                 when {
-                    isFunction(target, "kotlin", "String", "plus", false) -> {
-                        val id = tw.getFreshIdLabel<DbAddexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binopDisp(id)
-                    }
-                    isFunction(target, "kotlin", "String", "plus", true) -> {
-                        findJdkIntrinsicOrWarn("stringPlus", c)?.let { stringPlusFn ->
-                            extractRawMethodAccess(
-                                stringPlusFn,
-                                c,
-                                c.type,
-                                callable,
-                                parent,
-                                idx,
-                                enclosingStmt,
-                                listOf(c.extensionReceiver, c.getValueArgument(0)),
-                                null,
-                                null
-                            )
-                        }
-                    }
                     isNumericFunction(
                         target,
                         "plus",

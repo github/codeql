@@ -8,7 +8,13 @@ import org.jetbrains.kotlin.analysis.api.resolution.KaSuccessCallInfo
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.analysis.api.types.KaTypeNullability
+import org.jetbrains.kotlin.analysis.api.types.symbol
 import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 import org.jetbrains.kotlin.psi.*
 
@@ -215,25 +221,57 @@ OLD: KE1
         }
 */
 
-private fun isFunction(
+private fun isFunctionMatchingNames(
+    symbol: KaFunctionSymbol,
+    name: CallableId,
+    isExtension: Boolean = false,
+    nullability: KaTypeNullability = KaTypeNullability.UNKNOWN,
+    extensionReceiverClassName: ClassId? = null
+): Boolean {
+
+    if (symbol.callableId != name)
+        return false
+
+    if (!isExtension)
+        return true
+
+    val receiverType = symbol.receiverParameter?.type
+    if (receiverType == null)
+        return false
+
+    if (receiverType.nullability != nullability)
+        return false
+
+    if (receiverType.symbol?.classId != extensionReceiverClassName)
+        return false
+
+    return true
+}
+
+private fun isFunctionMatchingName(
     symbol: KaFunctionSymbol,
     packageName: String,
-    className: String,
+    className: String?,
     functionName: String
 ): Boolean {
 
-    return symbol.callableId?.packageName?.asString() == packageName &&
-            symbol.callableId?.className?.asString() == className &&
-            symbol.callableId?.callableName?.asString() == functionName
+    return isFunctionMatchingNames(
+        symbol,
+        CallableId(
+            FqName(packageName),
+            if (className == null) null else FqName(className),
+            Name.identifier(functionName)
+        )
+    )
 }
 
-private fun isNumericFunction(target: KaFunctionSymbol, fName: String): Boolean {
-    return isFunction(target, "kotlin", "Int", fName) ||
-            isFunction(target, "kotlin", "Byte", fName) ||
-            isFunction(target, "kotlin", "Short", fName) ||
-            isFunction(target, "kotlin", "Long", fName) ||
-            isFunction(target, "kotlin", "Float", fName) ||
-            isFunction(target, "kotlin", "Double", fName)
+private fun isNumericFunction(target: KaFunctionSymbol, functionName: String): Boolean {
+    return isFunctionMatchingName(target, "kotlin", "Int", functionName) ||
+            isFunctionMatchingName(target, "kotlin", "Byte", functionName) ||
+            isFunctionMatchingName(target, "kotlin", "Short", functionName) ||
+            isFunctionMatchingName(target, "kotlin", "Long", functionName) ||
+            isFunctionMatchingName(target, "kotlin", "Float", functionName) ||
+            isFunctionMatchingName(target, "kotlin", "Double", functionName)
 }
 
 /**
@@ -267,7 +305,16 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 TODO()
             }
 
-            if (isNumericFunction(target, "plus")) {
+            if (isNumericFunction(target, "plus") ||
+                isFunctionMatchingName(target, "kotlin", "String", "plus") ||
+                isFunctionMatchingNames(
+                    target,
+                    CallableId(FqName("kotlin"), null, Name.identifier("plus")),
+                    isExtension = true,
+                    nullability = KaTypeNullability.NULLABLE,
+                    ClassId(FqName("kotlin"), Name.identifier("String"))
+                )
+            ) {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val type = useType(expression.expressionType)
                 val exprParent = parent.expr(expression, callable)
@@ -278,7 +325,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
                 extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
             } else {
-                TODO()
+                TODO("Extract as method call")
             }
         }
 
