@@ -9,7 +9,8 @@ module Ssa {
   private import semmle.code.powershell.Cfg
   private import powershell
   private import internal.SsaImpl as SsaImpl
-  private import CfgNodes::ExprNodes
+  private import CfgNodes
+  private import ExprNodes
 
   /** A static single assignment (SSA) definition. */
   class Definition extends SsaImpl::Definition {
@@ -23,7 +24,7 @@ module Ssa {
     }
 
     /** Gets a control-flow node that reads the value of this SSA definition. */
-    final VarReadAccessCfgNode getARead() { result = SsaImpl::getARead(this) }
+    final AstCfgNode  getARead() { result = SsaImpl::getARead(this) }
 
     /**
      * Gets a first control-flow node that reads the value of this SSA definition.

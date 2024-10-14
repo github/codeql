@@ -209,10 +209,10 @@ private module Cached {
   }
 
   cached
-  VarReadAccessCfgNode getARead(Definition def) {
+  AstCfgNode getARead(Definition def) {
     exists(SsaInput::SourceVariable v, Cfg::BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
-      variableReadActual(bb, i, v) and
+      SsaInput::variableRead(bb, i, v, true) and
       result = bb.getNode(i)
     )
   }
