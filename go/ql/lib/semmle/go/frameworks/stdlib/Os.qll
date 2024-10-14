@@ -43,4 +43,12 @@ module Os {
       input = inp and output = outp
     }
   }
+
+  private class Stdin extends SourceNode {
+    Stdin() {
+      exists(Variable osStdin | osStdin.hasQualifiedName("os", "Stdin") | this = osStdin.getARead())
+    }
+
+    override string getThreatModel() { result = "stdin" }
+  }
 }
