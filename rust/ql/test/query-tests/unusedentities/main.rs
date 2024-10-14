@@ -3,10 +3,10 @@
 // --- locals ---
 
 fn locals_1() {
-    let a = 1; // BAD: unused value [NOT DETECTED]
+    let a = 1; // BAD: unused value
     let b = 1;
     let c = 1;
-    let d = String::from("a"); // BAD: unused value [NOT DETECTED]
+    let d = String::from("a"); // BAD: unused value
     let e = String::from("b");
     let f = 1;
     let _ = 1; // (deliberately unused)
@@ -32,22 +32,22 @@ fn locals_2() {
     let h: i32;
     let i: i32;
 
-    b = 1; // BAD: unused value [NOT DETECTED]
+    b = 1; // BAD: unused value
 
-    c = 1; // BAD: unused value [NOT DETECTED]
+    c = 1; // BAD: unused value
     c = 2;
     println!("use {}", c);
-    c = 3; // BAD: unused value [NOT DETECTED]
+    c = 3; // BAD: unused value
 
     d = 1;
     if cond() {
-        d = 2; // BAD: unused value [NOT DETECTED]
+        d = 2; // BAD: unused value
         d = 3;
     } else {
     }
     println!("use {}", d);
 
-    e = 1; // BAD: unused value [NOT DETECTED]
+    e = 1; // BAD: unused value
     if cond() {
         e = 2;
     } else {
@@ -58,16 +58,16 @@ fn locals_2() {
     f = 1;
     f += 1;
     println!("use {}", f);
-    f += 1; // BAD: unused value [NOT DETECTED]
+    f += 1; // BAD: unused value
     f = 1;
-    f += 1; // BAD: unused value [NOT DETECTED]
+    f += 1; // BAD: unused value
 
-    g = if cond() { 1 } else { 2 }; // BAD: unused value (x2) [NOT DETECTED]
+    g = if cond() { 1 } else { 2 }; // BAD: unused value
     h = if cond() { 3 } else { 4 };
     i = if cond() { h } else { 5 };
     println!("use {}", i);
 
-    _ = 1; // (deliberately unused) [NOT DETECTED]
+    _ = 1; // GOOD (deliberately unused)
 }
 
 // --- structs ---
@@ -84,7 +84,7 @@ impl MyStruct {
 }
 
 fn structs() {
-    let a = MyStruct { val: 1 }; // BAD: unused value [NOT DETECTED]
+    let a = MyStruct { val: 1 }; // BAD: unused value
     let b = MyStruct { val: 2 };
     let c = MyStruct { val: 3 };
     let mut d: MyStruct; // BAD: unused variable
@@ -105,7 +105,7 @@ fn structs() {
 // --- arrays ---
 
 fn arrays() {
-    let is = [1, 2, 3]; // BAD: unused values (x3) [NOT DETECTED]
+    let is = [1, 2, 3]; // BAD: unused values (x3)
     let js = [1, 2, 3];
     let ks = [1, 2, 3];
 
@@ -130,7 +130,7 @@ fn statics() {
     static mut STAT4: i32 = 0; // BAD: unused value [NOT DETECTED]
 
     unsafe {
-        let total = CON1 + STAT1 + STAT3;
+        let total = CON1 + STAT1 + STAT3; // BAD: unused value
     }
 }
 
@@ -189,7 +189,7 @@ enum YesOrNo {
     No,
 }
 
-use YesOrNo::{Yes, No}; // allows `Yes`, `No` to be accessed without qualifiers.
+use YesOrNo::{No, Yes}; // allows `Yes`, `No` to be accessed without qualifiers.
 
 struct MyPoint {
     x: i64,
@@ -207,7 +207,8 @@ fn if_lets_matches() {
     }
 
     let mut next = Some(30);
-    while let Some(val) = next // BAD: unused variable
+    while let Some(val) = // BAD: unused variable
+        next
     {
         next = None;
     }
@@ -222,25 +223,22 @@ fn if_lets_matches() {
     match c {
         Some(val) => { // BAD: unused variable
         }
-        None => {
-        }
+        None => {}
     }
 
     let d = Some(70);
     match d {
         Some(val) => {
-            total += val;
+            total += val; // BAD: unused value
         }
-        None => {
-        }
+        None => {}
     }
 
     let e = Option::Some(80);
     match e {
         Option::Some(val) => { // BAD: unused variable
         }
-        Option::None => {
-        }
+        Option::None => {}
     }
 
     let f = MyOption::Some(90);
@@ -250,10 +248,9 @@ fn if_lets_matches() {
         MyOption::None => {}
     }
 
-    let g : Result<i64, i64> = Ok(100);
+    let g: Result<i64, i64> = Ok(100);
     match g {
-        Ok(_) => {
-        }
+        Ok(_) => {}
         Err(num) => {} // BAD: unused variable
     }
 
@@ -279,8 +276,7 @@ fn if_lets_matches() {
     }
 
     let l = Yes;
-    if let Yes = l {
-    }
+    if let Yes = l {}
 
     match 1 {
         1 => {}
@@ -289,23 +285,20 @@ fn if_lets_matches() {
 
     let p1 = MyPoint { x: 1, y: 2 };
     match p1 {
-        MyPoint { x: 0, y: 0 } => {
-        }
+        MyPoint { x: 0, y: 0 } => {}
         MyPoint { x: 1, y } => { // BAD: unused variable
         }
-        MyPoint { x: 2, y: _ } => {
-        }
+        MyPoint { x: 2, y: _ } => {}
         MyPoint { x: 3, y: a } => { // BAD: unused variable
         }
-        MyPoint { x: 4, .. } => {
-        }
+        MyPoint { x: 4, .. } => {}
         p => { // BAD: unused variable
         }
     }
 }
 
 fn shadowing() -> i32 {
-    let x = 1; // BAD: unused value [NOT DETECTED]
+    let x = 1; // BAD: unused value
     let mut y: i32; // BAD: unused variable
 
     {
@@ -313,7 +306,7 @@ fn shadowing() -> i32 {
         let mut y: i32;
 
         {
-            let x = 3; // BAD: unused value [NOT DETECTED]
+            let x = 3; // BAD: unused value
             let mut y: i32; // BAD: unused variable
         }
 
@@ -329,14 +322,14 @@ fn main() {
     structs();
     arrays();
     statics();
-	println!("lets use result {}", parameters(1, 2, 3));
+    println!("lets use result {}", parameters(1, 2, 3));
     loops();
     if_lets_matches();
     shadowing();
 
-	unreachable_if();
-	unreachable_panic();
-	unreachable_match();
-	unreachable_loop();
-	unreachable_paren();
+    unreachable_if();
+    unreachable_panic();
+    unreachable_match();
+    unreachable_loop();
+    unreachable_paren();
 }
