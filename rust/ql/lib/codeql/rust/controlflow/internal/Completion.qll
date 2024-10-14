@@ -36,7 +36,13 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
 
   // `SimpleCompletion` is the "default" completion type, thus it is valid for
   // any node where there isn't another more specific completion type.
-  override predicate isValidFor(AstNode e) { not any(Completion c).isValidForSpecific(e) }
+  override predicate isValidFor(AstNode e) {
+    not any(Completion c).isValidForSpecific(e)
+    or
+    // A `?` expression can both proceed normally or cause an early return, so
+    // we explicitly allow the former here.
+    e instanceof TryExpr
+  }
 
   override string toString() { result = "simple" }
 }
@@ -204,7 +210,9 @@ class ContinueCompletion extends TContinueCompletion, Completion {
 class ReturnCompletion extends TReturnCompletion, Completion {
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof ReturnExpr }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof ReturnExpr or e instanceof TryExpr
+  }
 
   override string toString() { result = "return" }
 }

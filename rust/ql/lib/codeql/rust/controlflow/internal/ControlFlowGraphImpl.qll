@@ -504,7 +504,8 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge from the scrutinee to the first arm.
     last(super.getExpr(), pred, c) and
-    first(super.getArm(0).getPat(), succ)
+    first(super.getArm(0).getPat(), succ) and
+    completionIsNormal(c)
     or
     // Edge from a failed match/guard in one arm to the beginning of the next arm.
     exists(int i |
@@ -571,18 +572,12 @@ class RefExprTree extends StandardPostOrderTree instanceof RefExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
+class ReturnExprTree extends StandardPostOrderTree instanceof ReturnExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+}
 
-  override predicate first(AstNode node) {
-    first(super.getExpr(), node)
-    or
-    not super.hasExpr() and node = this
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this and completionIsNormal(c)
-  }
+class TryExprTree extends StandardPostOrderTree instanceof TryExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
