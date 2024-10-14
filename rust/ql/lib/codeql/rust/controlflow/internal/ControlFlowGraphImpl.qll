@@ -572,18 +572,8 @@ class RefExprTree extends StandardPostOrderTree instanceof RefExpr {
   override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
-class ReturnExprTree extends PostOrderTree instanceof ReturnExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = super.getExpr() }
-
-  override predicate first(AstNode node) {
-    first(super.getExpr(), node)
-    or
-    not super.hasExpr() and node = this
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this and completionIsNormal(c)
-  }
+class ReturnExprTree extends StandardPostOrderTree instanceof ReturnExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 class TryExprTree extends StandardPostOrderTree instanceof TryExpr {
