@@ -97,16 +97,16 @@ fn unreachable_panic() {
 
 	if cond() {
 		do_something();
-		_ = false && panic!(); // does not panic due to short-circuiting
-		do_something(); // SPURIOUS: unreachable
+		_ = false && panic!(); // does not panic due to short-circuiting SPURIOUS: unreachable
+		do_something();
 		_ = false || panic!();
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
 
 	if cond() {
 		do_something();
-		_ = true || panic!(); // does not panic due to short-circuiting
-		do_something(); // SPURIOUS: unreachable
+		_ = true || panic!(); // does not panic due to short-circuiting SPURIOUS: unreachable
+		do_something();
 		_ = true && panic!();
 		do_something(); // BAD: unreachable code [NOT DETECTED]
 	}
