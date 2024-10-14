@@ -52,3 +52,12 @@ class ScriptBlock extends @script_block, Ast {
 
   final override Scope getEnclosingScope() { result = this }
 }
+
+/** A `process` block. */
+class ProcessBlock extends NamedBlock {
+  ScriptBlock scriptBlock;
+
+  ProcessBlock() { scriptBlock.getProcessBlock() = this }
+
+  ScriptBlock getScriptBlock() { result = scriptBlock }
+}

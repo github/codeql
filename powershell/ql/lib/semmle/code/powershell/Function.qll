@@ -43,11 +43,18 @@ abstract private class AbstractFunction extends Ast {
    * Gets the i'th parameter of this function, if any.
    *
    * This does not include the `this` parameter.
+   *
+   * The implicit underscore parameter (if any) is included at index `-1`.
    */
   final Parameter getParameter(int i) {
+    result.getFunction() = this and
+    result.getIndex() = i
+  }
+
+  final Parameter getParameterExcludingPipline(int i) {
     result = this.getFunctionParameter(i)
     or
-    result = this.getBody().getParamBlock().getParameter(i)
+    result = this.getBody().getParamBlock().getParameterExcludingPipline(i)
   }
 
   final Parameter getThisParameter() {

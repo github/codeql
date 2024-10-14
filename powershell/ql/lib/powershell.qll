@@ -7,6 +7,7 @@ import semmle.code.powershell.Expression
 import semmle.code.powershell.CommandBase
 import semmle.code.powershell.AttributeBase
 import semmle.code.powershell.PipelineBase
+import semmle.code.powershell.PipelineChain
 import semmle.code.powershell.BaseConstantExpression
 import semmle.code.powershell.ConstantExpression
 import semmle.code.powershell.MemberExpressionBase

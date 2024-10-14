@@ -10,6 +10,19 @@ private predicate hasParameterBlockImpl(Internal::Parameter p, ParamBlock block,
   param_block_parameter(block, i, p)
 }
 
+private predicate hasParameterBlockExcludingPipelineImpl(
+  Internal::Parameter p, ParamBlock block, int i
+) {
+  p =
+    rank[i + 1](Internal::Parameter cand, int j |
+      hasParameterBlockImpl(cand, block, j) and
+      not cand.getAnAttribute().(Attribute).getANamedArgument() instanceof
+        ValueFromPipelineAttribute
+    |
+      cand order by j
+    )
+}
+
 /**
  * Gets the enclosing scope of `p`.
  *
@@ -41,7 +54,7 @@ private predicate isParameterImpl(string name, Scope scope) {
 private newtype TParameterImpl =
   TInternalParameter(Internal::Parameter p) or
   TUnderscore(Scope scope) {
-    exists(VarAccess va | va.getUserPath() = "_" and scope = va.getEnclosingScope())
+    exists(VarAccess va | va.getUserPath() = ["_", "PSItem"] and scope = va.getEnclosingScope())
   } or
   TThisParameter(Scope scope) { exists(scope.getEnclosingFunction().getDeclaringType()) }
 
@@ -56,15 +69,21 @@ private class ParameterImpl extends TParameterImpl {
 
   predicate hasParameterBlock(ParamBlock block, int i) { none() }
 
+  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) { none() }
+
   predicate isFunctionParameter(Function f, int i) { none() }
 
   Expr getDefaultValue() { none() }
+
+  abstract Attribute getAnAttribute();
 
   VarAccess getAnAccess() {
     // TODO: This won't join order nicely.
     result.getUserPath() = this.getName() and
     result.getEnclosingScope() = this.getEnclosingScope()
   }
+
+  abstract predicate isPipeline();
 }
 
 private class InternalParameter extends ParameterImpl, TInternalParameter {
@@ -82,11 +101,26 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
     hasParameterBlockImpl(p, block, i)
   }
 
+  override predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
+    hasParameterBlockExcludingPipelineImpl(p, block, i)
+  }
+
   override predicate isFunctionParameter(Function f, int i) { isFunctionParameterImpl(p, f, i) }
 
   override Expr getDefaultValue() { result = p.getDefaultValue() }
+
+  override Attribute getAnAttribute() { result = p.getAnAttribute() }
+
+  override predicate isPipeline() {
+    this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
+  }
 }
 
+/**
+ * The variable that represents an element in the pipeline.
+ *
+ * This is either the variable `$_` or the variable `$PSItem`.
+ */
 private class Underscore extends ParameterImpl, TUnderscore {
   Scope scope;
 
@@ -108,6 +142,12 @@ private class Underscore extends ParameterImpl, TUnderscore {
   override string getName() { result = "_" }
 
   final override Scope getEnclosingScope() { result = scope }
+
+  final override Attribute getAnAttribute() { none() }
+
+  final override predicate isPipeline() { any() }
+
+  final override predicate isFunctionParameter(Function f, int i) { f.getBody() = scope and i = -1 }
 }
 
 private class ThisParameter extends ParameterImpl, TThisParameter {
@@ -120,6 +160,10 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   override string getName() { result = "this" }
 
   final override Scope getEnclosingScope() { result = scope }
+
+  final override Attribute getAnAttribute() { none() }
+
+  final override predicate isPipeline() { none() }
 }
 
 private newtype TVariable =
@@ -128,7 +172,8 @@ private newtype TVariable =
     not name = "this" and // This is modeled as a parameter
     exists(VarAccess va | va.getUserPath() = name and scope = va.getEnclosingScope())
   } or
-  TParameter(ParameterImpl p)
+  TParameter(ParameterImpl p) or
+  TPipelineIteratorVariable(ProcessBlock pb)
 
 private class AbstractVariable extends TVariable {
   abstract Location getLocation();
@@ -136,6 +181,8 @@ private class AbstractVariable extends TVariable {
   string toString() { result = this.getName() }
 
   abstract string getName();
+
+  final predicate hasName(string s) { this.getName() = s }
 
   abstract Scope getDeclaringScope();
 
@@ -194,6 +241,10 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   predicate hasParameterBlock(ParamBlock block, int i) { p.hasParameterBlock(block, i) }
 
+  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
+    p.hasParameterBlockExcludingPipeline(block, i)
+  }
+
   predicate isFunctionParameter(Function f, int i) { p.isFunctionParameter(f, i) }
 
   Expr getDefaultValue() { result = p.getDefaultValue() }
@@ -210,11 +261,45 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
    */
   int getIndex() { result = this.getFunctionIndex() or result = this.getBlockIndex() }
 
+  int getIndexExcludingPipeline() {
+    result = this.getFunctionIndex() or result = this.getBlockIndexExcludingPipeline()
+  }
+
   /** Gets the index of this parameter in the parameter block, if any. */
   int getBlockIndex() { this.hasParameterBlock(_, result) }
+
+  int getBlockIndexExcludingPipeline() { this.hasParameterBlockExcludingPipeline(_, result) }
 
   /** Gets the index of this parameter in the function, if any. */
   int getFunctionIndex() { this.isFunctionParameter(_, result) }
 
   Function getFunction() { result.getBody() = this.getDeclaringScope() }
+
+  Attribute getAnAttribute() { result = p.getAnAttribute() }
+
+  predicate isPipeline() { p.isPipeline() }
+}
+
+class PipelineParameter extends Parameter {
+  PipelineParameter() { this.isPipeline() }
+}
+
+/**
+ * The variable that represents the value of a pipeline during a process block.
+ *
+ * That is, it is _not_ the pipeline variable, but the value that is obtained by reading
+ * from the pipeline.
+ */
+class PipelineIteratorVariable extends AbstractLocalScopeVariable, TPipelineIteratorVariable {
+  private ProcessBlock pb;
+
+  PipelineIteratorVariable() { this = TPipelineIteratorVariable(pb) }
+
+  override Location getLocation() { result = pb.getLocation() }
+
+  override string getName() { result = "pipeline iterator for " + pb.toString() }
+
+  final override Scope getDeclaringScope() { result = pb.getEnclosingScope() }
+
+  ProcessBlock getProcessBlock() { result = pb }
 }

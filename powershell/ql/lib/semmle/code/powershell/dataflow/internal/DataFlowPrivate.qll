@@ -31,6 +31,9 @@ abstract class NodeImpl extends Node {
 
   /** Do not call: use `toString()` instead. */
   abstract string toStringImpl();
+
+  /** Holds if this node should be hidden from path explanations. */
+  predicate nodeIsHidden() { none() }
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
@@ -73,6 +76,8 @@ module SsaFlow {
     or
     result.(Impl::ExprNode).getExpr() = n.asStmt()
     or
+    result.(Impl::ExprNode).getExpr() = n.(ProcessNode).getProcessBlock()
+    or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     n = toParameterNode(result.(Impl::ParameterNode).getParameter())
@@ -96,6 +101,24 @@ module LocalFlow {
     nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
     or
     nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
+    or
+    nodeFrom.(AstNode).getCfgNode() = nodeTo.(PreReturNodeImpl).getReturnedNode()
+    or
+    exists(CfgNode cfgNode |
+      nodeFrom = TPreReturnNodeImpl(cfgNode, true) and
+      nodeTo = TImplicitWrapNode(cfgNode, false)
+    )
+    or
+    exists(CfgNode cfgNode |
+      nodeFrom = TImplicitWrapNode(cfgNode, false) and
+      nodeTo = TReturnNodeImpl(cfgNode.getScope())
+    )
+    or
+    exists(CfgNode cfgNode |
+      cfgNode = nodeFrom.(AstNode).getCfgNode() and
+      isUniqueReturned(cfgNode) and
+      nodeTo.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+    )
   }
 
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
@@ -130,7 +153,11 @@ private module Cached {
       )
       or
       n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
-    }
+    } or
+    TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
+    TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isMultiReturned(n) } or
+    TReturnNodeImpl(CfgScope scope) or
+    TProcessNode(ProcessBlock process)
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -269,7 +296,13 @@ private string approxKnownElementIndex(ConstantValue cv) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n.(NodeImpl).nodeIsHidden() }
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { isReturned(n.(AstNode).getCfgNode()) }
 
 /** An SSA node. */
 abstract class SsaNode extends NodeImpl, TSsaNode {
@@ -425,13 +458,22 @@ private module ParameterNodes {
         // keywords in S are specified.
         exists(int i, int j, string name, NamedSet ns, Function f |
           pos.isPositional(j, ns) and
-          parameter.getIndex() = i and
+          parameter.getIndexExcludingPipeline() = i and
           f = parameter.getFunction() and
           f = ns.getAFunction() and
           name = parameter.getName() and
           not name = ns.getAName() and
-          j = i - count(int k | k < i and f.getParameter(k).getName() = ns.getAName())
+          j =
+            i -
+              count(int k, Parameter p |
+                k < i and
+                p = f.getParameterExcludingPipline(k) and
+                p.getName() = ns.getAName()
+              )
         )
+        or
+        parameter.isPipeline() and
+        pos.isPipeline()
       )
     }
 
@@ -478,6 +520,26 @@ module ArgumentNodes {
       )
     }
   }
+
+  private predicate isPipelineInput(
+    CfgNodes::StmtNodes::CmdBaseCfgNode input, CfgNodes::StmtNodes::CmdBaseCfgNode consumer
+  ) {
+    exists(CfgNodes::StmtNodes::PipelineCfgNode pipeline, int i |
+      input = pipeline.getComponent(i) and
+      consumer = pipeline.getComponent(i + 1)
+    )
+  }
+
+  class PipelineArgumentNode extends ArgumentNode, StmtNode {
+    CfgNodes::StmtNodes::CmdBaseCfgNode consumer;
+
+    PipelineArgumentNode() { isPipelineInput(this.getStmtNode(), consumer) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asCall() = consumer and
+      pos.isPipeline()
+    }
+  }
 }
 
 import ArgumentNodes
@@ -494,7 +556,7 @@ private module ReturnNodes {
     /**
      * Gets a direct node that will may be returned when evaluating this node.
      */
-    Node getANode() { none() }
+    CfgNode getANode() { none() }
 
     /** Gets a child that may produce more nodes that may be returned. */
     abstract ReturnContainer getAChild();
@@ -503,10 +565,18 @@ private module ReturnNodes {
      * Gets a (possibly transitive) node that may be returned when evaluating
      * this node.
      */
-    final Node getAReturnedNode() {
+    final CfgNode getAReturnedNode() {
       result = this.getANode()
       or
       result = this.getAChild().getAReturnedNode()
+    }
+
+    /** Holds if `n` may be returned multiples times. */
+    predicate mayBeMultiReturned(CfgNode n) {
+      n = this.getANode() and
+      n.getASuccessor+() = n
+      or
+      this.getAChild().mayBeMultiReturned(n)
     }
   }
 
@@ -519,7 +589,7 @@ private module ReturnNodes {
   }
 
   class CmdExprReturnContainer extends ReturnContainer, CmdExpr {
-    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
 
     final override ReturnContainer getAChild() { none() }
   }
@@ -551,25 +621,46 @@ private module ReturnNodes {
   }
 
   class CmdBaseReturnContainer extends ReturnContainer, CmdExpr {
-    final override ExprNode getANode() { result.getExprNode().getExpr() = this.getExpr() }
+    final override CfgNodes::ExprCfgNode getANode() { result.getExpr() = this.getExpr() }
 
     final override ReturnContainer getAChild() { none() }
   }
 
   class CmdReturnContainer extends ReturnContainer, Cmd {
-    final override StmtNode getANode() { result.getStmtNode().getStmt() = this }
+    final override CfgNodes::StmtCfgNode getANode() { result.getStmt() = this }
 
     final override ReturnContainer getAChild() { none() }
   }
 
-  class NormalReturnNode extends ReturnNode instanceof NodeImpl {
-    NormalReturnNode() {
-      exists(ReturnContainer container |
-        container = this.getEnclosingCallable().asCfgScope() and
-        this = container.getAReturnedNode()
-      )
-    }
+  private predicate isReturnedImpl(CfgNodes::AstCfgNode n, ReturnContainer container) {
+    container = n.getScope() and
+    n = container.getAReturnedNode()
+  }
 
+  /**
+   * Holds if `n` may be returned, and there are possibly
+   * more than one return value from the function.
+   */
+  predicate isMultiReturned(CfgNodes::AstCfgNode n) {
+    exists(ReturnContainer container | isReturnedImpl(n, container) |
+      strictcount(container.getAReturnedNode()) > 1
+      or
+      container.mayBeMultiReturned(n)
+    )
+  }
+
+  /**
+   * Holds if `n` may be returned.
+   */
+  predicate isReturned(CfgNodes::AstCfgNode n) { isReturnedImpl(n, _) }
+
+  /**
+   * Holds if `n` may be returned, and this is the only value that may be
+   * returned from the function.
+   */
+  predicate isUniqueReturned(CfgNodes::AstCfgNode n) { isReturned(n) and not isMultiReturned(n) }
+
+  class NormalReturnNode extends ReturnNode instanceof ReturnNodeImpl {
     final override NormalReturnKind getKind() { any() }
   }
 }
@@ -610,25 +701,37 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(fc)
   )
   or
-  exists(
-    CfgNodes::ExprNodes::IndexCfgWriteNode var, Content::KnownElementContent ec, int index,
-    CfgNodes::ExprCfgNode e
-  |
+  exists(CfgNodes::ExprNodes::IndexCfgWriteNode var, CfgNodes::ExprCfgNode e |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
     node1.asStmt() = var.getAssignStmt().getRightHandSide() and
-    c.isKnownOrUnknownElement(ec) and
-    index = ec.getIndex().asInt() and
     e = var.getIndex()
   |
-    index = e.getValue().asInt()
+    exists(int index, Content::KnownElementContent ec |
+      c.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt() and
+      index = e.getValue().asInt()
+    )
     or
-    not exists(e.getValue().asInt())
+    not exists(e.getValue().asInt()) and
+    c.isAnyElement()
   )
   or
   exists(Content::KnownElementContent ec, int index |
     node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
+  )
+  or
+  c.isAnyElement() and
+  exists(CfgNode cfgNode |
+    node1 = TPreReturnNodeImpl(cfgNode, false) and
+    node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+  )
+  or
+  exists(CfgNode cfgNode |
+    node1 = TImplicitWrapNode(cfgNode, true) and
+    c.isAnyElement() and
+    node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
 }
 
@@ -643,19 +746,31 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(fc)
   )
   or
-  exists(
-    CfgNodes::ExprNodes::IndexCfgReadNode var, Content::KnownElementContent ec, int index,
-    CfgNodes::ExprCfgNode e
-  |
+  exists(CfgNodes::ExprNodes::IndexCfgReadNode var, CfgNodes::ExprCfgNode e |
     node2.asExpr() = var and
     node1.asExpr() = var.getBase() and
-    c.isKnownOrUnknownElement(ec) and
-    index = ec.getIndex().asInt() and
     e = var.getIndex()
   |
-    index = e.getValue().asInt()
+    exists(int index, Content::KnownElementContent ec |
+      c.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt() and
+      index = e.getValue().asInt()
+    )
     or
-    not exists(e.getValue().asInt())
+    not exists(e.getValue().asInt()) and
+    c.isAnyElement()
+  )
+  or
+  exists(CfgNode cfgNode |
+    node1 = TPreReturnNodeImpl(cfgNode, true) and
+    node2 = TImplicitWrapNode(cfgNode, true) and
+    c.isSingleton(any(Content::KnownElementContent ec))
+  )
+  or
+  c.isAnyElement() and
+  exists(SsaImpl::DefinitionExt def |
+    node1.(ProcessNode).getIteratorVariable() = def.getSourceVariable() and
+    SsaImpl::firstRead(def, node2.asExpr())
   )
 }
 
@@ -665,7 +780,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
+  c.isSingleton(any(Content::FieldContent fc)) and
   n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  or
+  n = TPreReturnNodeImpl(_, false) and
+  c.isAnyElement()
 }
 
 /**
@@ -673,7 +792,14 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  none() // TODO
+  n = TPreReturnNodeImpl(_, true) and
+  c.isKnownOrUnknownElement(_)
+  or
+  n = TImplicitWrapNode(_, false) and
+  c.isSingleton(any(Content::UnknownElementContent ec))
+  or
+  n instanceof ProcessNode and
+  c.isAnyElement()
 }
 
 class DataFlowType extends TDataFlowType {
@@ -733,6 +859,83 @@ private module PostUpdateNodes {
 }
 
 private import PostUpdateNodes
+
+/**
+ * A node that performs implicit array unwrapping when an expression
+ * (or statement) is being returned from a function.
+ */
+private class ImplicitWrapNode extends TImplicitWrapNode, NodeImpl {
+  private CfgNodes::AstCfgNode n;
+  private boolean shouldWrap;
+
+  ImplicitWrapNode() { this = TImplicitWrapNode(n, shouldWrap) }
+
+  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+
+  predicate shouldWrap() { shouldWrap = true }
+
+  override CfgScope getCfgScope() { result = n.getScope() }
+
+  override Location getLocationImpl() { result = n.getLocation() }
+
+  override string toStringImpl() { result = "implicit unwrapping of " + n.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+/**
+ * A node that represents the return value before any array-unwrapping
+ * has been performed.
+ */
+private class PreReturNodeImpl extends TPreReturnNodeImpl, NodeImpl {
+  private CfgNodes::AstCfgNode n;
+  private boolean isArray;
+
+  PreReturNodeImpl() { this = TPreReturnNodeImpl(n, isArray) }
+
+  CfgNodes::AstCfgNode getReturnedNode() { result = n }
+
+  override CfgScope getCfgScope() { result = n.getScope() }
+
+  override Location getLocationImpl() { result = n.getLocation() }
+
+  override string toStringImpl() { result = "pre-return value for " + n.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+/** The node that represents the return value of a function. */
+private class ReturnNodeImpl extends TReturnNodeImpl, NodeImpl {
+  CfgScope scope;
+
+  ReturnNodeImpl() { this = TReturnNodeImpl(scope) }
+
+  override CfgScope getCfgScope() { result = scope }
+
+  override Location getLocationImpl() { result = scope.getLocation() }
+
+  override string toStringImpl() { result = "return value for " + scope.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+private class ProcessNode extends TProcessNode, NodeImpl {
+  ProcessBlock process;
+
+  ProcessNode() { this = TProcessNode(process) }
+
+  override CfgScope getCfgScope() { result = process.getEnclosingScope() }
+
+  override Location getLocationImpl() { result = process.getLocation() }
+
+  override string toStringImpl() { result = process.toString() }
+
+  override predicate nodeIsHidden() { any() }
+
+  PipelineIteratorVariable getIteratorVariable() { result.getProcessBlock() = process }
+
+  CfgNodes::ProcessBlockCfgNode getProcessBlock() { result.getAstNode() = process }
+}
 
 /** A node that performs a type cast. */
 class CastNode extends Node {

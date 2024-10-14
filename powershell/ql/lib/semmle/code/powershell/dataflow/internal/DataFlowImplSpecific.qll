@@ -21,4 +21,6 @@ module PowershellDataFlow implements InputSig<Location> {
   class ParameterNode = Private::ParameterNodeImpl;
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 }
