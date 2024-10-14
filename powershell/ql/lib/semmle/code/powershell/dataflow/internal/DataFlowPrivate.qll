@@ -667,19 +667,19 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(fc)
   )
   or
-  exists(
-    CfgNodes::ExprNodes::IndexCfgWriteNode var, Content::KnownElementContent ec, int index,
-    CfgNodes::ExprCfgNode e
-  |
+  exists(CfgNodes::ExprNodes::IndexCfgWriteNode var, CfgNodes::ExprCfgNode e |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
     node1.asStmt() = var.getAssignStmt().getRightHandSide() and
-    c.isKnownOrUnknownElement(ec) and
-    index = ec.getIndex().asInt() and
     e = var.getIndex()
   |
-    index = e.getValue().asInt()
+    exists(int index, Content::KnownElementContent ec |
+      c.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt() and
+      index = e.getValue().asInt()
+    )
     or
-    not exists(e.getValue().asInt())
+    not exists(e.getValue().asInt()) and
+    c.isAnyElement()
   )
   or
   exists(Content::KnownElementContent ec, int index |
@@ -712,19 +712,19 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(fc)
   )
   or
-  exists(
-    CfgNodes::ExprNodes::IndexCfgReadNode var, Content::KnownElementContent ec, int index,
-    CfgNodes::ExprCfgNode e
-  |
+  exists(CfgNodes::ExprNodes::IndexCfgReadNode var, CfgNodes::ExprCfgNode e |
     node2.asExpr() = var and
     node1.asExpr() = var.getBase() and
-    c.isKnownOrUnknownElement(ec) and
-    index = ec.getIndex().asInt() and
     e = var.getIndex()
   |
-    index = e.getValue().asInt()
+    exists(int index, Content::KnownElementContent ec |
+      c.isKnownOrUnknownElement(ec) and
+      index = ec.getIndex().asInt() and
+      index = e.getValue().asInt()
+    )
     or
-    not exists(e.getValue().asInt())
+    not exists(e.getValue().asInt()) and
+    c.isAnyElement()
   )
   or
   exists(CfgNode cfgNode |
