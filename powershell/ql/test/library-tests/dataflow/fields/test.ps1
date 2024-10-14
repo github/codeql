@@ -59,3 +59,16 @@ $myClass = [MyClass]::new()
 $myClass.field = Source "12"
 
 $myClass.callSink()
+
+function produce {
+    $x = Source "13"
+    $y = Source "14"
+    $z = Source "15"
+    $x
+    $y, $z
+}
+
+$x = produce
+Sink $x[0] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
+Sink $x[1] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
+Sink $x[2] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
