@@ -50,6 +50,8 @@ private class Fprintf extends FormattingFunction, NonThrowingFunction {
   override int getFormatParameterIndex() { result = 1 }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
+
+  override int getFirstFormatArgumentIndex() { result = 2 }
 }
 
 /**
@@ -91,7 +93,7 @@ private class Sprintf extends FormattingFunction, NonThrowingFunction {
   override int getFirstFormatArgumentIndex() {
     if this.hasName("__builtin___sprintf_chk")
     then result = 4
-    else result = this.getNumberOfParameters()
+    else result = this.getNumberOfExplicitParameters()
   }
 }
 

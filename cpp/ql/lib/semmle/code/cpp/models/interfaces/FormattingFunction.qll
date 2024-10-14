@@ -143,7 +143,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * from implicit function declarations. If there is some inconsistency in the number
    * of parameters, then don't return anything.
    */
-  private int getNumberOfExplicitParameters() {
+  int getNumberOfExplicitParameters() {
     forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
       result = fde.getNumberOfParameters()
     )
