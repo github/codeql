@@ -595,7 +595,6 @@ edges
 | test.rs:276:34:276:40 | CallExpr | test.rs:276:19:276:40 | ... == ... |  |
 | test.rs:276:39:276:39 | 3 | test.rs:276:34:276:40 | CallExpr |  |
 | test.rs:277:13:277:20 | ReturnExpr | test.rs:275:5:284:5 | exit test_match_with_return_in_scrutinee (normal) | return |
-| test.rs:277:13:277:20 | ReturnExpr | test.rs:281:13:281:27 | TupleStructPat | return |
 | test.rs:277:13:277:21 | ExprStmt | test.rs:277:20:277:20 | 3 |  |
 | test.rs:277:20:277:20 | 3 | test.rs:277:13:277:20 | ReturnExpr |  |
 | test.rs:278:16:280:9 | BlockExpr | test.rs:276:16:280:9 | IfExpr |  |

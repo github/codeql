@@ -504,7 +504,8 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
     // Edge from the scrutinee to the first arm.
     last(super.getExpr(), pred, c) and
-    first(super.getArm(0).getPat(), succ)
+    first(super.getArm(0).getPat(), succ) and
+    completionIsNormal(c)
     or
     // Edge from a failed match/guard in one arm to the beginning of the next arm.
     exists(int i |
