@@ -31,8 +31,8 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
     exists(Run run |
       pred instanceof FileSource and
       pred.asExpr().(Step).getAFollowingStep() = run and
-      succ.asExpr() = run.getScriptScalar() and
-      Bash::outputsPartialFileContent(run, run.getACommand())
+      succ.asExpr() = run.getScript() and
+      exists(run.getScript().getAFileReadCommand())
     )
   }
 }

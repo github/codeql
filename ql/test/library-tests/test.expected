@@ -1,1 +1,2 @@
+ERROR: Ast::ShellScript is incompatible with string (test.ql:24,66-67)
 ERROR: getCallee() cannot be resolved for type DataFlowPublic::CallNode (test.ql:62,79-88)

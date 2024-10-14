@@ -22,14 +22,14 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
- * A download artifact step followed by a step that may use downloaded artifacts.
+ * A file source step followed by a Run step may read the file.
  */
 predicate fileDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(FileSource source, Run run |
     pred = source and
     source.asExpr().(Step).getAFollowingStep() = run and
-    succ.asExpr() = run.getScriptScalar() and
-    Bash::outputsPartialFileContent(run, run.getACommand())
+    succ.asExpr() = run.getScript() and
+    exists(run.getScript().getAFileReadCommand())
   )
 }
 

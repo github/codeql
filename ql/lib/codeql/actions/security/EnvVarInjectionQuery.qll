@@ -28,15 +28,15 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
         step instanceof UntrustedArtifactDownloadStep or
         step instanceof PRHeadCheckoutStep
       ) and
-      this.asExpr() = run.getScriptScalar() and
+      this.asExpr() = run.getScript() and
       step.getAFollowingStep() = run and
       (
         exists(string cmd |
-          Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_ENV", _) and
-          Bash::outputsPartialFileContent(run, cmd)
+          run.getScript().getACmdReachingGitHubEnvWrite(cmd, _) and
+          run.getScript().getAFileReadCommand() = cmd
         )
         or
-        Bash::fileToGitHubEnv(run, _)
+        run.getScript().fileToGitHubEnv(_)
       )
     )
   }
@@ -52,9 +52,8 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
 class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
   EnvVarInjectionFromCommandSink() {
     exists(CommandSource source |
-      this.asExpr() = source.getEnclosingRun().getScriptScalar() and
-      Bash::cmdReachingGitHubFileWrite(source.getEnclosingRun(), source.getCommand(), "GITHUB_ENV",
-        _)
+      this.asExpr() = source.getEnclosingRun().getScript() and
+      source.getEnclosingRun().getScript().getACmdReachingGitHubEnvWrite(source.getCommand(), _)
     )
   }
 }
@@ -71,8 +70,8 @@ class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
     exists(Run run, string var_name |
       exists(run.getInScopeEnvVarExpr(var_name)) and
-      run.getScriptScalar() = this.asExpr() and
-      Bash::envReachingGitHubFileWrite(run, var_name, "GITHUB_ENV", _)
+      run.getScript() = this.asExpr() and
+      run.getScript().getAnEnvReachingGitHubEnvWrite(var_name, _)
     )
   }
 }
@@ -109,8 +108,12 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Run run, string var |
       run.getInScopeEnvVarExpr(var) = pred.asExpr() and
-      succ.asExpr() = run.getScriptScalar() and
-      Bash::envReachingGitHubFileWrite(run, var, ["GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH"], _)
+      succ.asExpr() = run.getScript() and
+      (
+        run.getScript().getAnEnvReachingGitHubEnvWrite(var, _)
+        or
+        run.getScript().getAnEnvReachingGitHubOutputWrite(var, _)
+      )
     )
     or
     exists(Uses step |
@@ -123,8 +126,8 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
     exists(Run run |
       pred instanceof FileSource and
       pred.asExpr().(Step).getAFollowingStep() = run and
-      succ.asExpr() = run.getScriptScalar() and
-      Bash::outputsPartialFileContent(run, run.getACommand())
+      succ.asExpr() = run.getScript() and
+      exists(run.getScript().getAFileReadCommand())
     )
   }
 }

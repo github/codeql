@@ -34,5 +34,6 @@ jobs:
           name: pr_number 
       - id: clob1
         run: |
+          # VULNERABLE
           echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT
           echo "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT

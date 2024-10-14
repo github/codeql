@@ -18,7 +18,7 @@ class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      this.getACommand().regexpMatch("^" + regexp + ".*")
+      this.getScript().getACommand().regexpMatch("^" + regexp + ".*")
     )
   }
 }
@@ -46,7 +46,7 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
   string path;
 
   LocalScriptExecutionRunStep() {
-    exists(string cmd, string regexp, int path_group | cmd = this.getACommand() |
+    exists(string cmd, string regexp, int path_group | cmd = this.getScript().getACommand() |
       poisonableLocalScriptsDataModel(regexp, path_group) and
       path = cmd.regexpCapture(regexp, path_group)
     )
@@ -57,13 +57,4 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
 
 class LocalActionUsesStep extends PoisonableStep, UsesStep {
   LocalActionUsesStep() { this.getCallee().matches("./%") }
-}
-
-class EnvVarInjectionFromFileReadRunStep extends PoisonableStep, Run {
-  string value;
-
-  EnvVarInjectionFromFileReadRunStep() {
-    this.getAWriteToGitHubEnv(_, value) and
-    Bash::outputsPartialFileContent(this, value)
-  }
 }

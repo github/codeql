@@ -62,6 +62,7 @@ private newtype TAstNode =
     n.lookup("jobs") instanceof YamlMapping
   } or
   TRunsNode(YamlMapping n) { exists(CompositeActionImpl a | a.getNode().lookup("runs") = n) } or
+  TDefaultsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("defaults") = n) } or
   TInputsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("inputs") = n) } or
   TInputNode(YamlValue n) { exists(YamlMapping m | m.lookup("inputs").(YamlMapping).maps(n, _)) } or
   TOutputsNode(YamlMapping n) { exists(YamlMapping m | m.lookup("outputs") = n) } or
@@ -141,6 +142,19 @@ abstract class AstNodeImpl extends TAstNode {
       env.getParentNode().getAChildNode*() = this
     )
   }
+
+  ScalarValueImpl getInScopeDefaultValue(string name, string prop) {
+    exists(DefaultsImpl dft |
+      this.getEnclosingJob().getNode().(YamlMapping).maps(_, dft.getNode()) and
+      result = dft.getValue(name, prop)
+    )
+    or
+    not exists(DefaultsImpl dft | this.getEnclosingJob() = dft.getParentNode()) and
+    exists(DefaultsImpl dft |
+      this.getEnclosingWorkflow().getNode().(YamlMapping).maps(_, dft.getNode()) and
+      result = dft.getValue(name, prop)
+    )
+  }
 }
 
 class ScalarValueImpl extends AstNodeImpl, TScalarValueNode {
@@ -163,6 +177,61 @@ class ScalarValueImpl extends AstNodeImpl, TScalarValueNode {
   override YamlScalar getNode() { result = value }
 
   string getValue() { result = value.getValue() }
+}
+
+class ShellScriptImpl extends ScalarValueImpl {
+  ShellScriptImpl() { exists(YamlMapping run | run.lookup("run").(YamlScalar) = this.getNode()) }
+
+  string getRawScript() { result = this.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
+
+  RunImpl getEnclosingRun() { result.getNode().lookup("run") = this.getNode() }
+
+  abstract string getStmt(int i);
+
+  abstract string getAStmt();
+
+  abstract string getCommand(int i);
+
+  string getACommand() {
+    if this.getEnclosingRun().getShell().matches("bash%")
+    then result = this.(BashShellScript).getACommand()
+    else
+      if this.getEnclosingRun().getShell().matches("pwsh%")
+      then result = this.(PowerShellScript).getACommand()
+      else result = "NOT IMPLEMENTED"
+  }
+
+  abstract string getFileReadCommand(int i);
+
+  abstract string getAFileReadCommand();
+
+  abstract predicate getAssignment(int i, string name, string data);
+
+  abstract predicate getAnAssignment(string name, string data);
+
+  abstract predicate getAWriteToGitHubEnv(string name, string data);
+
+  abstract predicate getAWriteToGitHubOutput(string name, string data);
+
+  abstract predicate getAWriteToGitHubPath(string data);
+
+  abstract predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field);
+
+  abstract predicate getACmdReachingGitHubOutputWrite(string cmd, string output_field);
+
+  abstract predicate getAnEnvReachingGitHubEnvWrite(string var, string output_field);
+
+  abstract predicate getACmdReachingGitHubEnvWrite(string cmd, string output_field);
+
+  abstract predicate getAnEnvReachingGitHubPathWrite(string var);
+
+  abstract predicate getACmdReachingGitHubPathWrite(string cmd);
+
+  abstract predicate fileToGitHubEnv(string path);
+
+  abstract predicate fileToGitHubOutput(string path);
+
+  abstract predicate fileToGitHubPath(string path);
 }
 
 class ExpressionImpl extends AstNodeImpl, TExpressionNode {
@@ -490,6 +559,28 @@ class InputsImpl extends AstNodeImpl, TInputsNode {
   InputImpl getInput(string name) {
     n.maps(result.getNode(), _) and
     result.getNode().(YamlString).getValue() = name
+  }
+}
+
+class DefaultsImpl extends AstNodeImpl, TDefaultsNode {
+  YamlMapping n;
+
+  DefaultsImpl() { this = TDefaultsNode(n) }
+
+  override string toString() { result = n.toString() }
+
+  override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
+
+  override AstNodeImpl getParentNode() { result.getAChildNode() = this }
+
+  override string getAPrimaryQlClass() { result = "DefaultsImpl" }
+
+  override Location getLocation() { result = n.getLocation() }
+
+  override YamlMapping getNode() { result = n }
+
+  ScalarValueImpl getValue(string name, string prop) {
+    n.lookup(name).(YamlMapping).lookup(prop) = result.getNode()
   }
 }
 
@@ -1314,20 +1405,18 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
 
 class RunImpl extends StepImpl {
   YamlScalar script;
+  ScalarValueImpl scriptScalar;
 
-  RunImpl() { this.getNode().lookup("run") = script }
-
-  string getScript() { result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "") }
-
-  ScalarValueImpl getScriptScalar() { result = TScalarValueNode(script) }
-
-  ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }
+  RunImpl() {
+    this.getNode().lookup("run") = script and
+    scriptScalar = TScalarValueNode(script)
+  }
 
   override string toString() {
     if exists(this.getId()) then result = "Run Step: " + this.getId() else result = "Run Step"
   }
 
-  /** Gets the working directory for this `runs` mapping. */
+  /** Gets the working directory for this `run` mapping. */
   string getWorkingDirectory() {
     if exists(n.lookup("working-directory").(YamlString).getValue())
     then
@@ -1339,268 +1428,19 @@ class RunImpl extends StepImpl {
     else result = "GITHUB_WORKSPACE/"
   }
 
-  private string lineProducer(int i) {
-    result = script.getValue().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", i)
+  /** Gets the shell for this `run` mapping. */
+  string getShell() {
+    if exists(n.lookup("shell").(YamlString).getValue())
+    then result = n.lookup("shell").(YamlString).getValue()
+    else
+      if exists(this.getInScopeDefaultValue("run", "shell"))
+      then result = this.getInScopeDefaultValue("run", "shell").getValue()
+      else result = "bash"
   }
 
-  private predicate cmdSubstitutionReplacement(string cmdSubs, string id, int k) {
-    exists(string line | line = this.lineProducer(k) |
-      exists(int i, int j |
-        cmdSubs =
-          // $() cmd substitution
-          line.regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", i, j)
-              .regexpReplaceAll("^\\$\\(", "")
-              .regexpReplaceAll("\\)$", "") and
-        id = "cmdsubs:" + k + ":" + i + ":" + j
-      )
-      or
-      exists(int i, int j |
-        // `...` cmd substitution
-        cmdSubs =
-          line.regexpFind("\\`[^\\`]+\\`", i, j)
-              .regexpReplaceAll("^\\`", "")
-              .regexpReplaceAll("\\`$", "") and
-        id = "cmd:" + k + ":" + i + ":" + j
-      )
-    )
-  }
+  ShellScriptImpl getScript() { result = scriptScalar }
 
-  private predicate rankedCmdSubstitutionReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.cmdSubstitutionReplacement(old2, _, _) | old2) and
-    this.cmdSubstitutionReplacement(old, new, _)
-  }
-
-  private predicate doReplaceCmdSubstitutions(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.lineProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doReplaceCmdSubstitutions(line, round - 1, old, middle) and
-      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
-      new = middle.replaceAll(target, replacement)
-    )
-  }
-
-  private string cmdSubstitutedLineProducer(int i) {
-    // script lines where any command substitution has been replaced with a unique placeholder
-    result =
-      max(int round, string new |
-        this.doReplaceCmdSubstitutions(i, round, _, new)
-      |
-        new order by round
-      )
-    or
-    this.cmdSubstitutionReplacement(result, _, i)
-  }
-
-  private predicate quotedStringReplacement(string quotedStr, string id) {
-    exists(string line, int k | line = this.cmdSubstitutedLineProducer(k) |
-      exists(int i, int j |
-        // double quoted string
-        quotedStr = line.regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
-      or
-      exists(int i, int j |
-        // single quoted string
-        quotedStr = line.regexpFind("'((?:\\\\.|[^'\\\\])*)'", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
-    )
-  }
-
-  private predicate rankedQuotedStringReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.quotedStringReplacement(old2, _) | old2) and
-    this.quotedStringReplacement(old, new)
-  }
-
-  private predicate doReplaceQuotedStrings(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.cmdSubstitutedLineProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doReplaceQuotedStrings(line, round - 1, old, middle) and
-      this.rankedQuotedStringReplacements(round, target, replacement) and
-      new = middle.replaceAll(target, replacement)
-    )
-  }
-
-  private string quotedStringLineProducer(int i) {
-    result =
-      max(int round, string new | this.doReplaceQuotedStrings(i, round, _, new) | new order by round)
-  }
-
-  private string stmtProducer(int i) {
-    result = this.quotedStringLineProducer(i).splitAt(Bash::splitSeparator()).trim() and
-    // when splitting the line with a separator that is not present, the result is the original line which may contain other separators
-    // we only one the split parts that do not contain any of the separators
-    not result.indexOf(Bash::splitSeparator()) > -1
-  }
-
-  private predicate doStmtRestoreQuotedStrings(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.stmtProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doStmtRestoreQuotedStrings(line, round - 1, old, middle) and
-      this.rankedQuotedStringReplacements(round, target, replacement) and
-      new = middle.replaceAll(replacement, target)
-    )
-  }
-
-  private string restoredStmtQuotedStringLineProducer(int i) {
-    result =
-      max(int round, string new |
-        this.doStmtRestoreQuotedStrings(i, round, _, new)
-      |
-        new order by round
-      )
-  }
-
-  private predicate doStmtRestoreCmdSubstitutions(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.restoredStmtQuotedStringLineProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doStmtRestoreCmdSubstitutions(line, round - 1, old, middle) and
-      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
-      new = middle.replaceAll(replacement, target)
-    )
-  }
-
-  string getStmt(int i) {
-    result =
-      max(int round, string new |
-        this.doStmtRestoreCmdSubstitutions(i, round, _, new)
-      |
-        new order by round
-      )
-  }
-
-  string getAStmt() { result = this.getStmt(_) }
-
-  private string cmdProducer(int i) {
-    result = this.quotedStringLineProducer(i).splitAt(Bash::separator()).trim() and
-    // when splitting the line with a separator that is not present, the result is the original line which may contain other separators
-    // we only one the split parts that do not contain any of the separators
-    not result.indexOf(Bash::separator()) > -1
-  }
-
-  private predicate doCmdRestoreQuotedStrings(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.cmdProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doCmdRestoreQuotedStrings(line, round - 1, old, middle) and
-      this.rankedQuotedStringReplacements(round, target, replacement) and
-      new = middle.replaceAll(replacement, target)
-    )
-  }
-
-  private string restoredCmdQuotedStringLineProducer(int i) {
-    result =
-      max(int round, string new |
-        this.doCmdRestoreQuotedStrings(i, round, _, new)
-      |
-        new order by round
-      )
-  }
-
-  private predicate doCmdRestoreCmdSubstitutions(int line, int round, string old, string new) {
-    round = 0 and
-    old = this.restoredCmdQuotedStringLineProducer(line) and
-    new = old
-    or
-    round > 0 and
-    exists(string middle, string target, string replacement |
-      this.doCmdRestoreCmdSubstitutions(line, round - 1, old, middle) and
-      this.rankedCmdSubstitutionReplacements(round, target, replacement) and
-      new = middle.replaceAll(replacement, target)
-    )
-  }
-
-  string getCmd(int i) {
-    result =
-      max(int round, string new |
-        this.doCmdRestoreCmdSubstitutions(i, round, _, new)
-      |
-        new order by round
-      )
-  }
-
-  string getACmd() { result = this.getCmd(_) }
-
-  string getCommand(int i) {
-    result = this.getCmd(i) and
-    // exclude variable declarations
-    not result.regexpMatch("^[a-zA-Z0-9\\-_]+=") and
-    // exclude the following keywords
-    not result =
-      [
-        "", "for", "in", "do", "done", "if", "then", "else", "elif", "fi", "while", "until", "case",
-        "esac", "{", "}"
-      ]
-  }
-
-  string getACommand() { result = this.getCommand(_) }
-
-  predicate getAssignment(int i, string name, string value) {
-    exists(string stmt |
-      stmt = this.getStmt(i) and
-      name = stmt.regexpCapture("^([a-zA-Z0-9\\-_]+)=.*", 1) and
-      value = stmt.regexpCapture("^[a-zA-Z0-9\\-_]+=(.*)", 1)
-    )
-  }
-
-  predicate getAnAssignment(string name, string value) { this.getAssignment(_, name, value) }
-
-  predicate getAWriteToGitHubEnv(string name, string value) {
-    exists(string raw |
-      Bash::extractFileWrite(this.getScript(), "GITHUB_ENV", raw) and
-      Bash::extractVariableAndValue(raw, name, value)
-    )
-  }
-
-  predicate getAWriteToGitHubOutput(string name, string value) {
-    exists(string raw |
-      Bash::extractFileWrite(this.getScript(), "GITHUB_OUTPUT", raw) and
-      Bash::extractVariableAndValue(raw, name, value)
-    )
-  }
-
-  predicate getAWriteToGitHubPath(string value) {
-    Bash::extractFileWrite(this.getScript(), "GITHUB_PATH", value)
-  }
-
-  predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field) {
-    Bash::envReachingGitHubFileWrite(this, var, "GITHUB_OUTPUT", output_field)
-  }
-
-  predicate getACmdReachingGitHubOutputWrite(string cmd, string output_field) {
-    Bash::cmdReachingGitHubFileWrite(this, cmd, "GITHUB_OUTPUT", output_field)
-  }
-
-  predicate getAnEnvReachingGitHubEnvWrite(string var, string output_field) {
-    Bash::envReachingGitHubFileWrite(this, var, "GITHUB_ENV", output_field)
-  }
-
-  predicate getACmdReachingGitHubEnvWrite(string cmd, string output_field) {
-    Bash::cmdReachingGitHubFileWrite(this, cmd, "GITHUB_ENV", output_field)
-  }
+  ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }
 }
 
 /**

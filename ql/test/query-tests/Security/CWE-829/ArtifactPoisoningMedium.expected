@@ -11,9 +11,6 @@ edges
 | .github/workflows/artifactpoisoning34.yml:13:9:16:6 | Run Step | .github/workflows/artifactpoisoning34.yml:20:14:22:23 | npm install\nnpm run lint\n | provenance | Config |
 | .github/workflows/artifactpoisoning41.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning41.yml:22:14:22:22 | ./foo/cmd | provenance | Config |
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning42.yml:22:14:22:18 | ./cmd | provenance | Config |
-| .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning51.yml:19:14:20:57 | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n | provenance | Config |
-| .github/workflows/artifactpoisoning52.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning52.yml:19:14:22:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n | provenance | Config |
-| .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | provenance | Config |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | provenance | Config |
 nodes
@@ -38,12 +35,6 @@ nodes
 | .github/workflows/artifactpoisoning41.yml:22:14:22:22 | ./foo/cmd | semmle.label | ./foo/cmd |
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning42.yml:22:14:22:18 | ./cmd | semmle.label | ./cmd |
-| .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
-| .github/workflows/artifactpoisoning51.yml:19:14:20:57 | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n | semmle.label | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n |
-| .github/workflows/artifactpoisoning52.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
-| .github/workflows/artifactpoisoning52.yml:19:14:22:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n | semmle.label | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n |
-| .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
-| .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | semmle.label | sed -f config foo.md > bar.md\n |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | semmle.label | Uses Step |

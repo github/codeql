@@ -282,7 +282,7 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
         (
           child = super.getInScopeEnvVarExpr(_) or
           child = super.getAnScriptExpr() or
-          child = super.getScriptScalar()
+          child = super.getScript()
         ) and
         l = child.getLocation()
       |

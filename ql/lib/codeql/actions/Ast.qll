@@ -22,6 +22,10 @@ class AstNode instanceof AstNodeImpl {
   CompositeAction getEnclosingCompositeAction() { result = super.getEnclosingCompositeAction() }
 
   Expression getInScopeEnvVarExpr(string name) { result = super.getInScopeEnvVarExpr(name) }
+
+  ScalarValue getInScopeDefaultValue(string name, string prop) {
+    result = super.getInScopeDefaultValue(name, prop)
+  }
 }
 
 class ScalarValue extends AstNode instanceof ScalarValueImpl {
@@ -120,6 +124,10 @@ class ReusableWorkflow extends Workflow instanceof ReusableWorkflowImpl {
 }
 
 class Input extends AstNode instanceof InputImpl { }
+
+class Default extends AstNode instanceof DefaultsImpl {
+  ScalarValue getValue(string name, string prop) { result = super.getValue(name, prop) }
+}
 
 class Outputs extends AstNode instanceof OutputsImpl {
   Expression getAnOutputExpr() { result = super.getAnOutputExpr() }
@@ -286,13 +294,17 @@ class ExternalJob extends Job, Uses instanceof ExternalJobImpl { }
  * See https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun.
  */
 class Run extends Step instanceof RunImpl {
-  string getScript() { result = super.getScript() }
-
-  ScalarValue getScriptScalar() { result = super.getScriptScalar() }
+  ShellScript getScript() { result = super.getScript() }
 
   Expression getAnScriptExpr() { result = super.getAnScriptExpr() }
 
   string getWorkingDirectory() { result = super.getWorkingDirectory() }
+
+  string getShell() { result = super.getShell() }
+}
+
+class ShellScript extends ScalarValueImpl instanceof ShellScriptImpl {
+  string getRawScript() { result = super.getRawScript() }
 
   string getStmt(int i) { result = super.getStmt(i) }
 
@@ -302,19 +314,23 @@ class Run extends Step instanceof RunImpl {
 
   string getACommand() { result = super.getACommand() }
 
-  predicate getAssignment(int i, string name, string value) { super.getAssignment(i, name, value) }
+  string getFileReadCommand(int i) { result = super.getFileReadCommand(i) }
 
-  predicate getAnAssignment(string name, string value) { super.getAnAssignment(name, value) }
+  string getAFileReadCommand() { result = super.getAFileReadCommand() }
 
-  predicate getAWriteToGitHubEnv(string name, string value) {
-    super.getAWriteToGitHubEnv(name, value)
+  predicate getAssignment(int i, string name, string data) { super.getAssignment(i, name, data) }
+
+  predicate getAnAssignment(string name, string data) { super.getAnAssignment(name, data) }
+
+  predicate getAWriteToGitHubEnv(string name, string data) {
+    super.getAWriteToGitHubEnv(name, data)
   }
 
-  predicate getAWriteToGitHubOutput(string name, string value) {
-    super.getAWriteToGitHubOutput(name, value)
+  predicate getAWriteToGitHubOutput(string name, string data) {
+    super.getAWriteToGitHubOutput(name, data)
   }
 
-  predicate getAWriteToGitHubPath(string value) { super.getAWriteToGitHubPath(value) }
+  predicate getAWriteToGitHubPath(string data) { super.getAWriteToGitHubPath(data) }
 
   predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field) {
     super.getAnEnvReachingGitHubOutputWrite(var, output_field)
@@ -331,6 +347,18 @@ class Run extends Step instanceof RunImpl {
   predicate getACmdReachingGitHubEnvWrite(string cmd, string output_field) {
     super.getACmdReachingGitHubEnvWrite(cmd, output_field)
   }
+
+  predicate getAnEnvReachingGitHubPathWrite(string var) {
+    super.getAnEnvReachingGitHubPathWrite(var)
+  }
+
+  predicate getACmdReachingGitHubPathWrite(string cmd) { super.getACmdReachingGitHubPathWrite(cmd) }
+
+  predicate fileToGitHubEnv(string path) { super.fileToGitHubEnv(path) }
+
+  predicate fileToGitHubOutput(string path) { super.fileToGitHubOutput(path) }
+
+  predicate fileToGitHubPath(string path) { super.fileToGitHubPath(path) }
 }
 
 abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {

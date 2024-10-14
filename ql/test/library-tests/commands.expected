@@ -1,19 +1,21 @@
-| .github/workflows/commands.yml:7:9:9:6 | Run Step | command1 |
-| .github/workflows/commands.yml:7:9:9:6 | Run Step | command2 |
-| .github/workflows/commands.yml:9:9:11:6 | Run Step | command3 |
-| .github/workflows/commands.yml:9:9:11:6 | Run Step | command4 |
-| .github/workflows/commands.yml:11:9:13:6 | Run Step | command5 "$(command6)" |
-| .github/workflows/commands.yml:11:9:13:6 | Run Step | command6 |
-| .github/workflows/commands.yml:13:9:15:6 | Run Step | command7 |
-| .github/workflows/commands.yml:13:9:15:6 | Run Step | command8 |
-| .github/workflows/commands.yml:15:9:17:6 | Run Step | command9 |
-| .github/workflows/commands.yml:15:9:17:6 | Run Step | command10 |
-| .github/workflows/commands.yml:17:9:19:6 | Run Step | command11 "`command12`" |
-| .github/workflows/commands.yml:17:9:19:6 | Run Step | command12 |
-| .github/workflows/commands.yml:19:9:20:50 | Run Step | command13 "`command14` $(date \| wc -l)" |
-| .github/workflows/commands.yml:19:9:20:50 | Run Step | command14 |
-| .github/workflows/commands.yml:19:9:20:50 | Run Step | date |
-| .github/workflows/commands.yml:19:9:20:50 | Run Step | wc -l |
+| .github/workflows/commands.yml:15:9:18:6 | Run Step | command1 |
+| .github/workflows/commands.yml:15:9:18:6 | Run Step | command2 |
+| .github/workflows/commands.yml:18:9:20:6 | Run Step | command3 |
+| .github/workflows/commands.yml:18:9:20:6 | Run Step | command4 |
+| .github/workflows/commands.yml:20:9:22:6 | Run Step | command5 "$(command6)" |
+| .github/workflows/commands.yml:20:9:22:6 | Run Step | command6 |
+| .github/workflows/commands.yml:22:9:24:6 | Run Step | command7 |
+| .github/workflows/commands.yml:22:9:24:6 | Run Step | command8 |
+| .github/workflows/commands.yml:24:9:26:6 | Run Step | command9 |
+| .github/workflows/commands.yml:24:9:26:6 | Run Step | command10 |
+| .github/workflows/commands.yml:26:9:28:6 | Run Step | command11 "`command12`" |
+| .github/workflows/commands.yml:26:9:28:6 | Run Step | command12 |
+| .github/workflows/commands.yml:28:9:31:2 | Run Step | command13 "`command14` $(date \| wc -l)" |
+| .github/workflows/commands.yml:28:9:31:2 | Run Step | command14 |
+| .github/workflows/commands.yml:28:9:31:2 | Run Step | date |
+| .github/workflows/commands.yml:28:9:31:2 | Run Step | wc -l |
+| .github/workflows/commands.yml:34:9:37:6 | Run Step | command1 |
+| .github/workflows/commands.yml:34:9:37:6 | Run Step | command2 |
 | .github/workflows/expression_nodes.yml:7:9:8:6 | Run Step | LINE 1echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:8:9:10:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' |
 | .github/workflows/expression_nodes.yml:10:9:13:6 | Run Step | LINE 1 echo '${{ github.event.comment.body }}' |

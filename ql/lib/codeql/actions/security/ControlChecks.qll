@@ -283,8 +283,8 @@ class BashCommentVsHeadDateCheck extends CommentVsHeadDateCheck, Run {
   BashCommentVsHeadDateCheck() {
     // eg: if [[ $(date -d "$pushed_at" +%s) -gt $(date -d "$COMMENT_AT" +%s) ]]; then
     exists(string cmd1, string cmd2 |
-      cmd1 = this.getACommand() and
-      cmd2 = this.getACommand() and
+      cmd1 = this.getScript().getACommand() and
+      cmd2 = this.getScript().getACommand() and
       not cmd1 = cmd2 and
       cmd1.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*") and
       cmd2.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*")

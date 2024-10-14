@@ -61,8 +61,8 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
     exists(Run run |
       pred instanceof FileSource and
       pred.asExpr().(Step).getAFollowingStep() = run and
-      succ.asExpr() = run.getScriptScalar() and
-      Bash::outputsPartialFileContent(run, run.getACommand())
+      succ.asExpr() = run.getScript() and
+      exists(run.getScript().getAFileReadCommand())
     )
   }
 }
@@ -107,8 +107,8 @@ private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
     exists(Run run |
       pred instanceof FileSource and
       pred.asExpr().(Step).getAFollowingStep() = run and
-      succ.asExpr() = run.getScriptScalar() and
-      Bash::outputsPartialFileContent(run, run.getACommand())
+      succ.asExpr() = run.getScript() and
+      exists(run.getScript().getAFileReadCommand())
     )
   }
 }
@@ -283,7 +283,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
-    exists(string cmd | this.getACommand() = cmd |
+    exists(string cmd | this.getScript().getACommand() = cmd |
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -306,7 +306,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using git within a Run step */
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
-    exists(string cmd | this.getACommand() = cmd |
+    exists(string cmd | this.getScript().getACommand() = cmd |
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -326,7 +326,7 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
-    exists(string cmd | this.getACommand() = cmd |
+    exists(string cmd | this.getScript().getACommand() = cmd |
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -348,7 +348,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 /** Checkout of a Pull Request HEAD ref using gh within a Run step */
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
-    exists(string cmd | this.getACommand() = cmd |
+    exists(string cmd | this.getScript().getACommand() = cmd |
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)

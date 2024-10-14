@@ -86,7 +86,8 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
         exists(Uses uses |
           checkout = uses and
           uses.getCallee() = "actions/checkout" and
-          exists(uses.getArgument("ref"))
+          exists(uses.getArgument("ref")) and
+          not uses.getArgument("ref").matches("%base%")
         )
         or
         checkout instanceof GitMutableRefCheckout
@@ -97,9 +98,9 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
         or
         checkout instanceof GhSHACheckout
       ) and
-      this.asExpr() = run.getScriptScalar() and
+      this.asExpr() = run.getScript() and
       checkout.getAFollowingStep() = run and
-      run.getACommand() = cmd and
+      run.getScript().getACommand() = cmd and
       cmd.indexOf("git") = 0 and
       untrustedGitCommandsDataModel(cmd_regex, flag) and
       cmd.regexpMatch(cmd_regex)
@@ -127,8 +128,8 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
   // PR_TITLE=$(jq --raw-output .pull_request.title ${GITHUB_EVENT_PATH})
   // BODY=$(jq -r '.issue.body' "$GITHUB_EVENT_PATH" | sed -n '3p')
   GitHubEventPathSource() {
-    this.asExpr() = run.getScriptScalar() and
-    run.getACommand() = cmd and
+    this.asExpr() = run.getScript() and
+    run.getScript().getACommand() = cmd and
     cmd.matches("jq%") and
     cmd.matches("%GITHUB_EVENT_PATH%") and
     exists(string regexp |
@@ -207,10 +208,11 @@ private class CheckoutSource extends RemoteFlowSource, FileSource {
     // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
     // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
     // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-    exists(Uses u |
-      this.asExpr() = u and
-      u.getCallee() = "actions/checkout" and
-      exists(u.getArgument("ref"))
+    exists(Uses uses |
+      this.asExpr() = uses and
+      uses.getCallee() = "actions/checkout" and
+      exists(uses.getArgument("ref")) and
+      not uses.getArgument("ref").matches("%base%")
     )
     or
     this.asExpr() instanceof GitMutableRefCheckout

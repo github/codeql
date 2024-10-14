@@ -23,7 +23,7 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
   exists(Run run, string var, string field |
     run.getInScopeEnvVarExpr(var) = pred.asExpr() and
     succ.asExpr() = run and
-    Bash::envReachingGitHubFileWrite(run, var, "GITHUB_OUTPUT", field) and
+    run.getScript().getAnEnvReachingGitHubOutputWrite(var, field) and
     c = any(DataFlow::FieldContent ct | ct.getName() = field)
   )
 }
@@ -35,8 +35,8 @@ predicate envToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::
     run.getInScopeEnvVarExpr(var) = pred.asExpr() and
     // we store the taint on the enclosing job since the may not exist an implicit env attribute
     succ.asExpr() = run.getEnclosingJob() and
-    Bash::envReachingGitHubFileWrite(run, var, "GITHUB_ENV", field) and
-    c = any(DataFlow::FieldContent ct | ct.getName() = field) //and
+    run.getScript().getAnEnvReachingGitHubEnvWrite(var, field) and
+    c = any(DataFlow::FieldContent ct | ct.getName() = field)
   )
 }
 
@@ -55,12 +55,12 @@ predicate commandToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Dat
       or
       exists(FileSource source |
         source.asExpr().(Step).getAFollowingStep() = run and
-        Bash::outputsPartialFileContent(run, cmd)
+        run.getScript().getAFileReadCommand() = cmd
       )
     ) and
-    Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_OUTPUT", key) and
+    run.getScript().getACmdReachingGitHubOutputWrite(cmd, key) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getScriptScalar() and
+    pred.asExpr() = run.getScript() and
     succ.asExpr() = run
   )
 }
@@ -80,12 +80,12 @@ predicate commandToEnvStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFl
       or
       exists(FileSource source |
         source.asExpr().(Step).getAFollowingStep() = run and
-        Bash::outputsPartialFileContent(run, cmd)
+        run.getScript().getAFileReadCommand() = cmd
       )
     ) and
-    Bash::cmdReachingGitHubFileWrite(run, cmd, "GITHUB_ENV", key) and
+    run.getScript().getACmdReachingGitHubEnvWrite(cmd, key) and
     c = any(DataFlow::FieldContent ct | ct.getName() = key) and
-    pred.asExpr() = run.getScriptScalar() and
+    pred.asExpr() = run.getScript() and
     // we store the taint on the enclosing job since there may not be an implicit env attribute
     succ.asExpr() = run.getEnclosingJob()
   )

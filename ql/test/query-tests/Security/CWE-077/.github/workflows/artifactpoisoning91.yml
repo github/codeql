@@ -1,0 +1,29 @@
+name: SnapshotPR
+on:
+  workflow_run:
+    workflows:
+      - ApprovalComment
+    types:
+      - completed
+jobs:
+  snapshot:
+    permissions:
+      id-token: write
+      pull-requests: write
+      statuses: write
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - uses: ./.github/actions/download-artifact
+      - id: metadata
+        run: |
+          pr_number="$(head -n 2 /tmp/artifacts/metadata.txt | tail -n 1)"
+          pr_commit="$(tail -n 1 /tmp/artifacts/metadata.txt)"
+          echo PR_COMMIT="$pr_commit" >> "$GITHUB_ENV"
+          echo PR_NUMBER="$pr_number" >> "$GITHUB_ENV"
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          ref: ${{ env.PR_COMMIT }}
+      - uses: ./.github/actions/install-deps
+      - run: make snapshot

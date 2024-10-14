@@ -3,6 +3,7 @@ private import codeql.Locations
 private import codeql.actions.security.ControlChecks
 import codeql.actions.config.Config
 import codeql.actions.Bash
+import codeql.actions.PowerShell
 
 bindingset[expr]
 string normalizeExpr(string expr) {
