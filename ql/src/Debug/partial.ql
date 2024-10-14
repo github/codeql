@@ -18,7 +18,9 @@ import PartialFlow::PartialPathGraph
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    source.getLocation().getFile().getBaseName() = "non-existant-test.yml"
+    //source.getLocation().getFile().getBaseName() = "non-existant-test.yml"
+    source.getLocation().getFile().getBaseName() = "test16.yml" and
+    source.getLocation().getStartLine() = 125
   }
 
   predicate isSink(DataFlow::Node sink) { none() }
