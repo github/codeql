@@ -113,6 +113,12 @@ module LocalFlow {
       nodeFrom = TImplicitWrapNode(cfgNode, false) and
       nodeTo = TReturnNodeImpl(cfgNode.getScope())
     )
+    or
+    exists(CfgNode cfgNode |
+      cfgNode = nodeFrom.(AstNode).getCfgNode() and
+      isUniqueReturned(cfgNode) and
+      nodeTo.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
+    )
   }
 
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
@@ -148,8 +154,8 @@ private module Cached {
       or
       n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
     } or
-    TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isReturned(n) } or
-    TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isReturned(n) } or
+    TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
+    TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isMultiReturned(n) } or
     TReturnNodeImpl(CfgScope scope) or
     TProcessNode(ProcessBlock process)
 
@@ -564,6 +570,14 @@ private module ReturnNodes {
       or
       result = this.getAChild().getAReturnedNode()
     }
+
+    /** Holds if `n` may be returned multiples times. */
+    predicate mayBeMultiReturned(CfgNode n) {
+      n = this.getANode() and
+      n.getASuccessor+() = n
+      or
+      this.getAChild().mayBeMultiReturned(n)
+    }
   }
 
   class ScriptBlockReturnContainer extends ReturnContainer, ScriptBlock {
@@ -618,13 +632,33 @@ private module ReturnNodes {
     final override ReturnContainer getAChild() { none() }
   }
 
-  /** Holds if `n` is returned from the enclosing callable. */
-  predicate isReturned(CfgNodes::AstCfgNode n) {
-    exists(ReturnContainer container |
-      container = n.getScope() and
-      n = container.getAReturnedNode()
+  private predicate isReturnedImpl(CfgNodes::AstCfgNode n, ReturnContainer container) {
+    container = n.getScope() and
+    n = container.getAReturnedNode()
+  }
+
+  /**
+   * Holds if `n` may be returned, and there are possibly
+   * more than one return value from the function.
+   */
+  predicate isMultiReturned(CfgNodes::AstCfgNode n) {
+    exists(ReturnContainer container | isReturnedImpl(n, container) |
+      strictcount(container.getAReturnedNode()) > 1
+      or
+      container.mayBeMultiReturned(n)
     )
   }
+
+  /**
+   * Holds if `n` may be returned.
+   */
+  predicate isReturned(CfgNodes::AstCfgNode n) { isReturnedImpl(n, _) }
+
+  /**
+   * Holds if `n` may be returned, and this is the only value that may be
+   * returned from the function.
+   */
+  predicate isUniqueReturned(CfgNodes::AstCfgNode n) { isReturned(n) and not isMultiReturned(n) }
 
   class NormalReturnNode extends ReturnNode instanceof ReturnNodeImpl {
     final override NormalReturnKind getKind() { any() }
