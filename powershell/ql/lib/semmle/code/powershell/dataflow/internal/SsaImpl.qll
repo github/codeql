@@ -34,12 +34,18 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       parameterWrite(bb, i, v)
       or
       variableWriteActual(bb, i, v, _)
+      or
+      pipelineIteratorWrite(bb, i, v)
     ) and
     certain = true
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    variableReadActual(bb, i, v) and
+    (
+      variableReadActual(bb, i, v)
+      or
+      pipelineRead(bb, i, v)
+    ) and
     certain = true
   }
 }
@@ -60,6 +66,13 @@ module Consistency = Impl::Consistency;
 predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   v.getDeclaringScope() = bb.getScope() and
   i = -1
+}
+
+predicate pipelineIteratorWrite(Cfg::BasicBlock bb, int i, PipelineIteratorVariable v) {
+  exists(ProcessBlockCfgNode process |
+    process = bb.getNode(i) and
+    v.getProcessBlock() = process.getAstNode()
+  )
 }
 
 /**
@@ -101,11 +114,28 @@ predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
   )
 }
 
+private PipelineIteratorVariable getPipelineIterator(PipelineParameter pipelineParam) {
+  result.getProcessBlock().getScriptBlock() = pipelineParam.getDeclaringScope()
+}
+
+private predicate isPipelineIteratorVarAccess(VarAccessCfgNode va) {
+  va.getVariable() instanceof PipelineParameter and
+  va.getAstNode().getParent*() instanceof ProcessBlock
+}
+
 /** Holds if `v` is read at index `i` in basic block `bb`. */
-private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalScopeVariable v) {
-  exists(VarReadAccess read |
-    read.getVariable() = v and
-    read = bb.getNode(i).getAstNode()
+private predicate variableReadActual(Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v) {
+  exists(VarReadAccessCfgNode read, SsaInput::SourceVariable w |
+    read.getVariable() = w and read = bb.getNode(i)
+  |
+    if isPipelineIteratorVarAccess(read) then v = getPipelineIterator(w) else v = w
+  )
+}
+
+private predicate pipelineRead(Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v) {
+  exists(ProcessBlockCfgNode process |
+    process = bb.getNode(i) and
+    v = process.getPipelineParameter()
   )
 }
 
@@ -195,11 +225,12 @@ private module Cached {
    */
   cached
   predicate variableWriteActual(
-    Cfg::BasicBlock bb, int i, LocalScopeVariable v, VarWriteAccessCfgNode write
+    Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v, VarWriteAccessCfgNode write
   ) {
-    exists(Cfg::CfgNode n |
-      write.getVariable() = v and
-      n = bb.getNode(i)
+    exists(Cfg::CfgNode n, SsaInput::SourceVariable w |
+      write.getVariable() = w and
+      n = bb.getNode(i) and
+      if isPipelineIteratorVarAccess(write) then v = getPipelineIterator(w) else v = w
     |
       write.isExplicitWrite(n)
       or

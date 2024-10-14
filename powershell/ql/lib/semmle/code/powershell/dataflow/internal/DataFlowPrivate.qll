@@ -76,6 +76,8 @@ module SsaFlow {
     or
     result.(Impl::ExprNode).getExpr() = n.asStmt()
     or
+    result.(Impl::ExprNode).getExpr() = n.(ProcessNode).getProcessBlock()
+    or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     n = toParameterNode(result.(Impl::ParameterNode).getParameter())
@@ -148,7 +150,8 @@ private module Cached {
     } or
     TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isReturned(n) } or
     TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isReturned(n) } or
-    TReturnNodeImpl(CfgScope scope)
+    TReturnNodeImpl(CfgScope scope) or
+    TProcessNode(ProcessBlock process)
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -462,6 +465,9 @@ private module ParameterNodes {
                 p.getName() = ns.getAName()
               )
         )
+        or
+        parameter.isPipeline() and
+        pos.isPipeline()
       )
     }
 
@@ -506,6 +512,26 @@ module ArgumentNodes {
         arg.isQualifier() and
         pos.isThis()
       )
+    }
+  }
+
+  private predicate isPipelineInput(
+    CfgNodes::StmtNodes::CmdBaseCfgNode input, CfgNodes::StmtNodes::CmdBaseCfgNode consumer
+  ) {
+    exists(CfgNodes::StmtNodes::PipelineCfgNode pipeline, int i |
+      input = pipeline.getComponent(i) and
+      consumer = pipeline.getComponent(i + 1)
+    )
+  }
+
+  class PipelineArgumentNode extends ArgumentNode, StmtNode {
+    CfgNodes::StmtNodes::CmdBaseCfgNode consumer;
+
+    PipelineArgumentNode() { isPipelineInput(this.getStmtNode(), consumer) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asCall() = consumer and
+      pos.isPipeline()
     }
   }
 }
@@ -706,6 +732,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TImplicitWrapNode(cfgNode, true) and
     c.isSingleton(any(Content::KnownElementContent ec))
   )
+  or
+  c.isAnyElement() and
+  exists(SsaImpl::DefinitionExt def |
+    node1.(ProcessNode).getIteratorVariable() = def.getSourceVariable() and
+    SsaImpl::firstRead(def, node2.asExpr())
+  )
 }
 
 /**
@@ -731,6 +763,9 @@ predicate expectsContent(Node n, ContentSet c) {
   or
   n = TImplicitWrapNode(_, false) and
   c.isSingleton(any(Content::UnknownElementContent ec))
+  or
+  n instanceof ProcessNode and
+  c.isAnyElement()
 }
 
 class DataFlowType extends TDataFlowType {
@@ -848,6 +883,24 @@ private class ReturnNodeImpl extends TReturnNodeImpl, NodeImpl {
   override string toStringImpl() { result = "return value for " + scope.toString() }
 
   override predicate nodeIsHidden() { any() }
+}
+
+private class ProcessNode extends TProcessNode, NodeImpl {
+  ProcessBlock process;
+
+  ProcessNode() { this = TProcessNode(process) }
+
+  override CfgScope getCfgScope() { result = process.getEnclosingScope() }
+
+  override Location getLocationImpl() { result = process.getLocation() }
+
+  override string toStringImpl() { result = process.toString() }
+
+  override predicate nodeIsHidden() { any() }
+
+  PipelineIteratorVariable getIteratorVariable() { result.getProcessBlock() = process }
+
+  CfgNodes::ProcessBlockCfgNode getProcessBlock() { result.getAstNode() = process }
 }
 
 /** A node that performs a type cast. */

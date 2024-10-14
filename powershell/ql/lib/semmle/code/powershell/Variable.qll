@@ -160,7 +160,8 @@ private newtype TVariable =
     not name = "this" and // This is modeled as a parameter
     exists(VarAccess va | va.getUserPath() = name and scope = va.getEnclosingScope())
   } or
-  TParameter(ParameterImpl p)
+  TParameter(ParameterImpl p) or
+  TPipelineIteratorVariable(ProcessBlock pb)
 
 private class AbstractVariable extends TVariable {
   abstract Location getLocation();
@@ -271,4 +272,24 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
 class PipelineParameter extends Parameter {
   PipelineParameter() { this.isPipeline() }
+}
+
+/**
+ * The variable that represents the value of a pipeline during a process block.
+ * 
+ * That is, it is _not_ the pipeline variable, but the value that is obtained by reading
+ * from the pipeline.
+ */
+class PipelineIteratorVariable extends AbstractLocalScopeVariable, TPipelineIteratorVariable {
+  private ProcessBlock pb;
+
+  PipelineIteratorVariable() { this = TPipelineIteratorVariable(pb) }
+
+  override Location getLocation() { result = pb.getLocation() }
+
+  override string getName() { result = "pipeline iterator for " + pb.toString() }
+
+  final override Scope getDeclaringScope() { result = pb.getEnclosingScope() }
+
+  ProcessBlock getProcessBlock() { result = pb }
 }
