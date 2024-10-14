@@ -727,7 +727,7 @@ module Trees {
     }
   }
 
-  class CmdExprTree extends StandardPreOrderTree instanceof CmdExpr {
+  class CmdExprTree extends StandardPostOrderTree instanceof CmdExpr {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
 
