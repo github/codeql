@@ -20,4 +20,6 @@ int getLinesOfUserCode() {
 /**
  * Gets a count of the total number of control flow graph inconsistencies in the database.
  */
-int getTotalCfgInconsistencies() { result = sum(CfgConsistency::getCfgInconsistencyCounts(_)) }
+int getTotalCfgInconsistencies() {
+  result = sum(string type | | CfgConsistency::getCfgInconsistencyCounts(type))
+}
