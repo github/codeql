@@ -105,7 +105,7 @@ fn structs() {
 // --- arrays ---
 
 fn arrays() {
-    let is = [1, 2, 3]; // BAD: unused values (x3)
+    let is = [1, 2, 3]; // BAD: unused value
     let js = [1, 2, 3];
     let ks = [1, 2, 3];
 
@@ -200,7 +200,7 @@ fn loops() {
 
     for x // SPURIOUS: unused variable
     in 1..10 {
-        _ = format!("x is {x}");
+        _ = format!("x is {x}"); // SPURIOUS: unused value `res`
     }
 
     for x
@@ -215,12 +215,12 @@ fn loops() {
 
     for x
     in 1..10 {
-        assert_eq!(x, 1);
+        assert_eq!(x, 1); // SPURIOUS: unused value `kind`
     }
 
     for x
     in 1..10 {
-        assert_eq!(id(x), id(1));
+        assert_eq!(id(x), id(1)); // SPURIOUS: unused value `kind`
     }
 
 }
@@ -345,7 +345,7 @@ fn if_lets_matches() {
     }
 
     let duration1 = std::time::Duration::new(10, 0); // ten seconds
-    assert_eq!(duration1.as_secs(), 10);
+    assert_eq!(duration1.as_secs(), 10); // SPURIOUS: unused value `kind`
 
     let duration2:Result<std::time::Duration, String> =
         Ok(std::time::Duration::new(10, 0));
@@ -429,7 +429,7 @@ fn folds_and_closures() {
     let a5 = 1..10;
     _ = a5.fold(0, | acc, val | val); // BAD: unused variable
 
-    let i6 = 1;
+    let i6 = 1; // SPURIOUS: unused value
     let a6 = 1..10;
     _ = a6.fold(0, | acc, val | acc + val + i6);
 }

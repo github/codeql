@@ -11,6 +11,11 @@
 | main.rs:87:9:87:9 | a | Variable is assigned a value that is never used. |
 | main.rs:108:9:108:10 | is | Variable is assigned a value that is never used. |
 | main.rs:133:13:133:17 | total | Variable is assigned a value that is never used. |
-| main.rs:232:13:232:17 | total | Variable is assigned a value that is never used. |
-| main.rs:301:9:301:9 | x | Variable is assigned a value that is never used. |
-| main.rs:309:17:309:17 | x | Variable is assigned a value that is never used. |
+| main.rs:203:13:203:31 | res | Variable is assigned a value that is never used. |
+| main.rs:218:9:218:24 | kind | Variable is assigned a value that is never used. |
+| main.rs:223:9:223:32 | kind | Variable is assigned a value that is never used. |
+| main.rs:280:13:280:17 | total | Variable is assigned a value that is never used. |
+| main.rs:348:5:348:39 | kind | Variable is assigned a value that is never used. |
+| main.rs:370:9:370:9 | x | Variable is assigned a value that is never used. |
+| main.rs:378:17:378:17 | x | Variable is assigned a value that is never used. |
+| main.rs:432:9:432:10 | i6 | Variable is assigned a value that is never used. |
