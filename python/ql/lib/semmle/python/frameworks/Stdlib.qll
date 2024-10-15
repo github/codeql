@@ -4537,21 +4537,9 @@ module StdlibPrivate {
     override DataFlow::ArgumentNode getACallback() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(string content |
-        content = "ListElement"
-        or
-        content = "SetElement"
-        or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          content = "TupleElement[" + i.toString() + "]"
-        )
-        or
-        exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-          content = "DictionaryElement[" + key + "]"
-        )
-      |
-        input = "Argument[self]." + content and
-        output = "ReturnValue." + content and
+      exists(DataFlow::Content c |
+        input = "Argument[self]." + c.getMaDRepresentation() and
+        output = "ReturnValue." + c.getMaDRepresentation() and
         preservesValue = true
       )
       or
