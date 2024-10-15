@@ -302,6 +302,7 @@ test_named_tuple()
 test_defaultdict("key", "key")
 test_copy_1()
 test_copy_2()
+test_replace()
 
 list_index_assign()
 list_index_aug_assign()
