@@ -501,6 +501,20 @@ module ExprNodes {
 
     TypeConstraint getType() { result = e.getType() }
   }
+
+  class ParenExprChildMapping extends ExprChildMapping, ParenExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() }
+  }
+
+  class ParenCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ParenExprCfgNode" }
+
+    override ParenExprChildMapping e;
+
+    override ParenExpr getExpr() { result = e }
+
+    final StmtCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+  }
 }
 
 module StmtNodes {

@@ -601,7 +601,7 @@ module Trees {
   }
 
   class ParenExprTree extends StandardPostOrderTree instanceof ParenExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+    override AstNode getChildNode(int i) { i = 0 and result = super.getBase() }
   }
 
   class TypeNameExprTree extends LeafTree instanceof TypeNameExpr { }
