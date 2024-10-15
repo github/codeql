@@ -237,7 +237,7 @@ enum YesOrNo {
     No,
 }
 
-use YesOrNo::{No, Yes}; // allows `Yes`, `No` to be accessed without qualifiers.
+use YesOrNo::{Yes, No}; // allows `Yes`, `No` to be accessed without qualifiers.
 
 struct MyPoint {
     x: i64,
