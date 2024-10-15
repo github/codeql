@@ -2979,68 +2979,6 @@ OLD: KE1
 
                 val dr = c.dispatchReceiver
                 when {
-                    isNumericFunction(
-                        target,
-                        "and",
-                        "or",
-                        "xor",
-                        "shl",
-                        "shr",
-                        "ushr"
-                    ) -> {
-                        val type = useType(c.type)
-                        val id: Label<out DbExpr> =
-                            when (val targetName = target.name.asString()) {
-                                "and" -> {
-                                    val id = tw.getFreshIdLabel<DbAndbitexpr>()
-                                    tw.writeExprs_andbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "or" -> {
-                                    val id = tw.getFreshIdLabel<DbOrbitexpr>()
-                                    tw.writeExprs_orbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "xor" -> {
-                                    val id = tw.getFreshIdLabel<DbXorbitexpr>()
-                                    tw.writeExprs_xorbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "shl" -> {
-                                    val id = tw.getFreshIdLabel<DbLshiftexpr>()
-                                    tw.writeExprs_lshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "shr" -> {
-                                    val id = tw.getFreshIdLabel<DbRshiftexpr>()
-                                    tw.writeExprs_rshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "ushr" -> {
-                                    val id = tw.getFreshIdLabel<DbUrshiftexpr>()
-                                    tw.writeExprs_urshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                else -> {
-                                    logger.errorElement("Unhandled binary target name: $targetName", c)
-                                    return
-                                }
-                            }
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        if (
-                            isFunction(
-                                target,
-                                "kotlin",
-                                "Byte or Short",
-                                { it == "Byte" || it == "Short" },
-                                "and",
-                                "or",
-                                "xor"
-                            )
-                        )
-                            binopExt(id)
-                        else binopDisp(id)
-                    }
                     // != gets desugared into not and ==. Here we resugar it.
                     c.origin == IrStatementOrigin.EXCLEQ &&
                         isFunction(target, "kotlin", "Boolean", "not") &&

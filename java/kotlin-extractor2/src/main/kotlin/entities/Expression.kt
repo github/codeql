@@ -311,11 +311,19 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_divexpr)
     } else if (op == KtTokens.PERC && target.isNumericWithName("rem")) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_remexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("and")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_andbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("or")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_orbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("xor")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_xorbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("shl")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_lshiftexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("shr")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_rshiftexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("ushr")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_urshiftexpr)
     } else {
-        if (op !in listOf(KtTokens.PLUS, KtTokens.MINUS, KtTokens.MUL, KtTokens.DIV, KtTokens.PERC)) {
-            TODO("Unhandled binary op")
-        }
-
         TODO("Extract as method call")
     }
 }
