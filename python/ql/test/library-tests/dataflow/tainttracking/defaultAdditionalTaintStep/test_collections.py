@@ -183,14 +183,14 @@ def test_replace():
 
     d = replace(c, tainted_to_safe=NOT_TAINTED, safe_to_tainted=TAINTED_STRING)
 
-    ensure_tainted(d.always_tainted) # $ MISSING: tainted
-    ensure_tainted(d.safe_to_tainted) # $ MISSING: tainted
+    ensure_tainted(d.always_tainted) # $ tainted
+    ensure_tainted(d.safe_to_tainted) # $ tainted
     ensure_not_tainted(d.always_safe)
 
     # Currently, we have no way of stopping the value in the tainted_to_safe field (which gets
     # overwritten) from flowing through the replace call, which means we get a spurious result.
 
-    ensure_not_tainted(d.tainted_to_safe) # $
+    ensure_not_tainted(d.tainted_to_safe) # $ SPURIOUS: tainted
 
 
 
