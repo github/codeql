@@ -749,7 +749,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNode cfgNode |
     node1 = TPreReturnNodeImpl(cfgNode, true) and
     node2 = TImplicitWrapNode(cfgNode, true) and
-    c.isSingleton(any(Content::KnownElementContent ec))
+    c.isSingleton(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   )
   or
   c.isAnyElement() and
@@ -785,7 +785,7 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   n = TPreReturnNodeImpl(_, true) and
-  c.isKnownOrUnknownElement(_)
+  c.isKnownOrUnknownElement(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   or
   n = TImplicitWrapNode(_, false) and
   c.isSingleton(any(Content::UnknownElementContent ec))
