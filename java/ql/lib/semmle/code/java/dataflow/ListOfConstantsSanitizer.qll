@@ -6,6 +6,7 @@
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.TaintTracking
+private import internal.DataFlowPrivate
 
 /**
  * A comparison against a list of compile-time constants, sanitizing taint by
@@ -174,19 +175,25 @@ module Collection {
   /** Holds if `e` is a collection of constants. */
   private predicate isCollectionOfConstants(Expr e) {
     forex(Expr r | r = getALocalExprFlowRoot(e) |
-      r instanceof CollectionOfConstants
-      or
-      // Access a static final field to get an immutable list of constants.
-      exists(Field f | r = f.getAnAccess() |
-        f.isStatic() and
-        f.isFinal() and
-        forall(Expr v | v = f.getInitializer() | v instanceof ImmutableCollectionOfConstants) and
-        forall(Expr fieldSource | fieldSource = f.getAnAccess().(FieldWrite).getASource() |
-          forall(Expr root | root = getALocalExprFlowRoot(fieldSource) |
-            root instanceof ImmutableCollectionOfConstants
-          ) and
-          noUnsafeCalls(fieldSource)
+      (
+        r instanceof CollectionOfConstants
+        or
+        // Access a static final field to get an immutable list of constants.
+        exists(Field f | r = f.getAnAccess() |
+          f.isStatic() and
+          f.isFinal() and
+          forall(Expr v | v = f.getInitializer() | v instanceof ImmutableCollectionOfConstants) and
+          forall(Expr fieldSource | fieldSource = f.getAnAccess().(FieldWrite).getASource() |
+            forall(Expr root | root = getALocalExprFlowRoot(fieldSource) |
+              root instanceof ImmutableCollectionOfConstants
+            ) and
+            noUnsafeCalls(fieldSource)
+          )
         )
+      ) and
+      (
+        r instanceof ImmutableCollectionOfConstants or
+        not DataFlow::localExprFlow(r, any(CapturedVariable cv).(LocalScopeVariable).getAnAccess())
       )
     ) and
     noUnsafeCalls(e)
