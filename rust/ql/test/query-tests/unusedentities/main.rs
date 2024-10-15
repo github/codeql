@@ -361,13 +361,13 @@ fn if_lets_matches() {
         Err(_) => { println!("failed"); }
     }
 
-    let(left,
+    let (left,
         right) = // BAD: unused value [NOT DETECTED] SPURIOUS: unused variable
         (1, 2);
     _ = left;
 
     let pair = (1, 2);
-    let(left2,
+    let (left2,
         right2) = // BAD: unused value [NOT DETECTED] SPURIOUS: unused variable
         pair;
     _ = left2;
