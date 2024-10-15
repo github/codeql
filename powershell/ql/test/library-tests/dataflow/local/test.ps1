@@ -6,3 +6,9 @@ if($b) {
     $a2 = Source
 }
 Sink $a2
+
+$c = [string]$b
+Sink $c
+
+$d = ($c)
+Sink $d

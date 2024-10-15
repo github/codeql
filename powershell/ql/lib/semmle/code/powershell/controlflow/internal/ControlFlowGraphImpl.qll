@@ -589,7 +589,7 @@ module Trees {
   class ScriptBlockExprTree extends LeafTree instanceof ScriptBlockExpr { }
 
   class ConvertExprTree extends StandardPostOrderTree instanceof ConvertExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+    override AstNode getChildNode(int i) { i = 0 and result = super.getBase() }
   }
 
   class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
@@ -601,7 +601,7 @@ module Trees {
   }
 
   class ParenExprTree extends StandardPostOrderTree instanceof ParenExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+    override AstNode getChildNode(int i) { i = 0 and result = super.getBase() }
   }
 
   class TypeNameExprTree extends LeafTree instanceof TypeNameExpr { }

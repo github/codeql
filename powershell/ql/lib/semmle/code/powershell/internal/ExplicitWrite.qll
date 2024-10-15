@@ -10,7 +10,7 @@ module Private {
   predicate isExplicitWrite(Expr e, AssignStmt assign) {
     e = assign.getLeftHandSide()
     or
-    e = any(ConvertExpr convert | isExplicitWrite(convert, assign)).getExpr()
+    e = any(ConvertExpr convert | isExplicitWrite(convert, assign)).getBase()
     or
     e = any(ArrayLiteral array | isExplicitWrite(array, assign)).getAnElement()
   }

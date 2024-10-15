@@ -5,7 +5,7 @@ class ConvertExpr extends @convert_expression, Expr {
 
   override SourceLocation getLocation() { convert_expression_location(this, result) }
 
-  Expr getExpr() { convert_expression(this, _, result, _, _) }
+  Expr getBase() { convert_expression(this, _, result, _, _) }
 
   TypeConstraint getType() { convert_expression(this, _, _, result, _) }
 

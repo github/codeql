@@ -102,6 +102,10 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asStmt().(CfgNodes::StmtNodes::CmdExprCfgNode).getExpr()
     or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConvertCfgNode).getBase()
+    or
+    nodeFrom.asStmt() = nodeTo.asExpr().(CfgNodes::ExprNodes::ParenCfgNode).getBase()
+    or
     exists(
       CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
     |

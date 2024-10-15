@@ -485,6 +485,36 @@ module ExprNodes {
       )
     }
   }
+
+  class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() }
+  }
+
+  class ConvertCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConvertCfgNode" }
+
+    override ConvertExprChildMapping e;
+
+    override ConvertExpr getExpr() { result = e }
+
+    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+
+    TypeConstraint getType() { result = e.getType() }
+  }
+
+  class ParenExprChildMapping extends ExprChildMapping, ParenExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() }
+  }
+
+  class ParenCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ParenExprCfgNode" }
+
+    override ParenExprChildMapping e;
+
+    override ParenExpr getExpr() { result = e }
+
+    final StmtCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+  }
 }
 
 module StmtNodes {
