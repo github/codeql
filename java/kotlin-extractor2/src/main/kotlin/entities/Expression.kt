@@ -297,37 +297,60 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     val op = expression.operationToken
     val target = expression.resolveCallTarget()?.symbol
 
-    when (op) {
-        KtTokens.PLUS -> {
-            if (target == null) {
-                TODO()
-            }
-
-            if (target.isNumericWithName("plus") ||
-                target.hasName("kotlin", "String", "plus") ||
-                target.hasMatchingNames(
-                    CallableId(FqName("kotlin"), null, Name.identifier("plus")),
-                    ClassId(FqName("kotlin"), Name.identifier("String")),
-                    nullability = KaTypeNullability.NULLABLE,
-                )
-            ) {
-                val id = tw.getFreshIdLabel<DbAddexpr>()
-                val type = useType(expression.expressionType)
-                val exprParent = parent.expr(expression, callable)
-                tw.writeExprs_addexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-
-                extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
-                extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
-                extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
-            } else {
-                TODO("Extract as method call")
-            }
-        }
-
-        else -> TODO()
+    if (target == null) {
+        TODO()
     }
 
+    if (op == KtTokens.PLUS && target.isBinaryPlus()) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_addexpr)
+    } else if (op == KtTokens.MINUS && target.isNumericWithName("minus")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_subexpr)
+    } else if (op == KtTokens.MUL && target.isNumericWithName("times")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_mulexpr)
+    } else if (op == KtTokens.DIV && target.isNumericWithName("div")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_divexpr)
+    } else if (op == KtTokens.PERC && target.isNumericWithName("rem")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_remexpr)
+    } else {
+        if (op !in listOf(KtTokens.PLUS, KtTokens.MINUS, KtTokens.MUL, KtTokens.DIV, KtTokens.PERC)) {
+            TODO("Unhandled binary op")
+        }
+
+        TODO("Extract as method call")
+    }
+}
+
+private fun KaFunctionSymbol.isBinaryPlus(): Boolean {
+    return this.isNumericWithName("plus") ||
+            this.hasName("kotlin", "String", "plus") ||
+            this.hasMatchingNames(
+                CallableId(FqName("kotlin"), null, Name.identifier("plus")),
+                ClassId(FqName("kotlin"), Name.identifier("String")),
+                nullability = KaTypeNullability.NULLABLE,
+            )
+}
+
+context(KaSession)
+private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
+    expression: KtBinaryExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent,
+    extractExpression: (
+        id: Label<out T>,
+        typeid: Label<out DbType>,
+        parent: Label<out DbExprparent>,
+        idx: Int
+    ) -> Unit
+) {
+    val id = tw.getFreshIdLabel<T>()
+    val type = useType(expression.expressionType)
+    val exprParent = parent.expr(expression, callable)
+    extractExpression(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+
+    extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
 }
 
 context(KaSession)

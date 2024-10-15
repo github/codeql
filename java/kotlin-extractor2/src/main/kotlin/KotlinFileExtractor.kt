@@ -2981,11 +2981,6 @@ OLD: KE1
                 when {
                     isNumericFunction(
                         target,
-                        "plus",
-                        "minus",
-                        "times",
-                        "div",
-                        "rem",
                         "and",
                         "or",
                         "xor",
@@ -2996,26 +2991,6 @@ OLD: KE1
                         val type = useType(c.type)
                         val id: Label<out DbExpr> =
                             when (val targetName = target.name.asString()) {
-                                "minus" -> {
-                                    val id = tw.getFreshIdLabel<DbSubexpr>()
-                                    tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "times" -> {
-                                    val id = tw.getFreshIdLabel<DbMulexpr>()
-                                    tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "div" -> {
-                                    val id = tw.getFreshIdLabel<DbDivexpr>()
-                                    tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "rem" -> {
-                                    val id = tw.getFreshIdLabel<DbRemexpr>()
-                                    tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
                                 "and" -> {
                                     val id = tw.getFreshIdLabel<DbAndbitexpr>()
                                     tw.writeExprs_andbitexpr(id, type.javaResult.id, parent, idx)
