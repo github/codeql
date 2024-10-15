@@ -660,10 +660,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asStmt() = var.getAssignStmt().getRightHandSide() and
     e = var.getIndex()
   |
-    exists(int index, Content::KnownElementContent ec |
+    exists(Content::KnownElementContent ec |
       c.isKnownOrUnknownElement(ec) and
-      index = ec.getIndex().asInt() and
-      index = e.getValue().asInt()
+      e.getValue() = ec.getIndex()
     )
     or
     not exists(e.getValue().asInt()) and
@@ -674,6 +673,18 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getElement(index) = node1.asExpr() and
     c.isKnownOrUnknownElement(ec) and
     index = ec.getIndex().asInt()
+  )
+  or
+  exists(CfgNodes::ExprCfgNode key |
+    node2.asExpr().(CfgNodes::ExprNodes::HashTableCfgNode).getElement(key) = node1.asStmt()
+  |
+    exists(Content::KnownElementContent ec |
+      c.isKnownOrUnknownElement(ec) and
+      ec.getIndex() = key.getValue()
+    )
+    or
+    not exists(key.getValue()) and
+    c.isAnyElement()
   )
   or
   exists(
@@ -714,13 +725,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = var.getBase() and
     e = var.getIndex()
   |
-    exists(int index, Content::KnownElementContent ec |
+    exists(Content::KnownElementContent ec |
       c.isKnownOrUnknownElement(ec) and
-      index = ec.getIndex().asInt() and
-      index = e.getValue().asInt()
+      e.getValue() = ec.getIndex()
     )
     or
-    not exists(e.getValue().asInt()) and
+    not exists(e.getValue()) and
     c.isAnyElement()
   )
   or
