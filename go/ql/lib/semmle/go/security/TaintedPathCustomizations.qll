@@ -111,18 +111,6 @@ module TaintedPath {
   }
 
   /**
-   * A read from the field `Path` of the type `net/url.URL`, which is sanitized.
-   */
-  class UrlPathSanitizer extends Sanitizer {
-    UrlPathSanitizer() {
-      exists(DataFlow::Field fld |
-        this = fld.getARead() and
-        fld.hasQualifiedName("net/url", "URL", "Path")
-      )
-    }
-  }
-
-  /**
    * A read from the field `Filename` of the type `mime/multipart.FileHeader`,
    * considered as a sanitizer for path traversal.
    *
