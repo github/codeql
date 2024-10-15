@@ -9,3 +9,6 @@ Sink $a2
 
 $c = [string]$b
 Sink $c
+
+$d = ($c)
+Sink $d
