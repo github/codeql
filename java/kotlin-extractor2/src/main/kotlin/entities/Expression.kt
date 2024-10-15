@@ -325,6 +325,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     } else if (op == KtTokens.EXCLEQEQEQ && target == null) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_neexpr)
     } else {
+        // todo: other operators, such as .., ..<, in, !in, +=, -=, *=, /=, %=, <, >, <=, >=, ==, !=,
         TODO("Extract as method call")
     }
 }
