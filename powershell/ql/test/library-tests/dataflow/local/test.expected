@@ -20,6 +20,7 @@
 | test.ps1:10:6:10:16 | [...]... | test.ps1:10:1:10:3 | c |
 | test.ps1:10:6:10:16 | [...]... | test.ps1:10:1:10:16 | ...=... |
 | test.ps1:10:6:10:16 | [...]... | test.ps1:10:6:10:16 | [...]... |
+| test.ps1:10:14:10:16 | b | test.ps1:10:6:10:16 | [...]... |
 | test.ps1:11:1:11:8 | Sink | test.ps1:11:1:11:8 | pre-return value for Sink |
 | test.ps1:11:1:11:8 | Sink | test.ps1:11:1:11:8 | pre-return value for Sink |
 | test.ps1:11:1:11:8 | implicit unwrapping of Sink | test.ps1:1:1:11:8 | return value for test.ps1 |
