@@ -333,6 +333,9 @@ class MacroDef(Item):
 class MacroExpr(Expr):
    macro_call: optional["MacroCall"] | child
 
+class MacroItems(AstNode):
+   items: list["Item"] | child
+
 class MacroPat(Pat):
    macro_call: optional["MacroCall"] | child
 
@@ -341,6 +344,10 @@ class MacroRules(Item):
    name: optional["Name"] | child
    token_tree: optional["TokenTree"] | child
    visibility: optional["Visibility"] | child
+
+class MacroStmts(AstNode):
+   expr: optional["Expr"] | child
+   statements: list["Stmt"] | child
 
 class MacroType(TypeRef):
    macro_call: optional["MacroCall"] | child

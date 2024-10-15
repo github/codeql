@@ -248,11 +248,39 @@ mod logical_operators {
     }
 }
 
-fn test_match(maybe_digit: Option<i64>) -> i64 {
-    match maybe_digit {
-        Option::Some(x) if x < 10 => x + 5,
-        Option::Some(x) => x,
-        Option::None => 5,
+mod question_mark_operator {
+
+    fn test_question_mark_operator_1(s: &str) -> Option<i32> {
+        str.parse::<u32>()? + 4
+    }
+
+    fn test_question_mark_operator_2(b: Option<bool>) -> Option<bool> {
+        match b? {
+            true => Some(false),
+            false => Some(true),
+        }
+    }
+}
+
+mod match_expression {
+
+    fn test_match(maybe_digit: Option<i64>) -> i64 {
+        match maybe_digit {
+            Option::Some(x) if x < 10 => x + 5,
+            Option::Some(x) => x,
+            Option::None => 5,
+        }
+    }
+
+    fn test_match_with_return_in_scrutinee(maybe_digit: Option<i64>) -> i64 {
+        match (if maybe_digit == Some(3) {
+            return 3;
+        } else {
+            maybe_digit
+        }) {
+            Option::Some(x) => x + 5,
+            Option::None => 5,
+        }
     }
 }
 
@@ -300,4 +328,12 @@ fn labelled_block2() -> i64 {
         };
         x
     };
+}
+
+fn test_nested_function() {
+    let mut x = 0;
+    fn nested(x: &mut i64) {
+        *x += 1;
+    }
+    nested(&mut x);
 }

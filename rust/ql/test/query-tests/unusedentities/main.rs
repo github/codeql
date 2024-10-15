@@ -111,7 +111,7 @@ fn arrays() {
 
     println!("lets use {:?}", js);
 
-    for k // SPURIOUS: unused variable [macros not yet supported]
+    for k
 	in ks
 	{
         println!("lets use {}", k); // [unreachable FALSE POSITIVE]
@@ -166,12 +166,12 @@ fn loops() {
 
     for _ in 1..10 {}
 
-    for x // SPURIOUS: unused variable [macros not yet supported]
+    for x
     in 1..10 {
         println!("x is {}", x);
     }
 
-    for x // SPURIOUS: unused variable [macros not yet supported]
+    for x
     in 1..10 {
         assert!(x != 11);
     }

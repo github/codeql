@@ -1069,6 +1069,110 @@ impl From<trap::Label<Lifetime>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
+pub struct MacroItems {
+    pub id: trap::TrapId<MacroItems>,
+    pub items: Vec<trap::Label<Item>>,
+}
+
+impl trap::TrapEntry for MacroItems {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_items", vec![id.into()]);
+        for (i, v) in self.items.into_iter().enumerate() {
+            out.add_tuple("macro_items_items", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for MacroItems {
+    fn class_name() -> &'static str { "MacroItems" }
+}
+
+impl From<trap::Label<MacroItems>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroItems>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroItems>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroItems>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroItems>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroItems>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct MacroStmts {
+    pub id: trap::TrapId<MacroStmts>,
+    pub expr: Option<trap::Label<Expr>>,
+    pub statements: Vec<trap::Label<Stmt>>,
+}
+
+impl trap::TrapEntry for MacroStmts {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_stmts", vec![id.into()]);
+        if let Some(v) = self.expr {
+            out.add_tuple("macro_stmts_exprs", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.statements.into_iter().enumerate() {
+            out.add_tuple("macro_stmts_statements", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for MacroStmts {
+    fn class_name() -> &'static str { "MacroStmts" }
+}
+
+impl From<trap::Label<MacroStmts>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroStmts>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroStmts>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroStmts>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroStmts>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroStmts>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct MatchArm {
     pub id: trap::TrapId<MatchArm>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -8717,6 +8821,12 @@ impl trap::TrapEntry for MacroCall {
         if let Some(v) = self.token_tree {
             out.add_tuple("macro_call_token_trees", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl MacroCall {
+    pub fn emit_expanded(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_expandeds", vec![id.into(), value.into()]);
     }
 }
 
