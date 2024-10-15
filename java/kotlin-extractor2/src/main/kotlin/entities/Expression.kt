@@ -224,7 +224,7 @@ OLD: KE1
 private fun KaFunctionSymbol.hasMatchingNames(
     name: CallableId,
     extensionReceiverClassName: ClassId? = null,
-    nullability: KaTypeNullability = KaTypeNullability.UNKNOWN,
+    nullability: KaTypeNullability? = null,
 ): Boolean {
 
     if (this.callableId != name)
@@ -236,7 +236,9 @@ private fun KaFunctionSymbol.hasMatchingNames(
                 receiverType.symbol?.classId == extensionReceiverClassName
     }
 
-    return receiverType == null && extensionReceiverClassName == null
+    return receiverType == null &&
+            extensionReceiverClassName == null &&
+            nullability == null
 }
 
 private fun KaFunctionSymbol.hasName(
