@@ -84,7 +84,9 @@ module SsaFlow {
   }
 
   predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep) and
+    // Flow out of property name parameter nodes are covered by `readStep`.
+    not nodeFrom instanceof PipelineByPropertyNameParameter
   }
 
   predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
@@ -485,7 +487,7 @@ private module ParameterNodes {
               )
         )
         or
-        parameter.isPipeline() and
+        (parameter.isPipeline() or parameter.isPipelineByPropertyName()) and
         pos.isPipeline()
       )
     }
@@ -497,6 +499,12 @@ private module ParameterNodes {
     override Location getLocationImpl() { result = parameter.getLocation() }
 
     override string toStringImpl() { result = parameter.toString() }
+  }
+
+  class PipelineByPropertyNameParameter extends NormalParameterNode {
+    PipelineByPropertyNameParameter() { this.getParameter().isPipelineByPropertyName() }
+
+    string getPropretyName() { result = this.getParameter().getName() }
   }
 }
 
@@ -749,6 +757,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.(ProcessNode).getIteratorVariable() = def.getSourceVariable() and
     SsaImpl::firstRead(def, node2.asExpr())
   )
+  or
+  exists(Content::KnownElementContent ec, SsaImpl::DefinitionExt def |
+    c.isSingleton(ec) and
+    node1.(PipelineByPropertyNameParameter).getPropretyName() = ec.getIndex().asString() and
+    def.getSourceVariable() = node1.(PipelineByPropertyNameParameter).getParameter() and
+    SsaImpl::firstRead(def, node2.asExpr())
+  )
 }
 
 /**
@@ -777,6 +792,11 @@ predicate expectsContent(Node n, ContentSet c) {
   or
   n instanceof ProcessNode and
   c.isAnyElement()
+  or
+  exists(Content::KnownElementContent ec |
+    ec.getIndex().asString() = n.(PipelineByPropertyNameParameter).getPropretyName() and
+    c.isSingleton(ec)
+  )
 }
 
 class DataFlowType extends TDataFlowType {
