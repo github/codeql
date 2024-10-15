@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public class NugetConfig
     {
-        internal class NugetFeed
+        internal class NugetFeed : IComparable<NugetFeed>
         {
             internal string Value { get; }
             internal bool DisableTlsCertificateValidation { get; set; }
@@ -16,12 +16,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             internal NugetFeed(string value)
             {
                 this.Value = value;
+                this.DisableTlsCertificateValidation = false;
+            }
 
-                // Testing hack for now
-                if (value.Contains("localhost"))
-                {
-                    this.DisableTlsCertificateValidation = true;
-                }
+            public override string ToString()
+            {
+                return this.Value;
+            }
+
+            public int CompareTo(NugetFeed? other)
+            {
+                return this.Value.CompareTo(other?.Value);
             }
         }
 
