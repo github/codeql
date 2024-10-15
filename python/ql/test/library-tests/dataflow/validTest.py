@@ -66,6 +66,7 @@ if __name__ == "__main__":
     check_tests_valid("coverage.datamodel")
     check_tests_valid("coverage.test_builtins")
     check_tests_valid("coverage.loops")
+    check_tests_valid("coverage.functional")
     check_tests_valid("coverage-py2.classes")
     check_tests_valid("coverage-py3.classes")
     check_tests_valid("variable-capture.in")
