@@ -63,3 +63,11 @@ class Unimplemented(Unextracted):
     The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
     """
     pass
+
+
+class Callable(AstNode):
+    """
+    A callable. Either a `Function` or a `ClosureExpr`.
+    """
+    param_list: optional["ParamList"] | child
+    attrs: list["Attr"] | child

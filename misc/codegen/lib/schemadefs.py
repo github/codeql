@@ -1,6 +1,7 @@
 from typing import (
     Callable as _Callable,
     Dict as _Dict,
+    Iterable as _Iterable,
     ClassVar as _ClassVar,
 )
 from misc.codegen.lib import schema as _schema
@@ -278,7 +279,7 @@ _ = _PropertyAnnotation()
 drop = object()
 
 
-def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None) -> _Callable[[type], _PropertyAnnotation]:
+def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, replace_bases: _Dict[type, type] | None = None) -> _Callable[[type], _PropertyAnnotation]:
     """
     Add or modify schema annotations after a class has been defined previously.
 
@@ -295,6 +296,8 @@ def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None
             _ClassPragma(p, value=v)(annotated_cls)
         if replace_bases:
             annotated_cls.__bases__ = tuple(replace_bases.get(b, b) for b in annotated_cls.__bases__)
+        if add_bases:
+            annotated_cls.__bases__ += tuple(add_bases)
         for a in dir(cls):
             if a.startswith(_schema.inheritable_pragma_prefix):
                 setattr(annotated_cls, a, getattr(cls, a))
