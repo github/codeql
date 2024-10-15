@@ -26,6 +26,14 @@ private predicate listOfConstantsComparisonSanitizerGuard(Guard g, Expr e, boole
   )
 }
 
+private Expr skipCaseChanges(MethodCall mc) {
+  exists(Method changecase | mc.getMethod() = changecase |
+    changecase.hasName(["toUpperCase", "toLowerCase"]) and
+    changecase.getDeclaringType() instanceof TypeString
+  ) and
+  result = mc.getQualifier()
+}
+
 /** A comparison against a list of compile-time constants. */
 abstract class ListOfConstantsComparison extends Guard {
   Expr e;
@@ -36,8 +44,16 @@ abstract class ListOfConstantsComparison extends Guard {
     outcome = [true, false]
   }
 
-  /** Gets the expression that is compared to a list of constants. */
-  Expr getExpr() { result = e }
+  /**
+   * Gets the expression that is compared to a list of constants. Note that it
+   * is very common to see `x.toUpperCase()` or `x.toLowerCase()` compared with
+   * a list of constants, and in this case `result` is `x`.
+   */
+  Expr getExpr() {
+    result = skipCaseChanges(e)
+    or
+    not exists(skipCaseChanges(e)) and result = e
+  }
 
   /** Gets the value of `this` when `e` is in the list of constants. */
   boolean getOutcome() { result = outcome }
