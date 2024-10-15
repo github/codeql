@@ -4549,6 +4549,32 @@ module StdlibPrivate {
     }
   }
 
+  /** A flow summary for `copy.replace`. */
+  class ReplaceSummary extends SummarizedCallable {
+    ReplaceSummary() { this = "copy.replace" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("copy").getMember("replace").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("copy").getMember("replace").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(CallNode c, string name, ControlFlowNode n, DataFlow::AttributeContent ac |
+        c.getFunction().(NameNode).getId() = "replace" or
+        c.getFunction().(AttrNode).getName() = "replace"
+      |
+        n = c.getArgByName(name) and
+        ac.getAttribute() = name and
+        input = "Argument[" + name + ":]" and
+        output = "ReturnValue." + ac.getMaDRepresentation() and
+        preservesValue = true
+      )
+    }
+  }
+
   /**
    * A flow summary for `pop` either for list or set.
    * This ignores the index if given, since content is
