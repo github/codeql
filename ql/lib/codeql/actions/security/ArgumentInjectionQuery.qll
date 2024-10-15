@@ -10,23 +10,6 @@ abstract class ArgumentInjectionSink extends DataFlow::Node {
 }
 
 /**
- * Holds if an environment variable is used, directly or indirectly, as an argument to a dangerous command
- * in a Run step.
- * Where the command is a string captured from the Run's script.
- */
-bindingset[var]
-predicate envToArgInjSink(string var, Run run, string command) {
-  exists(string argument, string cmd, string regexp, int command_group, int argument_group |
-    run.getScript().getACommand() = cmd and
-    argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-    command = cmd.regexpCapture(regexp, command_group) and
-    argument = cmd.regexpCapture(regexp, argument_group) and
-    Bash::envReachingRunExpr(run.getScript(), var, argument) and
-    exists(run.getInScopeEnvVarExpr(var))
-  )
-}
-
-/**
  * Holds if a Run step declares an environment variable, uses it as the argument to a command vulnerable to argument injection.
  * e.g.
  *    env:
@@ -36,23 +19,16 @@ predicate envToArgInjSink(string var, Run run, string command) {
  */
 class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
   string command;
+  string argument;
 
   ArgumentInjectionFromEnvVarSink() {
     exists(Run run, string var |
-      envToArgInjSink(var, run, command) and
       run.getScript() = this.asExpr() and
-      exists(run.getInScopeEnvVarExpr(var))
-    )
-    or
-    exists(
-      Run run, string cmd, string argument, string regexp, int argument_group, int command_group
-    |
-      run.getScript().getACommand() = cmd and
-      run.getScript() = this.asExpr() and
-      argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-      argument = cmd.regexpCapture(regexp, argument_group) and
-      command = cmd.regexpCapture(regexp, command_group) and
-      argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
+      (
+        exists(run.getInScopeEnvVarExpr(var)) or
+        var = "GITHUB_HEAD_REF"
+      ) and
+      run.getScript().getAnEnvReachingArgumentInjectionSink(var, command, argument)
     )
   }
 
@@ -68,18 +44,13 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
  */
 class ArgumentInjectionFromCommandSink extends ArgumentInjectionSink {
   string command;
+  string argument;
 
   ArgumentInjectionFromCommandSink() {
-    exists(
-      CommandSource source, Run run, string cmd, string argument, string regexp, int argument_group,
-      int command_group
-    |
+    exists(CommandSource source, Run run |
       run = source.getEnclosingRun() and
       this.asExpr() = run.getScript() and
-      cmd = run.getScript().getACommand() and
-      argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-      argument = cmd.regexpCapture(regexp, argument_group) and
-      command = cmd.regexpCapture(regexp, command_group)
+      run.getScript().getACmdReachingArgumentInjectionSink(source.getCommand(), command, argument)
     )
   }
 
@@ -103,14 +74,9 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource
     or
-    exists(
-      Run run, string argument, string cmd, string regexp, int command_group, int argument_group
-    |
+    exists(Run run |
       run.getScript() = source.asExpr() and
-      run.getScript().getACommand() = cmd and
-      argumentInjectionSinksDataModel(regexp, command_group, argument_group) and
-      argument = cmd.regexpCapture(regexp, argument_group) and
-      argument.regexpMatch(".*\\$(\\{)?(GITHUB_HEAD_REF).*")
+      run.getScript().getAnEnvReachingArgumentInjectionSink("GITHUB_HEAD_REF", _, _)
     )
   }
 
@@ -120,7 +86,7 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
     exists(Run run, string var |
       run.getInScopeEnvVarExpr(var) = pred.asExpr() and
       succ.asExpr() = run.getScript() and
-      envToArgInjSink(var, run, _)
+      run.getScript().getAnEnvReachingArgumentInjectionSink(var, _, _)
     )
   }
 }

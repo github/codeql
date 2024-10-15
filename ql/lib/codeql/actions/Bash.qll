@@ -133,7 +133,8 @@ class BashShellScript extends ShellScript {
         this.doStmtRestoreQuotedStrings(i, round, _, new)
       |
         new order by round
-      )
+      ) and
+    not result.indexOf("qstr:") > -1
   }
 
   private predicate doStmtRestoreCmdSubstitutions(int line, int round, string old, string new) {
@@ -155,7 +156,8 @@ class BashShellScript extends ShellScript {
         this.doStmtRestoreCmdSubstitutions(i, round, _, new)
       |
         new order by round
-      )
+      ) and
+    not result.indexOf("cmdsubs:") > -1
   }
 
   override string getAStmt() { result = this.getStmt(_) }
@@ -186,7 +188,8 @@ class BashShellScript extends ShellScript {
         this.doCmdRestoreQuotedStrings(i, round, _, new)
       |
         new order by round
-      )
+      ) and
+    not result.indexOf("qstr:") > -1
   }
 
   private predicate doCmdRestoreCmdSubstitutions(int line, int round, string old, string new) {
@@ -208,13 +211,16 @@ class BashShellScript extends ShellScript {
         this.doCmdRestoreCmdSubstitutions(i, round, _, new)
       |
         new order by round
-      )
+      ) and
+    not result.indexOf("cmdsubs:") > -1
   }
 
   string getACmd() { result = this.getCmd(_) }
 
   override string getCommand(int i) {
-    result = this.getCmd(i) and
+    // remove redirection
+    result =
+      this.getCmd(i).regexpReplaceAll("(>|>>|2>|2>>|<|<<<)\\s*[\\{\\}\\$\"'_\\-0-9a-zA-Z]+$", "") and
     // exclude variable declarations
     not result.regexpMatch("^[a-zA-Z0-9\\-_]+=") and
     // exclude the following keywords
@@ -284,6 +290,18 @@ class BashShellScript extends ShellScript {
 
   override predicate getACmdReachingGitHubPathWrite(string cmd) {
     Bash::cmdReachingGitHubFileWrite(this, cmd, "GITHUB_PATH", _)
+  }
+
+  override predicate getAnEnvReachingArgumentInjectionSink(
+    string var, string command, string argument
+  ) {
+    Bash::envReachingArgumentInjectionSink(this, var, command, argument)
+  }
+
+  override predicate getACmdReachingArgumentInjectionSink(
+    string cmd, string command, string argument
+  ) {
+    Bash::cmdReachingArgumentInjectionSink(this, cmd, command, argument)
   }
 
   override predicate fileToGitHubEnv(string path) {
@@ -630,6 +648,30 @@ module Bash {
         script.getAWriteToGitHubPath(file_write_value)
       ) and
       cmdReachingRunExpr(script, cmd, file_write_value)
+    )
+  }
+
+  predicate envReachingArgumentInjectionSink(
+    BashShellScript script, string source, string command, string argument
+  ) {
+    exists(string cmd, string regex, int command_group, int argument_group |
+      cmd = script.getACommand() and
+      argumentInjectionSinksDataModel(regex, command_group, argument_group) and
+      argument = cmd.regexpCapture(regex, argument_group) and
+      command = cmd.regexpCapture(regex, command_group) and
+      envReachingRunExpr(script, source, argument)
+    )
+  }
+
+  predicate cmdReachingArgumentInjectionSink(
+    BashShellScript script, string source, string command, string argument
+  ) {
+    exists(string cmd, string regex, int command_group, int argument_group |
+      cmd = script.getACommand() and
+      argumentInjectionSinksDataModel(regex, command_group, argument_group) and
+      argument = cmd.regexpCapture(regex, argument_group) and
+      command = cmd.regexpCapture(regex, command_group) and
+      cmdReachingRunExpr(script, source, argument)
     )
   }
 

@@ -354,6 +354,14 @@ class ShellScript extends ScalarValueImpl instanceof ShellScriptImpl {
 
   predicate getACmdReachingGitHubPathWrite(string cmd) { super.getACmdReachingGitHubPathWrite(cmd) }
 
+  predicate getAnEnvReachingArgumentInjectionSink(string var, string command, string argument) {
+    super.getAnEnvReachingArgumentInjectionSink(var, command, argument)
+  }
+
+  predicate getACmdReachingArgumentInjectionSink(string cmd, string command, string argument) {
+    super.getACmdReachingArgumentInjectionSink(cmd, command, argument)
+  }
+
   predicate fileToGitHubEnv(string path) { super.fileToGitHubEnv(path) }
 
   predicate fileToGitHubOutput(string path) { super.fileToGitHubOutput(path) }

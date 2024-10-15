@@ -227,6 +227,14 @@ class ShellScriptImpl extends ScalarValueImpl {
 
   abstract predicate getACmdReachingGitHubPathWrite(string cmd);
 
+  abstract predicate getAnEnvReachingArgumentInjectionSink(
+    string var, string command, string argument
+  );
+
+  abstract predicate getACmdReachingArgumentInjectionSink(
+    string cmd, string command, string argument
+  );
+
   abstract predicate fileToGitHubEnv(string path);
 
   abstract predicate fileToGitHubOutput(string path);

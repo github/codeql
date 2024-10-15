@@ -34,3 +34,15 @@ jobs:
       - run: |
           BODY=$(git log --format=%s)
           sed "s/FOO/$BODY/g" > /tmp/foo
+
+      - name: Checkout ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Detect new changesets
+        id: added-files
+        run: |
+          delimiter="$(openssl rand -hex 8)"
+          echo "changesets<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$(git diff --name-only --diff-filter=A ${{ steps.comment-branch.outputs.base_sha }} ${{ steps.parse-sha.outputs.sha }} .changeset/*.md)" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"

@@ -42,6 +42,18 @@ class PowerShellScript extends ShellScript {
 
   override predicate getACmdReachingGitHubPathWrite(string cmd) { none() }
 
+  override predicate getAnEnvReachingArgumentInjectionSink(
+    string var, string command, string argument
+  ) {
+    none()
+  }
+
+  override predicate getACmdReachingArgumentInjectionSink(
+    string cmd, string command, string argument
+  ) {
+    none()
+  }
+
   override predicate fileToGitHubEnv(string path) { none() }
 
   override predicate fileToGitHubOutput(string path) { none() }
