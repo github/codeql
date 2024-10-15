@@ -78,10 +78,10 @@ $hash = @{
   b = 2
 }
 
-Sink $hash["a"] # $ MISSING: hasValueFlow=16
+Sink $hash["a"] # $ hasValueFlow=16
 Sink $hash["b"] # clean
 
 $hash["a"] = 0
-Sink $hash["a"] # clean
+Sink $hash["a"] # $ SPURIOUS: hasValueFlow=16
 $hash.b = Source "17"
 Sink $hash.b # $ hasValueFlow=17
