@@ -214,7 +214,8 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
         exists(FunctionCall call | call.getEnclosingFunction() = func |
-          getTranslatedExpr(call).(TranslatedCallExpr).mayRaiseException(_)
+          getTranslatedExpr(call).(TranslatedCallExpr).mayRaiseException(_) or
+          getTranslatedExpr(call).(TranslatedCallExpr).alwaysRaiseException(_)
         )
       )
       or
@@ -405,13 +406,8 @@ abstract class TranslatedParameter extends TranslatedElement {
     else result = this.getParent().getChildSuccessor(this, kind)
     or
     tag = InitializerIndirectAddressTag() and
-    (
-      result = this.getInstruction(InitializerIndirectStoreTag()) and kind instanceof GotoEdge
-      or
-      // All load instructions can throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getInstruction(InitializerIndirectStoreTag()) and
+    kind instanceof GotoEdge
     or
     tag = InitializerIndirectStoreTag() and
     result = this.getParent().getChildSuccessor(this, kind)

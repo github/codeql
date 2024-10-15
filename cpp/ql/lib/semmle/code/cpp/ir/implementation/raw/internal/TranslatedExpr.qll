@@ -3061,7 +3061,6 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       or
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
-      kind instanceof ExceptionEdge and
       kind = exceptionEdge(false) and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), false)
     )

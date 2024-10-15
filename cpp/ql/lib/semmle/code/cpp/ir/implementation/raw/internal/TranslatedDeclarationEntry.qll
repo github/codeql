@@ -165,10 +165,8 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result = this.getInstruction(DynamicInitializationFlagLoadTag())
     or
     tag = DynamicInitializationFlagLoadTag() and
-    (
-      kind instanceof GotoEdge and
-      result = this.getInstruction(DynamicInitializationConditionalBranchTag())
-    )
+    kind instanceof GotoEdge and
+    result = this.getInstruction(DynamicInitializationConditionalBranchTag())
     or
     tag = DynamicInitializationConditionalBranchTag() and
     (

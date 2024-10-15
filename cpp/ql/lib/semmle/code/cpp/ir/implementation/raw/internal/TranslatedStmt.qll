@@ -229,7 +229,6 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
   override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
     // A throw from within a `__except` block flows to the handler for the parent of
     // the `__try`.
-    isSEH = true and
     result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, isSEH)
   }
 }
@@ -286,7 +285,6 @@ class TranslatedMicrosoftTryFinallyHandler extends TranslatedElement,
   override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
     // A throw from within a `__finally` block flows to the handler for the parent of
     // the `__try`.
-    isSEH = true and
     result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, isSEH)
   }
 }
@@ -844,7 +842,6 @@ abstract class TranslatedHandler extends TranslatedStmt {
   override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
     // A throw from within a `catch` block flows to the handler for the parent of
     // the `try`.
-    isSEH = false and
     result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, isSEH)
   }
 
@@ -954,7 +951,6 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
       result = this.getParameter().getFirstInstruction(kind)
       or
       kind instanceof ExceptionEdge and
-      not kind.(ExceptionEdge).isSEH() and
       if exists(this.getDestructors())
       then result = this.getDestructors().getFirstInstruction(any(GotoEdge edge))
       else result = this.getParent().(TranslatedTryStmt).getNextHandler(this, any(GotoEdge edge))
