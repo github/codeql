@@ -256,13 +256,14 @@ private fun KaFunctionSymbol.hasName(
     )
 }
 
-private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
-    return this.hasName("kotlin", "Int", functionName) ||
-            this.hasName("kotlin", "Byte", functionName) ||
-            this.hasName("kotlin", "Short", functionName) ||
-            this.hasName("kotlin", "Long", functionName) ||
-            this.hasName("kotlin", "Float", functionName) ||
-            this.hasName("kotlin", "Double", functionName)
+private fun KaFunctionSymbol?.isNumericWithName(functionName: String): Boolean {
+    return this != null &&
+            (this.hasName("kotlin", "Int", functionName) ||
+                    this.hasName("kotlin", "Byte", functionName) ||
+                    this.hasName("kotlin", "Short", functionName) ||
+                    this.hasName("kotlin", "Long", functionName) ||
+                    this.hasName("kotlin", "Float", functionName) ||
+                    this.hasName("kotlin", "Double", functionName))
 }
 
 context(KaSession)
@@ -297,10 +298,6 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     val op = expression.operationToken
     val target = expression.resolveCallTarget()?.symbol
 
-    if (target == null) {
-        TODO()
-    }
-
     if (op == KtTokens.PLUS && target.isBinaryPlus()) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_addexpr)
     } else if (op == KtTokens.MINUS && target.isNumericWithName("minus")) {
@@ -323,19 +320,24 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_rshiftexpr)
     } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("ushr")) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_urshiftexpr)
+    } else if (op == KtTokens.EQEQEQ && target == null) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_eqexpr)
+    } else if (op == KtTokens.EXCLEQEQEQ && target == null) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_neexpr)
     } else {
         TODO("Extract as method call")
     }
 }
 
-private fun KaFunctionSymbol.isBinaryPlus(): Boolean {
-    return this.isNumericWithName("plus") ||
-            this.hasName("kotlin", "String", "plus") ||
-            this.hasMatchingNames(
-                CallableId(FqName("kotlin"), null, Name.identifier("plus")),
-                ClassId(FqName("kotlin"), Name.identifier("String")),
-                nullability = KaTypeNullability.NULLABLE,
-            )
+private fun KaFunctionSymbol?.isBinaryPlus(): Boolean {
+    return this != null && (
+            this.isNumericWithName("plus") ||
+                    this.hasName("kotlin", "String", "plus") ||
+                    this.hasMatchingNames(
+                        CallableId(FqName("kotlin"), null, Name.identifier("plus")),
+                        ClassId(FqName("kotlin"), Name.identifier("String")),
+                        nullability = KaTypeNullability.NULLABLE,
+                    ))
 }
 
 context(KaSession)

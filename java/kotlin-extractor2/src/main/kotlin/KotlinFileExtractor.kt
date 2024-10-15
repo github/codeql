@@ -2992,18 +2992,6 @@ OLD: KE1
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         binOp(id, dr, callable, enclosingStmt)
                     }
-                    c.origin == IrStatementOrigin.EXCLEQEQ &&
-                        isFunction(target, "kotlin", "Boolean", "not") &&
-                        c.valueArgumentsCount == 0 &&
-                        dr != null &&
-                        dr is IrCall &&
-                        isBuiltinCallInternal(dr, "EQEQEQ") -> {
-                        val id = tw.getFreshIdLabel<DbNeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, dr, callable, enclosingStmt)
-                    }
                     c.origin == IrStatementOrigin.EXCLEQ &&
                         isFunction(target, "kotlin", "Boolean", "not") &&
                         c.valueArgumentsCount == 0 &&
@@ -3110,16 +3098,6 @@ OLD: KE1
                         val id = tw.getFreshIdLabel<DbValueeqexpr>()
                         val type = useType(c.type)
                         tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "EQEQEQ") -> {
-                        if (c.origin != IrStatementOrigin.EQEQEQ) {
-                            logger.warnElement("Unexpected origin for EQEQEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbEqexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         binOp(id, c, callable, enclosingStmt)
                     }
