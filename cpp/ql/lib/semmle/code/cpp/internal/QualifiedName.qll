@@ -181,12 +181,7 @@ class VariableDeclarationEntry extends @var_decl {
   string getName() { var_decls(this, _, _, result, _) and result != "" }
 }
 
-class Parameter extends LocalScopeVariable, @parameter {
-  @functionorblock function;
-  int index;
-
-  Parameter() { params(this, function, index, _) }
-}
+class Parameter extends LocalScopeVariable, @parameter { }
 
 class GlobalOrNamespaceVariable extends Variable, @globalvariable { }
 

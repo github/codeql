@@ -534,7 +534,7 @@ static_asserts(
 #keyset[function, index, type_id]
 params(
     int id: @parameter,
-    int function: @parameterized_element ref,
+    int function: @functionorblock ref,
     int index: int ref,
     int type_id: @type ref
 );
@@ -1791,9 +1791,6 @@ case @expr.kind of
 | 388 = @datasizeof
 | 389 = @c11_generic
 | 390 = @requires_expr
-| 391 = @nested_requirement
-| 392 = @compound_requirement
-| 393 = @concept_id
 ;
 
 @var_args_expr = @vastartexpr
@@ -1911,10 +1908,6 @@ case @expr.kind of
             | @isscopedenum
             | @istriviallyrelocatable
             ;
-
-compound_requirement_is_noexcept(
-    int expr: @compound_requirement ref
-);
 
 new_allocated_type(
     unique int expr: @new_expr ref,
@@ -2175,11 +2168,11 @@ stmt_decl_entry_bind(
     int decl_entry: @element ref
 );
 
-@parameterized_element = @function | @stmt_block | @requires_expr;
+@functionorblock = @function | @stmt_block;
 
 blockscope(
     unique int block: @stmt_block ref,
-    int enclosing: @parameterized_element ref
+    int enclosing: @functionorblock ref
 );
 
 @jump = @stmt_goto | @stmt_break | @stmt_continue;

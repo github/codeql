@@ -23585,10 +23585,26 @@ ir.cpp:
 # 2692|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
 # 2692|           Type = [IntType] int
 # 2692|         getVariable().getInitializer(): [Initializer] initializer for y
-#-----|           getExpr(): [RequiresExpr] requires ...
+#-----|           getExpr(): [RequiresExpr] requires { ... }
 #-----|               Type = [BoolType] bool
 #-----|               Value = [RequiresExpr] 1
 #-----|               ValueCategory = prvalue
+#-----|             <params>: 
+# 2692|             getRequirement(0): [GTExpr,SimpleRequirementExpr] ... > ...
+# 2692|                 Type = [BoolType] bool
+# 2692|                 ValueCategory = prvalue
+# 2692|               getGreaterOperand(): [SizeofTypeOperator] sizeof(int)
+# 2692|                   Type = [LongType] unsigned long
+# 2692|                   Value = [SizeofTypeOperator] 4
+# 2692|                   ValueCategory = prvalue
+# 2692|               getLesserOperand(): [Literal] 0
+# 2692|                   Type = [IntType] int
+# 2692|                   Value = [Literal] 0
+# 2692|                   ValueCategory = prvalue
+# 2692|               getLesserOperand().getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2692|                   Conversion = [IntegralConversion] integral conversion
+# 2692|                   Type = [LongType] unsigned long
+# 2692|                   ValueCategory = prvalue
 #-----|           getExpr().getFullyConverted(): [CStyleCast] (int)...
 #-----|               Conversion = [IntegralConversion] integral conversion
 #-----|               Type = [IntType] int
