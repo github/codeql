@@ -62,6 +62,6 @@ process_dict(func=read_sql_dict, sql=SOURCE)
 
 # TODO:
 # Consider adding tests for
-# threading.Thread, mulitprocess.Process,
+# threading.Thread, multiprocess.Process,
 # concurrent.futures.ThreadPoolExecutor,
 # and concurrent.futures.ProcessPoolExecutor.
