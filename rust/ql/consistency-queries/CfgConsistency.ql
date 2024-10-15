@@ -5,4 +5,4 @@
  * @id rust/diagnostics/cfg-consistency
  */
 
- import codeql.rust.controlflow.internal.CfgConsistency
+import codeql.rust.controlflow.internal.CfgConsistency
