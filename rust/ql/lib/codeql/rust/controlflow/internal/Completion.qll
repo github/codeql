@@ -36,7 +36,13 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
 
   // `SimpleCompletion` is the "default" completion type, thus it is valid for
   // any node where there isn't another more specific completion type.
-  override predicate isValidFor(AstNode e) { not any(Completion c).isValidForSpecific(e) }
+  override predicate isValidFor(AstNode e) {
+    not any(Completion c).isValidForSpecific(e)
+    or
+    // A `?` expression can both proceed normally or cause an early return, so
+    // we explicitly allow the former here.
+    e instanceof TryExpr
+  }
 
   override string toString() { result = "simple" }
 }
@@ -117,9 +123,9 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
-/** Holds if `pat` is guaranteed to match. */
+/** Holds if `pat` is guaranteed to match at the point in the AST where it occurs. */
 pragma[nomagic]
-private predicate isIrrefutablePattern(Pat pat) {
+private predicate isExhaustiveMatch(Pat pat) {
   (
     pat instanceof WildcardPat
     or
@@ -127,18 +133,18 @@ private predicate isIrrefutablePattern(Pat pat) {
     or
     pat instanceof RestPat
     or
-    // `let` statements without an `else` branch must be irrefutible
+    // `let` statements without an `else` branch must be exhaustive
     pat = any(LetStmt let | not let.hasLetElse()).getPat()
     or
-    // `match` expressions must be irrefutible, so last arm cannot fail
+    // `match` expressions must be exhaustive, so last arm cannot fail
     pat = any(MatchExpr me).getLastArm().getPat()
     or
-    // parameter patterns must be irrefutible
+    // parameter patterns must be exhaustive
     pat = any(Param p).getPat()
   ) and
   not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
   or
-  exists(Pat parent | isIrrefutablePattern(parent) |
+  exists(Pat parent | isExhaustiveMatch(parent) |
     pat = parent.(BoxPat).getPat()
     or
     pat = parent.(IdentPat).getPat()
@@ -165,7 +171,7 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 
   override predicate isValidForSpecific(AstNode e) {
     e instanceof Pat and
-    if isIrrefutablePattern(e) then value = true else any()
+    if isExhaustiveMatch(e) then value = true else any()
   }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
@@ -204,7 +210,9 @@ class ContinueCompletion extends TContinueCompletion, Completion {
 class ReturnCompletion extends TReturnCompletion, Completion {
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof ReturnExpr }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof ReturnExpr or e instanceof TryExpr
+  }
 
   override string toString() { result = "return" }
 }
