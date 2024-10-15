@@ -99,7 +99,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 // GOOD: Sanitized by Gorilla's cleaner
 func GorillaHandler(w http.ResponseWriter, r *http.Request) {
-	not_tainted_path := mux.Vars(r)
+	not_tainted_path := mux.Vars(r)["id"]
 	data, _ := ioutil.ReadFile(filepath.Join("/home/user/", not_tainted_path))
 	w.Write(data)
 }
