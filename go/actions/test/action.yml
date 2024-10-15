@@ -30,6 +30,8 @@ runs:
       if: inputs.run-code-checks == 'true'
       shell: bash
       run: |
+        declare -px
+        where bazel
         bazel run go:gen
         git add .
         git diff --exit-code HEAD || (
@@ -40,6 +42,8 @@ runs:
     - name: Build
       shell: bash
       run: |
+        declare -px
+        where bazel
         bazel run go:go-installer
 
     - name: Check that all Go code is autoformatted
