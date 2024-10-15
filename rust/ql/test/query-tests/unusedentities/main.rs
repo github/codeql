@@ -356,7 +356,7 @@ fn if_lets_matches() {
 
     let duration2:Result<std::time::Duration, String> =
         Ok(std::time::Duration::new(10, 0));
-    match (duration2) {
+    match duration2 {
         Ok(n) => { println!("duration was {} seconds", n.as_secs()); }
         Err(_) => { println!("failed"); }
     }
@@ -400,7 +400,7 @@ fn increment(x: i32) -> i32 {
 }
 
 fn func_ptrs() {
-    let MyFunc: FuncPtr = increment;
+    let my_func: FuncPtr = increment;
 
     for x
     in 1..10 {
@@ -414,7 +414,7 @@ fn func_ptrs() {
 
     for x
     in 1..10 {
-        _ = MyFunc(x);
+        _ = my_func(x);
     }
 }
 
