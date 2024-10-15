@@ -33,7 +33,7 @@ $x, $y | consume2
 function consumeValueFromPipelineByPropertyName {
     Param([Parameter(ValueFromPipelineByPropertyName)] $x)
 
-    Sink $x # $ MISSING: hasValueFlow=23
+    Sink $x # $ hasValueFlow=23
 }
 
 $x = Source "23"
