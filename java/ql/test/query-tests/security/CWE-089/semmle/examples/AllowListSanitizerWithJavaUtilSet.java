@@ -57,13 +57,13 @@ class AllowListSanitizerWithJavaUtilSet {
 	private static void testStaticFields(String[] args) throws IOException, SQLException {
 		String tainted = args[1];
 		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList1.contains(tainted)){
+		if(goodAllowList1.contains(tainted.toLowerCase())){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
 		// GOOD: an allowlist is used with constant strings
-		if(goodAllowList2.contains(tainted)){
+		if(goodAllowList2.contains(tainted.toUpperCase())){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
@@ -133,7 +133,7 @@ class AllowListSanitizerWithJavaUtilSet {
 		// GOOD: an allowlist is used with constant strings
 		{
 			Set<String> allowlist = Set.of("allowed1", "allowed2", "allowed3");
-			if(allowlist.contains(tainted)){
+			if(allowlist.contains(tainted.toLowerCase())){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
 				ResultSet results = connection.createStatement().executeQuery(query);
@@ -152,7 +152,7 @@ class AllowListSanitizerWithJavaUtilSet {
 		{
 			String[] allowedArray = {"allowed1", "allowed2", "allowed3"};
 			Set<String> allowlist = Set.of(allowedArray);
-			if(allowlist.contains(tainted)){
+			if(allowlist.contains(tainted.toUpperCase())){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
 				ResultSet results = connection.createStatement().executeQuery(query);
