@@ -340,7 +340,7 @@ import Cached
  * Only intended for internal use.
  */
 class DefinitionExt extends Impl::DefinitionExt {
-  VarReadAccessCfgNode getARead() { result = getARead(this) }
+  AstCfgNode getARead() { result = getARead(this) }
 
   override string toString() { result = this.(Ssa::Definition).toString() }
 

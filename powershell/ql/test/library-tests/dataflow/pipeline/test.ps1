@@ -29,3 +29,12 @@ function consume2 {
 $x = Source "21"
 $y = Source "22"
 $x, $y | consume2
+
+function consumeValueFromPipelineByPropertyName {
+    Param([Parameter(ValueFromPipelineByPropertyName)] $x)
+
+    Sink $x # $ hasValueFlow=23
+}
+
+$x = Source "23"
+[pscustomobject]@{x = $x} | consumeValueFromPipelineByPropertyName

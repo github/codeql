@@ -15,7 +15,7 @@ class ParamBlock extends @param_block, Ast {
 
   Parameter getParameter(int i) { result.hasParameterBlock(this, i) }
 
-  Parameter getParameterExcludingPipline(int i) { result.hasParameterBlockExcludingPipeline(this, i) }
+  Parameter getParameterExcludingPiplines(int i) { result.hasParameterBlockExcludingPipelines(this, i) }
 
   Parameter getAParameter() { result = this.getParameter(_) }
 }

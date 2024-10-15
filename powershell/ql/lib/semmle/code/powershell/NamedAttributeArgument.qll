@@ -13,3 +13,7 @@ class NamedAttributeArgument extends @named_attribute_argument, Ast {
 class ValueFromPipelineAttribute extends NamedAttributeArgument {
   ValueFromPipelineAttribute() { this.getName() = "ValueFromPipeline" }
 }
+
+class ValueFromPipelineByPropertyName extends NamedAttributeArgument {
+  ValueFromPipelineByPropertyName() { this.getName() = "ValueFromPipelineByPropertyName" }
+}

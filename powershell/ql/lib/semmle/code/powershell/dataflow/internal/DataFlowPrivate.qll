@@ -84,7 +84,9 @@ module SsaFlow {
   }
 
   predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep) and
+    // Flow out of property name parameter nodes are covered by `readStep`.
+    not nodeFrom instanceof PipelineByPropertyNameParameter
   }
 
   predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
@@ -471,7 +473,7 @@ private module ParameterNodes {
         // keywords in S are specified.
         exists(int i, int j, string name, NamedSet ns, Function f |
           pos.isPositional(j, ns) and
-          parameter.getIndexExcludingPipeline() = i and
+          parameter.getIndexExcludingPipelines() = i and
           f = parameter.getFunction() and
           f = ns.getAFunction() and
           name = parameter.getName() and
@@ -480,12 +482,12 @@ private module ParameterNodes {
             i -
               count(int k, Parameter p |
                 k < i and
-                p = f.getParameterExcludingPipline(k) and
+                p = f.getParameterExcludingPiplines(k) and
                 p.getName() = ns.getAName()
               )
         )
         or
-        parameter.isPipeline() and
+        (parameter.isPipeline() or parameter.isPipelineByPropertyName()) and
         pos.isPipeline()
       )
     }
@@ -497,6 +499,12 @@ private module ParameterNodes {
     override Location getLocationImpl() { result = parameter.getLocation() }
 
     override string toStringImpl() { result = parameter.toString() }
+  }
+
+  class PipelineByPropertyNameParameter extends NormalParameterNode {
+    PipelineByPropertyNameParameter() { this.getParameter().isPipelineByPropertyName() }
+
+    string getPropretyName() { result = this.getParameter().getName() }
   }
 }
 
@@ -741,12 +749,19 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNode cfgNode |
     node1 = TPreReturnNodeImpl(cfgNode, true) and
     node2 = TImplicitWrapNode(cfgNode, true) and
-    c.isSingleton(any(Content::KnownElementContent ec))
+    c.isSingleton(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   )
   or
   c.isAnyElement() and
   exists(SsaImpl::DefinitionExt def |
     node1.(ProcessNode).getIteratorVariable() = def.getSourceVariable() and
+    SsaImpl::firstRead(def, node2.asExpr())
+  )
+  or
+  exists(Content::KnownElementContent ec, SsaImpl::DefinitionExt def |
+    c.isSingleton(ec) and
+    node1.(PipelineByPropertyNameParameter).getPropretyName() = ec.getIndex().asString() and
+    def.getSourceVariable() = node1.(PipelineByPropertyNameParameter).getParameter() and
     SsaImpl::firstRead(def, node2.asExpr())
   )
 }
@@ -770,13 +785,18 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   n = TPreReturnNodeImpl(_, true) and
-  c.isKnownOrUnknownElement(_)
+  c.isKnownOrUnknownElement(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   or
   n = TImplicitWrapNode(_, false) and
   c.isSingleton(any(Content::UnknownElementContent ec))
   or
   n instanceof ProcessNode and
   c.isAnyElement()
+  or
+  exists(Content::KnownElementContent ec |
+    ec.getIndex().asString() = n.(PipelineByPropertyNameParameter).getPropretyName() and
+    c.isSingleton(ec)
+  )
 }
 
 class DataFlowType extends TDataFlowType {

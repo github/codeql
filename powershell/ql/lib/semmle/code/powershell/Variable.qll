@@ -10,14 +10,16 @@ private predicate hasParameterBlockImpl(Internal::Parameter p, ParamBlock block,
   param_block_parameter(block, i, p)
 }
 
-private predicate hasParameterBlockExcludingPipelineImpl(
+private predicate hasParameterBlockExcludingPipelinesImpl(
   Internal::Parameter p, ParamBlock block, int i
 ) {
   p =
     rank[i + 1](Internal::Parameter cand, int j |
       hasParameterBlockImpl(cand, block, j) and
       not cand.getAnAttribute().(Attribute).getANamedArgument() instanceof
-        ValueFromPipelineAttribute
+        ValueFromPipelineAttribute and
+      not cand.getAnAttribute().(Attribute).getANamedArgument() instanceof
+        ValueFromPipelineByPropertyName
     |
       cand order by j
     )
@@ -69,7 +71,7 @@ private class ParameterImpl extends TParameterImpl {
 
   predicate hasParameterBlock(ParamBlock block, int i) { none() }
 
-  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) { none() }
+  predicate hasParameterBlockExcludingPipelines(ParamBlock block, int i) { none() }
 
   predicate isFunctionParameter(Function f, int i) { none() }
 
@@ -84,6 +86,8 @@ private class ParameterImpl extends TParameterImpl {
   }
 
   abstract predicate isPipeline();
+
+  abstract predicate isPipelineByPropertyName();
 }
 
 private class InternalParameter extends ParameterImpl, TInternalParameter {
@@ -101,8 +105,8 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
     hasParameterBlockImpl(p, block, i)
   }
 
-  override predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
-    hasParameterBlockExcludingPipelineImpl(p, block, i)
+  override predicate hasParameterBlockExcludingPipelines(ParamBlock block, int i) {
+    hasParameterBlockExcludingPipelinesImpl(p, block, i)
   }
 
   override predicate isFunctionParameter(Function f, int i) { isFunctionParameterImpl(p, f, i) }
@@ -113,6 +117,10 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
 
   override predicate isPipeline() {
     this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineAttribute
+  }
+
+  override predicate isPipelineByPropertyName() {
+    this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineByPropertyName
   }
 }
 
@@ -147,6 +155,8 @@ private class Underscore extends ParameterImpl, TUnderscore {
 
   final override predicate isPipeline() { any() }
 
+  final override predicate isPipelineByPropertyName() { none() }
+
   final override predicate isFunctionParameter(Function f, int i) { f.getBody() = scope and i = -1 }
 }
 
@@ -164,6 +174,8 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   final override Attribute getAnAttribute() { none() }
 
   final override predicate isPipeline() { none() }
+
+  final override predicate isPipelineByPropertyName() { none() }
 }
 
 private newtype TVariable =
@@ -241,8 +253,8 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
   predicate hasParameterBlock(ParamBlock block, int i) { p.hasParameterBlock(block, i) }
 
-  predicate hasParameterBlockExcludingPipeline(ParamBlock block, int i) {
-    p.hasParameterBlockExcludingPipeline(block, i)
+  predicate hasParameterBlockExcludingPipelines(ParamBlock block, int i) {
+    p.hasParameterBlockExcludingPipelines(block, i)
   }
 
   predicate isFunctionParameter(Function f, int i) { p.isFunctionParameter(f, i) }
@@ -261,14 +273,14 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
    */
   int getIndex() { result = this.getFunctionIndex() or result = this.getBlockIndex() }
 
-  int getIndexExcludingPipeline() {
-    result = this.getFunctionIndex() or result = this.getBlockIndexExcludingPipeline()
+  int getIndexExcludingPipelines() {
+    result = this.getFunctionIndex() or result = this.getBlockIndexExcludingPipelines()
   }
 
   /** Gets the index of this parameter in the parameter block, if any. */
   int getBlockIndex() { this.hasParameterBlock(_, result) }
 
-  int getBlockIndexExcludingPipeline() { this.hasParameterBlockExcludingPipeline(_, result) }
+  int getBlockIndexExcludingPipelines() { this.hasParameterBlockExcludingPipelines(_, result) }
 
   /** Gets the index of this parameter in the function, if any. */
   int getFunctionIndex() { this.isFunctionParameter(_, result) }
@@ -278,6 +290,8 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
   Attribute getAnAttribute() { result = p.getAnAttribute() }
 
   predicate isPipeline() { p.isPipeline() }
+
+  predicate isPipelineByPropertyName() { p.isPipelineByPropertyName() }
 }
 
 class PipelineParameter extends Parameter {
