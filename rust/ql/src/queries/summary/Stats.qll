@@ -21,7 +21,9 @@ int getLinesOfUserCode() {
 /**
  * Gets a count of the total number of abstract syntax tree inconsistencies in the database.
  */
-int getTotalAstInconsistencies() { result = sum(AstConsistency::getAstInconsistencyCounts(_)) }
+int getTotalAstInconsistencies() {
+  result = sum(string type | | AstConsistency::getAstInconsistencyCounts(type))
+}
 
 /**
  * Gets a count of the total number of control flow graph inconsistencies in the database.
