@@ -72,3 +72,16 @@ $x = produce
 Sink $x[0] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
 Sink $x[1] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
 Sink $x[2] # $ hasValueFlow=13 hasValueFlow=14 hasValueFlow=15
+
+$hash = @{
+  a = Source "16"
+  b = 2
+}
+
+Sink $hash["a"] # $ MISSING: hasValueFlow=16
+Sink $hash["b"] # clean
+
+$hash["a"] = 0
+Sink $hash["a"] # clean
+$hash.b = Source "17"
+Sink $hash.b # $ hasValueFlow=17

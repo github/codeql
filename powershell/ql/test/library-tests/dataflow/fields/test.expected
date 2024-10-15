@@ -64,6 +64,9 @@ edges
 | test.ps1:72:6:72:8 | x [element] | test.ps1:72:6:72:11 | ...[...] | provenance |  |
 | test.ps1:73:6:73:8 | x [element] | test.ps1:73:6:73:11 | ...[...] | provenance |  |
 | test.ps1:74:6:74:8 | x [element] | test.ps1:74:6:74:11 | ...[...] | provenance |  |
+| test.ps1:86:1:86:6 | [post] hash [b] | test.ps1:87:6:87:11 | hash [b] | provenance |  |
+| test.ps1:86:11:86:22 | Source | test.ps1:86:1:86:6 | [post] hash [b] | provenance |  |
+| test.ps1:87:6:87:11 | hash [b] | test.ps1:87:6:87:13 | b | provenance |  |
 nodes
 | test.ps1:1:1:1:3 | [post] a [f] | semmle.label | [post] a [f] |
 | test.ps1:1:8:1:18 | Source | semmle.label | Source |
@@ -141,6 +144,10 @@ nodes
 | test.ps1:73:6:73:11 | ...[...] | semmle.label | ...[...] |
 | test.ps1:74:6:74:8 | x [element] | semmle.label | x [element] |
 | test.ps1:74:6:74:11 | ...[...] | semmle.label | ...[...] |
+| test.ps1:86:1:86:6 | [post] hash [b] | semmle.label | [post] hash [b] |
+| test.ps1:86:11:86:22 | Source | semmle.label | Source |
+| test.ps1:87:6:87:11 | hash [b] | semmle.label | hash [b] |
+| test.ps1:87:6:87:13 | b | semmle.label | b |
 subpaths
 testFailures
 #select
@@ -167,3 +174,4 @@ testFailures
 | test.ps1:74:6:74:11 | ...[...] | test.ps1:64:10:64:21 | Source | test.ps1:74:6:74:11 | ...[...] | $@ | test.ps1:64:10:64:21 | Source | Source |
 | test.ps1:74:6:74:11 | ...[...] | test.ps1:65:10:65:21 | Source | test.ps1:74:6:74:11 | ...[...] | $@ | test.ps1:65:10:65:21 | Source | Source |
 | test.ps1:74:6:74:11 | ...[...] | test.ps1:66:10:66:21 | Source | test.ps1:74:6:74:11 | ...[...] | $@ | test.ps1:66:10:66:21 | Source | Source |
+| test.ps1:87:6:87:13 | b | test.ps1:86:11:86:22 | Source | test.ps1:87:6:87:13 | b | $@ | test.ps1:86:11:86:22 | Source | Source |
