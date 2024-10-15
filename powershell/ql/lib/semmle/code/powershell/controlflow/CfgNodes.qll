@@ -453,6 +453,38 @@ module ExprNodes {
 
     StmtBlockCfgNode getStmtBlock() { e.hasCfgChild(e.getStmtBlock(), this, result) }
   }
+
+  class HashTableChildMapping extends ExprChildMapping, HashTableExpr {
+    override predicate relevantChild(Ast n) { this.hasEntry(_, _, n) or this.hasEntry(_, n, _) }
+  }
+
+  class HashTableCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "HashMapCfgNode" }
+
+    override HashTableChildMapping e;
+
+    override HashTableExpr getExpr() { result = super.getExpr() }
+
+    StmtCfgNode getElement(ExprCfgNode key) {
+      exists(Expr eKey |
+        eKey = key.getAstNode() and
+        e.hasCfgChild(eKey, this, key) and
+        e.hasCfgChild(e.getElement(eKey), this, result)
+      )
+    }
+
+    predicate hasKey(ExprCfgNode key) { exists(this.getElement(key)) }
+
+    StmtCfgNode getAnElement() { result = this.getElement(_) }
+
+    predicate hasEntry(int index, ExprCfgNode key, StmtCfgNode value) {
+      exists(Expr eKey, Stmt sValue |
+        e.hasCfgChild(eKey, this, key) and
+        e.hasCfgChild(sValue, this, value) and
+        e.hasEntry(index, eKey, sValue)
+      )
+    }
+  }
 }
 
 module StmtNodes {

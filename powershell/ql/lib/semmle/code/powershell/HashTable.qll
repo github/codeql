@@ -5,11 +5,11 @@ class HashTableExpr extends @hash_table, Expr {
 
   final override string toString() { result = "${...}" }
 
-  Stmt getExprWithKey(Expr key) { hash_table_key_value_pairs(this, _, key, result) } // TODO: Change @ast to @expr in db scheme
+  Stmt getElement(Expr key) { hash_table_key_value_pairs(this, _, key, result) } // TODO: Change @ast to @expr in db scheme
 
-  predicate hasKey(Expr key) { exists(this.getExprWithKey(key)) }
+  predicate hasKey(Expr key) { exists(this.getElement(key)) }
 
-  Stmt getAnExpr() { result = this.getExprWithKey(_) }
+  Stmt getAnElement() { result = this.getElement(_) }
 
   predicate hasEntry(int index, Expr key, Stmt value) {
     hash_table_key_value_pairs(this, index, key, value)
