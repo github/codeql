@@ -51,10 +51,10 @@ abstract private class AbstractFunction extends Ast {
     result.getIndex() = i
   }
 
-  final Parameter getParameterExcludingPipline(int i) {
+  final Parameter getParameterExcludingPiplines(int i) {
     result = this.getFunctionParameter(i)
     or
-    result = this.getBody().getParamBlock().getParameterExcludingPipline(i)
+    result = this.getBody().getParamBlock().getParameterExcludingPiplines(i)
   }
 
   final Parameter getThisParameter() {

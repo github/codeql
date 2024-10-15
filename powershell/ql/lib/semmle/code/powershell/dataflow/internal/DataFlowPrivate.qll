@@ -471,7 +471,7 @@ private module ParameterNodes {
         // keywords in S are specified.
         exists(int i, int j, string name, NamedSet ns, Function f |
           pos.isPositional(j, ns) and
-          parameter.getIndexExcludingPipeline() = i and
+          parameter.getIndexExcludingPipelines() = i and
           f = parameter.getFunction() and
           f = ns.getAFunction() and
           name = parameter.getName() and
@@ -480,7 +480,7 @@ private module ParameterNodes {
             i -
               count(int k, Parameter p |
                 k < i and
-                p = f.getParameterExcludingPipline(k) and
+                p = f.getParameterExcludingPiplines(k) and
                 p.getName() = ns.getAName()
               )
         )
