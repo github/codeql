@@ -1,0 +1,4 @@
+| tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |
+| tests.c:8:18:8:34 | call to implicit_function | This format specifier for type 'char *' does not match the argument type 'int'. |
+| tests.c:9:13:9:13 | 0 | This format specifier for type 'char *' does not match the argument type 'int'. |
+| tests.c:10:13:10:13 | 0 | This format specifier for type 'char *' does not match the argument type 'int'. |
