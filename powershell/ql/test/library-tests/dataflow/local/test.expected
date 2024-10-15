@@ -31,6 +31,7 @@
 | test.ps1:13:6:13:10 | (...) | test.ps1:13:1:13:3 | d |
 | test.ps1:13:6:13:10 | (...) | test.ps1:13:1:13:10 | ...=... |
 | test.ps1:13:6:13:10 | (...) | test.ps1:13:6:13:10 | (...) |
+| test.ps1:13:7:13:9 | c | test.ps1:13:6:13:10 | (...) |
 | test.ps1:13:7:13:9 | c | test.ps1:13:7:13:9 | c |
 | test.ps1:14:1:14:8 | Sink | test.ps1:14:1:14:8 | pre-return value for Sink |
 | test.ps1:14:1:14:8 | Sink | test.ps1:14:1:14:8 | pre-return value for Sink |
