@@ -3,11 +3,9 @@ import powershell
 class ConstExpr extends @constant_expression, BaseConstExpr {
   override SourceLocation getLocation() { constant_expression_location(this, result) }
 
-  string getType() { constant_expression(this, result) }
+  override string getType() { constant_expression(this, result) }
 
-  StringLiteral getValue() { constant_expression_value(this, result) }
-
-  override string toString() { result = this.getValue().toString() }
+  override StringLiteral getValue() { constant_expression_value(this, result) }
 }
 
 private newtype TConstantValue =
@@ -97,7 +95,7 @@ class ConstString extends ConstantValue, TConstString {
     result = "\"" + this.asString().replaceAll("\"", "\\\"") + "\""
   }
 
-  final override ConstExpr getAnExpr() { result.getValue().getValue() = this.getValue() }
+  final override BaseConstExpr getAnExpr() { result.getValue().getValue() = this.getValue() }
 }
 
 /** A constant boolean value. */
