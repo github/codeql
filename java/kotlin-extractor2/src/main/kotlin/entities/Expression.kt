@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.analysis.api.types.KaTypeNullability
 import org.jetbrains.kotlin.analysis.api.types.symbol
+import org.jetbrains.kotlin.lexer.KtToken
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -287,7 +288,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     callable: Label<out DbCallable>,
     parent: StmtExprParent
 ) {
-    val op = expression.operationToken
+    val op = expression.operationToken as? KtToken
     val target = ((expression.resolveToCall() as? KaSuccessCallInfo)?.call as? KaSimpleFunctionCall)?.symbol
 
     if (target == null) {
@@ -304,11 +305,19 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_divexpr)
     } else if (op == KtTokens.PERC && target.isNumericWithName("rem")) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_remexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("and")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_andbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("or")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_orbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("xor")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_xorbitexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("shl")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_lshiftexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("shr")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_rshiftexpr)
+    } else if (op == KtTokens.IDENTIFIER && target.isNumericWithName("ushr")) {
+        extractBinaryExpression(expression, callable, parent, tw::writeExprs_urshiftexpr)
     } else {
-        if (op !in listOf(KtTokens.PLUS, KtTokens.MINUS, KtTokens.MUL, KtTokens.DIV, KtTokens.PERC)) {
-            TODO("Unhandled binary op")
-        }
-
         TODO("Extract as method call")
     }
 }
