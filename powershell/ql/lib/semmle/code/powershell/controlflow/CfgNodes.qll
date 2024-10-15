@@ -485,6 +485,22 @@ module ExprNodes {
       )
     }
   }
+
+  class ConvertExprChildMapping extends ExprChildMapping, ConvertExpr {
+    override predicate relevantChild(Ast n) { n = this.getBase() }
+  }
+
+  class ConvertCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ConvertCfgNode" }
+
+    override ConvertExprChildMapping e;
+
+    override ConvertExpr getExpr() { result = e }
+
+    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+
+    TypeConstraint getType() { result = e.getType() }
+  }
 }
 
 module StmtNodes {
