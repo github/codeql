@@ -302,7 +302,6 @@ class FunctionCall extends Call, @funbindexpr {
   }
 
   override predicate mayBeFromImplicitlyDeclaredFunction() {
-    this.getType() instanceof IntType and
     this.getTarget().getADeclarationEntry().isImplicit()
   }
 }
