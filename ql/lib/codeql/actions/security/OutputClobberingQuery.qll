@@ -3,9 +3,6 @@ private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
-private import codeql.actions.dataflow.FlowSteps
-import codeql.actions.DataFlow
-import codeql.actions.dataflow.FlowSources
 
 abstract class OutputClobberingSink extends DataFlow::Node { }
 

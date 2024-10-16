@@ -2,7 +2,6 @@ private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
-import codeql.actions.dataflow.FlowSteps
 import codeql.actions.DataFlow
 
 abstract class ArgumentInjectionSink extends DataFlow::Node {

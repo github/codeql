@@ -14,6 +14,7 @@
 
 import actions
 import codeql.actions.security.EnvPathInjectionQuery
+import codeql.actions.dataflow.FlowSources
 import EnvPathInjectionFlow::PathGraph
 
 from EnvPathInjectionFlow::PathNode source, EnvPathInjectionFlow::PathNode sink

@@ -1,6 +1,4 @@
 import actions
-import codeql.actions.config.Config
-import codeql.actions.Helper
 
 string defaultBranchTriggerEvent() {
   result =

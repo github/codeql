@@ -13,6 +13,7 @@ edges
 | .github/workflows/artifactpoisoning42.yml:13:9:21:6 | Run Step | .github/workflows/artifactpoisoning42.yml:22:14:22:18 | ./cmd | provenance | Config |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | provenance | Config |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | provenance | Config |
+| .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | provenance | Config |
 nodes
 | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
@@ -41,6 +42,8 @@ nodes
 | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | semmle.label | python test.py |
 | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | semmle.label | make snapshot |
+| .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | semmle.label | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n |
 subpaths
 #select
 | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning11.yml:38:11:38:77 | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build | ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build |
@@ -57,3 +60,4 @@ subpaths
 | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | python test.py |
 | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning92.yml:28:9:29:6 | Uses Step | Uses Step |
 | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | make snapshot |
+| .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | Potential artifact poisoning in $@, which may be controlled by an external user. | .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n |

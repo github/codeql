@@ -2,7 +2,6 @@ private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
-private import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.DataFlow
 
 private class SecretExfiltrationSink extends DataFlow::Node {

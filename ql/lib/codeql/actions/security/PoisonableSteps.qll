@@ -1,5 +1,4 @@
 import actions
-import codeql.actions.config.Config
 
 abstract class PoisonableStep extends Step { }
 

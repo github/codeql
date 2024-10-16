@@ -15,6 +15,7 @@
 import actions
 import codeql.actions.security.EnvVarInjectionQuery
 import codeql.actions.dataflow.ExternalFlow
+import codeql.actions.dataflow.FlowSources
 import EnvVarInjectionFlow::PathGraph
 
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink

@@ -1,7 +1,6 @@
 import actions
 private import codeql.actions.TaintTracking
 import codeql.actions.DataFlow
-private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
 

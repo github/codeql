@@ -253,6 +253,9 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
       or
       this.getArgument("exit") = "true"
     )
+    or
+    this.getCallee() = "actions/github-script" and
+    this.getArgument("script").splitAt("\n").matches("%getMembershipForUserInOrg%")
   }
 }
 

@@ -3,20 +3,11 @@ private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
-private import codeql.actions.dataflow.FlowSteps
-import codeql.actions.DataFlow
-import codeql.actions.dataflow.FlowSources
 
 abstract class EnvPathInjectionSink extends DataFlow::Node { }
 
 /**
  * Holds if a Run step declares a PATH environment variable with contents from a local file.
- * e.g.
- *    run: |
- *      cat foo.txt >> $GITHUB_PATH
- *      echo "$(cat foo.txt)" >> $GITHUB_PATH
- *      FOO=$(cat foo.txt)
- *      echo "$FOO" >> $GITHUB_PATH
  */
 class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
   EnvPathInjectionFromFileReadSink() {
@@ -28,11 +19,15 @@ class EnvPathInjectionFromFileReadSink extends EnvPathInjectionSink {
       this.asExpr() = run.getScript() and
       step.getAFollowingStep() = run and
       (
+        // echo "$(cat foo.txt)" >> $GITHUB_PATH
+        // FOO=$(cat foo.txt)
+        // echo "$FOO" >> $GITHUB_PATH
         exists(string cmd |
-          run.getScript().getACmdReachingGitHubPathWrite(cmd) and
-          run.getScript().getAFileReadCommand() = cmd
+          run.getScript().getAFileReadCommand() = cmd and
+          run.getScript().getACmdReachingGitHubPathWrite(cmd)
         )
         or
+        // cat foo.txt >> $GITHUB_PATH
         run.getScript().fileToGitHubPath(_)
       )
     )
@@ -91,8 +86,10 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
       run.getInScopeEnvVarExpr(var) = pred.asExpr() and
       succ.asExpr() = run.getScript() and
       (
-        run.getScript().getAnEnvReachingGitHubOutputWrite(var, _) or
-        run.getScript().getAnEnvReachingGitHubEnvWrite(var, _) or
+        run.getScript().getAnEnvReachingGitHubEnvWrite(var, _)
+        or
+        run.getScript().getAnEnvReachingGitHubOutputWrite(var, _)
+        or
         run.getScript().getAnEnvReachingGitHubPathWrite(var)
       )
     )

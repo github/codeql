@@ -1,5 +1,4 @@
 import actions
-import codeql.actions.config.Config
 
 bindingset[runner]
 predicate isGithubHostedRunner(string runner) {

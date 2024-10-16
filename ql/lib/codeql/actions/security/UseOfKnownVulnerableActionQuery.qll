@@ -1,5 +1,4 @@
 import actions
-import codeql.actions.config.Config
 
 class KnownVulnerableAction extends UsesStep {
   string vulnerable_action;

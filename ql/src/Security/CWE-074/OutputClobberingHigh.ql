@@ -15,6 +15,7 @@
 import actions
 import codeql.actions.security.OutputClobberingQuery
 import codeql.actions.dataflow.ExternalFlow
+import codeql.actions.dataflow.FlowSources
 import OutputClobberingFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
