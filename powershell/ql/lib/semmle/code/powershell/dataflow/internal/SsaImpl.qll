@@ -68,10 +68,11 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
   i = -1
 }
 
-predicate pipelineIteratorWrite(Cfg::BasicBlock bb, int i, PipelineIteratorVariable v) {
-  exists(ProcessBlockCfgNode process |
-    process = bb.getNode(i) and
-    v.getProcessBlock() = process.getAstNode()
+predicate pipelineIteratorWrite(Cfg::BasicBlock bb, int i, LocalScopeVariable v) {
+  exists(ProcessBlockCfgNode process | process = bb.getNode(i) |
+    v.(PipelineIteratorVariable).getProcessBlock() = process.getAstNode()
+    or
+    v.(PipelineByPropertyNameIteratorVariable).getProcessBlock() = process.getAstNode()
   )
 }
 
@@ -114,12 +115,19 @@ predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
   )
 }
 
-private PipelineIteratorVariable getPipelineIterator(PipelineParameter pipelineParam) {
-  result.getProcessBlock().getScriptBlock() = pipelineParam.getDeclaringScope()
+private LocalScopeVariable getPipelineIterator(LocalScopeVariable pipelineParam) {
+  result.(PipelineIteratorVariable).getProcessBlock().getScriptBlock() =
+    pipelineParam.(PipelineParameter).getDeclaringScope()
+  or
+  result.(PipelineByPropertyNameIteratorVariable).getParameter() =
+    pipelineParam.(PipelineByPropertyNameParameter)
 }
 
 private predicate isPipelineIteratorVarAccess(VarAccessCfgNode va) {
-  va.getVariable() instanceof PipelineParameter and
+  (
+    va.getVariable() instanceof PipelineParameter or
+    va.getVariable() instanceof PipelineByPropertyNameParameter
+  ) and
   va.getAstNode().getParent*() instanceof ProcessBlock
 }
 
@@ -133,9 +141,9 @@ private predicate variableReadActual(Cfg::BasicBlock bb, int i, SsaInput::Source
 }
 
 private predicate pipelineRead(Cfg::BasicBlock bb, int i, SsaInput::SourceVariable v) {
-  exists(ProcessBlockCfgNode process |
-    process = bb.getNode(i) and
-    v = process.getPipelineParameter()
+  exists(ProcessBlockCfgNode process | process = bb.getNode(i) |
+    v = process.getPipelineParameter() or
+    v = process.getAPipelineByPropertyNameParameter()
   )
 }
 

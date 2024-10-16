@@ -7,6 +7,8 @@ class NamedAttributeArgument extends @named_attribute_argument, Ast {
 
   string getName() { named_attribute_argument(this, result, _) }
 
+  predicate hasName(string s) { this.getName() = s }
+
   Expr getValue() { named_attribute_argument(this, _, result) }
 }
 
