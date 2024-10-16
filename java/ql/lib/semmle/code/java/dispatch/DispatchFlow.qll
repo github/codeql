@@ -334,7 +334,7 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
     )
   }
 
-  private module TtInput implements TypeTrackingInput {
+  private module TtInput implements TypeTrackingInput<Location> {
     import TypeTrackingSteps
 
     predicate callStep(Node n1, LocalSourceNode n2) { argParamCand(n1, n2) }
@@ -348,7 +348,7 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
     }
   }
 
-  private import TypeTracking<TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
+  private import TypeTracking<Location, TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
 
   private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 

@@ -106,7 +106,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
 
-module TypeTrackingInput implements Shared::TypeTrackingInput {
+module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   class Node = DataFlowPublic::Node;
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
@@ -318,9 +318,9 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
     capturedJumpStep(nodeFrom, nodeTo)
   }
 
-  predicate hasFeatureBacktrackStoreTarget() { any() }
+  predicate hasFeatureBacktrackStoreTarget() { none() }
 
   predicate nonStandardFlowsTo(LocalSourceNode localSource, Node dst) { localSource.flowsTo(dst) }
 }
 
-import SharedImpl::TypeTracking<TypeTrackingInput>
+import SharedImpl::TypeTracking<Location, TypeTrackingInput>
