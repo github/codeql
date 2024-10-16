@@ -7,7 +7,7 @@
 fn do_something() {
 }
 
-fn unreachable_if() {
+fn unreachable_if_1() {
 	if false {
 		do_something(); // BAD: unreachable code
 	} else {
@@ -162,13 +162,13 @@ fn unreachable_loop() {
 		do_something(); // BAD: unreachable code
 	}
 
-
-
-
-
-
-
-
+	for x in 1..10 {
+		if cond() {
+			continue;
+			do_something(); // BAD: unreachable code
+		}
+		do_something();
+	}
 
 	loop {
 		if cond() {
@@ -183,4 +183,44 @@ fn unreachable_loop() {
 
 fn unreachable_paren() {
 	let _ = (((1)));
+}
+
+fn unreachable_let_1() {
+	if let a = get_a_number() {
+		do_something();
+		return;
+	} else {
+		do_something(); // SPURIOUS: unreachable code
+	}
+
+	do_something(); // SPURIOUS: unreachable code
+}
+
+fn unreachable_let_2() {
+	let a = get_a_number() else {
+		do_something(); // SPURIOUS: unreachable code
+		return;
+	};
+
+	do_something();
+}
+
+fn unreachable_if_2() {
+	if cond() {
+		do_something();
+		return;
+	} else {
+		do_something();
+	}
+
+	do_something(); // SPURIOUS: unreachable code
+}
+
+fn unreachable_if_3() {
+	if !cond() {
+		do_something();
+		return;
+	}
+
+	do_something(); // SPURIOUS: unreachable code
 }

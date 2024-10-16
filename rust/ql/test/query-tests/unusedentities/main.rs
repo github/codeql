@@ -456,9 +456,13 @@ fn main() {
     func_ptrs();
     folds_and_closures();
 
-	unreachable_if();
+	unreachable_if_1();
 	unreachable_panic();
 	unreachable_match();
 	unreachable_loop();
 	unreachable_paren();
+	unreachable_let_1();
+	unreachable_let_2();
+	unreachable_if_2();
+	unreachable_if_3();
 }
