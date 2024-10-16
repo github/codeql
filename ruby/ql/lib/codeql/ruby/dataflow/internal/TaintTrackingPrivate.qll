@@ -162,12 +162,16 @@ private module SpeculativeTaintFlow {
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(
       DataFlowDispatch::DataFlowCall call, MethodCall srcCall,
-      DataFlowDispatch::ArgumentPosition argpos
+      DataFlowDispatch::ArgumentPosition argpos, MethodCall mc
     |
       // TODO: exclude neutrals and anything that has QL modeling.
       not exists(DataFlowDispatch::viableCallable(call)) and
       call.asCall().getExpr() = srcCall and
-      src.(ArgumentNode).argumentOf(call, argpos)
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      call.asCall().getExpr() = mc and
+      not mc instanceof Operation and
+      not mc instanceof SetterMethodCall and
+      not mc instanceof ElementReference
     |
       not argpos.isSelf() and
       sink.(DataFlowPublic::PostUpdateNode)
