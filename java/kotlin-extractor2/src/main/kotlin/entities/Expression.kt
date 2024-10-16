@@ -8,7 +8,13 @@ import org.jetbrains.kotlin.analysis.api.resolution.KaSuccessCallInfo
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.analysis.api.types.KaTypeNullability
+import org.jetbrains.kotlin.analysis.api.types.symbol
 import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 import org.jetbrains.kotlin.psi.*
 
@@ -215,25 +221,48 @@ OLD: KE1
         }
 */
 
-private fun isFunction(
-    symbol: KaFunctionSymbol,
+private fun KaFunctionSymbol.hasMatchingNames(
+    name: CallableId,
+    extensionReceiverClassName: ClassId? = null,
+    nullability: KaTypeNullability? = null,
+): Boolean {
+
+    if (this.callableId != name)
+        return false
+
+    val receiverType = this.receiverParameter?.type
+    if (receiverType != null && extensionReceiverClassName != null) {
+        return receiverType.nullability == nullability &&
+                receiverType.symbol?.classId == extensionReceiverClassName
+    }
+
+    return receiverType == null &&
+            extensionReceiverClassName == null &&
+            nullability == null
+}
+
+private fun KaFunctionSymbol.hasName(
     packageName: String,
-    className: String,
+    className: String?,
     functionName: String
 ): Boolean {
 
-    return symbol.callableId?.packageName?.asString() == packageName &&
-            symbol.callableId?.className?.asString() == className &&
-            symbol.callableId?.callableName?.asString() == functionName
+    return this.hasMatchingNames(
+        CallableId(
+            FqName(packageName),
+            if (className == null) null else FqName(className),
+            Name.identifier(functionName)
+        )
+    )
 }
 
-private fun isNumericFunction(target: KaFunctionSymbol, fName: String): Boolean {
-    return isFunction(target, "kotlin", "Int", fName) ||
-            isFunction(target, "kotlin", "Byte", fName) ||
-            isFunction(target, "kotlin", "Short", fName) ||
-            isFunction(target, "kotlin", "Long", fName) ||
-            isFunction(target, "kotlin", "Float", fName) ||
-            isFunction(target, "kotlin", "Double", fName)
+private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
+    return this.hasName("kotlin", "Int", functionName) ||
+            this.hasName("kotlin", "Byte", functionName) ||
+            this.hasName("kotlin", "Short", functionName) ||
+            this.hasName("kotlin", "Long", functionName) ||
+            this.hasName("kotlin", "Float", functionName) ||
+            this.hasName("kotlin", "Double", functionName)
 }
 
 /**
@@ -267,7 +296,14 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 TODO()
             }
 
-            if (isNumericFunction(target, "plus")) {
+            if (target.isNumericWithName("plus") ||
+                target.hasName("kotlin", "String", "plus") ||
+                target.hasMatchingNames(
+                    CallableId(FqName("kotlin"), null, Name.identifier("plus")),
+                    ClassId(FqName("kotlin"), Name.identifier("String")),
+                    nullability = KaTypeNullability.NULLABLE,
+                )
+            ) {
                 val id = tw.getFreshIdLabel<DbAddexpr>()
                 val type = useType(expression.expressionType)
                 val exprParent = parent.expr(expression, callable)
@@ -278,7 +314,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
                 extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
             } else {
-                TODO()
+                TODO("Extract as method call")
             }
         }
 
