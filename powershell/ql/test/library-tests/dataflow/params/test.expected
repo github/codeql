@@ -1,5 +1,6 @@
 models
 edges
+| global.ps1:1:7:1:22 | Source | global.ps1:3:6:3:13 | Source | provenance |  |
 | test.ps1:1:14:1:16 | a | test.ps1:2:10:2:12 | a | provenance |  |
 | test.ps1:5:6:5:16 | Source | test.ps1:6:5:6:7 | x | provenance |  |
 | test.ps1:6:5:6:7 | x | test.ps1:1:14:1:16 | a | provenance |  |
@@ -139,6 +140,8 @@ edges
 | test.ps1:39:24:39:31 | second | test.ps1:8:24:8:26 | y | provenance |  |
 | test.ps1:39:32:39:38 | first | test.ps1:8:20:8:22 | x | provenance |  |
 nodes
+| global.ps1:1:7:1:22 | Source | semmle.label | Source |
+| global.ps1:3:6:3:13 | Source | semmle.label | Source |
 | test.ps1:1:14:1:16 | a | semmle.label | a |
 | test.ps1:2:10:2:12 | a | semmle.label | a |
 | test.ps1:5:6:5:16 | Source | semmle.label | Source |
@@ -221,6 +224,7 @@ nodes
 subpaths
 testFailures
 #select
+| global.ps1:3:6:3:13 | Source | global.ps1:1:7:1:22 | Source | global.ps1:3:6:3:13 | Source | $@ | global.ps1:1:7:1:22 | Source | Source |
 | test.ps1:2:10:2:12 | a | test.ps1:5:6:5:16 | Source | test.ps1:2:10:2:12 | a | $@ | test.ps1:5:6:5:16 | Source | Source |
 | test.ps1:9:10:9:12 | x | test.ps1:14:10:14:20 | Source | test.ps1:9:10:9:12 | x | $@ | test.ps1:14:10:14:20 | Source | Source |
 | test.ps1:10:10:10:12 | y | test.ps1:15:11:15:21 | Source | test.ps1:10:10:10:12 | y | $@ | test.ps1:15:11:15:21 | Source | Source |
