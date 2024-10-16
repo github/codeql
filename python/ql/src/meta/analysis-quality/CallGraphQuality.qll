@@ -103,20 +103,20 @@ module TypeTrackingBasedCallGraph {
   /** A call that can be resolved by type-tracking. */
   class ResolvableCall extends RelevantCall {
     ResolvableCall() {
-      exists(TT::TNormalCall(this, _, _))
+      TT::resolveCall(this, _, _)
       or
       TT::resolveClassCall(this, _)
     }
 
     /** Gets a resolved target of this call. */
     Target getTarget() {
-      exists(TT::DataFlowCall call, TT::CallType ct, Function targetFunc |
-        call = TT::TNormalCall(this, targetFunc, ct) and
+      exists(TT::CallType ct, Function targetFunc |
+        TT::resolveCall(this, targetFunc, ct) and
         not ct instanceof TT::CallTypeClass and
         targetFunc = result.(TargetFunction).getFunction()
       )
       or
-      // a TT::TNormalCall only exists when the call can be resolved to a function.
+      // TT::resolveCall only holds when the call can be resolved to a function.
       // Since points-to just says the call goes directly to the class itself, and
       // type-tracking based wants to resolve this to the constructor, which might not
       // exist. So to do a proper comparison, we don't require the call to be resolve to
