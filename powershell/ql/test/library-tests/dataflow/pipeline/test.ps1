@@ -1,40 +1,40 @@
 function produce {
-    $x = Source "16"
-    $y = Source "17"
-    $z = Source "18"
+    $x = Source "1"
+    $y = Source "2"
+    $z = Source "3"
     $x
     $y, $z
 }
 
-function consume {
+function consumeWithProcess {
     Param([Parameter(ValueFromPipeline)] $x)
 
     process {
-        Sink $x # $ hasValueFlow=16 hasValueFlow=17 hasValueFlow=18 hasValueFlow=19 hasValueFlow=20
+        Sink $x # $ hasValueFlow=1 hasValueFlow=2 hasValueFlow=3 hasValueFlow=4 hasValueFlow=5
     }
 }
 
-produce | consume
+produce | consumeWithProcess
 
-$x = Source "19"
-$y = Source "20"
-$x, $y | consume
+$x = Source "4"
+$y = Source "5"
+$x, $y | consumeWithProcess
 
-function consume2 {
+function consumeWithProcessAnonymous {
     process {
-        Sink $_ # $ hasValueFlow=21 hasValueFlow=22
+        Sink $_ # $ hasValueFlow=6 hasValueFlow=7
     }
 }
 
-$x = Source "21"
-$y = Source "22"
-$x, $y | consume2
+$x = Source "6"
+$y = Source "7"
+$x, $y | consumeWithProcessAnonymous
 
-function consumeValueFromPipelineByPropertyName {
+function consumeValueFromPipelineByPropertyNameWithoutProcess {
     Param([Parameter(ValueFromPipelineByPropertyName)] $x)
 
-    Sink $x # $ hasValueFlow=23
+    Sink $x # $ hasValueFlow=8
 }
 
-$x = Source "23"
-[pscustomobject]@{x = $x} | consumeValueFromPipelineByPropertyName
+$x = Source "8"
+[pscustomobject]@{x = $x} | consumeValueFromPipelineByPropertyNameWithoutProcess
