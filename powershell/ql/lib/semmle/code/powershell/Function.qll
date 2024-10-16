@@ -69,6 +69,8 @@ abstract private class AbstractFunction extends Ast {
   EntryBasicBlock getEntryBasicBlock() { result.getScope() = this.getBody() }
 }
 
+final class Function = AbstractFunction;
+
 /**
  * A function definition.
  */
@@ -114,4 +116,12 @@ class Constructor extends Method {
   Constructor() { this.isConstructor() }
 }
 
-final class Function = FunctionBase;
+class TopLevel extends AbstractFunction instanceof TopLevelScriptBlock {
+  final override string getName() { result = "toplevel" }
+
+  final override ScriptBlock getBody() { result = this }
+
+  final override Parameter getFunctionParameter(int i) { none() }
+
+  final override Type getDeclaringType() { none() }
+}
