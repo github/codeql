@@ -324,8 +324,21 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_eqexpr)
     } else if (op == KtTokens.EXCLEQEQEQ && target == null) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_neexpr)
+    } else if (op in listOf(KtTokens.LT, KtTokens.GT, KtTokens.LTEQ, KtTokens.GTEQ)) {
+        if (target.isNumericWithName("compareTo")) {
+            when (op) {
+                KtTokens.LT -> extractBinaryExpression(expression, callable, parent, tw::writeExprs_ltexpr)
+                KtTokens.GT -> extractBinaryExpression(expression, callable, parent, tw::writeExprs_gtexpr)
+                KtTokens.LTEQ -> extractBinaryExpression(expression, callable, parent, tw::writeExprs_leexpr)
+                KtTokens.GTEQ -> extractBinaryExpression(expression, callable, parent, tw::writeExprs_geexpr)
+                else -> TODO("error")
+            }
+        } else {
+            TODO("Extract lowered equivalent call, such as `a.compareTo(b) < 0`")
+        }
+
     } else {
-        // todo: other operators, such as .., ..<, in, !in, +=, -=, *=, /=, %=, <, >, <=, >=, ==, !=,
+        // todo: other operators, such as .., ..<, in, !in, =, +=, -=, *=, /=, %=, ==, !=,
         TODO("Extract as method call")
     }
 }

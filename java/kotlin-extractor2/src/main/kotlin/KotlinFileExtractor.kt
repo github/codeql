@@ -3051,46 +3051,6 @@ OLD: KE1
                     // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                     //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
                     // as they can't be extracted as external dependencies.
-                    isBuiltinCallInternal(c, "less") -> {
-                        if (c.origin != IrStatementOrigin.LT) {
-                            logger.warnElement("Unexpected origin for LT: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbLtexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_ltexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "lessOrEqual") -> {
-                        if (c.origin != IrStatementOrigin.LTEQ) {
-                            logger.warnElement("Unexpected origin for LTEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbLeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_leexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "greater") -> {
-                        if (c.origin != IrStatementOrigin.GT) {
-                            logger.warnElement("Unexpected origin for GT: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbGtexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_gtexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "greaterOrEqual") -> {
-                        if (c.origin != IrStatementOrigin.GTEQ) {
-                            logger.warnElement("Unexpected origin for GTEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbGeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_geexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
                     isBuiltinCallInternal(c, "EQEQ") -> {
                         if (c.origin != IrStatementOrigin.EQEQ) {
                             logger.warnElement("Unexpected origin for EQEQ: ${c.origin}", c)
