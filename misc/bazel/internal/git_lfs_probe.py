@@ -213,5 +213,12 @@ try:
     for resp in get_locations(objects):
         print(resp)
 except NoEndpointsFound as e:
-    print(f"ERROR: no valid endpoints found", file=sys.stderr)
+    print("""\
+ERROR: no valid endpoints found, your git authentication method might be currently unsupported by this script.
+You can bypass this error by running from semmle-code (this might take a while):
+  git config lfs.fetchexclude ""
+  git -C ql config lfs.fetchinclude \\*
+  git lfs fetch && git lfs checkout
+  cd ql
+  git lfs fetch && git lfs checkout""", file=sys.stderr)
     sys.exit(1)
