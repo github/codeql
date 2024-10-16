@@ -55,16 +55,14 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
    */
   class SourceVariable extends Variable {
     SourceVariable() {
-      this.isImmutable()
-      or
-      this.isMutable() and
-      forall(VariableAccess va | va = this.getAnAccess() |
-        va instanceof VariableReadAccess and
+      this.isMutable()
+      implies
+      not exists(VariableAccess va | va = this.getAnAccess() |
+        exists(RefExpr re | va = re.getExpr() and re.isMut())
+        or
         // receivers can be borrowed implicitly, cf.
         // https://doc.rust-lang.org/reference/expressions/method-call-expr.html
-        not va = any(MethodCallExpr mce).getReceiver()
-        or
-        variableWrite(va, this)
+        va = any(MethodCallExpr mce).getReceiver()
       )
     }
   }

@@ -1,5 +1,4 @@
 nonSsaVariable
-| variables.rs:28:13:28:13 | x |
 | variables.rs:341:13:341:13 | a |
 | variables.rs:349:13:349:13 | i |
 | variables.rs:372:13:372:13 | x |
@@ -15,6 +14,8 @@ definition
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:9:16:10 | x1 |
 | variables.rs:21:9:21:14 | x2 | variables.rs:21:13:21:14 | x2 |
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 |
+| variables.rs:28:9:28:13 | x | variables.rs:28:13:28:13 | x |
+| variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x |
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 |
 | variables.rs:37:9:37:10 | x3 | variables.rs:37:9:37:10 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 |
@@ -542,6 +543,7 @@ ultimateDef
 | variables.rs:439:5:447:5 | phi | variables.rs:444:9:444:9 | x |
 assigns
 | variables.rs:23:5:23:6 | x2 | variables.rs:23:10:23:10 | 5 |
+| variables.rs:30:5:30:5 | x | variables.rs:30:9:30:9 | 2 |
 | variables.rs:421:9:421:9 | y | variables.rs:421:13:421:13 | 3 |
 | variables.rs:440:9:440:9 | x | variables.rs:440:13:440:13 | 2 |
 | variables.rs:444:9:444:9 | x | variables.rs:444:13:444:13 | 3 |
