@@ -47,10 +47,6 @@ predicate externallyTriggerableEventsDataModel(string event) {
 
 private string commandLauncher() { result = ["", "sudo\\s+", "su\\s+", "xvfb-run\\s+"] }
 
-private string commandPrefixDelimiter() { result = "(^|;|\\$\\(|`|\\||&&|\\|\\|)\\s*" }
-
-private string commandSuffixDelimiter() { result = "\\s*(;|\\||\\)|`|&&|\\|\\||$)" }
-
 /**
  * MaD models for poisonable commands
  * Fields:
@@ -59,9 +55,7 @@ private string commandSuffixDelimiter() { result = "\\s*(;|\\||\\)|`|&&|\\|\\||$
 predicate poisonableCommandsDataModel(string regexp) {
   exists(string sub_regexp |
     Extensions::poisonableCommandsDataModel(sub_regexp) and
-    // find regexp
-    regexp =
-      commandPrefixDelimiter() + commandLauncher() + sub_regexp + "(.*?)" + commandSuffixDelimiter()
+    regexp = commandLauncher() + sub_regexp + ".*"
   )
 }
 
@@ -74,10 +68,7 @@ predicate poisonableCommandsDataModel(string regexp) {
 predicate poisonableLocalScriptsDataModel(string regexp, int command_group) {
   exists(string sub_regexp |
     Extensions::poisonableLocalScriptsDataModel(sub_regexp, command_group) and
-    // capture regexp
-    regexp =
-      ".*" + commandPrefixDelimiter() + commandLauncher() + sub_regexp + commandSuffixDelimiter() +
-        ".*"
+    regexp = commandLauncher() + sub_regexp + ".*"
   )
 }
 
@@ -91,8 +82,7 @@ predicate poisonableLocalScriptsDataModel(string regexp, int command_group) {
 predicate argumentInjectionSinksDataModel(string regexp, int command_group, int argument_group) {
   exists(string sub_regexp |
     Extensions::argumentInjectionSinksDataModel(sub_regexp, command_group, argument_group) and
-    // capture regexp
-    regexp = ".*" + commandPrefixDelimiter() + sub_regexp // + commandSuffixDelimiter() +  ".*"
+    regexp = commandLauncher() + sub_regexp
   )
 }
 

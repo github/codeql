@@ -220,9 +220,13 @@ class BashShellScript extends ShellScript {
   override string getCommand(int i) {
     // remove redirection
     result =
-      this.getCmd(i).regexpReplaceAll("(>|>>|2>|2>>|<|<<<)\\s*[\\{\\}\\$\"'_\\-0-9a-zA-Z]+$", "") and
+      this.getCmd(i)
+          .regexpReplaceAll("(>|>>|2>|2>>|<|<<<)\\s*[\\{\\}\\$\"'_\\-0-9a-zA-Z]+$", "")
+          .trim() and
     // exclude variable declarations
     not result.regexpMatch("^[a-zA-Z0-9\\-_]+=") and
+    // exclude comments
+    not result.trim().indexOf("#") = 0 and
     // exclude the following keywords
     not result =
       [
@@ -359,11 +363,11 @@ module Bash {
     exists(string regexp |
       // $(cmd)
       regexp = ".*\\$\\(([^)]+)\\).*" and
-      cmd = expr.regexpCapture(regexp, 1)
+      cmd = expr.regexpCapture(regexp, 1).trim()
       or
       // `cmd`
       regexp = ".*`([^`]+)`.*" and
-      cmd = expr.regexpCapture(regexp, 1)
+      cmd = expr.regexpCapture(regexp, 1).trim()
     )
   }
 
@@ -657,8 +661,8 @@ module Bash {
     exists(string cmd, string regex, int command_group, int argument_group |
       cmd = script.getACommand() and
       argumentInjectionSinksDataModel(regex, command_group, argument_group) and
-      argument = cmd.regexpCapture(regex, argument_group) and
-      command = cmd.regexpCapture(regex, command_group) and
+      argument = cmd.regexpCapture(regex, argument_group).trim() and
+      command = cmd.regexpCapture(regex, command_group).trim() and
       envReachingRunExpr(script, source, argument)
     )
   }
@@ -669,8 +673,8 @@ module Bash {
     exists(string cmd, string regex, int command_group, int argument_group |
       cmd = script.getACommand() and
       argumentInjectionSinksDataModel(regex, command_group, argument_group) and
-      argument = cmd.regexpCapture(regex, argument_group) and
-      command = cmd.regexpCapture(regex, command_group) and
+      argument = cmd.regexpCapture(regex, argument_group).trim() and
+      command = cmd.regexpCapture(regex, command_group).trim() and
       cmdReachingRunExpr(script, source, argument)
     )
   }

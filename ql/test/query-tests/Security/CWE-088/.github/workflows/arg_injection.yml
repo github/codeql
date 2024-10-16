@@ -13,36 +13,62 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-      - run: echo "s/FOO/$TITLE/g"
-      - run: sed "s/FOO/$TITLE/g"
-      - run: echo "foo" | sed "s/FOO/$TITLE/g" > bar
-      - run: echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
-      - run: awk "BEGIN {$TITLE}"
-      - run: sed -i "s/git_branch = .*/git_branch = \"$GITHUB_HEAD_REF\"/" config.json
       - run: |
+          # NOT VULNERABLE
+          echo "s/FOO/$TITLE/g"
+      - run: |
+          # VULNERABLE
+          sed "s/FOO/$TITLE/g"
+      - run: |
+          # VULNERABLE
+          echo "foo" | sed "s/FOO/$TITLE/g" > bar
+      - run: |
+          # VULNERABLE
+          echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
+      - run: |
+          # VULNERABLE
+          awk "BEGIN {$TITLE}"
+      - run: |
+          # VULNERABLE
+          sed -i "s/git_branch = .*/git_branch = \"$GITHUB_HEAD_REF\"/" config.json
+      - run: |
+          # VULNERABLE
           sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json
       - run: |
+          # VULNERABLE
           sed -e 's#<branch_to_sync>#${TITLE}#' \
               -e 's#<sot_repo>#${{ env.sot_repo }}#' \
               -e 's#<destination_repo>#TITLE#' \
               .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky
       - run: |
+          # VULNERABLE
           sed -e 's#<branch_to_sync>#TITLE#' \
               -e 's#<sot_repo>#${{ env.sot_repo }}#' \
               -e 's#<destination_repo>#${TITLE}#' \
               .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky
       - run: |
+          # VULNERABLE
           BODY=$(git log --format=%s)
           sed "s/FOO/$BODY/g" > /tmp/foo
-
-      - name: Checkout ref
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Detect new changesets
-        id: added-files
-        run: |
-          delimiter="$(openssl rand -hex 8)"
-          echo "changesets<<${delimiter}" >> "${GITHUB_OUTPUT}"
-          echo "$(git diff --name-only --diff-filter=A ${{ steps.comment-branch.outputs.base_sha }} ${{ steps.parse-sha.outputs.sha }} .changeset/*.md)" >> "${GITHUB_OUTPUT}"
-          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD)
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD )
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD^ | xargs)
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # NOT VULNERABLE
+          echo "value=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
+      - run: |
+          # NOT VULNERABLE
+          git log -1 --pretty=%s
+      - run: |
+          # NOT VULNERABLE
+          BODY=$(git log --format=%s)
+          sed -E 's/\s+/\n/g' <<<"$BODY"

@@ -3,22 +3,15 @@ import codeql.actions.config.Config
 
 abstract class PoisonableStep extends Step { }
 
-private string dangerousActions() {
-  exists(string action |
-    poisonableActionsDataModel(action) and
-    result = action
-  )
-}
-
 class DangerousActionUsesStep extends PoisonableStep, UsesStep {
-  DangerousActionUsesStep() { this.getCallee() = dangerousActions() }
+  DangerousActionUsesStep() { poisonableActionsDataModel(this.getCallee()) }
 }
 
 class PoisonableCommandStep extends PoisonableStep, Run {
   PoisonableCommandStep() {
     exists(string regexp |
       poisonableCommandsDataModel(regexp) and
-      this.getScript().getACommand().regexpMatch("^" + regexp + ".*")
+      this.getScript().getACommand().regexpMatch(regexp)
     )
   }
 }

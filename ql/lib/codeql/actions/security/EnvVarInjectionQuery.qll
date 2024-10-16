@@ -9,17 +9,17 @@ import codeql.actions.dataflow.FlowSources
 
 abstract class EnvVarInjectionSink extends DataFlow::Node { }
 
+string sanitizerCommand() {
+  result =
+    [
+      "tr\\s+(-d\\s*)?('|\")?.n('|\")?", // tr -d '\n' ' ', tr '\n' ' '
+      "tr\\s+-cd\\s+.*:alpha:", // tr -cd '[:alpha:_]'
+      "(head|tail)\\s+-n\\s+1" // head -n 1, tail -n 1
+    ]
+}
+
 /**
  * Holds if a Run step declares an environment variable with contents from a local file.
- * e.g.
- *    run: |
- *      cat test-results/.env >> $GITHUB_ENV
- *
- *      echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV
- *      echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV
- *
- *      FOO=$(cat test-results/sha-number)
- *      echo "FOO=$FOO" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
   EnvVarInjectionFromFileReadSink() {
@@ -31,11 +31,19 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
       this.asExpr() = run.getScript() and
       step.getAFollowingStep() = run and
       (
-        exists(string cmd |
-          run.getScript().getACmdReachingGitHubEnvWrite(cmd, _) and
-          run.getScript().getAFileReadCommand() = cmd
+        // eg:
+        // echo "SHA=$(cat test-results/sha-number)" >> $GITHUB_ENV
+        // echo "SHA=$(<test-results/sha-number)" >> $GITHUB_ENV
+        // FOO=$(cat test-results/sha-number)
+        // echo "FOO=$FOO" >> $GITHUB_ENV
+        exists(string cmd, string var, string sanitizer |
+          run.getScript().getAFileReadCommand() = cmd and
+          run.getScript().getACmdReachingGitHubEnvWrite(cmd, var) and
+          run.getScript().getACmdReachingGitHubEnvWrite(sanitizer, var) and
+          not exists(sanitizer.regexpFind(sanitizerCommand(), _, _))
         )
         or
+        // eg: cat test-results/.env >> $GITHUB_ENV
         run.getScript().fileToGitHubEnv(_)
       )
     )
@@ -51,9 +59,18 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
  */
 class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
   EnvVarInjectionFromCommandSink() {
-    exists(CommandSource source |
+    exists(CommandSource source, Run run, string var |
       this.asExpr() = source.getEnclosingRun().getScript() and
-      source.getEnclosingRun().getScript().getACmdReachingGitHubEnvWrite(source.getCommand(), _)
+      run = source.getEnclosingRun() and
+      run.getScript().getACmdReachingGitHubEnvWrite(source.getCommand(), var) and
+      (
+        not run.getScript().getACmdReachingGitHubEnvWrite(_, var)
+        or
+        exists(string sanitizer |
+          run.getScript().getACmdReachingGitHubEnvWrite(sanitizer, var) and
+          not exists(sanitizer.regexpFind(sanitizerCommand(), _, _))
+        )
+      )
     )
   }
 }
@@ -68,10 +85,18 @@ class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
  */
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run, string var_name |
+    exists(Run run, string var_name, string var |
       exists(run.getInScopeEnvVarExpr(var_name)) and
       run.getScript() = this.asExpr() and
-      run.getScript().getAnEnvReachingGitHubEnvWrite(var_name, _)
+      run.getScript().getAnEnvReachingGitHubEnvWrite(var_name, var) and
+      (
+        not run.getScript().getACmdReachingGitHubEnvWrite(_, var)
+        or
+        exists(string sanitizer |
+          run.getScript().getACmdReachingGitHubEnvWrite(sanitizer, var) and
+          not exists(sanitizer.regexpFind(sanitizerCommand(), _, _))
+        )
+      )
     )
   }
 }

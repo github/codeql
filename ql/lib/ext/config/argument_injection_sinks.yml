@@ -5,12 +5,11 @@ extensions:
     # https://gtfobins.github.io/
     # https://0xn3va.gitbook.io/cheat-sheets/web-application/command-injection/argument-injection
     data:
-      - ["(awk)\\s(.*?)", 2, 3]
-      - ["(curl)\\s(.*?)", 2, 3]
-      - ["(find)\\s(.*?)", 2, 3]
-      - ["(git)\\s(.*?)", 2, 3]
-      - ["(sed)\\s(.*?)", 2, 3]
-      - ["(tar)\\s(.*?)", 2, 3]
-      - ["(wget)\\s(.*?)", 2, 3]
-      - ["(zip)\\s(.*?)", 2, 3]
+      - ["(awk)\\s(.*?)", 1, 2]
+      - ["(find)\\s(.*?)", 1, 2]
+      - ["(git clone)\\s(.*?)", 1, 2]
+      - ["(sed)\\s(.*?)", 1, 2]
+      - ["(tar)\\s(.*?)", 1, 2]
+      - ["(wget)\\s(.*?)", 1, 2]
+      - ["(zip)\\s(.*?)", 1, 2]
 

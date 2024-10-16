@@ -20,7 +20,6 @@
 | .github/workflows/poisonable_steps.yml:31:9:32:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:32:9:33:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:33:9:34:6 | Run Step |
-| .github/workflows/poisonable_steps.yml:34:9:35:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:35:9:36:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:37:9:38:6 | Run Step |
 | .github/workflows/poisonable_steps.yml:38:9:39:6 | Run Step |

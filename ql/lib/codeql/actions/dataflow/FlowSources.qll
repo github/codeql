@@ -100,10 +100,10 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
       ) and
       this.asExpr() = run.getScript() and
       checkout.getAFollowingStep() = run and
-      run.getScript().getACommand() = cmd and
+      run.getScript().getAStmt() = cmd and
       cmd.indexOf("git") = 0 and
       untrustedGitCommandsDataModel(cmd_regex, flag) and
-      cmd.regexpMatch(cmd_regex)
+      cmd.regexpMatch(".*" + cmd_regex + ".*")
     )
   }
 

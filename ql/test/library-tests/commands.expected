@@ -92,24 +92,23 @@
 | .github/workflows/multiline2.yml:78:9:85:6 | Run Step | tee -a "$GITHUB_ENV" |
 | .github/workflows/multiline2.yml:85:9:89:35 | Run Step | echo 'JSON_RESPONSE< |
 | .github/workflows/multiline2.yml:85:9:89:35 | Run Step | tee -a "$GITHUB_ENV" |
-| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "CHANGELOGEOF"  |
-| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "changelog<<CHANGELOGEOF"  |
-| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo -e "$FILTERED_CHANGELOG"  |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "CHANGELOGEOF" |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo "changelog<<CHANGELOGEOF" |
+| .github/workflows/multiline.yml:11:9:15:6 | Run Step | echo -e "$FILTERED_CHANGELOG" |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | EOF=$(dd if=/dev/urandom bs=15 count=1 status=none \| base64) |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | base64 |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | cat status.output.json |
 | .github/workflows/multiline.yml:15:9:20:6 | Run Step | dd if=/dev/urandom bs=15 count=1 status=none |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$(cat status.output.json)"  |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$EOF"  |
-| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "status<<$EOF"  |
-| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "$EOF"  |
-| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "response<<$EOF"  |
-| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo $output  |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$(cat status.output.json)" |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "$EOF" |
+| .github/workflows/multiline.yml:15:9:20:6 | Run Step | echo "status<<$EOF" |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "$EOF" |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo "response<<$EOF" |
+| .github/workflows/multiline.yml:20:9:24:6 | Run Step | echo $output |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | echo 'JSON_RESPONSE< |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | echo EOF |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | grep -E "*.(tar.gz\|zip)$" |
 | .github/workflows/multiline.yml:24:9:30:6 | Run Step | ls |
-| .github/workflows/multiline.yml:24:9:30:6 | Run Step | }  |
 | .github/workflows/multiline.yml:30:9:34:6 | Run Step | ${{ toJson(github.event) }} |
 | .github/workflows/multiline.yml:30:9:34:6 | Run Step | EOF |
 | .github/workflows/multiline.yml:30:9:34:6 | Run Step | cat <<-"EOF" > event.json |
@@ -124,33 +123,30 @@
 | .github/workflows/multiline.yml:46:9:52:6 | Run Step | ${ISSUE_BODY} |
 | .github/workflows/multiline.yml:46:9:52:6 | Run Step | EOL |
 | .github/workflows/multiline.yml:46:9:52:6 | Run Step | FOO |
-| .github/workflows/multiline.yml:46:9:52:6 | Run Step | cat << EOL  |
+| .github/workflows/multiline.yml:46:9:52:6 | Run Step | cat << EOL |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step | EOF |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step | Hello |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step | World |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step | cat < |
 | .github/workflows/multiline.yml:52:9:58:6 | Run Step | sed 's/l/e/g' > file.txt |
 | .github/workflows/multiline.yml:58:9:63:6 | Run Step | EOF |
-| .github/workflows/multiline.yml:58:9:63:6 | Run Step | cat <<-EOF  |
+| .github/workflows/multiline.yml:58:9:63:6 | Run Step | cat <<-EOF |
 | .github/workflows/multiline.yml:58:9:63:6 | Run Step | echo "FOO=$TITLE" |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | cat issue.txt |
-| .github/workflows/multiline.yml:63:9:66:6 | Run Step | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ')  |
+| .github/workflows/multiline.yml:63:9:66:6 | Run Step | echo REPO_NAME=$(cat issue.txt \| sed 's/\\\\r/\\\\n/g' \| grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' \| tr -d ' ') |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | grep -ioE '\\\\s*[a-z0-9_-]+/[a-z0-9_-]+\\\\s*$' |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | sed 's/\\\\r/\\\\n/g' |
 | .github/workflows/multiline.yml:63:9:66:6 | Run Step | tr -d ' ' |
-| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "$TITLE"  |
-| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "EOF"  |
-| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "PR_TITLE<<EOF"  |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "$TITLE" |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "EOF" |
+| .github/workflows/multiline.yml:66:9:71:6 | Run Step | echo "PR_TITLE<<EOF" |
 | .github/workflows/multiline.yml:71:9:78:6 | Run Step | echo "$TITLE" |
 | .github/workflows/multiline.yml:71:9:78:6 | Run Step | echo 'JSON_RESPONSE< |
 | .github/workflows/multiline.yml:71:9:78:6 | Run Step | echo EOF |
-| .github/workflows/multiline.yml:71:9:78:6 | Run Step | }  |
 | .github/workflows/multiline.yml:78:9:85:6 | Run Step | echo '$ISSUE' |
 | .github/workflows/multiline.yml:78:9:85:6 | Run Step | echo 'EOF' |
 | .github/workflows/multiline.yml:78:9:85:6 | Run Step | echo 'JSON_RESPONSE< |
-| .github/workflows/multiline.yml:78:9:85:6 | Run Step | }  |
 | .github/workflows/multiline.yml:85:9:89:29 | Run Step | echo 'JSON_RESPONSE< |
-| .github/workflows/multiline.yml:85:9:89:29 | Run Step | }  |
 | .github/workflows/poisonable_steps.yml:7:9:8:6 | Run Step | venv/bin/activate |
 | .github/workflows/poisonable_steps.yml:13:9:14:6 | Run Step | . venv/bin/activate |
 | .github/workflows/poisonable_steps.yml:14:9:15:6 | Run Step | . venv/bin/activate |
@@ -167,7 +163,7 @@
 | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | echo foo |
 | .github/workflows/poisonable_steps.yml:20:9:21:6 | Run Step | sh venv/bin/activate.sh |
 | .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step | echo foo |
-| .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step | sh venv/bin/activate.sh  |
+| .github/workflows/poisonable_steps.yml:21:9:22:6 | Run Step | sh venv/bin/activate.sh |
 | .github/workflows/poisonable_steps.yml:22:9:23:6 | Run Step | python venv/bin/activate.py |
 | .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step | echo foo |
 | .github/workflows/poisonable_steps.yml:23:9:24:6 | Run Step | python venv/bin/activate.py |

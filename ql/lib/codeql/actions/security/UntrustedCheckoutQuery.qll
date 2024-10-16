@@ -53,7 +53,7 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(Uses uses |
       uses.getCallee() = "actions/checkout" and
-      uses.getArgumentExpr("ref") = sink.asExpr()
+      uses.getArgumentExpr(["ref", "repository"]) = sink.asExpr()
     )
   }
 
@@ -99,7 +99,7 @@ private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(Uses uses |
       uses.getCallee() = "actions/checkout" and
-      uses.getArgumentExpr("ref") = sink.asExpr()
+      uses.getArgumentExpr(["ref", "repository"]) = sink.asExpr()
     )
   }
 
@@ -199,7 +199,7 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
     (
       exists(ActionsMutableRefCheckoutFlow::PathNode sink |
         ActionsMutableRefCheckoutFlow::flowPath(_, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr("ref")
+        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
       )
       or
       // heuristic base on the step id and field name
@@ -243,7 +243,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
     (
       exists(ActionsSHACheckoutFlow::PathNode sink |
         ActionsSHACheckoutFlow::flowPath(_, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr("ref")
+        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
       )
       or
       // heuristic base on the step id and field name
