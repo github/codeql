@@ -1,6 +1,7 @@
 // semmle-extractor-options: --expect_errors
 
 int printf(const char * format, ...);
+int fprintf();
 
 void f() {
     printf("%s", 1); // BAD
