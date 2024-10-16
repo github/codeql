@@ -5,8 +5,6 @@ nonSsaVariable
 | variables.rs:372:13:372:13 | x |
 | variables.rs:379:13:379:13 | z |
 | variables.rs:392:13:392:13 | x |
-| variables.rs:410:13:410:13 | x |
-| variables.rs:418:13:418:13 | y |
 | variables.rs:426:13:426:13 | z |
 | variables.rs:478:13:478:13 | a |
 | variables.rs:506:11:506:11 | a |
@@ -115,8 +113,12 @@ definition
 | variables.rs:400:9:400:9 | x | variables.rs:400:9:400:9 | x |
 | variables.rs:402:9:402:11 | cap | variables.rs:402:9:402:11 | cap |
 | variables.rs:402:15:404:5 | <captured entry> x | variables.rs:400:9:400:9 | x |
+| variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 |
+| variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x |
+| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 |
+| variables.rs:421:9:421:9 | y | variables.rs:418:13:418:13 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b |
 | variables.rs:436:9:436:13 | x | variables.rs:436:13:436:13 | x |
@@ -227,7 +229,10 @@ read
 | variables.rs:400:9:400:9 | x | variables.rs:400:9:400:9 | x | variables.rs:406:15:406:15 | x |
 | variables.rs:402:9:402:11 | cap | variables.rs:402:9:402:11 | cap | variables.rs:405:5:405:7 | cap |
 | variables.rs:402:15:404:5 | <captured entry> x | variables.rs:400:9:400:9 | x | variables.rs:403:19:403:19 | x |
+| variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
+| variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
+| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
@@ -326,7 +331,10 @@ firstRead
 | variables.rs:400:9:400:9 | x | variables.rs:400:9:400:9 | x | variables.rs:406:15:406:15 | x |
 | variables.rs:402:9:402:11 | cap | variables.rs:402:9:402:11 | cap | variables.rs:405:5:405:7 | cap |
 | variables.rs:402:15:404:5 | <captured entry> x | variables.rs:400:9:400:9 | x | variables.rs:403:19:403:19 | x |
+| variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
+| variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
+| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
@@ -421,7 +429,10 @@ lastRead
 | variables.rs:400:9:400:9 | x | variables.rs:400:9:400:9 | x | variables.rs:406:15:406:15 | x |
 | variables.rs:402:9:402:11 | cap | variables.rs:402:9:402:11 | cap | variables.rs:405:5:405:7 | cap |
 | variables.rs:402:15:404:5 | <captured entry> x | variables.rs:400:9:400:9 | x | variables.rs:403:19:403:19 | x |
+| variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
+| variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
+| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
@@ -531,5 +542,6 @@ ultimateDef
 | variables.rs:439:5:447:5 | phi | variables.rs:444:9:444:9 | x |
 assigns
 | variables.rs:23:5:23:6 | x2 | variables.rs:23:10:23:10 | 5 |
+| variables.rs:421:9:421:9 | y | variables.rs:421:13:421:13 | 3 |
 | variables.rs:440:9:440:9 | x | variables.rs:440:13:440:13 | 2 |
 | variables.rs:444:9:444:9 | x | variables.rs:444:13:444:13 | 3 |
