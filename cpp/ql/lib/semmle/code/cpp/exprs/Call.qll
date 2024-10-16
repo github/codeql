@@ -300,6 +300,11 @@ class FunctionCall extends Call, @funbindexpr {
     this.isVirtual() or
     this.getTarget().getAnAttribute().getName() = "weak"
   }
+
+  override predicate mayBeFromImplicitlyDeclaredFunction() {
+    this.getType() instanceof IntType and
+    this.getTarget().getADeclarationEntry().isImplicit()
+  }
 }
 
 /** A _user-defined_ unary `operator*` function. */
