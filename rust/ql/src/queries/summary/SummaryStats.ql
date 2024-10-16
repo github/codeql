@@ -33,4 +33,6 @@ where
   key = "Lines of code extracted" and value = getLinesOfCode().toString()
   or
   key = "Lines of user code extracted" and value = getLinesOfUserCode().toString()
+  or
+  key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies().toString()
 select key, value

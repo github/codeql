@@ -600,8 +600,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TAbi or TArgList or TAssocItem or TAssocItemList or TAttr or TClosureBinder or TExpr or
-        TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
+    TAbi or TArgList or TAssocItem or TAssocItemList or TAttr or TCallable or TClosureBinder or
+        TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
         TMeta or TName or TNameRef or TParam or TParamList or TPat or TPath or TPathSegment or
@@ -615,6 +615,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TCallExprBase = TCallExpr or TMethodCallExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TCallable = TClosureExpr or TFunction;
 
   /**
    * INTERNAL: Do not use.
@@ -1588,6 +1593,8 @@ module Synth {
     or
     result = convertAttrFromRaw(e)
     or
+    result = convertCallableFromRaw(e)
+    or
     result = convertClosureBinderFromRaw(e)
     or
     result = convertExprFromRaw(e)
@@ -1701,6 +1708,16 @@ module Synth {
     result = convertCallExprFromRaw(e)
     or
     result = convertMethodCallExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCallable`, if possible.
+   */
+  TCallable convertCallableFromRaw(Raw::Element e) {
+    result = convertClosureExprFromRaw(e)
+    or
+    result = convertFunctionFromRaw(e)
   }
 
   /**
@@ -2882,6 +2899,8 @@ module Synth {
     or
     result = convertAttrToRaw(e)
     or
+    result = convertCallableToRaw(e)
+    or
     result = convertClosureBinderToRaw(e)
     or
     result = convertExprToRaw(e)
@@ -2995,6 +3014,16 @@ module Synth {
     result = convertCallExprToRaw(e)
     or
     result = convertMethodCallExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCallable` to a raw DB element, if possible.
+   */
+  Raw::Element convertCallableToRaw(TCallable e) {
+    result = convertClosureExprToRaw(e)
+    or
+    result = convertFunctionToRaw(e)
   }
 
   /**
