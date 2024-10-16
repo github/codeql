@@ -38,3 +38,13 @@ function consumeValueFromPipelineByPropertyNameWithoutProcess {
 
 $x = Source "8"
 [pscustomobject]@{x = $x} | consumeValueFromPipelineByPropertyNameWithoutProcess
+
+function consumeValueFromPipelineByPropertyNameWithProcess {
+    Param([Parameter(ValueFromPipelineByPropertyName)] $x)
+
+    process {
+        Sink $x # $ MISSING: hasValueFlow=9 hasValueFlow=10 hasValueFlow=11
+    }
+}
+
+[pscustomobject]@{x = Source "9"}, [pscustomobject]@{x = Source "10"}, [pscustomobject]@{x = Source "11"} | consumeValueFromPipelineByPropertyNameWithProcess
