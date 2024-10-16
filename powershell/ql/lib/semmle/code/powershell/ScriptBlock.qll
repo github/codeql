@@ -10,7 +10,7 @@ class ScriptBlock extends @script_block, Ast {
     else result = "{...}"
   }
 
-  override SourceLocation getLocation() { script_block_location(this, result) }
+  override Location getLocation() { script_block_location(this, result) }
 
   int getNumUsings() { script_block(this, result, _, _, _, _) }
 
@@ -51,6 +51,42 @@ class ScriptBlock extends @script_block, Ast {
   ModuleSpecification getAModuleSpecification() { result = this.getModuleSpecification(_) }
 
   final override Scope getEnclosingScope() { result = this }
+
+  /**
+   * Gets the `i`'th paramter in this scope.
+   *
+   * This may be both function paramters and parameter block parameters.
+   */
+  Parameter getParameter(int i) {
+    exists(Function func |
+      func.getBody() = this and
+      result = func.getParameter(i)
+    )
+    or
+    this.isTopLevel() and
+    result = this.getParamBlock().getParameter(i)
+  }
+
+  /**
+   * Gets a paramter in this scope.
+   *
+   * This may be both function parameters and parameter block parameters.
+   */
+  Parameter getAParameter() { result = this.getParameter(_) }
+
+  Parameter getThisParameter() {
+    exists(Function func |
+      func.getBody() = this and
+      result = func.getThisParameter()
+    )
+  }
+
+  /** Gets the number of function parameters. */
+  final int getNumberOfParameters() { result = count(this.getAParameter()) }
+
+  final Parameter getParameterExcludingPiplines(int i) {
+    result = this.getParamBlock().getParameterExcludingPiplines(i)
+  }
 }
 
 /** A `process` block. */
@@ -68,4 +104,8 @@ class ProcessBlock extends NamedBlock {
   PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
     result = scriptBlock.getEnclosingFunction().getAParameter()
   }
+}
+
+class TopLevelScriptBlock extends ScriptBlock {
+  TopLevelScriptBlock() { this.isTopLevel() }
 }
