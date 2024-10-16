@@ -268,6 +268,10 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
         }
     }
 
+    fun infoVerbosity(dtw: DiagnosticTrapWriter) {
+        info(dtw, "Kotlin extractor verbosity is " + verbosity.toString())
+    }
+
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         warn(dtw, msg, extraInfo, null)
     }
@@ -346,6 +350,10 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) : B
 
     fun info(msg: String) {
         info(dtw, msg)
+    }
+
+    fun infoVerbosity() {
+        loggerBase.infoVerbosity(dtw)
     }
 
     override fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {

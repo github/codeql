@@ -119,6 +119,7 @@ OLD: KE1
         val logger = Logger(loggerBase, dtw)
         logger.info("Extraction started")
         logger.flush()
+        logger.infoVerbosity()
         logger.info("Extraction for invocation TRAP file $invocationTrapFile")
         logger.flush()
         /*
