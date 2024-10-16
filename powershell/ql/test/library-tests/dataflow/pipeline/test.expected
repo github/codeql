@@ -1,8 +1,8 @@
 models
 edges
-| test.ps1:2:10:2:21 | Source | test.ps1:5:5:5:7 | x | provenance |  |
-| test.ps1:3:10:3:21 | Source | test.ps1:6:5:6:7 | y | provenance |  |
-| test.ps1:4:10:4:21 | Source | test.ps1:6:9:6:11 | z | provenance |  |
+| test.ps1:2:10:2:20 | Source | test.ps1:5:5:5:7 | x | provenance |  |
+| test.ps1:3:10:3:20 | Source | test.ps1:6:5:6:7 | y | provenance |  |
+| test.ps1:4:10:4:20 | Source | test.ps1:6:9:6:11 | z | provenance |  |
 | test.ps1:5:5:5:7 | x | test.ps1:17:1:17:8 | produce [element] | provenance |  |
 | test.ps1:6:5:6:7 | y | test.ps1:6:5:6:11 | ...,... [element 0] | provenance |  |
 | test.ps1:6:5:6:11 | ...,... [element 0] | test.ps1:17:1:17:8 | produce [element] | provenance |  |
@@ -12,8 +12,8 @@ edges
 | test.ps1:10:11:10:44 | x [element 1] | test.ps1:13:14:13:16 | x | provenance |  |
 | test.ps1:10:11:10:44 | x [element] | test.ps1:13:14:13:16 | x | provenance |  |
 | test.ps1:17:1:17:8 | produce [element] | test.ps1:10:11:10:44 | x [element] | provenance |  |
-| test.ps1:19:6:19:17 | Source | test.ps1:21:1:21:3 | x | provenance |  |
-| test.ps1:20:6:20:17 | Source | test.ps1:21:5:21:7 | y | provenance |  |
+| test.ps1:19:6:19:16 | Source | test.ps1:21:1:21:3 | x | provenance |  |
+| test.ps1:20:6:20:16 | Source | test.ps1:21:5:21:7 | y | provenance |  |
 | test.ps1:21:1:21:3 | x | test.ps1:21:1:21:7 | ...,... [element 0] | provenance |  |
 | test.ps1:21:1:21:7 | ...,... [element 0] | test.ps1:10:11:10:44 | x [element 0] | provenance |  |
 | test.ps1:21:1:21:7 | ...,... [element 0] | test.ps1:21:1:21:7 | ...,... [element 0] | provenance |  |
@@ -22,8 +22,8 @@ edges
 | test.ps1:21:5:21:7 | y | test.ps1:21:1:21:7 | ...,... [element 1] | provenance |  |
 | test.ps1:25:14:25:16 | _ [element 0] | test.ps1:25:14:25:16 | _ | provenance |  |
 | test.ps1:25:14:25:16 | _ [element 1] | test.ps1:25:14:25:16 | _ | provenance |  |
-| test.ps1:29:6:29:17 | Source | test.ps1:31:1:31:3 | x | provenance |  |
-| test.ps1:30:6:30:17 | Source | test.ps1:31:5:31:7 | y | provenance |  |
+| test.ps1:29:6:29:16 | Source | test.ps1:31:1:31:3 | x | provenance |  |
+| test.ps1:30:6:30:16 | Source | test.ps1:31:5:31:7 | y | provenance |  |
 | test.ps1:31:1:31:3 | x | test.ps1:31:1:31:7 | ...,... [element 0] | provenance |  |
 | test.ps1:31:1:31:7 | ...,... [element 0] | test.ps1:25:14:25:16 | _ [element 0] | provenance |  |
 | test.ps1:31:1:31:7 | ...,... [element 0] | test.ps1:31:1:31:7 | ...,... [element 0] | provenance |  |
@@ -31,14 +31,14 @@ edges
 | test.ps1:31:1:31:7 | ...,... [element 1] | test.ps1:31:1:31:7 | ...,... [element 1] | provenance |  |
 | test.ps1:31:5:31:7 | y | test.ps1:31:1:31:7 | ...,... [element 1] | provenance |  |
 | test.ps1:34:11:34:58 | x [element x] | test.ps1:36:10:36:12 | x | provenance |  |
-| test.ps1:39:6:39:17 | Source | test.ps1:40:23:40:25 | x | provenance |  |
+| test.ps1:39:6:39:16 | Source | test.ps1:40:23:40:25 | x | provenance |  |
 | test.ps1:40:1:40:26 | [...]... [element x] | test.ps1:34:11:34:58 | x [element x] | provenance |  |
 | test.ps1:40:17:40:26 | ${...} [element x] | test.ps1:40:1:40:26 | [...]... [element x] | provenance |  |
 | test.ps1:40:23:40:25 | x | test.ps1:40:17:40:26 | ${...} [element x] | provenance |  |
 nodes
-| test.ps1:2:10:2:21 | Source | semmle.label | Source |
-| test.ps1:3:10:3:21 | Source | semmle.label | Source |
-| test.ps1:4:10:4:21 | Source | semmle.label | Source |
+| test.ps1:2:10:2:20 | Source | semmle.label | Source |
+| test.ps1:3:10:3:20 | Source | semmle.label | Source |
+| test.ps1:4:10:4:20 | Source | semmle.label | Source |
 | test.ps1:5:5:5:7 | x | semmle.label | x |
 | test.ps1:6:5:6:7 | y | semmle.label | y |
 | test.ps1:6:5:6:11 | ...,... [element 0] | semmle.label | ...,... [element 0] |
@@ -49,8 +49,8 @@ nodes
 | test.ps1:10:11:10:44 | x [element] | semmle.label | x [element] |
 | test.ps1:13:14:13:16 | x | semmle.label | x |
 | test.ps1:17:1:17:8 | produce [element] | semmle.label | produce [element] |
-| test.ps1:19:6:19:17 | Source | semmle.label | Source |
-| test.ps1:20:6:20:17 | Source | semmle.label | Source |
+| test.ps1:19:6:19:16 | Source | semmle.label | Source |
+| test.ps1:20:6:20:16 | Source | semmle.label | Source |
 | test.ps1:21:1:21:3 | x | semmle.label | x |
 | test.ps1:21:1:21:7 | ...,... [element 0] | semmle.label | ...,... [element 0] |
 | test.ps1:21:1:21:7 | ...,... [element 0] | semmle.label | ...,... [element 0] |
@@ -60,8 +60,8 @@ nodes
 | test.ps1:25:14:25:16 | _ | semmle.label | _ |
 | test.ps1:25:14:25:16 | _ [element 0] | semmle.label | _ [element 0] |
 | test.ps1:25:14:25:16 | _ [element 1] | semmle.label | _ [element 1] |
-| test.ps1:29:6:29:17 | Source | semmle.label | Source |
-| test.ps1:30:6:30:17 | Source | semmle.label | Source |
+| test.ps1:29:6:29:16 | Source | semmle.label | Source |
+| test.ps1:30:6:30:16 | Source | semmle.label | Source |
 | test.ps1:31:1:31:3 | x | semmle.label | x |
 | test.ps1:31:1:31:7 | ...,... [element 0] | semmle.label | ...,... [element 0] |
 | test.ps1:31:1:31:7 | ...,... [element 0] | semmle.label | ...,... [element 0] |
@@ -70,18 +70,18 @@ nodes
 | test.ps1:31:5:31:7 | y | semmle.label | y |
 | test.ps1:34:11:34:58 | x [element x] | semmle.label | x [element x] |
 | test.ps1:36:10:36:12 | x | semmle.label | x |
-| test.ps1:39:6:39:17 | Source | semmle.label | Source |
+| test.ps1:39:6:39:16 | Source | semmle.label | Source |
 | test.ps1:40:1:40:26 | [...]... [element x] | semmle.label | [...]... [element x] |
 | test.ps1:40:17:40:26 | ${...} [element x] | semmle.label | ${...} [element x] |
 | test.ps1:40:23:40:25 | x | semmle.label | x |
 subpaths
 testFailures
 #select
-| test.ps1:13:14:13:16 | x | test.ps1:2:10:2:21 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:2:10:2:21 | Source | Source |
-| test.ps1:13:14:13:16 | x | test.ps1:3:10:3:21 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:3:10:3:21 | Source | Source |
-| test.ps1:13:14:13:16 | x | test.ps1:4:10:4:21 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:4:10:4:21 | Source | Source |
-| test.ps1:13:14:13:16 | x | test.ps1:19:6:19:17 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:19:6:19:17 | Source | Source |
-| test.ps1:13:14:13:16 | x | test.ps1:20:6:20:17 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:20:6:20:17 | Source | Source |
-| test.ps1:25:14:25:16 | _ | test.ps1:29:6:29:17 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:29:6:29:17 | Source | Source |
-| test.ps1:25:14:25:16 | _ | test.ps1:30:6:30:17 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:30:6:30:17 | Source | Source |
-| test.ps1:36:10:36:12 | x | test.ps1:39:6:39:17 | Source | test.ps1:36:10:36:12 | x | $@ | test.ps1:39:6:39:17 | Source | Source |
+| test.ps1:13:14:13:16 | x | test.ps1:2:10:2:20 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:2:10:2:20 | Source | Source |
+| test.ps1:13:14:13:16 | x | test.ps1:3:10:3:20 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:3:10:3:20 | Source | Source |
+| test.ps1:13:14:13:16 | x | test.ps1:4:10:4:20 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:4:10:4:20 | Source | Source |
+| test.ps1:13:14:13:16 | x | test.ps1:19:6:19:16 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:19:6:19:16 | Source | Source |
+| test.ps1:13:14:13:16 | x | test.ps1:20:6:20:16 | Source | test.ps1:13:14:13:16 | x | $@ | test.ps1:20:6:20:16 | Source | Source |
+| test.ps1:25:14:25:16 | _ | test.ps1:29:6:29:16 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:29:6:29:16 | Source | Source |
+| test.ps1:25:14:25:16 | _ | test.ps1:30:6:30:16 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:30:6:30:16 | Source | Source |
+| test.ps1:36:10:36:12 | x | test.ps1:39:6:39:16 | Source | test.ps1:36:10:36:12 | x | $@ | test.ps1:39:6:39:16 | Source | Source |
