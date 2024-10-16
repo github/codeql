@@ -198,7 +198,11 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
 
   override ProcessBlock getBlock() { result = block }
 
-  PipelineParameter getPipelineParameter() { result = block.getEnclosingFunction().getAParameter() }
+  PipelineParameter getPipelineParameter() { result = block.getPipelineParameter() }
+
+  PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
+    result = block.getAPipelineByPropertyNameParameter()
+  }
 }
 
 private class StmtBlockChildMapping extends NonExprChildMapping, StmtBlock {

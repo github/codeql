@@ -60,4 +60,12 @@ class ProcessBlock extends NamedBlock {
   ProcessBlock() { scriptBlock.getProcessBlock() = this }
 
   ScriptBlock getScriptBlock() { result = scriptBlock }
+
+  PipelineParameter getPipelineParameter() {
+    result = scriptBlock.getEnclosingFunction().getAParameter()
+  }
+
+  PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {
+    result = scriptBlock.getEnclosingFunction().getAParameter()
+  }
 }

@@ -178,6 +178,16 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   final override predicate isPipelineByPropertyName() { none() }
 }
 
+private predicate isPipelineIteratorVariable(ParameterImpl p, ProcessBlock pb) {
+  p.isPipeline() and
+  pb.getEnclosingScope() = p.getEnclosingScope()
+}
+
+private predicate isPipelineByPropertyNameIteratorVariable(ParameterImpl p, ProcessBlock pb) {
+  p.isPipelineByPropertyName() and
+  pb.getEnclosingScope() = p.getEnclosingScope()
+}
+
 private newtype TVariable =
   TLocalVariable(string name, Scope scope) {
     not isParameterImpl(name, scope) and
@@ -185,7 +195,10 @@ private newtype TVariable =
     exists(VarAccess va | va.getUserPath() = name and scope = va.getEnclosingScope())
   } or
   TParameter(ParameterImpl p) or
-  TPipelineIteratorVariable(ProcessBlock pb)
+  TPipelineIteratorVariable(ProcessBlock pb) { isPipelineIteratorVariable(_, pb) } or
+  TPipelineByPropertyNameIteratorVariable(ParameterImpl p) {
+    isPipelineByPropertyNameIteratorVariable(p, _)
+  }
 
 private class AbstractVariable extends TVariable {
   abstract Location getLocation();
@@ -296,12 +309,22 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
 
 class PipelineParameter extends Parameter {
   PipelineParameter() { this.isPipeline() }
+
+  PipelineIteratorVariable getIteratorVariable() {
+    result.getProcessBlock().getEnclosingScope() = p.getEnclosingScope()
+  }
+}
+
+class PipelineByPropertyNameParameter extends Parameter {
+  PipelineByPropertyNameParameter() { this.isPipelineByPropertyName() }
+
+  PipelineByPropertyNameIteratorVariable getIteratorVariable() { result.getParameter() = this }
 }
 
 /**
  * The variable that represents the value of a pipeline during a process block.
  *
- * That is, it is _not_ the pipeline variable, but the value that is obtained by reading
+ * That is, it is _not_ the `ValueFromPipeline` variable, but the value that is obtained by reading
  * from the pipeline.
  */
 class PipelineIteratorVariable extends AbstractLocalScopeVariable, TPipelineIteratorVariable {
@@ -316,4 +339,29 @@ class PipelineIteratorVariable extends AbstractLocalScopeVariable, TPipelineIter
   final override Scope getDeclaringScope() { result = pb.getEnclosingScope() }
 
   ProcessBlock getProcessBlock() { result = pb }
+}
+
+/**
+ * The variable that represents the value of a pipeline that picks out a
+ * property specific property during a process block.
+ *
+ * That is, it is _not_ the `PipelineByPropertyName` variable, but the value that is obtained by reading
+ * from the pipeline.
+ */
+class PipelineByPropertyNameIteratorVariable extends AbstractLocalScopeVariable,
+  TPipelineByPropertyNameIteratorVariable
+{
+  private ParameterImpl p;
+
+  PipelineByPropertyNameIteratorVariable() { this = TPipelineByPropertyNameIteratorVariable(p) }
+
+  override Location getLocation() { result = p.getLocation() }
+
+  override string getName() { result = "pipeline iterator for " + p.toString() }
+
+  final override Scope getDeclaringScope() { result = p.getEnclosingScope() }
+
+  Parameter getParameter() { result = TParameter(p) }
+
+  ProcessBlock getProcessBlock() { isPipelineByPropertyNameIteratorVariable(p, result) }
 }

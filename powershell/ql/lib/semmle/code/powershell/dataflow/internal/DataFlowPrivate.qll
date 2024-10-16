@@ -76,7 +76,8 @@ module SsaFlow {
     or
     result.(Impl::ExprNode).getExpr() = n.asStmt()
     or
-    result.(Impl::ExprNode).getExpr() = n.(ProcessNode).getProcessBlock()
+    result.(Impl::ExprNode).getExpr() =
+      [n.(ProcessNode).getProcessBlock(), n.(ProcessPropertyByNameNode).getProcessBlock()]
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -84,9 +85,7 @@ module SsaFlow {
   }
 
   predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep) and
-    // Flow out of property name parameter nodes are covered by `readStep`.
-    not nodeFrom instanceof PipelineByPropertyNameParameterNode
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
   predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
@@ -146,6 +145,12 @@ module VariableCapture {
   // TODO
 }
 
+private predicate isProcessPropertyByNameNode(
+  PipelineByPropertyNameIteratorVariable iter, ProcessBlock pb
+) {
+  pb.getEnclosingScope() = iter.getDeclaringScope()
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -172,7 +177,10 @@ private module Cached {
     TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
     TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isMultiReturned(n) } or
     TReturnNodeImpl(CfgScope scope) or
-    TProcessNode(ProcessBlock process)
+    TProcessNode(ProcessBlock process) or
+    TProcessPropertyByNameNode(PipelineByPropertyNameIteratorVariable iter) {
+      isProcessPropertyByNameNode(iter, _)
+    }
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -753,8 +761,23 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   c.isAnyElement() and
-  exists(SsaImpl::DefinitionExt def |
-    node1.(ProcessNode).getIteratorVariable() = def.getSourceVariable() and
+  exists(SsaImpl::DefinitionExt def, ProcessNode processNode, LocalScopeVariable iterator |
+    processNode = node1 and iterator = def.getSourceVariable()
+  |
+    processNode.getIteratorVariable() = iterator and
+    SsaImpl::firstRead(def, node2.asExpr())
+    or
+    processNode.getPropertyNameIteratorVariable() = iterator and
+    node2 = TProcessPropertyByNameNode(def.getSourceVariable())
+  )
+  or
+  exists(
+    Content::KnownElementContent ec, PipelineByPropertyNameParameter p, SsaImpl::DefinitionExt def
+  |
+    c.isSingleton(ec) and
+    p.getIteratorVariable() = node1.(ProcessPropertyByNameNode).getVariable() and
+    p.getName() = ec.getIndex().asString() and
+    def.getSourceVariable() = p.getIteratorVariable() and
     SsaImpl::firstRead(def, node2.asExpr())
   )
   or
@@ -792,11 +815,6 @@ predicate expectsContent(Node n, ContentSet c) {
   or
   n instanceof ProcessNode and
   c.isAnyElement()
-  or
-  exists(Content::KnownElementContent ec |
-    ec.getIndex().asString() = n.(PipelineByPropertyNameParameterNode).getPropretyName() and
-    c.isSingleton(ec)
-  )
 }
 
 class DataFlowType extends TDataFlowType {
@@ -925,13 +943,37 @@ private class ProcessNode extends TProcessNode, NodeImpl {
 
   override Location getLocationImpl() { result = process.getLocation() }
 
-  override string toStringImpl() { result = process.toString() }
+  override string toStringImpl() { result = "process node for " + process.toString() }
 
   override predicate nodeIsHidden() { any() }
 
   PipelineIteratorVariable getIteratorVariable() { result.getProcessBlock() = process }
 
+  PipelineByPropertyNameIteratorVariable getPropertyNameIteratorVariable() {
+    result.getProcessBlock() = process
+  }
+
   CfgNodes::ProcessBlockCfgNode getProcessBlock() { result.getAstNode() = process }
+}
+
+private class ProcessPropertyByNameNode extends TProcessPropertyByNameNode, NodeImpl {
+  private PipelineByPropertyNameIteratorVariable iter;
+
+  ProcessPropertyByNameNode() { this = TProcessPropertyByNameNode(iter) }
+
+  PipelineByPropertyNameIteratorVariable getVariable() { result = iter }
+
+  override CfgScope getCfgScope() { result = iter.getDeclaringScope() }
+
+  override Location getLocationImpl() { result = iter.getLocation() }
+
+  override string toStringImpl() { result = "process node for " + iter.toString() }
+
+  override predicate nodeIsHidden() { any() }
+
+  CfgNodes::ProcessBlockCfgNode getProcessBlock() {
+    isProcessPropertyByNameNode(iter, result.getAstNode())
+  }
 }
 
 /** A node that performs a type cast. */
