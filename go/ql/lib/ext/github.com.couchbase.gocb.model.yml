@@ -27,6 +27,9 @@ extensions:
     data:
       - ["group:gocb1", "", False, "NewAnalyticsQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "", False, "NewN1qlQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsResults", True, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsResults", True, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsResults", True, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "AnalyticsQuery", True, "ContextId", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "AnalyticsQuery", True, "Deferred", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "AnalyticsQuery", True, "Pretty", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
@@ -43,3 +46,17 @@ extensions:
       - ["group:gocb1", "N1qlQuery", True, "ReadOnly", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "N1qlQuery", True, "ScanCap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb1", "N1qlQuery", True, "Timeout", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "QueryResults", True, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["group:gocb1", "QueryResults", True, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["group:gocb1", "QueryResults", True, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:gocb1", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteN1qlQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteSearchQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gocb2", "QueryResult", True, "One", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gocb2", "QueryResult", True, "Row", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionQueryResult", True, "One", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gocb2", "TransactionQueryResult", True, "Row", "", "", "Argument[0]", "database", "manual"]
