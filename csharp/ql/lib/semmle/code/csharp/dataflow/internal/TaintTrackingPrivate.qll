@@ -185,6 +185,10 @@ private module SpeculativeTaintFlow {
     exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
   }
 
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(DataFlowCall call, Call srcCall, ArgumentPosition argpos |
       not exists(viableCallable(call)) and

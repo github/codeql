@@ -690,6 +690,10 @@ private module SpeculativeTaintFlow {
         .hasName("java.util.function")
   }
 
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(DataFlowCall call, Call srcCall, int argpos |
       not hasTarget(srcCall) and

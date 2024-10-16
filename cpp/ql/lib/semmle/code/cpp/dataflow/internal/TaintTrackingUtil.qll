@@ -282,4 +282,8 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
 
 private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }
 
+/**
+ * Holds if the additional step from `src` to `sink` should be considered in
+ * speculative taint flow exploration.
+ */
 predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }

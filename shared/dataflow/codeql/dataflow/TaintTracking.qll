@@ -208,6 +208,10 @@ module TaintFlowMake<
     }
   }
 
+  /**
+   * Constructs a global taint tracking computation that also allows a given
+   * maximum number of speculative taint steps.
+   */
   module SpeculativeFlow<DataFlow::ConfigSig Config, speculationLimitSig/0 speculationLimit>
     implements DataFlow::GlobalFlowSig
   {
@@ -229,6 +233,10 @@ module TaintFlowMake<
     import DataFlowInternal::Impl<C>
   }
 
+  /**
+   * Constructs a global taint tracking computation using flow state that also
+   * allows a given maximum number of speculative taint steps.
+   */
   module SpeculativeFlowWithState<
     DataFlow::StateConfigSig Config, speculationLimitSig/0 speculationLimit> implements
     DataFlow::GlobalFlowSig

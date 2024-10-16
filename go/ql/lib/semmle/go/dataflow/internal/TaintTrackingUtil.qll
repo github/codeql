@@ -434,6 +434,10 @@ import SpeculativeTaintFlow
 private module SpeculativeTaintFlow {
   private import semmle.go.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(DataFlowPrivate::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
       // TODO: exclude neutrals and anything that has QL modeling.

@@ -155,6 +155,10 @@ private module SpeculativeTaintFlow {
   private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
   private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(
       DataFlowDispatch::DataFlowCall call, MethodCall srcCall,
