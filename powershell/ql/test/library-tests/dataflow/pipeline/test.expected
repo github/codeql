@@ -35,6 +35,24 @@ edges
 | test.ps1:40:1:40:26 | [...]... [element x] | test.ps1:34:11:34:58 | x [element x] | provenance |  |
 | test.ps1:40:17:40:26 | ${...} [element x] | test.ps1:40:1:40:26 | [...]... [element x] | provenance |  |
 | test.ps1:40:23:40:25 | x | test.ps1:40:17:40:26 | ${...} [element x] | provenance |  |
+| test.ps1:43:11:43:58 | x [element 0, element x] | test.ps1:46:14:46:16 | x | provenance |  |
+| test.ps1:43:11:43:58 | x [element 1, element x] | test.ps1:46:14:46:16 | x | provenance |  |
+| test.ps1:43:11:43:58 | x [element 2, element x] | test.ps1:46:14:46:16 | x | provenance |  |
+| test.ps1:50:1:50:34 | [...]... [element x] | test.ps1:50:1:50:106 | ...,... [element 0, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 0, element x] | test.ps1:43:11:43:58 | x [element 0, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 0, element x] | test.ps1:50:1:50:106 | ...,... [element 0, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 1, element x] | test.ps1:43:11:43:58 | x [element 1, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 1, element x] | test.ps1:50:1:50:106 | ...,... [element 1, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 2, element x] | test.ps1:43:11:43:58 | x [element 2, element x] | provenance |  |
+| test.ps1:50:1:50:106 | ...,... [element 2, element x] | test.ps1:50:1:50:106 | ...,... [element 2, element x] | provenance |  |
+| test.ps1:50:17:50:34 | ${...} [element x] | test.ps1:50:1:50:34 | [...]... [element x] | provenance |  |
+| test.ps1:50:23:50:33 | Source | test.ps1:50:17:50:34 | ${...} [element x] | provenance |  |
+| test.ps1:50:36:50:70 | [...]... [element x] | test.ps1:50:1:50:106 | ...,... [element 1, element x] | provenance |  |
+| test.ps1:50:52:50:70 | ${...} [element x] | test.ps1:50:36:50:70 | [...]... [element x] | provenance |  |
+| test.ps1:50:58:50:69 | Source | test.ps1:50:52:50:70 | ${...} [element x] | provenance |  |
+| test.ps1:50:72:50:106 | [...]... [element x] | test.ps1:50:1:50:106 | ...,... [element 2, element x] | provenance |  |
+| test.ps1:50:88:50:106 | ${...} [element x] | test.ps1:50:72:50:106 | [...]... [element x] | provenance |  |
+| test.ps1:50:94:50:105 | Source | test.ps1:50:88:50:106 | ${...} [element x] | provenance |  |
 nodes
 | test.ps1:2:10:2:20 | Source | semmle.label | Source |
 | test.ps1:3:10:3:20 | Source | semmle.label | Source |
@@ -74,6 +92,25 @@ nodes
 | test.ps1:40:1:40:26 | [...]... [element x] | semmle.label | [...]... [element x] |
 | test.ps1:40:17:40:26 | ${...} [element x] | semmle.label | ${...} [element x] |
 | test.ps1:40:23:40:25 | x | semmle.label | x |
+| test.ps1:43:11:43:58 | x [element 0, element x] | semmle.label | x [element 0, element x] |
+| test.ps1:43:11:43:58 | x [element 1, element x] | semmle.label | x [element 1, element x] |
+| test.ps1:43:11:43:58 | x [element 2, element x] | semmle.label | x [element 2, element x] |
+| test.ps1:46:14:46:16 | x | semmle.label | x |
+| test.ps1:50:1:50:34 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:1:50:106 | ...,... [element 0, element x] | semmle.label | ...,... [element 0, element x] |
+| test.ps1:50:1:50:106 | ...,... [element 0, element x] | semmle.label | ...,... [element 0, element x] |
+| test.ps1:50:1:50:106 | ...,... [element 1, element x] | semmle.label | ...,... [element 1, element x] |
+| test.ps1:50:1:50:106 | ...,... [element 1, element x] | semmle.label | ...,... [element 1, element x] |
+| test.ps1:50:1:50:106 | ...,... [element 2, element x] | semmle.label | ...,... [element 2, element x] |
+| test.ps1:50:1:50:106 | ...,... [element 2, element x] | semmle.label | ...,... [element 2, element x] |
+| test.ps1:50:17:50:34 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:23:50:33 | Source | semmle.label | Source |
+| test.ps1:50:36:50:70 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:52:50:70 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:58:50:69 | Source | semmle.label | Source |
+| test.ps1:50:72:50:106 | [...]... [element x] | semmle.label | [...]... [element x] |
+| test.ps1:50:88:50:106 | ${...} [element x] | semmle.label | ${...} [element x] |
+| test.ps1:50:94:50:105 | Source | semmle.label | Source |
 subpaths
 testFailures
 #select
@@ -85,3 +122,6 @@ testFailures
 | test.ps1:25:14:25:16 | _ | test.ps1:29:6:29:16 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:29:6:29:16 | Source | Source |
 | test.ps1:25:14:25:16 | _ | test.ps1:30:6:30:16 | Source | test.ps1:25:14:25:16 | _ | $@ | test.ps1:30:6:30:16 | Source | Source |
 | test.ps1:36:10:36:12 | x | test.ps1:39:6:39:16 | Source | test.ps1:36:10:36:12 | x | $@ | test.ps1:39:6:39:16 | Source | Source |
+| test.ps1:46:14:46:16 | x | test.ps1:50:23:50:33 | Source | test.ps1:46:14:46:16 | x | $@ | test.ps1:50:23:50:33 | Source | Source |
+| test.ps1:46:14:46:16 | x | test.ps1:50:58:50:69 | Source | test.ps1:46:14:46:16 | x | $@ | test.ps1:50:58:50:69 | Source | Source |
+| test.ps1:46:14:46:16 | x | test.ps1:50:94:50:105 | Source | test.ps1:46:14:46:16 | x | $@ | test.ps1:50:94:50:105 | Source | Source |
