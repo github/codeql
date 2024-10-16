@@ -162,6 +162,14 @@ fn unreachable_loop() {
 		do_something(); // BAD: unreachable code
 	}
 
+
+
+
+
+
+
+
+
 	loop {
 		if cond() {
 			return;
