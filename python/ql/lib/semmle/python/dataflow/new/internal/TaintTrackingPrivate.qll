@@ -233,7 +233,12 @@ private module SpeculativeTaintFlow {
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
       // TODO: exclude neutrals and anything that has QL modeling.
-      not exists(DataFlowDispatch::viableCallable(call)) and
+      not exists(DataFlowDispatch::DataFlowCall call0 |
+        // Workaround for the fact that python currently associates several
+        // DataFlowCalls with a single call.
+        src.(DataFlowPublic::ArgumentNode).argumentOf(call0, _) and
+        exists(DataFlowDispatch::viableCallable(call0))
+      ) and
       call instanceof DataFlowDispatch::PotentialLibraryCall and
       src.(DataFlowPublic::ArgumentNode).argumentOf(call, argpos)
     |
