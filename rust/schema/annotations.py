@@ -1740,3 +1740,14 @@ class _:
     todo!()
     ```
     """
+
+@annotate(Function, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop
+
+
+@annotate(ClosureExpr, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop

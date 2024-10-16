@@ -687,16 +687,23 @@ newtype TContent =
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }
+
+  /** Gets the Models-as-Data representation of this content (if any). */
+  string getMaDRepresentation() { none() }
 }
 
 /** An element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
+
+  override string getMaDRepresentation() { result = "ListElement" }
 }
 
 /** An element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
+
+  override string getMaDRepresentation() { result = "SetElement" }
 }
 
 /** An element of a tuple at a specific index. */
@@ -709,6 +716,8 @@ class TupleElementContent extends TTupleElementContent, Content {
   int getIndex() { result = index }
 
   override string toString() { result = "Tuple element at index " + index.toString() }
+
+  override string getMaDRepresentation() { result = "TupleElement[" + index + "]" }
 }
 
 /** An element of a dictionary under a specific key. */
@@ -721,11 +730,15 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   string getKey() { result = key }
 
   override string toString() { result = "Dictionary element at key " + key }
+
+  override string getMaDRepresentation() { result = "DictionaryElement[" + key + "]" }
 }
 
 /** An element of a dictionary under any key. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
+
+  override string getMaDRepresentation() { result = "DictionaryElementAny" }
 }
 
 /** An object attribute. */
@@ -738,6 +751,8 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+
+  override string getMaDRepresentation() { result = "Attribute[" + attr + "]" }
 }
 
 /** A captured variable. */
@@ -750,6 +765,8 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
   VariableCapture::CapturedVariable getVariable() { result = v }
 
   override string toString() { result = "captured " + v }
+
+  override string getMaDRepresentation() { none() }
 }
 
 /**
