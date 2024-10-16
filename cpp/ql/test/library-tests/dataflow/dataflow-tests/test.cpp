@@ -1118,7 +1118,7 @@ void test_temp_with_conversion_from_materialization() {
 }
 
 void reads_input(int x) {
-  sink(x); // $ MISSING: ast,ir
+  sink(x); // $ ir MISSING: ast
 }
 
 void not_does_read_input(int x);
