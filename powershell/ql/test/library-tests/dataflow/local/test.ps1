@@ -12,3 +12,6 @@ Sink $c
 
 $d = ($c)
 Sink $d
+
+$e = $d + 1
+Sink $e

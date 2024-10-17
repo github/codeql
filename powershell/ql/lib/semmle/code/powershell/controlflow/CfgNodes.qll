@@ -519,6 +519,50 @@ module ExprNodes {
 
     final StmtCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
   }
+
+  class UnaryExprChildMapping extends ExprChildMapping, UnaryExpr {
+    override predicate relevantChild(Ast n) { n = this.getOperand() }
+  }
+
+  class UnaryCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "UnaryExprCfgNode" }
+
+    override UnaryExprChildMapping e;
+
+    override UnaryExpr getExpr() { result = e }
+
+    final ExprCfgNode getOperand() { e.hasCfgChild(e.getOperand(), this, result) }
+  }
+
+  class BinaryExprChildMapping extends ExprChildMapping, BinaryExpr {
+    override predicate relevantChild(Ast n) { n = this.getLeft() or n = this.getRight() }
+  }
+
+  class BinaryCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "BinaryExprCfgNode" }
+
+    override BinaryExprChildMapping e;
+
+    override BinaryExpr getExpr() { result = e }
+
+    final ExprCfgNode getLeft() { e.hasCfgChild(e.getLeft(), this, result) }
+
+    final ExprCfgNode getRight() { e.hasCfgChild(e.getRight(), this, result) }
+  }
+
+  class OperationChildMapping extends ExprChildMapping instanceof Operation {
+    override predicate relevantChild(Ast n) { n = super.getAnOperand() }
+  }
+
+  class OperationCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "OperationCfgNode" }
+
+    override OperationChildMapping e;
+
+    override Operation getExpr() { result = e }
+
+    final ExprCfgNode getAnOperand() { e.hasCfgChild(this.getExpr().getAnOperand(), this, result) }
+  }
 }
 
 module StmtNodes {
