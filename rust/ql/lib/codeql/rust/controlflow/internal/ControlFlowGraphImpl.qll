@@ -325,7 +325,7 @@ class LetStmtTree extends PreOrderTree, LetStmt {
     not this.hasInitializer()
     or
     // Edge from end of initializer to pattern.
-    last(this.getInitializer(), pred, c) and first(this.getPat(), succ)
+    last(this.getInitializer(), pred, c) and first(this.getPat(), succ) and completionIsNormal(c)
     or
     // Edge from failed pattern to `else` branch.
     last(this.getPat(), pred, c) and

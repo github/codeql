@@ -691,7 +691,6 @@ edges
 | test.rs:312:26:312:28 | ret | test.rs:311:19:314:9 | MatchExpr |  |
 | test.rs:313:13:313:16 | None | test.rs:313:28:313:32 | false | match |
 | test.rs:313:21:313:32 | ReturnExpr | test.rs:310:5:316:5 | exit test_let_with_return (normal) | return |
-| test.rs:313:21:313:32 | ReturnExpr | test.rs:311:13:311:15 | ret | return |
 | test.rs:313:28:313:32 | false | test.rs:313:21:313:32 | ReturnExpr |  |
 | test.rs:315:9:315:12 | true | test.rs:310:45:316:5 | BlockExpr |  |
 | test.rs:321:5:324:5 | enter empty_tuple_pattern | test.rs:321:28:321:31 | unit |  |
