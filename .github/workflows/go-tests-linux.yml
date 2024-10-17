@@ -1,4 +1,4 @@
-name: "Go: Run Tests - Other OS"
+name: "Go: Run Tests"
 on:
   workflow_dispatch:
   workflow_call:
@@ -11,21 +11,10 @@ permissions:
   contents: read
 
 jobs:
-  test-mac:
-    name: Test MacOS
-    runs-on: macos-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
-      - name: Run tests
-        uses: ./go/actions/test
-
-  test-win:
+  test-linux:
     if: github.repository_owner == 'github'
-    name: Test Windows
-    runs-on: windows-latest-xl
+    name: Test Linux (Ubuntu)
+    runs-on: ubuntu-latest-xl
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -33,3 +22,5 @@ jobs:
           ref: ${{ inputs.ref }}
       - name: Run tests
         uses: ./go/actions/test
+        with:
+          run-code-checks: true
