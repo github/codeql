@@ -31,5 +31,30 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      - name: dump env bash
+        shell: bash
+        run: |
+          where bazel
+          declare -px
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "~1.23.1"
+          cache: false
+        id: go
+      - name: dump env bash again
+        shell: bash
+        run: |
+          where bazel
+          declare -px
+      - name: test1
+        run: |
+          C:\npm\prefix\bazel version
+      - name: test2
+        run: |
+          C:\ProgramData\Chocolatey\bin\bazel.exe version
+      - name: test3
+        run: |
+          C:\npm\prefix\bazelisk version
       - name: Run tests
         uses: ./go/actions/test
