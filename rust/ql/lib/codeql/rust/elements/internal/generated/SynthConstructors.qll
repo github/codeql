@@ -46,6 +46,7 @@ import codeql.rust.elements.internal.IdentPatConstructor
 import codeql.rust.elements.internal.IfExprConstructor
 import codeql.rust.elements.internal.ImplConstructor
 import codeql.rust.elements.internal.ImplTraitTypeConstructor
+import codeql.rust.elements.internal.ImplicitVariableAccessConstructor
 import codeql.rust.elements.internal.IndexExprConstructor
 import codeql.rust.elements.internal.InferTypeConstructor
 import codeql.rust.elements.internal.ItemListConstructor
