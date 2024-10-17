@@ -1,6 +1,7 @@
 
 //fn cond() -> bool;
 //fn get_a_number() -> i32;
+//fn maybe_get_a_number() -> Option<i32>;
 
 // --- unreachable code --
 
@@ -186,19 +187,35 @@ fn unreachable_paren() {
 }
 
 fn unreachable_let_1() {
-	if let a = get_a_number() {
+
+
+
+
+
+
+
+
+
+	if let a = get_a_number() { // (always succeeds)
 		do_something();
 		return;
 	} else {
-		do_something(); // SPURIOUS: unreachable code
+		do_something(); // BAD: unreachable code
 	}
 
-	do_something(); // SPURIOUS: unreachable code
+	do_something(); // BAD: unreachable code
 }
 
 fn unreachable_let_2() {
-	let a = get_a_number() else {
-		do_something(); // SPURIOUS: unreachable code
+
+
+
+
+
+
+
+	let a = maybe_get_a_number() else { // (always succeeds)
+		do_something(); // BAD: unreachable code
 		return;
 	};
 
