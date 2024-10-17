@@ -44,9 +44,11 @@
 | test.ps1:14:6:14:8 | [post] d | test.ps1:16:6:16:8 | d |
 | test.ps1:14:6:14:8 | d | test.ps1:16:6:16:8 | d |
 | test.ps1:16:1:16:3 | e | test.ps1:17:6:17:8 | e |
+| test.ps1:16:6:16:8 | d | test.ps1:16:6:16:12 | ...+... |
 | test.ps1:16:6:16:12 | ...+... | test.ps1:16:1:16:3 | e |
 | test.ps1:16:6:16:12 | ...+... | test.ps1:16:1:16:12 | ...=... |
 | test.ps1:16:6:16:12 | ...+... | test.ps1:16:6:16:12 | ...+... |
+| test.ps1:16:11:16:12 | 1 | test.ps1:16:6:16:12 | ...+... |
 | test.ps1:17:1:17:8 | Sink | test.ps1:17:1:17:8 | pre-return value for Sink |
 | test.ps1:17:1:17:8 | Sink | test.ps1:17:1:17:8 | pre-return value for Sink |
 | test.ps1:17:1:17:8 | implicit unwrapping of Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
