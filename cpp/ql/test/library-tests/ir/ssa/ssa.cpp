@@ -211,7 +211,7 @@ int ModeledCallTarget(int x) {
 }
 
 void InitArray() {
-    char a_pad[32] = ""; 
+    char a_pad[32] = "";
     char a_nopad[4] = "foo";
     char a_infer[] = "blah";
     char b[2];
@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
 
 class ThisAliasTest {
   int x, y;
-  
+
   void setX(int arg) {
     this->x = arg;
   }
@@ -437,4 +437,14 @@ int noreturnTest2(int x) {
 
 void Conditional(bool a, int x, int y) {
     int z = a ? x : y;
+}
+
+static void NonEscapingParams(void *a, void *b)
+{
+}
+
+static void EscapingParams(void *a, void *b)
+{
+  Escape(a);
+  Escape(b);
 }
