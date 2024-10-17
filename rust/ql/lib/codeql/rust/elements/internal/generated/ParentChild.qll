@@ -1829,6 +1829,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfImplicitVariableAccess(
+    ImplicitVariableAccess e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfIndexExpr(IndexExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nBase, int nIndex |
       b = 0 and
@@ -3610,6 +3625,8 @@ private module Impl {
     result = getImmediateChildOfIfExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfImplTraitType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImplicitVariableAccess(e, index, partialAccessor)
     or
     result = getImmediateChildOfIndexExpr(e, index, partialAccessor)
     or

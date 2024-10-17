@@ -56,6 +56,7 @@ import codeql.rust.elements.IdentPat
 import codeql.rust.elements.IfExpr
 import codeql.rust.elements.Impl
 import codeql.rust.elements.ImplTraitType
+import codeql.rust.elements.ImplicitVariableAccess
 import codeql.rust.elements.IndexExpr
 import codeql.rust.elements.InferType
 import codeql.rust.elements.Item

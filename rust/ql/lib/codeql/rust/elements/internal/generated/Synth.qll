@@ -189,6 +189,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TImplicitVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
+      constructImplicitVariableAccess(parent, index, kind)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIndexExpr(Raw::IndexExpr id) { constructIndexExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -627,10 +633,11 @@ module Synth {
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExpr or
-        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
-        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
+        TForExpr or TFormatArgsExpr or TIfExpr or TImplicitVariableAccess or TIndexExpr or
+        TLetExpr or TLiteralExpr or TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or
+        TParenExpr or TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or
+        TReturnExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or
+        TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -953,6 +960,12 @@ module Synth {
    * Converts a raw element to a synthesized `TImplTraitType`, if possible.
    */
   TImplTraitType convertImplTraitTypeFromRaw(Raw::Element e) { result = TImplTraitType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TImplicitVariableAccess`, if possible.
+   */
+  TImplicitVariableAccess convertImplicitVariableAccessFromRaw(Raw::Element e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -1765,6 +1778,8 @@ module Synth {
     or
     result = convertIfExprFromRaw(e)
     or
+    result = convertImplicitVariableAccessFromRaw(e)
+    or
     result = convertIndexExprFromRaw(e)
     or
     result = convertLetExprFromRaw(e)
@@ -2259,6 +2274,12 @@ module Synth {
    * Converts a synthesized `TImplTraitType` to a raw DB element, if possible.
    */
   Raw::Element convertImplTraitTypeToRaw(TImplTraitType e) { e = TImplTraitType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TImplicitVariableAccess` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplicitVariableAccessToRaw(TImplicitVariableAccess e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -3070,6 +3091,8 @@ module Synth {
     result = convertFormatArgsExprToRaw(e)
     or
     result = convertIfExprToRaw(e)
+    or
+    result = convertImplicitVariableAccessToRaw(e)
     or
     result = convertIndexExprToRaw(e)
     or

@@ -191,6 +191,7 @@ class _:
     ```
     """
 
+
 class CallExprBase(Expr):
     """
     A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
@@ -212,6 +213,7 @@ class _:
     """
     arg_list: drop
     attrs: drop
+
 
 @annotate(MethodCallExpr, replace_bases={Expr: CallExprBase})
 class _:
@@ -1741,6 +1743,7 @@ class _:
     ```
     """
 
+
 @annotate(Function, add_bases=[Callable])
 class _:
     param_list: drop
@@ -1751,3 +1754,9 @@ class _:
 class _:
     param_list: drop
     attrs: drop
+
+
+@qltest.skip
+@synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
+class ImplicitVariableAccess(Expr):
+    pass
