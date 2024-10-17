@@ -6,3 +6,4 @@ import codeql.files.FileSystem
 import codeql.rust.elements.AssignmentOperation
 import codeql.rust.elements.LogicalOperation
 import codeql.rust.elements.Variable
+import codeql.rust.elements.FormatTemplate
