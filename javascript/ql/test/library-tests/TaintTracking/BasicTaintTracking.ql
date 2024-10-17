@@ -1,5 +1,6 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
+import testUtilities.ConsistencyChecking
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name
