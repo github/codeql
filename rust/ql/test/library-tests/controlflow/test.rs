@@ -284,6 +284,22 @@ mod match_expression {
     }
 }
 
+mod patterns {
+
+    fn empty_tuple_pattern(unit: ()) -> void {
+        let () = unit;
+        return;
+    }
+
+    struct MyStruct {}
+
+    fn empty_struct_pattern(st: MyStruct) -> i64 {
+        match st {
+            MyStruct {} => 1,
+        }
+    }
+}
+
 mod divergence {
     fn test_infinite_loop() -> &'static str {
         loop {
