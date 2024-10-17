@@ -3,9 +3,6 @@ set -xe
 BAZELISK_VERSION=v1.12.0
 BAZELISK_DOWNLOAD_SHA=6b0bcb2ea15bca16fffabe6fda75803440375354c085480fe361d2cbf32501db
 
-# install git lfs apt source
-curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
-
 # install gh apt source
 (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
 && sudo mkdir -p -m 755 /etc/apt/keyrings \
@@ -21,7 +18,6 @@ apt-get -y install --no-install-recommends \
     python3-distutils \
     python3-pip \
     bash-completion \
-    git-lfs \
     gh
 
 # Install Bazel

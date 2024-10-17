@@ -1,7 +1,5 @@
 set -xe
 
-git lfs install
-
 # add the workspace to the codeql search path
 mkdir -p /home/vscode/.config/codeql
 echo "--search-path /workspaces/codeql" > /home/vscode/.config/codeql/config
