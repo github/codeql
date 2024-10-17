@@ -14,7 +14,7 @@ sink(map2.get("b")); // OK - but still flagged [INCONSISTENCY]
 
 const map3 = map2.set("d", source("d"));
 sink(map1.get("d")); // OK
-sink(map3.get("d")); // NOT OK [INCONSISTENCY]
+sink(map3.get("d")); // NOT OK
 
 
 sink(map3.toJS()["a"]); // NOT OK
@@ -34,7 +34,7 @@ List(["safe"]).push(source()).forEach(x => sink(x)); // NOT OK
 
 
 const map4 = OrderedMap({}).set("f", source());
-sink(map4.get("f")); // NOT OK [INCONSISTENCY]
+sink(map4.get("f")); // NOT OK
 
 const map5 = Record({a: source(), b: null, c: null})({b: source()});
 sink(map5.get("a")); // NOT OK
@@ -56,3 +56,6 @@ Set.of(source()).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
 Set([source()]).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
 
 OrderedSet([source()]).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
+
+x.d; // ensure 'd' property exists
+x.f; // ensure 'f' property exists
