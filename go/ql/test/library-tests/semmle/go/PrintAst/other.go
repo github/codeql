@@ -5,7 +5,7 @@ func main() {}
 func f() {}
 func g() {}
 
-func hasNested() {
+func hasNested[U int]() {
 
 	myNested := func() int { return 1 }
 	myNested()
@@ -13,3 +13,7 @@ func hasNested() {
 }
 
 var x int = 0
+
+type myType[T ~string] []T
+
+func (m myType[U]) f() {}
