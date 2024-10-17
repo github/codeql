@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", True, "toContentCaptureSession", "()", "", "Argument[this].SyntheticField[androidx.core.view.contentcapture.ContentCaptureSessionCompat.mWrappedObj]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", True, "toContentCaptureSessionCompat", "(ContentCaptureSession,View)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.core.view.contentcapture.ContentCaptureSessionCompat.mWrappedObj]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", "newAutofillId", "(long)", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", "newVirtualViewStructure", "(AutofillId,long)", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", "notifyViewTextChanged", "(AutofillId,CharSequence)", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", "notifyViewsAppeared", "(List)", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompat", "notifyViewsDisappeared", "(long[])", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testNewAutofillId_returnsAutofillIdAboveSDK29", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testNewVirtualViewStructure_returnsViewStructureAboveSDK29", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testNotifyViewTextChanged_throwsNPEAboveSDK29", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testNotifyViewsAppeared_throwsNPEBetweenSDK29And33", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testNotifyViewsDisappeared_throwsNPEAboveSDK29", "()", "summary", "df-generated"]
+      - ["androidx.core.view.contentcapture", "ContentCaptureSessionCompatTest", "testToContentCaptureSession_returnsContentCaptureSession", "()", "summary", "df-generated"]

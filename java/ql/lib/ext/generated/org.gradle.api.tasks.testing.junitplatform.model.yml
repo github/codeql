@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeEngines", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeEngines].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeEngines", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeEngines].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeEngines", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeTags", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeTags].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeTags", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeTags].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "excludeTags", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "getExcludeEngines", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeEngines]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "getExcludeTags", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeTags]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "getIncludeEngines", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeEngines]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "getIncludeTags", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeTags]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeEngines", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeEngines].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeEngines", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeEngines].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeEngines", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeTags", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeTags].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeTags", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeTags].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "includeTags", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "setExcludeEngines", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeEngines]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "setExcludeTags", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.excludeTags]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "setIncludeEngines", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeEngines]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", True, "setIncludeTags", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions.includeTags]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.tasks.testing.junitplatform", "JUnitPlatformOptions", "copyFrom", "(JUnitPlatformOptions)", "summary", "df-generated"]

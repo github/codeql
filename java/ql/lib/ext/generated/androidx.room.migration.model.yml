@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.migration", "TableInfoTest", "alteredTable", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "caseInsensitiveTypeName", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "closeDb", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "columnInfo_defaultValue_equality", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "compatColumnTypes", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "compositeForeignKey", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue_missing", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue_missing_should_print_undefined", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue_null_should_print_null", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue_oldConstructor", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "defaultValue_unaccounted", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "foreignKey", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "multipleForeignKeys", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "multiplePrimaryKeys", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "nonNull", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "readIndices", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "readSimple", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "readSimple_toStringCheck", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "testDoubleSurroundingParenthesis", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "testMultipleParenthesisWithSurrounding", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "testSurroundingParenthesis", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "testSurroundingParenthesisWithSpacesAfter", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "TableInfoTest", "testSurroundingParenthesisWithSpacesBefore", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "ViewInfoTest", "closeDb", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "ViewInfoTest", "infoEquals", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "ViewInfoTest", "notExisting", "()", "summary", "df-generated"]
+      - ["androidx.room.migration", "ViewInfoTest", "readSimple", "()", "summary", "df-generated"]

@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "ResolvingVisitor", "(Schema,IdentityHashMap,Function)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace]", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "afterVisitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "copyAllProperties", "(Schema$Field,Schema$Field)", "", "Argument[0].SyntheticField[org.apache.avro.Schema$Field.aliases].Element", "Argument[1].SyntheticField[org.apache.avro.Schema$Field.aliases].Element", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "copyAllProperties", "(Schema,Schema)", "", "Argument[0].SyntheticField[org.apache.avro.Schema.logicalType]", "Argument[1].SyntheticField[org.apache.avro.Schema.logicalType]", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "get", "()", "", "Argument[this].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "visitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.compiler.idl", "ResolvingVisitor", False, "visitTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.compiler.idl.ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.compiler.idl", "IsResolvedSchemaVisitor", "afterVisitNonTerminal", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.compiler.idl", "IsResolvedSchemaVisitor", "get", "()", "summary", "df-generated"]
+      - ["org.apache.avro.compiler.idl", "IsResolvedSchemaVisitor", "visitNonTerminal", "(Schema)", "summary", "df-generated"]
+      - ["org.apache.avro.compiler.idl", "IsResolvedSchemaVisitor", "visitTerminal", "(Schema)", "summary", "df-generated"]

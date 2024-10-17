@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.kruth", "NumericComparisonTest", "testAllCombinations_pass", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testNumericPrimitiveTypes", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testNumericPrimitiveTypes_isNotEqual_shouldFail_charToInt", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testNumericTypeWithSameValue_shouldBeEqual_int_int", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testNumericTypeWithSameValue_shouldBeEqual_int_long", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testPrimitivesVsBoxedPrimitivesVsObject_int", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "NumericComparisonTest", "testPrimitivesVsBoxedPrimitivesVsObject_long", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "allFramesAboveStandardSubjectBuilderCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "allFramesAboveSubjectCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "allFramesBelowJUnitRunnerCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "allFramesBelowJUnitStatementCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "assertionsActuallyUseCleaner", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "assertionsActuallyUseCleaner_comparisonFailure", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "causingThrowablesAreAlsoCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "classNestedInSubject", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "cleaningTraceIsIdempotent", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "collapseStreaks", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "cyclesAreHandled", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "dontCollapseStreaksOfOneFrame", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "emptyTrace", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "failureFromJUnitInfrastructureIncludesItInStack", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "mixedCausingAndSuppressThrowablesAreCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "mixedStreaks", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "packagesAreIgnoredForTestClasses", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "realWorld", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "removesTestingAndReflectiveFramesOnBottom", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "suppressedThrowablesAreAlsoCleaned", "()", "summary", "df-generated"]
+      - ["androidx.kruth", "StackTraceCleanerTest", "truthFrameWithOutSubject_shouldNotCleaned", "()", "summary", "df-generated"]

@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.work.impl.foreground", "ForegroundProcessor", True, "startForeground", "(String,ForegroundInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", True, "createCancelWorkIntent", "(Context,String)", "", "Argument[1]", "ReturnValue.SyntheticField[android.content.Intent.data]", "taint", "dfc-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", True, "createCancelWorkIntent", "(Context,String)", "", "Argument[1]", "ReturnValue.SyntheticField[android.content.Intent.extras].MapValue", "value", "dfc-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", True, "createNotifyIntent", "(Context,WorkGenerationalId,ForegroundInfo)", "", "Argument[2].SyntheticField[androidx.work.ForegroundInfo.mNotification]", "ReturnValue.SyntheticField[android.content.Intent.extras].MapValue", "value", "dfc-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", True, "createStartForegroundIntent", "(Context,WorkGenerationalId,ForegroundInfo)", "", "Argument[2].SyntheticField[androidx.work.ForegroundInfo.mNotification]", "ReturnValue.SyntheticField[android.content.Intent.extras].MapValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.work.impl.foreground", "SystemForegroundService", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", True, "onStartCommand", "(Intent,int,int)", "", "Argument[0]", "pending-intents", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", "createStopForegroundIntent", "(Context)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", "onConstraintsStateChanged", "(WorkSpec,ConstraintsState)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundDispatcher", "onExecuted", "(WorkGenerationalId,boolean)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "cancelNotification", "(int)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "getInstance", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "notify", "(int,Notification)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "onTimeout", "(int)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "onTimeout", "(int,int)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "startForeground", "(int,int,Notification)", "summary", "df-generated"]
+      - ["androidx.work.impl.foreground", "SystemForegroundService", "stop", "()", "summary", "df-generated"]

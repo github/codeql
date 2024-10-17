@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setBody", "(CarText)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setMultimediaMimeType", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setMultimediaUri", "(Uri)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setRead", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setReceivedTimeEpochMillis", "(long)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage$Builder", False, "setSender", "(Person)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage", True, "getMultimediaMimeType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage", True, "getMultimediaUri", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage", True, "getSender", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "Builder", "(ConversationItem)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "Builder", "(String,CarText,Person,List,ConversationCallback)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "Builder", "(String,CarText,Person,List,ConversationCallback)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "Builder", "(String,CarText,Person,List,ConversationCallback)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "Builder", "(String,CarText,Person,List,ConversationCallback)", "", "Argument[3].Element", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "addAction", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setConversationCallback", "(ConversationCallback)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setGroupConversation", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setIcon", "(CarIcon)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setId", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setIndexable", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setMessages", "(List)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setSelf", "(Person)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem$Builder", False, "setTitle", "(CarText)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getActions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getConversationCallbackDelegate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getIcon", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getMessages", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getSelf", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", True, "getTitle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.messaging.model", "CarMessage", "getReceivedTimeEpochMillis", "()", "summary", "df-generated"]
+      - ["androidx.car.app.messaging.model", "CarMessage", "isRead", "()", "summary", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", "isGroupConversation", "()", "summary", "df-generated"]
+      - ["androidx.car.app.messaging.model", "ConversationItem", "isIndexable", "()", "summary", "df-generated"]

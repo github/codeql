@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.initialization.exception", "DefaultExceptionAnalyser", True, "DefaultExceptionAnalyser", "(ProblemDiagnosticsFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "ExceptionAnalyser", True, "transform", "(List)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "ExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "ExceptionCollector", True, "collectFailures", "(Throwable,Collection)", "", "Argument[0]", "Argument[1].Element", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "InitializationException", True, "InitializationException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "MultipleBuildFailuresExceptionAnalyser", "(ExceptionCollector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "StackTraceSanitizingExceptionAnalyser", "(ExceptionAnalyser)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.initialization.exception", "DefaultExceptionAnalyser", True, "collectFailures", "(Throwable,Collection)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "DefaultExceptionAnalyser", True, "collectFailures", "(Throwable,Collection)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "DefaultExceptionAnalyser", True, "collectFailures", "(Throwable,Collection)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.exception", "DefaultExceptionAnalyser", True, "collectFailures", "(Throwable,Collection)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.exception", "MultipleBuildFailuresExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(List)", "", "Argument[this]", "xslt-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.initialization.exception", "StackTraceSanitizingExceptionAnalyser", True, "transform", "(Throwable)", "", "Argument[this]", "xslt-injection", "df-generated"]

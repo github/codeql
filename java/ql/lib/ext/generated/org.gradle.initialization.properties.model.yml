@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.initialization.properties", "DefaultProjectPropertiesLoader", True, "DefaultProjectPropertiesLoader", "(StartParameterInternal,Environment)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "DefaultProjectPropertiesLoader", True, "DefaultProjectPropertiesLoader", "(StartParameterInternal,Environment)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "DefaultSystemPropertiesInstaller", True, "DefaultSystemPropertiesInstaller", "(EnvironmentChangeTracker,StartParameterInternal,GradleInternal)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "DefaultSystemPropertiesInstaller", True, "DefaultSystemPropertiesInstaller", "(EnvironmentChangeTracker,StartParameterInternal,GradleInternal)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "DefaultSystemPropertiesInstaller", True, "DefaultSystemPropertiesInstaller", "(EnvironmentChangeTracker,StartParameterInternal,GradleInternal)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "MutableGradleProperties", True, "updateOverrideProperties", "(Map)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.initialization.properties", "ProjectPropertiesLoader", True, "loadProjectProperties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.initialization.properties", "DefaultSystemPropertiesInstaller", "setSystemPropertiesFrom", "(GradleProperties)", "summary", "df-generated"]

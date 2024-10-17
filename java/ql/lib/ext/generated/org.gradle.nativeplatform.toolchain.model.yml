@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.nativeplatform.toolchain", "CommandLineToolConfiguration", True, "withArguments", "(Action)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccCommandLineToolConfiguration", True, "getExecutable", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccCommandLineToolConfiguration", True, "setExecutable", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccCompatibleToolChain", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getAssembler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getCppCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getLinker", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getObjcCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getObjcppCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getStaticLibArchiver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "GccPlatformToolChain", True, "getcCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "NativePlatformToolChain", True, "getPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "Swiftc", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "SwiftcPlatformToolChain", True, "getLinker", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "SwiftcPlatformToolChain", True, "getStaticLibArchiver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "SwiftcPlatformToolChain", True, "getStripper", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "SwiftcPlatformToolChain", True, "getSwiftCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "SwiftcPlatformToolChain", True, "getSymbolExtractor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCpp", True, "getInstallDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCpp", True, "getWindowsSdkDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCpp", True, "setInstallDir", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCpp", True, "setWindowsSdkDir", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getAssembler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getCppCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getLinker", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getRcCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getStaticLibArchiver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.nativeplatform.toolchain", "VisualCppPlatformToolChain", True, "getcCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

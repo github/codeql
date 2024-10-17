@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "ReleasedVersionDistributions", "(IntegrationTestBuildContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getAll", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(GradleVersion)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getPrevious", "(GradleVersion)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getSupported", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.fixtures.versions", "ClasspathVersionSource", True, "create", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ClasspathVersionSource", True, "create", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getAll", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getAll", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(GradleVersion)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(GradleVersion)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(String)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getDistribution", "(String)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getMostRecentRelease", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getMostRecentRelease", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getMostRecentReleaseSnapshot", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getMostRecentReleaseSnapshot", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getPrevious", "(GradleVersion)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getPrevious", "(GradleVersion)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getSupported", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", True, "getSupported", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.fixtures.versions", "ClasspathVersionSource", "create", "()", "summary", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", "getMostRecentRelease", "()", "summary", "df-generated"]
+      - ["org.gradle.integtests.fixtures.versions", "ReleasedVersionDistributions", "getMostRecentReleaseSnapshot", "()", "summary", "df-generated"]

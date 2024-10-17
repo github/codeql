@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.sample", "GreetingExtension", "getWho", "()", "summary", "df-generated"]
+      - ["org.sample", "GreetingPlugin", "apply", "(Project)", "summary", "df-generated"]
+      - ["org.sample", "GreetingTask", "getWho", "()", "summary", "df-generated"]
+      - ["org.sample", "GreetingTask", "greet", "()", "summary", "df-generated"]

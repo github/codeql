@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", False, "RoutesAdapter", "(List,RoutesAdapter$RouteItemListener)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", False, "RoutesAdapter", "(List,RoutesAdapter$RouteItemListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", False, "updateRoutes", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.mediarouting.ui", "LibraryAdapter", "LibraryAdapter", "(MainActivity,SessionManager)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "LibraryAdapter", "getView", "(int,View,ViewGroup)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "PlaylistAdapter", "PlaylistAdapter", "(MainActivity,SessionManager)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "PlaylistAdapter", "getView", "(int,View,ViewGroup)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", "onBindViewHolder", "(RoutesAdapter$RouteViewHolder,int)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "RoutesAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["com.example.androidx.mediarouting.ui", "UiUtils", "setUpEnumBasedSpinner", "(Context,Spinner,Enum,Consumer)", "summary", "df-generated"]

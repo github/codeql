@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", True, "getBeforeMerged", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.FileContentMerger.beforeMerged]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", True, "getWhenMerged", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.FileContentMerger.whenMerged]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", True, "setBeforeMerged", "(MutableActionSet)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.FileContentMerger.beforeMerged]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", True, "setWhenMerged", "(MutableActionSet)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.FileContentMerger.whenMerged]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.GeneratorTask.inputFile]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.GeneratorTask.outputFile]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getOutputFile", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.GeneratorTask.outputFile]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "setInputFile", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.GeneratorTask.inputFile]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "setOutputFile", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.GeneratorTask.outputFile]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertiesFileContentMerger", True, "PropertiesFileContentMerger", "(PropertiesTransformer)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.PropertiesFileContentMerger.transformer]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertiesFileContentMerger", True, "getTransformer", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.PropertiesFileContentMerger.transformer]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertiesFileContentMerger", True, "setTransformer", "(PropertiesTransformer)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.PropertiesFileContentMerger.transformer]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertyListGeneratorTask", True, "getPropertyListTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlFileContentMerger", True, "XmlFileContentMerger", "(XmlTransformer)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.XmlFileContentMerger.xmlTransformer]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlFileContentMerger", True, "getXmlTransformer", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.XmlFileContentMerger.xmlTransformer]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlFileContentMerger", True, "setXmlTransformer", "(XmlTransformer)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ide.api.XmlFileContentMerger.xmlTransformer]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlGeneratorTask", True, "getXmlTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "GeneratorTask", True, "getInputFile", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", "beforeMerged", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", "beforeMerged", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", "whenMerged", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "FileContentMerger", "whenMerged", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertiesFileContentMerger", "withProperties", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "PropertiesFileContentMerger", "withProperties", "(Closure)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlFileContentMerger", "withXml", "(Action)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.api", "XmlFileContentMerger", "withXml", "(Closure)", "summary", "df-generated"]

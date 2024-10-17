@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.compose.ui.platform.coreshims", "AutofillIdCompat", True, "toAutofillId", "()", "", "Argument[this].SyntheticField[androidx.compose.ui.platform.coreshims.AutofillIdCompat.mWrappedObj]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "AutofillIdCompat", True, "toAutofillIdCompat", "(AutofillId)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.compose.ui.platform.coreshims.AutofillIdCompat.mWrappedObj]", "value", "dfc-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", True, "toContentCaptureSession", "()", "", "Argument[this].SyntheticField[androidx.compose.ui.platform.coreshims.ContentCaptureSessionCompat.mWrappedObj]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", True, "toContentCaptureSessionCompat", "(ContentCaptureSession,View)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.compose.ui.platform.coreshims.ContentCaptureSessionCompat.mWrappedObj]", "value", "dfc-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewCompatShims", True, "getContentCaptureSession", "(View)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", "newAutofillId", "(long)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", "newVirtualViewStructure", "(AutofillId,long)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", "notifyViewTextChanged", "(AutofillId,CharSequence)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", "notifyViewsAppeared", "(List)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ContentCaptureSessionCompat", "notifyViewsDisappeared", "(long[])", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewCompatShims", "getAutofillId", "(View)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewCompatShims", "setImportantForContentCapture", "(View,int)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "getExtras", "()", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setClassName", "(String)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setContentDescription", "(CharSequence)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setDimens", "(int,int,int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setId", "(int,String,String,String)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setText", "(CharSequence)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "setTextStyle", "(float,int,int,int)", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "toViewStructure", "()", "summary", "df-generated"]
+      - ["androidx.compose.ui.platform.coreshims", "ViewStructureCompat", "toViewStructureCompat", "(ViewStructure)", "summary", "df-generated"]

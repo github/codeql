@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.configuration", "BuildFeature", True, "getActive", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.configuration", "BuildFeature", True, "getRequested", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.configuration", "BuildFeatures", True, "getConfigurationCache", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.configuration", "BuildFeatures", True, "getIsolatedProjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

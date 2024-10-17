@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.performance.fixture", "AbstractBuildExperimentRunner", True, "AbstractBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "AbstractBuildExperimentRunner", True, "AbstractBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleBuildExperimentRunner", True, "GradleBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleBuildExperimentRunner", True, "GradleBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleVsMavenBuildExperimentRunner", True, "GradleVsMavenBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleVsMavenBuildExperimentRunner", True, "GradleVsMavenBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "MavenBuildExperimentRunner", True, "MavenBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "MavenBuildExperimentRunner", True, "MavenBuildExperimentRunner", "(GradleProfilerReporter,OutputDirSelector)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", True, "getTestClassName", "()", "", "Argument[this].SyntheticField[org.gradle.performance.fixture.PerformanceTestSpec.testClassName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", True, "getTestId", "()", "", "Argument[this].SyntheticField[org.gradle.performance.fixture.PerformanceTestSpec.testId]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", True, "setTestClassName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.performance.fixture.PerformanceTestSpec.testClassName]", "value", "dfc-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", True, "setTestId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.performance.fixture.PerformanceTestSpec.testId]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.performance.fixture", "AbstractBuildExperimentRunner", "isProfilingActive", "()", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "AbstractBuildExperimentRunner", "run", "(String,BuildExperimentSpec,MeasuredOperationList)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "CompositeDataReporter", "CompositeDataReporter", "(List)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "CompositeDataReporter", "report", "(CrossVersionPerformanceResults)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleBuildExperimentRunner", "doRun", "(String,BuildExperimentSpec,MeasuredOperationList)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "GradleVsMavenBuildExperimentRunner", "doRun", "(String,BuildExperimentSpec,MeasuredOperationList)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "MavenBuildExperimentRunner", "doRun", "(String,BuildExperimentSpec,MeasuredOperationList)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestDirectoryProvider", "PerformanceTestDirectoryProvider", "(Class)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", "getRuns", "()", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", "getWarmUpRuns", "()", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", "setRuns", "(Integer)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "PerformanceTestSpec", "setWarmUpRuns", "(Integer)", "summary", "df-generated"]
+      - ["org.gradle.performance.fixture", "TestScenarioSelector", "shouldRun", "(String)", "summary", "df-generated"]

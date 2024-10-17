@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.browser.customtabs.testutil", "CustomTabConnectionRule", True, "establishSessionBlocking", "(Context)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.browser.customtabs.testutil", "CustomTabConnectionRule", True, "establishSessionBlocking", "(Context)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.browser.customtabs.testutil", "TestUtil", True, "runOnUiThreadBlocking", "(Callable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.browser.customtabs.testutil", "TestUtil", True, "getBrowserActivityWhenLaunched", "(Runnable)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.browser.customtabs.testutil", "TestUtil", "getBrowserActivityWhenLaunched", "(Runnable)", "summary", "df-generated"]
+      - ["androidx.browser.customtabs.testutil", "TestUtil", "runOnUiThreadBlocking", "(Runnable)", "summary", "df-generated"]

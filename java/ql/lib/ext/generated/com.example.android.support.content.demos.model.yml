@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.support.content.demos", "ContentPagerDemoActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "ContentPagerDemoActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "UnpagedDemoDataProvider", "delete", "(Uri,String,String[])", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "UnpagedDemoDataProvider", "getType", "(Uri)", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "UnpagedDemoDataProvider", "insert", "(Uri,ContentValues)", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "UnpagedDemoDataProvider", "onCreate", "()", "summary", "df-generated"]
+      - ["com.example.android.support.content.demos", "UnpagedDemoDataProvider", "update", "(Uri,ContentValues,String,String[])", "summary", "df-generated"]

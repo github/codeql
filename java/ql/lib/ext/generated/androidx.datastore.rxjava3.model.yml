@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "isDisposed", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "testConstructWithContextAndName", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "testConstructWithProduceFile", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "testCorruptionHandlerIsUser", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "testMigrationsAreInstalledAndRun", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxDataStoreBuilderTest", "testSpecifiedSchedulerIsUser", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxSharedPreferencesMigrationTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxSharedPreferencesMigrationTest", "testSharedPrefsViewContainsSpecifiedKeys", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxSharedPreferencesMigrationTest", "testSharedPrefsViewWithAllKeysSpecified", "()", "summary", "df-generated"]
+      - ["androidx.datastore.rxjava3", "RxSharedPreferencesMigrationTest", "testShouldMigrateSkipsMigration", "()", "summary", "df-generated"]

@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getAssemblerArgs", "()", "", "Argument[this].SyntheticField[org.gradle.language.assembler.tasks.Assemble.assemblerArgs]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getIncludes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getObjectFileDir", "()", "", "Argument[this].SyntheticField[org.gradle.language.assembler.tasks.Assemble.objectFileDir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getTargetPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "getToolChain", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "setAssemblerArgs", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.assembler.tasks.Assemble.assemblerArgs]", "value", "dfc-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "setObjectFileDir", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.assembler.tasks.Assemble.objectFileDir]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "assemble", "()", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "assemble", "()", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "assemble", "()", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", True, "assemble", "()", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.language.assembler.tasks", "Assemble", "assemble", "()", "summary", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", "getOperationLoggerFactory", "()", "summary", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", "includes", "(Object)", "summary", "df-generated"]
+      - ["org.gradle.language.assembler.tasks", "Assemble", "source", "(Object)", "summary", "df-generated"]

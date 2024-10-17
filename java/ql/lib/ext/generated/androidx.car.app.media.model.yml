@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.media", "AutomotiveCarAudioRecord", True, "AutomotiveCarAudioRecord", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.media", "CarAudioRecord", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["androidx.car.app.media", "MediaPlaybackManager", True, "create", "(CarContext,HostDispatcher,Lifecycle)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneRequest$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneRequest", False, "getCarAudioCallbackDelegate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneResponse$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneResponse$Builder", False, "setCarMicrophoneDescriptor", "(ParcelFileDescriptor)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneResponse", False, "getCarAudioCallback", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.media", "ProjectedCarAudioRecord", True, "ProjectedCarAudioRecord", "(CarContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.media", "CarAudioCallbackDelegate", "onStopRecording", "()", "summary", "df-generated"]
+      - ["androidx.car.app.media", "CarAudioRecord", "create", "(CarContext)", "summary", "df-generated"]
+      - ["androidx.car.app.media", "CarAudioRecord", "startRecording", "()", "summary", "df-generated"]
+      - ["androidx.car.app.media", "CarAudioRecord", "stopRecording", "()", "summary", "df-generated"]
+      - ["androidx.car.app.media", "MediaPlaybackManager", "registerMediaPlaybackToken", "(MediaSessionCompat$Token)", "summary", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneRequest$Builder", "Builder", "(CarAudioCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneResponse$Builder", "Builder", "(CarAudioCallback)", "summary", "df-generated"]
+      - ["androidx.car.app.media", "OpenMicrophoneResponse", "getCarMicrophoneInputStream", "()", "summary", "df-generated"]

@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.media.session", "MediaButtonReceiver", True, "handleIntent", "(MediaSessionCompat,Intent)", "", "Argument[1].SyntheticField[android.content.Intent.extras].MapValue", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.media.session", "MediaButtonReceiver", True, "onReceive", "(Context,Intent)", "", "Argument[1]", "intent-redirection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.media.session", "MediaButtonReceiver", "buildMediaButtonPendingIntent", "(Context,ComponentName,long)", "summary", "df-generated"]
+      - ["androidx.media.session", "MediaButtonReceiver", "buildMediaButtonPendingIntent", "(Context,long)", "summary", "df-generated"]
+      - ["androidx.media.session", "MediaButtonReceiver", "getMediaButtonReceiverComponent", "(Context)", "summary", "df-generated"]
+      - ["androidx.media.session", "MediaButtonReceiver", "onReceive", "(Context,Intent)", "summary", "df-generated"]

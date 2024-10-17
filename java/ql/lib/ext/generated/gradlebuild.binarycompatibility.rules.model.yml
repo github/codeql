@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["gradlebuild.binarycompatibility.rules", "SinceAnnotationMissingRuleCurrentGradleVersionSetup", True, "SinceAnnotationMissingRuleCurrentGradleVersionSetup", "(Map)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "UpgradePropertiesRuleSetup", True, "UpgradePropertiesRuleSetup", "(Map)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["gradlebuild.binarycompatibility.rules", "UpgradePropertiesRuleSetup", True, "execute", "(ViolationCheckContext)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["gradlebuild.binarycompatibility.rules", "AcceptedRegressionsRulePostProcess", "execute", "(ViolationCheckContextWithViolations)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "AcceptedRegressionsRuleSetup", "AcceptedRegressionsRuleSetup", "(Map)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "AcceptedRegressionsRuleSetup", "execute", "(ViolationCheckContext)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "BinaryBreakingChangesRule", "BinaryBreakingChangesRule", "(Map)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "BinaryBreakingChangesRule", "maybeViolation", "(JApiCompatibility)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "IncubatingMissingRule", "IncubatingMissingRule", "(Map)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "IncubatingMissingRule", "maybeViolation", "(JApiCompatibility)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "NewIncubatingAPIRule", "NewIncubatingAPIRule", "(Map)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "NewIncubatingAPIRule", "maybeViolation", "(JApiCompatibility)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "SinceAnnotationMissingRule", "SinceAnnotationMissingRule", "(Map)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "SinceAnnotationMissingRule", "maybeViolation", "(JApiCompatibility)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "SinceAnnotationMissingRuleCurrentGradleVersionSetup", "execute", "(ViolationCheckContext)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "UpgradePropertiesRulePostProcess", "execute", "(ViolationCheckContextWithViolations)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.rules", "UpgradePropertiesRuleSetup", "execute", "(ViolationCheckContext)", "summary", "df-generated"]

@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.thrift", "ThriftData", True, "getSchema", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumReader", True, "ThriftDatumReader", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumReader", True, "ThriftDatumReader", "(Schema,Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumReader", True, "ThriftDatumReader", "(Schema,Schema)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumWriter", True, "ThriftDatumWriter", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.thrift", "ThriftData", "get", "()", "summary", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumReader", "ThriftDatumReader", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.thrift", "ThriftDatumWriter", "ThriftDatumWriter", "(Class)", "summary", "df-generated"]

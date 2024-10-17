@@ -1,0 +1,55 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.loader.app", "LoaderManager", True, "getInstance", "(LifecycleOwner)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", True, "initLoader", "(int,Bundle,LoaderManager$LoaderCallbacks)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", True, "initLoader", "(int,Bundle,LoaderManager$LoaderCallbacks)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", True, "restartLoader", "(int,Bundle,LoaderManager$LoaderCallbacks)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", True, "restartLoader", "(int,Bundle,LoaderManager$LoaderCallbacks)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerImpl$LoaderInfo", True, "onLoadComplete", "(Loader,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerImpl$LoaderInfo", True, "setValue", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.loader.app", "LoaderManagerImpl$LoaderInfo", True, "removeObserver", "(Observer)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.loader.app", "LoaderInfoTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testDestroy", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testIsCallbackWaitingForData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testMarkForRedelivery", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testMarkForRedelivery_replace", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testSetCallback", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderInfoTest", "testSetCallback_replace", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "destroyLoader", "(int)", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "enableDebugLogging", "(boolean)", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "getLoader", "(int)", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "hasRunningLoaders", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManager", "markForRedelivery", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerImpl$LoaderInfo", "dump", "(String,FileDescriptor,PrintWriter,String[])", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerImpl$LoaderInfo", "removeObserver", "(Observer)", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "enforceNonNullLoader", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "enforceOnMainThread_destroyLoader", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "enforceOnMainThread_initLoader", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "enforceOnMainThread_restartLoader", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "setup", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testDestroyFromOnCreateLoader", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testDestroyFromOnLoadFinished", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testDestroyLoaderAfterDeliverData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testDestroyLoaderBeforeDeliverData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testRestartLoaderAfterDeliverData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testRestartLoaderBeforeDeliverData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testRestartLoaderMultiple", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderManagerTest", "testRestartLoaderWhileDeliveringData", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderObserverTest", "testOnChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderObserverTest", "testReset", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderObserverTest", "testResetWithOnChanged", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderViewModelTest", "testHasRunningLoaders", "()", "summary", "df-generated"]
+      - ["androidx.loader.app", "LoaderViewModelTest", "testOnCleared", "()", "summary", "df-generated"]

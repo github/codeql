@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.tooling.events", "BinaryPluginIdentifier", True, "getClassName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "BinaryPluginIdentifier", True, "getPluginId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "FailureResult", True, "getFailures", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "FinishEvent", True, "getResult", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "OperationDescriptor", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "OperationDescriptor", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "OperationDescriptor", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "PluginIdentifier", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "ProgressEvent", True, "getDescriptor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "ProgressEvent", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "ProgressListener", True, "statusChanged", "(ProgressEvent)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "ScriptPluginIdentifier", True, "getUri", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.events", "StatusEvent", True, "getUnit", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

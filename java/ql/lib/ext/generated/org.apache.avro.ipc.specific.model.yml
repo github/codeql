@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "SpecificRequestor", "(Class,Transceiver)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "SpecificRequestor", "(Class,Transceiver,SpecificData)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.avro.ipc.specific.SpecificRequestor.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "SpecificRequestor", "(Protocol,Transceiver,SpecificData)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.avro.ipc.specific.SpecificRequestor.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "getRemote", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "getSpecificData", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.specific.SpecificRequestor.data]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "invoke", "(Object,Method,Object[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "SpecificResponder", "(Class,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "SpecificResponder", "(Class,Object,SpecificData)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericResponder.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "SpecificResponder", "(Protocol,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "SpecificResponder", "(Protocol,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "SpecificResponder", "(Protocol,Object,SpecificData)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericResponder.data]", "value", "dfc-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificResponder", True, "getSpecificData", "()", "", "Argument[this].SyntheticField[org.apache.avro.ipc.generic.GenericResponder.data]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "getRemote", "(Object)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "invoke", "(Object,Method,Object[])", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", True, "invoke", "(Object,Method,Object[])", "", "Argument[this]", "request-forgery", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", "getClient", "(Class,SpecificRequestor)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", "getClient", "(Class,Transceiver)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.specific", "SpecificRequestor", "getClient", "(Class,Transceiver,SpecificData)", "summary", "df-generated"]

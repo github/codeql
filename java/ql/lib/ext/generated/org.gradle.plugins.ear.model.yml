@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Closure)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "getAppDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "getDeploymentDescriptor", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ear.Ear.deploymentDescriptor]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "getGenerateDeploymentDescriptor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "getLib", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "getLibDirName", "()", "", "Argument[this].SyntheticField[org.gradle.plugins.ear.Ear.libDirName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Action)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Closure)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "setDeploymentDescriptor", "(DeploymentDescriptor)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ear.Ear.deploymentDescriptor]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "setLibDirName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.plugins.ear.Ear.libDirName]", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "EarPlugin", "(ObjectFactory,JvmPluginServices,TaskDependencyFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "EarPlugin", "(ObjectFactory,JvmPluginServices,TaskDependencyFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "EarPlugin", "(ObjectFactory,JvmPluginServices,TaskDependencyFactory)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "appDirName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "deploymentDescriptor", "(Action)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "deploymentDescriptor", "(Closure)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "getAppDirName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "getDeploymentDescriptor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "getGenerateDeploymentDescriptor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "getLibDirName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "libDirName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "setAppDirName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "setDeploymentDescriptor", "(DeploymentDescriptor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPluginConvention", True, "setLibDirName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "deploymentDescriptor", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Action)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Action)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Action)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ear", "Ear", True, "lib", "(Action)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "apply", "(Project)", "", "Argument[this]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "apply", "(Project)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "apply", "(Project)", "", "Argument[this]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ear", "EarPlugin", True, "apply", "(Project)", "", "Argument[this]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugins.ear", "EarPlugin", "apply", "(Project)", "summary", "df-generated"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["replacewith", "ReplaceWithUsageJava", "ReplaceWithUsageJava", "(String)", "summary", "df-generated"]
+      - ["replacewith", "ReplaceWithUsageJava", "ReplaceWithUsageJava", "(int)", "summary", "df-generated"]
+      - ["replacewith", "ReplaceWithUsageJava", "obtain", "(int)", "summary", "df-generated"]
+      - ["replacewith", "ReplaceWithUsageJava", "toString", "(Object)", "summary", "df-generated"]
+      - ["replacewith", "ReplaceWithUsageJava", "toStringWithImport", "(Object)", "summary", "df-generated"]
+      - ["replacewith", "ReplaceWithUsageJava", "toStringWithImports", "(Object)", "summary", "df-generated"]

@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.effects", "Frame", True, "getOverlayCanvas", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.effects", "Frame", True, "of", "(Surface,long,Size,SurfaceRequest$TransformationInfo)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", True, "OverlayEffect", "(int,int,Handler,Consumer)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.camera.core.CameraEffect.mSurfaceProcessor].SyntheticField[androidx.camera.effects.internal.SurfaceProcessorImpl.mGlHandler]", "value", "dfc-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", True, "getHandler", "()", "", "Argument[this].SyntheticField[androidx.camera.core.CameraEffect.mSurfaceProcessor].SyntheticField[androidx.camera.effects.internal.SurfaceProcessorImpl.mGlHandler]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.effects", "Frame", "getCropRect", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "getRotationDegrees", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "getSensorToBufferTransform", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "getSize", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "getTimestampNanos", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "isMirroring", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "Frame", "isOverlayDirty", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", "clearOnDrawListener", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", "close", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", "drawFrameAsync", "(long)", "summary", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", "getQueueDepth", "()", "summary", "df-generated"]
+      - ["androidx.camera.effects", "OverlayEffect", "setOnDrawListener", "(Function)", "summary", "df-generated"]

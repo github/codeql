@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.startup", "AppInitializer", False, "initializeComponent", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.startup", "StartupException", False, "StartupException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.startup", "StartupException", False, "StartupException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.startup", "StartupException", False, "StartupException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.startup", "StartupException", False, "StartupException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.startup", "AppInitializer", "getInstance", "(Context)", "summary", "df-generated"]
+      - ["androidx.startup", "AppInitializer", "isEagerlyInitialized", "(Class)", "summary", "df-generated"]
+      - ["androidx.startup", "InitializationProvider", "delete", "(Uri,String,String[])", "summary", "df-generated"]
+      - ["androidx.startup", "InitializationProvider", "getType", "(Uri)", "summary", "df-generated"]
+      - ["androidx.startup", "InitializationProvider", "insert", "(Uri,ContentValues)", "summary", "df-generated"]
+      - ["androidx.startup", "InitializationProvider", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.startup", "InitializationProvider", "update", "(Uri,ContentValues,String,String[])", "summary", "df-generated"]
+      - ["androidx.startup", "StartupLogger", "e", "(String,Throwable)", "summary", "df-generated"]
+      - ["androidx.startup", "StartupLogger", "i", "(String)", "summary", "df-generated"]
+      - ["androidx.startup", "StartupLogger", "w", "(String)", "summary", "df-generated"]

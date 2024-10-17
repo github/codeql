@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.coordinatorlayout.testutils", "CoordinatorLayoutUtils$DependentBehavior", True, "DependentBehavior", "(View)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.coordinatorlayout.testutils", "AppBarStateChangedListener", "onOffsetChanged", "(AppBarLayout,int)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.testutils", "AppBarStateChangedListener", "onStateChanged", "(AppBarLayout,AppBarStateChangedListener$State)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.testutils", "CoordinatorLayoutUtils$DependentBehavior", "layoutDependsOn", "(CoordinatorLayout,View,View)", "summary", "df-generated"]
+      - ["androidx.coordinatorlayout.testutils", "NestedScrollViewActions", "scrollToTop", "()", "summary", "df-generated"]

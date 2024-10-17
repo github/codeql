@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", True, "ComplexDependencyNodesSet", "(DependencySuccessorsOnlyNodeSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", True, "addMustSuccessor", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.ComplexDependencyNodesSet.orderedMustSuccessors].Element", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", True, "addMustSuccessor", "(Node)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.execution.plan.edges.ComplexDependencyNodesSet.orderedMustSuccessors].Element", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", True, "getMustSuccessors", "()", "", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.ComplexDependencyNodesSet.orderedMustSuccessors]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", True, "healthDiagnostics", "(StringBuilder)", "", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.ComplexDependencyNodesSet.orderedMustSuccessors].Element", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "addDependency", "(Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "addDependency", "(Node)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "addMustSuccessor", "(Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "addMustSuccessor", "(Node)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "addMustSuccessor", "(Node)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencyNodesSet", True, "getDependencySuccessors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", True, "getDependencySuccessors", "()", "", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.DependencySuccessorsOnlyNodeSet.orderedDependencies]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", True, "healthDiagnostics", "(StringBuilder)", "", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.DependencySuccessorsOnlyNodeSet.orderedDependencies].Element", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", True, "healthDiagnostics", "(StringBuilder)", "", "Argument[this].SyntheticField[org.gradle.execution.plan.edges.DependencySuccessorsOnlyNodeSet.waitingFor].Element", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addDependencyPredecessors", "(Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addDependencyPredecessors", "(Node)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addFinalizer", "(Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addFinalizer", "(Node)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addFinalizer", "(Node)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addMustPredecessor", "(Node)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addMustPredecessor", "(Node)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "addMustPredecessor", "(Node)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "getDependencyPredecessors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "getFinalizers", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependentNodesSet", True, "getMustPredecessors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", "getState", "(Node)", "summary", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "ComplexDependencyNodesSet", "onNodeComplete", "(Node,Node)", "summary", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", "getMustSuccessors", "()", "summary", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", "getState", "(Node)", "summary", "df-generated"]
+      - ["org.gradle.execution.plan.edges", "DependencySuccessorsOnlyNodeSet", "onNodeComplete", "(Node,Node)", "summary", "df-generated"]

@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.grpc", "AvroRequestMarshaller", True, "AvroRequestMarshaller", "(Protocol$Message)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroRequestMarshaller", True, "stream", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroRequestMarshaller", True, "stream", "(Object[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroResponseMarshaller", True, "AvroResponseMarshaller", "(Protocol$Message)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroResponseMarshaller", True, "stream", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroResponseMarshaller", True, "stream", "(Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.grpc", "AvroGrpcClient", "create", "(Channel,Class)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroGrpcClient", "create", "(Channel,Class,CallOptions)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroGrpcServer", "createServiceDefinition", "(Class,Object)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroGrpcUtils", "getProtocol", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroGrpcUtils", "getServiceName", "(Class)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroRequestMarshaller", "parse", "(InputStream)", "summary", "df-generated"]
+      - ["org.apache.avro.grpc", "AvroResponseMarshaller", "parse", "(InputStream)", "summary", "df-generated"]

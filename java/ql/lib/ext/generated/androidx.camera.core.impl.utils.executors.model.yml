@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canCancelScheduledTask", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canExecuteOnCurrentThreadExecutor", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canExecuteTaskInFuture", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canRetrieveMainThreadExecutor_withCurrentThreadExecutor", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canRetrieveValueFromFuture", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "canWrapHandlerAndExecute", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "retrieveCurrentThreadExecutor_throwsOnNonLooperThread", "()", "summary", "df-generated"]
+      - ["androidx.camera.core.impl.utils.executors", "HandlerScheduledExecutorServiceTest", "schedulingOnShutdownLooperReturnsException", "()", "summary", "df-generated"]

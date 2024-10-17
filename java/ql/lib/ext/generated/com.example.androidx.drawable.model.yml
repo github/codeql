@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.drawable", "MyDrawable", "draw", "(Canvas)", "summary", "df-generated"]
+      - ["com.example.androidx.drawable", "MyDrawable", "getOpacity", "()", "summary", "df-generated"]
+      - ["com.example.androidx.drawable", "MyDrawable", "setAlpha", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.drawable", "MyDrawable", "setColorFilter", "(ColorFilter)", "summary", "df-generated"]

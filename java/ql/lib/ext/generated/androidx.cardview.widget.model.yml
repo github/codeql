@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.cardview.widget", "CardView", "CardView", "(Context)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "CardView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "CardView", "(Context,AttributeSet,int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getCardBackgroundColor", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getCardElevation", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getContentPaddingBottom", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getContentPaddingLeft", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getContentPaddingRight", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getContentPaddingTop", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getMaxCardElevation", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getPreventCornerOverlap", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getRadius", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "getUseCompatPadding", "()", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setCardBackgroundColor", "(ColorStateList)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setCardBackgroundColor", "(int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setCardElevation", "(float)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setContentPadding", "(int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setMaxCardElevation", "(float)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setMinimumHeight", "(int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setMinimumWidth", "(int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setPadding", "(int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setPaddingRelative", "(int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setPreventCornerOverlap", "(boolean)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setRadius", "(float)", "summary", "df-generated"]
+      - ["androidx.cardview.widget", "CardView", "setUseCompatPadding", "(boolean)", "summary", "df-generated"]

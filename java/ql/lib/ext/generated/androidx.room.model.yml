@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room", "RoomOpenHelperTest", "init", "()", "summary", "df-generated"]
+      - ["androidx.room", "RoomOpenHelperTest", "room_v1_1_helper", "()", "summary", "df-generated"]
+      - ["androidx.room", "RoomOpenHelperTest", "room_v1_1_helper_badHash", "()", "summary", "df-generated"]
+      - ["androidx.room", "RoomOpenHelperTest", "room_v1_1_helper_legacy", "()", "summary", "df-generated"]
+      - ["androidx.room", "RoomOpenHelperTest", "room_v1_1_helper_legacy_badHash", "()", "summary", "df-generated"]
+      - ["androidx.room", "RoomOpenHelperTest", "room_v1_helper", "()", "summary", "df-generated"]

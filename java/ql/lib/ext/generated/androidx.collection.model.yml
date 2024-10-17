@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.collection", "ArrayMap", "ArrayMap", "(SimpleArrayMap)", "summary", "df-generated"]
+      - ["androidx.collection", "ArrayMap", "ArrayMap", "(int)", "summary", "df-generated"]
+      - ["androidx.collection", "ArrayMap", "containsAll", "(Collection)", "summary", "df-generated"]
+      - ["androidx.collection", "ArrayMap", "containsValue", "(Object)", "summary", "df-generated"]
+      - ["androidx.collection", "ArrayMap", "removeAll", "(Collection)", "summary", "df-generated"]
+      - ["androidx.collection", "ArrayMap", "retainAll", "(Collection)", "summary", "df-generated"]

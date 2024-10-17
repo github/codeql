@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "AndNode", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "AndNode", "(Node,Node,Node[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "AndNode", "(Node,Node,Node[])", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "AndNode", "(Node,Node,Node[])", "", "Argument[2].ArrayElement", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "addChild", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "getChildren", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "setChild", "(int,Node)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "AndNode", False, "setChildren", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.AndNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", True, "ComparatorNode", "(int,PropertyPath,long)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.ComparatorNode.mPropertyPath]", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", True, "getPropertyPath", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.ComparatorNode.mPropertyPath]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", True, "setPropertyPath", "(PropertyPath)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.ComparatorNode.mPropertyPath]", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "OrNode", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "OrNode", "(Node,Node,Node[])", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "OrNode", "(Node,Node,Node[])", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "OrNode", "(Node,Node,Node[])", "", "Argument[2].ArrayElement", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "addChild", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "getChildren", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "setChild", "(int,Node)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", False, "setChildren", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.OrNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "PropertyRestrictNode", "(PropertyPath,Node)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mProperty]", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "PropertyRestrictNode", "(PropertyPath,Node)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "getChild", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mChildren].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "getChildren", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mChildren].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "getProperty", "()", "", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mProperty]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "setChild", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mChildren].Element", "value", "dfc-generated"]
+      - ["androidx.appsearch.ast.operators", "PropertyRestrictNode", True, "setProperty", "(PropertyPath)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.appsearch.ast.operators.PropertyRestrictNode.mProperty]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appsearch.ast.operators", "AndNode", "removeChild", "(int)", "summary", "df-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", "getComparator", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", "getValue", "()", "summary", "df-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", "setComparator", "(int)", "summary", "df-generated"]
+      - ["androidx.appsearch.ast.operators", "ComparatorNode", "setValue", "(long)", "summary", "df-generated"]
+      - ["androidx.appsearch.ast.operators", "OrNode", "removeChild", "(int)", "summary", "df-generated"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "close", "()", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "flush", "()", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "install", "()", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "isInstalled", "()", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "publish", "(LogRecord)", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "removeHandlersForRootLogger", "()", "summary", "df-generated"]
+      - ["org.slf4j.bridge", "SLF4JBridgeHandler", "uninstall", "()", "summary", "df-generated"]

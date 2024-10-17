@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.mapred.tether", "TetherJob", "getExecutable", "(JobConf)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "getProtocol", "(JobConf)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "runJob", "(JobConf)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "setExecutable", "(JobConf,File)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "setExecutable", "(JobConf,File,List,boolean)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "setProtocol", "(JobConf,String)", "summary", "df-generated"]
+      - ["org.apache.avro.mapred.tether", "TetherJob", "submitJob", "(JobConf)", "summary", "df-generated"]

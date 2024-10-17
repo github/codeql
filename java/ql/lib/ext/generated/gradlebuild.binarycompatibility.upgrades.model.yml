@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "of", "(String,String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "of", "(String,String,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "of", "(String,String,String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "ofMethodWithSameSignatureButNewName", "(String,JApiMethod)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "ofReplacedAccessor", "(String,UpgradedProperty$ReplacedAccessor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "ofReplacedAccessor", "(String,UpgradedProperty$ReplacedAccessor)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", True, "ofUpgradedProperty", "(UpgradedProperty)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$ReplacedAccessor", True, "ReplacedAccessor", "(String,String,UpgradedProperty$BinaryCompatibility)", "", "Argument[0]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty$ReplacedAccessor.name]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$ReplacedAccessor", True, "ReplacedAccessor", "(String,String,UpgradedProperty$BinaryCompatibility)", "", "Argument[1]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty$ReplacedAccessor.descriptor]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$ReplacedAccessor", True, "getDescriptor", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty$ReplacedAccessor.descriptor]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$ReplacedAccessor", True, "getName", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty$ReplacedAccessor.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "UpgradedProperty", "(String,String,String,String,List)", "", "Argument[0]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.containingType]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "UpgradedProperty", "(String,String,String,String,List)", "", "Argument[1]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.propertyName]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "UpgradedProperty", "(String,String,String,String,List)", "", "Argument[2]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.methodName]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "UpgradedProperty", "(String,String,String,String,List)", "", "Argument[3]", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.methodDescriptor]", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "UpgradedProperty", "(String,String,String,String,List)", "", "Argument[4].Element", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.replacedAccessors].Element", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "getContainingType", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.containingType]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "getMethodDescriptor", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.methodDescriptor]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "getMethodName", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.methodName]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "getPropertyName", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.propertyName]", "ReturnValue", "value", "dfc-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty", True, "getReplacedAccessors", "()", "", "Argument[this].SyntheticField[gradlebuild.binarycompatibility.upgrades.UpgradedProperty.replacedAccessors]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperties", True, "parse", "(String)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperties", "maybeGetKeyOfOldAccessorOfUpgradedProperty", "(JApiCompatibility,ViolationCheckContext)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperties", "parse", "(String)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperties", "shouldAcceptForUpgradedProperty", "(JApiMethod,Violation,ViolationCheckContext)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", "ofNewMethod", "(JApiMethod)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$AccessorKey", "ofOldMethod", "(JApiMethod)", "summary", "df-generated"]
+      - ["gradlebuild.binarycompatibility.upgrades", "UpgradedProperty$ReplacedAccessor", "getBinaryCompatibility", "()", "summary", "df-generated"]

@@ -1,0 +1,45 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.emoji.util", "TestString", True, "TestString", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.emoji.util", "TestString", True, "append", "(Emoji$EmojiMapping)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.emoji.util", "TestString", True, "append", "(int[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.emoji.util", "TestString", True, "prepend", "(int[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.emoji.util", "TestString", True, "withPrefix", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.emoji.util", "TestString", True, "withSuffix", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.emoji.util", "Emoji$EmojiMapping", "charCount", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "Emoji$EmojiMapping", "codepoints", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "Emoji$EmojiMapping", "id", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmoji", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmoji", "(Emoji$EmojiMapping)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmoji", "(int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmojiAt", "(Emoji$EmojiMapping,int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmojiAt", "(int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmojiAt", "(int,int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "hasEmojiCount", "(int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "EmojiMatcher", "sameCharSequence", "(CharSequence)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "altDel", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "ctrlDel", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "del", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "deleteSurroundingText", "(Instrumentation,InputConnection,int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "fnDel", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "forwardDel", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "initTextViewForSimulatedIme", "(Instrumentation,TextView)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "keyEvent", "(int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "keyEvent", "(int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "setComposingTextInBatch", "(Instrumentation,InputConnection,CharSequence)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "setSelection", "(Instrumentation,Spannable,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "setSelection", "(Instrumentation,Spannable,int,int)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "shiftDel", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "KeyboardUtil", "zero", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "TestString", "TestString", "(Emoji$EmojiMapping)", "summary", "df-generated"]
+      - ["androidx.emoji.util", "TestString", "TestString", "(int[])", "summary", "df-generated"]
+      - ["androidx.emoji.util", "TestString", "emojiEndIndex", "()", "summary", "df-generated"]
+      - ["androidx.emoji.util", "TestString", "emojiStartIndex", "()", "summary", "df-generated"]
