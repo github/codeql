@@ -519,13 +519,7 @@ class Method extends Function {
    * Gets the receiver base type of this method, that is, either the base type of the receiver type
    * if it is a pointer type, or the receiver type itself if it is not a pointer type.
    */
-  Type getReceiverBaseType() {
-    exists(Type recv | recv = this.getReceiverType() |
-      if recv instanceof PointerType
-      then result = recv.(PointerType).getBaseType()
-      else result = recv
-    )
-  }
+  Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
   private predicate isIn(NamedType tp, string m) {

@@ -446,11 +446,7 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        (
-          name = tp.(NamedType).getName()
-          or
-          name = tp.(PointerType).getBaseType().(NamedType).getName()
-        )
+        name = lookThroughPointerType(tp).(NamedType).getName()
       ) else (
         isEmbedded = false and
         name = n
@@ -518,9 +514,7 @@ class StructType extends @structtype, CompositeType {
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     result.getName() = name and
     (
-      result.getReceiverBaseType() = embeddedParent.getType()
-      or
-      result.getReceiverBaseType() = embeddedParent.getType().(PointerType).getBaseType()
+      result.getReceiverBaseType() = lookThroughPointerType(embeddedParent.getType())
       or
       methodhosts(result, embeddedParent.getType())
     )
@@ -642,6 +636,16 @@ class PointerType extends @pointertype, CompositeType {
   override string pp() { result = "* " + this.getBaseType().pp() }
 
   override string toString() { result = "pointer type" }
+}
+
+/**
+ * Gets the base type if `t` is a pointer type, otherwise `t` itself.
+ */
+Type lookThroughPointerType(Type t) {
+  not t instanceof PointerType and
+  result = t
+  or
+  result = t.(PointerType).getBaseType()
 }
 
 private newtype TTypeSetTerm =
