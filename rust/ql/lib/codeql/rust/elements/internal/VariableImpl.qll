@@ -1,6 +1,8 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.ImplicitVariableAccessImpl::Impl as ImplicitVariableAccessImpl
 private import codeql.util.DenseRank
 
 module Impl {
@@ -450,7 +452,8 @@ module Impl {
   private class TVariableAccess = Synth::TPathExpr or Synth::TImplicitVariableAccess;
 
   /** A variable access. */
-  class VariableAccess extends ExprImpl::Expr, TVariableAccess instanceof VariableAccessCand {
+  abstract class VariableAccess extends ExprImpl::Expr, TVariableAccess instanceof VariableAccessCand
+  {
     private string name;
     private Variable v;
 
@@ -465,6 +468,18 @@ module Impl {
     override string toString() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
+  }
+
+  private class VariableAccessPathExpr extends VariableAccess, PathExprImpl::PathExpr {
+    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
+  }
+
+  private class VariableAccessImplicitVariableAccess extends VariableAccess,
+    ImplicitVariableAccessImpl::ImplicitVariableAccess
+  {
+    override string toString() { result = VariableAccess.super.toString() }
+
+    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
