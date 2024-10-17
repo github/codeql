@@ -428,3 +428,29 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
     )
   }
 }
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.go.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowPrivate::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlow::ArgumentNode).argumentOf(call, argpos)
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlow::ArgumentNode)
+          .argumentOf(call, -1)
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
+    )
+  }
+}
