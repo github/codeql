@@ -375,8 +375,8 @@
 | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:12 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:2 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:39 | Parameter | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:16 | Number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:16 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:8:6 | param(...) |
-| Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | True | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:39 | Parameter |
-| Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | True | Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | True |
+| Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | True | Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | ValueFromPipeline |
+| Statements/UseProcessBlockForPipelineCommand.ps1:5:20:5:37 | ValueFromPipeline | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:39 | Parameter |
 | Statements/UseProcessBlockForPipelineCommand.ps1:6:9:6:14 | int | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:16 | Number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:12 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:12 | Number |
