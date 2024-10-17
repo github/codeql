@@ -224,6 +224,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           hasFilteredSource()
         )
       }
+
+      bindingset[source, sink]
+      pragma[inline_late]
+      predicate isRelevantSourceSinkPair(Node source, Node sink) {
+        isFilteredSource(source) or
+        isFilteredSink(sink)
+      }
     }
 
     private import SourceSinkFiltering
@@ -3511,6 +3518,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
              * included in the module `PathGraph`.
              */
             predicate flowPath(PathNode source, PathNode sink) {
+              (
+                // When there are both sources and sinks in the diff range,
+                // diff-informed dataflow falls back to computing all paths without
+                // any filtering. To prevent significant alert flip-flopping due to
+                // minor code changes triggering the fallback, we consistently apply
+                // source-or-sink filtering here to ensure that we return the same
+                // paths regardless of whether the fallback is triggered.
+                if Config::observeDiffInformedIncrementalMode()
+                then isRelevantSourceSinkPair(source.getNode(), sink.getNode())
+                else any()
+              ) and
               exists(PathNodeImpl flowsource, PathNodeImpl flowsink |
                 source = flowsource and sink = flowsink
               |
