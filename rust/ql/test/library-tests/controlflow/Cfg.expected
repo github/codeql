@@ -633,14 +633,23 @@ edges
 | test.rs:282:13:282:24 | PathPat | test.rs:282:29:282:29 | 5 | match |
 | test.rs:282:29:282:29 | 5 | test.rs:276:9:283:9 | MatchExpr |  |
 | test.rs:289:5:292:5 | enter empty_tuple_pattern | test.rs:289:28:289:31 | unit |  |
+| test.rs:289:5:292:5 | exit empty_tuple_pattern (normal) | test.rs:289:5:292:5 | exit empty_tuple_pattern |  |
 | test.rs:289:28:289:31 | unit | test.rs:289:28:289:35 | Param | match |
 | test.rs:289:28:289:35 | Param | test.rs:290:9:290:22 | LetStmt |  |
 | test.rs:290:9:290:22 | LetStmt | test.rs:290:18:290:21 | unit |  |
+| test.rs:290:13:290:14 | TuplePat | test.rs:291:9:291:15 | ExprStmt | match |
 | test.rs:290:18:290:21 | unit | test.rs:290:13:290:14 | TuplePat |  |
+| test.rs:291:9:291:14 | ReturnExpr | test.rs:289:5:292:5 | exit empty_tuple_pattern (normal) | return |
+| test.rs:291:9:291:15 | ExprStmt | test.rs:291:9:291:14 | ReturnExpr |  |
 | test.rs:296:5:300:5 | enter empty_struct_pattern | test.rs:296:29:296:30 | st |  |
+| test.rs:296:5:300:5 | exit empty_struct_pattern (normal) | test.rs:296:5:300:5 | exit empty_struct_pattern |  |
 | test.rs:296:29:296:30 | st | test.rs:296:29:296:40 | Param | match |
 | test.rs:296:29:296:40 | Param | test.rs:297:15:297:16 | st |  |
+| test.rs:296:50:300:5 | BlockExpr | test.rs:296:5:300:5 | exit empty_struct_pattern (normal) |  |
+| test.rs:297:9:299:9 | MatchExpr | test.rs:296:50:300:5 | BlockExpr |  |
 | test.rs:297:15:297:16 | st | test.rs:298:13:298:23 | RecordPat |  |
+| test.rs:298:13:298:23 | RecordPat | test.rs:298:28:298:28 | 1 | match |
+| test.rs:298:28:298:28 | 1 | test.rs:297:9:299:9 | MatchExpr |  |
 | test.rs:304:5:309:5 | enter test_infinite_loop | test.rs:305:9:307:9 | ExprStmt |  |
 | test.rs:305:9:307:9 | ExprStmt | test.rs:306:13:306:13 | 1 |  |
 | test.rs:305:14:307:9 | BlockExpr | test.rs:306:13:306:13 | 1 |  |

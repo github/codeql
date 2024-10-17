@@ -612,6 +612,8 @@ module PatternTrees {
       result = rank[i + 1](Pat pat, int j | pat = this.getPat(j) | pat order by j)
     }
 
+    predicate isEmpty() { not any(Pat p) = this.getPat(0) }
+
     override predicate propagatesAbnormal(AstNode child) { child = this.getPatRanked(_) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -629,8 +631,11 @@ module PatternTrees {
 
     override predicate last(AstNode node, Completion c) {
       node = this and
-      completionIsValidFor(c, this) and
-      c.(MatchCompletion).failed()
+      (
+        completionIsValidFor(c, this) and c.(MatchCompletion).failed()
+        or
+        this.isEmpty() and node = this and c.(MatchCompletion).succeeded()
+      )
       or
       exists(int i | last(this.getPatRanked(i), node, c) |
         c.(MatchCompletion).failed()
