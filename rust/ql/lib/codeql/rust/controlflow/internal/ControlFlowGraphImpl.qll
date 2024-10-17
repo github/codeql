@@ -524,10 +524,7 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
 
 class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
   override AstNode getChildNode(int i) {
-    i = 0 and
-    result = this.getReceiver()
-    or
-    result = this.getArgList().getArg(i + 1)
+    if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
   }
 }
 

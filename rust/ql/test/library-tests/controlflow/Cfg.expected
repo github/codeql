@@ -19,10 +19,9 @@ edges
 | test.rs:10:13:10:19 | map | test.rs:11:9:11:28 | ExprStmt | match |
 | test.rs:10:23:10:34 | PathExpr | test.rs:10:23:10:36 | CallExpr |  |
 | test.rs:10:23:10:36 | CallExpr | test.rs:10:13:10:19 | map |  |
-| test.rs:11:9:11:11 | map | test.rs:11:9:11:27 | MethodCallExpr |  |
+| test.rs:11:9:11:11 | map | test.rs:11:20:11:21 | 37 |  |
 | test.rs:11:9:11:27 | MethodCallExpr | test.rs:9:22:12:5 | BlockExpr |  |
-| test.rs:11:9:11:28 | ExprStmt | test.rs:11:20:11:21 | 37 |  |
-| test.rs:11:20:11:21 | 37 | test.rs:11:9:11:11 | map |  |
+| test.rs:11:9:11:28 | ExprStmt | test.rs:11:9:11:11 | map |  |
 | test.rs:11:20:11:21 | 37 | test.rs:11:24:11:26 | "a" |  |
 | test.rs:11:24:11:26 | "a" | test.rs:11:9:11:27 | MethodCallExpr |  |
 | test.rs:17:5:33:5 | enter test_break_and_continue | test.rs:17:32:17:32 | n |  |
