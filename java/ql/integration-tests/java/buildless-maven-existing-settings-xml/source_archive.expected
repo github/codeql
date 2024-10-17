@@ -1,4 +1,4 @@
-.mvn/wrapper/maven-wrapper.properties
+home-dir-with-maven-settings/.m2/settings.xml
 pom.xml
 src/main/java/com/example/App.java
 src/main/resources/my-app.properties
