@@ -269,15 +269,16 @@ module SourceSinkInterpretationInput implements
   }
 
   private predicate ensureCorrectTypeInfo(SourceOrSinkElement sse, DataFlow::Node recv) {
-    exists(
-      string pkg, string typename, boolean subtypes, Type syntacticRecvType,
-      Type syntacticRecvBaseType
-    |
+    (
+      exists(DataFlow::CallNode cn | cn.getReceiver() = recv and cn.getTarget() = sse.asEntity())
+      or
+      exists(DataFlow::FieldReadNode frn | frn.getBase() = recv and frn.getField() = sse.asEntity())
+      or
+      exists(DataFlow::Write fw | fw.writesField(recv, sse.asEntity(), _))
+    ) and
+    exists(string pkg, string typename, boolean subtypes, Type syntacticRecvBaseType |
       sse.hasTypeInfo(pkg, typename, subtypes) and
-      syntacticRecvType = skipImplicitFieldReads(recv).getType() and
-      if syntacticRecvType instanceof PointerType
-      then syntacticRecvBaseType = syntacticRecvType.(PointerType).getBaseType()
-      else syntacticRecvBaseType = syntacticRecvType
+      syntacticRecvBaseType = lookThroughPointerType(getSyntacticRecv(recv).getType())
     |
       subtypes = [true, false] and
       syntacticRecvBaseType.hasQualifiedName(pkg, typename)
@@ -285,7 +286,7 @@ module SourceSinkInterpretationInput implements
       subtypes = true and
       (
         // `syntacticRecvBaseType`'s underlying type might be an interface type and `sse`
-        // might be a method defined on an embedded interface.
+        // might be a method defined on an interface which is a subtype of it.
         exists(Type t |
           t = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
           t.hasQualifiedName(pkg, typename) and
@@ -294,55 +295,71 @@ module SourceSinkInterpretationInput implements
         or
         // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method.
-        exists(StructType st, Field embeddedParent, int depth |
-          st = syntacticRecvBaseType.getUnderlyingType() and
-          sse.asEntity() = st.getMethodOfEmbedded(embeddedParent, _, depth) and
-          methodTypeInfoHelper(sse.asEntity(), embeddedParent, st, depth, pkg, typename)
-        )
+        methodTypeInfoHelper(sse, _, syntacticRecvBaseType, _)
         or
         // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted field.
-        exists(StructType st, Field embeddedParent, int depth |
-          st = syntacticRecvBaseType.getUnderlyingType() and
-          sse.asEntity() = st.getFieldOfEmbedded(embeddedParent, _, depth, false) and
-          fieldTypeInfoHelper(sse.asEntity(), embeddedParent, st, depth, pkg, typename)
-        )
+        fieldTypeInfoHelper(sse, _, syntacticRecvBaseType, _)
       )
+    )
+  }
+
+  private DataFlow::Node getSyntacticRecv(DataFlow::Node n) {
+    exists(DataFlow::Node n2 |
+      // look through implicit dereference, if there is one
+      not exists(n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()) and
+      n2 = n
+      or
+      n2.asExpr() = n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()
+    |
+      result = skipImplicitFieldReads(n2)
     )
   }
 
   private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
     not exists(getImplicitFieldReadInstruction(n)) and result = n
     or
-    result =
-      skipImplicitFieldReads(DataFlow::instructionNode(getImplicitFieldReadInstruction(n)
-              .getBaseInstruction()))
+    result = skipImplicitFieldReads(getImplicitFieldReadInstruction(n))
   }
 
   pragma[inline]
-  private IR::ImplicitFieldReadInstruction getImplicitFieldReadInstruction(DataFlow::Node n) {
-    result = n.(DataFlow::InstructionNode).asInstruction()
+  private DataFlow::Node getImplicitFieldReadInstruction(DataFlow::Node n) {
+    result.asInstruction() =
+      n.(DataFlow::InstructionNode)
+          .asInstruction()
+          .(IR::ImplicitFieldReadInstruction)
+          .getBaseInstruction()
   }
 
   /**
-   * Holds if `st` has an embedded field `embeddedParent` at depth `depth` - 1,
+   * Holds if `st`'s underlying type is a struct type which has an embedded
+   * field `embeddedParent` at depth `depth` - 1,
    * which has a method `m` defined directly on it, and the type of
    * `embeddedParent` is `pkg.name`.
    */
   private predicate methodTypeInfoHelper(
-    Method m, Field embeddedParent, StructType st, int depth, string pkg, string name
+    SourceOrSinkElement sse, Field embeddedParent, NamedType t, int depth
   ) {
-    depth = 1 and
-    embeddedParent = st.getOwnField(_, true) and
-    embeddedParent.getType().hasQualifiedName(pkg, name) and
-    m.getReceiverBaseType() = embeddedParent.getType()
-    or
-    depth > 1 and
-    exists(Field f, StructType st2 |
-      f = st.getOwnField(_, true) and
-      st2 = f.getType().getUnderlyingType() and
-      m = st2.getMethodOfEmbedded(embeddedParent, _, depth - 1) and
-      methodTypeInfoHelper(m, f, st2, depth - 1, pkg, name)
+    exists(Method m, StructType st, string pkg, string typename |
+      m = sse.asEntity() and
+      sse.hasTypeInfo(pkg, typename, true) and
+      st = t.getUnderlyingType() and
+      m = st.getMethodOfEmbedded(embeddedParent, _, depth)
+    |
+      depth = 1 and
+      embeddedParent = st.getOwnField(_, true) and
+      exists(Type epbasetype | epbasetype = lookThroughPointerType(embeddedParent.getType()) |
+        epbasetype.hasQualifiedName(pkg, typename) and
+        m.getReceiverBaseType() = epbasetype
+      )
+      or
+      depth > 1 and
+      exists(Field f, NamedType t2 |
+        f = st.getOwnField(_, true) and
+        t2 = f.getType() and
+        m = t2.getUnderlyingType().(StructType).getMethodOfEmbedded(embeddedParent, _, depth - 1) and
+        methodTypeInfoHelper(sse, embeddedParent, t2, depth - 1)
+      )
     )
   }
 
@@ -352,19 +369,31 @@ module SourceSinkInterpretationInput implements
    * `embeddedParent` is `pkg.name`.
    */
   private predicate fieldTypeInfoHelper(
-    Field targetField, Field embeddedParent, StructType st, int depth, string pkg, string name
+    SourceOrSinkElement sse, Field embeddedParent, NamedType t, int depth
   ) {
-    depth = 1 and
-    embeddedParent = st.getOwnField(_, true) and
-    embeddedParent.getType().hasQualifiedName(pkg, name) and
-    targetField.getDeclaringType() = embeddedParent.getType().getUnderlyingType()
-    or
-    depth > 1 and
-    exists(Field f, StructType st2 |
-      f = st.getOwnField(_, true) and
-      st2 = f.getType().getUnderlyingType() and
-      targetField = st2.getFieldOfEmbedded(embeddedParent, _, depth - 1, false) and
-      fieldTypeInfoHelper(targetField, f, st2, depth - 1, pkg, name)
+    exists(Field targetField, StructType st, string pkg, string typename |
+      st = t.getUnderlyingType() and
+      sse.asEntity() = targetField and
+      sse.hasTypeInfo(pkg, typename, true) and
+      targetField = st.getFieldOfEmbedded(embeddedParent, _, depth, false)
+    |
+      depth = 1 and
+      embeddedParent = st.getOwnField(_, true) and
+      exists(Type epbasetype | epbasetype = lookThroughPointerType(embeddedParent.getType()) |
+        epbasetype.hasQualifiedName(pkg, typename) and
+        targetField.getDeclaringType() = epbasetype.getUnderlyingType()
+      )
+      or
+      depth > 1 and
+      exists(Field f, NamedType t2 |
+        t2 = f.getType() and
+        f = st.getOwnField(_, true) and
+        targetField =
+          t2.getUnderlyingType()
+              .(StructType)
+              .getFieldOfEmbedded(embeddedParent, _, depth - 1, false) and
+        fieldTypeInfoHelper(sse, embeddedParent, t2, depth - 1)
+      )
     )
   }
 

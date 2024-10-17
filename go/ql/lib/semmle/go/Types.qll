@@ -644,6 +644,13 @@ class PointerType extends @pointertype, CompositeType {
   override string toString() { result = "pointer type" }
 }
 
+Type lookThroughPointerType(Type t) {
+  not t instanceof PointerType and
+  result = t
+  or
+  result = t.(PointerType).getBaseType()
+}
+
 private newtype TTypeSetTerm =
   MkTypeSetTerm(TypeSetLiteralType tslit, int index) { component_types(tslit, index, _, _) }
 
