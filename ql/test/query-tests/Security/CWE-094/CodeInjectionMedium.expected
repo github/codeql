@@ -155,6 +155,10 @@ edges
 | .github/workflows/test16.yml:100:30:100:70 | steps.commit-message.outputs.value | .github/workflows/test16.yml:99:13:102:8 | Job outputs node [commit-message] | provenance |  |
 | .github/workflows/test16.yml:123:15:128:12 | Run Step: commit-message [value] | .github/workflows/test16.yml:100:30:100:70 | steps.commit-message.outputs.value | provenance |  |
 | .github/workflows/test16.yml:125:20:125:75 | echo "value=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT | .github/workflows/test16.yml:123:15:128:12 | Run Step: commit-message [value] | provenance |  |
+| .github/workflows/test17.yml:14:13:22:10 | Uses Step: get-pr | .github/workflows/test17.yml:25:41:25:72 | steps.get-pr.outputs.data | provenance |  |
+| .github/workflows/test17.yml:30:13:39:10 | Uses Step: get-pr-details | .github/workflows/test17.yml:45:30:45:88 | fromJson(steps.get-pr-details.outputs.data).head.ref | provenance |  |
+| .github/workflows/test17.yml:49:13:55:10 | Uses Step: issues | .github/workflows/test17.yml:56:22:56:53 | steps.issues.outputs.data | provenance |  |
+| .github/workflows/test17.yml:60:13:68:10 | Uses Step: get-pull-request | .github/workflows/test17.yml:69:13:71:55 | fromJson(steps.get-pull-request.outputs.data).title | provenance |  |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | .github/workflows/test.yml:52:20:52:56 | needs.job1.outputs['job_output'] | provenance |  |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | provenance |  |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | provenance |  |
@@ -472,6 +476,14 @@ nodes
 | .github/workflows/test16.yml:215:19:230:24 | github.event.workflow_run.head_commit.author.name | semmle.label | github.event.workflow_run.head_commit.author.name |
 | .github/workflows/test16.yml:215:19:230:24 | needs.build-demo.outputs.commit-message | semmle.label | needs.build-demo.outputs.commit-message |
 | .github/workflows/test16.yml:215:19:230:24 | needs.setup.outputs.ref | semmle.label | needs.setup.outputs.ref |
+| .github/workflows/test17.yml:14:13:22:10 | Uses Step: get-pr | semmle.label | Uses Step: get-pr |
+| .github/workflows/test17.yml:25:41:25:72 | steps.get-pr.outputs.data | semmle.label | steps.get-pr.outputs.data |
+| .github/workflows/test17.yml:30:13:39:10 | Uses Step: get-pr-details | semmle.label | Uses Step: get-pr-details |
+| .github/workflows/test17.yml:45:30:45:88 | fromJson(steps.get-pr-details.outputs.data).head.ref | semmle.label | fromJson(steps.get-pr-details.outputs.data).head.ref |
+| .github/workflows/test17.yml:49:13:55:10 | Uses Step: issues | semmle.label | Uses Step: issues |
+| .github/workflows/test17.yml:56:22:56:53 | steps.issues.outputs.data | semmle.label | steps.issues.outputs.data |
+| .github/workflows/test17.yml:60:13:68:10 | Uses Step: get-pull-request | semmle.label | Uses Step: get-pull-request |
+| .github/workflows/test17.yml:69:13:71:55 | fromJson(steps.get-pull-request.outputs.data).title | semmle.label | fromJson(steps.get-pull-request.outputs.data).title |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |

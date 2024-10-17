@@ -295,3 +295,24 @@ class Xt0rtedSlashCommandSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "text" }
 }
+
+class OctokitRequestActionSource extends RemoteFlowSource {
+  OctokitRequestActionSource() {
+    exists(UsesStep u, string route |
+      u.getCallee() = "octokit/request-action" and
+      route = u.getArgument("route").trim() and
+      route.indexOf("GET") = 0 and
+      (
+        route.matches("%/commits%") or
+        route.matches("%/comments%") or
+        route.matches("%/pulls%") or
+        route.matches("%/issues%") or
+        route.matches("%/users%") or
+        route.matches("%github.event.issue.pull_request.url%")
+      ) and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+}
