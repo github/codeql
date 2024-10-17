@@ -796,8 +796,6 @@ edges
 | test.rs:381:5:381:19 | ExprStmt | test.rs:381:5:381:10 | PathExpr |  |
 | test.rs:381:12:381:17 | RefExpr | test.rs:381:5:381:18 | CallExpr |  |
 | test.rs:381:17:381:17 | x | test.rs:381:12:381:17 | RefExpr |  |
-| test.rs:385:5:385:29 | enter my_from | test.rs:385:16:385:16 | x |  |
-| test.rs:385:16:385:16 | x | test.rs:385:16:385:19 | Param | match |
 breakTarget
 | test.rs:25:17:25:21 | BreakExpr | test.rs:19:9:31:9 | LoopExpr |
 | test.rs:39:21:39:25 | BreakExpr | test.rs:37:13:44:13 | LoopExpr |
