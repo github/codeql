@@ -95,7 +95,7 @@ private module InvalidPointerToDerefBarrier {
     additional predicate isSource(DataFlow::Node source, PointerArithmeticInstruction pai) {
       invalidPointerToDerefSource(_, pai, _) and
       // source <= pai
-      bounded2(source.asInstruction(), pai, any(int d | d <= 0))
+      bounded2(source.asInstruction(), pai, any(QlBuiltins::BigInt d | d <= 0.toBigInt()))
     }
 
     predicate isSource(DataFlow::Node source) { isSource(source, _) }
@@ -135,7 +135,10 @@ private module InvalidPointerToDerefBarrier {
    * Gets an instruction `instr` such that `instr < pai`.
    */
   Instruction getABarrierInstruction(PointerArithmeticInstruction pai) {
-    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge, int delta, int k |
+    exists(
+      IRGuardCondition g, ValueNumber value, Operand use, boolean edge, QlBuiltins::BigInt delta,
+      int k
+    |
       use = value.getAUse() and
       // value < pai + k
       operandGuardChecks(pai, pragma[only_bind_into](g), pragma[only_bind_into](use),
@@ -143,7 +146,7 @@ private module InvalidPointerToDerefBarrier {
       // result <= value + delta
       bounded(result, value.getAnInstruction(), delta) and
       g.controls(result.getBlock(), edge) and
-      delta + k <= 0
+      delta + k.toBigInt() <= 0.toBigInt()
       // combining the above we have: result < pai + k + delta <= pai
     )
   }
@@ -241,12 +244,12 @@ private predicate invalidPointerToDerefSource(
 pragma[inline]
 private predicate isInvalidPointerDerefSink(
   DataFlow::Node sink, AddressOperand addr, Instruction i, string operation,
-  int deltaDerefSinkAndDerefAddress
+  QlBuiltins::BigInt deltaDerefSinkAndDerefAddress
 ) {
   exists(Instruction s |
     s = sink.asInstruction() and
     bounded(addr.getDef(), s, deltaDerefSinkAndDerefAddress) and
-    deltaDerefSinkAndDerefAddress >= 0 and
+    deltaDerefSinkAndDerefAddress >= 0.toBigInt() and
     i.getAnOperand() = addr
   |
     i instanceof StoreInstruction and
@@ -287,7 +290,7 @@ private predicate paiForDereferenceSink(PointerArithmeticInstruction pai, DataFl
  */
 private predicate derefSinkToOperation(
   DataFlow::Node derefSink, PointerArithmeticInstruction pai, DataFlow::Node operation,
-  string description, int deltaDerefSinkAndDerefAddress
+  string description, QlBuiltins::BigInt deltaDerefSinkAndDerefAddress
 ) {
   exists(Instruction operationInstr, AddressOperand addr |
     paiForDereferenceSink(pai, pragma[only_bind_into](derefSink)) and
@@ -309,7 +312,7 @@ private predicate derefSinkToOperation(
  */
 predicate operationIsOffBy(
   DataFlow::Node allocation, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
-  DataFlow::Node derefSink, string description, DataFlow::Node operation, int delta
+  DataFlow::Node derefSink, string description, DataFlow::Node operation, QlBuiltins::BigInt delta
 ) {
   invalidPointerToDerefSource(allocation, pai, derefSource) and
   flow(derefSource, derefSink) and

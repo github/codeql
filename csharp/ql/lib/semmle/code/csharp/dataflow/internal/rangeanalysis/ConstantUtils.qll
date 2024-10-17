@@ -22,8 +22,8 @@ predicate systemArrayLengthAccess(PropertyAccess pa) {
  * - a read of a compile time constant with integer value `val`, or
  * - a read of the `Length` of an array with `val` lengths.
  */
-private predicate constantIntegerExpr(ExprNode e, int val) {
-  e.getValue().toInt() = val
+private predicate constantIntegerExpr(ExprNode e, QlBuiltins::BigInt val) {
+  e.getValue().toBigInt() = val
   or
   exists(ExprNode src |
     e = getAnExplicitDefinitionRead(src) and
@@ -33,25 +33,26 @@ private predicate constantIntegerExpr(ExprNode e, int val) {
   isArrayLengthAccess(e, val)
 }
 
-private int getArrayLength(ExprNode e, int index) {
+private QlBuiltins::BigInt getArrayLength(ExprNode e, QlBuiltins::BigInt index) {
   exists(ArrayCreation arrCreation, ExprNode length |
-    hasChild(arrCreation, arrCreation.getLengthArgument(index), e, length) and
+    hasChild(arrCreation, arrCreation.getLengthArgument(any(int i | i.toBigInt() = index)), e,
+      length) and
     constantIntegerExpr(length, result)
   )
 }
 
-private int getArrayLengthRec(ExprNode arrCreation, int index) {
-  index = 0 and result = getArrayLength(arrCreation, 0)
+private QlBuiltins::BigInt getArrayLengthRec(ExprNode arrCreation, QlBuiltins::BigInt index) {
+  index = 0.toBigInt() and result = getArrayLength(arrCreation, 0.toBigInt())
   or
-  index > 0 and
-  result = getArrayLength(arrCreation, index) * getArrayLengthRec(arrCreation, index - 1)
+  index > 0.toBigInt() and
+  result = getArrayLength(arrCreation, index) * getArrayLengthRec(arrCreation, index - 1.toBigInt())
 }
 
-private predicate isArrayLengthAccess(ExprNode e, int length) {
+private predicate isArrayLengthAccess(ExprNode e, QlBuiltins::BigInt length) {
   exists(PropertyAccess pa, ExprNode arrCreation |
     systemArrayLengthAccess(pa) and
     getArrayLengthRec(arrCreation,
-      arrCreation.getExpr().(ArrayCreation).getNumberOfLengthArguments() - 1) = length and
+      (arrCreation.getExpr().(ArrayCreation).getNumberOfLengthArguments() - 1).toBigInt()) = length and
     hasChild(pa, pa.getQualifier(), e, getAnExplicitDefinitionRead(arrCreation))
   )
 }
@@ -61,5 +62,5 @@ class ConstantIntegerExpr extends ExprNode {
   ConstantIntegerExpr() { constantIntegerExpr(this, _) }
 
   /** Gets the integer value of this expression. */
-  int getIntValue() { constantIntegerExpr(this, result) }
+  QlBuiltins::BigInt getIntValue() { constantIntegerExpr(this, result) }
 }

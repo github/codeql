@@ -18,7 +18,7 @@ import ArrayAddressToDerefFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
-  getSemanticExpr(result) = b.getExpr(0) and
+  getSemanticExpr(result) = b.getExpr(0.toBigInt()) and
   result.getEnclosingIRFunction() = func
 }
 
@@ -26,7 +26,7 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
  * Holds if `i <= b + delta`.
  */
 pragma[inline]
-predicate boundedImpl(Instruction i, Instruction b, int delta) {
+predicate boundedImpl(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
     b = getABoundIn(bound, func) and
@@ -36,17 +36,21 @@ predicate boundedImpl(Instruction i, Instruction b, int delta) {
 
 bindingset[i]
 pragma[inline_late]
-predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+predicate bounded1(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
+  boundedImpl(i, b, delta)
+}
 
 bindingset[b]
 pragma[inline_late]
-predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+predicate bounded2(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
+  boundedImpl(i, b, delta)
+}
 
 bindingset[delta]
 predicate isInvalidPointerDerefSinkImpl(
-  int delta, Instruction i, AddressOperand addr, string operation
+  QlBuiltins::BigInt delta, Instruction i, AddressOperand addr, string operation
 ) {
-  delta >= 0 and
+  delta >= 0.toBigInt() and
   i.getAnOperand() = addr and
   (
     i instanceof StoreInstruction and
@@ -64,7 +68,7 @@ predicate isInvalidPointerDerefSinkImpl(
  */
 pragma[inline]
 predicate isInvalidPointerDerefSink1(DataFlow::Node sink, Instruction i, string operation) {
-  exists(AddressOperand addr, int delta |
+  exists(AddressOperand addr, QlBuiltins::BigInt delta |
     bounded1(addr.getDef(), sink.asInstruction(), delta) and
     isInvalidPointerDerefSinkImpl(delta, i, addr, operation)
   )
@@ -72,7 +76,7 @@ predicate isInvalidPointerDerefSink1(DataFlow::Node sink, Instruction i, string 
 
 pragma[inline]
 predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string operation) {
-  exists(AddressOperand addr, int delta |
+  exists(AddressOperand addr, QlBuiltins::BigInt delta |
     bounded2(addr.getDef(), sink.asInstruction(), delta) and
     isInvalidPointerDerefSinkImpl(delta, i, addr, operation)
   )
@@ -85,31 +89,33 @@ predicate arrayTypeCand(ArrayType arrayType) {
 
 bindingset[baseTypeSize]
 pragma[inline_late]
-predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int size) {
+predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, QlBuiltins::BigInt size) {
   arrayTypeCand(arr) and
-  arr.getByteSize() / baseTypeSize = size
+  (arr.getByteSize() / baseTypeSize).toBigInt() = size
 }
 
 bindingset[pai]
 pragma[inline_late]
-predicate constantUpperBounded(PointerArithmeticInstruction pai, int delta) {
+predicate constantUpperBounded(PointerArithmeticInstruction pai, QlBuiltins::BigInt delta) {
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true, _)
 }
 
 bindingset[pai, size]
-predicate pointerArithOverflow0Impl(PointerArithmeticInstruction pai, int size, int delta) {
-  exists(int bound |
+predicate pointerArithOverflow0Impl(
+  PointerArithmeticInstruction pai, QlBuiltins::BigInt size, QlBuiltins::BigInt delta
+) {
+  exists(QlBuiltins::BigInt bound |
     constantUpperBounded(pai, bound) and
     delta = bound - size and
-    delta >= 0 and
-    size != 0 and
-    size != 1
+    delta >= 0.toBigInt() and
+    size != 0.toBigInt() and
+    size != 1.toBigInt()
   )
 }
 
 pragma[nomagic]
-predicate pointerArithOverflow0(PointerArithmeticInstruction pai, int delta) {
-  exists(int size |
+predicate pointerArithOverflow0(PointerArithmeticInstruction pai, QlBuiltins::BigInt delta) {
+  exists(QlBuiltins::BigInt size |
     arrayTypeHasSizes(_, pai.getElementSize(), size) and
     pointerArithOverflow0Impl(pai, size, delta)
   )
@@ -127,14 +133,16 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
 
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
 
-predicate pointerArithOverflow(PointerArithmeticInstruction pai, int delta) {
+predicate pointerArithOverflow(PointerArithmeticInstruction pai, QlBuiltins::BigInt delta) {
   pointerArithOverflow0(pai, delta) and
   PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
 }
 
 bindingset[v]
-predicate finalPointerArithOverflow(Variable v, PointerArithmeticInstruction pai, int delta) {
-  exists(int size |
+predicate finalPointerArithOverflow(
+  Variable v, PointerArithmeticInstruction pai, QlBuiltins::BigInt delta
+) {
+  exists(QlBuiltins::BigInt size |
     arrayTypeHasSizes(pragma[only_bind_out](v.getUnspecifiedType()), pai.getElementSize(), size) and
     pointerArithOverflow0Impl(pai, size, delta)
   )
@@ -189,7 +197,8 @@ module ArrayAddressToDerefFlow = DataFlow::GlobalWithState<ArrayAddressToDerefCo
 
 from
   Variable v, ArrayAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
-  ArrayAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
+  ArrayAddressToDerefFlow::PathNode sink, Instruction deref, string operation,
+  QlBuiltins::BigInt delta
 where
   ArrayAddressToDerefFlow::flowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
   isInvalidPointerDerefSink2(sink.getNode(), deref, operation) and
@@ -197,5 +206,5 @@ where
   isSourceImpl(source.getNode(), v) and
   finalPointerArithOverflow(v, pai, delta)
 select pai, source, sink,
-  "This pointer arithmetic may have an off-by-" + (delta + 1) +
+  "This pointer arithmetic may have an off-by-" + (delta + 1.toBigInt()) +
     " error allowing it to overrun $@ at this $@.", v, v.getName(), deref, operation
