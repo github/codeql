@@ -14,6 +14,5 @@ from Variable v
 where
   not exists(v.getAnAccess()) and
   not exists(v.getInitializer()) and
-  not v.getName().charAt(0) = "_" and
-  exists(File f | f.getBaseName() = "main.rs" | v.getLocation().getFile() = f) // temporarily severely limit results
+  not v.getName().charAt(0) = "_"
 select v, "Variable is not used."
