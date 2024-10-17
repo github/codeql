@@ -4,7 +4,7 @@ class BashShellScript extends ShellScript {
   BashShellScript() {
     exists(Run run |
       this = run.getScript() and
-      run.getShell().matches("bash%")
+      run.getShell().matches(["bash%", "sh"])
     )
   }
 
