@@ -3,3 +3,4 @@
  * This module exports all modules providing `Element` subclasses.
  */
 
+import codeql.rust.elements.internal.ImplicitVariableAccessConstructor

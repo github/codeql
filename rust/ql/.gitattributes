@@ -53,6 +53,7 @@
 /lib/codeql/rust/elements/IfExpr.qll linguist-generated
 /lib/codeql/rust/elements/Impl.qll linguist-generated
 /lib/codeql/rust/elements/ImplTraitType.qll linguist-generated
+/lib/codeql/rust/elements/ImplicitVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/IndexExpr.qll linguist-generated
 /lib/codeql/rust/elements/InferType.qll linguist-generated
 /lib/codeql/rust/elements/Item.qll linguist-generated
@@ -506,6 +507,7 @@
 /lib/codeql/rust/elements/internal/generated/IfExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Impl.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ImplTraitType.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/ImplicitVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/IndexExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/InferType.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Item.qll linguist-generated
