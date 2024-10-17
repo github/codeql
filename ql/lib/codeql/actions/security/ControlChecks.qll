@@ -256,6 +256,9 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
     or
     this.getCallee() = "actions/github-script" and
     this.getArgument("script").splitAt("\n").matches("%getMembershipForUserInOrg%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(memberships).*")
   }
 }
 
@@ -279,6 +282,9 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
     or
     this.getCallee() = "actions/github-script" and
     this.getArgument("script").splitAt("\n").matches("%getCollaboratorPermissionLevel%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(collaborators|permission).*")
   }
 }
 
