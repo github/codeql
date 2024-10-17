@@ -10,13 +10,47 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
 import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
+newtype TException =
+  TSEHException() or
+  TCxxException()
+
 /**
- * A class that models the exceptional behavior of a function.
+ * Functions with information about how an exception is throwwn or if one is thrown at all.
+ * If throwing details conflict for the same function, IR is assumed
+ * to use the most restricted interpretation, meaning taking options
+ * that stipulate no exception is raised, before the exception is always raised,
+ * before conditional exceptions.
+ * 
+ * Annotations must specify if the exception is from SEH (structured exception handling)
+ * or ordinary c++ exceptions.
  */
-abstract class ThrowingFunction extends Function {
+private abstract class ExceptionAnnotation extends Function {
+  abstract TException getExceptionType();
+
+  final predicate isSEH() { this.getExceptionType() = TSEHException() }
+
+  final predicate isCxx() { this.getExceptionType() = TCxxException() }
+}
+
+/**
+ * Functions that are known to not throw an exception.
+ */
+abstract class NonThrowingFunction extends ExceptionAnnotation { }
+
+/**
+ * Functions that are known to raise an exception.
+ */
+abstract class ThrowingFunction extends ExceptionAnnotation {
   /**
-   * Holds if this function may throw an exception during evaluation.
-   * If `unconditional` is `true` the function always throws an exception.
+   * Holds if this function may raise an exception during evaluation.
+   * If `conditional` is `false` the function may raise, and if `true` the function
+   * will always raise an exception.
+   * Do not specify `none()` if no exception is raised, instead use the
+   * `NonThrowingFunction` class instead.
    */
-  abstract predicate mayThrowException(boolean unconditional);
+  abstract predicate raisesException(boolean unconditional);
+
+  final predicate alwaysRaisesException() { this.raisesException(true) }
+
+  final predicate mayRaiseException() { this.raisesException(false) }
 }
