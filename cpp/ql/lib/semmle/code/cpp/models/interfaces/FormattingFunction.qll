@@ -125,6 +125,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     // The formatting function either has a definition in the snapshot, or all
     // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
     // really know the correct number)
+    result > 0 and // Avoid invalid declarations
     if this.hasDefinition()
     then result = this.getDefinition().getNumberOfParameters()
     else result = this.getNumberOfExplicitParameters()
@@ -143,7 +144,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * from implicit function declarations. If there is some inconsistency in the number
    * of parameters, then don't return anything.
    */
-  private int getNumberOfExplicitParameters() {
+  int getNumberOfExplicitParameters() {
     forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
       result = fde.getNumberOfParameters()
     )
