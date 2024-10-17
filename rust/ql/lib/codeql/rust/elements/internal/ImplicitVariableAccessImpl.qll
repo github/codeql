@@ -25,14 +25,7 @@ module Impl {
       )
     }
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
+    override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       argument.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
