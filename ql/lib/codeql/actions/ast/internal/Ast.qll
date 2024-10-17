@@ -1438,12 +1438,18 @@ class RunImpl extends StepImpl {
 
   /** Gets the shell for this `run` mapping. */
   string getShell() {
-    if exists(n.lookup("shell").(YamlString).getValue())
+    if exists(n.lookup("shell"))
     then result = n.lookup("shell").(YamlString).getValue()
     else
       if exists(this.getInScopeDefaultValue("run", "shell"))
       then result = this.getInScopeDefaultValue("run", "shell").getValue()
-      else result = "bash"
+      else
+        if this.getEnclosingJob().getARunsOnLabel().matches(["ubuntu%", "macos%"])
+        then result = "bash"
+        else
+          if this.getEnclosingJob().getARunsOnLabel().matches("windows%")
+          then result = "pwsh"
+          else result = "bash"
   }
 
   ShellScriptImpl getScript() { result = scriptScalar }
