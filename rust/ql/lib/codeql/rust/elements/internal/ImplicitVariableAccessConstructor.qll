@@ -13,7 +13,7 @@ private import codeql.rust.elements.FormatTemplate
  *  INTERNAL: Do not use.
  */
 predicate constructImplicitVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
-  exists(NamedFormatArgument arg | unboundNamedFormatArgument(parent, index, kind, arg))
+  unboundNamedFormatArgument(parent, index, kind, _)
 }
 
 /**
