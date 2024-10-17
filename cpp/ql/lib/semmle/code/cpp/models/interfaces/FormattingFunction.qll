@@ -125,6 +125,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     // The formatting function either has a definition in the snapshot, or all
     // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
     // really know the correct number)
+    result > 0 and // Avoid invalid declarations
     if this.hasDefinition()
     then result = this.getDefinition().getNumberOfParameters()
     else result = this.getNumberOfExplicitParameters()

@@ -50,8 +50,6 @@ private class Fprintf extends FormattingFunction, NonThrowingFunction {
   override int getFormatParameterIndex() { result = 1 }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
-
-  override int getFirstFormatArgumentIndex() { result = 2 }
 }
 
 /**
