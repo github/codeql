@@ -187,14 +187,14 @@ fn unreachable_paren() {
 }
 
 fn unreachable_let_1() {
+	if let Some(a) = maybe_get_a_number() {
+		do_something();
+		return;
+	} else {
+		do_something();
+	}
 
-
-
-
-
-
-
-
+	do_something(); // SPURIOUS: unreachable code
 
 	if let a = get_a_number() { // (always succeeds)
 		do_something();
@@ -207,12 +207,12 @@ fn unreachable_let_1() {
 }
 
 fn unreachable_let_2() {
+	let Some(a) = maybe_get_a_number() else {
+		do_something();
+		return;
+	};
 
-
-
-
-
-
+	do_something();
 
 	let a = maybe_get_a_number() else { // (always succeeds)
 		do_something(); // BAD: unreachable code

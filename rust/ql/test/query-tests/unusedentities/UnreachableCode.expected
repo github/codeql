@@ -13,6 +13,7 @@
 | unreachable.rs:169:4:169:18 | ExprStmt | This code is never reached. |
 | unreachable.rs:177:4:177:18 | ExprStmt | This code is never reached. |
 | unreachable.rs:180:2:180:16 | ExprStmt | This code is never reached. |
+| unreachable.rs:197:2:197:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:203:3:203:17 | ExprStmt | This code is never reached. |
 | unreachable.rs:206:2:206:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:218:3:218:17 | ExprStmt | This code is never reached. |
