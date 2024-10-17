@@ -638,6 +638,9 @@ class PointerType extends @pointertype, CompositeType {
   override string toString() { result = "pointer type" }
 }
 
+/**
+ * Gets the base type if `t` is a pointer type, otherwise `t` itself.
+ */
 Type lookThroughPointerType(Type t) {
   not t instanceof PointerType and
   result = t
