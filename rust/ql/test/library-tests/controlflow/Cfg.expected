@@ -575,7 +575,7 @@ edges
 | test.rs:263:9:263:11 | PathExpr | test.rs:263:9:263:26 | MethodCallExpr |  |
 | test.rs:263:9:263:26 | MethodCallExpr | test.rs:263:9:263:27 | TryExpr |  |
 | test.rs:263:9:263:27 | TryExpr | test.rs:262:5:264:5 | exit test_question_mark_operator_1 (normal) | return |
-| test.rs:263:9:263:27 | TryExpr | test.rs:263:31:263:31 | 4 |  |
+| test.rs:263:9:263:27 | TryExpr | test.rs:263:31:263:31 | 4 | match |
 | test.rs:263:9:263:31 | ... + ... | test.rs:262:62:264:5 | BlockExpr |  |
 | test.rs:263:31:263:31 | 4 | test.rs:263:9:263:31 | ... + ... |  |
 | test.rs:266:5:271:5 | enter test_question_mark_operator_2 | test.rs:266:38:266:38 | b |  |
@@ -586,7 +586,7 @@ edges
 | test.rs:267:9:270:9 | MatchExpr | test.rs:266:71:271:5 | BlockExpr |  |
 | test.rs:267:15:267:15 | b | test.rs:267:15:267:16 | TryExpr |  |
 | test.rs:267:15:267:16 | TryExpr | test.rs:266:5:271:5 | exit test_question_mark_operator_2 (normal) | return |
-| test.rs:267:15:267:16 | TryExpr | test.rs:268:13:268:16 | LiteralPat |  |
+| test.rs:267:15:267:16 | TryExpr | test.rs:268:13:268:16 | LiteralPat | match |
 | test.rs:268:13:268:16 | LiteralPat | test.rs:268:21:268:24 | PathExpr | match |
 | test.rs:268:13:268:16 | LiteralPat | test.rs:269:13:269:17 | LiteralPat | no-match |
 | test.rs:268:21:268:24 | PathExpr | test.rs:268:26:268:30 | false |  |
