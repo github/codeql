@@ -16,7 +16,10 @@ type I2 interface {
 }
 
 // A struct type implementing I1
-type S1 struct{}
+type S1 struct {
+	SourceField string
+	SinkField   string
+}
 
 func (t *S1) Source() interface{} {
 	return nil
@@ -97,9 +100,13 @@ type SEmbedS1 struct{ S1 }
 // A struct type embedding S2
 type SEmbedS2 struct{ S2 }
 
-// A struct type embedding S1 and separately implementing I1's methods, so the
-// methods of the embedded field are not promoted.
-type SImplEmbedS1 struct{ S1 }
+// A struct type embedding S1 and separately implementing I1's methods and
+// fields, so the methods and fields of the embedded field are not promoted.
+type SImplEmbedS1 struct {
+	S1
+	SourceField string
+	SinkField   string
+}
 
 func (t *SImplEmbedS1) Source() interface{} {
 	return nil
