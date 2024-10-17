@@ -661,7 +661,6 @@ edges
 | test.rs:297:18:297:18 | a | test.rs:297:24:297:24 | a | match |
 | test.rs:297:24:297:24 | a | test.rs:296:10:299:9 | [boolean(false)] MatchExpr | false |
 | test.rs:297:24:297:24 | a | test.rs:296:10:299:9 | [boolean(true)] MatchExpr | true |
-| test.rs:297:24:297:24 | a | test.rs:298:13:298:13 | WildcardPat | false |
 | test.rs:298:13:298:13 | WildcardPat | test.rs:298:18:298:22 | false | match |
 | test.rs:298:18:298:22 | false | test.rs:296:10:299:9 | [boolean(false)] MatchExpr | false |
 | test.rs:299:15:299:18 | cond | test.rs:296:9:299:18 | ... && ... |  |

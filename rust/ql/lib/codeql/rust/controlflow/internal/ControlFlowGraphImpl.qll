@@ -507,9 +507,12 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     first(super.getArm(0).getPat(), succ) and
     completionIsNormal(c)
     or
-    // Edge from a failed match/guard in one arm to the beginning of the next arm.
+    // Edge from a failed pattern or guard in one arm to the beginning of the next arm.
     exists(int i |
-      last(super.getArm(i), pred, c) and
+      (
+        last(super.getArm(i).getPat(), pred, c) or
+        last(super.getArm(i).getGuard().getCondition(), pred, c)
+      ) and
       first(super.getArm(i + 1), succ) and
       c.(ConditionalCompletion).failed()
     )
