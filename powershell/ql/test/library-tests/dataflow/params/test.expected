@@ -1,6 +1,9 @@
 models
 edges
-| global.ps1:1:7:1:22 | Source | global.ps1:3:6:3:13 | Source | provenance |  |
+| global.ps1:1:7:1:23 | Source1 | global.ps1:3:6:3:14 | Source1 | provenance |  |
+| global.ps1:1:25:1:41 | Source2 | global.ps1:4:6:4:14 | Source2 | provenance |  |
+| global.ps1:1:43:1:59 | Source3 | global.ps1:5:6:5:14 | Source3 | provenance |  |
+| global.ps1:1:61:1:77 | Source4 | global.ps1:6:6:6:14 | Source4 | provenance |  |
 | test.ps1:1:14:1:16 | a | test.ps1:2:10:2:12 | a | provenance |  |
 | test.ps1:5:6:5:16 | Source | test.ps1:6:5:6:7 | x | provenance |  |
 | test.ps1:6:5:6:7 | x | test.ps1:1:14:1:16 | a | provenance |  |
@@ -140,8 +143,14 @@ edges
 | test.ps1:39:24:39:31 | second | test.ps1:8:24:8:26 | y | provenance |  |
 | test.ps1:39:32:39:38 | first | test.ps1:8:20:8:22 | x | provenance |  |
 nodes
-| global.ps1:1:7:1:22 | Source | semmle.label | Source |
-| global.ps1:3:6:3:13 | Source | semmle.label | Source |
+| global.ps1:1:7:1:23 | Source1 | semmle.label | Source1 |
+| global.ps1:1:25:1:41 | Source2 | semmle.label | Source2 |
+| global.ps1:1:43:1:59 | Source3 | semmle.label | Source3 |
+| global.ps1:1:61:1:77 | Source4 | semmle.label | Source4 |
+| global.ps1:3:6:3:14 | Source1 | semmle.label | Source1 |
+| global.ps1:4:6:4:14 | Source2 | semmle.label | Source2 |
+| global.ps1:5:6:5:14 | Source3 | semmle.label | Source3 |
+| global.ps1:6:6:6:14 | Source4 | semmle.label | Source4 |
 | test.ps1:1:14:1:16 | a | semmle.label | a |
 | test.ps1:2:10:2:12 | a | semmle.label | a |
 | test.ps1:5:6:5:16 | Source | semmle.label | Source |
@@ -224,7 +233,10 @@ nodes
 subpaths
 testFailures
 #select
-| global.ps1:3:6:3:13 | Source | global.ps1:1:7:1:22 | Source | global.ps1:3:6:3:13 | Source | $@ | global.ps1:1:7:1:22 | Source | Source |
+| global.ps1:3:6:3:14 | Source1 | global.ps1:1:7:1:23 | Source1 | global.ps1:3:6:3:14 | Source1 | $@ | global.ps1:1:7:1:23 | Source1 | Source1 |
+| global.ps1:4:6:4:14 | Source2 | global.ps1:1:25:1:41 | Source2 | global.ps1:4:6:4:14 | Source2 | $@ | global.ps1:1:25:1:41 | Source2 | Source2 |
+| global.ps1:5:6:5:14 | Source3 | global.ps1:1:43:1:59 | Source3 | global.ps1:5:6:5:14 | Source3 | $@ | global.ps1:1:43:1:59 | Source3 | Source3 |
+| global.ps1:6:6:6:14 | Source4 | global.ps1:1:61:1:77 | Source4 | global.ps1:6:6:6:14 | Source4 | $@ | global.ps1:1:61:1:77 | Source4 | Source4 |
 | test.ps1:2:10:2:12 | a | test.ps1:5:6:5:16 | Source | test.ps1:2:10:2:12 | a | $@ | test.ps1:5:6:5:16 | Source | Source |
 | test.ps1:9:10:9:12 | x | test.ps1:14:10:14:20 | Source | test.ps1:9:10:9:12 | x | $@ | test.ps1:14:10:14:20 | Source | Source |
 | test.ps1:10:10:10:12 | y | test.ps1:15:11:15:21 | Source | test.ps1:10:10:10:12 | y | $@ | test.ps1:15:11:15:21 | Source | Source |

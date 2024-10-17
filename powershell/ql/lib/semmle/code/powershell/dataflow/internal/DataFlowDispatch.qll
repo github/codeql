@@ -241,6 +241,13 @@ private module Cached {
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
+      or
+      // Uncalled functions are never the target of a call returned by
+      // `ns.getABindingCall()`, but those parameters should still have
+      // positions since SSA depends on this.
+      // In particular, global scope is also an uncalled function.
+      any(Parameter p).getIndexExcludingPipelines() = pos and
+      ns.isEmpty()
     } or
     TPipelineParameter()
 }
