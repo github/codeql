@@ -1,4 +1,5 @@
 | conditionals.ps1:1:1:9:2 | test-if | conditionals.ps1:11:1:22:2 | test-if-else |  |
+| conditionals.ps1:1:1:129:2 | conditionals.ps1 | conditionals.ps1:1:1:129:2 | exit conditionals.ps1 (normal) |  |
 | conditionals.ps1:1:1:129:2 | conditionals.ps1 | conditionals.ps1:1:1:129:2 | {...} |  |
 | conditionals.ps1:1:1:129:2 | enter conditionals.ps1 | conditionals.ps1:1:1:129:2 | conditionals.ps1 |  |
 | conditionals.ps1:1:1:129:2 | exit conditionals.ps1 (normal) | conditionals.ps1:1:1:129:2 | exit conditionals.ps1 |  |
@@ -9,7 +10,7 @@
 | conditionals.ps1:2:5:2:19 | param(...) | conditionals.ps1:2:5:8:14 | {...} |  |
 | conditionals.ps1:2:5:8:14 | {...} | conditionals.ps1:4:5:7:6 | if (...) {...} |  |
 | conditionals.ps1:4:5:7:6 | if (...) {...} | conditionals.ps1:4:8:4:15 | myBool |  |
-| conditionals.ps1:4:8:4:15 | myBool | conditionals.ps1:4:8:4:15 | myBool |  |
+| conditionals.ps1:4:8:4:15 | myBool | conditionals.ps1:4:8:4:15 | myBool | false, true |
 | conditionals.ps1:4:8:4:15 | myBool | conditionals.ps1:5:5:7:6 | {...} | true |
 | conditionals.ps1:5:5:7:6 | {...} | conditionals.ps1:6:9:6:18 | return ... |  |
 | conditionals.ps1:6:9:6:18 | return ... | conditionals.ps1:6:16:6:18 | 10 |  |
@@ -25,7 +26,7 @@
 | conditionals.ps1:12:5:12:19 | param(...) | conditionals.ps1:12:5:21:6 | {...} |  |
 | conditionals.ps1:12:5:21:6 | {...} | conditionals.ps1:14:5:21:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:14:5:21:6 | if (...) {...} else {...} | conditionals.ps1:14:8:14:15 | myBool |  |
-| conditionals.ps1:14:8:14:15 | myBool | conditionals.ps1:14:8:14:15 | myBool |  |
+| conditionals.ps1:14:8:14:15 | myBool | conditionals.ps1:14:8:14:15 | myBool | false, true |
 | conditionals.ps1:14:8:14:15 | myBool | conditionals.ps1:15:5:17:6 | {...} | true |
 | conditionals.ps1:14:8:14:15 | myBool | conditionals.ps1:19:5:21:6 | {...} | false |
 | conditionals.ps1:15:5:17:6 | {...} | conditionals.ps1:16:9:16:18 | return ... |  |
@@ -42,9 +43,9 @@
 | conditionals.ps1:24:23:32:2 | {...} | conditionals.ps1:25:5:25:30 | param(...) |  |
 | conditionals.ps1:25:5:25:30 | param(...) | conditionals.ps1:25:5:31:14 | {...} |  |
 | conditionals.ps1:25:5:31:14 | {...} | conditionals.ps1:27:5:30:6 | if (...) {...} |  |
-| conditionals.ps1:27:5:30:6 | if (...) {...} | conditionals.ps1:27:8:27:30 | ... -and ... |  |
+| conditionals.ps1:27:5:30:6 | if (...) {...} | conditionals.ps1:27:8:27:16 | myBool1 |  |
 | conditionals.ps1:27:8:27:16 | myBool1 | conditionals.ps1:27:22:27:30 | myBool2 | false, true |
-| conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:27:8:27:16 | myBool1 |  |
+| conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
 | conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:28:5:30:6 | {...} | true |
 | conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
 | conditionals.ps1:28:5:30:6 | {...} | conditionals.ps1:29:9:29:18 | return ... |  |
@@ -60,9 +61,9 @@
 | conditionals.ps1:34:28:45:2 | {...} | conditionals.ps1:35:5:35:30 | param(...) |  |
 | conditionals.ps1:35:5:35:30 | param(...) | conditionals.ps1:35:5:44:6 | {...} |  |
 | conditionals.ps1:35:5:44:6 | {...} | conditionals.ps1:37:5:44:6 | if (...) {...} else {...} |  |
-| conditionals.ps1:37:5:44:6 | if (...) {...} else {...} | conditionals.ps1:37:8:37:30 | ... -and ... |  |
+| conditionals.ps1:37:5:44:6 | if (...) {...} else {...} | conditionals.ps1:37:8:37:16 | myBool1 |  |
 | conditionals.ps1:37:8:37:16 | myBool1 | conditionals.ps1:37:22:37:30 | myBool2 | false, true |
-| conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:37:8:37:16 | myBool1 |  |
+| conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:38:5:40:6 | {...} | true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:42:5:44:6 | {...} | false |
 | conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
@@ -80,9 +81,9 @@
 | conditionals.ps1:47:23:55:2 | {...} | conditionals.ps1:48:5:48:30 | param(...) |  |
 | conditionals.ps1:48:5:48:30 | param(...) | conditionals.ps1:48:5:54:14 | {...} |  |
 | conditionals.ps1:48:5:54:14 | {...} | conditionals.ps1:50:5:53:6 | if (...) {...} |  |
-| conditionals.ps1:50:5:53:6 | if (...) {...} | conditionals.ps1:50:8:50:29 | ... -or ... |  |
+| conditionals.ps1:50:5:53:6 | if (...) {...} | conditionals.ps1:50:8:50:16 | myBool1 |  |
 | conditionals.ps1:50:8:50:16 | myBool1 | conditionals.ps1:50:21:50:29 | myBool2 | false, true |
-| conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:50:8:50:16 | myBool1 |  |
+| conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
 | conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:51:5:53:6 | {...} | true |
 | conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
 | conditionals.ps1:51:5:53:6 | {...} | conditionals.ps1:52:9:52:18 | return ... |  |
@@ -98,9 +99,9 @@
 | conditionals.ps1:57:28:68:2 | {...} | conditionals.ps1:58:5:58:30 | param(...) |  |
 | conditionals.ps1:58:5:58:30 | param(...) | conditionals.ps1:58:5:67:6 | {...} |  |
 | conditionals.ps1:58:5:67:6 | {...} | conditionals.ps1:60:5:67:6 | if (...) {...} else {...} |  |
-| conditionals.ps1:60:5:67:6 | if (...) {...} else {...} | conditionals.ps1:60:8:60:29 | ... -or ... |  |
+| conditionals.ps1:60:5:67:6 | if (...) {...} else {...} | conditionals.ps1:60:8:60:16 | myBool1 |  |
 | conditionals.ps1:60:8:60:16 | myBool1 | conditionals.ps1:60:21:60:29 | myBool2 | false, true |
-| conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:60:8:60:16 | myBool1 |  |
+| conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:61:5:63:6 | {...} | true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:65:5:67:6 | {...} | false |
 | conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
@@ -119,7 +120,7 @@
 | conditionals.ps1:71:5:71:30 | param(...) | conditionals.ps1:71:5:81:14 | {...} |  |
 | conditionals.ps1:71:5:81:14 | {...} | conditionals.ps1:73:5:80:6 | if (...) {...} |  |
 | conditionals.ps1:73:5:80:6 | if (...) {...} | conditionals.ps1:73:8:73:16 | myBool1 |  |
-| conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:73:8:73:16 | myBool1 |  |
+| conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:73:8:73:16 | myBool1 | false, true |
 | conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:74:5:76:6 | {...} | true |
 | conditionals.ps1:74:5:76:6 | {...} | conditionals.ps1:75:9:75:18 | return ... |  |
 | conditionals.ps1:75:9:75:18 | return ... | conditionals.ps1:75:16:75:18 | 10 |  |
@@ -135,7 +136,7 @@
 | conditionals.ps1:85:5:85:30 | param(...) | conditionals.ps1:85:5:98:6 | {...} |  |
 | conditionals.ps1:85:5:98:6 | {...} | conditionals.ps1:87:5:98:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:87:5:98:6 | if (...) {...} else {...} | conditionals.ps1:87:8:87:16 | myBool1 |  |
-| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:87:8:87:16 | myBool1 |  |
+| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:87:8:87:16 | myBool1 | false, true |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:88:5:90:6 | {...} | true |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:96:5:98:6 | {...} | false |
 | conditionals.ps1:88:5:90:6 | {...} | conditionals.ps1:89:9:89:18 | return ... |  |
@@ -237,14 +238,15 @@
 | functions.ps1:1:1:54:1 | enter functions.ps1 | functions.ps1:1:1:54:1 | functions.ps1 |  |
 | functions.ps1:1:1:54:1 | exit functions.ps1 (normal) | functions.ps1:1:1:54:1 | exit functions.ps1 |  |
 | functions.ps1:1:1:54:1 | functions.ps1 | functions.ps1:1:1:52:2 | {...} |  |
+| functions.ps1:1:1:54:1 | functions.ps1 | functions.ps1:1:1:54:1 | exit functions.ps1 (normal) |  |
 | functions.ps1:1:32:9:2 | enter {...} | functions.ps1:1:32:9:2 | {...} |  |
 | functions.ps1:1:32:9:2 | exit {...} (normal) | functions.ps1:1:32:9:2 | exit {...} |  |
 | functions.ps1:1:32:9:2 | {...} | functions.ps1:3:5:6:6 | param(...) |  |
 | functions.ps1:3:5:6:6 | param(...) | functions.ps1:3:5:8:24 | {...} |  |
-| functions.ps1:3:5:8:24 | {...} | functions.ps1:8:5:8:24 | ...+... |  |
+| functions.ps1:3:5:8:24 | {...} | functions.ps1:8:5:8:13 | number1 |  |
 | functions.ps1:8:5:8:13 | number1 | functions.ps1:8:16:8:24 | number2 |  |
 | functions.ps1:8:5:8:24 | ...+... | functions.ps1:1:32:9:2 | exit {...} (normal) |  |
-| functions.ps1:8:5:8:24 | ...+... | functions.ps1:8:5:8:13 | number1 |  |
+| functions.ps1:8:5:8:24 | ...+... | functions.ps1:8:5:8:24 | ...+... |  |
 | functions.ps1:8:16:8:24 | number2 | functions.ps1:8:5:8:24 | ...+... |  |
 | functions.ps1:11:1:11:29 | foo | functions.ps1:13:1:20:2 | Default-Arguments |  |
 | functions.ps1:11:16:11:29 | enter {...} | functions.ps1:11:16:11:29 | {...} |  |
@@ -257,14 +259,14 @@
 | functions.ps1:13:28:20:2 | exit {...} (normal) | functions.ps1:13:28:20:2 | exit {...} |  |
 | functions.ps1:13:28:20:2 | {...} | functions.ps1:16:24:16:25 | 0 |  |
 | functions.ps1:14:5:18:6 | param(...) | functions.ps1:14:5:19:19 | {...} |  |
-| functions.ps1:14:5:19:19 | {...} | functions.ps1:19:5:19:19 | ...+... |  |
+| functions.ps1:14:5:19:19 | {...} | functions.ps1:19:5:19:10 | name |  |
 | functions.ps1:16:24:16:25 | 0 | functions.ps1:17:24:17:30 | name1 |  |
 | functions.ps1:17:24:17:30 | name1 | functions.ps1:17:33:17:34 | 1 |  |
 | functions.ps1:17:24:17:34 | ...+... | functions.ps1:14:5:18:6 | param(...) |  |
 | functions.ps1:17:33:17:34 | 1 | functions.ps1:17:24:17:34 | ...+... |  |
 | functions.ps1:19:5:19:10 | name | functions.ps1:19:13:19:19 | name2 |  |
 | functions.ps1:19:5:19:19 | ...+... | functions.ps1:13:28:20:2 | exit {...} (normal) |  |
-| functions.ps1:19:5:19:19 | ...+... | functions.ps1:19:5:19:10 | name |  |
+| functions.ps1:19:5:19:19 | ...+... | functions.ps1:19:5:19:19 | ...+... |  |
 | functions.ps1:19:13:19:19 | name2 | functions.ps1:19:5:19:19 | ...+... |  |
 | functions.ps1:22:1:34:2 | Add-Numbers-From-Array | functions.ps1:36:1:52:2 | Add-Numbers-From-Pipeline |  |
 | functions.ps1:22:33:34:2 | enter {...} | functions.ps1:22:33:34:2 | {...} |  |
@@ -311,6 +313,7 @@
 | global.ps1:1:1:7:2 | enter global.ps1 | global.ps1:1:1:7:2 | global.ps1 |  |
 | global.ps1:1:1:7:2 | exit global.ps1 (normal) | global.ps1:1:1:7:2 | exit global.ps1 |  |
 | global.ps1:1:1:7:2 | global.ps1 | global.ps1:1:1:4:2 | {...} |  |
+| global.ps1:1:1:7:2 | global.ps1 | global.ps1:1:1:7:2 | exit global.ps1 (normal) |  |
 | global.ps1:2:5:2:7 | a | global.ps1:2:10:2:11 | 1 |  |
 | global.ps1:2:5:2:11 | ...=... | global.ps1:2:5:2:7 | a |  |
 | global.ps1:2:10:2:11 | 1 | global.ps1:2:10:2:11 | 1 |  |
@@ -320,17 +323,18 @@
 | global.ps1:3:10:3:11 | 2 | global.ps1:3:10:3:11 | 2 |  |
 | global.ps1:3:10:3:11 | 2 | global.ps1:5:1:7:2 | {...} |  |
 | global.ps1:5:1:7:2 | {...} | global.ps1:6:5:6:17 | ...=... |  |
-| global.ps1:6:5:6:7 | c | global.ps1:6:10:6:17 | ...+... |  |
+| global.ps1:6:5:6:7 | c | global.ps1:6:10:6:12 | a |  |
 | global.ps1:6:5:6:17 | ...=... | global.ps1:6:5:6:7 | c |  |
 | global.ps1:6:10:6:12 | a | global.ps1:6:15:6:17 | b |  |
 | global.ps1:6:10:6:17 | ...+... | global.ps1:1:1:7:2 | exit global.ps1 (normal) |  |
-| global.ps1:6:10:6:17 | ...+... | global.ps1:6:10:6:12 | a |  |
+| global.ps1:6:10:6:17 | ...+... | global.ps1:6:10:6:17 | ...+... |  |
 | global.ps1:6:15:6:17 | b | global.ps1:6:10:6:17 | ...+... |  |
 | loops.ps1:1:1:7:2 | Test-While | loops.ps1:9:1:15:2 | Test-Break |  |
 | loops.ps1:1:1:68:2 | {...} | loops.ps1:1:1:7:2 | Test-While |  |
 | loops.ps1:1:1:70:1 | enter loops.ps1 | loops.ps1:1:1:70:1 | loops.ps1 |  |
 | loops.ps1:1:1:70:1 | exit loops.ps1 (normal) | loops.ps1:1:1:70:1 | exit loops.ps1 |  |
 | loops.ps1:1:1:70:1 | loops.ps1 | loops.ps1:1:1:68:2 | {...} |  |
+| loops.ps1:1:1:70:1 | loops.ps1 | loops.ps1:1:1:70:1 | exit loops.ps1 (normal) |  |
 | loops.ps1:1:21:7:2 | enter {...} | loops.ps1:1:21:7:2 | {...} |  |
 | loops.ps1:1:21:7:2 | exit {...} (normal) | loops.ps1:1:21:7:2 | exit {...} |  |
 | loops.ps1:1:21:7:2 | {...} | loops.ps1:2:5:6:6 | {...} |  |
@@ -339,18 +343,18 @@
 | loops.ps1:2:5:6:6 | {...} | loops.ps1:2:5:2:11 | ...=... |  |
 | loops.ps1:2:10:2:11 | 0 | loops.ps1:2:10:2:11 | 0 |  |
 | loops.ps1:2:10:2:11 | 0 | loops.ps1:4:5:6:6 | while(...) {...} |  |
-| loops.ps1:4:5:6:6 | while(...) {...} | loops.ps1:4:11:4:20 | ... -le ... |  |
+| loops.ps1:4:5:6:6 | while(...) {...} | loops.ps1:4:11:4:13 | a |  |
 | loops.ps1:4:11:4:13 | a | loops.ps1:4:18:4:20 | 10 |  |
 | loops.ps1:4:11:4:20 | ... -le ... | loops.ps1:1:21:7:2 | exit {...} (normal) | false |
-| loops.ps1:4:11:4:20 | ... -le ... | loops.ps1:4:11:4:13 | a |  |
+| loops.ps1:4:11:4:20 | ... -le ... | loops.ps1:4:11:4:20 | ... -le ... | false, true |
 | loops.ps1:4:11:4:20 | ... -le ... | loops.ps1:4:22:6:6 | {...} | true |
 | loops.ps1:4:18:4:20 | 10 | loops.ps1:4:11:4:20 | ... -le ... |  |
 | loops.ps1:4:22:6:6 | {...} | loops.ps1:5:9:5:20 | ...=... |  |
-| loops.ps1:5:9:5:11 | a | loops.ps1:5:14:5:20 | ...+... |  |
+| loops.ps1:5:9:5:11 | a | loops.ps1:5:14:5:16 | a |  |
 | loops.ps1:5:9:5:20 | ...=... | loops.ps1:5:9:5:11 | a |  |
 | loops.ps1:5:14:5:16 | a | loops.ps1:5:19:5:20 | 1 |  |
-| loops.ps1:5:14:5:20 | ...+... | loops.ps1:4:11:4:20 | ... -le ... |  |
-| loops.ps1:5:14:5:20 | ...+... | loops.ps1:5:14:5:16 | a |  |
+| loops.ps1:5:14:5:20 | ...+... | loops.ps1:4:11:4:13 | a |  |
+| loops.ps1:5:14:5:20 | ...+... | loops.ps1:5:14:5:20 | ...+... |  |
 | loops.ps1:5:19:5:20 | 1 | loops.ps1:5:14:5:20 | ...+... |  |
 | loops.ps1:9:1:15:2 | Test-Break | loops.ps1:17:1:23:2 | Test-Continue |  |
 | loops.ps1:9:21:15:2 | enter {...} | loops.ps1:9:21:15:2 | {...} |  |
@@ -361,10 +365,10 @@
 | loops.ps1:10:5:14:6 | {...} | loops.ps1:10:5:10:11 | ...=... |  |
 | loops.ps1:10:10:10:11 | 0 | loops.ps1:10:10:10:11 | 0 |  |
 | loops.ps1:10:10:10:11 | 0 | loops.ps1:11:5:14:6 | while(...) {...} |  |
-| loops.ps1:11:5:14:6 | while(...) {...} | loops.ps1:11:11:11:20 | ... -le ... |  |
+| loops.ps1:11:5:14:6 | while(...) {...} | loops.ps1:11:11:11:13 | a |  |
 | loops.ps1:11:11:11:13 | a | loops.ps1:11:18:11:20 | 10 |  |
 | loops.ps1:11:11:11:20 | ... -le ... | loops.ps1:9:21:15:2 | exit {...} (normal) | false |
-| loops.ps1:11:11:11:20 | ... -le ... | loops.ps1:11:11:11:13 | a |  |
+| loops.ps1:11:11:11:20 | ... -le ... | loops.ps1:11:11:11:20 | ... -le ... | false, true |
 | loops.ps1:11:11:11:20 | ... -le ... | loops.ps1:11:22:14:6 | {...} | true |
 | loops.ps1:11:18:11:20 | 10 | loops.ps1:11:11:11:20 | ... -le ... |  |
 | loops.ps1:11:22:14:6 | {...} | loops.ps1:12:9:12:14 | break |  |
@@ -378,14 +382,14 @@
 | loops.ps1:18:5:22:6 | {...} | loops.ps1:18:5:18:11 | ...=... |  |
 | loops.ps1:18:10:18:11 | 0 | loops.ps1:18:10:18:11 | 0 |  |
 | loops.ps1:18:10:18:11 | 0 | loops.ps1:19:5:22:6 | while(...) {...} |  |
-| loops.ps1:19:5:22:6 | while(...) {...} | loops.ps1:19:11:19:20 | ... -le ... |  |
+| loops.ps1:19:5:22:6 | while(...) {...} | loops.ps1:19:11:19:13 | a |  |
 | loops.ps1:19:11:19:13 | a | loops.ps1:19:18:19:20 | 10 |  |
 | loops.ps1:19:11:19:20 | ... -le ... | loops.ps1:17:24:23:2 | exit {...} (normal) | false |
-| loops.ps1:19:11:19:20 | ... -le ... | loops.ps1:19:11:19:13 | a |  |
+| loops.ps1:19:11:19:20 | ... -le ... | loops.ps1:19:11:19:20 | ... -le ... | false, true |
 | loops.ps1:19:11:19:20 | ... -le ... | loops.ps1:19:22:22:6 | {...} | true |
 | loops.ps1:19:18:19:20 | 10 | loops.ps1:19:11:19:20 | ... -le ... |  |
 | loops.ps1:19:22:22:6 | {...} | loops.ps1:20:9:20:17 | continue |  |
-| loops.ps1:20:9:20:17 | continue | loops.ps1:19:11:19:20 | ... -le ... | continue |
+| loops.ps1:20:9:20:17 | continue | loops.ps1:19:11:19:13 | a | continue |
 | loops.ps1:25:1:31:2 | Test-DoWhile | loops.ps1:33:1:39:2 | Test-DoUntil |  |
 | loops.ps1:25:23:31:2 | enter {...} | loops.ps1:25:23:31:2 | {...} |  |
 | loops.ps1:25:23:31:2 | exit {...} (normal) | loops.ps1:25:23:31:2 | exit {...} |  |
@@ -397,16 +401,16 @@
 | loops.ps1:26:10:26:11 | 0 | loops.ps1:28:5:30:24 | DoWhile |  |
 | loops.ps1:28:5:30:24 | DoWhile | loops.ps1:28:8:30:6 | {...} |  |
 | loops.ps1:28:8:30:6 | {...} | loops.ps1:29:9:29:20 | ...=... |  |
-| loops.ps1:29:9:29:11 | a | loops.ps1:29:14:29:20 | ...+... |  |
+| loops.ps1:29:9:29:11 | a | loops.ps1:29:14:29:16 | a |  |
 | loops.ps1:29:9:29:20 | ...=... | loops.ps1:29:9:29:11 | a |  |
 | loops.ps1:29:14:29:16 | a | loops.ps1:29:19:29:20 | 1 |  |
-| loops.ps1:29:14:29:20 | ...+... | loops.ps1:29:14:29:16 | a |  |
-| loops.ps1:29:14:29:20 | ...+... | loops.ps1:30:14:30:23 | ... -le ... |  |
+| loops.ps1:29:14:29:20 | ...+... | loops.ps1:29:14:29:20 | ...+... |  |
+| loops.ps1:29:14:29:20 | ...+... | loops.ps1:30:14:30:16 | a |  |
 | loops.ps1:29:19:29:20 | 1 | loops.ps1:29:14:29:20 | ...+... |  |
 | loops.ps1:30:14:30:16 | a | loops.ps1:30:21:30:23 | 10 |  |
 | loops.ps1:30:14:30:23 | ... -le ... | loops.ps1:25:23:31:2 | exit {...} (normal) | false |
 | loops.ps1:30:14:30:23 | ... -le ... | loops.ps1:28:8:30:6 | {...} | true |
-| loops.ps1:30:14:30:23 | ... -le ... | loops.ps1:30:14:30:16 | a |  |
+| loops.ps1:30:14:30:23 | ... -le ... | loops.ps1:30:14:30:23 | ... -le ... | false, true |
 | loops.ps1:30:21:30:23 | 10 | loops.ps1:30:14:30:23 | ... -le ... |  |
 | loops.ps1:33:1:39:2 | Test-DoUntil | loops.ps1:41:1:47:2 | Test-For |  |
 | loops.ps1:33:23:39:2 | enter {...} | loops.ps1:33:23:39:2 | {...} |  |
@@ -419,16 +423,16 @@
 | loops.ps1:34:10:34:11 | 0 | loops.ps1:36:5:38:24 | DoUntil |  |
 | loops.ps1:36:5:38:24 | DoUntil | loops.ps1:36:8:38:6 | {...} |  |
 | loops.ps1:36:8:38:6 | {...} | loops.ps1:37:9:37:20 | ...=... |  |
-| loops.ps1:37:9:37:11 | a | loops.ps1:37:14:37:20 | ...+... |  |
+| loops.ps1:37:9:37:11 | a | loops.ps1:37:14:37:16 | a |  |
 | loops.ps1:37:9:37:20 | ...=... | loops.ps1:37:9:37:11 | a |  |
 | loops.ps1:37:14:37:16 | a | loops.ps1:37:19:37:20 | 1 |  |
-| loops.ps1:37:14:37:20 | ...+... | loops.ps1:37:14:37:16 | a |  |
-| loops.ps1:37:14:37:20 | ...+... | loops.ps1:38:14:38:23 | ... -ge ... |  |
+| loops.ps1:37:14:37:20 | ...+... | loops.ps1:37:14:37:20 | ...+... |  |
+| loops.ps1:37:14:37:20 | ...+... | loops.ps1:38:14:38:16 | a |  |
 | loops.ps1:37:19:37:20 | 1 | loops.ps1:37:14:37:20 | ...+... |  |
 | loops.ps1:38:14:38:16 | a | loops.ps1:38:21:38:23 | 10 |  |
 | loops.ps1:38:14:38:23 | ... -ge ... | loops.ps1:33:23:39:2 | exit {...} (normal) | true |
 | loops.ps1:38:14:38:23 | ... -ge ... | loops.ps1:36:8:38:6 | {...} | false |
-| loops.ps1:38:14:38:23 | ... -ge ... | loops.ps1:38:14:38:16 | a |  |
+| loops.ps1:38:14:38:23 | ... -ge ... | loops.ps1:38:14:38:23 | ... -ge ... | false, true |
 | loops.ps1:38:21:38:23 | 10 | loops.ps1:38:14:38:23 | ... -ge ... |  |
 | loops.ps1:41:1:47:2 | Test-For | loops.ps1:49:1:56:2 | Test-ForEach |  |
 | loops.ps1:41:19:47:2 | enter {...} | loops.ps1:41:19:47:2 | {...} |  |
@@ -443,35 +447,35 @@
 | loops.ps1:44:10:44:12 | i | loops.ps1:44:15:44:16 | 0 |  |
 | loops.ps1:44:10:44:16 | ...=... | loops.ps1:44:10:44:12 | i |  |
 | loops.ps1:44:15:44:16 | 0 | loops.ps1:44:15:44:16 | 0 |  |
-| loops.ps1:44:15:44:16 | 0 | loops.ps1:44:18:44:27 | ... -le ... |  |
+| loops.ps1:44:15:44:16 | 0 | loops.ps1:44:18:44:20 | i |  |
 | loops.ps1:44:18:44:20 | i | loops.ps1:44:25:44:27 | 10 |  |
 | loops.ps1:44:18:44:27 | ... -le ... | loops.ps1:41:19:47:2 | exit {...} (normal) | false |
-| loops.ps1:44:18:44:27 | ... -le ... | loops.ps1:44:18:44:20 | i |  |
+| loops.ps1:44:18:44:27 | ... -le ... | loops.ps1:44:18:44:27 | ... -le ... | false, true |
 | loops.ps1:44:18:44:27 | ... -le ... | loops.ps1:44:42:46:6 | {...} | true |
 | loops.ps1:44:25:44:27 | 10 | loops.ps1:44:18:44:27 | ... -le ... |  |
-| loops.ps1:44:29:44:31 | i | loops.ps1:44:34:44:40 | ...+... |  |
+| loops.ps1:44:29:44:31 | i | loops.ps1:44:34:44:36 | i |  |
 | loops.ps1:44:29:44:40 | ...=... | loops.ps1:44:29:44:31 | i |  |
 | loops.ps1:44:34:44:36 | i | loops.ps1:44:39:44:40 | 1 |  |
-| loops.ps1:44:34:44:40 | ...+... | loops.ps1:44:18:44:27 | ... -le ... |  |
-| loops.ps1:44:34:44:40 | ...+... | loops.ps1:44:34:44:36 | i |  |
+| loops.ps1:44:34:44:40 | ...+... | loops.ps1:44:18:44:20 | i |  |
+| loops.ps1:44:34:44:40 | ...+... | loops.ps1:44:34:44:40 | ...+... |  |
 | loops.ps1:44:39:44:40 | 1 | loops.ps1:44:34:44:40 | ...+... |  |
 | loops.ps1:44:42:46:6 | {...} | loops.ps1:45:9:45:20 | ...=... |  |
-| loops.ps1:45:9:45:11 | a | loops.ps1:45:14:45:20 | ...+... |  |
+| loops.ps1:45:9:45:11 | a | loops.ps1:45:14:45:16 | a |  |
 | loops.ps1:45:9:45:20 | ...=... | loops.ps1:45:9:45:11 | a |  |
 | loops.ps1:45:14:45:16 | a | loops.ps1:45:19:45:20 | 1 |  |
-| loops.ps1:45:14:45:20 | ...+... | loops.ps1:44:18:44:27 | ... -le ... |  |
+| loops.ps1:45:14:45:20 | ...+... | loops.ps1:44:18:44:20 | i |  |
 | loops.ps1:45:14:45:20 | ...+... | loops.ps1:44:29:44:40 | ...=... |  |
-| loops.ps1:45:14:45:20 | ...+... | loops.ps1:45:14:45:16 | a |  |
+| loops.ps1:45:14:45:20 | ...+... | loops.ps1:45:14:45:20 | ...+... |  |
 | loops.ps1:45:19:45:20 | 1 | loops.ps1:45:14:45:20 | ...+... |  |
 | loops.ps1:49:1:56:2 | Test-ForEach | loops.ps1:58:1:68:2 | Test-For-Ever |  |
 | loops.ps1:49:23:56:2 | enter {...} | loops.ps1:49:23:56:2 | {...} |  |
 | loops.ps1:49:23:56:2 | exit {...} (normal) | loops.ps1:49:23:56:2 | exit {...} |  |
 | loops.ps1:49:23:56:2 | {...} | loops.ps1:50:5:55:6 | {...} |  |
-| loops.ps1:50:5:50:17 | letterArray | loops.ps1:50:20:50:35 | ...,... |  |
+| loops.ps1:50:5:50:17 | letterArray | loops.ps1:50:20:50:23 | a |  |
 | loops.ps1:50:5:50:35 | ...=... | loops.ps1:50:5:50:17 | letterArray |  |
 | loops.ps1:50:5:55:6 | {...} | loops.ps1:50:5:50:35 | ...=... |  |
 | loops.ps1:50:20:50:23 | a | loops.ps1:50:24:50:27 | b |  |
-| loops.ps1:50:20:50:35 | ...,... | loops.ps1:50:20:50:23 | a |  |
+| loops.ps1:50:20:50:35 | ...,... | loops.ps1:50:20:50:35 | ...,... |  |
 | loops.ps1:50:20:50:35 | ...,... | loops.ps1:51:5:51:11 | ...=... |  |
 | loops.ps1:50:24:50:27 | b | loops.ps1:50:28:50:31 | c |  |
 | loops.ps1:50:28:50:31 | c | loops.ps1:50:32:50:35 | d |  |
@@ -486,11 +490,11 @@
 | loops.ps1:52:25:52:37 | letterArray | loops.ps1:52:5:55:6 | forach(... in ...) |  |
 | loops.ps1:52:25:52:37 | letterArray | loops.ps1:52:25:52:37 | letterArray |  |
 | loops.ps1:53:5:55:6 | {...} | loops.ps1:54:9:54:20 | ...=... |  |
-| loops.ps1:54:9:54:11 | a | loops.ps1:54:14:54:20 | ...+... |  |
+| loops.ps1:54:9:54:11 | a | loops.ps1:54:14:54:16 | a |  |
 | loops.ps1:54:9:54:20 | ...=... | loops.ps1:54:9:54:11 | a |  |
 | loops.ps1:54:14:54:16 | a | loops.ps1:54:19:54:20 | 1 |  |
 | loops.ps1:54:14:54:20 | ...+... | loops.ps1:52:5:55:6 | forach(... in ...) |  |
-| loops.ps1:54:14:54:20 | ...+... | loops.ps1:54:14:54:16 | a |  |
+| loops.ps1:54:14:54:20 | ...+... | loops.ps1:54:14:54:20 | ...+... |  |
 | loops.ps1:54:19:54:20 | 1 | loops.ps1:54:14:54:20 | ...+... |  |
 | loops.ps1:58:1:68:2 | Test-For-Ever | loops.ps1:1:1:70:1 | exit loops.ps1 (normal) |  |
 | loops.ps1:58:24:68:2 | enter {...} | loops.ps1:58:24:68:2 | {...} |  |
@@ -503,9 +507,9 @@
 | loops.ps1:59:10:59:11 | 0 | loops.ps1:61:5:67:6 | for(...;...;...) |  |
 | loops.ps1:61:5:67:6 | for(...;...;...) | loops.ps1:62:5:67:6 | {...} |  |
 | loops.ps1:62:5:67:6 | {...} | loops.ps1:63:9:66:10 | if (...) {...} |  |
-| loops.ps1:63:9:66:10 | if (...) {...} | loops.ps1:63:12:63:21 | ... -le ... |  |
+| loops.ps1:63:9:66:10 | if (...) {...} | loops.ps1:63:12:63:14 | a |  |
 | loops.ps1:63:12:63:14 | a | loops.ps1:63:19:63:21 | 10 |  |
-| loops.ps1:63:12:63:21 | ... -le ... | loops.ps1:63:12:63:14 | a |  |
+| loops.ps1:63:12:63:21 | ... -le ... | loops.ps1:63:12:63:21 | ... -le ... | false, true |
 | loops.ps1:63:12:63:21 | ... -le ... | loops.ps1:64:9:66:10 | {...} | true |
 | loops.ps1:63:19:63:21 | 10 | loops.ps1:63:12:63:21 | ... -le ... |  |
 | loops.ps1:64:9:66:10 | {...} | loops.ps1:65:13:65:18 | break |  |
@@ -513,6 +517,7 @@
 | try.ps1:1:1:8:2 | test-try-catch | try.ps1:10:1:19:2 | test-try-with-throw-catch |  |
 | try.ps1:1:1:194:2 | enter try.ps1 | try.ps1:1:1:194:2 | try.ps1 |  |
 | try.ps1:1:1:194:2 | exit try.ps1 (normal) | try.ps1:1:1:194:2 | exit try.ps1 |  |
+| try.ps1:1:1:194:2 | try.ps1 | try.ps1:1:1:194:2 | exit try.ps1 (normal) |  |
 | try.ps1:1:1:194:2 | try.ps1 | try.ps1:1:1:194:2 | {...} |  |
 | try.ps1:1:1:194:2 | {...} | try.ps1:1:1:8:2 | test-try-catch |  |
 | try.ps1:1:25:8:2 | enter {...} | try.ps1:1:25:8:2 | {...} |  |
@@ -535,7 +540,7 @@
 | try.ps1:11:5:18:13 | {...} | try.ps1:11:5:17:6 | try {...} |  |
 | try.ps1:11:9:15:6 | {...} | try.ps1:12:9:14:10 | if (...) {...} |  |
 | try.ps1:12:9:14:10 | if (...) {...} | try.ps1:12:12:12:14 | b |  |
-| try.ps1:12:12:12:14 | b | try.ps1:12:12:12:14 | b |  |
+| try.ps1:12:12:12:14 | b | try.ps1:12:12:12:14 | b | false, true |
 | try.ps1:12:12:12:14 | b | try.ps1:12:16:14:10 | {...} | true |
 | try.ps1:12:16:14:10 | {...} | try.ps1:13:13:13:21 | throw ... |  |
 | try.ps1:13:13:13:21 | throw ... | try.ps1:13:19:13:21 | 42 |  |
@@ -552,7 +557,7 @@
 | try.ps1:22:5:29:13 | {...} | try.ps1:22:5:28:6 | try {...} |  |
 | try.ps1:22:9:26:6 | {...} | try.ps1:23:9:25:10 | if (...) {...} |  |
 | try.ps1:23:9:25:10 | if (...) {...} | try.ps1:23:12:23:14 | b |  |
-| try.ps1:23:12:23:14 | b | try.ps1:23:12:23:14 | b |  |
+| try.ps1:23:12:23:14 | b | try.ps1:23:12:23:14 | b | false, true |
 | try.ps1:23:12:23:14 | b | try.ps1:23:16:25:10 | {...} | true |
 | try.ps1:23:16:25:10 | {...} | try.ps1:24:13:24:21 | throw ... |  |
 | try.ps1:24:13:24:21 | throw ... | try.ps1:24:19:24:21 | 42 |  |
@@ -569,7 +574,7 @@
 | try.ps1:33:5:40:13 | {...} | try.ps1:33:5:39:6 | try {...} |  |
 | try.ps1:33:9:37:6 | {...} | try.ps1:34:9:36:10 | if (...) {...} |  |
 | try.ps1:34:9:36:10 | if (...) {...} | try.ps1:34:12:34:14 | b |  |
-| try.ps1:34:12:34:14 | b | try.ps1:34:12:34:14 | b |  |
+| try.ps1:34:12:34:14 | b | try.ps1:34:12:34:14 | b | false, true |
 | try.ps1:34:12:34:14 | b | try.ps1:34:16:36:10 | {...} | true |
 | try.ps1:34:16:36:10 | {...} | try.ps1:35:13:35:21 | throw ... |  |
 | try.ps1:35:13:35:21 | throw ... | try.ps1:35:19:35:21 | 42 |  |
