@@ -21,7 +21,6 @@ namespace Semmle.Extraction.PowerShell.Entities
                 var item1 = EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Clauses[index].Item1); 
                 var item2 = EntityConstructor.ConstructAppropriateEntity(PowerShellContext, Fragment.Clauses[index].Item2); 
                 trapFile.if_statement_clause(this, index, item1, item2);
-                index++; 
             }
             if (Fragment.ElseClause is not null)
             {
