@@ -10,4 +10,10 @@ public class MultiPaths {
     }
     return x;
   }
+
+  // No summary for the clone method as it is explicitly handled by the dataflow library.
+  @Override
+  public Object clone() {
+    return this;
+  }
 }
