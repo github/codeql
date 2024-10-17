@@ -34,6 +34,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+  predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
     node instanceof Sanitizer
