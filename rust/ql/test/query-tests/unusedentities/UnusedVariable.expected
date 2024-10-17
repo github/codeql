@@ -2,8 +2,6 @@
 | main.rs:90:13:90:13 | d | Variable is not used. |
 | main.rs:141:5:141:5 | y | Variable is not used. |
 | main.rs:168:9:168:9 | x | Variable is not used. |
-| main.rs:196:9:196:9 | x | Variable is not used. |
-| main.rs:201:9:201:9 | x | Variable is not used. |
 | main.rs:250:17:250:17 | a | Variable is not used. |
 | main.rs:258:20:258:22 | val | Variable is not used. |
 | main.rs:272:14:272:16 | val | Variable is not used. |
