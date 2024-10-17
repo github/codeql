@@ -260,9 +260,9 @@ function RegisterExtractorPack(id)
         end
     }
     if OperatingSystem == 'windows' then
-        return windowsMatchers
+        return {}
     else
-        return posixMatchers
+        return {}
     end
 end
 
