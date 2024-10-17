@@ -318,7 +318,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     capturedJumpStep(nodeFrom, nodeTo)
   }
 
-  predicate hasFeatureBacktrackStoreTarget() { none() }
+  predicate hasFeatureBacktrackStoreTarget() { any() }
 
   predicate nonStandardFlowsTo(LocalSourceNode localSource, Node dst) { localSource.flowsTo(dst) }
 }
