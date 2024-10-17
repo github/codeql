@@ -20,10 +20,10 @@ models
 | 2 | Sink: group:beego-context; BeegoOutput; false; Download; ; ; Argument[0]; path-injection; manual |
 | 3 | Source: group:beego-context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
 | 4 | Source: group:beego-context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
-| 5 | Sink: group:beego; ; false; Walk; ; ; Argument[1]; path-injection; manual |
-| 6 | Sink: group:beego; Controller; false; SaveToFile; ; ; Argument[1]; path-injection; manual |
-| 7 | Sink: group:beego; Controller; false; SaveToFileWithBuffer; ; ; Argument[1]; path-injection; manual |
-| 8 | Sink: group:beego; FileSystem; false; Open; ; ; Argument[0]; path-injection; manual |
+| 5 | Sink: group:beego; ; true; Walk; ; ; Argument[1]; path-injection; manual |
+| 6 | Sink: group:beego; Controller; true; SaveToFile; ; ; Argument[1]; path-injection; manual |
+| 7 | Sink: group:beego; Controller; true; SaveToFileWithBuffer; ; ; Argument[1]; path-injection; manual |
+| 8 | Sink: group:beego; FileSystem; true; Open; ; ; Argument[0]; path-injection; manual |
 nodes
 | test.go:215:15:215:26 | call to Data | semmle.label | call to Data |
 | test.go:216:18:216:26 | untrusted | semmle.label | untrusted |

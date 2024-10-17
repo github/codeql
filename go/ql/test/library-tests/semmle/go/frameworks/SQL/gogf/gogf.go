@@ -4,11 +4,13 @@ package main
 //go:generate depstubber -vendor github.com/gogf/gf/database/gdb DB,Core,TX ""
 
 import (
+	"context"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
 )
 
-func gogfCoreTest(sql string, c *gdb.Core) {
+func gogfCoreTest(sql string, c *gdb.Core, ctx context.Context) {
 	c.Exec(sql, nil)               // $ querystring=sql
 	c.GetAll(sql, nil)             // $ querystring=sql
 	c.GetArray(sql, nil)           // $ querystring=sql
@@ -21,14 +23,14 @@ func gogfCoreTest(sql string, c *gdb.Core) {
 	c.GetScan(nil, sql, nil)       // $ querystring=sql
 	c.GetStruct(nil, sql, nil)     // $ querystring=sql
 	c.GetStructs(nil, sql, nil)    // $ querystring=sql
-	c.DoCommit(nil, nil, sql, nil) // $ querystring=sql
-	c.DoExec(nil, nil, sql, nil)   // $ querystring=sql
-	c.DoGetAll(nil, nil, sql, nil) // $ querystring=sql
-	c.DoQuery(nil, nil, sql, nil)  // $ querystring=sql
-	c.DoPrepare(nil, nil, sql)     // $ querystring=sql
+	c.DoCommit(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoExec(ctx, nil, sql, nil)   // $ querystring=sql
+	c.DoGetAll(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoQuery(ctx, nil, sql, nil)  // $ querystring=sql
+	c.DoPrepare(ctx, nil, sql)     // $ querystring=sql
 }
 
-func gogfDbtest(sql string, c gdb.DB) {
+func gogfDbtest(sql string, c gdb.DB, ctx context.Context) {
 	c.Exec(sql, nil)               // $ querystring=sql
 	c.GetAll(sql, nil)             // $ querystring=sql
 	c.GetArray(sql, nil)           // $ querystring=sql
@@ -39,14 +41,14 @@ func gogfDbtest(sql string, c gdb.DB) {
 	c.Query(sql, nil)              // $ querystring=sql
 	c.Raw(sql, nil)                // $ querystring=sql
 	c.GetScan(nil, sql, nil)       // $ querystring=sql
-	c.DoCommit(nil, nil, sql, nil) // $ querystring=sql
-	c.DoExec(nil, nil, sql, nil)   // $ querystring=sql
-	c.DoGetAll(nil, nil, sql, nil) // $ querystring=sql
-	c.DoQuery(nil, nil, sql, nil)  // $ querystring=sql
-	c.DoPrepare(nil, nil, sql)     // $ querystring=sql
+	c.DoCommit(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoExec(ctx, nil, sql, nil)   // $ querystring=sql
+	c.DoGetAll(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoQuery(ctx, nil, sql, nil)  // $ querystring=sql
+	c.DoPrepare(ctx, nil, sql)     // $ querystring=sql
 }
 
-func gogfGTest(sql string) {
+func gogfGTest(sql string, ctx context.Context) {
 	c := g.DB("ad")
 	c.Exec(sql, nil)               // $ querystring=sql
 	c.GetAll(sql, nil)             // $ querystring=sql
@@ -58,11 +60,11 @@ func gogfGTest(sql string) {
 	c.Query(sql, nil)              // $ querystring=sql
 	c.Raw(sql, nil)                // $ querystring=sql
 	c.GetScan(nil, sql, nil)       // $ querystring=sql
-	c.DoCommit(nil, nil, sql, nil) // $ querystring=sql
-	c.DoExec(nil, nil, sql, nil)   // $ querystring=sql
-	c.DoGetAll(nil, nil, sql, nil) // $ querystring=sql
-	c.DoQuery(nil, nil, sql, nil)  // $ querystring=sql
-	c.DoPrepare(nil, nil, sql)     // $ querystring=sql
+	c.DoCommit(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoExec(ctx, nil, sql, nil)   // $ querystring=sql
+	c.DoGetAll(ctx, nil, sql, nil) // $ querystring=sql
+	c.DoQuery(ctx, nil, sql, nil)  // $ querystring=sql
+	c.DoPrepare(ctx, nil, sql)     // $ querystring=sql
 }
 
 func main() {
