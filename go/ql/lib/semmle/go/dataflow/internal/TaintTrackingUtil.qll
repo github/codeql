@@ -47,10 +47,11 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  exists(Type containerType |
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+  exists(Type containerType, DataFlow::Content c |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType
+    getElementType*(node.getType()) = containerType and
+    cs.asOneContent() = c
   |
     containerType instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
@@ -142,7 +143,7 @@ predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
-        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+        .getSummaryNode(), any(DataFlow::ArrayContent ac).asContentSet(),
     succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
