@@ -6,6 +6,7 @@ private import semmle.code.powershell.dataflow.Ssa
 private import DataFlowPublic
 private import DataFlowDispatch
 private import SsaImpl as SsaImpl
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -135,8 +136,25 @@ module LocalFlow {
     )
   }
 
+  predicate flowSummaryLocalStep(
+    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c,
+    string model
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.getSummaryNode(),
+      nodeTo.getSummaryNode(), true, model) and
+    c = nodeFrom.getSummarizedCallable()
+  }
+
   predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    SsaFlow::localMustFlowStep(_, nodeFrom, nodeTo)
+    or
     nodeFrom.asStmt() = nodeTo.asStmt().(CfgNodes::StmtNodes::AssignStmtCfgNode).getRightHandSide()
+    or
+    nodeFrom =
+      unique(FlowSummaryNode n1 |
+        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+          nodeTo.(FlowSummaryNode).getSummaryNode(), true, _)
+      )
   }
 }
 
@@ -174,6 +192,7 @@ private module Cached {
       or
       n = any(CfgNodes::ExprNodes::IndexCfgNode index).getBase()
     } or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TPreReturnNodeImpl(CfgNodes::AstCfgNode n, Boolean isArray) { isMultiReturned(n) } or
     TImplicitWrapNode(CfgNodes::AstCfgNode n, Boolean shouldWrap) { isMultiReturned(n) } or
     TReturnNodeImpl(CfgScope scope) or
@@ -197,7 +216,14 @@ private module Cached {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
+        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+      |
+        isUseStep = false
+        or
+        isUseStep = true and
+        not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      )
     ) and
     model = ""
   }
@@ -208,6 +234,10 @@ private module Cached {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   /**
@@ -442,6 +472,8 @@ class NamedSet extends NamedSet0 {
   }
 }
 
+NamedSet emptyNamedSet() { result.isEmpty() }
+
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
@@ -514,9 +546,44 @@ private module ParameterNodes {
 
     string getPropretyName() { result = this.getParameter().getName() }
   }
+
+  /** A parameter for a library callable with a flow summary. */
+  class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+    private ParameterPosition pos_;
+
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), pos_)
+    }
+
+    override Parameter getParameter() { none() }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.getSummarizedCallable() = c.asLibraryCallable() and pos = pos_
+    }
+  }
 }
 
 import ParameterNodes
+
+/** A data-flow node used to model flow summaries. */
+class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
+
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
+
+  override CfgScope getCfgScope() { none() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asLibraryCallable() = this.getSummarizedCallable()
+  }
+
+  override EmptyLocation getLocationImpl() { any() }
+
+  override string toStringImpl() { result = this.getSummaryNode().toString() }
+}
 
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
@@ -569,6 +636,19 @@ module ArgumentNodes {
       pos.isPipeline()
     }
   }
+
+  private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    private FlowSummaryImpl::Private::SummaryNode receiver;
+    private ArgumentPosition pos_;
+
+    SummaryArgumentNode() {
+      FlowSummaryImpl::Private::summaryArgumentNode(receiver, this.getSummaryNode(), pos_)
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(SummaryCall).getReceiver() = receiver and pos = pos_
+    }
+  }
 }
 
 import ArgumentNodes
@@ -600,6 +680,14 @@ private module EscapeContainer {
       or
       this.getAChild().(EscapeContainer).mayBeMultiReturned(n)
     }
+  }
+
+  private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
+    private ReturnKind rk;
+
+    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
+
+    override ReturnKind getKind() { result = rk }
   }
 }
 
@@ -655,12 +743,24 @@ private module OutNodes {
       kind instanceof NormalReturnKind
     }
   }
+
+  private class SummaryOutNode extends FlowSummaryNode, OutNode {
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
+
+    override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
+  }
 }
 
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  none() // TODO
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
+    succ.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -727,6 +827,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement() and
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -787,6 +890,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     def.getSourceVariable() = node1.(PipelineByPropertyNameParameterNode).getParameter() and
     SsaImpl::firstRead(def, node2.asExpr())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -795,6 +901,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
   c.isSingleton(any(Content::FieldContent fc)) and
   n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
   or
@@ -807,6 +915,8 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
   n = TPreReturnNodeImpl(_, true) and
   c.isKnownOrUnknownElement(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   or
@@ -870,6 +980,16 @@ private module PostUpdateNodes {
     override Location getLocationImpl() { result = e.getLocation() }
 
     override string toStringImpl() { result = "[post] " + e.toString() }
+  }
+
+  private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+    private FlowSummaryNode pre;
+
+    SummaryPostUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
   }
 }
 
@@ -1042,7 +1162,10 @@ class DataFlowSecondLevelScope = Unit;
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNodeImpl p) {
-  none() // TODO
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
+  )
 }
 
 /** An approximated `Content`. */

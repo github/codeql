@@ -210,6 +210,23 @@ module Content {
 
     override string toString() { result = name }
   }
+
+  /** Gets the element content corresponding to constant value `cv`. */
+  ElementContent getElementContent(ConstantValue cv) {
+    result = TKnownElementContent(cv)
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = TUnknownElementContent()
+  }
+
+  /**
+   * Gets the constant value of `e`, which corresponds to a valid known
+   * element index. Unlike calling simply `e.getConstantValue()`, this
+   * excludes negative array indices.
+   */
+  ConstantValue getKnownElementIndex(Expr e) {
+    result = getElementContent(e.getValue()).(KnownElementContent).getIndex()
+  }
 }
 
 /**

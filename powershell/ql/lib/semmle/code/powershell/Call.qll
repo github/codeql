@@ -6,6 +6,8 @@ private import semmle.code.powershell.controlflow.CfgNodes
 abstract private class AbstractCall extends Ast {
   abstract Expr getCommand();
 
+  abstract string getName();
+
   /** Gets the i'th argument to this call. */
   abstract Expr getArgument(int i);
 
@@ -33,6 +35,8 @@ class CmdCall extends AbstractCall instanceof Cmd {
   final override Expr getCommand() { result = Cmd.super.getCommand() }
 
   final override Expr getPositionalArgument(int i) { result = Cmd.super.getPositionalArgument(i) }
+
+  final override string getName() { result = Cmd.super.getCommandName() }
 
   final override Expr getArgument(int i) { result = Cmd.super.getArgument(i) }
 
@@ -68,6 +72,8 @@ class MethodCall extends AbstractCall instanceof InvokeMemberExpr {
       result.getBody() = getTarget(call)
     )
   }
+
+  final override string getName() { result = InvokeMemberExpr.super.getName() }
 }
 
 final class Call = AbstractCall;
