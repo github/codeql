@@ -6,7 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
-private import codeql.rust.elements.FormatTemplate
+private import codeql.rust.elements.Format
+private import codeql.rust.elements.NamedFormatArgument
 
 /**
  *  The characteristic predicate of `ImplicitVariableAccess` synthesized instances.

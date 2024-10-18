@@ -5,7 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.FormatArgsExpr
-private import codeql.rust.elements.FormatTemplate
+private import codeql.rust.elements.Format
 
 /**
  * INTERNAL: This module contains the customizable definition of `FormatArgsExpr` and should not
