@@ -534,9 +534,6 @@ class Expr extends StmtParent, @expr {
 
   /** Gets the function containing this control-flow node. */
   override Function getControlFlowScope() { result = this.getEnclosingFunction() }
-
-  /** Holds if this expression could be the return value of an implicitly declared function. */
-  predicate mayBeFromImplicitlyDeclaredFunction() { none() }
 }
 
 /**

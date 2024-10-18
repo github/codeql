@@ -1,5 +1,5 @@
 import cpp
 
-from Expr e
-where e.mayBeFromImplicitlyDeclaredFunction()
-select e
+from Call c
+where c.mayBeFromImplicitlyDeclaredFunction()
+select c
