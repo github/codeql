@@ -28,3 +28,8 @@
 | more.rs:80:9:80:14 | a_ptr4 | Variable is assigned a value that is never used. |
 | more.rs:95:9:95:13 | d_ptr | Variable is assigned a value that is never used. |
 | more.rs:101:9:101:17 | f_ptr | Variable is assigned a value that is never used. |
+| unreachable.rs:166:6:166:6 | x | Variable is assigned a value that is never used. |
+| unreachable.rs:190:14:190:14 | a | Variable is assigned a value that is never used. |
+| unreachable.rs:199:9:199:9 | a | Variable is assigned a value that is never used. |
+| unreachable.rs:210:11:210:11 | a | Variable is assigned a value that is never used. |
+| unreachable.rs:217:6:217:6 | a | Variable is assigned a value that is never used. |

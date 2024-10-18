@@ -1,13 +1,14 @@
 
 //fn cond() -> bool;
 //fn get_a_number() -> i32;
+//fn maybe_get_a_number() -> Option<i32>;
 
 // --- unreachable code --
 
 fn do_something() {
 }
 
-fn unreachable_if() {
+fn unreachable_if_1() {
 	if false {
 		do_something(); // BAD: unreachable code
 	} else {
@@ -162,6 +163,14 @@ fn unreachable_loop() {
 		do_something(); // BAD: unreachable code
 	}
 
+	for x in 1..10 {
+		if cond() {
+			continue;
+			do_something(); // BAD: unreachable code
+		}
+		do_something();
+	}
+
 	loop {
 		if cond() {
 			return;
@@ -175,4 +184,60 @@ fn unreachable_loop() {
 
 fn unreachable_paren() {
 	let _ = (((1)));
+}
+
+fn unreachable_let_1() {
+	if let Some(a) = maybe_get_a_number() {
+		do_something();
+		return;
+	} else {
+		do_something();
+	}
+
+	do_something(); // SPURIOUS: unreachable code
+
+	if let a = get_a_number() { // (always succeeds)
+		do_something();
+		return;
+	} else {
+		do_something(); // BAD: unreachable code
+	}
+
+	do_something(); // BAD: unreachable code
+}
+
+fn unreachable_let_2() {
+	let Some(a) = maybe_get_a_number() else {
+		do_something();
+		return;
+	};
+
+	do_something();
+
+	let a = maybe_get_a_number() else { // (always succeeds)
+		do_something(); // BAD: unreachable code
+		return;
+	};
+
+	do_something();
+}
+
+fn unreachable_if_2() {
+	if cond() {
+		do_something();
+		return;
+	} else {
+		do_something();
+	}
+
+	do_something(); // SPURIOUS: unreachable code
+}
+
+fn unreachable_if_3() {
+	if !cond() {
+		do_something();
+		return;
+	}
+
+	do_something(); // SPURIOUS: unreachable code
 }
