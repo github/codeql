@@ -5,6 +5,7 @@
  * @tags empty
  *       block
  *       statement
+ *       example
  */
 
 import java
