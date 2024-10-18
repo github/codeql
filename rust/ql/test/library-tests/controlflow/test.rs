@@ -330,6 +330,15 @@ mod patterns {
             MyStruct {} => 1,
         }
     }
+
+    fn range_pattern() -> i64 {
+        match 42 {
+            ..0 => 1,
+            1..2 => 2,
+            5.. => 3,
+            .. => 4,
+        }
+    }
 }
 
 mod divergence {
