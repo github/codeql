@@ -612,7 +612,7 @@ module PatternTrees {
       result = rank[i + 1](Pat pat, int j | pat = this.getPat(j) | pat order by j)
     }
 
-    predicate isEmpty() { not any(Pat p) = this.getPat(0) }
+    predicate isEmpty() { not any(Pat p) = this.getPatRanked(0) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getPatRanked(_) }
 

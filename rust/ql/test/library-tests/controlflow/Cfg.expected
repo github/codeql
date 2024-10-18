@@ -716,7 +716,6 @@ edges
 | test.rs:335:9:340:9 | MatchExpr | test.rs:334:31:341:5 | BlockExpr |  |
 | test.rs:335:15:335:16 | 42 | test.rs:336:13:336:15 | RangePat |  |
 | test.rs:336:13:336:15 | RangePat | test.rs:336:15:336:15 | LiteralPat | match |
-| test.rs:336:13:336:15 | RangePat | test.rs:336:20:336:20 | 1 | match |
 | test.rs:336:13:336:15 | RangePat | test.rs:337:13:337:16 | RangePat | no-match |
 | test.rs:336:15:336:15 | LiteralPat | test.rs:336:20:336:20 | 1 | match |
 | test.rs:336:15:336:15 | LiteralPat | test.rs:337:13:337:16 | RangePat | no-match |
