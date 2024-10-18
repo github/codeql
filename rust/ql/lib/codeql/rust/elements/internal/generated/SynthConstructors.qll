@@ -37,8 +37,10 @@ import codeql.rust.elements.internal.FieldExprConstructor
 import codeql.rust.elements.internal.FnPtrTypeConstructor
 import codeql.rust.elements.internal.ForExprConstructor
 import codeql.rust.elements.internal.ForTypeConstructor
+import codeql.rust.elements.internal.FormatConstructor
 import codeql.rust.elements.internal.FormatArgsArgConstructor
 import codeql.rust.elements.internal.FormatArgsExprConstructor
+import codeql.rust.elements.internal.FormatArgumentConstructor
 import codeql.rust.elements.internal.FunctionConstructor
 import codeql.rust.elements.internal.GenericArgListConstructor
 import codeql.rust.elements.internal.GenericParamListConstructor
