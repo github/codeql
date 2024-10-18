@@ -91,7 +91,7 @@ private class Sprintf extends FormattingFunction, NonThrowingFunction {
   override int getFirstFormatArgumentIndex() {
     if this.hasName("__builtin___sprintf_chk")
     then result = 4
-    else result = this.getNumberOfParameters()
+    else result = super.getFirstFormatArgumentIndex()
   }
 }
 
