@@ -278,8 +278,25 @@ class FormatArgsExprTree extends StandardPostOrderTree, FormatArgsExpr {
     i = -1 and result = this.getTemplate()
     or
     result = this.getArg(i).getExpr()
+    or
+    result =
+      any(FormatTemplateVariableAccess v, Format f, int index, int kind |
+        f = this.getFormat(index) and
+        (
+          v.getArgument() = f.getArgumentRef() and kind = 0
+          or
+          v.getArgument() = f.getWidthArgument() and kind = 1
+          or
+          v.getArgument() = f.getPrecisionArgument() and kind = 2
+        ) and
+        i = this.getNumberOfArgs() + index * 3 + kind
+      |
+        v
+      )
   }
 }
+
+class ImplictVariableAccessTree extends LeafTree, FormatTemplateVariableAccess { }
 
 class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
   override AstNode getChildNode(int i) {

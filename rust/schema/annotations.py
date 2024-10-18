@@ -191,6 +191,7 @@ class _:
     ```
     """
 
+
 class CallExprBase(Expr):
     """
     A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
@@ -212,6 +213,7 @@ class _:
     """
     arg_list: drop
     attrs: drop
+
 
 @annotate(MethodCallExpr, replace_bases={Expr: CallExprBase})
 class _:
@@ -1741,6 +1743,7 @@ class _:
     ```
     """
 
+
 @annotate(Function, add_bases=[Callable])
 class _:
     param_list: drop
@@ -1751,3 +1754,38 @@ class _:
 class _:
     param_list: drop
     attrs: drop
+
+
+@qltest.skip
+@synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
+class FormatTemplateVariableAccess(Expr):
+    pass
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int)
+class Format(Locatable):
+    """
+    A format element in a formatting template. For example the `{}` in:
+    ```rust
+    println!("Hello {}", "world");
+    ```
+    """
+    parent: FormatArgsExpr
+    index: int
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int)
+class FormatArgument(Locatable):
+    """
+    An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:
+    ```rust
+    println!("Value {value:#width$.precision$}");
+    ```
+    or the `0`, `1` and `2` in:
+    ```rust
+    println!("Value {0:#1$.2$}", value, width, precision);
+    ```
+    """
+    parent: Format

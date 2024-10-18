@@ -1,6 +1,8 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
 module Impl {
@@ -138,12 +140,12 @@ module Impl {
   }
 
   /** A path expression that may access a local variable. */
-  private class VariableAccessCand extends PathExpr {
+  private class VariableAccessCand extends TVariableAccess {
     string name_;
 
     VariableAccessCand() {
       exists(Path p, PathSegment ps |
-        p = this.getPath() and
+        p = this.(PathExpr).getPath() and
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
@@ -152,9 +154,23 @@ module Impl {
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
       )
+      or
+      this.(FormatTemplateVariableAccess).getName() = name_
     }
 
+    string toString() { result = name_ }
+
     string getName() { result = name_ }
+
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.(PathExpr)
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+      this.(FormatTemplateVariableAccess)
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
   }
 
   private AstNode getAnAncestorInVariableScope(AstNode n) {
@@ -164,7 +180,10 @@ module Impl {
       n instanceof LetStmt or
       n instanceof VariableScope
     ) and
-    exists(AstNode n0 | result = getImmediateParent(n0) |
+    exists(AstNode n0 |
+      result = getImmediateParent(n0) or
+      result = n0.(FormatTemplateVariableAccess).getArgument().getParent().getParent()
+    |
       n0 = n
       or
       n0 = getAnAncestorInVariableScope(n) and
@@ -272,7 +291,7 @@ module Impl {
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+    cand.hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
     nestLevel = 0
     or
     exists(VariableScope inner |
@@ -347,8 +366,14 @@ module Impl {
       result = this.asVariable().toString() or result = this.asVariableAccessCand().toString()
     }
 
-    Location getLocation() {
-      result = this.asVariable().getLocation() or result = this.asVariableAccessCand().getLocation()
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.asVariable()
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+      this.asVariableAccessCand()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     pragma[nomagic]
@@ -422,9 +447,13 @@ module Impl {
   }
 
   private import codeql.rust.controlflow.internal.Scope
+  private import codeql.rust.elements.internal.generated.Synth
+
+  private class TVariableAccess = Synth::TPathExpr or Synth::TFormatTemplateVariableAccess;
 
   /** A variable access. */
-  class VariableAccess extends PathExprImpl::PathExpr instanceof VariableAccessCand {
+  abstract class VariableAccess extends ExprImpl::Expr, TVariableAccess instanceof VariableAccessCand
+  {
     private string name;
     private Variable v;
 
@@ -439,6 +468,18 @@ module Impl {
     override string toString() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
+  }
+
+  private class VariableAccessPathExpr extends VariableAccess, PathExprImpl::PathExpr {
+    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
+  }
+
+  private class VariableAccessFormatTemplateVariableAccess extends VariableAccess,
+    FormatTemplateVariableAccessImpl::FormatTemplateVariableAccess
+  {
+    override string toString() { result = VariableAccess.super.toString() }
+
+    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
