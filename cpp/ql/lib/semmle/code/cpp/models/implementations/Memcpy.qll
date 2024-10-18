@@ -9,7 +9,7 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.interfaces.NonThrowing
+import semmle.code.cpp.models.interfaces.Throwing
 
 /**
  * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
@@ -106,6 +106,8 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     not this.hasGlobalName(["bcopy", mempcpy(), "memccpy"]) and
     index = this.getParamDest()
   }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 private string mempcpy() { result = ["mempcpy", "wmempcpy"] }
