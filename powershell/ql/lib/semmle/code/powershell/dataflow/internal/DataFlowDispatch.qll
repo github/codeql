@@ -134,6 +134,9 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     or
     start.asExpr().(CfgNodes::ExprNodes::TypeNameCfgNode).getTypeName() = typename and
     exact = true
+    or
+    start.asParameter().getStaticType() = typename and
+    exact = false
   }
 
   newtype State = additional MkState(string typename, Boolean exact) { start0(_, typename, exact) }
@@ -174,12 +177,20 @@ Node trackInstance(string typename, boolean exact) {
         exact))
 }
 
+private Type getTypeWithName(string s, boolean exact) {
+  result.getName() = s and
+  exact = true
+  or
+  result.getASubtype+().getName() = s and
+  exact = false
+}
+
 private CfgScope getTargetInstance(CfgNodes::CallCfgNode call) {
   // TODO: Also match argument/parameter types
-  exists(Node receiver, string method, string typename, Type t |
+  exists(Node receiver, string method, string typename, Type t, boolean exact |
     qualifiedCall(call, receiver, method) and
-    receiver = trackInstance(typename, _) and
-    t.getName() = typename
+    receiver = trackInstance(typename, exact) and
+    t = getTypeWithName(typename, exact)
   |
     if method = "new"
     then result = t.getAConstructor().getBody()
