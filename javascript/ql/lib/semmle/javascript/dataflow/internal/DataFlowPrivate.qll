@@ -1314,17 +1314,18 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
 private Node getPostUpdateForStore(Node base) {
-  // Some nodes have post-update nodes but should not be targeted by a PropWrite store.
-  // Notably, an object literal can have a post-update node it if is an argument to a call,
-  // but in this case, we should not target the post-update node, as this would prevent data from
-  // flowing into the call.
   exists(Expr expr |
     base = TValueNode(expr) and
     result = TExprPostUpdateNode(expr)
   |
-    expr instanceof PropAccess or
-    expr instanceof VarAccess or
-    expr instanceof ThisExpr
+    // When object/array literal appears as an argument to a call, we would generally need two post-update nodes:
+    // - one for the stores coming from the properties or array elements (which happen before the call and must flow into the call)
+    // - one for the argument position, to propagate the updates that happened during the call
+    //
+    // However, the first post-update is not actually needed since we are storing into a brand new object, so in the first case
+    // we just target the expression directly. In the second case we use the ExprPostUpdateNode.
+    not expr instanceof ObjectExpr and
+    not expr instanceof ArrayExpr
   )
   or
   exists(ImplicitThisUse use |
