@@ -131,7 +131,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
 
     /** Gets the content of a type-tracker that matches this filter. */
     Content getAMatchingContent() {
-      none() // TODO
+      this = MkElementFilter() and
+      result.getAReadContent() instanceof DataFlow::Content::ElementContent
     }
   }
 
