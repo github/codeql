@@ -53,12 +53,16 @@ private predicate isParameterImpl(string name, Scope scope) {
   name = "_"
 }
 
+private predicate isThisParameter(Scope scope, Type t) {
+  t = scope.getEnclosingFunction().getDeclaringType()
+}
+
 private newtype TParameterImpl =
   TInternalParameter(Internal::Parameter p) or
   TUnderscore(Scope scope) {
     exists(VarAccess va | va.getUserPath() = ["_", "PSItem"] and scope = va.getEnclosingScope())
   } or
-  TThisParameter(Scope scope) { exists(scope.getEnclosingFunction().getDeclaringType()) }
+  TThisParameter(Scope scope) { isThisParameter(scope, _) }
 
 private class ParameterImpl extends TParameterImpl {
   abstract Location getLocation();
@@ -88,6 +92,13 @@ private class ParameterImpl extends TParameterImpl {
   abstract predicate isPipeline();
 
   abstract predicate isPipelineByPropertyName();
+
+  /**
+   * Gets the static type of this parameter.
+   * The type of this parameter at runtime may be a subtype of this static
+   * type.
+   */
+  abstract string getStaticType();
 }
 
 private class InternalParameter extends ParameterImpl, TInternalParameter {
@@ -122,6 +133,8 @@ private class InternalParameter extends ParameterImpl, TInternalParameter {
   override predicate isPipelineByPropertyName() {
     this.getAnAttribute().getANamedArgument() instanceof ValueFromPipelineByPropertyName
   }
+
+  final override string getStaticType() { result = p.getStaticType() }
 }
 
 /**
@@ -158,6 +171,8 @@ private class Underscore extends ParameterImpl, TUnderscore {
   final override predicate isPipelineByPropertyName() { none() }
 
   final override predicate isFunctionParameter(Function f, int i) { f.getBody() = scope and i = -1 }
+
+  final override string getStaticType() { none() }
 }
 
 private class ThisParameter extends ParameterImpl, TThisParameter {
@@ -176,6 +191,13 @@ private class ThisParameter extends ParameterImpl, TThisParameter {
   final override predicate isPipeline() { none() }
 
   final override predicate isPipelineByPropertyName() { none() }
+
+  final override string getStaticType() {
+    exists(Type t |
+      isThisParameter(scope, t) and
+      result = t.getName()
+    )
+  }
 }
 
 private predicate isPipelineIteratorVariable(ParameterImpl p, ProcessBlock pb) {
@@ -305,6 +327,8 @@ class Parameter extends AbstractLocalScopeVariable, TParameter {
   predicate isPipeline() { p.isPipeline() }
 
   predicate isPipelineByPropertyName() { p.isPipelineByPropertyName() }
+
+  string getStaticType() { result = p.getStaticType() }
 }
 
 class PipelineParameter extends Parameter {
