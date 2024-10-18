@@ -159,7 +159,7 @@ class BreakExprTree extends PostOrderTree, BreakExpr {
   override predicate last(AstNode last, Completion c) { none() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this
+    last(super.getExpr(), pred, c) and completionIsNormal(c) and succ = this
     or
     pred = this and
     c.isValidFor(pred) and

@@ -207,12 +207,8 @@ edges
 | test.rs:102:13:102:14 | ExprStmt | test.rs:102:13:102:13 | 1 |  |
 | test.rs:106:5:110:5 | enter break_with_return | test.rs:108:13:108:27 | ExprStmt |  |
 | test.rs:106:5:110:5 | exit break_with_return (normal) | test.rs:106:5:110:5 | exit break_with_return |  |
-| test.rs:106:35:110:5 | BlockExpr | test.rs:106:5:110:5 | exit break_with_return (normal) |  |
-| test.rs:107:9:109:9 | LoopExpr | test.rs:106:35:110:5 | BlockExpr |  |
-| test.rs:108:13:108:26 | BreakExpr | test.rs:107:9:109:9 | LoopExpr | break |
 | test.rs:108:13:108:27 | ExprStmt | test.rs:108:26:108:26 | 1 |  |
 | test.rs:108:19:108:26 | ReturnExpr | test.rs:106:5:110:5 | exit break_with_return (normal) | return |
-| test.rs:108:19:108:26 | ReturnExpr | test.rs:108:13:108:26 | BreakExpr | return |
 | test.rs:108:26:108:26 | 1 | test.rs:108:19:108:26 | ReturnExpr |  |
 | test.rs:113:1:116:1 | enter test_nested_function | test.rs:113:25:113:25 | n |  |
 | test.rs:113:1:116:1 | exit test_nested_function (normal) | test.rs:113:1:116:1 | exit test_nested_function |  |
