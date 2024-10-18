@@ -42,8 +42,10 @@
 /lib/codeql/rust/elements/FnPtrType.qll linguist-generated
 /lib/codeql/rust/elements/ForExpr.qll linguist-generated
 /lib/codeql/rust/elements/ForType.qll linguist-generated
+/lib/codeql/rust/elements/Format.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsExpr.qll linguist-generated
+/lib/codeql/rust/elements/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/Function.qll linguist-generated
 /lib/codeql/rust/elements/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgList.qll linguist-generated
@@ -236,6 +238,10 @@
 /lib/codeql/rust/elements/internal/FormatArgsArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgumentConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgumentImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgListConstructor.qll linguist-generated
@@ -496,8 +502,10 @@
 /lib/codeql/rust/elements/internal/generated/FnPtrType.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ForExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ForType.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Format.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Function.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArgList.qll linguist-generated
