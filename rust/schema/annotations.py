@@ -1760,3 +1760,32 @@ class _:
 @synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
 class ImplicitVariableAccess(Expr):
     pass
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int)
+class Format(Locatable):
+    """
+    A format element in a formatting template. For example the `{}` in:
+    ```rust
+    println!("Hello {}", "world");
+    ```
+    """
+    parent: FormatArgsExpr
+    index: int
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int)
+class FormatArgument(Locatable):
+    """
+    An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:
+    ```rust
+    println!("Value {value:#width$.precision$}");
+    ```
+    or the `0`, `1` and `2` in:
+    ```rust
+    println!("Value {0:#1$.2$}", value, width, precision);
+    ```
+    """
+    parent: Format
