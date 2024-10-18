@@ -49,6 +49,7 @@ import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
 import codeql.rust.elements.FormatArgsExpr
 import codeql.rust.elements.FormatArgument
+import codeql.rust.elements.FormatTemplateVariableAccess
 import codeql.rust.elements.Function
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
@@ -58,7 +59,6 @@ import codeql.rust.elements.IdentPat
 import codeql.rust.elements.IfExpr
 import codeql.rust.elements.Impl
 import codeql.rust.elements.ImplTraitType
-import codeql.rust.elements.ImplicitVariableAccess
 import codeql.rust.elements.IndexExpr
 import codeql.rust.elements.InferType
 import codeql.rust.elements.Item

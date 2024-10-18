@@ -1,27 +1,27 @@
 /**
- * This module provides a hand-modifiable wrapper around the generated class `ImplicitVariableAccess`.
+ * This module provides a hand-modifiable wrapper around the generated class `FormatTemplateVariableAccess`.
  *
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.elements.internal.generated.ImplicitVariableAccess
-private import codeql.rust.elements.internal.ImplicitVariableAccessConstructor
+private import codeql.rust.elements.internal.generated.FormatTemplateVariableAccess
+private import codeql.rust.elements.internal.FormatTemplateVariableAccessConstructor
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.NamedFormatArgument
 
 /**
- * INTERNAL: This module contains the customizable definition of `ImplicitVariableAccess` and should not
+ * INTERNAL: This module contains the customizable definition of `FormatTemplateVariableAccess` and should not
  * be referenced directly.
  */
 module Impl {
-  class ImplicitVariableAccess extends Generated::ImplicitVariableAccess {
+  class FormatTemplateVariableAccess extends Generated::FormatTemplateVariableAccess {
     private NamedFormatArgument argument;
 
-    ImplicitVariableAccess() {
+    FormatTemplateVariableAccess() {
       exists(Raw::FormatArgsExpr parent, int index, int kind |
-        this = Synth::TImplicitVariableAccess(parent, index, kind) and
+        this = Synth::TFormatTemplateVariableAccess(parent, index, kind) and
         unboundNamedFormatArgument(parent, index, kind, argument)
       )
     }

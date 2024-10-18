@@ -41,6 +41,7 @@ import codeql.rust.elements.internal.FormatConstructor
 import codeql.rust.elements.internal.FormatArgsArgConstructor
 import codeql.rust.elements.internal.FormatArgsExprConstructor
 import codeql.rust.elements.internal.FormatArgumentConstructor
+import codeql.rust.elements.internal.FormatTemplateVariableAccessConstructor
 import codeql.rust.elements.internal.FunctionConstructor
 import codeql.rust.elements.internal.GenericArgListConstructor
 import codeql.rust.elements.internal.GenericParamListConstructor
@@ -48,7 +49,6 @@ import codeql.rust.elements.internal.IdentPatConstructor
 import codeql.rust.elements.internal.IfExprConstructor
 import codeql.rust.elements.internal.ImplConstructor
 import codeql.rust.elements.internal.ImplTraitTypeConstructor
-import codeql.rust.elements.internal.ImplicitVariableAccessConstructor
 import codeql.rust.elements.internal.IndexExprConstructor
 import codeql.rust.elements.internal.InferTypeConstructor
 import codeql.rust.elements.internal.ItemListConstructor
