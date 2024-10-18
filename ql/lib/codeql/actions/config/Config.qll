@@ -120,7 +120,7 @@ predicate vulnerableActionsDataModel(
 }
 
 /**
- * MaD models for vulnerable actions
+ * MaD models for immutable actions
  * Fields:
  *    - action: action name
  */
