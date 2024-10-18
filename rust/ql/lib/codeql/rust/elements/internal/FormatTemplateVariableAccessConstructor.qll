@@ -1,6 +1,6 @@
 /**
  *  This module defines the hook used internally to tweak the characteristic predicate of
- *  `ImplicitVariableAccess` synthesized instances.
+ *  `FormatTemplateVariableAccess` synthesized instances.
  *  INTERNAL: Do not use.
  */
 
@@ -10,10 +10,10 @@ private import codeql.rust.elements.Format
 private import codeql.rust.elements.NamedFormatArgument
 
 /**
- *  The characteristic predicate of `ImplicitVariableAccess` synthesized instances.
+ *  The characteristic predicate of `FormatTemplateVariableAccess` synthesized instances.
  *  INTERNAL: Do not use.
  */
-predicate constructImplicitVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
+predicate constructFormatTemplateVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
   unboundNamedFormatArgument(parent, index, kind, _)
 }
 

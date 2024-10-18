@@ -46,6 +46,7 @@
 /lib/codeql/rust/elements/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgument.qll linguist-generated
+/lib/codeql/rust/elements/FormatTemplateVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/Function.qll linguist-generated
 /lib/codeql/rust/elements/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/GenericArgList.qll linguist-generated
@@ -55,7 +56,6 @@
 /lib/codeql/rust/elements/IfExpr.qll linguist-generated
 /lib/codeql/rust/elements/Impl.qll linguist-generated
 /lib/codeql/rust/elements/ImplTraitType.qll linguist-generated
-/lib/codeql/rust/elements/ImplicitVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/IndexExpr.qll linguist-generated
 /lib/codeql/rust/elements/InferType.qll linguist-generated
 /lib/codeql/rust/elements/Item.qll linguist-generated
@@ -502,6 +502,7 @@
 /lib/codeql/rust/elements/internal/generated/FormatArgsArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgument.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/FormatTemplateVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Function.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/GenericArgList.qll linguist-generated
@@ -511,7 +512,6 @@
 /lib/codeql/rust/elements/internal/generated/IfExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Impl.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ImplTraitType.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/ImplicitVariableAccess.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/IndexExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/InferType.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Item.qll linguist-generated

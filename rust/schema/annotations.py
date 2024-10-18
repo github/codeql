@@ -1758,7 +1758,7 @@ class _:
 
 @qltest.skip
 @synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
-class ImplicitVariableAccess(Expr):
+class FormatTemplateVariableAccess(Expr):
     pass
 
 

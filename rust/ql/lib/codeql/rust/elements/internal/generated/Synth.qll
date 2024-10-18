@@ -171,6 +171,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFormatTemplateVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
+      constructFormatTemplateVariableAccess(parent, index, kind)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFunction(Raw::Function id) { constructFunction(id) } or
     /**
      * INTERNAL: Do not use.
@@ -196,12 +202,6 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TImplTraitType(Raw::ImplTraitType id) { constructImplTraitType(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TImplicitVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
-      constructImplicitVariableAccess(parent, index, kind)
-    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -643,7 +643,7 @@ module Synth {
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TImplicitVariableAccess or TIndexExpr or
+        TForExpr or TFormatArgsExpr or TFormatTemplateVariableAccess or TIfExpr or TIndexExpr or
         TLetExpr or TLiteralExpr or TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or
         TParenExpr or TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or
         TReturnExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or
@@ -943,6 +943,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormatTemplateVariableAccess`, if possible.
+   */
+  TFormatTemplateVariableAccess convertFormatTemplateVariableAccessFromRaw(Raw::Element e) {
+    none()
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TFunction`, if possible.
    */
   TFunction convertFunctionFromRaw(Raw::Element e) { result = TFunction(e) }
@@ -982,12 +990,6 @@ module Synth {
    * Converts a raw element to a synthesized `TImplTraitType`, if possible.
    */
   TImplTraitType convertImplTraitTypeFromRaw(Raw::Element e) { result = TImplTraitType(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TImplicitVariableAccess`, if possible.
-   */
-  TImplicitVariableAccess convertImplicitVariableAccessFromRaw(Raw::Element e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -1798,9 +1800,9 @@ module Synth {
     or
     result = convertFormatArgsExprFromRaw(e)
     or
-    result = convertIfExprFromRaw(e)
+    result = convertFormatTemplateVariableAccessFromRaw(e)
     or
-    result = convertImplicitVariableAccessFromRaw(e)
+    result = convertIfExprFromRaw(e)
     or
     result = convertIndexExprFromRaw(e)
     or
@@ -2275,6 +2277,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatTemplateVariableAccess` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatTemplateVariableAccessToRaw(TFormatTemplateVariableAccess e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TFunction` to a raw DB element, if possible.
    */
   Raw::Element convertFunctionToRaw(TFunction e) { e = TFunction(result) }
@@ -2314,12 +2322,6 @@ module Synth {
    * Converts a synthesized `TImplTraitType` to a raw DB element, if possible.
    */
   Raw::Element convertImplTraitTypeToRaw(TImplTraitType e) { e = TImplTraitType(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TImplicitVariableAccess` to a raw DB element, if possible.
-   */
-  Raw::Element convertImplicitVariableAccessToRaw(TImplicitVariableAccess e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -3130,9 +3132,9 @@ module Synth {
     or
     result = convertFormatArgsExprToRaw(e)
     or
-    result = convertIfExprToRaw(e)
+    result = convertFormatTemplateVariableAccessToRaw(e)
     or
-    result = convertImplicitVariableAccessToRaw(e)
+    result = convertIfExprToRaw(e)
     or
     result = convertIndexExprToRaw(e)
     or

@@ -5,4 +5,4 @@
 
 import codeql.rust.elements.internal.FormatConstructor
 import codeql.rust.elements.internal.FormatArgumentConstructor
-import codeql.rust.elements.internal.ImplicitVariableAccessConstructor
+import codeql.rust.elements.internal.FormatTemplateVariableAccessConstructor

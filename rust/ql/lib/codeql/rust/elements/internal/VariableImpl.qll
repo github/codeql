@@ -2,7 +2,7 @@ private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
-private import codeql.rust.elements.internal.ImplicitVariableAccessImpl::Impl as ImplicitVariableAccessImpl
+private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
 module Impl {
@@ -155,7 +155,7 @@ module Impl {
         name_ = ps.getNameRef().getText()
       )
       or
-      this.(ImplicitVariableAccess).getName() = name_
+      this.(FormatTemplateVariableAccess).getName() = name_
     }
 
     string toString() { result = name_ }
@@ -168,7 +168,7 @@ module Impl {
       this.(PathExpr)
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-      this.(ImplicitVariableAccess)
+      this.(FormatTemplateVariableAccess)
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
@@ -182,7 +182,7 @@ module Impl {
     ) and
     exists(AstNode n0 |
       result = getImmediateParent(n0) or
-      result = n0.(ImplicitVariableAccess).getArgument().getParent().getParent()
+      result = n0.(FormatTemplateVariableAccess).getArgument().getParent().getParent()
     |
       n0 = n
       or
@@ -449,7 +449,7 @@ module Impl {
   private import codeql.rust.controlflow.internal.Scope
   private import codeql.rust.elements.internal.generated.Synth
 
-  private class TVariableAccess = Synth::TPathExpr or Synth::TImplicitVariableAccess;
+  private class TVariableAccess = Synth::TPathExpr or Synth::TFormatTemplateVariableAccess;
 
   /** A variable access. */
   abstract class VariableAccess extends ExprImpl::Expr, TVariableAccess instanceof VariableAccessCand
@@ -474,8 +474,8 @@ module Impl {
     override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
   }
 
-  private class VariableAccessImplicitVariableAccess extends VariableAccess,
-    ImplicitVariableAccessImpl::ImplicitVariableAccess
+  private class VariableAccessFormatTemplateVariableAccess extends VariableAccess,
+    FormatTemplateVariableAccessImpl::FormatTemplateVariableAccess
   {
     override string toString() { result = VariableAccess.super.toString() }
 

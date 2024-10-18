@@ -1790,6 +1790,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfFormatTemplateVariableAccess(
+    FormatTemplateVariableAccess e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfIdentPat(IdentPat e, int index, string partialPredicateCall) {
     exists(int b, int bPat, int n, int nAttr, int nName, int nPat |
       b = 0 and
@@ -1853,21 +1868,6 @@ private module Impl {
         result = getImmediateChildOfTypeRef(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getTypeBoundList() and partialPredicateCall = "TypeBoundList()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfImplicitVariableAccess(
-    ImplicitVariableAccess e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bExpr, int n |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3652,13 +3652,13 @@ private module Impl {
     or
     result = getImmediateChildOfFormatArgsExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfFormatTemplateVariableAccess(e, index, partialAccessor)
+    or
     result = getImmediateChildOfIdentPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfIfExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfImplTraitType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfImplicitVariableAccess(e, index, partialAccessor)
     or
     result = getImmediateChildOfIndexExpr(e, index, partialAccessor)
     or
