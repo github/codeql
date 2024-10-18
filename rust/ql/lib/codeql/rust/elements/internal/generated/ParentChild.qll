@@ -51,6 +51,34 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfFormat(Format e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfFormatArgument(
+    FormatArgument e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfMissing(Missing e, int index, string partialPredicateCall) {
     exists(int b, int bUnextracted, int n |
       b = 0 and
@@ -1829,6 +1857,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfImplicitVariableAccess(
+    ImplicitVariableAccess e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfIndexExpr(IndexExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nBase, int nIndex |
       b = 0 and
@@ -3459,6 +3502,10 @@ private module Impl {
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
     or
+    result = getImmediateChildOfFormat(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFormatArgument(e, index, partialAccessor)
+    or
     result = getImmediateChildOfMissing(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnimplemented(e, index, partialAccessor)
@@ -3610,6 +3657,8 @@ private module Impl {
     result = getImmediateChildOfIfExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfImplTraitType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImplicitVariableAccess(e, index, partialAccessor)
     or
     result = getImmediateChildOfIndexExpr(e, index, partialAccessor)
     or
