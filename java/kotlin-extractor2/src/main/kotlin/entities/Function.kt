@@ -674,7 +674,7 @@ private fun KotlinFileExtractor.extractMethod(
     */
 }
 
-private fun <T : DbCallable> KotlinUsesExtractor.useFunction(
+fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
     /*
