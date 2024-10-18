@@ -1279,16 +1279,25 @@
 
 ; Class.bases - using `(_ !name)` as a proxy for all non-keyword arguments.
 (class_definition
-    superclasses: (argument_list element: (_ !name) @arg)
+    superclasses: (argument_list element: (_ !value !name) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
     attr (@class.class_expr -> @arg.node) bases = (named-child-index @arg)
 }
 
-; Class.keywords
+; Class.keywords of the form `foo=bar`
 (class_definition
     superclasses: (argument_list element: (keyword_argument) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) keywords = (named-child-index @arg)
+}
+
+; Class.keywords of the form `**kwargs`
+(class_definition
+    superclasses: (argument_list element: (dictionary_splat) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
