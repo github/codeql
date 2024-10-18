@@ -102,6 +102,12 @@ mod loop_expression {
             1;
         }
     }
+
+    fn break_with_return() -> i64 {
+        loop {
+            break return 1;
+        }
+    }
 }
 
 fn test_nested_function(n: i64) -> i64 {
