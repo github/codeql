@@ -153,11 +153,21 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFormat(Raw::FormatArgsExpr parent, int index) { constructFormat(parent, index) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFormatArgsArg(Raw::FormatArgsArg id) { constructFormatArgsArg(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TFormatArgsExpr(Raw::FormatArgsExpr id) { constructFormatArgsExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TFormatArgument(Raw::FormatArgsExpr parent, int index, int kind) {
+      constructFormatArgument(parent, index, kind)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -186,6 +196,12 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TImplTraitType(Raw::ImplTraitType id) { constructImplTraitType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TImplicitVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
+      constructImplicitVariableAccess(parent, index, kind)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -627,10 +643,11 @@ module Synth {
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExpr or
-        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
-        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
+        TForExpr or TFormatArgsExpr or TIfExpr or TImplicitVariableAccess or TIndexExpr or
+        TLetExpr or TLiteralExpr or TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or
+        TParenExpr or TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or
+        TReturnExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or
+        TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -663,7 +680,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocatable = TAstNode;
+  class TLocatable = TAstNode or TFormat or TFormatArgument;
 
   /**
    * INTERNAL: Do not use.
@@ -902,6 +919,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormat`, if possible.
+   */
+  TFormat convertFormatFromRaw(Raw::Element e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TFormatArgsArg`, if possible.
    */
   TFormatArgsArg convertFormatArgsArgFromRaw(Raw::Element e) { result = TFormatArgsArg(e) }
@@ -911,6 +934,12 @@ module Synth {
    * Converts a raw element to a synthesized `TFormatArgsExpr`, if possible.
    */
   TFormatArgsExpr convertFormatArgsExprFromRaw(Raw::Element e) { result = TFormatArgsExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormatArgument`, if possible.
+   */
+  TFormatArgument convertFormatArgumentFromRaw(Raw::Element e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -953,6 +982,12 @@ module Synth {
    * Converts a raw element to a synthesized `TImplTraitType`, if possible.
    */
   TImplTraitType convertImplTraitTypeFromRaw(Raw::Element e) { result = TImplTraitType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TImplicitVariableAccess`, if possible.
+   */
+  TImplicitVariableAccess convertImplicitVariableAccessFromRaw(Raw::Element e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -1765,6 +1800,8 @@ module Synth {
     or
     result = convertIfExprFromRaw(e)
     or
+    result = convertImplicitVariableAccessFromRaw(e)
+    or
     result = convertIndexExprFromRaw(e)
     or
     result = convertLetExprFromRaw(e)
@@ -1900,7 +1937,13 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
-  TLocatable convertLocatableFromRaw(Raw::Element e) { result = convertAstNodeFromRaw(e) }
+  TLocatable convertLocatableFromRaw(Raw::Element e) {
+    result = convertAstNodeFromRaw(e)
+    or
+    result = convertFormatFromRaw(e)
+    or
+    result = convertFormatArgumentFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2208,6 +2251,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TFormat` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatToRaw(TFormat e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TFormatArgsArg` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsArgToRaw(TFormatArgsArg e) { e = TFormatArgsArg(result) }
@@ -2217,6 +2266,12 @@ module Synth {
    * Converts a synthesized `TFormatArgsExpr` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsExprToRaw(TFormatArgsExpr e) { e = TFormatArgsExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatArgument` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatArgumentToRaw(TFormatArgument e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -2259,6 +2314,12 @@ module Synth {
    * Converts a synthesized `TImplTraitType` to a raw DB element, if possible.
    */
   Raw::Element convertImplTraitTypeToRaw(TImplTraitType e) { e = TImplTraitType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TImplicitVariableAccess` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplicitVariableAccessToRaw(TImplicitVariableAccess e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -3071,6 +3132,8 @@ module Synth {
     or
     result = convertIfExprToRaw(e)
     or
+    result = convertImplicitVariableAccessToRaw(e)
+    or
     result = convertIndexExprToRaw(e)
     or
     result = convertLetExprToRaw(e)
@@ -3206,7 +3269,13 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
-  Raw::Element convertLocatableToRaw(TLocatable e) { result = convertAstNodeToRaw(e) }
+  Raw::Element convertLocatableToRaw(TLocatable e) {
+    result = convertAstNodeToRaw(e)
+    or
+    result = convertFormatToRaw(e)
+    or
+    result = convertFormatArgumentToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
