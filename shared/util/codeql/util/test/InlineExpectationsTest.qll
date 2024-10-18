@@ -584,3 +584,69 @@ private string expectationPattern() {
     result = tags + "(?:=" + value + ")?"
   )
 }
+
+/**
+ * Provides logic for creating a `@kind test-postprocess` query that checks
+ * inline test expectations using `$ BAD` markers.
+ */
+module TestPostProcessing {
+  external predicate queryResults(string relation, int row, int column, string data);
+
+  external predicate queryRelations(string relation);
+
+  signature module InputSig<InlineExpectationsTestSig Input> {
+    string getRelativeUrl(Input::Location location);
+  }
+
+  module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
+    private import InlineExpectationsTest as InlineExpectationsTest
+    private import InlineExpectationsTest::Make<Input>
+
+    private module TestInput implements TestSig {
+      string getARelevantTag() { result = "BAD" }
+
+      predicate hasActualResult(Input::Location location, string element, string tag, string value) {
+        exists(int row, string loc |
+          queryResults("#select", row, 0, loc) and
+          element = "Unexpected result" and
+          tag = "BAD" and
+          value = "" and
+          Input2::getRelativeUrl(location) = loc
+        )
+      }
+    }
+
+    private module Test = MakeTest<TestInput>;
+
+    private predicate rankedTestFailures(int i, Test::FailureLocatable f) {
+      f =
+        rank[i](Test::FailureLocatable f0, string filename, int startLine, int startColumn,
+          int endLine, int endColumn |
+          Test::testFailures(f0, _) and
+          f0.getLocation().hasLocationInfo(filename, startLine, startColumn, endLine, endColumn)
+        |
+          f0 order by filename, startLine, startColumn, endLine, endColumn
+        )
+    }
+
+    query predicate results(string relation, int row, int column, string data) {
+      queryResults(relation, row, column, data)
+      or
+      exists(Test::FailureLocatable f |
+        relation = "testFailures" and
+        rankedTestFailures(row, f)
+      |
+        column = 0 and data = Input2::getRelativeUrl(f.getLocation())
+        or
+        column = 1 and data = f.toString()
+      )
+    }
+
+    query predicate resultRelations(string relation) {
+      queryRelations(relation)
+      or
+      Test::testFailures(_, _) and
+      relation = "testFailures"
+    }
+  }
+}

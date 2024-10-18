@@ -8,10 +8,10 @@ function test() {
     var parser;
     try {
       // NOT OK: XMLDOM expands external entities by default
-      (new ActiveXObject("Microsoft.XMLDOM")).loadXML(src);
+      (new ActiveXObject("Microsoft.XMLDOM")).loadXML(src); // $ BAD
     } catch (e) {
       // NOT OK: MSXML expands external entities by default
-      (new ActiveXObject("Msxml2.DOMDocument")).loadXML(src);
+      (new ActiveXObject("Msxml2.DOMDocument")).loadXML(src); // $ BAD
     }
   }
 }

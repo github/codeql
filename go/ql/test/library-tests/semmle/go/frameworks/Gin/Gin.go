@@ -22,11 +22,11 @@ func FileSystemAccess() {
 	router := gin.Default()
 	router.POST("/FormUploads", func(c *gin.Context) {
 		filepath := c.Query("filepath")
-		c.File(filepath)                                    // $ FileSystemAccess=filepath
-		http.ServeFile(c.Writer, c.Request, filepath)       // $ FileSystemAccess=filepath
-		c.FileAttachment(filepath, "file name in response") // $ FileSystemAccess=filepath
+		c.File(filepath)                                    // $ BAD $ FileSystemAccess=filepath
+		http.ServeFile(c.Writer, c.Request, filepath)       // $ BAD $ FileSystemAccess=filepath
+		c.FileAttachment(filepath, "file name in response") // $ BAD $ FileSystemAccess=filepath
 		file, _ := c.FormFile("afile")
-		_ = c.SaveUploadedFile(file, filepath) // $ FileSystemAccess=filepath
+		_ = c.SaveUploadedFile(file, filepath) // $ BAD $ FileSystemAccess=filepath
 	})
 	_ = router.Run()
 }
