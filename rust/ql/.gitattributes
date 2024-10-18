@@ -238,10 +238,6 @@
 /lib/codeql/rust/elements/internal/FormatArgsArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/FormatArgumentConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/FormatArgumentImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/FormatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/FormatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgListConstructor.qll linguist-generated

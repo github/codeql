@@ -8,7 +8,8 @@ private import codeql.rust.elements.internal.generated.ImplicitVariableAccess
 private import codeql.rust.elements.internal.ImplicitVariableAccessConstructor
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
-private import codeql.rust.elements.FormatTemplate
+private import codeql.rust.elements.Format
+private import codeql.rust.elements.NamedFormatArgument
 
 /**
  * INTERNAL: This module contains the customizable definition of `ImplicitVariableAccess` and should not
