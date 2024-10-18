@@ -147,23 +147,15 @@ class BlockExprTree extends StandardPostOrderTree, BlockExpr {
   override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 }
 
-class BreakExprTree extends PostOrderTree, BreakExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
-
-  override predicate first(AstNode node) {
-    first(this.getExpr(), node)
-    or
-    not this.hasExpr() and node = this
-  }
+class BreakExprTree extends StandardPostOrderTree, BreakExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getExpr() }
 
   override predicate last(AstNode last, Completion c) { none() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and completionIsNormal(c) and succ = this
+    super.succ(pred, succ, c)
     or
-    pred = this and
-    c.isValidFor(pred) and
-    succ = this.getTarget()
+    pred = this and c.isValidFor(pred) and succ = this.getTarget()
   }
 }
 
