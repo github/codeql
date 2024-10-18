@@ -1510,6 +1510,16 @@ module MakeWithSplitting<
 
     /** Holds if CFG scope `scope` lacks an initial AST node. */
     query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
+
+    /** Holds if `node` is appears in `first` but not in `succ`. */
+    query predicate firstNoSucc(AstNode node) {
+      first(_, node) and not succ(node, _, _) and not succ(_, node, _)
+    }
+
+    /** Holds if `node` is appears in `first` but not in `succ`. */
+    query predicate lastNoSucc(AstNode node) {
+      last(_, node, _) and not succ(node, _, _) and not succ(_, node, _)
+    }
   }
 }
 
