@@ -12,6 +12,12 @@ abstract class CfgScope extends AstNode {
 }
 
 final class FunctionScope extends CfgScope, Function {
+  FunctionScope() {
+    // A function without a body corresponds to a trait method signature and
+    // should not have a CFG scope.
+    this.hasBody()
+  }
+
   override predicate scopeFirst(AstNode node) {
     first(this.(FunctionTree).getFirstChildNode(), node)
   }
