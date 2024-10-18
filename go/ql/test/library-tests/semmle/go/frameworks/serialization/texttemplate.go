@@ -43,7 +43,10 @@ func test() {
 	buff1.Read(bytes1)
 	sink(bytes1) // $ hasTaintFlow=1 hasTaintFlow=2 hasTaintFlow=3
 
-	tmpl.Execute(buff2, toSerialize)
+	// Read `buff2` via an `any`-typed variable, to ensure the static type of the argument to tmpl.Execute makes no difference to the result
+	var toSerializeAsAny any
+	toSerializeAsAny = toSerialize
+	tmpl.Execute(buff2, toSerializeAsAny)
 	buff2.Read(bytes2)
 	sink(bytes2) // $ hasTaintFlow=1 hasTaintFlow=2 hasTaintFlow=3
 

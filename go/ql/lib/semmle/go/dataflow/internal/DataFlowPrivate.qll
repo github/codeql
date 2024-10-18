@@ -143,73 +143,28 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, ContentSet c, Node node2) {
-  // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-  // which in turn flows into the pointer content of `p`
-  exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
-    node1 = rhs and
-    node2.(PostUpdateNode).getPreUpdateNode() = base and
-    c = any(DataFlow::FieldContent fc | fc.getField() = f)
+predicate storeStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
+    // which in turn flows into the pointer content of `p`
+    exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
+      node1 = rhs and
+      node2.(PostUpdateNode).getPreUpdateNode() = base and
+      c = any(DataFlow::FieldContent fc | fc.getField() = f)
+      or
+      node1 = base and
+      node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+      c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    )
     or
-    node1 = base and
-    node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+    node1 = node2.(AddressOperationNode).getOperand() and
     c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    or
+    containerStoreStep(node1, node2, c)
   )
   or
-  node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
-  or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
-  or
-  containerStoreStep(node1, node2, c)
-}
-
-/**
- * Gets a `DataFlow::ContentSet` containing a single `Content` appropriate
- * for reading a field, element, map value or channel message of type `containerType`.
- */
-DataFlow::ContentSet getContentForType(Type containerType) {
-  containerType instanceof ArrayType and
-  result instanceof DataFlow::ArrayContent
-  or
-  containerType instanceof SliceType and
-  result instanceof DataFlow::ArrayContent
-  or
-  containerType instanceof ChanType and
-  result instanceof DataFlow::CollectionContent
-  or
-  containerType instanceof MapType and
-  result instanceof DataFlow::MapValueContent
-  or
-  result.(DataFlow::PointerContent).getPointerType() = containerType
-  or
-  exists(Field f | f = containerType.(StructType).getField(_) |
-    result.(DataFlow::FieldContent).getField() = f
-  )
-}
-
-/**
- * Gets the type of an array/slice element, channel value, map value,
- * pointer base type or named-type underlying type relating to `containerType`.
- */
-Type getElementType(Type containerType) {
-  result = containerType.(ArrayType).getElementType() or
-  result = containerType.(SliceType).getElementType() or
-  result = containerType.(ChanType).getElementType() or
-  result = containerType.(MapType).getValueType() or
-  result = containerType.(PointerType).getPointerType() or
-  result = containerType.(NamedType).getUnderlyingType()
-}
-
-/**
- * Gets the type of an array/slice element, channel value, map value,
- * pointer base type, named-type underlying type or struct field type
- * relating to `containerType`.
- */
-Type getAnElementOrFieldType(Type containerType) {
-  result = getElementType(containerType) or
-  result = containerType.(StructType).getField(_).getType()
 }
 
 /**
@@ -217,28 +172,26 @@ Type getAnElementOrFieldType(Type containerType) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) {
-  node1 = node2.(PointerDereferenceNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
-  or
-  exists(FieldReadNode read |
-    node2 = read and
-    node1 = read.getBase() and
-    c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+predicate readStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    node1 = node2.(PointerDereferenceNode).getOperand() and
+    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+    or
+    exists(FieldReadNode read |
+      node2 = read and
+      node1 = read.getBase() and
+      c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+    )
+    or
+    containerReadStep(node1, node2, c)
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  containerReadStep(node1, node2, c)
-  or
-  exists(Type containerType |
-    any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
-    getAnElementOrFieldType*(node1.getType()) = containerType
-  |
-    c = getContentForType(containerType) and
-    node1 = node2
-  )
+  any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
+  cs.isUniversalContent() and
+  node1 = node2
 }
 
 /**
