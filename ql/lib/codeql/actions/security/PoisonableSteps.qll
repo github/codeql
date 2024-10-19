@@ -49,4 +49,6 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
 
 class LocalActionUsesStep extends PoisonableStep, UsesStep {
   LocalActionUsesStep() { this.getCallee().matches("./%") }
+
+  string getPath() { result = normalizePath(this.getCallee()) }
 }

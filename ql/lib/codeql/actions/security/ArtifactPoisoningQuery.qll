@@ -276,7 +276,12 @@ class ArtifactPoisoningSink extends DataFlow::Node {
       )
       or
       poisonable.(UsesStep) = this.asExpr() and
-      download.getPath() = "GITHUB_WORKSPACE/"
+      (
+        not poisonable instanceof LocalActionUsesStep and
+        download.getPath() = "GITHUB_WORKSPACE/"
+        or
+        isSubpath(poisonable.(LocalActionUsesStep).getPath(), download.getPath())
+      )
     )
   }
 
