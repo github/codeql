@@ -179,7 +179,8 @@ class ActorIfCheck extends ActorCheck instanceof If {
           .regexpFind([
               "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
               "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
-              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b",
+              "\\bgithub\\.event\\.sender\\.login\\b"
             ], _, _)
     )
     or
