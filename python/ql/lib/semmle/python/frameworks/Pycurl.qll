@@ -90,17 +90,13 @@ module Pycurl {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        exists(API::CallNode c |
-          c = setopt().getACall() and
-          sslverifypeer().getAValueReachableFromSource() = c.getArg(0) and
-          (
-            exists(IntegerLiteral i | i.getValue() = 0 and c.getArg(1).asExpr() = i)
-            or
-            exists(BooleanLiteral b | b.booleanValue() = false)
-          )
-        |
-          disablingNode = c and argumentOrigin = c.getArg(1)
-        )
+        sslverifypeer().getAValueReachableFromSource() = this.getArg(0) and
+        (
+          exists(IntegerLiteral i | i.getValue() = 0 and this.getArg(1).asExpr() = i)
+          or
+          exists(BooleanLiteral b | b.booleanValue() = false and this.getArg(_).asExpr() = b)
+        ) and
+        (disablingNode = this and argumentOrigin = this.getArg(1))
       }
     }
   }
