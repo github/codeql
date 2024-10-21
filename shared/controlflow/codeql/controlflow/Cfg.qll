@@ -1503,9 +1503,12 @@ module MakeWithSplitting<
     }
 
     /** Holds if `n` has multiple textual representations. */
+    predicate multipleToString(Node n) { strictcount(n.toString()) > 1 }
+
+    /** Holds if `n` has multiple textual representations. */
     query predicate multipleToString(Node n, string s) {
-      s = strictconcat(n.toString(), ",") and
-      strictcount(n.toString()) > 1
+      multipleToString(n) and
+      s = strictconcat(n.toString(), ",")
     }
 
     /** Holds if CFG scope `scope` lacks an initial AST node. */
